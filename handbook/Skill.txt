@@ -1,0 +1,541 @@
+0000008 - Follow the Lead - Allows one to lead up to 3 pets at once. (Passive skill)
+0001000 - Three Snails - [Master Level : 3]\nHurls snail shells to attack monsters from long distance.
+0001001 - Recovery - [Master Level : 3]\nEnables the user to recover HP constantly for 30 sec. \n#cTerms between skills : 10 min.#
+0001003 - Legendary Spirit - [Master Level : 1]\nUses the spirit of a legend to use a scroll on an item that cannot be normally equipped by the character.
+0001004 - Monster Rider - [Master Level : 1]\nEnables one to ride on a tamed monster and use it as a method of transportation.
+0001002 - Nimble Feet - [Master Level : 3]\nEnables the character to move around quickly for a short amount of time. \n#cTerms between skills : 1 min.#
+0001013 - Spaceship - [Master Level : 2]\nYou board a spaceship. While aboard, you can increase your movement and jump abilities by pressing the right/left direction key twice. #Available until: 06-08-2009 at 00 hour#
+0001014 - Space Dash - [Master Level : 1]\nIncrease your movement and jump abilities by pressing the right/left direction key twice. #cAvailable until 06-08-2009 at 00 hour# 
+0001015 - Space Beam - [Master Level : 1]\nChanges the condition of the Krypto found at the Space Mine. #cAvailable until: 06-08-2009 at 00 hour# 
+1000000 - Improved HP Recovery - [Master Level : 16]\nRecover additional HP every 10 sec. while standing still.
+1000001 - Improved MaxHP Increase - Master Level : 10] This skill boosts up the amount of increase on MaxHP after each Level UP, or AP used on MaxHP.\nRequired Skill : #cAt least Level 5 on Improving HP Recovery.#
+1000002 - Endure - [Master Level : 8]\nEven when hanging on the rope or on a ladder, you'll be able to recover some HP after a certain amount of time.\nRequired Skill : #cAt least Level 3 on Improving MaxHP Increase.#
+1001003 - Iron Body - [Master Level : 20]\nTemporarily increases your weapon defense.\nRequired Skill : #cAt least Level 3 on Endure#
+1001004 - Power Strike - [Master Level : 20]\nUse MP to deliver a killer blow to the monsters with a sword.
+1001005 - Slash Blast - [Master Level : 20]\nUse HP and MP to attack every enemy around you with a sword.\nRequired Skill : #cAt least Level 1 on Power Strike#
+2000000 - Improved MP Recovery - [Master Level : 16]\nRecovering even more MP every 10 sec. The higher the level of the character and the skill level, the more recovery it enables the character to have.
+2000001 - Improved MaxMP Increase - Master Level : 10] This skill boosts up the amount of increase on MaxMP after each Level UP, or AP used on MaxMP.\nRequired Skill : #cAt least Level 5 on Improving MP Recovery#
+2001002 - Magic Guard - [Master Level : 20]\nTemporarily replaces damage with MP instead of HP. If MP reaches 0, the HP takes a full hit.
+2001003 - Magic Armor - [Master Level : 20]\nTemporarily boosts the weapon def. of the armor by blowing magic into it.\nRequired Skill : #cAt least Level 3 on Magic Guard#
+2001004 - Energy Bolt - [Master Level : 20]\nUse MP to attack one enemy.
+2001005 - Magic Claw - [Master Level : 20]\nUse MP to attack an enemy twice.\nRequired Skill : #cAt least Level 1 on Energy Bolt#
+3000000 - The Blessing of Amazon - [Master Level : 16]\nIncreases accuracy.
+3000001 - Critical Shot - [Master Level : 20]\nLaunches a critical attack with a given success rate.
+3000002 - The Eye of Amazon - [Master Level : 8]\nIncreases the range of attack for bows and crossbows.\nRequired Skill : #cAt least Level 3 on The Blessing of Amazon#
+3001003 - Focus - [Master Level : 20]\nFocusing to temporarily increase accuracy and avoidability.\nRequired Skill : #cAt least Level 3 on The Blessing of Amazon#
+3001004 - Arrow Blow - [Master Level : 20]\nFires an arrow with authority. Applies more damage than usual.
+3001005 - Double Shot - [Master Level : 20]\nFires two arrows at once to attack an enemy twice.\nRequired Skill : #cAt least Level 1 on Arrow Blow#
+4000000 - Nimble Body - [Master Level : 20]\nIncreases accuracy and avoidability.
+4000001 - Keen Eyes - [Master Level : 8]\nIncreases the range of attack using throwing weapons such as throwing stars & knives.\nRequired Skill : #cAt least Level 3 on Nimble Body#
+4001002 - Disorder - [Master Level : 20]\nTemporarily decreases the weapon def. and attacking abilities of the affected, even stunting the ongoing attacks. Can't use this skill on a monster that's already in "disorder."
+4001003 - Dark Sight - [Master Level : 20]\nUse MP to hide behind the shadows. Can't be attacked, and can't attack either.\nRequired Skill : #cAt least Level 3 on Disorder#
+4001334 - Double Stab - [Master Level : 20]\nUse MP to quickly stab a monster twice in one turn using a dagger.
+4001344 - Lucky Seven - [Master Level : 20]\nUse MP to throw 2 throwing stars and apply damage based on LUK, regardless of the rate of Claw Mastery.
+1100000 - Sword Mastery - [Master Level : 20]\nIncreases the sword mastery and accuracy. It only applies when either a one-handed or a two-handed sword is in hand.
+1100001 - Axe Mastery - [Master Level : 20]\nIncreases the axe mastery and accuracy. It only applies when either a one-handed or a two-handed axe is in hand.
+1100002 - Final Attack : Sword - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand sword.\nRequired Skill : #cAt least Level 3 on Sword Mastery#
+1100003 - Final Attack : Axe - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand axe.\nRequired Skill : #cAt least Level 3 on Axe Mastery#
+1101004 - Sword Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the equipped sword. It only applies when either a one-handed or a two-handed sword is in hand.\nRequired Skill : #cAt least Level 5 on Sword Mastery#
+1101005 - Axe Booster - [Master Level : 20]\nUses HP and MP  to temporarily boost up the attacking speed of the equipped axe. It only applies when either a one-handed or a two-handed axe is in hand.\nRequired Skill : #cAt least Level 5 on Axe Mastery#
+1101006 - Rage - [Master Level : 20]\nTemporarily boosts the weapon attack level of everyone in the party around the area, but also decreases the level of weapon attack defense.
+1101007 - Power Guard - [Master Level : 30]\nReturns a portion of the damage received from the enemy. Can't return more than 10% of the enemy's Max HP at once, however.\nRequired Skill : #cAt least Level 3 on Rage#
+1200000 - Sword Mastery - [Master Level : 20]\nIncreases the sword mastery and accuracy. It only applies when either a one-handed or a two-handed sword is in hand.
+1200001 - BW Mastery - [Master Level : 20]\nIncreases the mastery of blunt weapons and accuracy. It only applies when either a one-handed or a two-handed blunt weapon is in hand.
+1200002 - Final Attack : Sword - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand sword.\nRequired Skill : #cAt least Level 3 on Sword Mastery#
+1200003 - Final Attack : BW - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand blunt weapon.\nRequired Skill : #cAt least Level 3 on BW Mastery#
+1201004 - Sword Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the equipped sword. It only applies when either a one-handed or a two-handed sword is in hand.\nRequired Skill : #cAt least Level 5 on Sword Mastery#
+1201005 - BW Booster - [Master Level: 20]\nUses HP and MP  to temporarily boost up the attacking speed of the equipped blunt weapon. It only applies when either a one-handed or a two-handed blunt weapon is in hand.\nRequired Skill : #cAt least Level 5 on Mace Mastery#
+1201006 - Threaten - [Master Level : 20]\nUse MP to temporarily threaten a monster. Decreases the level of weapon attack and weapon defense of every monster around the area.
+1201007 - Power Guard - [Master Level : 30]\nReturns a portion of the damage received from the enemy. Can't return more than 10% of the enemy's Max HP at once, however.\nRequired Skill : #cAt least Level 3 on Threaten#
+1300000 - Spear Mastery - [Master Level : 20]\nIncreases the spear mastery and accuracy. It only applies when a spear is in hand.
+1300001 - Pole Arm Mastery - [Master Level : 20]\nIncreases the mastery of pole arms and accuracy. It only applies when a pole arm is in hand.
+1300002 - Final Attack : Spear - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand spear.\nRequired Skill : #cAt least Level 3 on Spear Mastery#
+1300003 - Final Attack : Pole Arm - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a one-hand or two-hand pole arm.\nRequired Skill : #cAt least Level 3 on Pole Arm Mastery#
+1301004 - Spear Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the equipped spear. It only applies when a spear is in hand.\nRequired Skill : #cAt least Level 5 on Spear Mastery#
+1301005 - Pole Arm Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the equipped pole arm. It only applies when a pole arm is in hand.\nRequired Skill : #cAt least Level 5 on Pole Arm Mastery#
+1301006 - Iron Will - [Master Level : 20]\nTemporarily increases the level of weapon and magic defense on every member of the party around the area.
+1301007 - Hyper Body - [Master Level : 30]\nTemporarily increases the Max HP and Max MP of all members of the party around the area.\nRequired Skill : #cAt least Level 3 on Iron Will#
+2100000 - MP Eater - [Master Level : 20]\nAbsorbs the enemy's MP when attacking with Magic skills, until it reaches 0.
+2101001 - Meditation - [Master Level : 20]\nMeditate for a bit to temporarily boost up the magic attack of party members around the area.\nRequired Skill : #cAt least Level 3 on MP Eater#
+2101002 - Teleport - [Master Level : 20]\nUse the arrow keys to teleport to other places in the same map on a set distance.
+2101003 - Slow - [Master Level : 20]\nTemporarily slows down the movement of up to 6 monsters. Cannot be used on the same monsters more than twice in a row.\nRequired Skill : #cAt least Level 5 on Teleport#
+2101004 - Fire Arrow - [Master Level : 30]\nAttacks a single monster with a fire arrow using the magic power. Applies 1.5 times the damage to the ice-based enemies, whereas fire-based enemies receive half the damage, if that.
+2101005 - Poison Breath - [Master Level : 30]\nAttacks a single monster by splashing a Poison drop.  With a given success rate, the monster gets temporarily poisoned.
+2200000 - MP Eater - [Master Level : 20]\nAbsorbs the enemy's MP when attacking with Magic skills, until it reaches 0.
+2201001 - Meditation - [Master Level : 20]\nMeditate for a bit to temporarily boost up the magic attack of party members around the area.\nRequired Skill : #cAt least Level 3 on MP Eater#
+2201002 - Teleport - [Master Level : 20]\nUse the arrow keys to teleport to other places in the same map on a set distance.
+2201003 - Slow - [Master Level : 20]\nTemporarily slows down the movement of up to 6 monsters. Cannot be used on the same monsters more than twice in a row.\nRequired Skill : #cAt least Level 5 on Teleport#
+2201004 - Cold Beam - [Master Level : 30]\nAttacks a single monster with a sharp piece of Ice. The monster will freeze if hit.  Damages the fire-based enemies 1.5 times more, where as the ice-based enemies get only half the damage.
+2201005 - Thunder Bolt - [Master Level : 30]\nAttacks surrounding monsters with a thunder bolt.  All monsters in the range receive damage.
+2300000 - MP Eater - [Master Level : 20]\nAbsorbs the enemy's MP when attacking with Magic skills, until it reaches 0.
+2301001 - Teleport - [Master Level : 20]\nUse the arrow keys to teleport to other places in the same map on a set distance.
+2301002 - Heal - [Master Level : 30]\nRecovers the HP of all party members around the area. The amount of healing depends on the number of people being healed, and the undead monster in the vicinity of this will receive damage.
+2301003 - Invincible - [Master Level : 20]\nTemporarily decreases the weapon damage received. It has no effect, however, on the magic attack.\nRequired Skill : #cAt least Level 5 on Heal#
+2301004 - Bless - [Master Level : 20]\nTemporarily increases the weapon def., magic def., accuracy, and avoidability of all party members around the area. This cannot be combined with a skill or a potion.\nRequired Skill : #cAt least Level 5 on Invincible#
+2301005 - Holy Arrow - [Master Level : 30]\nAttacks a single monster by firing Holy Arrows.  Very effective against the undead's or devil-based monsters.
+3100000 - Bow Mastery - [Master Level : 20]\nIncreases the bow mastery and accuracy. It only applies when a bow is in hand.
+3100001 - Final Attack : Bow - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a bow.\nRequired Skill : #cAt least Level 3 on Bow Mastery#
+3101002 - Bow Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the bow. It only works with a bow in hand.\nRequired Skill : #cAt least Level 5 on Bow Mastery#
+3101003 - Power Knock-Back - [Master Level : 20]\nIncreases the success rate for pushing off the monsters when swinging a bow.  As the level rises, the number of monsters that one can push off with one swing increases.
+3101004 - Soul Arrow : Bow - [Master Level : 20]\nTemporarily allows the character to fire bow arrows without using up the arrows. Only works with a bow in hand.\nRequired Skill : #cAt least Level 5 on Bow Booster#
+3101005 - Arrow Bomb : Bow - [Master Level : 30]\nFires arrows with bombs attached to it. If struck cleanly, the bomb explodes on the enemy, knocking out some of the enemies around with a certain success rate. Can't attack more than 6 at once, and it only works with a bow in hand.
+3200000 - Crossbow Mastery - [Master Level : 20]\nIncreases the crossbow mastery and accuracy. It only applies when a crossbow is in hand.
+3200001 - Final Attack : Crossbow - [Master Level : 30]\nStrikes an another, far deadlier blow following the initial attack with a given success rate. It works only when holding a crossbow.\nRequired Skill : #cAt least Level 3 on Crossbow Mastery#
+3201002 - Crossbow Booster - [Master Level : 20]\nUses HP and MP to temporarily boost up the attacking speed of the crossbow. It only works with a crossbow in hand.\nRequired Skill : #cAt least Level 5 on Crossbow Mastery#
+3201003 - Power Knock-Back - [Master Level : 20]\nIncreases the success rate for pushing off the monsters when swinging a crossbow.  As the level rises, the number of monsters that one can push off with one swing increases.
+3201004 - Soul Arrow : Crossbow - [Master Level : 20]\nTemporarily allows the character to fire crossbow arrows without using up the arrows. Only works with a crossbow in hand.\nRequired Skill : #cAt least Level 5 on Bow Booster#
+3201005 - Iron Arrow : Crossbow - [Master Level : 30]\nAttacks up to 6 monsters at once with a powerful arrow, which penetrates through them. Damage decreases as the arrow flies through.
+4100000 - Claw Mastery - [Master Level : 20]\nIncreases the mastery of throwing stars and accuracy, along with the maximum number of throwing stars to recharge. It only applies when the character is throwing stars.
+4100001 - Critical Throw - [Master Level : 30]\nEnables the character to make a critical attack with throwing stars on a certain success rate.\nRequired Skill : #cAt least Level 3 on Claw Mastery#
+4100002 - Endure - [Master Level : 20]\nRecovers additional amount of HP and MP.
+4101003 - Claw Booster - [Master Level : 20]\nUse HP and MP to temporarily boost up the attacking speed of the claw. It only applies when the character is equipped with a claw throwing stars.\nRequired Skill : #cAt least Level 5 on Claw Mastery#
+4101004 - Haste - [Master Level : 20]\nTemporarily improves the speed and jumping ability of every member of the party.
+4101005 - Drain - [Master Level : 30]\nAbsorb some of the damage dished out to the enemy as HP. The most one can absorb at once is the character's MaxHP / 2, and can't absorb more than the MaxHP of the enemy.\nRequired Skill : #cAt least Level 3 on Endure#
+4200000 - Dagger Mastery - [Master Level: 20]\nIncreases the dagger mastery and accuracy. It only applies when the character has a dagger in hand.
+4200001 - Endure - [Master Level : 20]\nRecovers additional amount of HP and MP.
+4201002 - Dagger Booster - [Master Level : 20]\nUse HP and MP to temporarily boost up the attacking speed of the dagger. Only applies when the character has a dagger in hand. \nRequired Skill : #cAt least Level 5 on Dagger Mastery#
+4201003 - Haste - [Master Level : 20]\nTemporarily boosts the speed and jumping ability of everyone in the party.
+4201004 - Steal - [Master Level : 30]\nSteals one of the monster's items with a given success rate.  It works only once against the same monster.  The effort can be continued till its success.\nRequired Skill : #cAt least Level 5 on Haste#
+4201005 - Savage Blow - [Master Level : 30]\nUse MP to attack an enemy up to 6 times in a row with a dagger.
+1110000 - Improving MP Recovery - [Master Level : 20]\nRecovers MP at a faster rate than the norm every 10 seconds by standing still.
+1110001 - Shield Mastery - [Master Level : 20]\nIncreases shield defense. However, it does not affect if the character does not equip the shield.
+1111002 - Combo Attack - [Master Level : 30]\nPrepares for combo attack.  Combo counter can be used to strike a deadly blow to the monster.  Max. for combo counter is 5 and midpoint is 3.
+1111003 - Panic : Sword - [Master Level : 30]\n Attack a single monster using dark powers. This skill can only be used when equipped with a sword and the combo all charged up.\nRequired Skill : #cAt least Level 1 on Combo Attack#
+1111004 - Panic : Axe - [Master Level : 30]\n Attack a single monster using dark powers. This skill can only be used when equipped with an axe and the combo all charged up.\nRequired Skill : #cAt least Level 1 on Combo Attack#
+1111005 - Coma: Sword - [Master Level : 30]\n If struck cleanly, the monster becomes panicked. This skill can only be used when equipped with a sword and the combo all charged up.\nRequired Skill : #cAt least Level 1 on Combo Attack#
+1111006 - Coma: Axe - [Master Level : 30]\n If struck cleanly, the monster becomes panicked. This skill can only be used when equipped with an axe and the combo all charged up.\nRequired Skill : #cAt least Level 1 on Combo Attack#
+1111007 - Armor Crash - [Master Level : 20]\n Nullifies the defense buff used by the monster with a given success rate.\nRequired Skill : #cAt least Level 3 on Shout#
+1111008 - Shout - [Master Level : 30]\nTemporarily stuns up to 6 monsters nearby with damage.
+1210000 - Improving MP Recovery - [Master Level : 20]\nRecovering even more MP every 10 sec. 
+1210001 - Shield Mastery - [Master Level : 20]\nShield Defense increases. However, it does not affect if the character does not equip the shield.
+1211002 - Charged Blow - [Master Level : 30]\n Make the enemy stun. You can use this skill only when your combo is charged up.
+1211003 - Fire Charge: Sword - [Master Level: 30]\n Temporarily adds an element of fire into the sword.  It gets cancelled when the charge blow is used or it simply expires.
+1211004 - Flame Charge: BW - [Master Level: 30]\n Temporarily adds an element of fire into the blunt weapon.  It gets cancelled when the charge blow is used or it simply expires.
+1211005 - Ice Charge: Sword - [Master Level: 30]\n You can attack with ice power. The skill get canceled if you use Charge Blow or if the time runs out.
+1211006 - Blizzard Charge: BW - [Master Level: 30]\n Temporarily adds an element of blizzard into the blunt weapon.  It gets cancelled when the charge blow is used or it simply expires.
+1211007 - Thunder Charge: Sword - [Master Level: 30]\n Temporarily adds an element of thunder into the sword.  It gets cancelled when the charge blow is used or it simply expires.
+1211008 - Lightning Charge: BW - [Master Level: 30]\n Temporarily adds an element of lightning into the blunt weapon.  It gets cancelled when the charge blow is used or it simply expires.
+1211009 - Magic Crash - [Master Level : 20]\n Nullifies the magic defense buff used by the monster with a given success rate.\nRequired Skill : #cAt least Level 3 on Charged Blow#
+1310000 - Elemental Resistance - [Master Level : 20]\n Gains resistance against all Magic attacks (Fire, Cold, Lightning & Poison.)
+1311001 - Spear Crusher - [Master Level : 30]\nAttacks multiple monsters several times by thrusting the spear.
+1311002 - Pole Arm Crusher - [Master Level : 30]\nAttacks multiple monsters several times by thrusting the pole arm.
+1311003 - Dragon Fury: Spear - [Master Level : 30]\n Attacks up to 6 monsters nearby in relatively distant range by swinging the Spear.
+1311004 - Dragon Fury: Pole Arm - [Master Level : 30]\n Attacks up to 6 monsters nearby in relatively distant range by swinging the pole arm.
+1311005 - Sacrifice - [Master Level: 30]\n Attacks a single monster while disabling the monster's defending capacity. However, some damage will be done to the attacker him/herself. 
+1311006 - Dragon Roar - [Master Level : 30]\n Attacks up to 15 monsters at once by temporarily stunning them.  It works only when more than 50% of HP is left.\nRequired Skill : #cAt least Level 3 on Sacrifice#
+1311007 - Power Crash - [Master Level : 20]\n Nullifies "power-up" skills of multiple monsters with a given success rate.\nRequired Skill : #cAt least Level 3 on Dragon Blood#
+1311008 - Dragon Blood - [Master Level : 20]\nIncreases the attacking capacity, but decreases HP steadily until 4 seconds before the remaining HP exhausts.
+2110000 - Partial Resistance - [Master Level : 20]\n Gains resistance against Magic attacks of Fire and Poison.
+2110001 - Element Amplification - [Master Level : 30]\n Boosts the capacity for all Magic attacks by using additional MP.
+2111002 - Explosion - [Master Level : 30]\nAttacks up to 6 surrounding monsters by creating an explosion around the character, using fire-based attacks.
+2111003 - Poison Mist - [Master Level : 30]\n Makes a poison fog around the character. Deceases HP of all monsters in the range.
+2111004 - Seal - [Master Level : 20]\nTemporarily seals up all surrounding monsters.  Once sealed, monsters can't use skills. Does not work against boss-level monsters.\nRequired Skill : #cAt least Level 3 on Element Amplification#
+2111005 - Spell Booster - [Master Level : 20]\nUses up a significant amount of HP and MP to increase the attacking speed for spells.\nRequired Skill : #cAt least Level 3 on Element Amplification#
+2111006 - Element Composition - [Master Level : 30]\nAttacks a single monster by splashing a Poison drop. With a given success rate, the monster gets temporarily poisoned.
+2210000 - Partial Resistance - [Master Level : 20]\n Gains resistance against Magic attacks of Ice and Lightning.
+2210001 - Element Amplification - [Master Level : 30]\n Boosts the capacity for all Magic attacks by using additional MP.
+2211002 - Ice Strike - [Master Level : 30]\nFires ice blocks at multiple enemies. If struck, all monsters other than ice-based ones will freeze. Cannot attack more than 6 at once.
+2211003 - Thunder Spear - [Master Level : 30]\nGathers up the power of lightening and turns it into a spear, attacking a single enemy. Monsters will be damaged with a lightening-based attack.
+2211004 - Seal - [Master Level : 20]\nSeals up the enemies around you for a certain amount of time. Once sealed up, the monsters can't use attacking skills, but the skill does not work on boss monsters.\nRequired Skill : #cAt least Level 3 on Element Amplification#
+2211005 - Spell Booster - [Master Level : 20]\nUses up a significant amount of HP and MP to increase the attacking speed for spells.
+2211006 - Element Composition - [Master Level : 30]\nAttacks a single monster with Magic attack of Ice and Lightning features combined.  Very effective to the monsters vulnerable to ice and lightning, and if struck, the monster will freeze.
+2310000 - Elemental Resistance - [Master Level : 20]\nGains a higher tolerance for all element-based spell attacks from the enemy.
+2311001 - Dispel - [Master Level : 20]\nNullifies all monsters' Magic effects within the targeted area while healing all abnormal conditions suffered by all surrounding party members.
+2311002 - Mystic Door - [Master Level : 20]\nCreates a portal that heads to the nearest town. All members of the party can use it multiple times until the portal disappears. Press? to move.\nRequired Skill : #cAt least Level 3 on Dispell#
+2311003 - Holy Symbol - [Master Level : 30]\nTemporarily allows all members of the party nearby to gain additional EXP while hunting.  It becomes fully effective only when there are more than 2 members of the party around.\nRequired Skill : #cAt least Level 3 on Dispell#
+2311004 - Shining Ray - [Master Level : 30]\nAttacks multiple enemies at once with the ray of holy light. Applies massive damage to the undead + devil-based monsters.
+2311005 - Doom - [Master Level : 30]\nTurns up to 6 monsters into snails.  Changes the look, the attacking capacity, and the speed of movement. Cannot be used against boss-level monsters.
+2311006 - Summon Dragon - [Master Level : 30]\nSummons a holy dragon for a certain amount of time. The dragon will stay beside you and attack the enemies in the process. The higher the skill level, the stronger the summoned dragon is.
+3110000 - Thrust - [Master Level : 20]\nBoosts up the moving speed.
+3110001 - Mortal Blow - [Master Level : 20]\nEnables to shoot monsters within a very close range with a given success rate. Even kills a monster with a single shot every once in a while.
+3111002 - Puppet - [Master Level : 20]\nTemporarily summons a puppet, which takes all the attacks from the monsters instead. 
+3111003 - Inferno - [Master Level : 30]\nUses fire-based arrows to attack up to 6 monsters at once. Only works when equipped with a bow.
+3111004 - Arrow Rain - [Master Level : 30]\nFires a number of arrows into the sky, attacking upto 6 monsters at once on its way down. Only available when equipped with a bow.\nRequired Skill : #cAt least Level 5 on Mortal Blow#
+3111005 - Silver Hawk - [Master Level : 30]\nSummons a silver hawk. The hawk will be hovering around you, attacking monsters nearby.\nRequired Skill : #cAt least Level 5 on Puppet#
+3111006 - Strafe - [Master Level : 30]\nFires 4 arrows at an enemy.
+3210000 - Thrust - [Master Level : 20]\nBoosts up the moving speed.
+3210001 - Mortal Blow - [Master Level : 20]\nFor a certain rate, allows you to fire crossbow arrows even at a very close range. Even kills a monster with one shot every once in a while.
+3211002 - Puppet - [Master Level : 20]\nSummons a puppet (your other self) for a certain amount of time. While the puppet is around, the monsters will attack the puppet, not you.
+3211003 - Blizzard - [Master Level : 30]\nUses ice-based arrows to attack up to 6 monsters at once. Only works when equipped with a bow.
+3211004 - Arrow Eruption - [Master Level : 30]\nAttacks up to 6 monsters simultaneously by shooting multiple arrows.  Only works with a crossbow equipped.
+3211005 - Golden Eagle - [Master Level : 30]\nSummons a golden eagle. The eagle will be hovering around you, attacking monsters nearby.\nRequired Skill : #cAt least Level 5 on Puppet#
+3211006 - Strafe - [Master Level : 30]\nFires 4 arrows at an enemy.
+4110000 - Alchemist - [Master Level : 20]\nIncreases the effect of the recovery-based items like potions and others, and lengthen time for the effect, if the item is based on such. However, items such as Elixir and others that base the recovery in % do not apply in this skill.
+4111001 - Meso Up - [Master Level : 20]\nFor a certain amount of time, everyone in the party can make the enemies drop more mesos than usual with this skill.
+4111002 - Shadow Partner - [Master Level : 30]\nTemporarily summons a shadow of oneself, repeating every move. There's no real stamina in it, and it will disappear after a while.
+4111003 - Shadow Web - [Spider Web : 20]\nCreates a web of shadow of oneself to hold up to 6 monsters. Once stuck, the monsters held in the spiderweb will be unable to move.
+4111004 - Shadow Meso - [Master Level : 30]\nAttacks enemies with mesos and the damage is based on the amount of mesos thrown. Nullifies the monsters' "weapon def. up" and "magic guard up." \nRequired Skill : #cAt least Level 5 on Meso Up#
+4111005 - Avenger - [Master Level : 30]\nUses MP to make an enormous throwing star for attack. The throwing star will go through an enemy, and attack the ones behind it, too.
+4111006 - Flash Jump - [Master Level : 20]\nWhile in the air after a jump, use this skill + the arrow for a second jump. The higher the skill level, the farther the distance for the jump.\nRequired Skill : #cAt least Level 5 on Avenger#
+4210000 - Shield Mastery - [Master Level : 20]\nIncreases the def. of the equipped shield. Only works when the shield is equipped.
+4211001 - Chakra - [Master Level : 30]\nUses MP to recover HP. Only works when the HP is less than 50%, and it'll stop if either attacked or moved.
+4211002 - Assaulter - [Master Level : 30]\nAttacks a single monster with incredible power and speed. The attacked may even be stunned on a low succcess rate.
+4211003 - Pickpocket - [Master Level : 20]\nTemporarily increases the amount of mesos dropped off from the attacked monsters.  The amount of mesos increases in proportion to the skill level and damage done to the monsters.\nRequired Skill : #cAt least Level 3 on Meso Explosion#
+4211004 - Band of Thieves - [Master Level : 30]\nSummons fellow bandits to attack up to 6 monsters around the area.
+4211005 - Meso Guard - [Master Level : 20]\nUses mesos to guard 50% of the damage received. Once the skill is used, it saves up a certain amount of mesos, and once damaged from then on out, the mesos will be used based on the damage received. The skill will be turned off when the saved mesos are used up.\nRequired Skill : #cAt least Level 3 on Chakra#
+4211006 - Meso Explosion - [Master Level : 30]\nExplodes the mesos dropped on the ground around you to attack monsters. The mesos from the monsters killed by someone else will not be able to be used for this.
+9001000 - Haste (Normal) - [Master Level : 1]\n Haste
+9001001 - Super Dragon Roar - [Master Level : 1]\n Super Dragon Roar
+9001002 - Teleport - [Master Level : 1]\n Teleport
+9101000 - Heal + Dispel - [Master Level : 1]\nHeal + Dispel
+9101001 - Haste (Super) - [Master Level : 1]\n Haste
+9101002 - Holy Symbol - [Master Level : 1]\n Holy Symbol
+9101003 - Bless - [Master Level : 1]\n Bless
+9101004 - Hide - [Master Level : 1]\n Hide
+9101005 - Resurrection - [Master Level : 1]\n Resurrection
+9101006 - Super Dragon Roar - [Master Level : 1]\n Super Dragon Roar
+9101007 - Teleport - [Master Level : 1]\n Teleport
+9101008 - Hyper Body - [Master Level : 1]\nIncrease the Max HP and Max MP for 15 mins.
+0001005 - Echo of Hero - [Master Level : 1]\n Increase weapon attack and magic attack on all players around. \n#cTerms between skills : 2hours#
+1121000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+1121001 - Monster Magnet - Pulls a monster from afar up close.
+1121002 - Power Stance - Enables one to stay at the same spot after being struck, resisting knock-back effects.
+1120003 - Advanced Combo Attack - By maximizing the potential of the combo attack, it enables one to charge up the combo counter up to 10, and with a given success rate, the combo counter gets charged twice as fast. The Skill can only be obtained by fully mastered Combo Attack. \nRequired skill : #cCombo attack level 30#
+1120004 - Achilles - Permanently increases the weapon defense of one's armor
+1120005 - Guardian - Blocks the monster's attack by using the shield with a given success rate. Additionally, if the close-range attack is blocked, the attacking monster will be stunned for 2 seconds. The skill only works when equipped with a shield
+1121006 - Rush - Makes a mad dash forward, pushing off up to 10 monsters.
+1121008 - Brandish - Enables one to attack multiple monsters forward twice
+1121010 - Enrage - Temporarily increases the attacking ability by using up the 10 combo counters.
+1121011 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+1221000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+1221001 - Monster Magnet - Pulls a monster from afar up close.
+1221002 - Power Stance - Enables one to stay at the same spot after being struck, resisting knock-back effects.
+1221003 - Holy Charge : Sword - Temporarily adds a holy element to the sword. The skill gets cancelled when the charge blow is used or expires.
+1221004 - Divine Charge : BW - Temporarily adds a divine element to the blunt weapon. The skill gets cancelled when the charge blow is used or expires.
+1220005 - Achilles - Permanently increases the weapon defense of one's armor
+1220006 - Guardian - Blocks the monster's attack by using the shield with a given success rate. Additionally, if the close-range attack is blocked, the attacking monster will be stunned for 2 seconds. The skill only works when equipped with a shield
+1221007 - Rush - Makes a mad dash forward, pushing off up to 10 monsters.
+1221009 - Blast - Strikes a single, tremendous blow to a single monster.
+1220010 - Advanced Charge - Increases the damage incurred when using Charge Blow.  With a given success rate, the charge does not expire even after the initial Charge Blow.
+1221011 - Heaven's Hammer - Strikes the ground with a huge hammer to attack up to 15 monsters. The skill works when charged up in a Holy Charge.
+1221012 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+1321000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+1321001 - Monster Magnet - Pulls a monster from afar up close.
+1321002 - Power Stance - Enables one to stay at the same spot after being struck, resisting knock-back effects.
+1321003 - Rush - Makes a mad dash forward, pushing off up to 10 monsters.
+1320005 - Achilles - Permanently increases the weapon defense of one's armor
+1320006 - Berserk - Increases overall attack once the knight's HP drops below a certain level. However, the additional attack boost is nullified once HP recovers back past that level.
+1321007 - Beholder - Temporarily summons Beholder. With the Beholder's incredible powers, the knight's weapon mastery permanently increases.
+1320008 - Aura of the Beholder - The black spirit periodically restores the Dark Knight's HP. The amount of healing increases as the skill level rises.
+1320009 - Hex of the Beholder - The black spirit periodically buffs the Dark Knight. Buff type depends on skill level.
+1321010 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+2121000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+2121001 - Big Bang - Gathers up numerous particles from the surrounding area to form an energy vortex, culminating in a powerful explosion.
+2121002 - Mana Reflection - By drawing an incredible inner strength, enables one to reverse the flow of Mana back to the monster, returning the damage received from the monster. The returned damage cannot exceed 20% of maxHP of the monster.
+2121003 - Fire Demon - Provides consistent damage to a monster using a ball of fire from the Fire Demon. Monsters stricken by Fire Demon become vulnerable to ice-based attacks.
+2121004 - Infinity - Enables one to temporarily draw magic powers from sources surrounding the mage and use it in place of one's own MP.
+2121005 - Elquines - Calls upon the Elquines familiar, who is ice-based. Attacks up to 3 monsters.\nRequired skill : #cFire Demon level 5 and above#
+2121006 - Paralyze - Temporarily paralyzes the monster with a poison-based attack.
+2121007 - Meteor Shower - Summons meteors from outer space to shower the ground, striking up to 15 monsters at once. Incurs tremendous fire-based damages to those struck.
+2121008 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+2221000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+2221001 - Big Bang - Gathers up numerous particles from the surrounding area to form an energy vortex, culminating in a powerful explosion.
+2221002 - Mana Reflection - By drawing on incredible inner strength, enables one to reverse the flow of Mana back to the monster, returning the damage received from the monster. The returned damage cannot exceed 20% of maxHP of the monster.
+2221003 - Ice Demon - Provides consistent damage to a monster using ice pieces from Ice Demon. Monsters stricken by Ice Demon become vulnerable to fire-based attacks.
+2221004 - Infinity - Enables one to temporarily draw magic powers from sources surrounding the mage and use it in place of one's own MP.
+2221005 - Ifrit - Calls upon the Ifrit familiar, who is fire-based. Attacks up to 3 monsters.
+2221006 - Chain Lightning - Attacks a single monster using a high-voltage lightning attack. If struck, monsters around the affected monster will receive damage as well.
+2221007 - Blizzard - Summons spears of ice from the sky, showering up to 15 monsters at one time with a nasty blizzard. Incurs tremedous ice-based damages to the attacked.
+2221008 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+2321000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+2321001 - Big Bang - Gathers up numerous particles from the surrounding area to form an energy vortex, culminating in a powerful explosion.
+2321002 - Mana Reflection - By drawing on incredible inner strength, enables one to reverse the flow of Mana back to the monster, returning the damage received from the monster. The returned damage cannot exceed 20% of maxHP of the monster.
+2321003 - Bahamut - Temporarily summons Bahamut, a holy dragon. Attacks up to 3 monsters..\nRequired skill : #cSummon Dragon level 15 and above#
+2321004 - Infinity - Enables one to temporarily draw magic powers from sources surrounding the mage and use it in place of one's own MP.
+2321005 - Holy Shield - Temporarily protects all party members from abnormal conditions.
+2321006 - Resurrection - Resurrects a member instantly.
+2321007 - Angel Ray - Attacks a single monster with a holy arrow, incurring tremendous holy damage.
+2321008 - Genesis - A holy ray of light shines down from the sky, burning up to 15 monsters at one time. Incurs tremendous holy damage to the targets.
+2321009 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+3121000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+3121002 - Sharp Eyes - Grants party members the ability to locate enemy weaknesses, and in turn inflict more damage by exploiting them.
+3121003 - Dragon's Breath - Drawing upon the spirit of the dragon, fires a powerful arrow of tremendous force that will knock back the target a long distance.
+3121004 - Hurricane - Fires away arrows at a tremendous speed, as chaotic as a nasty rainstorm.
+3120005 - Bow Expert - Increases the bow mastery as well as weapon attack. Only applied with a bow equipped.
+3121006 - Phoenix - Temporarily summons the Phoenix, who is a fire-based ally. Attacks up to 4 monsters.
+3121007 - Hamstring - Attacks a monster's leg with a given success rate, slowing it down tremendously in the process
+3121008 - Concentrate - Temporarily increases weapon attack, while simultaneously decreases skill-based MP usage.\n#c Terms between skills : 6 Minutes#
+3121009 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+3221000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+3221001 - Piercing Arrow - Fires a special arrow that penetrates through monsters. The arrow's power increases with each monster it pierces, inflicting more damage to each consecutive monster.
+3221002 - Sharp Eyes - Grants party members the ability to locate enemy weaknesses, and in turn inflict more damage by exploiting them.
+3221003 - Dragon's Breath - Drawing upon the spirit of the dragon, fires a powerful arrow of tremendous force that will knock back the target a long distance.
+3220004 - Marksman Boost - Increases the crossbow mastery as well as weapon attack.  Only applied with a crossbow equipped.
+3221005 - Frostprey - Temporarily summons the Frostprey, an ice-based hawk. Attacks up to 4 monsters.
+3221006 - Blind - Delivers a blinding strike that impairs a monster's vision with a certain success rate, decreasing its accuracy.
+3221007 - Snipe - Delivers a lethal blow to a monster by aiming for its weak spot.
+3221008 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+4121000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+4120002 - Shadow Shifter - With great reflexes, enables one to avoid the monster's attack.
+4121003 - Taunt - Provokes a monster, causing its general defense to increase. As a result, EXP earned and drop rate for items will increase for this monster.
+4121004 - Ninja Ambush - For a set period of time, a group of ninjas hiding around the bushes will periodically ambush up to 6 monsters at once. : #cShadow Shifter level 5 and above#
+4120005 - Venomous Star - Throws a star that's been smeared with poison; the monster struck has a chance of being poisoned. Usable up to 3 times against each monster.
+4121006 - Shadow Stars - Attacks a monster using 200 stars out of the currently equipped star. Allows an infinite number of stars to be thrown for a short period of time.
+4121007 - Triple Throw - Attacks one monster by simultaneously throwing 3 stars.
+4121008 - Ninja Storm - Summons ninjas to push back surrounding monsters.
+4121009 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+4221000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+4221001 - Assassinate - Strikes an unsuspecting monster at its vital spots 4 times. The last strike can be lethal with a given success rate.  Only works with Dark Sight enabled.
+4220002 - Shadow Shifter - With great reflexes, enables one to avoid the monster's attack.
+4221003 - Taunt - Provokes a monster, causing its general defense to increase. As a result, EXP earned and drop rate for items will increase for this monster.
+4221004 - Ninja Ambush - For a set period of time, a group of ninjas hiding around the bushes will periodically ambush up to 6 monsters at once. : #cShadow Shifter level 5 and above#
+4220005 - Venomous Stab - Stab a monster with a dagger that's been smeared with poison; the monster struck has a chance of being poisoned.  Usable up to 3 times against each monster.
+4221006 - Smokescreen - Sets off a smoke grenade to escape from a tight situation. All members of the party in the vicinity of smoke will not receive damage while the smokescreen is up.
+4221007 - Boomerang Step - With great quickness, stabs multiple monsters TWICE. Under the set success rate, the monsters attacked will be stunned.
+4221008 - Hero's Will - Enables one to shrug off abnormal conditions. The higher the skill level, the more types of abnormal conditions one can nullify.
+0001006 - Jump Down - [Master Level : 1]nJump downward.
+5000000 - Bullet Time - [Master Level : 20]\nIncreases accuracy and avoidability.
+5001001 - Flash Fist - [Master Level : 20]\nUses MP to speed up the punch to rapidly attack enemies.
+5001002 - Sommersault Kick - [Master Level : 20]\nA devastating kick that accompanies a backward sommersault. Attacks all enemies in the vicinity.
+5001003 - Double Shot - [Master Level : 20]\nFires two bullets at once to apply double damage to monsters.
+5001005 - Dash - [Master Level : 10]\nPress left or right arrow twice to temporarily boost your speed and jump.
+5100000 - Improve MaxHP - [Master Level : 10]\nApply AP to MaxHP to improve the rate of increase for MaxHP.
+5100001 - Knuckler Mastery - [Master Level : 20]\nBoosts the accuracy and the mastery of Knucklers. This skill only applies when you equip a Knuckler.
+5101002 - Backspin Blow - [Master Level : 20]\nThis skill allows you to quickly slide back and elbow multiple monsters at once to apply damage and temporarily stun them.
+5101003 - Double Uppercut - [Master Level : 20]\nA quick round of two punches to apply damage and temporarily stun a monster.
+5101004 - Corkscrew Blow - [Master Level : 20]\nThis skill allows you to run forward and punch multiple monsters in front at once.
+5101005 - MP Recovery - [Master Level : 10]\nRecovers MP by using up a bit of HP.
+5101006 - Knuckler Booster - [Master Level : 20]\nUses parts of HP and MP to temporarily boost the speed of a Knuckler. This skill can only be triggered when a Knuckler is equipped. \nRequired Skill : #cLevel 5 or above on Knuckler Mastery
+5101007 - Oak Barrel - [Master Level : 10]\nThis skill will allow you to safely navigate your way through monsters without being recognized by them...by donning an Oak Barrel. Some clever monsters may be able to tell, though, so be careful. If you are lying down, it's literally impossible to tell the difference!
+5200000 - Gun Mastery - [Master Level : 20]\nBoosts the accuracy and the mastery of your Guns. This skill only applies when you equip a Gun.
+5201001 - Invisible Shot - [Master Level : 20]\nAttacks multiple monsters by quickly firing a few bullets, so fast that the naked eye can't see the shooting.
+5201002 - Grenade - [Master Level : 20]\nAttacks a monster by throwing a grenade. The distance the grenade travels depends on how long you press the skill key.
+5201003 - Gun Booster - [Master Level : 20]\nUses parts of HP and MP to temporarily boost the firing speed of the Gun.This skill can only be triggered when the Gun is equipped. \nRequired Skill : #cLevel 5 or above on Gun Mastery
+5201004 - Blank Shot - [Master Level : 20]\nThis skill allows you to pretend shooting a gun, faking out the monsters, and instead of firing bullets, it'll fire a flag. This will temporarily stun up to 3 monsters.
+5201005 - Wings - [Master Level : 10]\nAllows for a longer, more sustained jump than a regular jump.
+5201006 - Recoil Shot - [Master Level : 20]\nUses the recoil of the gun to run back after a gunshot. \nRequired Skill : #cLevel 5 or above on Wings#
+5110000 - Stun Mastery - [Master Level : 20]\nWhen attacking a monster that's stunned, the critical attack will be triggered at a set rate.
+5110001 - Energy Charge - [Master Level : 40]\nA set amount of energy is charged after every attack. When the energy is fully charged, this will automatically trigger the effects of the Body Attack and Stance will be triggered at a specific rate. This will allow you to use energy-related skills.
+5111002 - Energy Blast - [Master Level : 30]\nBlasts a ball of energy to attack multiple monsters at once. This skill can only be used when #cthe energy is fully charged#.\nRequired Skill : #cLevel 1 of Energy Charge#
+5111004 - Energy Drain - [Master Level : 20]\nUses energy to convert the lost HP of a monster into your own HP. This skill can only be used when #cthe energy is full charged#.\nRequired Skill : #cLevel 1 of Energy Charge#
+5111005 - Transformation - [Master Level : 20]\nTransforms you into a more powerful state for 120 seconds. \nSkills available : Changes have been made so that while using the Buccaneer skill, Transform, you can now use all skills besides the Oak Barrel, Double Fire, Demolition and Snatch.
+5111006 - Shockwave - [Master Level : 30]\nStrikes the ground with tremendous force, affecting multiple monsters. This skill can only be used during #cTransformation or Super Transformation#.\nRequired Skill : #cLevel 1 of Transformation#
+5210000 - Burst Fire - [Master Level : 20]\nIncreases the potency and the number of bullets fired when using Double Shot.\nRequired Skill : #cLevel 20 of Double Shot# 
+5211001 - Octopus - [Master Level : 30]\nSummons a loyal octopus that'll aid your attacks. The summoned octopus will not move, however.\n#cWaiting time until the next summon : 10 sec#
+5211002 - Gaviota - [Master Level : 30]\nSummons Gaviota, who's trained to throw a grenade at monsters. The summoned Gaviota will seek a monster, and when it finds one, it'll toss the grenade and disappear. \n#cWaiting time : 5 sec.#
+5211004 - Flamethrower - [Master Level : 30]\nAttacks a monster nearby with a fire-based attack. The affected monster will keep receiving damage for a short period of time.
+5211005 - Ice Splitter - [Master Level : 30]\nAttacks the closest monster with an ice-based attack. The affected monster will be frozen for a short period of time.
+5211006 - Homing Beacon - [Master Level : 30]\nSends a parrot that'll mark a target on a monster. From then on out, all attacks will be focused on that monster.
+5121000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+5121001 - Dragon Strike - Summons a sleeping dragon from the depths of the ground to apply damage to a number of monsters.
+5121002 - Energy Orb - Uses a blast of powerful energy to strike a monster. If there are other monsters around the affected monster, they will also be affected by this potent ball of energy. Only available when the #cenergy is fully charged#.\nRequired Skill : #cLevel 1 of Ener
+5121003 - Super Transformation - Increases power to extreme levels for 120 seconds. \nAvailable skills : Changes have been made so that while using the Viper skill, Super Transform, you can now use all skills excluding the Oak Barrel and the Double Fire. \nRequired Skill : #cLevel 20 of Transformation#
+5121004 - Demolition - Apply a significant damage to a single monster by attacking it in a blinding speed. Only available when under a state of #cSuper Transformation#.\nRequired Skill : #cLevel 1 of Super Transformation#
+5121005 - Snatch - Applies damage to a monster that's far away, and drags it right in front of you. Only available when under a state of #cSuper Transformation#.\nRequired Skill : #cLevel 1 of Super Transformation#
+5121007 - Barrage - Attacks a monster nearby 6 times in quick succession.
+5121008 - Pirate's Rage - Allows you to break out of an abnormal state. As its level increases, the number of abnormal states that can be broken out increases. \n#cWaiting time : 10 min.#
+5121009 - Speed Infusion - Uses HP and MP to temporarily increase the attacking speed of a weapon. This can be combined with other boosters, and everyone in the party will have their attacking speed increased.\nRequired Skill : #cLevel 20 of Knuckle Booster#
+5121010 - Time Leap - Resets the waiting time for skills for yourself and everyone in the party. This does not reset the waiting time for Time Leap.
+5221000 - Maple Warrior - Increase all players' stats within a party by certain percentage 
+5220001 - Elemental Boost - Increases the potency of Flamethrower and Ice Splitter.
+5220002 - Wrath of the Octopi - An additional octopus is summoned, increasing the fire rate and the damage.\nRequired Skill : #cLevel 30 of Octopus#
+5221003 - Aerial Strike - Uses the grenade attack of Gaviota to damage up to 6 monsters. \nRequired Skill : #cLevel 15 of Gaviota#
+5221004 - Rapid Fire - Fires rounds of bullets very quickly. Hold on to the skill key for continued shooting.\nRequired Skill : #cLevel 20 of Burst Fire#
+5221006 - Battleship - Calls forth a ship that you can mount and launch attacks from. The durability of the ship decreases per damage received, and when it reaches 0, you will not be able to get back on board for a short period of time. \nAvailable Skills : Battleship skills, Grenades, Gun Booster, Flamethower. 
+5221007 - Battleship Cannon - Rapidly fires a number of cannonballs. Only available when aboard the Battleship.\nRequired Skill : #cLevel 1 of Battleship#
+5221008 - Battleship Torpedo - Fires a hardened cannonball that goes through monsters. Only available when aboard the Battleship.\nRequired Skill : #cLevel 1 of Battleship#
+5221009 - Hypnotize - Hypnotizes monsters to temporarily make it attack other monsters instead of you.
+5221010 - Speed Infusion - Uses HP and MP to temporarily increase the attacking speed of a weapon. This can be combined with other boosters, and everyone in the party will be positively affected by this.\nRequired Skill : #cLevel 20 of Knuckler Booster#
+5220011 - Bullseye - Applies more damage to monsters under the effect of Homing Beacon.\nRequired Skill : #cLevel 30 of Homing Beacon#
+0001009 - Bamboo Rain - An attack using a bamboo stick.
+0001010 - Invincibility - You become invincible for a fixed amount of time.
+0001011 - Power Explosion - Increased damage rate for a fixed amount of time.
+8001000 - ??? ??? - [??? ?? : 1]\n???? ???? ???? ???? ??? ???? ????.
+8001001 - ???? - [??? ?? : 1]\n?, ?, ?, ? ???? ???? ?? ? ?? ?? ??? ?? ???? ??? ? ??.
+11001002 - Power Strike - [Master Level : 20]\nInflict damage on the opponent using the weapon with which the character used MP to equip. 
+11001003 - Slash Blast - [Master Level : 20]\nInflict damage on all nearby opponents using the weapon with which the character used HP and MP to equip.\nRequired Skill : #cAt least Level 1 on Power Strike#
+11101003 - Rage - [Master Level : 20]\nTemporarily enhances the Weapon Attack rate of everyone in the party nearby, while decreasing the rate of Weapon Defense.
+13111001 - Strafe - [Master Level : 30]\nFires 4 arrows at a single enemy.
+15111007 - Shark Wave - [Master Level : 30]\nAttack multiple monsters in front.
+15100000 - Improve MaxHP - [Master Level : 10]\nThis skill boosts up the amount of increase on MaxHP after each Level UP, or AP used on MaxHP.
+15100001 - Knuckle Mastery - [Master Level : 20]\nBoosts the accuracy and the mastery of Knuckles. This skill only applies when you equip a Knuckle.
+15101002 - Knuckle Booster - [Master Level : 20]\nUses parts of HP and MP to temporarily boost the speed of a Knuckle. This skill can only be triggered when a Knuckle is equipped. \nRequired Skill : #cLevel 5 or above on Knuckle Mastery
+15101003 - Corkscrew Blow - [Master Level : 20]\nThis skill allows you to run forward and punch multiple monsters in front at once.
+15100004 - Energy Charge - [Master Level : 20]\nA set amount of energy is charged after every attack. When the energy is full charged, this will automatically trigger the effects of the Body Attack and Stance, and will allow you to use energy-related skills.
+15101005 - Energy Blast - [Master Level : 20]\nBlasts a ball of energy to attack multiple monsters at once. This skill can only be used when #cthe energy is full charged#.\nRequired Skill : #cLevel 1 of Energy Charge#
+15101006 - Lightning Charge - [Master Level : 20]\nKnuckle will be empowered with lightning element for certain period of time. 
+15110000 - Critical Punch - [Master Level : 20]\nCritical attack available at certain rate.
+15111001 - Energy Drain - [Master Level : 20]\nUses energy to convert the lost HP of a monster into your own HP. This skill can only be used when #cthe energy is full charged#.\nRequired Skill : #cLevel 1 of Energy Charge#
+15111002 - Transformation - [Master Level : 10]\nTransforms you into a more powerful state for 120 seconds.
+15111003 - Shockwave - [Master Level : 20]\nStrikes the ground with tremendous force, affecting multiple monsters. This skill can only be used during #cTransformation#.\nRequired Skill : #cLevel 1 of Transformation#
+15111004 - Barrage - [Master Level : 20]\nAttacks a monster nearby 6 times in quick succession.
+15111005 - Speed Infusion - Uses HP and MP to temporarily increase the attacking speed of a weapon. This can be combined with other boosters, and everyone in the party will have their attacking speed increased.\nRequired Skill : #cLevel 20 of Knuckle Booster#
+15111006 - Spark - [Master Level : 20]\nMake additional attack by the power of lightning fairy. Monsters around the monster that is attacked will get damage at the same time.
+14111005 - Triple throw - [Master Level : 20]\nAttacks monsters by throwing 3 stars at once.
+14111006 - Poison Bomb - [Master Level : 30]\nThrows a bomb that generates a poisonous cloud. Monsters within the range of the poisonous cloud will continuously incur damage. 
+15000000 - Quick Motion - [Master Level : 10]\nIncreases accuracy and avoidability.
+15001001 - Straight - [Master Level : 20]\nUses MP to speed up the punch to rapidly attack enemies.
+15001002 - Somersault Kick - [Master Level : 20]\nA devastating kick that accompanies a backward somersault. Attacks all enemies in the vicinity.
+15001003 - Dash - [Master Level : 10]\nPress left or right arrow twice to temporarily boost your speed and jump.
+15001004 - Lightning - [Master Level : 20]\nSummon guardian fairy and attack monsters in the close distance.
+13100000 - Bow Mastery - [Master Level : 20]\nEnhnaces Mastery and Accuracy of bow-type weapons. It only applies when the bow is in hand. 
+13101001 - Bow Booster - [Master Level : 20]\nEnhances the Speed of bow attack for a given duration using HP and MP. It only applies when the bow is in hand. \nRequired Skill : #c At least Level 5 on Bow Mastery #
+13101002 - Final Attack - [Master Level : 30]\nConsecutive attack is activated by using a pre-established amount of MP after applying the attack skill at a regular interval. It only applies when the bow is equipped in hand. \nRequired Skill : #c At least Level 3 on Bow Mastery #
+13101003 - Soul Arrow - [Master Level : 20]\nTemporarily allows the character to fire crossbow arrows without using up the arrows. It  only applies when the crossbow is equipped in hand.\nRequired Skill : #c At least Level 5 on Bow Booster  #
+13100004 - Thrust - [Master Level : 20]\nEnhances Speed.
+13101005 - Storm Break - [Master Level : 20]\nCast Damage to monsters in a close distance and Knock-back to far away.
+13101006 - Wind Walk - [Master Level : 10]\nTemporarily hides one’s self from the monsters. Attacking an opponent in the state of Wind Walk can inflict additional damage. 
+13111000 - Arrow Rain - [Master Level : 20]\nFires a number of arrows into the sky, attacking up to 6 monsters at once. It can only be applied when the character is equipped with a bow. 
+13111002 - Hurricane - [Master Level : 20]\nLaunches arrows at a tremendous speed like a catastrophic rainstorm. Pressing the skill key will launch the arrows continuously.
+13110003 - Bow Expert - [Master Level : 20]\nEnhances Mastery and Attack Rate of bow-type weapons. It can only be applied when the character is equipped with a bow. \nRequired Skill:  #c Bow Mastery level 20 #
+13111004 - Puppet - [Master Level : 20]\nSummons a Puppet (a doppelganger) for a given duration. When the Puppet is summoned, the monsters will attack the Puppet instead of the actual character.
+13111005 - Eagle Eye - [Master Level : 10]\nTransforms into Eagle Eye, a heroic figure who was able to use his bow more freely and skillfully than anyone else for 120 sec. This will enhance the character's Speed and Jump stats and allow the character to use the exclusive skills of Eagle Eye.
+13111006 - Wind Piercing - [Master Level : 20]\nInflicts a significant damage on multiple monsters at once with a single powerful blow. Available only during the character’s transformed state of Eagle Eye. \nRequired skill : #cEagle Eye over level 1#
+13111007 - Wind Shot - [Master Level : 20]\nFires 3 arrows to inflict damage on monsters. Available only during the character’s transformed state of Eagle Eye. \nRequired skill : #cEagle Eye over level 1#
+14000000 - Nimble Body - [Master Level : 10]\nIncreases accuracy and avoidability.
+14000001 - Keen Eyes - [Master Level : 8]\nIncreases the range of attack for throwing weapons such as the Throwing Stars and Knives.\nRequired Skill : #cAt least Level 3 on Nimble Body#
+14001002 - Disorder - [Master Level : 10]\nTemporarily decreases the enemy’s Weapon Attack and Defense, eventually disabling the monster’s attack.  It cannot be used on the same monster repeatedly.
+14001003 - Dark Sight - [Master Level : 10]\nUses MP  to hide behind the shadows. With this skill activated, the character can neither attack nor be attacked.\nRequired Skill : #c At least Level 3 on Disorder # 
+14001004 - Lucky Seven - [Master Level : 20]\nUses MP to throw 2 Throwing Stars and inflict damage according to the LUK stats regardless of the character's level of Claw Mastery.
+14001005 - Darkness - [Master Level : 20]\nSummons the Guardian Fairy to attack monsters nearby.
+14100000 - Claw Mastery - [Master Level : 20]\nIncreases the character’s skill in using the Throwing Stars, and enhances the max number of charges. It only applies when the character is equipped with Throwing Stars.
+14100001 - Critical Throw - [Master Level : 30]\nEnables Critical Attack with Throwing Stars at a pre-established success rate.\nRequired Skill: #c At least Level 3 on Claw Mastery # 
+14101002 - Claw Booster - [Master Level : 20]\nUse HP and MP to temporarily boost up the attack speed of the claw. It only applies when the character is equipped with a claw Throwing Stars.\nRequired Skill : \n#cAt least Level 5 on Claw Mastery#
+14101003 - Haste - [Master Level : 20]\nTemporarily enhances Speed and Jump stats of every member in the party.
+14101004 - Flash Jump - [Master Level : 20]\n[Master Level : 20]\nAllows a second Jump toward the direction which the character was headed when used while the character is in the air. The distance of the Jump increases in accordance with the advancement of the character’s skill level.
+14100005 - Vanish - [Master Level : 10]\nInflicts additional damage on monsters when used while Dark Sight is activated. Dark Sight deactivates as soon as this skill is applied. \nRequired skill : #cDark Sight over level 10#
+14101006 - Vampire - [Master Level : 20]\nCan attack multiple monsters 4 times and partially consumes the damage to recover HP. No more than ½ of the character’s max HP and the Monster’s max HP can be consumed.
+14111000 - Shadow Partner - [Master Level : 30]\nSummons a shadow, which repeats the character’s every move, for a given duration. It has no special strength.
+14111001 - Shadow Web - [Master Level : 20]\nMakes a spider web of the character’s shadow, and holds up to 6 enemies in one spot at once. Mobility of the monsters caught in the spider web will be disabled.
+14111002 - Avenger - [Master Level : 30]\nUses MP to make an enormous Throwing Star for attack. The Throwing Star will penetrate the enemy, and attack the ones behind it, too.
+14110003 - Alchemist - [Master Level : 20]\nEnhances the effects of recovery items including potions or lengthens the duration of items applied to the status of the character, with an exception of recovery items such as the Elixir that provide recovery based on %. 
+14110004 - Venom - [Master Level : 20]\nThrows a poisonous Throwing Star. Monsters that have been struck will be poisoned according to the pre-established success rate. It can be used against one monster up to 3 times during which the monster's HP will not go any lower than 1.
+11101004 - Soul Blade - [Master Level : 30]\nTransforms invisible Soul into visible form and inflicts damage on an enemy.
+11101005 - Soul Rush - [Master Level : 10]\nReceives the power of Soul, which allows the character to instantaneously move at a fast speed.
+11110000 - MP Recovery Rate Enhancement - [Master Level : 20]\nCan recover more MP every 10 sec. 
+11111001 - Combo Attack - [Master Level : 20]\nCan build up one’s Comb Attack. The Finish Attack is enabled when the Combo Counter increases every time the attack is used. The Max Combo Counter is 5 and the standard Damage inflicted is when the Combo Counter is at 3. 
+11111002 - Panic - [Master Level : 20]\nAttacks a single enemy. It is only available when the Sword is equipped and the Combo Counter is activated.\nRequired Skill: #cCombo Attack higher than level 1.#
+11111003 - Coma - [Master Level : 20]\nPut monsters nearby in coma. Only available when the Sword is equipped and Combo Counter is activated : #cCombo Attack higher than level 1 required.#
+11111004 - Brandish - [Master Level : 30]\nEnables two attacks on multiple monsters nearby.
+11110005 - Advanced combo - [Master Level : 20]\nIncreases max Combo Counter stats to 10 and charges 2 Combo Counts at a pre-established rate. It only applies when the Combo Attack is mastered. \nRequired Skill: #cCombo Attack Lv.20# 
+11111006 - Soul Driver - [Master Level : 30]\nAttacks multiple monsters 4 times at once via the power of Soul. 
+11111007 - Soul Charge - [Master Level : 20]\nEmpower the sword with sanctity attribute for a given duration.
+12000000 - Increasing Max MP. - [Master Level : 10]\nIncreases the Max MP when AP is applied to Max MP at the time of Level Up. 
+12001001 - Magic Guard - [Master Level : 10]\nTemporarily replaces damage with MP instead of HP. If MP reaches 0, the HP takes a full hit.
+12001002 - Magic Armor - [Master Level : 10]\nTemporarily enhances the Weapon Def. of the armor by applying magic for a given duration.\nRequired Skill : \n#cAt least Level 3 on Magic Guard#
+12001003 - Magic Claw - [Master Level : 20]\nUse MP to attack an enemy twice.
+12001004 - Flame - [Master Level : 20]\nSummon the Guardian Fairy to attack monsters nearby.
+12101000 - Meditation - [Master Level : 20]\nTemporarily enhances the Magic Attack of all party members nearby by Meditation. 
+12101001 - Slow - [Master Level : 20]\nTemporrily slows down the enemies around you. Can't use it on them twice at once, and affects only 6 enemies per say.\nRequired Skill : \n#cAt least Level 5 on Teleport#
+12101002 - Fire Arrow - [Master Level : 20]\nA Fire Arrow is generated using magic and is shot at an enemy. It is especially effective on enemies with ice attribute.
+12101003 - Teleport - [Master Level : 20]\nCan move a pre-established distance to other locations within the map using the arrow keys. 
+12101004 - Spell Booster - [Master Level : 20]\nConsumes a significant amount of HP and MP to enhance the speed of Magic Attack. 
+12101005 - Elemental Reset - [Master Level : 20]\nMake all Elemental Attack to Non-elemental Attack for a given duration.
+12101006 - Fire Pillar - [Master Level : 20]\nInflicts fire damage on nearby monster. It can be applied to attack up to 6 monsters. 
+12110000 - Elemental Resistance - [Master Level : 20]\nGains a higher tolerance for all Elemental Attacks from the enemy.
+12110001 - Element Amplification - [Master Level : 20]\nIncrease all Magic Attacks by using more MP. 
+12111002 - Seal - [Master Level : 20]\nSeals multiple enemies nearby for a given duration. Once sealed, the monsters will not be able to use their skills to attack. This does not apply to the Boss Monsters. \nRequired Skill : #c At least Level 3 on Element Amplification #
+12111003 - Meteor Shower - [Master Level : 20]\nInflicts significant fire damages on up to 15 monsters at once via the meteor shower.
+12111004 - Ifrit - [Master Level : 20]\nTemporarily summons Ifrit of Fire Attribute for a given duration. Attacks up to 3 monsters.
+12111005 - Flame Gear - [Master Level : 30]\n Temporarily creates a wall of fire near the character for a given duration. The monsters inside the wall continuously receive damage.
+12111006 - Fire Strike - [Master Level : 30]\nThrow huge fireball to attack up to 6 monsters.
+13000000 - Critical Shot - [Master Level : 20]\nEnables Critical Attack at a pre-established success rate. 
+13000001 - The Eye of Amazon - [Master Level : 8]\nIncreases the range of attack for bows and crossbows.
+13001002 - Focus - [Master Level : 10]\nEnhances Accuracy and Avoidability for a given duration. \nRequired Skill : #c At least Level 3 on the Eye of Amazon #
+13001003 - Double Shot - [Master Level : 20]\nAttacks an enemy twice using two arrows at once. 
+13001004 - Storm - [Master Level : 20]\nSummon the Guardian Fairy to attack monsters nearby.
+11001004 - Soul - [Master Level : 20]\nSummons a Fairy who attacks enemies within a given range.
+11100000 - Sword Mastery - [Master Level : 20]\nIncreases the Sword Mastery and Accuracy. It only applies when either a one-handed or a two-handed Sword is in hand.
+11101001 - Sword Booster - [Master Level : 20]\nUses HP and MP to temporarily boost the attack speed of the Sword. It only applies when either a one-handed or a two-handed Sword is in hand.\nRequired Skill : \n#cAt least Level 5 on Sword Mastery#
+11101002 - Final Attack - [Master Level : 30]\nEnables consecutive attacks when an attack skill is applied at a regular interval and pre-established amount of MP is used. It only applies when a one-handed or a two-handed Sword is in hand. \nRequired Skill : #c At least Lv.3 on Sword Mastery#
+10000018 - Follow the Lead - Allows one to lead up to 3 pets at once. (Passive skill)
+10001000 - Three Snails - [Master Level : 3]\nHurls snail shells to attack monsters from long distance.
+10001001 - Recovery - [Master Level : 3]\nEnables the user to recover HP constantly for 30 sec. \n#cTerms between skills : 10 min.#
+10001002 - Nimble Feet - [Master Level : 3]\nEnables the character to move around quickly for a short amount of time. \n#cTerms between skills : 1 min.#
+10001003 - Legendary Spirit - [Master Level : 1]\nUses the spirit of a legend to use a scroll on an item that cannot be equipped with your character.
+10001004 - Monster Rider - [Master Level : 1]\nEnables one to ride on a tamed monster and use it as a method of transportation.
+10001005 - Echo of Hero - [Master Lever : 1]\n Increase weapon attack and magic attack on all players around. \n#cTerms between skills : 2hours#
+10001006 - Jump Down - [Master Level:1]\nJump down.
+10001007 - Maker - [Master Level : 3]\nCan create item by using alchemy. Created item is different by level.
+10001009 - Bamboo Thrust - Use bamboo as weapon and attack.
+10001010 - Invincible Barrier - Become invincible for certain period of time.
+10001011 - Meteo Shower - Damage will increase for certain period of time.
+10000012 - Blessing of the Fairy - [Master Level : 20]\nSkill Point will increase by 1 when the related character reaches above Lv.10.
+11000000 - Max HP Enhancement - [Master Level : 10]\nIncreases the Max HP when AP is applied during the Level Up. 
+11001001 - Iron Body - [Master Level : 10]\nTemporarily increases your Weapon Defense.
+0000012 - Blessing of the Fairy - [Master Level : 20]\nSkill Point will increase by 1 when the related character reaches above Lv.10.
+0001007 - Maker - [Master Level : 3]\nCan create item by using alchemy.  Items that can be created will vary depending on your Character level.
+9001003 - Bless - [Master Level:1]\nIncreases all abilities of those around you for 15 minutes.
+9001004 - Hide - [Master Level : 1]\n Hide
+9001005 - Resurrection - [Master Level : 1]\n Resurrection
+9001006 - Super Dragon Roar - [Master Level : 1]\n Super Dragon Roar
+9001007 - Teleport - [Master Level : 1]\n Teleport
+9001009 - ADMIN_ANTIMACRO - [Master Level:1]\nActivate Lie Detector on the suspicious macro user.
+9001008 - Hyper Body - [Master Level:1]\nMax HP, Max MP increases for 15 minutes.
+10001014 - Spaceship - [Master Level : 2]\nYou board a spaceship. While aboard, you can increase your movement and jump abilities by pressing the right/left direction key twice. #Available until: 06-08-2009 at 00 hour#
+10001015 - Space Dash - [Master Level : 1]\nIncrease your movement and jump abilities by pressing the right/left direction key twice. #cAvailable until 06-08-2009 at 00 hour# 
+10001016 - Space Beam - [Master Level : 1]\nChanges the condition of the Krypto found at the Space Mine. #cAvailable until: 06-08-2009 at 00 hour# 
+20001000 - Three Snails - [Master Level : 3]\nHurls snail shells to attack monsters from long distance.
+20001001 - Recovery - [Master Level : 3]\nEnables the user to recover HP constantly for 30 sec. \n#cTerms between skills : 2 min.#
+20001002 - Agile Body - [Master Level : 3]\nExplosive speed for an instant. \n#cTakes about 1 min. until the next call.#
+20001003 - Legendary Spirit - [Master Level : 1]\nUses the spirit of a legend to use a scroll on an item that cannot be normally equipped by the character.
+20001004 - Monster Rider - [Master Level : 1]\nEnables one to ride on a tamed monster and use it as a method of transportation.
+20001005 - Echo of Hero - [Master Level : 1]\n Increase weapon attack and magic attack on all players around. \n#cTerms between skills : 2hours#
+20001006 - Jump Down - [Master Level : 1]nJump downward.
+20001007 - Maker - [Master Level : 3]\nCan create item by using alchemy. Created item is different by level.
+20001009 - Bamboo Thrust - Use bamboo as weapon and attack.
+20001010 - Invincible Barrier - Become invincible for certain period of time.
+20001011 - Meteo Shower - Damage will increase for certain period of time.
+20000012 - Blessing of the Fairy - [Master Level : 20]\nSkill Point will increase by 1 when the related character reaches above Lv.10.
+20001013 - Helper - Damage increases for a fixed time period.
+20000014 - Tutorial Skill - Tutorial Skill
+20000015 - Tutorial Skill - Tutorial Skill
+20000016 - Tutorial Skill - Tutorial Skill
+20000017 - Tutorial Skill - Tutorial Skill
+20000018 - Tutorial Skill - Tutorial Skill
+20000024 - Follow the Lead - Allows one to lead up to 3 pets at once. (Passive skill)
+21000000 - Combo Ability - [Master Level : 10]\nEverytime the combo count reaches 10, the stats increase.\nRequired Skill : #cLevel 10 on Double Swing#
+21000002 - Double Swing - [Master Level : 20]\nTap the attack key twice to attack up to 12 enemies by attacking twice.
+21001003 - Polearm Booster - [Master Level : 20]\n\nUses HP and MP to temporarily boost up the attacking speed of the equipped polearm. It only applies when either a one-handed or a two-handed polearm is in hand.\nRequired Skill : \n#cAt least Level 5 on Polearm Mastery#\n\nRequired Skill : #cCombat Step Level 5#
+21100000 - Polearm Mastery - [Master Level : 20]\nIncreases the mastery of pole arms and accuracy. It only applies when a pole arm is in hand. This skill only gets triggered when the owner is carrying the secuity stuff.\nRequired Skill : #cTriple Swing Level 3#
+21100002 - Final Charge - [Master Level : 30]\nJust pushes the enemy forward. Only available right after #cTriple Swing#.\nRequired Skill : #cTriple Swing Level 20 and above#\n[Command : triple attack, #cArrow Key : Right + attack#]
+21101003 - Body Pressure - [Master Level : 20]\nAllows one to feel very powerful for a small period of time, by being able to body-check monsters, and completely render the monster useless.
+21110000 - Combo Critical - [Master Level : 20]\nEvery time the combo count reaches 10, that's when the critical rate and the damage increases.\nRequired Skill : #cCombo Ability Level 10#
+21111001 - Smart Knockback - [Master Level : 20]\nUtilizes efficiency over power, in that it dishes out less damage than a regular knockback, yet still manages to knock back an enemy.
+21110004 - Combo Penril - [Master Level : 30]\nShoots a wave of concentrated energy, mixing with the spirit of wolves. Can only be used when the #cCombo Count reaches at least 100.#\nRequired Skill : #cCombo Smash Level 10#\n[Command : #cArrow Key : Down + Right + attack key#]
+21111005 - Snow Charge - [Master Level : 20]\nFor a set period of time, add the element of ice on the Pole Arm. The skill cancels itself when the time is up, while the attacked monsters become much slower.
+21110007 - (hidden) Full Swing - Double Swing - [Master Level : 20]
+21110008 - (hidden) Full Swing - Triple Swing - [Master Level : 20]
+21121000 - Maple Warrior - Temporarily boosts the stats of everyone in the party.
+21120001 - High Mastery - Improves the overall mastery of Polearm-related weapons and attack.\nRequired Skill : #cPolearm Mastery Level 20#
+21121003 - Freeze Standing - Stand heavy like a frozen block of ice and back down from no one.
+21120004 - High Defense - A new level of defense, in that it permanently decreases the damage suffering from the same attacks.
+21120006 - Combo Tempest - Creates an ice that is so deadly that even a slight collision would kill the monster, while incurring significant damage to boss monsters as well. #cOnly avilable when the combo count reaches 200 or more#.\nRequired Skill : #cCombo Penril Level 10#\n[command : #cArrow Key : Down + Right + attck\#]
+21120007 - Combo Barrier - A buff that decreases the amount of damage received over a set time. A welcome skill in party formats a la cleric. Only available once the #ccombo count reaches 200#.\nRequired Skill : #cCombo Drain Level 10#\n[Command : #cArrow key : Down + Down + attack#]
+21121008 - Hero's Will - Allows one to snap out of abnormal conditions. The higher the character's level, the less the character has to wait.
+21120009 - (hidden) Over Swing - Double Swing - [Master Level : 30]
+21120010 - (hidden) Over Swing - Triple Swing - [Master Level : 30]
+0001020 - Rage of Pharaoh - [Master Level : 1]\nUtilizes the rage of Pharaoh as an attack.
+0009000 - Pig's Weakness - [Master Level : 1]\n Inflicts 150% damage on Pigs.
+0009001 - Stump's Weakness - [Master Level : 1]\n Inflicts 150% damage on Stumps.
+0009002 - Slime's Weakness - [Master Level : 1]\n Inflicts 150% damage on Slimes.
+10000013 - Helper - Damage increases for a fixed time period.
+10001019 - Yeti Rider - [Master Level : 1]\nAllows one to ride on a Yeti.\n#cAvailable until : 7/9/2009 at 00:00#
+10001020 - Rage of Pharaoh - [Master Level : 1]\nUtilizes the rage of Pharaoh as an attack.
+10009000 - Pig's Weakness - [Master Level : 1]\n Inflicts 150% damage on Pigs.
+10009001 - Stump's Weakness - [Master Level : 1]\n Inflicts 150% damage on Stumps.
+10009002 - Slime's Weakness - [Master Level : 1]\n Inflicts 150% damage on Slimes.
+20001019 - Yeti Rider - [Master Level : 1]\nAllows one to ride on a Yeti.\n#cAvailable until : 7/9/2009 at 00:00#
+20001020 - Rage of Pharaoh - [Master Level : 1]\nUtilizes the rage of Pharaoh as an attack.
+20009000 - Pig's Weakness - [Master Level : 1]\n Inflicts 150% damage on Pigs.
+20009001 - Stump's Weakness - [Master Level : 1]\n Inflicts 150% damage on Stumps.
+20009002 - Slime's Weakness - [Master Level : 1]\n Inflicts 150% damage on Slimes. 
+0001017 - Yeti Rider - [Master Level : 1]\nAllows one to ride on a Yeti.\n#cAvailable until : 7/9/2009 at 00:00#
+21001001 - Combat Step - [Master Level : 15]\nQuickly tap the direction arrows twice to quickly cover a short distance.\nRequired Skill : #cDouble Swing Level 5#\n[How-to : #cArrow Key : Right + Right#]
+21100001 - Triple Swing - [Master Level : 20]\nPress the attack key 3 times in a row to privde triple-hit combos on up to 12 enemies.\nRequired Skill : #cDouble Swing 20#
+21100004 - Combo Smash - [Master Level : 20]\nAchieves excellent amound of danger at the booth. Only available when the #cCombo Count reaches 30 or above#.\nRequired Skill : #cPolearm combo 1#\n[Command : #cArrow Key : Down + Right + attack key#]
+21100005 - Combo Drain - [Master Level : 20]\nA buff that allows one to recover a portion of damage dished out by attacking back as HP. #cCombo Count must reach 30# and can only be used then.\nRequired Skill : #cCombo Ability Level 1#\n[Command : #cArrow Key : Down + Down + attack#]
+21120005 - Final Blow - Swings Polearm widely to incur significant damage to up to 12 monsters at once. Only works right after triggering #cTriple Swing#.\nRequired Skill : #cTriple Swing Level 20#\n[Command : Triple Swing + #cArrow Key : Down + attack key#]
+21120002 - Over Swing - Expands the damage caused by Double Swing and Triple Swing to the extreme.\nRequired Skill : #cFull Swing Level 20#
+21110006 - Rolling Spin - [Master Level : 20]\nCauses a strong wind which flies out monsters left and right.\n[command : #cArrow Key : Up + Up +  Attack key#]
+21110003 - Final Cross - [Master Level : 30]\nTosses up 12 monsters in the air. The monsters that are in the air will be vulnerable to attacks, therefore receiving more damage than on the ground. Can only triggered right after Triple Swing.\nRequired Skill : #cTriple Swing Level 20#\n[Command : #cArrow Key : Up + attack key#]
+21110002 - Full Swing - [Master Level : 20]\nIncreases the damage rate of Double Swing and Triple Swing. \nRequired Skill : #cTriple Swing Level 20#
+0001018 - Yeti Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Yeti.
+0001019 - Witch's Broomstick - [Master Level : 1]\nAllows you to move around while being mounted on a Broomstick.
+10001023 - Witch's Broomstick - [Master Level : 1]\nAllows you to move around while being mounted on a Broomstick.
+10001022 - Yeti Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Yeti.
+20001023 - Witch's Broomstick - [Master Level : 1]\nAllows you to move around while being mounted on a Broomstick.
+20001022 - Yeti Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Yeti.
+0001031 - Barlog Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Barlog.
+10001031 - Barlog Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Barlog.
+20001031 - Barlog Mount - [Master Level : 1]\nAllows you to move around while being mounted on a Barlog.

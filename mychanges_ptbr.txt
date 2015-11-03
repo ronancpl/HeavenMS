@@ -1,0 +1,73 @@
+NEW NPC SCRIPTS:
+	Coco -> 9000017
+	Agent E -> 9000036
+
+
+LOGS:
+
+12 --- 16 Julho 2015,
+
+Inclui um SQL que copia conteudo do spider que nao esteja na tabela drop_data inicial.
+Alterei a chance de drops de CARDS de mobs.
+Pequenas alteracoes nos scripts dos NPCs, e nas mensagens do game tb.
+Inclui constante SCROLL_CHANCE_RATE: repete resultados na tentativa de scrolls.
+Inclui constantes ADD_SLOTS_BY_LEVEL + ADD_RATES_BY_LEVEL: muda rates do gameplay de um personagem com a evolucao dele.
+Alterei APs podendo aumentar ate 32767.
+Corrigi alguns XMLs dos mapas de Omega Sector, tinham ordem dos portais invertidas.
+AUTOBAN eh uma constante setavel do server agora.
+
+17 Julho 2015,
+Adaptei todos os scripts de 2nd job adv. Nao testado ainda!
+ULTRA_RECOVERY: pq n?
+GAIN_FAME_BY_QUEST: cada N quests completas da +1 fame.
+
+21 --- 22 Julho 2015,
+Coloquei uma fala no ZMM, ainda n testei.
+Corrigi um bug no elevador.
+Consertei o script restante do Grendel.
+
+25 --- 27 Julho 2015,
+Criei uma variação do auto-assign, que leva em conta caracteristicas nos stats dos equips.
+Consertei upar até 2 niveis por expGain().
+
+OBS.:	Dar um jeito de automatizar o script para colocar scrolls OP a venda
+	NPC Coco (9000017) sera o novo vendedor de scrolls
+
+28 --- 31 Julho 2015,
+Consertei algumas quests e NPCs, pra variar.
+Inclui constante USE_ENHANCED_CRAFTING.
+Auto HP e MP.
+
+01 --- 03 Agosto 2015,
+DUEY FUNCIONOU! Pelo menos parcialmente, ta valendo!
+Pet nao mais atrapalha o jogador ao pegar itens enquanto o anterior ataca.
+Utilizando um software externo, corrige dados dos drops de mobs de acordo com o BD do Maple.
+
+05 --- 07 Agosto 2015,
+Consertei algumas quests, scripts e mapas...
+Update no auto-assign para Warriors e beginners. Comeca a upar DEX para accuracy.
+Update nos scripts de 2nd e 3rd job de todos os NPCs dos Explorers.
+Incorporei um novo NPC script: NPC Acessories Crafter.
+Testei o script do chscroll crafter.
+
+10 --- 11 Agosto 2015,
+NPC crafters, Accessories e chscroll funcionam OK.
+cORRIGIDO BUG DE CRAFTER Q TIRAVA ITEM SE INCOMPLETO!
+Inclui constante USE_PERFECT_SCROLLING.
+
+12 --- 14 Agosto 2015,
+Correcao de algumas quests...
+Inseri exchange npc de orbis e de crimsonwood
+
+15 --- 19 Agosto 2015,
+Pet evolution funciona agora!
+
+20 --- 21 Agosto 2015,
+Genie funciona OK agora.
+Script para CWKPQ.
+Resolvi alguns problemas com scripts do aviao e do metro.
+
+25 --- 26 Agosto 2015,
+Mecanismos de evitar queda de HP por mapa (red bean, air bubble, soft white bun) funcionam.
+Correcao de bug que nao contabilizava queda de hp qdo um char loga em um mapa.
+Correcao de bug que nao retirava corretamente recursos de projeteis.
