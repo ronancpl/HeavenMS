@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0007.img">
+  <imgdir name="info">
+    <int name="speed" value="70" />
+    <int name="jump" value="100" />
+    <float name="fs" value="10.0" />
+    <float name="swim" value="100.0" />
+    <int name="morphEffect" value="1" />
+  </imgdir>
+  <imgdir name="walk">
+    <canvas name="0" width="35" height="34">
+      <vector name="origin" x="12" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="110" />
+      <vector name="lt" x="-13" y="-35" />
+      <vector name="rb" x="23" y="0" />
+      <vector name="head" x="0" y="-34" />
+    </canvas>
+    <canvas name="1" width="39" height="34">
+      <vector name="origin" x="14" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="110" />
+      <vector name="lt" x="-14" y="-34" />
+      <vector name="rb" x="25" y="0" />
+      <vector name="head" x="-2" y="-34" />
+    </canvas>
+    <canvas name="2" width="41" height="34">
+      <vector name="origin" x="15" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="110" />
+      <vector name="lt" x="-15" y="-34" />
+      <vector name="rb" x="26" y="0" />
+      <vector name="head" x="-3" y="-34" />
+    </canvas>
+    <canvas name="3" width="37" height="34">
+      <vector name="origin" x="13" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="110" />
+      <vector name="lt" x="-13" y="-34" />
+      <vector name="rb" x="24" y="0" />
+      <vector name="head" x="-1" y="-34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="35" height="34">
+      <vector name="origin" x="16" y="34" />
+      <vector name="lt" x="-16" y="-34" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-4" y="-34" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="jump">
+    <canvas name="0" width="41" height="38">
+      <vector name="origin" x="16" y="38" />
+      <int name="z" value="0" />
+      <vector name="lt" x="-16" y="-38" />
+      <vector name="rb" x="25" y="0" />
+      <vector name="head" x="-4" y="-38" />
+    </canvas>
+  </imgdir>
+  <imgdir name="prone">
+    <canvas name="0" width="39" height="29">
+      <vector name="origin" x="19" y="29" />
+      <int name="z" value="0" />
+      <vector name="lt" x="-19" y="-29" />
+      <vector name="rb" x="20" y="0" />
+      <vector name="head" x="-8" y="-29" />
+    </canvas>
+  </imgdir>
+  <imgdir name="ladder">
+    <canvas name="0" width="25" height="48">
+      <vector name="origin" x="12" y="39" />
+      <int name="z" value="0" />
+      <int name="delay" value="300" />
+      <vector name="lt" x="-12" y="-39" />
+      <vector name="rb" x="13" y="9" />
+      <vector name="head" x="0" y="-39" />
+    </canvas>
+    <canvas name="1" width="25" height="46">
+      <vector name="origin" x="12" y="36" />
+      <int name="z" value="0" />
+      <int name="delay" value="300" />
+      <vector name="lt" x="-12" y="-36" />
+      <vector name="rb" x="13" y="10" />
+      <vector name="head" x="0" y="-36" />
+    </canvas>
+  </imgdir>
+  <imgdir name="rope">
+    <canvas name="0" width="25" height="48">
+      <vector name="origin" x="12" y="39" />
+      <int name="z" value="0" />
+      <int name="delay" value="300" />
+      <vector name="lt" x="-12" y="-39" />
+      <vector name="rb" x="13" y="9" />
+      <vector name="head" x="0" y="-39" />
+    </canvas>
+    <canvas name="1" width="25" height="46">
+      <vector name="origin" x="12" y="36" />
+      <int name="z" value="0" />
+      <int name="delay" value="300" />
+      <vector name="lt" x="-12" y="-36" />
+      <vector name="rb" x="13" y="10" />
+      <vector name="head" x="0" y="-36" />
+    </canvas>
+  </imgdir>
+  <imgdir name="fly">
+    <canvas name="0" width="39" height="35">
+      <vector name="origin" x="19" y="35" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+      <vector name="lt" x="-19" y="-35" />
+      <vector name="rb" x="20" y="0" />
+      <vector name="head" x="-7" y="-35" />
+    </canvas>
+    <canvas name="1" width="41" height="35">
+      <vector name="origin" x="20" y="35" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+      <vector name="lt" x="-20" y="-35" />
+      <vector name="rb" x="21" y="0" />
+      <vector name="head" x="-8" y="-35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="sit">
+    <canvas name="0" width="38" height="30">
+      <vector name="origin" x="19" y="30" />
+      <int name="z" value="0" />
+      <vector name="lt" x="-19" y="-30" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-9" y="-30" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2041001.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+      <string name="2" value="n2" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goOutWaitingRoom" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+  <imgdir name="smile">
+    <canvas name="0" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="50" height="85">
+      <vector name="origin" x="25" y="85" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+</imgdir>

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0205.img">
+  <imgdir name="02050000">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="28">
+        <vector name="origin" x="-3" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="27">
+        <vector name="origin" x="-3" y="28" />
+      </canvas>
+      <int name="price" value="100" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="poison" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02050001">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-4" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="26">
+        <vector name="origin" x="-5" y="28" />
+      </canvas>
+      <int name="price" value="100" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="darkness" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02050002">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="31">
+        <vector name="origin" x="-4" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="24" height="30">
+        <vector name="origin" x="-4" y="31" />
+      </canvas>
+      <int name="price" value="150" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="weakness" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02050003">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-4" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="15" height="32">
+        <vector name="origin" x="-9" y="32" />
+      </canvas>
+      <int name="price" value="150" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="seal" value="1" />
+      <int name="curse" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02050004">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-4" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="31">
+        <vector name="origin" x="-6" y="32" />
+      </canvas>
+      <int name="price" value="200" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="poison" value="1" />
+      <int name="seal" value="1" />
+      <int name="darkness" value="1" />
+      <int name="weakness" value="1" />
+      <int name="curse" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02050005">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-4" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="31">
+        <vector name="origin" x="-6" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec" />
+  </imgdir>
+  <imgdir name="02050006">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-4" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="31">
+        <vector name="origin" x="-6" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec" />
+  </imgdir>
+  <imgdir name="02050098">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="23">
+        <vector name="origin" x="-4" y="23" />
+      </canvas>
+      <canvas name="iconRaw" width="21" height="16">
+        <vector name="origin" x="-7" y="23" />
+      </canvas>
+      <int name="price" value="75" />
+    </imgdir>
+    <imgdir name="spec" />
+  </imgdir>
+  <imgdir name="02050099">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="33">
+        <vector name="origin" x="-1" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="32">
+        <vector name="origin" x="-1" y="33" />
+      </canvas>
+      <int name="price" value="600" />
+    </imgdir>
+    <imgdir name="spec" />
+  </imgdir>
+</imgdir>

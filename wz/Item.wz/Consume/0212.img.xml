@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0212.img">
+  <imgdir name="02120000">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-4" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="31">
+        <vector name="origin" x="-5" y="32" />
+      </canvas>
+      <int name="slotMax" value="200" />
+      <int name="price" value="15" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="0" value="5000000" />
+      <int name="1" value="5000001" />
+      <int name="2" value="5000002" />
+      <int name="3" value="5000003" />
+      <int name="4" value="5000004" />
+      <int name="5" value="5000005" />
+      <int name="6" value="5000006" />
+      <int name="7" value="5000007" />
+      <int name="8" value="5000008" />
+      <int name="9" value="5000011" />
+      <int name="inc" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02120008">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="29">
+        <vector name="origin" x="-3" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-3" y="29" />
+      </canvas>
+      <int name="price" value="190" />
+      <int name="slotMax" value="200" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="inc" value="30" />
+    </imgdir>
+  </imgdir>
+</imgdir>

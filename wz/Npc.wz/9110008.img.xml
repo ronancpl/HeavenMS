@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9110008.img">
+  <imgdir name="info">
+    <string name="quest" value="goKerning" />
+    <int name="dcLeft" value="-100" />
+    <int name="dcTop" value="-225" />
+    <int name="dcRight" value="90" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+      <string name="2" value="n2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="217" height="232">
+      <vector name="origin" x="108" y="229" />
+      <int name="delay" value="2500" />
+    </canvas>
+    <canvas name="1" width="217" height="232">
+      <vector name="origin" x="108" y="229" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="217" height="232">
+      <vector name="origin" x="108" y="229" />
+      <int name="delay" value="150" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+</imgdir>

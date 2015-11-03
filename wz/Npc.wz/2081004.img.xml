@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2081004.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="babyfood" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="52" height="54">
+      <vector name="origin" x="23" y="54" />
+      <int name="delay" value="2000" />
+    </canvas>
+    <canvas name="1" width="52" height="54">
+      <vector name="origin" x="23" y="54" />
+      <int name="delay" value="1000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="68" height="56">
+      <vector name="origin" x="39" y="56" />
+      <int name="delay" value="200" />
+    </canvas>
+    <canvas name="1" width="68" height="55">
+      <vector name="origin" x="39" y="55" />
+      <int name="delay" value="200" />
+    </canvas>
+    <canvas name="2" width="68" height="56">
+      <vector name="origin" x="39" y="56" />
+      <int name="delay" value="200" />
+    </canvas>
+    <canvas name="3" width="68" height="55">
+      <vector name="origin" x="39" y="55" />
+      <int name="delay" value="200" />
+    </canvas>
+    <canvas name="4" width="68" height="56">
+      <vector name="origin" x="39" y="56" />
+      <int name="delay" value="300" />
+    </canvas>
+    <canvas name="5" width="68" height="55">
+      <vector name="origin" x="39" y="55" />
+      <int name="delay" value="700" />
+    </canvas>
+    <uol name="6" value="2" />
+    <canvas name="7" width="68" height="55">
+      <vector name="origin" x="39" y="55" />
+      <int name="delay" value="500" />
+    </canvas>
+    <uol name="8" value="0" />
+    <uol name="9" value="1" />
+    <uol name="10" value="2" />
+    <uol name="11" value="3" />
+    <uol name="12" value="4" />
+    <uol name="13" value="5" />
+    <uol name="14" value="6" />
+    <uol name="15" value="7" />
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+      <string name="1" value="s1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

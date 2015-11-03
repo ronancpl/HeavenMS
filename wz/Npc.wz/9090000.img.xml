@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9090000.img">
+  <imgdir name="info">
+    <int name="cash" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="58" height="98">
+      <vector name="origin" x="31" y="98" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="58" height="98">
+      <vector name="origin" x="31" y="98" />
+      <int name="delay" value="30" />
+    </canvas>
+    <canvas name="2" width="58" height="98">
+      <vector name="origin" x="31" y="98" />
+      <int name="delay" value="60" />
+    </canvas>
+  </imgdir>
+</imgdir>

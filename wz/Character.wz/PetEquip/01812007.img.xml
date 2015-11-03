@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01812007.img">
+  <imgdir name="info">
+    <canvas name="icon" width="26" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+    <canvas name="iconRaw" width="24" height="30">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+    <int name="reqLevel" value="0" />
+    <int name="cash" value="1" />
+    <string name="consumeMP" value="0" />
+    <string name="longRange" value="0" />
+    <string name="sweepForDrop" value="0" />
+    <string name="pickupOthers" value="0" />
+    <string name="pickupItem" value="0" />
+    <string name="pickupMeso" value="0" />
+    <int name="ignorePickup" value="1" />
+  </imgdir>
+</imgdir>

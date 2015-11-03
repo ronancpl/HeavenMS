@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1006000.img">
+  <imgdir name="info">
+    <string name="info" value="도움닫기용 발판" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="344" height="65">
+      <vector name="origin" x="172" y="32" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="344" height="65">
+        <vector name="origin" x="172" y="32" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4032035" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-172" y="-32" />
+        <vector name="rb" x="172" y="43" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="344" height="65">
+      <vector name="origin" x="172" y="32" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="lostDoyoNPC0" />
+</imgdir>

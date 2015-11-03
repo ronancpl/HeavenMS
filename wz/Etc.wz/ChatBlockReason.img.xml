@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="ChatBlockReason.img">
+  <imgdir name="1">
+    <string name="type" value="Foul Language" />
+    <string name="msg" value="Foul language/Harrassment" />
+  </imgdir>
+  <imgdir name="2">
+    <string name="type" value="Advertising" />
+    <string name="msg" value="Advertising websites" />
+  </imgdir>
+  <imgdir name="3">
+    <string name="type" value="Hack" />
+    <string name="msg" value="Fake GM" />
+  </imgdir>
+  <imgdir name="4">
+    <string name="type" value="Account Trading" />
+    <string name="msg" value="Trading or selling account" />
+  </imgdir>
+  <imgdir name="5">
+    <string name="type" value="Trading" />
+    <string name="msg" value="Do not report fame scams and trade scams. " />
+  </imgdir>
+  <imgdir name="6">
+    <string name="type" value="Penalty Alert" />
+    <string name="msg" value="The reporter's conversation is also subject to penalties." />
+  </imgdir>
+</imgdir>

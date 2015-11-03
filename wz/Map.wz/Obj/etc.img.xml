@@ -1,0 +1,535 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="etc.img">
+  <imgdir name="clock">
+    <imgdir name="fontTime">
+      <canvas name="am" width="22" height="20">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="pm" width="22" height="20">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="comma" width="17" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="0" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="coconut">
+    <canvas name="backgrnd" width="258" height="101">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <uol name="fontScore" value="../clock/fontTime" />
+    <imgdir name="fontTime">
+      <canvas name="0" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="8" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name=":" width="3" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="timer">
+    <canvas name="backgrnd" width="258" height="58">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrndhour" width="258" height="58">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="goldkey">
+    <canvas name="backgrnd" width="115" height="36">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="key" width="35" height="37">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="number">
+      <canvas name="0" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="17" height="27">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="4" width="23" height="27">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="5" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="6" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="7" width="22" height="27">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="8" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="9" width="22" height="28">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="eventPointCount">
+    <canvas name="backgrnd" width="187" height="45">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="0">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="4">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="battleField">
+    <canvas name="backgrnd" width="215" height="73">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="fontTime">
+      <canvas name="0" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="2" height="7">
+        <vector name="origin" x="-2" y="0" />
+      </canvas>
+      <canvas name="2" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="6" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="comma" width="1" height="4">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="fontScore0">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="fontScore1">
+      <canvas name="0" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="21" height="28">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="space">
+    <canvas name="backgrnd" width="228" height="69">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="fontTime">
+      <canvas name="0" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="26" height="36">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="25" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="comma" width="12" height="22">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="killing">
+    <canvas name="backgrnd" width="192" height="61">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="fontTime">
+      <canvas name="0" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="26" height="36">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="25" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="comma" width="12" height="22">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="partyRace">
+    <canvas name="backgrnd" width="242" height="49">
+      <vector name="origin" x="31" y="0" />
+    </canvas>
+    <imgdir name="fontTime">
+      <canvas name="0" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="26" height="36">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="5" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="6" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="7" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="8" width="26" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="9" width="25" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="comma" width="12" height="22">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

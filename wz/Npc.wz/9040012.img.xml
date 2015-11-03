@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040012.img">
+  <imgdir name="info">
+    <int name="hideName" value="1" />
+    <int name="dcMark" value="1" />
+    <int name="dcLeft" value="-68" />
+    <int name="dcRight" value="68" />
+    <int name="dcTop" value="-168" />
+    <int name="dcBottom" value="-60" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_knight" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="138" height="169">
+      <vector name="origin" x="69" y="169" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

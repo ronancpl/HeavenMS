@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2308000.img">
+  <imgdir name="info" />
+  <imgdir name="0">
+    <canvas name="0" width="105" height="73">
+      <vector name="origin" x="44" y="39" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="105" height="73">
+        <vector name="origin" x="44" y="39" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="105" height="73">
+      <vector name="origin" x="44" y="39" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="103" height="70">
+      <vector name="origin" x="42" y="36" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="101" height="68">
+      <vector name="origin" x="40" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="108" height="78">
+      <vector name="origin" x="47" y="44" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <int name="repeat" value="1" />
+    <imgdir name="hit">
+      <canvas name="0" width="105" height="73">
+        <vector name="origin" x="44" y="39" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

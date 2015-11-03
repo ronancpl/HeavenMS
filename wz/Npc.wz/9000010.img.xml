@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9000010.img">
+  <imgdir name="info">
+    <int name="dcMark" value="1" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Event06" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="83" height="87">
+      <vector name="origin" x="41" y="87" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

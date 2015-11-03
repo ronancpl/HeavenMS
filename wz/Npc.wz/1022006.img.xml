@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1022006.img">
+  <imgdir name="info" />
+  <imgdir name="stand">
+    <canvas name="0" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="1" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="700" />
+    </canvas>
+    <canvas name="2" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="700" />
+    </canvas>
+    <canvas name="5" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="1" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <uol name="3" value="1" />
+    <canvas name="4" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="500" />
+    </canvas>
+    <uol name="5" value="1" />
+    <canvas name="6" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="500" />
+    </canvas>
+    <uol name="7" value="1" />
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="1" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="100" />
+    </canvas>
+    <uol name="3" value="1" />
+    <canvas name="4" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="300" />
+    </canvas>
+    <canvas name="5" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="600" />
+    </canvas>
+    <uol name="6" value="2" />
+    <uol name="7" value="1" />
+    <uol name="8" value="2" />
+    <canvas name="9" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="700" />
+    </canvas>
+    <canvas name="10" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="400" />
+    </canvas>
+    <uol name="11" value="1" />
+    <uol name="12" value="2" />
+    <canvas name="13" width="47" height="72">
+      <vector name="origin" x="24" y="72" />
+      <int name="delay" value="300" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+      <string name="1" value="s1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

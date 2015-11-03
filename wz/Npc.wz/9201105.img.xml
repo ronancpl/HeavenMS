@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201105.img">
+  <imgdir name="info">
+    <imgdir name="speak" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Masteria_Sage02" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="146" height="162">
+      <vector name="origin" x="75" y="167" />
+      <int name="delay" value="2000" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052012.img">
+  <imgdir name="info">
+    <int name="dcMark" value="1" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="go_pc" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="57" height="69">
+      <vector name="origin" x="28" y="69" />
+    </canvas>
+  </imgdir>
+</imgdir>

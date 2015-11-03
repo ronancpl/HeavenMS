@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2103012.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-8" />
+    <int name="dcTop" value="-16" />
+    <int name="dcRight" value="8" />
+    <int name="dcBottom" value="0" />
+    <int name="hideName" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ariant_gold4" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="0" y="4" />
+    </canvas>
+  </imgdir>
+</imgdir>

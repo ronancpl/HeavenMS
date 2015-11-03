@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201050.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="About_NLC" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="1200" />
+    </canvas>
+    <canvas name="1" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="8" width="59" height="68">
+      <vector name="origin" x="27" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="9" width="57" height="68">
+      <vector name="origin" x="25" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="10" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say2">
+    <canvas name="0" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="1200" />
+    </canvas>
+    <canvas name="1" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="2" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="4" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="8" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="9" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="51" height="68">
+      <vector name="origin" x="19" y="68" />
+      <int name="delay" value="1200" />
+    </canvas>
+    <canvas name="1" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="2" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="3" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="4" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="5" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+    <canvas name="6" width="51" height="68">
+      <vector name="origin" x="20" y="68" />
+      <int name="delay" value="240" />
+    </canvas>
+  </imgdir>
+</imgdir>

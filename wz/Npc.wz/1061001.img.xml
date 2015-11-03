@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1061001.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-60" />
+    <int name="dcTop" value="-115" />
+    <int name="dcRight" value="80" />
+    <int name="dcBottom" value="-60" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="157" height="123">
+      <vector name="origin" x="78" y="123" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="shop">
+    <canvas name="0" width="61" height="64">
+      <vector name="origin" x="30" y="64" />
+    </canvas>
+  </imgdir>
+</imgdir>

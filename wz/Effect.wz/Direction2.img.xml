@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Direction2.img">
+  <imgdir name="effect">
+    <imgdir name="gasi">
+      <imgdir name="back1">
+        <imgdir name="0">
+          <canvas name="0" width="800" height="405">
+            <vector name="origin" x="400" y="207" />
+            <int name="z" value="0" />
+            <int name="a0" value="0" />
+            <int name="a1" value="255" />
+            <int name="delay" value="1000" />
+          </canvas>
+          <canvas name="1" width="800" height="405">
+            <vector name="origin" x="400" y="207" />
+            <int name="z" value="0" />
+            <int name="delay" value="1000" />
+          </canvas>
+          <canvas name="2" width="800" height="405">
+            <vector name="origin" x="400" y="207" />
+            <int name="z" value="0" />
+            <int name="a0" value="255" />
+            <int name="a1" value="0" />
+            <int name="delay" value="1000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="back2">
+        <imgdir name="0">
+          <canvas name="0" width="800" height="422">
+            <vector name="origin" x="400" y="216" />
+            <int name="z" value="0" />
+            <int name="delay" value="12000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="gasi">
+        <imgdir name="0">
+          <canvas name="0" width="797" height="329">
+            <vector name="origin" x="397" y="123" />
+            <int name="z" value="1" />
+            <int name="a0" value="255" />
+            <int name="a1" value="255" />
+            <int name="delay" value="6000" />
+          </canvas>
+          <canvas name="1" width="797" height="329">
+            <vector name="origin" x="397" y="123" />
+            <int name="z" value="0" />
+            <int name="a0" value="255" />
+            <int name="a1" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="light">
+        <imgdir name="0">
+          <canvas name="0" width="718" height="422">
+            <vector name="origin" x="318" y="216" />
+            <int name="z" value="0" />
+            <int name="a0" value="0" />
+            <int name="a1" value="255" />
+            <int name="delay" value="1000" />
+          </canvas>
+          <canvas name="1" width="718" height="422">
+            <vector name="origin" x="318" y="216" />
+            <int name="z" value="0" />
+            <int name="a0" value="255" />
+            <int name="a1" value="255" />
+            <int name="delay" value="3000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="hand">
+        <imgdir name="0">
+          <canvas name="0" width="289" height="271">
+            <vector name="origin" x="388" y="216" />
+            <int name="z" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="frame">
+        <imgdir name="0">
+          <canvas name="0" width="800" height="600">
+            <vector name="origin" x="400" y="300" />
+            <int name="z" value="0" />
+            <int name="delay" value="12000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="sparkle">
+        <imgdir name="0">
+          <canvas name="0" width="16" height="16">
+            <vector name="origin" x="7" y="8" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="1" width="30" height="30">
+            <vector name="origin" x="14" y="15" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="2" width="41" height="41">
+            <vector name="origin" x="20" y="21" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="3" width="58" height="58">
+            <vector name="origin" x="28" y="29" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="4" width="128" height="128">
+            <vector name="origin" x="63" y="64" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="5" width="150" height="150">
+            <vector name="origin" x="74" y="75" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="6" width="164" height="164">
+            <vector name="origin" x="81" y="82" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="7" width="158" height="158">
+            <vector name="origin" x="78" y="79" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="8" width="114" height="114">
+            <vector name="origin" x="56" y="57" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="9" width="70" height="70">
+            <vector name="origin" x="34" y="35" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="10" width="55" height="55">
+            <vector name="origin" x="27" y="27" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+          <canvas name="11" width="30" height="30">
+            <vector name="origin" x="13" y="14" />
+            <int name="z" value="0" />
+            <int name="delay" value="120" />
+            <int name="a0" value="200" />
+            <int name="a1" value="200" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="chat">
+      <imgdir name="nugu">
+        <imgdir name="0">
+          <canvas name="0" width="110" height="104">
+            <vector name="origin" x="98" y="104" />
+            <int name="z" value="0" />
+            <int name="delay" value="1000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="open">
+      <imgdir name="back0">
+        <imgdir name="0">
+          <canvas name="0" width="1032" height="405">
+            <vector name="origin" x="632" y="208" />
+            <int name="z" value="0" />
+            <int name="delay" value="15000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="back1">
+        <imgdir name="0">
+          <canvas name="0" width="1032" height="405">
+            <vector name="origin" x="632" y="208" />
+            <int name="z" value="0" />
+            <int name="delay" value="15000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="light">
+        <imgdir name="0">
+          <canvas name="0" width="432" height="367">
+            <vector name="origin" x="632" y="197" />
+            <int name="z" value="1" />
+            <int name="a0" value="0" />
+            <int name="a1" value="255" />
+            <int name="delay" value="1500" />
+          </canvas>
+          <canvas name="1" width="432" height="367">
+            <vector name="origin" x="632" y="197" />
+            <int name="z" value="1" />
+            <int name="a0" value="255" />
+            <int name="a1" value="255" />
+            <int name="delay" value="10000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="pepeKing">
+        <imgdir name="0">
+          <canvas name="0" width="412" height="297">
+            <vector name="origin" x="525" y="99" />
+            <int name="z" value="2" />
+            <int name="a0" value="0" />
+            <int name="a1" value="255" />
+            <int name="delay" value="2000" />
+          </canvas>
+          <canvas name="1" width="412" height="297">
+            <vector name="origin" x="525" y="99" />
+            <int name="z" value="2" />
+            <int name="a0" value="255" />
+            <int name="a1" value="255" />
+            <int name="delay" value="10000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="line">
+        <imgdir name="0">
+          <canvas name="0" width="765" height="347">
+            <vector name="origin" x="632" y="209" />
+            <int name="z" value="3" />
+            <int name="a0" value="0" />
+            <int name="a1" value="255" />
+            <int name="delay" value="1500" />
+          </canvas>
+          <canvas name="1" width="765" height="347">
+            <vector name="origin" x="632" y="209" />
+            <int name="z" value="3" />
+            <int name="a0" value="255" />
+            <int name="a1" value="255" />
+            <int name="delay" value="10000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="violeta0">
+        <imgdir name="0">
+          <canvas name="0" width="767" height="360">
+            <vector name="origin" x="367" y="162" />
+            <int name="z" value="4" />
+            <int name="delay" value="3500" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="violeta1">
+        <imgdir name="0">
+          <canvas name="0" width="767" height="360">
+            <vector name="origin" x="367" y="162" />
+            <int name="z" value="4" />
+            <int name="delay" value="14000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="frame">
+        <imgdir name="0">
+          <canvas name="0" width="800" height="600">
+            <vector name="origin" x="400" y="300" />
+            <int name="z" value="5" />
+            <int name="delay" value="15000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="chat">
+        <imgdir name="0">
+          <canvas name="0" width="360" height="261">
+            <vector name="origin" x="384" y="274" />
+            <int name="z" value="0" />
+            <int name="delay" value="1500" />
+          </canvas>
+          <canvas name="1" width="1" height="1">
+            <vector name="origin" x="0" y="0" />
+            <int name="z" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+          <canvas name="2" width="540" height="304">
+            <vector name="origin" x="250" y="300" />
+            <int name="z" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+          <canvas name="3" width="540" height="304">
+            <vector name="origin" x="250" y="300" />
+            <int name="z" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+          <canvas name="4" width="540" height="304">
+            <vector name="origin" x="250" y="300" />
+            <int name="z" value="0" />
+            <int name="delay" value="2000" />
+          </canvas>
+          <canvas name="5" width="1" height="1">
+            <vector name="origin" x="0" y="0" />
+            <int name="z" value="0" />
+            <int name="delay" value="1000" />
+          </canvas>
+          <canvas name="6" width="360" height="262">
+            <vector name="origin" x="152" y="274" />
+            <int name="z" value="0" />
+            <int name="delay" value="1500" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="piramid">
+      <imgdir name="anubis">
+        <imgdir name="0">
+          <canvas name="0" width="233" height="173">
+            <vector name="origin" x="233" y="173" />
+            <int name="z" value="0" />
+            <int name="delay" value="7000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="anubis2">
+        <imgdir name="0">
+          <canvas name="0" width="233" height="173">
+            <vector name="origin" x="233" y="173" />
+            <int name="z" value="0" />
+            <int name="delay" value="7000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="metro">
+      <imgdir name="Im">
+        <imgdir name="0">
+          <canvas name="0" width="255" height="161">
+            <vector name="origin" x="255" y="161" />
+            <int name="z" value="0" />
+            <int name="delay" value="7000" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="sound" />
+  <imgdir name="mushCatle">
+    <imgdir name="nugu">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/chat/nugu" />
+        <int name="start" value="0" />
+        <int name="x" value="-812" />
+        <int name="y" value="-209" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="pepeKing0">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/pepeKing/black" />
+        <int name="start" value="0" />
+        <int name="x" value="-360" />
+        <int name="y" value="-215" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="pepeKing1">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/pepeKing/pepe" />
+        <int name="start" value="0" />
+        <int name="x" value="330" />
+        <int name="y" value="-166" />
+        <int name="x1" value="-125" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1000" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="pepeKing2">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/pepeKing/chat" />
+        <int name="start" value="1000" />
+        <int name="x" value="-503" />
+        <int name="y" value="-368" />
+        <int name="z" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="gasi">
+    <imgdir name="gasi1">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/frame" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="7" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi2">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/back1" />
+        <int name="start" value="3000" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi22">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/back2" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi3">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/gasi" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi4">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/hand" />
+        <int name="start" value="1000" />
+        <int name="x" value="-290" />
+        <int name="y" value="0" />
+        <int name="x1" value="290" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1000" />
+        <int name="z" value="2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi5">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/light" />
+        <int name="start" value="6000" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi6">
+      <imgdir name="0">
+        <int name="type" value="2" />
+        <int name="field" value="106020501" />
+        <int name="start" value="9000" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi7">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/sparkle" />
+        <int name="start" value="6000" />
+        <int name="x" value="193" />
+        <int name="y" value="28" />
+        <int name="z" value="6" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="gasi8">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/gasi/sparkle" />
+        <int name="start" value="6400" />
+        <int name="x" value="-54" />
+        <int name="y" value="130" />
+        <int name="z" value="6" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="open">
+    <imgdir name="back0">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/back0" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="back1">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/back1" />
+        <int name="start" value="3500" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="x1" value="232" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1500" />
+        <int name="z" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="light">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/light" />
+        <int name="start" value="3500" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="x1" value="232" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1500" />
+        <int name="z" value="2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="pepeKing">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/pepeKing" />
+        <int name="start" value="3500" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="x1" value="232" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1500" />
+        <int name="z" value="3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="line">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/line" />
+        <int name="start" value="3500" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="x1" value="232" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1500" />
+        <int name="z" value="4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="violeta0">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/violeta0" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="5" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="violeta1">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/violeta1" />
+        <int name="start" value="3500" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="x1" value="232" />
+        <int name="y1" value="0" />
+        <int name="duration" value="1500" />
+        <int name="z" value="5" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="frame">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/frame" />
+        <int name="start" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="6" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="chat">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/open/chat" />
+        <int name="start" value="2000" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="7" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="out">
+      <imgdir name="0">
+        <int name="type" value="2" />
+        <int name="field" value="106020000" />
+        <int name="start" value="13000" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="piramid">
+    <imgdir name="anubis">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/piramid/anubis2" />
+        <int name="start" value="0" />
+        <int name="x" value="835" />
+        <int name="y" value="120" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="metro">
+    <imgdir name="Im">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <string name="visual" value="Effect/Direction2.img/effect/metro/Im" />
+        <int name="start" value="0" />
+        <int name="x" value="90" />
+        <int name="y" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

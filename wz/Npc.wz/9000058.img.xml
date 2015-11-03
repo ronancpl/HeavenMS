@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9000058.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="witchRewordH" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="104" height="91">
+      <vector name="origin" x="56" y="89" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="104" height="91">
+      <vector name="origin" x="56" y="89" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+      <string name="1" value="s1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

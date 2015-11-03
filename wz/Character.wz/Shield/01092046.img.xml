@@ -1,0 +1,364 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01092046.img">
+  <imgdir name="info">
+    <canvas name="icon" width="25" height="32">
+      <vector name="origin" x="-4" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="25" height="32">
+      <vector name="origin" x="-4" y="32" />
+    </canvas>
+    <string name="islot" value="Si" />
+    <string name="vslot" value="Si" />
+    <int name="reqJob" value="1" />
+    <int name="reqLevel" value="64" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incPDD" value="53" />
+    <int name="incMDD" value="22" />
+    <int name="incSTR" value="2" />
+    <int name="tuc" value="10" />
+    <int name="price" value="200000" />
+    <int name="cash" value="0" />
+  </imgdir>
+  <imgdir name="walk1">
+    <imgdir name="0">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="25" y="16" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shield" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="24" height="34">
+        <vector name="origin" x="24" y="15" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shield" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <uol name="shield" value="../0/shield" />
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="shield" width="26" height="34">
+        <vector name="origin" x="25" y="17" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shield" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand1">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="20" y="16" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="22" y="17" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="24" y="16" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="alert">
+    <imgdir name="0">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="24" y="15" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="24" y="15" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="24" y="15" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO1">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="17" y="25" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="11" y="26" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="26" y="28" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO2">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="27" y="22" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="26" y="34" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="31" y="35" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO3">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="40" y="29" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="18" y="29" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="13" y="29" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingOF">
+    <imgdir name="0">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="28" y="19" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="-8" y="21" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="backShield" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="16" y="31" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="39" y="24" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO1">
+    <imgdir name="0">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="36" y="24" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="17" y="27" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO2">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="41" y="29" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="15" y="26" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabOF">
+    <imgdir name="0">
+      <canvas name="shield" width="25" height="34">
+        <vector name="origin" x="25" y="21" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldOverHair" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="50" y="31" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="36" y="28" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="proneStab">
+    <imgdir name="0">
+      <canvas name="shield" width="34" height="29">
+        <vector name="origin" x="58" y="28" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="shield" value="../0/shield" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="prone">
+    <imgdir name="0">
+      <uol name="shield" value="../../proneStab/0/shield" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="heal">
+    <imgdir name="0">
+      <uol name="shield" value="../../alert/1/shield" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="shield" value="../../swingO2/1/shield" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="shield" value="../../swingO2/0/shield" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="fly">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="27" y="26" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="shield" value="../0/shield" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="jump">
+    <imgdir name="0">
+      <canvas name="shield" width="31" height="37">
+        <vector name="origin" x="26" y="25" />
+        <imgdir name="map">
+          <vector name="navel" x="0" y="0" />
+        </imgdir>
+        <string name="z" value="shieldBelowBody" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

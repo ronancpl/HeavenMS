@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="SkillName1.img">
+  <imgdir name="1001003">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="85" height="45">
+      <vector name="origin" x="42" y="22" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1001004">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="99" height="44">
+      <vector name="origin" x="49" y="22" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1001005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="89" height="43">
+      <vector name="origin" x="44" y="21" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1100002">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="104" height="44">
+      <vector name="origin" x="52" y="22" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1100003">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1100002/0" />
+  </imgdir>
+  <imgdir name="1101004">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="43">
+      <vector name="origin" x="58" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1101005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="42">
+      <vector name="origin" x="58" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1101006">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="71" height="25">
+      <vector name="origin" x="35" y="12" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1101007">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="96" height="43">
+      <vector name="origin" x="48" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1200002">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1100002/0" />
+  </imgdir>
+  <imgdir name="1200003">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1100002/0" />
+  </imgdir>
+  <imgdir name="1201004">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1101004/0" />
+  </imgdir>
+  <imgdir name="1201005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="43">
+      <vector name="origin" x="58" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1201006">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="135" height="23">
+      <vector name="origin" x="67" y="11" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1201007">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1101007/0" />
+  </imgdir>
+  <imgdir name="1300002">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1100002/0" />
+  </imgdir>
+  <imgdir name="1300003">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../1100002/0" />
+  </imgdir>
+  <imgdir name="1301004">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="43">
+      <vector name="origin" x="58" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1301005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="123" height="42">
+      <vector name="origin" x="61" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1301006">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="65" height="43">
+      <vector name="origin" x="32" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1301007">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="90" height="48">
+      <vector name="origin" x="45" y="24" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

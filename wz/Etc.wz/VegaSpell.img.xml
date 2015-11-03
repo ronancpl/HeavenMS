@@ -1,0 +1,799 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="VegaSpell.img">
+  <imgdir name="0">
+    <int name="item" value="2040002" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="1">
+    <int name="item" value="2040005" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="2">
+    <int name="item" value="2040016" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="3">
+    <int name="item" value="2040026" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="4">
+    <int name="item" value="2040031" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="5">
+    <int name="item" value="2040100" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="6">
+    <int name="item" value="2040105" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="7">
+    <int name="item" value="2040200" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="8">
+    <int name="item" value="2040205" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="9">
+    <int name="item" value="2040302" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="10">
+    <int name="item" value="2040310" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="11">
+    <int name="item" value="2040318" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="12">
+    <int name="item" value="2040323" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="13">
+    <int name="item" value="2040328" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="14">
+    <int name="item" value="2040329" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="15">
+    <int name="item" value="2040330" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="16">
+    <int name="item" value="2040331" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="17">
+    <int name="item" value="2040402" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="18">
+    <int name="item" value="2040412" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="19">
+    <int name="item" value="2040419" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="20">
+    <int name="item" value="2040422" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="21">
+    <int name="item" value="2040427" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="22">
+    <int name="item" value="2040502" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="23">
+    <int name="item" value="2040505" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="24">
+    <int name="item" value="2040514" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="25">
+    <int name="item" value="2040517" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="26">
+    <int name="item" value="2040534" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="27">
+    <int name="item" value="2040602" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="28">
+    <int name="item" value="2040612" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="29">
+    <int name="item" value="2040619" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="30">
+    <int name="item" value="2040622" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="31">
+    <int name="item" value="2040627" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="32">
+    <int name="item" value="2040702" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="33">
+    <int name="item" value="2040705" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="34">
+    <int name="item" value="2040708" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="35">
+    <int name="item" value="2040727" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="36">
+    <int name="item" value="2040802" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="37">
+    <int name="item" value="2040805" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="38">
+    <int name="item" value="2040816" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="39">
+    <int name="item" value="2040825" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="40">
+    <int name="item" value="2040902" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="41">
+    <int name="item" value="2040915" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="42">
+    <int name="item" value="2040920" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="43">
+    <int name="item" value="2040925" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="44">
+    <int name="item" value="2040928" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="45">
+    <int name="item" value="2040933" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="46">
+    <int name="item" value="2041002" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="47">
+    <int name="item" value="2041005" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="48">
+    <int name="item" value="2041008" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="49">
+    <int name="item" value="2041011" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="50">
+    <int name="item" value="2041014" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="51">
+    <int name="item" value="2041017" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="52">
+    <int name="item" value="2041020" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="53">
+    <int name="item" value="2041023" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="54">
+    <int name="item" value="2041058" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="55">
+    <int name="item" value="2041102" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="56">
+    <int name="item" value="2041105" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="57">
+    <int name="item" value="2041108" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="58">
+    <int name="item" value="2041111" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="59">
+    <int name="item" value="2041302" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="60">
+    <int name="item" value="2041305" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="61">
+    <int name="item" value="2041308" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="62">
+    <int name="item" value="2041311" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="63">
+    <int name="item" value="2043002" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="64">
+    <int name="item" value="2043008" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="65">
+    <int name="item" value="2043019" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="66">
+    <int name="item" value="2043102" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="67">
+    <int name="item" value="2043114" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="68">
+    <int name="item" value="2043202" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="69">
+    <int name="item" value="2043214" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="70">
+    <int name="item" value="2043302" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="71">
+    <int name="item" value="2043702" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="72">
+    <int name="item" value="2043802" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="73">
+    <int name="item" value="2044002" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="74">
+    <int name="item" value="2044014" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="75">
+    <int name="item" value="2044015" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="76">
+    <int name="item" value="2044102" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="77">
+    <int name="item" value="2044114" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="78">
+    <int name="item" value="2044202" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="79">
+    <int name="item" value="2044214" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="80">
+    <int name="item" value="2044302" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="81">
+    <int name="item" value="2044314" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="82">
+    <int name="item" value="2044402" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="83">
+    <int name="item" value="2044414" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="84">
+    <int name="item" value="2044502" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="85">
+    <int name="item" value="2044602" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="86">
+    <int name="item" value="2044702" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="87">
+    <int name="item" value="2044802" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="88">
+    <int name="item" value="2044809" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="89">
+    <int name="item" value="2044902" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="90">
+    <int name="item" value="2048002" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="91">
+    <int name="item" value="2048005" />
+    <string name="prob" value="[R8]0.1" />
+  </imgdir>
+  <imgdir name="92">
+    <int name="item" value="2040001" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="93">
+    <int name="item" value="2040004" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="94">
+    <int name="item" value="2040017" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="95">
+    <int name="item" value="2040025" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="96">
+    <int name="item" value="2040029" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="97">
+    <int name="item" value="2040101" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="98">
+    <int name="item" value="2040106" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="99">
+    <int name="item" value="2040201" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="100">
+    <int name="item" value="2040206" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="101">
+    <int name="item" value="2040301" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="102">
+    <int name="item" value="2040311" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="103">
+    <int name="item" value="2040317" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="104">
+    <int name="item" value="2040321" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="105">
+    <int name="item" value="2040326" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="106">
+    <int name="item" value="2040401" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="107">
+    <int name="item" value="2040413" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="108">
+    <int name="item" value="2040418" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="109">
+    <int name="item" value="2040421" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="110">
+    <int name="item" value="2040425" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="111">
+    <int name="item" value="2040501" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="112">
+    <int name="item" value="2040504" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="113">
+    <int name="item" value="2040513" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="114">
+    <int name="item" value="2040516" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="115">
+    <int name="item" value="2040532" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="116">
+    <int name="item" value="2040601" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="117">
+    <int name="item" value="2040613" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="118">
+    <int name="item" value="2040618" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="119">
+    <int name="item" value="2040621" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="120">
+    <int name="item" value="2040625" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="121">
+    <int name="item" value="2040701" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="122">
+    <int name="item" value="2040704" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="123">
+    <int name="item" value="2040707" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="124">
+    <int name="item" value="2040801" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="125">
+    <int name="item" value="2040804" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="126">
+    <int name="item" value="2040817" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="127">
+    <int name="item" value="2040824" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="128">
+    <int name="item" value="2040826" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="129">
+    <int name="item" value="2040901" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="130">
+    <int name="item" value="2040914" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="131">
+    <int name="item" value="2040919" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="132">
+    <int name="item" value="2040924" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="133">
+    <int name="item" value="2040927" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="134">
+    <int name="item" value="2040931" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="135">
+    <int name="item" value="2041001" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="136">
+    <int name="item" value="2041004" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="137">
+    <int name="item" value="2041007" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="138">
+    <int name="item" value="2041010" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="139">
+    <int name="item" value="2041013" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="140">
+    <int name="item" value="2041016" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="141">
+    <int name="item" value="2041019" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="142">
+    <int name="item" value="2041022" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="143">
+    <int name="item" value="2041101" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="144">
+    <int name="item" value="2041104" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="145">
+    <int name="item" value="2041107" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="146">
+    <int name="item" value="2041110" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="147">
+    <int name="item" value="2041301" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="148">
+    <int name="item" value="2041304" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="149">
+    <int name="item" value="2041307" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="150">
+    <int name="item" value="2041310" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="151">
+    <int name="item" value="2043001" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="152">
+    <int name="item" value="2043009" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="153">
+    <int name="item" value="2043017" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="154">
+    <int name="item" value="2043021" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="155">
+    <int name="item" value="2043101" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="156">
+    <int name="item" value="2043112" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="157">
+    <int name="item" value="2043116" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="158">
+    <int name="item" value="2043201" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="159">
+    <int name="item" value="2043212" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="160">
+    <int name="item" value="2043216" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="161">
+    <int name="item" value="2043301" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="162">
+    <int name="item" value="2043311" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="163">
+    <int name="item" value="2043701" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="164">
+    <int name="item" value="2043711" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="165">
+    <int name="item" value="2043801" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="166">
+    <int name="item" value="2043811" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="167">
+    <int name="item" value="2044001" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="168">
+    <int name="item" value="2044012" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="169">
+    <int name="item" value="2044024" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="170">
+    <int name="item" value="2044101" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="171">
+    <int name="item" value="2044112" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="172">
+    <int name="item" value="2044116" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="173">
+    <int name="item" value="2044201" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="174">
+    <int name="item" value="2044212" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="175">
+    <int name="item" value="2044216" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="176">
+    <int name="item" value="2044301" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="177">
+    <int name="item" value="2044312" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="178">
+    <int name="item" value="2044316" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="179">
+    <int name="item" value="2044401" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="180">
+    <int name="item" value="2044412" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="181">
+    <int name="item" value="2044416" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="182">
+    <int name="item" value="2044501" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="183">
+    <int name="item" value="2044511" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="184">
+    <int name="item" value="2044601" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="185">
+    <int name="item" value="2044611" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="186">
+    <int name="item" value="2044701" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="187">
+    <int name="item" value="2044711" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="188">
+    <int name="item" value="2044801" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="189">
+    <int name="item" value="2044807" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="190">
+    <int name="item" value="2044816" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="191">
+    <int name="item" value="2044901" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="192">
+    <int name="item" value="2044909" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="193">
+    <int name="item" value="2048001" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="194">
+    <int name="item" value="2048004" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="195">
+    <int name="item" value="2048010" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="196">
+    <int name="item" value="2048011" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="197">
+    <int name="item" value="2048012" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+  <imgdir name="198">
+    <int name="item" value="2048013" />
+    <string name="prob" value="[R8]0.6" />
+  </imgdir>
+</imgdir>

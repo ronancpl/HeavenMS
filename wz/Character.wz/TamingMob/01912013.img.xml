@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01912013.img">
+  <imgdir name="info">
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="27" />
+    </canvas>
+    <canvas name="iconRaw" width="32" height="21">
+      <vector name="origin" x="0" y="27" />
+    </canvas>
+    <string name="islot" value="Sd" />
+    <string name="vslot" value="Sd" />
+    <int name="cash" value="1" />
+  </imgdir>
+  <imgdir name="1902020">
+    <imgdir name="walk1">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-59" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="62" height="46">
+          <vector name="origin" x="29" y="66" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-61" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="59" height="46">
+          <vector name="origin" x="27" y="67" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-62" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="3">
+        <canvas name="0" width="62" height="46">
+          <vector name="origin" x="29" y="66" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-61" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="4">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-59" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="5">
+        <canvas name="0" width="71" height="46">
+          <vector name="origin" x="33" y="64" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="walk2">
+      <imgdir name="0">
+        <uol name="0" value="../../walk1/0/0" />
+        <uol name="1" value="../../walk1/0/1" />
+      </imgdir>
+      <imgdir name="1">
+        <uol name="0" value="../../walk1/1/0" />
+        <uol name="1" value="../../walk1/1/1" />
+      </imgdir>
+      <imgdir name="2">
+        <uol name="0" value="../../walk1/2/0" />
+        <uol name="1" value="../../walk1/2/1" />
+      </imgdir>
+      <imgdir name="3">
+        <uol name="0" value="../../walk1/3/0" />
+        <uol name="1" value="../../walk1/3/1" />
+      </imgdir>
+      <imgdir name="4">
+        <uol name="0" value="../../walk1/3/0" />
+        <uol name="1" value="../../walk1/3/1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="stand1">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-59" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="66" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-60" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="67" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-61" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="3">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="66" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-60" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="4">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-59" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="5">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="64" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="stand2">
+      <imgdir name="0">
+        <uol name="0" value="../../stand1/0/0" />
+        <uol name="1" value="../../stand1/0/1" />
+      </imgdir>
+      <imgdir name="1">
+        <uol name="0" value="../../stand1/1/0" />
+        <uol name="1" value="../../stand1/1/1" />
+      </imgdir>
+      <imgdir name="2">
+        <uol name="0" value="../../stand1/2/0" />
+        <uol name="1" value="../../stand1/2/1" />
+      </imgdir>
+      <imgdir name="3">
+        <uol name="0" value="../../stand1/3/0" />
+        <uol name="1" value="../../stand1/3/1" />
+      </imgdir>
+      <imgdir name="4">
+        <uol name="0" value="../../stand1/4/0" />
+        <uol name="1" value="../../stand1/4/1" />
+      </imgdir>
+      <imgdir name="5">
+        <uol name="0" value="../../stand1/5/0" />
+        <uol name="1" value="../../stand1/5/1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="tired">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="49" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-42" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="50" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-43" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="51" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-45" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="3">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="50" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-44" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="4">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="49" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-43" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="5">
+        <canvas name="0" width="67" height="46">
+          <vector name="origin" x="31" y="48" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-42" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="jump">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="87" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-79" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="prone">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="43">
+          <vector name="origin" x="31" y="40" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-34" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="ladder">
+      <imgdir name="0">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="rope">
+      <imgdir name="0">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="68" height="46">
+          <vector name="origin" x="32" y="65" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-58" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="fly">
+      <imgdir name="0">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="88" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-78" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="89" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-79" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="88" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-78" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="3">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="87" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-77" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+      <imgdir name="4">
+        <canvas name="0" width="67" height="48">
+          <vector name="origin" x="31" y="86" />
+          <imgdir name="map">
+            <vector name="navel" x="2" y="-76" />
+          </imgdir>
+          <string name="z" value="saddleFront" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

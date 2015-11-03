@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9108006.img">
+  <imgdir name="info">
+    <string name="name" value="beenTree" />
+    <int name="backTile" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="82" height="71">
+      <vector name="origin" x="35" y="70" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="106" height="163">
+        <vector name="origin" x="35" y="162" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="107" height="163">
+        <vector name="origin" x="35" y="162" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="107" height="163">
+      <vector name="origin" x="35" y="162" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="226" height="290">
+        <vector name="origin" x="78" y="289" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="227" height="290">
+        <vector name="origin" x="78" y="289" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="227" height="291">
+      <vector name="origin" x="78" y="290" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="264" height="412">
+        <vector name="origin" x="115" y="411" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="263" height="412">
+        <vector name="origin" x="115" y="411" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="244" height="412">
+      <vector name="origin" x="115" y="411" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="276" height="459">
+        <vector name="origin" x="133" y="458" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="277" height="459">
+        <vector name="origin" x="133" y="458" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="277" height="459">
+      <vector name="origin" x="133" y="460" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="382" height="459">
+        <vector name="origin" x="171" y="458" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="384" height="460">
+        <vector name="origin" x="171" y="458" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <canvas name="0" width="385" height="460">
+      <vector name="origin" x="172" y="458" />
+      <int name="z" value="0" />
+      <int name="delay" value="300000" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="385" height="460">
+        <vector name="origin" x="172" y="458" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

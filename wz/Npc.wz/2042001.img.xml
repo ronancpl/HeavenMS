@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2042001.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="mc_enter1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="reg">
+      <string name="r0ID0" value="" />
+      <string name="r0ID1" value="" />
+      <string name="r0ID2" value="" />
+      <string name="r0ID3" value="" />
+      <string name="r0ID4" value="" />
+      <string name="r0ID5" value="" />
+      <string name="r1ID0" value="" />
+      <string name="r1ID1" value="" />
+      <string name="r1ID2" value="" />
+      <string name="r1ID3" value="" />
+      <string name="r1ID4" value="" />
+      <string name="r1ID5" value="" />
+      <string name="r2ID0" value="" />
+      <string name="r2ID1" value="" />
+      <string name="r2ID2" value="" />
+      <string name="r2ID3" value="" />
+      <string name="r2ID4" value="" />
+      <string name="r2ID5" value="" />
+      <string name="r3ID0" value="" />
+      <string name="r3ID1" value="" />
+      <string name="r3ID2" value="" />
+      <string name="r3ID3" value="" />
+      <string name="r3ID4" value="" />
+      <string name="r3ID5" value="" />
+      <string name="r4ID0" value="" />
+      <string name="r4ID1" value="" />
+      <string name="r4ID2" value="" />
+      <string name="r4ID3" value="" />
+      <string name="r4ID4" value="" />
+      <string name="r4ID5" value="" />
+      <string name="r5ID0" value="" />
+      <string name="r5ID1" value="" />
+      <string name="r5ID2" value="" />
+      <string name="r5ID3" value="" />
+      <string name="r5ID4" value="" />
+      <string name="r5ID5" value="" />
+      <string name="r6ID0" value="" />
+      <string name="r6ID1" value="" />
+      <string name="r6ID2" value="" />
+      <string name="r6ID3" value="" />
+      <string name="r6ID4" value="" />
+      <string name="r6ID5" value="" />
+      <string name="r7ID0" value="" />
+      <string name="r7ID1" value="" />
+      <string name="r7ID2" value="" />
+      <string name="r7ID3" value="" />
+      <string name="r7ID4" value="" />
+      <string name="r7ID5" value="" />
+      <string name="r8ID0" value="" />
+      <string name="r8ID1" value="" />
+      <string name="r8ID2" value="" />
+      <string name="r8ID3" value="" />
+      <string name="r8ID4" value="" />
+      <string name="r8ID5" value="" />
+      <string name="r0Level" value="" />
+      <string name="r1Level" value="" />
+      <string name="r2Level" value="" />
+      <string name="r3Level" value="" />
+      <string name="r4Level" value="" />
+      <string name="r5Level" value="" />
+      <string name="r6Level" value="" />
+      <string name="r7Level" value="" />
+      <string name="r8Level" value="" />
+      <string name="r0Num" value="" />
+      <string name="r1Num" value="" />
+      <string name="r2Num" value="" />
+      <string name="r3Num" value="" />
+      <string name="r4Num" value="" />
+      <string name="r5Num" value="" />
+      <string name="r6Num" value="" />
+      <string name="r7Num" value="" />
+      <string name="r8Num" value="" />
+      <string name="r0PB" value="" />
+      <string name="r1PB" value="" />
+      <string name="r2PB" value="" />
+      <string name="r3PB" value="" />
+      <string name="r4PB" value="" />
+      <string name="r5PB" value="" />
+      <string name="r6PB" value="" />
+      <string name="r7PB" value="" />
+      <string name="r8PB" value="" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="6000" />
+    </canvas>
+    <canvas name="1" width="82" height="100">
+      <vector name="origin" x="38" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="2" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="130" />
+    </canvas>
+    <uol name="3" value="1" />
+    <uol name="4" value="2" />
+    <uol name="5" value="1" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="500" />
+    </canvas>
+    <canvas name="1" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="87" height="100">
+      <vector name="origin" x="40" y="100" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <uol name="4" value="1" />
+    <uol name="5" value="3" />
+  </imgdir>
+</imgdir>

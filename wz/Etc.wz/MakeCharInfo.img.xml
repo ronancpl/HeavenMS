@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="MakeCharInfo.img">
+  <imgdir name="Info">
+    <imgdir name="CharMale">
+      <imgdir name="0">
+        <int name="0" value="20000" />
+        <int name="1" value="20001" />
+        <int name="2" value="20002" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="0" value="30030" />
+        <int name="1" value="30020" />
+        <int name="2" value="30000" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="0" value="0" />
+        <int name="1" value="7" />
+        <int name="2" value="3" />
+        <int name="3" value="2" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="0" value="0" />
+        <int name="1" value="1" />
+        <int name="2" value="2" />
+        <int name="3" value="3" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="0" value="1040002" />
+        <int name="1" value="1040006" />
+        <int name="2" value="1040010" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="0" value="1060002" />
+        <int name="1" value="1060006" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="0" value="1072001" />
+        <int name="1" value="1072005" />
+        <int name="2" value="1072037" />
+        <int name="3" value="1072038" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="0" value="1302000" />
+        <int name="1" value="1322005" />
+        <int name="2" value="1312004" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="CharFemale">
+      <imgdir name="0">
+        <int name="0" value="21000" />
+        <int name="1" value="21001" />
+        <int name="2" value="21002" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="0" value="31000" />
+        <int name="1" value="31040" />
+        <int name="2" value="31050" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="0" value="0" />
+        <int name="1" value="7" />
+        <int name="2" value="3" />
+        <int name="3" value="2" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="0" value="0" />
+        <int name="1" value="1" />
+        <int name="2" value="2" />
+        <int name="3" value="3" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="0" value="1041002" />
+        <int name="1" value="1041006" />
+        <int name="2" value="1041010" />
+        <int name="3" value="1041011" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="0" value="1061002" />
+        <int name="1" value="1061008" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="0" value="1072001" />
+        <int name="1" value="1072005" />
+        <int name="2" value="1072037" />
+        <int name="3" value="1072038" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="0" value="1302000" />
+        <int name="1" value="1322005" />
+        <int name="2" value="1312004" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="Name">
+    <imgdir name="CharMale">
+      <imgdir name="1">
+        <string name="30030" value="Buzz Hair" />
+        <string name="30020" value="Rebel Hair" />
+        <string name="30000" value="Toben Hair" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="0" value="Black" />
+        <string name="7" value="Brown" />
+        <string name="3" value="Blond" />
+        <string name="2" value="Orange" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="0" value="Light" />
+        <string name="1" value="Tanned" />
+        <string name="2" value="Dark" />
+        <string name="3" value="Pale" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="CharFemale">
+      <imgdir name="1">
+        <string name="31000" value="Sammy Hair" />
+        <string name="31040" value="Edgy Hair" />
+        <string name="31050" value="Connie Hair" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="0" value="Black" />
+        <string name="7" value="Brown" />
+        <string name="3" value="Blond" />
+        <string name="2" value="Orange" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="0" value="Light" />
+        <string name="1" value="Tanned" />
+        <string name="2" value="Dark" />
+        <string name="3" value="Pale" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="PremiumCharMale">
+      <imgdir name="1">
+        <string name="30030" value="Buzz Hair" />
+        <string name="30020" value="Rebel Hair" />
+        <string name="30000" value="Toben Hair" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="0" value="Black" />
+        <string name="7" value="Brown" />
+        <string name="3" value="Blond" />
+        <string name="2" value="Orange" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="0" value="Light" />
+        <string name="1" value="Tanned" />
+        <string name="2" value="Dark" />
+        <string name="3" value="Pale" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="PremiumCharFemale">
+      <imgdir name="1">
+        <string name="31000" value="Sammy Hair" />
+        <string name="31040" value="Edgy Hair" />
+        <string name="31050" value="Connie Hair" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="0" value="Black" />
+        <string name="7" value="Brown" />
+        <string name="3" value="Blond" />
+        <string name="2" value="Orange" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="0" value="Light" />
+        <string name="1" value="Tanned" />
+        <string name="2" value="Dark" />
+        <string name="3" value="Pale" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="PremiumCharMale">
+    <imgdir name="0">
+      <int name="0" value="20000" />
+      <int name="1" value="20001" />
+      <int name="2" value="20002" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="0" value="30030" />
+      <int name="1" value="30020" />
+      <int name="2" value="30000" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="0" value="0" />
+      <int name="1" value="7" />
+      <int name="2" value="3" />
+      <int name="3" value="2" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="0" value="0" />
+      <int name="1" value="1" />
+      <int name="2" value="2" />
+      <int name="3" value="3" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="0" value="1040002" />
+      <int name="1" value="1040006" />
+      <int name="2" value="1040010" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="0" value="1060002" />
+      <int name="1" value="1060006" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="0" value="1072001" />
+      <int name="1" value="1072005" />
+      <int name="2" value="1072037" />
+      <int name="3" value="1072038" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="0" value="1302000" />
+      <int name="1" value="1322005" />
+      <int name="2" value="1312004" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="PremiumCharFemale">
+    <imgdir name="0">
+      <int name="0" value="21000" />
+      <int name="1" value="21001" />
+      <int name="2" value="21002" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="0" value="31000" />
+      <int name="1" value="31040" />
+      <int name="2" value="31050" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="0" value="0" />
+      <int name="1" value="7" />
+      <int name="2" value="3" />
+      <int name="3" value="2" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="0" value="0" />
+      <int name="1" value="1" />
+      <int name="2" value="2" />
+      <int name="3" value="3" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="0" value="1041002" />
+      <int name="1" value="1041006" />
+      <int name="2" value="1041010" />
+      <int name="3" value="1041011" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="0" value="1061002" />
+      <int name="1" value="1061008" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="0" value="1072001" />
+      <int name="1" value="1072005" />
+      <int name="2" value="1072037" />
+      <int name="3" value="1072038" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="0" value="1302000" />
+      <int name="1" value="1322005" />
+      <int name="2" value="1312004" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="OrientCharMale">
+    <imgdir name="0">
+      <int name="0" value="20100" />
+      <int name="1" value="20401" />
+      <int name="2" value="20402" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="0" value="30030" />
+      <int name="1" value="30020" />
+      <int name="2" value="30000" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="0" value="0" />
+      <int name="1" value="7" />
+      <int name="2" value="3" />
+      <int name="3" value="2" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="0" value="0" />
+      <int name="1" value="1" />
+      <int name="2" value="2" />
+      <int name="3" value="3" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="0" value="1042167" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="0" value="1062115" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="0" value="1072383" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="0" value="1442079" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="OrientCharFemale">
+    <imgdir name="0">
+      <int name="0" value="21700" />
+      <int name="1" value="21201" />
+      <int name="2" value="21002" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="0" value="31000" />
+      <int name="1" value="31040" />
+      <int name="2" value="31050" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="0" value="0" />
+      <int name="1" value="7" />
+      <int name="2" value="3" />
+      <int name="3" value="2" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="0" value="0" />
+      <int name="1" value="1" />
+      <int name="2" value="2" />
+      <int name="3" value="3" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="0" value="1042167" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="0" value="1062115" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="0" value="1072383" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="0" value="1442079" />
+    </imgdir>
+  </imgdir>
+</imgdir>

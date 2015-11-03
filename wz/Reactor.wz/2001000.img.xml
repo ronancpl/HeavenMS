@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2001000.img">
+  <imgdir name="info">
+    <string name="info" value="여신의 화분:여신탑의 네펜데스 소환" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="106" height="54">
+      <vector name="origin" x="53" y="-9" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4001053" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-56" y="-32" />
+        <vector name="rb" x="55" y="43" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="106" height="54">
+        <vector name="origin" x="53" y="-9" />
+        <int name="z" value="0" />
+        <int name="delay" value="120" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="106" height="54">
+      <vector name="origin" x="53" y="-9" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="fgodMob0" />
+</imgdir>

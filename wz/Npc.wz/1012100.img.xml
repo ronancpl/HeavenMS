@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1012100.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="bowman" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="60" height="71">
+      <vector name="origin" x="27" y="71" />
+      <int name="z" value="0" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+</imgdir>

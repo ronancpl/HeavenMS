@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052007.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-54" />
+    <int name="dcTop" value="-62" />
+    <int name="dcRight" value="42" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="subway_in" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="111" height="63">
+      <vector name="origin" x="55" y="63" />
+    </canvas>
+  </imgdir>
+</imgdir>

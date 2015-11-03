@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1209001.img">
+  <imgdir name="info">
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="64" height="77">
+      <vector name="origin" x="20" y="77" />
+      <int name="z" value="0" />
+      <int name="delay" value="3000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="worry">
+    <canvas name="0" width="64" height="77">
+      <vector name="origin" x="20" y="77" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="64" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="67" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="70" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="72" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5" width="74" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6" width="64" height="76">
+      <vector name="origin" x="20" y="76" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

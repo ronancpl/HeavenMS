@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2006000.img">
+  <imgdir name="info">
+    <string name="info" value="빛덩어리" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="64" height="65">
+      <vector name="origin" x="32" y="32" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="69" height="69">
+      <vector name="origin" x="35" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="71" height="71">
+      <vector name="origin" x="36" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="77" height="72">
+      <vector name="origin" x="37" y="35" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="84" height="75">
+      <vector name="origin" x="40" y="37" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="88" height="74">
+      <vector name="origin" x="42" y="36" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="72" height="70">
+      <vector name="origin" x="37" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="69" height="68">
+      <vector name="origin" x="35" y="33" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <int name="repeat" value="1" />
+    <imgdir name="hit">
+      <canvas name="0" width="64" height="65">
+        <vector name="origin" x="32" y="32" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="2">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="3">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="4">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="5">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="6">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="7">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="8">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="9">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="10">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="11">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="12">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="13">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="14">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="15">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="16">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="17">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="18">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="19">
+    <uol name="0" value="../0/0" />
+    <uol name="1" value="../0/1" />
+    <uol name="2" value="../0/2" />
+    <uol name="3" value="../0/3" />
+    <uol name="4" value="../0/4" />
+    <uol name="5" value="../0/5" />
+    <uol name="6" value="../0/6" />
+    <uol name="7" value="../0/7" />
+    <int name="repeat" value="1" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="20">
+    <canvas name="0" width="64" height="65">
+      <vector name="origin" x="32" y="32" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="69" height="69">
+      <vector name="origin" x="35" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="71" height="71">
+      <vector name="origin" x="36" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="77" height="72">
+      <vector name="origin" x="37" y="35" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="84" height="75">
+      <vector name="origin" x="40" y="37" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="88" height="74">
+      <vector name="origin" x="42" y="36" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="72" height="70">
+      <vector name="origin" x="37" y="34" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="69" height="68">
+      <vector name="origin" x="35" y="33" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <int name="repeat" value="1" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="21" />
+        <int name="0" value="4001063" />
+        <int name="1" value="20" />
+        <vector name="lt" x="-33" y="-36" />
+        <vector name="rb" x="34" y="81" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="64" height="65">
+        <vector name="origin" x="32" y="32" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="67" height="67">
+        <vector name="origin" x="34" y="33" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="68" height="67">
+        <vector name="origin" x="34" y="32" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="75" height="62">
+        <vector name="origin" x="35" y="30" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="21">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="fgodNPC0" />
+</imgdir>

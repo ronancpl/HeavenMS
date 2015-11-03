@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2141001.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="PinkBeen_accept" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="reg">
+      <string name="in00" value="" />
+      <string name="in01" value="" />
+      <string name="in02" value="" />
+      <string name="in03" value="" />
+      <string name="in04" value="" />
+      <string name="in05" value="" />
+      <string name="in06" value="" />
+      <string name="in07" value="" />
+      <string name="in08" value="" />
+      <string name="in09" value="" />
+      <string name="in10" value="" />
+      <string name="in11" value="" />
+      <string name="in12" value="" />
+      <string name="in13" value="" />
+      <string name="in14" value="" />
+      <string name="in15" value="" />
+      <string name="in16" value="" />
+      <string name="in17" value="" />
+      <string name="in18" value="" />
+      <string name="in19" value="" />
+      <string name="in20" value="" />
+      <string name="in21" value="" />
+      <string name="in22" value="" />
+      <string name="in23" value="" />
+      <string name="in24" value="" />
+      <string name="in25" value="" />
+      <string name="in26" value="" />
+      <string name="in27" value="" />
+      <string name="in28" value="" />
+      <string name="noin00" value="" />
+      <string name="noin01" value="" />
+      <string name="noin02" value="" />
+      <string name="noin03" value="" />
+      <string name="noin04" value="" />
+      <string name="noin05" value="" />
+      <string name="noin06" value="" />
+      <string name="noin07" value="" />
+      <string name="noin08" value="" />
+      <string name="noin09" value="" />
+      <string name="master" value="" />
+      <string name="list" value="00000000000000000000000000000" />
+      <string name="nolist" value="0000000000" />
+      <string name="lastmaster" value="" />
+    </imgdir>
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="64" height="117">
+      <vector name="origin" x="30" y="117" />
+      <int name="delay" value="2000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="64" height="117">
+      <vector name="origin" x="30" y="117" />
+      <int name="delay" value="2000" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

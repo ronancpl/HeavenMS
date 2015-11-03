@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2091009.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="enterShadow" />
+      </imgdir>
+    </imgdir>
+    <int name="hideName" value="1" />
+    <int name="dcLeft" value="-12" />
+    <int name="dcTop" value="-147" />
+    <int name="dcRight" value="23" />
+    <int name="dcBottom" value="-111" />
+    <canvas name="default" width="54" height="16">
+      <vector name="origin" x="27" y="8" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="54" height="16">
+      <vector name="origin" x="24" y="138" />
+    </canvas>
+  </imgdir>
+</imgdir>

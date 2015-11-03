@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="8892004.img">
+  <imgdir name="info">
+    <string name="info" value="Check the condition of the Giant Snowman" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="11" height="1">
+      <vector name="origin" x="5" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="11" height="1">
+        <vector name="origin" x="5" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4032199" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-1790" y="-1190" />
+        <vector name="rb" x="1797" y="817" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="08_Snowman2" />
+</imgdir>

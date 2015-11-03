@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2060102.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-46" />
+    <int name="dcTop" value="-167" />
+    <int name="dcRight" value="20" />
+    <int name="dcBottom" value="-28" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="75" height="182">
+      <vector name="origin" x="54" y="192" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="75" height="182">
+      <vector name="origin" x="54" y="192" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="75" height="182">
+      <vector name="origin" x="54" y="192" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="75" height="182">
+      <vector name="origin" x="54" y="192" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="75" height="182">
+      <vector name="origin" x="54" y="192" />
+      <int name="delay" value="100" />
+    </canvas>
+  </imgdir>
+</imgdir>

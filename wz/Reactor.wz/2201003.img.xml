@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2201003.img">
+  <imgdir name="info">
+    <string name="info" value="루디브리엄 범용리엑터" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="49" height="36">
+      <vector name="origin" x="24" y="35" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4001022" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-67" y="-16" />
+        <vector name="rb" x="38" y="7" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="68" height="56">
+        <vector name="origin" x="34" y="55" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="67" height="50">
+        <vector name="origin" x="34" y="49" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="67" height="47">
+        <vector name="origin" x="31" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="67" height="39">
+        <vector name="origin" x="33" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="ludiBoss0" />
+</imgdir>

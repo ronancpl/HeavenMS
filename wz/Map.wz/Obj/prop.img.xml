@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="prop.img">
+  <imgdir name="grassySoil">
+    <imgdir name="door">
+      <imgdir name="0">
+        <canvas name="0" width="68" height="87">
+          <vector name="origin" x="34" y="43" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="win">
+      <imgdir name="0">
+        <canvas name="0" width="73" height="62">
+          <vector name="origin" x="36" y="31" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="140" height="141">
+          <vector name="origin" x="70" y="70" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="lamp">
+      <imgdir name="0">
+        <canvas name="0" width="34" height="60">
+          <vector name="origin" x="17" y="30" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="fur">
+      <imgdir name="0">
+        <canvas name="0" width="90" height="85">
+          <vector name="origin" x="45" y="42" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="128" height="67">
+          <vector name="origin" x="64" y="33" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="77" height="41">
+          <vector name="origin" x="38" y="20" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="lad">
+      <imgdir name="0">
+        <canvas name="0" width="68" height="209">
+          <vector name="origin" x="34" y="104" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

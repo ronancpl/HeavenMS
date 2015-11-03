@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2502002.img">
+  <imgdir name="info">
+    <string name="info" value="바위탁자" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="113" height="36">
+      <vector name="origin" x="52" y="36" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="0" />
+        <string name="0" value="4031794" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-43" y="-74" />
+        <vector name="rb" x="57" y="4" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="100" />
+        <int name="state" value="0" />
+        <string name="0" value="2022116" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-43" y="-74" />
+        <vector name="rb" x="57" y="4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="63" height="69">
+        <vector name="origin" x="27" y="86" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="71" height="73">
+        <vector name="origin" x="28" y="86" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="72" height="63">
+        <vector name="origin" x="31" y="81" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="76" height="60">
+        <vector name="origin" x="31" y="78" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="4" width="68" height="55">
+        <vector name="origin" x="25" y="75" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="5" width="62" height="49">
+        <vector name="origin" x="22" y="71" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="113" height="36">
+      <vector name="origin" x="52" y="36" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="2" />
+        <int name="0" value="4031700" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-3" y="-237" />
+        <vector name="rb" x="-2" y="-236" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeOut" value="2000" />
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="113" height="36">
+        <vector name="origin" x="52" y="36" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="muruengItem2" />
+</imgdir>

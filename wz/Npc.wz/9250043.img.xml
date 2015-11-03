@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9250043.img">
+  <imgdir name="info">
+    <int name="MapleTV" value="1" />
+    <short name="MapleTVmsgX" value="65321" />
+    <int name="MapleTVmsgY" value="-375" />
+    <int name="MapleTVadX" value="-255" />
+    <int name="MapleTVadY" value="-256" />
+    <int name="hideName" value="1" />
+    <int name="dcLeft" value="0" />
+    <int name="dcTop" value="0" />
+    <int name="dcRight" value="0" />
+    <int name="dcBottom" value="0" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="418" height="445">
+      <vector name="origin" x="331" y="445" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="410" height="445">
+      <vector name="origin" x="323" y="445" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="410" height="445">
+      <vector name="origin" x="323" y="445" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="410" height="445">
+      <vector name="origin" x="323" y="445" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+  </imgdir>
+</imgdir>

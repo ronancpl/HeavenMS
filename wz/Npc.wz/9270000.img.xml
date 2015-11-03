@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9270000.img">
+  <imgdir name="info">
+    <int name="MapleTV" value="1" />
+    <short name="MapleTVmsgX" value="65416" />
+    <int name="MapleTVmsgY" value="-354" />
+    <int name="MapleTVadX" value="-120" />
+    <int name="MapleTVadY" value="-244" />
+    <int name="hideName" value="1" />
+    <int name="dcLeft" value="0" />
+    <int name="dcTop" value="0" />
+    <int name="dcRight" value="0" />
+    <int name="dcBottom" value="0" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="380" height="470">
+      <vector name="origin" x="182" y="471" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="380" height="477">
+      <vector name="origin" x="182" y="478" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="380" height="476">
+      <vector name="origin" x="182" y="477" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="380" height="475">
+      <vector name="origin" x="182" y="476" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="380" height="474">
+      <vector name="origin" x="182" y="475" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="5" width="380" height="475">
+      <vector name="origin" x="182" y="476" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="6" width="380" height="476">
+      <vector name="origin" x="182" y="477" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+  </imgdir>
+</imgdir>

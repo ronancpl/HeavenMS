@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500001.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="1" />
+    <int name="maxHP" value="100000" />
+    <int name="maxMP" value="100000" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="1000" />
+    <int name="PDDamage" value="1000" />
+    <int name="MADamage" value="1000" />
+    <int name="MDDamage" value="1000" />
+    <int name="acc" value="250" />
+    <int name="eva" value="12" />
+    <int name="exp" value="0" />
+    <int name="pushed" value="20000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="noFlip" value="1" />
+    <int name="boss" value="1" />
+    <string name="removeAfter" value="10" />
+    <int name="removeQuest" value="1" />
+    <string name="link" value="9500000" />
+  </imgdir>
+</imgdir>

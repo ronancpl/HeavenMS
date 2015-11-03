@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1204010.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="giantDagoth" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="108" height="107">
+      <vector name="origin" x="46" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="1" width="109" height="106">
+      <vector name="origin" x="47" y="106" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="2" width="111" height="105">
+      <vector name="origin" x="48" y="105" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="3" width="109" height="106">
+      <vector name="origin" x="47" y="106" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="4" width="108" height="107">
+      <vector name="origin" x="46" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="5" width="108" height="108">
+      <vector name="origin" x="45" y="108" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+  </imgdir>
+</imgdir>

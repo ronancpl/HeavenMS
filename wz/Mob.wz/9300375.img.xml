@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300375.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="90" />
+    <int name="maxHP" value="96000" />
+    <int name="maxMP" value="350" />
+    <int name="speed" value="-80" />
+    <int name="PADamage" value="400" />
+    <int name="PDDamage" value="700" />
+    <int name="MADamage" value="430" />
+    <int name="MDDamage" value="465" />
+    <int name="acc" value="160" />
+    <int name="eva" value="27" />
+    <int name="exp" value="3000" />
+    <int name="pushed" value="3000" />
+    <int name="hpRecovery" value="100" />
+    <int name="mpRecovery" value="5" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="boss" value="1" />
+    <int name="firstAttack" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="100" />
+        <int name="action" value="1" />
+        <int name="level" value="16" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="132" />
+        <int name="action" value="2" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <string name="link" value="9300367" />
+  </imgdir>
+</imgdir>

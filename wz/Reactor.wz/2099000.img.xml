@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2099000.img">
+  <imgdir name="info">
+    <string name="info" value="Mirror that breaks by Wing hammer in APQ" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <string name="message" value="The Magik Mirror shatters, scattering its pieces on the ground." />
+        <int name="0" value="4000417" />
+        <int name="2" value="1" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-1200" y="-90" />
+        <vector name="rb" x="902" y="32" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="4" height="4">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="snowScript0" />
+</imgdir>

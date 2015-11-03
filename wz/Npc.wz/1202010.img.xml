@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1202010.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="aran_lv200" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="3000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="1" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="2" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="3" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="180" />
+    </canvas>
+    <uol name="4" value="0" />
+    <uol name="5" value="1" />
+    <uol name="6" value="2" />
+    <uol name="7" value="3" />
+    <uol name="8" value="0" />
+    <uol name="9" value="1" />
+    <uol name="10" value="2" />
+    <uol name="11" value="3" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="600" />
+    </canvas>
+    <canvas name="1" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hand">
+    <canvas name="0" width="96" height="124">
+      <vector name="origin" x="60" y="123" />
+      <int name="z" value="0" />
+      <int name="delay" value="900" />
+    </canvas>
+    <canvas name="1" width="96" height="126">
+      <vector name="origin" x="60" y="126" />
+      <int name="z" value="0" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="2" width="96" height="127">
+      <vector name="origin" x="60" y="127" />
+      <int name="z" value="0" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="3" width="96" height="128">
+      <vector name="origin" x="60" y="128" />
+      <int name="z" value="0" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="4" width="96" height="124">
+      <vector name="origin" x="60" y="122" />
+      <int name="z" value="0" />
+      <int name="delay" value="240" />
+    </canvas>
+  </imgdir>
+</imgdir>

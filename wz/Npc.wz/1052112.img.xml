@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052112.img">
+  <imgdir name="info">
+    <canvas name="default" width="79" height="77">
+      <vector name="origin" x="28" y="77" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="givebubbleDoll4" />
+      </imgdir>
+    </imgdir>
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="1" height="60">
+      <vector name="origin" x="0" y="61" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0553.img">
+  <imgdir name="05530000">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="4170012" />
+        <int name="prob" value="50" />
+        <string name="Effect" value="Effect/BasicEff/Event1/Success" />
+        <int name="count" value="12" />
+        <int name="period" value="21600" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530001">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="1142144" />
+        <int name="prob" value="100" />
+        <string name="Effect" value="Effect/BasicEff/Event1/Success" />
+        <int name="count" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530002">
+    <imgdir name="info">
+      <canvas name="icon" width="34" height="32">
+        <vector name="origin" x="1" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="34" height="32">
+        <vector name="origin" x="1" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2430030" />
+        <int name="prob" value="100" />
+        <int name="count" value="5" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530003">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2210021" />
+        <int name="prob" value="100" />
+        <int name="count" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530004">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="31">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2022456" />
+        <int name="prob" value="100" />
+        <int name="count" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530005">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="31">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2022456" />
+        <int name="prob" value="100" />
+        <int name="count" value="200" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530006">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="31">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2022457" />
+        <int name="prob" value="100" />
+        <int name="count" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530007">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="31">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2022457" />
+        <int name="prob" value="100" />
+        <int name="count" value="150" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05530008">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="31">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+    <imgdir name="reward">
+      <imgdir name="0">
+        <string name="item" value="2022457" />
+        <int name="prob" value="100" />
+        <int name="count" value="200" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

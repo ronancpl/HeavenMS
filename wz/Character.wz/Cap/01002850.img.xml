@@ -1,0 +1,430 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01002850.img">
+  <imgdir name="info">
+    <canvas name="icon" width="29" height="34">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+    <canvas name="iconRaw" width="29" height="34">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+    <string name="islot" value="Cp" />
+    <string name="vslot" value="CpH5" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="0" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incPAD" value="20" />
+    <int name="incPDD" value="20" />
+    <int name="tuc" value="7" />
+    <int name="price" value="1" />
+    <int name="incSTR" value="2" />
+    <int name="incINT" value="2" />
+    <int name="incDEX" value="2" />
+    <int name="incLUK" value="2" />
+    <int name="tradeBlock" value="1" />
+    <int name="notSale" value="1" />
+    <int name="timeLimited" value="1" />
+    <int name="cash" value="0" />
+  </imgdir>
+  <imgdir name="default">
+    <canvas name="default" width="39" height="48">
+      <vector name="origin" x="19" y="24" />
+      <imgdir name="map">
+        <vector name="brow" x="-2" y="6" />
+      </imgdir>
+      <string name="z" value="capOverHair" />
+    </canvas>
+  </imgdir>
+  <imgdir name="backDefault">
+    <canvas name="default" width="43" height="21">
+      <vector name="origin" x="13" y="17" />
+      <imgdir name="map">
+        <vector name="brow" x="4" y="13" />
+      </imgdir>
+      <string name="z" value="capOverHair" />
+    </canvas>
+  </imgdir>
+  <imgdir name="walk1">
+    <imgdir name="0">
+      <uol name="Default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="Default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="Default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="Default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="walk2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="alert">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="1" width="46" height="53">
+        <vector name="origin" x="23" y="26" />
+        <int name="z" value="0" />
+        <imgdir name="map">
+          <vector name="brow" x="-2" y="9" />
+        </imgdir>
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="default" width="46" height="53">
+        <vector name="origin" x="23" y="26" />
+        <imgdir name="map">
+          <vector name="brow" x="-2" y="9" />
+        </imgdir>
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO3">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingOF">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT3">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingTF">
+    <imgdir name="0">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingP1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingP2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingPF">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="dafault" width="45" height="51">
+        <vector name="origin" x="22" y="25" />
+        <int name="z" value="0" />
+        <imgdir name="map">
+          <vector name="brow" x="-2" y="8" />
+        </imgdir>
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabOF">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabT1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabT2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabTF">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shoot1">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shoot2">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingPF/1/dafault" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+    <imgdir name="4">
+      <uol name="default" value="../../swingO1/1/1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shootF">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="proneStab">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="prone">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="heal">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="fly">
+    <imgdir name="0">
+      <canvas name="dafault" width="44" height="53">
+        <vector name="origin" x="22" y="26" />
+        <int name="z" value="0" />
+        <imgdir name="map">
+          <vector name="brow" x="-2" y="9" />
+        </imgdir>
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="dafault" width="45" height="53">
+        <vector name="origin" x="22" y="26" />
+        <int name="z" value="0" />
+        <imgdir name="map">
+          <vector name="brow" x="-1" y="9" />
+        </imgdir>
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="jump">
+    <imgdir name="0">
+      <uol name="default" value="../../swingO1/2/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="sit">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladder">
+    <imgdir name="0">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="rope">
+    <imgdir name="0">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../backDefault/default" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="8820026.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="0" />
+    <int name="level" value="1" />
+    <int name="maxHP" value="450000000" />
+    <int name="maxMP" value="0" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="0" />
+    <int name="PDDamage" value="0" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="0" />
+    <int name="acc" value="0" />
+    <int name="eva" value="0" />
+    <int name="exp" value="0" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="12" />
+    <int name="hideName" value="1" />
+    <int name="noFlip" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="158" height="216">
+      <vector name="origin" x="402" y="303" />
+      <vector name="head" x="-320" y="-1500" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="158" height="216">
+      <vector name="origin" x="402" y="303" />
+      <vector name="head" x="-320" y="-1500" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="158" height="216">
+      <vector name="origin" x="402" y="303" />
+      <vector name="head" x="-320" y="-1500" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+</imgdir>

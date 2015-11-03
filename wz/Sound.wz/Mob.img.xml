@@ -1,0 +1,4191 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Mob.img">
+  <imgdir name="0100100" />
+  <imgdir name="0100101">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0100100/Die" />
+  </imgdir>
+  <imgdir name="0100120" />
+  <imgdir name="0100121" />
+  <imgdir name="0100122" />
+  <imgdir name="0100123" />
+  <imgdir name="0100124" />
+  <imgdir name="0100130" />
+  <imgdir name="0100131" />
+  <imgdir name="0100132" />
+  <imgdir name="0100133" />
+  <imgdir name="0100134" />
+  <imgdir name="0120100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="0130100" />
+  <imgdir name="0130101">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0100100/Die" />
+  </imgdir>
+  <imgdir name="0210100" />
+  <imgdir name="1110100">
+    <uol name="Damage" value="../2110200/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="1110101">
+    <uol name="Die" value="../0130100/Die" />
+  </imgdir>
+  <imgdir name="1110130">
+    <uol name="Damage" value="../2110200/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="1120100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="1130100">
+    <uol name="Damage" value="../0130100/Damage" />
+    <uol name="Die" value="../0130100/Die" />
+  </imgdir>
+  <imgdir name="1140100" />
+  <imgdir name="1140130">
+    <uol name="Damage" value="../1140100/Damage" />
+    <uol name="Die" value="../1140100/Die" />
+  </imgdir>
+  <imgdir name="1210100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="1210101">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="1210102">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="1210103" />
+  <imgdir name="2100100" />
+  <imgdir name="2100101" />
+  <imgdir name="2100102" />
+  <imgdir name="2100103" />
+  <imgdir name="2100104" />
+  <imgdir name="2100105" />
+  <imgdir name="2100106" />
+  <imgdir name="2100107" />
+  <imgdir name="2100108" />
+  <imgdir name="2110100" />
+  <imgdir name="2110101" />
+  <imgdir name="2110200">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="2110300" />
+  <imgdir name="2110301" />
+  <imgdir name="2130100">
+    <uol name="Damage" value="../0130100/Damage" />
+    <uol name="Die" value="../0130100/Die" />
+  </imgdir>
+  <imgdir name="2130103">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="2220000" />
+  <imgdir name="2220100">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="2230100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="2230101">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="2230102">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="2230103" />
+  <imgdir name="2230104" />
+  <imgdir name="2230105" />
+  <imgdir name="2230106" />
+  <imgdir name="2230107" />
+  <imgdir name="2230108" />
+  <imgdir name="2230109" />
+  <imgdir name="2230110" />
+  <imgdir name="2230111" />
+  <imgdir name="2230131">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="2230200" />
+  <imgdir name="2300100" />
+  <imgdir name="3000000" />
+  <imgdir name="3000001">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill1" />
+  </imgdir>
+  <imgdir name="3000002">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill2" />
+    <uol name="Damage" value="../3000001/Damage" />
+  </imgdir>
+  <imgdir name="3000003">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="../3000002/Skill1" />
+    <uol name="Damage" value="../3000001/Damage" />
+    <uol name="Die" value="../3000001/Die" />
+  </imgdir>
+  <imgdir name="3000004">
+    <uol name="Damage" value="../3000001/Damage" />
+    <uol name="Die" value="../3000002/Die" />
+    <uol name="Skill1" value="../3000002/Skill1" />
+    <uol name="Attack1" value="Skill1" />
+  </imgdir>
+  <imgdir name="3000005" />
+  <imgdir name="3000006" />
+  <imgdir name="3100101" />
+  <imgdir name="3100102" />
+  <imgdir name="3110100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3110101" />
+  <imgdir name="3110102" />
+  <imgdir name="3110300" />
+  <imgdir name="3110301" />
+  <imgdir name="3110302" />
+  <imgdir name="3110303" />
+  <imgdir name="3210100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3210200" />
+  <imgdir name="3210201">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="3210202">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="3210203" />
+  <imgdir name="3210204" />
+  <imgdir name="3210205">
+    <uol name="Damage" value="../3110102/Damage" />
+    <uol name="Die" value="../3110102/Die" />
+  </imgdir>
+  <imgdir name="3210206" />
+  <imgdir name="3210207" />
+  <imgdir name="3210208" />
+  <imgdir name="3210450" />
+  <imgdir name="3210800">
+    <uol name="Damage" value="../2230100/Damage" />
+  </imgdir>
+  <imgdir name="3220000">
+    <uol name="Skill1" value="Attack2" />
+  </imgdir>
+  <imgdir name="3220001">
+    <uol name="CharDam1" value="../8220001/CharDam1" />
+  </imgdir>
+  <imgdir name="3230100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3230101" />
+  <imgdir name="3230102" />
+  <imgdir name="3230103" />
+  <imgdir name="3230104" />
+  <imgdir name="3230200" />
+  <imgdir name="3230300" />
+  <imgdir name="3230301">
+    <uol name="Damage" value="../3230300/Damage" />
+    <uol name="Die" value="../3230300/Die" />
+  </imgdir>
+  <imgdir name="3230302" />
+  <imgdir name="3230303" />
+  <imgdir name="3230304" />
+  <imgdir name="3230305" />
+  <imgdir name="3230306" />
+  <imgdir name="3230307" />
+  <imgdir name="3230308" />
+  <imgdir name="3230400" />
+  <imgdir name="3230405" />
+  <imgdir name="3300000">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3300001">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3300002">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="3300003" />
+  <imgdir name="3300004">
+    <uol name="Damage" value="../3300003/Damage" />
+    <uol name="Die" value="../3300003/Die" />
+  </imgdir>
+  <imgdir name="3300005" />
+  <imgdir name="3300006">
+    <uol name="Attack1" value="../3300005/Attack1" />
+    <uol name="skill1" value="../3300005/skill1" />
+    <uol name="Die" value="../3300005/Die" />
+    <uol name="Damege" value="../3300005/Damage" />
+  </imgdir>
+  <imgdir name="3300007">
+    <uol name="Attack1" value="../3300005/Attack1" />
+    <uol name="skill1" value="../3300005/skill1" />
+    <uol name="Die" value="../3300005/Die" />
+    <uol name="Damege" value="../3300005/Damage" />
+  </imgdir>
+  <imgdir name="3300008" />
+  <imgdir name="3400000" />
+  <imgdir name="3400001">
+    <uol name="Attack1" value="../3400000/Attack1" />
+    <uol name="CharDam1" value="../3400000/CharDam1" />
+    <uol name="Damage" value="../3400000/Damage" />
+    <uol name="Die" value="../3400000/Die" />
+  </imgdir>
+  <imgdir name="3400002">
+    <uol name="Attack1" value="../3400000/Attack1" />
+    <uol name="CharDam1" value="../3400000/CharDam1" />
+    <uol name="Damage" value="../3400000/Damage" />
+    <uol name="Die" value="../3400000/Die" />
+  </imgdir>
+  <imgdir name="3400003">
+    <uol name="Attack2" value="Attack1" />
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="3400004" />
+  <imgdir name="3400005">
+    <uol name="Attack1" value="../3400003/Attack1" />
+    <uol name="Attack2" value="../3400003/Attack1" />
+    <uol name="CharDam1" value="../3400003/CharDam1" />
+    <uol name="CharDam2" value="../3400003/CharDam1" />
+    <uol name="Damage" value="../3400003/Damage" />
+    <uol name="Die" value="../3400003/Die" />
+  </imgdir>
+  <imgdir name="3400006">
+    <uol name="Damage" value="../3400004/Damage" />
+    <uol name="Die" value="../3400004/Die" />
+  </imgdir>
+  <imgdir name="3400007">
+    <uol name="Damage" value="../3400003/Damage" />
+    <uol name="Die" value="../3400003/Die" />
+  </imgdir>
+  <imgdir name="3400008">
+    <uol name="Damage" value="../3400003/Damage" />
+    <uol name="Die" value="../3400003/Die" />
+  </imgdir>
+  <imgdir name="4110300" />
+  <imgdir name="4110301" />
+  <imgdir name="4110302" />
+  <imgdir name="4130100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="4130101" />
+  <imgdir name="4130102">
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="CharDam1" value="../4230105/CharDam1" />
+    <uol name="Damage" value="../4230105/Damage" />
+    <uol name="Die" value="../4230105/Die" />
+  </imgdir>
+  <imgdir name="4130103" />
+  <imgdir name="4130104">
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="CharDam1" value="../4230105/CharDam1" />
+    <uol name="Damage" value="../4230105/Damage" />
+    <uol name="Die" value="../4230105/Die" />
+  </imgdir>
+  <imgdir name="4220000">
+    <uol name="CharDam1" value="../6130207/CharDam1" />
+  </imgdir>
+  <imgdir name="4220001" />
+  <imgdir name="4230100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="4230101">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="4230102" />
+  <imgdir name="4230103" />
+  <imgdir name="4230104" />
+  <imgdir name="4230105" />
+  <imgdir name="4230106">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="4230107" />
+  <imgdir name="4230108" />
+  <imgdir name="4230109" />
+  <imgdir name="4230110" />
+  <imgdir name="4230111" />
+  <imgdir name="4230112" />
+  <imgdir name="4230113" />
+  <imgdir name="4230114" />
+  <imgdir name="4230115" />
+  <imgdir name="4230116" />
+  <imgdir name="4230117" />
+  <imgdir name="4230118" />
+  <imgdir name="4230119" />
+  <imgdir name="4230120" />
+  <imgdir name="4230121" />
+  <imgdir name="4230122">
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="CharDam1" value="../4230105/CharDam1" />
+    <uol name="Damage" value="../4230105/Damage" />
+    <uol name="Die" value="../4230105/Die" />
+  </imgdir>
+  <imgdir name="4230123" />
+  <imgdir name="4230124" />
+  <imgdir name="4230125" />
+  <imgdir name="4230126" />
+  <imgdir name="4230200" />
+  <imgdir name="4230201" />
+  <imgdir name="4230300" />
+  <imgdir name="4230400">
+    <uol name="Damage" value="../4230103/Damage" />
+    <uol name="Die" value="../4230103/Die" />
+  </imgdir>
+  <imgdir name="4230500" />
+  <imgdir name="4230501" />
+  <imgdir name="4230502" />
+  <imgdir name="4230503" />
+  <imgdir name="4230504" />
+  <imgdir name="4230505" />
+  <imgdir name="4230506" />
+  <imgdir name="4230600" />
+  <imgdir name="4240000" />
+  <imgdir name="4250000" />
+  <imgdir name="4250001" />
+  <imgdir name="4300000">
+    <uol name="Die" value="../4300001/Die" />
+  </imgdir>
+  <imgdir name="4300001" />
+  <imgdir name="4300002">
+    <uol name="Die" value="../4300001/Die" />
+  </imgdir>
+  <imgdir name="4300003">
+    <uol name="Attack1" value="../4300001/Attack1" />
+    <uol name="Attack2" value="../4300001/Attack2" />
+    <uol name="CharDam1" value="../4300001/CharDam1" />
+    <uol name="CharDam2" value="../4300001/CharDam2" />
+    <uol name="Damage" value="../4300001/Damage" />
+    <uol name="Die" value="../4300001/Die" />
+  </imgdir>
+  <imgdir name="4300004">
+    <uol name="Die" value="../4300001/Die" />
+  </imgdir>
+  <imgdir name="4300005">
+    <uol name="Attack1" value="../4300001/Attack1" />
+    <uol name="Attack2" value="../4300001/Attack2" />
+    <uol name="CharDam1" value="../4300001/CharDam1" />
+    <uol name="CharDam2" value="../4300001/CharDam2" />
+    <uol name="Damage" value="../4300001/Damage" />
+    <uol name="Die" value="../4300001/Die" />
+  </imgdir>
+  <imgdir name="4300006" />
+  <imgdir name="4300007" />
+  <imgdir name="4300008" />
+  <imgdir name="4300009">
+    <uol name="Damage" value="../4300010/Damage" />
+    <uol name="Die" value="../4300010/Die" />
+  </imgdir>
+  <imgdir name="4300010" />
+  <imgdir name="4300011" />
+  <imgdir name="4300012" />
+  <imgdir name="4300013" />
+  <imgdir name="4300014">
+    <uol name="Attack1" value="../4300010/Attack1" />
+    <uol name="CharDam1" value="../4300010/CharDam1" />
+    <uol name="Damage" value="../4300010/Damage" />
+    <uol name="Die" value="../4300010/Die" />
+  </imgdir>
+  <imgdir name="4300015">
+    <uol name="Attack1" value="../4300011/Attack1" />
+    <uol name="CharDam1" value="../4300011/CharDam1" />
+    <uol name="Damage" value="../4300011/Damage" />
+    <uol name="Die" value="../4300011/Die" />
+  </imgdir>
+  <imgdir name="4300016">
+    <uol name="Attack1" value="../4300012/Attack1" />
+    <uol name="CharDam1" value="../4300012/CharDam1" />
+    <uol name="Damage" value="../4300012/Damage" />
+    <uol name="Die" value="../4300012/Die" />
+  </imgdir>
+  <imgdir name="5090000" />
+  <imgdir name="5090001" />
+  <imgdir name="5100000" />
+  <imgdir name="5100001" />
+  <imgdir name="5100002">
+    <uol name="CharDam1" value="8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="5100003" />
+  <imgdir name="5100004" />
+  <imgdir name="5100005" />
+  <imgdir name="5110300" />
+  <imgdir name="5110301" />
+  <imgdir name="5110302" />
+  <imgdir name="5120000">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="5120001">
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="5120002">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="5120003">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="5120100" />
+  <imgdir name="5120500" />
+  <imgdir name="5120501" />
+  <imgdir name="5120502" />
+  <imgdir name="5120503" />
+  <imgdir name="5120504" />
+  <imgdir name="5120505" />
+  <imgdir name="5120506" />
+  <imgdir name="5130100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="5130101">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="5130102">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="5130103">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="5130104">
+    <uol name="CharDam1" value="../6130101/CharDam1" />
+  </imgdir>
+  <imgdir name="5130105">
+    <uol name="Damage" value="../5100000/Damage" />
+    <uol name="Die" value="../5100000/Die" />
+  </imgdir>
+  <imgdir name="5130106">
+    <uol name="Damage" value="../5100001/Damage" />
+    <uol name="Die" value="../5100001/Die" />
+  </imgdir>
+  <imgdir name="5130107" />
+  <imgdir name="5130108">
+    <uol name="Attack1" value="../5130107/Attack1" />
+    <uol name="Attack2" value="../5130107/Attack2" />
+    <uol name="CharDam1" value="../5130107/CharDam1" />
+    <uol name="CharDam2" value="../5130107/CharDam2" />
+    <uol name="Damage" value="../5130107/Damage" />
+    <uol name="Die" value="../5130107/Die" />
+  </imgdir>
+  <imgdir name="5140000">
+    <uol name="Attack1" value="../5130104/Attack1" />
+    <uol name="CharDam1" value="../5130104/CharDam1" />
+    <uol name="Damage" value="../5130104/Damage" />
+  </imgdir>
+  <imgdir name="5150000">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../5130102/Die" />
+  </imgdir>
+  <imgdir name="5150001" />
+  <imgdir name="5200000" />
+  <imgdir name="5200001">
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3000000/Damage" />
+    <uol name="Die" value="../3000000/Die" />
+  </imgdir>
+  <imgdir name="5200002">
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3000000/Damage" />
+    <uol name="Die" value="../3000000/Die" />
+  </imgdir>
+  <imgdir name="5220000">
+    <uol name="Skill1" value="../5200002/Attack1" />
+  </imgdir>
+  <imgdir name="5220001" />
+  <imgdir name="5220002" />
+  <imgdir name="5220003" />
+  <imgdir name="5220004" />
+  <imgdir name="5250000" />
+  <imgdir name="5250001" />
+  <imgdir name="5250002">
+    <uol name="Die" value="../2230102/Die" />
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="5300000" />
+  <imgdir name="5300001">
+    <uol name="Damage" value="../5300000/Damage" />
+    <uol name="Die" value="../5300000/Die" />
+  </imgdir>
+  <imgdir name="5300100">
+    <uol name="Damage" value="../3230102/Damage" />
+    <uol name="Die" value="../3230101/Die" />
+  </imgdir>
+  <imgdir name="5400000" />
+  <imgdir name="6090000" />
+  <imgdir name="6090001" />
+  <imgdir name="6090002" />
+  <imgdir name="6090003" />
+  <imgdir name="6090004" />
+  <imgdir name="6110300" />
+  <imgdir name="6110301" />
+  <imgdir name="6130100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="6130101">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="6130102" />
+  <imgdir name="6130103">
+    <uol name="Damage" value="../6130102/Damage" />
+    <uol name="Die" value="../6130102/Die" />
+  </imgdir>
+  <imgdir name="6130104" />
+  <imgdir name="6130200" />
+  <imgdir name="6130201" />
+  <imgdir name="6130202" />
+  <imgdir name="6130203" />
+  <imgdir name="6130204" />
+  <imgdir name="6130207" />
+  <imgdir name="6130208" />
+  <imgdir name="6130209" />
+  <imgdir name="6220000" />
+  <imgdir name="6220001">
+    <uol name="CharDam1" value="../6130101/CharDam1" />
+  </imgdir>
+  <imgdir name="6230100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="6230101" />
+  <imgdir name="6230200">
+    <uol name="Damage" value="../6130102/Damage" />
+    <uol name="Die" value="../6130102/Die" />
+  </imgdir>
+  <imgdir name="6230201">
+    <uol name="Damage" value="../6130102/Damage" />
+    <uol name="Die" value="../6130102/Die" />
+  </imgdir>
+  <imgdir name="6230300">
+    <uol name="Attack1" value="../6130200/Attack1" />
+    <uol name="CharDam1" value="../6130200/Chardam1" />
+    <uol name="Damage" value="../6130200/Damage" />
+    <uol name="Die" value="../6130200/Die" />
+  </imgdir>
+  <imgdir name="6230400" />
+  <imgdir name="6230401">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="6230500" />
+  <imgdir name="6230600" />
+  <imgdir name="6230601" />
+  <imgdir name="6230602" />
+  <imgdir name="6300000" />
+  <imgdir name="6300001">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="6300002">
+    <uol name="Attack1" value="../6300001/Attack1" />
+    <uol name="CharDam1" value="../6300001/CharDam1" />
+    <uol name="Damage" value="../6300001/Damage" />
+    <uol name="Die" value="../6300001/Die" />
+  </imgdir>
+  <imgdir name="6300003">
+    <uol name="Damage" value="../6230101/Damage" />
+    <uol name="Die" value="../6230101/Die" />
+  </imgdir>
+  <imgdir name="6300004" />
+  <imgdir name="6300005">
+    <uol name="Attack1" value="../6300004/Attack1" />
+    <uol name="CharDam1" value="../6300004/CharDam1" />
+    <uol name="Damage" value="../6300004/Damage" />
+    <uol name="Die" value="../6300004/Die" />
+  </imgdir>
+  <imgdir name="6300100" />
+  <imgdir name="6400000">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="6400001">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="6400002">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="6400003">
+    <uol name="CharDam1" value="../6300003/CharDam1" />
+    <uol name="Damage" value="../6230101/Damage" />
+    <uol name="Die" value="../6230101/Die" />
+  </imgdir>
+  <imgdir name="6400004" />
+  <imgdir name="6400005">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="6400006">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="6400007" />
+  <imgdir name="6400008">
+    <uol name="Attack1" value="../6400005/Attack1" />
+    <uol name="Attack2" value="../6400005/Attack2" />
+    <uol name="Attack3" value="../6400005/Attack3" />
+    <uol name="CharDam1" value="../6400005/CharDam1" />
+    <uol name="CharDam2" value="../6400005/CharDam2" />
+    <uol name="CharDam3" value="../6400005/CharDam3" />
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../6400005/Die" />
+  </imgdir>
+  <imgdir name="6400009">
+    <uol name="Attack1" value="../6400006/Attack1" />
+    <uol name="Attack2" value="../6400006/Attack2" />
+    <uol name="CharDam1" value="../6400006/CharDam1" />
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Damage" value="../6400006/Damage" />
+    <uol name="Die" value="../6400006/Die" />
+  </imgdir>
+  <imgdir name="6400100">
+    <uol name="Attack1" value="../6300100/Attack1" />
+    <uol name="CharDam1" value="../6300100/CharDam1" />
+    <uol name="Damage" value="../6300100/Damage" />
+    <uol name="Die" value="../6300100/Die" />
+  </imgdir>
+  <imgdir name="7090000" />
+  <imgdir name="7110300" />
+  <imgdir name="7110301" />
+  <imgdir name="7120100">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+  </imgdir>
+  <imgdir name="7120101">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+    <uol name="Regen" value="../7120100/Regen" />
+    <uol name="Attack1" value="../7120100/Attack1" />
+    <uol name="Attack3" value="../7120100/Attack3" />
+    <uol name="Attack4" value="../7120100/Attack4" />
+    <uol name="Skill1" value="../7120100/Skill1" />
+    <uol name="Skill2" value="../7120100/Skill2" />
+    <uol name="Die" value="../7120100/Die" />
+  </imgdir>
+  <imgdir name="7120102">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+    <uol name="Regen" value="../7120100/Regen" />
+    <uol name="Attack1" value="../7120100/Attack1" />
+    <uol name="Attack3" value="../7120100/Attack3" />
+    <uol name="Attack4" value="../7120100/Attack4" />
+    <uol name="Skill1" value="../7120100/Skill1" />
+    <uol name="Skill2" value="../7120100/Skill2" />
+    <uol name="Die" value="../7120100/Die" />
+  </imgdir>
+  <imgdir name="7120103" />
+  <imgdir name="7120104">
+    <uol name="Damage" value="../7120103/Damage" />
+    <uol name="Die" value="../7120103/Die" />
+  </imgdir>
+  <imgdir name="7120105">
+    <uol name="Damage" value="../7120103/Damage" />
+    <uol name="Die" value="../7120103/Die" />
+  </imgdir>
+  <imgdir name="7120106" />
+  <imgdir name="7120107" />
+  <imgdir name="7120108" />
+  <imgdir name="7120109" />
+  <imgdir name="7130000">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="7130001">
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../4230108/Damage" />
+  </imgdir>
+  <imgdir name="7130002" />
+  <imgdir name="7130003" />
+  <imgdir name="7130004" />
+  <imgdir name="7130010" />
+  <imgdir name="7130020" />
+  <imgdir name="7130100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="7130101" />
+  <imgdir name="7130102">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+  </imgdir>
+  <imgdir name="7130103" />
+  <imgdir name="7130104" />
+  <imgdir name="7130200" />
+  <imgdir name="7130300" />
+  <imgdir name="7130400" />
+  <imgdir name="7130401" />
+  <imgdir name="7130402" />
+  <imgdir name="7130500" />
+  <imgdir name="7130501" />
+  <imgdir name="7130600" />
+  <imgdir name="7130601" />
+  <imgdir name="7130602" />
+  <imgdir name="7140000" />
+  <imgdir name="7160000">
+    <uol name="Attack1" value="../7140000/Attack1" />
+    <uol name="CharDam1" value="../7140000/CharDam1" />
+    <uol name="Damage" value="../7140000/Damage" />
+    <uol name="Die" value="../7140000/Die" />
+  </imgdir>
+  <imgdir name="7220000">
+    <uol name="Skill1" value="../7130400/Attack1" />
+  </imgdir>
+  <imgdir name="7220001" />
+  <imgdir name="7220002" />
+  <imgdir name="7220003">
+    <uol name="Skill1" value="Regen" />
+  </imgdir>
+  <imgdir name="7220004">
+    <uol name="Attack1" value="../7220003/Attack2" />
+    <uol name="Attack2" value="../7220003/Attack3" />
+    <uol name="Skill1" value="../7220003/Regen" />
+    <uol name="Die" value="../7220003/Die" />
+    <uol name="Damage" value="../7220003/Damage" />
+  </imgdir>
+  <imgdir name="7220005">
+    <uol name="Attack2" value="../7220003/Attack3" />
+    <uol name="Skill1" value="../7220003/Regen" />
+    <uol name="Damage" value="../7220003/Damage" />
+  </imgdir>
+  <imgdir name="8090000" />
+  <imgdir name="8110300" />
+  <imgdir name="8130100">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="8120100">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+    <uol name="Regen" value="../7120100/Regen" />
+    <uol name="Attack1" value="../7120100/Attack1" />
+    <uol name="Attack3" value="../7120100/Attack3" />
+    <uol name="Attack4" value="../7120100/Attack4" />
+    <uol name="Skill1" value="../7120100/Skill1" />
+    <uol name="Skill2" value="../7120100/Skill2" />
+    <uol name="Die" value="../7120100/Die" />
+  </imgdir>
+  <imgdir name="8120101">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+    <uol name="Regen" value="../7120100/Regen" />
+    <uol name="Attack1" value="../7120100/Attack1" />
+    <uol name="Attack3" value="../7120100/Attack3" />
+    <uol name="Attack4" value="../7120100/Attack4" />
+    <uol name="Skill1" value="../7120100/Skill1" />
+    <uol name="Skill2" value="../7120100/Skill2" />
+    <uol name="Die" value="../7120100/Die" />
+  </imgdir>
+  <imgdir name="8120102" />
+  <imgdir name="8120103" />
+  <imgdir name="8120104" />
+  <imgdir name="8120105" />
+  <imgdir name="8120106" />
+  <imgdir name="8140000">
+    <uol name="Damage" value="../7130200/Damage" />
+    <uol name="Die" value="../7130200/Die" />
+  </imgdir>
+  <imgdir name="8140001" />
+  <imgdir name="8140002" />
+  <imgdir name="8140100">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../7130102/Die" />
+  </imgdir>
+  <imgdir name="8140101" />
+  <imgdir name="8140102" />
+  <imgdir name="8140103" />
+  <imgdir name="8140110" />
+  <imgdir name="8140111" />
+  <imgdir name="8140200" />
+  <imgdir name="8140300" />
+  <imgdir name="8140500">
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="Die" value="../7130001/Die" />
+  </imgdir>
+  <imgdir name="8140510">
+    <uol name="Attack2" value="../8090000/Skill1" />
+    <uol name="Damage" value="../8140200/Damage" />
+    <uol name="Regen" value="../7120100/Regen" />
+    <uol name="Attack1" value="../7120100/Attack1" />
+    <uol name="Attack3" value="../7120100/Attack3" />
+    <uol name="Attack4" value="../7120100/Attack4" />
+    <uol name="Skill1" value="../7120100/Skill1" />
+    <uol name="Skill2" value="../7120100/Skill2" />
+    <uol name="Die" value="../7120100/Die" />
+  </imgdir>
+  <imgdir name="8140511" />
+  <imgdir name="8140512" />
+  <imgdir name="8140555" />
+  <imgdir name="8140600" />
+  <imgdir name="8140700" />
+  <imgdir name="8140701" />
+  <imgdir name="8140702" />
+  <imgdir name="8140703" />
+  <imgdir name="8141000" />
+  <imgdir name="8141100">
+    <uol name="Attack1" value="../8141000/Attack1" />
+    <uol name="CharDam1" value="../8141000/CharDam1" />
+    <uol name="Damage" value="../8141000/Damage" />
+    <uol name="Die" value="../8141000/Die" />
+  </imgdir>
+  <imgdir name="8141300" />
+  <imgdir name="8142000" />
+  <imgdir name="8142100" />
+  <imgdir name="8143000" />
+  <imgdir name="8150000">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="8150100" />
+  <imgdir name="8150101" />
+  <imgdir name="8150200" />
+  <imgdir name="8150201" />
+  <imgdir name="8150300" />
+  <imgdir name="8150301" />
+  <imgdir name="8150302" />
+  <imgdir name="8160000" />
+  <imgdir name="8170000" />
+  <imgdir name="8180000" />
+  <imgdir name="8180001" />
+  <imgdir name="8190000" />
+  <imgdir name="8190001" />
+  <imgdir name="8190002" />
+  <imgdir name="8190003" />
+  <imgdir name="8190004" />
+  <imgdir name="8190005" />
+  <imgdir name="8200000" />
+  <imgdir name="8200001" />
+  <imgdir name="8200002" />
+  <imgdir name="8200003" />
+  <imgdir name="8200004" />
+  <imgdir name="8200005" />
+  <imgdir name="8200006" />
+  <imgdir name="8200007" />
+  <imgdir name="8200008" />
+  <imgdir name="8200009" />
+  <imgdir name="8200010" />
+  <imgdir name="8200011" />
+  <imgdir name="8200012" />
+  <imgdir name="8220000">
+    <uol name="Skill1" value="Attack1" />
+    <uol name="Skill2" value="Attack1" />
+  </imgdir>
+  <imgdir name="8220001" />
+  <imgdir name="8220002">
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="8220003">
+    <uol name="CharDam1" value="../8130100/CharDam3" />
+    <uol name="CharDam2" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="8220004" />
+  <imgdir name="8220005" />
+  <imgdir name="8220006" />
+  <imgdir name="8220007">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="8220008" />
+  <imgdir name="8220009">
+    <uol name="Die" value="../9410014/Die" />
+  </imgdir>
+  <imgdir name="8220010">
+    <uol name="Skill2" value="Attack2" />
+  </imgdir>
+  <imgdir name="8220011">
+    <uol name="Skill2" value="Attack2" />
+  </imgdir>
+  <imgdir name="8220012">
+    <uol name="Skill2" value="Attack2" />
+  </imgdir>
+  <imgdir name="8220013">
+    <uol name="Attack4" value="Attack3" />
+    <uol name="Attack5" value="Attack3" />
+  </imgdir>
+  <imgdir name="8220014">
+    <uol name="Attack1" value="../8220013/Attack3" />
+    <uol name="Attack2" value="../8220013/Attack3" />
+    <uol name="Attack3" value="../8220013/Attack3" />
+    <uol name="Attack4" value="../8220013/Attack3" />
+    <uol name="Skill1" value="../8220013/Skill1" />
+    <uol name="Die" value="../8220013/Die" />
+    <uol name="Damage" value="../8220013/Damage" />
+  </imgdir>
+  <imgdir name="8220015">
+    <uol name="Attack1" value="../8220013/Attack3" />
+    <uol name="Attack2" value="../8220013/Attack3" />
+    <uol name="Attack3" value="../8220013/Attack3" />
+    <uol name="Attack4" value="../8220013/Attack3" />
+    <uol name="Skill1" value="../8220013/Skill1" />
+    <uol name="Die" value="../8220013/Die" />
+    <uol name="Damage" value="../8220013/Damage" />
+  </imgdir>
+  <imgdir name="8500000" />
+  <imgdir name="8500001" />
+  <imgdir name="8500002" />
+  <imgdir name="8500003" />
+  <imgdir name="8500004">
+    <uol name="Die" value="../8500003/Die" />
+    <uol name="Attack1" value="../8500003/Attack" />
+  </imgdir>
+  <imgdir name="8510000" />
+  <imgdir name="8510100" />
+  <imgdir name="8520000">
+    <uol name="CharDam1" value="../8510000/CharDam1" />
+    <uol name="Attack1" value="../8510000/Attack1" />
+    <uol name="CharDam2" value="../8510000/CharDam2" />
+    <uol name="Attack2" value="../8510000/Attack2" />
+    <uol name="CharDam3" value="../8510000/CharDam3" />
+    <uol name="Attack3" value="../8510000/Attack3" />
+    <uol name="Damage" value="../8510000/Damage" />
+    <uol name="Skill1" value="../8510000/Skill1" />
+    <uol name="Skill2" value="../8510000/Skill2" />
+    <uol name="Skill3" value="../8510000/Skill3" />
+    <uol name="Skill4" value="../8510000/Skill4" />
+    <uol name="Skill5" value="../8510000/Skill5" />
+    <uol name="Die" value="../8510000/Die" />
+  </imgdir>
+  <imgdir name="8800000" />
+  <imgdir name="8800001">
+    <uol name="Attack1" value="../8800000/attack1" />
+    <uol name="Attack2" value="../8800000/attack2" />
+    <uol name="Attack3" value="../8800000/attack3" />
+    <uol name="CharDam1" value="../8800000/CharDam1" />
+    <uol name="CharDam2" value="../8800000/CharDam2" />
+    <uol name="CharDam3" value="../8800000/CharDam3" />
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800000/Die" />
+    <uol name="Skill1" value="../8800000/skill1" />
+    <uol name="Skill2" value="../8800000/skill2" />
+    <uol name="Skill3" value="../8800000/skill3" />
+  </imgdir>
+  <imgdir name="8800002">
+    <uol name="Attack1" value="../8800000/Attack1" />
+    <uol name="Attack2" value="../8800000/Attack2" />
+    <uol name="Attack3" value="../8800000/Attack3" />
+    <uol name="CharDam1" value="../8800000/CharDam1" />
+    <uol name="CharDam2" value="../8800000/CharDam2" />
+    <uol name="CharDam3" value="../8800000/CharDam3" />
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Skill1" value="../8800000/Skill1" />
+    <uol name="Skill2" value="../8800000/Skill2" />
+    <uol name="Skill3" value="../8800000/Skill3" />
+  </imgdir>
+  <imgdir name="8800003">
+    <uol name="Damage" value="../8800000/Damage" />
+  </imgdir>
+  <imgdir name="8800004">
+    <uol name="Attack1" value="../8800003/Attack1" />
+    <uol name="Attack2" value="../8800003/Attack2" />
+    <uol name="CharDam1" value="../8800003/CharDam1" />
+    <uol name="CharDam2" value="../8800003/CharDam2" />
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800005">
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800006">
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800007">
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800008">
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800009">
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8800010">
+    <uol name="Attack1" value="../8800009/Attack1" />
+    <uol name="Attack2" value="../8800009/Attack2" />
+    <uol name="CharDam1" value="../8800009/CharDam1" />
+    <uol name="CharDam2" value="../8800009/CharDam1" />
+    <uol name="Damage" value="../8800000/Damage" />
+    <uol name="Die" value="../8800003/Die" />
+  </imgdir>
+  <imgdir name="8810000">
+    <uol name="Attack1" value="../8810002/Attack1" />
+    <uol name="CharDam1" value="../8810002/CharDam1" />
+    <uol name="Attack2" value="../8810002/Attack2" />
+    <uol name="CharDam2" value="../8810002/CharDam2" />
+    <uol name="Attack3" value="../8810002/Attack2" />
+    <uol name="CharDam3" value="../8810002/CharDam2" />
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Skill3" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810001">
+    <uol name="Attack1" value="../8810004/Attack1" />
+    <uol name="CharDam1" value="../8810004/CharDam1" />
+    <uol name="Attack2" value="../8810004/Attack2" />
+    <uol name="CharDam2" value="../8810004/CharDam2" />
+    <uol name="Attack3" value="../8810004/Attack3" />
+    <uol name="CharDam3" value="../8810004/CharDam3" />
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Skill3" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810002" />
+  <imgdir name="8810003">
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810004">
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810005">
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810006">
+    <uol name="Attack1" value="../8810005/Attack1" />
+    <uol name="CharDam1" value="../8810005/CharDam1" />
+    <uol name="Skill3" value="../8810005/Skill3" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810007">
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810008">
+    <uol name="Attack3" value="Attack1" />
+    <uol name="CharDam3" value="CharDam1" />
+    <uol name="Attack4" value="Attack2" />
+    <uol name="CharDam4" value="CharDam2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810009">
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="8810018" />
+  <imgdir name="8810019">
+    <uol name="Attack1" value="../8150300/Attack1" />
+    <uol name="CharDam1" value="../8150300/CharDam1" />
+    <uol name="Attack2" value="../8150300/Attack2" />
+    <uol name="CharDam2" value="../8150300/CharDam2" />
+    <uol name="Damage" value="../8150300/Damage" />
+    <uol name="Die" value="../8150300/Die" />
+  </imgdir>
+  <imgdir name="8810020">
+    <uol name="Attack1" value="../8150301/Attack1" />
+    <uol name="CharDam1" value="../8150301/CharDam1" />
+    <uol name="Attack2" value="../8150301/Attack2" />
+    <uol name="CharDam2" value="../8150301/CharDam2" />
+    <uol name="Damage" value="../8150301/Damage" />
+    <uol name="Die" value="../8150301/Die" />
+  </imgdir>
+  <imgdir name="8810022">
+    <uol name="Attack1" value="../8150200/Attack1" />
+    <uol name="CharDam1" value="../8150200/CharDam1" />
+    <uol name="Attack2" value="../8150200/Attack2" />
+    <uol name="CharDam2" value="../8150200/CharDam2" />
+    <uol name="Damage" value="../8150200/Damage" />
+    <uol name="Die" value="../8150200/Die" />
+  </imgdir>
+  <imgdir name="8810023">
+    <uol name="Attack1" value="../8150201/Attack1" />
+    <uol name="CharDam1" value="../8150201/CharDam1" />
+    <uol name="Attack2" value="../8150201/Attack2" />
+    <uol name="CharDam2" value="../8150201/CharDam2" />
+    <uol name="Skill1" value="../8150201/Skill1" />
+    <uol name="Damage" value="../8150201/Damage" />
+    <uol name="Die" value="../8150201/Die" />
+  </imgdir>
+  <imgdir name="8810026" />
+  <imgdir name="8820000" />
+  <imgdir name="8820001" />
+  <imgdir name="8820002" />
+  <imgdir name="8820003" />
+  <imgdir name="8820004" />
+  <imgdir name="8820005" />
+  <imgdir name="8820006" />
+  <imgdir name="8820007" />
+  <imgdir name="8820008" />
+  <imgdir name="8820009" />
+  <imgdir name="8820010" />
+  <imgdir name="8820011" />
+  <imgdir name="8820012" />
+  <imgdir name="8820013" />
+  <imgdir name="8820014" />
+  <imgdir name="8820015" />
+  <imgdir name="8820016" />
+  <imgdir name="8820017" />
+  <imgdir name="8820018" />
+  <imgdir name="8830000" />
+  <imgdir name="8830001" />
+  <imgdir name="8830002">
+    <uol name="Damage" value="../8830001/Damage" />
+    <uol name="Die" value="../8830001/Die" />
+  </imgdir>
+  <imgdir name="8830007">
+    <uol name="Attack1" value="../8830000/Attack1" />
+    <uol name="CharDam1" value="../8830000/CharDam1" />
+    <uol name="Attack2" value="../8830000/Attack2" />
+    <uol name="CharDam2" value="../8830000/CharDam2" />
+    <uol name="Attack3" value="../8830000/Attack3" />
+    <uol name="CharDam3" value="../8830000/CharDam3" />
+    <uol name="Attack4" value="../8830000/Attack4" />
+    <uol name="Skill1" value="../8830000/Skill1" />
+    <uol name="Damage" value="../8830000/Damage" />
+    <uol name="Die" value="../8830000/Die" />
+  </imgdir>
+  <imgdir name="8830008">
+    <uol name="Attack1" value="../8830001/Attack1" />
+    <uol name="CharDam1" value="../8830001/CharDam1" />
+    <uol name="Attack2" value="../8830001/Attack2" />
+    <uol name="CharDam2" value="../8830001/CharDam2" />
+    <uol name="Skill1" value="../8830001/Skill1" />
+    <uol name="Damage" value="../8830001/Damage" />
+    <uol name="Die" value="../8830001/Die" />
+  </imgdir>
+  <imgdir name="8830009">
+    <uol name="Attack1" value="../8830002/Attack1" />
+    <uol name="CharDam1" value="../8830002/CharDam1" />
+    <uol name="Attack2" value="../8830002/Attack2" />
+    <uol name="CharDam2" value="../8830002/CharDam2" />
+    <uol name="Attack3" value="../8830002/Attack3" />
+    <uol name="CharDam3" value="../8830002/CharDam3" />
+    <uol name="Damage" value="../8830001/Damage" />
+    <uol name="Die" value="../8830001/Die" />
+  </imgdir>
+  <imgdir name="9000001">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../3230100/Die" />
+  </imgdir>
+  <imgdir name="9000002">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9000100">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../3210100/Die" />
+  </imgdir>
+  <imgdir name="9000101">
+    <uol name="Attack1" value="../3210800/Attack1" />
+    <uol name="CharDam1" value="../3210800/CharDam1" />
+    <uol name="Damage" value="../2230100/Damage" />
+    <uol name="Die" value="../3210800/Die" />
+  </imgdir>
+  <imgdir name="9000200">
+    <uol name="Damage" value="../2230100/Damage" />
+    <uol name="Die" value="../2230100/Die" />
+  </imgdir>
+  <imgdir name="9000201">
+    <uol name="Damage" value="../1210102/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9000300">
+    <uol name="Damage" value="../2230100/Damage" />
+    <uol name="Die" value="../4230100/Die" />
+  </imgdir>
+  <imgdir name="9000301">
+    <uol name="Damage" value="../1210102/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9001000">
+    <uol name="Skill1" value="../9001002/Skill1" />
+    <uol name="Skill2" value="../9001002/Skill2" />
+    <uol name="Damage" value="../9001002/Damage" />
+    <uol name="CharDam1" value="../9001002/CharDam1" />
+    <uol name="CharDam2" value="../9001002/CharDam2" />
+    <uol name="Die" value="../9001002/Die" />
+    <uol name="Attack2" value="Attack1" />
+  </imgdir>
+  <imgdir name="9001001">
+    <uol name="Skill1" value="../9001003/Skill2" />
+    <uol name="Skill2" value="Skill1" />
+    <uol name="CharDam1" value="../9001003/CharDam1" />
+    <uol name="CharDam2" value="../9001003/CharDam2" />
+    <uol name="CharDam3" value="../9001003/CharDam1" />
+    <uol name="Damage" value="../9001003/Damage" />
+    <uol name="Die" value="../9001002/Die" />
+  </imgdir>
+  <imgdir name="9001002">
+    <uol name="Skill1" value="../9001003/Skill1" />
+    <uol name="Skill2" value="../9001003/Skill2" />
+    <uol name="CharDam1" value="../9001003/CharDam1" />
+    <uol name="CharDam2" value="../9001003/CharDam2" />
+    <uol name="Damage" value="../9001003/Damage" />
+    <uol name="Die" value="../9001003/Die" />
+  </imgdir>
+  <imgdir name="9001003" />
+  <imgdir name="9001009" />
+  <imgdir name="9001010" />
+  <imgdir name="9001011">
+    <uol name="Die" value="../0100124/Die" />
+    <uol name="Damage" value="../0100124/Damage" />
+  </imgdir>
+  <imgdir name="9001012" />
+  <imgdir name="9001013" />
+  <imgdir name="9001014" />
+  <imgdir name="9100000">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9100001">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2130103/Die" />
+  </imgdir>
+  <imgdir name="9100002">
+    <uol name="Damage" value="../2300100/Damage" />
+    <uol name="Die" value="../2300100/Die" />
+  </imgdir>
+  <imgdir name="9100003">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2130103/Die" />
+  </imgdir>
+  <imgdir name="9100004">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2130103/Die" />
+  </imgdir>
+  <imgdir name="9100005">
+    <uol name="Damage" value="../2230103/Damage" />
+    <uol name="Die" value="../2230103/Die" />
+  </imgdir>
+  <imgdir name="9100006">
+    <uol name="Damage" value="../2230103/Damage" />
+    <uol name="Die" value="../2230103/Die" />
+  </imgdir>
+  <imgdir name="9100007">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9100008">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0100100/Die" />
+  </imgdir>
+  <imgdir name="9100009">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0100100/Die" />
+  </imgdir>
+  <imgdir name="9100010" />
+  <imgdir name="9200000">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200001">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200002">
+    <uol name="Damage" value="../0130100/Damage" />
+    <uol name="Die" value="../0130100/Die" />
+  </imgdir>
+  <imgdir name="9200003">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200004">
+    <uol name="Damage" value="../2110200/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9200005" />
+  <imgdir name="9200006">
+    <uol name="Damage" value="../2230100/Damage" />
+  </imgdir>
+  <imgdir name="9200007">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200008">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9200009">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200010">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9200011">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200012">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200013">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200014">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9200015">
+    <uol name="Damage" value="../3000005/Damage" />
+    <uol name="Die" value="../3000005/Die" />
+  </imgdir>
+  <imgdir name="9200016">
+    <uol name="Damage" value="../3230400/Damage" />
+    <uol name="Die" value="../3230400/Die" />
+  </imgdir>
+  <imgdir name="9200017">
+    <uol name="Damage" value="../3110101/Damage" />
+    <uol name="Die" value="../3110101/Die" />
+  </imgdir>
+  <imgdir name="9200018">
+    <uol name="Damage" value="../5100000/Damage" />
+    <uol name="Die" value="../5100000/Die" />
+  </imgdir>
+  <imgdir name="9200019">
+    <uol name="Attack1" value="../5130104/Attack1" />
+    <uol name="CharDam1" value="../5130104/CharDam1" />
+    <uol name="Damage" value="../5130104/Damage" />
+    <uol name="Die" value="../5140000/Die" />
+  </imgdir>
+  <imgdir name="9200020">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../7130102/Die" />
+  </imgdir>
+  <imgdir name="9200021">
+    <uol name="Attack1" value="../6300001/Attack1" />
+    <uol name="CharDam1" value="../6300001/CharDam1" />
+    <uol name="Damage" value="../6300001/Damage" />
+    <uol name="Die" value="../6300001/Die" />
+  </imgdir>
+  <imgdir name="9200022">
+    <uol name="Damage" value="../6130102/Damage" />
+    <uol name="Die" value="../6130102/Die" />
+  </imgdir>
+  <imgdir name="9300000">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2130103/Die" />
+  </imgdir>
+  <imgdir name="9300001">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../3110100/Die" />
+  </imgdir>
+  <imgdir name="9300002">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../3230100/Die" />
+  </imgdir>
+  <imgdir name="9300003">
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9300004">
+    <uol name="CharDam1" value="../9300003/CharDam1" />
+  </imgdir>
+  <imgdir name="9300005">
+    <uol name="Damage" value="../3110102/Damage" />
+    <uol name="Die" value="../3110102/Die" />
+  </imgdir>
+  <imgdir name="9300006">
+    <uol name="Damage" value="../3110102/Damage" />
+    <uol name="Die" value="../3110102/Die" />
+  </imgdir>
+  <imgdir name="9300007">
+    <uol name="Damage" value="../3230302/Damage" />
+    <uol name="Die" value="../3230302/Die" />
+  </imgdir>
+  <imgdir name="9300008" />
+  <imgdir name="9300009">
+    <uol name="Damage" value="../4230109/Damage" />
+    <uol name="Die" value="../4230109/Die" />
+  </imgdir>
+  <imgdir name="9300010">
+    <uol name="Damage" value="../4130103/Damage" />
+    <uol name="Die" value="../4130103/Die" />
+  </imgdir>
+  <imgdir name="9300011">
+    <uol name="Damage" value="../3230305/Damage" />
+    <uol name="Die" value="../3230305/Die" />
+  </imgdir>
+  <imgdir name="9300012" />
+  <imgdir name="9300013">
+    <uol name="Damage" value="../4230110/Damage" />
+    <uol name="Die" value="../4230110/Die" />
+  </imgdir>
+  <imgdir name="9300014">
+    <uol name="Damage" value="../9300008/Damage" />
+    <uol name="Die" value="../9300008/Die" />
+  </imgdir>
+  <imgdir name="9300015">
+    <uol name="Damage" value="../3230306/Damage" />
+    <uol name="Die" value="../3230306/Die" />
+  </imgdir>
+  <imgdir name="9300016">
+    <uol name="Damage" value="../4230114/Damage" />
+    <uol name="CharDam1" value="../4230114/CharDam1" />
+    <uol name="Attack1" value="../4230114/Attack1" />
+    <uol name="Die" value="../4230114/Die" />
+  </imgdir>
+  <imgdir name="9300017">
+    <uol name="Damage" value="../4230115/Damage" />
+    <uol name="CharDam1" value="../4230115/CharDam1" />
+    <uol name="Attack1" value="../4230115/Attack1" />
+    <uol name="Die" value="../4230115/Die" />
+  </imgdir>
+  <imgdir name="9300018">
+    <uol name="Damage" value="../5200000/Damage" />
+    <uol name="Die" value="../5200000/Die" />
+  </imgdir>
+  <imgdir name="9300019" />
+  <imgdir name="9300020" />
+  <imgdir name="9300021" />
+  <imgdir name="9300022" />
+  <imgdir name="9300023" />
+  <imgdir name="9300024" />
+  <imgdir name="9300025" />
+  <imgdir name="9300026" />
+  <imgdir name="9300027" />
+  <imgdir name="9300028" />
+  <imgdir name="9300029" />
+  <imgdir name="9300030">
+    <uol name="Damage" value="../9300029/Damage" />
+    <uol name="Die" value="../9300029/Die" />
+  </imgdir>
+  <imgdir name="9300031" />
+  <imgdir name="9300032">
+    <uol name="Damage" value="../9300031/Damage" />
+    <uol name="Die" value="../9300031/Die" />
+  </imgdir>
+  <imgdir name="9300033">
+    <uol name="Damage" value="../9300026/Damage" />
+    <uol name="Die" value="../9300026/Die" />
+  </imgdir>
+  <imgdir name="9300034">
+    <uol name="Die" value="../9300023/Die" />
+    <uol name="CharDam1" value="../9300023/CharDam1" />
+    <uol name="Attack1" value="../9300023/Attack1" />
+    <uol name="Damage" value="../9300023/Damage" />
+    <uol name="Skill1" value="../9300023/Skill1" />
+  </imgdir>
+  <imgdir name="9300035">
+    <uol name="Damaage" value="../9300026/Damage" />
+    <uol name="Die" value="../9300026/Die" />
+  </imgdir>
+  <imgdir name="9300036">
+    <uol name="CharDam1" value="../9300022/CharDam1" />
+    <uol name="Attack1" value="../9300022/Attack1" />
+    <uol name="Damage" value="../9300022/Damage" />
+    <uol name="Skill1" value="../9300022/Skill1" />
+    <uol name="Die" value="../9300022/Die" />
+  </imgdir>
+  <imgdir name="9300037">
+    <uol name="Die" value="../9300023/Die" />
+    <uol name="CharDam1" value="../9300023/CharDam1" />
+    <uol name="Attack1" value="../9300023/Attack1" />
+    <uol name="Damage" value="../9300023/Damage" />
+    <uol name="Skill1" value="../9300023/Skill1" />
+  </imgdir>
+  <imgdir name="9300038" />
+  <imgdir name="9300039" />
+  <imgdir name="9300040">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300041">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300042">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300043">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300044">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300045">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300046">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300047">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300048">
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="CharDam1" value="../4230105/CharDam1" />
+    <uol name="Damage" value="../4230105/Damage" />
+    <uol name="Die" value="../4230105/Die" />
+  </imgdir>
+  <imgdir name="9300049">
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="CharDam1" value="../4230105/CharDam1" />
+    <uol name="Damage" value="../4230105/Damage" />
+    <uol name="Die" value="../4230105/Die" />
+  </imgdir>
+  <imgdir name="9300050">
+    <uol name="Damage" value="../3230300/Damage" />
+    <uol name="Die" value="../3230300/Die" />
+  </imgdir>
+  <imgdir name="9300051">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300052">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300053">
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300054">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300055">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300056">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9300057">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9300058">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9300059">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9300060">
+    <uol name="Damage" value="../4230103/Damage" />
+    <uol name="Die" value="../4230103/Die" />
+  </imgdir>
+  <imgdir name="9300062">
+    <uol name="Damage" value="../4230107/Damage" />
+    <uol name="Die" value="../4230107/Die" />
+  </imgdir>
+  <imgdir name="9300063">
+    <uol name="Damage" value="../2300100/Damage" />
+    <uol name="Die" value="../2300100/Die" />
+  </imgdir>
+  <imgdir name="9300064">
+    <uol name="Damage" value="../6130201/Damage" />
+    <uol name="Die" value="../6130201/Die" />
+  </imgdir>
+  <imgdir name="9300065">
+    <uol name="Attack1" value="../8150200/Attack1" />
+    <uol name="CharDam1" value="../8150200/CharDam1" />
+    <uol name="Attack2" value="../8150200/Attack2" />
+    <uol name="CharDam2" value="../8150200/CharDam2" />
+    <uol name="Damage" value="../8150200/Damage" />
+    <uol name="Die" value="../8150200/Die" />
+  </imgdir>
+  <imgdir name="9300066">
+    <uol name="Attack1" value="../8150200/Attack1" />
+    <uol name="CharDam1" value="../8150200/CharDam1" />
+    <uol name="Attack2" value="../8150200/Attack2" />
+    <uol name="CharDam2" value="../8150200/CharDam2" />
+    <uol name="Damage" value="../8150200/Damage" />
+    <uol name="Die" value="../8150200/Die" />
+  </imgdir>
+  <imgdir name="9300067">
+    <uol name="Attack1" value="../8150201/Attack1" />
+    <uol name="CharDam1" value="../8150201/CharDam1" />
+    <uol name="Attack2" value="../8150201/Attack2" />
+    <uol name="CharDam2" value="../8150201/CharDam2" />
+    <uol name="Skill1" value="../8150201/Skill1" />
+    <uol name="Damage" value="../8150201/Damage" />
+    <uol name="Die" value="../8150201/Die" />
+  </imgdir>
+  <imgdir name="9300068">
+    <uol name="Attack1" value="../8150201/Attack1" />
+    <uol name="CharDam1" value="../8150201/CharDam1" />
+    <uol name="Attack2" value="../8150201/Attack2" />
+    <uol name="CharDam2" value="../8150201/CharDam2" />
+    <uol name="Skill1" value="../8150201/Skill1" />
+    <uol name="Damage" value="../8150201/Damage" />
+    <uol name="Die" value="../8150201/Die" />
+  </imgdir>
+  <imgdir name="9300069">
+    <uol name="Attack1" value="../8150300/Attack1" />
+    <uol name="CharDam1" value="../8150300/CharDam1" />
+    <uol name="Attack2" value="../8150300/Attack2" />
+    <uol name="CharDam2" value="../8150300/CharDam2" />
+    <uol name="Damage" value="../8150300/Damage" />
+    <uol name="Die" value="../8150300/Die" />
+  </imgdir>
+  <imgdir name="9300070">
+    <uol name="Attack1" value="../8150300/Attack1" />
+    <uol name="CharDam1" value="../8150300/CharDam1" />
+    <uol name="Attack2" value="../8150300/Attack2" />
+    <uol name="CharDam2" value="../8150300/CharDam2" />
+    <uol name="Damage" value="../8150300/Damage" />
+    <uol name="Die" value="../8150300/Die" />
+  </imgdir>
+  <imgdir name="9300071">
+    <uol name="Attack1" value="../8150301/Attack1" />
+    <uol name="CharDam1" value="../8150301/CharDam1" />
+    <uol name="Attack2" value="../8150301/Attack2" />
+    <uol name="CharDam2" value="../8150301/CharDam2" />
+    <uol name="Damage" value="../8150301/Damage" />
+    <uol name="Die" value="../8150301/Die" />
+  </imgdir>
+  <imgdir name="9300072">
+    <uol name="Attack1" value="../8150301/Attack1" />
+    <uol name="CharDam1" value="../8150301/CharDam1" />
+    <uol name="Attack2" value="../8150301/Attack2" />
+    <uol name="CharDam2" value="../8150301/CharDam2" />
+    <uol name="Damage" value="../8150301/Damage" />
+    <uol name="Die" value="../8150301/Die" />
+  </imgdir>
+  <imgdir name="9300073">
+    <uol name="Attack1" value="../8150200/Attack1" />
+    <uol name="CharDam1" value="../8150200/CharDam1" />
+    <uol name="Attack2" value="../8150200/Attack2" />
+    <uol name="CharDam2" value="../8150200/CharDam2" />
+    <uol name="Damage" value="../8150200/Damage" />
+    <uol name="Die" value="../8150200/Die" />
+  </imgdir>
+  <imgdir name="9300074">
+    <uol name="Attack1" value="../8150200/Attack1" />
+    <uol name="CharDam1" value="../8150200/CharDam1" />
+    <uol name="Attack2" value="../8150200/Attack2" />
+    <uol name="CharDam2" value="../8150200/CharDam2" />
+    <uol name="Damage" value="../8150200/Damage" />
+    <uol name="Die" value="../8150200/Die" />
+  </imgdir>
+  <imgdir name="9300075">
+    <uol name="Attack1" value="../8190003/Attack1" />
+    <uol name="CharDam1" value="../8190003/CharDam1" />
+    <uol name="Skill1" value="../8190003/Skill1" />
+    <uol name="Damage" value="../8190003/Damage" />
+    <uol name="Die" value="../8190003/Die" />
+  </imgdir>
+  <imgdir name="9300076">
+    <uol name="Attack1" value="../8190003/Attack1" />
+    <uol name="CharDam1" value="../8190003/CharDam1" />
+    <uol name="Skill1" value="../8190003/Skill1" />
+    <uol name="Damage" value="../8190003/Damage" />
+    <uol name="Die" value="../8190003/Die" />
+  </imgdir>
+  <imgdir name="9300077">
+    <uol name="Attack1" value="../8190004/Attack1" />
+    <uol name="CharDam1" value="../8190004/CharDam1" />
+    <uol name="Skill1" value="../8190004/Skill1" />
+    <uol name="Damage" value="../8190004/Damage" />
+    <uol name="Die" value="../8190004/Die" />
+  </imgdir>
+  <imgdir name="9300078">
+    <uol name="Attack1" value="../8190000/Attack1" />
+    <uol name="CharDam1" value="../8190000/CharDam1" />
+    <uol name="Attack2" value="../8190000/Attack2" />
+    <uol name="CharDam2" value="../8190000/CharDam2" />
+    <uol name="Damage" value="../8190000/Damage" />
+    <uol name="Die" value="../8190000/Die" />
+  </imgdir>
+  <imgdir name="9300079">
+    <uol name="Attack1" value="../8190002/Attack1" />
+    <uol name="CharDam1" value="../8190002/CharDam1" />
+    <uol name="Attack2" value="../8190002/Attack2" />
+    <uol name="CharDam2" value="../8190002/CharDam2" />
+    <uol name="Damage" value="../8190002/Damage" />
+    <uol name="Die" value="../8190002/Die" />
+  </imgdir>
+  <imgdir name="9300080" />
+  <imgdir name="9300084">
+    <uol name="Damage" value="../9300008/Damage" />
+    <uol name="Die" value="../9300008/Die" />
+  </imgdir>
+  <imgdir name="9300085">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="AttackF" value="../8130100/AttackF" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="CharDamF" value="../8130100/CharDamF" />
+    <uol name="Die" value="../8130100/Die" />
+  </imgdir>
+  <imgdir name="9300086">
+    <uol name="Attack1" value="../8170000/Attack1" />
+    <uol name="CharDam1" value="../8170000/CharDam1" />
+    <uol name="Skill1" value="../8170000/Skill1" />
+    <uol name="Skill2" value="../8170000/Skill2" />
+    <uol name="Skill3" value="../8170000/Skill3" />
+    <uol name="Skill4" value="../8170000/Skill4" />
+    <uol name="Damage" value="../8170000/Damage" />
+    <uol name="Die" value="../8170000/Die" />
+  </imgdir>
+  <imgdir name="9300087">
+    <uol name="Attack1" value="../7130101/Attack1" />
+    <uol name="Attack2" value="../7130101/Attack2" />
+    <uol name="CharDam1" value="../7130101/CharDam1" />
+    <uol name="CharDam2" value="../7130101/CharDam2" />
+    <uol name="Damage" value="../7130101/Damage" />
+    <uol name="Die" value="../7130101/Die" />
+  </imgdir>
+  <imgdir name="9300088">
+    <uol name="Skill1" value="../9001003/Skill1" />
+    <uol name="Skill2" value="../9001003/Skill2" />
+    <uol name="Attack1" value="../9001003/Attack1" />
+    <uol name="Attack2" value="../9001003/Attack2" />
+    <uol name="CharDam1" value="../9001003/CharDam1" />
+    <uol name="CharDam2" value="../9001003/CharDam2" />
+    <uol name="Die" value="../9001003/Die" />
+    <uol name="Damage" value="../9001003/Damage" />
+  </imgdir>
+  <imgdir name="9300089" />
+  <imgdir name="9300090">
+    <uol name="Damage" value="../9300089/Damage" />
+    <uol name="Die" value="../9300089/Die" />
+    <uol name="Regen" value="../9300089/Regen" />
+  </imgdir>
+  <imgdir name="9300091">
+    <uol name="CharDam1" value="../9300020/CharDam1" />
+    <uol name="Attack1" value="../9300020/Attack1" />
+    <uol name="Damage" value="../9300020/Damage" />
+    <uol name="Die" value="../9300020/Die" />
+  </imgdir>
+  <imgdir name="9300092">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="AttackF" value="../8130100/AttackF" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="CharDamF" value="../8130100/CharDamF" />
+    <uol name="Die" value="../8130100/Die" />
+  </imgdir>
+  <imgdir name="9300093" />
+  <imgdir name="9300094">
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+  </imgdir>
+  <imgdir name="9300095">
+    <uol name="Attack1" value="../8140000/Attack1" />
+    <uol name="Damage" value="../7130200/Damage" />
+    <uol name="Die" value="../7130200/Die" />
+    <uol name="Skill1" value="../8140000/Skill1" />
+  </imgdir>
+  <imgdir name="9300096">
+    <uol name="Attack1" value="../8140101/Attack1" />
+    <uol name="CharDam1" value="../8140101/CharDam1" />
+    <uol name="Attack2" value="../8140101/Attack2" />
+    <uol name="CharDam2" value="../8140101/CharDam2" />
+    <uol name="Damage" value="../8140101/Damage" />
+    <uol name="Die" value="../8140101/Die" />
+  </imgdir>
+  <imgdir name="9300105">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+  </imgdir>
+  <imgdir name="9300106">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+  </imgdir>
+  <imgdir name="9300107">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+  </imgdir>
+  <imgdir name="9300108" />
+  <imgdir name="9300109">
+    <uol name="Damage" value="../4230506/Damage" />
+    <uol name="Die" value="../4230506/Die" />
+  </imgdir>
+  <imgdir name="9300110">
+    <uol name="Damage" value="../5120501/Damage" />
+    <uol name="Die" value="../5120501/Die" />
+  </imgdir>
+  <imgdir name="9300111">
+    <uol name="Damage" value="../5120502/Damage" />
+    <uol name="Die" value="../5120502/Die" />
+  </imgdir>
+  <imgdir name="9300112">
+    <uol name="Damage" value="../5120501/Damage" />
+    <uol name="Die" value="../5120501/Die" />
+  </imgdir>
+  <imgdir name="9300113">
+    <uol name="Damage" value="../5120502/Damage" />
+    <uol name="Die" value="../5120502/Die" />
+  </imgdir>
+  <imgdir name="9300114">
+    <uol name="Attack1" value="../6130204/Attack1" />
+    <uol name="CharDam1" value="../6130204/CharDam1" />
+    <uol name="Attack2" value="../6130204/Attack2" />
+    <uol name="CharDam2" value="../6130204/CharDam2" />
+    <uol name="Damage" value="../6130204/Damage" />
+    <uol name="Die" value="../6130204/Die" />
+  </imgdir>
+  <imgdir name="9300115">
+    <uol name="Attack1" value="../6130208/Attack1" />
+    <uol name="CharDam1" value="../6130208/CharDam1" />
+    <uol name="Damage" value="../6130208/Damage" />
+    <uol name="Die" value="../6130208/Die" />
+  </imgdir>
+  <imgdir name="9300116">
+    <uol name="Attack1" value="../7130104/Attack1" />
+    <uol name="CharDam1" value="../7130104/CharDam1" />
+    <uol name="Damage" value="../7130104/Damage" />
+    <uol name="Die" value="../7130104/Die" />
+  </imgdir>
+  <imgdir name="9300117">
+    <uol name="Attack1" value="../6130208/Attack1" />
+    <uol name="CharDam1" value="../6130208/CharDam1" />
+    <uol name="Damage" value="../6130208/Damage" />
+    <uol name="Die" value="../6130208/Die" />
+  </imgdir>
+  <imgdir name="9300118">
+    <uol name="Attack1" value="../7130104/Attack1" />
+    <uol name="CharDam1" value="../7130104/CharDam1" />
+    <uol name="Damage" value="../7130104/Damage" />
+    <uol name="Die" value="../7130104/Die" />
+  </imgdir>
+  <imgdir name="9300119" />
+  <imgdir name="9300120">
+    <uol name="Attack1" value="../6130204/Attack1" />
+    <uol name="CharDam1" value="../6130204/CharDam1" />
+    <uol name="Attack2" value="../6130204/Attack2" />
+    <uol name="CharDam2" value="../6130204/CharDam2" />
+    <uol name="Damage" value="../6130204/Damage" />
+    <uol name="Die" value="../6130204/Die" />
+  </imgdir>
+  <imgdir name="9300121">
+    <uol name="Attack1" value="../6130208/Attack1" />
+    <uol name="CharDam1" value="../6130208/CharDam1" />
+    <uol name="Damage" value="../6130208/Damage" />
+    <uol name="Die" value="../6130208/Die" />
+  </imgdir>
+  <imgdir name="9300122">
+    <uol name="Attack1" value="../7130104/Attack1" />
+    <uol name="CharDam1" value="../7130104/CharDam1" />
+    <uol name="Damage" value="../7130104/Damage" />
+    <uol name="Die" value="../7130104/Die" />
+  </imgdir>
+  <imgdir name="9300123">
+    <uol name="Attack1" value="../6130204/Attack1" />
+    <uol name="CharDam1" value="../6130204/CharDam1" />
+    <uol name="Attack2" value="../6130204/Attack2" />
+    <uol name="CharDam2" value="../6130204/CharDam2" />
+    <uol name="Damage" value="../6130204/Damage" />
+    <uol name="Die" value="../6130204/Die" />
+  </imgdir>
+  <imgdir name="9300124">
+    <uol name="Attack1" value="../6130208/Attack1" />
+    <uol name="CharDam1" value="../6130208/CharDam1" />
+    <uol name="Damage" value="../6130208/Damage" />
+    <uol name="Die" value="../6130208/Die" />
+  </imgdir>
+  <imgdir name="9300125">
+    <uol name="Attack1" value="../7130104/Attack1" />
+    <uol name="CharDam1" value="../7130104/CharDam1" />
+    <uol name="Damage" value="../7130104/Damage" />
+    <uol name="Die" value="../7130104/Die" />
+  </imgdir>
+  <imgdir name="9300126">
+    <uol name="Damage" value="../4230506/Damage" />
+    <uol name="Die" value="../4230506/Die" />
+  </imgdir>
+  <imgdir name="9300127">
+    <uol name="Damage" value="../3000005/Damage" />
+    <uol name="Die" value="../3000005/Die" />
+  </imgdir>
+  <imgdir name="9300128">
+    <uol name="Damage" value="../3230302/Damage" />
+    <uol name="Die" value="../3230302/Die" />
+  </imgdir>
+  <imgdir name="9300129">
+    <uol name="Die" value="../3210208/Die" />
+    <uol name="Damage" value="../3210208/Damage" />
+  </imgdir>
+  <imgdir name="9300130">
+    <uol name="Damage" value="../3230306/Damage" />
+    <uol name="Die" value="../3230306/Die" />
+  </imgdir>
+  <imgdir name="9300131">
+    <uol name="Damage" value="../3230305/Damage" />
+    <uol name="Skill1" value="../3230305/Skill1" />
+    <uol name="Die" value="../3230305/Die" />
+  </imgdir>
+  <imgdir name="9300132">
+    <uol name="Damage" value="../4230113/Damage" />
+    <uol name="Die" value="../4230113/Die" />
+  </imgdir>
+  <imgdir name="9300133">
+    <uol name="Damage" value="../4230111/Damage" />
+    <uol name="Die" value="../4230111/Die" />
+  </imgdir>
+  <imgdir name="9300134">
+    <uol name="Damage" value="../4230110/Damage" />
+    <uol name="Die" value="../4230110/Die" />
+  </imgdir>
+  <imgdir name="9300135">
+    <uol name="Damage" value="../4230115/Damage" />
+    <uol name="Attack1" value="../4230115/Attack1" />
+    <uol name="CharDam" value="../4230115/CharDam1" />
+    <uol name="Die" value="../4230115/Die" />
+  </imgdir>
+  <imgdir name="9300136">
+    <uol name="Attack1" value="../4130103/Attack1" />
+    <uol name="Damage" value="../4130103/Damage" />
+    <uol name="Die" value="../4130103/Die" />
+  </imgdir>
+  <imgdir name="9300139" />
+  <imgdir name="9300140" />
+  <imgdir name="9300157">
+    <uol name="Damage" value="../2110301/Damage" />
+    <uol name="Die" value="../2110301/Die" />
+  </imgdir>
+  <imgdir name="9300166" />
+  <imgdir name="9300167">
+    <uol name="Damage" value="../3110302/Damage" />
+    <uol name="Die" value="../3110302/Die" />
+  </imgdir>
+  <imgdir name="9300168">
+    <uol name="Damage" value="../5110301/Damage" />
+    <uol name="Die" value="../5110301/Die" />
+  </imgdir>
+  <imgdir name="9300172" />
+  <imgdir name="9300173">
+    <uol name="Damage" value="../5250001/Damage" />
+    <uol name="Die" value="../5250001/Die" />
+  </imgdir>
+  <imgdir name="9300174" />
+  <imgdir name="9300175" />
+  <imgdir name="9300176" />
+  <imgdir name="9300177">
+    <uol name="Attack1" value="../9300172/Attack1" />
+    <uol name="Die" value="../9300172/Die" />
+    <uol name="Damage" value="../9300172/Damage" />
+    <uol name="Skill1" value="../9300172/Skill1" />
+  </imgdir>
+  <imgdir name="9300178">
+    <uol name="Damage" value="../5250001/Damage" />
+    <uol name="Die" value="../5250001/Die" />
+  </imgdir>
+  <imgdir name="9300179">
+    <uol name="Attack1" value="../9300175/Attack1" />
+    <uol name="Die" value="../9300175/Die" />
+    <uol name="Damage" value="../9300175/Damage" />
+    <uol name="Skill1" value="../9300175/Skill1" />
+  </imgdir>
+  <imgdir name="9300180" />
+  <imgdir name="9300181" />
+  <imgdir name="9300182" />
+  <imgdir name="9300183">
+    <uol name="Damage" value="../5250001/Damage" />
+    <uol name="Die" value="../5250001/Die" />
+  </imgdir>
+  <imgdir name="9300184">
+    <uol name="Attack1" value="../9300174/Attack1" />
+    <uol name="Die" value="../9300174/Die" />
+    <uol name="Damage" value="../9300174/Damage" />
+    <uol name="Skill1" value="../9300174/Skill1" />
+  </imgdir>
+  <imgdir name="9300185">
+    <uol name="Attack1" value="../9300175/Attack1" />
+    <uol name="CharDam1" value="../9300175/CharDam1" />
+    <uol name="Damage" value="../9300175/Damage" />
+    <uol name="Die" value="../9300175/Die" />
+  </imgdir>
+  <imgdir name="9300186">
+    <uol name="Attack1" value="../9300175/Attack1" />
+    <uol name="CharDam1" value="../9300175/CharDam1" />
+    <uol name="Damage" value="../9300175/Damage" />
+    <uol name="Die" value="../9300175/Die" />
+  </imgdir>
+  <imgdir name="9300187">
+    <uol name="Attack1" value="../9300174/Attack1" />
+    <uol name="Die" value="../9300174/Die" />
+    <uol name="Damage" value="../9300174/Damage" />
+    <uol name="Skill1" value="../9300174/Skill1" />
+  </imgdir>
+  <imgdir name="9300188">
+    <uol name="Die" value="../9300179/Die" />
+    <uol name="Damage" value="../9300179/Damage" />
+  </imgdir>
+  <imgdir name="9300189">
+    <uol name="Attack1" value="../9300174/Attack1" />
+    <uol name="Die" value="../9300174/Die" />
+    <uol name="Damage" value="../9300174/Damage" />
+    <uol name="Skill1" value="../9300174/Skill1" />
+  </imgdir>
+  <imgdir name="9300190">
+    <uol name="Die" value="../9300179/Die" />
+    <uol name="Damage" value="../9300179/Damage" />
+  </imgdir>
+  <imgdir name="9300191">
+    <uol name="Attack1" value="../9300174/Attack1" />
+    <uol name="Die" value="../9300174/Die" />
+    <uol name="Damage" value="../9300174/Damage" />
+    <uol name="Skill1" value="../9300174/Skill1" />
+  </imgdir>
+  <imgdir name="9300192">
+    <uol name="Die" value="../9300179/Die" />
+    <uol name="Damage" value="../9300179/Damage" />
+  </imgdir>
+  <imgdir name="9300193">
+    <uol name="Attack1" value="../9300175/Attack1" />
+    <uol name="CharDam1" value="../9300175/CharDam1" />
+    <uol name="Damage" value="../9300175/Damage" />
+    <uol name="Die" value="../9300175/Die" />
+  </imgdir>
+  <imgdir name="9300194">
+    <uol name="Attack1" value="../9300175/Attack1" />
+    <uol name="CharDam1" value="../9300175/CharDam1" />
+    <uol name="Damage" value="../9300175/Damage" />
+    <uol name="Die" value="../9300175/Die" />
+  </imgdir>
+  <imgdir name="9300195">
+    <uol name="Attack1" value="../9300039/Attack1" />
+    <uol name="CharDam1" value="../9300039/CharDam1" />
+    <uol name="Damage" value="../9300039/Damage" />
+    <uol name="Die" value="../9300039/Die" />
+    <uol name="Skill1" value="../9300039/Skill1" />
+    <uol name="Skill2" value="../9300039/Skill2" />
+    <uol name="Skill3" value="../9300039/Skill3" />
+  </imgdir>
+  <imgdir name="9300196">
+    <uol name="Attack1" value="../6300005/Attack1" />
+    <uol name="CharDam1" value="../6300005/CharDam1" />
+    <uol name="Damage" value="../6300005/Damage" />
+    <uol name="Die" value="../6300005/Die" />
+    <uol name="Skill1" value="../6300005/Skill1" />
+  </imgdir>
+  <imgdir name="9300197">
+    <uol name="Attack1" value="../6220001/Attack1" />
+    <uol name="CharDam1" value="../6220001/CharDam1" />
+    <uol name="Damage" value="../6220001/Damage" />
+    <uol name="Die" value="../6220001/Die" />
+    <uol name="Skill1" value="../6220001/Skill1" />
+  </imgdir>
+  <imgdir name="9300198">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+    <uol name="Skill3" value="../9300119/Skill3" />
+  </imgdir>
+  <imgdir name="9300199">
+    <uol name="Attack1" value="../7220001/Attack1" />
+    <uol name="CharDam1" value="../7220001/CharDam1" />
+    <uol name="Die" value="../7220001/Die" />
+    <uol name="Damage" value="../7220001/Damage" />
+    <uol name="Skill1" value="../7220001/Skill1" />
+    <uol name="Skill2" value="../7220001/Skill2" />
+  </imgdir>
+  <imgdir name="9300200">
+    <uol name="Skill1" value="../7130400/Attack1" />
+  </imgdir>
+  <imgdir name="9300201">
+    <uol name="Attack1" value="../9300172/Attack1" />
+    <uol name="Die" value="../9300172/Die" />
+    <uol name="Damage" value="../9300172/Damage" />
+    <uol name="Skill1" value="../9300172/Skill1" />
+  </imgdir>
+  <imgdir name="9300202" />
+  <imgdir name="9300203">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9300204">
+    <uol name="Skill1" value="Attack1" />
+    <uol name="Skill2" value="Attack1" />
+  </imgdir>
+  <imgdir name="9300205" />
+  <imgdir name="9300206">
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="9300207">
+    <uol name="Die" value="../9410014/Die" />
+  </imgdir>
+  <imgdir name="9300208" />
+  <imgdir name="9300209">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9300210">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9300211" />
+  <imgdir name="9300212" />
+  <imgdir name="9300213">
+    <uol name="CharDam1" value="../8130100/CharDam3" />
+    <uol name="CharDam2" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="9300214" />
+  <imgdir name="9300215" />
+  <imgdir name="9300271">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9300272">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9300273">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9300274">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9300285" />
+  <imgdir name="9300286">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9300287">
+    <uol name="Attack1" value="../8220001/Attack1" />
+    <uol name="CharDam1" value="../8220001/CharDam1" />
+    <uol name="Damage" value="../8220001/Damage" />
+    <uol name="Die" value="../8220001/Die" />
+    <uol name="Skill1" value="../8220001/Skill1" />
+  </imgdir>
+  <imgdir name="9300288">
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9300289">
+    <uol name="Attack1" value="../8220004/Attack1" />
+    <uol name="Attack2" value="../8220004/Attack2" />
+    <uol name="Die" value="../8220004/Die" />
+    <uol name="Damage" value="../8220004/Damage" />
+    <uol name="Skill1" value="../8220004/Skill1" />
+    <uol name="Skill2" value="../8220004/Skill2" />
+  </imgdir>
+  <imgdir name="9300290">
+    <uol name="Attack1" value="../8220005/Attack1" />
+    <uol name="Attack2" value="../8220005/Attack2" />
+    <uol name="Die" value="../8220005/Die" />
+    <uol name="Damage" value="../8220005/Damage" />
+    <uol name="Skill1" value="../8220005/Skill1" />
+    <uol name="Skill2" value="../8220005/Skill2" />
+  </imgdir>
+  <imgdir name="9300291">
+    <uol name="Attack1" value="../8180000/Attack1" />
+    <uol name="CharDam1" value="../8180000/CharDam1" />
+    <uol name="Attack2" value="../8180000/Attack2" />
+    <uol name="CharDam2" value="../8180000/CharDam2" />
+    <uol name="Attack3" value="../8180000/Attack3" />
+    <uol name="CharDam3" value="../8180000/CharDam3" />
+    <uol name="Damage" value="../8180000/Damage" />
+    <uol name="Die" value="../8180000/Die" />
+  </imgdir>
+  <imgdir name="9300292">
+    <uol name="Attack1" value="../8180001/Attack1" />
+    <uol name="CharDam1" value="../8180001/CharDam1" />
+    <uol name="Attack2" value="../8180001/Attack2" />
+    <uol name="CharDam2" value="../8180001/CharDam2" />
+    <uol name="Attack3" value="../8180001/Attack3" />
+    <uol name="CharDam3" value="../8180001/CharDam3" />
+    <uol name="Damage" value="../8180001/Damage" />
+    <uol name="Die" value="../8180001/Die" />
+  </imgdir>
+  <imgdir name="9300293">
+    <uol name="Attack1" value="../8220003/Attack1" />
+    <uol name="Attack2" value="../8220003/Attack2" />
+    <uol name="Damage" value="../8220003/Damage" />
+    <uol name="Skill1" value="../8220003/Skill1" />
+    <uol name="CharDam1" value="../8130100/CharDam3" />
+    <uol name="CharDam2" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="9300294">
+    <uol name="Attack1" value="../8510000/Attack1" />
+    <uol name="Attack2" value="../8510000/Attack2" />
+    <uol name="Attack3" value="../8510000/Attack3" />
+    <uol name="CharDam1" value="../8510000/CharDam1" />
+    <uol name="CharDam2" value="../8510000/CharDam2" />
+    <uol name="CharDam3" value="../8510000/CharDan3" />
+    <uol name="Damage" value="../8510000/Damage" />
+    <uol name="Skill1" value="../8510000/Skill1" />
+    <uol name="Skill2" value="../8510000/Skill2" />
+    <uol name="Skill3" value="../8510000/Skill3" />
+    <uol name="Skill4" value="../8510000/Skill4" />
+    <uol name="Skill5" value="../8510000/Skill5" />
+    <uol name="Die" value="../8510000/Die" />
+  </imgdir>
+  <imgdir name="9300311">
+    <uol name="Damage" value="../6300000/Damage" />
+  </imgdir>
+  <imgdir name="9300312">
+    <uol name="Die" value="../5400000/Die" />
+  </imgdir>
+  <imgdir name="9300313">
+    <uol name="Attack1" value="../5100005/Attack1" />
+    <uol name="Attack2" value="../5100005/Attack2" />
+    <uol name="CharDam1" value="../5120100/CharDam1" />
+    <uol name="Damage" value="../5100003/Damage" />
+    <uol name="Die" value="../5400000/Die" />
+  </imgdir>
+  <imgdir name="9300314">
+    <uol name="Attack1" value="../8220007/Attack1" />
+    <uol name="Attack2" value="../8220007/Attack2" />
+    <uol name="CharDam1" value="../5120100/CharDam1" />
+    <uol name="Damage" value="../5100003/Damage" />
+    <uol name="Die" value="../5400000/Die" />
+  </imgdir>
+  <imgdir name="9300315" />
+  <imgdir name="9300316" />
+  <imgdir name="9300317">
+    <uol name="Attack1" value="../6130200/Attack1" />
+    <uol name="CharDam1" value="../6130200/Chardam1" />
+    <uol name="Damage" value="../6130200/Damage" />
+    <uol name="Die" value="../6130200/Die" />
+  </imgdir>
+  <imgdir name="9300318" />
+  <imgdir name="9300319" />
+  <imgdir name="9300320" />
+  <imgdir name="9300321">
+    <uol name="Attack1" value="../6300100/Attack1" />
+    <uol name="CharDam1" value="../6300100/CharDam1" />
+    <uol name="Damage" value="../6300100/Damage" />
+    <uol name="Die" value="../6300100/Die" />
+  </imgdir>
+  <imgdir name="9300322" />
+  <imgdir name="9300323" />
+  <imgdir name="9300324" />
+  <imgdir name="9300325">
+    <uol name="Attack1" value="../8220007/Attack1" />
+    <uol name="Attack2" value="../8220007/Attack2" />
+    <uol name="Damage" value="../4230113/Damage" />
+  </imgdir>
+  <imgdir name="9300341">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9300342">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9300343">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9300344">
+    <uol name="Attack1" value="../9300285/Attack1" />
+    <uol name="Skill1" value="../9300285/Skill1" />
+    <uol name="Die" value="../9300285/Die" />
+    <uol name="Damage" value="../9300285/Damage" />
+  </imgdir>
+  <imgdir name="9300345">
+    <uol name="Attack1" value="../9300285/Attack1" />
+    <uol name="Skill1" value="../9300285/Skill1" />
+    <uol name="Die" value="../9300285/Die" />
+    <uol name="Damage" value="../9300285/Damage" />
+  </imgdir>
+  <imgdir name="9300346">
+    <uol name="Attack1" value="../9300285/Attack1" />
+    <uol name="Skill1" value="../9300285/Skill1" />
+    <uol name="Die" value="../9300285/Die" />
+    <uol name="Damage" value="../9300285/Damage" />
+  </imgdir>
+  <imgdir name="9300347" />
+  <imgdir name="9300348" />
+  <imgdir name="9300349" />
+  <imgdir name="9300350">
+    <uol name="Attack1" value="../9300215/Attack1" />
+    <uol name="CharDam1" value="../9300215/CharDam1" />
+    <uol name="Attack2" value="../9300215/Attack2" />
+    <uol name="CharDam2" value="../9300215/CharDam2" />
+    <uol name="Attack3" value="../9300215/Attack3" />
+    <uol name="CharDam3" value="../9300215/CharDam3" />
+    <uol name="Die" value="../9300215/Die" />
+    <uol name="Damage" value="../9300215/Damage" />
+    <uol name="Skill1" value="../9300215/Skill1" />
+  </imgdir>
+  <imgdir name="9300351" />
+  <imgdir name="9300352">
+    <uol name="Die" value="../9300349/Die" />
+  </imgdir>
+  <imgdir name="9300353">
+    <uol name="Die" value="../9300349/Die" />
+  </imgdir>
+  <imgdir name="9300354" />
+  <imgdir name="9300355">
+    <uol name="Attack1" value="../9001009/Attack1" />
+    <uol name="Skill1" value="../9001009/Skill1" />
+    <uol name="Damage" value="../9001009/Damage" />
+    <uol name="Die" value="../9001009/Die" />
+  </imgdir>
+  <imgdir name="9300367" />
+  <imgdir name="9300368" />
+  <imgdir name="9300369" />
+  <imgdir name="9300370" />
+  <imgdir name="9300371" />
+  <imgdir name="9300372" />
+  <imgdir name="9300373" />
+  <imgdir name="9300374" />
+  <imgdir name="9300375" />
+  <imgdir name="9300376" />
+  <imgdir name="9300377" />
+  <imgdir name="9300378" />
+  <imgdir name="9300379" />
+  <imgdir name="9300380" />
+  <imgdir name="9300381" />
+  <imgdir name="9300382">
+    <uol name="Attack1" value="../9001009/Attack1" />
+    <uol name="Skill1" value="../9001009/Skill1" />
+    <uol name="Damage" value="../9001009/Damage" />
+    <uol name="Die" value="../9001009/Die" />
+  </imgdir>
+  <imgdir name="9300383">
+    <uol name="Die" value="../0100130/Die" />
+    <uol name="Damage" value="../0100130/Damage" />
+  </imgdir>
+  <imgdir name="9302000">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302001">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302002">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302003">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302004">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302005">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302006">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302007">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302008">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302009">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9302010">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9303000">
+    <uol name="Damage" value="../2220000/Damage" />
+    <uol name="Die" value="../2220000/Die" />
+    <uol name="Skill1" value="../2220000/Skill1" />
+  </imgdir>
+  <imgdir name="9303001">
+    <uol name="Damage" value="../3220000/Damage" />
+    <uol name="Die" value="../3220000/Die" />
+    <uol name="Skill1" value="../3220000/Skill1" />
+    <uol name="Attack1" value="../3220000/Attack1" />
+    <uol name="Attack2" value="../3220000/Attack1" />
+    <uol name="CharDam1" value="../3220000/Attack1" />
+  </imgdir>
+  <imgdir name="9303002">
+    <uol name="Damage" value="../9300003/Damage" />
+    <uol name="Die" value="../9300003/Die" />
+    <uol name="Skill1" value="../9300003/Skill1" />
+    <uol name="Attack1" value="../9300003/Attack1" />
+    <uol name="CharDam1" value="../9300003/CharDam1" />
+  </imgdir>
+  <imgdir name="9303003">
+    <uol name="Damage" value="../3220001/Damage" />
+    <uol name="Die" value="../3220001/Die" />
+    <uol name="Skill1" value="../3220001/Skill1" />
+    <uol name="Attack1" value="../3220001/Attack1" />
+    <uol name="CharDam1" value="../3220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9303004">
+    <uol name="Damage" value="../6130101/Damage" />
+    <uol name="Die" value="../6130101/Die" />
+    <uol name="Attack1" value="../6130101/Attack1" />
+    <uol name="CharDam1" value="../6130101/CharDam1" />
+  </imgdir>
+  <imgdir name="9303005">
+    <uol name="Damage" value="../7220000/Damage" />
+    <uol name="Die" value="../7220000/Die" />
+    <uol name="Skill1" value="../7220000/Skill1" />
+    <uol name="Attack1" value="../7220000/Attack1" />
+    <uol name="Attack2" value="../7220000/Attack2" />
+    <uol name="CharDam1" value="../7220000/CharDam1" />
+    <uol name="CharDam2" value="../7220000/CharDam2" />
+  </imgdir>
+  <imgdir name="9303006">
+    <uol name="Damage" value="../4130103/Damage" />
+    <uol name="Die" value="../4130103/Die" />
+    <uol name="Attack1" value="../4130103/Attack1" />
+  </imgdir>
+  <imgdir name="9303007">
+    <uol name="Damage" value="../6220001/Damage" />
+    <uol name="Die" value="../6220001/Die" />
+    <uol name="Attack1" value="../6220001/Attack1" />
+    <uol name="CharDam1" value="../6220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9303008">
+    <uol name="Damage" value="../7220001/Damage" />
+    <uol name="Die" value="../7220001/Die" />
+    <uol name="Skill1" value="../7220001/Skill1" />
+    <uol name="Skill2" value="../7220001/Skill2" />
+    <uol name="Attack1" value="../7220001/Attack1" />
+    <uol name="CharDam1" value="../7220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9303009">
+    <uol name="Damage" value="../7220002/Damage" />
+    <uol name="Die" value="../7220002/Die" />
+    <uol name="Skill1" value="../7220002/Skill1" />
+    <uol name="Attack1" value="../7220002/Attack1" />
+    <uol name="CharDam1" value="../7220002/CharDam1" />
+  </imgdir>
+  <imgdir name="9303010">
+    <uol name="Damage" value="../8130100/Damage" />
+    <uol name="Die" value="../8130100/Die" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="Attack3" value="../8130100/Attack3" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="CharDam3" value="../8130100/CharDam3" />
+  </imgdir>
+  <imgdir name="9303011">
+    <uol name="Damage" value="../9500175/Damage" />
+    <uol name="Die" value="../9500175/Die" />
+    <uol name="Skill1" value="../9500175/Skill1" />
+    <uol name="Skill2" value="../9500175/Skill2" />
+    <uol name="Attack1" value="../9500175/Attack1" />
+    <uol name="CharDam1" value="../9500175/CharDam1" />
+  </imgdir>
+  <imgdir name="9303012">
+    <uol name="Damage" value="../9300039/Damage" />
+    <uol name="Die" value="../9300039/Die" />
+    <uol name="Skill1" value="../9300039/Skill1" />
+    <uol name="Skill2" value="../9300039/Skill2" />
+    <uol name="Skill3" value="../9300039/Skill3" />
+    <uol name="Attack1" value="../9300039/Attack1" />
+    <uol name="CharDam1" value="../9300039/CharDam1" />
+  </imgdir>
+  <imgdir name="9303013">
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="CharDam2" value="../8150000/CharDam2" />
+  </imgdir>
+  <imgdir name="9303014">
+    <uol name="Damage" value="../4220000/Damage" />
+    <uol name="Die" value="../4220000/Die" />
+    <uol name="Skill1" value="../4220000/Skill1" />
+    <uol name="Attack1" value="../4220000/Attack1" />
+    <uol name="Attack2" value="../4220000/Attack2" />
+    <uol name="CharDam1" value="../4220000/Attack2" />
+  </imgdir>
+  <imgdir name="9303015">
+    <uol name="Damage" value="../8220000/Damage" />
+    <uol name="Die" value="../8220000/Die" />
+    <uol name="Skill1" value="../8220000/Skill1" />
+    <uol name="Skill2" value="../8220000/Skill2" />
+    <uol name="Attack1" value="../8220000/Attack1" />
+    <uol name="CharDam1" value="../8220000/CharDam1" />
+  </imgdir>
+  <imgdir name="9303016">
+    <uol name="Damage" value="../8220003/Damage" />
+    <uol name="Attack1" value="../8220003/Attack1" />
+    <uol name="Attack2" value="../8220003/Attack2" />
+    <uol name="CharDam1" value="../8220003/CharDam1" />
+    <uol name="CharDam2" value="../8220003/CharDam2" />
+  </imgdir>
+  <imgdir name="9400000" />
+  <imgdir name="9400001" />
+  <imgdir name="9400002">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400003" />
+  <imgdir name="9400004">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400005" />
+  <imgdir name="9400006" />
+  <imgdir name="9400007" />
+  <imgdir name="9400008" />
+  <imgdir name="9400009">
+    <uol name="Damage" value="../9400000/Damage" />
+    <uol name="Die" value="../9400000/Die" />
+  </imgdir>
+  <imgdir name="9400010">
+    <uol name="Damage" value="../9400001/Damage" />
+    <uol name="Die" value="../9400001/Die" />
+  </imgdir>
+  <imgdir name="9400011">
+    <uol name="Damage" value="../4230115/Damage" />
+    <uol name="Die" value="../4230115/Die" />
+    <uol name="Attack1" value="../4230105/Attack1" />
+    <uol name="Attack2" value="../6130100/Attack1" />
+  </imgdir>
+  <imgdir name="9400012">
+    <uol name="Damage" value="../9400001/Damage" />
+    <uol name="Die" value="../9400001/Die" />
+    <uol name="Attack1" value="../5130107/Attack1" />
+  </imgdir>
+  <imgdir name="9400013">
+    <uol name="Damage" value="../9400103/Damage" />
+    <uol name="Die" value="../9400103/Die" />
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../7130400/Attack1" />
+  </imgdir>
+  <imgdir name="9400014">
+    <uol name="Die" value="../7130400/Die" />
+    <uol name="Damage" value="../7130400/Damage" />
+    <uol name="Attack1" value="../6130101/Attack1" />
+    <uol name="Attack2" value="../9400300/Attack1" />
+  </imgdir>
+  <imgdir name="9400100" />
+  <imgdir name="9400101" />
+  <imgdir name="9400102" />
+  <imgdir name="9400103">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400110" />
+  <imgdir name="9400111" />
+  <imgdir name="9400112">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400113">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400120" />
+  <imgdir name="9400121" />
+  <imgdir name="9400122">
+    <uol name="Attack1" value="../9400120/Attack1" />
+    <uol name="Attack2" value="../9400120/Attack2" />
+    <uol name="Skill1" value="../9400120/Skill1" />
+    <uol name="CharDam1" value="../9400120/CharDam1" />
+    <uol name="CharDam2" value="../9400120/CharDam2" />
+    <uol name="Damage" value="../9400120/Damage" />
+    <uol name="Die" value="../9400120/Die" />
+  </imgdir>
+  <imgdir name="9400200">
+    <uol name="Damage" value="../3230102/Damage" />
+    <uol name="Die" value="../3230101/Die" />
+  </imgdir>
+  <imgdir name="9400201">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../6230100/Die" />
+  </imgdir>
+  <imgdir name="9400202" />
+  <imgdir name="9400203">
+    <uol name="Damage" value="../9400202/Damage" />
+    <uol name="Die" value="../9400202/Die" />
+  </imgdir>
+  <imgdir name="9400204">
+    <uol name="Damage" value="../9400202/Damage" />
+    <uol name="Die" value="../9400202/Die" />
+  </imgdir>
+  <imgdir name="9400205">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400300" />
+  <imgdir name="9400310">
+    <uol name="Damage" value="../2300100/Damage" />
+    <uol name="Die" value="../2300100/Die" />
+  </imgdir>
+  <imgdir name="9400311">
+    <uol name="Damage" value="../4230107/Damage" />
+    <uol name="Die" value="../4230107/Die" />
+  </imgdir>
+  <imgdir name="9400312">
+    <uol name="Damage" value="../4230102/Damage" />
+    <uol name="Die" value="../4230102/Die" />
+  </imgdir>
+  <imgdir name="9400313">
+    <uol name="Damage" value="../4230102/Damage" />
+    <uol name="Die" value="../4230102/Die" />
+  </imgdir>
+  <imgdir name="9400314">
+    <uol name="Damage" value="../2300100/Damage" />
+    <uol name="Die" value="../2300100/Die" />
+  </imgdir>
+  <imgdir name="9400315">
+    <uol name="Damage" value="../4230107/Damage" />
+    <uol name="Die" value="../4230107/Die" />
+  </imgdir>
+  <imgdir name="9400316">
+    <uol name="Damage" value="../4230102/Damage" />
+    <uol name="Die" value="../4230102/Die" />
+  </imgdir>
+  <imgdir name="9400317">
+    <uol name="Damage" value="../2300100/Damage" />
+    <uol name="Die" value="../2300100/Die" />
+  </imgdir>
+  <imgdir name="9400318">
+    <uol name="Damage" value="../4230107/Damage" />
+    <uol name="Die" value="../4230107/Die" />
+  </imgdir>
+  <imgdir name="9400319">
+    <uol name="Skill1" value="../6130104/Skill1" />
+    <uol name="Damage" value="../6130104/Damage" />
+    <uol name="Die" value="../6130104/Die" />
+    <uol name="Attack1" value="../6130203/Attack1" />
+  </imgdir>
+  <imgdir name="9400320">
+    <uol name="Skill1" value="../6130104/Skill1" />
+    <uol name="Damage" value="../6130104/Damage" />
+    <uol name="Die" value="../6130104/Die" />
+    <uol name="Attack1" value="../6130203/Attack1" />
+  </imgdir>
+  <imgdir name="9400321">
+    <uol name="Skill1" value="../6130104/Skill1" />
+    <uol name="Damage" value="../6130104/Damage" />
+    <uol name="Die" value="../6130104/Die" />
+    <uol name="Attack1" value="../6130203/Attack1" />
+  </imgdir>
+  <imgdir name="9400505" />
+  <imgdir name="9400506" />
+  <imgdir name="9400507" />
+  <imgdir name="9400509">
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9400510">
+    <uol name="Damage" value="../9400506/Damage" />
+    <uol name="Die" value="../9400506/Die" />
+  </imgdir>
+  <imgdir name="9400511">
+    <uol name="Attack1" value="../9400510/Attack1" />
+  </imgdir>
+  <imgdir name="9400512" />
+  <imgdir name="9400513" />
+  <imgdir name="9400514">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400515" />
+  <imgdir name="9400516" />
+  <imgdir name="9400517">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400518">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400519">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9400520">
+    <uol name="Damage" value="../9300027/Damage" />
+    <uol name="Die" value="../9300027/Die" />
+  </imgdir>
+  <imgdir name="9400521">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9400522">
+    <uol name="Damage" value="../1210103/Damage" />
+    <uol name="Die" value="../1210103/Die" />
+  </imgdir>
+  <imgdir name="9400523">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400524">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400525">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400526">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400527">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400528" />
+  <imgdir name="9400529">
+    <uol name="CharDam1" value="../3000000/CharDam1" />
+    <uol name="Damage" value="../3000000/Damage" />
+    <uol name="Die" value="../3000000/Die" />
+  </imgdir>
+  <imgdir name="9400530">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400531" />
+  <imgdir name="9400533" />
+  <imgdir name="9400534" />
+  <imgdir name="9400535">
+    <uol name="Attack1" value="Skill1" />
+    <uol name="Skill1" value="9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400536">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9400537">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400538" />
+  <imgdir name="9400539" />
+  <imgdir name="9400540" />
+  <imgdir name="9400541">
+    <uol name="Damage" value="../9400540/Damage" />
+    <uol name="Die" value="../9400540/Die" />
+  </imgdir>
+  <imgdir name="9400542" />
+  <imgdir name="9400543" />
+  <imgdir name="9400544" />
+  <imgdir name="9400545" />
+  <imgdir name="9400546" />
+  <imgdir name="9400547" />
+  <imgdir name="9400548" />
+  <imgdir name="9400549" />
+  <imgdir name="9400550" />
+  <imgdir name="9400551" />
+  <imgdir name="9400553" />
+  <imgdir name="9400554">
+    <uol name="Damage" value="../9400553/Damage" />
+    <uol name="Die" value="../9400553/Die" />
+  </imgdir>
+  <imgdir name="9400555">
+    <uol name="Damage" value="../9400553/Damage" />
+    <uol name="Die" value="../9400553/Die" />
+  </imgdir>
+  <imgdir name="9400556" />
+  <imgdir name="9400557" />
+  <imgdir name="9400558" />
+  <imgdir name="9400559" />
+  <imgdir name="9400560">
+    <uol name="Damage" value="../9400559/Damage" />
+  </imgdir>
+  <imgdir name="9400561" />
+  <imgdir name="9400562">
+    <uol name="Die" value="../9400561/Die" />
+    <uol name="Damage" value="../9400561/Damage" />
+  </imgdir>
+  <imgdir name="9400563" />
+  <imgdir name="9400564" />
+  <imgdir name="9400565">
+    <uol name="Die" value="../9400556/Die" />
+    <uol name="Damage" value="../9400556/Damage" />
+  </imgdir>
+  <imgdir name="9400566" />
+  <imgdir name="9400567">
+    <uol name="Damage" value="../9400566/Damage" />
+  </imgdir>
+  <imgdir name="9400568" />
+  <imgdir name="9400569" />
+  <imgdir name="9400570" />
+  <imgdir name="9400574" />
+  <imgdir name="9400575" />
+  <imgdir name="9400576" />
+  <imgdir name="9400577" />
+  <imgdir name="9400578" />
+  <imgdir name="9400579" />
+  <imgdir name="9400580" />
+  <imgdir name="9400581" />
+  <imgdir name="9400582" />
+  <imgdir name="9400583" />
+  <imgdir name="9400585" />
+  <imgdir name="9400586">
+    <uol name="Attack1" value="../9400585/Attack1" />
+    <uol name="Die" value="../9400585/Die" />
+    <uol name="Damage" value="../9400585/Damage" />
+  </imgdir>
+  <imgdir name="9400587">
+    <uol name="Attack1" value="../9400588/Attack1" />
+    <uol name="Die" value="../9400588/Die" />
+    <uol name="Damage" value="../9400588/Damage" />
+  </imgdir>
+  <imgdir name="9400588" />
+  <imgdir name="9400589">
+    <uol name="Attack1" value="../9400748/Attack1" />
+    <uol name="Damage" value="../9400748/Damage" />
+    <uol name="Die" value="../9400748/Die" />
+  </imgdir>
+  <imgdir name="9400590" />
+  <imgdir name="9400591" />
+  <imgdir name="9400592" />
+  <imgdir name="9400593" />
+  <imgdir name="9400594" />
+  <imgdir name="9400595" />
+  <imgdir name="9400596" />
+  <imgdir name="9400597" />
+  <imgdir name="9400601">
+    <uol name="Damage" value="../9400506/Damage" />
+    <uol name="Die" value="../9400506/Die" />
+  </imgdir>
+  <imgdir name="9400602">
+    <uol name="Damage" value="../9400507/Damage" />
+    <uol name="Die" value="../9400507/Die" />
+  </imgdir>
+  <imgdir name="9400603">
+    <uol name="Damage" value="../9400507/Damage" />
+    <uol name="Die" value="../9400507/Die" />
+  </imgdir>
+  <imgdir name="9400604">
+    <uol name="Damage" value="../9400506/Damage" />
+    <uol name="Die" value="../9400506/Die" />
+  </imgdir>
+  <imgdir name="9400605">
+    <uol name="Damage" value="../9400570/Damage" />
+    <uol name="Die" value="../9400570/Die" />
+  </imgdir>
+  <imgdir name="9400606">
+    <uol name="Attack1" value="../9400569/Attack1" />
+    <uol name="Damage" value="../9400569/Damage" />
+    <uol name="Die" value="../9400569/Die" />
+    <uol name="Skill1" value="../9400569/Skill1" />
+  </imgdir>
+  <imgdir name="9400609" />
+  <imgdir name="9400610" />
+  <imgdir name="9400611" />
+  <imgdir name="9400612" />
+  <imgdir name="9400613" />
+  <imgdir name="9400614">
+    <uol name="Damage" value="../1210102/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9400615">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9400616">
+    <uol name="Damage" value="../2110200/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9400617">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9400618">
+    <uol name="Damage" value="../0130100/Damage" />
+    <uol name="Die" value="../0130100/Die" />
+  </imgdir>
+  <imgdir name="9400619">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9400620">
+    <uol name="Die" value="../0130100/Die" />
+    <uol name="Damage" value="../1110101/Damage" />
+  </imgdir>
+  <imgdir name="9400621">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9400622">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9400623">
+    <uol name="Attack1" value="../9400610/Attack1" />
+    <uol name="Die" value="../9400610/Die" />
+    <uol name="Damage" value="../9400610/Damage" />
+    <uol name="Skill1" value="../9400610/Skill1" />
+  </imgdir>
+  <imgdir name="9400630">
+    <uol name="Attack1" value="../8810002/Attack1" />
+    <uol name="CharDam1" value="../8810002/CharDam1" />
+    <uol name="Attack2" value="../8810002/Attack2" />
+    <uol name="CharDam2" value="../8810002/CharDam2" />
+    <uol name="Attack3" value="../8810002/Attack2" />
+    <uol name="CharDam3" value="../8810002/CharDam2" />
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Skill3" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="9400631">
+    <uol name="Attack1" value="../8810004/Attack1" />
+    <uol name="CharDam1" value="../8810004/CharDam1" />
+    <uol name="Attack2" value="../8810004/Attack2" />
+    <uol name="CharDam2" value="../8810004/CharDam2" />
+    <uol name="Attack3" value="../8810004/Attack3" />
+    <uol name="CharDam3" value="../8810004/CharDam3" />
+    <uol name="Skill1" value="../8810002/Skill1" />
+    <uol name="Skill2" value="../8810002/Skill2" />
+    <uol name="Skill3" value="../8810002/Skill2" />
+    <uol name="Damage" value="../8810002/Damage" />
+    <uol name="Die" value="../8810002/Die" />
+  </imgdir>
+  <imgdir name="9400632">
+    <uol name="Attack1" value="../8820001/Attack1" />
+    <uol name="Attack2" value="../8820001/Attack2" />
+    <uol name="Attack3" value="../8820001/Attack3" />
+    <uol name="Attack4" value="../8820001/Attack4" />
+    <uol name="Die" value="../8820001/Die" />
+    <uol name="Damage" value="../8820001/Damage" />
+    <uol name="Skill1" value="../8820001/Skill1" />
+    <uol name="Skill2" value="../8820001/Skill2" />
+    <uol name="Skill3" value="../8820001/Skill3" />
+  </imgdir>
+  <imgdir name="9400633" />
+  <imgdir name="9400634" />
+  <imgdir name="9400635" />
+  <imgdir name="9400636">
+    <uol name="Damage" value="../9500324/Damage" />
+    <uol name="Die" value="../9300004/Die" />
+  </imgdir>
+  <imgdir name="9400637">
+    <uol name="Damage" value="../9500324/Damage" />
+    <uol name="Die" value="../9300004/Die" />
+    <uol name="CharDam1" value="../7130501/CharDam1" />
+  </imgdir>
+  <imgdir name="9400638">
+    <uol name="Attack1" value="../6230602/Attack1" />
+    <uol name="CharDam1" value="../6230602/CharDam1" />
+    <uol name="Damage" value="../6230602/Damage" />
+    <uol name="Die" value="../4230125/Die" />
+  </imgdir>
+  <imgdir name="9400639">
+    <uol name="Damage" value="../9300319/Damage" />
+  </imgdir>
+  <imgdir name="9400640">
+    <uol name="Damage" value="../9300319/Damage" />
+    <uol name="Die" value="../9400639/Die" />
+  </imgdir>
+  <imgdir name="9400641">
+    <uol name="Attack2" value="Attack1" />
+    <uol name="Attack3" value="Attack1" />
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="CharDam3" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9400642">
+    <uol name="Die" value="../9400641/Die" />
+    <uol name="Damage" value="../9400641/Damage" />
+    <uol name="CharDam1" value="../9400641/CharDam1" />
+    <uol name="Attack1" value="../9400641/Attack1" />
+    <uol name="Skill1" value="../9400641/Skill1" />
+    <uol name="Skill2" value="../9400641/Skill2" />
+    <uol name="Attack2" value="../9400641/Attack1" />
+    <uol name="Attack3" value="../9400641/Attack1" />
+    <uol name="CharDam2" value="../9400641/CharDam1" />
+    <uol name="CharDam3" value="../9400641/CharDam1" />
+  </imgdir>
+  <imgdir name="9400643">
+    <uol name="Die" value="../9400641/Die" />
+    <uol name="Damage" value="../9400641/Damage" />
+    <uol name="CharDam1" value="../9400641/CharDam1" />
+    <uol name="Attack1" value="../9400641/Attack1" />
+    <uol name="Skill1" value="../9400641/Skill1" />
+    <uol name="Skill2" value="../9400641/Skill2" />
+    <uol name="Attack2" value="../9400641/Attack1" />
+    <uol name="Attack3" value="../9400641/Attack1" />
+    <uol name="CharDam2" value="../9400641/CharDam1" />
+    <uol name="CharDam3" value="../9400641/CharDam1" />
+  </imgdir>
+  <imgdir name="9400644">
+    <uol name="Damage" value="../3230102/Damage" />
+    <uol name="Die" value="../3230101/Die" />
+  </imgdir>
+  <imgdir name="9400647">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2130103/Die" />
+  </imgdir>
+  <imgdir name="9400648">
+    <uol name="Attack1" value="../6230400/Attack1" />
+    <uol name="CharDam1" value="../6230400/CharDam1" />
+    <uol name="Damage" value="../6230400/Damage" />
+    <uol name="Die" value="../6230400/Die" />
+  </imgdir>
+  <imgdir name="9400649">
+    <uol name="Damage" value="../3230400/Damage" />
+    <uol name="Die" value="../3230400/Die" />
+    <uol name="Skill1" value="../9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400650">
+    <uol name="Attack1" value="../6230400/Attack1" />
+    <uol name="CharDam1" value="../6230400/CharDam1" />
+    <uol name="Damage" value="../6230400/Damage" />
+    <uol name="Die" value="../6230400/Die" />
+  </imgdir>
+  <imgdir name="9400651">
+    <uol name="Damage" value="../3230400/Damage" />
+    <uol name="Die" value="../3230400/Die" />
+    <uol name="Skill1" value="../9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400652">
+    <uol name="Attack1" value="../6230400/Attack1" />
+    <uol name="CharDam1" value="../6230400/CharDam1" />
+    <uol name="Damage" value="../6230400/Damage" />
+    <uol name="Die" value="../6230400/Die" />
+  </imgdir>
+  <imgdir name="9400653">
+    <uol name="Damage" value="../3230400/Damage" />
+    <uol name="Die" value="../3230400/Die" />
+    <uol name="Skill1" value="../9001003/Skill1" />
+  </imgdir>
+  <imgdir name="9400704" />
+  <imgdir name="9400706">
+    <uol name="Die" value="../../3000000/Die" />
+    <uol name="Damage" value="../3000005/Damage" />
+  </imgdir>
+  <imgdir name="9400708" />
+  <imgdir name="9400709" />
+  <imgdir name="9400710" />
+  <imgdir name="9400712" />
+  <imgdir name="9400739" />
+  <imgdir name="9400740" />
+  <imgdir name="9400741" />
+  <imgdir name="9400742" />
+  <imgdir name="9400743" />
+  <imgdir name="9400744" />
+  <imgdir name="9400745" />
+  <imgdir name="9400746" />
+  <imgdir name="9400747" />
+  <imgdir name="9400748" />
+  <imgdir name="9409000" />
+  <imgdir name="9409001" />
+  <imgdir name="9410000" />
+  <imgdir name="9410001" />
+  <imgdir name="9410002" />
+  <imgdir name="9410003">
+    <uol name="Attack2" value="Attack1" />
+    <uol name="Attack3" value="Attack1" />
+  </imgdir>
+  <imgdir name="9410004" />
+  <imgdir name="9410005" />
+  <imgdir name="9410006">
+    <uol name="Attack1" value="../9410005/Attack1" />
+    <uol name="CharDam1" value="../9410005/CharDam1" />
+    <uol name="Damage" value="../9410005/Damage" />
+    <uol name="Die" value="../9410005/Die" />
+  </imgdir>
+  <imgdir name="9410007">
+    <uol name="Attack1" value="../9410005/Attack1" />
+    <uol name="CharDam1" value="../9410005/CharDam1" />
+    <uol name="Damage" value="../9410005/Damage" />
+    <uol name="Die" value="../9410005/Die" />
+  </imgdir>
+  <imgdir name="9410008">
+    <uol name="Attack2" value="Attack1" />
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9410009" />
+  <imgdir name="9410010">
+    <uol name="Attack1" value="../9410008/Attack1" />
+    <uol name="Attack2" value="Attack1" />
+    <uol name="CharDam1" value="../9410008/CharDam1" />
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Damage" value="../9410008/Damage" />
+    <uol name="Die" value="../9410008/Die" />
+  </imgdir>
+  <imgdir name="9410011">
+    <uol name="Damage" value="../9410009/Damage" />
+    <uol name="Die" value="../9410009/Die" />
+  </imgdir>
+  <imgdir name="9410012">
+    <uol name="Damage" value="../9410008/Damage" />
+    <uol name="Die" value="../9410008/Die" />
+  </imgdir>
+  <imgdir name="9410013">
+    <uol name="Damage" value="../9410008/Damage" />
+    <uol name="Die" value="../9410008/Die" />
+  </imgdir>
+  <imgdir name="9410014" />
+  <imgdir name="9410015">
+    <uol name="Die" value="../9410014/Die" />
+  </imgdir>
+  <imgdir name="9420000" />
+  <imgdir name="9420001" />
+  <imgdir name="9420002" />
+  <imgdir name="9420003" />
+  <imgdir name="9420004" />
+  <imgdir name="9420005" />
+  <imgdir name="9420015" />
+  <imgdir name="9420500" />
+  <imgdir name="9420501" />
+  <imgdir name="9420502" />
+  <imgdir name="9420503" />
+  <imgdir name="9420504" />
+  <imgdir name="9420505" />
+  <imgdir name="9420506" />
+  <imgdir name="9420507" />
+  <imgdir name="9420508" />
+  <imgdir name="9420509" />
+  <imgdir name="9420510" />
+  <imgdir name="9420511" />
+  <imgdir name="9420512" />
+  <imgdir name="9420513" />
+  <imgdir name="9420514" />
+  <imgdir name="9420515" />
+  <imgdir name="9420516" />
+  <imgdir name="9420517" />
+  <imgdir name="9420518" />
+  <imgdir name="9420519" />
+  <imgdir name="9420520" />
+  <imgdir name="9420521" />
+  <imgdir name="9420522">
+    <uol name="Skill1" value="../9420521/Skill1" />
+    <uol name="Skill2" value="../9420521/Skill2" />
+    <uol name="Skill3" value="../9420521/Skill3" />
+    <uol name="Attack1" value="../9420521/Attack1" />
+    <uol name="Attack2" value="../9420521/Attack2" />
+    <uol name="Attack3" value="../9420521/Attack3" />
+    <uol name="Attack4" value="../9420521/Attack4" />
+    <uol name="CharDam1" value="../9420521/CharDam1" />
+    <uol name="CharDam2" value="../9420521/CharDam2" />
+    <uol name="CharDam3" value="../9420521/CharDam3" />
+    <uol name="CharDam4" value="../9420521/CharDam4" />
+    <uol name="Die" value="../9420521/Die" />
+    <uol name="Hit" value="../9420521/Hit" />
+  </imgdir>
+  <imgdir name="9420523" />
+  <imgdir name="9420524">
+    <uol name="Die" value="../9420523/Die" />
+    <uol name="Hit" value="../9420523/Hit" />
+  </imgdir>
+  <imgdir name="9420525" />
+  <imgdir name="9420526" />
+  <imgdir name="9420527" />
+  <imgdir name="9420528" />
+  <imgdir name="9420529" />
+  <imgdir name="9420530" />
+  <imgdir name="9420531" />
+  <imgdir name="9420532" />
+  <imgdir name="9420533" />
+  <imgdir name="9420534" />
+  <imgdir name="9420535" />
+  <imgdir name="9420536" />
+  <imgdir name="9420537" />
+  <imgdir name="9420538" />
+  <imgdir name="9420539" />
+  <imgdir name="9420540" />
+  <imgdir name="9420542">
+    <uol name="Hit" value="Damage" />
+  </imgdir>
+  <imgdir name="9420543">
+    <uol name="Attack1" value="../9420542/Attack1" />
+    <uol name="Hit" value="../9420542/Hit" />
+    <uol name="CharDam1" value="../9420542/CharDam1" />
+    <uol name="Attack2" value="../9420542/Attack2" />
+    <uol name="CharDam2" value="../9420542/CharDam2" />
+    <uol name="Attack3" value="../9420542/Attack3" />
+    <uol name="CharDam3" value="../9420542/CharDam3" />
+    <uol name="Attack4" value="../9420542/Attack4" />
+    <uol name="CharDam4" value="../9420542/CharDam4" />
+    <uol name="Skill1" value="../9420542/Skill1" />
+    <uol name="Skill2" value="../9420542/Skill2" />
+    <uol name="Damage" value="../9420542/Damage" />
+    <uol name="Die" value="../9420542/Die" />
+  </imgdir>
+  <imgdir name="9420544">
+    <uol name="Attack1" value="../9420542/Attack1" />
+    <uol name="CharDam1" value="../9420542/CharDam1" />
+    <uol name="Hit" value="../9420543/Hit" />
+    <uol name="Attack2" value="../9420542/Attack2" />
+    <uol name="CharDam2" value="../9420542/CharDam2" />
+    <uol name="Attack3" value="../9420542/Attack3" />
+    <uol name="CharDam3" value="../9420542/CharDam3" />
+    <uol name="Attack4" value="../9420542/Attack4" />
+    <uol name="CharDam4" value="../9420542/CharDam4" />
+    <uol name="Skill1" value="../9420542/Skill1" />
+    <uol name="Skill2" value="../9420542/Skill2" />
+    <uol name="Damage" value="../9420542/Damage" />
+  </imgdir>
+  <imgdir name="9420545" />
+  <imgdir name="9420547">
+    <uol name="CharDam1" value="../9420542/CharDam1" />
+    <uol name="Attack4" value="../9420542/Attack4" />
+    <uol name="CharDam4" value="../9420542/CharDam4" />
+    <uol name="Hit" value="Damage" />
+  </imgdir>
+  <imgdir name="9420548">
+    <uol name="Attack1" value="../9420547/Attack1" />
+    <uol name="CharDam1" value="../9420542/CharDam1" />
+    <uol name="Attack2" value="../9420547/Attack2" />
+    <uol name="CharDam2" value="../9420547/CharDam2" />
+    <uol name="Attack3" value="../9420547/Attack3" />
+    <uol name="CharDam3" value="../9420547/CharDam3" />
+    <uol name="Attack4" value="../9420542/Attack4" />
+    <uol name="CharDam4" value="../9420542/CharDam4" />
+    <uol name="Skill1" value="../9420547/Skill1" />
+    <uol name="Skill2" value="../9420547/Skill2" />
+    <uol name="Damage" value="../9420547/Damage" />
+    <uol name="Die" value="../9420547/Die" />
+    <uol name="Hit" value="../9420547/Hit" />
+  </imgdir>
+  <imgdir name="9420549">
+    <uol name="Attack1" value="../9420547/Attack1" />
+    <uol name="Hit" value="../9420548/Hit" />
+    <uol name="CharDam1" value="../9420542/CharDam1" />
+    <uol name="Attack2" value="../9420547/Attack2" />
+    <uol name="CharDam2" value="../9420547/CharDam2" />
+    <uol name="Attack3" value="../9420547/Attack3" />
+    <uol name="CharDam3" value="../9420547/CharDam3" />
+    <uol name="Attack4" value="../9420542/Attack4" />
+    <uol name="CharDam4" value="../9420542/CharDam4" />
+    <uol name="Skill1" value="../9420547/Skill1" />
+    <uol name="Skill2" value="../9420547/Skill2" />
+    <uol name="Damage" value="../9420547/Damage" />
+  </imgdir>
+  <imgdir name="9420550" />
+  <imgdir name="9500100">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9500101">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9500102">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210102/Die" />
+  </imgdir>
+  <imgdir name="9500103">
+    <uol name="Damage" value="../1210103/Damage" />
+    <uol name="Die" value="../1210103/Die" />
+  </imgdir>
+  <imgdir name="9500104">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1120100/Die" />
+  </imgdir>
+  <imgdir name="9500105">
+    <uol name="Damage" value="../2110200/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9500106">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../2110200/Die" />
+  </imgdir>
+  <imgdir name="9500107">
+    <uol name="Damage" value="../3230400/Damage" />
+    <uol name="Die" value="../3230400/Die" />
+  </imgdir>
+  <imgdir name="9500108">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../3110100/Die" />
+  </imgdir>
+  <imgdir name="9500109">
+    <uol name="Damage" value="../3110102/Damage" />
+    <uol name="Die" value="../3110102/Die" />
+  </imgdir>
+  <imgdir name="9500110">
+    <uol name="Attack1" value="../3230200/Attack1" />
+    <uol name="CharDam1" value="../3230200/CharDam1" />
+    <uol name="Damage" value="../3230200/Damage" />
+    <uol name="Die" value="../3230200/Die" />
+  </imgdir>
+  <imgdir name="9500111">
+    <uol name="Damage" value="../3230101/Damage" />
+    <uol name="Die" value="../3230101/Die" />
+  </imgdir>
+  <imgdir name="9500112">
+    <uol name="Damage" value="../5400000/Damage" />
+    <uol name="Die" value="../5400000/Die" />
+  </imgdir>
+  <imgdir name="9500113">
+    <uol name="Damage" value="../3210203/Damage" />
+    <uol name="Die" value="../3210203/Die" />
+  </imgdir>
+  <imgdir name="9500114">
+    <uol name="Attack1" value="../3230103/Attack1" />
+    <uol name="CharDam1" value="../3230103/CharDam1" />
+    <uol name="Damage" value="../3230103/Damage" />
+    <uol name="Die" value="../3230103/Die" />
+  </imgdir>
+  <imgdir name="9500115">
+    <uol name="Damage" value="../3230102/Damage" />
+    <uol name="Die" value="../3230102/Die" />
+  </imgdir>
+  <imgdir name="9500116">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../4230101/Attack1" />
+    <uol name="CharDam1" value="../4230101/CharDam1" />
+    <uol name="Die" value="../4230101/Die" />
+  </imgdir>
+  <imgdir name="9500117">
+    <uol name="Damage" value="../3210206/Damage" />
+    <uol name="Die" value="../3210206/Die" />
+  </imgdir>
+  <imgdir name="9500118">
+    <uol name="Damage" value="../3230308/Damage" />
+    <uol name="Die" value="../3230308/Die" />
+  </imgdir>
+  <imgdir name="9500119">
+    <uol name="Damage" value="../3230305/Damage" />
+    <uol name="Die" value="../3230305/Die" />
+    <uol name="Skill1" value="../3230305/Skill1" />
+  </imgdir>
+  <imgdir name="9500120">
+    <uol name="Damage" value="../4230110/Damage" />
+    <uol name="Die" value="../4230110/Die" />
+  </imgdir>
+  <imgdir name="9500121">
+    <uol name="Damage" value="../4230102/Damage" />
+    <uol name="Die" value="../4230102/Die" />
+  </imgdir>
+  <imgdir name="9500122">
+    <uol name="Damage" value="../4240000/Damage" />
+    <uol name="Attack1" value="../4240000/Attack1" />
+    <uol name="CharDam1" value="../4240000/CharDam1" />
+    <uol name="Die" value="../4240000/Die" />
+  </imgdir>
+  <imgdir name="9500123">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../5130102/Die" />
+  </imgdir>
+  <imgdir name="9500124">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../6130101/Attack1" />
+    <uol name="CharDam1" value="../6130101/CharDam1" />
+    <uol name="Die" value="../6130101/Die" />
+  </imgdir>
+  <imgdir name="9500125">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../6130100/Attack1" />
+    <uol name="CharDam1" value="../6130100/CharDam1" />
+    <uol name="Die" value="../6130100/Die" />
+  </imgdir>
+  <imgdir name="9500126">
+    <uol name="Damage" value="../6230600/Damage" />
+    <uol name="CharDam1" value="../6230600/CharDam1" />
+    <uol name="Attack1" value="../6230600/Attack1" />
+    <uol name="Die" value="../6230600/Die" />
+  </imgdir>
+  <imgdir name="9500127">
+    <uol name="Attack1" value="../6230500/Attack1" />
+    <uol name="CharDam1" value="../6230500/CharDam1" />
+    <uol name="Damage" value="../6230500/Damage" />
+    <uol name="Die" value="../6230500/Die" />
+  </imgdir>
+  <imgdir name="9500128">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="9500129">
+    <uol name="Attack1" value="../7130101/Attack1" />
+    <uol name="Attack2" value="../7130101/Attack2" />
+    <uol name="CharDam1" value="../7130101/CharDam1" />
+    <uol name="CharDam2" value="../7130101/CharDam2" />
+    <uol name="Damage" value="../7130101/Damage" />
+    <uol name="Die" value="../7130101/Die" />
+  </imgdir>
+  <imgdir name="9500130">
+    <uol name="CharDam1" value="../7130401/CharDam1" />
+    <uol name="Attack1" value="../7130401/Attack1" />
+    <uol name="Damage" value="../7130401/Damage" />
+    <uol name="Die" value="../7130401/Die" />
+  </imgdir>
+  <imgdir name="9500131">
+    <uol name="Attack1" value="../5120001/Attack1" />
+    <uol name="CharDam1" value="3000000/CharDam1" />
+    <uol name="Damage" value="../3210200/Damage" />
+    <uol name="Die" value="../3210200/Die" />
+  </imgdir>
+  <imgdir name="9500132">
+    <uol name="Attack1" value="../7130200/Attack1" />
+    <uol name="CharDam1" value="../7130200/CharDam1" />
+    <uol name="Damage" value="../7130200/Damage" />
+    <uol name="Die" value="../7130200/Die" />
+  </imgdir>
+  <imgdir name="9500133">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../7130102/Die" />
+  </imgdir>
+  <imgdir name="9500134">
+    <uol name="Damage" value="../7130200/Damage" />
+    <uol name="Die" value="../7130200/Die" />
+    <uol name="Attack1" value="../8140000/Attack1" />
+    <uol name="Skill" value="../8140000/Skill1" />
+  </imgdir>
+  <imgdir name="9500135">
+    <uol name="Attack1" value="../7130010/Attack1" />
+    <uol name="CharDam1" value="../7130010/CharDam1" />
+    <uol name="Damage" value="../7130010/Damage" />
+    <uol name="Die" value="../7130010/Die" />
+  </imgdir>
+  <imgdir name="9500136">
+    <uol name="Attack1" value="../8141000/Attack1" />
+    <uol name="CharDam1" value="../8141000/CharDam1" />
+    <uol name="Damage" value="../8141000/Damage" />
+    <uol name="Die" value="../8141000/Die" />
+  </imgdir>
+  <imgdir name="9500137">
+    <uol name="Attack1" value="../8143000/Attack1" />
+    <uol name="CharDam1" value="../8143000/CharDam1" />
+    <uol name="Damage" value="../8143000/Damage" />
+    <uol name="Die" value="../8143000/Die" />
+  </imgdir>
+  <imgdir name="9500138">
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="Die" value="../7130001/Die" />
+    <uol name="Attack1" value="../8140500/Attack1" />
+    <uol name="Damage" value="../8140500/Damage" />
+  </imgdir>
+  <imgdir name="9500139">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="AttackF" value="../8130100/AttackF" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="CharDamF" value="../8130100/CharDamF" />
+    <uol name="Die" value="../8130100/Die" />
+  </imgdir>
+  <imgdir name="9500140">
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+  </imgdir>
+  <imgdir name="9500141">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../6300000/Die" />
+  </imgdir>
+  <imgdir name="9500142">
+    <uol name="Damage" value="../6130102/Damage" />
+    <uol name="Die" value="../6130102/Die" />
+  </imgdir>
+  <imgdir name="9500143">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9500144">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0100100/Die" />
+  </imgdir>
+  <imgdir name="9500145" />
+  <imgdir name="9500146" />
+  <imgdir name="9500147">
+    <uol name="Attack1" value="../6300000/Attack1" />
+    <uol name="CharDam1" value="../6300000/CharDam1" />
+    <uol name="Damage" value="../6300000/Damage" />
+    <uol name="Die" value="../7130102/Die" />
+  </imgdir>
+  <imgdir name="9500148">
+    <uol name="Attack1" value="../4130101/Attack1" />
+    <uol name="CharDam1" value="../4130101/CharDam1" />
+    <uol name="Die" value="../4130101/Die" />
+  </imgdir>
+  <imgdir name="9500149">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../5130101/Die" />
+  </imgdir>
+  <imgdir name="9500150">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../5130101/Die" />
+  </imgdir>
+  <imgdir name="9500151">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../0120100/Die" />
+  </imgdir>
+  <imgdir name="9500152" />
+  <imgdir name="9500153" />
+  <imgdir name="9500154" />
+  <imgdir name="9500167">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../1210100/Die" />
+  </imgdir>
+  <imgdir name="9500168">
+    <uol name="Attack1" value="../9300003/Attack1" />
+    <uol name="CharDam1" value="../9300003/CharDam1" />
+    <uol name="Damage" value="../9300003/Damage" />
+    <uol name="Die" value="../0210100/Die" />
+    <uol name="Skill1" value="../9300003/Skill1" />
+  </imgdir>
+  <imgdir name="9500169">
+    <uol name="Attack1" value="../../8130100/Attack1" />
+    <uol name="Attack2" value="../../8130100/Attack2" />
+    <uol name="Attack3" value="../../8130100/Attack3" />
+    <uol name="CharDam1" value="../../8130100/CharDam1" />
+    <uol name="CharDam2" value="../../8130100/CharDam2" />
+    <uol name="CharDam3" value="../../8130100/CharDam3" />
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../../8130100/Die" />
+  </imgdir>
+  <imgdir name="9500170">
+    <uol name="Attack1" value="../9300039/Attack1" />
+    <uol name="CharDam1" value="../9300039/CharDam1" />
+    <uol name="Damage" value="../9300039/Damage" />
+    <uol name="Die" value="../9300039/Die" />
+    <uol name="Skill1" value="../9300039/Skill1" />
+    <uol name="Skill2" value="../9300039/Skill2" />
+    <uol name="Skill3" value="../9300039/Skill3" />
+  </imgdir>
+  <imgdir name="9500171">
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="CharDam2" value="CharDam1" />
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+  </imgdir>
+  <imgdir name="9500172">
+    <uol name="Damage" value="../9300012/Damage" />
+    <uol name="Attack1" value="../9300012/Attack1" />
+    <uol name="CharDam1" value="../9300012/CharDam1" />
+    <uol name="Die" value="../9300012/Die" />
+  </imgdir>
+  <imgdir name="9500173">
+    <uol name="Attack1" value="../8180001/Attack1" />
+    <uol name="CharDam1" value="../8180001/CharDam1" />
+    <uol name="Attack2" value="../8180001/Attack2" />
+    <uol name="CharDam2" value="../8180001/CharDam2" />
+    <uol name="Attack3" value="../8180001/Attack3" />
+    <uol name="CharDam3" value="../8180001/CharDam3" />
+    <uol name="Damage" value="../8180001/Damage" />
+    <uol name="Die" value="../8180001/Die" />
+  </imgdir>
+  <imgdir name="9500174">
+    <uol name="Attack1" value="../8180000/Attack1" />
+    <uol name="Attack2" value="../8180000/Attack2" />
+    <uol name="Attack3" value="../8180000/Attack3" />
+    <uol name="CharDam1" value="../8180000/CharDam1" />
+    <uol name="CharDam2" value="../8180000/CharDam2" />
+    <uol name="CharDam3" value="../8180000/CharDam3" />
+    <uol name="Damage" value="../8180000/Damage" />
+    <uol name="Die" value="../8180000/Die" />
+  </imgdir>
+  <imgdir name="9500175">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+  </imgdir>
+  <imgdir name="9500176">
+    <uol name="Attack1" value="../9400205/Attack1" />
+    <uol name="CharDam1" value="../9400205/CharDam1" />
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Die" value="../9400205/Die" />
+  </imgdir>
+  <imgdir name="9500177">
+    <uol name="Attack1" value="../9600009/Attack1" />
+    <uol name="Attack2" value="../9600009/Attack2" />
+    <uol name="Attack3" value="../9600009/Attack3" />
+    <uol name="CharDam1" value="../9600009/CharDam1" />
+    <uol name="CharDam2" value="../9600009/CharDam2" />
+    <uol name="CharDam3" value="../9600009/CharDam3" />
+    <uol name="Damage" value="../9600009/Damage" />
+    <uol name="Die" value="../9600009/Die" />
+  </imgdir>
+  <imgdir name="9500178">
+    <uol name="Die" value="../9410014/Die" />
+  </imgdir>
+  <imgdir name="9500179">
+    <uol name="Attack1" value="../9410015/Attack1" />
+    <uol name="Attack2" value="../9410015/Attack2" />
+    <uol name="Attack3" value="../9410015/Attack3" />
+    <uol name="CharDam1" value="../9410015/CharDam1" />
+    <uol name="CharDam2" value="../9410015/CharDam2" />
+    <uol name="CharDam3" value="../9410015/CharDam3" />
+    <uol name="Damage" value="../9410015/Damage" />
+    <uol name="Die" value="../9410014/Die" />
+  </imgdir>
+  <imgdir name="9500180">
+    <uol name="Attack1" value="../8500001/Attack1" />
+    <uol name="Attack2" value="../8500001/Attack2" />
+    <uol name="Attack3" value="../8500001/Attack3" />
+    <uol name="Attack4" value="../8500001/Attack4" />
+    <uol name="CharDam1" value="../8500001/CharDam1" />
+    <uol name="CharDam2" value="../8500001/CharDam2" />
+    <uol name="CharDam3" value="../8500001/CharDam3" />
+    <uol name="Damage" value="../8500001/Damage" />
+    <uol name="Skill1" value="../8500001/Skill1" />
+    <uol name="Skill2" value="../8500001/Skill2" />
+    <uol name="Skill3" value="../8500001/Skill3" />
+    <uol name="Die" value="../8500001/Die" />
+  </imgdir>
+  <imgdir name="9500181">
+    <uol name="Damage" value="../8500002/Damage" />
+    <uol name="Die" value="../8500002/Die" />
+  </imgdir>
+  <imgdir name="9500184" />
+  <imgdir name="9500185">
+    <uol name="Damage" value="../9500184/Damage" />
+    <uol name="Die" value="../9500184/Die" />
+  </imgdir>
+  <imgdir name="9500186">
+    <uol name="Damage" value="../9500184/Damage" />
+    <uol name="Die" value="../9500184/Die" />
+  </imgdir>
+  <imgdir name="9500187" />
+  <imgdir name="9500188">
+    <uol name="Die" value="../9500187/Die" />
+    <uol name="Damage" value="../9500187/Damage" />
+  </imgdir>
+  <imgdir name="9500189" />
+  <imgdir name="9500190" />
+  <imgdir name="9500191" />
+  <imgdir name="9500192" />
+  <imgdir name="9500193" />
+  <imgdir name="9500194" />
+  <imgdir name="9500195" />
+  <imgdir name="9500196" />
+  <imgdir name="9500197" />
+  <imgdir name="9500198" />
+  <imgdir name="9500199" />
+  <imgdir name="9500300" />
+  <imgdir name="9500301">
+    <uol name="Die" value="../9500187/Die" />
+    <uol name="Damage" value="../9500187/Damage" />
+  </imgdir>
+  <imgdir name="9500302" />
+  <imgdir name="9500317" />
+  <imgdir name="9500318" />
+  <imgdir name="9500319" />
+  <imgdir name="9500320">
+    <uol name="CharDam1" value="../5120505/CharDam1" />
+    <uol name="Damage" value="../5120505/Damage" />
+    <uol name="Die" value="../5120505/Die" />
+  </imgdir>
+  <imgdir name="9500321" />
+  <imgdir name="9500322" />
+  <imgdir name="9500323">
+    <uol name="Die" value="../9500324/Die" />
+    <uol name="Damage" value="../9500324/Damage" />
+    <uol name="Regen" value="../9500324/Regen" />
+  </imgdir>
+  <imgdir name="9500324" />
+  <imgdir name="9500325">
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9500326">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9500327">
+    <uol name="Damage" value="../0100100/Damage" />
+  </imgdir>
+  <imgdir name="9500328">
+    <uol name="CharDam2" value="CharDam1" />
+  </imgdir>
+  <imgdir name="9500329" />
+  <imgdir name="9500330" />
+  <imgdir name="9500331" />
+  <imgdir name="9500332" />
+  <imgdir name="9500333">
+    <uol name="CharDam1" value="../8130100/CharDam3" />
+    <uol name="CharDam2" value="../8130100/CharDam1" />
+  </imgdir>
+  <imgdir name="9500334">
+    <uol name="Attack1" value="../9300119/Attack1" />
+    <uol name="CharDam1" value="../9300119/CharDam1" />
+    <uol name="Damage" value="../9300119/Damage" />
+    <uol name="Die" value="../9300119/Die" />
+    <uol name="Skill1" value="../9300119/Skill1" />
+    <uol name="Skill2" value="../9300119/Skill2" />
+  </imgdir>
+  <imgdir name="9500335">
+    <uol name="Damage" value="../0100100/Damage" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="AttackF" value="../8130100/AttackF" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="CharDamF" value="../8130100/CharDamF" />
+    <uol name="Die" value="../8130100/Die" />
+  </imgdir>
+  <imgdir name="9500337">
+    <uol name="Damage" value="../2220000/Damage" />
+    <uol name="Die" value="../2220000/Die" />
+    <uol name="Skill1" value="../2220000/Skill1" />
+  </imgdir>
+  <imgdir name="9500338">
+    <uol name="Damage" value="../3220000/Damage" />
+    <uol name="Die" value="../3220000/Die" />
+    <uol name="Skill1" value="../3220000/Skill1" />
+    <uol name="Attack1" value="../3220000/Attack1" />
+    <uol name="CharDam1" value="../3220000/CharDam1" />
+    <uol name="Attack2" value="../3220000/Attack2" />
+    <uol name="CharDam2" value="../3220000/CharDam2" />
+  </imgdir>
+  <imgdir name="9500339">
+    <uol name="Damage" value="../3220001/Damage" />
+    <uol name="Die" value="../3220001/Die" />
+    <uol name="Skill1" value="../3220001/Skill1" />
+    <uol name="Attack1" value="../3220001/Attack1" />
+    <uol name="CharDam1" value="../3220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9500340">
+    <uol name="Die" value="../0210100/Die" />
+  </imgdir>
+  <imgdir name="9500341">
+    <uol name="Damage" value="../5220002/Damage" />
+    <uol name="Die" value="../5220002/Die" />
+    <uol name="Skill1" value="../5220002/Skill1" />
+    <uol name="Attack1" value="../5220002/Attack1" />
+    <uol name="CharDam1" value="../5220002/CharDam1" />
+  </imgdir>
+  <imgdir name="9500342">
+    <uol name="Damage" value="../5220000/Damage" />
+    <uol name="Die" value="../5220000/Die" />
+    <uol name="Skill1" value="../5220000/Skill1" />
+    <uol name="Attack1" value="../5220000/Attack1" />
+    <uol name="CharDam1" value="../5220000/CharDam1" />
+  </imgdir>
+  <imgdir name="9500343">
+    <uol name="Damage" value="../9300012/Damage" />
+    <uol name="Die" value="../9300012/Die" />
+    <uol name="Attack1" value="../9300012/Attack1" />
+    <uol name="CharDam1" value="../9300012/CharDam1" />
+  </imgdir>
+  <imgdir name="9500344">
+    <uol name="Damage" value="../5220003/Damage" />
+    <uol name="Die" value="../5220003/Die" />
+    <uol name="Skill1" value="../5220003/Skill1" />
+    <uol name="Attack1" value="../5220003/Attack1" />
+    <uol name="CharDam1" value="../5220003/CharDam1" />
+  </imgdir>
+  <imgdir name="9500345">
+    <uol name="Damage" value="../6130101/Damage" />
+    <uol name="Die" value="../6130101/Die" />
+    <uol name="Attack1" value="../6130101/Attack1" />
+    <uol name="CharDam1" value="../6130101/CharDam1" />
+  </imgdir>
+  <imgdir name="9500346">
+    <uol name="Damage" value="../6220000/Damage" />
+    <uol name="Die" value="../6220000/Die" />
+    <uol name="Skill1" value="../6220000/Skill1" />
+  </imgdir>
+  <imgdir name="9500347">
+    <uol name="Damage" value="../6220001/Damage" />
+    <uol name="Die" value="../6220001/Die" />
+    <uol name="Attack1" value="../6220001/Attack1" />
+    <uol name="CharDam1" value="../6220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9500348">
+    <uol name="Damage" value="../7220001/Damage" />
+    <uol name="Die" value="../7220001/Die" />
+    <uol name="Skill1" value="../7220001/Skill1" />
+    <uol name="Attack1" value="../7220001/Attack1" />
+    <uol name="CharDam1" value="../7220001/CharDam1" />
+    <uol name="Skill2" value="../7220001/Skill2" />
+  </imgdir>
+  <imgdir name="9500349">
+    <uol name="Damage" value="../9300105/Damage" />
+    <uol name="Die" value="../9300105/Die" />
+    <uol name="Skill1" value="../9300105/Skill1" />
+    <uol name="Attack1" value="../9300105/Attack1" />
+    <uol name="CharDam1" value="../9300105/CharDam1" />
+    <uol name="Skill2" value="../9300105/Skill2" />
+  </imgdir>
+  <imgdir name="9500350">
+    <uol name="Damage" value="../7220000/Damage" />
+    <uol name="Die" value="../7220000/Die" />
+    <uol name="Skill1" value="../7220000/Skill1" />
+    <uol name="Attack1" value="../7220000/Attack1" />
+    <uol name="CharDam1" value="../7220000/CharDam1" />
+    <uol name="Attack2" value="../7220000/Attack2" />
+    <uol name="CharDam2" value="../7220000/CharDam2" />
+  </imgdir>
+  <imgdir name="9500351">
+    <uol name="Damage" value="../9300039/Damage" />
+    <uol name="Die" value="../9300039/Die" />
+    <uol name="Skill1" value="../9300039/Skill1" />
+    <uol name="Attack1" value="../9300039/Attack1" />
+    <uol name="CharDam1" value="../9300039/CharDam1" />
+    <uol name="Skill2" value="../9300039/Skill2" />
+    <uol name="Skill3" value="../9300039/Skill3" />
+  </imgdir>
+  <imgdir name="9500352">
+    <uol name="Damage" value="../7220002/Damage" />
+    <uol name="Die" value="../7220002/Die" />
+    <uol name="Skill1" value="../7220002/Skill1" />
+    <uol name="Attack1" value="../7220002/Attack1" />
+    <uol name="CharDam1" value="../7220002/CharDam1" />
+  </imgdir>
+  <imgdir name="9500353">
+    <uol name="Damage" value="../8130100/Damage" />
+    <uol name="Die" value="../8130100/Die" />
+    <uol name="Attack1" value="../8130100/Attack1" />
+    <uol name="CharDam1" value="../8130100/CharDam1" />
+    <uol name="Attack2" value="../8130100/Attack2" />
+    <uol name="CharDam2" value="../8130100/CharDam2" />
+    <uol name="Attack3" value="../8130100/Attack3" />
+    <uol name="CharDam3" value="../8130100/CharDam3" />
+  </imgdir>
+  <imgdir name="9500354">
+    <uol name="Damage" value="../9300139/Damage" />
+    <uol name="Die" value="../9300139/Die" />
+    <uol name="Skill1" value="../9300139/Skill1" />
+    <uol name="Attack1" value="../9300139/Attack1" />
+    <uol name="CharDam1" value="../9300139/CharDam1" />
+    <uol name="Attack2" value="../9300139/Attack2" />
+    <uol name="CharDam2" value="../9300139/CharDam2" />
+  </imgdir>
+  <imgdir name="9500355">
+    <uol name="Damage" value="../8220000/Damage" />
+    <uol name="Die" value="../8220000/Die" />
+    <uol name="Skill1" value="../8220000/Skill1" />
+    <uol name="Attack1" value="../8220000/Attack1" />
+    <uol name="CharDam1" value="../8220000/CharDam1" />
+    <uol name="Skill2" value="../8220000/Skill2" />
+  </imgdir>
+  <imgdir name="9500356">
+    <uol name="Damage" value="../8220002/Damage" />
+    <uol name="Die" value="../8220002/Die" />
+    <uol name="Skill1" value="../8220002/Skill1" />
+    <uol name="Attack1" value="../8220002/Attack1" />
+    <uol name="CharDam1" value="../8220002/CharDam1" />
+  </imgdir>
+  <imgdir name="9500357">
+    <uol name="Damage" value="../8220001/Damage" />
+    <uol name="Die" value="../8220001/Die" />
+    <uol name="Skill1" value="../8220001/Skill1" />
+    <uol name="Attack1" value="../8220001/Attack1" />
+    <uol name="CharDam1" value="../8220001/CharDam1" />
+  </imgdir>
+  <imgdir name="9500358">
+    <uol name="Damage" value="../8150000/Damage" />
+    <uol name="Die" value="../8150000/Die" />
+    <uol name="Attack1" value="../8150000/Attack1" />
+    <uol name="CharDam1" value="../8150000/CharDam1" />
+    <uol name="Attack2" value="../8150000/Attack2" />
+    <uol name="CharDam2" value="../8150000/CharDam2" />
+  </imgdir>
+  <imgdir name="9500359">
+    <uol name="Damage" value="../8180000/Damage" />
+    <uol name="Die" value="../8180000/Die" />
+    <uol name="Attack1" value="../8180000/Attack1" />
+    <uol name="CharDam1" value="../8180000/CharDam1" />
+    <uol name="Attack2" value="../8180000/Attack2" />
+    <uol name="CharDam2" value="../8180000/CharDam2" />
+    <uol name="Attack3" value="../8180000/Attack3" />
+    <uol name="CharDam3" value="../8180000/CharDam3" />
+  </imgdir>
+  <imgdir name="9500360">
+    <uol name="Damage" value="../8180001/Damage" />
+    <uol name="Die" value="../8180001/Die" />
+    <uol name="Attack1" value="../8180001/Attack1" />
+    <uol name="CharDam1" value="../8180001/CharDam1" />
+    <uol name="Attack2" value="../8180001/Attack2" />
+    <uol name="CharDam2" value="../8180001/CharDam2" />
+    <uol name="Attack3" value="../8180001/Attack3" />
+    <uol name="CharDam3" value="../8180001/CharDam3" />
+  </imgdir>
+  <imgdir name="9500361">
+    <uol name="Damage" value="../8220003/Damage" />
+    <uol name="Die" value="../8220003/Die" />
+    <uol name="Skill1" value="../8220003/Skill1" />
+    <uol name="Attack1" value="../8220003/Attack1" />
+    <uol name="CharDam1" value="../8220003/CharDam1" />
+    <uol name="Attack2" value="../8220003/Attack2" />
+    <uol name="CharDam2" value="../8220003/CharDam2" />
+  </imgdir>
+  <imgdir name="9500362">
+    <uol name="Damage" value="../8500001/Damage" />
+    <uol name="Die" value="../8500001/Die" />
+    <uol name="Attack1" value="../8500001/Attack1" />
+    <uol name="CharDam1" value="../8500001/CharDam1" />
+    <uol name="Attack2" value="../8500001/Attack2" />
+    <uol name="CharDam2" value="../8500001/CharDam2" />
+    <uol name="Attack3" value="../8500001/Attack3" />
+    <uol name="CharDam3" value="../8500001/CharDam3" />
+    <uol name="Attack4" value="../8500001/Attack4" />
+    <uol name="CharDam4" value="../8500001/CharDam4" />
+    <uol name="Skill1" value="../8500001/Skill1" />
+    <uol name="Skill2" value="../8500001/Skill2" />
+    <uol name="Skill3" value="../8500001/Skill3" />
+  </imgdir>
+  <imgdir name="9500363">
+    <uol name="Damage" value="../8510000/Damage" />
+    <uol name="Die" value="../8510000/Die" />
+    <uol name="Attack1" value="../8510000/Attack1" />
+    <uol name="CharDam1" value="../8510000/CharDam1" />
+    <uol name="Attack2" value="../8510000/Attack2" />
+    <uol name="CharDam2" value="../8510000/CharDam2" />
+    <uol name="Attack3" value="../8510000/Attack3" />
+    <uol name="CharDam3" value="../8510000/CharDam3" />
+    <uol name="Skill1" value="../8510000/Skill1" />
+    <uol name="Skill2" value="../8510000/Skill2" />
+    <uol name="Skill3" value="../8510000/Skill3" />
+    <uol name="Skill4" value="../8510000/Skill4" />
+    <uol name="Skill5" value="../8510000/Skill5" />
+  </imgdir>
+  <imgdir name="9500365" />
+  <imgdir name="9500366" />
+  <imgdir name="9500367" />
+  <imgdir name="9500368" />
+  <imgdir name="9500369" />
+  <imgdir name="9500370" />
+  <imgdir name="9500371" />
+  <imgdir name="9500372" />
+  <imgdir name="9500373" />
+  <imgdir name="9600001" />
+  <imgdir name="9600002" />
+  <imgdir name="9600003" />
+  <imgdir name="9600004" />
+  <imgdir name="9600005" />
+  <imgdir name="9600006" />
+  <imgdir name="9600007" />
+  <imgdir name="9600008" />
+  <imgdir name="9600009" />
+  <imgdir name="9600010">
+    <uol name="Attack1" value="../9600009/Attack1" />
+    <uol name="Attack2" value="../9600009/Attack2" />
+    <uol name="Attack3" value="../9600009/Attack3" />
+    <uol name="CharDam1" value="../9600009/CharDam1" />
+    <uol name="CharDam2" value="../9600009/CharDam2" />
+    <uol name="CharDam3" value="../9600009/CharDam3" />
+    <uol name="Damage" value="../9600009/Damage" />
+    <uol name="Die" value="../9600009/Die" />
+  </imgdir>
+  <imgdir name="9600065">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../2100105/Die" />
+  </imgdir>
+  <imgdir name="9600066">
+    <uol name="Damage" value="../0210100/Damage" />
+    <uol name="Die" value="../2100105/Die" />
+  </imgdir>
+  <imgdir name="9700000" />
+  <imgdir name="9700001">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700002">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700003">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700004">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700005">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700006" />
+  <imgdir name="9700007">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700008">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700009">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700010">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700011">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700012" />
+  <imgdir name="9700013">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700014">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700015">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700016">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700017">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700018">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700019">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700020">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700021">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700022" />
+  <imgdir name="9700023">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700024">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700025">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700026">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700027">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700028">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700029">
+    <uol name="Damage" value="../9700000/Damage" />
+    <uol name="Die0" value="../9700000/Die0" />
+    <uol name="Die1" value="../9700000/Die1" />
+    <uol name="DieF" value="../9700000/DieF" />
+  </imgdir>
+  <imgdir name="9700030" />
+  <imgdir name="9700031" />
+  <imgdir name="9700032" />
+  <imgdir name="9700033" />
+  <imgdir name="9700034" />
+  <imgdir name="9700035" />
+  <imgdir name="9700036" />
+  <imgdir name="9700037" />
+</imgdir>

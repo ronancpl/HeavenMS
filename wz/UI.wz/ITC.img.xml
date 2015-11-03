@@ -1,0 +1,469 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="ITC.img">
+  <imgdir name="Base">
+    <canvas name="backgrnd" width="800" height="600" />
+    <imgdir name="Tab">
+      <imgdir name="Enable">
+        <canvas name="0" width="25" height="25" />
+        <canvas name="1" width="25" height="25" />
+        <canvas name="2" width="25" height="25" />
+      </imgdir>
+      <imgdir name="Disable">
+        <canvas name="0" width="25" height="18" />
+        <canvas name="1" width="25" height="18" />
+        <canvas name="2" width="25" height="18" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Tab2">
+      <imgdir name="Enable">
+        <canvas name="0" width="27" height="10" />
+        <canvas name="1" width="19" height="9" />
+        <canvas name="2" width="29" height="9" />
+        <canvas name="3" width="19" height="9" />
+      </imgdir>
+      <imgdir name="Disable">
+        <canvas name="0" width="27" height="10" />
+        <canvas name="1" width="19" height="9" />
+        <canvas name="2" width="29" height="9" />
+        <canvas name="3" width="19" height="9" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Preview">
+      <canvas name="0" width="213" height="109" />
+      <canvas name="1" width="213" height="109" />
+      <canvas name="2" width="213" height="109" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Tab">
+    <canvas name="1" width="509" height="77" />
+    <canvas name="2" width="509" height="77" />
+    <canvas name="3" width="509" height="77" />
+    <canvas name="4" width="509" height="77" />
+    <canvas name="5" width="509" height="77" />
+  </imgdir>
+  <imgdir name="Sell">
+    <canvas name="backgrnd" width="508" height="320" />
+    <canvas name="backgrnd1" width="266" height="165" />
+    <imgdir name="Tab">
+      <canvas name="0" width="508" height="48" />
+      <canvas name="1" width="508" height="48" />
+      <canvas name="2" width="508" height="48" />
+      <canvas name="3" width="508" height="48" />
+      <canvas name="4" width="508" height="48" />
+    </imgdir>
+    <imgdir name="up">
+      <imgdir name="normal">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="down">
+      <imgdir name="normal">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="9" height="11" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="check">
+      <canvas name="0" width="12" height="12" />
+    </imgdir>
+    <imgdir name="BtShoppingBasket">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtBuy">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtRegistration">
+      <imgdir name="normal">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCancel">
+      <imgdir name="normal">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Item">
+      <imgdir name="BtRegistration">
+        <imgdir name="normal">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="BtCancel">
+        <imgdir name="normal">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="Buy">
+    <canvas name="backgrnd" width="508" height="320" />
+    <canvas name="backgrnd1" width="266" height="268" />
+    <canvas name="backgrnd2" width="266" height="84" />
+    <canvas name="backgrnd3" width="266" height="200" />
+    <imgdir name="backgrnd4">
+      <canvas name="0" width="266" height="38">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="266" height="30">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="266" height="189">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="266" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="Tab">
+      <canvas name="0" width="508" height="48" />
+      <canvas name="1" width="508" height="48" />
+      <canvas name="2" width="508" height="48" />
+      <canvas name="3" width="508" height="48" />
+      <canvas name="4" width="508" height="48" />
+    </imgdir>
+    <imgdir name="BtRegistration">
+      <imgdir name="normal">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="80" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtSell">
+      <imgdir name="normal">
+        <canvas name="0" width="70" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="70" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="70" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="70" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Item">
+      <canvas name="backgrnd" width="202" height="302" />
+      <imgdir name="BtRegistration">
+        <imgdir name="normal">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="BtCancel">
+        <imgdir name="normal">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="40" height="18" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="MyPage">
+    <canvas name="backgrnd" width="508" height="320" />
+    <canvas name="backgrnd1" width="508" height="320">
+      <vector name="origin" x="254" y="160" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="backgrnd2" width="508" height="320" />
+    <imgdir name="Tab">
+      <canvas name="0" width="508" height="48" />
+      <canvas name="1" width="508" height="48" />
+      <canvas name="2" width="508" height="48" />
+      <canvas name="3" width="508" height="48" />
+    </imgdir>
+    <imgdir name="BtBuy">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtDelete">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCancel">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtBuy1">
+      <imgdir name="normal">
+        <canvas name="0" width="37" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="37" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="37" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="37" height="17" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="PicturePlate">
+    <canvas name="HowTo" width="500" height="48" />
+    <canvas name="HowTo1" width="500" height="344" />
+    <canvas name="NoItem" width="406" height="242" />
+  </imgdir>
+  <imgdir name="BtSearch">
+    <imgdir name="normal">
+      <canvas name="0" width="34" height="17" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="34" height="17" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="34" height="17" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="34" height="17" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="BtExit">
+    <imgdir name="normal">
+      <canvas name="0" width="78" height="46" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="78" height="46" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="78" height="46" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="78" height="46" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="BtCharge">
+    <imgdir name="normal">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="BtCheck">
+    <imgdir name="normal">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="46" height="39" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Sort">
+    <imgdir name="Normal_Asc">
+      <canvas name="0" width="289" height="22" />
+      <canvas name="1" width="69" height="22" />
+      <canvas name="2" width="61" height="22" />
+      <canvas name="3" width="69" height="22" />
+    </imgdir>
+    <imgdir name="Pressed_Asc">
+      <canvas name="0" width="289" height="22" />
+      <canvas name="1" width="69" height="22" />
+      <canvas name="2" width="61" height="22" />
+      <canvas name="3" width="69" height="22" />
+    </imgdir>
+    <imgdir name="Normal_Desc">
+      <canvas name="0" width="289" height="22" />
+      <canvas name="1" width="69" height="22" />
+      <canvas name="2" width="61" height="22" />
+      <canvas name="3" width="69" height="22" />
+    </imgdir>
+    <imgdir name="Pressed_Desc">
+      <canvas name="0" width="289" height="22" />
+      <canvas name="1" width="69" height="22" />
+      <canvas name="2" width="61" height="22" />
+      <canvas name="3" width="69" height="22" />
+    </imgdir>
+    <canvas name="asc" width="11" height="10" />
+    <canvas name="desc" width="11" height="10" />
+  </imgdir>
+  <imgdir name="Auction">
+    <canvas name="backgrnd" width="266" height="247">
+      <vector name="origin" x="133" y="113" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="backgrnd1" width="284" height="184">
+      <vector name="origin" x="145" y="92" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="BtBid">
+      <imgdir name="normal">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="34" height="17" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="BtSell">
+    <imgdir name="normal">
+      <canvas name="0" width="33" height="17" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="33" height="17" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="33" height="17" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="33" height="17" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="BtAuction">
+    <imgdir name="normal">
+      <canvas name="0" width="45" height="17" />
+    </imgdir>
+    <imgdir name="pressed">
+      <canvas name="0" width="45" height="17" />
+    </imgdir>
+    <imgdir name="mouseOver">
+      <canvas name="0" width="45" height="17" />
+    </imgdir>
+    <imgdir name="disabled">
+      <canvas name="0" width="45" height="17" />
+    </imgdir>
+  </imgdir>
+</imgdir>

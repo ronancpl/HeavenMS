@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2092002.img">
+  <imgdir name="info">
+    <string name="info" value="카메라삼각대" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="58" height="93">
+        <vector name="origin" x="32" y="92" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="70" height="102">
+        <vector name="origin" x="38" y="101" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+    <canvas name="0" width="58" height="93">
+      <vector name="origin" x="32" y="92" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <uol name="0" value="../../0/hit/0" />
+      <uol name="1" value="../../0/hit/1" />
+      <canvas name="2" width="127" height="141">
+        <vector name="origin" x="76" y="148" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="145" height="149">
+        <vector name="origin" x="80" y="148" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="4" width="66" height="95">
+        <vector name="origin" x="32" y="93" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <string name="action" value="SEAitem0" />
+</imgdir>

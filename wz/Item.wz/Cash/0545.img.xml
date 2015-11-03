@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0545.img">
+  <imgdir name="05450000">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="33">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="33">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="npc" value="9090000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05451000">
+    <imgdir name="info">
+      <canvas name="icon" width="33" height="28">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="33" height="25">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="npc" value="0" />
+    </imgdir>
+  </imgdir>
+</imgdir>

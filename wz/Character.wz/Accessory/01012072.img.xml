@@ -1,0 +1,314 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01012072.img">
+  <imgdir name="info">
+    <canvas name="icon" width="26" height="32">
+      <vector name="origin" x="-3" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="25" height="32">
+      <vector name="origin" x="-4" y="32" />
+    </canvas>
+    <string name="islot" value="Af" />
+    <string name="vslot" value="Af" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="10" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incSpeed" value="10" />
+    <string name="timeLimited" value="1" />
+    <int name="slotMax" value="1" />
+    <int name="cash" value="0" />
+    <int name="price" value="1" />
+    <int name="notSale" value="1" />
+  </imgdir>
+  <imgdir name="default">
+    <canvas name="default" width="11" height="11">
+      <vector name="origin" x="5" y="5" />
+      <imgdir name="map">
+        <vector name="brow" x="2" y="-23" />
+      </imgdir>
+      <string name="z" value="accessoryFace" />
+    </canvas>
+  </imgdir>
+  <imgdir name="blink">
+    <imgdir name="0">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="default" value="../../default/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="hit">
+    <imgdir name="0">
+      <canvas name="default" width="11" height="11">
+        <vector name="origin" x="5" y="5" />
+        <imgdir name="map">
+          <vector name="brow" x="2" y="-23" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="smile">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-13" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="troubled">
+    <imgdir name="0">
+      <canvas name="default" width="7" height="7">
+        <vector name="origin" x="3" y="3" />
+        <imgdir name="map">
+          <vector name="brow" x="2" y="-22" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="cry">
+    <imgdir name="0">
+      <canvas name="default" width="7" height="7">
+        <vector name="origin" x="3" y="3" />
+        <imgdir name="map">
+          <vector name="brow" x="2" y="-22" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="angry">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-13" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="bewildered">
+    <imgdir name="0">
+      <canvas name="default" width="11" height="11">
+        <vector name="origin" x="5" y="5" />
+        <imgdir name="map">
+          <vector name="brow" x="2" y="-23" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stunned">
+    <imgdir name="0">
+      <canvas name="default" width="11" height="11">
+        <vector name="origin" x="5" y="5" />
+        <imgdir name="map">
+          <vector name="brow" x="2" y="-23" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="vomit">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-13" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="oops">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-13" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="cheers">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-13" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="chu">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-12" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="wink">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-12" y="-44" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="pain">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-11" y="-43" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="glitter">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-11" y="-43" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shine">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-12" y="-42" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="blaze">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-12" y="-42" />
+        </imgdir>
+        <string name="z" value="accessoryFaceOverCap" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="love">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-42" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="despair">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="hum">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="bowing">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="hot">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="dam">
+    <imgdir name="0">
+      <canvas name="default" width="1" height="1">
+        <vector name="origin" x="15" y="25" />
+        <imgdir name="map">
+          <vector name="brow" x="-14" y="-45" />
+        </imgdir>
+        <string name="z" value="accessoryFace" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <uol name="default" value="../0/default" />
+    </imgdir>
+  </imgdir>
+</imgdir>

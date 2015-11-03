@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="grayBrick3.img">
+  <imgdir name="info" />
+  <imgdir name="bsc">
+    <canvas name="0" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enH0">
+    <canvas name="0" width="90" height="29">
+      <vector name="origin" x="0" y="29" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="0" y="-28" />
+        <vector name="foothold" x="90" y="-28" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="enH1">
+    <canvas name="0" width="90" height="29">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enV0">
+    <canvas name="0" width="39" height="60">
+      <vector name="origin" x="39" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="-50" y="60" />
+        <vector name="foothold" x="-50" y="0" />
+      </extended>
+    </canvas>
+    <canvas name="1" width="40" height="60">
+      <vector name="origin" x="40" y="0" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="-50" y="60" />
+        <vector name="foothold" x="-50" y="0" />
+      </extended>
+    </canvas>
+    <canvas name="2" width="39" height="60">
+      <vector name="origin" x="39" y="0" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="-50" y="60" />
+        <vector name="foothold" x="-50" y="0" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="enV1">
+    <canvas name="0" width="35" height="60">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="50" y="0" />
+        <vector name="foothold" x="50" y="60" />
+      </extended>
+    </canvas>
+    <canvas name="1" width="40" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="50" y="0" />
+        <vector name="foothold" x="50" y="60" />
+      </extended>
+    </canvas>
+    <canvas name="2" width="43" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="50" y="0" />
+        <vector name="foothold" x="50" y="60" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="edU">
+    <canvas name="0" width="45" height="29">
+      <vector name="origin" x="40" y="29" />
+      <imgdir name="map" />
+      <int name="z" value="-4" />
+      <extended name="foothold">
+        <vector name="foothold" x="-50" y="0" />
+        <vector name="foothold" x="-50" y="-15" />
+        <vector name="foothold" x="50" y="-15" />
+        <vector name="foothold" x="50" y="0" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="edD">
+    <canvas name="0" width="45" height="29">
+      <vector name="origin" x="40" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-4" />
+    </canvas>
+  </imgdir>
+</imgdir>

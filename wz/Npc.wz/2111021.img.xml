@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2111021.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-16" />
+    <int name="dcTop" value="-258" />
+    <int name="dcRight" value="18" />
+    <int name="dcBottom" value="-223" />
+    <int name="hideName" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="alceCircle2" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="act33452">
+    <canvas name="0" width="82" height="79">
+      <vector name="origin" x="39" y="275" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="71" height="68">
+      <vector name="origin" x="33" y="270" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="69" height="67">
+      <vector name="origin" x="32" y="269" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="68" height="66">
+      <vector name="origin" x="32" y="268" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="64" height="64">
+      <vector name="origin" x="30" y="267" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="5" width="52" height="52">
+      <vector name="origin" x="24" y="260" />
+      <int name="z" value="0" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <int name="special" value="1" />
+  </imgdir>
+</imgdir>

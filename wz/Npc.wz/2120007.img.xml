@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2120007.img">
+  <imgdir name="info" />
+  <imgdir name="stand">
+    <canvas name="0" width="55" height="69">
+      <vector name="origin" x="28" y="69" />
+      <int name="delay" value="3000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="55" height="69">
+      <vector name="origin" x="28" y="69" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

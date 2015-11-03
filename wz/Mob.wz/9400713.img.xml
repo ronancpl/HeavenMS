@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9400713.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="10" />
+    <int name="maxHP" value="120" />
+    <int name="maxMP" value="45" />
+    <int name="speed" value="5" />
+    <int name="PADamage" value="70" />
+    <int name="PDDamage" value="10" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="30" />
+    <int name="acc" value="40" />
+    <int name="eva" value="2" />
+    <int name="exp" value="20" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="removeAfter" value="10" />
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+      <vector name="lt" x="-34" y="-47" />
+      <vector name="rb" x="34" y="0" />
+      <vector name="head" x="-20" y="-40" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+      <vector name="lt" x="-34" y="-47" />
+      <vector name="rb" x="34" y="0" />
+      <vector name="head" x="-20" y="-40" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+      <vector name="lt" x="-34" y="-47" />
+      <vector name="rb" x="34" y="0" />
+      <vector name="head" x="-20" y="-40" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+      <vector name="lt" x="-34" y="-47" />
+      <vector name="rb" x="34" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

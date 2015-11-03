@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0405.img">
+  <imgdir name="04055000">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="30">
+        <vector name="origin" x="-3" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-3" y="30" />
+      </canvas>
+      <int name="slotMax" value="1" />
+      <string name="tradeBlock" value="1" />
+      <int name="only" value="1" />
+      <int name="timeLimited" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="04055001">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="30">
+        <vector name="origin" x="-3" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-3" y="30" />
+      </canvas>
+      <int name="slotMax" value="1" />
+      <string name="tradeBlock" value="1" />
+      <int name="only" value="1" />
+      <int name="timeLimited" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="04055004">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="28">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <int name="timeLimited" value="1" />
+      <int name="slotMax" value="1" />
+      <string name="tradeBlock" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="04055005">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="27">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <int name="timeLimited" value="1" />
+      <int name="slotMax" value="1" />
+      <string name="tradeBlock" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

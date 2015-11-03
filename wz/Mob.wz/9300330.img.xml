@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300330.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="10" />
+    <int name="maxHP" value="40000" />
+    <int name="maxMP" value="100" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="0" />
+    <int name="PDDamage" value="0" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="0" />
+    <int name="acc" value="999" />
+    <int name="eva" value="800" />
+    <int name="exp" value="0" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="10000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="noFlip" value="1" />
+    <int name="removeAfter" value="10" />
+    <int name="boss" value="1" />
+    <int name="firstAttack" value="1" />
+    <int name="invincible" value="1" />
+    <int name="hideHP" value="1" />
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="72" height="43">
+      <vector name="origin" x="36" y="39" />
+      <vector name="head" x="0" y="-34" />
+      <vector name="lt" x="-55" y="-60" />
+      <vector name="rb" x="55" y="1" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="72" height="43">
+      <vector name="origin" x="36" y="39" />
+      <vector name="head" x="0" y="-34" />
+      <int name="delay" value="600" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="70" height="41">
+      <vector name="origin" x="37" y="38" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="1" width="67" height="39">
+      <vector name="origin" x="37" y="37" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="2" width="55" height="37">
+      <vector name="origin" x="33" y="34" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="3" width="47" height="35">
+      <vector name="origin" x="38" y="32" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="4" width="22" height="33">
+      <vector name="origin" x="35" y="32" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="300" />
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="attack1">
+    <imgdir name="info">
+      <imgdir name="range">
+        <vector name="lt" x="-55" y="-60" />
+        <vector name="rb" x="55" y="1" />
+      </imgdir>
+      <imgdir name="hit">
+        <canvas name="0" width="99" height="107">
+          <vector name="origin" x="50" y="53" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="1" width="80" height="77">
+          <vector name="origin" x="37" y="35" />
+          <int name="delay" value="300" />
+          <int name="a0" value="255" />
+          <int name="a1" value="0" />
+        </canvas>
+      </imgdir>
+      <int name="type" value="0" />
+      <int name="attackAfter" value="400" />
+      <int name="comMP" value="1" />
+      <int name="PADamage" value="1" />
+      <int name="knockback" value="1" />
+    </imgdir>
+    <canvas name="0" width="70" height="41">
+      <vector name="origin" x="37" y="38" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="500" />
+      <vector name="lt" x="-55" y="-60" />
+      <vector name="rb" x="55" y="1" />
+    </canvas>
+  </imgdir>
+</imgdir>

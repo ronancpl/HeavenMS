@@ -1,0 +1,2877 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="ChatBalloon.img">
+  <imgdir name="0">
+    <canvas name="nw" width="6" height="6">
+      <vector name="origin" x="6" y="6" />
+    </canvas>
+    <canvas name="ne" width="6" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="s" width="12" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="13">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="nw" width="6" height="6">
+      <vector name="origin" x="6" y="6" />
+    </canvas>
+    <canvas name="ne" width="6" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="s" width="12" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="13">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="nw" width="6" height="6">
+      <vector name="origin" x="6" y="6" />
+    </canvas>
+    <canvas name="ne" width="6" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="s" width="12" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="13">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="nw" width="12" height="11">
+      <vector name="origin" x="12" y="11" />
+    </canvas>
+    <canvas name="ne" width="12" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="8">
+      <vector name="origin" x="0" y="7" />
+    </canvas>
+    <canvas name="s" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="14">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="nw" width="12" height="11">
+      <vector name="origin" x="12" y="11" />
+    </canvas>
+    <canvas name="ne" width="12" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="8">
+      <vector name="origin" x="0" y="8" />
+    </canvas>
+    <canvas name="s" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="14">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="5">
+    <canvas name="nw" width="30" height="31">
+      <vector name="origin" x="30" y="7" />
+    </canvas>
+    <canvas name="ne" width="7" height="31">
+      <vector name="origin" x="0" y="7" />
+    </canvas>
+    <canvas name="sw" width="30" height="8">
+      <vector name="origin" x="30" y="0" />
+    </canvas>
+    <canvas name="se" width="7" height="8">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="31">
+      <vector name="origin" x="0" y="7" />
+    </canvas>
+    <canvas name="s" width="12" height="8">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="30" height="14">
+      <vector name="origin" x="30" y="0" />
+    </canvas>
+    <canvas name="e" width="7" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="15">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="6">
+    <canvas name="nw" width="16" height="17">
+      <vector name="origin" x="7" y="17" />
+    </canvas>
+    <canvas name="ne" width="16" height="17">
+      <vector name="origin" x="9" y="17" />
+    </canvas>
+    <canvas name="sw" width="16" height="7">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="se" width="16" height="7">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="16" height="14">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="e" width="16" height="14">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="7">
+    <canvas name="nw" width="16" height="17">
+      <vector name="origin" x="7" y="17" />
+    </canvas>
+    <canvas name="ne" width="16" height="17">
+      <vector name="origin" x="9" y="17" />
+    </canvas>
+    <canvas name="sw" width="16" height="7">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="se" width="16" height="7">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="16" height="14">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="e" width="16" height="14">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="8">
+    <canvas name="nw" width="16" height="17">
+      <vector name="origin" x="7" y="17" />
+    </canvas>
+    <canvas name="ne" width="16" height="17">
+      <vector name="origin" x="9" y="17" />
+    </canvas>
+    <canvas name="sw" width="16" height="7">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="se" width="16" height="7">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="n" width="16" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="16" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="16" height="14">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="e" width="16" height="14">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="c" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="9">
+    <canvas name="nw" width="16" height="17">
+      <vector name="origin" x="7" y="17" />
+    </canvas>
+    <canvas name="ne" width="16" height="17">
+      <vector name="origin" x="9" y="17" />
+    </canvas>
+    <canvas name="sw" width="16" height="7">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="se" width="16" height="7">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="n" width="16" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="16" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="16" height="14">
+      <vector name="origin" x="7" y="0" />
+    </canvas>
+    <canvas name="e" width="16" height="14">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="c" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="10">
+    <canvas name="nw" width="10" height="10">
+      <vector name="origin" x="10" y="10" />
+    </canvas>
+    <canvas name="ne" width="10" height="10">
+      <vector name="origin" x="0" y="10" />
+    </canvas>
+    <canvas name="sw" width="10" height="10">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="se" width="10" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="10">
+      <vector name="origin" x="0" y="10" />
+    </canvas>
+    <canvas name="s" width="14" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="10" height="14">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="e" width="10" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="16">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="11">
+    <canvas name="nw" width="6" height="7">
+      <vector name="origin" x="6" y="7" />
+    </canvas>
+    <canvas name="ne" width="6" height="7">
+      <vector name="origin" x="0" y="7" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="16" height="7">
+      <vector name="origin" x="0" y="7" />
+    </canvas>
+    <canvas name="s" width="16" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="12">
+    <canvas name="nw" width="21" height="20">
+      <vector name="origin" x="21" y="20" />
+    </canvas>
+    <canvas name="ne" width="20" height="20">
+      <vector name="origin" x="0" y="20" />
+    </canvas>
+    <canvas name="sw" width="21" height="20">
+      <vector name="origin" x="21" y="0" />
+    </canvas>
+    <canvas name="se" width="20" height="20">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="15" height="14">
+      <vector name="origin" x="15" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="13">
+    <canvas name="nw" width="21" height="20">
+      <vector name="origin" x="21" y="20" />
+    </canvas>
+    <canvas name="ne" width="20" height="20">
+      <vector name="origin" x="0" y="20" />
+    </canvas>
+    <canvas name="sw" width="21" height="20">
+      <vector name="origin" x="21" y="0" />
+    </canvas>
+    <canvas name="se" width="20" height="20">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="15" height="14">
+      <vector name="origin" x="15" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="14">
+    <canvas name="nw" width="21" height="20">
+      <vector name="origin" x="21" y="20" />
+    </canvas>
+    <canvas name="ne" width="20" height="20">
+      <vector name="origin" x="0" y="20" />
+    </canvas>
+    <canvas name="sw" width="21" height="20">
+      <vector name="origin" x="21" y="0" />
+    </canvas>
+    <canvas name="se" width="20" height="20">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="s" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="15" height="14">
+      <vector name="origin" x="15" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="15">
+    <canvas name="nw" width="17" height="16">
+      <vector name="origin" x="17" y="16" />
+    </canvas>
+    <canvas name="ne" width="17" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="17" height="16">
+      <vector name="origin" x="17" y="0" />
+    </canvas>
+    <canvas name="se" width="17" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="s" width="15" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="12" height="14">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="16">
+    <canvas name="nw" width="17" height="16">
+      <vector name="origin" x="17" y="16" />
+    </canvas>
+    <canvas name="ne" width="17" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="17" height="16">
+      <vector name="origin" x="17" y="0" />
+    </canvas>
+    <canvas name="se" width="17" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="12" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="12" height="14">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="12" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="17">
+    <canvas name="nw" width="17" height="16">
+      <vector name="origin" x="17" y="16" />
+    </canvas>
+    <canvas name="ne" width="17" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="17" height="16">
+      <vector name="origin" x="17" y="0" />
+    </canvas>
+    <canvas name="se" width="17" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="s" width="15" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="12" height="14">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="18">
+    <canvas name="nw" width="15" height="12">
+      <vector name="origin" x="15" y="12" />
+    </canvas>
+    <canvas name="ne" width="15" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="sw" width="12" height="7">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="se" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="12" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="13" height="14">
+      <vector name="origin" x="13" y="0" />
+    </canvas>
+    <canvas name="e" width="13" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="12" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="19">
+    <canvas name="nw" width="17" height="17">
+      <vector name="origin" x="17" y="17" />
+    </canvas>
+    <canvas name="ne" width="17" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="sw" width="10" height="6">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="se" width="10" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="s" width="14" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="10" height="14">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="e" width="10" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="20">
+    <canvas name="nw" width="17" height="15">
+      <vector name="origin" x="17" y="15" />
+    </canvas>
+    <canvas name="ne" width="17" height="15">
+      <vector name="origin" x="0" y="15" />
+    </canvas>
+    <canvas name="sw" width="10" height="7">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="se" width="10" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="10" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="s" width="10" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="10" height="14">
+      <vector name="origin" x="10" y="0" />
+    </canvas>
+    <canvas name="e" width="10" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="10" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="12" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="21">
+    <int name="clr" value="-1024" />
+    <imgdir name="0">
+      <canvas name="nw" width="10" height="11">
+        <vector name="origin" x="10" y="11" />
+      </canvas>
+      <canvas name="ne" width="11" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="sw" width="10" height="10">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="11" height="10">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="s" width="14" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="11" height="14">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="e" width="11" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="delay" value="150" />
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="nw" width="11" height="10">
+        <vector name="origin" x="11" y="10" />
+      </canvas>
+      <canvas name="ne" width="10" height="10">
+        <vector name="origin" x="0" y="10" />
+      </canvas>
+      <canvas name="sw" width="11" height="11">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="s" width="14" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="11" height="14">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="e" width="11" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="delay" value="150" />
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="nw" width="11" height="11">
+        <vector name="origin" x="11" y="11" />
+      </canvas>
+      <canvas name="ne" width="11" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="sw" width="11" height="11">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="se" width="11" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="s" width="14" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="11" height="14">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="e" width="11" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="delay" value="150" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="22">
+    <canvas name="nw" width="20" height="14">
+      <vector name="origin" x="20" y="14" />
+    </canvas>
+    <canvas name="ne" width="12" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="sw" width="14" height="10">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="17">
+      <vector name="origin" x="2" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="23">
+    <canvas name="nw" width="20" height="14">
+      <vector name="origin" x="20" y="14" />
+    </canvas>
+    <canvas name="ne" width="12" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="sw" width="14" height="10">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="17">
+      <vector name="origin" x="2" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="24">
+    <canvas name="nw" width="16" height="17">
+      <vector name="origin" x="16" y="17" />
+    </canvas>
+    <canvas name="ne" width="16" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="sw" width="16" height="17">
+      <vector name="origin" x="16" y="0" />
+    </canvas>
+    <canvas name="se" width="16" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="16" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="16" height="11">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="11" height="14">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="e" width="11" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="16" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="25">
+    <canvas name="nw" width="12" height="16">
+      <vector name="origin" x="12" y="16" />
+    </canvas>
+    <canvas name="ne" width="12" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="15" height="15">
+      <vector name="origin" x="15" y="0" />
+    </canvas>
+    <canvas name="se" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="s" width="12" height="11">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="9" height="13">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="e" width="9" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="26">
+    <canvas name="nw" width="13" height="12">
+      <vector name="origin" x="13" y="12" />
+    </canvas>
+    <canvas name="ne" width="13" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="sw" width="9" height="9">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="se" width="9" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="9">
+      <vector name="origin" x="0" y="9" />
+    </canvas>
+    <canvas name="s" width="14" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="9" height="13">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="e" width="9" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="27">
+    <canvas name="nw" width="12" height="12">
+      <vector name="origin" x="12" y="12" />
+    </canvas>
+    <canvas name="ne" width="12" height="12">
+      <vector name="origin" x="0" y="12" />
+    </canvas>
+    <canvas name="sw" width="8" height="9">
+      <vector name="origin" x="8" y="0" />
+    </canvas>
+    <canvas name="se" width="8" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="9">
+      <vector name="origin" x="0" y="9" />
+    </canvas>
+    <canvas name="s" width="14" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="8" height="13">
+      <vector name="origin" x="8" y="0" />
+    </canvas>
+    <canvas name="e" width="8" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="28">
+    <canvas name="nw" width="14" height="13">
+      <vector name="origin" x="14" y="13" />
+    </canvas>
+    <canvas name="ne" width="14" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="sw" width="14" height="12">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="14" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="11" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="11" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="15" height="13">
+      <vector name="origin" x="15" y="0" />
+    </canvas>
+    <canvas name="e" width="15" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="11" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="11" height="23">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="29">
+    <canvas name="nw" width="11" height="11">
+      <vector name="origin" x="11" y="11" />
+    </canvas>
+    <canvas name="ne" width="11" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="sw" width="11" height="11">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="se" width="11" height="11">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="8">
+      <vector name="origin" x="0" y="8" />
+    </canvas>
+    <canvas name="s" width="14" height="8">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="8" height="13">
+      <vector name="origin" x="8" y="0" />
+    </canvas>
+    <canvas name="e" width="8" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="16" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="30">
+    <canvas name="nw" width="15" height="20">
+      <vector name="origin" x="15" y="20" />
+    </canvas>
+    <canvas name="ne" width="14" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="11" height="9">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="se" width="14" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="9">
+      <vector name="origin" x="0" y="9" />
+    </canvas>
+    <canvas name="s" width="15" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="11" height="13">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="31">
+    <canvas name="nw" width="17" height="16">
+      <vector name="origin" x="17" y="16" />
+    </canvas>
+    <canvas name="ne" width="8" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="sw" width="14" height="8">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="8" height="8">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="12" height="8">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="e" width="8" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="12" height="17">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="32">
+    <canvas name="nw" width="14" height="14">
+      <vector name="origin" x="14" y="14" />
+    </canvas>
+    <canvas name="ne" width="14" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="sw" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="20">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="33">
+    <canvas name="nw" width="14" height="14">
+      <vector name="origin" x="14" y="14" />
+    </canvas>
+    <canvas name="ne" width="14" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="sw" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="14">
+      <vector name="origin" x="0" y="14" />
+    </canvas>
+    <canvas name="s" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="14" height="14">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="e" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="20">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-65536" />
+  </imgdir>
+  <imgdir name="34">
+    <canvas name="nw" width="16" height="19">
+      <vector name="origin" x="16" y="19" />
+    </canvas>
+    <canvas name="ne" width="16" height="19">
+      <vector name="origin" x="0" y="19" />
+    </canvas>
+    <canvas name="sw" width="12" height="10">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="se" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="18" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="s" width="18" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="12" height="13">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="18" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="18" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="35">
+    <canvas name="nw" width="9" height="11">
+      <vector name="origin" x="9" y="11" />
+    </canvas>
+    <canvas name="ne" width="20" height="16">
+      <vector name="origin" x="0" y="16" />
+    </canvas>
+    <canvas name="sw" width="20" height="15">
+      <vector name="origin" x="20" y="0" />
+    </canvas>
+    <canvas name="se" width="9" height="11">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="15" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="s" width="15" height="11">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="9" height="13">
+      <vector name="origin" x="9" y="0" />
+    </canvas>
+    <canvas name="e" width="9" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="15" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="36">
+    <canvas name="nw" width="11" height="13">
+      <vector name="origin" x="11" y="13" />
+    </canvas>
+    <canvas name="ne" width="11" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="sw" width="14" height="10">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="11" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="14" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="11" height="13">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="e" width="11" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="17">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="37">
+    <canvas name="nw" width="11" height="13">
+      <vector name="origin" x="11" y="13" />
+    </canvas>
+    <canvas name="ne" width="11" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="sw" width="13" height="10">
+      <vector name="origin" x="13" y="0" />
+    </canvas>
+    <canvas name="se" width="11" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="14" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="11" height="13">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="e" width="11" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="17">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="38">
+    <canvas name="nw" width="11" height="13">
+      <vector name="origin" x="11" y="13" />
+    </canvas>
+    <canvas name="ne" width="11" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="sw" width="14" height="10">
+      <vector name="origin" x="14" y="0" />
+    </canvas>
+    <canvas name="se" width="11" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="14" height="13">
+      <vector name="origin" x="0" y="13" />
+    </canvas>
+    <canvas name="s" width="14" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="11" height="13">
+      <vector name="origin" x="11" y="0" />
+    </canvas>
+    <canvas name="e" width="11" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="15" height="17">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="39">
+    <canvas name="nw" width="13" height="17">
+      <vector name="origin" x="13" y="17" />
+    </canvas>
+    <canvas name="ne" width="13" height="17">
+      <vector name="origin" x="0" y="17" />
+    </canvas>
+    <canvas name="sw" width="12" height="10">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="se" width="12" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="18" height="11">
+      <vector name="origin" x="0" y="11" />
+    </canvas>
+    <canvas name="s" width="18" height="10">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="12" height="13">
+      <vector name="origin" x="12" y="0" />
+    </canvas>
+    <canvas name="e" width="12" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="18" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="18" height="17">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <int name="clr" value="-1" />
+  </imgdir>
+  <imgdir name="dead">
+    <canvas name="nw" width="6" height="6">
+      <vector name="origin" x="6" y="6" />
+    </canvas>
+    <canvas name="ne" width="6" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="s" width="12" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="14" height="15">
+      <vector name="origin" x="2" y="0" />
+    </canvas>
+    <int name="clr" value="-16777216" />
+  </imgdir>
+  <imgdir name="miniroom">
+    <imgdir name="MemoryGame">
+      <canvas name="0" width="17" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="17" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="17" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <canvas name="PersonalShop" width="14" height="13">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Omok" width="16" height="16">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Lock" width="12" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Unlock" width="12" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrnd" width="112" height="63">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrnd2" width="112" height="63">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Progress" width="48" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Able" width="48" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Disable" width="48" height="15">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="cNum">
+      <canvas name="1" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="mNum">
+      <canvas name="1" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="PSSkin">
+      <canvas name="0" width="112" height="63">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="156" height="159">
+        <vector name="origin" x="21" y="29" />
+      </canvas>
+      <canvas name="2" width="156" height="159">
+        <vector name="origin" x="21" y="29" />
+      </canvas>
+      <canvas name="3" width="156" height="159">
+        <vector name="origin" x="21" y="29" />
+      </canvas>
+      <canvas name="4" width="156" height="159">
+        <vector name="origin" x="21" y="29" />
+      </canvas>
+      <canvas name="6" width="156" height="159">
+        <vector name="origin" x="21" y="29" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="pet">
+    <imgdir name="0">
+      <canvas name="nw" width="6" height="6">
+        <vector name="origin" x="6" y="6" />
+      </canvas>
+      <canvas name="ne" width="6" height="6">
+        <vector name="origin" x="0" y="6" />
+      </canvas>
+      <canvas name="sw" width="6" height="6">
+        <vector name="origin" x="6" y="0" />
+      </canvas>
+      <canvas name="se" width="6" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="6">
+        <vector name="origin" x="0" y="6" />
+      </canvas>
+      <canvas name="s" width="12" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="6" height="14">
+        <vector name="origin" x="6" y="0" />
+      </canvas>
+      <canvas name="e" width="6" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="13">
+        <vector name="origin" x="1" y="0" />
+      </canvas>
+      <int name="clr" value="-8388608" />
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="nw" width="15" height="11">
+        <vector name="origin" x="15" y="11" />
+      </canvas>
+      <canvas name="ne" width="15" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="13" height="8">
+        <vector name="origin" x="0" y="8" />
+      </canvas>
+      <canvas name="s" width="13" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="13">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="13" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="nw" width="11" height="11">
+        <vector name="origin" x="11" y="11" />
+      </canvas>
+      <canvas name="ne" width="11" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="13" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="s" width="13" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="13">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="13" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="nw" width="11" height="11">
+        <vector name="origin" x="11" y="11" />
+      </canvas>
+      <canvas name="ne" width="11" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="13" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="s" width="13" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="13">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="13" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="4">
+      <canvas name="nw" width="15" height="13">
+        <vector name="origin" x="15" y="13" />
+      </canvas>
+      <canvas name="ne" width="15" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="sw" width="8" height="6">
+        <vector name="origin" x="8" y="0" />
+      </canvas>
+      <canvas name="se" width="8" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="5">
+      <canvas name="nw" width="10" height="12">
+        <vector name="origin" x="10" y="12" />
+      </canvas>
+      <canvas name="ne" width="10" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="8">
+        <vector name="origin" x="0" y="8" />
+      </canvas>
+      <canvas name="s" width="12" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="14">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="6">
+      <canvas name="nw" width="10" height="10">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+      <canvas name="ne" width="7" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="10">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="s" width="12" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="14">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="7">
+      <canvas name="nw" width="15" height="15">
+        <vector name="origin" x="15" y="15" />
+      </canvas>
+      <canvas name="ne" width="10" height="9">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="sw" width="10" height="7">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="7" height="9">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="s" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="7" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="7" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="8">
+      <canvas name="nw" width="21" height="15">
+        <vector name="origin" x="21" y="15" />
+      </canvas>
+      <canvas name="ne" width="21" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="sw" width="13" height="6">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="se" width="13" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="s" width="12" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="13" height="14">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="e" width="13" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="10">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="9">
+      <canvas name="nw" width="13" height="12">
+        <vector name="origin" x="13" y="12" />
+      </canvas>
+      <canvas name="ne" width="13" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="13" height="6">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="se" width="13" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="s" width="14" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+      <canvas name="w" width="13" height="14">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="e" width="13" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="11">
+      <canvas name="nw" width="14" height="10">
+        <vector name="origin" x="14" y="10" />
+      </canvas>
+      <canvas name="ne" width="13" height="10">
+        <vector name="origin" x="0" y="10" />
+      </canvas>
+      <canvas name="sw" width="7" height="6">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="6" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="7" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="s" width="7" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="14">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="6" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="7" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="7" height="10">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="12">
+      <canvas name="nw" width="15" height="15">
+        <vector name="origin" x="15" y="15" />
+      </canvas>
+      <canvas name="ne" width="10" height="9">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="sw" width="10" height="7">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="7" height="9">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="s" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="7" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="7" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="13">
+      <canvas name="nw" width="19" height="19">
+        <vector name="origin" x="19" y="19" />
+      </canvas>
+      <canvas name="ne" width="19" height="19">
+        <vector name="origin" x="0" y="19" />
+      </canvas>
+      <canvas name="sw" width="13" height="8">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="se" width="13" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="s" width="14" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="13" height="14">
+        <vector name="origin" x="13" y="0" />
+      </canvas>
+      <canvas name="e" width="13" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="14">
+      <canvas name="head" width="15" height="19">
+        <vector name="origin" x="0" y="19" />
+      </canvas>
+      <canvas name="nw" width="16" height="18">
+        <vector name="origin" x="16" y="18" />
+      </canvas>
+      <canvas name="ne" width="16" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="10" height="7">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="15" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="s" width="15" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="15" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="15" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="16">
+      <canvas name="head" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="18" height="15">
+        <vector name="origin" x="18" y="15" />
+      </canvas>
+      <canvas name="ne" width="18" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="17">
+      <canvas name="head" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="21" height="17">
+        <vector name="origin" x="21" y="17" />
+      </canvas>
+      <canvas name="ne" width="21" height="17">
+        <vector name="origin" x="0" y="17" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="18">
+      <canvas name="head" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="21" height="18">
+        <vector name="origin" x="21" y="18" />
+      </canvas>
+      <canvas name="ne" width="21" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="19">
+      <canvas name="head" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="21" height="17">
+        <vector name="origin" x="21" y="17" />
+      </canvas>
+      <canvas name="ne" width="21" height="17">
+        <vector name="origin" x="0" y="17" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="20">
+      <canvas name="head" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="21" height="18">
+        <vector name="origin" x="21" y="18" />
+      </canvas>
+      <canvas name="ne" width="21" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="22">
+      <canvas name="head" width="13" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="nw" width="19" height="14">
+        <vector name="origin" x="18" y="14" />
+      </canvas>
+      <canvas name="ne" width="19" height="14">
+        <vector name="origin" x="0" y="14" />
+      </canvas>
+      <canvas name="sw" width="11" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="11" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="s" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="12">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="13" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="23">
+      <canvas name="head" width="17" height="21">
+        <vector name="origin" x="0" y="21" />
+      </canvas>
+      <canvas name="nw" width="15" height="15">
+        <vector name="origin" x="15" y="15" />
+      </canvas>
+      <canvas name="ne" width="15" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="sw" width="9" height="9">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="se" width="9" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="15" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="s" width="15" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="13">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="17" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="17" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="24">
+      <canvas name="head" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="nw" width="11" height="12">
+        <vector name="origin" x="11" y="12" />
+      </canvas>
+      <canvas name="ne" width="16" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="11" height="8">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="se" width="11" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="s" width="14" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="11" height="14">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="e" width="11" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="15">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="28">
+      <canvas name="head" width="14" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="nw" width="15" height="18">
+        <vector name="origin" x="15" y="18" />
+      </canvas>
+      <canvas name="ne" width="15" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="10" height="9">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="15">
+        <vector name="origin" x="0" y="15" />
+      </canvas>
+      <canvas name="s" width="14" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="11" height="14">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="e" width="11" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="15">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="29">
+      <canvas name="head" width="14" height="10">
+        <vector name="origin" x="0" y="10" />
+      </canvas>
+      <canvas name="nw" width="10" height="12">
+        <vector name="origin" x="10" y="12" />
+      </canvas>
+      <canvas name="ne" width="10" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="10" height="7">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="7">
+        <vector name="origin" x="0" y="7" />
+      </canvas>
+      <canvas name="s" width="14" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="18">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="30">
+      <canvas name="head" width="14" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="nw" width="10" height="13">
+        <vector name="origin" x="10" y="13" />
+      </canvas>
+      <canvas name="ne" width="9" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="sw" width="9" height="6">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="se" width="8" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="8">
+        <vector name="origin" x="0" y="8" />
+      </canvas>
+      <canvas name="s" width="14" height="5">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="8" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="31">
+      <canvas name="head" width="14" height="10">
+        <vector name="origin" x="0" y="10" />
+      </canvas>
+      <canvas name="nw" width="11" height="13">
+        <vector name="origin" x="11" y="13" />
+      </canvas>
+      <canvas name="ne" width="11" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="sw" width="10" height="6">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="8">
+        <vector name="origin" x="0" y="8" />
+      </canvas>
+      <canvas name="s" width="14" height="5">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="10" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="32">
+      <canvas name="head" width="14" height="11">
+        <vector name="origin" x="0" y="11" />
+      </canvas>
+      <canvas name="nw" width="15" height="12">
+        <vector name="origin" x="15" y="12" />
+      </canvas>
+      <canvas name="ne" width="15" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="10" height="6">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="9">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="s" width="14" height="5">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="33">
+      <canvas name="head" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="nw" width="11" height="16">
+        <vector name="origin" x="11" y="16" />
+      </canvas>
+      <canvas name="ne" width="11" height="16">
+        <vector name="origin" x="0" y="16" />
+      </canvas>
+      <canvas name="sw" width="10" height="8">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="s" width="14" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="34">
+      <canvas name="head" width="14" height="16">
+        <vector name="origin" x="0" y="16" />
+      </canvas>
+      <canvas name="nw" width="14" height="19">
+        <vector name="origin" x="14" y="19" />
+      </canvas>
+      <canvas name="ne" width="13" height="17">
+        <vector name="origin" x="0" y="17" />
+      </canvas>
+      <canvas name="sw" width="16" height="9">
+        <vector name="origin" x="16" y="0" />
+      </canvas>
+      <canvas name="se" width="15" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="17">
+        <vector name="origin" x="0" y="17" />
+      </canvas>
+      <canvas name="s" width="14" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="10" height="14">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="e" width="8" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="50">
+      <canvas name="nw" width="10" height="12">
+        <vector name="origin" x="10" y="12" />
+      </canvas>
+      <canvas name="ne" width="10" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="7" height="7">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="se" width="7" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="8">
+        <vector name="origin" x="0" y="8" />
+      </canvas>
+      <canvas name="s" width="12" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="7" height="11">
+        <vector name="origin" x="7" y="0" />
+      </canvas>
+      <canvas name="e" width="7" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="12">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="12" height="13">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="51">
+      <canvas name="nw" width="12" height="12">
+        <vector name="origin" x="12" y="12" />
+      </canvas>
+      <canvas name="ne" width="12" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="sw" width="8" height="6">
+        <vector name="origin" x="8" y="0" />
+      </canvas>
+      <canvas name="se" width="8" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="15" height="13">
+        <vector name="origin" x="0" y="13" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="15" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="s" width="15" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+      <canvas name="arrow" width="15" height="18">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="36">
+      <canvas name="head" width="14" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="nw" width="8" height="10">
+        <vector name="origin" x="8" y="10" />
+      </canvas>
+      <canvas name="ne" width="8" height="10">
+        <vector name="origin" x="0" y="10" />
+      </canvas>
+      <canvas name="sw" width="11" height="7">
+        <vector name="origin" x="11" y="0" />
+      </canvas>
+      <canvas name="se" width="11" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="10">
+        <vector name="origin" x="0" y="9" />
+      </canvas>
+      <canvas name="s" width="14" height="7">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="8" height="14">
+        <vector name="origin" x="8" y="0" />
+      </canvas>
+      <canvas name="e" width="8" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="15">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+    <imgdir name="37">
+      <canvas name="nw" width="9" height="18">
+        <vector name="origin" x="9" y="18" />
+      </canvas>
+      <canvas name="ne" width="9" height="18">
+        <vector name="origin" x="0" y="18" />
+      </canvas>
+      <canvas name="sw" width="10" height="11">
+        <vector name="origin" x="10" y="0" />
+      </canvas>
+      <canvas name="se" width="10" height="11">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="11" height="14">
+        <vector name="origin" x="0" y="14" />
+      </canvas>
+      <canvas name="w" width="9" height="16">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="9" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="16" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="s" width="16" height="9">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+      <canvas name="arrow" width="11" height="16">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="25">
+      <canvas name="head" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="nw" width="11" height="17">
+        <vector name="origin" x="11" y="17" />
+      </canvas>
+      <canvas name="ne" width="15" height="19">
+        <vector name="origin" x="0" y="19" />
+      </canvas>
+      <canvas name="sw" width="9" height="8">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="se" width="12" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="14" height="12">
+        <vector name="origin" x="0" y="12" />
+      </canvas>
+      <canvas name="s" width="14" height="8">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="9" height="14">
+        <vector name="origin" x="9" y="0" />
+      </canvas>
+      <canvas name="e" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="15">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="npc">
+    <canvas name="nw" width="6" height="6">
+      <vector name="origin" x="6" y="6" />
+    </canvas>
+    <canvas name="ne" width="6" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="sw" width="6" height="6">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="se" width="6" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="n" width="12" height="6">
+      <vector name="origin" x="0" y="6" />
+    </canvas>
+    <canvas name="s" width="12" height="6">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="w" width="6" height="14">
+      <vector name="origin" x="6" y="0" />
+    </canvas>
+    <canvas name="e" width="6" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="c" width="12" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="13" height="13">
+      <vector name="origin" x="1" y="0" />
+    </canvas>
+    <int name="clr" value="-8388608" />
+  </imgdir>
+  <imgdir name="adboard">
+    <imgdir name="0">
+      <canvas name="nw" width="18" height="19">
+        <vector name="origin" x="18" y="19" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="ne" width="18" height="19">
+        <vector name="origin" x="0" y="19" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="sw" width="18" height="19">
+        <vector name="origin" x="18" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="se" width="18" height="19">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="n" width="14" height="19">
+        <vector name="origin" x="0" y="19" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="s" width="14" height="19">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="w" width="18" height="14">
+        <vector name="origin" x="18" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="e" width="18" height="14">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="c" width="14" height="14">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="arrow" width="14" height="23">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="mob">
+    <imgdir name="0">
+      <canvas name="nw" width="6" height="6">
+        <vector name="origin" x="6" y="6" />
+      </canvas>
+      <canvas name="ne" width="6" height="6">
+        <vector name="origin" x="0" y="6" />
+      </canvas>
+      <canvas name="sw" width="6" height="6">
+        <vector name="origin" x="6" y="0" />
+      </canvas>
+      <canvas name="se" width="6" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="12" height="6">
+        <vector name="origin" x="0" y="6" />
+      </canvas>
+      <canvas name="s" width="12" height="6">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="6" height="14">
+        <vector name="origin" x="6" y="0" />
+      </canvas>
+      <canvas name="e" width="6" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="12" height="14">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="arrow" width="13" height="13">
+        <vector name="origin" x="1" y="0" />
+      </canvas>
+      <int name="clr" value="-16777216" />
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="nw" width="58" height="35">
+        <vector name="origin" x="58" y="35" />
+      </canvas>
+      <canvas name="ne" width="58" height="35">
+        <vector name="origin" x="0" y="35" />
+      </canvas>
+      <canvas name="sw" width="58" height="35">
+        <vector name="origin" x="58" y="0" />
+      </canvas>
+      <canvas name="se" width="58" height="35">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="n" width="36" height="25">
+        <vector name="origin" x="0" y="25" />
+      </canvas>
+      <canvas name="s" width="36" height="25">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="w" width="46" height="17">
+        <vector name="origin" x="46" y="0" />
+      </canvas>
+      <canvas name="e" width="46" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="c" width="36" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <int name="clr" value="-1" />
+      <int name="screenChat" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="tutorial">
+    <canvas name="nw" width="19" height="21">
+      <vector name="origin" x="19" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="ne" width="19" height="21">
+      <vector name="origin" x="0" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="sw" width="19" height="19">
+      <vector name="origin" x="19" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="se" width="19" height="19">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="n" width="1" height="21">
+      <vector name="origin" x="0" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="s" width="1" height="19">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="w" width="19" height="1">
+      <vector name="origin" x="19" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="e" width="19" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="c" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="arrow" width="21" height="27">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

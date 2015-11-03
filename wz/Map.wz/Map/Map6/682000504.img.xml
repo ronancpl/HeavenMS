@@ -1,0 +1,674 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="682000504.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="swim" value="0" />
+    <int name="returnMap" value="682000000" />
+    <int name="forcedReturn" value="999999999" />
+    <float name="mobRate" value="1.0" />
+    <string name="bgm" value="BgmGL/HauntedHouse" />
+    <string name="mapMark" value="Halloween" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="72" />
+    <int name="VRTop" value="-358" />
+    <int name="VRLeft" value="-511" />
+    <int name="VRBottom" value="409" />
+    <int name="VRRight" value="539" />
+  </imgdir>
+  <imgdir name="back">
+    <imgdir name="0">
+      <string name="bS" value="" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="0" />
+      <int name="f" value="0" />
+      <int name="x" value="0" />
+      <int name="y" value="0" />
+      <int name="rx" value="0" />
+      <int name="ry" value="0" />
+      <int name="type" value="0" />
+      <int name="cx" value="0" />
+      <int name="cy" value="0" />
+      <int name="a" value="255" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="life">
+    <imgdir name="0">
+      <string name="type" value="m" />
+      <string name="id" value="9400639" />
+      <int name="x" value="368" />
+      <int name="y" value="263" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="hide" value="0" />
+      <int name="fh" value="3" />
+      <int name="cy" value="283" />
+      <int name="rx0" value="-88" />
+      <int name="rx1" value="515" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="type" value="m" />
+      <string name="id" value="9400639" />
+      <int name="x" value="91" />
+      <int name="y" value="266" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="hide" value="0" />
+      <int name="fh" value="5" />
+      <int name="cy" value="283" />
+      <int name="rx0" value="-88" />
+      <int name="rx1" value="515" />
+    </imgdir>
+    <imgdir name="2">
+      <string name="type" value="m" />
+      <string name="id" value="9400639" />
+      <int name="x" value="-317" />
+      <int name="y" value="262" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="hide" value="0" />
+      <int name="fh" value="6" />
+      <int name="cy" value="283" />
+      <int name="rx0" value="-503" />
+      <int name="rx1" value="-128" />
+    </imgdir>
+    <imgdir name="3">
+      <string name="type" value="m" />
+      <string name="id" value="9400640" />
+      <int name="x" value="-151" />
+      <int name="y" value="263" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="hide" value="0" />
+      <int name="fh" value="7" />
+      <int name="cy" value="283" />
+      <int name="rx0" value="-503" />
+      <int name="rx1" value="-128" />
+    </imgdir>
+    <imgdir name="4">
+      <string name="type" value="m" />
+      <string name="id" value="9400638" />
+      <int name="x" value="220" />
+      <int name="y" value="256" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="hide" value="0" />
+      <int name="fh" value="2" />
+      <int name="cy" value="283" />
+      <int name="rx0" value="-88" />
+      <int name="rx1" value="515" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="reactor" />
+  <imgdir name="0">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="room" />
+        <int name="x" value="6" />
+        <int name="y" value="51" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="0" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="chandelier" />
+        <int name="x" value="6" />
+        <int name="y" value="197" />
+        <int name="z" value="8" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="behindfabric" />
+        <int name="x" value="5" />
+        <int name="y" value="64" />
+        <int name="z" value="8" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="middlefabric" />
+        <int name="x" value="5" />
+        <int name="y" value="132" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="window" />
+        <int name="x" value="366" />
+        <int name="y" value="-61" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="6" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="wallcandle" />
+        <int name="x" value="3" />
+        <int name="y" value="82" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="littleframe" />
+        <int name="x" value="143" />
+        <int name="y" value="-76" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="8" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="frame" />
+        <int name="x" value="6" />
+        <int name="y" value="23" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="wallmirror" />
+        <int name="x" value="-126" />
+        <int name="y" value="-150" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="11" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="photoframe" />
+        <int name="x" value="-130" />
+        <int name="y" value="-71" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="9" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="pianoframe" />
+        <int name="x" value="145" />
+        <int name="y" value="-179" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="12" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="smallframe" />
+        <int name="x" value="112" />
+        <int name="y" value="-137" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="12" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="eagle" />
+        <int name="x" value="-341" />
+        <int name="y" value="86" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="5" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="418" />
+        <int name="y" value="-274" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="15" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="bookshelf" />
+        <int name="x" value="-336" />
+        <int name="y" value="-110" />
+        <int name="z" value="8" />
+        <int name="f" value="0" />
+        <int name="zM" value="7" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room2" />
+        <string name="l2" value="ladder" />
+        <int name="x" value="-246" />
+        <int name="y" value="-155" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="7" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room2" />
+        <string name="l2" value="hanger" />
+        <int name="x" value="-149" />
+        <int name="y" value="-188" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="13" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="frontfabric" />
+        <int name="x" value="6" />
+        <int name="y" value="64" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="4" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="ani0" />
+        <string name="l2" value="3" />
+        <int name="x" value="-458" />
+        <int name="y" value="-21" />
+        <int name="z" value="9" />
+        <int name="f" value="1" />
+        <int name="zM" value="4" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="rockingchair" />
+        <int name="x" value="-297" />
+        <int name="y" value="-186" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="4" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room2" />
+        <string name="l2" value="flowerpot1" />
+        <int name="x" value="162" />
+        <int name="y" value="-172" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="4" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room3" />
+        <string name="l2" value="flowerdrawer" />
+        <int name="x" value="495" />
+        <int name="y" value="-177" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="4" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="stage" />
+        <int name="x" value="305" />
+        <int name="y" value="-237" />
+        <int name="z" value="6" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="musicstand0" />
+        <int name="x" value="427" />
+        <int name="y" value="-216" />
+        <int name="z" value="15" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="musicstand1" />
+        <int name="x" value="472" />
+        <int name="y" value="-219" />
+        <int name="z" value="14" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="musicstand2" />
+        <int name="x" value="495" />
+        <int name="y" value="-212" />
+        <int name="z" value="13" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="ani0" />
+        <string name="l2" value="2" />
+        <int name="x" value="340" />
+        <int name="y" value="-63" />
+        <int name="z" value="5" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="musicstand3" />
+        <int name="x" value="200" />
+        <int name="y" value="-187" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="halloweenGLR" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="room4" />
+        <string name="l2" value="platform" />
+        <int name="x" value="15" />
+        <int name="y" value="-303" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="14" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="201" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="407" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="431" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="-419" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="2" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="-212" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="2" />
+        <int name="r" value="0" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="halloweenGL" />
+        <string name="l0" value="halloween" />
+        <string name="l1" value="inside" />
+        <string name="l2" value="36" />
+        <int name="x" value="-6" />
+        <int name="y" value="285" />
+        <int name="z" value="9" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+        <int name="r" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="6">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="7">
+    <imgdir name="info" />
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="foothold">
+    <imgdir name="1">
+      <imgdir name="15">
+        <imgdir name="1">
+          <int name="x1" value="314" />
+          <int name="y1" value="-276" />
+          <int name="x2" value="522" />
+          <int name="y2" value="-276" />
+          <int name="prev" value="0" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="5">
+      <imgdir name="1">
+        <imgdir name="2">
+          <int name="x1" value="97" />
+          <int name="y1" value="283" />
+          <int name="x2" value="305" />
+          <int name="y2" value="283" />
+          <int name="prev" value="5" />
+          <int name="next" value="3" />
+        </imgdir>
+        <imgdir name="3">
+          <int name="x1" value="305" />
+          <int name="y1" value="283" />
+          <int name="x2" value="511" />
+          <int name="y2" value="283" />
+          <int name="prev" value="2" />
+          <int name="next" value="4" />
+        </imgdir>
+        <imgdir name="4">
+          <int name="x1" value="511" />
+          <int name="y1" value="283" />
+          <int name="x2" value="535" />
+          <int name="y2" value="283" />
+          <int name="prev" value="3" />
+          <int name="next" value="0" />
+        </imgdir>
+        <imgdir name="5">
+          <int name="x1" value="-108" />
+          <int name="y1" value="283" />
+          <int name="x2" value="97" />
+          <int name="y2" value="283" />
+          <int name="prev" value="7" />
+          <int name="next" value="2" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="2">
+        <imgdir name="6">
+          <int name="x1" value="-523" />
+          <int name="y1" value="283" />
+          <int name="x2" value="-315" />
+          <int name="y2" value="283" />
+          <int name="prev" value="0" />
+          <int name="next" value="7" />
+        </imgdir>
+        <imgdir name="7">
+          <int name="x1" value="-315" />
+          <int name="y1" value="283" />
+          <int name="x2" value="-108" />
+          <int name="y2" value="283" />
+          <int name="prev" value="6" />
+          <int name="next" value="5" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladderRope" />
+  <imgdir name="miniMap">
+    <canvas name="canvas" width="75" height="56" />
+    <int name="width" value="1209" />
+    <int name="height" value="908" />
+    <int name="centerX" value="614" />
+    <int name="centerY" value="509" />
+    <int name="mag" value="4" />
+  </imgdir>
+  <imgdir name="portal">
+    <imgdir name="0">
+      <string name="pn" value="sp" />
+      <int name="pt" value="0" />
+      <int name="x" value="-1" />
+      <int name="y" value="273" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="pn" value="st00" />
+      <int name="pt" value="1" />
+      <int name="x" value="8" />
+      <int name="y" value="-184" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="2">
+      <string name="pn" value="st01" />
+      <int name="pt" value="2" />
+      <int name="x" value="5" />
+      <int name="y" value="281" />
+      <int name="tm" value="682000500" />
+      <string name="tn" value="pr00" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9701000.img">
+  <imgdir name="info">
+    <string name="info" value="마을 케이크 출몰용" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="1" />
+      </imgdir>
+      <int name="timeOut" value="3600000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeOut" value="60000" />
+    </imgdir>
+  </imgdir>
+  <string name="action" value="6th_mob0" />
+</imgdir>

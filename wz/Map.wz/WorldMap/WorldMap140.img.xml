@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="WorldMap140.img">
+  <imgdir name="info">
+    <string name="parentMap" value="WorldMap" />
+  </imgdir>
+  <imgdir name="BaseImg">
+    <canvas name="0" width="640" height="470">
+      <vector name="origin" x="320" y="235" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="MapList">
+    <imgdir name="0">
+      <vector name="spot" x="-118" y="70" />
+      <int name="type" value="0" />
+      <imgdir name="mapNo">
+        <int name="0" value="680000000" />
+        <int name="1" value="680000001" />
+        <int name="2" value="680000002" />
+        <int name="3" value="680000003" />
+        <int name="4" value="680000100" />
+        <int name="5" value="680000110" />
+        <int name="6" value="680000200" />
+        <int name="7" value="680000210" />
+        <int name="8" value="680000300" />
+        <int name="9" value="680000400" />
+        <int name="10" value="680000401" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <vector name="spot" x="-45" y="79" />
+      <int name="type" value="1" />
+      <imgdir name="mapNo">
+        <int name="0" value="680010000" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="2">
+      <vector name="spot" x="8" y="34" />
+      <int name="type" value="1" />
+      <imgdir name="mapNo">
+        <int name="0" value="680010100" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="3">
+      <vector name="spot" x="24" y="-25" />
+      <int name="type" value="1" />
+      <imgdir name="mapNo">
+        <int name="0" value="670000100" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="4">
+      <vector name="spot" x="49" y="-87" />
+      <int name="type" value="1" />
+      <imgdir name="mapNo">
+        <int name="0" value="670000200" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="5">
+      <vector name="spot" x="107" y="-121" />
+      <int name="type" value="1" />
+      <imgdir name="mapNo">
+        <int name="0" value="670010000" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

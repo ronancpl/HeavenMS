@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9101000.img">
+  <imgdir name="info">
+    <string name="name" value="월묘의 달" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="299" height="316">
+      <vector name="origin" x="141" y="159" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="299" height="316">
+        <vector name="origin" x="141" y="159" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="2">
+    <uol name="0" value="../1/0" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="3">
+    <uol name="0" value="../2/0" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="4">
+    <uol name="0" value="../0/0" />
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="5">
+    <uol name="0" value="../0/0" />
+    <imgdir name="hit">
+      <canvas name="0" width="299" height="316">
+        <vector name="origin" x="141" y="159" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="309" height="319">
+        <vector name="origin" x="149" y="160" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="312" height="321">
+        <vector name="origin" x="152" y="161" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="314" height="321">
+        <vector name="origin" x="154" y="161" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="4" width="316" height="322">
+        <vector name="origin" x="155" y="161" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="5" width="317" height="323">
+        <vector name="origin" x="156" y="162" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="6" width="318" height="323">
+        <vector name="origin" x="157" y="162" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="7" width="319" height="323">
+        <vector name="origin" x="158" y="162" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="8" width="321" height="324">
+        <vector name="origin" x="159" y="162" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="6">
+    <canvas name="0" width="321" height="324">
+      <vector name="origin" x="159" y="162" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="moonMob0" />
+</imgdir>

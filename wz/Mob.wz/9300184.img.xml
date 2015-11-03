@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300184.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="20" />
+    <int name="maxHP" value="2000" />
+    <int name="maxMP" value="30" />
+    <int name="speed" value="-40" />
+    <int name="PADamage" value="90" />
+    <int name="PDDamage" value="20" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="30" />
+    <int name="acc" value="60" />
+    <int name="eva" value="8" />
+    <int name="exp" value="120" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1" />
+    <int name="hpRecovery" value="10" />
+    <int name="mpRecovery" value="1" />
+    <int name="boss" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="firstAttack" value="1" />
+    <int name="mobType" value="0" />
+    <string name="link" value="2220000" />
+    <int name="ignoreFieldOut" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="126" />
+        <int name="action" value="1" />
+        <int name="level" value="7" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="103" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="112" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="113" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="revive">
+      <int name="0" value="9300216" />
+    </imgdir>
+    <int name="explosiveReward" value="1" />
+  </imgdir>
+</imgdir>

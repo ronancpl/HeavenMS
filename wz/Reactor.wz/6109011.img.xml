@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="6109011.img">
+  <imgdir name="info">
+    <string name="info" value="글로벌 파티 퀘스트 - 보스몹소환, 투명" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4000488" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-49" y="-15" />
+        <vector name="rb" x="56" y="18" />
+        <int name="2" value="1" />
+      </imgdir>
+    </imgdir>
+    <canvas name="0" width="48" height="34">
+      <vector name="origin" x="24" y="17" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="2" />
+        <int name="0" value="4000488" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-49" y="-15" />
+        <vector name="rb" x="56" y="18" />
+        <int name="2" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4000488" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-49" y="-15" />
+        <vector name="rb" x="56" y="18" />
+        <int name="2" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <string name="action" value="glpqmob1" />
+</imgdir>

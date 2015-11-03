@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="SkillName4.img">
+  <imgdir name="4001002">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="134" height="24">
+      <vector name="origin" x="67" y="12" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4001003">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="90" height="45">
+      <vector name="origin" x="45" y="22" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4001334">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="103" height="44">
+      <vector name="origin" x="51" y="22" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4001344">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="100" height="43">
+      <vector name="origin" x="50" y="21" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4101003">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="44">
+      <vector name="origin" x="58" y="22" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4101004">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="89" height="23">
+      <vector name="origin" x="44" y="11" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4101005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="82" height="24">
+      <vector name="origin" x="41" y="12" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4201002">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="117" height="44">
+      <vector name="origin" x="58" y="22" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4201003">
+    <int name="fixed" value="1" />
+    <uol name="0" value="../4101004/0" />
+  </imgdir>
+  <imgdir name="4201004">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="80" height="23">
+      <vector name="origin" x="40" y="11" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4201005">
+    <int name="fixed" value="1" />
+    <canvas name="0" width="110" height="43">
+      <vector name="origin" x="55" y="21" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300214.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="125" />
+    <int name="maxHP" value="23000000" />
+    <int name="maxMP" value="2000000" />
+    <int name="speed" value="-40" />
+    <int name="PADamage" value="630" />
+    <int name="PDDamage" value="1000" />
+    <int name="MADamage" value="480" />
+    <int name="MDDamage" value="1100" />
+    <int name="acc" value="250" />
+    <int name="eva" value="12" />
+    <int name="exp" value="50000" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="10000" />
+    <int name="hpRecovery" value="10000" />
+    <int name="mpRecovery" value="50000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="boss" value="1" />
+    <int name="firstAttack" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="127" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="126" />
+        <int name="action" value="2" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="200" />
+        <int name="action" value="3" />
+        <int name="level" value="133" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="114" />
+        <int name="action" value="4" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="123" />
+        <int name="action" value="1" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <int name="mbookID" value="8500001" />
+    <string name="link" value="8500001" />
+    <imgdir name="default">
+      <canvas name="0" width="189" height="222">
+        <vector name="origin" x="94" y="111" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <int name="ignoreFieldOut" value="1" />
+    <imgdir name="revive">
+      <int name="0" value="9300216" />
+    </imgdir>
+    <int name="explosiveReward" value="1" />
+  </imgdir>
+</imgdir>

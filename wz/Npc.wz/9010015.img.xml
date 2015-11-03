@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9010015.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="cheeseEnter" />
+        <int name="start" value="20080122" />
+        <int name="end" value="20080301" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="54" height="68">
+      <vector name="origin" x="28" y="68" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="52" height="67">
+      <vector name="origin" x="28" y="67" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="54" height="66">
+      <vector name="origin" x="28" y="66" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="55" height="67">
+      <vector name="origin" x="28" y="67" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="58" height="68">
+      <vector name="origin" x="28" y="68" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="5" width="57" height="69">
+      <vector name="origin" x="28" y="69" />
+      <int name="delay" value="150" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,1602 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="CashShop.img">
+  <imgdir name="Base">
+    <canvas name="backgrnd" width="800" height="600" />
+    <canvas name="backgrnd1" width="800" height="600" />
+    <canvas name="backgrnd2" width="800" height="599" />
+    <imgdir name="Tab">
+      <imgdir name="Enable">
+        <canvas name="0" width="25" height="25" />
+        <canvas name="1" width="25" height="25" />
+        <canvas name="2" width="25" height="25" />
+      </imgdir>
+      <imgdir name="Disable">
+        <canvas name="0" width="25" height="18" />
+        <canvas name="1" width="25" height="18" />
+        <canvas name="2" width="25" height="18" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Tab2">
+      <imgdir name="Enable">
+        <canvas name="0" width="28" height="12" />
+        <canvas name="1" width="17" height="10" />
+        <canvas name="2" width="29" height="13" />
+        <canvas name="3" width="15" height="10" />
+        <canvas name="4" width="20" height="8" />
+      </imgdir>
+      <imgdir name="Disable">
+        <canvas name="0" width="28" height="12" />
+        <canvas name="1" width="17" height="10" />
+        <canvas name="2" width="29" height="13" />
+        <canvas name="3" width="15" height="10" />
+        <canvas name="4" width="21" height="8" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="Preview">
+      <canvas name="0" width="212" height="165" />
+      <canvas name="1" width="212" height="165" />
+      <canvas name="2" width="212" height="165" />
+    </imgdir>
+    <imgdir name="PreviewOnOff">
+      <imgdir name="On">
+        <canvas name="0" width="230" height="226" />
+      </imgdir>
+      <imgdir name="Off">
+        <canvas name="0" width="35" height="21" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSItemSearch">
+    <imgdir name="PopUp">
+      <canvas name="backgrnd" width="265" height="135" />
+      <imgdir name="Box">
+        <canvas name="0" width="139" height="17" />
+      </imgdir>
+      <imgdir name="BtComboBox">
+        <imgdir name="normal">
+          <canvas name="0" width="18" height="17">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="18" height="17">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="18" height="17">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="18" height="17">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="PopUp1">
+      <canvas name="backgrnd" width="264" height="274" />
+      <imgdir name="BtCancel">
+        <imgdir name="normal">
+          <canvas name="0" width="28" height="12">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="0" width="28" height="12">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="0" width="28" height="12">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="0" width="28" height="12">
+            <vector name="origin" x="0" y="0" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="Scroll">
+        <imgdir name="normal">
+          <canvas name="prev" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="next" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="thumb" width="13" height="25">
+            <vector name="origin" x="6" y="12" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="base" width="15" height="167">
+            <vector name="origin" x="7" y="83" />
+            <int name="z" value="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="pressed">
+          <canvas name="prev" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="next" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="thumb" width="13" height="25">
+            <vector name="origin" x="6" y="12" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="base" width="15" height="167">
+            <vector name="origin" x="7" y="83" />
+            <int name="z" value="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="disabled">
+          <canvas name="prev" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="next" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="thumb" width="13" height="25">
+            <vector name="origin" x="6" y="12" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="base" width="15" height="167">
+            <vector name="origin" x="7" y="83" />
+            <int name="z" value="0" />
+          </canvas>
+        </imgdir>
+        <imgdir name="mouseOver">
+          <canvas name="prev" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="next" width="13" height="14">
+            <vector name="origin" x="6" y="7" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="thumb" width="13" height="25">
+            <vector name="origin" x="6" y="12" />
+            <int name="z" value="0" />
+          </canvas>
+          <canvas name="base" width="15" height="167">
+            <vector name="origin" x="7" y="83" />
+            <int name="z" value="0" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtSearch">
+      <imgdir name="normal">
+        <canvas name="0" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="ani">
+        <canvas name="0" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+          <vector name="head" x="-16" y="-73" />
+          <int name="delay" value="150" />
+        </canvas>
+        <canvas name="1" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+          <vector name="head" x="-13" y="-74" />
+          <int name="delay" value="220" />
+        </canvas>
+        <canvas name="2" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+          <vector name="head" x="-11" y="-75" />
+          <int name="delay" value="150" />
+        </canvas>
+        <canvas name="3" width="89" height="22">
+          <vector name="origin" x="0" y="0" />
+          <vector name="head" x="-9" y="-73" />
+          <int name="delay" value="220" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtAllItem">
+      <imgdir name="normal">
+        <canvas name="0" width="61" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="61" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="61" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="61" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtBuy">
+      <imgdir name="normal">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCancel">
+      <imgdir name="normal">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="45" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="Price">
+      <imgdir name="0">
+        <int name="0" value="0" />
+        <int name="1" value="1000" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="0" value="1000" />
+        <int name="1" value="3000" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="0" value="3000" />
+        <int name="1" value="5000" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="0" value="5000" />
+        <int name="1" value="50000" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSChar">
+    <imgdir name="BtBuyAvatar">
+      <imgdir name="normal">
+        <canvas name="0" width="83" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="83" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="83" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="83" height="19" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtDefaultAvatar">
+      <imgdir name="normal">
+        <canvas name="0" width="84" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="84" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="84" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="84" height="19" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtTakeoffAvatar">
+      <imgdir name="normal">
+        <canvas name="0" width="55" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="55" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="55" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="55" height="19" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSLocker">
+    <imgdir name="BtRebate">
+      <imgdir name="normal">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtRebate2">
+      <imgdir name="normal">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="86" height="19" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSInventory">
+    <imgdir name="BtExEquip">
+      <imgdir name="normal">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtExConsume">
+      <imgdir name="normal">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtExInstall">
+      <imgdir name="normal">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtExEtc">
+      <imgdir name="normal">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtExTrunk">
+      <imgdir name="normal">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="64" height="22" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSTab">
+    <imgdir name="Tab">
+      <canvas name="1" width="508" height="78" />
+      <canvas name="2" width="508" height="78" />
+      <canvas name="3" width="508" height="78" />
+      <canvas name="4" width="508" height="78" />
+      <canvas name="5" width="508" height="78" />
+      <canvas name="6" width="508" height="78" />
+      <canvas name="7" width="508" height="78" />
+      <canvas name="8" width="508" height="78" />
+      <canvas name="9" width="508" height="78" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSList">
+    <canvas name="Base" width="200" height="80" />
+    <imgdir name="BtBuy">
+      <imgdir name="normal">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="keyFocused">
+        <canvas name="0" width="41" height="23">
+          <vector name="origin" x="2" y="2" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtGift">
+      <imgdir name="normal">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="keyFocused">
+        <canvas name="0" width="41" height="23">
+          <vector name="origin" x="2" y="2" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtReserve">
+      <imgdir name="normal">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="keyFocused">
+        <canvas name="0" width="41" height="23">
+          <vector name="origin" x="2" y="2" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtRemove">
+      <imgdir name="normal">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="37" height="19" />
+      </imgdir>
+      <imgdir name="keyFocused">
+        <canvas name="0" width="41" height="23">
+          <vector name="origin" x="2" y="2" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <canvas name="ItemIcon" width="72" height="72" />
+  </imgdir>
+  <imgdir name="CSStatus">
+    <imgdir name="BtCharge">
+      <imgdir name="normal">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCheck">
+      <imgdir name="normal">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCoupon">
+      <imgdir name="normal">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="41" height="41" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtExit">
+      <imgdir name="normal">
+        <canvas name="0" width="168" height="49" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="168" height="49" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="168" height="49" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="168" height="49" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="PicturePlate">
+    <canvas name="HowTo" width="406" height="404" />
+    <canvas name="HowToGift" width="406" height="291" />
+    <canvas name="NoItem" width="406" height="242" />
+    <canvas name="NoItem0" width="406" height="242" />
+    <canvas name="NoItem1" width="406" height="242" />
+    <canvas name="ShortcutHelp" width="321" height="358">
+      <vector name="origin" x="161" y="181" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="BtJoin">
+      <imgdir name="normal">
+        <canvas name="0" width="108" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="108" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="108" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="108" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtShortcut">
+      <imgdir name="normal">
+        <canvas name="0" width="95" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="95" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="95" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="95" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtClose">
+      <imgdir name="normal">
+        <canvas name="0" width="65" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="65" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="65" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="65" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CashItem">
+    <canvas name="0" width="13" height="13">
+      <vector name="origin" x="12" y="12" />
+    </canvas>
+    <canvas name="1" width="12" height="12">
+      <vector name="origin" x="12" y="12" />
+    </canvas>
+    <canvas name="2" width="11" height="11">
+      <vector name="origin" x="11" y="12" />
+    </canvas>
+    <canvas name="3" width="12" height="12">
+      <vector name="origin" x="12" y="12" />
+    </canvas>
+  </imgdir>
+  <imgdir name="PrepaidCashItem">
+    <canvas name="0" width="16" height="14">
+      <vector name="origin" x="8" y="7" />
+    </canvas>
+  </imgdir>
+  <imgdir name="NewItem">
+    <canvas name="0" width="23" height="6">
+      <vector name="origin" x="0" y="0" />
+      <int name="delay" value="400" />
+    </canvas>
+    <canvas name="1" width="23" height="4">
+      <vector name="origin" x="0" y="-1" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="23" height="2">
+      <vector name="origin" x="0" y="-2" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="23" height="6">
+      <vector name="origin" x="0" y="0" />
+      <int name="delay" value="400" />
+    </canvas>
+  </imgdir>
+  <imgdir name="GuideWords">
+    <canvas name="0" width="111" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="1" width="111" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="2" width="111" height="21">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="3" width="111" height="21">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="CSNotice">
+    <imgdir name="0">
+      <canvas name="0" width="286" height="21">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="286" height="40">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="286" height="5">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="286" height="19">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="286" height="104">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="backgrnd" width="266" height="126">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="backgrnd" width="266" height="142">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="backgrnd" width="266" height="250">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="4">
+      <canvas name="0" width="266" height="21">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="266" height="40">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="2" width="266" height="5">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="3" width="266" height="19">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="4" width="266" height="104">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSIcon">
+    <canvas name="0" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="1" width="15" height="14">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="CSDiscount">
+    <canvas name="w" width="2" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="e" width="19" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="0" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="1" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="2" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="3" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="4" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="5" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="6" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="7" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="8" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="9" width="5" height="12">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="arrow" width="9" height="9">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="Line" width="194" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrnd" width="34" height="34">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="total" width="39" height="7">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="bonus" width="38" height="18">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="CSEffect">
+    <imgdir name="new">
+      <canvas name="0" width="40" height="13">
+        <vector name="origin" x="-8" y="-3" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="49" height="16">
+        <vector name="origin" x="-3" y="-1" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="55" height="18">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="63" height="21">
+        <vector name="origin" x="5" y="2" />
+        <int name="delay" value="1000" />
+      </canvas>
+    </imgdir>
+    <imgdir name="sale">
+      <canvas name="0" width="55" height="13">
+        <vector name="origin" x="-8" y="-2" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="62" height="15">
+        <vector name="origin" x="-5" y="-1" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="71" height="17">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="79" height="19">
+        <vector name="origin" x="4" y="1" />
+        <int name="delay" value="1000" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hot">
+      <canvas name="0" width="46" height="15">
+        <vector name="origin" x="-4" y="-2" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="49" height="16">
+        <vector name="origin" x="-3" y="-1" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="54" height="18">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="60" height="20">
+        <vector name="origin" x="3" y="1" />
+        <int name="delay" value="1000" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <canvas name="0" width="57" height="14">
+        <vector name="origin" x="-8" y="-2" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="66" height="16">
+        <vector name="origin" x="-4" y="-1" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="74" height="18">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="80" height="20">
+        <vector name="origin" x="3" y="1" />
+        <int name="delay" value="1000" />
+      </canvas>
+    </imgdir>
+    <imgdir name="time">
+      <canvas name="0" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="140" />
+      </canvas>
+      <canvas name="1" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="140" />
+      </canvas>
+      <canvas name="2" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="140" />
+      </canvas>
+      <canvas name="3" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="140" />
+      </canvas>
+      <canvas name="4" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="140" />
+      </canvas>
+      <uol name="5" value="0" />
+      <uol name="6" value="1" />
+      <uol name="7" value="2" />
+      <uol name="8" value="3" />
+      <uol name="9" value="4" />
+      <canvas name="10" width="74" height="74">
+        <vector name="origin" x="0" y="0" />
+        <int name="delay" value="500" />
+      </canvas>
+    </imgdir>
+    <imgdir name="effect">
+      <canvas name="0" width="18" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+      <canvas name="1" width="18" height="17">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSChangeName">
+    <imgdir name="Base">
+      <canvas name="backgrnd" width="266" height="124">
+        <vector name="origin" x="-8" y="-3" />
+      </canvas>
+      <canvas name="backgrndnotice" width="406" height="424">
+        <vector name="origin" x="-8" y="-3" />
+      </canvas>
+    </imgdir>
+    <imgdir name="BtCheck">
+      <imgdir name="normal">
+        <canvas name="0" width="39" height="17" />
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="39" height="17" />
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="39" height="17" />
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="39" height="17" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSTransferWorld">
+    <imgdir name="Base">
+      <canvas name="backgrnd" width="209" height="101">
+        <vector name="origin" x="-8" y="-3" />
+      </canvas>
+      <canvas name="backgrndnotice" width="406" height="424">
+        <vector name="origin" x="-8" y="-3" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSWebMsg">
+    <canvas name="backgrnd" width="330" height="153">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrnd1" width="330" height="199">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="CSGift">
+    <canvas name="backgrnd" width="266" height="169">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <canvas name="backgrnd1" width="473" height="169">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="BtBuddy">
+      <imgdir name="normal">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtGuild">
+      <imgdir name="normal">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="53" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtHide">
+      <imgdir name="normal">
+        <canvas name="0" width="17" height="16">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="17" height="16">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="17" height="16">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="17" height="16">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="Line">
+      <canvas name="0" width="153" height="4">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="153" height="17">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="153" height="3">
+        <vector name="origin" x="0" y="0" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="CSMemberShop">
+    <canvas name="backgrnd" width="400" height="500">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="BtAgree">
+      <imgdir name="normal">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtDisagree">
+      <imgdir name="normal">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="59" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <canvas name="backgrnd1" width="266" height="285">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="BtTested">
+      <imgdir name="normal">
+        <canvas name="0" width="88" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="88" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="88" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="88" height="17">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtOK">
+      <imgdir name="normal">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="BtCancel">
+      <imgdir name="normal">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="pressed">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="disabled">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mouseOver">
+        <canvas name="0" width="39" height="18">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="Article">
+      <string name="0" value="제1조(목적)" />
+      <null name="1" />
+      <string name="2" value="① 이 약관은 ㈜넥슨모바일(이하 '회사'라 함)에서 제공하는" />
+      <string name="3" value="인터넷 서비스를 이용함에 있어 회사와 회원의 권리·의무" />
+      <string name="4" value="및 책임사항을 규정함을 목적으로 합니다." />
+      <string name="5" value="② 회원이 되고자 하는 자가 회사가 정한 소정의 절차를 거" />
+      <string name="6" value="쳐서 `등록하기` 단추를 누르면 본 약관에 동의하는 것으로" />
+      <string name="7" value="간주합니다. 본 약관에 정하는 이외의 회원과 회사의 권리," />
+      <string name="8" value="의무 및 책임사항에 관해서는 전기통신사업법 기타 대한민국" />
+      <string name="9" value="의 관련 법령 및 상관습에 의합니다." />
+      <null name="10" />
+      <null name="11" />
+      <string name="12" value="제2조(정의)" />
+      <null name="13" />
+      <string name="14" value="① `이용자` 란 본 약관에 따라 회사가 제공하는 서비스를" />
+      <string name="15" value="받는 자를 말합니다." />
+      <string name="16" value="② `회원`이라 함은 회사에 개인정보를 제공하여 회원등록을" />
+      <string name="17" value="한 자로서 회사가 제공하는 서비스를 계속적으로 이용할 수" />
+      <string name="18" value="있는 자를 말합니다." />
+      <string name="19" value="③ '서비스' 란 본 약관 제4조에 따라 회사가 이용자에게 제" />
+      <string name="20" value="공하는 서비스를 말합니다." />
+      <string name="21" value="④ '이용계약' 이란 서비스를 제공받기 위해 회사와 이용자" />
+      <string name="22" value="가 체결하는 계약을 말합니다." />
+      <string name="23" value="⑤ '아이디' 란 이용자의 식별과 서비스 이용을 위하여 이용" />
+      <string name="24" value="자가 선정하고 회사가 사용을 승인한 문자와 숫자의 조합을" />
+      <string name="25" value="말합니다." />
+      <string name="26" value="⑥ '비밀번호' 란 이용자의 확인 및 권익보호를 위해 이용자" />
+      <string name="27" value="가 선정한 영문자와 숫자의 조합을 말합니다." />
+      <string name="28" value="⑦ '월정액 서비스' 란 한 달을 기준으로 하여 회사가 미리" />
+      <string name="29" value="책정한 요금을 지불하고, 해당요금에 해당하는 기간만큼 서" />
+      <string name="30" value="비스를 이용하는 요금제도를 말합니다. 단, 모바일 멤버샵의" />
+      <string name="31" value="경우는 매월 가입일에 해당하는 날에 회사가 제공하는 캐릭" />
+      <string name="32" value="터 또는 아이템이나 게임내 가상화폐를 지급받는 요금제도를" />
+      <string name="33" value="의미합니다." />
+      <null name="34" />
+      <null name="35" />
+      <string name="36" value="제3조 (약관의 명시와 개정)" />
+      <null name="37" />
+      <string name="38" value="① 본 약관은 회사의 홈페이지(www.nexonmobile.co.kr 이하" />
+      <string name="39" value="'홈페이지'라 함)에 공지사항을 통해 온라인으로 공시하거나" />
+      <string name="40" value="모바일페이지(휴대폰으로 **072 누른후 통화키 . 이하 '모바" />
+      <string name="41" value="일페이지'라 함) 첫 화면에 공시하며, 합리적인 사유가 발생" />
+      <string name="42" value="할 경우에는 변경될 수 있습니다. 회사는 약관이 변경되는" />
+      <string name="43" value="경우에 변경된 약관의 내용과 적용일을 정하여, 그 적용일로" />
+      <string name="44" value="부터 7일전까지 홈페이지 또는 모바일페이지 첫 화면에 공시" />
+      <string name="45" value="하거나 전자우편으로 고지 또는 회원의 휴대폰으로 문자메세" />
+      <string name="46" value="지(SMS)를 전송하는 방법으로 회원에게 고지합니다. 변경된" />
+      <string name="47" value="약관은 공시하거나 고지한 적용일로부터 효력을 발생합니다." />
+      <null name="48" />
+      <string name="49" value="② 회원은 변경된 약관 사항에 동의하지 않을 시, 서비스 이" />
+      <string name="50" value="용을 중단하고 회원탈퇴를 통해 이용 계약을 해지할 수 있습" />
+      <string name="51" value="니다. 유료서비스이용료를 선납한 회원은 본 약관의 규정에" />
+      <string name="52" value="의하여 환불을 받으실 수 있습니다." />
+      <string name="53" value="③ 개정된 약관 공시내용을 알지 못해 발생하는 회원의 피해" />
+      <string name="54" value="에 대해서는 회사에서 책임지지 않습니다." />
+      <string name="55" value="④ 이 약관에서 정하지 아니한 사항과 이 약관의 해석에 관" />
+      <string name="56" value="하여는 정부가 제정한 전자거래소비자보호지침 및 관계법령" />
+      <string name="57" value="또는 상관례에 따릅니다." />
+      <null name="58" />
+      <null name="59" />
+      <string name="60" value="제4조(서비스의 제공 및 변경)" />
+      <null name="61" />
+      <string name="62" value="① 회사는 다음과 같은 업무를 수행합니다." />
+      <string name="63" value="1. 게임에 대한 정보 서비스" />
+      <string name="64" value="2. 메시지 전송, 메일 통보, 등을 내용으로 하는 정보 서비" />
+      <string name="65" value="스" />
+      <string name="66" value="3. 개인 이동통신(핸드폰/PCS)으로 문자메세지를 발송할 수" />
+      <string name="67" value="있는 SMS서비스를 비롯한 무선인터넷 서비스" />
+      <string name="68" value="4. 기타 회사가 자체 개발하거나 다른 회사와의 협력계약 등" />
+      <string name="69" value="을 통해 회원들에게 제공할 일체의 서비스" />
+      <string name="70" value="② 서비스는 회사의 업무상 또는 기술상의 장애, 기타 특별" />
+      <string name="71" value="한 사유가 없는 한 연중무휴, 1일 24시간 이용할 수 있습니" />
+      <string name="72" value="다. 다만 설비의 점검 등 회사가 필요한 경우 또는 설비의" />
+      <string name="73" value="장애, 서비스 이용의 폭주 등 불가항력으로 인하여 서비스" />
+      <string name="74" value="이용에 지장이 있는 경우 홈페이지 또는 모바일페이지를 통" />
+      <string name="75" value="해 사전고지후 서비스 이용의 전부 또는 일부에 대하여 제한" />
+      <string name="76" value="할 수 있습니다. 단, 사전고지를 할 수 없는 불가피한 사정" />
+      <string name="77" value="이 있는 경우는 사후에 고지합니다." />
+      <string name="78" value="③ 회사는 서비스의 향상 또는 문제 해결을 위해 이를 사전" />
+      <string name="79" value="에 고지하고 내용의 일부 등을 변경할 수 있습니다. 단, 사" />
+      <string name="80" value="전고지를 할 수 없는 불가피한 사정이 있는 경우는 사후에" />
+      <string name="81" value="고지합니다." />
+      <string name="82" value="④ 회사가 제공하는 서비스를 사용하기 위해서는 해당 서비" />
+      <string name="83" value="스에 명시된 요금을 지불하여야 합니다." />
+      <null name="84" />
+      <null name="85" />
+      <string name="86" value="제5조(서비스의 중단)" />
+      <null name="87" />
+      <string name="88" value="회사는 컴퓨터 등 정보통신설비의 보수점검·교체 및 고장," />
+      <string name="89" value="통신의 두절 등의 사유가 발생한 경우와 전시, 사변, 천재지" />
+      <string name="90" value="변 또는 이에 준하는 국가 비상사태가 발생할 우려가 있는" />
+      <string name="91" value="경우 서비스의 전부 또는 일부를 제한 하거나 정지할 수 있" />
+      <string name="92" value="습니다." />
+      <null name="93" />
+      <null name="94" />
+      <string name="95" value="제6조(회원가입 및 관리)" />
+      <null name="96" />
+      <string name="97" value="① 이용자는 약관에 동의한다는 의사표시를 함으로써 회사가" />
+      <string name="98" value="정한 가입양식에 따라 회원정보를 기입한 후 회원가입을 신" />
+      <string name="99" value="청합니다." />
+      <string name="100" value="② 회사는 다음의 각 호에 해당하는 이용신청에 대해서는 승" />
+      <string name="101" value="인을 하지 않거나, 추후에 해당 승인을 취소할 수 있습니다." />
+      <null name="102" />
+      <string name="103" value="1. 등록 내용에 허위, 기재누락, 오기가 있는 경우" />
+      <string name="104" value="2. 기타 회원으로 등록하는 것이 회사의 기술상 현저히 지장" />
+      <string name="105" value="이 있다고 판단되는 경우" />
+      <string name="106" value="3. 다른 사람의 명의를 사용하여 신청한 경우" />
+      <string name="107" value="4. 사회의 안녕과 질서 또는 미풍양속을 저해할 목적으로 신" />
+      <string name="108" value="청한 경우" />
+      <string name="109" value="5. 유료서비스를 이용할 목적으로 신청하였으나, 이용 요금" />
+      <string name="110" value="을 납부하지 않은 경우 또는 납부자를 확인할 수 없는 경우" />
+      <string name="111" value="6. 기타 이용신청자의 귀책사유로 승인이 불가능하다고 판단" />
+      <string name="112" value="되는 경우" />
+      <string name="113" value="③ 회사는 다음의 각 호에 해당하는 경우에는 이용신청에 대" />
+      <string name="114" value="한 승인제한 사유가 소멸할 때까지 승인을 제한하거나 보류" />
+      <string name="115" value="할 수 있습니다." />
+      <string name="116" value="1. 서비스 설비가 부족하여 만족스러운 서비스를 제공할 수" />
+      <string name="117" value="없다고 판단될 경우" />
+      <string name="118" value="2. 서비스상의 장애가 발생한 경우" />
+      <string name="119" value="④ 회사의 귀책사유없이 승인이 지연될 경우 이는 서비스 제" />
+      <string name="120" value="공기간에 속하지 않습니다. 그러므로, 회사는 개통이 지연되" />
+      <string name="121" value="는 기간동안 회원에게 유료서비스 이용요금을 청구할 수 없" />
+      <string name="122" value="으며, 또한 서비스 개통지연에 대한 보상을 하지 않습니다." />
+      <string name="123" value="⑤ 회원은 등록사항에 변경이 있는 경우, 이를 즉시 회사에" />
+      <string name="124" value="알려야 합니다. 변경을 하지 않아 생기는 문제의 책임은 회" />
+      <string name="125" value="원에게 있습니다." />
+      <null name="126" />
+      <null name="127" />
+      <string name="128" value="제7조(회원 탈퇴 및 자격 상실 등)" />
+      <null name="129" />
+      <string name="130" value="① 회원은 회사에게 언제든지 탈퇴를 요청할 수 있으며 회사" />
+      <string name="131" value="는 회원의 의사를 확인하는 즉시 회원탈퇴를 처리합니다." />
+      <string name="132" value="② 회원은 모바일페이지에서 '해지하기' 버튼을 누르거나," />
+      <string name="133" value="핸드폰에서 114를 누른 후 연결되는 이동통신사 고객센터에" />
+      <string name="134" value="서 서비스에 대한 해지를 신청하여 회원탈퇴를 할 수 있으며" />
+      <string name="135" value=", 회사의 고객센터에 전화 (02-928-7623) 또는 팩스 (02-928" />
+      <string name="136" value="-9561)를 이용하여 회원탈퇴를 할 수 있습니다." />
+      <string name="137" value="③ 회원이 다음 각 호의 사유에 해당하는 경우, 회사는 이용" />
+      <string name="138" value="계약을 해지하거나 또는 기간을 정하여 서비스 이용을 중지" />
+      <string name="139" value="할 수 있습니다." />
+      <string name="140" value="1. 가입 신청 시에 허위 내용을 등록한 경우" />
+      <string name="141" value="2. 타인의 서비스 아이디 및 비밀번호, 휴대폰 번호를 도용" />
+      <string name="142" value="한 경우" />
+      <string name="143" value="3. 서비스 운영을 고의로 방해한 경우" />
+      <string name="144" value="4. 경고 후에도 음담패설이나 욕설 등을 하거나, 다른 회원" />
+      <string name="145" value="을 희롱, 위협하는 등 물리적, 정신적 가해행위를 하는 경우" />
+      <null name="146" />
+      <string name="147" value="5. 타인의 명예를 손상시키거나 불이익을 주는 행위를 한 경" />
+      <string name="148" value="우" />
+      <string name="149" value="6. 회사의 운영진이나 회사 직원을 사칭하는 경우" />
+      <string name="150" value="7. 서비스의 안정적 운영을 방해할 목적으로 다량의 정보를" />
+      <string name="151" value="전송하거나 광고성 정보를 전송하는 경우" />
+      <string name="152" value="8. 정보통신설비의 오작동이나 정보 등의 파괴를 유발시키는" />
+      <string name="153" value="컴퓨터 바이러스 프로그램 등을 유포하는 경우" />
+      <string name="154" value="9. 허가 없이 회사의 클라이언트 프로그램을 변경하거나 서" />
+      <string name="155" value="버를 해킹하는 행위" />
+      <string name="156" value="10. 프로그램상의 버그를 악용하는 행위" />
+      <string name="157" value="11. 회사 및 다른 회원 또는 타인의 지적재산권을 침해하는" />
+      <string name="158" value="경우" />
+      <string name="159" value="12. 타인의 사적인 정보나 사생활 보호에 위배되는 정보를" />
+      <string name="160" value="유출시키거나 매매하는 행위" />
+      <string name="161" value="13. 정보통신윤리위원회 등 회부기관의 시정요구가 있거나" />
+      <string name="162" value="불법선거 운동과 관련하여 선관리위원회의 유권해석을 받은" />
+      <string name="163" value="경우" />
+      <string name="164" value="14. 회사의 서비스 정보를 이용하여 얻은 정보를 회사의 사" />
+      <string name="165" value="전 승낙없이 복제 또는 유통시키거나 상업적으로 이용하는" />
+      <string name="166" value="경우" />
+      <string name="167" value="15. 음란물을 게재하거나 음란사이트를 링크하는 경우" />
+      <string name="168" value="16. 회사가 제공하는 서비스를 통하여 취득한 아이템이나 캐" />
+      <string name="169" value="릭터 또는 게임ID를 회사의 허락없이 매매 기타 영리행위를" />
+      <string name="170" value="위해 이용하거나 제3자로 하여금 이용하게 하는 경우" />
+      <string name="171" value="④ 회사는 이용제한의 사유가 소멸한 회원에 한하여 제한을" />
+      <string name="172" value="해제할 수 있습니다." />
+      <null name="173" />
+      <null name="174" />
+      <string name="175" value="제8조(개인정보보호)" />
+      <null name="176" />
+      <string name="177" value="① 회사는 회원의 정보수집 시 회원에게 제공되는 각종 편의" />
+      <string name="178" value="서비스의 이용 및 구매계약 이행에 필요한 최소한의 정보를" />
+      <string name="179" value="수집합니다." />
+      <string name="180" value="② 회사는 회원의 개인식별이 가능한 개인정보를 수집하는" />
+      <string name="181" value="때에는 반드시 당해 이용자의 동의를 받습니다." />
+      <string name="182" value="③ 회사는 회원이 서비스를 이용함에 있어 회사의 고의 또는" />
+      <string name="183" value="중대한 과실로 인하여 입은 손해를 배상할 책임을 부담합니" />
+      <string name="184" value="다." />
+      <string name="185" value="④ 회사는 회원의 개인정보보호를 위해 개인정보보호정책을" />
+      <string name="186" value="공시하고 준수합니다." />
+      <null name="187" />
+      <null name="188" />
+      <string name="189" value="제9조(회사의 의무)" />
+      <null name="190" />
+      <string name="191" value="① 회사는 법령과 이 약관이 금지하거나 공서양속에 반하는" />
+      <string name="192" value="행위를 하지 않으며 이 약관이 정하는 바에 따라 지속적이고" />
+      <string name="193" value=", 안정적으로 재화·용역을 제공하는 데 최선을 다하여야 합" />
+      <string name="194" value="니다. 다만, 처리가 곤란할 경우에는 회원에게 그 사유와 처" />
+      <string name="195" value="리 일정을 서면, 전자우편 또는 전화, 휴대폰문자메세지(SMS" />
+      <string name="196" value=") 등으로 통보하거나 홈페이지 또는 모바일페이지에 공시합" />
+      <string name="197" value="니다." />
+      <string name="198" value="② 회사는 서비스 제공과 관련하여 취득한 회원의 정보를 본" />
+      <string name="199" value="인의 사전 동의 없이 어떠한 목적으로도 사용할 수 없습니다" />
+      <string name="200" value=". 다만, 관계법령에 의해 수사상의 목적으로 요청받은 경우" />
+      <string name="201" value="는 예외로 합니다." />
+      <string name="202" value="③ 회사는 회원이 서비스 이용 중 필요가 있다고 인정되는" />
+      <string name="203" value="다양한 정보를 회원의 신청에 따라 소정의 절차를 거쳐 전자" />
+      <string name="204" value="우편이나 서신 등으로 제공합니다." />
+      <null name="205" />
+      <null name="206" />
+      <null name="207" />
+      <string name="208" value="제10조(회원의 ID 및 비밀번호, 휴대폰번호에 대한 의무)" />
+      <null name="209" />
+      <string name="210" value="① ID와 비밀번호, 휴대폰번호에 관한 관리책임은 회원에게" />
+      <string name="211" value="있습니다." />
+      <string name="212" value="② 회원은 자신의 ID 및 비밀번호, 휴대폰번호를 제3자에게" />
+      <string name="213" value="이용하게 해서는 안됩니다. 회사의 귀책사유가 없는 제3자에" />
+      <string name="214" value="의한 부정사용등에 대한 책임은 이용고객에게 있으며 회사는" />
+      <string name="215" value="그에 대한 책임을 부담하지 않습니다." />
+      <string name="216" value="③ 회원이 자신의 ID 및 비밀번호, 휴대폰번호를 도난 당하" />
+      <string name="217" value="거나 제3자가 사용하고 있음을 인지한 경우에는 바로 회사에" />
+      <string name="218" value="통보하고 안내가 있는 경우에는 그에 따라야 합니다." />
+      <null name="219" />
+      <null name="220" />
+      <string name="221" value="제11조(회원의 의무)" />
+      <null name="222" />
+      <string name="223" value="① 회원은 다음 행위를 하여서는 안됩니다. 사실과는 다른" />
+      <string name="224" value="허위정보를 입력하였을 경우, 경품이나 각종 이벤트에 당첨" />
+      <string name="225" value="되더라도 그 사실이 발견된 시점에서 취소될 수 있습니다." />
+      <string name="226" value="1. 신청 또는 변경 시 허위내용의 등록" />
+      <string name="227" value="2. 다른 회원의 아이디나 비밀번호, 휴대폰번호를 부정하게" />
+      <string name="228" value="사용하는 행위" />
+      <string name="229" value="3. 회사가 게시된 정보의 변경" />
+      <string name="230" value="4. 회사가 정한 정보 이외의 정보(컴퓨터 프로그램 등)의 송" />
+      <string name="231" value="신 또는 게시" />
+      <string name="232" value="5. 서비스에서 얻은 정보를 회사의 사전승낙 없이 회원의 이" />
+      <string name="233" value="용이외의 목적으로 복제 하거나 이를 변경, 출판 및 방송 등" />
+      <string name="234" value="에 사용하거나 타인에게 제공하는 행위" />
+      <string name="235" value="6. 회사 및 제3자의 저작권 등 지적재산권에 대한 침해" />
+      <string name="236" value="7. 회사 및 제3자의 명예를 손상시키거나 업무를 방해하는" />
+      <string name="237" value="행위" />
+      <string name="238" value="8. 음란 또는 폭력적인 메시지·화상·음성 기타 공서양속에" />
+      <string name="239" value="반하는 정보, 문장, 도형 등을 공개 또는 게시하거나 타인에" />
+      <string name="240" value="게 유포하는 행위" />
+      <string name="241" value="9. 범죄와 결부된다고 객관적으로 판단되는 행위" />
+      <string name="242" value="10. 공공의 안녕, 질서 및 미풍양속을 저해하는 행위" />
+      <string name="243" value="11. 기타 관계법령에 위배되는 행위" />
+      <null name="244" />
+      <string name="245" value="② 회원은 관계법령, 이 약관에서 규정하는 사항, 서비스 이" />
+      <string name="246" value="용 안내 및 주의 사항을 준수하여야 하며, 서비스에 지장을" />
+      <string name="247" value="초래하는 행위를 해서는 안됩니다." />
+      <string name="248" value="③ 회원은 수시로 회사의 홈페이지 또는 모바일페이지를 방" />
+      <string name="249" value="문하여 공지사항을 확인하여야 하며, 내용별로 회사가 공지" />
+      <string name="250" value="사항에 게시하거나 별도로 공지한 이용 제한 사항을 준수하" />
+      <string name="251" value="여야 합니다." />
+      <string name="252" value="④ 모바일 멤버샵 같은 중개서비스의 경우, 회원은 넥슨닷컴" />
+      <string name="253" value="(www.nexon.com) 과 해당통신사의 홈페이지 (www.sktelecom." />
+      <string name="254" value="com, www.ktf.co.kr, www.lgt.co.kr)를 방문하여 각 사의 약" />
+      <string name="255" value="관을 숙지하고 준수하여야 합니다." />
+      <string name="256" value="⑤ 회원은 회사의 사전 승낙 없이 서비스를 이용하여 불법" />
+      <string name="257" value="상품을 판매하는 영업활동을 할 수 없으며 특히 해킹, 돈벌" />
+      <string name="258" value="기 광고, 음란사이트를 통한 상업행위, 상용 S/W 불법배포" />
+      <string name="259" value="등을 할 수 없습니다. 이를 어기고 발생한 영업활동의 결과" />
+      <string name="260" value="및 손실, 관계기관에 의한 구속 등 법적 조치등에 관해서는" />
+      <string name="261" value="회사가 책임을 지지 않습니다." />
+      <string name="262" value="⑥ 회원은 회사가 제공하는 서비스를 통하여 취득한 아이템" />
+      <string name="263" value="이나 캐릭터 또는 게임ID를 회사의 허락없이 매매 기타 영리" />
+      <string name="264" value="행위를 위해 이용하거나 제3자로 하여금 이용하게 할 수 없" />
+      <string name="265" value="습니다." />
+      <null name="266" />
+      <null name="267" />
+      <string name="268" value="제12조(저작권의 귀속 및 이용제한)" />
+      <null name="269" />
+      <string name="270" value="① 회사가 작성한 저작물에 대한 저작권 기타 지적재산권은" />
+      <string name="271" value="회사에 귀속 합니다." />
+      <string name="272" value="② 회원은 회사의 서비스를 이용하면서 취득한 정보와 회사" />
+      <string name="273" value="의 저작물을 회사의 사전 승낙 없이 복제, 송신, 출판, 배포" />
+      <string name="274" value=", 방송 기타 방법에 의하여 영리목적으로 이용하거나 제3자" />
+      <string name="275" value="에게 이용하게 하여서는 안됩니다." />
+      <string name="276" value="③ ㈜넥슨이 제공하는 서비스, 그에 필요한 소프트웨어, 이" />
+      <string name="277" value="미지, 마크, 로고, 디자인, 서비스명칭, 정보 및 상표 등과" />
+      <string name="278" value="관련된 지적재산권 및 기타 권리는" />
+      <string name="279" value="㈜넥슨에게 소유권이 있습니다. 회원은 ㈜넥슨에서 명시적으" />
+      <string name="280" value="로 승인한 경우를 제외하고는 상기한 ㈜넥슨의 재산에 대한" />
+      <string name="281" value="전부 또는 일부의 수정, 대여, 대출, 판매, 배포, 제작, 양" />
+      <string name="282" value="도, 재라이센스, 담보권 설정행위 기타 상업적 이용행위를" />
+      <string name="283" value="할 수 없으며, 제3자로 하여금 이와 같은 행위를 하도록 허" />
+      <string name="284" value="락할 수 없습니다. 특히, 회원은 서비스에서 제공되는 쿠폰" />
+      <string name="285" value="이나 아이템 등을 ㈜넥슨에서 허락한 경우를 제외하고 매매" />
+      <string name="286" value="나 담보설정 기타 이용자의 영리행위를 위해 사용할 수 없습" />
+      <string name="287" value="니다." />
+      <null name="288" />
+      <string name="289" value="제13조(정보의 제공)" />
+      <null name="290" />
+      <string name="291" value="넥슨모바일은 서비스 개선 및 회원 대상의 서비스 소개 등의" />
+      <string name="292" value="목적으로 회원의 동의하에 추가적인 개인 정보를 요구할 수" />
+      <string name="293" value="있습니다." />
+      <null name="294" />
+      <null name="295" />
+      <string name="296" value="제14조 (SMS수신)" />
+      <string name="297" value="① 회원이 서비스에 가입할 경우 휴대폰문자메세지(SMS)수신" />
+      <string name="298" value="에 자동으로 가입되며, 각종 정보를 SMS를 통해 이용하실 수" />
+      <string name="299" value="있습니다." />
+      <string name="300" value="② 수신거부를 원하는 회원은 회사의 고객센터(02-928-7623)" />
+      <string name="301" value="를 통하여 언제든지 수신을 거부할 수 있습니다." />
+      <null name="302" />
+      <null name="303" />
+      <string name="304" value="제15조(회원 게시물의 삭제)" />
+      <null name="305" />
+      <string name="306" value="회원의 공개 게시물의 내용이 다음의 경우에 해당될 경우 사" />
+      <string name="307" value="전통지 없이 삭제할 수 있으며 해당 이용자의 회원 자격을" />
+      <string name="308" value="제한하거나, 정지 또는 상실 시킬 수 있습니다." />
+      <string name="309" value="1. 다른 회원이나 타인을 비방하거나, 프라이버시를 침해하" />
+      <string name="310" value="거나, 중상모략으로 명예를 손상시키는 내용인 경우" />
+      <string name="311" value="2. 서비스의 안정적인 운영에 지장을 주거나 줄 우려가 있는" />
+      <string name="312" value="경우" />
+      <string name="313" value="3. 범죄적 행위에 관련된다고 인정되는 내용일 경우" />
+      <string name="314" value="4. 넥슨모바일 및 제 3자의 지적재산권 등 기타 권리를 침해" />
+      <string name="315" value="하는 내용인 경우" />
+      <string name="316" value="5. 기타 본 약관 제6조 제2항 또는 제11조의 각호에 해당하" />
+      <string name="317" value="는 경우" />
+      <null name="318" />
+      <null name="319" />
+      <string name="320" value="제16조 (유료서비스의 개시 및 연장)" />
+      <string name="321" value="① 회사는 회사로부터 이용신청에 대한 승인을 받고 결제완" />
+      <string name="322" value="료가 확인된 회원에 한하여, 1시간이내에 해당 유료서비스가" />
+      <string name="323" value="제공되도록 합니다. 월 이용 기간은 한 달로 산정함을 원칙" />
+      <string name="324" value="으로 합니다. 단, 개별 서비스별로 이용 기간을 다르게 정한" />
+      <string name="325" value="경우는 그에 따릅니다." />
+      <string name="326" value="② 월정액 서비스를 이용하는 회원의 경우, 서비스 이용기간" />
+      <string name="327" value="이 종료되면 회원이 별도의 해지의 의사표시를 하지 않는 이" />
+      <string name="328" value="상 자동으로 서비스이용이 연장됩니다. 월정액 서비스 해지" />
+      <string name="329" value="를 원하는 고객은 가입후 익일부터 언제든지 해지가 가능합" />
+      <string name="330" value="니다." />
+      <null name="331" />
+      <null name="332" />
+      <string name="333" value="제17조 (유료서비스이용회원의 탈퇴시의 요금반환)" />
+      <string name="334" value="① 서비스 이용기간 중에 서비스를 이용하지 않은 회원이 회" />
+      <string name="335" value="원탈퇴를 할 경우 납입금을 환불 신청하시면 정해진 기간에" />
+      <string name="336" value="반환합니다." />
+      <string name="337" value="② 제1항의 회원이 연속하여 2개월이상 서비스를 이용하지" />
+      <string name="338" value="않은 경우는 최종월 결제요금만 반환합니다." />
+      <string name="339" value="③ 서비스 이용기간 중에 서비스를 이미 이용한 회원이 회원" />
+      <string name="340" value="탈퇴를 할 경우 환불을 받으실 수 없습니다." />
+      <string name="341" value="④ 서비스에서 구매한 쿠폰번호를 해당 게임에서 사용한 경" />
+      <string name="342" value="우 환불을 받으실 수 없습니다." />
+      <string name="343" value="⑤ 회사는 회사에서 공지한 시점 (매월 말일)에 환불을 이행" />
+      <string name="344" value="하되 송금수수료는 회사가 부담합니다." />
+      <string name="345" value="⑥ 회원의 귀책사유로 입금착오 및 그로 인한 등록지연이나" />
+      <string name="346" value="회원탈퇴지연이 발생할 경우, 회사는 이에 대해 책임을 지지" />
+      <string name="347" value="않습니다." />
+      <null name="348" />
+      <null name="349" />
+      <string name="350" value="제18조 (손해배상)" />
+      <string name="351" value="① 회사는 회사의 귀책사유로 인한 회원의 손해를 배상할 책" />
+      <string name="352" value="임이 있습니다." />
+      <string name="353" value="② 다음에 해당하는 경우 회사는 회원에 대하여 배상 책임을" />
+      <string name="354" value="면할 수 있습니다." />
+      <string name="355" value="1. 전시, 사변, 천재지변, 국가비상사태 및 기타 불가항력적" />
+      <string name="356" value="인 사유에 의한 경우" />
+      <string name="357" value="2. 이용고객의 고의 또는 과실로 인하여 발생한 경우" />
+      <string name="358" value="3. 기간통신 사업자가 전기통신 서비스를 중지하였거나 정상" />
+      <string name="359" value="적인 역무를 제공하지 못하여 발생한 경우" />
+      <string name="360" value="4. 사전에 고지한 서비스용 설비의 보수, 정기점검, 공사 등" />
+      <string name="361" value="부득이한 경우" />
+      <string name="362" value="③ 회원이 본 약관의 의무를 위반하거나 서비스를 이용함에" />
+      <string name="363" value="있어 회사에 손해를 입힌 경우에는 회원은 회사에 그 손해를" />
+      <string name="364" value="배상할 책임이 있습니다." />
+      <null name="365" />
+      <null name="366" />
+      <string name="367" value="제19조 (상품 및 경품)" />
+      <string name="368" value="① 각종 경품 및 상품을 수령하는 회원이 회원가입시 입력한" />
+      <string name="369" value="회원 정보에서 허위로 기재한 사항이 있을 경우 모든 권리(" />
+      <string name="370" value="경품 및 수상 포함)가 박탈되며 회원에서 삭제됩니다." />
+      <string name="371" value="② 별도로 정한 기준에 의거 부여하는 각종 경품과 상금은" />
+      <string name="372" value="미리 정해진 날에 본인 확인 후 제공하거나 또는 온라인 송" />
+      <string name="373" value="금됩니다. 상금의 경우 지급되는 금액은 각종 제세금을 제외" />
+      <string name="374" value="한 금액을 지급합니다. 경품의 경우도 각종 제세금은 수령자" />
+      <string name="375" value="인 회원의 부담입니다." />
+      <string name="376" value="③ 해당 이용자가 만20세미만인 경우 반드시 회사의 안내에" />
+      <string name="377" value="따라 법정대리인의 동의를 얻어 수령하여야 합니다." />
+      <null name="378" />
+      <null name="379" />
+      <string name="380" value="제20조 (재판관할)" />
+      <string name="381" value="회사와 이용자간에 발생한 서비스 이용에 관한 분쟁에 대하" />
+      <string name="382" value="여는 대한민국 법을 적용하며, 본 분쟁으로 인한 소는 민사" />
+      <string name="383" value="소송법상의 관할을 가지는 대한민국의 법원에 제기합니다." />
+      <null name="384" />
+      <null name="385" />
+      <null name="386" />
+      <string name="387" value="부칙1" />
+      <string name="388" value="본 약관은 2006년 3월 2일부터 적용됩니다." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="CS3thEvent">
+    <canvas name="0" width="79" height="70">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

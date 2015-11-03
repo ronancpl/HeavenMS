@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="926020108.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="swim" value="0" />
+    <int name="returnMap" value="926010001" />
+    <int name="forcedReturn" value="926010000" />
+    <float name="mobRate" value="1.0" />
+    <string name="bgm" value="Bgm20/NetsPiramid" />
+    <string name="mapMark" value="Ariant" />
+    <int name="fly" value="0" />
+    <int name="noMapCmd" value="1" />
+    <int name="hideMinimap" value="1" />
+    <int name="fieldLimit" value="271100" />
+    <int name="VRTop" value="-415" />
+    <int name="VRLeft" value="-495" />
+    <int name="VRBottom" value="270" />
+    <int name="VRRight" value="495" />
+    <string name="onFirstUserEnter" value="killing_MapSetting" />
+    <string name="onUserEnter" value="Massacre_first" />
+    <int name="fixedMobCapacity" value="70" />
+    <int name="fieldType" value="23" />
+    <int name="createMobInterval" value="3000" />
+    <string name="link" value="926020100" />
+  </imgdir>
+</imgdir>

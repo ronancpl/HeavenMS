@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="BFSkill.img">
+  <imgdir name="0">
+    <string name="name" value="Cry" />
+    <string name="desc" value="You cry at the Wolf, and it slows down as if it's in shock. " />
+    <int name="mobSkillID" value="126" />
+    <int name="level" value="9" />
+    <int name="userCount" value="5" />
+    <int name="owner" value="0" />
+    <string name="effect" value="Effect/BasicEff/ItemSkill/Success" />
+  </imgdir>
+  <imgdir name="1">
+    <string name="name" value="Surprise Attack" />
+    <string name="desc" value="You attack the Wolf. He should be momentarily stunned. " />
+    <int name="mobSkillID" value="123" />
+    <int name="level" value="14" />
+    <int name="userCount" value="2" />
+    <int name="owner" value="0" />
+    <string name="effect" value="Effect/BasicEff/ItemSkill/Success" />
+  </imgdir>
+  <imgdir name="2">
+    <string name="name" value="Great Confusion" />
+    <string name="desc" value="The Sheep are in a state of confusion." />
+    <int name="mobSkillID" value="132" />
+    <int name="level" value="4" />
+    <int name="userCount" value="6" />
+    <int name="owner" value="1" />
+    <string name="effect" value="Effect/BasicEff/ItemSkill/Success" />
+  </imgdir>
+  <imgdir name="3">
+    <string name="name" value="Sheep's Bell" />
+    <string name="desc" value="The Wolves have slowed down." />
+    <int name="mobSkillID" value="126" />
+    <int name="level" value="10" />
+    <int name="allMap" value="1" />
+    <int name="owner" value="0" />
+  </imgdir>
+  <imgdir name="4">
+    <string name="name" value="Wolf's Bell" />
+    <string name="desc" value="The Sheep are momentarily stunned." />
+    <int name="mobSkillID" value="123" />
+    <int name="level" value="15" />
+    <int name="allMap" value="1" />
+    <int name="owner" value="1" />
+  </imgdir>
+  <imgdir name="5">
+    <string name="name" value="Wolf's Threat" />
+    <string name="desc" value="The Sheep have momentarily weakened." />
+    <int name="mobSkillID" value="122" />
+    <int name="level" value="12" />
+    <int name="allMap" value="1" />
+    <int name="owner" value="1" />
+    <int name="userCount" value="6" />
+    <string name="effect" value="Effect/BasicEff/ItemSkill/Success" />
+  </imgdir>
+</imgdir>

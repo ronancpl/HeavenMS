@@ -1,0 +1,3027 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0910.img">
+  <imgdir name="9100000">
+    <string name="name" value="일반 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101000">
+    <string name="name" value="처녀귀신 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101001">
+    <string name="name" value="The Package of Death" />
+    <uol name="icon" value="../9101000/icon" />
+  </imgdir>
+  <imgdir name="9101002">
+    <string name="name" value="Fine Hanbok Pkg.(Blue)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101003">
+    <string name="name" value="Fine Hanbok Dress Pkg.(Red)" />
+    <uol name="icon" value="../9101002/icon" />
+  </imgdir>
+  <imgdir name="9101004">
+    <string name="name" value="Cyber Punk Package (Man)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101005">
+    <string name="name" value="Cyber Punk Package (Woman)" />
+    <uol name="icon" value="../9101004/icon" />
+  </imgdir>
+  <imgdir name="9101006">
+    <string name="name" value="Raincoat Package (Men)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101007">
+    <string name="name" value="Raincoat Package (Women)" />
+    <uol name="icon" value="../9101006/icon" />
+  </imgdir>
+  <imgdir name="9101008">
+    <string name="name" value="Angel Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101009">
+    <string name="name" value="Santa Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101010">
+    <string name="name" value="Mrs. Claus Package" />
+    <uol name="icon" value="../9101009/icon" />
+  </imgdir>
+  <imgdir name="9101011">
+    <string name="name" value="Rudolph Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101012">
+    <string name="name" value="Red Christmas Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101013">
+    <string name="name" value="White Christmas Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101014">
+    <string name="name" value="레벨20이하유저 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101015">
+    <string name="name" value="고급쿠폰세트 " />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101016">
+    <string name="name" value="남자 패션 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101017">
+    <string name="name" value="여자 패션 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101018">
+    <string name="name" value="펫(검은색 돼지)세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101019">
+    <string name="name" value="법사&amp;주문서 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101020">
+    <string name="name" value="궁수&amp;캐주얼웨어 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101021">
+    <string name="name" value="펫(검은색 돼지)&amp;고급쿠폰 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101022">
+    <string name="name" value="도적&amp;신규아이템 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101023">
+    <string name="name" value="전사&amp;고급쿠폰 세트" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101024">
+    <string name="name" value="해신 장보고 세트" />
+    <canvas name="icon" width="31" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101025">
+    <string name="name" value="해신 염장 세트" />
+    <canvas name="icon" width="31" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101026">
+    <string name="name" value="해신 자미부인 세트" />
+    <canvas name="icon" width="31" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101027">
+    <string name="name" value="관우 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101028">
+    <string name="name" value="초선 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101029">
+    <string name="name" value="제갈량 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101030">
+    <string name="name" value="Blue Chinese Undead Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101031">
+    <string name="name" value="Purple Chinese Undead Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101032">
+    <string name="name" value="Graduation Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101033">
+    <string name="name" value="Army Boy Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101034">
+    <string name="name" value="Witch Costume Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101035">
+    <string name="name" value="유비 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101036">
+    <string name="name" value="조조 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101037">
+    <string name="name" value="손권 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101038">
+    <string name="name" value="웨딩드레스 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101039">
+    <string name="name" value="관우 세트" />
+    <uol name="icon" value="../9101027/icon" />
+  </imgdir>
+  <imgdir name="9101040">
+    <string name="name" value="초선 세트" />
+    <uol name="icon" value="../9101028/icon" />
+  </imgdir>
+  <imgdir name="9101041">
+    <string name="name" value="제갈량 세트" />
+    <uol name="icon" value="../9101029/icon" />
+  </imgdir>
+  <imgdir name="9101042">
+    <string name="name" value="유비 세트" />
+    <uol name="icon" value="../9101035/icon" />
+  </imgdir>
+  <imgdir name="9101043">
+    <string name="name" value="조조 세트" />
+    <uol name="icon" value="../9101036/icon" />
+  </imgdir>
+  <imgdir name="9101044">
+    <string name="name" value="손권 세트" />
+    <uol name="icon" value="../9101037/icon" />
+  </imgdir>
+  <imgdir name="9101045">
+    <string name="name" value="Red Mesoranger Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101046">
+    <string name="name" value="Blue Mesoranger Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101047">
+    <string name="name" value="Green Mesoranger Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101048">
+    <string name="name" value="Black Mesoranger Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101049">
+    <string name="name" value="Pink Mesoranger Package (F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101050">
+    <string name="name" value="Yellow Mesoranger Package (F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101051">
+    <string name="name" value="Black Mesoranger Package (F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101052">
+    <string name="name" value="Expression Package #1" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101053">
+    <string name="name" value="Expression Package #2" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101054">
+    <string name="name" value="Scream Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101055">
+    <string name="name" value="Bunny Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101056">
+    <string name="name" value="Duckie Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101060">
+    <string name="name" value="Basic Baseball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101061">
+    <string name="name" value="Home Baseball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101062">
+    <string name="name" value="Away Baseball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101063">
+    <string name="name" value="Extra Baseball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101077">
+    <string name="name" value="물병자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101078">
+    <string name="name" value="물병자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101079">
+    <string name="name" value="물고기자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101080">
+    <string name="name" value="물고기자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101081">
+    <string name="name" value="양자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101082">
+    <string name="name" value="양자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101083">
+    <string name="name" value="황소자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101084">
+    <string name="name" value="황소자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101085">
+    <string name="name" value="쌍둥이자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101086">
+    <string name="name" value="쌍둥이자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101087">
+    <string name="name" value="게자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101088">
+    <string name="name" value="게자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101089">
+    <string name="name" value="사자자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101090">
+    <string name="name" value="사자자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101091">
+    <string name="name" value="처녀자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101092">
+    <string name="name" value="처녀자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101093">
+    <string name="name" value="천칭자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101094">
+    <string name="name" value="천칭자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101095">
+    <string name="name" value="전갈자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101096">
+    <string name="name" value="전갈자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101097">
+    <string name="name" value="사수자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101098">
+    <string name="name" value="사수자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101099">
+    <string name="name" value="염소자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101100">
+    <string name="name" value="염소자리 : 별자리 세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101101">
+    <string name="name" value="루돌프 펫 패키지 Ⅰ" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101102">
+    <string name="name" value="루돌프 펫 패키지 Ⅱ" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101104">
+    <string name="name" value="눈사람 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101105">
+    <string name="name" value="산타보이 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101106">
+    <string name="name" value="산타걸 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101107">
+    <string name="name" value="호피무늬 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101108">
+    <string name="name" value="Snowboard Package 1" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101109">
+    <string name="name" value="Snowboard Package 2" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101110">
+    <string name="name" value="Snowman Package(Basic)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101111">
+    <string name="name" value="Snowman Package(Claw)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101112">
+    <string name="name" value="산타 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101113">
+    <string name="name" value="산타 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101114">
+    <string name="name" value="루돌프 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101115">
+    <string name="name" value="Black Snowboard Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101116">
+    <string name="name" value="Red Snowboard Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101117">
+    <string name="name" value="Snowman Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101118">
+    <string name="name" value="금동자세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101119">
+    <string name="name" value="옥소녀세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101120">
+    <string name="name" value="백호 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101121">
+    <string name="name" value="Fine Hanbok Pkg.(Black)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101122">
+    <string name="name" value="Fine Hanbok Dress Pkg.(Blue)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101123">
+    <string name="name" value="Blue B-Ball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101124">
+    <string name="name" value="Orange B-Ball Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101125">
+    <string name="name" value="헤네시스 뷰티샵 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101126">
+    <string name="name" value="오르비스 뷰티샵 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101127">
+    <string name="name" value="루디브리엄 뷰티샵 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101128">
+    <string name="name" value="엘프상인 1일 체험 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101129">
+    <string name="name" value="Football Package(Home)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101130">
+    <string name="name" value="Football Package(Away)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101131">
+    <string name="name" value="QB Essentials" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101132">
+    <string name="name" value="Linebacker Package(Home)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101133">
+    <string name="name" value="Linebacker Package(Away)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101134">
+    <string name="name" value="Lunar Celebration Suit Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101135">
+    <string name="name" value="Lunar Celebration Dress Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101142">
+    <string name="name" value="가위바위보 패키지" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101143">
+    <string name="name" value="태극 패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101144">
+    <string name="name" value="Blue Boxing Set(M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101145">
+    <string name="name" value="Blue Boxing Set(F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101146">
+    <string name="name" value="Red Boxing Set(M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101147">
+    <string name="name" value="Red Boxing Set(F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101148">
+    <string name="name" value="Pink Bunny Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101149">
+    <string name="name" value="White Bunny Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101150">
+    <string name="name" value="Easter Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101151">
+    <string name="name" value="Ludibrium Beauty Package(A Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101152">
+    <string name="name" value="Henesys Beauty Package(A Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101153">
+    <string name="name" value="Orbis Beauty Package(A Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101154">
+    <string name="name" value="Ludibrium Beauty Package(B Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101155">
+    <string name="name" value="Henesys Beauty Package(B Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101156">
+    <string name="name" value="Orbis Beauty Package(B Type)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101157">
+    <string name="name" value="Henesys Hair Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101158">
+    <string name="name" value="Orbis Hair Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101159">
+    <string name="name" value="Ludibrium Hair Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101160">
+    <string name="name" value="Kerning City Hair Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101161">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101162">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101163">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101164">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101165">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101166">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101167">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101168">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101169">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101170">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101171">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101172">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101173">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101174">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101175">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101176">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101177">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101178">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101179">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101180">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101181">
+    <string name="name" value="3주년 캐시패키지" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101182">
+    <string name="name" value="Black Pig Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101183">
+    <string name="name" value="Panda Special Pacakge" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101191">
+    <string name="name" value="대한민국 응원세트" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101192">
+    <string name="name" value="축구공 응원세트(남)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101193">
+    <string name="name" value="축구공 응원세트(여)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101197">
+    <string name="name" value="Western Cowboy Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101198">
+    <string name="name" value="Western Cowgirl Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101199">
+    <string name="name" value="Special Husky Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101200">
+    <string name="name" value="Premium Husky Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101225">
+    <string name="name" value="Dino Girl Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101226">
+    <string name="name" value="Dino Queen Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101233">
+    <string name="name" value="Dino Boy Package" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101234">
+    <string name="name" value="Dino King Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101254">
+    <string name="name" value="Guan Yu Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101255">
+    <string name="name" value="Diao Chan Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101256">
+    <string name="name" value="Monkey Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101257">
+    <string name="name" value="Zhu-Ge-Liang Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101258">
+    <string name="name" value="Monkey Package Special Edition" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101259">
+    <string name="name" value="AP Reset + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101260">
+    <string name="name" value="SP Reset(1st) + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101261">
+    <string name="name" value="SP Reset(2nd) + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101262">
+    <string name="name" value="Safety Charm(5) + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101263">
+    <string name="name" value="Super Megaphone(13) + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101264">
+    <string name="name" value="VIP Teleport Rock(6) + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101265">
+    <string name="name" value="Regular Store Permit + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101266">
+    <string name="name" value="Michael Wings + 1 free Gachapon Ticket" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101276">
+    <string name="name" value="Moon Bunny Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101277">
+    <string name="name" value="Shower Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101279">
+    <string name="name" value="Prisoner Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101280">
+    <string name="name" value="Maple-Stein Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101281">
+    <string name="name" value="Scroll Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101282">
+    <string name="name" value="Patissier Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101283">
+    <string name="name" value="White Cat Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101284">
+    <string name="name" value="Black Cat Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101290">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Turkey Package" />
+  </imgdir>
+  <imgdir name="9101291">
+    <uol name="icon" value="../9101037/icon" />
+    <string name="name" value="Sun Quan Package" />
+  </imgdir>
+  <imgdir name="9101292">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Groom's Package" />
+  </imgdir>
+  <imgdir name="9101293">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Queen Mary Package" />
+  </imgdir>
+  <imgdir name="9101294">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Princess Isis Package" />
+  </imgdir>
+  <imgdir name="9101295">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Amoria Package (VIP)" />
+  </imgdir>
+  <imgdir name="9101296">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Amoria Package (Reg)" />
+  </imgdir>
+  <imgdir name="9101297">
+    <string name="name" value="Cao Cao Package" />
+    <uol name="icon" value="../9101036/icon" />
+  </imgdir>
+  <imgdir name="9101298">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Starter's Package I" />
+  </imgdir>
+  <imgdir name="9101299">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Starter's Package II" />
+  </imgdir>
+  <imgdir name="9101300">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Starter's Functional Package" />
+  </imgdir>
+  <imgdir name="9101301">
+    <string name="name" value="Liu Bei Package" />
+    <uol name="icon" value="../9101035/icon" />
+  </imgdir>
+  <imgdir name="9101302">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="White Tiger Package" />
+  </imgdir>
+  <imgdir name="9101310">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Santa Girl Package" />
+  </imgdir>
+  <imgdir name="9101311">
+    <uol name="icon" value="../9101310/icon" />
+    <string name="name" value="Santa Boy Package" />
+  </imgdir>
+  <imgdir name="9101312">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Elf Package" />
+  </imgdir>
+  <imgdir name="9101313">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Penguin Package" />
+  </imgdir>
+  <imgdir name="9101314">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Rudolph Package" />
+  </imgdir>
+  <imgdir name="9101315">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="The Chinese Undead Package (Blue)" />
+  </imgdir>
+  <imgdir name="9101316">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="The Chinese Undead Package (Maroon)" />
+  </imgdir>
+  <imgdir name="9101317">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Women's Ninja Package" />
+  </imgdir>
+  <imgdir name="9101318">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="SF Ninja Package" />
+  </imgdir>
+  <imgdir name="9101319">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Hanukkah Candle Package" />
+  </imgdir>
+  <imgdir name="9101320">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Hanukkah Candle Package" />
+  </imgdir>
+  <imgdir name="9101346">
+    <uol name="icon" value="../9101107/icon" />
+    <string name="name" value="Leopard Print Package" />
+  </imgdir>
+  <imgdir name="9101347">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Teddy Bear Package" />
+  </imgdir>
+  <imgdir name="9101348">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Kimono Package (Female)" />
+  </imgdir>
+  <imgdir name="9101349">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Kimono Package (Male)" />
+  </imgdir>
+  <imgdir name="9101356">
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Lunar Celebration Suit Package" />
+  </imgdir>
+  <imgdir name="9101357">
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Lunar Celebration Dress Package" />
+  </imgdir>
+  <imgdir name="9101358">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Valentine's Day Package I (Female)" />
+  </imgdir>
+  <imgdir name="9101359">
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Valentine's Day Package II (Female)" />
+  </imgdir>
+  <imgdir name="9101360">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Valentine's Day Package I (Male)" />
+  </imgdir>
+  <imgdir name="9101361">
+    <canvas name="icon" width="32" height="34">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+    <string name="name" value="Valentine's Day Package II (Male)" />
+  </imgdir>
+  <imgdir name="9101362">
+    <canvas name="icon" width="36" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+    <string name="name" value="Golden Pig Package" />
+  </imgdir>
+  <imgdir name="9101363">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Chocolate Ring Package" />
+  </imgdir>
+  <imgdir name="9101364">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Pink Candy Package" />
+  </imgdir>
+  <imgdir name="9101376">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Robot Package" />
+  </imgdir>
+  <imgdir name="9101377">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Pink Nurse Package" />
+  </imgdir>
+  <imgdir name="9101378">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="White Nurse Package" />
+  </imgdir>
+  <imgdir name="9101379">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Race Queen Package" />
+  </imgdir>
+  <imgdir name="9101380">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Race Ace Package" />
+  </imgdir>
+  <imgdir name="9101385">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Mini Yeti Package" />
+  </imgdir>
+  <imgdir name="9101386">
+    <string name="name" value="Sachiel Package (M)" />
+    <canvas name="icon" width="30" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101387">
+    <string name="name" value="Veamoth Package (M)" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101388">
+    <string name="name" value="Janus Package (M)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101389">
+    <string name="name" value="Sachiel Package (F)" />
+    <canvas name="icon" width="30" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101390">
+    <string name="name" value="Veamoth Package (F)" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101391">
+    <string name="name" value="Janus Package (F)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101406">
+    <string name="name" value="Anniversary Package I" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101407">
+    <string name="name" value="Anniversary Package II" />
+    <canvas name="icon" width="35" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101408">
+    <string name="name" value="Anniversary Package III" />
+    <canvas name="icon" width="36" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101409">
+    <string name="name" value="Anniversary Package IV" />
+    <uol name="icon" value="../9101408/icon" />
+  </imgdir>
+  <imgdir name="9101410">
+    <string name="name" value="Anniversary Package V" />
+    <canvas name="icon" width="36" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101411">
+    <string name="name" value="Anniversary Package VI" />
+    <canvas name="icon" width="35" height="36">
+      <vector name="origin" x="2" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101412">
+    <string name="name" value="Anniversary Package VII" />
+    <canvas name="icon" width="36" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101413">
+    <string name="name" value="Anniversary Package VIII" />
+    <uol name="icon" value="../9101412/icon" />
+  </imgdir>
+  <imgdir name="9101414">
+    <string name="name" value="Anniversary Package VIV" />
+    <canvas name="icon" width="35" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101415">
+    <string name="name" value="Anniversary Package X" />
+    <uol name="icon" value="../9101410/icon" />
+  </imgdir>
+  <imgdir name="9101416">
+    <string name="name" value="Anniversary Package XI" />
+    <uol name="icon" value="../9101411/icon" />
+  </imgdir>
+  <imgdir name="9101417">
+    <string name="name" value="Anniversary Package XII" />
+    <uol name="icon" value="../9101411/icon" />
+  </imgdir>
+  <imgdir name="9101418">
+    <string name="name" value="Balrog Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="2" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101426">
+    <string name="name" value="Graduation Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101427">
+    <string name="name" value="Summer Package I " />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101428">
+    <string name="name" value="Summer Package II" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101429">
+    <string name="name" value="Summer Package III" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101430">
+    <string name="name" value="Summer Package IV" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101431">
+    <string name="name" value="Summer Package V" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101432">
+    <string name="name" value="Summer Package VI" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101433">
+    <string name="name" value="Summer Package VII" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101434">
+    <string name="name" value="Hawaiian Package (Male)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101435">
+    <string name="name" value="Hawaiian Package (Female)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101436">
+    <string name="name" value="Summer Package I" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101437">
+    <string name="name" value="Summer Package II" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101441">
+    <string name="name" value="Zhu Ba Jie Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101449">
+    <string name="name" value="Avatar Megaphone Package I" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101450">
+    <string name="name" value="Centaurus Package III" />
+    <canvas name="icon" width="33" height="34">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101451">
+    <string name="name" value="Centaurus Package II" />
+    <canvas name="icon" width="33" height="34">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101452">
+    <string name="name" value="Centaurus Package I" />
+    <canvas name="icon" width="33" height="34">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101453">
+    <string name="name" value="Avatar Megaphone Package II" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101458">
+    <string name="name" value="Maid Package" />
+    <uol name="icon" value="../9101109/icon" />
+  </imgdir>
+  <imgdir name="9101459">
+    <string name="name" value="Cowboy Package (M)" />
+    <uol name="icon" value="../9101197/icon" />
+  </imgdir>
+  <imgdir name="9101460">
+    <string name="name" value="Cowboy Package (F)" />
+    <uol name="icon" value="../9101198/icon" />
+  </imgdir>
+  <imgdir name="9101461">
+    <string name="name" value="Cat Package " />
+    <uol name="icon" value="../9101107/icon" />
+  </imgdir>
+  <imgdir name="9101462">
+    <string name="name" value="Maple-Stein Package" />
+    <uol name="icon" value="../9101280/icon" />
+  </imgdir>
+  <imgdir name="9101463">
+    <string name="name" value="Ducky Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101464">
+    <string name="name" value="Bunny Package" />
+    <uol name="icon" value="../9101028/icon" />
+  </imgdir>
+  <imgdir name="9101465">
+    <string name="name" value="Witch Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101466">
+    <string name="name" value="Racing Girl Package" />
+    <uol name="icon" value="../9101379/icon" />
+  </imgdir>
+  <imgdir name="9101467">
+    <string name="name" value="Racer Package" />
+    <uol name="icon" value="../9101380/icon" />
+  </imgdir>
+  <imgdir name="9101468">
+    <string name="name" value="Chef Package" />
+    <uol name="icon" value="../9101013/icon" />
+  </imgdir>
+  <imgdir name="9101469">
+    <string name="name" value="Black Cat Package" />
+    <uol name="icon" value="../9101284/icon" />
+  </imgdir>
+  <imgdir name="9101470">
+    <string name="name" value="White Cat Package" />
+    <uol name="icon" value="../9101283/icon" />
+  </imgdir>
+  <imgdir name="9101471">
+    <string name="name" value="Ninja I Package" />
+    <uol name="icon" value="../9101317/icon" />
+  </imgdir>
+  <imgdir name="9101472">
+    <string name="name" value="Ninja II Package" />
+    <uol name="icon" value="../9101318/icon" />
+  </imgdir>
+  <imgdir name="9101473">
+    <string name="name" value="Teddy Bear Package" />
+    <uol name="icon" value="../9101347/icon" />
+  </imgdir>
+  <imgdir name="9101474">
+    <string name="name" value="Wildcats Baseball Package (Home)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101475">
+    <string name="name" value="Wildcats Baseball Package (Away)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101476">
+    <string name="name" value="Wildcats Baseball Package (Basic)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101477">
+    <string name="name" value="Wildcats Baseball Package (Alternate)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101478">
+    <string name="name" value="B-Ball Package (Blue)" />
+    <uol name="icon" value="../9101006/icon" />
+  </imgdir>
+  <imgdir name="9101479">
+    <string name="name" value="B-Ball Package (Orange)" />
+    <uol name="icon" value="../9101006/icon" />
+  </imgdir>
+  <imgdir name="9101480">
+    <string name="name" value="Ragged Package (M)" />
+    <uol name="icon" value="../9101120/icon" />
+  </imgdir>
+  <imgdir name="9101481">
+    <string name="name" value="Ragged Package (F)" />
+    <uol name="icon" value="../9101120/icon" />
+  </imgdir>
+  <imgdir name="9101482">
+    <string name="name" value="Boxer Gear (F)" />
+    <uol name="icon" value="../9101144/icon" />
+  </imgdir>
+  <imgdir name="9101483">
+    <string name="name" value="Boxer Gear (M)" />
+    <uol name="icon" value="../9101145/icon" />
+  </imgdir>
+  <imgdir name="9101484">
+    <string name="name" value="Angel Package" />
+    <uol name="icon" value="../9101008/icon" />
+  </imgdir>
+  <imgdir name="9101485">
+    <string name="name" value="Pink Nurse Package" />
+    <uol name="icon" value="../9101377/icon" />
+  </imgdir>
+  <imgdir name="9101486">
+    <string name="name" value="White Nurse Package" />
+    <uol name="icon" value="../9101378/icon" />
+  </imgdir>
+  <imgdir name="9101487">
+    <string name="name" value="Package of Death" />
+    <uol name="icon" value="../9101000/icon" />
+  </imgdir>
+  <imgdir name="9101488">
+    <string name="name" value="Red Mesoranger Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101489">
+    <string name="name" value="Blue Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101490">
+    <string name="name" value="Green Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101491">
+    <string name="name" value="Black Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101492">
+    <string name="name" value="Pink Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101493">
+    <string name="name" value="Yellow Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101494">
+    <string name="name" value="Black Mesoranger Package" />
+    <uol name="icon" value="../9101488/icon" />
+  </imgdir>
+  <imgdir name="9101495">
+    <string name="name" value="Prisoner Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101496">
+    <string name="name" value="Gothic Package I" />
+    <uol name="icon" value="../9101117/icon" />
+  </imgdir>
+  <imgdir name="9101497">
+    <string name="name" value="Gothic Package II" />
+    <uol name="icon" value="../9101117/icon" />
+  </imgdir>
+  <imgdir name="9101514">
+    <string name="name" value="Mercury Package (M)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101515">
+    <string name="name" value="Mercury Package (F)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101516">
+    <string name="name" value="Tania Package (M)" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101517">
+    <string name="name" value="Tania Package (F)" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101518">
+    <uol name="icon" value="../9101037/icon" />
+    <string name="name" value="Sun Quan Package" />
+  </imgdir>
+  <imgdir name="9101519">
+    <string name="name" value="Mu Lung Hairstyle Package (VIP)" />
+    <uol name="icon" value="../9101008/icon" />
+  </imgdir>
+  <imgdir name="9101520">
+    <string name="name" value="Guan Yu Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101521">
+    <string name="name" value="Hairstyle Coupon Package (EXP)" />
+    <uol name="icon" value="../9101225/icon" />
+  </imgdir>
+  <imgdir name="9101522">
+    <string name="name" value="Zhu-Ge-Liang Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101523">
+    <string name="name" value="Henesys Face Coupon (REG)" />
+    <uol name="icon" value="../9101125/icon" />
+  </imgdir>
+  <imgdir name="9101524">
+    <string name="name" value="NLC Skin &amp; Face Package" />
+    <uol name="icon" value="../9101038/icon" />
+  </imgdir>
+  <imgdir name="9101525">
+    <string name="name" value="Liu Bei Package" />
+    <uol name="icon" value="../9101035/icon" />
+  </imgdir>
+  <imgdir name="9101526">
+    <string name="name" value="AP Reset (3)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101527">
+    <string name="name" value="Orbis Lens &amp; Face Package (REG)" />
+    <uol name="icon" value="../9101126/icon" />
+  </imgdir>
+  <imgdir name="9101528">
+    <string name="name" value="Diao Chan Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101529">
+    <string name="name" value="Hair Color Coupon Package (REG)" />
+    <uol name="icon" value="../9101360/icon" />
+  </imgdir>
+  <imgdir name="9101530">
+    <string name="name" value="Ludbrium Hairstyle Package (EXP)" />
+    <uol name="icon" value="../9101127/icon" />
+  </imgdir>
+  <imgdir name="9101531">
+    <string name="name" value="Cao Cao Package" />
+    <uol name="icon" value="../9101036/icon" />
+  </imgdir>
+  <imgdir name="9101532">
+    <string name="name" value="VIP Teleport Rock (11)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101535">
+    <string name="name" value="Henesys EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101536">
+    <string name="name" value="Henesys VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101537">
+    <string name="name" value="Kerning City EXP Hair Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101538">
+    <string name="name" value="NLC VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101539">
+    <string name="name" value="Orbis EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101540">
+    <string name="name" value="Orbis VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101541">
+    <string name="name" value="Mu Lung EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101542">
+    <string name="name" value="Mu Lung VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101543">
+    <string name="name" value="NLC EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101544">
+    <string name="name" value="Amoria EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101545">
+    <string name="name" value="Amoria VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101546">
+    <string name="name" value="Ludibrium EXP Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101547">
+    <string name="name" value="Ludibrium VIP Package" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101548">
+    <string name="name" value="Queen Mary Package" />
+    <uol name="icon" value="../9101293/icon" />
+  </imgdir>
+  <imgdir name="9101549">
+    <string name="name" value="Princess Isis Package" />
+    <uol name="icon" value="../9101294/icon" />
+  </imgdir>
+  <imgdir name="9101550">
+    <string name="name" value="Beau Package" />
+    <uol name="icon" value="../9101292/icon" />
+  </imgdir>
+  <imgdir name="9101551">
+    <string name="name" value="Wedding Tuxedo Package" />
+    <uol name="icon" value="../9101292/icon" />
+  </imgdir>
+  <imgdir name="9101552">
+    <string name="name" value="Chinese Lion Package" />
+    <uol name="icon" value="../9101037/icon" />
+  </imgdir>
+  <imgdir name="9101553">
+    <string name="name" value="Chinese Lion Package" />
+    <uol name="icon" value="../9101037/icon" />
+  </imgdir>
+  <imgdir name="9101573">
+    <string name="name" value="April Fool's Day Package I (M)" />
+    <uol name="icon" value="../9101017/icon" />
+  </imgdir>
+  <imgdir name="9101574">
+    <string name="name" value="April Fool's Day Package II (M)" />
+    <uol name="icon" value="../9101018/icon" />
+  </imgdir>
+  <imgdir name="9101575">
+    <string name="name" value="April Fool's Day Package (F)" />
+    <uol name="icon" value="../9101090/icon" />
+  </imgdir>
+  <imgdir name="9101576">
+    <string name="name" value="April Fool's Day Package (F)" />
+    <uol name="icon" value="../9101086/icon" />
+  </imgdir>
+  <imgdir name="9101577">
+    <uol name="icon" value="../9101037/icon" />
+    <string name="name" value="Golden Package" />
+  </imgdir>
+  <imgdir name="9101590">
+    <string name="name" value="Mercury Package (M)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101591">
+    <string name="name" value="Mercury Package (F)" />
+    <uol name="icon" value="../9101474/icon" />
+  </imgdir>
+  <imgdir name="9101592">
+    <string name="name" value="Tania Package (M)" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101593">
+    <string name="name" value="Tania Package (F)" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101597">
+    <string name="name" value="Anniversary Package I" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101598">
+    <string name="name" value="Anniversary Package II" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101599">
+    <string name="name" value="Anniversary Package III" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101600">
+    <string name="name" value="Sachiel Package (M)" />
+    <uol name="icon" value="../9101386/icon" />
+  </imgdir>
+  <imgdir name="9101601">
+    <string name="name" value="Sachiel Package (F)" />
+    <uol name="icon" value="../9101389/icon" />
+  </imgdir>
+  <imgdir name="9101602">
+    <string name="name" value="Janus Package (M)" />
+    <uol name="icon" value="../9101388/icon" />
+  </imgdir>
+  <imgdir name="9101603">
+    <string name="name" value="Janus Package (F)" />
+    <uol name="icon" value="../9101391/icon" />
+  </imgdir>
+  <imgdir name="9101613">
+    <string name="name" value="Red School Package" />
+    <canvas name="icon" width="29" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101614">
+    <string name="name" value="Blue School Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101615">
+    <string name="name" value="Green School Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101621">
+    <string name="name" value="Noob Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101666">
+    <string name="name" value="Jail Bird Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101646">
+    <string name="name" value="Gothic Package" />
+    <uol name="icon" value="../9101117/icon" />
+  </imgdir>
+  <imgdir name="9101647">
+    <string name="name" value="Witch Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101648">
+    <string name="name" value="Racer Package" />
+    <uol name="icon" value="../9101380/icon" />
+  </imgdir>
+  <imgdir name="9101649">
+    <string name="name" value="Chef Package" />
+    <uol name="icon" value="../9101013/icon" />
+  </imgdir>
+  <imgdir name="9101650">
+    <string name="name" value="Black Cat Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101651">
+    <string name="name" value="White Cat Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101652">
+    <string name="name" value="Ragged Package (M)" />
+    <uol name="icon" value="../9101120/icon" />
+  </imgdir>
+  <imgdir name="9101653">
+    <string name="name" value="Ragged Package (F)" />
+    <uol name="icon" value="../9101120/icon" />
+  </imgdir>
+  <imgdir name="9101654">
+    <string name="name" value="Angel Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101655">
+    <string name="name" value="Package of Death" />
+    <uol name="icon" value="../9101000/icon" />
+  </imgdir>
+  <imgdir name="9101656">
+    <string name="name" value="Black Mesorangers" />
+    <uol name="icon" value="../9101109/icon" />
+  </imgdir>
+  <imgdir name="9101657">
+    <string name="name" value="Pink Mesorangers" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101658">
+    <string name="name" value="Ducky Package" />
+    <uol name="icon" value="../9101056/icon" />
+  </imgdir>
+  <imgdir name="9101659">
+    <string name="name" value="Teddy Bear Package" />
+    <uol name="icon" value="../9101347/icon" />
+  </imgdir>
+  <imgdir name="9101660">
+    <string name="name" value="Bunny Package" />
+    <uol name="icon" value="../9101028/icon" />
+  </imgdir>
+  <imgdir name="9101661">
+    <string name="name" value="Race Queen Uniform" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101663">
+    <string name="name" value="Boxing Gear (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101664">
+    <string name="name" value="Pink Nurse Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101665">
+    <string name="name" value="White Nurse Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101672">
+    <string name="name" value="Frog Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+  </imgdir>
+  <imgdir name="9101673">
+    <string name="name" value="Ostrich Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+  </imgdir>
+  <imgdir name="9101749">
+    <string name="name" value="Chinese Lion Package" />
+    <uol name="icon" value="../9101037/icon" />
+  </imgdir>
+  <imgdir name="9101750">
+    <string name="name" value="Cow Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101753">
+    <string name="name" value="Yeti Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+  </imgdir>
+  <imgdir name="9101762">
+    <string name="name" value="Audition User Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101787">
+    <string name="name" value="Sun Wu Kong Package 1" />
+    <canvas name="icon" width="35" height="34">
+      <vector name="origin" x="0" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101788">
+    <string name="name" value="Sun Wu Kong Package 2" />
+    <canvas name="icon" width="35" height="34">
+      <vector name="origin" x="0" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101784">
+    <string name="name" value="AP and SP Reset Package - 1st Job" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101827">
+    <string name="name" value="AP and SP Reset Package - 2nd Job" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101828">
+    <string name="name" value="AP and SP Reset Package - 3rd Job" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101829">
+    <string name="name" value="AP and SP Reset Package - 4th Job" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101834">
+    <string name="name" value="Brown Kitty Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101835">
+    <string name="name" value="Brown Puppy Package" />
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101836">
+    <string name="name" value="Rudolph Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101837">
+    <string name="name" value="Mini Kargo Package" />
+    <canvas name="icon" width="31" height="28">
+      <vector name="origin" x="-1" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101838">
+    <string name="name" value="Black Kitty Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101839">
+    <string name="name" value="Pink Bunny Package" />
+    <canvas name="icon" width="30" height="31">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101840">
+    <string name="name" value="White Bunny Package" />
+    <canvas name="icon" width="30" height="31">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101841">
+    <string name="name" value="Black Pig Package" />
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101842">
+    <string name="name" value="Panda Package" />
+    <canvas name="icon" width="31" height="27">
+      <vector name="origin" x="-1" y="27" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101843">
+    <string name="name" value="Husky Package" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101844">
+    <string name="name" value="Dino Girl Package" />
+    <canvas name="icon" width="33" height="25">
+      <vector name="origin" x="1" y="25" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101845">
+    <string name="name" value="Dino Boy Package" />
+    <canvas name="icon" width="33" height="25">
+      <vector name="origin" x="1" y="25" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101846">
+    <string name="name" value="Monkey Package" />
+    <canvas name="icon" width="31" height="28">
+      <vector name="origin" x="-1" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101847">
+    <string name="name" value="Turkey Package" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101848">
+    <string name="name" value="White Tiger Package" />
+    <canvas name="icon" width="33" height="31">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101849">
+    <string name="name" value="Penguin Package" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101850">
+    <string name="name" value="Golden Pig Package" />
+    <canvas name="icon" width="37" height="35">
+      <vector name="origin" x="3" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101851">
+    <string name="name" value="Robot Package" />
+    <canvas name="icon" width="34" height="32">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101852">
+    <string name="name" value="MiniYeti Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101853">
+    <string name="name" value="Jr. Balrog Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101854">
+    <string name="name" value="Dragon Egg Package" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101855">
+    <string name="name" value="Jr. Reaper Package" />
+    <canvas name="icon" width="34" height="31">
+      <vector name="origin" x="2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101856">
+    <string name="name" value="Snowman Package" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101857">
+    <string name="name" value="Robo Package" />
+    <canvas name="icon" width="29" height="28">
+      <vector name="origin" x="-2" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101858">
+    <string name="name" value="White Duck Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101859">
+    <string name="name" value="Sun Wu Kong Package" />
+    <canvas name="icon" width="35" height="34">
+      <vector name="origin" x="0" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101878">
+    <string name="name" value="Brown Kitty Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101879">
+    <string name="name" value="Brown Puppy Package" />
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101880">
+    <string name="name" value="Rudolph Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101881">
+    <string name="name" value="Mini Kargo Package" />
+    <canvas name="icon" width="31" height="28">
+      <vector name="origin" x="-1" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101882">
+    <string name="name" value="Black Kitty Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101883">
+    <string name="name" value="Pink Bunny Package" />
+    <canvas name="icon" width="30" height="31">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101884">
+    <string name="name" value="White Bunny Package" />
+    <canvas name="icon" width="30" height="31">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101885">
+    <string name="name" value="Black Pig Package" />
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101886">
+    <string name="name" value="Panda Package" />
+    <canvas name="icon" width="31" height="27">
+      <vector name="origin" x="-1" y="27" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101887">
+    <string name="name" value="Husky Package" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101888">
+    <string name="name" value="Dino Girl Package" />
+    <canvas name="icon" width="33" height="25">
+      <vector name="origin" x="1" y="25" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101889">
+    <string name="name" value="Dino Boy Package" />
+    <canvas name="icon" width="33" height="25">
+      <vector name="origin" x="1" y="25" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101890">
+    <string name="name" value="Monkey Package" />
+    <canvas name="icon" width="31" height="28">
+      <vector name="origin" x="-1" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101891">
+    <string name="name" value="Turkey Package" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101892">
+    <string name="name" value="White Tiger Package" />
+    <canvas name="icon" width="33" height="31">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101893">
+    <string name="name" value="Penguin Package" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101894">
+    <string name="name" value="Golden Pig Package" />
+    <canvas name="icon" width="37" height="35">
+      <vector name="origin" x="3" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101895">
+    <string name="name" value="Robot Package" />
+    <canvas name="icon" width="34" height="32">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101896">
+    <string name="name" value="MiniYeti Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101897">
+    <string name="name" value="Jr. Balrog Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101898">
+    <string name="name" value="Dragon Egg Package" />
+    <canvas name="icon" width="32" height="30">
+      <vector name="origin" x="0" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101899">
+    <string name="name" value="Jr. Reaper Package" />
+    <canvas name="icon" width="34" height="31">
+      <vector name="origin" x="2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101900">
+    <string name="name" value="Snowman Package" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101901">
+    <string name="name" value="Robo Package" />
+    <canvas name="icon" width="29" height="28">
+      <vector name="origin" x="-2" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101902">
+    <string name="name" value="White Duck Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101903">
+    <string name="name" value="Sun Wu Kong Package" />
+    <canvas name="icon" width="35" height="34">
+      <vector name="origin" x="0" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101962">
+    <string name="name" value="Heart Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101963">
+    <string name="name" value="Kino Package 1" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101964">
+    <string name="name" value="Kino Package 2" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101747">
+    <string name="name" value="Turtle Package" />
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101992">
+    <string name="name" value="Green Skin Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101993">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Pink Skin Package" />
+  </imgdir>
+  <imgdir name="9102035">
+    <string name="name" value="Red Ring Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102036">
+    <string name="name" value="Blue Ring Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102037">
+    <string name="name" value="Green Ring Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102038">
+    <string name="name" value="Seraphim Package(M)" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102039">
+    <string name="name" value="Seraphim Package(F)" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102029">
+    <string name="name" value="Maple Racing Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101926">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Mecha Package" />
+  </imgdir>
+  <imgdir name="9102002">
+    <string name="name" value="Fire Shadow Package" />
+    <canvas name="icon" width="28" height="27">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102004">
+    <string name="name" value="Chaos Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102005">
+    <string name="name" value="Alchemist Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102074">
+    <string name="name" value="Maple Racing Mount Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101513">
+    <string name="name" value="Jr. Reaper Package" />
+    <canvas name="icon" width="34" height="31">
+      <vector name="origin" x="2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102065">
+    <string name="name" value="Pink Scooter" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102066">
+    <string name="name" value="Black Scooter" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9101925">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Hot Air Balloon Mount Package" />
+  </imgdir>
+  <imgdir name="9102104">
+    <string name="name" value="Sachiel Package (M)" />
+    <canvas name="icon" width="30" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102105">
+    <string name="name" value="Sachiel Package (F)" />
+    <canvas name="icon" width="30" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102106">
+    <string name="name" value="Frog Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+  </imgdir>
+  <imgdir name="9102107">
+    <string name="name" value="Yeti Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="desc" value="You must have an in-game mount (Watch Hog, Silver Boar, etc) to use this mount cover." />
+  </imgdir>
+  <imgdir name="9102108">
+    <string name="name" value="Veamoth Package (M)" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102109">
+    <string name="name" value="Veamoth Package (F)" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102110">
+    <string name="name" value="Janus Package (M)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102111">
+    <string name="name" value="Janus Package (F)" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102173">
+    <string name="name" value="Tania Package (F)" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102174">
+    <string name="name" value="Tania Package (M)" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="-2" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102134">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Amoria Package (VIP)" />
+  </imgdir>
+  <imgdir name="9102135">
+    <string name="name" value="Black Mesoranger Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102136">
+    <string name="name" value="Black Pig Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="-2" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102137">
+    <string name="name" value="Brown Kitty Package" />
+    <canvas name="icon" width="32" height="28">
+      <vector name="origin" x="0" y="28" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102138">
+    <string name="name" value="Brown Puppy Package" />
+    <canvas name="icon" width="32" height="23">
+      <vector name="origin" x="0" y="23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102139">
+    <string name="name" value="Dino Boy Package" />
+    <canvas name="icon" width="33" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102140">
+    <string name="name" value="Dino Girl Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102141">
+    <canvas name="icon" width="36" height="35">
+      <vector name="origin" x="3" y="35" />
+    </canvas>
+    <string name="name" value="Golden Pig Package" />
+  </imgdir>
+  <imgdir name="9102142">
+    <string name="name" value="Gothic Package I" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102143">
+    <string name="name" value="Gothic Package II" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102144">
+    <string name="name" value="Green Mesoranger Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102145">
+    <string name="name" value="Green Skin Package" />
+    <canvas name="icon" width="28" height="29">
+      <vector name="origin" x="0" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102146">
+    <string name="name" value="Henesys VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102147">
+    <string name="name" value="Husky Package" />
+    <canvas name="icon" width="33" height="30">
+      <vector name="origin" x="1" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102148">
+    <string name="name" value="Jr. Balrog Package" />
+    <canvas name="icon" width="32" height="31">
+      <vector name="origin" x="0" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102149">
+    <string name="name" value="Ludibrium VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102150">
+    <string name="name" value="Mercury Package (F)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102151">
+    <string name="name" value="Mercury Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102152">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Mini Yeti Package" />
+  </imgdir>
+  <imgdir name="9102153">
+    <string name="name" value="Monkey Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102154">
+    <string name="name" value="Mu Lung VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102155">
+    <string name="name" value="NLC Skin &amp; Face Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102156">
+    <string name="name" value="NLC VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102157">
+    <string name="name" value="Orbis Lens &amp; Face Package (REG)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102158">
+    <string name="name" value="Orbis VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102159">
+    <string name="name" value="Panda Package" />
+    <canvas name="icon" width="31" height="27">
+      <vector name="origin" x="-1" y="27" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102160">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Penguin Package" />
+  </imgdir>
+  <imgdir name="9102161">
+    <string name="name" value="Pink Bunny Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102162">
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="1" y="35" />
+    </canvas>
+    <string name="name" value="Pink Skin Package" />
+  </imgdir>
+  <imgdir name="9102163">
+    <string name="name" value="Red Mesoranger Package (M)" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102164">
+    <string name="name" value="Robo Package" />
+    <canvas name="icon" width="29" height="28">
+      <vector name="origin" x="-2" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102165">
+    <string name="name" value="Robot Package" />
+    <canvas name="icon" width="34" height="32">
+      <vector name="origin" x="1" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102166">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Rudolph Package" />
+  </imgdir>
+  <imgdir name="9102167">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Santa Boy Package" />
+  </imgdir>
+  <imgdir name="9102168">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Santa Girl Package" />
+  </imgdir>
+  <imgdir name="9102169">
+    <string name="name" value="Seraphim Package(F)" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102170">
+    <string name="name" value="Seraphim Package(M)" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="2" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102171">
+    <string name="name" value="Snowman Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102172">
+    <string name="name" value="Sun Wu Kong Package" />
+    <canvas name="icon" width="35" height="34">
+      <vector name="origin" x="0" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102175">
+    <string name="name" value="Wedding Tuxedo Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102176">
+    <string name="name" value="White Duck Package" />
+    <canvas name="icon" width="32" height="33">
+      <vector name="origin" x="-1" y="34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102177">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="White Tiger Package" />
+  </imgdir>
+  <imgdir name="9102113">
+    <string name="name" value="Bear Outfit Package" />
+    <canvas name="icon" width="31" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102190">
+    <string name="name" value="Tomato Package" />
+    <canvas name="icon" width="27" height="31">
+      <vector name="origin" x="-3" y="31" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102233">
+    <string name="name" value="Mu Lung VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102234">
+    <string name="name" value="Henesys VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102235">
+    <string name="name" value="Orbis VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102236">
+    <string name="name" value="Ludibrium VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102237">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="name" value="Amoria VIP Package" />
+  </imgdir>
+  <imgdir name="9102238">
+    <string name="name" value="NLC VIP Package" />
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="9102232">
+    <string name="name" value="Baby Tiger Package" />
+    <canvas name="icon" width="36" height="36">
+      <vector name="origin" x="0" y="30" />
+    </canvas>
+  </imgdir>
+</imgdir>

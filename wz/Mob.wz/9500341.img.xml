@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500341.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="50" />
+    <int name="maxHP" value="9800" />
+    <int name="maxMP" value="100" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="165" />
+    <int name="PDDamage" value="110" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="150" />
+    <int name="acc" value="100" />
+    <int name="eva" value="20" />
+    <int name="exp" value="410" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="600" />
+    <int name="hpRecovery" value="800" />
+    <int name="mpRecovery" value="50" />
+    <int name="boss" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="hpTagColor" value="1" />
+    <int name="hpTagBgcolor" value="5" />
+    <int name="HPgaugeHide" value="1" />
+    <int name="firstAttack" value="1" />
+    <string name="link" value="5220002" />
+    <int name="ignoreFieldOut" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="114" />
+        <int name="action" value="1" />
+        <int name="level" value="18" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="110" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="112" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="113" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="84" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="skill" value="140" />
+        <int name="action" value="1" />
+        <int name="level" value="12" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="default">
+      <canvas name="0" width="135" height="210">
+        <vector name="origin" x="67" y="105" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

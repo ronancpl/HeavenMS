@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="6802000.img">
+  <imgdir name="info">
+    <string name="info" value="메이플아일랜드 범용리엑터" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="53" height="38">
+        <vector name="origin" x="24" y="32" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="56" height="41">
+        <vector name="origin" x="28" y="34" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="59" height="41">
+        <vector name="origin" x="26" y="35" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="53" height="38">
+        <vector name="origin" x="24" y="32" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+    <canvas name="0" width="53" height="38">
+      <vector name="origin" x="24" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="2">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="3" />
+      </imgdir>
+    </imgdir>
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="3">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <uol name="0" value="../../0/hit/0" />
+      <uol name="1" value="../../0/hit/1" />
+      <canvas name="2" width="57" height="41">
+        <vector name="origin" x="23" y="34" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="67" height="35">
+        <vector name="origin" x="23" y="28" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="4" width="73" height="28">
+        <vector name="origin" x="26" y="22" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="weddingItem0" />
+</imgdir>

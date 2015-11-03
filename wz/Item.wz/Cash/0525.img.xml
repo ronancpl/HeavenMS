@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0525.img">
+  <imgdir name="05251000">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="28">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05251003">
+    <imgdir name="info">
+      <canvas name="icon" width="35" height="30">
+        <vector name="origin" x="1" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="35" height="27">
+        <vector name="origin" x="0" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05251001">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="28">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05251002">
+    <imgdir name="info">
+      <canvas name="icon" width="35" height="30">
+        <vector name="origin" x="1" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="35" height="27">
+        <vector name="origin" x="1" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05251100">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="28">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <int name="slotMax" value="1" />
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05252000">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="32">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="29">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05252001">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="23">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="28">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="slotMax" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2103000.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-335" />
+    <int name="dcTop" value="60" />
+    <int name="dcRight" value="335" />
+    <int name="dcBottom" value="123" />
+    <int name="hideName" value="1" />
+    <canvas name="default" width="126" height="77">
+      <vector name="origin" x="64" y="77" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ariant_oasis" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="0" y="4" />
+    </canvas>
+  </imgdir>
+</imgdir>

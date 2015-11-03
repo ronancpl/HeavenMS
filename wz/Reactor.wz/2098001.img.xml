@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2098001.img">
+  <imgdir name="info">
+    <string name="info" value="표창제거" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4001074" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-81" y="-68" />
+        <vector name="rb" x="175" y="-3" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <vector name="origin" x="0" y="0" />
+  </imgdir>
+</imgdir>

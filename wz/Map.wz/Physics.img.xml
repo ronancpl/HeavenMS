@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Physics.img">
+  <double name="walkForce" value="140000.0" />
+  <double name="walkSpeed" value="125.0" />
+  <double name="walkDrag" value="80000.0" />
+  <double name="slipForce" value="60000.0" />
+  <double name="slipSpeed" value="120.0" />
+  <double name="floatDrag1" value="100000.0" />
+  <double name="floatDrag2" value="10000.0" />
+  <double name="floatCoefficient" value="0.01" />
+  <double name="swimForce" value="120000.0" />
+  <double name="swimSpeed" value="140.0" />
+  <double name="flyForce" value="120000.0" />
+  <double name="flySpeed" value="200.0" />
+  <double name="gravityAcc" value="2000.0" />
+  <double name="fallSpeed" value="670.0" />
+  <double name="jumpSpeed" value="555.0" />
+  <double name="maxFriction" value="2.0" />
+  <double name="minFriction" value="0.05" />
+  <double name="swimSpeedDec" value="0.9" />
+  <float name="flyJumpDec" value="0.35" />
+</imgdir>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2133002.img">
+  <imgdir name="info">
+    <string name="name" value="엘린숲 이정표" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="party6_giveUp" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="113" height="165">
+      <vector name="origin" x="56" y="163" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

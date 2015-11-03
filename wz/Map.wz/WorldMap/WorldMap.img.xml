@@ -1,0 +1,1064 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="WorldMap.img">
+  <imgdir name="info" />
+  <imgdir name="BaseImg">
+    <canvas name="0" width="640" height="470">
+      <vector name="origin" x="320" y="235" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="MapList">
+    <imgdir name="0">
+      <int name="type" value="3" />
+      <string name="title" value="Maple Island" />
+      <string name="desc" value="An island for the beginners. It's the home of all beginners stepping into the world of MapleStory for the very first time." />
+      <imgdir name="mapNo">
+        <int name="0" value="0" />
+        <int name="1" value="10000" />
+        <int name="2" value="20000" />
+        <int name="3" value="30000" />
+        <int name="4" value="30001" />
+        <int name="5" value="40000" />
+        <int name="6" value="50000" />
+        <int name="7" value="1000000" />
+        <int name="8" value="1000001" />
+        <int name="9" value="1000002" />
+        <int name="10" value="1000003" />
+        <int name="11" value="1010000" />
+        <int name="12" value="1010100" />
+        <int name="13" value="1010200" />
+        <int name="14" value="1010300" />
+        <int name="15" value="1010400" />
+        <int name="16" value="2000000" />
+        <int name="17" value="2000001" />
+      </imgdir>
+      <canvas name="path" width="112" height="125">
+        <vector name="origin" x="279" y="180" />
+        <int name="z" value="2" />
+      </canvas>
+      <vector name="spot" x="-178" y="-169" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="100000000" />
+        <int name="1" value="100000001" />
+        <int name="2" value="100000100" />
+        <int name="3" value="100000101" />
+        <int name="4" value="100000102" />
+        <int name="5" value="100000103" />
+        <int name="6" value="100000104" />
+        <int name="7" value="100000105" />
+        <int name="8" value="100000200" />
+        <int name="9" value="100000201" />
+        <int name="10" value="100000202" />
+        <int name="11" value="100000203" />
+        <int name="12" value="100010000" />
+        <int name="13" value="100020000" />
+        <int name="14" value="100030000" />
+        <int name="15" value="104020000" />
+        <int name="16" value="104030000" />
+        <int name="17" value="104040000" />
+        <int name="18" value="104040001" />
+        <int name="19" value="104040002" />
+        <int name="20" value="106010000" />
+        <int name="21" value="106010100" />
+      </imgdir>
+      <vector name="spot" x="-230" y="-67" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="101000000" />
+        <int name="1" value="101000001" />
+        <int name="2" value="101000002" />
+        <int name="3" value="101000003" />
+        <int name="4" value="101000200" />
+        <int name="5" value="101000300" />
+        <int name="6" value="101000301" />
+        <int name="7" value="100040000" />
+        <int name="8" value="100040001" />
+        <int name="9" value="100040002" />
+        <int name="10" value="100040003" />
+        <int name="11" value="100040004" />
+        <int name="12" value="100040100" />
+        <int name="13" value="100050000" />
+        <int name="14" value="101010000" />
+        <int name="15" value="101010100" />
+        <int name="16" value="101010101" />
+        <int name="17" value="101010102" />
+        <int name="18" value="101010103" />
+        <int name="19" value="101020000" />
+        <int name="20" value="101020001" />
+        <int name="21" value="101020002" />
+        <int name="22" value="101020003" />
+        <int name="23" value="101020004" />
+        <int name="24" value="101020005" />
+        <int name="25" value="101020006" />
+        <int name="26" value="101020007" />
+        <int name="27" value="101020008" />
+        <int name="28" value="101020009" />
+        <int name="29" value="101020010" />
+      </imgdir>
+      <canvas name="path" width="215" height="59">
+        <vector name="origin" x="214" y="132" />
+        <int name="z" value="2" />
+      </canvas>
+      <vector name="spot" x="-204" y="-93" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="102000000" />
+        <int name="1" value="102000001" />
+        <int name="2" value="102000002" />
+        <int name="3" value="102000003" />
+        <int name="4" value="101030000" />
+        <int name="5" value="101030100" />
+        <int name="6" value="101030101" />
+        <int name="7" value="101030102" />
+        <int name="8" value="101030103" />
+        <int name="9" value="101030104" />
+        <int name="10" value="101030105" />
+        <int name="11" value="101030106" />
+        <int name="12" value="101030107" />
+        <int name="13" value="101030108" />
+        <int name="14" value="101030109" />
+        <int name="15" value="101030200" />
+        <int name="16" value="101030300" />
+        <int name="17" value="101030400" />
+        <int name="18" value="101030401" />
+        <int name="19" value="101030402" />
+        <int name="20" value="101030403" />
+        <int name="21" value="101030404" />
+        <int name="22" value="101030405" />
+        <int name="23" value="101030406" />
+        <int name="24" value="101040000" />
+        <int name="25" value="102010000" />
+        <int name="26" value="102020000" />
+        <int name="27" value="102020100" />
+        <int name="28" value="102020200" />
+        <int name="29" value="102020300" />
+        <int name="30" value="102030000" />
+        <int name="31" value="106000000" />
+        <int name="32" value="106000100" />
+        <int name="33" value="106000101" />
+        <int name="34" value="106000110" />
+        <int name="35" value="106000120" />
+        <int name="36" value="106000130" />
+        <int name="37" value="106000140" />
+        <int name="38" value="106000200" />
+        <int name="39" value="106000300" />
+      </imgdir>
+      <vector name="spot" x="-250" y="-124" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="103000000" />
+        <int name="1" value="103000001" />
+        <int name="2" value="103000002" />
+        <int name="3" value="103000003" />
+        <int name="4" value="103000004" />
+        <int name="5" value="103000005" />
+        <int name="6" value="103000006" />
+        <int name="7" value="103000100" />
+        <int name="8" value="103000101" />
+        <int name="9" value="103000102" />
+        <int name="10" value="103000103" />
+        <int name="11" value="103000104" />
+        <int name="12" value="103000105" />
+        <int name="13" value="103000200" />
+        <int name="14" value="103000201" />
+        <int name="15" value="103000202" />
+        <int name="16" value="102040000" />
+        <int name="17" value="102050000" />
+        <int name="18" value="103010000" />
+        <int name="19" value="103020000" />
+        <int name="20" value="103020100" />
+        <int name="21" value="103020200" />
+        <int name="22" value="103030000" />
+        <int name="23" value="103030100" />
+        <int name="24" value="103030200" />
+        <int name="25" value="107000000" />
+        <int name="26" value="107000100" />
+        <int name="27" value="107000200" />
+        <int name="28" value="107000300" />
+        <int name="29" value="107000400" />
+        <int name="30" value="103040000" />
+        <int name="31" value="103040100" />
+        <int name="32" value="103040101" />
+        <int name="33" value="103040102" />
+        <int name="34" value="103040103" />
+        <int name="35" value="103040200" />
+        <int name="36" value="103040201" />
+        <int name="37" value="103040202" />
+        <int name="38" value="103040203" />
+        <int name="39" value="103040300" />
+        <int name="40" value="103040301" />
+        <int name="41" value="103040302" />
+        <int name="42" value="103040303" />
+        <int name="43" value="103040400" />
+      </imgdir>
+      <vector name="spot" x="-273" y="-99" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="104000000" />
+        <int name="1" value="104000001" />
+        <int name="2" value="104000002" />
+        <int name="3" value="104000003" />
+        <int name="4" value="104000100" />
+        <int name="5" value="104000200" />
+        <int name="6" value="104000300" />
+        <int name="7" value="104000400" />
+        <int name="8" value="104010000" />
+        <int name="9" value="104000004" />
+      </imgdir>
+      <vector name="spot" x="-271" y="-64" />
+      <canvas name="path" width="29" height="96">
+        <vector name="origin" x="279" y="75" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="6">
+      <vector name="spot" x="-240" y="-95" />
+      <int name="type" value="3" />
+      <string name="title" value="Victoria Island Center Dungeon" />
+      <imgdir name="mapNo">
+        <int name="0" value="105040300" />
+        <int name="1" value="105040400" />
+        <int name="2" value="105040401" />
+        <int name="3" value="105040402" />
+        <int name="4" value="105030000" />
+        <int name="5" value="105040000" />
+        <int name="6" value="105040100" />
+        <int name="7" value="105040200" />
+        <int name="8" value="105040301" />
+        <int name="9" value="105040302" />
+        <int name="10" value="105040303" />
+        <int name="11" value="105040304" />
+        <int name="12" value="105040305" />
+        <int name="13" value="105050000" />
+        <int name="14" value="105050100" />
+        <int name="15" value="105050200" />
+        <int name="16" value="105050300" />
+        <int name="17" value="105050400" />
+        <int name="18" value="105060000" />
+        <int name="19" value="105060100" />
+        <int name="20" value="105070000" />
+        <int name="21" value="105070001" />
+        <int name="22" value="105070002" />
+        <int name="23" value="105070100" />
+        <int name="24" value="105070200" />
+        <int name="25" value="105070300" />
+        <int name="26" value="105070400" />
+        <int name="27" value="105080000" />
+        <int name="28" value="105090000" />
+        <int name="29" value="105090100" />
+        <int name="30" value="105090200" />
+        <int name="31" value="105090300" />
+        <int name="32" value="105090301" />
+        <int name="33" value="105090310" />
+        <int name="34" value="105090311" />
+        <int name="35" value="105090312" />
+        <int name="36" value="105090400" />
+        <int name="37" value="105090500" />
+        <int name="38" value="105090600" />
+        <int name="39" value="105090700" />
+        <int name="40" value="105090800" />
+        <int name="41" value="105090900" />
+        <int name="42" value="107000500" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="7">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="110000000" />
+        <int name="1" value="110010000" />
+        <int name="2" value="110020000" />
+        <int name="3" value="110030000" />
+        <int name="4" value="110040000" />
+      </imgdir>
+      <vector name="spot" x="-185" y="-71" />
+    </imgdir>
+    <imgdir name="8">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="230000000" />
+        <int name="1" value="230000001" />
+        <int name="2" value="230000002" />
+        <int name="3" value="230000003" />
+        <int name="4" value="230010000" />
+        <int name="5" value="230010100" />
+        <int name="6" value="230010200" />
+        <int name="7" value="230010201" />
+        <int name="8" value="230010300" />
+        <int name="9" value="230010400" />
+        <int name="10" value="230020000" />
+        <int name="11" value="230020100" />
+        <int name="12" value="230020200" />
+        <int name="13" value="230020201" />
+        <int name="14" value="230020300" />
+        <int name="15" value="230030000" />
+        <int name="16" value="230030100" />
+        <int name="17" value="230030101" />
+        <int name="18" value="230030200" />
+        <int name="19" value="230040000" />
+        <int name="20" value="230040100" />
+        <int name="21" value="230040200" />
+        <int name="22" value="230040300" />
+        <int name="23" value="230040400" />
+        <int name="24" value="230040410" />
+        <int name="25" value="230040420" />
+      </imgdir>
+      <vector name="spot" x="-125" y="-61" />
+    </imgdir>
+    <imgdir name="9">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="200000000" />
+        <int name="1" value="200000001" />
+        <int name="2" value="200000002" />
+        <int name="3" value="200000100" />
+        <int name="4" value="200000110" />
+        <int name="5" value="200000111" />
+        <int name="6" value="200000112" />
+        <int name="7" value="200000120" />
+        <int name="8" value="200000121" />
+        <int name="9" value="200000122" />
+        <int name="10" value="200000130" />
+        <int name="11" value="200000131" />
+        <int name="12" value="200000132" />
+        <int name="13" value="200000140" />
+        <int name="14" value="200000141" />
+        <int name="15" value="200000150" />
+        <int name="16" value="200000151" />
+        <int name="17" value="200000152" />
+        <int name="18" value="200000200" />
+        <int name="19" value="200000201" />
+        <int name="20" value="200000202" />
+        <int name="21" value="200000203" />
+        <int name="22" value="200000300" />
+        <int name="23" value="200000301" />
+        <int name="24" value="200010000" />
+        <int name="25" value="200010100" />
+        <int name="26" value="200010110" />
+        <int name="27" value="200010111" />
+        <int name="28" value="200010120" />
+        <int name="29" value="200010121" />
+        <int name="30" value="200010130" />
+        <int name="31" value="200010131" />
+        <int name="32" value="200010200" />
+        <int name="33" value="200010300" />
+        <int name="34" value="200010301" />
+        <int name="35" value="200010302" />
+        <int name="36" value="200020000" />
+        <int name="37" value="200030000" />
+        <int name="38" value="200040000" />
+        <int name="39" value="200050000" />
+        <int name="40" value="200060000" />
+        <int name="41" value="200070000" />
+        <int name="42" value="200080000" />
+        <int name="43" value="200080100" />
+        <int name="44" value="200080200" />
+        <int name="45" value="200080300" />
+        <int name="46" value="200080400" />
+        <int name="47" value="200080500" />
+        <int name="48" value="200080600" />
+        <int name="49" value="200080700" />
+        <int name="50" value="200080800" />
+        <int name="51" value="200080900" />
+        <int name="52" value="200081000" />
+        <int name="53" value="200081100" />
+        <int name="54" value="200081200" />
+        <int name="55" value="200081300" />
+        <int name="56" value="200081400" />
+      </imgdir>
+      <canvas name="path" width="462" height="316">
+        <vector name="origin" x="214" y="132" />
+        <int name="z" value="3" />
+      </canvas>
+      <vector name="spot" x="-16" y="-86" />
+    </imgdir>
+    <imgdir name="10">
+      <vector name="spot" x="85" y="-28" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="211000000" />
+        <int name="1" value="211000001" />
+        <int name="2" value="211000100" />
+        <int name="3" value="211000100" />
+        <int name="4" value="211000101" />
+        <int name="5" value="211000102" />
+        <int name="6" value="200081500" />
+        <int name="7" value="200081600" />
+        <int name="8" value="200081700" />
+        <int name="9" value="200081800" />
+        <int name="10" value="200081900" />
+        <int name="11" value="200082000" />
+        <int name="12" value="200082100" />
+        <int name="13" value="200082200" />
+        <int name="14" value="200082300" />
+        <int name="15" value="211000200" />
+        <int name="16" value="211010000" />
+        <int name="17" value="211020000" />
+        <int name="18" value="211030000" />
+        <int name="19" value="211040000" />
+        <int name="20" value="211040100" />
+        <int name="21" value="211040200" />
+        <int name="22" value="211040300" />
+        <int name="23" value="211040400" />
+        <int name="24" value="211040500" />
+        <int name="25" value="211040600" />
+        <int name="26" value="211040700" />
+        <int name="27" value="211040800" />
+        <int name="28" value="211040900" />
+        <int name="29" value="211041000" />
+        <int name="30" value="211041100" />
+        <int name="31" value="211041200" />
+        <int name="32" value="211041300" />
+        <int name="33" value="211041400" />
+        <int name="34" value="211041500" />
+        <int name="35" value="211041600" />
+        <int name="36" value="211041700" />
+        <int name="37" value="211041800" />
+        <int name="38" value="211041900" />
+        <int name="39" value="211042000" />
+        <int name="40" value="211042100" />
+        <int name="41" value="211042200" />
+        <int name="42" value="211042300" />
+        <int name="43" value="211042400" />
+        <int name="44" value="211050000" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="11">
+      <vector name="spot" x="-51" y="7" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="220000000" />
+        <int name="1" value="220000001" />
+        <int name="2" value="220000002" />
+        <int name="3" value="220000003" />
+        <int name="4" value="220000004" />
+        <int name="5" value="220000005" />
+        <int name="6" value="220000006" />
+        <int name="7" value="220000100" />
+        <int name="8" value="220000110" />
+        <int name="9" value="220000111" />
+        <int name="10" value="220000300" />
+        <int name="11" value="220000301" />
+        <int name="12" value="220000302" />
+        <int name="13" value="220000303" />
+        <int name="14" value="220000304" />
+        <int name="15" value="220000305" />
+        <int name="16" value="220000306" />
+        <int name="17" value="220000307" />
+        <int name="18" value="220000400" />
+        <int name="19" value="220000500" />
+        <int name="20" value="220010000" />
+        <int name="21" value="220010100" />
+        <int name="22" value="220010200" />
+        <int name="23" value="220010300" />
+        <int name="24" value="220010400" />
+        <int name="25" value="220010500" />
+        <int name="26" value="220010600" />
+        <int name="27" value="220010700" />
+        <int name="28" value="220010800" />
+        <int name="29" value="220010900" />
+        <int name="30" value="220011000" />
+        <int name="31" value="220020000" />
+        <int name="32" value="220020100" />
+        <int name="33" value="220020200" />
+        <int name="34" value="220020300" />
+        <int name="35" value="220020400" />
+        <int name="36" value="220020500" />
+        <int name="37" value="220020600" />
+        <int name="38" value="220030000" />
+        <int name="39" value="220030100" />
+        <int name="40" value="220030200" />
+        <int name="41" value="220030300" />
+        <int name="42" value="220030400" />
+        <int name="43" value="220040000" />
+        <int name="44" value="220040100" />
+        <int name="45" value="220040200" />
+        <int name="46" value="220040300" />
+        <int name="47" value="220040400" />
+        <int name="48" value="220050000" />
+        <int name="49" value="220050100" />
+        <int name="50" value="220050200" />
+        <int name="51" value="220050300" />
+        <int name="52" value="220060000" />
+        <int name="53" value="220060100" />
+        <int name="54" value="220060200" />
+        <int name="55" value="220060300" />
+        <int name="56" value="220060400" />
+        <int name="57" value="220070000" />
+        <int name="58" value="220070100" />
+        <int name="59" value="220070200" />
+        <int name="60" value="220070300" />
+        <int name="61" value="220070400" />
+        <int name="62" value="220080000" />
+        <int name="63" value="220080001" />
+        <int name="64" value="221022300" />
+        <int name="65" value="221022400" />
+        <int name="66" value="221022500" />
+        <int name="67" value="221022600" />
+        <int name="68" value="221022700" />
+        <int name="69" value="221022800" />
+        <int name="70" value="221022900" />
+        <int name="71" value="221023000" />
+        <int name="72" value="221023100" />
+        <int name="73" value="221023200" />
+        <int name="74" value="221023300" />
+        <int name="75" value="221023400" />
+        <int name="76" value="221023500" />
+        <int name="77" value="221023600" />
+        <int name="78" value="221023700" />
+        <int name="79" value="221023800" />
+        <int name="80" value="221023900" />
+        <int name="81" value="221024000" />
+        <int name="82" value="221024100" />
+        <int name="83" value="221024200" />
+        <int name="84" value="221024300" />
+        <int name="85" value="221024400" />
+        <int name="86" value="221024500" />
+        <int name="87" value="222020200" />
+        <int name="88" value="222020300" />
+      </imgdir>
+      <canvas name="path" width="59" height="119">
+        <vector name="origin" x="61" y="103" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="12">
+      <vector name="spot" x="-83" y="41" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="221000000" />
+        <int name="1" value="221000001" />
+        <int name="2" value="221000100" />
+        <int name="3" value="221000200" />
+        <int name="4" value="221000300" />
+        <int name="5" value="221000400" />
+        <int name="6" value="221020000" />
+        <int name="7" value="221020100" />
+        <int name="8" value="221020200" />
+        <int name="9" value="221020300" />
+        <int name="10" value="221020400" />
+        <int name="11" value="221020500" />
+        <int name="12" value="221020600" />
+        <int name="13" value="221020700" />
+        <int name="14" value="221020800" />
+        <int name="15" value="221020900" />
+        <int name="16" value="221021000" />
+        <int name="17" value="221021100" />
+        <int name="18" value="221021200" />
+        <int name="19" value="221021300" />
+        <int name="20" value="221021400" />
+        <int name="21" value="221021500" />
+        <int name="22" value="221021600" />
+        <int name="23" value="221021700" />
+        <int name="24" value="221021800" />
+        <int name="25" value="221021900" />
+        <int name="26" value="221022000" />
+        <int name="27" value="221030000" />
+        <int name="28" value="221030100" />
+        <int name="29" value="221030200" />
+        <int name="30" value="221030300" />
+        <int name="31" value="221030400" />
+        <int name="32" value="221030500" />
+        <int name="33" value="221030600" />
+        <int name="34" value="221030600" />
+        <int name="35" value="221040000" />
+        <int name="36" value="221040100" />
+        <int name="37" value="221040200" />
+        <int name="38" value="221040300" />
+        <int name="39" value="221040400" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="13">
+      <vector name="spot" x="-17" y="41" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="222000000" />
+        <int name="1" value="222000001" />
+        <int name="2" value="222010000" />
+        <int name="3" value="222010001" />
+        <int name="4" value="222010002" />
+        <int name="5" value="222010100" />
+        <int name="6" value="222010101" />
+        <int name="7" value="222010102" />
+        <int name="8" value="222010200" />
+        <int name="9" value="222010201" />
+        <int name="10" value="222010300" />
+        <int name="11" value="222010400" />
+        <int name="12" value="222020000" />
+        <int name="13" value="222020100" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="14">
+      <vector name="spot" x="-112" y="169" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="240000000" />
+        <int name="1" value="240000001" />
+        <int name="2" value="240000002" />
+        <int name="3" value="240000003" />
+        <int name="4" value="240000004" />
+        <int name="5" value="240000005" />
+        <int name="6" value="240000006" />
+        <int name="7" value="240000100" />
+        <int name="8" value="240000110" />
+        <int name="9" value="240000111" />
+        <int name="10" value="240010000" />
+        <int name="11" value="240010100" />
+        <int name="12" value="240010200" />
+        <int name="13" value="240010300" />
+        <int name="14" value="240010400" />
+        <int name="15" value="240010500" />
+        <int name="16" value="240010600" />
+        <int name="17" value="240010700" />
+        <int name="18" value="240010800" />
+        <int name="19" value="240010900" />
+        <int name="20" value="240011000" />
+        <int name="21" value="240020000" />
+        <int name="22" value="240020100" />
+        <int name="23" value="240020101" />
+        <int name="24" value="240020102" />
+        <int name="25" value="240020200" />
+        <int name="26" value="240020300" />
+        <int name="27" value="240020400" />
+        <int name="28" value="240020401" />
+        <int name="29" value="240020402" />
+        <int name="30" value="240020500" />
+        <int name="31" value="240030000" />
+        <int name="32" value="240030100" />
+        <int name="33" value="240030101" />
+        <int name="34" value="240030102" />
+        <int name="35" value="240030200" />
+        <int name="36" value="240030300" />
+        <int name="37" value="240040000" />
+        <int name="38" value="240040100" />
+        <int name="39" value="240040200" />
+        <int name="40" value="240040300" />
+        <int name="41" value="240040400" />
+        <int name="42" value="240040500" />
+        <int name="43" value="240040510" />
+        <int name="44" value="240040511" />
+        <int name="45" value="240040520" />
+        <int name="46" value="240040521" />
+        <int name="47" value="240040600" />
+        <int name="48" value="240040700" />
+        <int name="49" value="240050000" />
+        <int name="50" value="240050100" />
+        <int name="51" value="240050101" />
+        <int name="52" value="240050102" />
+        <int name="53" value="240050103" />
+        <int name="54" value="240050104" />
+        <int name="55" value="240050105" />
+        <int name="56" value="240050200" />
+        <int name="57" value="240050300" />
+        <int name="58" value="240050310" />
+        <int name="59" value="240050400" />
+        <int name="60" value="240050500" />
+        <int name="61" value="240060000" />
+        <int name="62" value="240060100" />
+        <int name="63" value="240060200" />
+        <int name="64" value="240070000" />
+        <int name="65" value="240070010" />
+        <int name="66" value="240070020" />
+        <int name="67" value="240070030" />
+        <int name="68" value="240070040" />
+        <int name="69" value="240070050" />
+        <int name="70" value="240070060" />
+        <int name="71" value="240070100" />
+        <int name="72" value="240070101" />
+        <int name="73" value="240070102" />
+        <int name="74" value="240070200" />
+        <int name="75" value="240070201" />
+        <int name="76" value="240070202" />
+        <int name="77" value="240070203" />
+        <int name="78" value="240070300" />
+        <int name="79" value="240070301" />
+        <int name="80" value="240070302" />
+        <int name="81" value="240070303" />
+        <int name="82" value="240070400" />
+        <int name="83" value="240070401" />
+        <int name="84" value="240070402" />
+        <int name="85" value="240070403" />
+        <int name="86" value="240070500" />
+        <int name="87" value="240070501" />
+        <int name="88" value="240070502" />
+        <int name="89" value="240070503" />
+        <int name="90" value="240070600" />
+        <int name="91" value="240070601" />
+        <int name="92" value="240070602" />
+        <int name="93" value="240070603" />
+      </imgdir>
+      <canvas name="path" width="273" height="275">
+        <vector name="origin" x="279" y="95" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="15">
+      <vector name="spot" x="239" y="27" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="250000000" />
+        <int name="1" value="250000001" />
+        <int name="2" value="250000002" />
+        <int name="3" value="250000003" />
+        <int name="4" value="250000100" />
+        <int name="5" value="250010000" />
+        <int name="6" value="250010100" />
+        <int name="7" value="250010200" />
+        <int name="8" value="250010300" />
+        <int name="9" value="250010301" />
+        <int name="10" value="250010302" />
+        <int name="11" value="250010303" />
+        <int name="12" value="250010304" />
+        <int name="13" value="250010400" />
+        <int name="14" value="250010500" />
+        <int name="15" value="250010501" />
+        <int name="16" value="250010502" />
+        <int name="17" value="250010503" />
+        <int name="18" value="250010600" />
+        <int name="19" value="250010700" />
+        <int name="20" value="250020000" />
+        <int name="21" value="250020100" />
+        <int name="22" value="250020200" />
+        <int name="23" value="250020300" />
+      </imgdir>
+      <canvas name="path" width="273" height="162">
+        <vector name="origin" x="25" y="126" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="16">
+      <vector name="spot" x="216" y="125" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="251000000" />
+        <int name="1" value="251010000" />
+        <int name="2" value="251010100" />
+        <int name="3" value="251010200" />
+        <int name="4" value="251010300" />
+        <int name="5" value="251010400" />
+        <int name="6" value="251010401" />
+        <int name="7" value="251010402" />
+        <int name="8" value="251010403" />
+        <int name="9" value="251010500" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="17">
+      <vector name="spot" x="-5" y="175" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="260000000" />
+        <int name="1" value="260000100" />
+        <int name="2" value="260000110" />
+        <int name="3" value="260000200" />
+        <int name="4" value="260000201" />
+        <int name="5" value="260000202" />
+        <int name="6" value="260000203" />
+        <int name="7" value="260000204" />
+        <int name="8" value="260000205" />
+        <int name="9" value="260000206" />
+        <int name="10" value="260000207" />
+        <int name="11" value="260000300" />
+        <int name="12" value="260000301" />
+        <int name="13" value="260000302" />
+        <int name="14" value="260000303" />
+        <int name="15" value="260010000" />
+        <int name="16" value="260010100" />
+        <int name="17" value="260010200" />
+        <int name="18" value="260010300" />
+        <int name="19" value="260010400" />
+        <int name="20" value="260010500" />
+        <int name="21" value="260010600" />
+        <int name="22" value="260010700" />
+        <int name="23" value="260020000" />
+        <int name="24" value="260020100" />
+        <int name="25" value="260020200" />
+        <int name="26" value="260020300" />
+        <int name="27" value="260020400" />
+        <int name="28" value="926010000" />
+      </imgdir>
+      <canvas name="path" width="57" height="279">
+        <vector name="origin" x="25" y="95" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="18">
+      <vector name="spot" x="97" y="111" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="261000000" />
+        <int name="1" value="260020500" />
+        <int name="2" value="260020600" />
+        <int name="3" value="260020610" />
+        <int name="4" value="260020620" />
+        <int name="5" value="260020700" />
+        <int name="6" value="261000001" />
+        <int name="7" value="261000002" />
+        <int name="8" value="261000010" />
+        <int name="9" value="261000011" />
+        <int name="10" value="261000020" />
+        <int name="11" value="261000021" />
+        <int name="12" value="261010000" />
+        <int name="13" value="261010001" />
+        <int name="14" value="261010002" />
+        <int name="15" value="261010003" />
+        <int name="16" value="261010100" />
+        <int name="17" value="261010101" />
+        <int name="18" value="261010102" />
+        <int name="19" value="261010103" />
+        <int name="20" value="261020000" />
+        <int name="21" value="261020100" />
+        <int name="22" value="261020200" />
+        <int name="23" value="261020300" />
+        <int name="24" value="261020400" />
+        <int name="25" value="261020500" />
+        <int name="26" value="261020600" />
+        <int name="27" value="261020700" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="19">
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="120000000" />
+        <int name="1" value="120010000" />
+        <int name="2" value="120000100" />
+        <int name="3" value="120000101" />
+        <int name="4" value="120000102" />
+        <int name="5" value="120000103" />
+        <int name="6" value="120000104" />
+        <int name="7" value="120000200" />
+        <int name="8" value="120000201" />
+        <int name="9" value="120000202" />
+        <int name="10" value="120000300" />
+        <int name="11" value="120000301" />
+      </imgdir>
+      <vector name="spot" x="-207" y="-52" />
+    </imgdir>
+    <imgdir name="20">
+      <vector name="spot" x="-268" y="121" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="270000100" />
+        <int name="1" value="270000000" />
+        <int name="2" value="270010000" />
+        <int name="3" value="270010100" />
+        <int name="4" value="270010110" />
+        <int name="5" value="270010111" />
+        <int name="6" value="270010200" />
+        <int name="7" value="270010210" />
+        <int name="8" value="270010300" />
+        <int name="9" value="270010310" />
+        <int name="10" value="270010400" />
+        <int name="11" value="270010410" />
+        <int name="12" value="270010500" />
+        <int name="13" value="270020000" />
+        <int name="14" value="270020100" />
+        <int name="15" value="270020110" />
+        <int name="16" value="270020200" />
+        <int name="17" value="270020210" />
+        <int name="18" value="270020211" />
+        <int name="19" value="270020300" />
+        <int name="20" value="270020310" />
+        <int name="21" value="270020400" />
+        <int name="22" value="270020410" />
+        <int name="23" value="270020500" />
+        <int name="24" value="270030000" />
+        <int name="25" value="270030100" />
+        <int name="26" value="270030110" />
+        <int name="27" value="270030200" />
+        <int name="28" value="270030210" />
+        <int name="29" value="270030300" />
+        <int name="30" value="270030310" />
+        <int name="31" value="270030400" />
+        <int name="32" value="270030410" />
+        <int name="33" value="270030411" />
+        <int name="34" value="270030500" />
+        <int name="35" value="270040000" />
+        <int name="36" value="270050000" />
+      </imgdir>
+      <canvas name="path" width="178" height="70">
+        <vector name="origin" x="279" y="-110" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="21">
+      <vector name="spot" x="-123" y="-136" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="130000000" />
+        <int name="1" value="130000100" />
+        <int name="2" value="130000200" />
+        <int name="3" value="130000210" />
+        <int name="4" value="130010000" />
+        <int name="5" value="130010010" />
+        <int name="6" value="130010020" />
+        <int name="7" value="130010100" />
+        <int name="8" value="130010110" />
+        <int name="9" value="130010120" />
+        <int name="10" value="130010200" />
+        <int name="11" value="130010210" />
+        <int name="12" value="130010220" />
+        <int name="13" value="130020000" />
+        <int name="14" value="130030000" />
+        <int name="15" value="130030005" />
+        <int name="16" value="130030006" />
+      </imgdir>
+      <canvas name="path" width="209" height="68">
+        <vector name="origin" x="214" y="146" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+    <imgdir name="22">
+      <vector name="spot" x="-266" y="10" />
+      <int name="type" value="3" />
+      <imgdir name="mapNo">
+        <int name="0" value="140000000" />
+        <int name="1" value="140000001" />
+        <int name="2" value="140000010" />
+        <int name="3" value="140000011" />
+        <int name="4" value="140000012" />
+        <int name="5" value="140010000" />
+        <int name="6" value="140010100" />
+        <int name="7" value="140010200" />
+        <int name="8" value="140020000" />
+        <int name="9" value="140020100" />
+        <int name="10" value="140020200" />
+        <int name="11" value="140020300" />
+        <int name="12" value="140030000" />
+        <int name="13" value="140090100" />
+        <int name="14" value="140090200" />
+        <int name="15" value="140090300" />
+        <int name="16" value="140090400" />
+        <int name="17" value="140090500" />
+        <int name="18" value="140010110" />
+        <int name="19" value="140090000" />
+      </imgdir>
+      <canvas name="path" width="29" height="96">
+        <vector name="origin" x="279" y="75" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="MapLink">
+    <imgdir name="0">
+      <string name="toolTip" value="Maple Island" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap000" />
+        <canvas name="linkImg" width="63" height="49">
+          <vector name="origin" x="208" y="189" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="toolTip" value="Victoria Island" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap010" />
+        <canvas name="linkImg" width="133" height="121">
+          <vector name="origin" x="302" y="144" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2">
+      <string name="toolTip" value="Elnath Mts." />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap020" />
+        <canvas name="linkImg" width="278" height="217">
+          <vector name="origin" x="94" y="125" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="3">
+      <string name="toolTip" value="Ludus Lake" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap030" />
+        <canvas name="linkImg" width="155" height="120">
+          <vector name="origin" x="130" y="24" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="4">
+      <string name="toolTip" value="Aqua Road" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap040" />
+        <canvas name="linkImg" width="109" height="140">
+          <vector name="origin" x="173" y="96" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="5">
+      <string name="toolTip" value="Minar Forest" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap050" />
+        <canvas name="linkImg" width="262" height="254">
+          <vector name="origin" x="282" y="34" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="6">
+      <string name="toolTip" value="Mureung" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap060" />
+        <canvas name="linkImg" width="176" height="406">
+          <vector name="origin" x="-132" y="222" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="7">
+      <string name="toolTip" value="Nihal Desert" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap070" />
+        <canvas name="linkImg" width="230" height="175">
+          <vector name="origin" x="52" y="-60" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="8">
+      <string name="toolTip" value="Temple of Time" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap080" />
+        <canvas name="linkImg" width="134" height="130">
+          <vector name="origin" x="313" y="-76" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="9">
+      <imgdir name="link">
+        <string name="toolTip" value="Ereve" />
+        <string name="linkMap" value="WorldMap090" />
+        <canvas name="linkImg" width="96" height="86">
+          <vector name="origin" x="168" y="179" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+      <string name="toolTip" value="Ereve" />
+    </imgdir>
+    <imgdir name="10">
+      <string name="toolTip" value="Rien" />
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap100" />
+        <canvas name="linkImg" width="75" height="97">
+          <vector name="origin" x="303" y="44" />
+          <int name="z" value="1" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

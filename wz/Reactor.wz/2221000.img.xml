@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2221000.img">
+  <imgdir name="info">
+    <string name="info" value="돌무더기:돼지고기 산적을 떨어뜨려 노란왕도깨비를 소환한다." />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="120" height="96">
+      <vector name="origin" x="60" y="91" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="2022050" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-49" y="-28" />
+        <vector name="rb" x="48" y="7" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="120" height="96">
+      <vector name="origin" x="60" y="91" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="fvMob0" />
+</imgdir>

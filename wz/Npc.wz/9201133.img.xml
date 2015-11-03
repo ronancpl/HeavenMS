@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201133.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Astaroth_door" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="189" height="195">
+      <vector name="origin" x="94" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="189" height="195">
+      <vector name="origin" x="94" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="189" height="196">
+      <vector name="origin" x="94" y="194" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="189" height="195">
+      <vector name="origin" x="94" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="189" height="195">
+      <vector name="origin" x="94" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="5" width="189" height="193">
+      <vector name="origin" x="94" y="191" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="6" width="189" height="193">
+      <vector name="origin" x="94" y="191" />
+      <int name="delay" value="150" />
+    </canvas>
+  </imgdir>
+</imgdir>

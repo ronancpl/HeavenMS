@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0224.img">
+  <imgdir name="02240000">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="34">
+        <vector name="origin" x="0" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="35" />
+      </canvas>
+      <int name="tradeBlock" value="1" />
+      <int name="price" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="notSale" value="1" />
+      <int name="only" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02240001">
+    <imgdir name="info">
+      <canvas name="icon" width="30" height="34">
+        <vector name="origin" x="-1" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="30" height="34">
+        <vector name="origin" x="-1" y="35" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="notSale" value="1" />
+      <int name="only" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02240002">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="22" height="23">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="notSale" value="1" />
+      <int name="only" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02240003">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="27">
+        <vector name="origin" x="-4" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="22" height="22">
+        <vector name="origin" x="-4" y="28" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="notSale" value="1" />
+      <int name="only" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

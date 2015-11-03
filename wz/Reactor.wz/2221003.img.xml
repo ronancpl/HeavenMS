@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2221003.img">
+  <imgdir name="info">
+    <string name="info" value="흥부네 지붕:흥부의 박씨를 떨어뜨려 박을 소환한다." />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4031244" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-150" y="-48" />
+        <vector name="rb" x="155" y="41" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="fvquest0" />
+</imgdir>

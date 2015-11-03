@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201124.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goHenesys" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-52" />
+    <int name="dcTop" value="-153" />
+    <int name="dcRight" value="59" />
+    <int name="dcBottom" value="-1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="137" height="182">
+      <vector name="origin" x="68" y="179" />
+    </canvas>
+  </imgdir>
+</imgdir>

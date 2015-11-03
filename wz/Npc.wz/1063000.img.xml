@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1063000.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-14" />
+    <int name="dcRight" value="14" />
+    <int name="dcTop" value="-32" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="viola_pink" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="29" height="32">
+      <vector name="origin" x="14" y="32" />
+    </canvas>
+  </imgdir>
+</imgdir>

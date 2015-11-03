@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500350.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="71" />
+    <int name="maxHP" value="93000" />
+    <int name="maxMP" value="200" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="285" />
+    <int name="PDDamage" value="335" />
+    <int name="MADamage" value="310" />
+    <int name="MDDamage" value="265" />
+    <int name="acc" value="175" />
+    <int name="eva" value="30" />
+    <int name="exp" value="1580" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1500" />
+    <int name="hpRecovery" value="2200" />
+    <int name="mpRecovery" value="10" />
+    <int name="boss" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="firstAttack" value="1" />
+    <int name="hpTagColor" value="1" />
+    <int name="hpTagBgcolor" value="5" />
+    <int name="HPgaugeHide" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="140" />
+        <int name="action" value="1" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="110" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="112" />
+        <int name="action" value="1" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="113" />
+        <int name="action" value="1" />
+        <int name="level" value="2" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="83" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <int name="mobType" value="0" />
+    <string name="link" value="7220000" />
+    <int name="ignoreFieldOut" value="1" />
+  </imgdir>
+</imgdir>

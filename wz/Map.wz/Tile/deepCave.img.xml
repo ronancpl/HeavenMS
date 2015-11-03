@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="deepCave.img">
+  <imgdir name="info" />
+  <imgdir name="bsc">
+    <canvas name="0" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enH0">
+    <canvas name="0" width="90" height="56">
+      <vector name="origin" x="0" y="56" />
+      <int name="z" value="-4" />
+      <extended name="foothold">
+        <vector name="foothold" x="0" y="-10" />
+        <vector name="foothold" x="22" y="-14" />
+        <vector name="foothold" x="30" y="-21" />
+        <vector name="foothold" x="45" y="-25" />
+        <vector name="foothold" x="52" y="-24" />
+        <vector name="foothold" x="73" y="-11" />
+        <vector name="foothold" x="90" y="-10" />
+      </extended>
+    </canvas>
+    <canvas name="1" width="90" height="71">
+      <vector name="origin" x="0" y="71" />
+      <int name="z" value="-4" />
+      <extended name="foothold">
+        <vector name="foothold" x="0" y="-10" />
+        <vector name="foothold" x="22" y="-14" />
+        <vector name="foothold" x="30" y="-21" />
+        <vector name="foothold" x="45" y="-25" />
+        <vector name="foothold" x="52" y="-24" />
+        <vector name="foothold" x="73" y="-11" />
+        <vector name="foothold" x="90" y="-10" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="enH1">
+    <canvas name="0" width="90" height="56">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-4" />
+    </canvas>
+    <canvas name="1" width="90" height="71">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-4" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enV0">
+    <canvas name="0" width="36" height="60">
+      <vector name="origin" x="36" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="-43" y="68" />
+        <vector name="foothold" x="-43" y="0" />
+      </extended>
+    </canvas>
+    <canvas name="1" width="41" height="60">
+      <vector name="origin" x="41" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="-43" y="68" />
+        <vector name="foothold" x="-43" y="0" />
+      </extended>
+    </canvas>
+    <canvas name="2" width="33" height="60">
+      <vector name="origin" x="33" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="-43" y="68" />
+        <vector name="foothold" x="-43" y="0" />
+      </extended>
+    </canvas>
+    <canvas name="3" width="29" height="60">
+      <vector name="origin" x="29" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="-43" y="68" />
+        <vector name="foothold" x="-43" y="0" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="enV1">
+    <canvas name="0" width="33" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="43" y="0" />
+        <vector name="foothold" x="43" y="68" />
+      </extended>
+    </canvas>
+    <canvas name="1" width="29" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="43" y="0" />
+        <vector name="foothold" x="43" y="68" />
+      </extended>
+    </canvas>
+    <canvas name="2" width="36" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="43" y="0" />
+        <vector name="foothold" x="43" y="68" />
+      </extended>
+    </canvas>
+    <canvas name="3" width="41" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-3" />
+      <extended name="foothold">
+        <vector name="foothold" x="43" y="0" />
+        <vector name="foothold" x="43" y="68" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="edU">
+    <canvas name="0" width="54" height="32">
+      <vector name="origin" x="27" y="32" />
+      <int name="z" value="-5" />
+      <extended name="foothold">
+        <vector name="foothold" x="-43" y="0" />
+        <vector name="foothold" x="-43" y="-10" />
+        <vector name="foothold" x="43" y="-10" />
+        <vector name="foothold" x="43" y="0" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="edD">
+    <canvas name="0" width="54" height="32">
+      <vector name="origin" x="27" y="0" />
+      <int name="z" value="-5" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slLU">
+    <canvas name="0" width="90" height="128">
+      <vector name="origin" x="90" y="128" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="-90" y="-10" />
+        <vector name="foothold" x="-66" y="-29" />
+        <vector name="foothold" x="-56" y="-48" />
+        <vector name="foothold" x="-35" y="-59" />
+        <vector name="foothold" x="-20" y="-69" />
+        <vector name="foothold" x="0" y="-70" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="slRU">
+    <canvas name="0" width="90" height="128">
+      <vector name="origin" x="0" y="128" />
+      <int name="z" value="-2" />
+      <extended name="foothold">
+        <vector name="foothold" x="0" y="-70" />
+        <vector name="foothold" x="20" y="-69" />
+        <vector name="foothold" x="35" y="-59" />
+        <vector name="foothold" x="56" y="-48" />
+        <vector name="foothold" x="66" y="-29" />
+        <vector name="foothold" x="90" y="-10" />
+      </extended>
+    </canvas>
+  </imgdir>
+  <imgdir name="slLD">
+    <canvas name="0" width="90" height="128">
+      <vector name="origin" x="90" y="0" />
+      <int name="z" value="-2" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slRD">
+    <canvas name="0" width="90" height="128">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="-2" />
+    </canvas>
+  </imgdir>
+</imgdir>

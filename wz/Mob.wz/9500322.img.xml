@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500322.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="10" />
+    <int name="maxHP" value="3" />
+    <int name="maxMP" value="20" />
+    <int name="speed" value="-20" />
+    <int name="PADamage" value="10" />
+    <int name="PDDamage" value="10" />
+    <int name="MADamage" value="10" />
+    <int name="MDDamage" value="10" />
+    <int name="acc" value="-25" />
+    <int name="eva" value="1" />
+    <int name="exp" value="20" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="0" />
+    <float name="fs" value="10.0" />
+    <int name="fixedDamage" value="1" />
+    <int name="removeAfter" value="180" />
+    <int name="summonType" value="1" />
+    <int name="boss" value="1" />
+    <imgdir name="revive">
+      <int name="0" value="9500317" />
+    </imgdir>
+    <int name="mbookID" value="9500317" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="103" height="124">
+      <vector name="origin" x="55" y="124" />
+      <vector name="head" x="-12" y="-86" />
+      <int name="delay" value="180000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="103" height="124">
+      <vector name="origin" x="55" y="124" />
+      <vector name="head" x="-12" y="-86" />
+      <int name="delay" value="2000" />
+    </canvas>
+  </imgdir>
+</imgdir>

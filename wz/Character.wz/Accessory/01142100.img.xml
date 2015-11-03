@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01142100.img">
+  <imgdir name="info">
+    <canvas name="icon" width="31" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="31" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <string name="islot" value="Me" />
+    <string name="vslot" value="Me" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="0" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incSTR" value="4" />
+    <int name="incDEX" value="4" />
+    <int name="incINT" value="4" />
+    <int name="incLUK" value="4" />
+    <int name="tuc" value="0" />
+    <int name="price" value="0" />
+    <int name="tradeBlock" value="1" />
+    <int name="notSale" value="1" />
+    <int name="only" value="1" />
+    <int name="timeLimited" value="1" />
+    <int name="medalTag" value="34" />
+    <imgdir name="replace">
+      <int name="itemid" value="1142101" />
+      <string name="msg" value="메이플러버의 힘은 사라졌지만 메이플 6주년의 기억은 영원히 계속됩니다." />
+    </imgdir>
+  </imgdir>
+</imgdir>

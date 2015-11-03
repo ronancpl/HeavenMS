@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01112905.img">
+  <imgdir name="info">
+    <canvas name="icon" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="32" height="32">
+      <vector name="origin" x="0" y="32" />
+    </canvas>
+    <string name="islot" value="Ri" />
+    <string name="vslot" value="Ri" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="0" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="cash" value="1" />
+    <imgdir name="effect">
+      <string name="path" value="Effect/CharacterEff.img/1112905" />
+      <int name="follow" value="1" />
+      <int name="left" value="-10" />
+      <int name="top" value="-15" />
+      <int name="right" value="10" />
+      <int name="bottom" value="5" />
+      <int name="dx" value="35" />
+      <int name="delay" value="900" />
+      <int name="interval" value="35" />
+      <int name="emission" value="1" />
+      <imgdir name="genPoint">
+        <vector name="0" x="20" y="46" />
+        <vector name="1" x="13" y="42" />
+        <vector name="2" x="23" y="37" />
+        <vector name="3" x="5" y="38" />
+        <vector name="4" x="26" y="29" />
+        <vector name="5" x="-5" y="35" />
+        <vector name="6" x="32" y="21" />
+        <vector name="7" x="-15" y="33" />
+        <vector name="8" x="37" y="14" />
+        <vector name="9" x="-24" y="30" />
+        <vector name="10" x="43" y="6" />
+        <vector name="11" x="-32" y="27" />
+        <vector name="12" x="48" y="-2" />
+        <vector name="13" x="-40" y="22" />
+        <vector name="14" x="51" y="-11" />
+        <vector name="15" x="-47" y="16" />
+        <vector name="16" x="51" y="-21" />
+        <vector name="17" x="-52" y="7" />
+        <vector name="18" x="50" y="-30" />
+        <vector name="19" x="-54" y="-3" />
+        <vector name="20" x="46" y="-38" />
+        <vector name="21" x="-53" y="-13" />
+        <vector name="22" x="39" y="-46" />
+        <vector name="23" x="-49" y="-22" />
+        <vector name="24" x="31" y="-52" />
+        <vector name="25" x="-42" y="-30" />
+        <vector name="26" x="21" y="-54" />
+        <vector name="27" x="-31" y="-32" />
+        <vector name="28" x="12" y="-51" />
+        <vector name="29" x="-21" y="-31" />
+        <vector name="30" x="2" y="-44" />
+        <vector name="31" x="-5" y="-36" />
+        <vector name="32" x="-9" y="-27" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

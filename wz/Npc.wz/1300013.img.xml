@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1300013.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="TD_MC_violetaEnter" />
+      </imgdir>
+    </imgdir>
+    <canvas name="default" width="109" height="154">
+      <vector name="origin" x="54" y="153" />
+      <int name="z" value="0" />
+    </canvas>
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="100" height="127">
+      <vector name="origin" x="50" y="63" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+</imgdir>

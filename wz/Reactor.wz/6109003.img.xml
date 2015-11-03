@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="6109003.img">
+  <imgdir name="info">
+    <string name="info" value="글로벌 파티 퀘스트 - 도적 스킬" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="5" />
+        <int name="state" value="1" />
+        <imgdir name="activeSkillID">
+          <int name="0" value="4111005" />
+          <int name="1" value="4111002" />
+          <int name="2" value="4211006" />
+          <int name="3" value="4211001" />
+          <int name="4" value="4211004" />
+        </imgdir>
+        <vector name="lt" x="-125" y="-19" />
+        <vector name="rb" x="123" y="122" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="4" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="5" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="6" width="180" height="208">
+        <vector name="origin" x="90" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="5" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="6" width="180" height="208">
+      <vector name="origin" x="90" y="104" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <int name="repeat" value="1" />
+  </imgdir>
+  <string name="action" value="glpqskill3" />
+</imgdir>

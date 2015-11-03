@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040010.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-64" />
+    <int name="dcTop" value="-146" />
+    <int name="dcBottom" value="0" />
+    <int name="dcRight" value="64" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_bonus" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="128" height="147">
+      <vector name="origin" x="64" y="146" />
+    </canvas>
+  </imgdir>
+</imgdir>

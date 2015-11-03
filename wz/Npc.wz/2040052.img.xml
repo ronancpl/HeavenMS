@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2040052.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="library" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="1500" />
+    </canvas>
+    <canvas name="1" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="150" />
+    </canvas>
+    <uol name="3" value="1" />
+    <uol name="4" value="2" />
+    <uol name="5" value="1" />
+    <canvas name="6" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="600" />
+    </canvas>
+    <uol name="7" value="1" />
+    <uol name="8" value="2" />
+    <uol name="9" value="1" />
+    <uol name="10" value="6" />
+    <uol name="11" value="1" />
+    <uol name="12" value="2" />
+    <uol name="13" value="1" />
+    <uol name="14" value="2" />
+    <uol name="15" value="1" />
+    <uol name="16" value="6" />
+    <uol name="17" value="1" />
+    <uol name="18" value="2" />
+    <uol name="19" value="1" />
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="2500" />
+    </canvas>
+    <canvas name="1" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="300" />
+    </canvas>
+    <canvas name="2" width="40" height="70">
+      <vector name="origin" x="23" y="70" />
+      <int name="delay" value="300" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+</imgdir>

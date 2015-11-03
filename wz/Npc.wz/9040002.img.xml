@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040002.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_comment" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="4000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="300" />
+    </canvas>
+    <canvas name="1" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="2" value="0" />
+    <uol name="3" value="1" />
+    <uol name="4" value="0" />
+    <uol name="5" value="1" />
+    <uol name="6" value="0" />
+    <uol name="7" value="1" />
+    <canvas name="8" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <uol name="9" value="1" />
+    <uol name="10" value="0" />
+    <uol name="11" value="1" />
+    <uol name="12" value="0" />
+    <uol name="13" value="1" />
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="90" />
+    </canvas>
+    <canvas name="1" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="90" />
+    </canvas>
+    <canvas name="2" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="90" />
+    </canvas>
+    <uol name="3" value="0" />
+    <uol name="4" value="1" />
+    <uol name="5" value="2" />
+    <canvas name="6" width="55" height="76">
+      <vector name="origin" x="27" y="76" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <uol name="7" value="1" />
+    <uol name="8" value="2" />
+    <uol name="9" value="0" />
+    <uol name="10" value="1" />
+    <uol name="11" value="2" />
+    <uol name="12" value="6" />
+    <uol name="13" value="1" />
+    <uol name="14" value="2" />
+    <uol name="15" value="0" />
+    <uol name="16" value="1" />
+    <uol name="17" value="2" />
+    <uol name="18" value="6" />
+  </imgdir>
+</imgdir>

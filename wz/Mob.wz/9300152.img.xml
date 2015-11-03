@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300152.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="84" />
+    <int name="maxHP" value="850000" />
+    <int name="maxMP" value="2500" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="440" />
+    <int name="PDDamage" value="800" />
+    <int name="MADamage" value="440" />
+    <int name="MDDamage" value="990" />
+    <int name="acc" value="190" />
+    <int name="eva" value="33" />
+    <int name="exp" value="25000" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="6000" />
+    <string name="elemAttr" value="L2S2" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="14" />
+    <int name="boss" value="1" />
+    <int name="hideName" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="125" />
+        <int name="action" value="1" />
+        <int name="level" value="8" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="74" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="75" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="76" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="129" />
+        <int name="action" value="1" />
+        <int name="level" value="2" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="skill" value="121" />
+        <int name="action" value="1" />
+        <int name="level" value="5" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="ban">
+      <imgdir name="banMap">
+        <imgdir name="0">
+          <int name="field" value="926110400" />
+        </imgdir>
+      </imgdir>
+      <string name="banMsg" value="Through dark magic, you were transported elsewhere. Find your way back and help your friends!" />
+    </imgdir>
+    <string name="link" value="9300140" />
+    <int name="hpTagColor" value="3" />
+    <int name="hpTagBgcolor" value="5" />
+    <int name="firstAttack" value="1" />
+    <int name="hpRecovery" value="3000" />
+    <int name="mpRecovery" value="20" />
+    <int name="mobType" value="8" />
+  </imgdir>
+</imgdir>

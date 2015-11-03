@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01802039.img">
+  <imgdir name="info">
+    <canvas name="icon" width="37" height="35">
+      <vector name="origin" x="2" y="33" />
+    </canvas>
+    <canvas name="iconRaw" width="37" height="35">
+      <vector name="origin" x="2" y="33" />
+    </canvas>
+    <int name="tuc" value="7" />
+    <int name="reqLevel" value="0" />
+    <int name="cash" value="1" />
+  </imgdir>
+  <imgdir name="5000064">
+    <imgdir name="stand0">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="2" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+    </imgdir>
+    <imgdir name="stand1">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="50">
+        <vector name="origin" x="8" y="59" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+    </imgdir>
+    <imgdir name="hungry">
+      <canvas name="0" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+    </imgdir>
+    <imgdir name="move">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="7" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="50">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="2" width="44" height="50">
+        <vector name="origin" x="8" y="56" />
+      </canvas>
+      <canvas name="3" width="44" height="49">
+        <vector name="origin" x="7" y="57" />
+      </canvas>
+      <uol name="4" value="1" />
+      <uol name="5" value="2" />
+      <uol name="6" value="3" />
+      <canvas name="7" width="44" height="49">
+        <vector name="origin" x="7" y="58" />
+      </canvas>
+      <canvas name="8" width="44" height="49">
+        <vector name="origin" x="7" y="59" />
+      </canvas>
+    </imgdir>
+    <imgdir name="rest0">
+      <canvas name="0" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <canvas name="1" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+    </imgdir>
+    <imgdir name="chat">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+      <uol name="6" value="0" />
+      <uol name="7" value="1" />
+      <uol name="8" value="0" />
+      <uol name="9" value="1" />
+      <uol name="10" value="0" />
+      <uol name="11" value="1" />
+      <uol name="12" value="0" />
+      <uol name="13" value="1" />
+      <uol name="14" value="0" />
+      <uol name="15" value="1" />
+    </imgdir>
+    <imgdir name="angry">
+      <canvas name="0" width="43" height="57">
+        <vector name="origin" x="4" y="65" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hang">
+      <canvas name="0" width="44" height="37">
+        <vector name="origin" x="22" y="70" />
+      </canvas>
+      <canvas name="1" width="44" height="37">
+        <vector name="origin" x="22" y="71" />
+      </canvas>
+    </imgdir>
+    <imgdir name="jump">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="7" y="57" />
+      </canvas>
+    </imgdir>
+    <imgdir name="good">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="66" />
+      </canvas>
+      <canvas name="1" width="44" height="49">
+        <vector name="origin" x="12" y="66" />
+      </canvas>
+      <canvas name="2" width="44" height="49">
+        <vector name="origin" x="21" y="66" />
+      </canvas>
+      <canvas name="3" width="43" height="49">
+        <vector name="origin" x="26" y="66" />
+      </canvas>
+      <uol name="4" value="2" />
+      <uol name="5" value="1" />
+      <canvas name="6" width="44" height="49">
+        <vector name="origin" x="3" y="66" />
+      </canvas>
+      <canvas name="7" width="44" height="49">
+        <vector name="origin" x="6" y="66" />
+      </canvas>
+      <canvas name="8" width="44" height="49">
+        <vector name="origin" x="3" y="66" />
+      </canvas>
+      <canvas name="9" width="43" height="49">
+        <vector name="origin" x="2" y="66" />
+      </canvas>
+      <uol name="10" value="0" />
+      <uol name="11" value="1" />
+      <uol name="12" value="2" />
+      <uol name="13" value="3" />
+      <uol name="14" value="4" />
+      <uol name="15" value="5" />
+      <uol name="16" value="6" />
+      <uol name="17" value="7" />
+      <uol name="18" value="8" />
+      <uol name="19" value="9" />
+    </imgdir>
+    <imgdir name="sleep">
+      <canvas name="0" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <canvas name="1" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <canvas name="2" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <canvas name="3" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <canvas name="4" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <canvas name="5" width="55" height="38">
+        <vector name="origin" x="51" y="35" />
+      </canvas>
+      <uol name="6" value="0" />
+      <uol name="7" value="1" />
+      <uol name="8" value="2" />
+      <uol name="9" value="3" />
+      <uol name="10" value="4" />
+      <uol name="11" value="5" />
+    </imgdir>
+    <imgdir name="stunned">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+    </imgdir>
+    <imgdir name="dung">
+      <canvas name="0" width="44" height="53">
+        <vector name="origin" x="14" y="62" />
+      </canvas>
+    </imgdir>
+    <imgdir name="charge">
+      <canvas name="0" width="43" height="52">
+        <vector name="origin" x="7" y="60" />
+      </canvas>
+      <canvas name="1" width="43" height="52">
+        <vector name="origin" x="7" y="60" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+    </imgdir>
+    <imgdir name="cry">
+      <canvas name="0" width="42" height="49">
+        <vector name="origin" x="7" y="49" />
+      </canvas>
+      <canvas name="1" width="42" height="49">
+        <vector name="origin" x="7" y="49" />
+      </canvas>
+      <canvas name="2" width="42" height="49">
+        <vector name="origin" x="7" y="49" />
+      </canvas>
+      <canvas name="3" width="42" height="49">
+        <vector name="origin" x="7" y="49" />
+      </canvas>
+      <canvas name="4" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <canvas name="5" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+    </imgdir>
+    <imgdir name="love">
+      <canvas name="0" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="49">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+      <uol name="6" value="0" />
+      <uol name="7" value="1" />
+      <uol name="8" value="0" />
+      <uol name="9" value="1" />
+    </imgdir>
+    <imgdir name="love2">
+      <canvas name="0" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <canvas name="1" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <canvas name="2" width="42" height="49">
+        <vector name="origin" x="7" y="50" />
+      </canvas>
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+      <uol name="6" value="2" />
+      <uol name="7" value="3" />
+    </imgdir>
+    <imgdir name="hug">
+      <canvas name="0" width="41" height="49">
+        <vector name="origin" x="6" y="54" />
+      </canvas>
+    </imgdir>
+    <imgdir name="ignore">
+      <canvas name="0" width="42" height="46">
+        <vector name="origin" x="-3" y="47" />
+      </canvas>
+    </imgdir>
+    <imgdir name="fly">
+      <canvas name="0" width="44" height="50">
+        <vector name="origin" x="8" y="57" />
+      </canvas>
+      <canvas name="1" width="44" height="50">
+        <vector name="origin" x="7" y="56" />
+      </canvas>
+      <uol name="2" value="0" />
+      <uol name="3" value="1" />
+      <uol name="4" value="0" />
+      <uol name="5" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

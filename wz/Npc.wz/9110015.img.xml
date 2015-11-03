@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9110015.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-100" />
+    <int name="dcTop" value="-225" />
+    <int name="dcRight" value="90" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="surfing" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="143" height="173">
+      <vector name="origin" x="71" y="170" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

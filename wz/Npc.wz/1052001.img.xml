@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052001.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-45" />
+    <int name="dcTop" value="-135" />
+    <int name="dcRight" value="45" />
+    <int name="dcBottom" value="-30" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="rogue" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="135" height="174">
+      <vector name="origin" x="67" y="156" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

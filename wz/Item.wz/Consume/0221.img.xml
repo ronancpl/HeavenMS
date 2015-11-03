@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0221.img">
+  <imgdir name="02210000">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="30">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210001">
+    <imgdir name="info">
+      <canvas name="icon" width="34" height="30">
+        <vector name="origin" x="1" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210002">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="33">
+        <vector name="origin" x="-4" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="3" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210003">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="30">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="4" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210004">
+    <imgdir name="info">
+      <canvas name="icon" width="34" height="30">
+        <vector name="origin" x="1" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="5000" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="5" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210005">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="30">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+      <int name="quest" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="6" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210006">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="27">
+        <vector name="origin" x="-3" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="25">
+        <vector name="origin" x="-3" y="28" />
+      </canvas>
+      <int name="price" value="100" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="7" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210007">
+    <imgdir name="info">
+      <canvas name="icon" width="30" height="32">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="600000" />
+      <int name="morph" value="8" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210008">
+    <imgdir name="info">
+      <canvas name="icon" width="30" height="32">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="200" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="600000" />
+      <int name="morph" value="8" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210009">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="32">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="31">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+      <int name="timeLimited" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="180000" />
+      <int name="morph" value="9" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210010">
+    <imgdir name="info">
+      <canvas name="icon" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="10" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210011">
+    <imgdir name="info">
+      <canvas name="icon" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="11" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210012">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="180000" />
+      <int name="morph" value="12" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210016">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="1800000" />
+      <int name="morph" value="16" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210017">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="27">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="24">
+        <vector name="origin" x="0" y="27" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="1800000" />
+      <int name="morph" value="17" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210018">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="29">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="27">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="1800000" />
+      <int name="morph" value="18" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210021">
+    <imgdir name="info">
+      <canvas name="icon" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="1800000" />
+      <int name="morph" value="21" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210022">
+    <imgdir name="info">
+      <canvas name="icon" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+      <int name="timeLimited" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="30000" />
+      <int name="time" value="900000" />
+      <int name="morph" value="22" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210030">
+    <imgdir name="info">
+      <canvas name="icon" width="36" height="37">
+        <vector name="origin" x="3" y="35" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="16" y="16" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="700000" />
+      <int name="morph" value="36" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210032">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="32">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="24" height="32">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <int name="price" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="38" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210033">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="34">
+        <vector name="origin" x="-6" y="34" />
+      </canvas>
+      <canvas name="iconRaw" width="26" height="34">
+        <vector name="origin" x="-6" y="34" />
+      </canvas>
+      <int name="price" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="39" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210034">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="33">
+        <vector name="origin" x="-4" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="noCancelMouse" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="1800000" />
+      <int name="morph" value="40" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210035">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="41" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210036">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="42" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210037">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="43" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210038">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="44" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210039">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="0" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <int name="morph" value="45" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02210043">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="29">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="29">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="2700000" />
+      <int name="morph" value="49" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02211000">
+    <imgdir name="info">
+      <canvas name="icon" width="34" height="35">
+        <vector name="origin" x="0" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="34" height="35">
+        <vector name="origin" x="0" y="33" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <imgdir name="morphRandom">
+        <imgdir name="0">
+          <int name="morph" value="23" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="1">
+          <int name="morph" value="24" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="2">
+          <int name="morph" value="25" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="3">
+          <int name="morph" value="26" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="4">
+          <int name="morph" value="27" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="5">
+          <int name="morph" value="28" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="6">
+          <int name="morph" value="29" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="7">
+          <int name="morph" value="30" />
+          <string name="prop" value="15" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02212000">
+    <imgdir name="info">
+      <canvas name="icon" width="37" height="35">
+        <vector name="origin" x="3" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="34" height="35">
+        <vector name="origin" x="0" y="33" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="100" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+      <int name="time" value="3600000" />
+      <imgdir name="morphRandom">
+        <imgdir name="0">
+          <int name="morph" value="23" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="1">
+          <int name="morph" value="24" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="2">
+          <int name="morph" value="25" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="3">
+          <int name="morph" value="26" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="4">
+          <int name="morph" value="27" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="5">
+          <int name="morph" value="28" />
+          <string name="prop" value="10" />
+        </imgdir>
+        <imgdir name="6">
+          <int name="morph" value="29" />
+          <string name="prop" value="15" />
+        </imgdir>
+        <imgdir name="7">
+          <int name="morph" value="30" />
+          <string name="prop" value="15" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9120005.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="1" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="2" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="3" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="4" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="5" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="6" width="59" height="65">
+      <vector name="origin" x="28" y="65" />
+      <int name="delay" value="110" />
+    </canvas>
+  </imgdir>
+</imgdir>

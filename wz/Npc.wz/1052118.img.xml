@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052118.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-60" />
+    <int name="dcTop" value="-106" />
+    <int name="dcRight" value="57" />
+    <int name="dcBottom" value="0" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="action">
+    <canvas name="0" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="160" />
+    </canvas>
+    <canvas name="4" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="160" />
+    </canvas>
+    <canvas name="3" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="160" />
+    </canvas>
+    <canvas name="2" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="160" />
+    </canvas>
+    <canvas name="1" width="118" height="107">
+      <vector name="origin" x="61" y="107" />
+      <int name="z" value="0" />
+      <int name="delay" value="160" />
+    </canvas>
+  </imgdir>
+</imgdir>

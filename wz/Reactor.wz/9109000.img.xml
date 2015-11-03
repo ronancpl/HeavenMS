@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9109000.img">
+  <imgdir name="info">
+    <string name="name" value="콩나무문" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="2" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="92" height="119">
+        <vector name="origin" x="45" y="117" />
+        <int name="z" value="2" />
+      </canvas>
+      <canvas name="1" width="94" height="118">
+        <vector name="origin" x="47" y="116" />
+        <int name="z" value="2" />
+      </canvas>
+      <canvas name="2" width="95" height="118">
+        <vector name="origin" x="47" y="116" />
+        <int name="z" value="2" />
+      </canvas>
+      <canvas name="3" width="92" height="118">
+        <vector name="origin" x="44" y="116" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="104" height="118">
+      <vector name="origin" x="44" y="115" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="1" width="109" height="120">
+      <vector name="origin" x="44" y="117" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="2" width="127" height="121">
+      <vector name="origin" x="61" y="118" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="3" width="127" height="122">
+      <vector name="origin" x="62" y="119" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="4" width="123" height="121">
+      <vector name="origin" x="61" y="118" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="5" width="112" height="120">
+      <vector name="origin" x="55" y="117" />
+      <int name="z" value="2" />
+    </canvas>
+    <canvas name="6" width="100" height="120">
+      <vector name="origin" x="50" y="117" />
+      <int name="z" value="2" />
+    </canvas>
+    <int name="repeat" value="1" />
+    <imgdir name="hit">
+      <canvas name="0" width="89" height="117">
+        <vector name="origin" x="44" y="115" />
+        <int name="z" value="2" />
+      </canvas>
+      <canvas name="1" width="89" height="118">
+        <vector name="origin" x="44" y="116" />
+        <int name="z" value="2" />
+      </canvas>
+      <canvas name="2" width="91" height="118">
+        <vector name="origin" x="44" y="116" />
+        <int name="z" value="2" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

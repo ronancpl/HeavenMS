@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0543.img">
+  <imgdir name="05430000">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="28">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="23">
+        <vector name="origin" x="0" y="28" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05431000">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="30">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="26">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05432000">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="30">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="30">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

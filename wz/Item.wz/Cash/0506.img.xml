@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0506.img">
+  <imgdir name="05060000">
+    <imgdir name="info">
+      <canvas name="icon" width="30" height="31">
+        <vector name="origin" x="-1" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="30" height="30">
+        <vector name="origin" x="-1" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05060001">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="26">
+        <vector name="origin" x="-5" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05060002">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="30">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <int name="cash" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05061000">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="26">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="protectTime" value="7" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05061001">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-3" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="26">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="protectTime" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05061002">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-3" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="26">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="protectTime" value="90" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05061003">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-3" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="23" height="26">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="cash" value="1" />
+      <int name="protectTime" value="365" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201125.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goElinia" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-60" />
+    <int name="dcTop" value="-130" />
+    <int name="dcRight" value="56" />
+    <int name="dcBottom" value="-9" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="147" height="167">
+      <vector name="origin" x="73" y="164" />
+    </canvas>
+  </imgdir>
+</imgdir>

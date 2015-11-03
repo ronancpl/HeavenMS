@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9110009.img">
+  <imgdir name="info">
+    <string name="quest" value="gachapon1" />
+    <int name="dcLeft" value="-50" />
+    <int name="dcTop" value="-135" />
+    <int name="dcRight" value="32" />
+    <int name="dcBottom" value="0" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="88" height="131">
+      <vector name="origin" x="51" y="129" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="1" width="88" height="131">
+      <vector name="origin" x="51" y="129" />
+      <int name="delay" value="1000" />
+    </canvas>
+  </imgdir>
+</imgdir>

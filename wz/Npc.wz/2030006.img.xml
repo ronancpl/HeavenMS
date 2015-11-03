@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2030006.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-90" />
+    <int name="dcTop" value="-320" />
+    <int name="dcRight" value="90" />
+    <int name="dcBottom" value="-37" />
+    <canvas name="default" width="119" height="170">
+      <vector name="origin" x="59" y="166" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="holyStone" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="232" height="329">
+      <vector name="origin" x="116" y="323" />
+    </canvas>
+  </imgdir>
+</imgdir>

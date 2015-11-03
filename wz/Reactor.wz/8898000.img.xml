@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="8898000.img">
+  <imgdir name="info">
+    <string name="info" value="Holiday Season" />
+    <int name="backTile" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="382" height="286">
+      <vector name="origin" x="213" y="286" />
+      <vector name="head" x="-33" y="-238" />
+      <vector name="lt" x="-192" y="-290" />
+      <vector name="rb" x="126" y="0" />
+      <int name="delay" value="350" />
+    </canvas>
+    <canvas name="1" width="382" height="287">
+      <vector name="origin" x="213" y="287" />
+      <vector name="head" x="-33" y="-238" />
+      <int name="delay" value="350" />
+      <vector name="lt" x="-192" y="-290" />
+      <vector name="rb" x="126" y="0" />
+    </canvas>
+    <canvas name="2" width="382" height="289">
+      <vector name="origin" x="213" y="289" />
+      <vector name="head" x="-33" y="-238" />
+      <int name="delay" value="350" />
+      <vector name="lt" x="-192" y="-290" />
+      <vector name="rb" x="126" y="0" />
+    </canvas>
+    <canvas name="3" width="382" height="287">
+      <vector name="origin" x="213" y="287" />
+      <vector name="head" x="-33" y="-238" />
+      <int name="delay" value="350" />
+      <vector name="lt" x="-192" y="-290" />
+      <vector name="rb" x="126" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

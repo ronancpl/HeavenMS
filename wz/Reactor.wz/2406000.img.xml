@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2406000.img">
+  <imgdir name="info">
+    <string name="name" value="나인스피릿의둥지" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="115" height="45">
+      <vector name="origin" x="53" y="-24" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="115" height="45">
+        <vector name="origin" x="53" y="-24" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="1" width="123" height="135">
+        <vector name="origin" x="56" y="66" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="2" width="121" height="134">
+        <vector name="origin" x="55" y="65" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="3" width="123" height="132">
+        <vector name="origin" x="57" y="63" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="4" width="124" height="130">
+        <vector name="origin" x="58" y="61" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="5" width="123" height="136">
+        <vector name="origin" x="57" y="67" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="6" width="122" height="137">
+        <vector name="origin" x="56" y="68" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="122" height="137">
+      <vector name="origin" x="56" y="68" />
+      <int name="z" value="-2" />
+      <int name="delay" value="120" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="122" height="137">
+        <vector name="origin" x="56" y="68" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="1" width="122" height="137">
+        <vector name="origin" x="56" y="68" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="2" width="119" height="136">
+        <vector name="origin" x="54" y="67" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="3" width="115" height="136">
+        <vector name="origin" x="53" y="67" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="4" width="115" height="125">
+        <vector name="origin" x="53" y="56" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="5" width="115" height="118">
+        <vector name="origin" x="53" y="49" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="6" width="115" height="94">
+        <vector name="origin" x="53" y="25" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="7" width="115" height="74">
+        <vector name="origin" x="53" y="5" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+      <canvas name="8" width="115" height="45">
+        <vector name="origin" x="53" y="-24" />
+        <int name="z" value="-2" />
+        <int name="delay" value="120" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="hontaleNPC0" />
+</imgdir>
