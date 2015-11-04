@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="insideMR.img">
+  <imgdir name="inside00">
+    <imgdir name="frame">
+      <imgdir name="0">
+        <canvas name="0" width="455" height="491">
+          <vector name="origin" x="227" y="245" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="254" height="491">
+          <vector name="origin" x="127" y="245" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="527" height="600">
+          <vector name="origin" x="263" y="300" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="3">
+        <canvas name="0" width="317" height="600">
+          <vector name="origin" x="158" y="300" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="4">
+        <canvas name="0" width="263" height="600">
+          <vector name="origin" x="131" y="300" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="5">
+        <canvas name="0" width="800" height="110">
+          <vector name="origin" x="400" y="55" />
+          <int name="z" value="0" />
+          <extended name="foothold">
+            <vector name="foothold" x="-400" y="-53" />
+            <vector name="foothold" x="400" y="-53" />
+          </extended>
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="acc">
+      <imgdir name="0">
+        <canvas name="0" width="283" height="278">
+          <vector name="origin" x="141" y="139" />
+          <int name="z" value="0" />
+          <extended name="foothold">
+            <vector name="foothold" x="-140" y="-10" />
+            <vector name="foothold" x="112" y="-10" />
+          </extended>
+          <extended name="ladder">
+            <vector name="ladder" x="-48" y="-10" />
+            <vector name="ladder" x="-48" y="152" />
+          </extended>
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="589" height="168">
+          <vector name="origin" x="294" y="84" />
+          <int name="z" value="0" />
+          <imgdir name="foothold">
+            <extended name="0">
+              <vector name="0" x="-225" y="-253" />
+              <vector name="0" x="-225" y="-82" />
+              <vector name="0" x="-7" y="-82" />
+            </extended>
+            <extended name="1">
+              <vector name="1" x="-97" y="-66" />
+              <vector name="1" x="-18" y="-66" />
+            </extended>
+            <extended name="2">
+              <vector name="2" x="-83" y="-42" />
+              <vector name="2" x="-4" y="-42" />
+            </extended>
+            <extended name="3">
+              <vector name="3" x="-67" y="-17" />
+              <vector name="3" x="12" y="-17" />
+            </extended>
+            <extended name="4">
+              <vector name="4" x="-51" y="8" />
+              <vector name="4" x="28" y="8" />
+            </extended>
+            <extended name="5">
+              <vector name="5" x="-36" y="34" />
+              <vector name="5" x="43" y="34" />
+            </extended>
+            <extended name="6">
+              <vector name="6" x="-20" y="58" />
+              <vector name="6" x="59" y="58" />
+            </extended>
+            <extended name="7">
+              <vector name="7" x="67" y="34" />
+              <vector name="7" x="213" y="34" />
+            </extended>
+            <extended name="8">
+              <vector name="8" x="-158" y="34" />
+              <vector name="8" x="-76" y="34" />
+            </extended>
+          </imgdir>
+        </canvas>
+      </imgdir>
+      <imgdir name="2">
+        <canvas name="0" width="384" height="148">
+          <vector name="origin" x="192" y="74" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="gate">
+      <imgdir name="0">
+        <canvas name="0" width="111" height="151">
+          <vector name="origin" x="55" y="75" />
+          <int name="z" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="1">
+        <canvas name="0" width="1" height="1">
+          <vector name="origin" x="0" y="0" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

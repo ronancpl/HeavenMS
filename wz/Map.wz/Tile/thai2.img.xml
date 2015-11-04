@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="thai2.img">
+  <imgdir name="info" />
+  <imgdir name="bsc">
+    <canvas name="0" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5" width="90" height="60">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enH0">
+    <canvas name="0" width="90" height="36">
+      <vector name="origin" x="0" y="36" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+    <canvas name="1" width="90" height="39">
+      <vector name="origin" x="0" y="39" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+    <canvas name="2" width="90" height="40">
+      <vector name="origin" x="0" y="40" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enH1">
+    <canvas name="0" width="90" height="55">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+    <canvas name="1" width="90" height="62">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+    <canvas name="2" width="90" height="48">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enV0">
+    <canvas name="0" width="44" height="60">
+      <vector name="origin" x="44" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+    </canvas>
+    <canvas name="1" width="36" height="60">
+      <vector name="origin" x="36" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+    </canvas>
+  </imgdir>
+  <imgdir name="enV1">
+    <canvas name="0" width="42" height="60">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+    </canvas>
+    <canvas name="1" width="38" height="60">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-2" />
+    </canvas>
+  </imgdir>
+  <imgdir name="edU">
+    <canvas name="0" width="74" height="34">
+      <vector name="origin" x="35" y="34" />
+      <int name="z" value="-4" />
+    </canvas>
+  </imgdir>
+  <imgdir name="edD">
+    <canvas name="0" width="73" height="46">
+      <vector name="origin" x="35" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-4" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slLU">
+    <canvas name="0" width="90" height="89">
+      <vector name="origin" x="90" y="89" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slRU">
+    <canvas name="0" width="90" height="89">
+      <vector name="origin" x="0" y="89" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slLD">
+    <canvas name="0" width="90" height="109">
+      <vector name="origin" x="90" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+  <imgdir name="slRD">
+    <canvas name="0" width="90" height="97">
+      <vector name="origin" x="0" y="0" />
+      <imgdir name="map" />
+      <int name="z" value="-3" />
+    </canvas>
+  </imgdir>
+</imgdir>

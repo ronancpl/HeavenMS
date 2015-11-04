@@ -1,0 +1,2274 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="211040900.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="returnMap" value="211000000" />
+    <int name="forcedReturn" value="999999999" />
+    <float name="mobRate" value="0.6999999" />
+    <string name="bgm" value="Bgm05/WolfWood" />
+    <string name="mapMark" value="ElNathDungeon" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="0" />
+    <int name="VRTop" value="-2010" />
+    <int name="VRLeft" value="-402" />
+    <int name="VRBottom" value="640" />
+    <int name="VRRight" value="490" />
+    <float name="fs" value="0.2" />
+    <int name="decHP" value="10" />
+    <int name="protectItem" value="1102109" />
+  </imgdir>
+  <imgdir name="back">
+    <imgdir name="0">
+      <string name="bS" value="snowyLightrock" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="0" />
+      <int name="x" value="0" />
+      <int name="y" value="0" />
+      <int name="rx" value="0" />
+      <int name="ry" value="0" />
+      <int name="type" value="3" />
+      <int name="cx" value="0" />
+      <int name="cy" value="0" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="2">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="24" />
+      <int name="x" value="85" />
+      <int name="y" value="87" />
+      <int name="rx" value="-60" />
+      <int name="ry" value="-40" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="3">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="25" />
+      <int name="x" value="85" />
+      <int name="y" value="-113" />
+      <int name="rx" value="-60" />
+      <int name="ry" value="-40" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="5">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="4" />
+      <int name="x" value="-250" />
+      <int name="y" value="370" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="6">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="10" />
+      <int name="x" value="-236" />
+      <int name="y" value="-43" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="8">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="9" />
+      <int name="x" value="-310" />
+      <int name="y" value="159" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="9">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="11" />
+      <int name="x" value="-216" />
+      <int name="y" value="44" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="11">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="14" />
+      <int name="x" value="348" />
+      <int name="y" value="-134" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="12">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="15" />
+      <int name="x" value="372" />
+      <int name="y" value="166" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="4">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="3" />
+      <int name="x" value="-262" />
+      <int name="y" value="70" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="23" />
+      <int name="x" value="85" />
+      <int name="y" value="287" />
+      <int name="rx" value="-60" />
+      <int name="ry" value="-40" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="13">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="17" />
+      <int name="x" value="422" />
+      <int name="y" value="-1886" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="10">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="13" />
+      <int name="x" value="-246" />
+      <int name="y" value="-216" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+    <imgdir name="7">
+      <string name="bS" value="snowyLightrock2" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="8" />
+      <int name="x" value="-159" />
+      <int name="y" value="-239" />
+      <int name="rx" value="-100" />
+      <int name="ry" value="-100" />
+      <int name="type" value="2" />
+      <int name="cx" value="0" />
+      <int name="cy" value="600" />
+      <int name="a" value="255" />
+      <int name="f" value="0" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="portal">
+    <imgdir name="0">
+      <string name="pn" value="sp" />
+      <int name="pt" value="0" />
+      <int name="x" value="276" />
+      <int name="y" value="127" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="2">
+      <string name="pn" value="sp" />
+      <int name="pt" value="0" />
+      <int name="x" value="-186" />
+      <int name="y" value="-1509" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="pn" value="sp" />
+      <int name="pt" value="0" />
+      <int name="x" value="131" />
+      <int name="y" value="-861" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="3">
+      <string name="pn" value="under00" />
+      <int name="pt" value="2" />
+      <int name="x" value="430" />
+      <int name="y" value="208" />
+      <int name="tm" value="211040800" />
+      <string name="tn" value="top00" />
+    </imgdir>
+    <imgdir name="4">
+      <string name="pn" value="top00" />
+      <int name="pt" value="2" />
+      <int name="x" value="-273" />
+      <int name="y" value="-1464" />
+      <int name="tm" value="211041000" />
+      <string name="tn" value="under00" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="life">
+    <imgdir name="0">
+      <string name="type" value="m" />
+      <string name="id" value="8140000" />
+      <int name="x" value="-323" />
+      <int name="y" value="-19" />
+      <int name="mobTime" value="60" />
+      <int name="f" value="1" />
+      <int name="fh" value="43" />
+      <int name="cy" value="-4" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="type" value="m" />
+      <string name="id" value="8140000" />
+      <int name="x" value="410" />
+      <int name="y" value="-499" />
+      <int name="mobTime" value="60" />
+      <int name="f" value="0" />
+      <int name="fh" value="42" />
+      <int name="cy" value="-480" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="2">
+      <string name="type" value="m" />
+      <string name="id" value="8140000" />
+      <int name="x" value="409" />
+      <int name="y" value="-1173" />
+      <int name="mobTime" value="60" />
+      <int name="f" value="0" />
+      <int name="fh" value="32" />
+      <int name="cy" value="-1143" />
+      <int name="rx0" value="-381" />
+      <int name="rx1" value="469" />
+    </imgdir>
+    <imgdir name="3">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="192" />
+      <int name="y" value="-63" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="1" />
+      <int name="fh" value="49" />
+      <int name="cy" value="-39" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="4">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="31" />
+      <int name="y" value="-32" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="1" />
+      <int name="fh" value="47" />
+      <int name="cy" value="2" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="5">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="-57" />
+      <int name="y" value="-398" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="0" />
+      <int name="fh" value="36" />
+      <int name="cy" value="-376" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="6">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="176" />
+      <int name="y" value="-434" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="0" />
+      <int name="fh" value="39" />
+      <int name="cy" value="-423" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="7">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="161" />
+      <int name="y" value="-1114" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="0" />
+      <int name="fh" value="29" />
+      <int name="cy" value="-1081" />
+      <int name="rx0" value="-381" />
+      <int name="rx1" value="469" />
+    </imgdir>
+    <imgdir name="8">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="-64" />
+      <int name="y" value="-1081" />
+      <int name="mobTime" value="1" />
+      <int name="f" value="0" />
+      <int name="fh" value="26" />
+      <int name="cy" value="-1038" />
+      <int name="rx0" value="-381" />
+      <int name="rx1" value="469" />
+    </imgdir>
+    <imgdir name="9">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="-163" />
+      <int name="y" value="415" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="14" />
+      <int name="cy" value="454" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="10">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="-17" />
+      <int name="y" value="410" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="6" />
+      <int name="cy" value="454" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="11">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="169" />
+      <int name="y" value="395" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="13" />
+      <int name="cy" value="454" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="12">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="377" />
+      <int name="y" value="390" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="12" />
+      <int name="cy" value="454" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+    <imgdir name="13">
+      <string name="type" value="m" />
+      <string name="id" value="5140000" />
+      <int name="x" value="-301" />
+      <int name="y" value="392" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="15" />
+      <int name="cy" value="454" />
+      <int name="rx0" value="-380" />
+      <int name="rx1" value="470" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="1">
+    <imgdir name="info">
+      <string name="tS" value="snowyLightrock" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="2">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="13" />
+        <int name="x" value="-3" />
+        <int name="y" value="-1100" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="31" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="13" />
+        <int name="x" value="-2" />
+        <int name="y" value="-437" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="16" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="13" />
+        <int name="x" value="-2" />
+        <int name="y" value="-48" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="5" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="1" />
+        <int name="x" value="-251" />
+        <int name="y" value="-1387" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="35" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="7" />
+        <int name="x" value="121" />
+        <int name="y" value="-766" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="25" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="5" />
+        <int name="x" value="-100" />
+        <int name="y" value="-752" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="23" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="6" />
+        <int name="x" value="-260" />
+        <int name="y" value="-739" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="22" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="5" />
+        <int name="x" value="352" />
+        <int name="y" value="-757" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="24" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="8">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="-263" />
+        <int name="y" value="-395" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="18" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-263" />
+        <int name="y" value="-319" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="14" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-263" />
+        <int name="y" value="-217" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="10" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="1" />
+        <int name="x" value="-263" />
+        <int name="y" value="-142" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="9" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="-263" />
+        <int name="y" value="-109" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="8" />
+      </imgdir>
+      <imgdir name="13">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="367" />
+        <int name="y" value="-478" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="17" />
+      </imgdir>
+      <imgdir name="14">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="367" />
+        <int name="y" value="-410" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="17" />
+      </imgdir>
+      <imgdir name="15">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="367" />
+        <int name="y" value="-308" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="13" />
+      </imgdir>
+      <imgdir name="16">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="1" />
+        <int name="x" value="367" />
+        <int name="y" value="-233" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="12" />
+      </imgdir>
+      <imgdir name="17">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="367" />
+        <int name="y" value="-200" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="11" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="7" />
+        <int name="x" value="361" />
+        <int name="y" value="250" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+      <imgdir name="18">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="8" />
+        <int name="x" value="246" />
+        <int name="y" value="197" />
+        <int name="z" value="4" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="1" />
+        <int name="x" value="-259" />
+        <int name="y" value="-915" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="28" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="-259" />
+        <int name="y" value="-882" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="27" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="-259" />
+        <int name="y" value="-1055" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="29" />
+      </imgdir>
+      <imgdir name="0">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-259" />
+        <int name="y" value="-990" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="29" />
+      </imgdir>
+      <imgdir name="19">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="-210" />
+        <int name="y" value="-1461" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="37" />
+      </imgdir>
+      <imgdir name="20">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-210" />
+        <int name="y" value="-1387" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="36" />
+      </imgdir>
+      <imgdir name="21">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-210" />
+        <int name="y" value="-1285" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="34" />
+      </imgdir>
+      <imgdir name="22">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="-210" />
+        <int name="y" value="-1183" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="33" />
+      </imgdir>
+      <imgdir name="23">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="-210" />
+        <int name="y" value="-1123" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="32" />
+      </imgdir>
+      <imgdir name="24">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="382" />
+        <int name="y" value="-791" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="26" />
+      </imgdir>
+      <imgdir name="25">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="382" />
+        <int name="y" value="-717" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="21" />
+      </imgdir>
+      <imgdir name="26">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="382" />
+        <int name="y" value="-615" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="20" />
+      </imgdir>
+      <imgdir name="27">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="382" />
+        <int name="y" value="-555" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="19" />
+      </imgdir>
+      <imgdir name="28">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="5" />
+        <int name="x" value="349" />
+        <int name="y" value="-90" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="7" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="6" />
+        <int name="x" value="349" />
+        <int name="y" value="142" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="3" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="349" />
+        <int name="y" value="82" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="4" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="8" />
+        <string name="l2" value="4" />
+        <int name="x" value="349" />
+        <int name="y" value="-20" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="7" />
+      </imgdir>
+      <imgdir name="29">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="9" />
+        <string name="l2" value="3" />
+        <int name="x" value="198" />
+        <int name="y" value="213" />
+        <int name="z" value="5" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+      <imgdir name="30">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="9" />
+        <string name="l2" value="5" />
+        <int name="x" value="198" />
+        <int name="y" value="298" />
+        <int name="z" value="5" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+      <imgdir name="31">
+        <string name="oS" value="connect" />
+        <string name="l0" value="rope" />
+        <string name="l1" value="9" />
+        <string name="l2" value="2" />
+        <int name="x" value="198" />
+        <int name="y" value="367" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="14" />
+        <int name="x" value="-3" />
+        <int name="y" value="-47" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="6" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="14" />
+        <int name="x" value="-3" />
+        <int name="y" value="-435" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="15" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="14" />
+        <int name="x" value="-3" />
+        <int name="y" value="-1098" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="30" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="dungeon2" />
+        <string name="l0" value="snowyLightrock" />
+        <string name="l1" value="foot" />
+        <string name="l2" value="9" />
+        <int name="x" value="314" />
+        <int name="y" value="172" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="2" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <imgdir name="info">
+      <string name="tS" value="snowyLightrock" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile">
+      <imgdir name="9">
+        <int name="x" value="360" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="12">
+        <int name="x" value="360" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="32">
+        <int name="x" value="90" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="x" value="270" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="31">
+        <int name="x" value="180" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="x" value="270" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="37">
+        <int name="x" value="180" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="34">
+        <int name="x" value="90" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="33">
+        <int name="x" value="0" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="43">
+        <int name="x" value="-180" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="44">
+        <int name="x" value="-270" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="35">
+        <int name="x" value="-360" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="42">
+        <int name="x" value="-270" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="46">
+        <int name="x" value="-90" />
+        <int name="y" value="540" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="40">
+        <int name="x" value="-90" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="19">
+        <int name="x" value="0" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="36">
+        <int name="x" value="90" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="x" value="360" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="x" value="270" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="39">
+        <int name="x" value="180" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="38">
+        <int name="x" value="360" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="45">
+        <int name="x" value="180" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="47">
+        <int name="x" value="0" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="28">
+        <int name="x" value="90" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="29">
+        <int name="x" value="-360" />
+        <int name="y" value="660" />
+        <string name="u" value="enV0" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="x" value="-270" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="30">
+        <int name="x" value="-360" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="26">
+        <int name="x" value="-180" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="27">
+        <int name="x" value="-90" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="24">
+        <int name="x" value="-180" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="25">
+        <int name="x" value="-180" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="22">
+        <int name="x" value="0" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="23">
+        <int name="x" value="-360" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="20">
+        <int name="x" value="270" />
+        <int name="y" value="720" />
+        <string name="u" value="enH1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="21">
+        <int name="x" value="-90" />
+        <int name="y" value="600" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="x" value="-360" />
+        <int name="y" value="540" />
+        <string name="u" value="enV0" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="13">
+        <int name="x" value="-270" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="16">
+        <int name="x" value="-360" />
+        <int name="y" value="660" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="17">
+        <int name="x" value="-360" />
+        <int name="y" value="720" />
+        <string name="u" value="edD" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="x" value="-360" />
+        <int name="y" value="600" />
+        <string name="u" value="enV0" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="49">
+        <int name="x" value="-360" />
+        <int name="y" value="480" />
+        <string name="u" value="enV0" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="59">
+        <int name="x" value="-360" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="58">
+        <int name="x" value="-180" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="57">
+        <int name="x" value="-180" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="56">
+        <int name="x" value="0" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="55">
+        <int name="x" value="90" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="54">
+        <int name="x" value="90" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="52">
+        <int name="x" value="360" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="51">
+        <int name="x" value="360" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="53">
+        <int name="x" value="270" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="50">
+        <int name="x" value="270" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="48">
+        <int name="x" value="180" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="4" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="14">
+        <int name="x" value="180" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="15">
+        <int name="x" value="-90" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="x" value="0" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="x" value="-90" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="3" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="x" value="-270" />
+        <int name="y" value="480" />
+        <string name="u" value="enH0" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="0">
+        <int name="x" value="-270" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="2" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="41">
+        <int name="x" value="-360" />
+        <int name="y" value="480" />
+        <string name="u" value="bsc" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="18">
+        <int name="x" value="-360" />
+        <int name="y" value="480" />
+        <string name="u" value="edU" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="60">
+        <int name="x" value="450" />
+        <int name="y" value="480" />
+        <string name="u" value="edU" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="65">
+        <int name="x" value="450" />
+        <int name="y" value="600" />
+        <string name="u" value="enV1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="63">
+        <int name="x" value="450" />
+        <int name="y" value="540" />
+        <string name="u" value="enV1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="64">
+        <int name="x" value="450" />
+        <int name="y" value="660" />
+        <string name="u" value="enV1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="61">
+        <int name="x" value="450" />
+        <int name="y" value="480" />
+        <string name="u" value="enV1" />
+        <int name="no" value="1" />
+        <int name="zM" value="0" />
+      </imgdir>
+      <imgdir name="62">
+        <int name="x" value="450" />
+        <int name="y" value="720" />
+        <string name="u" value="edD" />
+        <int name="no" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="6">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="7">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="foothold">
+    <imgdir name="5">
+      <imgdir name="0">
+        <imgdir name="1">
+          <int name="x1" value="-400" />
+          <int name="y1" value="660" />
+          <int name="x2" value="-400" />
+          <int name="y2" value="600" />
+          <int name="prev" value="9" />
+          <int name="next" value="3" />
+        </imgdir>
+        <imgdir name="2">
+          <int name="x1" value="-270" />
+          <int name="y1" value="454" />
+          <int name="x2" value="-180" />
+          <int name="y2" value="454" />
+          <int name="prev" value="15" />
+          <int name="next" value="14" />
+        </imgdir>
+        <imgdir name="3">
+          <int name="x1" value="-400" />
+          <int name="y1" value="600" />
+          <int name="x2" value="-400" />
+          <int name="y2" value="540" />
+          <int name="prev" value="1" />
+          <int name="next" value="10" />
+        </imgdir>
+        <imgdir name="4">
+          <int name="x1" value="0" />
+          <int name="y1" value="454" />
+          <int name="x2" value="90" />
+          <int name="y2" value="454" />
+          <int name="prev" value="6" />
+          <int name="next" value="13" />
+        </imgdir>
+        <imgdir name="5">
+          <int name="x1" value="180" />
+          <int name="y1" value="454" />
+          <int name="x2" value="270" />
+          <int name="y2" value="454" />
+          <int name="prev" value="13" />
+          <int name="next" value="11" />
+        </imgdir>
+        <imgdir name="6">
+          <int name="x1" value="-90" />
+          <int name="y1" value="454" />
+          <int name="x2" value="0" />
+          <int name="y2" value="454" />
+          <int name="prev" value="14" />
+          <int name="next" value="4" />
+        </imgdir>
+        <imgdir name="7">
+          <int name="x1" value="-400" />
+          <int name="y1" value="480" />
+          <int name="x2" value="-400" />
+          <int name="y2" value="454" />
+          <int name="prev" value="10" />
+          <int name="next" value="8" />
+        </imgdir>
+        <imgdir name="8">
+          <int name="x1" value="-400" />
+          <int name="y1" value="454" />
+          <int name="x2" value="-320" />
+          <int name="y2" value="454" />
+          <int name="prev" value="7" />
+          <int name="next" value="15" />
+        </imgdir>
+        <imgdir name="9">
+          <int name="x1" value="-400" />
+          <int name="y1" value="720" />
+          <int name="x2" value="-400" />
+          <int name="y2" value="660" />
+          <int name="prev" value="0" />
+          <int name="next" value="1" />
+        </imgdir>
+        <imgdir name="10">
+          <int name="x1" value="-400" />
+          <int name="y1" value="540" />
+          <int name="x2" value="-400" />
+          <int name="y2" value="480" />
+          <int name="prev" value="3" />
+          <int name="next" value="7" />
+        </imgdir>
+        <imgdir name="11">
+          <int name="x1" value="270" />
+          <int name="y1" value="454" />
+          <int name="x2" value="360" />
+          <int name="y2" value="454" />
+          <int name="prev" value="5" />
+          <int name="next" value="12" />
+        </imgdir>
+        <imgdir name="12">
+          <int name="x1" value="360" />
+          <int name="y1" value="454" />
+          <int name="x2" value="410" />
+          <int name="y2" value="454" />
+          <int name="prev" value="11" />
+          <int name="next" value="16" />
+        </imgdir>
+        <imgdir name="13">
+          <int name="x1" value="90" />
+          <int name="y1" value="454" />
+          <int name="x2" value="180" />
+          <int name="y2" value="454" />
+          <int name="prev" value="4" />
+          <int name="next" value="5" />
+        </imgdir>
+        <imgdir name="14">
+          <int name="x1" value="-180" />
+          <int name="y1" value="454" />
+          <int name="x2" value="-90" />
+          <int name="y2" value="454" />
+          <int name="prev" value="2" />
+          <int name="next" value="6" />
+        </imgdir>
+        <imgdir name="15">
+          <int name="x1" value="-320" />
+          <int name="y1" value="454" />
+          <int name="x2" value="-270" />
+          <int name="y2" value="454" />
+          <int name="prev" value="8" />
+          <int name="next" value="2" />
+        </imgdir>
+        <imgdir name="16">
+          <int name="x1" value="410" />
+          <int name="y1" value="454" />
+          <int name="x2" value="450" />
+          <int name="y2" value="454" />
+          <int name="prev" value="12" />
+          <int name="next" value="17" />
+        </imgdir>
+        <imgdir name="17">
+          <int name="x1" value="450" />
+          <int name="y1" value="454" />
+          <int name="x2" value="490" />
+          <int name="y2" value="454" />
+          <int name="prev" value="16" />
+          <int name="next" value="18" />
+        </imgdir>
+        <imgdir name="18">
+          <int name="x1" value="490" />
+          <int name="y1" value="454" />
+          <int name="x2" value="490" />
+          <int name="y2" value="480" />
+          <int name="prev" value="17" />
+          <int name="next" value="19" />
+        </imgdir>
+        <imgdir name="19">
+          <int name="x1" value="490" />
+          <int name="y1" value="480" />
+          <int name="x2" value="490" />
+          <int name="y2" value="540" />
+          <int name="prev" value="18" />
+          <int name="next" value="20" />
+        </imgdir>
+        <imgdir name="20">
+          <int name="x1" value="490" />
+          <int name="y1" value="540" />
+          <int name="x2" value="490" />
+          <int name="y2" value="600" />
+          <int name="prev" value="19" />
+          <int name="next" value="22" />
+        </imgdir>
+        <imgdir name="21">
+          <int name="x1" value="490" />
+          <int name="y1" value="660" />
+          <int name="x2" value="490" />
+          <int name="y2" value="720" />
+          <int name="prev" value="22" />
+          <int name="next" value="0" />
+        </imgdir>
+        <imgdir name="22">
+          <int name="x1" value="490" />
+          <int name="y1" value="600" />
+          <int name="x2" value="490" />
+          <int name="y2" value="660" />
+          <int name="prev" value="20" />
+          <int name="next" value="21" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2">
+      <imgdir name="31">
+        <imgdir name="23">
+          <int name="x1" value="-401" />
+          <int name="y1" value="-1057" />
+          <int name="x2" value="-220" />
+          <int name="y2" value="-1054" />
+          <int name="prev" value="0" />
+          <int name="next" value="24" />
+        </imgdir>
+        <imgdir name="24">
+          <int name="x1" value="-220" />
+          <int name="y1" value="-1054" />
+          <int name="x2" value="-168" />
+          <int name="y2" value="-1037" />
+          <int name="prev" value="23" />
+          <int name="next" value="25" />
+        </imgdir>
+        <imgdir name="25">
+          <int name="x1" value="-168" />
+          <int name="y1" value="-1037" />
+          <int name="x2" value="-78" />
+          <int name="y2" value="-1037" />
+          <int name="prev" value="24" />
+          <int name="next" value="26" />
+        </imgdir>
+        <imgdir name="26">
+          <int name="x1" value="-78" />
+          <int name="y1" value="-1037" />
+          <int name="x2" value="4" />
+          <int name="y2" value="-1046" />
+          <int name="prev" value="25" />
+          <int name="next" value="27" />
+        </imgdir>
+        <imgdir name="27">
+          <int name="x1" value="4" />
+          <int name="y1" value="-1046" />
+          <int name="x2" value="84" />
+          <int name="y2" value="-1060" />
+          <int name="prev" value="26" />
+          <int name="next" value="28" />
+        </imgdir>
+        <imgdir name="28">
+          <int name="x1" value="84" />
+          <int name="y1" value="-1060" />
+          <int name="x2" value="148" />
+          <int name="y2" value="-1077" />
+          <int name="prev" value="27" />
+          <int name="next" value="29" />
+        </imgdir>
+        <imgdir name="29">
+          <int name="x1" value="148" />
+          <int name="y1" value="-1077" />
+          <int name="x2" value="222" />
+          <int name="y2" value="-1102" />
+          <int name="prev" value="28" />
+          <int name="next" value="30" />
+        </imgdir>
+        <imgdir name="30">
+          <int name="x1" value="222" />
+          <int name="y1" value="-1102" />
+          <int name="x2" value="272" />
+          <int name="y2" value="-1123" />
+          <int name="prev" value="29" />
+          <int name="next" value="31" />
+        </imgdir>
+        <imgdir name="31">
+          <int name="x1" value="272" />
+          <int name="y1" value="-1123" />
+          <int name="x2" value="300" />
+          <int name="y2" value="-1140" />
+          <int name="prev" value="30" />
+          <int name="next" value="32" />
+        </imgdir>
+        <imgdir name="32">
+          <int name="x1" value="300" />
+          <int name="y1" value="-1140" />
+          <int name="x2" value="489" />
+          <int name="y2" value="-1146" />
+          <int name="prev" value="31" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="16">
+        <imgdir name="33">
+          <int name="x1" value="-400" />
+          <int name="y1" value="-394" />
+          <int name="x2" value="-219" />
+          <int name="y2" value="-391" />
+          <int name="prev" value="0" />
+          <int name="next" value="34" />
+        </imgdir>
+        <imgdir name="34">
+          <int name="x1" value="-219" />
+          <int name="y1" value="-391" />
+          <int name="x2" value="-167" />
+          <int name="y2" value="-374" />
+          <int name="prev" value="33" />
+          <int name="next" value="35" />
+        </imgdir>
+        <imgdir name="35">
+          <int name="x1" value="-167" />
+          <int name="y1" value="-374" />
+          <int name="x2" value="-77" />
+          <int name="y2" value="-374" />
+          <int name="prev" value="34" />
+          <int name="next" value="36" />
+        </imgdir>
+        <imgdir name="36">
+          <int name="x1" value="-77" />
+          <int name="y1" value="-374" />
+          <int name="x2" value="5" />
+          <int name="y2" value="-383" />
+          <int name="prev" value="35" />
+          <int name="next" value="37" />
+        </imgdir>
+        <imgdir name="37">
+          <int name="x1" value="5" />
+          <int name="y1" value="-383" />
+          <int name="x2" value="85" />
+          <int name="y2" value="-397" />
+          <int name="prev" value="36" />
+          <int name="next" value="38" />
+        </imgdir>
+        <imgdir name="38">
+          <int name="x1" value="85" />
+          <int name="y1" value="-397" />
+          <int name="x2" value="149" />
+          <int name="y2" value="-414" />
+          <int name="prev" value="37" />
+          <int name="next" value="39" />
+        </imgdir>
+        <imgdir name="39">
+          <int name="x1" value="149" />
+          <int name="y1" value="-414" />
+          <int name="x2" value="223" />
+          <int name="y2" value="-439" />
+          <int name="prev" value="38" />
+          <int name="next" value="40" />
+        </imgdir>
+        <imgdir name="40">
+          <int name="x1" value="223" />
+          <int name="y1" value="-439" />
+          <int name="x2" value="273" />
+          <int name="y2" value="-460" />
+          <int name="prev" value="39" />
+          <int name="next" value="41" />
+        </imgdir>
+        <imgdir name="41">
+          <int name="x1" value="273" />
+          <int name="y1" value="-460" />
+          <int name="x2" value="301" />
+          <int name="y2" value="-477" />
+          <int name="prev" value="40" />
+          <int name="next" value="42" />
+        </imgdir>
+        <imgdir name="42">
+          <int name="x1" value="301" />
+          <int name="y1" value="-477" />
+          <int name="x2" value="490" />
+          <int name="y2" value="-483" />
+          <int name="prev" value="41" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="5">
+        <imgdir name="43">
+          <int name="x1" value="-400" />
+          <int name="y1" value="-5" />
+          <int name="x2" value="-219" />
+          <int name="y2" value="-2" />
+          <int name="prev" value="0" />
+          <int name="next" value="44" />
+        </imgdir>
+        <imgdir name="44">
+          <int name="x1" value="-219" />
+          <int name="y1" value="-2" />
+          <int name="x2" value="-167" />
+          <int name="y2" value="15" />
+          <int name="prev" value="43" />
+          <int name="next" value="45" />
+        </imgdir>
+        <imgdir name="45">
+          <int name="x1" value="-167" />
+          <int name="y1" value="15" />
+          <int name="x2" value="-77" />
+          <int name="y2" value="15" />
+          <int name="prev" value="44" />
+          <int name="next" value="46" />
+        </imgdir>
+        <imgdir name="46">
+          <int name="x1" value="-77" />
+          <int name="y1" value="15" />
+          <int name="x2" value="5" />
+          <int name="y2" value="6" />
+          <int name="prev" value="45" />
+          <int name="next" value="47" />
+        </imgdir>
+        <imgdir name="47">
+          <int name="x1" value="5" />
+          <int name="y1" value="6" />
+          <int name="x2" value="85" />
+          <int name="y2" value="-8" />
+          <int name="prev" value="46" />
+          <int name="next" value="48" />
+        </imgdir>
+        <imgdir name="48">
+          <int name="x1" value="85" />
+          <int name="y1" value="-8" />
+          <int name="x2" value="149" />
+          <int name="y2" value="-25" />
+          <int name="prev" value="47" />
+          <int name="next" value="49" />
+        </imgdir>
+        <imgdir name="49">
+          <int name="x1" value="149" />
+          <int name="y1" value="-25" />
+          <int name="x2" value="223" />
+          <int name="y2" value="-50" />
+          <int name="prev" value="48" />
+          <int name="next" value="50" />
+        </imgdir>
+        <imgdir name="50">
+          <int name="x1" value="223" />
+          <int name="y1" value="-50" />
+          <int name="x2" value="273" />
+          <int name="y2" value="-71" />
+          <int name="prev" value="49" />
+          <int name="next" value="51" />
+        </imgdir>
+        <imgdir name="51">
+          <int name="x1" value="273" />
+          <int name="y1" value="-71" />
+          <int name="x2" value="301" />
+          <int name="y2" value="-88" />
+          <int name="prev" value="50" />
+          <int name="next" value="52" />
+        </imgdir>
+        <imgdir name="52">
+          <int name="x1" value="301" />
+          <int name="y1" value="-88" />
+          <int name="x2" value="490" />
+          <int name="y2" value="-94" />
+          <int name="prev" value="51" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="35">
+        <imgdir name="53">
+          <int name="x1" value="-403" />
+          <int name="y1" value="-1477" />
+          <int name="x2" value="-257" />
+          <int name="y2" value="-1461" />
+          <int name="prev" value="0" />
+          <int name="next" value="54" />
+        </imgdir>
+        <imgdir name="54">
+          <int name="x1" value="-257" />
+          <int name="y1" value="-1461" />
+          <int name="x2" value="-178" />
+          <int name="y2" value="-1474" />
+          <int name="prev" value="53" />
+          <int name="next" value="55" />
+        </imgdir>
+        <imgdir name="55">
+          <int name="x1" value="-178" />
+          <int name="y1" value="-1474" />
+          <int name="x2" value="-99" />
+          <int name="y2" value="-1469" />
+          <int name="prev" value="54" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="22">
+        <imgdir name="56">
+          <int name="x1" value="-332" />
+          <int name="y1" value="-789" />
+          <int name="x2" value="-294" />
+          <int name="y2" value="-784" />
+          <int name="prev" value="0" />
+          <int name="next" value="57" />
+        </imgdir>
+        <imgdir name="57">
+          <int name="x1" value="-294" />
+          <int name="y1" value="-784" />
+          <int name="x2" value="-244" />
+          <int name="y2" value="-786" />
+          <int name="prev" value="56" />
+          <int name="next" value="58" />
+        </imgdir>
+        <imgdir name="58">
+          <int name="x1" value="-244" />
+          <int name="y1" value="-786" />
+          <int name="x2" value="-206" />
+          <int name="y2" value="-790" />
+          <int name="prev" value="57" />
+          <int name="next" value="0" />
+        </imgdir>
+        <imgdir name="59">
+          <int name="x1" value="-340" />
+          <int name="y1" value="-742" />
+          <int name="x2" value="-323" />
+          <int name="y2" value="-741" />
+          <int name="prev" value="0" />
+          <int name="next" value="60" />
+        </imgdir>
+        <imgdir name="60">
+          <int name="x1" value="-323" />
+          <int name="y1" value="-741" />
+          <int name="x2" value="-248" />
+          <int name="y2" value="-748" />
+          <int name="prev" value="59" />
+          <int name="next" value="61" />
+        </imgdir>
+        <imgdir name="61">
+          <int name="x1" value="-248" />
+          <int name="y1" value="-748" />
+          <int name="x2" value="-231" />
+          <int name="y2" value="-746" />
+          <int name="prev" value="60" />
+          <int name="next" value="62" />
+        </imgdir>
+        <imgdir name="62">
+          <int name="x1" value="-231" />
+          <int name="y1" value="-746" />
+          <int name="x2" value="-222" />
+          <int name="y2" value="-752" />
+          <int name="prev" value="61" />
+          <int name="next" value="63" />
+        </imgdir>
+        <imgdir name="63">
+          <int name="x1" value="-222" />
+          <int name="y1" value="-752" />
+          <int name="x2" value="-189" />
+          <int name="y2" value="-754" />
+          <int name="prev" value="62" />
+          <int name="next" value="64" />
+        </imgdir>
+        <imgdir name="64">
+          <int name="x1" value="-189" />
+          <int name="y1" value="-754" />
+          <int name="x2" value="-180" />
+          <int name="y2" value="-753" />
+          <int name="prev" value="63" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="25">
+        <imgdir name="65">
+          <int name="x1" value="-5" />
+          <int name="y1" value="-813" />
+          <int name="x2" value="45" />
+          <int name="y2" value="-809" />
+          <int name="prev" value="0" />
+          <int name="next" value="66" />
+        </imgdir>
+        <imgdir name="66">
+          <int name="x1" value="45" />
+          <int name="y1" value="-809" />
+          <int name="x2" value="123" />
+          <int name="y2" value="-812" />
+          <int name="prev" value="65" />
+          <int name="next" value="67" />
+        </imgdir>
+        <imgdir name="67">
+          <int name="x1" value="123" />
+          <int name="y1" value="-812" />
+          <int name="x2" value="136" />
+          <int name="y2" value="-804" />
+          <int name="prev" value="66" />
+          <int name="next" value="68" />
+        </imgdir>
+        <imgdir name="68">
+          <int name="x1" value="136" />
+          <int name="y1" value="-804" />
+          <int name="x2" value="219" />
+          <int name="y2" value="-808" />
+          <int name="prev" value="67" />
+          <int name="next" value="69" />
+        </imgdir>
+        <imgdir name="69">
+          <int name="x1" value="219" />
+          <int name="y1" value="-808" />
+          <int name="x2" value="236" />
+          <int name="y2" value="-802" />
+          <int name="prev" value="68" />
+          <int name="next" value="70" />
+        </imgdir>
+        <imgdir name="70">
+          <int name="x1" value="236" />
+          <int name="y1" value="-802" />
+          <int name="x2" value="249" />
+          <int name="y2" value="-800" />
+          <int name="prev" value="69" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="23">
+        <imgdir name="71">
+          <int name="x1" value="-170" />
+          <int name="y1" value="-793" />
+          <int name="x2" value="-154" />
+          <int name="y2" value="-792" />
+          <int name="prev" value="0" />
+          <int name="next" value="72" />
+        </imgdir>
+        <imgdir name="72">
+          <int name="x1" value="-154" />
+          <int name="y1" value="-792" />
+          <int name="x2" value="-106" />
+          <int name="y2" value="-793" />
+          <int name="prev" value="71" />
+          <int name="next" value="73" />
+        </imgdir>
+        <imgdir name="73">
+          <int name="x1" value="-106" />
+          <int name="y1" value="-793" />
+          <int name="x2" value="-92" />
+          <int name="y2" value="-796" />
+          <int name="prev" value="72" />
+          <int name="next" value="74" />
+        </imgdir>
+        <imgdir name="74">
+          <int name="x1" value="-92" />
+          <int name="y1" value="-796" />
+          <int name="x2" value="-80" />
+          <int name="y2" value="-793" />
+          <int name="prev" value="73" />
+          <int name="next" value="75" />
+        </imgdir>
+        <imgdir name="75">
+          <int name="x1" value="-80" />
+          <int name="y1" value="-793" />
+          <int name="x2" value="-62" />
+          <int name="y2" value="-795" />
+          <int name="prev" value="74" />
+          <int name="next" value="76" />
+        </imgdir>
+        <imgdir name="76">
+          <int name="x1" value="-62" />
+          <int name="y1" value="-795" />
+          <int name="x2" value="-27" />
+          <int name="y2" value="-785" />
+          <int name="prev" value="75" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="24">
+        <imgdir name="77">
+          <int name="x1" value="282" />
+          <int name="y1" value="-798" />
+          <int name="x2" value="298" />
+          <int name="y2" value="-797" />
+          <int name="prev" value="0" />
+          <int name="next" value="78" />
+        </imgdir>
+        <imgdir name="78">
+          <int name="x1" value="298" />
+          <int name="y1" value="-797" />
+          <int name="x2" value="346" />
+          <int name="y2" value="-798" />
+          <int name="prev" value="77" />
+          <int name="next" value="79" />
+        </imgdir>
+        <imgdir name="79">
+          <int name="x1" value="346" />
+          <int name="y1" value="-798" />
+          <int name="x2" value="360" />
+          <int name="y2" value="-801" />
+          <int name="prev" value="78" />
+          <int name="next" value="80" />
+        </imgdir>
+        <imgdir name="80">
+          <int name="x1" value="360" />
+          <int name="y1" value="-801" />
+          <int name="x2" value="372" />
+          <int name="y2" value="-798" />
+          <int name="prev" value="79" />
+          <int name="next" value="81" />
+        </imgdir>
+        <imgdir name="81">
+          <int name="x1" value="372" />
+          <int name="y1" value="-798" />
+          <int name="x2" value="390" />
+          <int name="y2" value="-800" />
+          <int name="prev" value="80" />
+          <int name="next" value="82" />
+        </imgdir>
+        <imgdir name="82">
+          <int name="x1" value="390" />
+          <int name="y1" value="-800" />
+          <int name="x2" value="425" />
+          <int name="y2" value="-790" />
+          <int name="prev" value="81" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="3">
+      <imgdir name="1">
+        <imgdir name="83">
+          <int name="x1" value="285" />
+          <int name="y1" value="207" />
+          <int name="x2" value="363" />
+          <int name="y2" value="204" />
+          <int name="prev" value="90" />
+          <int name="next" value="84" />
+        </imgdir>
+        <imgdir name="84">
+          <int name="x1" value="363" />
+          <int name="y1" value="204" />
+          <int name="x2" value="376" />
+          <int name="y2" value="212" />
+          <int name="prev" value="83" />
+          <int name="next" value="85" />
+        </imgdir>
+        <imgdir name="85">
+          <int name="x1" value="376" />
+          <int name="y1" value="212" />
+          <int name="x2" value="459" />
+          <int name="y2" value="208" />
+          <int name="prev" value="84" />
+          <int name="next" value="86" />
+        </imgdir>
+        <imgdir name="86">
+          <int name="x1" value="459" />
+          <int name="y1" value="208" />
+          <int name="x2" value="476" />
+          <int name="y2" value="214" />
+          <int name="prev" value="85" />
+          <int name="next" value="87" />
+        </imgdir>
+        <imgdir name="87">
+          <int name="x1" value="476" />
+          <int name="y1" value="214" />
+          <int name="x2" value="489" />
+          <int name="y2" value="216" />
+          <int name="prev" value="86" />
+          <int name="next" value="0" />
+        </imgdir>
+        <imgdir name="88">
+          <int name="x1" value="155" />
+          <int name="y1" value="212" />
+          <int name="x2" value="196" />
+          <int name="y2" value="206" />
+          <int name="prev" value="0" />
+          <int name="next" value="89" />
+        </imgdir>
+        <imgdir name="89">
+          <int name="x1" value="196" />
+          <int name="y1" value="206" />
+          <int name="x2" value="272" />
+          <int name="y2" value="205" />
+          <int name="prev" value="88" />
+          <int name="next" value="90" />
+        </imgdir>
+        <imgdir name="90">
+          <int name="x1" value="272" />
+          <int name="y1" value="205" />
+          <int name="x2" value="285" />
+          <int name="y2" value="207" />
+          <int name="prev" value="89" />
+          <int name="next" value="83" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladderRope">
+    <imgdir name="1">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="-257" />
+      <int name="y1" value="-1052" />
+      <int name="y2" value="-840" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="-261" />
+      <int name="y1" value="-389" />
+      <int name="y2" value="-67" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="369" />
+      <int name="y1" value="-477" />
+      <int name="y2" value="-158" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="-208" />
+      <int name="y1" value="-1467" />
+      <int name="y2" value="-1081" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="384" />
+      <int name="y1" value="-797" />
+      <int name="y2" value="-513" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="351" />
+      <int name="y1" value="-87" />
+      <int name="y2" value="184" />
+      <int name="page" value="3" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="l" value="0" />
+      <int name="uf" value="1" />
+      <int name="x" value="200" />
+      <int name="y1" value="207" />
+      <int name="y2" value="407" />
+      <int name="page" value="3" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="miniMap">
+    <canvas name="canvas" width="63" height="152" />
+    <int name="width" value="1015" />
+    <int name="height" value="2433" />
+    <int name="centerX" value="458" />
+    <int name="centerY" value="1633" />
+    <int name="mag" value="4" />
+  </imgdir>
+</imgdir>

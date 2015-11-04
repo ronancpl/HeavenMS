@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="221023445.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="returnMap" value="220000000" />
+    <int name="forcedReturn" value="221023400" />
+    <float name="mobRate" value="1.5" />
+    <string name="bgm" value="Bgm07/FunnyTimeMaker" />
+    <string name="mapMark" value="LudiTower1" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="262216" />
+    <int name="VRTop" value="32" />
+    <int name="VRLeft" value="-400" />
+    <int name="VRBottom" value="2277" />
+    <int name="VRRight" value="400" />
+    <int name="swim" value="0" />
+    <int name="fieldType" value="6" />
+    <int name="timeLimit" value="7200" />
+    <imgdir name="autoLieDetector">
+      <int name="startHour" value="0" />
+      <int name="endHour" value="24" />
+      <int name="interval" value="100" />
+      <int name="prop" value="80" />
+    </imgdir>
+    <int name="miniMapOnOff" value="1" />
+    <string name="onFirstUserEnter" value="" />
+    <string name="link" value="221023401" />
+  </imgdir>
+</imgdir>

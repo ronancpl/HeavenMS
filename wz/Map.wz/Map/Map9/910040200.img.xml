@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="910040200.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="swim" value="0" />
+    <int name="returnMap" value="910040001" />
+    <int name="forcedReturn" value="910040001" />
+    <float name="mobRate" value="1.0" />
+    <string name="bgm" value="Bgm18/WolfAndSheep" />
+    <string name="mapMark" value="Event" />
+    <int name="fly" value="0" />
+    <int name="noMapCmd" value="0" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="337660" />
+    <string name="onFirstUserEnter" value="" />
+    <string name="onUserEnter" value="" />
+    <int name="fieldType" value="19" />
+    <int name="VRTop" value="-1230" />
+    <int name="VRLeft" value="-810" />
+    <int name="VRBottom" value="302" />
+    <int name="VRRight" value="1080" />
+    <imgdir name="allowedItem">
+      <int name="0" value="2022539" />
+      <int name="1" value="2022540" />
+      <int name="2" value="2022541" />
+      <int name="3" value="2022542" />
+      <int name="4" value="2022543" />
+      <int name="5" value="2109004" />
+      <int name="6" value="2109005" />
+      <int name="7" value="2022547" />
+      <int name="8" value="2022548" />
+      <int name="9" value="2022549" />
+    </imgdir>
+    <int name="dropExpire" value="10" />
+    <string name="link" value="910040100" />
+  </imgdir>
+</imgdir>

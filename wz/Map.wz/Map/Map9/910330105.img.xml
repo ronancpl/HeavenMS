@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="910330105.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <string name="mapDesc" value="" />
+    <int name="town" value="0" />
+    <int name="returnMap" value="910320001" />
+    <float name="mobRate" value="2.0" />
+    <string name="bgm" value="Bgm03/Subway" />
+    <int name="hideMinimap" value="1" />
+    <int name="forcedReturn" value="910320000" />
+    <int name="moveLimit" value="0" />
+    <int name="VRTop" value="-250" />
+    <int name="VRLeft" value="-275" />
+    <int name="VRBottom" value="350" />
+    <int name="VRRight" value="525" />
+    <string name="mapMark" value="KerningCity" />
+    <int name="fieldLimit" value="0" />
+    <int name="swim" value="0" />
+    <int name="fly" value="0" />
+    <int name="noMapCmd" value="0" />
+    <string name="onFirstUserEnter" value="killing_MapSetting" />
+    <string name="onUserEnter" value="Massacre_first" />
+    <int name="fieldType" value="23" />
+    <int name="fixedMobCapacity" value="70" />
+    <int name="createMobInterval" value="3000" />
+    <string name="link" value="910330100" />
+  </imgdir>
+</imgdir>

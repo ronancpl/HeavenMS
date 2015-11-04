@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="200050001.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="1" />
+    <int name="returnMap" value="200000000" />
+    <int name="forcedReturn" value="999999999" />
+    <float name="mobRate" value="1.0" />
+    <string name="bgm" value="Bgm04/Shinin'Harbor" />
+    <string name="mapMark" value="Orbis" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="0" />
+  </imgdir>
+  <imgdir name="back">
+    <imgdir name="0">
+      <string name="bS" value="" />
+      <int name="front" value="0" />
+      <int name="ani" value="0" />
+      <int name="no" value="0" />
+      <int name="x" value="0" />
+      <int name="y" value="0" />
+      <int name="rx" value="0" />
+      <int name="ry" value="0" />
+      <int name="type" value="0" />
+      <int name="cx" value="0" />
+      <int name="cy" value="0" />
+      <int name="a" value="255" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="portal">
+    <imgdir name="0">
+      <string name="pn" value="sp" />
+      <int name="pt" value="0" />
+      <int name="x" value="-173" />
+      <int name="y" value="118" />
+      <int name="tm" value="999999999" />
+      <string name="tn" value="" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="pn" value="out00" />
+      <int name="pt" value="2" />
+      <int name="x" value="-295" />
+      <int name="y" value="187" />
+      <int name="tm" value="200050000" />
+      <string name="tn" value="house00" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="life">
+    <imgdir name="0">
+      <string name="type" value="n" />
+      <string name="id" value="2032001" />
+      <int name="x" value="40" />
+      <int name="y" value="158" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="1" />
+      <int name="cy" value="189" />
+      <int name="rx0" value="-10" />
+      <int name="rx1" value="90" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="type" value="n" />
+      <string name="id" value="2032000" />
+      <int name="x" value="145" />
+      <int name="y" value="188" />
+      <int name="mobTime" value="0" />
+      <int name="f" value="0" />
+      <int name="fh" value="1" />
+      <int name="cy" value="189" />
+      <int name="rx0" value="95" />
+      <int name="rx1" value="195" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="1">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="insideGS" />
+        <string name="l0" value="house4" />
+        <string name="l1" value="basic" />
+        <string name="l2" value="0" />
+        <int name="x" value="0" />
+        <int name="y" value="0" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc3" />
+        <string name="l0" value="skyStation" />
+        <string name="l1" value="artificiality" />
+        <string name="l2" value="30" />
+        <int name="x" value="24" />
+        <int name="y" value="167" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc3" />
+        <string name="l0" value="skyStation" />
+        <string name="l1" value="artificiality" />
+        <string name="l2" value="31" />
+        <int name="x" value="9" />
+        <int name="y" value="121" />
+        <int name="z" value="3" />
+        <int name="f" value="0" />
+        <int name="zM" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="4">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="5">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="6">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="7">
+    <imgdir name="info">
+      <string name="tS" value="blueCave" />
+      <int name="tSMag" value="1" />
+    </imgdir>
+    <imgdir name="tile" />
+    <imgdir name="obj" />
+  </imgdir>
+  <imgdir name="foothold">
+    <imgdir name="1">
+      <imgdir name="0">
+        <imgdir name="1">
+          <int name="x1" value="-400" />
+          <int name="y1" value="189" />
+          <int name="x2" value="400" />
+          <int name="y2" value="189" />
+          <int name="prev" value="0" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2">
+      <imgdir name="1">
+        <imgdir name="2">
+          <int name="x1" value="-14" />
+          <int name="y1" value="146" />
+          <int name="x2" value="71" />
+          <int name="y2" value="146" />
+          <int name="prev" value="0" />
+          <int name="next" value="0" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladderRope" />
+</imgdir>

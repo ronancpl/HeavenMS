@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="260020656.img">
+  <imgdir name="info">
+    <int name="version" value="10" />
+    <int name="cloud" value="0" />
+    <int name="town" value="0" />
+    <int name="swim" value="0" />
+    <int name="returnMap" value="261000000" />
+    <int name="forcedReturn" value="260020600" />
+    <float name="mobRate" value="2.0" />
+    <string name="bgm" value="Bgm15/SunsetDesert" />
+    <string name="mapMark" value="Magatia" />
+    <int name="hideMinimap" value="0" />
+    <int name="fieldLimit" value="262216" />
+    <int name="fieldType" value="6" />
+    <int name="timeLimit" value="7200" />
+    <imgdir name="autoLieDetector">
+      <int name="startHour" value="0" />
+      <int name="endHour" value="24" />
+      <int name="interval" value="100" />
+      <int name="prop" value="80" />
+    </imgdir>
+    <int name="miniMapOnOff" value="1" />
+    <string name="onFirstUserEnter" value="" />
+    <string name="link" value="260020630" />
+  </imgdir>
+</imgdir>

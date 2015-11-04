@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="grayBrickTower2.img">
+  <imgdir name="back">
+    <canvas name="0" width="639" height="200">
+      <vector name="origin" x="319" y="100" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="639" height="200">
+      <vector name="origin" x="319" y="100" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="639" height="200">
+      <vector name="origin" x="319" y="100" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="293" height="301">
+      <vector name="origin" x="147" y="150" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="134" height="133">
+      <vector name="origin" x="67" y="67" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5" width="186" height="241">
+      <vector name="origin" x="93" y="120" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6" width="75" height="240">
+      <vector name="origin" x="37" y="120" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="ani">
+    <imgdir name="0">
+      <canvas name="0" width="127" height="168">
+        <vector name="origin" x="77" y="97" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="123" height="170">
+        <vector name="origin" x="64" y="104" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="118" height="169">
+        <vector name="origin" x="79" y="102" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="grassySoil.img">
+  <imgdir name="back">
+    <canvas name="0" width="256" height="256">
+      <vector name="origin" x="128" y="128" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="1024" height="579">
+      <vector name="origin" x="512" y="289" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="2493" height="340">
+      <vector name="origin" x="1246" y="170" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="315" height="268">
+      <vector name="origin" x="157" y="134" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="1024" height="257">
+      <vector name="origin" x="512" y="128" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5" width="1024" height="257">
+      <vector name="origin" x="512" y="128" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6" width="1024" height="294">
+      <vector name="origin" x="512" y="147" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="7" width="2497" height="343">
+      <vector name="origin" x="1248" y="171" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="8" width="200" height="200">
+      <vector name="origin" x="100" y="100" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="ani">
+    <imgdir name="0">
+      <canvas name="0" width="172" height="489">
+        <vector name="origin" x="100" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="168" height="472">
+        <vector name="origin" x="97" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="162" height="457">
+        <vector name="origin" x="94" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3" width="155" height="448">
+        <vector name="origin" x="90" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="4" width="157" height="431">
+        <vector name="origin" x="94" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="5" width="162" height="406">
+        <vector name="origin" x="97" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="6" width="168" height="421">
+        <vector name="origin" x="100" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="7" width="173" height="440">
+        <vector name="origin" x="102" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="8" width="177" height="457">
+        <vector name="origin" x="105" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="9" width="179" height="468">
+        <vector name="origin" x="102" y="529" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>
