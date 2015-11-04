@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="smap.img">
+  <null name="mobEquipFront" />
+  <null name="tamingMobFront" />
+  <null name="mobEquipMid" />
+  <null name="saddleFront" />
+  <null name="mobEquipUnderSaddle" />
+  <null name="tamingMobMid" />
+  <null name="characterStart" />
+  <null name="emotionOverBody" />
+  <string name="weaponWristOverGlove" value="Wp" />
+  <string name="capeOverHead" value="Sr" />
+  <string name="weaponOverGlove" value="Wp" />
+  <string name="gloveWristOverHair" value="Gw" />
+  <string name="gloveOverHair" value="Gl" />
+  <string name="handOverHair" value="Bd" />
+  <string name="weaponOverHand" value="Wp" />
+  <string name="shieldOverHair" value="Si" />
+  <string name="gloveWristBelowWeapon" value="Gw" />
+  <string name="gloveBelowWeapon" value="Gl" />
+  <string name="handBelowWeapon" value="Bd" />
+  <string name="weaponOverArm" value="Wp" />
+  <string name="gloveWristBelowMailArm" value="Gw" />
+  <string name="mailArmOverHair" value="MaGw" />
+  <string name="gloveBelowMailArm" value="Gl" />
+  <string name="armOverHair" value="Bd" />
+  <string name="mailArmOverHairBelowWeapon" value="MaGw" />
+  <string name="armOverHairBelowWeapon" value="Bd" />
+  <string name="weaponBelowArm" value="Wp" />
+  <string name="capOverHair" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="hairOverHead" value="H1" />
+  <string name="accessoryEyeOverCap" value="Af" />
+  <string name="capAccessory" value="Cc" />
+  <string name="cap" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="hair" value="H2" />
+  <string name="accessoryEye" value="Ay" />
+  <string name="accessoryEyeShadow" value="As" />
+  <string name="accessoryFace" value="Af" />
+  <string name="capAccessoryBelowAccFace" value="Cc" />
+  <string name="accessoryEar" value="Ae" />
+  <string name="capBelowAccessory" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="accessoryFaceOverFaceBelowCap" value="Af" />
+  <string name="face" value="Fc" />
+  <string name="accessoryFaceBelowFace" value="Af" />
+  <string name="hairShade" value="Hs" />
+  <string name="head" value="Hd" />
+  <string name="cape" value="Sr" />
+  <string name="gloveWrist" value="Gw" />
+  <string name="mailArm" value="MaGw" />
+  <string name="glove" value="Gl" />
+  <string name="hand" value="Bd" />
+  <string name="arm" value="Bd" />
+  <string name="weapon" value="Wp" />
+  <string name="shield" value="Si" />
+  <string name="weaponOverArmBelowHead" value="Wp" />
+  <string name="gloveWristBelowHead" value="Gw" />
+  <string name="mailArmBelowHeadOverMailChest" value="MaGw" />
+  <string name="gloveBelowHead" value="Gl" />
+  <string name="armBelowHeadOverMailChest" value="Bd" />
+  <string name="mailArmBelowHead" value="MaGw" />
+  <string name="armBelowHead" value="Bd" />
+  <string name="weaponOverBody" value="Wp" />
+  <string name="mailChestTop" value="MaGw" />
+  <string name="gloveWristOverBody" value="Gw" />
+  <string name="mailChestOverHighest" value="MaGw" />
+  <string name="pantsOverMailChest" value="PnSo" />
+  <string name="shoesTop" value="So" />
+  <string name="mailChest" value="MaGw" />
+  <string name="shoesOverPants" value="So" />
+  <string name="mailChestOverPants" value="MaGw" />
+  <string name="pants" value="PnSo" />
+  <string name="shoes" value="So" />
+  <string name="pantsBelowShoes" value="PnSo" />
+  <string name="mailChestBelowPants" value="MaGw" />
+  <string name="gloveOverBody" value="Gl" />
+  <string name="body" value="Bd" />
+  <string name="gloveWristBelowBody" value="Gw" />
+  <string name="gloveBelowBody" value="Gl" />
+  <string name="capAccessoryBelowBody" value="Cc" />
+  <string name="shieldBelowBody" value="Si" />
+  <string name="capeBelowBody" value="Sr" />
+  <string name="hairBelowBody" value="Hb" />
+  <string name="weaponBelowBody" value="Wp" />
+  <string name="backHairOverCape" value="Hc" />
+  <string name="backWing" value="Wg" />
+  <string name="backWeaponOverShield" value="Wp" />
+  <string name="backShield" value="Si" />
+  <string name="backCapOverHair" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="backHair" value="H1" />
+  <string name="backCap" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="backWeaponOverHead" value="Wp" />
+  <string name="backHairBelowCapWide" value="H4" />
+  <string name="backHairBelowCapNarrow" value="H5" />
+  <string name="backHairBelowCap" value="H6" />
+  <string name="backCape" value="Sr" />
+  <string name="backAccessoryFaceOverHead" value="Af" />
+  <string name="backHead" value="Bd" />
+  <string name="backMailChestOverPants" value="MaGw" />
+  <string name="backPantsOverMailChest" value="PnSo" />
+  <string name="backMailChest" value="MaGw" />
+  <string name="backShoes" value="So" />
+  <string name="backPants" value="PnSo" />
+  <string name="backShoesBelowPants" value="So" />
+  <string name="backPantsBelowShoes" value="PnSo" />
+  <string name="backMailChestBelowPants" value="MaGw" />
+  <string name="backWeaponOverGlove" value="Wp" />
+  <string name="backGloveWrist" value="Gw" />
+  <string name="backGlove" value="Gl" />
+  <string name="backBody" value="Bd" />
+  <string name="backAccessoryEar" value="Ae" />
+  <string name="backAccessoryFace" value="Af" />
+  <string name="backCapAccessory" value="CcH5" />
+  <string name="backMailChestAccessory" value="Ma" />
+  <string name="backShieldBelowBody" value="Si" />
+  <string name="backHairBelowHead" value="Hf" />
+  <string name="backWeapon" value="Wp" />
+  <null name="characterEnd" />
+  <null name="saddleRear" />
+  <null name="tamingMobRear" />
+  <null name="mobEquipRear" />
+  <null name="backMobEquipFront" />
+  <null name="backTamingMobFront" />
+  <null name="backMobEquipMid" />
+  <null name="backSaddle" />
+  <null name="backMobEquipUnderSaddle" />
+  <null name="backTamingMobMid" />
+  <null name="Sd" />
+  <null name="Tm" />
+  <null name="Sr" />
+  <null name="Wg" />
+  <null name="Ma" />
+  <null name="Ws" />
+  <null name="Pn" />
+  <null name="So" />
+  <null name="Si" />
+  <null name="Wp" />
+  <null name="Gv" />
+  <null name="Ri" />
+  <null name="Cp" />
+  <null name="Ay" />
+  <null name="As" />
+  <null name="Ae" />
+  <null name="Am" />
+  <null name="Af" />
+  <null name="At" />
+  <null name="Fc" />
+  <null name="Hr" />
+  <null name="Hd" />
+  <null name="Bd" />
+</imgdir>
