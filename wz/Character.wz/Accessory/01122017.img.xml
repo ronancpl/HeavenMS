@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01122017.img">
+  <imgdir name="info">
+    <canvas name="icon" width="31" height="32">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="31" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+    <string name="islot" value="Pe" />
+    <string name="vslot" value="Pe" />
+    <int name="reqJob" value="0" />
+    <int name="cash" value="0" />
+    <int name="slotMax" value="1" />
+    <int name="timeLimited" value="1" />
+    <int name="price" value="1" />
+    <int name="tradeBlock" value="1" />
+    <int name="onlyEquip" value="1" />
+    <imgdir name="bonusExp">
+      <imgdir name="0">
+        <int name="incExpR" value="10" />
+        <int name="termStart" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="incExpR" value="20" />
+        <int name="termStart" value="1" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="incExpR" value="30" />
+        <int name="termStart" value="2" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

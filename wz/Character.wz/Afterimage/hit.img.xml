@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="hit.img">
+  <imgdir name="sword1">
+    <canvas name="0" width="36" height="59">
+      <vector name="origin" x="18" y="44" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="48" height="77">
+      <vector name="origin" x="25" y="58" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="24" height="47">
+      <vector name="origin" x="31" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="sword2">
+    <canvas name="0" width="36" height="59">
+      <vector name="origin" x="18" y="44" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="48" height="77">
+      <vector name="origin" x="21" y="61" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="24" height="47">
+      <vector name="origin" x="-13" y="80" />
+      <int name="z" value="1" />
+    </canvas>
+  </imgdir>
+  <imgdir name="mace1">
+    <canvas name="0" width="34" height="34">
+      <vector name="origin" x="17" y="17" />
+      <int name="z" value="0" />
+      <int name="delay" value="20" />
+    </canvas>
+    <canvas name="1" width="34" height="34">
+      <vector name="origin" x="17" y="17" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="mace2">
+    <canvas name="0" width="29" height="33">
+      <vector name="origin" x="14" y="16" />
+      <int name="z" value="0" />
+      <int name="delay" value="20" />
+    </canvas>
+    <canvas name="1" width="29" height="33">
+      <vector name="origin" x="14" y="16" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="maceF">
+    <canvas name="0" width="59" height="59">
+      <vector name="origin" x="29" y="29" />
+      <int name="z" value="0" />
+      <int name="delay" value="20" />
+    </canvas>
+    <canvas name="1" width="59" height="59">
+      <vector name="origin" x="29" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="49" height="49">
+      <vector name="origin" x="23" y="22" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="65" height="65">
+      <vector name="origin" x="31" y="31" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="88" height="87">
+      <vector name="origin" x="43" y="42" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="swordF">
+    <canvas name="0" width="87" height="50">
+      <vector name="origin" x="43" y="25" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="68" height="43">
+      <vector name="origin" x="34" y="9" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="45" height="33">
+      <vector name="origin" x="43" y="-8" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="32" height="21">
+      <vector name="origin" x="53" y="-28" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="anniversary">
+    <canvas name="0" width="105" height="109">
+      <vector name="origin" x="49" y="64" />
+      <int name="delay" value="70" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="99" height="104">
+      <vector name="origin" x="44" y="62" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="2" width="96" height="102">
+      <vector name="origin" x="43" y="65" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="3" width="95" height="108">
+      <vector name="origin" x="44" y="72" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="4" width="96" height="105">
+      <vector name="origin" x="50" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="5" width="101" height="104">
+      <vector name="origin" x="55" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="6" width="105" height="102">
+      <vector name="origin" x="57" y="70" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="7" width="109" height="103">
+      <vector name="origin" x="58" y="69" />
+      <int name="delay" value="70" />
+      <int name="a1" value="0" />
+      <int name="a0" value="255" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+  <imgdir name="anniversary1">
+    <canvas name="0" width="163" height="122">
+      <vector name="origin" x="81" y="61" />
+      <int name="delay" value="100" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="167" height="117">
+      <vector name="origin" x="86" y="68" />
+      <int name="delay" value="110" />
+    </canvas>
+    <canvas name="2" width="166" height="114">
+      <vector name="origin" x="91" y="74" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="163" height="101">
+      <vector name="origin" x="85" y="72" />
+      <int name="delay" value="130" />
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+  <imgdir name="anniversary2">
+    <canvas name="0" width="130" height="103">
+      <vector name="origin" x="65" y="65" />
+      <int name="delay" value="120" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="130" height="103">
+      <vector name="origin" x="65" y="65" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="2" width="130" height="103">
+      <vector name="origin" x="65" y="65" />
+      <int name="delay" value="140" />
+    </canvas>
+    <canvas name="3" width="130" height="103">
+      <vector name="origin" x="65" y="66" />
+      <int name="delay" value="150" />
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+  <imgdir name="anniversary3">
+    <canvas name="0" width="105" height="109">
+      <vector name="origin" x="48" y="61" />
+      <int name="delay" value="70" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="99" height="104">
+      <vector name="origin" x="43" y="59" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="2" width="96" height="101">
+      <vector name="origin" x="42" y="63" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="3" width="95" height="109">
+      <vector name="origin" x="43" y="73" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="4" width="96" height="105">
+      <vector name="origin" x="49" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="5" width="101" height="103">
+      <vector name="origin" x="54" y="70" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="6" width="105" height="101">
+      <vector name="origin" x="56" y="69" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="7" width="109" height="102">
+      <vector name="origin" x="57" y="68" />
+      <int name="delay" value="70" />
+      <int name="a1" value="0" />
+      <int name="a0" value="255" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+  <imgdir name="anniversary4">
+    <canvas name="0" width="105" height="109">
+      <vector name="origin" x="49" y="64" />
+      <int name="delay" value="70" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="99" height="104">
+      <vector name="origin" x="44" y="62" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="2" width="96" height="102">
+      <vector name="origin" x="43" y="65" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="3" width="95" height="108">
+      <vector name="origin" x="44" y="72" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="4" width="96" height="105">
+      <vector name="origin" x="50" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="5" width="101" height="104">
+      <vector name="origin" x="55" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="6" width="105" height="102">
+      <vector name="origin" x="57" y="70" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="7" width="109" height="103">
+      <vector name="origin" x="58" y="69" />
+      <int name="delay" value="70" />
+      <int name="a1" value="0" />
+      <int name="a0" value="255" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+  <imgdir name="anniversary5">
+    <canvas name="0" width="105" height="109">
+      <vector name="origin" x="49" y="64" />
+      <int name="delay" value="70" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="99" height="104">
+      <vector name="origin" x="44" y="62" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="2" width="96" height="102">
+      <vector name="origin" x="43" y="65" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="3" width="95" height="108">
+      <vector name="origin" x="44" y="72" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="4" width="96" height="105">
+      <vector name="origin" x="50" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="5" width="101" height="104">
+      <vector name="origin" x="55" y="71" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="6" width="105" height="102">
+      <vector name="origin" x="57" y="70" />
+      <int name="delay" value="70" />
+    </canvas>
+    <canvas name="7" width="109" height="103">
+      <vector name="origin" x="58" y="69" />
+      <int name="delay" value="70" />
+      <int name="a1" value="0" />
+      <int name="a0" value="255" />
+    </canvas>
+    <int name="fixed" value="1" />
+  </imgdir>
+</imgdir>

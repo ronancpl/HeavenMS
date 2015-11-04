@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01122012.img">
+  <imgdir name="info">
+    <canvas name="icon" width="31" height="29">
+      <vector name="origin" x="-2" y="32" />
+    </canvas>
+    <canvas name="iconRaw" width="31" height="28">
+      <vector name="origin" x="-2" y="32" />
+    </canvas>
+    <string name="islot" value="Pe" />
+    <string name="vslot" value="Pe" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="140" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incSTR" value="9" />
+    <int name="incDEX" value="9" />
+    <int name="incINT" value="9" />
+    <int name="incLUK" value="9" />
+    <int name="incPDD" value="126" />
+    <int name="incMDD" value="126" />
+    <int name="incEVA" value="28" />
+    <int name="tuc" value="3" />
+    <int name="price" value="400000" />
+    <int name="cash" value="0" />
+    <int name="tradeBlock" value="1" />
+    <int name="only" value="1" />
+    <imgdir name="level">
+      <imgdir name="info">
+        <imgdir name="1">
+          <int name="incSTRMin" value="2" />
+          <int name="incSTRMax" value="4" />
+          <int name="incDEXMin" value="2" />
+          <int name="incDEXMax" value="4" />
+          <int name="incINTMin" value="2" />
+          <int name="incINTMax" value="4" />
+          <int name="incLUKMin" value="2" />
+          <int name="incLUKMax" value="4" />
+          <int name="incPDDMin" value="20" />
+          <int name="incPDDMax" value="30" />
+          <int name="incMDDMin" value="20" />
+          <int name="incMDDMax" value="30" />
+          <int name="incEVAMin" value="2" />
+          <int name="incEVAMax" value="4" />
+          <int name="exp" value="80" />
+        </imgdir>
+        <imgdir name="2">
+          <int name="incSTRMin" value="2" />
+          <int name="incSTRMax" value="4" />
+          <int name="incDEXMin" value="2" />
+          <int name="incDEXMax" value="4" />
+          <int name="incINTMin" value="2" />
+          <int name="incINTMax" value="4" />
+          <int name="incLUKMin" value="2" />
+          <int name="incLUKMax" value="4" />
+          <int name="incPDDMin" value="20" />
+          <int name="incPDDMax" value="30" />
+          <int name="incMDDMin" value="20" />
+          <int name="incMDDMax" value="30" />
+          <int name="incEVAMin" value="2" />
+          <int name="incEVAMax" value="4" />
+          <int name="exp" value="90" />
+        </imgdir>
+        <imgdir name="3">
+          <int name="incSTRMin" value="2" />
+          <int name="incSTRMax" value="4" />
+          <int name="incDEXMin" value="2" />
+          <int name="incDEXMax" value="4" />
+          <int name="incINTMin" value="2" />
+          <int name="incINTMax" value="4" />
+          <int name="incLUKMin" value="2" />
+          <int name="incLUKMax" value="4" />
+          <int name="incPDDMin" value="20" />
+          <int name="incPDDMax" value="30" />
+          <int name="incMDDMin" value="20" />
+          <int name="incMDDMax" value="30" />
+          <int name="incEVAMin" value="2" />
+          <int name="incEVAMax" value="4" />
+          <int name="exp" value="100" />
+        </imgdir>
+        <imgdir name="4">
+          <int name="incSTRMin" value="2" />
+          <int name="incSTRMax" value="4" />
+          <int name="incDEXMin" value="2" />
+          <int name="incDEXMax" value="4" />
+          <int name="incINTMin" value="2" />
+          <int name="incINTMax" value="4" />
+          <int name="incLUKMin" value="2" />
+          <int name="incLUKMax" value="4" />
+          <int name="incPDDMin" value="20" />
+          <int name="incPDDMax" value="30" />
+          <int name="incMDDMin" value="20" />
+          <int name="incMDDMax" value="30" />
+          <int name="incEVAMin" value="2" />
+          <int name="incEVAMax" value="4" />
+          <int name="exp" value="110" />
+        </imgdir>
+        <imgdir name="5">
+          <int name="incSTRMin" value="2" />
+          <int name="incSTRMax" value="4" />
+          <int name="incDEXMin" value="2" />
+          <int name="incDEXMax" value="4" />
+          <int name="incINTMin" value="2" />
+          <int name="incINTMax" value="4" />
+          <int name="incLUKMin" value="2" />
+          <int name="incLUKMax" value="4" />
+          <int name="incPDDMin" value="20" />
+          <int name="incPDDMax" value="30" />
+          <int name="incMDDMin" value="20" />
+          <int name="incMDDMax" value="30" />
+          <int name="incEVAMin" value="2" />
+          <int name="incEVAMax" value="4" />
+          <int name="exp" value="120" />
+        </imgdir>
+        <imgdir name="6">
+          <int name="exp" value="0" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="case">
+        <imgdir name="0">
+          <int name="prob" value="9" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

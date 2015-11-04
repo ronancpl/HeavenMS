@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="01132013.img">
+  <imgdir name="info">
+    <canvas name="icon" width="31" height="30">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+    <canvas name="iconRaw" width="31" height="29">
+      <vector name="origin" x="-1" y="30" />
+    </canvas>
+    <string name="islot" value="Be" />
+    <string name="vslot" value="Be" />
+    <int name="reqJob" value="0" />
+    <int name="reqLevel" value="80" />
+    <int name="reqSTR" value="0" />
+    <int name="reqDEX" value="0" />
+    <int name="reqINT" value="0" />
+    <int name="reqLUK" value="0" />
+    <int name="incPDD" value="55" />
+    <int name="incMDD" value="55" />
+    <int name="incPAD" value="1" />
+    <int name="incMAD" value="2" />
+    <int name="tuc" value="3" />
+    <int name="price" value="0" />
+    <int name="cash" value="0" />
+    <int name="tradeBlock" value="1" />
+    <int name="slotMax" value="1" />
+    <int name="tradeAvailable" value="1" />
+  </imgdir>
+</imgdir>

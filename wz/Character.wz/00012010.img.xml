@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="00012010.img">
+  <imgdir name="info">
+    <string name="islot" value="Hd" />
+    <string name="vslot" value="Hd" />
+    <int name="cash" value="0" />
+  </imgdir>
+  <imgdir name="front">
+    <canvas name="head" width="39" height="35">
+      <vector name="origin" x="19" y="17" />
+      <imgdir name="map">
+        <vector name="neck" x="0" y="15" />
+        <vector name="earOverHead" x="15" y="10" />
+        <vector name="earBelowHead" x="-17" y="9" />
+        <vector name="brow" x="-4" y="-5" />
+      </imgdir>
+      <string name="z" value="head" />
+      <string name="group" value="skin" />
+    </canvas>
+  </imgdir>
+  <imgdir name="back">
+    <canvas name="head" width="41" height="35">
+      <vector name="origin" x="20" y="17" />
+      <imgdir name="map">
+        <vector name="neck" x="0" y="15" />
+        <vector name="brow" x="-4" y="-5" />
+      </imgdir>
+      <string name="z" value="backHead" />
+      <string name="group" value="skin" />
+    </canvas>
+  </imgdir>
+  <imgdir name="walk1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="walk2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="alert">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingO3">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingOF">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT3">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingTF">
+    <imgdir name="0">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingP1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingP2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingPF">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabO2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabOF">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabT1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabT2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabTF">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shoot1">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shoot2">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="3">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="4">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="shootF">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="proneStab">
+    <imgdir name="0">
+      <uol name="head" value="../../prone/0/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="prone">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="heal">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="2">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="fly">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="jump">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="sit">
+    <imgdir name="0">
+      <uol name="head" value="../../front/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladder">
+    <imgdir name="0">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="rope">
+    <imgdir name="0">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+    <imgdir name="1">
+      <uol name="head" value="../../back/head" />
+    </imgdir>
+  </imgdir>
+</imgdir>
