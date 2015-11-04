@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="MapEff.img">
+  <imgdir name="Bubbling">
+    <canvas name="0" width="8" height="14">
+      <vector name="origin" x="-11" y="22" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="13" height="21">
+      <vector name="origin" x="-11" y="31" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="13" height="38">
+      <vector name="origin" x="-12" y="78" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="22" height="35">
+      <vector name="origin" x="-7" y="103" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="1" height="1">
+      <vector name="origin" x="-11" y="20" />
+      <int name="delay" value="400" />
+    </canvas>
+  </imgdir>
+  <imgdir name="Viewrange">
+    <canvas name="0" width="316" height="316">
+      <vector name="origin" x="158" y="179" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="316" height="316">
+      <vector name="origin" x="158" y="180" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="600" height="600">
+      <vector name="origin" x="297" y="323" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="151" height="176">
+      <vector name="origin" x="-62" y="-27" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="NpcSummon">
+    <canvas name="0" width="119" height="72">
+      <vector name="origin" x="61" y="72" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="119" height="73">
+      <vector name="origin" x="61" y="73" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="112" height="74">
+      <vector name="origin" x="58" y="74" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="111" height="75">
+      <vector name="origin" x="56" y="75" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="120" height="75">
+      <vector name="origin" x="53" y="75" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="113" height="73">
+      <vector name="origin" x="48" y="73" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="115" height="73">
+      <vector name="origin" x="57" y="70" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="86" height="58">
+      <vector name="origin" x="44" y="58" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="NpcReturn">
+    <canvas name="0" width="119" height="72">
+      <vector name="origin" x="61" y="72" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="112" height="72">
+      <vector name="origin" x="57" y="72" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="110" height="71">
+      <vector name="origin" x="53" y="71" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="112" height="68">
+      <vector name="origin" x="53" y="68" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="115" height="71">
+      <vector name="origin" x="54" y="71" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="117" height="72">
+      <vector name="origin" x="55" y="72" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="118" height="33">
+      <vector name="origin" x="56" y="72" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+</imgdir>
