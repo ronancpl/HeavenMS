@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="5000054.img">
+  <imgdir name="info">
+    <canvas name="icon" width="30" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+    <canvas name="iconRaw" width="30" height="31">
+      <vector name="origin" x="-1" y="31" />
+    </canvas>
+    <canvas name="iconD" width="33" height="33">
+      <vector name="origin" x="1" y="33" />
+    </canvas>
+    <canvas name="iconRawD" width="33" height="33">
+      <vector name="origin" x="1" y="33" />
+    </canvas>
+    <int name="hungry" value="1" />
+    <int name="cash" value="1" />
+    <int name="life" value="90" />
+    <int name="limitedLife" value="18000" />
+    <int name="noRevive" value="1" />
+    <int name="noMoveToLocker" value="1" />
+  </imgdir>
+  <imgdir name="interact">
+    <imgdir name="0">
+      <string name="command" value="c1" />
+      <int name="inc" value="1" />
+      <int name="prob" value="100" />
+      <int name="l0" value="1" />
+      <int name="l1" value="30" />
+      <imgdir name="success">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c1_s1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="fail">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c1_f1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="command" value="c2" />
+      <int name="inc" value="1" />
+      <int name="prob" value="100" />
+      <int name="l0" value="1" />
+      <int name="l1" value="30" />
+      <imgdir name="success">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c2_s1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="fail">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c2_f1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2">
+      <string name="command" value="c3" />
+      <int name="inc" value="1" />
+      <int name="prob" value="100" />
+      <int name="l0" value="1" />
+      <int name="l1" value="30" />
+      <imgdir name="success">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c3_s1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="fail">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="c3_f1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="food">
+    <imgdir name="0">
+      <int name="l0" value="1" />
+      <int name="l1" value="30" />
+      <imgdir name="success">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="f1_s" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="fail">
+        <imgdir name="0">
+          <string name="act" value="chat" />
+          <string name="0" value="f1_f" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="slang">
+    <imgdir name="0">
+      <int name="l0" value="1" />
+      <int name="l1" value="30" />
+      <string name="act" value="chat" />
+      <string name="0" value="s1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand0">
+    <canvas name="0" width="37" height="41">
+      <vector name="origin" x="19" y="40" />
+      <vector name="lt" x="-19" y="-40" />
+      <vector name="rb" x="18" y="0" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand1">
+    <canvas name="0" width="37" height="41">
+      <vector name="origin" x="19" y="40" />
+      <vector name="lt" x="-19" y="-40" />
+      <vector name="rb" x="18" y="0" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+  <imgdir name="rest0">
+    <canvas name="0" width="37" height="41">
+      <vector name="origin" x="19" y="40" />
+      <vector name="lt" x="-19" y="-40" />
+      <vector name="rb" x="18" y="1" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hungry">
+    <canvas name="0" width="37" height="40">
+      <vector name="origin" x="18" y="39" />
+      <vector name="lt" x="-18" y="-39" />
+      <vector name="rb" x="19" y="1" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0" width="37" height="41">
+      <vector name="origin" x="19" y="40" />
+      <vector name="lt" x="-19" y="-40" />
+      <vector name="rb" x="18" y="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="36" height="40">
+      <vector name="origin" x="17" y="39" />
+      <int name="delay" value="100" />
+      <vector name="lt" x="-17" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+    <canvas name="2" width="36" height="40">
+      <vector name="origin" x="17" y="39" />
+      <int name="delay" value="100" />
+      <vector name="lt" x="-17" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+    <canvas name="3" width="36" height="40">
+      <vector name="origin" x="17" y="39" />
+      <int name="delay" value="100" />
+      <vector name="lt" x="-17" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+    <canvas name="4" width="37" height="40">
+      <vector name="origin" x="18" y="39" />
+      <int name="delay" value="100" />
+      <vector name="lt" x="-18" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="jump">
+    <canvas name="0" width="37" height="46">
+      <vector name="origin" x="18" y="50" />
+      <vector name="lt" x="-18" y="-50" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="chat">
+    <canvas name="0" width="36" height="40">
+      <vector name="origin" x="17" y="39" />
+      <int name="delay" value="1200" />
+      <vector name="lt" x="-17" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+    <canvas name="1" width="37" height="39">
+      <vector name="origin" x="18" y="38" />
+      <int name="delay" value="1200" />
+      <vector name="lt" x="-18" y="-38" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hang">
+    <canvas name="0" width="21" height="38">
+      <vector name="origin" x="10" y="41" />
+      <int name="z" value="0" />
+      <vector name="lt" x="-16" y="-48" />
+      <vector name="rb" x="16" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="prone">
+    <canvas name="0" width="37" height="41">
+      <vector name="origin" x="18" y="40" />
+      <int name="delay" value="3000" />
+      <vector name="lt" x="-18" y="-40" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="alert">
+    <canvas name="0" width="37" height="40">
+      <vector name="origin" x="18" y="39" />
+      <int name="delay" value="1000" />
+      <vector name="lt" x="-18" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+    <canvas name="1" width="37" height="40">
+      <vector name="origin" x="18" y="39" />
+      <int name="delay" value="1000" />
+      <vector name="lt" x="-18" y="-39" />
+      <vector name="rb" x="19" y="1" />
+    </canvas>
+    <canvas name="2" width="37" height="40">
+      <vector name="origin" x="18" y="39" />
+      <int name="delay" value="1000" />
+      <vector name="lt" x="-18" y="-39" />
+      <vector name="rb" x="19" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="fly">
+    <canvas name="0" width="37" height="46">
+      <vector name="origin" x="24" y="48" />
+      <int name="delay" value="200" />
+      <vector name="lt" x="-24" y="-47" />
+      <vector name="rb" x="16" y="0" />
+    </canvas>
+    <canvas name="1" width="39" height="42">
+      <vector name="origin" x="24" y="47" />
+      <int name="delay" value="200" />
+      <vector name="lt" x="-24" y="-47" />
+      <vector name="rb" x="15" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

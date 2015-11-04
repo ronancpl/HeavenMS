@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0216.img">
+  <imgdir name="02160101">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="33">
+        <vector name="origin" x="-1" y="33" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="33">
+        <vector name="origin" x="-1" y="33" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="tradeBlock" value="1" />
+      <int name="timeLimited" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="price" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>

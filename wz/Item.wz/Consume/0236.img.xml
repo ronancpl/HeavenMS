@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0236.img">
+  <imgdir name="02360000">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="200" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="time" value="3600000" />
+      <int name="ghost" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02360001">
+    <imgdir name="info">
+      <canvas name="icon" width="30" height="32">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="30" height="31">
+        <vector name="origin" x="-2" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="200" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="time" value="3600000" />
+      <int name="ghost" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02360002">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="1" />
+      <int name="noCancelMouse" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="time" value="3600000" />
+      <int name="ghost" value="2" />
+    </imgdir>
+  </imgdir>
+</imgdir>

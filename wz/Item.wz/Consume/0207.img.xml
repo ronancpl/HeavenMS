@@ -1,0 +1,490 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0207.img">
+  <imgdir name="02070000">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="26">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="250" />
+      <int name="slotMax" value="500" />
+      <double name="unitPrice" value="0.3" />
+      <int name="incPAD" value="15" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="19" height="19">
+        <vector name="origin" x="9" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="16" height="17">
+        <vector name="origin" x="8" y="8" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070001">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="29">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="500" />
+      <int name="slotMax" value="500" />
+      <double name="unitPrice" value="0.4" />
+      <int name="incPAD" value="17" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="19" height="19">
+        <vector name="origin" x="9" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="19" height="20">
+        <vector name="origin" x="9" y="10" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070002">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="30">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="28">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="1000" />
+      <int name="slotMax" value="700" />
+      <double name="unitPrice" value="0.5" />
+      <int name="incPAD" value="19" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="20" height="20">
+        <vector name="origin" x="10" y="10" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="22" height="22">
+        <vector name="origin" x="11" y="11" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070003">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="30">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="1500" />
+      <int name="slotMax" value="500" />
+      <double name="unitPrice" value="0.6" />
+      <int name="incPAD" value="21" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="20" height="20">
+        <vector name="origin" x="10" y="10" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="17" height="18">
+        <vector name="origin" x="8" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070004">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="30">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="28">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="2500" />
+      <int name="slotMax" value="1000" />
+      <double name="unitPrice" value="0.6" />
+      <int name="incPAD" value="23" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="19" height="19">
+        <vector name="origin" x="9" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="22" height="22">
+        <vector name="origin" x="11" y="11" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070005">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="29">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="29">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="10000" />
+      <int name="slotMax" value="1000" />
+      <double name="unitPrice" value="0.7" />
+      <int name="incPAD" value="25" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="48" height="9">
+        <vector name="origin" x="24" y="4" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="48" height="9">
+        <vector name="origin" x="24" y="4" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070006">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="30">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="27">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="20000" />
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="0.8" />
+      <int name="incPAD" value="27" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="27" height="27">
+        <vector name="origin" x="13" y="13" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="27" height="27">
+        <vector name="origin" x="13" y="13" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070009">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="31">
+        <vector name="origin" x="-4" y="31" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="28">
+        <vector name="origin" x="-4" y="31" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="500" />
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="19" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="25" height="22">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+      <canvas name="1" width="26" height="21">
+        <vector name="origin" x="13" y="11" />
+      </canvas>
+      <canvas name="2" width="28" height="21">
+        <vector name="origin" x="13" y="11" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070010">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-4" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="26" height="26">
+        <vector name="origin" x="-4" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="500" />
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="21" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="49" height="16">
+        <vector name="origin" x="17" y="7" />
+      </canvas>
+      <canvas name="1" width="49" height="16">
+        <vector name="origin" x="17" y="7" />
+      </canvas>
+      <canvas name="2" width="53" height="15">
+        <vector name="origin" x="17" y="6" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070011">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="30">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="27">
+        <vector name="origin" x="-2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="500" />
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="21" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="37" height="21">
+        <vector name="origin" x="18" y="10" />
+      </canvas>
+      <canvas name="1" width="38" height="17">
+        <vector name="origin" x="18" y="8" />
+      </canvas>
+      <canvas name="2" width="38" height="13">
+        <vector name="origin" x="18" y="6" />
+      </canvas>
+      <uol name="3" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070012">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="29">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="27">
+        <vector name="origin" x="-3" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="2500" />
+      <int name="slotMax" value="1000" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="20" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="24" height="12">
+        <vector name="origin" x="16" y="7" />
+      </canvas>
+      <canvas name="1" width="24" height="9">
+        <vector name="origin" x="16" y="8" />
+      </canvas>
+      <canvas name="2" width="24" height="13">
+        <vector name="origin" x="16" y="7" />
+      </canvas>
+      <uol name="3" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070013">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="18">
+        <vector name="origin" x="-4" y="18" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="17" height="17">
+        <vector name="origin" x="-10" y="18" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="2500" />
+      <int name="slotMax" value="1000" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="20" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="16" height="12">
+        <vector name="origin" x="8" y="6" />
+      </canvas>
+      <canvas name="1" width="18" height="14">
+        <vector name="origin" x="9" y="7" />
+      </canvas>
+      <canvas name="2" width="20" height="15">
+        <vector name="origin" x="10" y="7" />
+      </canvas>
+      <uol name="3" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070007">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="25">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="25000" />
+      <int name="slotMax" value="1000" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="27" />
+      <int name="reqLevel" value="70" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="19" height="19">
+        <vector name="origin" x="9" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="19" height="20">
+        <vector name="origin" x="9" y="10" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070008">
+    <imgdir name="info">
+      <canvas name="icon" width="28" height="25">
+        <vector name="origin" x="-3" y="25" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="28" height="21">
+        <vector name="origin" x="-3" y="25" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="500" />
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="17" />
+      <int name="reqLevel" value="10" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="37" height="23">
+        <vector name="origin" x="18" y="11" />
+      </canvas>
+      <canvas name="1" width="34" height="23">
+        <vector name="origin" x="17" y="11" />
+      </canvas>
+      <canvas name="2" width="34" height="23">
+        <vector name="origin" x="18" y="11" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070015">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="28">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="26">
+        <vector name="origin" x="-3" y="28" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="1000" />
+      <int name="incPAD" value="15" />
+      <int name="reqLevel" value="10" />
+      <int name="tradeBlock" value="1" />
+      <int name="notSale" value="1" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="19" height="19">
+        <vector name="origin" x="9" y="9" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+      <canvas name="1" width="16" height="17">
+        <vector name="origin" x="8" y="8" />
+        <int name="z" value="0" />
+        <int name="delay" value="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070016">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="32">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="31">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="29" />
+      <int name="reqLevel" value="50" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="27" height="27">
+        <vector name="origin" x="13" y="13" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="27" height="27">
+        <vector name="origin" x="13" y="13" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02070018">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="30">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="28">
+        <vector name="origin" x="-3" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="800" />
+      <double name="unitPrice" value="1.0" />
+      <int name="incPAD" value="30" />
+      <int name="reqLevel" value="70" />
+    </imgdir>
+    <imgdir name="bullet">
+      <canvas name="0" width="32" height="36">
+        <vector name="origin" x="16" y="18" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="36" height="32">
+        <vector name="origin" x="18" y="16" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="32" height="36">
+        <vector name="origin" x="16" y="18" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3" width="36" height="32">
+        <vector name="origin" x="18" y="16" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

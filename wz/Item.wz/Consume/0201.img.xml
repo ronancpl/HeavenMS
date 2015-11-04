@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0201.img">
+  <imgdir name="02010000">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="30">
+        <vector name="origin" x="-4" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="25">
+        <vector name="origin" x="-6" y="30" />
+      </canvas>
+      <int name="price" value="15" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010001">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="31">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="30">
+        <vector name="origin" x="-2" y="31" />
+      </canvas>
+      <int name="price" value="53" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="100" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010002">
+    <imgdir name="info">
+      <canvas name="icon" width="27" height="25">
+        <vector name="origin" x="-3" y="25" />
+      </canvas>
+      <canvas name="iconRaw" width="27" height="21">
+        <vector name="origin" x="-3" y="25" />
+      </canvas>
+      <int name="price" value="25" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="50" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010003">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="25">
+        <vector name="origin" x="-3" y="25" />
+      </canvas>
+      <canvas name="iconRaw" width="21" height="20">
+        <vector name="origin" x="-5" y="25" />
+      </canvas>
+      <int name="price" value="50" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mp" value="50" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010004">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="26">
+        <vector name="origin" x="-4" y="26" />
+      </canvas>
+      <canvas name="iconRaw" width="19" height="21">
+        <vector name="origin" x="-7" y="26" />
+      </canvas>
+      <int name="price" value="155" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mp" value="150" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010005">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="25" height="26">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <int name="price" value="750" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hpR" value="30" />
+      <int name="mpR" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010006">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="26">
+        <vector name="origin" x="-4" y="26" />
+      </canvas>
+      <canvas name="iconRaw" width="22" height="23">
+        <vector name="origin" x="-5" y="26" />
+      </canvas>
+      <int name="price" value="1000" />
+    </imgdir>
+    <imgdir name="spec">
+      <string name="hpR" value="50" />
+      <string name="mpR" value="50" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010007">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="30">
+        <vector name="origin" x="-4" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="25">
+        <vector name="origin" x="-6" y="30" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="quest" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02011000">
+    <imgdir name="info">
+      <canvas name="icon" width="29" height="29">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <canvas name="iconRaw" width="29" height="27">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+    </imgdir>
+    <imgdir name="spec" />
+  </imgdir>
+  <imgdir name="02012000">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="33">
+        <vector name="origin" x="-4" y="33" />
+      </canvas>
+      <canvas name="iconRaw" width="21" height="32">
+        <vector name="origin" x="-6" y="33" />
+      </canvas>
+      <int name="price" value="750" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="pad" value="8" />
+      <int name="time" value="300000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012001">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="32">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="31">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <int name="price" value="500" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="eva" value="10" />
+      <int name="time" value="300000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012002">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="30">
+        <vector name="origin" x="-3" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="21" height="29">
+        <vector name="origin" x="-5" y="30" />
+      </canvas>
+      <int name="price" value="700" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mad" value="10" />
+      <int name="time" value="300000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012003">
+    <imgdir name="info">
+      <canvas name="icon" width="31" height="26">
+        <vector name="origin" x="-1" y="26" />
+      </canvas>
+      <canvas name="iconRaw" width="31" height="22">
+        <vector name="origin" x="-1" y="26" />
+      </canvas>
+      <int name="price" value="500" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="pdd" value="10" />
+      <int name="time" value="300000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02010009">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-4" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="25">
+        <vector name="origin" x="-6" y="30" />
+      </canvas>
+      <int name="price" value="30" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mp" value="30" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012005">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="30">
+        <vector name="origin" x="-4" y="30" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="25">
+        <vector name="origin" x="-6" y="30" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="notSale" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="hp" value="200" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012006">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="26">
+        <vector name="origin" x="-4" y="26" />
+      </canvas>
+      <canvas name="iconRaw" width="19" height="21">
+        <vector name="origin" x="-7" y="26" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="tradeBlock" value="1" />
+      <int name="notSale" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mp" value="200" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02012008">
+    <imgdir name="info">
+      <canvas name="icon" width="26" height="29">
+        <vector name="origin" x="-4" y="28" />
+      </canvas>
+      <canvas name="iconRaw" width="20" height="25">
+        <vector name="origin" x="-7" y="28" />
+      </canvas>
+      <int name="price" value="1" />
+      <int name="slotMax" value="10" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="pad" value="60" />
+      <int name="mad" value="70" />
+      <int name="pdd" value="10" />
+      <int name="time" value="60000" />
+    </imgdir>
+  </imgdir>
+</imgdir>

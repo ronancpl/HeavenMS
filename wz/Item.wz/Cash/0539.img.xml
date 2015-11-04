@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0539.img">
+  <imgdir name="05390000">
+    <imgdir name="info">
+      <canvas name="iconRaw" width="35" height="29">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="icon" width="35" height="31">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="cash" value="1" />
+      <string name="path" value="Map/MapHelper.img/AvatarMegaphone/Burning" />
+      <int name="emotion" value="5" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05390001">
+    <imgdir name="info">
+      <canvas name="iconRaw" width="35" height="29">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="icon" width="35" height="31">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="cash" value="1" />
+      <string name="path" value="Map/MapHelper.img/AvatarMegaphone/Bright" />
+      <int name="emotion" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05390002">
+    <imgdir name="info">
+      <canvas name="iconRaw" width="35" height="29">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="icon" width="35" height="31">
+        <vector name="origin" x="2" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="cash" value="1" />
+      <string name="path" value="Map/MapHelper.img/AvatarMegaphone/Heart" />
+      <int name="emotion" value="17" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05390006">
+    <imgdir name="info">
+      <canvas name="iconRaw" width="35" height="30">
+        <vector name="origin" x="0" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="icon" width="36" height="30">
+        <vector name="origin" x="1" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="cash" value="1" />
+      <string name="path" value="Map/MapHelper.img/AvatarMegaphone/Tiger2" />
+      <int name="emotion" value="15" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="05390005">
+    <imgdir name="info">
+      <canvas name="iconRaw" width="35" height="29">
+        <vector name="origin" x="0" y="29" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="icon" width="35" height="30">
+        <vector name="origin" x="0" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="cash" value="1" />
+      <string name="path" value="Map/MapHelper.img/AvatarMegaphone/Tiger1" />
+      <int name="emotion" value="17" />
+    </imgdir>
+  </imgdir>
+</imgdir>
