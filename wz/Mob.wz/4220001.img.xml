@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="4220001.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="45" />
+    <int name="maxHP" value="2550" />
+    <int name="maxMP" value="150" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="135" />
+    <int name="PDDamage" value="150" />
+    <int name="MADamage" value="155" />
+    <int name="MDDamage" value="200" />
+    <int name="acc" value="200" />
+    <int name="eva" value="20" />
+    <int name="exp" value="0" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="3000" />
+    <int name="boss" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="noFlip" value="1" />
+    <imgdir name="revive">
+      <int name="0" value="4220000" />
+    </imgdir>
+    <int name="mobType" value="3" />
+    <int name="mbookID" value="4220000" />
+    <imgdir name="speak">
+      <int name="chatBalloon" value="0" />
+      <imgdir name="0">
+        <int name="hp" value="1000" />
+        <string name="0" value="I'm mad!" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="140" height="77">
+      <vector name="origin" x="66" y="76" />
+      <vector name="lt" x="-79" y="-129" />
+      <vector name="rb" x="63" y="0" />
+      <vector name="head" x="-30" y="-95" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="140" height="77">
+      <vector name="origin" x="66" y="76" />
+      <vector name="head" x="-29" y="-96" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="1" width="140" height="78">
+      <vector name="origin" x="66" y="77" />
+      <vector name="head" x="-29" y="-94" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="2" width="140" height="80">
+      <vector name="origin" x="66" y="79" />
+      <vector name="head" x="-29" y="-95" />
+      <int name="delay" value="210" />
+    </canvas>
+    <canvas name="3" width="140" height="151">
+      <vector name="origin" x="66" y="150" />
+      <vector name="head" x="-29" y="-94" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="140" height="153">
+      <vector name="origin" x="66" y="152" />
+      <vector name="head" x="-29" y="-96" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="5" width="140" height="152">
+      <vector name="origin" x="66" y="151" />
+      <vector name="head" x="-28" y="-99" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="6" width="140" height="130">
+      <vector name="origin" x="66" y="129" />
+      <vector name="head" x="-27" y="-105" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="7" width="140" height="133">
+      <vector name="origin" x="66" y="132" />
+      <vector name="head" x="-26" y="-113" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="8" width="140" height="132">
+      <vector name="origin" x="66" y="131" />
+      <vector name="head" x="-26" y="-125" />
+      <int name="delay" value="180" />
+    </canvas>
+    <imgdir name="speak">
+      <int name="prob" value="100" />
+      <string name="0" value="Who are you to wake up a sleeping clam?! " />
+    </imgdir>
+  </imgdir>
+</imgdir>

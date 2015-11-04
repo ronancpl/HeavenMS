@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9999999.img">
+  <imgdir name="info">
+    <int name="maxHP" value="1" />
+    <int name="hideHP" value="1" />
+    <int name="hideName" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <vector name="lt" x="0" y="0" />
+      <vector name="rb" x="0" y="0" />
+      <vector name="head" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <vector name="lt" x="0" y="0" />
+      <vector name="rb" x="0" y="0" />
+      <vector name="head" x="0" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

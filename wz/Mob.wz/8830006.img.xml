@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="8830006.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="0" />
+    <int name="level" value="1" />
+    <int name="maxHP" value="1" />
+    <int name="maxMP" value="0" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="0" />
+    <int name="PDDamage" value="0" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="0" />
+    <int name="acc" value="0" />
+    <int name="eva" value="0" />
+    <int name="exp" value="0" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="12" />
+    <int name="noFlip" value="1" />
+    <imgdir name="revive">
+      <int name="0" value="8830001" />
+    </imgdir>
+    <int name="boss" value="1" />
+    <imgdir name="speak">
+      <int name="chatBalloon" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="367" height="215">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="367" height="215">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="366" height="211">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="366" height="220">
+      <vector name="origin" x="441" y="202" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="366" height="211">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="366" height="220">
+      <vector name="origin" x="441" y="202" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4" width="366" height="211">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5" width="366" height="220">
+      <vector name="origin" x="441" y="202" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6" width="366" height="211">
+      <vector name="origin" x="441" y="193" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="7" width="369" height="256">
+      <vector name="origin" x="441" y="208" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="8" width="369" height="274">
+      <vector name="origin" x="441" y="226" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="9" width="369" height="285">
+      <vector name="origin" x="441" y="237" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="10" width="370" height="384">
+      <vector name="origin" x="442" y="336" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="11" width="413" height="324">
+      <vector name="origin" x="485" y="276" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="12" width="370" height="297">
+      <vector name="origin" x="442" y="249" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="13" width="374" height="288">
+      <vector name="origin" x="438" y="257" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="14" width="396" height="294">
+      <vector name="origin" x="441" y="263" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="15" width="399" height="280">
+      <vector name="origin" x="442" y="264" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="16" width="436" height="281">
+      <vector name="origin" x="442" y="266" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="17" width="437" height="285">
+      <vector name="origin" x="443" y="268" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="18" width="299" height="256">
+      <vector name="origin" x="402" y="240" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="19" width="282" height="218">
+      <vector name="origin" x="384" y="229" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="20" width="276" height="207">
+      <vector name="origin" x="378" y="219" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="21" width="275" height="199">
+      <vector name="origin" x="376" y="211" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="speak">
+      <int name="prob" value="100" />
+      <string name="0" value="Haha...trying to seal me up again?  Not a chance. I will show you my power! " />
+    </imgdir>
+  </imgdir>
+</imgdir>

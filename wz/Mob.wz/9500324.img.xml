@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500324.img">
+  <imgdir name="info">
+    <int name="boss" value="1" />
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="70" />
+    <int name="maxHP" value="5000000" />
+    <int name="maxMP" value="1" />
+    <int name="speed" value="5" />
+    <int name="PADamage" value="1" />
+    <int name="PDDamage" value="1" />
+    <int name="MADamage" value="1" />
+    <int name="MDDamage" value="1" />
+    <int name="acc" value="999" />
+    <int name="eva" value="999" />
+    <int name="exp" value="0" />
+    <int name="pushed" value="1000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="0" />
+    <string name="link" value="9500323" />
+    <int name="removeAfter" value="5" />
+    <imgdir name="ban">
+      <int name="banType" value="1" />
+      <string name="banMsg" value="The Cat has spotted you, so you are being kicked out of the Cheese Warehouse." />
+      <imgdir name="banMap">
+        <imgdir name="0">
+          <int name="field" value="926120410" />
+          <string name="portal" value="st00" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

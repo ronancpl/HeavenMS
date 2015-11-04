@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500343.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="56" />
+    <int name="maxHP" value="125000" />
+    <int name="maxMP" value="2500" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="280" />
+    <int name="PDDamage" value="210" />
+    <int name="MADamage" value="260" />
+    <int name="MDDamage" value="240" />
+    <int name="acc" value="160" />
+    <int name="eva" value="26" />
+    <int name="exp" value="4800" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="1500" />
+    <string name="elemAttr" value="I2F2L2H2S2" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="boss" value="1" />
+    <string name="link" value="9300012" />
+    <int name="ignoreFieldOut" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="29" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="30" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="31" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="120" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="121" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="default">
+      <canvas name="0" width="197" height="210">
+        <vector name="origin" x="98" y="105" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

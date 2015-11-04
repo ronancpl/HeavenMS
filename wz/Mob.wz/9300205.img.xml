@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300205.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="81" />
+    <int name="maxHP" value="660000" />
+    <int name="maxMP" value="2500" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="400" />
+    <int name="PDDamage" value="700" />
+    <int name="MADamage" value="400" />
+    <int name="MDDamage" value="990" />
+    <int name="acc" value="170" />
+    <int name="eva" value="28" />
+    <int name="exp" value="12000" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="6000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="13" />
+    <int name="boss" value="1" />
+    <int name="hpRecovery" value="3000" />
+    <int name="mpRecovery" value="20" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="131" />
+        <int name="action" value="1" />
+        <int name="level" value="6" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="200" />
+        <int name="action" value="1" />
+        <int name="level" value="124" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="121" />
+        <int name="action" value="1" />
+        <int name="level" value="5" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <int name="firstAttack" value="1" />
+    <string name="link" value="9300139" />
+    <imgdir name="default">
+      <canvas name="0" width="202" height="158">
+        <vector name="origin" x="101" y="79" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <int name="ignoreFieldOut" value="1" />
+    <imgdir name="revive">
+      <int name="0" value="9300216" />
+    </imgdir>
+    <int name="explosiveReward" value="1" />
+  </imgdir>
+</imgdir>

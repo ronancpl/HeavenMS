@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9700023.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="40" />
+    <int name="maxHP" value="1" />
+    <int name="maxMP" value="100" />
+    <int name="speed" value="-10" />
+    <int name="PADamage" value="20" />
+    <int name="PDDamage" value="20" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="30" />
+    <int name="acc" value="90" />
+    <int name="eva" value="500" />
+    <string name="pushed" value="100" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="undead" value="0" />
+    <imgdir name="revive">
+      <int name="0" value="9700021" />
+    </imgdir>
+    <string name="removeAfter" value="90" />
+    <int name="boss" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="36" y="53" />
+      <int name="delay" value="90" />
+      <vector name="head" x="1" y="-1500" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="36" y="53" />
+      <int name="delay" value="90" />
+      <vector name="head" x="1" y="-1500" />
+    </canvas>
+  </imgdir>
+</imgdir>

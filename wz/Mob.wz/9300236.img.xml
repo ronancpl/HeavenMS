@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9300236.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="56" />
+    <int name="maxHP" value="7200" />
+    <int name="maxMP" value="200" />
+    <int name="speed" value="-15" />
+    <int name="PADamage" value="160" />
+    <int name="PDDamage" value="180" />
+    <int name="MADamage" value="170" />
+    <int name="MDDamage" value="160" />
+    <int name="acc" value="124" />
+    <int name="eva" value="22" />
+    <int name="exp" value="355" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="450" />
+    <int name="mpRecovery" value="5" />
+    <float name="fs" value="10.0" />
+    <string name="elemAttr" value="I2F2L2H2" />
+    <int name="summonType" value="1" />
+    <int name="hideName" value="1" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="101" />
+        <int name="action" value="1" />
+        <int name="level" value="2" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="103" />
+        <int name="action" value="1" />
+        <int name="level" value="2" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="revive">
+      <int name="0" value="9300237" />
+    </imgdir>
+    <int name="mobType" value="5" />
+    <string name="link" value="9300056" />
+  </imgdir>
+</imgdir>

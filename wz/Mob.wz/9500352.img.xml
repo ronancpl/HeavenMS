@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500352.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="77" />
+    <int name="maxHP" value="108000" />
+    <int name="maxMP" value="520" />
+    <int name="speed" value="-30" />
+    <int name="PADamage" value="320" />
+    <int name="PDDamage" value="520" />
+    <int name="MADamage" value="350" />
+    <int name="MDDamage" value="410" />
+    <int name="acc" value="160" />
+    <int name="eva" value="27" />
+    <int name="exp" value="2280" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="2500" />
+    <int name="hpRecovery" value="2700" />
+    <int name="mpRecovery" value="10" />
+    <int name="boss" value="1" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="hpTagColor" value="1" />
+    <int name="hpTagBgcolor" value="5" />
+    <int name="HPgaugeHide" value="1" />
+    <int name="firstAttack" value="1" />
+    <string name="link" value="7220002" />
+    <imgdir name="skill">
+      <imgdir name="0">
+        <int name="skill" value="114" />
+        <int name="action" value="1" />
+        <int name="level" value="15" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="skill" value="110" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="skill" value="112" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="skill" value="113" />
+        <int name="action" value="1" />
+        <int name="level" value="1" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="skill" value="140" />
+        <int name="action" value="1" />
+        <int name="level" value="4" />
+        <int name="effectAfter" value="0" />
+      </imgdir>
+    </imgdir>
+    <int name="ignoreFieldOut" value="1" />
+  </imgdir>
+</imgdir>

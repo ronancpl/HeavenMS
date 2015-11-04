@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9500359.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="105" />
+    <int name="maxHP" value="3700000" />
+    <int name="maxMP" value="1500" />
+    <int name="speed" value="-20" />
+    <int name="PADamage" value="550" />
+    <int name="PDDamage" value="900" />
+    <int name="MADamage" value="680" />
+    <int name="MDDamage" value="850" />
+    <int name="acc" value="200" />
+    <int name="eva" value="39" />
+    <int name="exp" value="13500" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="5000" />
+    <int name="hpRecovery" value="300" />
+    <int name="mpRecovery" value="20" />
+    <string name="elemAttr" value="F2I3" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="boss" value="1" />
+    <int name="firstAttack" value="1" />
+    <int name="publicReward" value="1" />
+    <int name="hpTagColor" value="1" />
+    <int name="hpTagBgcolor" value="5" />
+    <int name="HPgaugeHide" value="1" />
+    <string name="link" value="8180000" />
+    <imgdir name="default">
+      <canvas name="0" width="167" height="211">
+        <vector name="origin" x="83" y="105" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <int name="ignoreFieldOut" value="1" />
+  </imgdir>
+</imgdir>

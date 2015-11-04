@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="7130602.img">
+  <imgdir name="info">
+    <int name="bodyAttack" value="1" />
+    <int name="level" value="76" />
+    <int name="maxHP" value="8000" />
+    <int name="maxMP" value="0" />
+    <int name="speed" value="0" />
+    <int name="PADamage" value="500" />
+    <int name="PDDamage" value="400" />
+    <int name="MADamage" value="0" />
+    <int name="MDDamage" value="350" />
+    <int name="acc" value="220" />
+    <int name="eva" value="20" />
+    <int name="exp" value="0" />
+    <int name="undead" value="0" />
+    <int name="pushed" value="10000" />
+    <float name="fs" value="10.0" />
+    <int name="summonType" value="1" />
+    <int name="noFlip" value="1" />
+    <int name="removeAfter" value="20" />
+    <int name="boss" value="1" />
+    <string name="elemAttr" value="S2F3" />
+    <int name="mobType" value="4" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="72" height="43">
+      <vector name="origin" x="36" y="39" />
+      <vector name="lt" x="-37" y="-39" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="0" y="-34" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0" width="72" height="43">
+      <vector name="origin" x="36" y="39" />
+      <vector name="lt" x="-37" y="-39" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="0" y="-34" />
+      <int name="delay" value="600" />
+    </canvas>
+  </imgdir>
+  <imgdir name="die1">
+    <canvas name="0" width="70" height="41">
+      <vector name="origin" x="37" y="38" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="1" width="67" height="39">
+      <vector name="origin" x="37" y="37" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="2" width="55" height="37">
+      <vector name="origin" x="33" y="34" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="3" width="47" height="35">
+      <vector name="origin" x="38" y="32" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="180" />
+    </canvas>
+    <canvas name="4" width="22" height="33">
+      <vector name="origin" x="35" y="32" />
+      <vector name="head" x="0" y="-34" />
+      <int name="dealy" value="300" />
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>
