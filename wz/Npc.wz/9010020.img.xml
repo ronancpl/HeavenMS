@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9010020.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-25" />
+    <int name="dcTop" value="-44" />
+    <int name="dcRight" value="27" />
+    <int name="dcBottom" value="1" />
+    <canvas name="default" width="53" height="45">
+      <vector name="origin" x="26" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="45" height="39">
+      <vector name="origin" x="22" y="38" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="act1">
+    <canvas name="0" width="106" height="65">
+      <vector name="origin" x="53" y="65" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="106" height="67">
+      <vector name="origin" x="69" y="77" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="106" height="63">
+      <vector name="origin" x="90" y="82" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="107" height="73">
+      <vector name="origin" x="122" y="113" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="106" height="65">
+      <vector name="origin" x="146" y="111" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="106" height="67">
+      <vector name="origin" x="183" y="107" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="106" height="63">
+      <vector name="origin" x="216" y="115" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="107" height="73">
+      <vector name="origin" x="254" y="132" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="8" width="106" height="65">
+      <vector name="origin" x="277" y="138" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="9" width="106" height="67">
+      <vector name="origin" x="323" y="136" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="10" width="106" height="63">
+      <vector name="origin" x="351" y="145" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="11" width="107" height="73">
+      <vector name="origin" x="375" y="161" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="12" width="106" height="65">
+      <vector name="origin" x="412" y="137" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="13" width="106" height="67">
+      <vector name="origin" x="445" y="157" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="14" width="106" height="63">
+      <vector name="origin" x="479" y="172" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="15" width="107" height="73">
+      <vector name="origin" x="509" y="192" />
+      <int name="delay" value="120" />
+    </canvas>
+    <int name="special" value="1" />
+  </imgdir>
+</imgdir>

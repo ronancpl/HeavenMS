@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2121003.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-20" />
+    <int name="dcTop" value="-64" />
+    <int name="dcRight" value="22" />
+    <int name="dcBottom" value="1" />
+    <int name="hideName" value="1" />
+    <canvas name="default" width="43" height="65">
+      <vector name="origin" x="21" y="65" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="tablet03" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="0" y="4" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201077.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="delay" value="144" />
+    </canvas>
+    <canvas name="1" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="delay" value="144" />
+    </canvas>
+    <canvas name="2" width="58" height="89">
+      <vector name="origin" x="32" y="90" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <int name="delay" value="144" />
+    <canvas name="3" width="58" height="88">
+      <vector name="origin" x="32" y="89" />
+      <int name="delay" value="144" />
+    </canvas>
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="delay" value="1200" />
+    </canvas>
+    <canvas name="1" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="z" value="0" />
+      <int name="delay" value="0" />
+    </canvas>
+    <canvas name="2" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="delay" value="240" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="delay" value="1200" />
+    </canvas>
+    <canvas name="1" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="58" height="87">
+      <vector name="origin" x="32" y="88" />
+      <int name="z" value="0" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+</imgdir>

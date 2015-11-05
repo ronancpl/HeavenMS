@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1092016.img">
+  <imgdir name="info">
+    <canvas name="default" width="76" height="154">
+      <vector name="origin" x="38" y="148" />
+      <int name="z" value="0" />
+    </canvas>
+    <int name="dcLeft" value="-77" />
+    <int name="dcTop" value="-262" />
+    <int name="dcRight" value="66" />
+    <int name="dcBottom" value="-145" />
+    <int name="hideName" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="nautil_stone" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="146" height="263">
+      <vector name="origin" x="78" y="263" />
+    </canvas>
+  </imgdir>
+</imgdir>

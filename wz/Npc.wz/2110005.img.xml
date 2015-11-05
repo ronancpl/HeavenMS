@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2110005.img">
+  <imgdir name="info">
+    <int name="dcTop" value="-149" />
+    <int name="dcRight" value="77" />
+    <int name="dcLeft" value="-81" />
+    <int name="dcBottom" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="nihal_taxi" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="158" height="151">
+      <vector name="origin" x="81" y="150" />
+      <int name="delay" value="3000" />
+    </canvas>
+  </imgdir>
+</imgdir>

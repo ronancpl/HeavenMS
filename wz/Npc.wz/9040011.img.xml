@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040011.img">
+  <imgdir name="info">
+    <int name="hideName" value="1" />
+    <int name="dcMark" value="1" />
+    <int name="dcLeft" value="-47" />
+    <int name="dcTop" value="-119" />
+    <int name="dcRight" value="47" />
+    <int name="dcBottom" value="-30" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_board" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="94" height="122">
+      <vector name="origin" x="47" y="122" />
+    </canvas>
+  </imgdir>
+</imgdir>

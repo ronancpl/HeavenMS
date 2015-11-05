@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2050017.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-45" />
+    <int name="dcTop" value="-57" />
+    <int name="dcRight" value="46" />
+    <int name="dcBottom" value="0" />
+    <int name="hideName" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="earth012" />
+      </imgdir>
+    </imgdir>
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="103" height="75">
+      <vector name="origin" x="51" y="67" />
+    </canvas>
+  </imgdir>
+</imgdir>

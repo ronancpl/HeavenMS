@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9100000.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="neko1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="71" height="67">
+      <vector name="origin" x="35" y="64" />
+      <int name="delay" value="500" />
+    </canvas>
+    <canvas name="1" width="71" height="67">
+      <vector name="origin" x="35" y="64" />
+      <int name="delay" value="500" />
+    </canvas>
+  </imgdir>
+</imgdir>

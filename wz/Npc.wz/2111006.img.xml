@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2111006.img">
+  <imgdir name="info">
+    <int name="hideName" value="1" />
+    <int name="dcLeft" value="-43" />
+    <int name="dcTop" value="-132" />
+    <int name="dcRight" value="50" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="drang_room1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="64" height="101">
+      <vector name="origin" x="31" y="113" />
+      <int name="delay" value="5000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0" width="64" height="101">
+      <vector name="origin" x="31" y="113" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="1" width="65" height="101">
+      <vector name="origin" x="32" y="112" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="66" height="101">
+      <vector name="origin" x="32" y="110" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="66" height="100">
+      <vector name="origin" x="31" y="109" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="4" width="65" height="100">
+      <vector name="origin" x="30" y="109" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="5" width="64" height="100">
+      <vector name="origin" x="29" y="110" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="6" width="67" height="100">
+      <vector name="origin" x="29" y="112" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="7" width="66" height="101">
+      <vector name="origin" x="30" y="113" />
+      <int name="delay" value="120" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit">
+    <canvas name="0" width="94" height="118">
+      <vector name="origin" x="44" y="133" />
+      <int name="delay" value="820" />
+    </canvas>
+  </imgdir>
+</imgdir>

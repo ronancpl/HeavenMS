@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052016.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-60" />
+    <int name="dcTop" value="-90" />
+    <int name="dcRight" value="60" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="taxi3" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="122" height="90">
+      <vector name="origin" x="61" y="90" />
+      <int name="z" value="0" />
+      <int name="delay" value="5000" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1092017.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-42" />
+    <int name="dcTop" value="-136" />
+    <int name="dcRight" value="127" />
+    <int name="dcBottom" value="0" />
+    <canvas name="default" width="112" height="141">
+      <vector name="origin" x="57" y="141" />
+      <int name="z" value="0" />
+    </canvas>
+    <int name="hideName" value="1" />
+    <int name="talkMouseOnly" value="1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="180" height="147">
+      <vector name="origin" x="51" y="147" />
+      <int name="delay" value="1000" />
+    </canvas>
+  </imgdir>
+</imgdir>

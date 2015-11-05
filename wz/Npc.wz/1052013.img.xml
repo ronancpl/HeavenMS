@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052013.img">
+  <imgdir name="info">
+    <int name="dcMark" value="1" />
+    <int name="dcLeft" value="-62" />
+    <int name="dcTop" value="-110" />
+    <int name="dcRight" value="63" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="go_pcmap" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="124" height="109">
+      <vector name="origin" x="64" y="109" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="124" height="109">
+      <vector name="origin" x="64" y="109" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="124" height="109">
+      <vector name="origin" x="64" y="109" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="124" height="109">
+      <vector name="origin" x="64" y="109" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="124" height="109">
+      <vector name="origin" x="64" y="109" />
+      <int name="delay" value="150" />
+    </canvas>
+    <uol name="5" value="1" />
+  </imgdir>
+</imgdir>

@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1002004.img">
+  <imgdir name="info">
+    <int name="dcMark" value="1" />
+    <int name="dcLeft" value="-75" />
+    <int name="dcTop" value="-92" />
+    <int name="dcRight" value="85" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="mTaxi" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="167" height="93">
+      <vector name="origin" x="83" y="93" />
+    </canvas>
+  </imgdir>
+</imgdir>

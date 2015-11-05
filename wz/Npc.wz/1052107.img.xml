@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1052107.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-64" />
+    <int name="dcTop" value="-147" />
+    <int name="dcRight" value="21" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="sca_Shade" />
+      </imgdir>
+    </imgdir>
+    <canvas name="default" width="78" height="113">
+      <vector name="origin" x="39" y="113" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="85" height="148">
+      <vector name="origin" x="65" y="148" />
+      <int name="delay" value="7000" />
+    </canvas>
+  </imgdir>
+  <imgdir name="scavenger">
+    <canvas name="0" width="111" height="148">
+      <vector name="origin" x="91" y="148" />
+      <int name="delay" value="5000" />
+    </canvas>
+    <int name="special" value="1" />
+  </imgdir>
+</imgdir>

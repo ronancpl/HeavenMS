@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040007.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-34" />
+    <int name="dcRight" value="34" />
+    <int name="dcTop" value="-30" />
+    <int name="dcBottom" value="0" />
+    <int name="dcMark" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_will" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="67" height="30">
+      <vector name="origin" x="34" y="30" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040009.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-53" />
+    <int name="dcTop" value="-146" />
+    <int name="dcBottom" value="-58" />
+    <int name="dcRight" value="46" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="guildquest1_statue" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="118" height="147">
+      <vector name="origin" x="54" y="146" />
+    </canvas>
+  </imgdir>
+</imgdir>

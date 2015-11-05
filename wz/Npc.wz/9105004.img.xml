@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9105004.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="08_xmas" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="eye">
+    <canvas name="0" width="85" height="98">
+      <vector name="origin" x="45" y="104" />
+      <int name="delay" value="500" />
+    </canvas>
+    <canvas name="1" width="84" height="98">
+      <vector name="origin" x="45" y="104" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="84" height="98">
+      <vector name="origin" x="44" y="104" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="85" height="98">
+      <vector name="origin" x="44" y="104" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="4" width="84" height="98">
+      <vector name="origin" x="44" y="104" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="5" width="84" height="98">
+      <vector name="origin" x="45" y="104" />
+      <int name="delay" value="250" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="85" height="98">
+      <vector name="origin" x="45" y="103" />
+      <int name="delay" value="800" />
+    </canvas>
+    <canvas name="1" width="170" height="82">
+      <vector name="origin" x="81" y="106" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="156" height="113">
+      <vector name="origin" x="70" y="135" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="3" width="87" height="124">
+      <vector name="origin" x="44" y="145" />
+      <int name="delay" value="500" />
+    </canvas>
+    <uol name="4" value="0" />
+    <uol name="5" value="1" />
+    <uol name="6" value="2" />
+    <uol name="7" value="3" />
+  </imgdir>
+</imgdir>

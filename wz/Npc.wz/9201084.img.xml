@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201084.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Tomb_Hall" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="122" height="95">
+      <vector name="origin" x="48" y="95" />
+      <int name="delay" value="1500" />
+    </canvas>
+    <canvas name="1" width="135" height="110">
+      <vector name="origin" x="54" y="102" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="2" width="139" height="114">
+      <vector name="origin" x="56" y="104" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="3" width="141" height="116">
+      <vector name="origin" x="57" y="105" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="4" width="141" height="117">
+      <vector name="origin" x="57" y="106" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="5" width="141" height="116">
+      <vector name="origin" x="57" y="105" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="6" width="139" height="114">
+      <vector name="origin" x="56" y="104" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="7" width="135" height="110">
+      <vector name="origin" x="54" y="102" />
+      <int name="delay" value="250" />
+    </canvas>
+  </imgdir>
+</imgdir>

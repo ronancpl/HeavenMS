@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1092091.img">
+  <imgdir name="info">
+    <int name="hideName" value="1" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="mom_cow" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="185" height="116">
+      <vector name="origin" x="92" y="116" />
+      <int name="delay" value="1000" />
+    </canvas>
+  </imgdir>
+</imgdir>

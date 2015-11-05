@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201123.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goPerion" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-49" />
+    <int name="dcTop" value="-169" />
+    <int name="dcRight" value="126" />
+    <int name="dcBottom" value="-3" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="187" height="175">
+      <vector name="origin" x="56" y="172" />
+    </canvas>
+  </imgdir>
+</imgdir>

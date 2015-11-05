@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201074.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="37" height="26">
+      <vector name="origin" x="18" y="26" />
+      <vector name="lt" x="-18" y="-26" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-13" y="-24" />
+    </canvas>
+  </imgdir>
+  <imgdir name="move">
+    <int name="zigzag" value="1" />
+    <canvas name="0" width="37" height="26">
+      <vector name="origin" x="18" y="26" />
+      <vector name="lt" x="-18" y="-26" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-13" y="-24" />
+      <int name="delay" value="140" />
+    </canvas>
+    <canvas name="1" width="36" height="25">
+      <vector name="origin" x="17" y="25" />
+      <vector name="lt" x="-17" y="-25" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-12" y="-24" />
+      <int name="delay" value="140" />
+    </canvas>
+    <canvas name="2" width="36" height="25">
+      <vector name="origin" x="17" y="25" />
+      <vector name="lt" x="-17" y="-25" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-11" y="-24" />
+      <int name="delay" value="140" />
+    </canvas>
+    <canvas name="3" width="36" height="24">
+      <vector name="origin" x="17" y="24" />
+      <vector name="lt" x="-17" y="-24" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-10" y="-24" />
+      <int name="delay" value="140" />
+    </canvas>
+    <canvas name="4" width="37" height="24">
+      <vector name="origin" x="18" y="24" />
+      <vector name="lt" x="-18" y="-24" />
+      <vector name="rb" x="19" y="0" />
+      <vector name="head" x="-9" y="-24" />
+      <int name="delay" value="140" />
+    </canvas>
+  </imgdir>
+</imgdir>

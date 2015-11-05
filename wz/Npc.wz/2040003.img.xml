@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2040003.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ludi020" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+  <imgdir name="smile">
+    <canvas name="0" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="1" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="200" />
+    </canvas>
+    <canvas name="2" width="93" height="137">
+      <vector name="origin" x="46" y="137" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+    <uol name="4" value="0" />
+    <uol name="5" value="1" />
+    <uol name="6" value="2" />
+    <uol name="7" value="1" />
+    <uol name="8" value="0" />
+    <uol name="9" value="1" />
+    <uol name="10" value="2" />
+    <uol name="11" value="1" />
+    <uol name="12" value="2" />
+  </imgdir>
+</imgdir>

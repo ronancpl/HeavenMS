@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9209100.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="xmas_party_ent" />
+      </imgdir>
+    </imgdir>
+    <int name="hideName" value="1" />
+    <canvas name="default" width="179" height="80">
+      <vector name="origin" x="86" y="80" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+  </imgdir>
+</imgdir>

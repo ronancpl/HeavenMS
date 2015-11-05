@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1204020.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ShadowWarrier" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="1" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="2" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="3" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="4" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+    <canvas name="5" width="85" height="99">
+      <vector name="origin" x="49" y="99" />
+      <vector name="lt" x="-49" y="-99" />
+      <vector name="rb" x="36" y="0" />
+      <vector name="head" x="-11" y="-73" />
+      <int name="delay" value="180" />
+    </canvas>
+  </imgdir>
+</imgdir>

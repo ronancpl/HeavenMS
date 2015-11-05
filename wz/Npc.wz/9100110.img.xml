@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9100110.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-50" />
+    <int name="dcTop" value="-135" />
+    <int name="dcRight" value="32" />
+    <int name="dcBottom" value="0" />
+    <int name="dcmark" value="1" />
+    <canvas name="default" width="93" height="118">
+      <vector name="origin" x="41" y="116" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="gachapon11" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="93" height="118">
+      <vector name="origin" x="41" y="117" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

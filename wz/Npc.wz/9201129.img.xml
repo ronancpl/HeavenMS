@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201129.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Enter_Darkportal_M" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="200" height="197">
+      <vector name="origin" x="100" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="200" height="197">
+      <vector name="origin" x="100" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="200" height="198">
+      <vector name="origin" x="100" y="194" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="3" width="200" height="197">
+      <vector name="origin" x="100" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="4" width="200" height="197">
+      <vector name="origin" x="100" y="193" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="5" width="200" height="195">
+      <vector name="origin" x="100" y="191" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="6" width="200" height="195">
+      <vector name="origin" x="100" y="191" />
+      <int name="delay" value="150" />
+    </canvas>
+  </imgdir>
+</imgdir>

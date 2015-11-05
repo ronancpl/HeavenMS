@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9100201.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-33" />
+    <int name="dcTop" value="-166" />
+    <int name="dcRight" value="30" />
+    <int name="dcBottom" value="0" />
+    <canvas name="default" width="115" height="141">
+      <vector name="origin" x="63" y="140" />
+    </canvas>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Pachinko_machine" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="82" height="140">
+      <vector name="origin" x="38" y="139" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="82" height="140">
+      <vector name="origin" x="38" y="139" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="82" height="140">
+      <vector name="origin" x="38" y="139" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="82" height="140">
+      <vector name="origin" x="38" y="139" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

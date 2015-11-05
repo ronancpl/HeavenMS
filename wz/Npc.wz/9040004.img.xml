@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9040004.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-104" />
+    <int name="dcTop" value="-218" />
+    <int name="dcBottom" value="0" />
+    <int name="dcRight" value="104" />
+    <int name="guildRank" value="1" />
+    <canvas name="default" width="80" height="84">
+      <vector name="origin" x="39" y="83" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="244" height="237">
+      <vector name="origin" x="122" y="236" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

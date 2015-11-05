@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201071.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="Sunstone" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="122" height="95">
+      <vector name="origin" x="49" y="95" />
+      <int name="delay" value="1500" />
+    </canvas>
+    <canvas name="1" width="125" height="99">
+      <vector name="origin" x="50" y="97" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="2" width="127" height="101">
+      <vector name="origin" x="51" y="98" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="3" width="128" height="102">
+      <vector name="origin" x="52" y="98" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="4" width="129" height="102">
+      <vector name="origin" x="52" y="98" />
+      <int name="delay" value="1000" />
+    </canvas>
+    <canvas name="5" width="128" height="102">
+      <vector name="origin" x="52" y="98" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="6" width="127" height="101">
+      <vector name="origin" x="51" y="98" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="7" width="125" height="99">
+      <vector name="origin" x="50" y="97" />
+      <int name="delay" value="250" />
+    </canvas>
+  </imgdir>
+</imgdir>

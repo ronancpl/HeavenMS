@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2060001.img">
+  <imgdir name="info" />
+  <imgdir name="stand">
+    <canvas name="0" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="delay" value="2000" />
+    </canvas>
+    <canvas name="1" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="delay" value="80" />
+    </canvas>
+    <canvas name="2" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="delay" value="80" />
+    </canvas>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="０" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="1000" />
+    </canvas>
+    <canvas name="１" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="150" />
+    </canvas>
+    <uol name="2" value="０" />
+    <uol name="3" value="１" />
+    <uol name="4" value="０" />
+    <uol name="5" value="１" />
+    <uol name="6" value="０" />
+    <canvas name="7" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="200" />
+    </canvas>
+    <canvas name="8" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="200" />
+    </canvas>
+    <uol name="9" value="０" />
+    <uol name="10" value="１" />
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+      <string name="1" value="s1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="hand">
+    <canvas name="０" width="64" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="2000" />
+    </canvas>
+    <canvas name="１" width="66" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="delat" value="100" />
+    </canvas>
+    <canvas name="２" width="66" height="80">
+      <vector name="origin" x="31" y="71" />
+      <int name="dealy" value="500" />
+    </canvas>
+    <uol name="3" value="１" />
+  </imgdir>
+</imgdir>

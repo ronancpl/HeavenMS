@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2083001.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="hontale_enter1" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-95" />
+    <int name="dcTop" value="-175" />
+    <int name="dcRight" value="67" />
+    <int name="dcBottom" value="0" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="199" height="250">
+      <vector name="origin" x="113" y="248" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201126.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goKerningCity" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-53" />
+    <int name="dcTop" value="-162" />
+    <int name="dcRight" value="49" />
+    <int name="dcBottom" value="-5" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="133" height="178">
+      <vector name="origin" x="66" y="175" />
+    </canvas>
+  </imgdir>
+</imgdir>

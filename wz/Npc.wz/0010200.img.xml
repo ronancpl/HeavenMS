@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0010200.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="infoArcher" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="60" height="71">
+      <vector name="origin" x="27" y="71" />
+      <int name="z" value="0" />
+      <int name="delay" value="1200" />
+    </canvas>
+  </imgdir>
+</imgdir>

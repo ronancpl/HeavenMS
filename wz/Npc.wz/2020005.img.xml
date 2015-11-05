@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2020005.img">
+  <imgdir name="info">
+    <int name="speed" value="-40" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="oldBook1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="68" height="79">
+      <vector name="origin" x="38" y="79" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="1" width="68" height="79">
+      <vector name="origin" x="38" y="79" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0" width="70" height="86">
+      <vector name="origin" x="41" y="86" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="1" width="69" height="82">
+      <vector name="origin" x="40" y="82" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="2" width="71" height="80">
+      <vector name="origin" x="42" y="80" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+    <canvas name="3" width="72" height="79">
+      <vector name="origin" x="43" y="79" />
+      <int name="z" value="0" />
+      <int name="delay" value="250" />
+    </canvas>
+  </imgdir>
+</imgdir>

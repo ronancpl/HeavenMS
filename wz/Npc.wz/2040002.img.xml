@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2040002.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <int name="dcLeft" value="-22" />
+    <int name="dcRight" value="23" />
+    <int name="dcTop" value="-126" />
+    <int name="dcBottom" value="0" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ludi023" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+  <imgdir name="smile">
+    <canvas name="0" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="3000" />
+    </canvas>
+    <canvas name="1" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="120" />
+    </canvas>
+    <canvas name="2" width="43" height="155">
+      <vector name="origin" x="21" y="155" />
+      <int name="delay" value="200" />
+    </canvas>
+    <uol name="3" value="1" />
+  </imgdir>
+</imgdir>

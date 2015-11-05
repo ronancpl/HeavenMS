@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9201127.img">
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="goNautilus" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-63" />
+    <int name="dcTop" value="-174" />
+    <int name="dcRight" value="50" />
+    <int name="dcBottom" value="-6" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="137" height="186">
+      <vector name="origin" x="68" y="183" />
+    </canvas>
+  </imgdir>
+</imgdir>

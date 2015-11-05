@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="0002007.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="tutorialSkip" />
+      </imgdir>
+    </imgdir>
+    <int name="hideName" value="1" />
+    <canvas name="default" width="46" height="69">
+      <vector name="origin" x="23" y="69" />
+      <int name="delay" value="2350" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="delay" value="300" />
+      <int name="a0" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

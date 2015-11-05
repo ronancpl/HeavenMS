@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2040024.img">
+  <imgdir name="info">
+    <int name="float" value="1" />
+    <int name="dcLeft" value="-25" />
+    <int name="dcRight" value="25" />
+    <int name="dcTop" value="-116" />
+    <int name="dcBottom" value="-20" />
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="ludi014" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="60" height="104">
+      <vector name="origin" x="30" y="120" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="1032111.img">
+  <imgdir name="info">
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="giveSap" />
+      </imgdir>
+    </imgdir>
+    <int name="dcLeft" value="-70" />
+    <int name="dcTop" value="-200" />
+    <int name="dcRight" value="75" />
+    <int name="dcBottom" value="-55" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="151" height="203">
+      <vector name="origin" x="75" y="203" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="1" width="151" height="205">
+      <vector name="origin" x="75" y="203" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+    <canvas name="2" width="151" height="209">
+      <vector name="origin" x="75" y="203" />
+      <int name="z" value="0" />
+      <int name="delay" value="150" />
+    </canvas>
+  </imgdir>
+</imgdir>
