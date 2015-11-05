@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="GLcloneC.img">
+  <imgdir name="Class">
+    <imgdir name="0">
+      <string name="Class" value="Warrior" />
+      <string name="Desc" value="Warrior - at 1st job status." />
+      <string name="InitStatDesc" value="AP: STR35, Unused AP: 123" />
+      <string name="InitSPDesc" value="SP: All skills blank (Unused SP: 61)" />
+      <string name="StartMap" value="Starting Map: Perion" />
+      <string name="Equip" value="Has defense equips and weapons." />
+      <string name="Item" value="Has potions, chair and 100,000 mesos." />
+    </imgdir>
+    <imgdir name="1">
+      <string name="Class" value="Magician" />
+      <string name="Desc" value="Magician - at 1st job status." />
+      <string name="InitStatDesc" value="AP: INT20,  Unused AP: 138" />
+      <string name="InitSPDesc" value="SP: All skills blank (Unused SP: 67)" />
+      <string name="StartMap" value="Starting Map: Ellinia" />
+      <string name="Equip" value="Has defense equips and weapons." />
+      <string name="Item" value="Has potions, chair and 100,000 mesos." />
+    </imgdir>
+    <imgdir name="2">
+      <string name="Class" value="Bowman" />
+      <string name="Desc" value="Bowman - at 1st job status." />
+      <string name="InitStatDesc" value="AP: DEX25, Unused AP: 133" />
+      <string name="InitSPDesc" value="SP: All skills blank (Unused SP: 61)" />
+      <string name="StartMap" value="Starting Map: Henesys" />
+      <string name="Equip" value="Has defense equips and 2 weapons." />
+      <string name="Item" value="Has potions, chair and 100,000 mesos." />
+    </imgdir>
+    <imgdir name="3">
+      <string name="Class" value="Thief" />
+      <string name="Desc" value="Thief - at 1st job status." />
+      <string name="InitStatDesc" value="AP: DEX25, Unused AP: 133" />
+      <string name="InitSPDesc" value="SP: All skills blank (Unused SP: 61)" />
+      <string name="StartMap" value="Starting Map: Kerning City" />
+      <string name="Equip" value="Has defense equips and 2 weapons." />
+      <string name="Item" value="Has potions, chair and 100,000 mesos." />
+    </imgdir>
+    <imgdir name="4">
+      <string name="Class" value="Pirate" />
+      <string name="Desc" value="Pirate - at 1st job status." />
+      <string name="InitStatDesc" value="AP: DEX20, Unused AP: 138" />
+      <string name="InitSPDesc" value="SP: All skills blank (Unused SP: 61)" />
+      <string name="StartMap" value="Starting Map: Nautilus" />
+      <string name="Equip" value="Has defense equips and 2 weapons." />
+      <string name="Item" value="Has potions, chair and 100,000 mesos." />
+    </imgdir>
+    <string name="Step4_W_Desc" value="Would you like to distribute SP to the \n#rImproved MaxHP Increased skill?#k\nUpon selecting this option, SP will be used and character will be created with the increased HP.\n#rSkill Description:#k This skill boosts up the amount of increase on MaxHP after each Level Up or AP used on MaxHP; Required Skill: #bAt least Level 5 on Improving HP Recovery.#k" />
+    <string name="Step4_M_Desc" value="Would you like to distribute SP to the \n#rImproved MaxMP Increased skill?#k\nUpon selecting this option, SP will be used and character will be created with the increased MP.\n#rSkill Description:#k This skill boosts up the amount of increase on MaxMP after each Level Up or AP used on MaxMP; Required Skill: #bAt least Level 5 on Improving MP Recovery.#k" />
+    <string name="Finish_Desc" value="All settings are complete.\r\nTo change previous settings, click the #bBACK#k button.\r\nTo proceed with the character creation, click the #bFINISH#k button.\r\n#rOnce the character is created, it cannot be undone.#k" />
+  </imgdir>
+</imgdir>

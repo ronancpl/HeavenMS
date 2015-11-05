@@ -1,0 +1,3813 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="ToolTipHelp.img">
+  <imgdir name="Game">
+    <imgdir name="Button">
+      <imgdir name="Shop">
+        <string name="Title" value="Cash Shop" />
+        <string name="Desc" value="It's a place where, armed with Cash, you'll be able to purchase accessories, clothes, messenger item, hair salon coupons, coupons for plastic surgery, and other various items." />
+      </imgdir>
+      <imgdir name="Item">
+        <string name="Title" value="Item Inventory (I)" />
+        <string name="Desc" value="The window that allows the character to see the items it owns.\nThe items are categorized under Equip., Use, Set-Up, and Etc. items." />
+      </imgdir>
+      <imgdir name="Equip">
+        <string name="Title" value="Equipment Window (E)" />
+        <string name="Desc" value="The window that shows the equipped items, and allowing the character to equip/unequip them.\nOpen the item inventory alongside it to use the equip. items." />
+      </imgdir>
+      <imgdir name="Stat">
+        <string name="Title" value="Ability Window (S)" />
+        <string name="Desc" value="The window that shows detailed character info and its abilities.\nUse AP to enhance many different kinds of abilities. " />
+      </imgdir>
+      <imgdir name="Skill">
+        <string name="Title" value="Skill Window (K)" />
+        <string name="Desc" value="The window that shows the detailed look of the skillbook owned by the character.\nUse skill points to learn the skills available." />
+      </imgdir>
+      <imgdir name="Chat">
+        <string name="Title" value="Messenger Window" />
+        <string name="Desc" value="The window that lets you chat with buddies within a world." />
+      </imgdir>
+      <imgdir name="Menu">
+        <string name="Title" value="Menu" />
+        <string name="Desc" value="The window that lets you change the options or game infos.\nCan change game and system option.\nCan also see quest info, party info, and the community info." />
+      </imgdir>
+      <imgdir name="Whisper">
+        <string name="Title" value="Whisper" />
+        <string name="Desc" value="Press the button to choose the character you want to whisper to.\nPress it once more to disable whisper." />
+      </imgdir>
+      <imgdir name="MapTransfer">
+        <imgdir name="Register">
+          <string name="Title" value="Register Map" />
+          <string name="Desc" value="Registers the map the character is at to the teleport list. Can save up to 5 maps." />
+        </imgdir>
+        <imgdir name="RegisterEx">
+          <string name="Title" value="Register Map" />
+          <string name="Desc" value="Registers the map where the character is located into the Teleport List. Can register upto 10 different places." />
+        </imgdir>
+        <imgdir name="Delete">
+          <string name="Title" value="Delete Map" />
+          <string name="Desc" value="Delete the chosen map from the list." />
+        </imgdir>
+        <imgdir name="Move">
+          <string name="Title" value="Move" />
+          <string name="Desc" value="Teleports to the map of your choice, or to the map where the chosen character is." />
+        </imgdir>
+      </imgdir>
+      <imgdir name="KeySet">
+        <string name="Title" value="Key Config." />
+      </imgdir>
+      <imgdir name="QuickSlot">
+        <string name="Title" value="Show Quick Slot" />
+      </imgdir>
+      <imgdir name="QuickSlotD">
+        <string name="Title" value="Hide Quick Slot" />
+      </imgdir>
+      <imgdir name="Claim">
+        <string name="Title" value="Alert GM" />
+      </imgdir>
+      <imgdir name="QuestAlarm">
+        <string name="Desc" value="Click on Quest Alarm button if you wish to register the current quest into the Quest Alarm. Up to 5 quests can be registered in this alarm." />
+      </imgdir>
+      <imgdir name="StatAuto">
+        <string name="Title" value="Stat Auto-Assign" />
+        <string name="Desc" value="Distributes the remaining AP according to your level and class." />
+      </imgdir>
+      <imgdir name="StatAuto1">
+        <string name="Title" value="Stat Auto-Assign (Brawler)" />
+        <string name="Desc" value="Distributes the remaining AP according to Brawler requirements." />
+      </imgdir>
+      <imgdir name="StatAuto2">
+        <string name="Title" value="Stat Auto-Assign (Gunslinger)" />
+        <string name="Desc" value="Distributes the remaining AP according to Gunslinger requirements." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="UIWnd">
+      <imgdir name="Stat">
+        <imgdir name="0">
+          <string name="Title" value="Name of the Character" />
+          <string name="Desc" value="Once the name is made,\nthe name can't be changed." />
+          <vector name="lt" x="8" y="32" />
+          <vector name="rb" x="55" y="47" />
+        </imgdir>
+        <imgdir name="1">
+          <string name="Title" value="Job of the Character" />
+          <string name="Desc" value="Can make the job advancement to Warrior, Bowman, Thief, Magician, or Pirate. \nWarrior : Minimum of Level 10, Perion\nBowman : Minimum of Level 10, Henesys\nMagician : Minimum of Level 8, Ellinia\nThief : Minimum of Level 10, Kerning City\nPirate : Minimum of Level 10, The Nautilus" />
+          <vector name="lt" x="8" y="50" />
+          <vector name="rb" x="55" y="75" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="Title" value="Level" />
+          <string name="Desc" value="Accumulate enough EXP to raise the level of the character." />
+          <vector name="lt" x="8" y="78" />
+          <vector name="rb" x="55" y="93" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="Title" value="Main Guild" />
+          <string name="Desc" value="The main community of the communities the account belongs to. Press &quot;G&quot; to check guild info." />
+          <vector name="lt" x="8" y="96" />
+          <vector name="rb" x="55" y="111" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="Title" value="Health Point" />
+          <string name="Desc" value="It's a health stat, and if it reaches 0, the character dies.\nHP decreases if either attacked by an enemy or if a certain skill is used.\nIt can go up to the maximum of 30,000 points." />
+          <vector name="lt" x="8" y="114" />
+          <vector name="rb" x="55" y="129" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="Title" value="Mana Point" />
+          <string name="Desc" value="The stat needed to use various skills.\nIt can go up to the maximum of 30,000 points." />
+          <vector name="lt" x="8" y="132" />
+          <vector name="rb" x="55" y="147" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="Title" value="EXP" />
+          <string name="Desc" value="The amount of experience gained. \nObtained by killing a monster or completing a quest." />
+          <vector name="lt" x="8" y="150" />
+          <vector name="rb" x="55" y="165" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="Title" value="Fame" />
+          <string name="Desc" value="The level of fame can be increased or decreased, based on other users. Some equipments and quests require the character reach a certain level of fame." />
+          <vector name="lt" x="8" y="168" />
+          <vector name="rb" x="55" y="183" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="Title" value="Strength (STR)" />
+          <string name="Desc" value="The stat needed to use heavy weapons and/or armors.\nIt determines the attacking ability of the warriors and pirates (Brawlers)." />
+          <vector name="lt" x="8" y="243" />
+          <vector name="rb" x="55" y="259" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="Title" value="Dexterity (DEX)" />
+          <string name="Desc" value="This stat is vital to making direct attacks using a weapon. This is the most significant stat when it comes to the strength of the attacks for warriors and pirates (Gunslingers). " />
+          <vector name="lt" x="8" y="262" />
+          <vector name="rb" x="55" y="277" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="Title" value="Intelligence (INT)" />
+          <string name="Desc" value="The higher this stat, the higher the accuracy and strenghth of your magic attack. The most important stat that determines the magic attacks for mages." />
+          <vector name="lt" x="8" y="280" />
+          <vector name="rb" x="55" y="295" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="Title" value="Luck (LUK)" />
+          <string name="Desc" value="The higher it is, the higher the avoidability is. \nIt determines the Thief's attacking ability and the Mage's magic attack accuracy. \nAlso, the higher it is, the less EXP a character loses by dying." />
+          <vector name="lt" x="8" y="298" />
+          <vector name="rb" x="55" y="313" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="Title" value="AP(Ability Point)" />
+          <string name="Desc" value="Amount to increase STR, DEX, INT,LUK, HP and MP. For STR, DEX, INT and LUK, every 1 AP used will increase the stats by 1.  For HP and MP, it differs pending on the jobs and characters.  5 Points will be given upon level up." />
+          <vector name="lt" x="7" y="192" />
+          <vector name="rb" x="90" y="214" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="StatDetail">
+        <imgdir name="0">
+          <vector name="lt" x="13" y="7" />
+          <vector name="rb" x="70" y="22" />
+          <string name="Title" value="Attack" />
+          <string name="Desc" value="The stat that impacts the damage caused by physical attacks. This stat is related to strength (STR) for warriors and magicians, dexterity (DEX) for bowmen, strength, dexterity and luck (LUK) for thieves and strength and dexterity for pirates. The above stat and the equipment's physical attack are added to decide on the overall physical attack.  " />
+        </imgdir>
+        <imgdir name="1">
+          <vector name="lt" x="13" y="25" />
+          <vector name="rb" x="70" y="40" />
+          <string name="Title" value="Weapon Def." />
+          <string name="Desc" value="The stat that determines the ability to defend the weapon attack.\nBased on all equipped armors' weapon def. " />
+        </imgdir>
+        <imgdir name="2">
+          <vector name="lt" x="13" y="43" />
+          <vector name="rb" x="70" y="58" />
+          <string name="Title" value="Magic" />
+          <string name="Desc" value="The stat that determines the success rate and the attacking ability of spells.\nBased on INT and equipped items' magic power." />
+        </imgdir>
+        <imgdir name="3">
+          <vector name="lt" x="13" y="61" />
+          <vector name="rb" x="70" y="76" />
+          <string name="Title" value="Magic Def." />
+          <string name="Desc" value="The stat for defending spells.\nBased on magic def. of every armor that's been equipped." />
+        </imgdir>
+        <imgdir name="4">
+          <vector name="lt" x="13" y="79" />
+          <vector name="rb" x="70" y="94" />
+          <string name="Title" value="Accuracy" />
+          <string name="Desc" value="The stat that determines the accuracy of weapon attack. \nThe higher, the more accurate.\nBased on dexterity and the equipment item options." />
+        </imgdir>
+        <imgdir name="5">
+          <vector name="lt" x="13" y="97" />
+          <vector name="rb" x="70" y="112" />
+          <string name="Title" value="Avoidability" />
+          <string name="Desc" value="The stat that enables the character to avoid weapon damage.\nThe higher it is, the better the character avoids weapon damage.\nBased on dexterity, luck, and the equipment item options." />
+        </imgdir>
+        <imgdir name="6">
+          <vector name="lt" x="13" y="115" />
+          <vector name="rb" x="70" y="130" />
+          <string name="Title" value="" />
+          <string name="Desc" value="" />
+        </imgdir>
+        <imgdir name="7">
+          <vector name="lt" x="13" y="133" />
+          <vector name="rb" x="70" y="148" />
+          <string name="Title" value="Speed" />
+          <string name="Desc" value="A character's speed can increase upto 140%. Can be changed through equipment item options or skills." />
+        </imgdir>
+        <imgdir name="8">
+          <vector name="lt" x="13" y="151" />
+          <vector name="rb" x="70" y="166" />
+          <string name="Title" value="Jump" />
+          <string name="Desc" value="A character's jump ability can increase upto 123%. \nCan be changed through equipment item options or skills." />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="Mapobject">
+    <imgdir name="0">
+      <imgdir name="0">
+        <string name="Title" value="Character Jump(Alt)" />
+        <string name="Desc" value="Press Alt on keyboard to jump" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Move Character(Arrow Keys)" />
+        <string name="Desc" value="Move around, climb up the ladder, and use portals using the arrow keys." />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Use Portal(Up)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="To New Places..." />
+        <string name="Desc" value="Move to the right to explore new grounds." />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Starting Point" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="10000">
+      <imgdir name="0">
+        <string name="Title" value="Use Portal (Up)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="20000">
+      <imgdir name="0">
+        <string name="Title" value="Mushroom Town" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Nina &amp; Sen's House" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="30000">
+      <imgdir name="0">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="40000">
+      <imgdir name="0">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="40001">
+      <imgdir name="0">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="40002">
+      <imgdir name="0">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="50000">
+      <imgdir name="0">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Snail Hunting Ground" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="60000">
+      <imgdir name="0">
+        <string name="Title" value="Armor Shop" />
+        <string name="Desc" value="This is the place to purchase armors." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southperry --&gt; Lith Harbor (Victoria Island)" />
+        <string name="Desc" value="Fee : 150 Mesos\n\nGet on the ship that heads to Lith Harbor through Shanks. Once out of Maple Island, you will not be able to return here ever again." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1000000">
+      <imgdir name="0">
+        <string name="Title" value="Weapon Store" />
+        <string name="Desc" value="This is the place to purchase weapons." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Department Store" />
+        <string name="Desc" value="This is the place to purchase potions, scrolls, and other goods." />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Entrance to Adventurer Training Center" />
+        <string name="Desc" value="Toward Southperry" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Amherst" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1010000">
+      <imgdir name="0">
+        <string name="Title" value="Split Road of Destiny" />
+        <string name="Desc" value="Toward Southperry" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Adventurer Training Center" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000000">
+      <imgdir name="0">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys Market" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Henesys Park" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Dungeon" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="The Hill East of Henesys" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Henesys Hunting Ground" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Maya's House" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Mini Dungeon: Mushroom Castle" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Dungeon (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000100">
+      <imgdir name="0">
+        <string name="Title" value="Henesys Market" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Pet Store" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Skin Care" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Henesys Market" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Henesys Park" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="Title" value="Henesys Market" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000200">
+      <imgdir name="0">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys Park" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Pet Walkway" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Henesys Market" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Henesys Game Park" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Bowman Instructional School" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Bowman Instructional School" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101000000">
+      <imgdir name="0">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ellinia Station" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Magic Library" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Marr's Forest" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Sky Ferry" />
+        <string name="Desc" value="The ship that passes through Ereve is at anchor." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101000300">
+      <imgdir name="0">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Perion" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Ellinia" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Kerning City" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ticket Booth" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030100">
+      <imgdir name="0">
+        <string name="Title" value="Rocky Road II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Excavation Site I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="East Domain of Perion" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Excavation Site I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030400">
+      <imgdir name="0">
+        <string name="Title" value="Rocky Road II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain II" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Rocky Road I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102000000">
+      <imgdir name="0">
+        <string name="Title" value="West Street Corner of Perion" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="On the Way to Dungeon" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="East Domain of Perion" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Warriors' Sanctuary" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102020000">
+      <imgdir name="0">
+        <string name="Title" value="West Domain of Perion" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="West Rocky Mountain II" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="West Street Corner of Perion" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="West Domain of Perion" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="West Rocky Mountain II" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="West Street Corner of Perion" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="             DANGER!             " />
+        <string name="Desc" value="Danger zone from here on. Be cautious." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103000000">
+      <imgdir name="0">
+        <string name="Title" value="Subway" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Key Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Maple Internet Cafe" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Kerning City Pharmacy" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Kerning City Pharmacy" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Fusion Jazz Bar" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Repair Shop" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Naora Hosptial" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Naora Hosptial" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Self-Defence Item Store" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103030000">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City Middle Forest II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="L Forest III" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Three-Way Road" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104000000">
+      <imgdir name="0">
+        <string name="Title" value="Ticket Booth" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Armor Shop" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Cab Station" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ticket Price Guideline" />
+        <string name="Desc" value="\nPerion, Ellinia: 1200 Mesos, Henesys: 800 Mesos, Kerning City: 1000 Mesos\n\n\n- 90% Discount for Beginners!!" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Info Shop" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104010000">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City Middle Forest I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Forest West of Henesys" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Thicket Around the Beach III" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Thicket Around the Beach III" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Forest West of Henesys" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Kerning City" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Danger Zone" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Danger Zone" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105040000">
+      <imgdir name="0">
+        <string name="Title" value="Entrance to Henesys Dungeon" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Deep Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Sleepywood" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Deep Forest Hunting Ground I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105040300">
+      <imgdir name="0">
+        <string name="Title" value="Hotel" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Swampy Land in a Deep Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Dungeon" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000000">
+      <imgdir name="0">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Guild Office" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Orbis Station" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Orbis Park" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Orbis Station" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Orbis Tower" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Cloud Park" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000100">
+      <imgdir name="0">
+        <string name="Title" value="Orbis" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Station" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000110">
+      <imgdir name="0">
+        <string name="Title" value="Station &lt;To Ellinia&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Orbis Station - Waiting Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000120">
+      <imgdir name="0">
+        <string name="Title" value="Station &lt;To Ludibrium&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Orbis Station - Waiting Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000130">
+      <imgdir name="0">
+        <string name="Title" value="Station &lt;To Leafre&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Orbis Station - Waiting Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000140">
+      <imgdir name="0">
+        <string name="Title" value="Station &lt;To Mu Lung&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Orbis Station - Waiting Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200010000">
+      <imgdir name="0" />
+      <imgdir name="1">
+        <string name="Title" value="The Road to Garden of 3 Colors" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Cloud Park II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200010100">
+      <imgdir name="0">
+        <string name="Title" value="Garden of Red I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Garden of Yellow I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Garden of Blue I" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="The Road to Garden of 3 Colors" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Cloud Park I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200010200">
+      <imgdir name="0">
+        <string name="Title" value="Stairway to the Sky II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Garden of Red II" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Garden of Yellow II" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Garden of Blue II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200082100">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Tower - Basement" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Orbis Tower - Basement" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211040000">
+      <imgdir name="0">
+        <string name="Title" value="Ice Valley I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cold Field I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Icy Cold Field" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211000000">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="El Nath" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="El Nath Market" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Chief's Residence" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="El Nath" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="El Nath Mountain Range" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211000100">
+      <imgdir name="0">
+        <string name="Title" value="El Nath" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="El Nath Market" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="219000000">
+      <imgdir name="0">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220000000">
+      <imgdir name="0">
+        <string name="Title" value="Ludibrium - East Entrance" />
+        <string name="Desc" value="On the Way to Helios Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Skin Care" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Clocktower" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ludibrium - West Entrance 1" />
+        <string name="Desc" value="On the Way to Eos Tower" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Pet Walkway" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Ludibrium Station" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="Title" value="Clocktower" />
+      </imgdir>
+      <imgdir name="13">
+        <string name="Title" value="Pet Walkway" />
+      </imgdir>
+      <imgdir name="14">
+        <string name="Title" value="Townstreet" />
+      </imgdir>
+      <imgdir name="15">
+        <string name="Title" value="Free Market·Plastic Surgery" />
+      </imgdir>
+      <imgdir name="16">
+        <string name="Title" value="Weapon Store·Department Store·Ludibrium Station" />
+      </imgdir>
+      <imgdir name="17">
+        <string name="Title" value="Helios Tower" />
+      </imgdir>
+      <imgdir name="18">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220000100">
+      <imgdir name="0">
+        <string name="Title" value="Ticket Booth" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Station" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220000300">
+      <imgdir name="0">
+        <string name="Title" value="Tara and Sarah's House" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Korin's House" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Manager Karl's House" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Chloe's House" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Mation's House" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Ludibrium - West Entrance 2" />
+        <string name="Desc" value="On the Way to Eos Tower" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Eos Tower" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Ludibrium" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220000400">
+      <imgdir name="0">
+        <string name="Title" value="Eos Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Eos Tower" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Townstreet" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220000500">
+      <imgdir name="0">
+        <string name="Title" value="Helios Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ludibrium" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Helios Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="220050300">
+      <imgdir name="0">
+        <string name="Title" value="Warped Path of Time" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Forgotten Path of Time" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221050300">
+      <imgdir name="0">
+        <string name="Title" value="Warped Path of Time" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Forgotten Path of Time" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221000000">
+      <imgdir name="0">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Headquarter" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Safety Zone" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Off-Limits" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221000200">
+      <imgdir name="0">
+        <string name="Title" value="Medical Office" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Weapon Provider" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Armor Provider" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221000400">
+      <imgdir name="0">
+        <string name="Title" value="Eos Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Eos Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221030000">
+      <imgdir name="0">
+        <string name="Title" value="Boswell Field I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Omega Sector" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Kulan  Field I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010000">
+      <imgdir name="0">
+        <string name="Title" value="Black Mountain &lt;Corner&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Korean Folk Town" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Small Pond" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Small Pond" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Korean Folk Town" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010100">
+      <imgdir name="0">
+        <string name="Title" value="Tiger Forest I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Entrance to Black Mountain" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Tiger Ridge" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010200">
+      <imgdir name="0">
+        <string name="Title" value="Black Mountain Valley" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Small Pond" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Fox Ridge" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230000000">
+      <imgdir name="0">
+        <string name="Title" value="Aquarium Department Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Aquarium Zoo" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Aquarium Market" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Aquarium" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230000001">
+      <imgdir name="0">
+        <string name="Title" value="Aquarium Zoo" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Aquarium Department Store" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230000002">
+      <imgdir name="0">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Armor Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Storage" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230000003">
+      <imgdir name="0">
+        <string name="Title" value="Balrog" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="White Fang and Yeti" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Pig and Ribbon Pig" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Aquarium Zoo" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230010000">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230010400">
+      <imgdir name="0">
+        <string name="Title" value="Aquarium" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Turban Shell Hill" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230020000">
+      <imgdir name="0">
+        <string name="Title" value="Aquarium" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230020100">
+      <imgdir name="0">
+        <string name="Title" value="The Sharp Unknown" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Blue Seaweed Road" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230030000">
+      <imgdir name="0">
+        <string name="Title" value="Mushroom Coral Hill" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Big Fish Valley" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230030200">
+      <imgdir name="0">
+        <string name="Title" value="Korean Folk Town" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230020200">
+      <imgdir name="0">
+        <string name="Title" value="Mushroom Coral Hill" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240000000">
+      <imgdir name="0">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Weapon·Armor Store" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="West Forest of Leafre" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="East Forest of Leafre" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Leafre Station" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Leafre" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240000100">
+      <imgdir name="0">
+        <string name="Title" value="Leafre" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ticket Booth" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Station" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010000">
+      <imgdir name="0">
+        <string name="Title" value="Leafre" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Minar Forest : West Border" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010100">
+      <imgdir name="0">
+        <string name="Title" value="West Forest of Leafre" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cranky Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010200">
+      <imgdir name="0">
+        <string name="Title" value="Steep Hill" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Steep Hill" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Minar Forest : West Border" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="The Area of Red Kentaurus" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Minar Forest : West Border" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010300">
+      <imgdir name="0">
+        <string name="Title" value="Forest : Forked Road" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cranky Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010400">
+      <imgdir name="0">
+        <string name="Title" value="Entrance to Dragon Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Steep Hill" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Valley of the Antelope" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Steep Hill" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Valley of the Antelope" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Entrance to Dragon Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010800">
+      <imgdir name="0">
+        <string name="Title" value="Minar Forest : East Border" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Sky Nest I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Battlefield of Water and Darkness" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Minar Forest : East Border" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Sky Nest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240011000">
+      <imgdir name="0">
+        <string name="Title" value="Minar Forest : East Border" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Leafre" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240020000">
+      <imgdir name="0">
+        <string name="Title" value="Battlefield of Fire and Water" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cranky Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Battlefield of Fire and Darkness" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240020300">
+      <imgdir name="0">
+        <string name="Title" value="The Area of Blue Kentaurus" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Entrance to Sky Nest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="The Area of Black Kentaurus" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030000">
+      <imgdir name="0">
+        <string name="Title" value="Forest : Forked Road" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dragon Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030100">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest II" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Entrance to Dragon Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Entrance to Dragon Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Dragon Forest II" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Burning Forest" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Disappeared Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030103">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030104">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030200">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest III" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dragon Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240030300">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040000">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Forest III" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040100">
+      <imgdir name="0">
+        <string name="Title" value="Dragon Canyon" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Path of Canyon" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="West Path of Canyon" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040400">
+      <imgdir name="0">
+        <string name="Title" value="West Path of Canyon" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Path of Canyon" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Entrance to Dragon Nest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040500">
+      <imgdir name="0">
+        <string name="Title" value="The Destroyed Dragon Nest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dead Dragon Nest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Wyvern Canyon" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040600">
+      <imgdir name="0">
+        <string name="Title" value="The Dragon Nest Left Behind" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Entrance to Cave of Life" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Dangerous Dragon Nest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="250000000">
+      <imgdir name="0">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Mu Lung Hair Salon" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Mu Lung Plastic Surgery" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Armor Shop" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Mu Lung Skin Care" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Mu Lung Department Store" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Free Market Entrance" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Mu Lung Temple" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="250010301">
+      <imgdir name="0">
+        <string name="Title" value="Snake Area" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="250010500">
+      <imgdir name="0">
+        <string name="Title" value="Peach Farm 2" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Where the Sky Forest Ends" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Foggy Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="250010501">
+      <imgdir name="0">
+        <string name="Title" value="Virtuous Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Peach Farm1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="250010700">
+      <imgdir name="0">
+        <string name="Title" value="Isolated Swamp" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="251000000">
+      <imgdir name="0">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Armor Shop" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="251010400">
+      <imgdir name="0">
+        <string name="Title" value="Bellflower Valley" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Isolated Swamp" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="251010500">
+      <imgdir name="0">
+        <string name="Title" value="Peach Farm 3" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Old Swamp" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="500000000">
+      <imgdir name="0">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="680000000">
+      <imgdir name="0">
+        <string name="Title" value="Amoria Wedding Shop" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Saint Maple Altar" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Amoria Plastic Surgery " />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Amoria Hair Salon" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="White Wedding Altar" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Amoria" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Purple Plains 1" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Wedding Cathedral" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Wedding Chapel" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="500020100">
+      <imgdir name="0">
+        <string name="Title" value="Outside the Entrance to the Village" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Fancy Swamp" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Small Jungle" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Outside the Entrance to the Village" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Fancy Swamp" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Small Jungle" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="701000000">
+      <imgdir name="0">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Weapon·Armor Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Newspaper Tray" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Newspaper Tray" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="740000000">
+      <imgdir name="0">
+        <string name="Title" value="Weapon Store" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Armor Store" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Taipei Route" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Subway&lt;Taipei&gt;" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="740000100">
+      <imgdir name="0">
+        <string name="Title" value="Exit" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="740010200">
+      <imgdir name="0">
+        <string name="Title" value="Back Alley of Taipei" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Streets of Taipei II" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Streets of TaipeiⅣ" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="741000000">
+      <imgdir name="0">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Hair Salon" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Skin Care" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="741000001">
+      <imgdir name="0">
+        <string name="Title" value="Skin Care" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Plastic Surgery" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="741010200">
+      <imgdir name="0">
+        <string name="Title" value="Streets of Night Market II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Streets of Night MarketⅣ" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="In Between the Road of Night Market I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800000000">
+      <imgdir name="0">
+        <string name="Title" value="Mushroom Shrine" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Fish Cake Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Yakisoba Shop" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Takoyaki Shop" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Mushroom Ramen Shop" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Dango Shop" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Mushroom Shrine" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="World Tour Info Desk" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800020000">
+      <imgdir name="0">
+        <string name="Title" value="Crow Forest II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Animal Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Mushroom Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800020101">
+      <imgdir name="0">
+        <string name="Title" value="Bamboo Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cloud Fox Mountain" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Crow Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="920010100">
+      <imgdir name="0">
+        <string name="Title" value="&lt;Lobby&gt;" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="&lt;Sealed Room&gt;" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="&lt;Storage&gt;" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="&lt;Lounge&gt;" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="&lt;Walkway&gt;" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="&lt;On the Way Up&gt;" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030103">
+      <imgdir name="0">
+        <string name="Title" value="Excavation Site II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Excavation Site" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030104">
+      <imgdir name="0">
+        <string name="Title" value="RemainsI" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Remains3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540000000">
+      <imgdir name="0">
+        <string name="Title" value="Changi Airport" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Central Way 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540000100">
+      <imgdir name="0">
+        <string name="Title" value="Central Way 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540000200">
+      <imgdir name="0">
+        <string name="Title" value="Central Way 3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540000300">
+      <imgdir name="0">
+        <string name="Title" value="Central Way 2" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Surburban Area 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540020000">
+      <imgdir name="0">
+        <string name="Title" value="Surburban Area 2" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Boat Quay Town" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="540020100">
+      <imgdir name="0">
+        <string name="Title" value="Surburban Area 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="541000300">
+      <imgdir name="0">
+        <string name="Title" value="Ghost Ship 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100030000">
+      <imgdir name="0">
+        <string name="Title" value="Utah's pig farm" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ellinia southern forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Nautilus Harbor" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Utah's Pig Farm" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ellinia southern forest" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Ellinia eastern forest" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Nautilus Harbor" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Utah's Pig Farm" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Ellinia southern forest" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Nautilus Harbor" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Forest East of Henesys" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101040001">
+      <imgdir name="0">
+        <string name="Title" value="Stone plate of Boogi" />
+        <string name="Desc" value="You will need to destroy the resource first before you defeated Boogi " />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104030000">
+      <imgdir name="0">
+        <string name="Title" value="Henesys hunting ground 1" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys Western forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000150">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Station waiting room" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Platform to Ariant" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200082300">
+      <imgdir name="0">
+        <string name="Title" value="Sea Interchange" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211000200">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Tower" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="ElNath" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211041100">
+      <imgdir name="0">
+        <string name="Title" value="lich -alert-" />
+        <string name="Desc" value="Lich area!! If you cannot escape from lich, dedicate teeth of zombie to grave!! Resource of lich's power is underneath.....grave.." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dead Tree's Forest II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211041200">
+      <imgdir name="0">
+        <string name="Title" value="lich -alert-" />
+        <string name="Desc" value="Lich area!! If you cannot escape from lich, dedicate teeth of zombie to grave!! Resource of lich's power is underneath.....grave.." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dead tree;s forest I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Dead tree;s forest III" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211041300">
+      <imgdir name="0">
+        <string name="Title" value="lich -alert-" />
+        <string name="Desc" value="Lich area!! If you cannot escape from lich, dedicate teeth of zombie to grave!! Resource of lich's power is underneath.....grave.." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211041400">
+      <imgdir name="0">
+        <string name="Title" value="lich -alert-" />
+        <string name="Desc" value="Lich area!! If you cannot escape from lich, dedicate teeth of zombie to grave!! Resource of lich's power is underneath.....grave.." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010101">
+      <imgdir name="0">
+        <string name="Title" value="Small pond" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Tiger forest II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010102">
+      <imgdir name="0">
+        <string name="Title" value="Tiger forest II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="※Prohibited to proceed " />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230010100">
+      <imgdir name="0">
+        <string name="Title" value="Sea Interchange" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Red Coral Forest" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230010200">
+      <imgdir name="0">
+        <string name="Title" value="Crystal Valley" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Turban Shell Hill" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="230010300">
+      <imgdir name="0">
+        <string name="Title" value="Red Coral Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Western Sea Crossroad" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260000000">
+      <imgdir name="0">
+        <string name="Title" value="Outside the Ariant West Gate" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Post Ware House" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="World Tour Manual" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Ariant Platform" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Ariant Skin Care Clinic" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Ariant Plastic Surgery" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Ariant town" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Free market" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Ariant Palace" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Ariant Weapon shop" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Ariant Armor shop" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Ariant Potion shop" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="Title" value="Ext North Gate of Ariant" />
+      </imgdir>
+      <imgdir name="13">
+        <string name="Title" value="Ariant Hair shop" />
+      </imgdir>
+      <imgdir name="14">
+        <string name="Title" value="Ext East gate of Ariant" />
+      </imgdir>
+      <imgdir name="15">
+        <string name="Title" value="Ariant Platform" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260000200">
+      <imgdir name="0">
+        <string name="Title" value="Ridium Processing Workshop" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ariant Market" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260010000">
+      <imgdir name="0">
+        <string name="Title" value="Ariant" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260010600">
+      <imgdir name="0">
+        <string name="Title" value="Dry Desert" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260010700">
+      <imgdir name="0">
+        <string name="Title" value="Ariant" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260020000">
+      <imgdir name="0">
+        <string name="Title" value="Ariant" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Camel Taxi" />
+        <string name="Desc" value="Magatia 1500 Mesos" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260020700">
+      <imgdir name="0">
+        <string name="Title" value="Camel Taxi" />
+        <string name="Desc" value="Ariant 1500 Mesos" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="990000200">
+      <imgdir name="0">
+        <string name="Title" value="Shelenian Ruins" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="60002">
+      <imgdir name="0">
+        <string name="Title" value="Southperry" />
+        <string name="Desc" value="Southperry is a port city." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="120000100">
+      <imgdir name="0">
+        <string name="Title" value="The Ship's Control Room" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Restaurant" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Central Corridor of The Nautilus (↓)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Training Room" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Kyrin's Control Room" />
+        <string name="Desc" value="If you want to make a job advancement to becoming a pirate,  then go to the room on the left most corner..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="120000300">
+      <imgdir name="0">
+        <string name="Title" value="Central Corridor of The Nautilus (↑)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Generator Room" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Generator Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211010000">
+      <imgdir name="0">
+        <string name="Title" value="Hunter's Altar" />
+        <string name="Desc" value="A small altar setup by the hunters in El Nath. This was made to appease the Snow Witch when she appears enraged. If a dropped item from the snowfield is used as the sacrifice, then the witch will be appeased." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211020000">
+      <imgdir name="0">
+        <string name="Title" value="Hunter's Altar" />
+        <string name="Desc" value="A small altar setup by the hunters in El Nath. This was made to appease the Snow Witch when she appears enraged. If a dropped item from the snowfield is used as the sacrifice, then the witch will be appeased." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="211050000">
+      <imgdir name="0">
+        <string name="Title" value="Hunter's Altar" />
+        <string name="Desc" value="A small altar setup by the hunters in El Nath. This was made to appease the Snow Witch when she appears enraged. If a dropped item from the snowfield is used as the sacrifice, then the witch will be appeased." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rider's Field" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="229010000">
+      <imgdir name="0">
+        <string name="Title" value="Abandoned Grave" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="On the Way Back" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="261020200">
+      <imgdir name="0">
+        <string name="Title" value="Poison Spray" />
+        <string name="Desc" value="A poison sprayer used to defeat Rurumo. All alchemists from Alcadno should only use this to eliminate Rurumo. Who keeps taking the poison from the spray bottle?" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="261020400">
+      <imgdir name="0">
+        <string name="Title" value="Poison Spray" />
+        <string name="Desc" value="A poison sprayer used to defeat Rurumo. All alchemists from Alcadno should only use this to eliminate Rurumo. Who keeps taking the poison from the spray bottle?" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="261020600">
+      <imgdir name="0">
+        <string name="Title" value="Poison Spray" />
+        <string name="Desc" value="A poison sprayer used to defeat Rurumo. All alchemists from Alcadno should only use this to eliminate Rurumo. Who keeps taking the poison from the spray bottle?" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300000000">
+      <imgdir name="0">
+        <string name="Title" value="Barrier Stone" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="General Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Clinic" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Camp Conference Room" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Barrier Stone" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300010000">
+      <imgdir name="0">
+        <string name="Title" value="Altaire Camp" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Mossy Tree Forest " />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300010200">
+      <imgdir name="0">
+        <string name="Title" value="Mossy Tree Forest Trail" />
+        <string name="Desc" value="If you're a lost adventurer, go this way..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300010300">
+      <imgdir name="0">
+        <string name="Title" value="Western Region of Mossy Tree Forest" />
+        <string name="Desc" value="The camp is beyond the western region of the forest. -Rios-" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southern Region of Mossy Tree Forest" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Toward the Boulder Mountain" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300020000">
+      <imgdir name="0">
+        <string name="Title" value="Mossy Tree Forest Trail" />
+        <string name="Desc" value="If you're a lost adventurer, go this way..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="300030000">
+      <imgdir name="0">
+        <string name="Title" value="Danger Zone.  Explorations Not Allowed!" />
+        <string name="Desc" value="Due to strange occurrences as of late, explorations are not being allowed. -Athena Pierce-" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="500010000">
+      <imgdir name="0">
+        <string name="Title" value="Toad Pond" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Floating Market" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="500010100">
+      <imgdir name="0">
+        <string name="Title" value="Frog Pond/Floating Market" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800020110">
+      <imgdir name="0">
+        <string name="Title" value="Watch Out for the Bamboo Warrior!" />
+        <string name="Desc" value="If a cold breeze blows through the Bamboo Forest, that's when Bamboo Warrior appears! Watch out for the Bamboo Warrior that's holding a grudge. To eliminate the warrior, slash the bamboo trees in the Forest..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800020120">
+      <imgdir name="0">
+        <string name="Title" value="Watch Out for the Bamboo Warrior!" />
+        <string name="Desc" value="If a cold breeze blows through the Bamboo Forest, that's when Bamboo Warrior appears! Watch out for the Bamboo Warrior that's holding a grudge. To eliminate the warrior, slash the bamboo trees in the Forest..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="800020130">
+      <imgdir name="0">
+        <string name="Title" value="Watch Out for the Bamboo Warrior!" />
+        <string name="Desc" value="If a cold breeze blows through the Bamboo Forest, that's when Bamboo Warrior appears! Watch out for the Bamboo Warrior that's holding a grudge. To eliminate the warrior, slash the bamboo trees in the Forest..." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100040105">
+      <string name="quest00" value="Rotten Tree Trail" />
+      <imgdir name="0">
+        <string name="Title" value="The Forest of Evil II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Monkey Forest II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="120000200">
+      <imgdir name="0">
+        <string name="Title" value="Morgan's Weapons Shop" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rodos' Armor Shop" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Conference Room" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Exit" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Gali's General Goods Shop" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Upper Corridor of The Nautilus (↑)" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Lower Corridor of The Nautilus (↓)" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Bedroom" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Weapon / Armor Shop" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="General Goods Shop / Stairs" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222000000">
+      <imgdir name="0">
+        <string name="Title" value="General Goods Shop" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Korean Folk Town" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Black Mountain" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Black Mountain" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Weapon / Armor Shop" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Helios Tower &lt;Library&gt;" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Entrance to Black Mountain" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Free Market Entrance" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="222010300">
+      <imgdir name="0">
+        <string name="Title" value="222010400.000000" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Tiger Ridge" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Tower" />
+        <string name="Desc" value="All those that pass Fox Valley should throw Samiho's tail from the top of the tower to pay off it's scores" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="261000000">
+      <imgdir name="0">
+        <string name="Title" value="Sahel" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Alcadno Society - General Store" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Zenumist Society - Weapon &amp; Armor Shop" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Magatia Bank" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Stan's Workroom" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Weapon &amp; Armor Shop" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Zenumist Society" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="General Store" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Alcadno Society" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Free Market Entrance" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000002">
+      <imgdir name="0">
+        <string name="Title" value="Pig Park" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Theme Dungeon: Mushroom Castle" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="헤네시스" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Theme Dungeon: Mushroom Castle" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000003">
+      <imgdir name="0">
+        <string name="Title" value="An Empty House (Towards Henesys)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Pig Park II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000004">
+      <imgdir name="0">
+        <string name="Title" value="Someone Else's House" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Pig Park (Towards Henesys)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100000005">
+      <imgdir name="0">
+        <string name="Title" value="Pig Park II (Towards Henesys)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100010000">
+      <imgdir name="0">
+        <string name="Title" value="The Forest East of Henesys (Towards Ellinia/Nautilus)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100020000">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Henesys Pig Farm" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Mini Dungeon: Henesys Pig Farm" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="The Forest East of Henesys (Towards Ellinia/Nautilus)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="The Hill East of Henesys" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100040000">
+      <imgdir name="0">
+        <string name="Title" value="The Forest of Wisdom (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Forest East of Henesys (Towards Henesys/Nautilus)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="The Forest of Wisdom (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="The Forest East of Henesys (Towards Henesys/Nautilus)" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="The Forest of Wisdom (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="The Forest East of Henesys (Towards Henesys/Nautilus)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100040100">
+      <imgdir name="0">
+        <string name="Title" value="The Forest South of Ellinia (Towards Henesys/Nautilus)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Field South of Ellinia (Towards Ellinia)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100040101">
+      <imgdir name="0">
+        <string name="Title" value="The Forest of Wisdom" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Monkey Forest II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="100040103">
+      <imgdir name="0">
+        <string name="Title" value="The Forest of Evil I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Monkey Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101010000">
+      <imgdir name="0">
+        <string name="Title" value="The Tree That Grew I (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ellinia" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101010100">
+      <imgdir name="0">
+        <string name="Title" value="The Tree That Grew II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Field Up North of Ellinia (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="The Forest North of Ellinia (Towards Perion)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101010101">
+      <imgdir name="0">
+        <string name="Title" value="The Tree That Grew III" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Tree That Grew I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101010102">
+      <imgdir name="0">
+        <string name="Title" value="Crest Of The Tree That Grew" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Tree That Grew II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101010103">
+      <imgdir name="0">
+        <string name="Title" value="             &lt;Warning&gt;             " />
+        <string name="Desc" value="Height: 30km above ground level. This is the highest peak of the tallest tree in Ellinia. The wind blows eastwards towards Sleepywood. Jump at your own risk." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101020000">
+      <imgdir name="0">
+        <string name="Title" value="East Domain of Perion (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Tree That Grew1 (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Tree Dungeon, Forest Up North I" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Tree Dungeon, Forest Up North I" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Tree Dungeon, Forest Up North II" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Tree Dungeon, Forest Up North II" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Tree Dungeon, Forest Up North III" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Tree Dungeon, Forest Up North III" />
+      </imgdir>
+      <imgdir name="8">
+        <string name="Title" value="Tree Dungeon, Forest Up North IV" />
+      </imgdir>
+      <imgdir name="9">
+        <string name="Title" value="Tree Dungeon, Forest Up North V" />
+      </imgdir>
+      <imgdir name="10">
+        <string name="Title" value="Tree Dungeon, Forest Up North VI" />
+      </imgdir>
+      <imgdir name="11">
+        <string name="Title" value="Tree Dungeon, Forest Up North VI" />
+      </imgdir>
+      <imgdir name="12">
+        <string name="Title" value="Tree Dungeon, Forest Up North VII" />
+      </imgdir>
+      <imgdir name="13">
+        <string name="Title" value="Tree Dungeon, Forest Up North VII" />
+      </imgdir>
+      <imgdir name="14">
+        <string name="Title" value="Tree Dungeon, Forest Up North VIII" />
+      </imgdir>
+      <imgdir name="15">
+        <string name="Title" value="Tree Dungeon, Forest Up North VIII" />
+      </imgdir>
+      <imgdir name="16">
+        <string name="Title" value="Tree Dungeon, Forest Up North IX" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030000">
+      <imgdir name="0">
+        <string name="Title" value="Rocky Road III (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Forest North of Ellinia (Towards Ellinia)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Rocky Road III (Towards Perion)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="The Forest North of Ellinia (Towards Ellinia)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030101">
+      <imgdir name="0">
+        <string name="Title" value="Excavation Site II (Towards Excavation Site)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rocky Road III (Towards Victoria Road)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030102">
+      <imgdir name="0">
+        <string name="Title" value="Excavation Site I (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Excavation Site III (Towards Excavation Site)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030200">
+      <imgdir name="0">
+        <string name="Title" value="Rocky Road I (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rocky Road III (Towards Ellinia)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030300">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain I (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rocky Road II (Towards Ellinia)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030401">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain I (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain III" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030402">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain II (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain IV" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030403">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain III (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain V" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030404">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain IV (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain VI" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101030405">
+      <imgdir name="0">
+        <string name="Title" value="East Rocky Mountain V (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain VII" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="101040000">
+      <imgdir name="0">
+        <string name="Title" value="Perion" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="East Rocky Mountain I (Towards Ellinia)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102010000">
+      <imgdir name="0">
+        <string name="Title" value="West Rocky Mountain I (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Perion" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102030000">
+      <imgdir name="0">
+        <string name="Title" value="Construction Site North of Kerning City (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="West Rocky Mountain I (Towards Perion)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102040000">
+      <imgdir name="0">
+        <string name="Title" value="Sunset Sky (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="West Domain of Perion (Towards Perion)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Abandoned Subway Station" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="102050000">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Construction Site North of Kerning City (Towards Perion)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103010000">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="L Forest I (Towards Henesys/Lith Harbor)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Kerning City" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="L Forest III (Towards Henesys/Lith Harbor)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103020000">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City Construction Site (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="L Forest II (Towards Henesys/Lith Harbor)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103020100">
+      <imgdir name="0">
+        <string name="Title" value="L Forest I (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="L Forest III (Towards Henesys/Lith Harbor)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103020200">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City Middle Forest I (Towards Henesys/Lith Harbor)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="L Forest II (Towards Kerning City)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="103030100">
+      <imgdir name="0">
+        <string name="Title" value="Kerning City Middle Forest III" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Kerning City Middle Forest I" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104000100">
+      <imgdir name="0">
+        <string name="Title" value="Lith Harbor" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Thicket Around the Beach I (Towards Victoria Road)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104000200">
+      <imgdir name="0">
+        <string name="Title" value="Right Around Lith Harbor (Towards Lith Harbor)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Thicket Around the Beach II (Towards Victoria Road)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104000300">
+      <imgdir name="0">
+        <string name="Title" value="Thicket Around the Beach I (Towards Lith Harbor)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Thicket Around the Beach III (Towards Victoria Road)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104000400">
+      <imgdir name="0">
+        <string name="Title" value="Thicket Around the Beach II (Towards Lith Harbor)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="3-Way Road-Split (Towards Victoria Road)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104020000">
+      <imgdir name="0">
+        <string name="Title" value="3-Way Road-Split (Towards Kerning City/Lith Harbor)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Hill West of Henesys (Towards Henesys)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104040000">
+      <imgdir name="0">
+        <string name="Title" value="Henesys Hunting Ground II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Hill West of Henesys (Towards Lith Harbor/Kerning City)" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Henesys Hunting Ground II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104040001">
+      <imgdir name="0">
+        <string name="Title" value="Henesys Hunting Ground III" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Henesys Hunting Ground I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Henesys Hunting Ground III" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="104040002">
+      <imgdir name="0">
+        <string name="Title" value="Henesys Hunting Ground II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105030000">
+      <imgdir name="0">
+        <string name="Title" value="Swampy Land (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dungeon (Towards Perion)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Swampy Land in a Deep Forest (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105040100">
+      <imgdir name="0">
+        <string name="Title" value="Hunting Ground in the Deep Forest I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Swampy Land in a Deep Forest (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105040304">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: The Ruins of the Fallen Golem" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105050100">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Cave Where Mushrooms Grow" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000000">
+      <imgdir name="0">
+        <string name="Title" value="Perion" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Deep Valley II (Towards Sleepywood)" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Perion" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Deep Valley II (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000001">
+      <imgdir name="0">
+        <string name="Title" value="Deep Valley I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Dangerous Valley II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000100">
+      <imgdir name="0">
+        <string name="Title" value="Deep Valley3 (Towards Sleepywood)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Burnt Land1" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Deep Valley I (Towards Perion)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000101">
+      <imgdir name="0">
+        <string name="Title" value="Deep Valley II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Burnt Land II" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000110">
+      <imgdir name="0">
+        <string name="Title" value="The Burnt Land I" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Burnt Land III" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000120">
+      <imgdir name="0">
+        <string name="Title" value="The Burnt Land II" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Burnt Land IV" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000130">
+      <imgdir name="0">
+        <string name="Title" value="The Burnt Land III" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Burnt Land V" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000200">
+      <imgdir name="0">
+        <string name="Title" value="Deep Valley II (Towards Perion)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Path to Perion Dungeon (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106000300">
+      <imgdir name="0">
+        <string name="Title" value="Deep Forest (Towards Sleepywood)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Deep Valley III (Towards Perion)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106010000">
+      <imgdir name="0">
+        <string name="Title" value="Henesys" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Entrance to Henesys Dungeon (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106010100">
+      <imgdir name="0">
+        <string name="Title" value="Path to the Dungeon (Towards Henesys)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Hunting Ground in the Deep Forest II (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106010101">
+      <imgdir name="0">
+        <string name="Title" value="The Entrance of Golem's Temple" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106010102">
+      <imgdir name="0">
+        <string name="Title" value="The Breathing Rock" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Golem's Temple I" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Golem's Temple II" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Golem's Temple III" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Golem's Temple IV" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="107000500">
+      <imgdir name="0">
+        <string name="Title" value="Dangerous Croko II (Towards Kerning City)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Deep Forest (Towards Sleepywood)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="120010000">
+      <imgdir name="0">
+        <string name="Title" value="The Forest East of Henesys (Towards Victoria Road)" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Nautilus" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="130000000">
+      <imgdir name="0">
+        <string name="Title" value="Spot where Shinsoo fell asleep" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200090500">
+      <imgdir name="0">
+        <string name="Title" value="Sky Road : Toward the Temple of Time" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200090510">
+      <imgdir name="0">
+        <string name="Title" value="Sky Road : Toward Leafre" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="221023400">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Drummer Bunny's Lair" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240020500">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: The Round Table of Kentaurus" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040511">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: The Restoring Memory" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240040520">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Newt Secured Zone" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260020600">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Hill of Sandstorms" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="261020300">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Critical Error" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270000000">
+      <imgdir name="0">
+        <string name="Title" value="Road to the Future" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Road of the Present" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Road to the Past" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270000100">
+      <imgdir name="0">
+        <string name="Title" value="Air Field" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Air Field" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Temple Entrance" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Three Doors" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Temple Entrance" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010000">
+      <imgdir name="0">
+        <string name="Title" value="Three Doors" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Door of Memory" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Road to the Past : Memory" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010100">
+      <imgdir name="0">
+        <string name="Title" value="Past of the Verdure" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010110">
+      <imgdir name="0">
+        <string name="Title" value="Memory Keeper's Room" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Memory Lane 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010111">
+      <imgdir name="0">
+        <string name="Title" value="Time Observatory" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010200">
+      <imgdir name="0">
+        <string name="Title" value="Resting Spot of Memory 1" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Resting Spot of Memory 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010210">
+      <imgdir name="0">
+        <string name="Title" value="Memory Lane 3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010310">
+      <imgdir name="0">
+        <string name="Title" value="Memory Lane 4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270010500">
+      <imgdir name="0">
+        <string name="Title" value="Frozen Past" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270020000">
+      <imgdir name="0">
+        <string name="Title" value="Memory Lane Direction" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Door of Regrets" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270020100">
+      <imgdir name="0">
+        <string name="Title" value="Frozen Past" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270020110">
+      <imgdir name="0">
+        <string name="Title" value="Road of Regrets 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270020210">
+      <imgdir name="0">
+        <string name="Title" value="Sorcerer's Room" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Road of Regrets 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270020400">
+      <imgdir name="0">
+        <string name="Title" value="Resting Spot of Regret 4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030000">
+      <imgdir name="0">
+        <string name="Title" value="Road to Oblivion" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Road of Regrets 5" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Door of Oblivion" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030210">
+      <imgdir name="0">
+        <string name="Title" value="Road to Oblivion 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030300">
+      <imgdir name="0">
+        <string name="Title" value="Resting Spot of Oblivion 3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030400">
+      <imgdir name="0">
+        <string name="Title" value="Resting Spot of Oblivion 3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030410">
+      <imgdir name="0">
+        <string name="Title" value="Road to Oblivion 4" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Road to Oblivion 5" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Record Keeper's Room" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="270030500">
+      <imgdir name="0">
+        <string name="Title" value="Toward the Temple Ruins" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="930000800">
+      <imgdir name="0">
+        <string name="Title" value="          Spring of Purification            " />
+        <string name="Desc" value="A spring of clean water. It appears to have the power to detoxify the Golem's Marble filled with poison inside. Let's try dropping the marble in front of the spring. poison which fills." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="130000200">
+      <imgdir name="0">
+        <string name="Title" value="Training Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Knights Chamber" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="in the direction of the Sky Ferry" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Free Market" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Ereve Weapon Store" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Sky Ferry" />
+        <string name="Desc" value="The ship that passes through Ereve is at anchor." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="200000160">
+      <imgdir name="0">
+        <string name="Title" value="Orbis Station Waiting Room" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Station to Ereve" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="922230000">
+      <imgdir name="0">
+        <string name="Title" value="Exit" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="925020000">
+      <imgdir name="0">
+        <string name="Title" value="Mu Lung Training Center" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="980020000">
+      <imgdir name="0">
+        <string name="Title" value="Entrance of the Goldrich maze" />
+        <string name="Desc" value="You're at the entrance to Mr. Goldrich's private lane. If you want to enter, please use your golden compass." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="550000100">
+      <imgdir name="0">
+        <string name="Title" value="Outskirt of Muddy Banks" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551030000">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Longest Ride on ByeBye Station" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551020000">
+      <imgdir name="0">
+        <string name="Title" value="Cable Car" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551010000">
+      <imgdir name="0">
+        <string name="Title" value="Cable Car Station 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551000200">
+      <imgdir name="0">
+        <string name="Title" value="Hibiscus Road 2" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551000100">
+      <imgdir name="0">
+        <string name="Title" value="Hibiscus Road 1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="551000000">
+      <imgdir name="0">
+        <string name="Title" value="Kampung Village" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="105090311">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Drake's Blue Cave" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="970000100">
+      <imgdir name="0">
+        <string name="Title" value="Maple Studio" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Ludibrium Studio" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Ariant Studio" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Orbis Studio" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Mu Lung Studio" />
+      </imgdir>
+      <imgdir name="5">
+        <string name="Title" value="Magatia Studio" />
+      </imgdir>
+      <imgdir name="6">
+        <string name="Title" value="Ereve Studio" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="Title" value="Cookie Studio" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="2000000">
+      <imgdir name="0">
+        <string name="Title" value="Armor Store" />
+        <string name="Desc" value="You may purchase armors here." />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Southperry → Lith Harbor of Victoria Island" />
+        <string name="Desc" value="Fee : 150 mesos\n\nBoard a ship headed to Lith Harbor by speaking with Shanks. Once you leave here, you won’t be able to come back." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1020000">
+      <imgdir name="0">
+        <string name="Title" value="Southperry" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020000">
+      <imgdir name="0">
+        <string name="Title" value="Castle of King Mush" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Empty House (To Henesys)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020100">
+      <imgdir name="0">
+        <string name="Title" value="Mushking Castle" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020200">
+      <imgdir name="0">
+        <string name="Title" value="Mushking Castle" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020300">
+      <imgdir name="0">
+        <string name="Title" value="Mushking Castle" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Barrier of the Magic Spore " />
+        <string name="Desc" value="Double-click on Killer Mushroom Spore item to permanently penetrate the barrier, or use 1 Poison Spore dropped from the Poison Mushroom to temporarily break the barrier." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020400">
+      <imgdir name="0">
+        <string name="Title" value="Mushking Castle" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Cliff Shadows" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020401">
+      <imgdir name="0">
+        <string name="Title" value="Cliff Shadows" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020402">
+      <imgdir name="0">
+        <string name="Title" value="Cliff Shadows" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020403">
+      <imgdir name="0">
+        <string name="Title" value="Mushking Castle (Beware of Cliff)" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020500">
+      <imgdir name="0">
+        <string name="Title" value="Outside the Wall of Mushroom Castle" />
+        <string name="Desc" value="Double-click on the Thorn Remover to remove the thorns from the vine, then climb on it." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020501">
+      <imgdir name="0">
+        <string name="Title" value="Entering Mushking Castle" />
+        <string name="Desc" value="You can only enter the castle by stepping on the vine with thorns removed." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020600">
+      <imgdir name="0">
+        <string name="Title" value="West Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106021800">
+      <imgdir name="0">
+        <string name="Title" value="Mushroom Castle Exit" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106021300">
+      <imgdir name="0">
+        <string name="Title" value="East Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106021200">
+      <imgdir name="0">
+        <string name="Title" value="Central Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106021100">
+      <imgdir name="0">
+        <string name="Title" value="Central Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106021000">
+      <imgdir name="0">
+        <string name="Title" value="Central Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020800">
+      <imgdir name="0">
+        <string name="Title" value="West Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="106020700">
+      <imgdir name="0">
+        <string name="Title" value="West Castle Tower" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="140000000">
+      <imgdir name="0">
+        <string name="Title" value="Towards Center of the Island" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="To Harbor" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Rien Library" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Weapon/Armor Store" />
+      </imgdir>
+      <imgdir name="4">
+        <string name="Title" value="Department Store" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="140010000">
+      <imgdir name="0">
+        <string name="Title" value="Rien" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Penguin Training Center" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="140010100">
+      <imgdir name="0">
+        <string name="Title" value="Penguin Training Center" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="140020000">
+      <imgdir name="0">
+        <string name="Title" value="Penguin Port" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="140020200">
+      <imgdir name="0">
+        <string name="Title" value="Penguin Port" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Rien" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="260020500">
+      <imgdir name="0">
+        <string name="Title" value="Pyramid Dunes" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="The Ruins of Desert Nomads" />
+      </imgdir>
+      <imgdir name="2">
+        <string name="Title" value="Sahel 2" />
+      </imgdir>
+      <imgdir name="3">
+        <string name="Title" value="Pyramid Dunes" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="251010402">
+      <imgdir name="0">
+        <string name="Title" value="Mini Dungeon: Pillage of Treasure Island " />
+      </imgdir>
+    </imgdir>
+    <imgdir name="240010900">
+      <imgdir name="0">
+        <string name="Title" value="Tera Forest" />
+      </imgdir>
+      <imgdir name="1">
+        <string name="Title" value="Tera Forest" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="PortalTooltip">
+    <imgdir name="100000100">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="100030000">
+      <string name="quest00" value="Utah's Pig Farm" />
+    </imgdir>
+    <imgdir name="101030104">
+      <string name="pt00" value="Hidden Relic" />
+    </imgdir>
+    <imgdir name="102000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="105090700">
+      <string name="in00" value="Secret Shrine" />
+    </imgdir>
+    <imgdir name="105090800">
+      <string name="in00" value="Forgotten Shrine" />
+    </imgdir>
+    <imgdir name="200000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="211000100">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="211042300">
+      <string name="ps00" value="Zakum Altar" />
+    </imgdir>
+    <imgdir name="220000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="221000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="230000000">
+      <string name="market01" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="230040410">
+      <string name="boss00" value="Pianus Cave" />
+    </imgdir>
+    <imgdir name="240000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="240010700">
+      <string name="pt00" value="The Top of the Sky Nest" />
+    </imgdir>
+    <imgdir name="240020100">
+      <string name="boss00" value="Griffey Forest" />
+    </imgdir>
+    <imgdir name="240020400">
+      <string name="boss00" value="Manon Forest" />
+    </imgdir>
+    <imgdir name="240040610">
+      <string name="in00" value="Nine Spirit's Nest" />
+    </imgdir>
+    <imgdir name="240040700">
+      <string name="out00" value="Peak of the Big Nest" />
+      <string name="temp00" value="Entrance to Cave of Horntail" />
+    </imgdir>
+    <imgdir name="240050100">
+      <string name="in00" value="1st Room of Maze" />
+    </imgdir>
+    <imgdir name="240050101">
+      <string name="in00" value="2nd Room of Maze" />
+    </imgdir>
+    <imgdir name="240050102">
+      <string name="in00" value="3rd Room of Maze" />
+    </imgdir>
+    <imgdir name="240050103">
+      <string name="in00" value="4th Room of Maze" />
+    </imgdir>
+    <imgdir name="240050104">
+      <string name="in00" value="5th Room of Maze" />
+    </imgdir>
+    <imgdir name="240050105">
+      <string name="in00" value="Room of Maze" />
+    </imgdir>
+    <imgdir name="240050400">
+      <string name="temp00" value="Entrance to the Cave of Life" />
+    </imgdir>
+    <imgdir name="250000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="251000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="280010000">
+      <string name="ps01" value="The Room of Tragedy" />
+    </imgdir>
+    <imgdir name="500000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="925100000">
+      <string name="next00" value="Through the Head of the Ship!" />
+    </imgdir>
+    <imgdir name="925100100">
+      <string name="next00" value="Through the Deck I" />
+    </imgdir>
+    <imgdir name="925100200">
+      <string name="next00" value="Through the Deck II" />
+    </imgdir>
+    <imgdir name="925100300">
+      <string name="next00" value="Eliminate Pirates!" />
+    </imgdir>
+    <imgdir name="925100400">
+      <string name="next00" value="The Captain's Dignity" />
+    </imgdir>
+    <imgdir name="910000000">
+      <string name="out00" value="Entrance to Free Market" />
+    </imgdir>
+    <imgdir name="261020600">
+      <string name="up00" value="Research Center A-3" />
+    </imgdir>
+    <imgdir name="920010100">
+      <string name="in00" value="Tower of Goddess &lt;Walkway&gt;" />
+      <string name="in01" value="Tower of Goddess &lt;Storage&gt;" />
+      <string name="in02" value="Tower of Goddess &lt;Lobby&gt;" />
+      <string name="in03" value="Tower of Goddess &lt;Sealed Room&gt;" />
+    </imgdir>
+    <imgdir name="920010300">
+      <string name="st00" value="Tower of Goddess &lt;Center Tower&gt;" />
+    </imgdir>
+    <imgdir name="920010500">
+      <string name="st00" value="Tower of Goddess &lt;Center Tower&gt;" />
+    </imgdir>
+    <imgdir name="920010800">
+      <string name="in00" value="Tower of Goddess &lt;Center Tower&gt;" />
+    </imgdir>
+    <imgdir name="100040105">
+      <string name="quest00" value="Dead Tree Path" />
+    </imgdir>
+    <imgdir name="120000200">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="222000000">
+      <string name="market00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="222010300">
+      <string name="west00" value="Tiger Ridge" />
+    </imgdir>
+    <imgdir name="261000000">
+      <string name="market0" value="Free Market" />
+    </imgdir>
+    <imgdir name="100020000">
+      <string name="MD00" value="Mini Dungeon: Henesys Pig Farm" />
+    </imgdir>
+    <imgdir name="101000000">
+      <string name="jobin00" value="Magic Library" />
+      <string name="in04" value="Sky Ferry" />
+      <string name="inERShip" value="Sky Ferry" />
+    </imgdir>
+    <imgdir name="105040304">
+      <string name="MD00" value="Mini Dungeon: The Ruins of the Fallen Golem" />
+    </imgdir>
+    <imgdir name="105050100">
+      <string name="MD00" value="Mini Dungeon: Cave Where Mushrooms Grow" />
+    </imgdir>
+    <imgdir name="221023400">
+      <string name="MD00" value="Mini Dungeon: Drummer Bunny's Lair" />
+    </imgdir>
+    <imgdir name="240020500">
+      <string name="MD00" value="Mini Dungeon: The Round Table of Kentaurus" />
+    </imgdir>
+    <imgdir name="240040511">
+      <string name="MD00" value="Mini Dungeon: The Restoring Memory" />
+    </imgdir>
+    <imgdir name="240040520">
+      <string name="MD00" value="Mini Dungeon: Newt Secured Zone" />
+    </imgdir>
+    <imgdir name="260020600">
+      <string name="MD00" value="Mini Dungeon: Hill of Sandstorms" />
+    </imgdir>
+    <imgdir name="261020300">
+      <string name="MD00" value="Mini Dungeon: Critical Error" />
+    </imgdir>
+    <imgdir name="130000200">
+      <string name="west00" value="Training Forest 1" />
+      <string name="st00" value="Free Market Entrance" />
+    </imgdir>
+    <imgdir name="130010000">
+      <string name="in00" value="Tino's Forest" />
+      <string name="in01" value="Tiv's Forest" />
+    </imgdir>
+    <imgdir name="130010100">
+      <string name="in00" value="Timu's Forest" />
+      <string name="in01" value="Tiru's Forest" />
+    </imgdir>
+    <imgdir name="130010200">
+      <string name="west00" value="Drill Hall Entrance" />
+    </imgdir>
+    <imgdir name="240020101">
+      <string name="in00" value="Remote Forest" />
+    </imgdir>
+    <imgdir name="240020102">
+      <string name="in00" value="Remote Forest" />
+    </imgdir>
+    <imgdir name="240020401">
+      <string name="in00" value="Remote Forest" />
+    </imgdir>
+    <imgdir name="240020402">
+      <string name="in00" value="Remote Forest" />
+    </imgdir>
+    <imgdir name="130020000">
+      <string name="in00" value="The 1st Drill Hall" />
+      <string name="in01" value="The 2nd Drill Hall" />
+      <string name="in02" value="The 3rd Drill Hall" />
+      <string name="in03" value="The 4th Drill Hall" />
+    </imgdir>
+    <imgdir name="240020600">
+      <string name="out00" value="Griffey Forest" />
+      <string name="out01" value="Manon Forest" />
+    </imgdir>
+    <imgdir name="106020400">
+      <string name="right00" value="Edge of Castle Wall" />
+      <string name="right01" value="Steep Downhill 1" />
+    </imgdir>
+    <imgdir name="106021000">
+      <string name="in00" value="Castle Security Room" />
+    </imgdir>
+    <imgdir name="222020400">
+      <string name="in00" value="To the Past" />
+    </imgdir>
+    <imgdir name="914000000">
+      <string name="out00" value="On the Way to Escape" />
+    </imgdir>
+    <imgdir name="914000100">
+      <string name="out00" value="Burning Forest 1" />
+    </imgdir>
+    <imgdir name="914000200">
+      <string name="west00" value="Burning Forest 2" />
+    </imgdir>
+    <imgdir name="914000210">
+      <string name="west00" value="Burning Forest 3" />
+    </imgdir>
+    <imgdir name="914000300">
+      <string name="east00" value="Burning Forest 3" />
+    </imgdir>
+    <imgdir name="914000500">
+      <string name="out00" value="Burning Forest 1" />
+    </imgdir>
+    <imgdir name="140090100">
+      <string name="west00" value="Cold Forest 2" />
+    </imgdir>
+    <imgdir name="140090200">
+      <string name="west00" value="Cold Forest 3" />
+    </imgdir>
+    <imgdir name="140090300">
+      <string name="west00" value="Cold Forest 4" />
+    </imgdir>
+    <imgdir name="140090400">
+      <string name="west00" value="Cold Forest 5" />
+    </imgdir>
+    <imgdir name="140000000">
+      <string name="market00" value="Free Market" />
+      <string name="west00" value="Field West of Rien" />
+    </imgdir>
+    <imgdir name="140010000">
+      <string name="east00" value="Rien" />
+      <string name="west00" value="Entrance to Rien Training Center" />
+    </imgdir>
+    <imgdir name="140030000">
+      <string name="in00" value="Mirror of Desire" />
+    </imgdir>
+    <imgdir name="140010200">
+      <string name="in00" value="Mirror Cave" />
+    </imgdir>
+    <imgdir name="140020200">
+      <string name="east00" value="Penguin Port" />
+    </imgdir>
+    <imgdir name="914020000">
+      <string name="out00" value="Battle Against Maha" />
+    </imgdir>
+    <imgdir name="211050000">
+      <string name="in00" value="Rider's Field" />
+    </imgdir>
+    <imgdir name="914030000">
+      <string name="out00" value="Field of Wolves" />
+    </imgdir>
+    <imgdir name="140010100">
+      <string name="in00" value="Rien Training Center" />
+    </imgdir>
+    <imgdir name="104000000">
+      <string name="in03" value="Lith Harbor Info Shop" />
+    </imgdir>
+    <imgdir name="200060000">
+      <string name="in00" value="Neglected Strolling Path" />
+    </imgdir>
+    <imgdir name="925040001">
+      <string name="out00" value="Back Alley of Mu Lung Dojo" />
+    </imgdir>
+    <imgdir name="300000010">
+      <string name="in00" value="Library" />
+    </imgdir>
+    <imgdir name="100000200">
+      <string name="in02" value="Bowman Instructional School" />
+    </imgdir>
+    <imgdir name="103000310">
+      <string name="out00" value="To Kerning City" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Shop">
+    <imgdir name="Button">
+      <imgdir name="BuyAvatar">
+        <string name="Title" value="Buying Equipped Items" />
+        <string name="Desc" value="Buying the items that are equipped by the character. The existing items are not\nincluded in the purchase." />
+      </imgdir>
+      <imgdir name="DefaultAvatar">
+        <string name="Title" value="Back to Default" />
+        <string name="Desc" value="Character being put back into the state of default before walking into the cash shop." />
+      </imgdir>
+      <imgdir name="Rebate">
+        <string name="Title" value="Deleting Items" />
+        <string name="Desc" value="Deleting cash items and saving a percentage of its price as MaplePoints" />
+      </imgdir>
+      <imgdir name="ExEquip">
+        <string name="Title" value="Extending Equip. Inventory" />
+        <string name="Desc" value="Extending an equip. inventory by 4 slots (1 line)\n8000 A-Cash" />
+      </imgdir>
+      <imgdir name="ExConsume">
+        <string name="Title" value="Extending Use Inventory" />
+        <string name="Desc" value="Extending a use inventory by 4 slots (1 line)\n8000 A-Cash" />
+      </imgdir>
+      <imgdir name="ExInstall">
+        <string name="Title" value="Extending Set-Up Inventory" />
+        <string name="Desc" value="Extending a set-up inventory by 4 slots (1 line)\n8000 A-Cash" />
+      </imgdir>
+      <imgdir name="ExEtc">
+        <string name="Title" value="Extending Etc. Inventory" />
+        <string name="Desc" value="Extending an etc. inventory by 4 slots (1 line)\n8000 A-Cash" />
+      </imgdir>
+      <imgdir name="Charge">
+        <string name="Title" value="Recharging Cash" />
+        <string name="Desc" value="Please visit the website to charge your account." />
+      </imgdir>
+      <imgdir name="Check">
+        <string name="Title" value="Check Cash" />
+        <string name="Desc" value="Checking the remaining Cash" />
+      </imgdir>
+      <imgdir name="Coupon">
+        <string name="Title" value="Using Coupon" />
+        <string name="Desc" value="Exchanging the item coupon into an item." />
+      </imgdir>
+      <imgdir name="TakeoffAvatar">
+        <string name="Title" value="Remove All" />
+        <string name="Desc" value="Remove all the items that the character is wearing." />
+      </imgdir>
+      <imgdir name="GiftToken">
+        <string name="Title" value="Gift Token" />
+        <string name="Desc" value="Click to see &quot;How to Gift&quot; Details" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="MTS">
+    <imgdir name="Button">
+      <imgdir name="Check">
+        <string name="Title" value="Check Points" />
+        <string name="Desc" value="Checking the remaining points." />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>
