@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2092003.img">
+  <imgdir name="info">
+    <string name="info" value="크리스마스 이벤트용 지팡이드롭" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="65" height="93">
+        <vector name="origin" x="32" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="1" width="65" height="93">
+        <vector name="origin" x="32" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="2" width="64" height="94">
+        <vector name="origin" x="32" y="47" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="3" width="65" height="95">
+        <vector name="origin" x="32" y="47" />
+        <int name="z" value="0" />
+        <int name="delay" value="150" />
+      </canvas>
+      <canvas name="7" width="64" height="94">
+        <vector name="origin" x="32" y="47" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="6" width="64" height="94">
+        <vector name="origin" x="32" y="47" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="5" width="65" height="93">
+        <vector name="origin" x="32" y="46" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="4" width="64" height="94">
+        <vector name="origin" x="32" y="47" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <canvas name="0" width="65" height="93">
+      <vector name="origin" x="32" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="65" height="93">
+      <vector name="origin" x="32" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1" width="65" height="93">
+      <vector name="origin" x="32" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2" width="65" height="93">
+      <vector name="origin" x="32" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3" width="65" height="93">
+      <vector name="origin" x="32" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <uol name="hit" value="../0/hit" />
+    <int name="repeat" value="1" />
+  </imgdir>
+  <string name="action" value="canedrop" />
+</imgdir>

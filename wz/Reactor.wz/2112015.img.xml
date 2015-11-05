@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2112015.img">
+  <imgdir name="info">
+    <string name="info" value="차가운 불길 : 카론의 노트" />
+    <int name="backTile" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4001109" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-83" y="-86" />
+        <vector name="rb" x="83" y="13" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="257" height="186">
+        <vector name="origin" x="124" y="183" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="257" height="186">
+        <vector name="origin" x="124" y="183" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="257" height="186">
+        <vector name="origin" x="124" y="183" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3" width="257" height="186">
+        <vector name="origin" x="124" y="183" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="4" width="257" height="186">
+        <vector name="origin" x="124" y="183" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <canvas name="0" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="1" width="257" height="184">
+      <vector name="origin" x="124" y="181" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="2" width="257" height="184">
+      <vector name="origin" x="124" y="181" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="3" width="257" height="185">
+      <vector name="origin" x="124" y="182" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="4" width="257" height="185">
+      <vector name="origin" x="124" y="182" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="5" width="257" height="185">
+      <vector name="origin" x="124" y="182" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="6" width="257" height="184">
+      <vector name="origin" x="124" y="181" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="7" width="257" height="184">
+      <vector name="origin" x="124" y="181" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="8" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="9" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="10" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="11" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="12" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="13" width="257" height="183">
+      <vector name="origin" x="124" y="180" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <canvas name="14" width="257" height="185">
+      <vector name="origin" x="124" y="182" />
+      <int name="z" value="0" />
+      <int name="delay" value="100" />
+    </canvas>
+    <int name="repeat" value="1" />
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="s4frameItem0" />
+</imgdir>

@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9902000.img">
+  <imgdir name="info">
+    <string name="name" value="마녀 상자" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="161" height="115">
+      <vector name="origin" x="81" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4001300" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-57" y="-4" />
+        <vector name="rb" x="52" y="53" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="146" height="115">
+      <vector name="origin" x="81" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="146" height="115">
+      <vector name="origin" x="81" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="3" />
+        <int name="0" value="4001300" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-57" y="-4" />
+        <vector name="rb" x="52" y="53" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="146" height="115">
+      <vector name="origin" x="81" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="146" height="115">
+      <vector name="origin" x="81" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="5" />
+        <int name="0" value="4001300" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-57" y="-4" />
+        <vector name="rb" x="52" y="53" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <canvas name="0" width="146" height="101">
+      <vector name="origin" x="81" y="56" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="6">
+    <canvas name="0" width="146" height="101">
+      <vector name="origin" x="81" y="56" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="7" />
+        <int name="0" value="4001300" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-57" y="-4" />
+        <vector name="rb" x="52" y="53" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="7">
+    <canvas name="0" width="146" height="101">
+      <vector name="origin" x="81" y="56" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="146" height="101">
+        <vector name="origin" x="81" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="1" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="2" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="3" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="4" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="5" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="8">
+    <canvas name="0" width="146" height="101">
+      <vector name="origin" x="81" y="56" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="9" />
+        <int name="0" value="4001300" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-57" y="-4" />
+        <vector name="rb" x="52" y="53" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="146" height="101">
+        <vector name="origin" x="81" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="1" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="2" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="3" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="4" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="5" width="131" height="101">
+        <vector name="origin" x="66" y="56" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="9">
+    <canvas name="0" width="104" height="91">
+      <vector name="origin" x="53" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="11" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="1" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="2" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="3" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="4" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10">
+    <canvas name="0" width="104" height="91">
+      <vector name="origin" x="53" y="46" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="11" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="1" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="2" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="3" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+      <canvas name="4" width="104" height="91">
+        <vector name="origin" x="53" y="46" />
+        <int name="z" value="0" />
+        <int name="delay" value="180" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="11">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="PB_boxCount" />
+</imgdir>

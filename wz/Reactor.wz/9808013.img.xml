@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9808013.img">
+  <imgdir name="info">
+    <string name="info" value="장애물맵 확인버튼" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="5" />
+        <int name="0" value="4001216" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="100" />
+        <int name="state" value="5" />
+        <int name="0" value="4001213" />
+        <int name="1" value="30" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="6" />
+        <int name="0" value="4001217" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="100" />
+        <int name="state" value="6" />
+        <int name="0" value="4001213" />
+        <int name="1" value="30" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="7" />
+        <int name="0" value="4001218" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="100" />
+        <int name="state" value="7" />
+        <int name="0" value="4001213" />
+        <int name="1" value="30" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="8" />
+        <int name="0" value="4001219" />
+        <int name="1" value="1" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="100" />
+        <int name="state" value="8" />
+        <int name="0" value="4001213" />
+        <int name="1" value="30" />
+        <vector name="lt" x="-73" y="6" />
+        <vector name="rb" x="79" y="86" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="6">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="7">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="8">
+    <canvas name="0" width="124" height="139">
+      <vector name="origin" x="62" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9802005.img">
+  <imgdir name="info" />
+  <imgdir name="0">
+    <canvas name="0" width="38" height="51">
+      <vector name="origin" x="21" y="27" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="38" height="51">
+        <vector name="origin" x="21" y="27" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1" width="39" height="51">
+        <vector name="origin" x="22" y="27" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2" width="38" height="51">
+        <vector name="origin" x="21" y="27" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3" width="38" height="51">
+        <vector name="origin" x="21" y="27" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeOut" value="8" />
+    </imgdir>
+  </imgdir>
+  <string name="action" value="goldRichItem1" />
+</imgdir>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9808012.img">
+  <imgdir name="info">
+    <string name="info" value="장애물맵 확인버튼" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="53" height="115">
+      <vector name="origin" x="26" y="57" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="56" height="115">
+      <vector name="origin" x="29" y="57" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

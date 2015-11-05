@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2092000.img">
+  <imgdir name="info">
+    <string name="info" value="표창드롭" />
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4000417" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-209" y="-400" />
+        <vector name="rb" x="175" y="-3" />
+      </imgdir>
+    </imgdir>
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="4" height="4">
+      <vector name="origin" x="-1" y="32" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="snowdrop" />
+</imgdir>

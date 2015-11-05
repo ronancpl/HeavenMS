@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2221002.img">
+  <imgdir name="info">
+    <string name="info" value="나무구멍:메밀묵을 떨어뜨려서 초록왕도깨비를 소환한다." />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="64" height="61">
+      <vector name="origin" x="46" y="54" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="2022051" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-18" y="-33" />
+        <vector name="rb" x="16" y="6" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="64" height="61">
+      <vector name="origin" x="46" y="54" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="fvMob2" />
+</imgdir>

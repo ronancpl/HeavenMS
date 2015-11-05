@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="5411000.img">
+  <imgdir name="info">
+    <string name="info" value="Once you drop the White Essence, Capt. Latanica will appear" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <int name="0" value="4000381" />
+        <int name="1" value="1" />
+        <int name="2" value="1" />
+        <vector name="lt" x="-30" y="-30" />
+        <vector name="rb" x="30" y="30" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="1" height="1">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="sgboss0" />
+</imgdir>

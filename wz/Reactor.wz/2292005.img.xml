@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2292005.img">
+  <imgdir name="info">
+    <string name="info" value="할로윈호박_가운데입" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="43" height="25">
+      <vector name="origin" x="20" y="17" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="56" height="43">
+      <vector name="origin" x="31" y="24" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="3" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="71" height="51">
+      <vector name="origin" x="37" y="27" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="4" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="79" height="58">
+      <vector name="origin" x="41" y="34" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="5" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <canvas name="0" width="94" height="65">
+      <vector name="origin" x="45" y="41" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="6" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="6">
+    <canvas name="0" width="110" height="65">
+      <vector name="origin" x="54" y="41" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="7" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="7">
+    <canvas name="0" width="131" height="65">
+      <vector name="origin" x="61" y="41" />
+      <int name="z" value="-2" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="8" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="8">
+    <canvas name="0" width="137" height="69">
+      <vector name="origin" x="64" y="45" />
+      <int name="z" value="-2" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="amberItem4" />
+</imgdir>

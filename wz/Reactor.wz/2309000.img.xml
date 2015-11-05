@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="2309000.img">
+  <imgdir name="info" />
+  <imgdir name="0">
+    <canvas name="0" width="55" height="67">
+      <vector name="origin" x="31" y="33" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="55" height="67">
+        <vector name="origin" x="31" y="33" />
+        <int name="z" value="0" />
+        <int name="delay" value="80" />
+      </canvas>
+      <canvas name="1" width="55" height="62">
+        <vector name="origin" x="31" y="26" />
+        <int name="z" value="0" />
+        <int name="delay" value="80" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="55" height="62">
+      <vector name="origin" x="31" y="26" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <uol name="0" value="../../0/hit/1" />
+      <uol name="1" value="../../0/hit/0" />
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeOut" value="3000" />
+    </imgdir>
+  </imgdir>
+</imgdir>

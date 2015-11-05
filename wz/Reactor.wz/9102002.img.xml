@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9102002.img">
+  <imgdir name="info">
+    <string name="name" value="달맞이꽃" />
+    <int name="removeInFieldSet" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="72" height="89">
+      <vector name="origin" x="29" y="87" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="72" height="89">
+        <vector name="origin" x="29" y="87" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="1" width="69" height="88">
+        <vector name="origin" x="28" y="86" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="2" width="72" height="90">
+        <vector name="origin" x="30" y="88" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+      <canvas name="3" width="76" height="90">
+        <vector name="origin" x="31" y="88" />
+        <int name="z" value="0" />
+        <int name="delay" value="100" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="2">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="3" />
+      </imgdir>
+    </imgdir>
+    <uol name="hit" value="../0/hit" />
+  </imgdir>
+  <imgdir name="3">
+    <uol name="0" value="../0/0" />
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0" />
+        <int name="state" value="4" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0" width="72" height="90">
+        <vector name="origin" x="29" y="87" />
+        <int name="z" value="0" />
+        <int name="delay" value="10" />
+      </canvas>
+      <canvas name="1" width="65" height="104">
+        <vector name="origin" x="32" y="101" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="2" width="57" height="97">
+        <vector name="origin" x="30" y="94" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="3" width="45" height="93">
+        <vector name="origin" x="25" y="90" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="4" width="38" height="86">
+        <vector name="origin" x="22" y="83" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="5" width="65" height="77">
+        <vector name="origin" x="24" y="75" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="6" width="76" height="65">
+        <vector name="origin" x="24" y="63" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="7" width="83" height="43">
+        <vector name="origin" x="29" y="41" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+      <canvas name="8" width="87" height="28">
+        <vector name="origin" x="31" y="27" />
+        <int name="z" value="0" />
+        <int name="delay" value="130" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+  <string name="action" value="moonItem0" />
+</imgdir>

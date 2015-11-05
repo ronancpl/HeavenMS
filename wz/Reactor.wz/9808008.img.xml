@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9808008.img">
+  <imgdir name="info">
+    <string name="info" value="색블럭" />
+    <int name="backTile" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="60" height="60">
+      <vector name="origin" x="30" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="1" />
+        <int name="state" value="1" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="2" />
+        <int name="state" value="4" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="60" height="60">
+      <vector name="origin" x="30" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="1" />
+        <int name="state" value="2" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="2" />
+        <int name="state" value="0" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="60" height="60">
+      <vector name="origin" x="30" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="1" />
+        <int name="state" value="3" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="2" />
+        <int name="state" value="1" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="60" height="60">
+      <vector name="origin" x="30" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="1" />
+        <int name="state" value="4" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="2" />
+        <int name="state" value="2" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <canvas name="0" width="60" height="60">
+      <vector name="origin" x="30" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="1" />
+        <int name="state" value="0" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="type" value="2" />
+        <int name="state" value="3" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

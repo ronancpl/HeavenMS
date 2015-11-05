@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9808004.img">
+  <imgdir name="info">
+    <string name="info" value="하이로우 상황판" />
+    <int name="backTile" value="1" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="82" height="91">
+      <vector name="origin" x="41" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="82" height="91">
+      <vector name="origin" x="41" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeout" value="3000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <canvas name="0" width="82" height="91">
+      <vector name="origin" x="41" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101" />
+        <int name="state" value="0" />
+      </imgdir>
+      <int name="timeout" value="3000" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <canvas name="0" width="82" height="91">
+      <vector name="origin" x="41" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

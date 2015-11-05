@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9208012.img">
+  <imgdir name="info">
+    <string name="info" value="비밀통로3" />
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="217" height="146">
+      <vector name="origin" x="72" y="129" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="hit">
+      <canvas name="0" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="1" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="2" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="3" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="4" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="5" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="6" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+      <canvas name="7" width="217" height="146">
+        <vector name="origin" x="72" y="129" />
+        <int name="z" value="0" />
+        <int name="dleay" value="100" />
+      </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100" />
+        <int name="state" value="1" />
+        <string name="0" value="4001035" />
+        <int name="1" value="20" />
+        <vector name="lt" x="-73" y="-28" />
+        <vector name="rb" x="76" y="32" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="217" height="146">
+      <vector name="origin" x="72" y="129" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>
