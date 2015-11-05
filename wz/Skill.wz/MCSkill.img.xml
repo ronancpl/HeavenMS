@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="MCSkill.img">
+  <imgdir name="0">
+    <int name="target" value="1" />
+    <int name="spendCP" value="14" />
+    <string name="name" value=" Seal (1 person)" />
+    <string name="desc" value="Seals up a single member from the opposing party." />
+    <int name="mobSkillID" value="120" />
+    <int name="level" value="10" />
+  </imgdir>
+  <imgdir name="1">
+    <int name="target" value="2" />
+    <int name="spendCP" value="17" />
+    <string name="name" value=" Darkness (Party)" />
+    <string name="desc" value=" Puts everyone in the opposing party in a state of darkness at an 80% success rate." />
+    <int name="mobSkillID" value="121" />
+    <int name="level" value="6" />
+  </imgdir>
+  <imgdir name="2">
+    <int name="target" value="2" />
+    <int name="spendCP" value="19" />
+    <string name="name" value="Weakness(Party)" />
+    <string name="desc" value="Puts everyone in the opposing party in a state of weakness at an 80% success rate." />
+    <int name="mobSkillID" value="122" />
+    <int name="level" value="7" />
+  </imgdir>
+  <imgdir name="3">
+    <int name="target" value="1" />
+    <int name="spendCP" value="22" />
+    <string name="name" value="Stun (1 person)" />
+    <string name="desc" value="Stuns a single member from the opposing party." />
+    <int name="mobSkillID" value="123" />
+    <int name="level" value="11" />
+  </imgdir>
+  <imgdir name="4">
+    <int name="target" value="2" />
+    <int name="spendCP" value="12" />
+    <string name="name" value="Curse (Party)" />
+    <string name="desc" value="Curses everyone in the opposing party." />
+    <int name="mobSkillID" value="124" />
+    <int name="level" value="7" />
+  </imgdir>
+  <imgdir name="5">
+    <int name="target" value="2" />
+    <int name="spendCP" value="19" />
+    <string name="name" value="Poisoned (Party)" />
+    <string name="desc" value="Poisons everyone in the opposing party at an 80% success rate." />
+    <int name="mobSkillID" value="125" />
+    <int name="level" value="6" />
+  </imgdir>
+  <imgdir name="6">
+    <int name="target" value="2" />
+    <int name="spendCP" value="16" />
+    <string name="name" value="Slow (Party)" />
+    <string name="desc" value="Slows down everyone in the opposing party at an 80% success rate." />
+    <int name="mobSkillID" value="126" />
+    <int name="level" value="6" />
+  </imgdir>
+  <imgdir name="7">
+    <int name="target" value="1" />
+    <int name="spendCP" value="18" />
+    <string name="name" value="Cancel Buff (1 person)" />
+    <string name="desc" value="Cancels the buff of a single member of the opposing party." />
+    <int name="mobSkillID" value="127" />
+    <int name="level" value="9" />
+  </imgdir>
+  <imgdir name="8">
+    <int name="target" value="1" />
+    <int name="type" value="8" />
+    <int name="time" value="30" />
+    <int name="spendCP" value="10" />
+    <string name="name" value="Random" />
+    <string name="desc" value="Random" />
+    <int name="prop" value="100" />
+  </imgdir>
+  <imgdir name="9">
+    <int name="target" value="2" />
+    <int name="type" value="8" />
+    <int name="time" value="30" />
+    <int name="spendCP" value="10" />
+    <string name="name" value="Random" />
+    <string name="desc" value="Random" />
+    <int name="prop" value="100" />
+  </imgdir>
+</imgdir>

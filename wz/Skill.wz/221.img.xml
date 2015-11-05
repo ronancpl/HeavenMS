@@ -1,0 +1,1810 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="221.img">
+  <imgdir name="info">
+    <canvas name="icon" width="26" height="30">
+      <vector name="origin" x="-4" y="30" />
+    </canvas>
+  </imgdir>
+  <imgdir name="skill">
+    <imgdir name="2210000">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="x" value="23" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="x" value="26" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="x" value="29" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="x" value="32" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="x" value="35" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="x" value="38" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="x" value="41" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="x" value="44" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="x" value="47" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="x" value="50" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="x" value="52" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="x" value="54" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="x" value="56" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="x" value="58" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="x" value="60" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="x" value="62" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="x" value="64" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="x" value="66" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="x" value="68" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="x" value="70" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2210001">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="x" value="105" />
+          <int name="y" value="107" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="x" value="110" />
+          <int name="y" value="109" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="x" value="115" />
+          <int name="y" value="111" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="x" value="120" />
+          <int name="y" value="113" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="x" value="125" />
+          <int name="y" value="114" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="x" value="130" />
+          <int name="y" value="115" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="x" value="135" />
+          <int name="y" value="116" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="x" value="140" />
+          <int name="y" value="117" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="x" value="145" />
+          <int name="y" value="118" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="x" value="150" />
+          <int name="y" value="119" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="x" value="160" />
+          <int name="y" value="121" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="x" value="155" />
+          <int name="y" value="121" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="x" value="165" />
+          <int name="y" value="123" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="x" value="160" />
+          <int name="y" value="123" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="x" value="170" />
+          <int name="y" value="125" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="x" value="165" />
+          <int name="y" value="125" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="x" value="175" />
+          <int name="y" value="127" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="x" value="170" />
+          <int name="y" value="127" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="x" value="180" />
+          <int name="y" value="129" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="x" value="175" />
+          <int name="y" value="129" />
+        </imgdir>
+        <imgdir name="21">
+          <string name="hs" value="h21" />
+          <int name="x" value="185" />
+          <int name="y" value="131" />
+        </imgdir>
+        <imgdir name="22">
+          <string name="hs" value="h22" />
+          <int name="x" value="180" />
+          <int name="y" value="131" />
+        </imgdir>
+        <imgdir name="23">
+          <string name="hs" value="h23" />
+          <int name="x" value="190" />
+          <int name="y" value="133" />
+        </imgdir>
+        <imgdir name="24">
+          <string name="hs" value="h24" />
+          <int name="x" value="185" />
+          <int name="y" value="133" />
+        </imgdir>
+        <imgdir name="25">
+          <string name="hs" value="h25" />
+          <int name="x" value="195" />
+          <int name="y" value="135" />
+        </imgdir>
+        <imgdir name="26">
+          <string name="hs" value="h26" />
+          <int name="x" value="190" />
+          <int name="y" value="135" />
+        </imgdir>
+        <imgdir name="27">
+          <string name="hs" value="h27" />
+          <int name="x" value="205" />
+          <int name="y" value="137" />
+        </imgdir>
+        <imgdir name="28">
+          <string name="hs" value="h28" />
+          <int name="x" value="200" />
+          <int name="y" value="137" />
+        </imgdir>
+        <imgdir name="29">
+          <string name="hs" value="h29" />
+          <int name="x" value="195" />
+          <int name="y" value="137" />
+        </imgdir>
+        <imgdir name="30">
+          <string name="hs" value="h30" />
+          <int name="x" value="200" />
+          <int name="y" value="140" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2211002">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <string name="elemAttr" value="i" />
+      <imgdir name="action">
+        <string name="0" value="magic2" />
+      </imgdir>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="mpCon" value="21" />
+          <int name="mad" value="32" />
+          <int name="mastery" value="1" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-110" y="-82" />
+          <vector name="rb" x="110" y="83" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="34" />
+          <int name="mastery" value="1" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-110" y="-82" />
+          <vector name="rb" x="110" y="83" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="mpCon" value="23" />
+          <int name="mad" value="36" />
+          <int name="mastery" value="1" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-110" y="-82" />
+          <vector name="rb" x="110" y="83" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="mpCon" value="24" />
+          <int name="mad" value="38" />
+          <int name="mastery" value="2" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-120" y="-90" />
+          <vector name="rb" x="120" y="90" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="mpCon" value="25" />
+          <int name="mad" value="40" />
+          <int name="mastery" value="2" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-120" y="-90" />
+          <vector name="rb" x="120" y="90" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="mpCon" value="26" />
+          <int name="mad" value="42" />
+          <int name="mastery" value="2" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-120" y="-90" />
+          <vector name="rb" x="120" y="90" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="mpCon" value="27" />
+          <int name="mad" value="44" />
+          <int name="mastery" value="3" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-130" y="-97" />
+          <vector name="rb" x="130" y="98" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="mpCon" value="28" />
+          <int name="mad" value="46" />
+          <int name="mastery" value="3" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-130" y="-97" />
+          <vector name="rb" x="130" y="98" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="mpCon" value="29" />
+          <int name="mad" value="48" />
+          <int name="mastery" value="3" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-130" y="-97" />
+          <vector name="rb" x="130" y="98" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="mpCon" value="30" />
+          <int name="mad" value="50" />
+          <int name="mastery" value="4" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-140" y="-105" />
+          <vector name="rb" x="140" y="105" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="mpCon" value="31" />
+          <int name="mad" value="52" />
+          <int name="mastery" value="4" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-140" y="-105" />
+          <vector name="rb" x="140" y="105" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="mpCon" value="32" />
+          <int name="mad" value="54" />
+          <int name="mastery" value="4" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-140" y="-105" />
+          <vector name="rb" x="140" y="105" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="mpCon" value="33" />
+          <int name="mad" value="56" />
+          <int name="mastery" value="5" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-150" y="-112" />
+          <vector name="rb" x="150" y="113" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="mpCon" value="34" />
+          <int name="mad" value="58" />
+          <int name="mastery" value="5" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-150" y="-112" />
+          <vector name="rb" x="150" y="113" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="mpCon" value="35" />
+          <int name="mad" value="60" />
+          <int name="mastery" value="5" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="1" />
+          <vector name="lt" x="-150" y="-112" />
+          <vector name="rb" x="150" y="113" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="mpCon" value="36" />
+          <int name="mad" value="62" />
+          <int name="mastery" value="6" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-160" y="-120" />
+          <vector name="rb" x="160" y="120" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="mpCon" value="37" />
+          <int name="mad" value="64" />
+          <int name="mastery" value="6" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-160" y="-120" />
+          <vector name="rb" x="160" y="120" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="mpCon" value="38" />
+          <int name="mad" value="66" />
+          <int name="mastery" value="6" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-160" y="-120" />
+          <vector name="rb" x="160" y="120" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="mpCon" value="39" />
+          <int name="mad" value="68" />
+          <int name="mastery" value="7" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-170" y="-127" />
+          <vector name="rb" x="170" y="128" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="mpCon" value="40" />
+          <int name="mad" value="70" />
+          <int name="mastery" value="7" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-170" y="-127" />
+          <vector name="rb" x="170" y="128" />
+        </imgdir>
+        <imgdir name="21">
+          <string name="hs" value="h21" />
+          <int name="mpCon" value="41" />
+          <int name="mad" value="72" />
+          <int name="mastery" value="7" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-170" y="-127" />
+          <vector name="rb" x="170" y="128" />
+        </imgdir>
+        <imgdir name="22">
+          <string name="hs" value="h22" />
+          <int name="mpCon" value="42" />
+          <int name="mad" value="74" />
+          <int name="mastery" value="8" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-180" y="-135" />
+          <vector name="rb" x="180" y="135" />
+        </imgdir>
+        <imgdir name="23">
+          <string name="hs" value="h23" />
+          <int name="mpCon" value="43" />
+          <int name="mad" value="76" />
+          <int name="mastery" value="8" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-180" y="-135" />
+          <vector name="rb" x="180" y="135" />
+        </imgdir>
+        <imgdir name="24">
+          <string name="hs" value="h24" />
+          <int name="mpCon" value="44" />
+          <int name="mad" value="78" />
+          <int name="mastery" value="8" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-180" y="-135" />
+          <vector name="rb" x="180" y="135" />
+        </imgdir>
+        <imgdir name="25">
+          <string name="hs" value="h25" />
+          <int name="mpCon" value="45" />
+          <int name="mad" value="80" />
+          <int name="mastery" value="9" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-190" y="-142" />
+          <vector name="rb" x="190" y="143" />
+        </imgdir>
+        <imgdir name="26">
+          <string name="hs" value="h26" />
+          <int name="mpCon" value="46" />
+          <int name="mad" value="82" />
+          <int name="mastery" value="9" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-190" y="-142" />
+          <vector name="rb" x="190" y="143" />
+        </imgdir>
+        <imgdir name="27">
+          <string name="hs" value="h27" />
+          <int name="mpCon" value="47" />
+          <int name="mad" value="84" />
+          <int name="mastery" value="9" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-190" y="-142" />
+          <vector name="rb" x="190" y="143" />
+        </imgdir>
+        <imgdir name="28">
+          <string name="hs" value="h28" />
+          <int name="mpCon" value="48" />
+          <int name="mad" value="86" />
+          <int name="mastery" value="10" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-200" y="-150" />
+          <vector name="rb" x="200" y="150" />
+        </imgdir>
+        <imgdir name="29">
+          <string name="hs" value="h29" />
+          <int name="mpCon" value="49" />
+          <int name="mad" value="88" />
+          <int name="mastery" value="10" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-200" y="-150" />
+          <vector name="rb" x="200" y="150" />
+        </imgdir>
+        <imgdir name="30">
+          <string name="hs" value="h30" />
+          <int name="mpCon" value="50" />
+          <int name="mad" value="90" />
+          <int name="mastery" value="10" />
+          <int name="mobCount" value="6" />
+          <int name="time" value="2" />
+          <vector name="lt" x="-200" y="-150" />
+          <vector name="rb" x="200" y="150" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="effect">
+        <canvas name="0" width="110" height="140">
+          <vector name="origin" x="61" y="136" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="1" width="124" height="144">
+          <vector name="origin" x="69" y="136" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="2" width="132" height="146">
+          <vector name="origin" x="72" y="138" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="3" width="132" height="142">
+          <vector name="origin" x="72" y="138" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="4" width="132" height="142">
+          <vector name="origin" x="72" y="138" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="5" width="132" height="142">
+          <vector name="origin" x="72" y="138" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="6" width="134" height="143">
+          <vector name="origin" x="73" y="139" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="7" width="132" height="142">
+          <vector name="origin" x="72" y="138" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="8" width="114" height="125">
+          <vector name="origin" x="60" y="127" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="9" width="21" height="113">
+          <vector name="origin" x="17" y="118" />
+          <int name="delay" value="95" />
+        </canvas>
+        <canvas name="10" width="3" height="53">
+          <vector name="origin" x="8" y="99" />
+          <int name="delay" value="95" />
+        </canvas>
+      </imgdir>
+      <imgdir name="hit">
+        <imgdir name="0">
+          <canvas name="0" width="48" height="81">
+            <vector name="origin" x="10" y="209" />
+            <int name="delay" value="120" />
+          </canvas>
+          <canvas name="1" width="54" height="57">
+            <vector name="origin" x="8" y="89" />
+            <int name="delay" value="80" />
+          </canvas>
+          <canvas name="2" width="73" height="72">
+            <vector name="origin" x="26" y="70" />
+            <int name="delay" value="80" />
+          </canvas>
+          <canvas name="3" width="79" height="78">
+            <vector name="origin" x="30" y="58" />
+            <int name="delay" value="80" />
+          </canvas>
+          <canvas name="4" width="80" height="79">
+            <vector name="origin" x="38" y="46" />
+            <int name="delay" value="80" />
+          </canvas>
+          <canvas name="5" width="76" height="75">
+            <vector name="origin" x="38" y="37" />
+            <int name="delay" value="80" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2211003">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <string name="elemAttr" value="l" />
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="mpCon" value="10" />
+          <int name="mad" value="80" />
+          <int name="mastery" value="1" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="mpCon" value="10" />
+          <int name="mad" value="90" />
+          <int name="mastery" value="1" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="mpCon" value="11" />
+          <int name="mad" value="95" />
+          <int name="mastery" value="1" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="mpCon" value="11" />
+          <int name="mad" value="100" />
+          <int name="mastery" value="2" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="mpCon" value="12" />
+          <int name="mad" value="104" />
+          <int name="mastery" value="2" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="mpCon" value="12" />
+          <int name="mad" value="108" />
+          <int name="mastery" value="2" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="mpCon" value="13" />
+          <int name="mad" value="111" />
+          <int name="mastery" value="3" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="mpCon" value="13" />
+          <int name="mad" value="115" />
+          <int name="mastery" value="3" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="118" />
+          <int name="mastery" value="3" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="121" />
+          <int name="mastery" value="4" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="mpCon" value="15" />
+          <int name="mad" value="124" />
+          <int name="mastery" value="4" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="mpCon" value="15" />
+          <int name="mad" value="127" />
+          <int name="mastery" value="4" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="mpCon" value="16" />
+          <int name="mad" value="130" />
+          <int name="mastery" value="5" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="mpCon" value="16" />
+          <int name="mad" value="133" />
+          <int name="mastery" value="5" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="mpCon" value="17" />
+          <int name="mad" value="135" />
+          <int name="mastery" value="5" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="mpCon" value="17" />
+          <int name="mad" value="138" />
+          <int name="mastery" value="6" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="141" />
+          <int name="mastery" value="6" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="143" />
+          <int name="mastery" value="6" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="mpCon" value="19" />
+          <int name="mad" value="145" />
+          <int name="mastery" value="7" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="mpCon" value="19" />
+          <int name="mad" value="148" />
+          <int name="mastery" value="7" />
+        </imgdir>
+        <imgdir name="21">
+          <string name="hs" value="h21" />
+          <int name="mpCon" value="20" />
+          <int name="mad" value="150" />
+          <int name="mastery" value="7" />
+        </imgdir>
+        <imgdir name="22">
+          <string name="hs" value="h22" />
+          <int name="mpCon" value="20" />
+          <int name="mad" value="153" />
+          <int name="mastery" value="8" />
+        </imgdir>
+        <imgdir name="23">
+          <string name="hs" value="h23" />
+          <int name="mpCon" value="21" />
+          <int name="mad" value="155" />
+          <int name="mastery" value="8" />
+        </imgdir>
+        <imgdir name="24">
+          <string name="hs" value="h24" />
+          <int name="mpCon" value="21" />
+          <int name="mad" value="157" />
+          <int name="mastery" value="8" />
+        </imgdir>
+        <imgdir name="25">
+          <string name="hs" value="h25" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="159" />
+          <int name="mastery" value="9" />
+        </imgdir>
+        <imgdir name="26">
+          <string name="hs" value="h26" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="162" />
+          <int name="mastery" value="9" />
+        </imgdir>
+        <imgdir name="27">
+          <string name="hs" value="h27" />
+          <int name="mpCon" value="23" />
+          <int name="mad" value="164" />
+          <int name="mastery" value="9" />
+        </imgdir>
+        <imgdir name="28">
+          <string name="hs" value="h28" />
+          <int name="mpCon" value="23" />
+          <int name="mad" value="166" />
+          <int name="mastery" value="10" />
+        </imgdir>
+        <imgdir name="29">
+          <string name="hs" value="h29" />
+          <int name="mpCon" value="24" />
+          <int name="mad" value="168" />
+          <int name="mastery" value="10" />
+        </imgdir>
+        <imgdir name="30">
+          <string name="hs" value="h30" />
+          <int name="mpCon" value="24" />
+          <int name="mad" value="170" />
+          <int name="mastery" value="10" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="action">
+        <string name="0" value="magic1" />
+      </imgdir>
+      <imgdir name="hit">
+        <imgdir name="0">
+          <canvas name="0" width="164" height="76">
+            <vector name="origin" x="47" y="56" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="1" width="113" height="76">
+            <vector name="origin" x="55" y="56" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="2" width="109" height="77">
+            <vector name="origin" x="53" y="57" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="3" width="104" height="69">
+            <vector name="origin" x="47" y="49" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="4" width="113" height="76">
+            <vector name="origin" x="55" y="56" />
+            <int name="delay" value="100" />
+            <int name="a0" value="255" />
+            <int name="a1" value="0" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="effect">
+        <canvas name="0" width="26" height="26">
+          <vector name="origin" x="16" y="47" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="1" width="39" height="39">
+          <vector name="origin" x="23" y="54" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="2" width="117" height="117">
+          <vector name="origin" x="59" y="91" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="3" width="215" height="134">
+          <vector name="origin" x="98" y="104" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="4" width="208" height="139">
+          <vector name="origin" x="103" y="103" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="5" width="207" height="127">
+          <vector name="origin" x="111" y="101" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="6" width="184" height="133">
+          <vector name="origin" x="93" y="108" />
+          <int name="z" value="0" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="7" width="187" height="140">
+          <vector name="origin" x="101" y="108" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="8" width="186" height="142">
+          <vector name="origin" x="100" y="110" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="9" width="163" height="116">
+          <vector name="origin" x="89" y="97" />
+          <int name="delay" value="70" />
+        </canvas>
+        <canvas name="10" width="139" height="94">
+          <vector name="origin" x="79" y="84" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="11" width="132" height="86">
+          <vector name="origin" x="76" y="80" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="12" width="170" height="24">
+          <vector name="origin" x="133" y="41" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="13" width="56" height="16">
+          <vector name="origin" x="79" y="36" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="14" width="27" height="12">
+          <vector name="origin" x="82" y="35" />
+          <int name="delay" value="100" />
+        </canvas>
+      </imgdir>
+    </imgdir>
+    <imgdir name="2211004">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <imgdir name="action">
+        <string name="0" value="alert4" />
+      </imgdir>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="time" value="10" />
+          <int name="prop" value="38" />
+          <int name="mpCon" value="12" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="time" value="11" />
+          <int name="prop" value="41" />
+          <int name="mpCon" value="12" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="time" value="11" />
+          <int name="prop" value="44" />
+          <int name="mpCon" value="12" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="time" value="12" />
+          <int name="prop" value="47" />
+          <int name="mpCon" value="12" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="time" value="12" />
+          <int name="prop" value="50" />
+          <int name="mpCon" value="12" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="time" value="13" />
+          <int name="prop" value="53" />
+          <int name="mpCon" value="18" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="time" value="13" />
+          <int name="prop" value="56" />
+          <int name="mpCon" value="18" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="time" value="14" />
+          <int name="prop" value="59" />
+          <int name="mpCon" value="18" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="time" value="14" />
+          <int name="prop" value="62" />
+          <int name="mpCon" value="18" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="time" value="15" />
+          <int name="prop" value="65" />
+          <int name="mpCon" value="18" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-250" y="-150" />
+          <vector name="rb" x="250" y="150" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="time" value="15" />
+          <int name="prop" value="68" />
+          <int name="mpCon" value="24" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="time" value="16" />
+          <int name="prop" value="71" />
+          <int name="mpCon" value="24" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="time" value="16" />
+          <int name="prop" value="74" />
+          <int name="mpCon" value="24" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="time" value="17" />
+          <int name="prop" value="77" />
+          <int name="mpCon" value="24" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="time" value="17" />
+          <int name="prop" value="80" />
+          <int name="mpCon" value="24" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="time" value="18" />
+          <int name="prop" value="83" />
+          <int name="mpCon" value="30" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="time" value="18" />
+          <int name="prop" value="86" />
+          <int name="mpCon" value="30" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="time" value="19" />
+          <int name="prop" value="89" />
+          <int name="mpCon" value="30" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="time" value="19" />
+          <int name="prop" value="92" />
+          <int name="mpCon" value="30" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="time" value="20" />
+          <int name="prop" value="95" />
+          <int name="mpCon" value="30" />
+          <int name="mobCount" value="6" />
+          <vector name="lt" x="-280" y="-150" />
+          <vector name="rb" x="280" y="150" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="effect">
+        <canvas name="0" width="50" height="133">
+          <vector name="origin" x="30" y="133" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="1" width="143" height="189">
+          <vector name="origin" x="75" y="189" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="2" width="152" height="192">
+          <vector name="origin" x="81" y="193" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="3" width="155" height="196">
+          <vector name="origin" x="81" y="195" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="4" width="162" height="196">
+          <vector name="origin" x="85" y="198" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="5" width="160" height="182">
+          <vector name="origin" x="84" y="198" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="6" width="150" height="171">
+          <vector name="origin" x="79" y="192" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="7" width="153" height="157">
+          <vector name="origin" x="81" y="196" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="8" width="61" height="89">
+          <vector name="origin" x="34" y="164" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="9" width="61" height="73">
+          <vector name="origin" x="34" y="164" />
+          <int name="delay" value="82" />
+        </canvas>
+        <canvas name="10" width="59" height="71">
+          <vector name="origin" x="33" y="163" />
+          <int name="delay" value="82" />
+        </canvas>
+      </imgdir>
+      <imgdir name="mob">
+        <canvas name="0" width="40" height="31">
+          <vector name="origin" x="13" y="50" />
+          <int name="delay" value="300" />
+        </canvas>
+        <canvas name="1" width="40" height="31">
+          <vector name="origin" x="13" y="50" />
+          <int name="delay" value="300" />
+        </canvas>
+        <canvas name="2" width="40" height="31">
+          <vector name="origin" x="13" y="50" />
+          <int name="delay" value="300" />
+        </canvas>
+        <canvas name="3" width="40" height="31">
+          <vector name="origin" x="13" y="50" />
+          <int name="delay" value="300" />
+        </canvas>
+        <int name="pos" value="2" />
+        <int name="repeat" value="1" />
+      </imgdir>
+      <imgdir name="req">
+        <int name="2210001" value="3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="2211005">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="hpCon" value="58" />
+          <int name="mpCon" value="53" />
+          <int name="time" value="10" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="hpCon" value="56" />
+          <int name="mpCon" value="51" />
+          <int name="time" value="20" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="hpCon" value="54" />
+          <int name="mpCon" value="49" />
+          <int name="time" value="30" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="hpCon" value="52" />
+          <int name="mpCon" value="47" />
+          <int name="time" value="40" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="hpCon" value="50" />
+          <int name="mpCon" value="45" />
+          <int name="time" value="50" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="hpCon" value="48" />
+          <int name="mpCon" value="43" />
+          <int name="time" value="60" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="hpCon" value="46" />
+          <int name="mpCon" value="41" />
+          <int name="time" value="70" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="hpCon" value="44" />
+          <int name="mpCon" value="39" />
+          <int name="time" value="80" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="hpCon" value="42" />
+          <int name="mpCon" value="37" />
+          <int name="time" value="90" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="hpCon" value="40" />
+          <int name="mpCon" value="35" />
+          <int name="time" value="100" />
+          <int name="x" value="-1" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="hpCon" value="39" />
+          <int name="mpCon" value="34" />
+          <int name="time" value="110" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="hpCon" value="38" />
+          <int name="mpCon" value="33" />
+          <int name="time" value="120" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="hpCon" value="37" />
+          <int name="mpCon" value="32" />
+          <int name="time" value="130" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="hpCon" value="36" />
+          <int name="mpCon" value="31" />
+          <int name="time" value="140" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="hpCon" value="35" />
+          <int name="mpCon" value="30" />
+          <int name="time" value="150" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="hpCon" value="34" />
+          <int name="mpCon" value="29" />
+          <int name="time" value="160" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="hpCon" value="33" />
+          <int name="mpCon" value="28" />
+          <int name="time" value="170" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="hpCon" value="32" />
+          <int name="mpCon" value="27" />
+          <int name="time" value="180" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="hpCon" value="31" />
+          <int name="mpCon" value="26" />
+          <int name="time" value="190" />
+          <int name="x" value="-2" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="hpCon" value="30" />
+          <int name="mpCon" value="25" />
+          <int name="time" value="200" />
+          <int name="x" value="-2" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="action">
+        <string name="0" value="alert" />
+      </imgdir>
+      <imgdir name="effect">
+        <canvas name="0" width="145" height="142">
+          <vector name="origin" x="109" y="119" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="1" width="139" height="137">
+          <vector name="origin" x="106" y="113" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="2" width="134" height="135">
+          <vector name="origin" x="103" y="107" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="3" width="120" height="120">
+          <vector name="origin" x="96" y="96" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="4" width="120" height="120">
+          <vector name="origin" x="96" y="93" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="5" width="99" height="105">
+          <vector name="origin" x="86" y="87" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="6" width="82" height="89">
+          <vector name="origin" x="86" y="81" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="7" width="83" height="93">
+          <vector name="origin" x="87" y="83" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="8" width="84" height="94">
+          <vector name="origin" x="88" y="88" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="9" width="84" height="90">
+          <vector name="origin" x="88" y="87" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="10" width="118" height="94">
+          <vector name="origin" x="88" y="94" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="11" width="123" height="97">
+          <vector name="origin" x="88" y="100" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="12" width="140" height="95">
+          <vector name="origin" x="85" y="99" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="13" width="127" height="104">
+          <vector name="origin" x="64" y="111" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="14" width="88" height="87">
+          <vector name="origin" x="53" y="99" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="15" width="89" height="96">
+          <vector name="origin" x="54" y="100" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="16" width="81" height="88">
+          <vector name="origin" x="51" y="99" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="17" width="81" height="81">
+          <vector name="origin" x="51" y="99" />
+          <int name="delay" value="75" />
+        </canvas>
+        <canvas name="18" width="79" height="79">
+          <vector name="origin" x="50" y="98" />
+          <int name="delay" value="75" />
+        </canvas>
+      </imgdir>
+      <imgdir name="req">
+        <int name="2210001" value="3" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="2211006">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="80" />
+          <int name="mastery" value="1" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="84" />
+          <int name="mastery" value="1" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="87" />
+          <int name="mastery" value="1" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="90" />
+          <int name="mastery" value="2" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="93" />
+          <int name="mastery" value="2" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="96" />
+          <int name="mastery" value="2" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="98" />
+          <int name="mastery" value="3" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="100" />
+          <int name="mastery" value="3" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="102" />
+          <int name="mastery" value="3" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10" />
+          <int name="mpCon" value="14" />
+          <int name="mad" value="104" />
+          <int name="mastery" value="4" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="106" />
+          <int name="mastery" value="4" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="108" />
+          <int name="mastery" value="4" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="110" />
+          <int name="mastery" value="5" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="112" />
+          <int name="mastery" value="5" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="114" />
+          <int name="mastery" value="5" />
+          <int name="time" value="1" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="116" />
+          <int name="mastery" value="6" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="118" />
+          <int name="mastery" value="6" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="120" />
+          <int name="mastery" value="6" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="122" />
+          <int name="mastery" value="7" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20" />
+          <int name="mpCon" value="18" />
+          <int name="mad" value="124" />
+          <int name="mastery" value="7" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="21">
+          <string name="hs" value="h21" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="126" />
+          <int name="mastery" value="7" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="22">
+          <string name="hs" value="h22" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="128" />
+          <int name="mastery" value="8" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="23">
+          <string name="hs" value="h23" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="130" />
+          <int name="mastery" value="8" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="24">
+          <string name="hs" value="h24" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="132" />
+          <int name="mastery" value="8" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="25">
+          <string name="hs" value="h25" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="134" />
+          <int name="mastery" value="9" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="26">
+          <string name="hs" value="h26" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="136" />
+          <int name="mastery" value="9" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="27">
+          <string name="hs" value="h27" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="137" />
+          <int name="mastery" value="9" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="28">
+          <string name="hs" value="h28" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="138" />
+          <int name="mastery" value="10" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="29">
+          <string name="hs" value="h29" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="139" />
+          <int name="mastery" value="10" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+        <imgdir name="30">
+          <string name="hs" value="h30" />
+          <int name="mpCon" value="22" />
+          <int name="mad" value="140" />
+          <int name="mastery" value="10" />
+          <int name="time" value="2" />
+          <int name="x" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="action">
+        <string name="0" value="shoot6" />
+      </imgdir>
+      <imgdir name="effect">
+        <canvas name="0" width="76" height="75">
+          <vector name="origin" x="81" y="110" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="1" width="84" height="84">
+          <vector name="origin" x="84" y="116" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="2" width="89" height="87">
+          <vector name="origin" x="87" y="117" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="3" width="141" height="77">
+          <vector name="origin" x="63" y="114" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="4" width="143" height="83">
+          <vector name="origin" x="61" y="117" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="5" width="148" height="88">
+          <vector name="origin" x="66" y="119" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="6" width="121" height="46">
+          <vector name="origin" x="65" y="98" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="7" width="115" height="44">
+          <vector name="origin" x="64" y="90" />
+          <int name="delay" value="60" />
+        </canvas>
+        <canvas name="8" width="171" height="146">
+          <vector name="origin" x="115" y="108" />
+          <int name="delay" value="80" />
+        </canvas>
+        <canvas name="9" width="178" height="151">
+          <vector name="origin" x="119" y="108" />
+          <int name="delay" value="80" />
+        </canvas>
+        <canvas name="10" width="174" height="155">
+          <vector name="origin" x="114" y="108" />
+          <int name="delay" value="80" />
+        </canvas>
+        <canvas name="11" width="168" height="155">
+          <vector name="origin" x="113" y="108" />
+          <int name="delay" value="90" />
+        </canvas>
+        <canvas name="12" width="58" height="150">
+          <vector name="origin" x="59" y="103" />
+          <int name="delay" value="90" />
+          <int name="a0" value="255" />
+          <int name="a1" value="0" />
+        </canvas>
+      </imgdir>
+      <imgdir name="ball">
+        <canvas name="0" width="75" height="30">
+          <vector name="origin" x="40" y="17" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="1" width="76" height="31">
+          <vector name="origin" x="40" y="18" />
+          <int name="delay" value="100" />
+        </canvas>
+        <canvas name="2" width="79" height="29">
+          <vector name="origin" x="40" y="16" />
+          <int name="delay" value="100" />
+        </canvas>
+      </imgdir>
+      <imgdir name="hit">
+        <imgdir name="0">
+          <canvas name="0" width="63" height="74">
+            <vector name="origin" x="32" y="37" />
+            <int name="delay" value="120" />
+          </canvas>
+          <canvas name="1" width="61" height="75">
+            <vector name="origin" x="33" y="37" />
+            <int name="delay" value="120" />
+          </canvas>
+          <canvas name="2" width="60" height="72">
+            <vector name="origin" x="32" y="35" />
+            <int name="delay" value="120" />
+            <int name="a0" value="255" />
+            <int name="a1" value="0" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

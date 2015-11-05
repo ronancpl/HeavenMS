@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="ItemSkill.img">
+  <imgdir name="10000">
+    <string name="info" value="봉인" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="10" />
+        <int name="prop" value="10" />
+        <imgdir name="mob">
+          <canvas name="0" width="40" height="31">
+            <vector name="origin" x="13" y="50" />
+            <int name="delay" value="300" />
+          </canvas>
+          <canvas name="1" width="40" height="31">
+            <vector name="origin" x="13" y="50" />
+            <int name="delay" value="300" />
+          </canvas>
+          <canvas name="2" width="40" height="31">
+            <vector name="origin" x="13" y="50" />
+            <int name="delay" value="300" />
+          </canvas>
+          <canvas name="3" width="40" height="31">
+            <vector name="origin" x="13" y="50" />
+            <int name="delay" value="300" />
+          </canvas>
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10001">
+    <string name="info" value="암흑" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="20" />
+        <int name="prop" value="10" />
+        <int name="x" value="70" />
+        <imgdir name="mob">
+          <canvas name="0" width="46" height="48">
+            <vector name="origin" x="23" y="52" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="1" width="47" height="49">
+            <vector name="origin" x="24" y="54" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="2" width="44" height="49">
+            <vector name="origin" x="24" y="55" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="3" width="45" height="48">
+            <vector name="origin" x="25" y="54" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="4" width="45" height="47">
+            <vector name="origin" x="25" y="52" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="5" width="45" height="51">
+            <vector name="origin" x="24" y="54" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="6" width="48" height="50">
+            <vector name="origin" x="25" y="55" />
+            <int name="delay" value="100" />
+          </canvas>
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10002">
+    <string name="info" value="스턴" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="5" />
+        <int name="prop" value="10" />
+        <imgdir name="mob">
+          <canvas name="0" width="66" height="18">
+            <vector name="origin" x="33" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="1" width="58" height="17">
+            <vector name="origin" x="29" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="2" width="58" height="17">
+            <vector name="origin" x="28" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="2">
+        <int name="mpCon" value="1" />
+        <int name="time" value="10" />
+        <int name="prop" value="10" />
+        <imgdir name="mob">
+          <canvas name="0" width="66" height="18">
+            <vector name="origin" x="33" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="1" width="58" height="17">
+            <vector name="origin" x="29" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="2" width="58" height="17">
+            <vector name="origin" x="28" y="9" />
+            <int name="delay" value="100" />
+          </canvas>
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10003">
+    <string name="info" value="도트" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="30" />
+        <int name="prop" value="10" />
+        <int name="x" value="120" />
+        <imgdir name="mob">
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+          <canvas name="0" width="26" height="37">
+            <vector name="origin" x="13" y="28" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="1" width="29" height="41">
+            <vector name="origin" x="14" y="28" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="2" width="37" height="40">
+            <vector name="origin" x="17" y="30" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="3" width="38" height="42">
+            <vector name="origin" x="19" y="30" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="4" width="33" height="36">
+            <vector name="origin" x="16" y="28" />
+            <int name="z" value="0" />
+            <int name="delay" value="70" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+      <imgdir name="2">
+        <int name="mpCon" value="5" />
+        <int name="time" value="10" />
+        <int name="prop" value="5" />
+        <int name="x" value="300" />
+        <imgdir name="mob">
+          <int name="pos" value="2" />
+          <int name="repeat" value="1" />
+          <canvas name="0" width="26" height="37">
+            <vector name="origin" x="13" y="28" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="1" width="29" height="41">
+            <vector name="origin" x="14" y="28" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="2" width="37" height="40">
+            <vector name="origin" x="17" y="30" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="3" width="38" height="42">
+            <vector name="origin" x="19" y="30" />
+            <int name="delay" value="70" />
+          </canvas>
+          <canvas name="4" width="33" height="36">
+            <vector name="origin" x="16" y="28" />
+            <int name="z" value="0" />
+            <int name="delay" value="70" />
+          </canvas>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10004">
+    <string name="info" value="결빙" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="5" />
+        <int name="prop" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="10005">
+    <string name="info" value="슬로우" />
+    <imgdir name="level">
+      <imgdir name="1">
+        <int name="mpCon" value="5" />
+        <int name="time" value="10" />
+        <int name="prop" value="10" />
+        <int name="x" value="-50" />
+        <imgdir name="mob">
+          <canvas name="0" width="48" height="38">
+            <vector name="origin" x="24" y="19" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="1" width="46" height="38">
+            <vector name="origin" x="23" y="19" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="2" width="45" height="38">
+            <vector name="origin" x="22" y="19" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="3" width="45" height="36">
+            <vector name="origin" x="22" y="18" />
+            <int name="delay" value="100" />
+          </canvas>
+          <canvas name="4" width="41" height="34">
+            <vector name="origin" x="20" y="17" />
+            <int name="delay" value="100" />
+          </canvas>
+          <int name="pos" value="3" />
+          <int name="repeat" value="1" />
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

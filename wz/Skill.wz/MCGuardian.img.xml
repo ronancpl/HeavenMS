@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="MCGuardian.img">
+  <imgdir name="0">
+    <int name="type" value="0" />
+    <int name="spendCP" value="17" />
+    <string name="name" value="Power UP" />
+    <string name="desc" value="The Weapon Attack stats for the monster working for your party has increased by 50." />
+    <int name="mobSkillID" value="150" />
+    <int name="level" value="1" />
+  </imgdir>
+  <imgdir name="1">
+    <int name="type" value="1" />
+    <int name="spendCP" value="16" />
+    <string name="name" value="Guard UP" />
+    <string name="desc" value="The Weapon Defense stats for the monster working for your party has increased by 50." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="151" />
+  </imgdir>
+  <imgdir name="2">
+    <int name="type" value="2" />
+    <int name="spendCP" value="17" />
+    <string name="name" value="Magic UP" />
+    <string name="desc" value="The Magic Attack stats for the monster working for your party has increased by 40." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="152" />
+  </imgdir>
+  <imgdir name="3">
+    <int name="type" value="3" />
+    <int name="spendCP" value="16" />
+    <string name="name" value="Shield UP" />
+    <string name="desc" value="The Magic Defense stats for the monster working for your party has increased by 50." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="153" />
+  </imgdir>
+  <imgdir name="4">
+    <int name="type" value="4" />
+    <int name="spendCP" value="13" />
+    <string name="name" value="Accuracy UP" />
+    <string name="desc" value="The Accuracy stats for the monster working for your party has increased by 30." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="154" />
+  </imgdir>
+  <imgdir name="5">
+    <int name="type" value="5" />
+    <int name="spendCP" value="16" />
+    <string name="name" value="Avoidability UP" />
+    <string name="desc" value="The Avoidability stats for the monster working for your party has increased by 30." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="155" />
+  </imgdir>
+  <imgdir name="6">
+    <int name="type" value="6" />
+    <int name="spendCP" value="12" />
+    <string name="name" value="Speed UP" />
+    <string name="desc" value="The Speed stats for the monster working for your party has increased by 30." />
+    <int name="level" value="1" />
+    <int name="mobSkillID" value="156" />
+  </imgdir>
+  <imgdir name="7">
+    <int name="type" value="7" />
+    <int name="spendCP" value="35" />
+    <string name="name" value="Cancel Weapon Attack" />
+    <string name="desc" value="The monster working for your party is now immune to weapon attack." />
+    <int name="level" value="10" />
+    <int name="mobSkillID" value="140" />
+  </imgdir>
+  <imgdir name="8">
+    <int name="type" value="8" />
+    <int name="spendCP" value="35" />
+    <string name="name" value="Cancel Magic Attack" />
+    <string name="desc" value=" The monster working for your party is now immune to magic attack." />
+    <int name="level" value="9" />
+    <int name="mobSkillID" value="141" />
+  </imgdir>
+</imgdir>
