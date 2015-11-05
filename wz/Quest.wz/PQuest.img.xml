@@ -1,0 +1,649 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="PQuest.img">
+  <imgdir name="1200">
+    <null name="Moon Bunny's Rice Cake" />
+    <string name="mark" value="Map/MapHelper/mark/MoonRabbitParty" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="6" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="90" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="7" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="8" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="9" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="10" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="40" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="10" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1201">
+    <null name="First Time Together" />
+    <string name="mark" value="Map/MapHelper/mark/KerningParty" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="10" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="90" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="15" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="20" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="25" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1202">
+    <null name="The Crack of Dimension" />
+    <string name="mark" value="Map/MapHelper/mark/AbandonTower" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="20" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="90" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="25" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="40" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="60" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="60" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1203">
+    <null name="Remnants of Goddess" />
+    <string name="mark" value="Map/MapHelper/mark/GoddessTower" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="15" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="80" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="20" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="40" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="60" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="60" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1204">
+    <null name="Lord Pirate" />
+    <string name="mark" value="Map/MapHelper/mark/DevijonParty" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="80" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have3" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have1" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have0" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1205">
+    <null name="Romeo and Juliet" />
+    <string name="mark" value="Map/MapHelper/mark/RomioJuliet" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="20" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="80" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="25" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+          <int name="have" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="35" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="45" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="45" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1206">
+    <string name="Forest of Poison Haze" value="" />
+    <string name="mark" value="Map/MapHelper/mark/EilnForest" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less">
+          <int name="min" value="15" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="CR" value="80" />
+          <int name="have1" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less">
+          <int name="min" value="17" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="CR" value="70" />
+          <int name="have0" value="1" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less">
+          <int name="min" value="20" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="30" />
+          <int name="CR" value="50" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less">
+          <int name="min" value="24" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="CR" value="30" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less">
+          <int name="min" value="30" />
+        </imgdir>
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="CR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1300">
+    <null name="Ariant Hunting Competition" />
+    <string name="mark" value="Map/MapHelper/mark/AriantMatch" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="VR" value="40" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="70" />
+          <int name="VR" value="30" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="VR" value="25" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="VR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="10" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1301">
+    <null name="Monster Carnival" />
+    <string name="mark" value="Map/MapHelper/mark/Carnival" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="200" />
+          <int name="VR" value="70" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="VR" value="60" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="VR" value="40" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="VR" value="40" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1302">
+    <string name="The 2nd Monster Carnival" value="" />
+    <string name="mark" value="Map/MapHelper/mark/Carnival" />
+    <imgdir name="rank">
+      <imgdir name="S">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="200" />
+          <int name="VR" value="70" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="A">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="100" />
+          <int name="VR" value="60" />
+        </imgdir>
+        <imgdir name="equal">
+          <int name="have" value="1" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="B">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="50" />
+          <int name="VR" value="40" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="C">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="10" />
+          <int name="VR" value="40" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="D">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="20" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+      <imgdir name="F">
+        <imgdir name="less" />
+        <imgdir name="more">
+          <int name="try" value="1" />
+          <int name="VR" value="0" />
+        </imgdir>
+        <imgdir name="equal" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>
