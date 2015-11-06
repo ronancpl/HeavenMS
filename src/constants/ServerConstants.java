@@ -32,10 +32,12 @@ public class ServerConstants {
     public static final boolean USE_PARTY_SEARCH = false;
     public static final boolean USE_AUTOBAN = false;            //commands the server to detect infractors automatically.
     public static final boolean USE_ANOTHER_AUTOASSIGN = true;  //based on distributing AP accordingly with higher secondary stat on equipments.
+    public static final boolean USE_REFRESH_RANK_MOVE = true;
     
     public static final int MAX_AP = 999;
     public static final long BLOCK_DUEY_RACE_COND = (long)(0.5 * 1000);
-    public static final long PET_LOOT_UPON_ATTACK = (long)(0.8 * 1000);    //time the pet must wait before trying to pick items up.
+    public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000);            //time the pet must wait before trying to pick items up.
+    
     //Some Gameplay Enhancing Configurations
     public static final boolean USE_PERFECT_SCROLLING = true;   //scrolls doesn't use slots upon failure.
     public static final boolean USE_ENHANCED_CHSCROLL = true;   //equips even more powerful with chaos upgrade

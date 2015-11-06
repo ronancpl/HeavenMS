@@ -52,7 +52,7 @@ Testei o script do chscroll crafter.
 
 10 --- 11 Agosto 2015,
 NPC crafters, Accessories e chscroll funcionam OK.
-cORRIGIDO BUG DE CRAFTER Q TIRAVA ITEM SE INCOMPLETO!
+CORRIGIDO BUG DE CRAFTER Q TIRAVA ITEM SE INCOMPLETO!
 Inclui constante USE_PERFECT_SCROLLING.
 
 12 --- 14 Agosto 2015,
@@ -71,3 +71,6 @@ Resolvi alguns problemas com scripts do aviao e do metro.
 Mecanismos de evitar queda de HP por mapa (red bean, air bubble, soft white bun) funcionam.
 Correcao de bug que nao contabilizava queda de hp qdo um char loga em um mapa.
 Correcao de bug que nao retirava corretamente recursos de projeteis.
+
+6 Novembro 2015,
+Movimentacao no ranking agora eh contabilizado corretamente.
