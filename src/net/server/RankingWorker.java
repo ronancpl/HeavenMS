@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import client.MapleJob;
 import tools.DatabaseConnection;
+import constants.ServerConstants;
 
 /**
  * @author Matze
@@ -35,11 +36,17 @@ import tools.DatabaseConnection;
 public class RankingWorker implements Runnable {
     private Connection con;
     private long lastUpdate = System.currentTimeMillis();
-
+    
     public void run() {
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false);
+            
+            if(ServerConstants.USE_REFRESH_RANK_MOVE == true) {
+                resetMoveRank(true);
+                resetMoveRank(false);
+            }
+            
             updateRanking(null);
             for (int i = 0; i < 3; i += 2) {
                 for (int j = 1; j < 6; j++) {
@@ -50,12 +57,21 @@ public class RankingWorker implements Runnable {
             con.setAutoCommit(true);
             lastUpdate = System.currentTimeMillis();
         } catch (SQLException ex) {
+            ex.printStackTrace();
+            
             try {
                 con.rollback();
                 con.setAutoCommit(true);
             } catch (SQLException ex2) {
+                ex2.printStackTrace();
             }
         }
+    }
+    
+    private void resetMoveRank(boolean job) throws SQLException {
+        String query = "UPDATE characters SET " + (job == true ? "jobRankMove = 0" : "rankMove = 0");
+        PreparedStatement reset = con.prepareStatement(query);
+        ResultSet rs = reset.executeQuery();
     }
 
     private void updateRanking(MapleJob job) throws SQLException {
