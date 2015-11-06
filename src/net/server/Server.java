@@ -168,11 +168,11 @@ public class Server implements Runnable {
         MapleItemInformationProvider.getInstance().getAllItems();
 
         CashItemFactory.getSpecialCashItems();
-        System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
+        System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
         
-	timeToTake = System.currentTimeMillis();
-	MapleQuest.loadAllQuest();
-	System.out.println("Quest loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
+		timeToTake = System.currentTimeMillis();
+		MapleQuest.loadAllQuest();
+		System.out.println("Quest loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
 		
 		
         try {
