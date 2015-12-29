@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="BlockReason.img">
+  <imgdir name="1">
+    <string name="type" value="HACK" />
+    <string name="msg" value="Your account has been blocked for hacking or illegal use of third-party programs." />
+  </imgdir>
+  <imgdir name="2">
+    <string name="type" value="BOT" />
+    <string name="msg" value="Your account has been blocked for using macro / auto-keyboard." />
+  </imgdir>
+  <imgdir name="3">
+    <string name="type" value="AD" />
+    <string name="msg" value="Your account has been blocked for illicit promotion and advertising." />
+  </imgdir>
+  <imgdir name="4">
+    <string name="type" value="HARASS" />
+    <string name="msg" value="Your account has been blocked for harassment." />
+  </imgdir>
+  <imgdir name="5">
+    <string name="type" value="CURSE" />
+    <string name="msg" value="Your account has been blocked for using profane language." />
+  </imgdir>
+  <imgdir name="6">
+    <string name="type" value="SCAM" />
+    <string name="msg" value="Your account has been blocked for scamming." />
+  </imgdir>
+  <imgdir name="7">
+    <string name="type" value="MISCONDUCT" />
+    <string name="msg" value="Your account has been blocked for misconduct." />
+  </imgdir>
+  <imgdir name="8">
+    <string name="type" value="SELL" />
+    <string name="msg" value="Your account has been blocked for illegal cash transaction" />
+  </imgdir>
+  <imgdir name="9">
+    <string name="type" value="ICASH" />
+    <string name="msg" value="Your account has been blocked for illegal charging/funding. Please contact customer support for further details." />
+  </imgdir>
+  <imgdir name="10">
+    <string name="type" value="TEMP" />
+    <string name="msg" value="Your account has been blocked for temporary request. Please contact customer support for further details." />
+  </imgdir>
+  <imgdir name="11">
+    <string name="type" value="GM" />
+    <string name="msg" value="Your account has been blocked for impersonating GM. " />
+  </imgdir>
+  <imgdir name="12">
+    <string name="type" value="IPROGRAM" />
+    <string name="msg" value="Your account has been blocked for using illegal programs or violating the game policy. " />
+  </imgdir>
+  <imgdir name="13">
+    <string name="type" value="MEGAPHONE" />
+    <string name="msg" value="Your account has been blocked for one of cursing, scamming, or illegal trading via Megaphones." />
+  </imgdir>
+</imgdir>

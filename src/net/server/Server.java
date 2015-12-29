@@ -138,9 +138,9 @@ public class Server implements Runnable {
 
 
         if(ServerConstants.SHUTDOWNHOOK)
-        Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
+            Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
         
-        DatabaseConnection.getConnection();
+        //DatabaseConnection.getConnection();
         Connection c = DatabaseConnection.getConnection();
         try {
             PreparedStatement ps = c.prepareStatement("UPDATE accounts SET loggedin = 0");
@@ -150,6 +150,7 @@ public class Server implements Runnable {
             ps.executeUpdate();
             ps.close();
         } catch (SQLException sqle) {
+            sqle.printStackTrace();
         }
         IoBuffer.setUseDirectBuffer(false);
         IoBuffer.setAllocator(new SimpleBufferAllocator());

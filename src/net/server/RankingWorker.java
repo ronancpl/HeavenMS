@@ -37,6 +37,46 @@ public class RankingWorker implements Runnable {
     private Connection con;
     private long lastUpdate = System.currentTimeMillis();
     
+    private void resetMoveRank(boolean job) throws SQLException {
+        String query = "UPDATE characters SET " + (job == true ? "jobRankMove = 0" : "rankMove = 0");
+        PreparedStatement reset = con.prepareStatement(query);
+        reset.executeUpdate();
+    }
+
+    private void updateRanking(int job) throws SQLException {
+        String sqlCharSelect = "SELECT c.id, " + (job != -1 ? "c.jobRank, c.jobRankMove" : "c.rank, c.rankMove") + ", a.lastlogin AS lastlogin, a.loggedin FROM characters AS c LEFT JOIN accounts AS a ON c.accountid = a.id ";
+        if (job != -1) {
+            sqlCharSelect += "WHERE c.job DIV 100 = ? ";
+        }
+        sqlCharSelect += "ORDER BY c.level DESC , c.exp DESC , c.fame DESC , c.meso DESC";
+        PreparedStatement charSelect = con.prepareStatement(sqlCharSelect);
+        
+        if (job != -1) {
+            charSelect.setInt(1, job);
+        }
+        ResultSet rs = charSelect.executeQuery();
+        PreparedStatement ps = con.prepareStatement("UPDATE characters SET " + (job != -1 ? "jobRank = ?, jobRankMove = ? " : "rank = ?, rankMove = ? ") + "WHERE id = ?");
+        int rank = 0;
+        
+        while (rs.next()) {
+            int rankMove = 0;
+            rank++;
+            if (rs.getLong("lastlogin") < lastUpdate || rs.getInt("loggedin") > 0) {
+                rankMove = rs.getInt((job != -1 ? "jobRankMove" : "rankMove"));
+            }
+            rankMove += rs.getInt((job != -1 ? "jobRank" : "rank")) - rank;
+            ps.setInt(1, rank);
+            ps.setInt(2, rankMove);
+            ps.setInt(3, rs.getInt("id"));
+            ps.executeUpdate();
+        }
+        
+        rs.close();
+        charSelect.close();
+        ps.close();
+    }
+    
+    @Override
     public void run() {
         try {
             con = DatabaseConnection.getConnection();
@@ -47,12 +87,11 @@ public class RankingWorker implements Runnable {
                 resetMoveRank(false);
             }
             
-            updateRanking(null);
-            for (int i = 0; i < 3; i += 2) {
-                for (int j = 1; j < 6; j++) {
-                    updateRanking(MapleJob.getById(i * 500 + 100 * j));
-                }
+            updateRanking(-1);    //overall ranking
+            for (int i = 0; i <= MapleJob.getMax(); i++) {
+                updateRanking(i);
             }
+            
             con.commit();
             con.setAutoCommit(true);
             lastUpdate = System.currentTimeMillis();
@@ -66,41 +105,5 @@ public class RankingWorker implements Runnable {
                 ex2.printStackTrace();
             }
         }
-    }
-    
-    private void resetMoveRank(boolean job) throws SQLException {
-        String query = "UPDATE characters SET " + (job == true ? "jobRankMove = 0" : "rankMove = 0");
-        PreparedStatement reset = con.prepareStatement(query);
-        ResultSet rs = reset.executeQuery();
-    }
-
-    private void updateRanking(MapleJob job) throws SQLException {
-        String sqlCharSelect = "SELECT c.id, " + (job != null ? "c.jobRank, c.jobRankMove" : "c.rank, c.rankMove") + ", a.lastlogin AS lastlogin, a.loggedin FROM characters AS c LEFT JOIN accounts AS a ON c.accountid = a.id WHERE c.gm = 0 ";
-        if (job != null) {
-            sqlCharSelect += "AND c.job DIV 100 = ? ";
-        }
-        sqlCharSelect += "ORDER BY c.level DESC , c.exp DESC , c.fame DESC , c.meso DESC";
-        PreparedStatement charSelect = con.prepareStatement(sqlCharSelect);
-        if (job != null) {
-            charSelect.setInt(1, job.getId() / 100);
-        }
-        ResultSet rs = charSelect.executeQuery();
-        PreparedStatement ps = con.prepareStatement("UPDATE characters SET " + (job != null ? "jobRank = ?, jobRankMove = ? " : "rank = ?, rankMove = ? ") + "WHERE id = ?");
-        int rank = 0;
-        while (rs.next()) {
-            int rankMove = 0;
-            rank++;
-            if (rs.getLong("lastlogin") < lastUpdate || rs.getInt("loggedin") > 0) {
-                rankMove = rs.getInt((job != null ? "jobRankMove" : "rankMove"));
-            }
-            rankMove += rs.getInt((job != null ? "jobRank" : "rank")) - rank;
-            ps.setInt(1, rank);
-            ps.setInt(2, rankMove);
-            ps.setInt(3, rs.getInt("id"));
-            ps.executeUpdate();
-        }
-        rs.close();
-        charSelect.close();
-        ps.close();
     }
 }

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Swindle.img">
+  <imgdir name="0">
+    <imgdir name="word">
+      <string name="0" value="buy cash" />
+      <string name="1" value="buy cash" />
+      <string name="2" value="sell cash" />
+      <string name="3" value="sell cash" />
+      <string name="4" value="confirmation number" />
+      <string name="5" value="phone number" />
+      <string name="6" value="advanced payment" />
+      <string name="7" value="fraud" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[Note] Beware of fraudulent messages that offer a gift, requesting you to enter a confirmation number." />
+      <string name="1" value="[Note] Beware of fraudulent messages that offer an item for a survey, requesting you to enter the confirmation number" />
+      <string name="2" value="[Note] Beware of fraudulent messages that present you with an offer to charge your cash, requesting sensitive information." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <imgdir name="word">
+      <string name="0" value="party member" />
+      <string name="1" value="party" />
+      <string name="2" value="invite party member" />
+      <string name="3" value="invite party member" />
+      <string name="4" value="invite party member" />
+      <string name="5" value="party mem" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[Note]You can use Party Search (hotkey: O) to find party members more easily." />
+      <string name="1" value="[Note]You can join a party automatically using the Game option." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <imgdir name="word">
+      <string name="0" value="운영자" />
+      <string name="1" value="운영원칙" />
+      <string name="2" value="운영정책" />
+      <string name="3" value="제재" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[공지]운영자는 결코 유저에게 개인정보나 아이템 등을 요구하지 않습니다. 운영자를 사칭하는 사기 행위에 주의하시기 바랍니다." />
+      <string name="1" value="[공지]운영자를 사칭하거나 운영정책에 위반되는 행위를 할 경우 제재될 수 있습니다." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <imgdir name="word">
+      <string name="0" value="주민등록번호" />
+      <string name="1" value="주민번호" />
+      <string name="2" value="민번" />
+      <string name="3" value="전화번호" />
+      <string name="4" value="비번" />
+      <string name="5" value="비밀번호" />
+      <string name="6" value="계좌번호" />
+      <string name="7" value="현금" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[공지]주민등록번호나 전화번호, 계좌번호 등은 타인이 악용할 수 있으므로, 개인정보 유출에 주의하시기 바랍니다." />
+      <string name="1" value="[공지]전화번호나 계좌번호 등이 유출될 경우 타인이 악용할 수 있으므로, 개인 신상정보를 묻는 사기 행위에 주의하시기 바랍니다." />
+      <string name="2" value="[공지]주민등록번호나 전화번호 등 타인의 신상을 유출해 악용할 경우 제재될 수 있습니다." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <imgdir name="word">
+      <string name="0" value="네이트온" />
+      <string name="1" value="메신저" />
+      <string name="2" value="원격" />
+      <string name="3" value="원격제어" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[공지]타인이 메신저를 이용해 컴퓨터를 원격 제어할 경우, 컴퓨터에 악성 (해킹) 프로그램이 설치될 수 있으니 주의하시기 바랍니다." />
+      <string name="1" value="[공지]메신저를 이용해 타인의 컴퓨터를 원격 제어하여 악성 프로그램을 설치할 경우 제재될 수 있습니다." />
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <imgdir name="word">
+      <string name="0" value="버그" />
+      <string name="1" value="핵" />
+      <string name="2" value="아이템베이" />
+      <string name="3" value="아이템매니아" />
+    </imgdir>
+    <imgdir name="warn">
+      <string name="0" value="[공지]메소나 아이템, 불법프로그램 등을 판매한다고 하며 현금 거래를 유도하는 사기 행위에 주의하시기 바랍니다." />
+      <string name="1" value="[공지]현금거래에서 발생하는 피해는 보상이나 복구 처리를 받으실 수 없습니다." />
+      <string name="2" value="[공지]메소나 아이템, 아이디, 불법프로그램 등을 현금으로 매매하거나 이를 시도하는 경우 제재될 수 있습니다." />
+    </imgdir>
+  </imgdir>
+</imgdir>

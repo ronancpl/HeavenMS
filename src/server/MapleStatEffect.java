@@ -364,7 +364,7 @@ public class MapleStatEffect {
                     break;
                 case BlazeWizard.ELEMENTAL_RESET:
                 case Evan.ELEMENTAL_RESET:
-                	statups.add(new Pair<>(MapleBuffStat.MAGIC_SHIELD, Integer.valueOf(x)));
+                	statups.add(new Pair<>(MapleBuffStat.ELEMENTAL_RESET, Integer.valueOf(x)));
                 	break;
                 case Evan.MAGIC_SHIELD:
                     statups.add(new Pair<>(MapleBuffStat.MAGIC_SHIELD, Integer.valueOf(x)));

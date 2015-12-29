@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="EmotionEffect.img">
+  <imgdir name="blink" />
+  <imgdir name="hit" />
+  <imgdir name="smile" />
+  <imgdir name="troubled" />
+  <imgdir name="cry" />
+  <imgdir name="angry" />
+  <imgdir name="bewildered" />
+  <imgdir name="stunned" />
+  <imgdir name="vomit" />
+  <imgdir name="oops">
+    <canvas name="0" width="11" height="17">
+      <vector name="origin" x="-2" y="82" />
+      <int name="delay" value="300" />
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+    </canvas>
+    <canvas name="1" width="41" height="41">
+      <vector name="origin" x="-2" y="96" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="2" width="36" height="56">
+      <vector name="origin" x="-2" y="101" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="3" width="39" height="61">
+      <vector name="origin" x="1" y="96" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="4" width="49" height="76">
+      <vector name="origin" x="11" y="101" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="5" width="59" height="81">
+      <vector name="origin" x="21" y="96" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="6" width="69" height="14">
+      <vector name="origin" x="31" y="101" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="7" width="79" height="14">
+      <vector name="origin" x="41" y="96" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="8" width="89" height="14">
+      <vector name="origin" x="51" y="101" />
+      <int name="delay" value="130" />
+    </canvas>
+    <canvas name="9" width="74" height="3">
+      <vector name="origin" x="36" y="93" />
+      <int name="delay" value="500" />
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>
