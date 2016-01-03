@@ -126,6 +126,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
             default:
                 c.getPlayer().dropMessage("Feature not available");
         }
+        
         alliance.saveToDB();
     }
 

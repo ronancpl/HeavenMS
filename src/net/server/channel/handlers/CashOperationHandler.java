@@ -47,6 +47,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         CashShop cs = chr.getCashShop();
+        
         if (!cs.isOpened()) {
             c.announce(MaplePacketCreator.enableActions());
             return;
@@ -98,6 +99,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             try {
                 chr.sendNote(recipient.get("name"), chr.getName() + " has sent you a gift! Go check out the Cash Shop.", (byte) 0); //fame or not
             } catch (SQLException ex) {
+                ex.printStackTrace();
             }
             MapleCharacter receiver = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient.get("name"));
             if (receiver != null) receiver.showNote();
@@ -283,6 +285,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         try {
                             chr.sendNote(partner.getName(), text, (byte) 1);
                         } catch (SQLException ex) {
+                            ex.printStackTrace();
                         }
                         partner.showNote();
                     }

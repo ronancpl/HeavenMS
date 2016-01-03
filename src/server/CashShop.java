@@ -175,6 +175,7 @@ public class CashShop {
                     if (rs != null) rs.close();
                     if (ps != null) ps.close();
                 } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         }

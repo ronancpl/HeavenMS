@@ -49,7 +49,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 		}
 		if (slea.available() == 0) { //Cash Shop :)
 			if(!chr.getCashShop().isOpened()) {                 
-				c.disconnect(false, false);               
+                            c.disconnect(false, false);               
 				return;           
 			}
 			String[] socket = c.getChannelServer().getIP().split(":");
@@ -62,7 +62,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 			}
 		} else {
 			if(chr.getCashShop().isOpened()) {                 
-				c.disconnect(false, false);               
+				c.disconnect(false, false);
 				return;           
 			}
 			try {

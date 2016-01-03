@@ -2971,7 +2971,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
         try {
-            MapleCharacter ret = new MapleCharacter();
+            MapleCharacter ret = new MapleCharacter();            
             ret.client = client;
             ret.id = charid;
             Connection con = DatabaseConnection.getConnection();
@@ -3857,6 +3857,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     ps.executeBatch();
                 }
             } catch (SQLException se) {
+                se.printStackTrace();
             }
         }
     }
@@ -3871,6 +3872,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.execute();
             }
         } catch (SQLException se) {
+            se.printStackTrace();
         }
     }
 
@@ -3959,6 +3961,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -4216,7 +4219,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             con.commit();
 			con.setAutoCommit(true);
 			
-			if (cashshop != null) {
+            if (cashshop != null) {
                 cashshop.save(con);
             }
             if (storage != null) {

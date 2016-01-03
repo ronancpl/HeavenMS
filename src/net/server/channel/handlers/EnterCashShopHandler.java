@@ -38,21 +38,25 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         try {
         	MapleCharacter mc = c.getPlayer();
 
-        	if (mc.getCashShop().isOpened()) return;
+        	if (mc.getCashShop().isOpened()) {
+                    return;
+                }
         	
-			Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
+		Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
 	        mc.cancelBuffEffects();
 	        mc.cancelExpirationTask();
-			c.announce(MaplePacketCreator.openCashShop(c, false));
-			mc.saveToDB();
-			mc.getCashShop().open(true);
-			mc.getMap().removePlayer(mc);
-			c.getChannelServer().removePlayer(mc);
-			
-			c.announce(MaplePacketCreator.showCashInventory(c));                
-			c.announce(MaplePacketCreator.showGifts(mc.getCashShop().loadGifts()));
-			c.announce(MaplePacketCreator.showWishList(mc, false));
-			c.announce(MaplePacketCreator.showCash(mc));
+                
+		c.announce(MaplePacketCreator.openCashShop(c, false));
+                c.announce(MaplePacketCreator.showCashInventory(c));
+		c.announce(MaplePacketCreator.showGifts(mc.getCashShop().loadGifts()));
+		c.announce(MaplePacketCreator.showWishList(mc, false));
+		c.announce(MaplePacketCreator.showCash(mc));
+                        
+                
+		c.getChannelServer().removePlayer(mc);
+                mc.getMap().removePlayer(mc);
+                mc.getCashShop().open(true);
+                mc.saveToDB();
         } catch (Exception e) {
             e.printStackTrace();
         }

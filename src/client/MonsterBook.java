@@ -56,6 +56,7 @@ public final class MonsterBook {
         c.announce(MaplePacketCreator.addCard(false, cardid, 1));
         c.announce(MaplePacketCreator.showGainCard());
         calculateLevel();
+        
         c.getPlayer().saveToDB();
     }
 

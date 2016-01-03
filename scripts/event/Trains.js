@@ -10,7 +10,7 @@ var Orbis_Station;
 var Ludibrium_Station;
 
 //Time Setting is in millisecond
-var closeTime = 60 * 1000; //The time to close the gate
+var closeTime = 50 * 1000; //The time to close the gate
 var beginTime = 60 * 1000; //The time to begin the ride
 var rideTime = 60 * 1000; //The time that require move to destination
 

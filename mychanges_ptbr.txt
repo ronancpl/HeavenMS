@@ -76,8 +76,15 @@ Correcao de bug que nao retirava corretamente recursos de projeteis.
 Movimentação no ranking agora é contabilizado corretamente.
 
 11 Dezembro 2015,
-Corrigi bug que nao permitia ao tentar aceitar quest remotamente (lightbulb).
+Correcao de bug que nao permitia ao tentar aceitar quest remotamente (lightbulb).
 
 26 --- 29 Dezembro 2015,
 Correcao de movimentacao no Ranking, a cada atualizacao do sistema.
 Implementacao e aprimoramento das funcionalidades de ItemSort e SlotMerger do inventario.
+Correcao de bug em scripts que fazia o jogador ficar preso num mapa de transicao (barco, por ex.).
+
+01 Janeiro 2016,
+Correcao de bug, onde o sistema nao contabilizava corretamente queda de HP em determinados mapas.
+
+03 Janeiro 2016,
+Correcao de bug, onde clientes podiam congelar apos acessar o Cash Shop.

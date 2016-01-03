@@ -506,6 +506,7 @@ public class MapleClient {
 					rs.close();
 				}
 			} catch (SQLException e) {
+                            e.printStackTrace();
 			}
 		}
 		if (loginok == 0) {
@@ -755,12 +756,12 @@ public class MapleClient {
 	}
 
 	public final void disconnect(boolean shutdown, boolean cashshop) {//once per MapleClient instance
-		if (disconnecting) {
+                if (disconnecting) {
 			return;
 		}
 		disconnecting = true;
 		if (player != null && player.isLoggedin() && player.getClient() != null) {
-			MapleMap map = player.getMap();
+                        MapleMap map = player.getMap();
 			final MapleParty party = player.getParty();
 			final int idz = player.getId();
 			final int messengerid = player.getMessenger() == null ? 0 : player.getMessenger().getId();
@@ -771,13 +772,17 @@ public class MapleClient {
 			final MapleGuildCharacter chrg = player.getMGC();
 			final MapleGuild guild = player.getGuild();
 
-			removePlayer();
-			player.saveCooldowns();
-			player.saveToDB();
 			if (channel == -1 || shutdown) {
+                                removePlayer();
+                                player.saveCooldowns();
+                                player.saveToDB();
+                            
 				player = null;
 				return;
 			}
+                        
+                        removePlayer();
+			
 			final World worlda = getWorldServer();
 			try {
 				if (!cashshop) {
@@ -854,7 +859,10 @@ public class MapleClient {
 					}
 					player.logOff();
 				}
-				player = null;
+				
+                                player.saveCooldowns();
+                                player.saveToDB();
+                                player = null;
 			}
 		}
 		if (!serverTransition && isLoggedIn()) {

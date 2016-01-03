@@ -60,7 +60,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
 
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
-    	if (cause instanceof IOException || cause instanceof ClassCastException) {
+    	System.out.println("disconnect by exception");
+        
+        if (cause instanceof IOException || cause instanceof ClassCastException) {
             return;
         }
         MapleClient mc = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
@@ -107,7 +109,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
             try {
                 boolean inCashShop = false;
                 if (client.getPlayer() != null) {
-                    inCashShop = client.getPlayer().getCashShop().isOpened();                  
+                    inCashShop = client.getPlayer().getCashShop().isOpened();
                 }
                 client.disconnect(false, inCashShop);
             } catch (Throwable t) {

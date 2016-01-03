@@ -29,6 +29,7 @@ public class ServerConstants {
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
     public static final boolean USE_ITEM_SORT = true;
+    public static final boolean USE_ITEM_SORT_BY_NAME = false;  //item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
     public static final boolean USE_AUTOBAN = false;            //commands the server to detect infractors automatically.
     public static final boolean USE_ANOTHER_AUTOASSIGN = true;  //based on distributing AP accordingly with higher secondary stat on equipments.

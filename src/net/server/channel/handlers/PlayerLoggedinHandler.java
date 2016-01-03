@@ -50,6 +50,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
+import java.util.concurrent.ScheduledFuture;
 import server.TimerManager;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
@@ -76,9 +77,10 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.newClient(c);
         }
         if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
-        	c.disconnect(true, false);
-        	return;
+            c.disconnect(true, false);
+            return;
         }
+        
         c.setPlayer(player);
         c.setAccID(player.getAccountID());
         
@@ -104,6 +106,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
 
         cserv.addPlayer(player);
+        
         List<PlayerBuffValueHolder> buffs = server.getPlayerBuffStorage().getBuffsFromStorage(cid);
         if (buffs != null) {
             player.silentGiveBuffs(buffs);
@@ -159,7 +162,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.getMap().addPlayer(player);
         World world = server.getWorld(c.getWorld());
         world.getPlayerStorage().addPlayer(player);
-        
+            
         int buddyIds[] = player.getBuddylist().getBuddyIds();
         world.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds);
         for (CharacterIdChannelPair onlineBuddy : server.getWorld(c.getWorld()).multiBuddyFind(player.getId(), buddyIds)) {
@@ -206,6 +209,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
+
         player.showNote();
         if (player.getParty() != null) {
             MaplePartyCharacter pchar = player.getMPC();
@@ -253,9 +257,18 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             	Server.getInstance().broadcastGMMessage(MaplePacketCreator.earnTitleMessage("GM " + player.getName() + " has logged in"));
             }
             
-            if (player.getMap().getHPDec() > 0) {
-                player.doHurtHp();
+            
+        }
+        
+        if (player.getMap().getHPDec() > 0) {
+            final MapleCharacter mc = player;
+            
+            ScheduledFuture<?> hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
+            @Override
+            public void run() {
+                mc.doHurtHp();
             }
+            }, 10000);
         }
     }
 }

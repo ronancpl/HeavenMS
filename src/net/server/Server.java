@@ -595,6 +595,7 @@ public class Server implements Runnable {
                     try {
                         instance.finalize();//FUU I CAN AND IT'S FREE
                     } catch (Throwable ex) {
+                        ex.printStackTrace();
                     }
                     instance = null;
                     System.gc();
