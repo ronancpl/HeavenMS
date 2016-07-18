@@ -13,7 +13,7 @@ public class ServerConstants {
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;//60 minutes, 3600000
     public static final boolean ENABLE_PIC = false;
     //Event Configuration
-    public static final boolean PERFECT_PITCH = false;  //for lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    public static final boolean PERFECT_PITCH = true;  //for lvl 30 or above, each lvlup player gains 1 perfect pitch.
     // IP Configuration
     public static String HOST;
     //Database Configuration
@@ -24,7 +24,7 @@ public class ServerConstants {
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
     //Gameplay Configurations
-    public static final boolean USE_DEBUG = false;
+    public static final boolean USE_DEBUG = true;
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;

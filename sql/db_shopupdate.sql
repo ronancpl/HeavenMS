@@ -3,6 +3,9 @@ UPDATE shopitems SET itemid=1812004, price=1000 WHERE shopitemid=19;
 UPDATE shopitems SET itemid=2120000, price=100 WHERE shopitemid=20;
 UPDATE shopitems SET itemid=1812000, price=1000 WHERE shopitemid=21;
 UPDATE shopitems SET itemid=1812001, price=1000 WHERE shopitemid=22;
+
+INSERT IGNORE INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`, `chance`) VALUES
+(995032, SHOPID, 2040025, 500000, 0, 0),
 UPDATE shopitems SET itemid=2040025, price=500000 WHERE shopitemid=995032;
 UPDATE shopitems SET itemid=2040029, price=500000 WHERE shopitemid=995033;
 UPDATE shopitems SET itemid=2040301, price=400000 WHERE shopitemid=995034;

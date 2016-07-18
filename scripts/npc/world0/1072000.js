@@ -55,10 +55,11 @@ function action(mode, type, selection) {
 		cm.sendNextPrev("You'll be able to acquire a marble called #b#t4031013##k while knocking down those monsters. It is a special marble made out of their sinister, evil minds. Collect 30 of those, and then go talk to a colleague of mine in there. That's how you pass the test.");
 	else if (status == 3)
 		cm.sendYesNo("Once you go inside, you can't leave until you take care of your mission. If you die, your experience level will decrease..so you better really buckle up and get ready...well, do you want to go for it now?");
-	else if (status == 4)
+	else if (status == 4) {
 		cm.sendNext("Alright I'll let you in! Defeat the monsters inside, collect 30 Dark Marbles, then strike up a conversation with a colleague of mine inside. He'll give you #bThe Proof of a Hero#k, the proof that you've passed the test. Best of luck to you.");
         	cm.startQuest(100004);
 		cm.gainItem(4031008, -1);
+	}
 	else if (status == 5) {
 		cm.warp(108000300, 0);
 		cm.dispose();

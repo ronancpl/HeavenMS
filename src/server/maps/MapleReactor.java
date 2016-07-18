@@ -151,9 +151,9 @@ public class MapleReactor extends AbstractMapleMapObject {
 			if(!this.isAlive()) {
 				return;
 			}
-                        if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId());
+                        if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid);
 			if (stats.getType(state) < 999 && stats.getType(state) != -1) {//type 2 = only hit from right (kerning swamp plants), 00 is air left 02 is ground left
-				if (!(stats.getType(state) == 2 && (charPos == 0 || charPos == 2))) { //get next state
+                            if (!(stats.getType(state) == 2 && (stance == 0 || stance == 2))) { //get next state	
 					for (byte b = 0; b < stats.getStateSize(state); b++) {//YAY?
 						List<Integer> activeSkills = stats.getActiveSkills(state, b);
 						if (activeSkills != null) {
@@ -170,6 +170,8 @@ public class MapleReactor extends AbstractMapleMapObject {
 							} else {//item-triggered on final step
 								map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
 							}
+                                                        
+                                                        if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "REACTOR " + this.getId() + " activated");
 							ReactorScriptManager.getInstance().act(c, this);
 						} else { //reactor not broken yet
 							map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));

@@ -32,6 +32,7 @@ import java.util.Map;
 import tools.Pair;
 import client.MapleCharacter;
 import constants.ItemConstants;
+import server.MapleItemInformationProvider;
 
 /**
  *
@@ -68,6 +69,15 @@ public class MapleInventory implements Iterable<Item> {
     public Item findById(int itemId) {
         for (Item item : inventory.values()) {
             if (item.getItemId() == itemId) {
+                return item;
+            }
+        }
+        return null;
+    }
+    
+    public Item findByName(String name) {
+        for (Item item : inventory.values()) {
+            if (name.compareToIgnoreCase(MapleItemInformationProvider.getInstance().getName(item.getItemId())) == 0) {
                 return item;
             }
         }

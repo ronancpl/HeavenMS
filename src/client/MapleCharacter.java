@@ -2971,7 +2971,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
         try {
-            MapleCharacter ret = new MapleCharacter();            
+            MapleCharacter ret = new MapleCharacter();
             ret.client = client;
             ret.id = charid;
             Connection con = DatabaseConnection.getConnection();
@@ -4701,7 +4701,58 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
         return false;
     }
+    
+    public boolean sellAllItemsFromName(MapleInventoryType type, String name) {
+        //player decides from which inventory items should be sold.
+        
+        Item it = getInventory(type).findByName(name);
+        if(it == null) return(false);
+        
+        sellAllItemsFromPosition(type, it.getPosition());
+        return(true);
+    }
+    
+    public void sellAllItemsFromPosition(MapleInventoryType type, short pos) {
+        for(short i = pos; i <= getInventory(type).getSlotLimit(); i++) {
+            if(getInventory(type).getItem(i) == null) continue;
+            standaloneSell(getClient(), type, i, getInventory(type).getItem(i).getQuantity());
+        }
+    }
 
+    private void standaloneSell(MapleClient c, MapleInventoryType type, short slot, short quantity) {
+        if (quantity == 0xFFFF || quantity == 0) {
+            quantity = 1;
+        }
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        Item item = getInventory(type).getItem((short) slot);
+        if (item == null){ //Basic check
+        	return;
+        }
+        if (ItemConstants.isRechargable(item.getItemId())) {
+            quantity = item.getQuantity();
+        }
+        if (quantity < 0) {
+            return;
+        }
+        short iQuant = item.getQuantity();
+        if (iQuant == 0xFFFF) {
+            iQuant = 1;
+        }
+        if (quantity <= iQuant && iQuant > 0) {
+            MapleInventoryManipulator.removeFromSlot(c, type, (byte) slot, quantity, false);
+            double price;
+            if (ItemConstants.isRechargable(item.getItemId())) {
+            	price = ii.getWholePrice(item.getItemId()) / (double) ii.getSlotMax(c, item.getItemId());
+            } else {
+                price = ii.getPrice(item.getItemId());
+            }
+            int recvMesos = (int) Math.max(Math.ceil(price * quantity), 0);
+            if (price != -1 && recvMesos > 0) {
+                gainMeso(recvMesos, false);
+            }
+        }
+    }
+    
     public void setShop(MapleShop shop) {
         this.shop = shop;
     }

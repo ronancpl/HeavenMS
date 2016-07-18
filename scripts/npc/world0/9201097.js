@@ -72,14 +72,14 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == 0) {
-	cm.sendOk("Hmmm...it shouldn't be a bad deal for you. Come see me at the right time and you may get a much better item to be offered. Anyway, let me know when you have a change of heart.");
+	cm.sendOk("Hmmm...it shouldn't be a bad deal for you. Come see me at the right time and you may get a much better item to be offered. Anyway, let me know when you have a change of mind.");
 	cm.dispose();
 	return;
     }
     
     status++;
     if (status == 0) { // first interaction with NPC
-	cm.sendNext("Hey, got a little bit of time? Well, my job is to collect items here and sell them elsewhere, but these days the monsters have become much more hostile so it's been difficult to getting good items ... What do you think? Do you want to do some business with me?");
+	cm.sendNext("Hey, got a little bit of time? Well, my job is to collect items here and sell them elsewhere, but these days the monsters have become much more hostile so it have been difficult to get good items... What do you think? Do you want to do some business with me?");
     } else if (status == 1) {
 	cm.sendYesNo("The deal is simple. You get me something I need, I get you something you need. The problem is, I deal with a whole bunch of people, so the items I have to offer may change every time you see me. What do you think? Still want to do it?");
     } else if (status == 2) {
@@ -89,10 +89,10 @@ function action(mode, type, selection) {
 	lastSelection = selection;
 	requiredItem = eQuestChoices[selection];
         
-        if(selection / 4 == 0) qnt = 50;
+        if(selection < 4) qnt = 50;
         else qnt=25;
         
-	cm.sendYesNo("Let's see, you want to trade your #b" + qnt +  " #t" + requiredItem + "##k with my stuff right? Before trading make sure you have an empty slot available on your use or etc. inventory. Now, do you want to trade with me?");
+	cm.sendYesNo("Let's see, you want to trade your #b" + qnt +  " #t" + requiredItem + "##k with my stuff, right? Before trading make sure you have an empty slot available on your use or etc. inventory. Now, do you want to trade with me?");
     }else if (status == 4){
 	itemSet = (Math.floor(Math.random() * eQuestPrizes[lastSelection].length));
 	reward = eQuestPrizes[lastSelection];
@@ -103,13 +103,13 @@ function action(mode, type, selection) {
 	} else if(prizeItem == 0) {
             cm.gainItem(requiredItem,-qnt);
             cm.gainMeso(prizeQuantity);
-            cm.sendOk("For your #b" + qnt + " #t"+requiredItem+"##k, here's #b" + prizeQuantity + " mesos#k. What do you think? Do you like the items I gave you in return? I plan on being here for a while, so if you gather up more items, I'm always open for a trade ...");
+            cm.sendOk("For your #b" + qnt + " #t"+requiredItem+"##k, here's #b" + prizeQuantity + " mesos#k. What do you think? Did you like the items I gave you in return? I plan on being here for awhile, so if you gather up more items, I'm always open for a trade...");
         } else if(!cm.canHold(prizeItem)){
 	    cm.sendOk("Your use and etc. inventory seems to be full. You need the free spaces to trade with me! Make room, and then find me.");
 	} else {
 	    cm.gainItem(requiredItem,-qnt);
 	    cm.gainItem(prizeItem, prizeQuantity);
-	    cm.sendOk("For your #b" + qnt + " #t"+requiredItem+"##k, here's my #b"+prizeQuantity+" #t"+prizeItem+"##k. What do you think? Do you like the items I gave you in return? I plan on being here for a while, so if you gather up more items, I'm always open for a trade ...");
+	    cm.sendOk("For your #b" + qnt + " #t"+requiredItem+"##k, here's my #b"+prizeQuantity+" #t"+prizeItem+"##k. What do you think? Did you like the items I gave you in return? I plan on being here for awhile, so if you gather up more items, I'm always open for a trade...");
 	}
 	cm.dispose();
     }

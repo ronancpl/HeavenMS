@@ -43616,6 +43616,7 @@
           <int name="count" value="10" />
         </imgdir>
       </imgdir>
+      <string name="endscript" value="q3454e" />
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2050001" />
@@ -43649,7 +43650,6 @@
     <imgdir name="0">
       <int name="npc" value="2050002" />
       <int name="interval" value="0" />
-      <string name="startscript" value="q3455s" />
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="3457" />
@@ -49954,8 +49954,6 @@
   <imgdir name="4306">
     <imgdir name="1">
       <int name="npc" value="9120003" />
-      <string name="start" value="2000010100" />
-      <string name="end" value="2000010200" />
       <imgdir name="item">
         <imgdir name="0">
           <int name="id" value="4000222" />

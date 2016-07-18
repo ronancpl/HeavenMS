@@ -559,7 +559,6 @@
 (1210101, 1072285, 1, 1, 0, 700), 
 (9300059, 1072285, 1, 1, 0, 700), 
 (9400242, 1072285, 1, 1, 0, 700), 
-(1110101, 1012031, 1, 1, 0, 700), 
 (1110101, 4030009, 1, 1, 0, 10000), 
 (1110101, 4001344, 1, 1, 0, 7000), 
 (1110101, 4001356, 1, 1, 0, 7000), 
@@ -3718,11 +3717,6 @@
 (9500307, 4000018, 1, 1, 0, 200000), 
 (9500338, 4000018, 1, 1, 0, 200000), 
 (9303001, 4000018, 1, 1, 0, 200000), 
-(3220000, 1012031, 1, 1, 0, 40000), 
-(9300185, 1012031, 1, 1, 0, 40000), 
-(9500307, 1012031, 1, 1, 0, 40000), 
-(9500338, 1012031, 1, 1, 0, 40000), 
-(9303001, 1012031, 1, 1, 0, 700), 
 (3220000, 4003001, 1, 1, 0, 7000), 
 (9300185, 4003001, 1, 1, 0, 7000), 
 (9500307, 4003001, 1, 1, 0, 7000), 
@@ -18746,7 +18740,9 @@
 (9400578, 2001000, 1, 1, 0, 800),
 (9400578, 1032032, 1, 1, 0, 1200),
 (9400578, 1032013, 1, 1, 0, 1200),
-(9400578, 1372009, 1, 1, 0, 1200);
+(9400578, 1372009, 1, 1, 0, 1200),
+(9400578, 1372009, 1, 1, 0, 1200),
+(9300011, 4031130, 1, 1, 0, 10000);
 
   UPDATE IGNORE temp_data SET dropperid=9000002 WHERE dropperid=9000000;
 
@@ -18769,7 +18765,8 @@
     `maximum_quantity` int(11) NOT NULL DEFAULT '1',
     `questid` int(11) NOT NULL DEFAULT '0',
     `chance` int(11) NOT NULL DEFAULT '0',
-    PRIMARY KEY (`dropperid`, `itemid`),
+    PRIMARY KEY (`id`),
+    UNIQUE KEY (`dropperid`, `itemid`),
     KEY `mobid` (`dropperid`)
   ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -18803,8 +18800,10 @@
   UPDATE drop_data SET questid=77777 WHERE itemid=4001358;	#id 77777 for ALL quest items with no v83 quest.
   UPDATE drop_data SET questid=77777 WHERE itemid=4001359;
   UPDATE drop_data SET questid=77777 WHERE itemid=4001342;
+  UPDATE drop_data SET chance=0 WHERE itemid=2050099;
 
   #update quest reactor items
+  UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;
   UPDATE reactordrops SET questid=3407 WHERE itemid=4031141;
   UPDATE reactordrops SET questid=3407 WHERE itemid=4031142;
   UPDATE reactordrops SET questid=3407 WHERE itemid=4031143;

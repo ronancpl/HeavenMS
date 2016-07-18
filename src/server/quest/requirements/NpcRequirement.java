@@ -33,13 +33,10 @@ import server.quest.MapleQuestRequirementType;
  */
 public class NpcRequirement extends MapleQuestRequirement {
 	private int reqNPC;
-	private final boolean autoComplete, autoStart;
 	
 	public NpcRequirement(MapleQuest quest, MapleData data) {
 		super(MapleQuestRequirementType.NPC);
 		processData(data);
-		this.autoComplete = quest.isAutoComplete();
-		this.autoStart = quest.isAutoStart();
 	}
 	
 	@Override
@@ -50,6 +47,6 @@ public class NpcRequirement extends MapleQuestRequirement {
 	
 	@Override
 	public boolean check(MapleCharacter chr, Integer npcid) {
-		return npcid != null && npcid == reqNPC && (autoComplete || autoStart || chr.getMap().containsNPC(npcid));
+		return npcid != null && npcid == reqNPC;
 	}
 }

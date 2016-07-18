@@ -239,14 +239,12 @@ function action(mode, type, selection) {
                         }
                     }
                     else {
-
-                        if (cm.haveItem(mats[i],matQty[i]*qty))complete=false;
+                        if (!cm.haveItem(mats[i],matQty[i]*qty)) complete=false;
                     }
                 }
             }
             else {
-                if (!cm.haveItem(mats, matQty * qty))complete=false;
-
+                if (!cm.haveItem(mats, matQty * qty)) complete=false;
             }
         }
 			

@@ -440,6 +440,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 				return true;
 			}
 		} catch (SQLException e) {
+                    e.printStackTrace();
 			return false;
 		}
 		if (getPlayer().getMerchantMeso() == 0) {

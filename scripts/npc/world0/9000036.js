@@ -42,7 +42,7 @@ var maxEqp = 0;
 
 function start() {
     cm.getPlayer().setCS(true);
-    var selStr = "Hello, I am the #bAccessory NPC Crafter#k! My works are widely recognized to be too fine, to the point which all my items mimic not only the appearance but too the attributes of them! Everything I charge is some 'ingredients' to make them and, of course, a fee for my services. On what kind of equipment will you take a look?#b"
+    var selStr = "Hello, I am the #bAccessory NPC Crafter#k! My works are widely recognized to be too fine, to the point which all my items mimic not only the appearance but too the attributes of them! Everything I charge is some 'ingredients' to make them and, of course, a fee for my services. On what kind of equipment will you take a look?#b";
     var options = ["Pendants","Face accessories","Eye accessories","Belts & medals","Rings","#t4032496#"];
     for (var i = 0; i < options.length; i++)
         selStr += "\r\n#L" + i + "# " + options[i] + "#l";
@@ -51,7 +51,7 @@ function start() {
 
 function action(mode, type, selection) {
     status++;
-    if (mode != 1){
+    if (mode != 1) {
         cm.dispose();
         return;
     }
@@ -109,7 +109,7 @@ function action(mode, type, selection) {
             var matQtySet = [[20, 20, 5, 1], [5, 5, 10, 1], [10, 4, 20, 4], [20, 8, 20, 8], [10, 4, 20, 4], [15, 6, 30, 6], [20, 8, 40, 8], [15, 6, 30, 6], [1, 1, 1]];
             var costSet = [150000, 500000, 200000, 400000, 200000, 300000, 400000, 300000, 2500000];
         }else if (selectedType == 1) { //face accessory refine
-            var matSet = [[4001343, 4003004],[4001343, 4003004,4000026],[4001343, 4003004,4000026,4000082,4003002],[4001343, 4003005],[4001343, 4003005,4000026],[4001343, 4003005,4000026,4000082,4003002],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008]];
+            var matSet = [[4006000, 4003004],[4006000, 4003004,4000026],[4006000, 4003004,4000026,4000082,4003002],[4006000, 4003005],[4006000, 4003005,4000026],[4006000, 4003005,4000026,4000082,4003002],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008]];
             var matQtySet = [[5,5],[5,5,5],[5,5,5,5,1],[5,5],[5,5,5],[5,5,5,5,1],[1,1],[1,1],[1,1],[1,1]];
             var costSet = [100000,200000,300000,125000,250000,375000,500000,500000,500000,500000, 25000, 25000, 25000, 25000];
         }else if (selectedType == 2) { //eye accessory refine
@@ -121,7 +121,7 @@ function action(mode, type, selection) {
             var matQtySet = [[2, 5, 10], [7777, 7777]];
             var costSet = [15000, 7777];
         }else if (selectedType == 4) { //ring refine
-            var matSet = [[4003001, 4001344, 4001343], [4003001, 4001344, 4001343], [4021004, 4011008], [4011008, 4001006], [1112405, 2022039], [1112413, 4000176], [4011007, 4021009]];
+            var matSet = [[4003001, 4001344, 4006000], [4003001, 4001344, 4006000], [4021004, 4011008], [4011008, 4001006], [1112405, 2022039], [1112413, 4000176], [4011007, 4021009]];
             var matQtySet = [[2, 2, 2], [2, 2, 2], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]];
             var costSet = [10000, 10000, 10000, 20000, 15000, 15000, 10000];
         }else if (selectedType == 5) { //necklace refine
