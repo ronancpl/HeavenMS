@@ -2861,7 +2861,7 @@ public class MaplePacketCreator {
 	   * @return
 	   */
 	  public static byte[] getNPCTalk(int npc, byte msgType, String talk, String endBytes, byte speaker) {
-		  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		  mplew.writeShort(SendOpcode.NPC_TALK.getValue());
 		  mplew.write(4); // ?
 		  mplew.writeInt(npc);
@@ -2873,7 +2873,7 @@ public class MaplePacketCreator {
 	  }
 
 	  public static byte[] getDimensionalMirror(String talk) {
-		  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		  mplew.writeShort(SendOpcode.NPC_TALK.getValue());
 		  mplew.write(4); // ?
 		  mplew.writeInt(9010022);
@@ -2885,7 +2885,7 @@ public class MaplePacketCreator {
 	  }
 
 	  public static byte[] getNPCTalkStyle(int npc, String talk, int styles[]) {
-		  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		  mplew.writeShort(SendOpcode.NPC_TALK.getValue());
 		  mplew.write(4); // ?
 		  mplew.writeInt(npc);
@@ -2900,7 +2900,7 @@ public class MaplePacketCreator {
 	  }
 
 	  public static byte[] getNPCTalkNum(int npc, String talk, int def, int min, int max) {
-		  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		  mplew.writeShort(SendOpcode.NPC_TALK.getValue());
 		  mplew.write(4); // ?
 		  mplew.writeInt(npc);
@@ -2915,7 +2915,7 @@ public class MaplePacketCreator {
 	  }
 
 	  public static byte[] getNPCTalkText(int npc, String talk, String def) {
-		  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                  final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 		  mplew.writeShort(SendOpcode.NPC_TALK.getValue());
 		  mplew.write(4); // Doesn't matter
 		  mplew.writeInt(npc);

@@ -4,63 +4,68 @@ UPDATE shopitems SET itemid=2120000, price=100 WHERE shopitemid=20;
 UPDATE shopitems SET itemid=1812000, price=1000 WHERE shopitemid=21;
 UPDATE shopitems SET itemid=1812001, price=1000 WHERE shopitemid=22;
 
-INSERT IGNORE INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`, `chance`) VALUES
-(995032, SHOPID, 2040025, 500000, 0, 0),
-UPDATE shopitems SET itemid=2040025, price=500000 WHERE shopitemid=995032;
-UPDATE shopitems SET itemid=2040029, price=500000 WHERE shopitemid=995033;
-UPDATE shopitems SET itemid=2040301, price=400000 WHERE shopitemid=995034;
-UPDATE shopitems SET itemid=2040317, price=400000 WHERE shopitemid=995035;
-UPDATE shopitems SET itemid=2040321, price=400000 WHERE shopitemid=995036;
-UPDATE shopitems SET itemid=2040413, price=400000 WHERE shopitemid=995037;
-UPDATE shopitems SET itemid=2040418, price=400000 WHERE shopitemid=995038;
-UPDATE shopitems SET itemid=2040501, price=250000 WHERE shopitemid=995039;
-UPDATE shopitems SET itemid=2040513, price=250000 WHERE shopitemid=995040;
-UPDATE shopitems SET itemid=2040516, price=250000 WHERE shopitemid=995041;
-UPDATE shopitems SET itemid=2040532, price=250000 WHERE shopitemid=995042;
-UPDATE shopitems SET itemid=2040613, price=400000 WHERE shopitemid=995043;
-UPDATE shopitems SET itemid=2040701, price=450000 WHERE shopitemid=995044;
-UPDATE shopitems SET itemid=2040704, price=450000 WHERE shopitemid=995045;
-UPDATE shopitems SET itemid=2040804, price=550000 WHERE shopitemid=995046;
-UPDATE shopitems SET itemid=2040914, price=300000 WHERE shopitemid=995047;
-UPDATE shopitems SET itemid=2040919, price=300000 WHERE shopitemid=995048;
-UPDATE shopitems SET itemid=2041013, price=300000 WHERE shopitemid=995049;
-UPDATE shopitems SET itemid=2041016, price=300000 WHERE shopitemid=995050;
-UPDATE shopitems SET itemid=2041019, price=300000 WHERE shopitemid=995051;
-UPDATE shopitems SET itemid=2041022, price=300000 WHERE shopitemid=995052;
-UPDATE shopitems SET itemid=2044901, price=520000 WHERE shopitemid=995053;
-UPDATE shopitems SET itemid=2044701, price=520000 WHERE shopitemid=995054;
-UPDATE shopitems SET itemid=2043001, price=520000 WHERE shopitemid=995055;
-UPDATE shopitems SET itemid=2043801, price=520000 WHERE shopitemid=995056;
-UPDATE shopitems SET itemid=2044601, price=520000 WHERE shopitemid=995057;
-UPDATE shopitems SET itemid=2040727, price=10000 WHERE shopitemid=995058;
-UPDATE shopitems SET itemid=2040807, price=1500000 WHERE shopitemid=995059;
-UPDATE shopitems SET itemid=2040026, price=15000 WHERE shopitemid=995060;
-UPDATE shopitems SET itemid=2040031, price=15000 WHERE shopitemid=995061;
-UPDATE shopitems SET itemid=2040302, price=25000 WHERE shopitemid=995062;
-UPDATE shopitems SET itemid=2040318, price=25000 WHERE shopitemid=995063;
-UPDATE shopitems SET itemid=2040323, price=25000 WHERE shopitemid=995064;
-UPDATE shopitems SET itemid=2040412, price=20000 WHERE shopitemid=995065;
-UPDATE shopitems SET itemid=2040419, price=20000 WHERE shopitemid=995066;
-UPDATE shopitems SET itemid=2040502, price=25000 WHERE shopitemid=995067;
-UPDATE shopitems SET itemid=2040514, price=25000 WHERE shopitemid=995068;
-UPDATE shopitems SET itemid=2040517, price=25000 WHERE shopitemid=995069;
-UPDATE shopitems SET itemid=2040534, price=25000  WHERE shopitemid=995070;
-UPDATE shopitems SET itemid=2040612, price=20000 WHERE shopitemid=995071;
-UPDATE shopitems SET itemid=2040702, price=20000 WHERE shopitemid=995072;
-UPDATE shopitems SET itemid=2040705, price=25000 WHERE shopitemid=995073;
-UPDATE shopitems SET itemid=2040805, price=100000 WHERE shopitemid=995074;
-UPDATE shopitems SET itemid=2040915, price=55000 WHERE shopitemid=995075;
-UPDATE shopitems SET itemid=2040920, price=55000 WHERE shopitemid=995076;
-UPDATE shopitems SET itemid=2041014, price=30000 WHERE shopitemid=995077;
-UPDATE shopitems SET itemid=2041017, price=30000 WHERE shopitemid=995078;
-UPDATE shopitems SET itemid=2041020, price=30000 WHERE shopitemid=995079;
-UPDATE shopitems SET itemid=2041023, price=30000 WHERE shopitemid=995080;
-UPDATE shopitems SET itemid=2044902, price=50000 WHERE shopitemid=995081;
-UPDATE shopitems SET itemid=2044702, price=50000 WHERE shopitemid=995082;
-UPDATE shopitems SET itemid=2043002, price=50000 WHERE shopitemid=995083;
-UPDATE shopitems SET itemid=2043802, price=50000 WHERE shopitemid=995084;
-UPDATE shopitems SET itemid=2044602, price=50000 WHERE shopitemid=995085;
-UPDATE shopitems SET itemid=2070016, price=100000000 WHERE shopitemid=996196;
-UPDATE shopitems SET itemid=2070018, price=175000000 WHERE shopitemid=996197;
-UPDATE shopitems SET itemid=2030007, price=700000 WHERE shopitemid=994782;
-UPDATE shopitems SET itemid=4001017, price=30000000 WHERE shopitemid=994783;
+# Scroll shop at Spindle
+INSERT INTO `shops` (`shopid`,`npcid`) VALUES
+(9201082,9201082);
+
+INSERT IGNORE INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
+(995032, 9201082, 2040025, 500000, 0, 1),
+(995033, 9201082, 2040029, 500000, 0, 2),
+(995034, 9201082, 2040301, 400000, 0, 3),
+(995035, 9201082, 2040317, 400000, 0, 4),
+(995036, 9201082, 2040321, 400000, 0, 5),
+(995037, 9201082, 2040413, 400000, 0, 6),
+(995038, 9201082, 2040418, 400000, 0, 7),
+(995039, 9201082, 2040501, 250000, 0, 8),
+(995040, 9201082, 2040513, 250000, 0, 9),
+(995041, 9201082, 2040516, 250000, 0, 10),
+(995042, 9201082, 2040532, 250000, 0, 11),
+(995043, 9201082, 2040613, 400000, 0, 12),
+(995044, 9201082, 2040701, 450000, 0, 13),
+(995045, 9201082, 2040704, 450000, 0, 14),
+(995046, 9201082, 2040804, 550000, 0, 15),
+(995047, 9201082, 2040914, 300000, 0, 16),
+(995048, 9201082, 2040919, 300000, 0, 17),
+(995049, 9201082, 2041013, 300000, 0, 18),
+(995050, 9201082, 2041016, 300000, 0, 19),
+(995051, 9201082, 2041019, 300000, 0, 20),
+(995052, 9201082, 2041022, 300000, 0, 21),
+(995053, 9201082, 2044901, 520000, 0, 22),
+(995054, 9201082, 2044701, 520000, 0, 23),
+(995055, 9201082, 2043001, 520000, 0, 24),
+(995056, 9201082, 2043801, 520000, 0, 25),
+(995057, 9201082, 2044601, 520000, 0, 26),
+(995058, 9201082, 2040727, 10000, 0, 27),
+(995059, 9201082, 2040807, 1500000, 0, 28),
+(995060, 9201082, 2040026, 15000, 0, 29),
+(995061, 9201082, 2040031, 15000, 0, 30),
+(995062, 9201082, 2040302, 25000, 0, 31),
+(995063, 9201082, 2040318, 25000, 0, 32),
+(995064, 9201082, 2040323, 25000, 0, 33),
+(995065, 9201082, 2040412, 20000, 0, 34),
+(995066, 9201082, 2040419, 20000, 0, 35),
+(995067, 9201082, 2040502, 25000, 0, 36),
+(995068, 9201082, 2040514, 25000, 0, 37),
+(995069, 9201082, 2040517, 25000, 0, 38),
+(995070, 9201082, 2040534, 25000, 0, 39),
+(995071, 9201082, 2040612, 20000, 0, 40),
+(995072, 9201082, 2040702, 20000, 0, 41),
+(995073, 9201082, 2040705, 25000, 0, 42),
+(995074, 9201082, 2040805, 100000, 0, 43),
+(995075, 9201082, 2040915, 55000, 0, 44),
+(995076, 9201082, 2040920, 55000, 0, 45),
+(995077, 9201082, 2041014, 30000, 0, 46),
+(995078, 9201082, 2041017, 30000, 0, 47),
+(995079, 9201082, 2041020, 30000, 0, 48),
+(995080, 9201082, 2041023, 30000, 0, 49),
+(995081, 9201082, 2044902, 50000, 0, 50),
+(995082, 9201082, 2044702, 50000, 0, 51),
+(995083, 9201082, 2043002, 50000, 0, 52),
+(995084, 9201082, 2043802, 50000, 0, 53),
+(995085, 9201082, 2044602, 50000, 0, 54),
+(996196, 9201082, 2070016, 100000000, 0, 55),
+(996197, 9201082, 2070018, 175000000, 0, 56),
+(994782, 9201082, 2030007, 700000, 0, 57),
+(994783, 9201082, 4001017, 30000000, 0, 58);
+
+UPDATE shopitems SET price = 11*price WHERE (`position` >= 27 and `position` <= 54);
