@@ -2,6 +2,7 @@
 
   INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
   #-- copy+paste inside here as many drop data as possible from the spider (drop generator) files --
+(5100004, 2383034, 1, 1, 0, 10000),
 
 (100100, 4000019, 1, 1, 0, 200000),
 (100100, 2000000, 1, 1, 0, 40000), 
@@ -18711,11 +18712,18 @@
 
   #--------------------------------------------------------------------------------------------
 
+  #insert things that should have been present already.
+
   INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(2386010, 8143000, 1, 1, 0, 10000),
 (3230100, 4001004, 1, 1, 0, 5000),
 (3000002, 4000068, 1, 1, 0, 40000),
 (3000003, 4000068, 1, 1, 0, 40000),
 (3000004, 4000068, 1, 1, 0, 40000),
+
+(8141000, 2386002, 1, 1, 0, 10000),
+(8141100, 2386009, 1, 1, 0, 10000),
+
 (4230116, 2382042, 1, 1, 0, 10000),
 (4230117, 2382055, 1, 1, 0, 10000),
 (4230118, 2382067, 1, 1, 0, 10000),
@@ -18742,7 +18750,11 @@
 (9400578, 1032013, 1, 1, 0, 1200),
 (9400578, 1372009, 1, 1, 0, 1200),
 (9400578, 1372009, 1, 1, 0, 1200),
-(9300011, 4031130, 1, 1, 0, 10000);
+(9300011, 4031130, 1, 1, 0, 10000),
+(7160000, 2385015, 1, 1, 0, 10000),
+(3230306, 2022355, 1, 1, 3248, 4000),
+(4230113, 2022354, 1, 1, 3248, 4000),
+(5220003, 4031991, 1, 1, 3248, 15000);
 
   UPDATE IGNORE temp_data SET dropperid=9000002 WHERE dropperid=9000000;
 
@@ -18810,6 +18822,7 @@
   UPDATE reactordrops SET questid=2067 WHERE itemid=4031150;
   UPDATE reactordrops SET questid=3239 WHERE itemid=4031092;
   UPDATE reactordrops SET questid=6002 WHERE itemid=4031508;
+  UPDATE reactordrops SET questid=9351 WHERE itemid=4031258;
   INSERT INTO `reactordrops` (`reactorid`, `itemid`, `chance`, `questid`) VALUES
     (9102000, 4031157, 1, 2074),
     (9102001, 4031158, 1, 2074),

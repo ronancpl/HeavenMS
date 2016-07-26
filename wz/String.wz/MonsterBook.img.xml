@@ -1319,11 +1319,10 @@
       <int name="28" value="2061000" />
       <int name="29" value="2381002" />
       <int name="30" value="4000009" />
-      <int name="31" value="4001368" />
-      <int name="32" value="4010006" />
-      <int name="33" value="4020005" />
-      <int name="34" value="4020006" />
-      <int name="35" value="4030012" />
+      <int name="31" value="4010006" />
+      <int name="32" value="4020005" />
+      <int name="33" value="4020006" />
+      <int name="34" value="4030012" />
     </imgdir>
     <string name="episode" value=" Lv. :  20\nForm : Plant\n\nA mushroom monster with a blue cap. Is the fattest looking mushroom of all the mushrooms in that family of monsters. For a mushroom, which are just about everywhere throughout Maple World, it is one of the rarer breeds. But go nearby Henesys and you'll find yourself entering into the Blue Mushroom Forest! These mushrooms will give up some gold at times, enriching the lives of many happy adventurers. " />
   </imgdir>
@@ -1439,6 +1438,7 @@
       <int name="36" value="4010002" />
       <int name="37" value="4010003" />
       <int name="38" value="4020003" />
+      <int name="39" value="4032399" />
     </imgdir>
     <string name="episode" value=" Lv. :  24\nForm : Immortal\nSpecial Trait : Vulnerable to Sanctity Attribute Attack.\n\nA mushroom monster that was reincarnated from previously dead mushrooms that were destroyed by adventurers by attaching a charmed amulet on its head. Who knows why anyone would do such a thing? In any case, these mushrooms have strong attacks, defenses as well as speed, but are extremely vulnerable to light. " />
   </imgdir>
@@ -1661,8 +1661,7 @@
       <int name="26" value="4010003" />
       <int name="27" value="4020004" />
       <int name="28" value="4031260" />
-      <int name="29" value="4031268" />
-      <int name="30" value="4031269" />
+      <int name="29" value="4031269" />
     </imgdir>
     <string name="episode" value=" Lv. :  25\nForm : Fish\nSpecial Trait : Vulnerable to Poison Attribute Attacks. -50% Fire Attribute Damage.\n\nA small sea-horse-like monster that lives near Aqua Road. It lives only in clean sea water where no signs of contamination can be seen. Its tail is coiled back while it has a flashy crown-like ornament on its head, which makes it more difficult for the people to spot when it is hiding in between the corals. " />
   </imgdir>
@@ -2514,18 +2513,19 @@
       <int name="29" value="2382011" />
       <int name="30" value="4000021" />
       <int name="31" value="4000073" />
-      <int name="32" value="4003004" />
-      <int name="33" value="4004000" />
-      <int name="34" value="4006000" />
-      <int name="35" value="4007000" />
-      <int name="36" value="4007001" />
-      <int name="37" value="4007006" />
-      <int name="38" value="4020000" />
-      <int name="39" value="4020001" />
-      <int name="40" value="4030012" />
-      <int name="41" value="4130007" />
-      <int name="42" value="4130016" />
-      <int name="43" value="4130021" />
+      <int name="32" value="4001006" />
+      <int name="33" value="4003004" />
+      <int name="34" value="4004000" />
+      <int name="35" value="4006000" />
+      <int name="36" value="4007000" />
+      <int name="37" value="4007001" />
+      <int name="38" value="4007006" />
+      <int name="39" value="4020000" />
+      <int name="40" value="4020001" />
+      <int name="41" value="4030012" />
+      <int name="42" value="4130007" />
+      <int name="43" value="4130016" />
+      <int name="44" value="4130021" />
     </imgdir>
     <string name="episode" value=" Lv. :  33\nForm : Mammal\nSpecial Trait : -50% Fire Attribute Damage. Vulnerable to Ice Attribute Attacks.\n\nA monster that lives in the Garden of Red in Orbis. Stay away from its inviting coat of soft white fur that is red at the tips, as it is deceivingly hot! It is still young to know how to attack with its small horn, but it has the attribute of fire which can be dangerous in the future." />
   </imgdir>
@@ -2555,17 +2555,18 @@
       <int name="17" value="2382012" />
       <int name="18" value="4000021" />
       <int name="19" value="4000073" />
-      <int name="20" value="4003004" />
-      <int name="21" value="4004001" />
-      <int name="22" value="4006000" />
-      <int name="23" value="4006001" />
-      <int name="24" value="4010002" />
-      <int name="25" value="4020003" />
-      <int name="26" value="4020007" />
-      <int name="27" value="4030012" />
-      <int name="28" value="4130003" />
-      <int name="29" value="4130004" />
-      <int name="30" value="4130012" />
+      <int name="20" value="4001006" />
+      <int name="21" value="4003004" />
+      <int name="22" value="4004001" />
+      <int name="23" value="4006000" />
+      <int name="24" value="4006001" />
+      <int name="25" value="4010002" />
+      <int name="26" value="4020003" />
+      <int name="27" value="4020007" />
+      <int name="28" value="4030012" />
+      <int name="29" value="4130003" />
+      <int name="30" value="4130004" />
+      <int name="31" value="4130012" />
     </imgdir>
     <string name="episode" value=" Lv. :  33\nForm : Mammal\nSpecial Trait : -50% Electricity Attribute Damage. Vulnerable to Ice Attribute Attacks.\n\nA monster that lives in the Garden of Yellow in Orbis. Stay away from its inviting coat of soft white fur that is gold at the tips, as it is saturated with the attribute of electricity! It is still young to know how to attack with its small horn, but it has the attribute of lightning and is resistant to attacks of electricity attribute, so use attacks of ice attribute. " />
   </imgdir>
@@ -3605,27 +3606,28 @@
       <int name="18" value="2000002" />
       <int name="19" value="2000003" />
       <int name="20" value="2002006" />
-      <int name="21" value="2043702" />
-      <int name="22" value="2044201" />
-      <int name="23" value="2044901" />
-      <int name="24" value="2044902" />
-      <int name="25" value="2060000" />
-      <int name="26" value="2061000" />
-      <int name="27" value="2070003" />
-      <int name="28" value="2070004" />
-      <int name="29" value="2382032" />
-      <int name="30" value="4000115" />
-      <int name="31" value="4004002" />
-      <int name="32" value="4006000" />
-      <int name="33" value="4007000" />
-      <int name="34" value="4007005" />
-      <int name="35" value="4010001" />
-      <int name="36" value="4010006" />
-      <int name="37" value="4031159" />
-      <int name="38" value="4031203" />
-      <int name="39" value="4031992" />
-      <int name="40" value="4130000" />
-      <int name="41" value="4130010" />
+      <int name="21" value="2022355" />
+      <int name="22" value="2043702" />
+      <int name="23" value="2044201" />
+      <int name="24" value="2044901" />
+      <int name="25" value="2044902" />
+      <int name="26" value="2060000" />
+      <int name="27" value="2061000" />
+      <int name="28" value="2070003" />
+      <int name="29" value="2070004" />
+      <int name="30" value="2382032" />
+      <int name="31" value="4000115" />
+      <int name="32" value="4004002" />
+      <int name="33" value="4006000" />
+      <int name="34" value="4007000" />
+      <int name="35" value="4007005" />
+      <int name="36" value="4010001" />
+      <int name="37" value="4010006" />
+      <int name="38" value="4031159" />
+      <int name="39" value="4031203" />
+      <int name="40" value="4031992" />
+      <int name="41" value="4130000" />
+      <int name="42" value="4130010" />
     </imgdir>
     <string name="episode" value=" Lv. :  37\nForm : Spirit\nSpecial Trait : Vulnerable to Sanctity Attribute Attacks.\n\nIt once was a useful creature that told time, until the time stopped ticking in Ludibrium and all the wall clocks were thrown away. A force of darkness that loomed over the Dimensional Schism consumed the wall clocks, turning them into monsters controlled by the cursed windup spring. As the force still lingers, you can feel the cold air even when you're just near this monster.  " />
   </imgdir>
@@ -4768,22 +4770,23 @@
       <int name="16" value="1452016" />
       <int name="17" value="2000002" />
       <int name="18" value="2000003" />
-      <int name="19" value="2040401" />
-      <int name="20" value="2043102" />
-      <int name="21" value="2044701" />
-      <int name="22" value="2060000" />
-      <int name="23" value="2061000" />
-      <int name="24" value="2382041" />
-      <int name="25" value="4000114" />
-      <int name="26" value="4004003" />
-      <int name="27" value="4007004" />
-      <int name="28" value="4010003" />
-      <int name="29" value="4031098" />
-      <int name="30" value="4031675" />
-      <int name="31" value="4031992" />
-      <int name="32" value="4130008" />
-      <int name="33" value="4130013" />
-      <int name="34" value="4130017" />
+      <int name="19" value="2022354" />
+      <int name="20" value="2040401" />
+      <int name="21" value="2043102" />
+      <int name="22" value="2044701" />
+      <int name="23" value="2060000" />
+      <int name="24" value="2061000" />
+      <int name="25" value="2382041" />
+      <int name="26" value="4000114" />
+      <int name="27" value="4004003" />
+      <int name="28" value="4007004" />
+      <int name="29" value="4010003" />
+      <int name="30" value="4031098" />
+      <int name="31" value="4031675" />
+      <int name="32" value="4031992" />
+      <int name="33" value="4130008" />
+      <int name="34" value="4130013" />
+      <int name="35" value="4130017" />
     </imgdir>
     <string name="episode" value=" Lv. :  40\nForm : Spirit\n\nThere are particular entities that linger the infinitude of the space-time continuum, where no ordinary creature can reach by ordinary means; Tick is one of them. Capitalizing on the Dimensional Schism, Tick-Tock can be found in the deserted Ludibrium Clocktower, feeding on time.  Some researchers say the Tick-Tock is the full-grown form of Tick, but a dominant opinion suggests that these monsters cannot undergo the similar process of growth as regular orgnisms, given that they are creatures of fractured and enmeshed space-time." />
   </imgdir>
@@ -6035,9 +6038,10 @@
       <int name="22" value="4004002" />
       <int name="23" value="4010002" />
       <int name="24" value="4020001" />
-      <int name="25" value="4130003" />
-      <int name="26" value="4130008" />
-      <int name="27" value="4130016" />
+      <int name="25" value="4031268" />
+      <int name="26" value="4130003" />
+      <int name="27" value="4130008" />
+      <int name="28" value="4130016" />
     </imgdir>
     <string name="episode" value=" Lv. :  50\nForm : Mammal\nSpecial Trait : -50% Fire Attribute Damage. Vulnerable to Ice Attribute Attacks.\n\nA cub found in the mountainside of the Black Mountain. It skips around cheerfully, but it is still a tiger, which means it can turn fierce and predatory and catch you off guard. Occasionally, you can earn a paw-print stamp when you hunt the Hodoris. " />
   </imgdir>
@@ -6067,18 +6071,19 @@
       <int name="16" value="2040420" />
       <int name="17" value="2043701" />
       <int name="18" value="2043801" />
-      <int name="19" value="4000021" />
-      <int name="20" value="4000172" />
-      <int name="21" value="4004002" />
-      <int name="22" value="4004004" />
-      <int name="23" value="4007000" />
-      <int name="24" value="4007006" />
-      <int name="25" value="4010005" />
-      <int name="26" value="4020004" />
-      <int name="27" value="4031790" />
-      <int name="28" value="4130003" />
-      <int name="29" value="4130005" />
-      <int name="30" value="4130011" />
+      <int name="19" value="2383034" />
+      <int name="20" value="4000021" />
+      <int name="21" value="4000172" />
+      <int name="22" value="4004002" />
+      <int name="23" value="4004004" />
+      <int name="24" value="4007000" />
+      <int name="25" value="4007006" />
+      <int name="26" value="4010005" />
+      <int name="27" value="4020004" />
+      <int name="28" value="4031790" />
+      <int name="29" value="4130003" />
+      <int name="30" value="4130005" />
+      <int name="31" value="4130011" />
     </imgdir>
     <string name="episode" value=" Lv. :  56\nForm : Mammal\nSpecial Trait : Vulnerable to Fire Attribute Attacks. Vulnerable to Sanctity Attribute Attacks.\n\nA Three-Tailed Fox that can be found near the Korean Folk Town. It is striving to become a Nine-Tailed Fox, but only has three tails as it is still in the process of training. It has taken over an entire valley of the Black Mountain, practicing magic by casting a curse on the passersby; hence, the adventurers exploring the Fox Ridge should always remain alert and cautious. " />
   </imgdir>
@@ -7565,6 +7570,7 @@
       <int name="59" value="4004001" />
       <int name="60" value="4010003" />
       <int name="61" value="4020006" />
+      <int name="62" value="4031991" />
     </imgdir>
     <string name="episode" value=" Lv. :  59\nForm : Enchanted\n\nThe ghost of the past that originated from the deserted land in Ludibrium. It was brought back to life due to the Dimensional Schism, and has been a follower of Papulatus ever since, pestering anyone that attempts to go near the lowest level of the Clocktower. It appears in the form of an owl clock, and it tries to cling onto the past by turning back the time. " />
   </imgdir>
@@ -8070,10 +8076,11 @@
       <int name="40" value="2383044" />
       <int name="41" value="4000014" />
       <int name="42" value="4000030" />
-      <int name="43" value="4010005" />
-      <int name="44" value="4020007" />
-      <int name="45" value="4130004" />
-      <int name="46" value="4130014" />
+      <int name="43" value="4001006" />
+      <int name="44" value="4010005" />
+      <int name="45" value="4020007" />
+      <int name="46" value="4130004" />
+      <int name="47" value="4130014" />
     </imgdir>
     <string name="episode" value=" Lv. :  60\nForm : Reptile\nSpecial Trait : -50% Fire Attribute Damage. Vulnerable to Ice Attribute Attacks.\n\nA dragon that lives in mountainous desert highlands. Is from a very weak and unintelligent breed of dragons as compared to regular dragons of that family of monsters. The Red Drake used to have its nest set in Sleepywood, but was banished by the other dragons due to its weaknesses. It has since been training in the desert highlands, adjusting to the heat of the sun and practicing launching powerful fireballs into a far distance. There aren't very many adventurers who'll be able to hunt this thick-coated, fireball-throwing dragon known as Red Drake.   " />
   </imgdir>
@@ -10340,19 +10347,20 @@
       <int name="32" value="2044401" />
       <int name="33" value="2070005" />
       <int name="34" value="2330003" />
-      <int name="35" value="4000133" />
-      <int name="36" value="4001110" />
-      <int name="37" value="4004000" />
-      <int name="38" value="4006001" />
-      <int name="39" value="4007001" />
-      <int name="40" value="4010003" />
-      <int name="41" value="4020008" />
-      <int name="42" value="4031171" />
-      <int name="43" value="4130003" />
-      <int name="44" value="4130004" />
-      <int name="45" value="4130007" />
-      <int name="46" value="4130011" />
-      <int name="47" value="4131007" />
+      <int name="35" value="2385015" />
+      <int name="36" value="4000133" />
+      <int name="37" value="4001110" />
+      <int name="38" value="4004000" />
+      <int name="39" value="4006001" />
+      <int name="40" value="4007001" />
+      <int name="41" value="4010003" />
+      <int name="42" value="4020008" />
+      <int name="43" value="4031171" />
+      <int name="44" value="4130003" />
+      <int name="45" value="4130004" />
+      <int name="46" value="4130007" />
+      <int name="47" value="4130011" />
+      <int name="48" value="4131007" />
     </imgdir>
     <string name="episode" value=" Lv. :  87\nForm : Devil\nSpecial Trait : -50% Ice Attribute Damage. Vulnerable to Fire Attribute Attacks.\n\nThere are particular entities that linger the infinitude of the space-time continuum, where no ordinary creature can reach by ordinary means; Duel Ghost Pirate is one of them. The Duel Ghost Pirate rides a flying boat that has a huge clock, allowing this monster to find its ways even through the Temporal Schism and pillage the lost adventurers. As one of the most powerful pirate monster, its ship has a powerful propeller that can penetrate the gap in time. Although highly resistant against attacks of coldness attribute, it fears fire, for fire can burn its ship in flames. " />
   </imgdir>
@@ -11472,17 +11480,18 @@
       <int name="33" value="2070006" />
       <int name="34" value="2290082" />
       <int name="35" value="2290097" />
-      <int name="36" value="4000134" />
-      <int name="37" value="4004000" />
-      <int name="38" value="4007002" />
-      <int name="39" value="4010001" />
-      <int name="40" value="4020008" />
-      <int name="41" value="4031170" />
-      <int name="42" value="4031171" />
-      <int name="43" value="4031175" />
-      <int name="44" value="4031193" />
-      <int name="45" value="4031873" />
-      <int name="46" value="4130013" />
+      <int name="36" value="2386002" />
+      <int name="37" value="4000134" />
+      <int name="38" value="4004000" />
+      <int name="39" value="4007002" />
+      <int name="40" value="4010001" />
+      <int name="41" value="4020008" />
+      <int name="42" value="4031170" />
+      <int name="43" value="4031171" />
+      <int name="44" value="4031175" />
+      <int name="45" value="4031193" />
+      <int name="46" value="4031873" />
+      <int name="47" value="4130013" />
     </imgdir>
     <string name="episode" value=" Lv. :  93\nForm : Devil\nSpecial Trait : -50% Fire Attribute Damage. Vulnerable to Electricity Attribute Attacks.\n\nThere are particular entities that linger the infinitude of the space-time continuum, where no ordinary creature can reach by ordinary means; Spirit Viking is one of them. The Spirit Viking has reached the Clocktower while wandering in the lost time, and wishes to go back to the world from which it came. It attacks people, believing that they are the ones responsible for the confusion which the Temporal Schism has created. " />
   </imgdir>
@@ -11516,22 +11525,23 @@
       <int name="22" value="2040427" />
       <int name="23" value="2040902" />
       <int name="24" value="2043002" />
-      <int name="25" value="4000135" />
-      <int name="26" value="4004004" />
-      <int name="27" value="4006001" />
-      <int name="28" value="4020008" />
-      <int name="29" value="4031170" />
-      <int name="30" value="4031171" />
-      <int name="31" value="4031175" />
-      <int name="32" value="4031176" />
-      <int name="33" value="4031177" />
-      <int name="34" value="4031178" />
-      <int name="35" value="4031874" />
-      <int name="36" value="4130000" />
-      <int name="37" value="4130010" />
-      <int name="38" value="4130011" />
-      <int name="39" value="4130016" />
-      <int name="40" value="4131003" />
+      <int name="25" value="2386009" />
+      <int name="26" value="4000135" />
+      <int name="27" value="4004004" />
+      <int name="28" value="4006001" />
+      <int name="29" value="4020008" />
+      <int name="30" value="4031170" />
+      <int name="31" value="4031171" />
+      <int name="32" value="4031175" />
+      <int name="33" value="4031176" />
+      <int name="34" value="4031177" />
+      <int name="35" value="4031178" />
+      <int name="36" value="4031874" />
+      <int name="37" value="4130000" />
+      <int name="38" value="4130010" />
+      <int name="39" value="4130011" />
+      <int name="40" value="4130016" />
+      <int name="41" value="4131003" />
     </imgdir>
     <string name="episode" value=" Lv. :  98\nForm : Devil\n\nThere are particular entities that linger the infinitude of the space-time continuum, where no ordinary creature can reach by ordinary means; Gigantic Spirit Viking is one of them. The Spirit Viking has reached the Clocktower while wandering in the lost time, and wishes to go back to the world from which it came. It wears a flag on its back to find its lost family and attacks any person it encounters, believing that people are responsible for the confusion which the Temporal Schism has created." />
   </imgdir>
@@ -11714,21 +11724,22 @@
       <int name="26" value="2040401" />
       <int name="27" value="2043019" />
       <int name="28" value="2044702" />
-      <int name="29" value="4000150" />
-      <int name="30" value="4001107" />
-      <int name="31" value="4006001" />
-      <int name="32" value="4007002" />
-      <int name="33" value="4010001" />
-      <int name="34" value="4010002" />
-      <int name="35" value="4031170" />
-      <int name="36" value="4031171" />
-      <int name="37" value="4031175" />
-      <int name="38" value="4031176" />
-      <int name="39" value="4031177" />
-      <int name="40" value="4031178" />
-      <int name="41" value="4130011" />
-      <int name="42" value="4130016" />
-      <int name="43" value="4130017" />
+      <int name="29" value="2386010" />
+      <int name="30" value="4000150" />
+      <int name="31" value="4001107" />
+      <int name="32" value="4006001" />
+      <int name="33" value="4007002" />
+      <int name="34" value="4010001" />
+      <int name="35" value="4010002" />
+      <int name="36" value="4031170" />
+      <int name="37" value="4031171" />
+      <int name="38" value="4031175" />
+      <int name="39" value="4031176" />
+      <int name="40" value="4031177" />
+      <int name="41" value="4031178" />
+      <int name="42" value="4130011" />
+      <int name="43" value="4130016" />
+      <int name="44" value="4130017" />
     </imgdir>
     <string name="episode" value=" Lv. :  99\nForm : Devil\nSpecial Trait : Vulnerable to Sanctity Attribute Attacks. Vulnerable to Fire Attribute Attacks. Ice Attribute Attacks Cancelled.\n\nA long time ago, the king of Ludibrium punished the sinners of heinous crimes by locking them inside a clock, forcing them to reflect on their sins for eternity. However, the evil spirits that were locked inside the clocks were awoken during the Temporal Schism, and rather than seeking forgiveness and redemption, the evil spirits grew even more vengeful against Ludibrium. Although said evil spirits are still imprisoned in the clock, their escape is becoming more and more plausible, not to mention that Grim Phantom Watch has already begun to freely attack the adventurers. " />
   </imgdir>

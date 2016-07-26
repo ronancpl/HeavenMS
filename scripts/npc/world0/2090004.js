@@ -24,10 +24,19 @@ function action(mode, type, selection) {
 		cm.dispose();
 	if (status == 0 && mode == 1) {
 		if (cm.isQuestActive(3821)) {
-			cm.forceCompleteQuest(3821);
-			cm.sendNext("Quest complete.");
-			cm.dispose();
-			return;
+			if(!cm.haveItem(4031554)) {
+				if(cm.canHold(4031554)) {
+					cm.sendNext("Oh, the boy wanted you to bring him a #t4031554#? No problem, I was on his debt anyway. Now, tell him I am repaying the debt, OK?");
+					cm.gainItem(4031554, 1);
+					cm.dispose();
+					return;
+				}
+				else {
+					cm.sendNext("Make room at your ETC inventory first.");
+					cm.dispose();
+					return;
+				}
+			}
 		}
 		var selStr = "I am a man of many talents. Let me know what you'd like to do. #b"
 		var options = new Array("Make a medicine","Make a scroll","Donate medicine ingredients","I want to forfeit the restoration of Portrait Scroll...");
