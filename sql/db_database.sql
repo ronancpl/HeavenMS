@@ -12789,7 +12789,8 @@ INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimu
 (1, 0, 0, 4031865, 1, 1, 0, 150000, 'NX Card 100 PTS'),
 (2, 0, 0, 4031866, 1, 1, 0, 90000, 'NX Card 250 PTS'),
 (3, 0, 0, 4001126, 1, 2, 0, 10000, 'Maple Leaves'),
-(4, 0, 0, 2049100, 1, 1, 0, 2000, 'Chaos Scroll 60%');
+(4, 0, 0, 2049100, 1, 1, 0, 2000, 'Chaos Scroll 60%'),
+(5, 0, 0, 4001006, 1, 1, 0, 12000, 'Flaming Feather');
 
 CREATE TABLE IF NOT EXISTS `dueyitems` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

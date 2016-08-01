@@ -88,7 +88,7 @@ function action(mode, type, selection) {
             
         }else if (selection == 4) { //ring refine
             var selStr = "Rings, huh? These are my specialty, go check it yourself!#b";
-            items = [1112407, 1112408, 1112401, 1112405, 1112413, 1112414, 1112402];
+            items = [1112407, 1112408, 1112401, 1112413, 1112414, 1112405, 1112402];
             
             for (var i = 0; i < items.length; i++)
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##b";
@@ -121,7 +121,7 @@ function action(mode, type, selection) {
             var matQtySet = [[2, 5, 10], [7777, 7777]];
             var costSet = [15000, 7777];
         }else if (selectedType == 4) { //ring refine
-            var matSet = [[4003001, 4001344, 4006000], [4003001, 4001344, 4006000], [4021004, 4011008], [4011008, 4001006], [1112405, 2022039], [1112413, 4000176], [4011007, 4021009]];
+            var matSet = [[4003001, 4001344, 4006000], [4003001, 4001344, 4006000], [4021004, 4011008], [4011008, 4001006], [1112413, 2022039], [1112414, 4000176], [4011007, 4021009]];
             var matQtySet = [[2, 2, 2], [2, 2, 2], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]];
             var costSet = [10000, 10000, 10000, 20000, 15000, 15000, 10000];
         }else if (selectedType == 5) { //necklace refine

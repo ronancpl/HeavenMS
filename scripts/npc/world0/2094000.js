@@ -61,10 +61,12 @@ function action(mode, type, selection) {
                     next = false;
                 else {
                     for (var i = 0; i < party.size() && next; i++) {
-                        if ((party.get(i).getLevel() >= minLevel) && (party.get(i).getLevel() <= maxLevel))
+                        if ((party.get(i).getLevel() >= minLevel) && (party.get(i).getLevel() <= maxLevel)) {
                             levelValid += 1;
-                        if (party.get(i).getMapid() == mapId)
-                            inMap += 1;
+
+                            if (party.get(i).getMapId() == mapId)
+                                inMap += 1;
+			}
                     }
                     if (levelValid < minPlayers || inMap < minPlayers)
                         next = false;
@@ -77,7 +79,7 @@ function action(mode, type, selection) {
                     }
                     else {
                         em.startInstance(cm.getParty(),cm.getPlayer().getMap());
-                        party = cm.getPlayer().getEventInstance().getPlayers();
+                        party = cm.getParty().getMembers();
                     }
                     cm.dispose();
                 }

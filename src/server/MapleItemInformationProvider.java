@@ -411,7 +411,12 @@ public class MapleItemInformationProvider {
             if (pData == null) {
                 return -1;
             }
-            pEntry = (double) MapleDataTool.getInt(pData);
+            try {
+                pEntry = (double) MapleDataTool.getInt(pData);
+            } catch(Exception e) {
+                priceCache.put(itemId, 0.0);
+                return 0;
+            }
         }
         priceCache.put(itemId, pEntry);
         return pEntry;
@@ -522,11 +527,12 @@ public class MapleItemInformationProvider {
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, boolean isGM) {
         if (equip instanceof Equip) {
             Equip nEquip = (Equip) equip;
+            
             Map<String, Integer> stats = this.getEquipStats(scrollId);
             Map<String, Integer> eqstats = this.getEquipStats(equip.getItemId());
+            
+            System.out.println("GM: " + isGM + "\tWS: " + usingWhiteScroll + "\tITEM: " + scrollId);
             if (((nEquip.getUpgradeSlots() > 0 || isCleanSlate(scrollId))) || isGM) {
-                System.out.println("GM: " + isGM + "\tWS: " + usingWhiteScroll + "\tITEM: " + scrollId);
-                
                 if(isGM || testYourLuck() <= stats.get("success")) {
                     short flag = nEquip.getFlag();
                     switch (scrollId) {
@@ -552,181 +558,183 @@ public class MapleItemInformationProvider {
                             int inc, i;
                             
                             if(ServerConstants.SCROLL_CHANCE_RATE > 0) {
+                                //int tempStr, tempDex, tempInt, tempLuk, tempWatk, tempWdef, tempMatk, tempMdef, tempAcc, tempAvoid, tempSpeed, tempJump, tempHp, tempMp;
                                 int temp;
                                 int mdStr = nEquip.getStr(), mdDex = nEquip.getDex(), mdInt = nEquip.getInt(), mdLuk = nEquip.getLuk(), mdWatk = nEquip.getWatk(), mdWdef = nEquip.getWdef(), mdMatk = nEquip.getMatk(), mdMdef = nEquip.getMdef(), mdAcc = nEquip.getAcc(), mdAvoid = nEquip.getAvoid(), mdSpeed = nEquip.getSpeed(), mdJump = nEquip.getJump(), mdHp = nEquip.getHp(), mdMp = nEquip.getMp();
                                 
+                                inc = 1;
+                                if (Randomizer.nextInt(2) == 0) {
+                                    inc = -1;
+                                }
+                                if(ServerConstants.USE_ENHANCED_CHSCROLL == true) inc = 1;
+                                
                                 for(i = 0; i < ServerConstants.SCROLL_CHANCE_RATE; i++) {
-                                    inc = 1;
-
-                                    if (Randomizer.nextInt(2) == 0) {
-                                        inc = -1;
-                                    }
                                     if (nEquip.getStr() > 0) {
                                         temp = (nEquip.getStr() + Randomizer.nextInt(6) * inc);
                                         nEquip.setStr((short) Math.max(mdStr, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdStr = nEquip.getStr();
                                         }
                                         else {
                                             temp = (mdStr + temp) / 2;
-                                            if(temp > 0) mdStr = temp;
+                                            if(temp > mdStr) mdStr = temp;
                                         }
                                     }
                                     if (nEquip.getDex() > 0) {
                                         temp = (nEquip.getDex() + Randomizer.nextInt(6) * inc);
                                         nEquip.setDex((short) Math.max(mdDex, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdDex = nEquip.getDex();
                                         }
                                         else {
                                             temp = (mdDex + temp) / 2;
-                                            if(temp > 0) mdDex = temp;
+                                            if(temp > mdDex) mdDex = temp;
                                         }
                                     }
                                     if (nEquip.getInt() > 0) {
                                         temp = (nEquip.getInt() + Randomizer.nextInt(6) * inc);
                                         nEquip.setInt((short) Math.max(mdInt, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdInt = nEquip.getInt();
                                         }
                                         else {
                                             temp = (mdInt + temp) / 2;
-                                            if(temp > 0) mdInt = temp;
+                                            if(temp > mdInt) mdInt = temp;
                                         }
                                     }
                                     if (nEquip.getLuk() > 0) {
                                         temp = (nEquip.getLuk() + Randomizer.nextInt(6) * inc);
                                         nEquip.setLuk((short) Math.max(mdLuk, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdLuk = nEquip.getLuk();
                                         }
                                         else {
                                             temp = (mdLuk + temp) / 2;
-                                            if(temp > 0) mdLuk = temp;
+                                            if(temp > mdLuk) mdLuk = temp;
                                         }
                                     }
                                     if (nEquip.getWatk() > 0) {
                                         temp = (nEquip.getWatk() + Randomizer.nextInt(6) * inc);
                                         nEquip.setWatk((short) Math.max(mdWatk, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdWatk = nEquip.getWatk();
                                         }
                                         else {
                                             temp = (mdWatk + temp) / 2;
-                                            if(temp > 0) mdWatk = temp;
+                                            if(temp > mdWatk) mdWatk = temp;
                                         }
                                     }
                                     if (nEquip.getWdef() > 0) {
                                         temp = (nEquip.getWdef() + Randomizer.nextInt(6) * inc);
                                         nEquip.setWdef((short) Math.max(mdWdef, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdWdef = nEquip.getWdef();
                                         }
                                         else {
                                             temp = (mdWdef + temp) / 2;
-                                            if(temp > 0) mdWdef = temp;
+                                            if(temp > mdWdef) mdWdef = temp;
                                         }
                                     }
                                     if (nEquip.getMatk() > 0) {
                                         temp = (nEquip.getMatk() + Randomizer.nextInt(6) * inc);
                                         nEquip.setMatk((short) Math.max(mdMatk, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdMatk = nEquip.getMatk();
                                         }
                                         else {
                                             temp = (mdMatk + temp) / 2;
-                                            if(temp > 0) mdMatk = temp;
+                                            if(temp > mdMatk) mdMatk = temp;
                                         }
                                     }
                                     if (nEquip.getMdef() > 0) {
                                         temp = (nEquip.getMdef() + Randomizer.nextInt(6) * inc);
                                         nEquip.setMdef((short) Math.max(mdMdef, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdMdef = nEquip.getMdef();
                                         }
                                         else {
                                             temp = (mdMdef + temp) / 2;
-                                            if(temp > 0) mdMdef = temp;
+                                            if(temp > mdMdef) mdMdef = temp;
                                         }
                                     }
                                     if (nEquip.getAcc() > 0) {
                                         temp = (nEquip.getAcc() + Randomizer.nextInt(6) * inc);
                                         nEquip.setAcc((short) Math.max(mdAcc, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdAcc = nEquip.getAcc();
                                         }
                                         else {
                                             temp = (mdAcc + temp) / 2;
-                                            if(temp > 0) mdAcc = temp;
+                                            if(temp > mdAcc) mdAcc = temp;
                                         }
                                     }
                                     if (nEquip.getAvoid() > 0) {
                                         temp = (nEquip.getAvoid() + Randomizer.nextInt(6) * inc);
                                         nEquip.setAvoid((short) Math.max(mdAvoid, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdAvoid = nEquip.getAvoid();
                                         }
                                         else {
                                             temp = (mdAvoid + temp) / 2;
-                                            if(temp > 0) mdAvoid = temp;
+                                            if(temp > mdAvoid) mdAvoid = temp;
                                         }
                                     }
                                     if (nEquip.getSpeed() > 0) {
                                         temp = (nEquip.getSpeed() + Randomizer.nextInt(6) * inc);
                                         nEquip.setSpeed((short) Math.max(mdSpeed, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdSpeed = nEquip.getSpeed();
                                         }
                                         else {
                                             temp = (mdSpeed + temp) / 2;
-                                            if(temp > 0) mdSpeed = temp;
+                                            if(temp > mdSpeed) mdSpeed = temp;
                                         }
                                     }
                                     if (nEquip.getJump() > 0) {
                                         temp = (nEquip.getJump() + Randomizer.nextInt(6) * inc);
                                         nEquip.setJump((short) Math.max(mdJump, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdJump = nEquip.getJump();
                                         }
                                         else {
                                             temp = (mdJump + temp) / 2;
-                                            if(temp > 0) mdJump = temp;
+                                            if(temp > mdJump) mdJump = temp;
                                         }
                                     }
                                     if (nEquip.getHp() > 0) {
                                         temp = (nEquip.getHp() + Randomizer.nextInt(6) * inc);
                                         nEquip.setHp((short) Math.max(mdHp, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdHp = nEquip.getHp();
                                         }
                                         else {
                                             temp = (mdHp + temp) / 2;
-                                            if(temp > 0) mdHp = temp;
+                                            if(temp > mdHp) mdHp = temp;
                                         }
                                     }
                                     if (nEquip.getMp() > 0) {
                                         temp = (nEquip.getMp() + Randomizer.nextInt(6) * inc);
                                         nEquip.setMp((short) Math.max(mdMp, temp));
                                         
-                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == false) {
+                                        if(ServerConstants.USE_ENHANCED_CHSCROLL == true) {
                                             mdMp = nEquip.getMp();
                                         }
                                         else {
                                             temp = (mdMp + temp) / 2;
-                                            if(temp > 0) mdMp = temp;
+                                            if(temp > mdMp) mdMp = temp;
                                         }
                                     }
                                 }
@@ -738,6 +746,8 @@ public class MapleItemInformationProvider {
                                 if (Randomizer.nextInt(2) == 0) {
                                     inc = -1;
                                 }
+                                if(ServerConstants.USE_ENHANCED_CHSCROLL == true) inc = 1;
+                                
                                 if (nEquip.getStr() > 0) {
                                     if(ServerConstants.USE_ENHANCED_CHSCROLL == true) nEquip.setStr((short) Math.max(nEquip.getStr(), (nEquip.getStr() + Randomizer.nextInt(6) * inc)));
                                     else nEquip.setStr((short) Math.max(0, (nEquip.getStr() + Randomizer.nextInt(6) * inc)));

@@ -304,6 +304,11 @@ public class AbstractPlayerInteraction {
             return gainItem(id, quantity, randomStats, showMessage, expires, null);
         }
         
+        private boolean isAccessory(int id) {
+            int val = id / 10000;
+            return(val >= 111 && val <= 113);
+        }
+        
 	public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from) {
 		Item item = null;
                 MaplePet evolved = null;
@@ -335,6 +340,11 @@ public class AbstractPlayerInteraction {
 
 			if (ii.getInventoryType(id).equals(MapleInventoryType.EQUIP)) {
 				item = ii.getEquipById(id);
+                                
+                                if(item != null) {
+                                    Equip it = (Equip)item;
+                                    if(isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) it.setUpgradeSlots(3);
+                                }
                                 
                                 if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true)
                                     item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, c.getPlayer().isGM());

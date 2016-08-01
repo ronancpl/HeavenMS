@@ -67,6 +67,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         MapleInventory useInventory = c.getPlayer().getInventory(MapleInventoryType.USE);
         Item scroll = useInventory.getItem(slot);
         Item wscroll = null;
+
         if (((Equip) toScroll).getUpgradeSlots() < 1 && !isCleanSlate(scroll.getItemId())) {
             c.announce(MaplePacketCreator.getInventoryFull());
             return;
@@ -82,6 +83,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
                 whiteScroll = false;
             }
         }
+
         if (!isChaosScroll(scroll.getItemId()) && !isCleanSlate(scroll.getItemId())) {
             if (!canScroll(scroll.getItemId(), toScroll.getItemId())) {
                 return;
@@ -130,6 +132,14 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
     }
     
     public boolean canScroll(int scrollid, int itemid) {
-        return (scrollid / 100) % 100 == (itemid / 10000) % 100;
+        int sid = scrollid / 100;
+        
+        switch(sid) {
+            case 20492: //scroll for accessory (pendant, belt, ring)
+                return canScroll(2041100, itemid) || canScroll(2041200, itemid) || canScroll(2041300, itemid);
+                
+            default:
+                return (scrollid / 100) % 100 == (itemid / 10000) % 100;
+        }
     }
 }

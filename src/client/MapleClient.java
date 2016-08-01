@@ -852,16 +852,21 @@ public class MapleClient {
 				FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, e);
 			} finally {
 				getChannelServer().removePlayer(player);
-				if (!this.serverTransition) {
+                                
+                                if (!this.serverTransition) {
 					worlda.removePlayer(player);
+                                        
+                                        player.saveCooldowns();
+                                        player.saveToDB();
 					if (player != null) {//no idea, occur :(
 						player.empty(false);
 					}
 					player.logOff();
 				}
-				
-                                player.saveCooldowns();
-                                player.saveToDB();
+                                else {
+                                    player.saveCooldowns();
+                                    player.saveToDB();
+                                }
                                 player = null;
 			}
 		}

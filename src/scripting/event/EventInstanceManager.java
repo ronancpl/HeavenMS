@@ -59,6 +59,9 @@ public class EventInstanceManager {
 	private long timeStarted = 0;
 	private long eventTime = 0;
 	private MapleExpedition expedition = null;
+        private List<Integer> mapIds = new LinkedList<Integer>();
+        private List<Boolean> isInstanced = new LinkedList<Boolean>();
+        private boolean disposed = false;
 
 	public EventInstanceManager(EventManager em, String name) {
 		this.em = em;
@@ -322,4 +325,13 @@ public class EventInstanceManager {
 	public boolean isLeader(MapleCharacter chr) {
 		return (chr.getParty().getLeader().getId() == chr.getId());
 	}
+        
+        public final MapleMap setInstanceMap(final int mapid) { //gets instance map from the channelserv
+            if (disposed) {
+                return this.getMapFactory().getMap(mapid);
+            }
+            mapIds.add(mapid);
+            isInstanced.add(false);
+            return this.getMapFactory().getMap(mapid);
+        }
 }
