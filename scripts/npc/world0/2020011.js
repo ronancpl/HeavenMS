@@ -52,7 +52,7 @@ function action(mode, type, selection){
         if (status == 0)
             cm.sendNext("Great job completing the mental part of the test. You have wisely answered all the questions correctly. I must say, I am quite impressed with the level of wisdom you have displayed there. Please hand me the necklace first, before we takeon the next step.");
         else if (status == 1)
-            cm.sendYesNo("Okay! Now, you'll be transformed into a much more powerful thieve through me. Before doing that, though, please make sure your SP has been thoroughly used, You'll need to use up at least all of SP's gained until level 70 to make the 3rd job advancement. Oh, and since you have already chosen your path of the occupation by the 2nd job adv., you won't have to choose again for the 3rd job adv. Do you want to do it right now?");
+            cm.sendYesNo("Okay! Now, you'll be transformed into a much more powerful adventurer through me. Before doing that, though, please make sure your SP has been thoroughly used, You'll need to use up at least all of SP's gained until level 70 to make the 3rd job advancement. Oh, and since you have already chosen your path of the occupation by the 2nd job adv., you won't have to choose again for the 3rd job adv. Do you want to do it right now?");
         else if (status == 2) {
             if (cm.getPlayer().getRemainingSp() > 0)
                 if (cm.getPlayer().getRemainingSp() > (cm.getLevel() - 70) * 3) {
@@ -74,7 +74,7 @@ function action(mode, type, selection){
         }
     }else if (actionx["Physical"]){
         if (status == 0)
-            cm.sendNext("Great job completing the physical part of the test. I knew you could do it. Now that you have passed the first half of the test, here's the second half. Please give me the necklace fist");
+            cm.sendNext("Great job completing the physical part of the test. I knew you could do it. Now that you have passed the first half of the test, here's the second half. Please give me the necklace first.");
         else if (status == 1){
             if (cm.haveItem(4031057)){
                 cm.gainItem(4031057, -1);

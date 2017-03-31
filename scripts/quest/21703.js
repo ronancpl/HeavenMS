@@ -57,7 +57,7 @@ function end(mode, type, selection) {
 	if (qm.isQuestStarted(21703)) {
 	    qm.forceCompleteQuest();
 	    qm.teachSkill(21000000, qm.getPlayer().getSkillLevel(21000000), 10, -1);   // Combo Ability Skill
-	    qm.gainExp(2800);
+	    qm.gainExp(2800 * qm.getPlayer().getExpRate());
 	}
 		qm.sendNext("(You remembered the #bCombo Ability#k skill! You were skeptical of the training at first, since the old man suffers from Alzheimer's and all, but boy, was it effective!)", 2);
 		qm.showInfo("Effect/BasicEff.img/AranGetSkill");

@@ -45,7 +45,7 @@ function action(mode, type, selection) {
             if (cm.isQuestCompleted(100202)) {
                 cm.startQuest(100202);
                 cm.completeQuest(100202);
-                cm.gainExp(10000);
+                cm.gainExp(10000 * qm.getPlayer().getExpRate());
             }
             cm.dispose();
         }

@@ -9,7 +9,7 @@ function start() {
 
 function action(mode, type, selection) {  
        
-    if (mode == -1) {  
+    if (mode == -1 || cm.getPlayer().getJobStyle() != MapleJob.BEGINNER) {  
         cm.dispose();  
     }  
     else {   

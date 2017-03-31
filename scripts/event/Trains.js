@@ -37,8 +37,6 @@ function scheduleNew() {
     em.schedule("takeoff", beginTime);
 }
 
-
-
 function stopEntry() {
     em.setProperty("entry","false");
 }
@@ -49,14 +47,14 @@ function takeoff() {
     Ludibrium_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
     Orbis_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
     em.setProperty("docked","false");
-	Orbis_btf.warpEveryone(Train_to_Ludibrium.getId());
-	Ludibrium_btf.warpEveryone(Train_to_Orbis.getId());
+    Orbis_btf.warpEveryone(Train_to_Ludibrium.getId());
+    Ludibrium_btf.warpEveryone(Train_to_Orbis.getId());
     em.schedule("arrived", rideTime);
 }
 
 function arrived() {
-	Train_to_Orbis.warpEveryone(Orbis_Station.getId());
-	Train_to_Ludibrium.warpEveryone(Ludibrium_Station.getId());
+    Train_to_Orbis.warpEveryone(Orbis_Station.getId());
+    Train_to_Ludibrium.warpEveryone(Ludibrium_Station.getId());
     scheduleNew();
 }
 

@@ -45,7 +45,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Did you gather up all the necessary ingredients for it?")
 	if (status == 1){
-		qm.gainExp(11500);
+		qm.gainExp(11500 * qm.getPlayer().getExpRate());
 		qm.gainItem(4000499, -50);
 		qm.sendNext("Okay, these should be enough for me to make the #bKiller Mushroom Spores.#k Please hold on for a bit.");
 		qm.forceCompleteQuest();

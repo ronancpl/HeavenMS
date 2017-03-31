@@ -48,7 +48,7 @@ function playerEntry(eim, player) {
 function playerExit(eim, player) {
     em.setProperty("noEntry","false");
     player.changeMap(returnMap, returnMap.getPortal(4));
-    eim.unregisterPlayer(player);
+    //eim.unregisterPlayer(player);	needed no more
     em.cancel();
     em.disposeInstance("DollHouse");
     eim.dispose();
@@ -58,7 +58,7 @@ function timeOut() {
     em.setProperty("noEntry","false");
     var player = eim.getPlayers().get(0);
     player.changeMap(returnMap, returnMap.getPortal(4));
-    eim.unregisterPlayer(player);
+    //eim.unregisterPlayer(player);
     em.cancel();
     em.disposeInstance("DollHouse");
     eim.dispose();
@@ -68,7 +68,7 @@ function playerDisconnected(eim, player) {
     em.setProperty("noEntry","false");
     player.getMap().removePlayer(player);
     player.setMap(returnMap);
-    eim.unregisterPlayer(player);
+    //eim.unregisterPlayer(player);
     em.cancel();
     em.disposeInstance("DollHouse");
     eim.dispose();
@@ -78,7 +78,7 @@ function clear(eim) {
     em.setProperty("noEntry","false");
     var player = eim.getPlayers().get(0);
     player.changeMap(returnMap, returnMap.getPortal(4));
-    eim.unregisterPlayer(player);
+    //eim.unregisterPlayer(player);
     em.cancel();
     em.disposeInstance("DollHouse");
     eim.dispose();

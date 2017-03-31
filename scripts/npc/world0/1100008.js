@@ -42,7 +42,7 @@ function action(mode, type, selection) {
 					cm.sendNext("Hmm... Are you sure you have #b1000#k Mesos? Check your Inventory and make sure you have enough. You must pay the fee or I can't let you get on...");
 					cm.dispose();
 				} else {
-							cm.gainMeso(1000);
+							cm.gainMeso(-1000);
 							cm.warp(200090020);
 							cm.dispose();
 					}

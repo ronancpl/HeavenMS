@@ -1,4 +1,4 @@
-#YOU MUST EXECUTE NEXT SQL: 'drops.sql'
+#YOU MUST EXECUTE NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -12789,7 +12789,7 @@ INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimu
 (1, 0, 0, 4031865, 1, 1, 0, 150000, 'NX Card 100 PTS'),
 (2, 0, 0, 4031866, 1, 1, 0, 90000, 'NX Card 250 PTS'),
 (3, 0, 0, 4001126, 1, 2, 0, 10000, 'Maple Leaves'),
-(4, 0, 0, 2049100, 1, 1, 0, 2000, 'Chaos Scroll 60%'),
+(4, 0, 0, 2049100, 1, 1, 0, 1500, 'Chaos Scroll 60%'),
 (5, 0, 0, 4001006, 1, 1, 0, 12000, 'Flaming Feather');
 
 CREATE TABLE IF NOT EXISTS `dueyitems` (
@@ -16436,7 +16436,7 @@ INSERT INTO `reactordrops` (`reactordropid`, `reactorid`, `itemid`, `chance`, `q
 (40, 2212003, 4031107, 2, -1),
 (41, 2212004, 4031116, 2, -1),
 (42, 2212004, 2000001, 2, -1),
-(43, 2212005, 4031136, 8, -1),
+(43, 2212005, 4031136, 8, 3439),
 (44, 2222000, 4031231, 2, -1),
 (45, 2222000, 4031258, 2, -1),
 (46, 2222000, 2000002, 3, -1),

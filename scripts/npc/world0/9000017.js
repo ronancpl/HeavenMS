@@ -45,8 +45,8 @@ function action(mode, type, selection) {
         selectedItem = 0;
 
         var itemSet = new Array(2049100, 7777777);
-        var matSet = new Array(new Array(4031203,4001356,4000136,4000082,4001126,4030012,4000021,4003005));
-        var matQtySet = new Array(new Array(10,10,5,4,2,20,10,5));
+        var matSet = new Array(new Array(4031203,4001356,4000136,4000082,4001126,4080100,4000021,4003005));
+        var matQtySet = new Array(new Array(10,6,4,8,8,1,20,12));
         var costSet = new Array(1200000, 7777777);
         item = itemSet[selectedItem];
         mats = matSet[selectedItem];

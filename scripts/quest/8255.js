@@ -20,14 +20,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*	
-	Author : 		Blue
-	NPC Name: 	        Arwen
-	Map(s): 		Ellinia
-	Description: 		Quest - Arwen and the Glass Shoe
-	Quest ID: 		2017
+	NPC Name: 		Adonis
+	Map(s): 		El Nath
+	Description: 		Quest - Lost Spirits
+	Quest ID: 		8255
 */
 
 function start(mode, type, selection) {
+	qm.forceStartQuest();
+	qm.forceCompleteQuest();
+}
 
+function end(mode, type, selection) {
 	qm.forceCompleteQuest();
 }

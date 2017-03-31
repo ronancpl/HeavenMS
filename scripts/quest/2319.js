@@ -46,7 +46,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Are the #bKiller Mushroom Spores#k finally completed?");
 	if (status == 1){
-		qm.gainExp(4200);
+		qm.gainExp(4200 * qm.getPlayer().getExpRate());
 		qm.gainItem(4032389, -1);
 		qm.sendOk("Okay, so this is the #bKiller Mushroom Spores.#k Thank you, thank you, and please tell #bScarrs#k the same.");
 		qm.forceCompleteQuest();

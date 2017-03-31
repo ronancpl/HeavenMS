@@ -86,6 +86,18 @@ public class EventInstanceManager {
 			ex.printStackTrace();
 		}
 	}  
+        
+        public void exitPlayer(MapleCharacter chr) {
+		if (chr == null || !chr.isLoggedin()){
+			return;
+		}
+		try {
+			unregisterPlayer(chr);
+                        em.getIv().invokeFunction("playerExit", this, chr);
+		} catch (ScriptException | NoSuchMethodException ex) {
+			ex.printStackTrace();
+		}
+	}
 
 	public void startEventTimer(long time) {
 		timeStarted = System.currentTimeMillis();

@@ -1634,7 +1634,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void gainExp(int gain, int party, boolean show, boolean inChat, boolean white) {
         if (hasDisease(MapleDisease.CURSE)) {
-			gain *= 0.5;
+            gain *= 0.5;
             party *= 0.5;
         }
 		
@@ -3708,6 +3708,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }, 5000, 5000);
         }
+        
+        //is it possible to maintain a list of statup effects of the same type concurrently? Pair<MapleBuffStat, Itemid>
         for (Pair<MapleBuffStat, Integer> statup : effect.getStatups()) {
             effects.put(statup.getLeft(), new MapleBuffStatValueHolder(effect, starttime, schedule, statup.getRight().intValue()));
         }
@@ -4702,31 +4704,35 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return false;
     }
     
-    public boolean sellAllItemsFromName(MapleInventoryType type, String name) {
+    public boolean sellAllItemsFromName(byte invTypeId, String name) {
         //player decides from which inventory items should be sold.
         
-        Item it = getInventory(type).findByName(name);
-        if(it == null) return(false);
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        MapleInventoryType type = MapleInventoryType.getByType(invTypeId);
         
-        sellAllItemsFromPosition(type, it.getPosition());
+        Item it = getInventory(type).findByName(name);
+        if(it == null) {
+            return(false);
+        }
+        
+        sellAllItemsFromPosition(ii, type, it.getPosition());
         return(true);
     }
     
-    public void sellAllItemsFromPosition(MapleInventoryType type, short pos) {
+    public void sellAllItemsFromPosition(MapleItemInformationProvider ii, MapleInventoryType type, short pos) {
         for(short i = pos; i <= getInventory(type).getSlotLimit(); i++) {
             if(getInventory(type).getItem(i) == null) continue;
-            standaloneSell(getClient(), type, i, getInventory(type).getItem(i).getQuantity());
+            standaloneSell(getClient(), ii, type, i, getInventory(type).getItem(i).getQuantity());
         }
     }
 
-    private void standaloneSell(MapleClient c, MapleInventoryType type, short slot, short quantity) {
+    private void standaloneSell(MapleClient c, MapleItemInformationProvider ii, MapleInventoryType type, short slot, short quantity) {
         if (quantity == 0xFFFF || quantity == 0) {
             quantity = 1;
         }
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         Item item = getInventory(type).getItem((short) slot);
         if (item == null){ //Basic check
-        	return;
+            return;
         }
         if (ItemConstants.isRechargable(item.getItemId())) {
             quantity = item.getQuantity();

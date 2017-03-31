@@ -8,47 +8,50 @@ package mobbookupdate;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import java.io.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import java.io.*;
+
+
 /**
  * @author RonanLana
- * 
+ *
  * This application updates the Monster Book drop data with the actual underlying drop data from
  * the Maplestory database specified by the URL below.
- * 
+ *
+ * In other words all items drops from monsters listed inside the Mob Book feature will be patched to match exactly like the item
+ * drop list specified by the URL's Maplestory database .
+ *
  * The original file "MonsterBook.img.xml" from String.wz must be copied to the directory of this application and only then
  * executed. This program will generate another file that must replace the original server file to make the effects take place
  * to on your server.
- * 
+ *
  * After replacing on server, this XML must be updated on the client via WZ Editor (HaRepack for instance). Once inside the repack,
  * remove the property 'MonsterBook.img' inside 'string.wz' and choose to import the xml generated with this software.
- * 
+ *
  */
 public class MobBookUpdate {
     static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
     static String driver = "com.mysql.jdbc.Driver";
     static String username = "root";
     static String password = "";
-            
+
     static String fileName = "MonsterBook.img.xml";
     static String newFile = "MonsterBook_updated.img.xml";
-    
+
     static Connection con = null;
     static PrintWriter printWriter = null;
     static FileReader fileReader = null;
     static BufferedReader bufferedReader = null;
     static byte status = 0;
     static int mobId = -1;
-    static int mobCount = 0;
-    
+
     private static String getName(String token) {
         int i, j;
         char[] dest;
         String d;
-        
+
         i = token.lastIndexOf("name");
         i = token.indexOf("\"", i) + 1; //lower bound of the string
         j = token.indexOf("\"", i);     //upper bound
@@ -56,14 +59,14 @@ public class MobBookUpdate {
         if(j - i < 7) dest = new char[6];
         else dest = new char[7];
         token.getChars(i, j, dest, 0);
-        
+
         d = new String(dest);
         return(d);
     }
-    
+
     private static void forwardCursor(int st) {
         String line = null;
-        
+
         try {
             while(status >= st && (line = bufferedReader.readLine()) != null) {
                 simpleToken(line);
@@ -74,7 +77,7 @@ public class MobBookUpdate {
             e.printStackTrace();
         }
     }
-    
+
     private static void simpleToken(String token) {
         if(token.contains("/imgdir")) {
             status -= 1;
@@ -83,31 +86,30 @@ public class MobBookUpdate {
             status += 1;
         }
     }
-    
+
     private static void loadDropsFromMob() {
-        //System.out.println("Loading mob id " + mobId);
-        mobCount++;
-        
+        System.out.println("Loading mob id " + mobId);
+
         try {
             String toPrint;
             int itemId, cont = 0;
-            
+
             PreparedStatement ps = con.prepareStatement("SELECT itemid FROM drop_data WHERE (dropperid = ? AND itemid > 0) GROUP BY itemid;");
             ps.setInt(1, mobId);
             ResultSet rs = ps.executeQuery();
-            
+
             while(rs.next()) {
                 toPrint = "";
                 for(int k = 0; k <= status; k++) toPrint += "  ";
-                
+
                 toPrint += "<int name=\"";
                 toPrint += cont;
                 toPrint += "\" value=\"";
-                
+
                 itemId = rs.getInt("itemid");
                 toPrint += itemId;
                 toPrint += "\" />";
-                
+
                 printWriter.println(toPrint);
                 cont++;
             }
@@ -116,13 +118,13 @@ public class MobBookUpdate {
             e.printStackTrace();
         }
     }
-    
+
     private static void translateToken(String token) {
         String d;
         int temp;
-        
+
         printWriter.println(token);
-        
+
         if(token.contains("/imgdir")) {
             status -= 1;
         }
@@ -133,24 +135,24 @@ public class MobBookUpdate {
             }
             else if(status == 2) {
                 d = getName(token);
-            
+
                 if(d.contains("reward")) {
                     temp = status;
-                    
+
                     loadDropsFromMob();
                     forwardCursor(temp);
                 }
             }
-            
+
             status += 1;
         }
-        
+
     }
-    
+
     private static void UpdateFromDropData() {
         // This will reference one line at a time
         String line = null;
-        
+
         try {
             Class.forName(driver).newInstance();
             con = DriverManager.getConnection(host, username, password);
@@ -162,22 +164,21 @@ public class MobBookUpdate {
             while((line = bufferedReader.readLine()) != null) {
                 translateToken(line);
             }
-            
+
             printWriter.close();
             bufferedReader.close();
             fileReader.close();
-            
+
             con.close();
-            System.out.println("Loaded drop data from " + mobCount + " mobs.");
         }
-        
+
         catch(FileNotFoundException ex) {
             System.out.println("Unable to open file '" + fileName + "'");
         }
         catch(IOException ex) {
             System.out.println("Error reading file '" + fileName + "'");
         }
-        
+
         catch(SQLException e) {
             System.out.println("Warning: Could not establish connection to database to change card chance rate.");
             System.out.println(e.getMessage());
@@ -204,5 +205,5 @@ public class MobBookUpdate {
     public static void main(String[] args) {
         UpdateFromDropData();
     }
-    
+
 }

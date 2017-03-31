@@ -203,7 +203,7 @@ function action(mode, type, selection) {
 	    cm.sendOk("Your use and etc. inventory seems to be full. You need the free spaces to trade with me! Make room, and then find me.");
 	} else {
 	    cm.gainItem(requiredItem,-100);
-	    cm.gainExp(500);
+	    cm.gainExp(500 * cm.getPlayer().getExpRate());
 	    cm.gainItem(prizeItem, prizeQuantity);
 	    cm.sendOk("For your #b100 #t"+requiredItem+"##k, here's my #b"+prizeQuantity+" #t"+prizeItem+"##k. What do you think? Do you like the items I gave you in return? I plan on being here for a while, so if you gather up more items, I'm always open for a trade ...");
 	}

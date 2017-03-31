@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <imgdir name="9101000.img">
-  <imgdir name="info" />
+  <imgdir name="info">
+  </imgdir>
   <imgdir name="stand">
     <canvas name="0" width="68" height="81">
-      <vector name="origin" x="34" y="77" />
+      <vector name="origin" x="34" y="77"/>
     </canvas>
   </imgdir>
 </imgdir>

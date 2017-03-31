@@ -59,20 +59,10 @@ function action(mode, type, selection) {
         name = cm.getText();
 	var res = false;
 
-        if (selectedType == 0) {
-		res = cm.getPlayer().sellAllItemsFromName(Packages.client.inventory.MapleInventoryType.EQUIP, name);
-        }else if (selectedType == 1) {
-		res = cm.getPlayer().sellAllItemsFromName(Packages.client.inventory.MapleInventoryType.USE, name);
-        }else if (selectedType == 2) {
-		res = cm.getPlayer().sellAllItemsFromName(Packages.client.inventory.MapleInventoryType.SETUP, name);
-        }else if (selectedType == 3) {
-		res = cm.getPlayer().sellAllItemsFromName(Packages.client.inventory.MapleInventoryType.ETC, name);
-        }else if (selectedType == 4) {
-		res = cm.getPlayer().sellAllItemsFromName(Packages.client.inventory.MapleInventoryType.CASH, name);
-        }
+	res = cm.getPlayer().sellAllItemsFromName(selectedType + 1, name);
 
         if(res) cm.sendOk("Transaction complete!");
-	else cm.sendOk("#b'" + name + "'#k is not a #b" + options[selectedType] + "#k item!");
+	else cm.sendOk("There is no #b'" + name + "'#k in your #b" + options[selectedType] + "#k inventory!");
 
         cm.dispose();
     }

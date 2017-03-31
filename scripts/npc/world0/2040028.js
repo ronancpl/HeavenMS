@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Guy in dollhouse map
+/* Mark the Toy Soldier
 */
 
 var greeting;
@@ -38,7 +38,10 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode > 0)
-        cm.warp(221024400,0);
+    if (mode > 0) {
+        var em = cm.getEventManager("DollHouse");
+        var eim = em.getInstance("DollHouse");
+        eim.exitPlayer(cm.getPlayer());
+    }
     cm.dispose();
 }

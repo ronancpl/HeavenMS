@@ -30,6 +30,7 @@ import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import constants.ServerConstants;
 
 public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     @Override
@@ -43,7 +44,6 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         slea.readInt();
         short slot = slea.readShort();
         int itemId = slea.readInt();
-        float Ratio = 0.85f;
         Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
         
         if(toUse != null) {
@@ -60,7 +60,7 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
                 //stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
                 stat.applyTo(c.getPlayer());
 
-            } while(((stat.getHp() > 0 && c.getPlayer().getHp() < Ratio * c.getPlayer().getMaxHp()) || (stat.getMp() > 0 && c.getPlayer().getMp() < Ratio * c.getPlayer().getMaxMp())) && toUse.getQuantity() > 0);
+            } while(((stat.getHp() > 0 && c.getPlayer().getHp() < ServerConstants.PET_AUTOHP_RATIO * c.getPlayer().getMaxHp()) || (stat.getMp() > 0 && c.getPlayer().getMp() < ServerConstants.PET_AUTOMP_RATIO * c.getPlayer().getMaxMp())) && toUse.getQuantity() > 0);
         }
     }
 }

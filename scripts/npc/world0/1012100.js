@@ -101,16 +101,18 @@ function action(mode, type, selection) {
         if (status == 0){
             if (cm.haveItem(4031012))
                 cm.sendSimple("Alright, when you have made your decision, click on [I'll choose my occupation] at the bottom.#b\r\n#L0#Please explain to me what being the Hunter is all about.\r\n#L1#Please explain to me what being the Crossbowman is all about.\r\n#L2#I'll choose my occupation!");
-            else
+            else {
                 cm.sendNext("Good decision. You look strong, but I need to see if you really are strong enough to pass the test, it's not a difficult test, so you'll do just fine. Here, take my letter first... make sure you don't lose it!");
+		if(!cm.isQuestStarted(100000)) cm.startQuest(100000);
+	   }
         } else if (status == 1){
             if (!cm.haveItem(4031012)){
                 if (cm.canHold(4031010)){
                     if (!cm.haveItem(4031010))
                         cm.gainItem(4031010, 1);
                     cm.sendNextPrev("Please get this letter to #b#p1072002##k who's around #b#m106010000##k near Henesys. She is taking care of the job of an instructor in place of me. Give her the letter and she'll test you in place of me. Best of luck to you.");
-					cm.dispose();
-				} else {
+		    cm.dispose();
+		} else {
                     cm.sendNext("Please, make some space in your inventory.");
                     cm.dispose();
                 }

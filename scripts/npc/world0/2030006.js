@@ -55,7 +55,7 @@ function action(mode, type, selection) {
         cm.sendSimple("Here's the " + (status + 1) + (status == 0 ? "st" : status == 1 ? "nd" : status == 2 ? "rd" : "th") + " question. " + quest[rand]);
         quest[rand] = "";
     } else {
-        cm.sendNext("Alright. All your asnwers have been proven as the truth. Your wisdom has been proven.\r\nTake this necklace and go back.");
+        cm.sendOk("Alright. All your answers have been proven as the truth. Your wisdom has been proven.\r\nTake this necklace and go back.");
         cm.gainItem(4031058, 1);
         cm.dispose();
     }

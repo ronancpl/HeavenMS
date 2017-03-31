@@ -197,6 +197,10 @@ public class AbstractPlayerInteraction {
 		NPCScriptManager.getInstance().start(c, npcid, script, null);
 	}
 
+        public void updateQuest(int questid, int data) {
+            updateQuest(questid, String.valueOf(data));
+        }
+        
 	public void updateQuest(int questid, String data) {
 		MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
 		status.setStatus(MapleQuestStatus.Status.STARTED);
@@ -231,6 +235,7 @@ public class AbstractPlayerInteraction {
 	}
 
 	public int getQuestProgress(int qid) {
+                if(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress().isEmpty()) return 0;
 		return Integer.parseInt(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress().get(0));
 	}
         
@@ -544,8 +549,7 @@ public class AbstractPlayerInteraction {
 				continue; // They aren't in the instance, don't give EXP.
 			}
 			int base = PartyQuest.getExp(PQ, player.getLevel());
-			int exp = base * player.getExpRate();
-			exp = exp * bonus / 100;
+			int exp = base * bonus / 100;
 			player.gainExp(exp, true, true);
 			if(ServerConstants.PQ_BONUS_EXP_MOD > 0 && System.currentTimeMillis() <= ServerConstants.EVENT_END_TIMESTAMP) {
 				player.gainExp((int) (exp * ServerConstants.PQ_BONUS_EXP_MOD), true, true);

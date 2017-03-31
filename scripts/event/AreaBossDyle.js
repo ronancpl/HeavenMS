@@ -45,10 +45,10 @@ function cancelSchedule() {
 function start() {
     var dangeroudCroko1 = em.getChannelServer().getMapFactory().getMap(107000300);
 	if(dangeroudCroko1.getMonsterById(6220000) != null) {
-		setupTask = em.schedule("start", 3 * 60 *60 * 1000);
+		setupTask = em.schedule("start", 3 * 60 * 60 * 1000);
 		return;
 	}
     dangeroudCroko1.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(6220000), new Packages.java.awt.Point(90, 119));
     dangeroudCroko1.broadcastMessage(MaplePacketCreator.serverNotice(6, "The huge crocodile Dyle has come out from the swamp."));
-	setupTask = em.schedule("start", 3 * 60 *60 * 1000);
+	setupTask = em.schedule("start", 3 * 60 * 60 * 1000);
 }

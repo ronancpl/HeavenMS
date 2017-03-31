@@ -20,18 +20,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*	
-	Author : 		Blue
-	NPC Name: 		Maple 7th Day Market Chick
-	Map(s): 		Everywhere
-	Description: 		Quest - Maple 7th Day Market
-	Quest ID: 		8248
+	Author : 		Ronan Lana
+	Description: 		Wildcard medals
+	Quest ID : 		-----
 */
 
+var status = -1;
+
 function start(mode, type, selection) {
-	qm.forceStartQuest();
 	qm.forceCompleteQuest();
+	qm.dispose();
 }
+
 
 function end(mode, type, selection) {
 	qm.forceCompleteQuest();
+	qm.dispose();
 }

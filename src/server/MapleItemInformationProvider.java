@@ -270,6 +270,7 @@ public class MapleItemInformationProvider {
             cat = "Eqp/Weapon";
         } else if (itemId >= 4000000 && itemId < 5000000) {
             theData = etcStringData;
+            cat = "Etc";
         } else if (itemId >= 3000000 && itemId < 4000000) {
             theData = insStringData;
         } else if (itemId >= 5000000 && itemId < 5010000) {

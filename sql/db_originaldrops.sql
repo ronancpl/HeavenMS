@@ -1,4 +1,4 @@
-﻿#YOU MUST EXECUTE NEXT SQL: 'drops.sql'
+﻿#YOU MUST EXECUTE NEXT SQL: 'db_drops.sql'
 #data collected from inside 'database.sql'
 
 CREATE TABLE IF NOT EXISTS `temp_data` (

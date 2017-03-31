@@ -73,7 +73,7 @@ function action(mode, type, selection){
         }
     }else if (actionx["Physical"]){
         if (status == 0)
-            cm.sendNext("Great job completing the physical part of the test. I knew you could do it. Now that you have passed the first half of the test, here's the second half. Please give me the necklace fist");
+            cm.sendNext("Great job completing the physical part of the test. I knew you could do it. Now that you have passed the first half of the test, here's the second half. Please give me the necklace first.");
         else if (status == 1){
             if (cm.haveItem(4031057)){
                 cm.gainItem(4031057, -1);

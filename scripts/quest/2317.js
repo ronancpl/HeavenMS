@@ -45,7 +45,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Have you gathered up the 100 Poison Mushroom Caps like I asked you to get?");
 	if (status == 1){
-		qm.gainExp(13500);
+		qm.gainExp(13500 * qm.getPlayer().getExpRate());
 		qm.gainItem(4000500, -100);
 		qm.sendOk("I am amazed that you were able to gather up these 100 Poison Mushroom Caps, which is considered a difficult feat. I think I'll be able to make #bKiller Mushroom Spores#k our of these.");
 		qm.forceCompleteQuest(); 

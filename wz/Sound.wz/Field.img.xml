@@ -1,20 +1,79 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <imgdir name="Field.img">
-  <imgdir name="Party1" />
-  <imgdir name="Coconut" />
-  <imgdir name="Cokeplay" />
-  <imgdir name="Party3" />
-  <imgdir name="MobCarnival" />
-  <imgdir name="Romio" />
-  <imgdir name="Magatia" />
-  <imgdir name="orbis" />
-  <imgdir name="5th_Maple" />
-  <imgdir name="Dojang">
-    <uol name="timeOver" value="clear" />
+  <imgdir name="Party1">
+    <sound name="Clear"/>
+    <sound name="Failed"/>
   </imgdir>
-  <imgdir name="GL" />
-  <imgdir name="AranEvent" />
-  <imgdir name="Aran" />
-  <imgdir name="quest2251" />
-  <imgdir name="quest2288" />
+  <imgdir name="Coconut">
+    <sound name="Broken"/>
+    <sound name="Hit"/>
+    <sound name="Fall"/>
+    <sound name="Failed"/>
+    <sound name="Victory"/>
+  </imgdir>
+  <imgdir name="Cokeplay">
+    <sound name="Broken"/>
+    <sound name="Hit"/>
+    <sound name="Fall"/>
+    <sound name="Failed"/>
+    <sound name="Victory"/>
+  </imgdir>
+  <imgdir name="Party3">
+    <sound name="Eat"/>
+  </imgdir>
+  <imgdir name="MobCarnival">
+    <sound name="Lose"/>
+    <sound name="Win"/>
+  </imgdir>
+  <imgdir name="Romio">
+    <sound name="discovery"/>
+  </imgdir>
+  <imgdir name="Magatia">
+    <sound name="alceCircle"/>
+  </imgdir>
+  <imgdir name="orbis">
+    <sound name="do"/>
+    <sound name="re"/>
+    <sound name="mi"/>
+    <sound name="pa"/>
+    <sound name="sol"/>
+    <sound name="la"/>
+    <sound name="si"/>
+  </imgdir>
+  <imgdir name="5th_Maple">
+    <sound name="gaga"/>
+    <sound name="prize"/>
+  </imgdir>
+  <imgdir name="Dojang">
+    <sound name="clear"/>
+    <sound name="start"/>
+    <uol name="timeOver" value="clear"/>
+  </imgdir>
+  <imgdir name="GL">
+    <sound name="oliviaMirror"/>
+  </imgdir>
+  <imgdir name="AranEvent">
+    <sound name="wolf"/>
+  </imgdir>
+  <imgdir name="Aran">
+    <sound name="balloon"/>
+  </imgdir>
+  <imgdir name="quest2251">
+    <sound name="yes"/>
+    <sound name="no1"/>
+    <sound name="no2"/>
+    <sound name="no3"/>
+  </imgdir>
+  <imgdir name="quest2288">
+    <sound name="0"/>
+    <sound name="1"/>
+    <sound name="2"/>
+    <sound name="3"/>
+    <sound name="4"/>
+    <sound name="5"/>
+    <sound name="6"/>
+    <sound name="7"/>
+    <sound name="8"/>
+    <sound name="9"/>
+  </imgdir>
 </imgdir>

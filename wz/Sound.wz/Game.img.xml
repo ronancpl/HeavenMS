@@ -1,2 +1,30 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<imgdir name="Game.img" />
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Game.img">
+  <sound name="Bird"/>
+  <sound name="GameIn"/>
+  <sound name="Portal"/>
+  <sound name="PickUpItem"/>
+  <sound name="Jump"/>
+  <sound name="Tombstone"/>
+  <sound name="DropItem"/>
+  <sound name="Portal2"/>
+  <sound name="UseShopItem"/>
+  <sound name="LevelUp"/>
+  <sound name="ElectrickDam"/>
+  <sound name="JobChanged"/>
+  <sound name="QuestAlert"/>
+  <sound name="QuestClear"/>
+  <sound name="Transform"/>
+  <sound name="Buff"/>
+  <sound name="EnchantSuccess"/>
+  <sound name="EnchantSuccess_Delay"/>
+  <sound name="EnchantFailure"/>
+  <sound name="EnchantFailure_Delay"/>
+  <sound name="questCount"/>
+  <sound name="clockBoom"/>
+  <sound name="mCardGet"/>
+  <sound name="CatchSuccess"/>
+  <sound name="CatchFaild"/>
+  <sound name="ItemLevelUp"/>
+  <sound name="IncEXP"/>
+</imgdir>

@@ -45,7 +45,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Ah, so you're the explorer people were talking about. I'm #bScarrs, the Royal Mushroom Scholar#k representing the Kingdom of Mushroom. So you need some #kKiller Mushroom Spores#k?");
 	if (status == 1){
-		qm.gainExp(4200);
+		qm.gainExp(4200 * qm.getPlayer().getExpRate());
 		qm.sendOk("#kKiller Mushroom Spores#k... I think i've heard of them before...");
 		qm.forceCompleteQuest(); 
 		qm.dispose();

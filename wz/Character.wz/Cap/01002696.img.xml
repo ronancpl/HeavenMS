@@ -1,74 +1,74 @@
-﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <imgdir name="01002696.img">
   <imgdir name="info">
     <canvas name="icon" width="29" height="33">
-      <vector name="origin" x="-1" y="33" />
+      <vector name="origin" x="-1" y="33"/>
     </canvas>
     <canvas name="iconRaw" width="29" height="33">
-      <vector name="origin" x="-1" y="33" />
+      <vector name="origin" x="-1" y="33"/>
     </canvas>
-    <string name="islot" value="Cp" />
-    <string name="vslot" value="CpH1H2H3H4H5H6HfHsHbAe" />
-    <int name="reqJob" value="0" />
-    <int name="reqLevel" value="0" />
-    <int name="reqSTR" value="0" />
-    <int name="reqDEX" value="0" />
-    <int name="reqINT" value="0" />
-    <int name="reqLUK" value="0" />
-    <int name="cash" value="1" />
+    <string name="islot" value="Cp"/>
+    <string name="vslot" value="CpH1H2H3H4H5H6HfHsHbAe"/>
+    <int name="reqJob" value="0"/>
+    <int name="reqLevel" value="0"/>
+    <int name="reqSTR" value="0"/>
+    <int name="reqDEX" value="0"/>
+    <int name="reqINT" value="0"/>
+    <int name="reqLUK" value="0"/>
+    <int name="cash" value="1"/>
   </imgdir>
   <imgdir name="default">
     <canvas name="default" width="52" height="66">
-      <vector name="origin" x="26" y="33" />
+      <vector name="origin" x="26" y="33"/>
       <imgdir name="map">
-        <vector name="brow" x="7" y="3" />
+        <vector name="brow" x="7" y="3"/>
       </imgdir>
-      <string name="z" value="capBelowAccessory" />
+      <string name="z" value="capBelowAccessory"/>
     </canvas>
   </imgdir>
   <imgdir name="backDefault">
     <canvas name="default" width="45" height="66">
-      <vector name="origin" x="22" y="33" />
+      <vector name="origin" x="22" y="33"/>
       <imgdir name="map">
-        <vector name="brow" x="6" y="3" />
+        <vector name="brow" x="6" y="3"/>
       </imgdir>
-      <string name="z" value="backCap" />
+      <string name="z" value="backCap"/>
     </canvas>
   </imgdir>
   <imgdir name="walk1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="11" y="42" />
+          <vector name="hand" x="11" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="44" />
+          <vector name="hand" x="2" y="44"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="11" y="43" />
+          <vector name="hand" x="11" y="43"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="14" y="41" />
+          <vector name="hand" x="14" y="41"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -76,37 +76,37 @@
   <imgdir name="walk2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="38" />
+          <vector name="hand" x="2" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="1" y="38" />
+          <vector name="hand" x="1" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="38" />
+          <vector name="hand" x="2" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="40" />
+          <vector name="hand" x="3" y="40"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -114,28 +114,28 @@
   <imgdir name="stand1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="8" y="44" />
+          <vector name="hand" x="8" y="44"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="9" y="44" />
+          <vector name="hand" x="9" y="44"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="10" y="44" />
+          <vector name="hand" x="10" y="44"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -143,28 +143,28 @@
   <imgdir name="stand2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="1" y="38" />
+          <vector name="hand" x="1" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="38" />
+          <vector name="hand" x="2" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="38" />
+          <vector name="hand" x="3" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -172,28 +172,28 @@
   <imgdir name="alert">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="42" />
+          <vector name="hand" x="7" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="6" y="43" />
+          <vector name="hand" x="6" y="43"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="44" />
+          <vector name="hand" x="7" y="44"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -201,28 +201,28 @@
   <imgdir name="swingO1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="37" />
+          <vector name="hand" x="3" y="37"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-6" y="39" />
+          <vector name="hand" x="-6" y="39"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="27" y="16" />
+          <vector name="hand" x="27" y="16"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -230,28 +230,28 @@
   <imgdir name="swingO2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-19" y="23" />
+          <vector name="hand" x="-19" y="23"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-16" y="38" />
+          <vector name="hand" x="-16" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="25" y="39" />
+          <vector name="hand" x="25" y="39"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -259,28 +259,28 @@
   <imgdir name="swingO3">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="23" y="25" />
+          <vector name="hand" x="23" y="25"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-13" y="35" />
+          <vector name="hand" x="-13" y="35"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-3" y="36" />
+          <vector name="hand" x="-3" y="36"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -288,37 +288,37 @@
   <imgdir name="swingOF">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="26" y="30" />
+          <vector name="hand" x="26" y="30"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="14" y="35" />
+          <vector name="hand" x="14" y="35"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-12" y="30" />
+          <vector name="hand" x="-12" y="30"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="33" y="22" />
+          <vector name="hand" x="33" y="22"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -326,28 +326,28 @@
   <imgdir name="swingT1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="5" y="15" />
+          <vector name="hand" x="5" y="15"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-12" y="26" />
+          <vector name="hand" x="-12" y="26"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-6" y="47" />
+          <vector name="hand" x="-6" y="47"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -355,28 +355,28 @@
   <imgdir name="swingT2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-5" y="25" />
+          <vector name="hand" x="-5" y="25"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-14" y="34" />
+          <vector name="hand" x="-14" y="34"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="17" y="41" />
+          <vector name="hand" x="17" y="41"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -384,28 +384,28 @@
   <imgdir name="swingT3">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="11" y="42" />
+          <vector name="hand" x="11" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="18" y="39" />
+          <vector name="hand" x="18" y="39"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-4" y="21" />
+          <vector name="hand" x="-4" y="21"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -413,37 +413,37 @@
   <imgdir name="swingTF">
     <imgdir name="0">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="1" y="15" />
+          <vector name="hand" x="1" y="15"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="11" y="24" />
+          <vector name="hand" x="11" y="24"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="9" />
+          <vector name="hand" x="2" y="9"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-5" y="46" />
+          <vector name="hand" x="-5" y="46"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -451,28 +451,28 @@
   <imgdir name="swingP1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-1" y="13" />
+          <vector name="hand" x="-1" y="13"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-9" y="18" />
+          <vector name="hand" x="-9" y="18"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-6" y="47" />
+          <vector name="hand" x="-6" y="47"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -480,28 +480,28 @@
   <imgdir name="swingP2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-20" y="25" />
+          <vector name="hand" x="-20" y="25"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-15" y="37" />
+          <vector name="hand" x="-15" y="37"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="18" y="42" />
+          <vector name="hand" x="18" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -509,37 +509,37 @@
   <imgdir name="swingPF">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="19" y="36" />
+          <vector name="hand" x="19" y="36"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="19" y="33" />
+          <vector name="hand" x="19" y="33"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="17" y="10" />
+          <vector name="hand" x="17" y="10"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-11" y="42" />
+          <vector name="hand" x="-11" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -547,19 +547,19 @@
   <imgdir name="stabO1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="13" y="42" />
+          <vector name="hand" x="13" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-17" y="31" />
+          <vector name="hand" x="-17" y="31"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -567,19 +567,19 @@
   <imgdir name="stabO2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="10" y="27" />
+          <vector name="hand" x="10" y="27"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-13" y="29" />
+          <vector name="hand" x="-13" y="29"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -587,28 +587,28 @@
   <imgdir name="stabOF">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="16" y="38" />
+          <vector name="hand" x="16" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-11" y="42" />
+          <vector name="hand" x="-11" y="42"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-10" y="41" />
+          <vector name="hand" x="-10" y="41"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -616,28 +616,28 @@
   <imgdir name="stabT1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="29" y="34" />
+          <vector name="hand" x="29" y="34"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="24" y="32" />
+          <vector name="hand" x="24" y="32"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="32" />
+          <vector name="hand" x="3" y="32"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -645,28 +645,28 @@
   <imgdir name="stabT2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="20" y="38" />
+          <vector name="hand" x="20" y="38"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="27" y="30" />
+          <vector name="hand" x="27" y="30"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="15" y="40" />
+          <vector name="hand" x="15" y="40"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -674,37 +674,37 @@
   <imgdir name="stabTF">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
+        <vector name="origin" x="26" y="33"/>
         <imgdir name="map">
-          <vector name="brow" x="-4" y="7" />
+          <vector name="brow" x="-4" y="7"/>
         </imgdir>
-        <string name="z" value="capBelowAccessory" />
+        <string name="z" value="capBelowAccessory"/>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
+        <vector name="origin" x="26" y="33"/>
         <imgdir name="map">
-          <vector name="brow" x="-4" y="7" />
+          <vector name="brow" x="-4" y="7"/>
         </imgdir>
-        <string name="z" value="capBelowAccessory" />
+        <string name="z" value="capBelowAccessory"/>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="17" y="10" />
+          <vector name="hand" x="17" y="10"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="32" />
+          <vector name="hand" x="3" y="32"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -712,28 +712,28 @@
   <imgdir name="shoot1">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-9" y="28" />
+          <vector name="hand" x="-9" y="28"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="5" y="28" />
+          <vector name="hand" x="5" y="28"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="5" y="28" />
+          <vector name="hand" x="5" y="28"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -741,46 +741,46 @@
   <imgdir name="shoot2">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="35" />
+          <vector name="hand" x="3" y="35"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="35" />
+          <vector name="hand" x="2" y="35"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-13" y="29" />
+          <vector name="hand" x="-13" y="29"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="3">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="0" y="28" />
+          <vector name="hand" x="0" y="28"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="4">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-2" y="27" />
+          <vector name="hand" x="-2" y="27"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -788,28 +788,28 @@
   <imgdir name="shootF">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-7" y="27" />
+          <vector name="hand" x="-7" y="27"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="29" />
+          <vector name="hand" x="7" y="29"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="2">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="29" />
+          <vector name="hand" x="7" y="29"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -817,55 +817,55 @@
   <imgdir name="proneStab">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="26" />
+          <vector name="hand" x="7" y="26"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-9" y="27" />
+          <vector name="hand" x="-9" y="27"/>
         </imgdir>
       </canvas>
     </imgdir>
   </imgdir>
   <imgdir name="prone">
     <imgdir name="0">
-      <uol name="default" value="../../default/default" />
+      <uol name="default" value="../../default/default"/>
     </imgdir>
   </imgdir>
   <imgdir name="heal">
     <imgdir name="0">
-      <uol name="default" value="../../default/default" />
+      <uol name="default" value="../../default/default"/>
     </imgdir>
     <imgdir name="1">
-      <uol name="default" value="../../default/default" />
+      <uol name="default" value="../../default/default"/>
     </imgdir>
     <imgdir name="2">
-      <uol name="default" value="../../default/default" />
+      <uol name="default" value="../../default/default"/>
     </imgdir>
   </imgdir>
   <imgdir name="fly">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="31" />
+          <vector name="hand" x="3" y="31"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="32" />
+          <vector name="hand" x="2" y="32"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -873,10 +873,10 @@
   <imgdir name="jump">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="3" y="31" />
+          <vector name="hand" x="3" y="31"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -884,10 +884,10 @@
   <imgdir name="sit">
     <imgdir name="0">
       <canvas name="0" width="52" height="66">
-        <vector name="origin" x="26" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="26" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="29" />
+          <vector name="hand" x="2" y="29"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -895,19 +895,19 @@
   <imgdir name="ladder">
     <imgdir name="0">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="-1" y="19" />
+          <vector name="hand" x="-1" y="19"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="7" y="18" />
+          <vector name="hand" x="7" y="18"/>
         </imgdir>
       </canvas>
     </imgdir>
@@ -915,19 +915,19 @@
   <imgdir name="rope">
     <imgdir name="0">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="22" />
+          <vector name="hand" x="2" y="22"/>
         </imgdir>
       </canvas>
     </imgdir>
     <imgdir name="1">
       <canvas name="0" width="45" height="66">
-        <vector name="origin" x="22" y="33" />
-        <string name="z" value="cap" />
+        <vector name="origin" x="22" y="33"/>
+        <string name="z" value="cap"/>
         <imgdir name="map">
-          <vector name="hand" x="2" y="27" />
+          <vector name="hand" x="2" y="27"/>
         </imgdir>
       </canvas>
     </imgdir>

@@ -18756,9 +18756,12 @@
 (7160000, 2385015, 1, 1, 0, 10000),
 (3230306, 2022355, 1, 1, 3248, 4000),
 (4230113, 2022354, 1, 1, 3248, 4000),
-(5220003, 4031991, 1, 1, 3248, 15000);
+(5220003, 4031991, 1, 1, 3248, 15000),
+(4230122, 2022354, 1, 1, 0, 4000);
 
   UPDATE IGNORE temp_data SET dropperid=9000002 WHERE dropperid=9000000;
+  UPDATE IGNORE temp_data SET questid=0 WHERE dropperid=2022354;
+  UPDATE IGNORE temp_data SET chance=600000 WHERE itemid=4000058;
 
   #update USE drops that were supposed to be ETC
   INSERT IGNORE INTO temp_data (dropperid, itemid, minimum_quantity, maximum_quantity, questid, chance)
@@ -18797,24 +18800,31 @@
   UPDATE drop_data SET chance=70000 WHERE itemid=4001356;
   UPDATE drop_data SET chance=7000 WHERE itemid=4001006;
 
+  UPDATE drop_data SET chance=600000 WHERE itemid=4000058;
+  UPDATE drop_data SET chance=3000 WHERE itemid=4005004;
+
   #update card rates
-  UPDATE drop_data SET chance=10000 WHERE (itemid >= 2380000 AND itemid < 2388000);
-  UPDATE drop_data SET chance=25000 WHERE (itemid >= 2388000 AND itemid < 2390000);
+  UPDATE drop_data SET chance=8000 WHERE (itemid >= 2380000 AND itemid < 2388000);
+  UPDATE drop_data SET chance=24000 WHERE (itemid >= 2388000 AND itemid < 2390000);
 
   #update quest mob items
+  UPDATE drop_data SET questid=8255 WHERE itemid=4032133;
   UPDATE drop_data SET questid=3232 WHERE itemid=4031098;
   UPDATE drop_data SET questid=3452 WHERE itemid=4001125;
   UPDATE drop_data SET questid=28248 WHERE itemid=4001360;
   UPDATE drop_data SET questid=20707 WHERE itemid=4032130;
   UPDATE drop_data SET questid=28170 WHERE itemid=4001345;
   UPDATE drop_data SET questid=7301 WHERE itemid=4001077;
-  UPDATE drop_data SET questid=3250 WHERE itemid=4031992;
+  UPDATE drop_data SET questid=3248 WHERE itemid=2022354;
+  UPDATE drop_data SET chance=40000, questid=3250 WHERE itemid=4031992;
   UPDATE drop_data SET questid=6191 WHERE itemid=4001107;
 
   UPDATE drop_data SET questid=77777 WHERE itemid=4001358;	#id 77777 for ALL quest items with no v83 quest.
   UPDATE drop_data SET questid=77777 WHERE itemid=4001359;
   UPDATE drop_data SET questid=77777 WHERE itemid=4001342;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
+  UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
+
 
   #update quest reactor items
   UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;
@@ -18825,6 +18835,8 @@
   UPDATE reactordrops SET questid=3239 WHERE itemid=4031092;
   UPDATE reactordrops SET questid=6002 WHERE itemid=4031508;
   UPDATE reactordrops SET questid=9351 WHERE itemid=4031258;
+  UPDATE reactordrops SET questid=3083 WHERE itemid >= 4031274 AND itemid <= 4031278;
+
   INSERT INTO `reactordrops` (`reactorid`, `itemid`, `chance`, `questid`) VALUES
     (9102000, 4031157, 1, 2074),
     (9102001, 4031158, 1, 2074),
