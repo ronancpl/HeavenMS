@@ -1071,6 +1071,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             keymap.remove(Integer.valueOf(key));
         }
     }
+    
+    protected MapleMap getWarpMap(int map) {
+	MapleMap target;
+	if (getEventInstance() == null) {
+            target = client.getChannelServer().getMapFactory().getMap(map);
+	} else {
+            target = getEventInstance().getMapInstance(map);
+	}
+	return target;
+    }
+    
+    public void warp(int map) {
+        changeMap(getWarpMap(map), getWarpMap(map).getPortal(0));
+    }
 
     public void changeMap(int map) {
         changeMap(map, 0);

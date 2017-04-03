@@ -139,11 +139,11 @@ public class AbstractPlayerInteraction {
 	}
 
 	public EventManager getEventManager(String event) {
-		return getClient().getChannelServer().getEventSM().getEventManager(event);
+		return getClient().getEventManager(event);
 	}
 
         public MapleInventory getInventory(MapleInventoryType type) {
-            return getPlayer().getInventory(type);
+                return getPlayer().getInventory(type);
         }
         
 	public boolean hasItem(int itemid){

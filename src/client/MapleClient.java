@@ -60,6 +60,7 @@ import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
+import scripting.event.EventManager;
 import scripting.npc.NPCConversationManager;
 import scripting.npc.NPCScriptManager;
 import scripting.quest.QuestActionManager;
@@ -131,6 +132,10 @@ public class MapleClient {
 	public synchronized IoSession getSession() {
 		return session;
 	}
+        
+        public EventManager getEventManager(String event) {
+                return getChannelServer().getEventSM().getEventManager(event);
+        }
 
 	public MapleCharacter getPlayer() {
 		return player;
