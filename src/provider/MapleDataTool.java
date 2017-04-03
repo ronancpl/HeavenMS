@@ -105,6 +105,7 @@ public class MapleDataTool {
             try {
                 return Integer.parseInt(getString(d));
             } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
                 return def;
             }
         } else {

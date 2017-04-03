@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.text.NumberFormat;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,6 +44,7 @@ import org.xml.sax.SAXException;
 public class XMLDomMapleData implements MapleData {
 	private Node node;
 	private File imageDataDir;
+        private NumberFormat nf;
 
 	public XMLDomMapleData(FileInputStream fis, File imageDataDir) {
 		try {
@@ -57,10 +60,12 @@ public class XMLDomMapleData implements MapleData {
 			throw new RuntimeException(e);
 		}
 		this.imageDataDir = imageDataDir;
+                this.nf = NumberFormat.getInstance(Locale.FRANCE);
 	}
 
 	private XMLDomMapleData(Node node) {
 		this.node = node;
+                this.nf = NumberFormat.getInstance(Locale.FRANCE);
 	}
 
 	@Override
@@ -114,25 +119,35 @@ public class XMLDomMapleData implements MapleData {
 		case DOUBLE:
 		case FLOAT:
 		case INT:
-		case SHORT:
+                case SHORT: {
+                        String value = attributes.getNamedItem("value").getNodeValue();
+                        Number nval;
+                        
+                        try {
+                                nval = nf.parse(value);
+                        }
+                        catch(java.text.ParseException pe) {
+                                pe.printStackTrace();
+                                nval = 0.0f;
+                        }
+                                
+                        switch (type) {
+                        case DOUBLE:
+                                return nval.doubleValue();
+                        case FLOAT:
+                                return nval.floatValue();
+                        case INT:
+                                return nval.intValue();
+                        case SHORT:
+                                return nval.shortValue();
+                        default:
+                                return null;
+                        }
+                }
 		case STRING:
 		case UOL: {
 			String value = attributes.getNamedItem("value").getNodeValue();
-			switch (type) {
-			case DOUBLE:
-				return Double.valueOf(Double.parseDouble(value));
-			case FLOAT:
-				return Float.valueOf(Float.parseFloat(value));
-			case INT:
-				return Integer.valueOf(Integer.parseInt(value));
-			case SHORT:
-				return Short.valueOf(Short.parseShort(value));
-			case STRING:
-			case UOL:
-				return value;
-			default:
-				break;
-			}
+                        return value;
 		}
 		case VECTOR: {
 			String x = attributes.getNamedItem("x").getNodeValue();

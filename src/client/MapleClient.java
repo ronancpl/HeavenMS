@@ -401,6 +401,7 @@ public class MapleClient {
 				ps.executeUpdate();
 			}
 		} catch (SQLException e) {
+                    e.printStackTrace();
 		}
 	}
 
@@ -429,6 +430,7 @@ public class MapleClient {
 				ps.executeUpdate();
 			}
 		} catch (SQLException e) {
+                    e.printStackTrace();
 		}
 	}
 
@@ -534,6 +536,7 @@ public class MapleClient {
 			lTempban.setTimeInMillis(rs.getTimestamp("tempban").getTime());
 			return lTempban;
 		} catch (SQLException e) {
+                    e.printStackTrace();
 		} finally {
 			try {
 				if (ps != null) {
@@ -543,6 +546,7 @@ public class MapleClient {
 					rs.close();
 				}
 			} catch (SQLException e) {
+                            e.printStackTrace();
 			}
 		}
 		return null;//why oh why!?!
@@ -590,6 +594,7 @@ public class MapleClient {
 						ps.close();
 					}
 				} catch (SQLException e) {
+                                    e.printStackTrace();
 				}
 			}
 		} else {
@@ -623,6 +628,7 @@ public class MapleClient {
 					ps.close();
 				}
 			} catch (SQLException ex) {
+                            ex.printStackTrace();
 			}
 		}
 	}
@@ -724,6 +730,7 @@ public class MapleClient {
 				try {
 					merchant.saveItems(false);
 				} catch (SQLException ex) {
+                                        ex.printStackTrace();
 					System.out.println("Error while saving Hired Merchant items.");
 				}
 			}
@@ -931,6 +938,7 @@ public class MapleClient {
 						try {
 							Server.getInstance().deleteGuildCharacter(new MapleGuildCharacter(cid, 0, rs.getString("name"), (byte) -1, (byte) -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank")));
 						} catch (Exception re) {
+                                                        re.printStackTrace();
 							return false;
 						}
 					}
@@ -994,6 +1002,7 @@ public class MapleClient {
 						}
 					}
 				} catch (NullPointerException e) {
+                                    e.printStackTrace();
 				}
 			}
 		}, 15000);
@@ -1061,6 +1070,7 @@ public class MapleClient {
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
+                    e.printStackTrace();
 		}
 		return disconnectForBeingAFaggot;
 	}
@@ -1079,6 +1089,7 @@ public class MapleClient {
 			rs.close();
 
 		} catch (SQLException e) {
+                    e.printStackTrace();
 		}
 		votePoints = points;
 		return votePoints;
@@ -1152,6 +1163,7 @@ public class MapleClient {
 					ps.executeUpdate();
 				}
 			} catch (SQLException e) {
+                            e.printStackTrace();
 			}
 			return true;
 		}
@@ -1180,6 +1192,7 @@ public class MapleClient {
 					rs.close();
 				}
 			} catch (SQLException e) {
+                            e.printStackTrace();
 			}
 		}
 		return 0;

@@ -40,6 +40,7 @@ public class TimerManager implements TimerManagerMBean {
         try {
             mBeanServer.registerMBean(this, new ObjectName("server:type=TimerManger"));
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

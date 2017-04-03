@@ -42,7 +42,7 @@ public class MobBookUpdate {
 
     static Connection con = null;
     static PrintWriter printWriter = null;
-    static FileReader fileReader = null;
+    static InputStreamReader fileReader = null;
     static BufferedReader bufferedReader = null;
     static byte status = 0;
     static int mobId = -1;
@@ -158,7 +158,7 @@ public class MobBookUpdate {
             con = DriverManager.getConnection(host, username, password);
 
             printWriter = new PrintWriter(newFile, "UTF-8");
-            fileReader = new FileReader(fileName);
+            fileReader = new InputStreamReader(new FileInputStream(fileName), "UTF-8");
             bufferedReader = new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {

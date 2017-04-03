@@ -49,6 +49,7 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
         } catch (UnknownHostException | NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 }

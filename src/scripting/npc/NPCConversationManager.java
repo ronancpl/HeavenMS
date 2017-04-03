@@ -191,6 +191,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		try {
 			MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
 		} catch (NullPointerException ex) {
+                        ex.printStackTrace();
 		}
 	}
 
@@ -198,6 +199,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		try {
 			MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
 		} catch (NullPointerException ex) {
+                        ex.printStackTrace();
 		}
 	}
 
@@ -205,6 +207,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		try {
 			MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
 		} catch (NullPointerException ex) {
+                        ex.printStackTrace();
 		}
 	}
 
@@ -212,6 +215,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		try {
 			MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
 		} catch (NullPointerException ex) {
+                        ex.printStackTrace();
 		}
 	}
 
@@ -326,8 +330,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 				Skill skill = SkillFactory.getSkill(Integer.parseInt(skill_.getName()));
 				getPlayer().changeSkillLevel(skill, (byte) 0, skill.getMaxLevel(), -1);
 			} catch (NumberFormatException nfe) {
+                                nfe.printStackTrace();
 				break;
 			} catch (NullPointerException npe) {
+                                npe.printStackTrace();
 				continue;
 			}
 		}
@@ -368,6 +374,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 					ps.close();
 				}
 			} catch (SQLException ex) {
+                                ex.printStackTrace();
 			}
 		}
 	}
@@ -425,6 +432,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			Server.getInstance().addAlliance(id, alliance);
 			Server.getInstance().allianceMessage(id, MaplePacketCreator.makeNewAlliance(alliance, chr1.getClient()), -1, -1);
 		} catch (Exception e) {
+                        e.printStackTrace();
 			return null;
 		}
 		return alliance;
@@ -440,7 +448,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 				return true;
 			}
 		} catch (SQLException e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
 			return false;
 		}
 		if (getPlayer().getMerchantMeso() == 0) {

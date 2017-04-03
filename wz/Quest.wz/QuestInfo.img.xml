@@ -10314,13 +10314,11 @@ Able to proceed to &apos;For the peace of Victoria Island...&apos; as next quest
     <int name="autoStart" value="1"/>
   </imgdir>
   <imgdir name="28344">
-    <string name="name" value="Hunter&apos;s Luck - Week 6"/>
+    <string name="name" value="Hunter&apos;s Profission"/>
     <int name="area" value="50"/>
-    <int name="autoStart" value="1"/>
-    <int name="autoPreComplete" value="1"/>
-    <string name="0" value="The time between February and March is what many call the prime hunting season! Receive some hunting pointers from Scadur and become the best hunter on the block!#b\n\n&lt;Event Period&gt;\nMarch 22, 2010 - March 28, 2010\n\n&lt;How to Join the Event&gt;\n1. Receive the 2x EXP item that Scadur hands out once a week.\n2. Use the item when in need of an extra boost of Luck.\n3. Hunt away!\n\n&lt;Notes&gt;\n1. 2x EXP item will expire at midnight on Sunday.\n2. New 2x item will become available the following Monday."/>
-    <string name="1" value="The time between February and March is what many call the prime hunting season! Receive some hunting pointers from Scadur and become the best hunter on the block!#b\n\n&lt;Event Period&gt;\nMarch 22, 2010 - March 28, 2010\n\n&lt;How to Join the Event&gt;\n1. Receive the 2x EXP item that Scadur hands out once a week.\n2. Use the item when in need of an extra boost of Luck.\n3. Hunt away!\n\n&lt;Notes&gt;\n1. 2x EXP item will expire at midnight on Sunday.\n2. New 2x item will become available the following Monday."/>
-    <string name="2" value="The time between February and March is what many call the prime hunting season! Receive some hunting pointers from Scadur and become the best hunter on the block!#b\n\n&lt;Event Period&gt;\nMarch 22, 2010 - March 28, 2010\n\n&lt;How to Join the Event&gt;\n1. Receive the 2x EXP item that Scadur hands out once a week.\n2. Use the item when in need of an extra boost of Luck.\n3. Hunt away!\n\n&lt;Notes&gt;\n1. 2x EXP item will expire at midnight on Sunday.\n2. New 2x item will become available the following Monday."/>
+    <string name="0" value="Scadur seems up to something big this time. I should move to El Nath and see what he is looking for..."/>
+    <string name="1" value="So Scadur is going to set-up a &quot;Leather Festival&quot; on El Nath... I&apos;m out to find and collect all these items for him. Hope the reward of this mission is really worth it...\n\n#i4000021# #t4000021# #c4000021# / #r50#k\n#i4000264# #t4000264# #c4000264# / #r10#k\n#i4000281# #t4000281# #c4000281# / #r10#k\n#i4000295# #t4000295# #c4000295# / #r10#k\n#i4000440# #t4000440# #c4000440# / #r10#k\n#i4031871# #t4031871# #c4031871# / #r10#k\n#i4032475# #t4032475# #c4032475# / #r5#k"/>
+    <string name="2" value="I helped Scadur in his &quot;Leather Festival&quot;, held on El Nath."/>
   </imgdir>
   <imgdir name="29000">
     <string name="name" value="Title Challenge - PQ Mania"/>

@@ -57,6 +57,7 @@ public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAcce
         try {
             bs.seek(offset);
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("Seek failed " + e);
         }
     }
@@ -72,6 +73,7 @@ public class GenericSeekableLittleEndianAccessor extends GenericLittleEndianAcce
         try {
             return bs.getPosition();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("getPosition failed" + e);
             return -1;
         }

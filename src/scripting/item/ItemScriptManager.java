@@ -91,6 +91,7 @@ public class ItemScriptManager {
                 try {
                     fr.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }

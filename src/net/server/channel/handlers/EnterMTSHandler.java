@@ -117,6 +117,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         c.announce(MaplePacketCreator.sendMTS(items, 1, 0, 0, pages));
         c.announce(MaplePacketCreator.transferInventory(getTransfer(chr.getId())));
@@ -163,6 +164,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return items;
     }
@@ -208,6 +210,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return items;
     }

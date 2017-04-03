@@ -1134,6 +1134,7 @@ public class MapleItemInformationProvider {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (rs != null) {
@@ -1143,6 +1144,7 @@ public class MapleItemInformationProvider {
                     ps.close();
                 }
             } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -1293,6 +1295,7 @@ public class MapleItemInformationProvider {
          }
          }
          } catch (SQLException ex) {
+            ex.printStackTrace();
          }*/
         int tdex = chr.getDex(), tstr = chr.getStr(), tint = chr.getInt(), tluk = chr.getLuk(), fame = chr.getFame();
         if (chr.getJob() != MapleJob.SUPERGM || chr.getJob() != MapleJob.GM) {
@@ -1374,6 +1377,7 @@ public class MapleItemInformationProvider {
          }
          }
          } catch (SQLException ex) {
+            ex.printStackTrace();
          }*/
        
         int reqLevel = getEquipStats(equip.getItemId()).get("reqLevel");

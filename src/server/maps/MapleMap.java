@@ -733,6 +733,39 @@ public class MapleMap {
     public List<MapleMapObject> getAllPlayer() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER));
     }
+    
+    
+    public List<MapleCharacter> getAllPlayers() {
+        List<MapleCharacter> character = new LinkedList<>();
+        chrRLock.lock();
+        try {
+            for (MapleCharacter a : characters) {
+                character.add(a);
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        return character;
+    }
+    
+    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chr) {
+        List<MapleCharacter> character = new LinkedList<>();
+        chrRLock.lock();
+        try {
+            for (MapleCharacter a : characters) {
+                if (chr.contains(a.getClient().getPlayer())) {
+                    if (box.contains(a.getPosition())) {
+                        character.add(a);
+                    }
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        return character;
+    }
 
     public void destroyReactor(int oid) {
         final MapleReactor reactor = getReactorByOid(oid);
@@ -1129,23 +1162,6 @@ public class MapleMap {
             }
         });
 
-    }
-
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chr) {
-        List<MapleCharacter> character = new LinkedList<>();
-        chrRLock.lock();
-        try {
-            for (MapleCharacter a : characters) {
-                if (chr.contains(a.getClient().getPlayer())) {
-                    if (box.contains(a.getPosition())) {
-                        character.add(a);
-                    }
-                }
-            }
-            return character;
-        } finally {
-            chrRLock.unlock();
-        }
     }
 
     public void spawnSummon(final MapleSummon summon) {

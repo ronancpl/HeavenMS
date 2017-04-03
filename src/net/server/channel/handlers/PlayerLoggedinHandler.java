@@ -126,6 +126,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     pss.executeUpdate();
                     pss.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 c.announce(MaplePacketCreator.sendDueyMSG((byte) 0x1B));
             }

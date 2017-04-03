@@ -78,9 +78,11 @@ public class Main {
                 System.out.println("Finished crawling section.");
             }
         } catch (MalformedURLException mue) {
+            mue.printStackTrace();
             System.out.println("Error parsing URL: " + url);
             return;
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             System.out.println("Error reading from URL: " + ioe.getLocalizedMessage());
             return;
         }
@@ -277,6 +279,7 @@ public class Main {
             pw.close();
             bw.close();
         } catch (IOException ioe) {
+            ioe.printStackTrace();
             System.out.println("Error writing to file: " + ioe.getLocalizedMessage());
         }
     }

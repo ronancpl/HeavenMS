@@ -216,7 +216,7 @@ public class AbstractPlayerInteraction {
 		try {
 			return getQuestStatus(quest) == MapleQuestStatus.Status.COMPLETED;
 		} catch (NullPointerException e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
 			return false;
 		}
 	}
@@ -229,7 +229,7 @@ public class AbstractPlayerInteraction {
 		try {
 			return getQuestStatus(quest) == MapleQuestStatus.Status.STARTED;
 		} catch (NullPointerException e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
 			return false;
 		}
 	}
@@ -461,7 +461,7 @@ public class AbstractPlayerInteraction {
 		try {
 			return Server.getInstance().getGuild(getPlayer().getGuildId(), getPlayer().getWorld(), null);
 		} catch (Exception e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
 		}
 		return null;
 	}

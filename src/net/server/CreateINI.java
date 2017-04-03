@@ -73,12 +73,14 @@ public class CreateINI {
             out = new FileOutputStream("moople.ini", false);
             out.write(sb.toString().getBytes());
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
 
@@ -113,12 +115,14 @@ public class CreateINI {
             }
             out.write(sb.toString().getBytes());
         } catch (Exception ex) {
+            ex.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
         System.out.println("\r\nMake sure that ServerConstants in modified too, and clean+compiled before you start the server.");

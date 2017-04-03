@@ -175,6 +175,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
                                 ps.executeUpdate();
                             }
                         } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 } else {
@@ -186,6 +187,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
             try {
                 this.saveItems(false);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -198,6 +200,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
             saveItems(true);
             items.clear();
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         //Server.getInstance().getChannel(world, channel).removeHiredMerchant(ownerId);
         map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(getOwnerId()));
@@ -247,10 +250,12 @@ public class HiredMerchant extends AbstractMapleMapObject {
             try {
                 this.saveItems(timeout);
             } catch (Exception e) {
+                e.printStackTrace();
             }
             items.clear();
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
         schedule.cancel(false);
     }
@@ -284,6 +289,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
         try {
             this.saveItems(false);
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -292,6 +298,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
         try {
             this.saveItems(false);
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
     

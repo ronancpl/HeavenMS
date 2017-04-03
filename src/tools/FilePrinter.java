@@ -60,12 +60,14 @@ public class FilePrinter {
             out.write(getString(t).getBytes());
             out.write("\n---------------------------------\r\n".getBytes());
         } catch (IOException ess) {
+            ess.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ignore) {
+                ignore.printStackTrace();
             }
         }
     }
@@ -85,12 +87,14 @@ public class FilePrinter {
             out.write(getString(t).getBytes());
             out.write("\n---------------------------------\r\n".getBytes());
         } catch (IOException ess) {
+            ess.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ignore) {
+                ignore.printStackTrace();
             }
         }
     }
@@ -109,12 +113,14 @@ public class FilePrinter {
             out.write(s.getBytes());
             //out.write("\n---------------------------------\n".getBytes());
         } catch (IOException ess) {
+            ess.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ignore) {
+                ignore.printStackTrace();
             }
         }
     }
@@ -140,12 +146,14 @@ public class FilePrinter {
                 out.write("---------------------------------\r\n".getBytes());
             }
         } catch (IOException ess) {
+            ess.printStackTrace();
         } finally {
             try {
                 if (out != null) {
                     out.close();
                 }
             } catch (IOException ignore) {
+                ignore.printStackTrace();
             }
         }
     }
@@ -168,6 +176,7 @@ public class FilePrinter {
                     sw.close();
                 }
             } catch (IOException ignore) {
+                ignore.printStackTrace();
             }
         }
         return retValue;

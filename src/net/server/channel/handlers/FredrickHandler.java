@@ -115,6 +115,7 @@ public class FredrickHandler extends AbstractMaplePacketHandler {
             }
             return true;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
 

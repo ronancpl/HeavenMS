@@ -202,6 +202,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         ps.close();
                         MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
                     } catch (SQLException e) {
+                        e.printStackTrace();
                     }
                     c.getPlayer().gainMeso(-5000, false);
                     c.announce(MaplePacketCreator.MTSConfirmSell());
@@ -329,6 +330,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     rs.close();
                     ps.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     System.out.println("MTS Transfer error: " + e);
                 }
             } else if (op == 9) { //add to cart
@@ -441,6 +443,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     rs.close();
                     ps.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     c.announce(MaplePacketCreator.MTSFailBuy());
                 }
             } else if (op == 17) { //buy from cart
@@ -498,6 +501,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     rs.close();
                     ps.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                     c.announce(MaplePacketCreator.MTSFailBuy());
                 }
             } else {
@@ -551,6 +555,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return items;
     }
@@ -616,6 +621,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return MaplePacketCreator.sendMTS(items, 4, 0, 0, pages);
     }
@@ -663,6 +669,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return items;
     }
@@ -735,6 +742,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return MaplePacketCreator.sendMTS(items, tab, type, page, pages); // resniff
     }
@@ -828,6 +836,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 ps.close();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return MaplePacketCreator.sendMTS(items, tab, type, page, pages);
     }

@@ -21,8 +21,8 @@ function action(mode, type, selection) {
 
     var em = cm.getEventManager("Cabin");
     if (em.getProperty("entry") == "true") {
-        cm.gainItem(4031331, -1);
         cm.warp(200000132);
+        cm.gainItem(4031331, -1);
     } else {
         cm.sendOk("The flight has not arrived yet. Come back soon.");
     }

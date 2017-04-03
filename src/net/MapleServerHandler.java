@@ -61,6 +61,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
     	System.out.println("disconnect by exception");
+        cause.printStackTrace();
         
         if (cause instanceof IOException || cause instanceof ClassCastException) {
             return;

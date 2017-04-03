@@ -84,6 +84,7 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 ps.executeUpdate();
                 ps.close();
                 } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
                 c.getPlayer().dropMessage(1, "Your engagement has been broken up.");
                 break;

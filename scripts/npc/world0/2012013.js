@@ -20,8 +20,8 @@ function action(mode, type, selection) {
     } 
     var em = cm.getEventManager("Trains");
     if (em.getProperty("entry") == "true") {
-        cm.gainItem(4031074, -1);
         cm.warp(200000122);
+        cm.gainItem(4031074, -1);
         cm.dispose();
     }
     else{

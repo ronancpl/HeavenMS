@@ -63,6 +63,7 @@ public class PlayerNPCs extends AbstractMapleMapObject {
             rs2.close();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

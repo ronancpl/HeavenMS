@@ -59,6 +59,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
                     ps.executeUpdate();
                     ps.close();
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
             switch (type) {
@@ -98,6 +99,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return item;
     }
@@ -113,6 +115,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
             rs.close();
             ps.close();
         } catch (SQLException ex) {
+            ex.printStackTrace();
         }
         return validcode;
     }

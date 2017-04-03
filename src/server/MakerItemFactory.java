@@ -71,6 +71,7 @@ public class MakerItemFactory {
                 ps.close();
                 createCache.put(toCreate, ret);
             } catch (SQLException sqle) {
+                sqle.printStackTrace();
             }
         }
         return createCache.get(toCreate);

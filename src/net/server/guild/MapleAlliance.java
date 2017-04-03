@@ -79,6 +79,7 @@ public class MapleAlliance {
             ps.close();
             rs.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return alliance;
     }
@@ -107,6 +108,7 @@ public class MapleAlliance {
             ps.executeQuery();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -146,6 +148,7 @@ public class MapleAlliance {
                 ps.close();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
         return ret;
     }

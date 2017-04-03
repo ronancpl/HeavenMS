@@ -357,6 +357,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             try {
                 player.sendNote(sendTo, msg, (byte) 0);
             } catch (SQLException e) {
+                e.printStackTrace();
             }
             remove(c, itemId);
         } else if (itemType == 510) {

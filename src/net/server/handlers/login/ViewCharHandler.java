@@ -76,6 +76,7 @@ public final class ViewCharHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.showAllCharacterInfo(w, chrsinworld));
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

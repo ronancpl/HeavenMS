@@ -20,8 +20,8 @@ function action(mode, type, selection) {
     }
     var em = cm.getEventManager("Cabin");
     if (em.getProperty("entry") == "true") {
-        cm.gainItem(4031045, -1);
         cm.warp(240000111);
+        cm.gainItem(4031045, -1);
     } else {
         cm.sendOk("The flight has not arrived yet. Come back soon.");
     }

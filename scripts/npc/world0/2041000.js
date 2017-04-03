@@ -21,8 +21,8 @@ function action(mode, type, selection) {
     
     var em = cm.getEventManager("Trains");
     if (em.getProperty("entry") == "true") {
-        cm.gainItem(4031045, -1);
         cm.warp(220000111);
+        cm.gainItem(4031045, -1);
         cm.dispose();
     }
     else {

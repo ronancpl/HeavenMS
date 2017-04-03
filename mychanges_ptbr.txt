@@ -110,5 +110,10 @@ Não é possível alterar QuestInfo.img.xml do lado do cliente...
 Elaboração do IMG XML Parser, atuando complementarmente com o HaRepacker v4.2.2.
 Correção de scripts de NPCs e quests.
 
-28 - 30 Março 2017,
+28 - 31 Março 2017,
 Revamp dos WZs e XMLs referentes ao cliente MapleStory e ao servidor MapleSolaxia.
+Inclusão de printStackTraces nos blocos catches do sistema.
+
+01 - 02 Abril 2017,
+Correção de bug que impedia carregamento do mapa Singapore: Spooky World.
+Adição dos cards de mob restantes no drop_data do BD.

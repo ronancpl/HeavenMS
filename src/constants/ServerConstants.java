@@ -82,6 +82,7 @@ public class ServerConstants {
             ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Failed to load configuration.ini.");
             System.exit(0);
         }

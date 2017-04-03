@@ -103,6 +103,7 @@ public class MapleGuild {
             ps.close();
             rs.close();
         } catch (SQLException se) {
+            se.printStackTrace();
             System.out.println("unable to read guild information from sql" + se);
         }
     }
@@ -171,6 +172,7 @@ public class MapleGuild {
                 this.broadcast(MaplePacketCreator.guildDisband(this.id));
             }
         } catch (SQLException se) {
+            se.printStackTrace();
         }
     }
 
@@ -267,6 +269,7 @@ public class MapleGuild {
                     }
                 }
             } catch (Exception re) {
+                re.printStackTrace();
                 System.out.println("Failed to contact channel(s) for broadcast.");//fu?
             }
         }
@@ -337,6 +340,7 @@ public class MapleGuild {
             ps.close();
             return guildid;
         } catch (Exception e) {
+            e.printStackTrace();
             return 0;
         }
     }
@@ -389,6 +393,7 @@ public class MapleGuild {
                                     ps.executeUpdate();
                                 }
                             } catch (SQLException e) {
+                                e.printStackTrace();
                                 System.out.println("expelMember - MapleGuild " + e);
                             }
                             Server.getInstance().getWorld(mgc.getWorld()).setOfflineGuildStatus((short) 0, (byte) 5, cid);
@@ -531,6 +536,7 @@ public class MapleGuild {
             }
             rs.close();
         } catch (SQLException e) {
+            e.printStackTrace();
             System.out.println("failed to display guild ranks. " + e);
         }
     }
@@ -548,6 +554,7 @@ public class MapleGuild {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

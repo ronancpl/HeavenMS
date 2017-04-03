@@ -79,7 +79,7 @@ public class MapleMonsterInformationProvider {
 			rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			System.err.println("Error retrieving drop" + e);
+                        System.err.println("Error retrieving drop" + e);
 		} finally {
 			try {
 				if (ps != null) { 
@@ -89,6 +89,7 @@ public class MapleMonsterInformationProvider {
 					rs.close();
 				}
 			} catch (SQLException ignore) {
+                                ignore.printStackTrace();
 			}
 		}
 	}
@@ -116,6 +117,7 @@ public class MapleMonsterInformationProvider {
 								rs.getShort("questid")));
 			}
 		} catch (SQLException e) {
+                    e.printStackTrace();
 			return ret;
 		} finally {
 			try {
@@ -126,6 +128,7 @@ public class MapleMonsterInformationProvider {
 					rs.close();
 				}
 			} catch (SQLException ignore) {
+                                ignore.printStackTrace();
 				return ret;
 			}
 		}
@@ -159,6 +162,8 @@ public class MapleMonsterInformationProvider {
 			return MapleLifeFactory.getMonster(id).getName();
 		} catch (Exception e)
 		{
+                        e.printStackTrace();
+                        System.err.println("Nonexistant mob id " + id);
 			return null; //nonexistant mob
 		}
 	}

@@ -238,6 +238,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         try {
                             chr.sendNote(partner.getName(), text, (byte) 1);
                         } catch (SQLException ex) {
+                            ex.printStackTrace();
                         }
                         partner.showNote();
                     }   

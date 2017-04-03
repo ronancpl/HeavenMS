@@ -47,6 +47,7 @@ public final class HiredMerchantRequest extends AbstractMaplePacketHandler {
                         chr.announce(MaplePacketCreator.retrieveFirstMessage());
                     }
                 } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             } else {
                 chr.dropMessage(1, "You already have a store open.");

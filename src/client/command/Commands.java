@@ -417,6 +417,7 @@ public class Commands {
 							float chance = 1000000 / drop.chance / player.getDropRate();
 							output += "- " + name + " (1/" + (int) chance + ")\r\n";
 						} catch (Exception ex){
+                                                        ex.printStackTrace();
 							continue;
 						}
 					}
@@ -629,6 +630,7 @@ public class Commands {
 						rs.close();
 					}
 				} catch (SQLException e) {
+                                        e.printStackTrace();
 				}
 			}
 			break;
@@ -765,6 +767,7 @@ public class Commands {
 				}
 				player.changeMap(target, target.getPortal(0));
 			} catch (Exception ex) {
+                                ex.printStackTrace();
 				player.yellowMessage("Map ID " + sub[1] + " is invalid.");
 				return false;
 			}
@@ -859,6 +862,7 @@ public class Commands {
 							victim.getClient().disconnect(true, false);
 							player.getMap().removePlayer(victim);
 						} catch (Exception e) {
+                                                        e.printStackTrace();
 						}
 					} else {
 						return true;
@@ -961,6 +965,7 @@ public class Commands {
 					}
 				}
 			} catch (Exception e) {
+                                e.printStackTrace();
 			}
 		} else if (sub[0].equals("item") || sub[0].equals("drop")) {
 			int itemId = Integer.parseInt(sub[1]);
@@ -968,6 +973,7 @@ public class Commands {
 			try {
 				quantity = Short.parseShort(sub[2]);
 			} catch (Exception e) {
+                                e.printStackTrace();
 			}
 			if (sub[0].equals("item")) {
 				int petid = -1;
@@ -1077,8 +1083,10 @@ public class Commands {
 						player.changeSkillLevel(skill, (byte) skill.getMaxLevel(), skill.getMaxLevel(), -1);
 					}
 				} catch (NumberFormatException nfe) {
+                                        nfe.printStackTrace();
 					break;
 				} catch (NullPointerException npe) {
+                                        npe.printStackTrace();
 					continue;
 				}
 			}
@@ -1099,6 +1107,7 @@ public class Commands {
 				is.close();
 				packet = packetProps.getProperty("pe");
 			} catch (IOException ex) {
+                                ex.printStackTrace();
 				player.yellowMessage("Failed to load pe.txt");
 				return false;
 			}
@@ -1223,6 +1232,7 @@ public class Commands {
 					p.executeUpdate();
 				}
 			} catch (Exception e) {
+                                e.printStackTrace();
 				player.message("Failed to unban " + sub[1]);
 				return true;
 			}
@@ -1249,6 +1259,7 @@ public class Commands {
 						ps.close();
 					}
 				} catch (SQLException ex) {
+                                        ex.printStackTrace();
 					c.getPlayer().message("Error occured while banning IP address");
 					c.getPlayer().message(target.getName() + "'s IP was not banned: " + ip);
 				}
@@ -1317,6 +1328,7 @@ public class Commands {
 					player.saveToDB();//To set the new world :O (true because else 2 player instances are created, one in both worlds)
 					c.announce(MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1])));
 				} catch (UnknownHostException | NumberFormatException ex) {
+                                        ex.printStackTrace();
 					player.message("Error when trying to change worlds, are you sure the world you are trying to warp to has the same amount of channels?");
 				}
 

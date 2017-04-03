@@ -146,6 +146,7 @@ public class MapleMapFactory {
                         }
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 for (MapleData life : mapData.getChildByPath("life")) {
                     String id = MapleDataTool.getString(life.getChildByPath("id"));
@@ -180,6 +181,9 @@ public class MapleMapFactory {
                     map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(omapid)), ""));
                     map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(omapid)), ""));
                 } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Not found mapid " + omapid);
+                    
                     map.setMapName("");
                     map.setStreetName("");
                 }
@@ -270,7 +274,7 @@ public class MapleMapFactory {
             builder.append("victoria");
         } else if (mapid >= 200000000 && mapid < 300000000) {
             builder.append("ossyria");
-        } else if (mapid >= 540000000 && mapid < 551030200) {
+        } else if (mapid >= 540000000 && mapid < 560000000) {
             builder.append("singapore");
         } else if (mapid >= 600000000 && mapid < 620000000) {
             builder.append("MasteriaGL");

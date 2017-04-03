@@ -68,6 +68,7 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
                     rs.close();
                 }
             } catch (SQLException ex) {
+                ex.printStackTrace();
             }
         }
         return false;

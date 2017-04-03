@@ -66,6 +66,7 @@ public class MapScriptManager {
             try {
                 scripts.get(scriptName).invokeFunction("start", new MapScriptMethods(c));
             } catch (final ScriptException | NoSuchMethodException e) {
+                e.printStackTrace();
             }
             return;
         }
@@ -93,6 +94,7 @@ public class MapScriptManager {
                 try {
                     fr.close();
                 } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         }

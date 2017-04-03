@@ -130,6 +130,7 @@ public class Server implements Runnable {
         try {
             p.load(new FileInputStream("world.ini"));
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("Please start create_server.bat");
             System.exit(0);
         }
@@ -200,8 +201,8 @@ public class Server implements Runnable {
                 System.out.println("Finished loading world " + i + "\r\n");
             }
         } catch (Exception e) {
-            System.out.println("Error in moople.ini, start CreateINI.bat to re-make the file.");
             e.printStackTrace();//For those who get errors
+            System.out.println("Error in moople.ini, start CreateINI.bat to re-make the file.");
             System.exit(0);
         }
 
@@ -574,6 +575,7 @@ public class Server implements Runnable {
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException ie) {
+                            ie.printStackTrace();
                             System.err.println("FUCK MY LIFE");
                         }
                     }

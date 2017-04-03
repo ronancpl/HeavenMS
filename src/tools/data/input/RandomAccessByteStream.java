@@ -76,6 +76,7 @@ public class RandomAccessByteStream implements SeekableInputStreamBytestream {
         try {
             return raf.length() - raf.getFilePointer();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("ERROR " + e);
             return 0;
         }

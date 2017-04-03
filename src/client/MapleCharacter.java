@@ -1145,8 +1145,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if (this.getTrade() != null) {
-			MapleTrade.cancelTrade(this);
-		}
+            MapleTrade.cancelTrade(this);
+	}
         client.announce(warpPacket);
         map.removePlayer(MapleCharacter.this);
         if (client.getChannelServer().getPlayerStorage().getCharacterById(getId()) != null) {
@@ -1191,7 +1191,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     ps.execute();
                 }
             } catch (SQLException ex) {
-                System.out.print("Error deleting skill: " + ex);
+                ex.printStackTrace();
             }
         }
     }
@@ -1293,7 +1293,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.execute();
             }
         } catch (SQLException ex) {
-            System.out.print("Error deleting guild: " + ex);
+            ex.printStackTrace();
         }
     }
 
@@ -1383,6 +1383,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         try {
             Server.getInstance().disbandGuild(guildid);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -1955,6 +1956,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         try {
             return Server.getInstance().getGuild(getGuildId(), getWorld(), null);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -2003,6 +2005,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             return id;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return -1;
     }
@@ -2023,6 +2026,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             return name;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -2625,6 +2629,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -4239,6 +4244,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 con.setAutoCommit(true);
                 con.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -4450,6 +4456,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return;
         }
         merchantmeso += add;
@@ -4463,6 +4470,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             return;
         }
         merchantmeso = set;
@@ -4835,6 +4843,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -5159,6 +5168,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.executeUpdate();
             }
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

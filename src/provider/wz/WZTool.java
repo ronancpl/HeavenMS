@@ -56,11 +56,14 @@ public class WZTool {
         try {
             cipher = Cipher.getInstance("AES");
         } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
         }
         try {
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
         } catch (InvalidKeyException e) {
+            e.printStackTrace();
         }
         encKey = new byte[0xFFFF];
         for (int i = 0; i < (0xFFFF / 16); i++) {

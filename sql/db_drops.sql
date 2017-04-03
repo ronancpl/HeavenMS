@@ -18757,7 +18757,30 @@
 (3230306, 2022355, 1, 1, 3248, 4000),
 (4230113, 2022354, 1, 1, 3248, 4000),
 (5220003, 4031991, 1, 1, 3248, 15000),
-(4230122, 2022354, 1, 1, 0, 4000);
+(4230122, 2022354, 1, 1, 0, 4000),
+(3210100, 2382003, 1, 1, 0, 8000),
+(3100101, 2382008, 1, 1, 0, 8000),
+(3110301, 2382010, 1, 1, 0, 8000),
+(4230600, 2382046, 1, 1, 0, 8000),
+(4230126, 2383005, 1, 1, 0, 8000),
+(5120000, 2383020, 1, 1, 0, 8000),
+(6230401, 2384005, 1, 1, 0, 8000),
+(7110301, 2384031, 1, 1, 0, 8000),
+(7110300, 2384034, 1, 1, 0, 8000),
+(8220000, 2388015, 1, 1, 0, 8000),
+(8810018, 2388024, 1, 1, 0, 8000),
+(9500320, 2388027, 1, 1, 0, 8000),
+(8220002, 2388032, 1, 1, 0, 8000),
+(9300182, 2388039, 1, 1, 0, 8000);
+
+
+
+
+
+
+
+
+# (dropperid, itemid, minqty, maxqty, questid, chance)
 
   UPDATE IGNORE temp_data SET dropperid=9000002 WHERE dropperid=9000000;
   UPDATE IGNORE temp_data SET questid=0 WHERE dropperid=2022354;
@@ -18818,8 +18841,9 @@
   UPDATE drop_data SET questid=3248 WHERE itemid=2022354;
   UPDATE drop_data SET chance=40000, questid=3250 WHERE itemid=4031992;
   UPDATE drop_data SET questid=6191 WHERE itemid=4001107;
+  UPDATE drop_data SET questid=28344 WHERE itemid=4032475;
 
-  UPDATE drop_data SET questid=77777 WHERE itemid=4001358;	#id 77777 for ALL quest items with no v83 quest.
+  UPDATE drop_data SET questid=77777 WHERE itemid=4001358;	#id 77777 for ALL "quest items" with no v83 quest.
   UPDATE drop_data SET questid=77777 WHERE itemid=4001359;
   UPDATE drop_data SET questid=77777 WHERE itemid=4001342;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;

@@ -154,6 +154,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                         c.announce(MaplePacketCreator.serverNotice(1, "A character called \"" + addName + "\" does not exist"));
                     }
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             } else {
                 ble.changeGroup(group);
@@ -185,6 +186,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                         notifyRemoteChannel(c, channel, otherCid, ADDED);
                     }
                 } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
             nextPendingRequest(c);

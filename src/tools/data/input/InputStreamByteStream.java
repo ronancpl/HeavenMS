@@ -85,6 +85,7 @@ public class InputStreamByteStream implements ByteInputStream {
         try {
             return is.available();
         } catch (IOException e) {
+            e.printStackTrace();
             System.out.println("ERROR" + e);
             return 0;
         }

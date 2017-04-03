@@ -21,8 +21,8 @@ function action(mode, type, selection) {
     
     var em = cm.getEventManager("Boats");
     if (em.getProperty("entry") == "true") {
-        cm.gainItem(4031047, -1);
         cm.warp(200000112);
+        cm.gainItem(4031047, -1);
         cm.dispose();
     }
     else{

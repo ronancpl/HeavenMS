@@ -134,6 +134,7 @@ public final class MonsterBook {
             ps.execute();
             ps.close();
         } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

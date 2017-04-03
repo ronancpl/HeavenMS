@@ -73,7 +73,7 @@ public class PortalScriptManager {
                 try {
                     fr.close();
                 } catch (IOException e) {
-                    System.out.println("ERROR CLOSING " + e);
+                    e.printStackTrace();
                 }
             }
         }

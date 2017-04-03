@@ -48,6 +48,7 @@ public class MapleFamily {
 			rs.close();
 			getMapleFamily();
 		} catch (SQLException ex) {
+                    ex.printStackTrace();
 		}
 	}
 
@@ -72,6 +73,7 @@ public class MapleFamily {
 			rs.close();
 			ps.close();
 		} catch (SQLException sqle) {
+                    sqle.printStackTrace();
 		}
 	}
 

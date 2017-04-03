@@ -76666,13 +76666,40 @@
   <imgdir name="28344">
     <imgdir name="1">
       <int name="npc" value="2020007"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4000021"/>
+          <int name="count" value="50"/>
+        </imgdir>
+        <imgdir name="1">
+          <int name="count" value="10"/>
+          <int name="id" value="4000264"/>
+        </imgdir>
+        <imgdir name="2">
+          <int name="count" value="10"/>
+          <int name="id" value="4000281"/>
+        </imgdir>
+        <imgdir name="3">
+          <int name="id" value="4000295"/>
+          <int name="count" value="10"/>
+        </imgdir>
+        <imgdir name="4">
+          <int name="count" value="10"/>
+          <int name="id" value="4000440"/>
+        </imgdir>
+        <imgdir name="5">
+          <int name="id" value="4031871"/>
+          <int name="count" value="10"/>
+        </imgdir>
+        <imgdir name="6">
+          <int name="id" value="4032475"/>
+          <int name="count" value="5"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2020007"/>
-      <int name="lvmin" value="13"/>
-      <string name="start" value="2010032200"/>
-      <string name="end" value="2010032900"/>
-      <int name="normalAutoStart" value="1"/>
+      <int name="lvmin" value="70"/>
     </imgdir>
   </imgdir>
 </imgdir>

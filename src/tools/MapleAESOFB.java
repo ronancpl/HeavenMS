@@ -63,6 +63,7 @@ public class MapleAESOFB {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
         } catch (InvalidKeyException e) {
+            e.printStackTrace();
         }
         this.setIv(iv);
         this.mapleVersion = (short) (((mapleVersion >> 8) & 0xFF) | ((mapleVersion << 8) & 0xFF00));
@@ -97,7 +98,9 @@ public class MapleAESOFB {
                             myIv[j] = newIv[j];
                         }
                     } catch (IllegalBlockSizeException e) {
+                        e.printStackTrace();
                     } catch (BadPaddingException e) {
+                        e.printStackTrace();
                     }
                 }
                 data[x] ^= myIv[(x - start) % myIv.length];

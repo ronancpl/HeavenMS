@@ -47,6 +47,7 @@ public final class SpouseChatHandler extends AbstractMaplePacketHandler {
 //                        } else
 //                            c.getPlayer().message("You are either not married or your spouse is currently offline.");
 //                    } catch (Exception e) {
+//                        e.printStackTrace();
 //                        c.getPlayer().message("You are either not married or your spouse is currently offline.");
 //                        c.getChannelServer().reconnectWorld();
 //                    }

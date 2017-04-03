@@ -46,6 +46,7 @@ public final class PickCharHandler extends AbstractMaplePacketHandler {
         try {
             c.setChannel(Randomizer.nextInt(Server.getInstance().getWorld(world).getChannels().size()));
         } catch (Exception e) {
+            e.printStackTrace();
             c.setChannel(1);
         }
         if (c.getIdleTask() != null) {
@@ -56,6 +57,7 @@ public final class PickCharHandler extends AbstractMaplePacketHandler {
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
         } catch (UnknownHostException e) {
+            e.printStackTrace();
         }
     }
 }
