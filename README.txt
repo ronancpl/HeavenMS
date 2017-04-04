@@ -6,8 +6,8 @@ Credits are to be given to the original MapleSolaxia staff and other colaborator
 changes/patches on the game were applied by myself, in which some of them diverged from the original v83
 patch contents.
 
-This is a NetBeans 8.0.2 Project. This means that it's easier to install the project via "NetBeans' import
-new project using existing code". Once installed, build this project on your machine and run the server using
+This is a NetBeans 8.0.2 Project. This means that it's easier to install the project via opening the server
+project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using
 the "launch.bat" application.
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server sources

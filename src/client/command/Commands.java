@@ -532,7 +532,8 @@ public class Commands {
 			FilePrinter.printError("bug.txt", MapleCharacter.makeMapleReadable(player.getName()) + ": " + message + "\r\n");
 			player.dropMessage(5, "Your bug '" + message + "' was submitted successfully to our developers. Thank you!");
 			break;
-		case "points":
+		/*
+                case "points":
 			player.dropMessage(5, "You have " + c.getVotePoints() + " vote point(s).");
 			if (c.hasVotedAlready()) {
 				Date currentDate = new Date();
@@ -545,6 +546,7 @@ public class Commands {
 				player.yellowMessage("You are free to vote! Make sure to vote to gain a vote point!");
 			}
 			break;
+                */
 		case "joinevent":
 		case "event":
 		case "join":

@@ -415,6 +415,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     }
                 }
             }
+            
             TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -429,6 +430,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 }
             }, getAnimationTime("die1"));
         }
+        else {
+            System.out.println("[CRITICAL LOSS] toSpawn is null for " + this.getName());
+        }
+        
         if (eventInstance != null) {
             if (!this.getStats().isFriendly()) {
                 eventInstance.monsterKilled(this);

@@ -30,11 +30,14 @@ function action(mode, type, selection) {
 		status++;
 	else {
                 cm.sendOk("Oh, talk to me when you have decided what you want from me. I am very busy right now.");
-		cm.dispose();            
+		cm.dispose();
+                return;
 	}
 
 	if (status == 0) {
 		if (cm.isQuestActive(3821) && !cm.haveItem(4031554) && !cm.haveItem(4161030) && cm.isQuestCompleted(3830)) {
+                        //player lost his book, help him complete quest anyways
+                    
                         if(cm.canHold(4031554)) {
                                 cm.sendOk("Oh, the boy wanted you to bring him a #t4031554#? No problem, I was on his debt anyway. Now, tell him I am repaying the debt, OK?");
                                 cm.gainItem(4031554, 1);
@@ -57,12 +60,11 @@ function action(mode, type, selection) {
 	} else if (status == 1) {
 		selectedType = selection;
 		var selStr;
-		var items;
 		if (selectedType == 0){ //Make a medicine
                         itemSet = new Array(2022145,2022146,2022147,2022148,2022149,2022150,2022178,4031554);
-                        matSet = new Array(new Array(2022116),new Array(2022116),new Array(4000281,4000293),new Array(4000276,2002005),new Array(4000288,4000292),new Array(4000295),new Array(??),new Array(??));
-			matQtySet = new Array(new Array(3),new Array(3),new Array(10,10),new Array(20,1),new Array(20,20),new Array(10),new Array(??),new Array(??));
-                        matQtyMeso = new Array(0,0,910,950,1940,600,??,??);
+                        matSet = new Array(2022116,2022116,new Array(4000281,4000293),new Array(4000276,2002005),new Array(4000288,4000292),4000295,new Array(2022131,2022132),new Array(4000286,4000287,4000293));
+			matQtySet = new Array(3,3,new Array(10,10),new Array(20,1),new Array(20,20),10,new Array(1,1),new Array(20,20,20));
+                        matQtyMeso = new Array(0,0,910,950,1940,600,700,1000);
                     
                         if(!cm.haveItem(4161030)) {
                                 cm.sendNext("If you want to make a medicine, you must study the Book on Herbal Medicine first. Nothing is more dangerous than practicing a medicine without proper knowledge.");
@@ -78,24 +80,28 @@ function action(mode, type, selection) {
                         selStr += "#k";
 		} 
 		else if(selectedType == 1){ //Make a scroll
+                        status++;
+                    
 			selStr = "What kind of scrolls are you interested in making?#b";
-			items = new Array("Scroll for One-Handed Sword for ATT", "Scroll for One-Handed Axe for ATT", "Scroll for One-Handed BW for ATT",
+			itemSet = new Array("Scroll for One-Handed Sword for ATT", "Scroll for One-Handed Axe for ATT", "Scroll for One-Handed BW for ATT",
 					"Scroll for Dagger for ATT","Scroll for Wand for Magic Att.","Scroll for Staff for Magic Att.",
 					"Scroll for Two-handed Sword for ATT.","Scroll for Two-handed Axe for ATT","Scroll for Two-handed BW for ATT",
 					"Scroll for Spear for ATT","Scroll for Pole Arm for ATT","Scroll for Bow for ATT","Scroll for Crossbow for ATT ",
 					"Scroll for Claw for ATT","Scroll for Knuckle for ATT","Scroll for Gun for ATT#k");
 
-                        for (var i = 0; i < items.length; i++){
-                                selStr += "\r\n#L" + i + "# " + items[i] + "#l";
+                        for (var i = 0; i < itemSet.length; i++){
+                                selStr += "\r\n#L" + i + "# " + itemSet[i] + "#l";
                         }
 		} 
 		else {//Donate medicine ingredients
+                        status++;
+                    
 			selStr = "So you wish to donate some medicine ingredients? This is great news! Donations will be accepted in the unit of #b100#k. The donator will receive a marble that enables one to make a scroll. Which of these would you like to donate? #b";
-			items = new Array("Acorn","Thimble","Needle Pouch","Necki Flower","Necki Swimming Cap","Broken Piece of Pot","Ginseng-Boiled Water","Straw Doll","Wooden Doll","Bellflower Root","100-Year-Old Bellflower",
+			itemSet = new Array("Acorn","Thimble","Needle Pouch","Necki Flower","Necki Swimming Cap","Broken Piece of Pot","Ginseng-Boiled Water","Straw Doll","Wooden Doll","Bellflower Root","100-Year-Old Bellflower",
 					"Old Paper","Yellow Belt","Broken Deer Horn","Red Belt","Peach Seed","Mr. Alli's Leather","Cat Doll","Mark of the Pirate","Captain Hat#k");
                                         
-                        for (var i = 0; i < items.length; i++){
-                                selStr += "\r\n#L" + i + "# " + items[i] + "#l";
+                        for (var i = 0; i < itemSet.length; i++){
+                                selStr += "\r\n#L" + i + "# " + itemSet[i] + "#l";
                         }
 		}
 		
@@ -103,27 +109,26 @@ function action(mode, type, selection) {
 	}
         else if (status == 2) {
                 selectedItem = selection;
-            
-                if(selectedType == 0) {
-                        cm.sendGetText("How many #b" + items[selectedItem] + "#k do you want to make?");
-                }
+                cm.sendGetText("How many #b#t" + itemSet[selectedItem] + "##k do you want to make?");
         }
 	else if (status == 3) {
 		if(selectedType == 0) { //Medicines
-                        makeQty = parseInt(cm.getText());
+			var text = cm.getText();
+                        makeQty = parseInt(text);
                         if(isNaN(makeQty)) makeQty = 1;
                         
                         item = itemSet[selectedItem];
 			mats = matSet[selectedItem];
 			matQty = matQtySet[selectedItem];
-                        matMeso = matMesoSet[selectedItem];
+                        matMeso = matQtyMeso[selectedItem];
                         
-                        var prompt = "You want to make " + makeQty + " #t" + item + "#? In order to make " + makeQty + " #t" + item +"#,You'll need the following items:";
+                        var prompt = "You want to make #b" + makeQty + " #t" + item + "##k? In order to make " + makeQty + " #t" + item +"#, you'll need the following items:\r\n";
 			if (mats instanceof Array){
 				for(var i = 0; i < mats.length; i++){
 					prompt += "\r\n#i"+mats[i]+"# " + matQty[i]*makeQty + " #t" + mats[i] + "#";
 				}
 			}
+                        else prompt += "\r\n#i"+mats+"# " + matQty*makeQty + " #t" + mats + "#";
                         
                         if (matMeso > 0)
                                 prompt += "\r\n#i4031138# " + matMeso*makeQty + " meso";
@@ -132,6 +137,8 @@ function action(mode, type, selection) {
                 }
                 
 		else if (selectedType == 1){ //Scrolls
+                        selectedItem = selection;
+                    
 			itemSet = new Array(2043000,2043100,2043200,2043300,2043700,2043800,2044000,2044100,2044200,2044300,2044400,2044500,2044600,2044700,2044800,2044900);
 			matSet = new Array(new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),
 					new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),new Array(4001124,4010001),
@@ -142,17 +149,22 @@ function action(mode, type, selection) {
 			item = itemSet[selectedItem];
 			mats = matSet[selectedItem];
 			matQty = matQtySet[selectedItem];
-			var prompt = "You want to make #t" + item + "#? In order to make #t" + item +"#,You'll need #b100 #t" + mats[0] + "##k and #b10 #t" + mats[1] + "##k.";
+			var prompt = "You want to make #b#t" + item + "##k? In order to make #t" + item +"# you'll need the following items:";
 			if (mats instanceof Array){
 				for(var i = 0; i < mats.length; i++){
 					prompt += "\r\n#i"+mats[i]+"# " + matQty[i] + " #t" + mats[i] + "#";
 				}
 			}
+                        else {
+                                prompt += "\r\n#i"+mats+"# " + matQty + " #t" + mats + "#";
+                        }
                         
                         cm.sendYesNo(prompt);
 		} 
 		else if(selectedType == 2){
-			itemSet = new Array(4000276,4000277,4000278,4000279,4000280,4000291,4000292,4000286,4000287,4000293, 4000294,4000298,4000284,4000288,4000285,4000282,4000295,4000289,4000296,4031435);
+                        selectedItem = selection;
+                    
+			itemSet = new Array(4000276,4000277,4000278,4000279,4000280,4000291,4000292,4000286,4000287,4000293,4000294,4000298,4000284,4000288,4000285,4000282,4000295,4000289,4000296,4031435);
                         rewdSet = new Array(7,7,new Array(7,8),10,11,8,new Array(7,8),new Array(7,9),new Array(7,8),9,10,new Array(10,11),11,new Array(11,12),13,13,14,15,new Array(15,16),17);
                         
 			item = itemSet[selectedItem];
@@ -167,9 +179,12 @@ function action(mode, type, selection) {
 				for(var i = 0; i < mats.length; i++) {
                                         if(!cm.haveItem(mats[i], matQty[i]*makeQty)) complete = false;
 				}
-                                
-                                if(cm.getMeso() < matMeso*makeQty) complete = false;
 			}
+                        else {
+                                if(!cm.haveItem(mats, matQty*makeQty)) complete = false;
+                        }
+                        
+                        if(cm.getMeso() < matMeso*makeQty) complete = false;
 
 			if (!complete || !cm.canHold(item, makeQty))
 				cm.sendOk("Please make sure you are neither lacking ingredients or lacking space in your use inventory.");
@@ -179,8 +194,11 @@ function action(mode, type, selection) {
 						cm.gainItem(mats[i], -matQty[i]*makeQty);
 					}
 				}
+                                else {
+                                    cm.gainItem(mats, -matQty*makeQty);
+                                }
 
-                                cm.gainMeso(-matMeso*makeQty);
+                                if(matMeso > 0) cm.gainMeso(-matMeso*makeQty);
 				cm.gainItem(item,makeQty);
 			}
 
@@ -223,7 +241,7 @@ function action(mode, type, selection) {
                                 */
 			}
                         
-                        if(java.lang.Math.random() >= 0.9f) //A lucky find! Scroll 60%
+                        if(java.lang.Math.random() >= 0.9) //A lucky find! Scroll 60%
                             item += 1;
 
 			if (!complete || !cm.canHold(item))

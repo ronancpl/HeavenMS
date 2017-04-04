@@ -147,9 +147,24 @@ public class MapleQuestStatus {
         return progress.size() > 0;
     }
 
+    public Integer getAnyProgressKey() {
+        if (!progress.isEmpty()) return progress.entrySet().iterator().next().getKey();
+        return 0;
+    }
+    
     public String getProgress(int id) {
         if (progress.get(id) == null) return "";
         return progress.get(id);
+    }
+    
+    public void resetProgress(int id) {
+        setProgress(id, "000");
+    }
+    
+    public void resetAllProgress() {
+        for(Map.Entry<Integer, String> entry : progress.entrySet()) {
+            setProgress(entry.getKey(), "000");
+        }
     }
 
     public Map<Integer, String> getProgress() {

@@ -43,8 +43,8 @@ var vp;
 var choice;
  
 function start() {
-	vp = cm.getClient().getVotePoints();
-	if(vp == null)
+	//vp = cm.getClient().getVotePoints();
+	//if(vp == null)
 		vp = 0;
 	
     status = -1;

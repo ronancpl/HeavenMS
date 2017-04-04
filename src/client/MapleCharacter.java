@@ -273,6 +273,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private boolean useCS = false;  //chaos scroll upon crafting item.
     private long useDuey;
     private long petLootCd;
+    private int newWarpMap = -1;
 
     private MapleCharacter() {
         setStance(0);
@@ -1082,8 +1083,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 	return target;
     }
     
-    public void warp(int map) {
-        changeMap(getWarpMap(map), getWarpMap(map).getPortal(0));
+    // for use ONLY inside OnUserEnter map scripts that requires players changing map even before entering it.
+    public void warpAhead(int map) {
+        newWarpMap = map;
     }
 
     public void changeMap(int map) {
@@ -1181,6 +1183,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                 }, 10000);
             }
+        }
+        
+        //alas, new map has been specified when a warping was being processed...
+        if(newWarpMap != -1) {
+            int temp = newWarpMap;
+            newWarpMap = -1;
+            changeMap(temp);
         }
     }
 

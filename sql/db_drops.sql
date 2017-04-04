@@ -18771,16 +18771,12 @@
 (8810018, 2388024, 1, 1, 0, 8000),
 (9500320, 2388027, 1, 1, 0, 8000),
 (8220002, 2388032, 1, 1, 0, 8000),
-(9300182, 2388039, 1, 1, 0, 8000);
-
-
-
-
-
-
-
+(9300182, 2388039, 1, 1, 0, 8000),
+(6130204, 0, 316, 478, 0, 400000);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
+
+  UPDATE IGNORE temp_data SET chance=700 WHERE itemid=1302056;
 
   UPDATE IGNORE temp_data SET dropperid=9000002 WHERE dropperid=9000000;
   UPDATE IGNORE temp_data SET questid=0 WHERE dropperid=2022354;
@@ -18848,9 +18844,13 @@
   UPDATE drop_data SET questid=77777 WHERE itemid=4001342;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
+  UPDATE drop_data SET questid=6191 WHERE itemid=4031477;
 
+  # two items named "Sparta": remove the entries where lv100 Sparta is being dropped by low-level mobs.
+  UPDATE IGNORE drop_data SET itemid=1402011 WHERE itemid=1302056 AND dropperid < 8000000;
+  DELETE FROM drop_data WHERE itemid=1302056 AND dropperid < 8000000;
 
-  #update quest reactor items
+  # update quest reactor items
   UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;
   UPDATE reactordrops SET questid=3407 WHERE itemid=4031141;
   UPDATE reactordrops SET questid=3407 WHERE itemid=4031142;
@@ -18864,8 +18864,11 @@
   INSERT INTO `reactordrops` (`reactorid`, `itemid`, `chance`, `questid`) VALUES
     (9102000, 4031157, 1, 2074),
     (9102001, 4031158, 1, 2074),
-    (2502000, 4031794, 1, 3839),
-    (2502000, 4031794, 1, 3839),
-    (2612000, 4031695, 1, 3335);
+    (2502001, 2022116, 1, -1),
+    (2612000, 4031695, 1, 3335),
+    (2402000, 2022087, 3, -1);
+    (2402001, 2022088, 1, -1),
+    (2402001, 2022086, 1, -1);
+
 
   #global data already updated

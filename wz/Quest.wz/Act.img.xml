@@ -35375,6 +35375,12 @@
   </imgdir>
   <imgdir name="6180">
     <imgdir name="0">
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="count" value="1"/>
+          <int name="id" value="1092041"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
     <imgdir name="1">
       <int name="exp" value="1000000"/>
@@ -35382,7 +35388,10 @@
         <imgdir name="0">
           <int name="id" value="1092042"/>
           <int name="count" value="1"/>
-          <int name="job" value="3"/>
+        </imgdir>
+        <imgdir name="1">
+          <int name="id" value="1092041"/>
+          <int name="count" value="-1"/>
         </imgdir>
       </imgdir>
       <imgdir name="skill">
@@ -55694,34 +55703,30 @@
     <imgdir name="1">
       <imgdir name="item">
         <imgdir name="0">
-          <int name="count" value="-50"/>
+          <int name="count" value="-60"/>
           <int name="id" value="4000021"/>
         </imgdir>
         <imgdir name="1">
-          <int name="count" value="-10"/>
+          <int name="count" value="-30"/>
           <int name="id" value="4000264"/>
         </imgdir>
         <imgdir name="2">
-          <int name="count" value="-10"/>
+          <int name="count" value="-30"/>
           <int name="id" value="4000281"/>
         </imgdir>
         <imgdir name="3">
-          <int name="count" value="-10"/>
+          <int name="count" value="-30"/>
           <int name="id" value="4000295"/>
         </imgdir>
         <imgdir name="4">
-          <int name="count" value="-10"/>
+          <int name="count" value="-30"/>
           <int name="id" value="4000440"/>
         </imgdir>
         <imgdir name="5">
           <int name="count" value="-10"/>
-          <int name="id" value="4031871"/>
-        </imgdir>
-        <imgdir name="6">
-          <int name="count" value="-5"/>
           <int name="id" value="4032475"/>
         </imgdir>
-        <imgdir name="7">
+        <imgdir name="6">
           <int name="count" value="10"/>
           <int name="id" value="2022184"/>
         </imgdir>

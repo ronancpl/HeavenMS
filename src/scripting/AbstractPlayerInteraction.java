@@ -198,13 +198,23 @@ public class AbstractPlayerInteraction {
 	}
 
         public void updateQuest(int questid, int data) {
-            updateQuest(questid, String.valueOf(data));
+            MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
+            updateQuest(questid, status.getAnyProgressKey(), data);
         }
         
-	public void updateQuest(int questid, String data) {
+        public void updateQuest(int questid, String data) {
+            MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
+            updateQuest(questid, status.getAnyProgressKey(), data);
+        }
+        
+        public void updateQuest(int questid, int pid, int data) {
+            updateQuest(questid, pid, String.valueOf(data));
+        }
+        
+	public void updateQuest(int questid, int pid, String data) {
 		MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(questid));
 		status.setStatus(MapleQuestStatus.Status.STARTED);
-		status.setProgress(0, data);//override old if exists
+		status.setProgress(pid, data);//override old if exists
 		c.getPlayer().updateQuest(status);
 	}
 
@@ -233,11 +243,29 @@ public class AbstractPlayerInteraction {
 			return false;
 		}
 	}
-
-	public int getQuestProgress(int qid) {
-                if(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress().isEmpty()) return 0;
-		return Integer.parseInt(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress().get(0));
+        
+        public int getQuestProgress(int qid) {
+                MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
+                String progress = status.getProgress(status.getAnyProgressKey());
+            
+                if(progress.isEmpty()) return 0;
+                return Integer.parseInt(progress);
+        }
+        
+        public int getQuestProgress(int qid, int pid) {
+                if(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) return 0;
+		return Integer.parseInt(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid));
 	}
+        
+        public void resetAllQuestProgress(int qid) {
+                getPlayer().getQuest(MapleQuest.getInstance(qid)).resetAllProgress();
+                getClient().announce(MaplePacketCreator.updateQuest(getPlayer().getQuest(MapleQuest.getInstance(qid)), false));
+        }
+        
+        public void resetQuestProgress(int qid, int pid) {
+                getPlayer().getQuest(MapleQuest.getInstance(qid)).resetProgress(pid);
+                getClient().announce(MaplePacketCreator.updateQuest(getPlayer().getQuest(MapleQuest.getInstance(qid)), false));
+        }
         
         public Item evolvePet(byte slot, int afterId) {
             MaplePet evolved = null;
