@@ -22,10 +22,13 @@
 function start() {
     if(cm.isQuestCompleted(6002))
         cm.sendOk("Thanks for saving the pork.");
-    else if(cm.getClient().getChannelServer().getMapFactory().getMap(923010000).getCharacters().size() > 0)
+    else if(cm.getWarpMap(923010000).getCharacters().size() > 0)
         cm.sendOk("There is currently someone in this map, come back later.");
-    else if(cm.isQuestStarted(6002))
+    else if(cm.isQuestStarted(6002)) {
+        cm.resetMapObjects(923010000);
         cm.warp(923010000);
+    }
+        
     else cm.sendSimple("Only few adventurers, from a selected public, are eligible to protect the Watch Hog.");
     cm.dispose();
 }

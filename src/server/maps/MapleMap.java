@@ -85,6 +85,7 @@ public class MapleMap {
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
     private Map<Integer, MapleMapObject> mapobjects = new LinkedHashMap<>();
     private Collection<SpawnPoint> monsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
+    private Collection<SpawnPoint> allMonsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private AtomicInteger spawnedMonstersOnMap = new AtomicInteger(0);
     private Collection<MapleCharacter> characters = new LinkedHashSet<>();
     private Map<Integer, MaplePortal> portals = new HashMap<>();
@@ -672,6 +673,8 @@ public class MapleMap {
             }
             dropFromMonster(dropOwner, monster);
         }
+        
+        monster.dispatchMonsterKilled();
     }
 
     public void killFriendlies(MapleMonster mob) {
@@ -713,20 +716,20 @@ public class MapleMap {
             if (monster.getStats().isFriendly()) {
                 continue;
             }
-            spawnedMonstersOnMap.decrementAndGet();
-            monster.setHp(0);
-            broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), true), monster.getPosition());
-            removeMapObject(monster);
+            
+            killMonster(monster, null, false, false, 1);
         }
     }
 
     public void killAllMonsters() {
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            spawnPoint.denySpawn(true);
+        }
+        
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
-            spawnedMonstersOnMap.decrementAndGet();
-            monster.setHp(0);
-            broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), true), monster.getPosition());
-            removeMapObject(monster);
+            
+            killMonster(monster, null, false, false, 1);
         }
     }
 
@@ -1032,6 +1035,7 @@ public class MapleMap {
 
     public void spawnMonster(final MapleMonster monster) {
         if (mobCapacity != -1 && mobCapacity == spawnedMonstersOnMap.get()) {
+            System.out.println("got here");
             return;//PyPQ
         }
         monster.setMap(this);
@@ -1050,11 +1054,13 @@ public class MapleMap {
         }, null);
         updateMonsterController(monster);
 
-        if (monster.getDropPeriodTime() > 0) { //9300102 - Watchhog, 9300061 - Moon Bunny (HPQ)
+        if (monster.getDropPeriodTime() > 0) { //9300102 - Watchhog, 9300061 - Moon Bunny (HPQ), 9300093 - Tylus
             if (monster.getId() == 9300102) {
                 monsterItemDrop(monster, new Item(4031507, (short) 0, (short) 1), monster.getDropPeriodTime());
             } else if (monster.getId() == 9300061) {
                 monsterItemDrop(monster, new Item(4001101, (short) 0, (short) 1), monster.getDropPeriodTime() / 3);
+            } else if (monster.getId() == 9300093) {
+                monsterItemDrop(monster, new Item(4031495, (short) 0, (short) 1), monster.getDropPeriodTime());
             } else {
                 FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId());
             }
@@ -1782,7 +1788,13 @@ public class MapleMap {
         if (sp.shouldSpawn() || mobTime == -1) {// -1 does not respawn and should not either but force ONE spawn
             spawnMonster(sp.getMonster());
         }
-
+    }
+    
+    public void addAllMonsterSpawn(MapleMonster monster, int mobTime, int team) {
+        Point newpos = calcPointBelow(monster.getPosition());
+        newpos.y -= 1;
+        SpawnPoint sp = new SpawnPoint(monster, newpos, !monster.isMobile(), mobTime, mobInterval, team);
+        allMonsterSpawn.add(sp);
     }
 
     public Collection<MapleCharacter> getCharacters() {
@@ -2029,6 +2041,13 @@ public class MapleMap {
             }
         }
     }
+    
+    public void instanceMapFirstSpawn() {
+        for(SpawnPoint spawnPoint: allMonsterSpawn) {
+            if(spawnPoint.getMobTime() == -1)   //just those allowed to be spawned only once
+                spawnMonster(spawnPoint.getMonster());
+        }
+    }
 
     public void instanceMapRespawn() {
         final int numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
@@ -2045,6 +2064,12 @@ public class MapleMap {
             }
         }
     }
+    
+    public void restoreMapSpawnPoints() {
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            spawnPoint.denySpawn(false);
+        }
+    }
 
     public void respawn() {
         if (characters.isEmpty()) {
@@ -2059,9 +2084,10 @@ public class MapleMap {
                 if (spawnPoint.shouldSpawn()) {
                     spawnMonster(spawnPoint.getMonster());
                     spawned++;
-                }
-                if (spawned >= numShouldSpawn) {
-                    break;
+                    
+                    if (spawned >= numShouldSpawn) {
+                        break;
+                    }
                 }
             }
         }
@@ -2394,5 +2420,18 @@ public class MapleMap {
 
     public short getMobInterval() {
         return mobInterval;
+    }
+    
+    public void clearMapObjects() {
+        clearDrops();
+        killAllMonsters();
+        resetReactors();
+    }
+    
+    public void resetMapObjects() {
+        clearMapObjects();
+        
+        restoreMapSpawnPoints();
+        instanceMapFirstSpawn();
     }
 }

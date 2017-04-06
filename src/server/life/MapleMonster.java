@@ -439,14 +439,15 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 eventInstance.monsterKilled(this);
             }
         }
-        // idk V just a troll
+        
+        MapleCharacter looter = map.getCharacterById(getHighestDamagerId());
+        return looter != null ? looter : killer;
+    }
+    
+    public void dispatchMonsterKilled() {
         for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
             listener.monsterKilled(getAnimationTime("die1"));
         }
-
-        MapleCharacter looter = map.getCharacterById(getHighestDamagerId());
-
-        return looter != null ? looter : killer;
     }
 
     // should only really be used to determine drop owner

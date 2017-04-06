@@ -32,7 +32,7 @@ var belts = Array(1132000, 1132001, 1132002, 1132003, 1132004);
 var belt_level = Array(25, 35, 45, 60, 75);
 
 /* var belt_points = Array(200, 1800, 4000, 9200, 17000); */
-var belt_points = Array(5, 45, 100, 230, 425); /* Watered down version */
+var belt_points = Array(10, 90, 200, 460, 850); /* Watered down version */
 
 var status = -1;
 var selectedMenu = -1;

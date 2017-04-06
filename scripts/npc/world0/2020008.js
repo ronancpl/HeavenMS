@@ -26,6 +26,18 @@ var sel;
 actionx = {"Mental" : false, "Physical" : false};
 
 function start() {
+    if(cm.isQuestStarted(6192)) {
+        if(cm.getWarpMap(921100300).getCharacters().size() > 0)
+            cm.sendOk("There is someone currently in this map, come back later.");
+        else {
+            cm.resetMapObjects(921100300);
+            cm.warp(921100300);
+        }
+            
+        cm.dispose();
+        return;
+    }
+    
     if (!(cm.getPlayer().getLevel() >= 70 && parseInt(cm.getJobId() / 100) == 1)){
         cm.sendNext("Hi there.");
         cm.dispose();

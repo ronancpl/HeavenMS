@@ -26,7 +26,6 @@ import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SpawnPoint {
-
     private int monster, mobTime, team, fh, f;
     private Point pos;
     private long nextPossibleSpawn;
@@ -45,9 +44,17 @@ public class SpawnPoint {
         this.mobInterval = mobInterval;
         this.nextPossibleSpawn = System.currentTimeMillis();
     }
+    
+    public int getSpawned() {
+        return spawnedMonsters.intValue();
+    }
+    
+    public void denySpawn(boolean val) {
+        spawnedMonsters.set((val == false) ? 0 : 1);
+    }
 
     public boolean shouldSpawn() {
-    	if (mobTime < 0 || ((mobTime != 0 || immobile) && spawnedMonsters.get() > 0) || spawnedMonsters.get() > 2) {//lol
+    	if (mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
         }
        
@@ -55,7 +62,7 @@ public class SpawnPoint {
     }
 
     public boolean shouldForceSpawn() {
-    	if (mobTime < 0 || ((mobTime != 0 || immobile) && spawnedMonsters.get() > 0) || spawnedMonsters.get() > 2) {//lol
+    	if (mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
         }
        
@@ -97,5 +104,13 @@ public class SpawnPoint {
 
     public final int getFh() {
         return fh;
+    }
+    
+    public int getMobTime() {
+        return mobTime;
+    }
+    
+    public int getTeam() {
+        return team;
     }
 }

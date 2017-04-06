@@ -124,7 +124,7 @@ public class AbstractPlayerInteraction {
 		return chars;
 	}
 
-	protected MapleMap getWarpMap(int map) {
+	public MapleMap getWarpMap(int map) {
 		MapleMap target;
 		if (getPlayer().getEventInstance() == null) {
 			target = c.getChannelServer().getMapFactory().getMap(map);
@@ -137,6 +137,10 @@ public class AbstractPlayerInteraction {
 	public MapleMap getMap(int map) {
 		return getWarpMap(map);
 	}
+        
+        public void resetMapObjects(int mapid) {
+                getWarpMap(mapid).resetMapObjects();
+        }
 
 	public EventManager getEventManager(String event) {
 		return getClient().getEventManager(event);

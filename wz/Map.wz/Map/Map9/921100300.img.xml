@@ -4253,15 +4253,12 @@
       <string name="tn" value=""/>
     </imgdir>
     <imgdir name="2">
-      <string name="pn" value="out00"/>
-      <int name="pt" value="2"/>
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
       <int name="x" value="-364"/>
       <int name="y" value="-508"/>
-      <int name="tm" value="211000000"/>
-      <string name="tn" value="in01"/>
-      <string name="script" value=""/>
-      <int name="hideTooltip" value="0"/>
-      <int name="delay" value="0"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
     </imgdir>
     <imgdir name="3">
       <string name="pn" value="out01"/>
@@ -4270,7 +4267,7 @@
       <int name="y" value="-207"/>
       <int name="tm" value="999999999"/>
       <string name="tn" value=""/>
-      <string name="script" value="s4common1_clear"/>
+      <string name="script" value="s4common1_exit"/>
       <int name="hideTooltip" value="0"/>
       <int name="delay" value="0"/>
     </imgdir>

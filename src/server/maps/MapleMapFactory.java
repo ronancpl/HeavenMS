@@ -52,7 +52,7 @@ public class MapleMapFactory {
         this.world = world;
         this.channel = channel;
     }
-
+    
     public MapleMap getMap(int mapid) {
         Integer omapid = Integer.valueOf(mapid);
         MapleMap map = maps.get(omapid);
@@ -148,6 +148,7 @@ public class MapleMapFactory {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                
                 for (MapleData life : mapData.getChildByPath("life")) {
                     String id = MapleDataTool.getString(life.getChildByPath("id"));
                     String type = MapleDataTool.getString(life.getChildByPath("type"));
@@ -164,10 +165,14 @@ public class MapleMapFactory {
                         } else {
                             map.addMonsterSpawn(monster, mobTime, team);
                         }
+                        
+                        //should the map be reseted, use allMonsterSpawn list of monsters to spawn them again
+                        map.addAllMonsterSpawn(monster, mobTime, team);
                     } else {
                         map.addMapObject(myLife);
                     }
                 }
+                
                 if (mapData.getChildByPath("reactor") != null) {
                     for (MapleData reactor : mapData.getChildByPath("reactor")) {
                         String id = MapleDataTool.getString(reactor.getChildByPath("id"));

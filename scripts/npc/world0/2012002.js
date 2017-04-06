@@ -41,9 +41,12 @@ if (mode == 0 && status == 1) {
         status++;
     else
         cm.dispose();
-    if (status == 1)
+    
+    if (status == 1) {
         cm.sendNext ("Alright, see you next time. Take care.");
-    else if (status == 2)
+    }
+    else if (status == 2) {
         cm.warp(200000111, 0);// back to Orbis jetty
-    cm.dispose();
+        cm.dispose();
+    }
 }
