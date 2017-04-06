@@ -25,21 +25,22 @@ function init() {
     Ellinia_docked = em.getChannelServer().getMapFactory().getMap(101000300);
     Orbis_Station = em.getChannelServer().getMapFactory().getMap(200000100);
     Orbis_docked = em.getChannelServer().getMapFactory().getMap(200000111);
-    OBoatsetup();
-    EBoatsetup();
+    
     scheduleNew();
 }
 
 function scheduleNew() {
+    em.setProperty("docked", "true");
     Ellinia_docked.setDocked(true);
     Orbis_docked.setDocked(true);
-    Ellinia_docked.broadcastMessage(MaplePacketCreator.boatPacket(true));
-    Orbis_docked.broadcastMessage(MaplePacketCreator.boatPacket(true));
-    em.setProperty("docked", "true");
+    
     em.setProperty("entry", "true");
-    em.setProperty("haveBalrog","false");
+    em.setProperty("haveBalrog", "false");
     em.schedule("stopentry", closeTime);
     em.schedule("takeoff", beginTime);
+
+    Boat_to_Orbis.killAllMonsters();
+    Boat_to_Ellinia.killAllMonsters();
 }
 
 function stopentry() {
@@ -48,55 +49,49 @@ function stopentry() {
     Ellinia_Boat_Cabin.resetReactors();
 }
 
-
-
 function takeoff() {
+    Orbis_btf.warpEveryone(Boat_to_Ellinia.getId());
+    Ellinia_btf.warpEveryone(Boat_to_Orbis.getId());
+    Ellinia_docked.broadcastShip(false);
+    Orbis_docked.broadcastShip(false);
+    
     em.setProperty("docked","false");
-	Orbis_btf.warpEveryone(Boat_to_Ellinia.getId());
-	Ellinia_btf.warpEveryone(Boat_to_Orbis.getId());
     Ellinia_docked.setDocked(false);
     Orbis_docked.setDocked(false);
-    Ellinia_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
-    Orbis_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
+    
     em.schedule("invasion", invasionTime);
     em.schedule("arrived", rideTime);
 }
 
 function arrived() {
-	Boat_to_Orbis.warpEveryone(Orbis_Station.getId());
-	Orbis_Boat_Cabin.warpEveryone(Orbis_Station.getId());
-	Boat_to_Ellinia.warpEveryone(Ellinia_docked.getId());
-	Ellinia_Boat_Cabin.warpEveryone(Ellinia_docked.getId());
+    Boat_to_Orbis.warpEveryone(Orbis_Station.getId());
+    Orbis_Boat_Cabin.warpEveryone(Orbis_Station.getId());
+    Boat_to_Ellinia.warpEveryone(Ellinia_docked.getId());
+    Ellinia_Boat_Cabin.warpEveryone(Ellinia_docked.getId());
+    Orbis_docked.broadcastShip(true);
+    Ellinia_docked.broadcastShip(true);
     Boat_to_Orbis.killAllMonsters();
     Boat_to_Ellinia.killAllMonsters();
+    em.setProperty("haveBalrog", "false");
     scheduleNew();
 }
 
 function invasion() {
-    var numspawn = 2;
-    if(numspawn > 0) {
-        for(var i=0; i < numspawn; i++) {
-            Boat_to_Orbis.spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8150000), new java.awt.Point(485, -221));
-            Boat_to_Ellinia.spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8150000), new java.awt.Point(-590, -221));
-        }
-        Boat_to_Orbis.setDocked(true);
-        Boat_to_Ellinia.setDocked(true);
-        Boat_to_Orbis.broadcastMessage(MaplePacketCreator.boatPacket(true));
-        Boat_to_Ellinia.broadcastMessage(MaplePacketCreator.boatPacket(true));
-        Boat_to_Orbis.broadcastMessage(MaplePacketCreator.musicChange("Bgm04/ArabPirate"));
-        Boat_to_Ellinia.broadcastMessage(MaplePacketCreator.musicChange("Bgm04/ArabPirate"));
+    if (Math.floor(Math.random() * 10) < 10) {
+	var map1 = Boat_to_Ellinia;
+	var pos1 = new java.awt.Point(-538, 143);
+	map1.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8150000), pos1);
+	map1.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8150000), pos1);
+
+	var map2 = Boat_to_Orbis;
+	var pos2 = new java.awt.Point(339, 148);
+	map2.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8150000), pos2);
+	map2.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8150000), pos2);
+
         em.setProperty("haveBalrog","true");
+        Boat_to_Ellinia.broadcastShip(true);
+        Boat_to_Orbis.broadcastShip(true);
     }
-}
-
-function OBoatsetup() {
-    em.getChannelServer().getMapFactory().getMap(200090011).getPortal("out00").setScriptName("OBoat1");
-    em.getChannelServer().getMapFactory().getMap(200090011).getPortal("out01").setScriptName("OBoat2");
-}
-
-function EBoatsetup() {
-    em.getChannelServer().getMapFactory().getMap(200090001).getPortal("out00").setScriptName("EBoat1");
-    em.getChannelServer().getMapFactory().getMap(200090001).getPortal("out01").setScriptName("EBoat2");
 }
 
 function cancelSchedule() {

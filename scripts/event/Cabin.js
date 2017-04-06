@@ -26,7 +26,7 @@
 -- By ---------------------------------------------------------------------------------------------
 	Information
 -- Version Info -----------------------------------------------------------------------------------
-	1.5 - Fix for infinity looping [Information]
+        1.5 - Fix for infinity looping [Information]
 	1.4 - Ship/boat is now showed
 	    - Removed temp message[Information]
 	    - Credit to Snow/superraz777 for old source
@@ -61,18 +61,18 @@ function init() {
     Leafre_docked = em.getChannelServer().getMapFactory().getMap(240000110);
     Orbis_Station = em.getChannelServer().getMapFactory().getMap(200000100);
     Leafre_Station = em.getChannelServer().getMapFactory().getMap(240000100);
+    
     scheduleNew();
 }
 
 function scheduleNew() {
-    Leafre_docked.setDocked(true);
-    Orbis_docked.setDocked(true);
-    Leafre_docked.broadcastMessage(MaplePacketCreator.boatPacket(true));
-    Orbis_docked.broadcastMessage(MaplePacketCreator.boatPacket(true));
     em.setProperty("docked", "true");
+    Orbis_docked.setDocked(true);
+    Leafre_docked.setDocked(true);
+    
     em.setProperty("entry", "true");
-    em.schedule("stopEntry", closeTime);
-    em.schedule("takeoff", beginTime);
+    em.schedule("stopEntry", closeTime); //The time to close the gate
+    em.schedule("takeoff", beginTime); //The time to begin the ride
 }
 
 function stopEntry() {
@@ -80,19 +80,26 @@ function stopEntry() {
 }
 
 function takeoff() {
-    Leafre_docked.setDocked(false);
-    Orbis_docked.setDocked(false);
-    Leafre_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
-    Orbis_docked.broadcastMessage(MaplePacketCreator.boatPacket(false));
-    em.setProperty("docked","false");
     Orbis_btf.warpEveryone(Cabin_to_Leafre.getId());
     Leafre_btf.warpEveryone(Cabin_to_Orbis.getId());
-    em.schedule("arrived", rideTime);
+    
+    Orbis_docked.broadcastShip(false);
+    Leafre_docked.broadcastShip(false);
+    
+    em.setProperty("docked","false");
+    Orbis_docked.setDocked(false);
+    Leafre_docked.setDocked(false);
+    
+    em.schedule("arrived", rideTime); //The time that require move to destination
 }
 
 function arrived() {
     Cabin_to_Orbis.warpEveryone(Orbis_Station.getId());
     Cabin_to_Leafre.warpEveryone(Leafre_Station.getId());
+    
+    Orbis_docked.broadcastShip(true);
+    Leafre_docked.broadcastShip(true);
+    
     scheduleNew();
 }
 

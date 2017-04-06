@@ -22,6 +22,8 @@ function init() {
 }
 
 function scheduleNew() {
+    em.setProperty("docked", "true");
+    em.setProperty("entry", "true");
     em.schedule("stopEntry", closeTime);
     em.schedule("takeoff", beginTime);
 }
@@ -31,16 +33,17 @@ function stopEntry() {
 }
 
 function takeoff() {
-    em.setProperty("entry", "true");
-	KC_bfd.warpEveryone(Plane_to_CBD.getId());
-	CBD_bfd.warpEveryone(Plane_to_KC.getId());
-    em.schedule("arrived", rideTime);
-    scheduleNew();
+    em.setProperty("docked","false");
+    KC_bfd.warpEveryone(Plane_to_CBD.getId());
+    CBD_bfd.warpEveryone(Plane_to_KC.getId());
+    em.schedule("arrived", rideTime); //The time that require move to destination
 }
 
 function arrived() {
-	Plane_to_CBD.warpEveryone(CBD_docked.getId());
-	Plane_to_KC.warpEveryone(KC_docked.getId());
+    Plane_to_CBD.warpEveryone(CBD_docked.getId());
+    Plane_to_KC.warpEveryone(KC_docked.getId());
+        
+    scheduleNew();
 }
 
 function cancelSchedule() {

@@ -20,6 +20,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function init() {
+    em.getChannelServer().getMapFactory().getMap(222020100).resetReactors();
+    em.getChannelServer().getMapFactory().getMap(222020200).resetReactors();
+    
     scheduleNew();
 }
 

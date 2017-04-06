@@ -99,7 +99,7 @@ public class MapleMap {
     private byte monsterRate;
     private boolean clock;
     private boolean boat;
-    private boolean docked;
+    private boolean docked = false;
     private String mapName;
     private String streetName;
     private MapleMapEffect mapEffect = null;
@@ -1278,7 +1278,7 @@ public class MapleMap {
     public void startMapEffect(String msg, int itemId) {
         startMapEffect(msg, itemId, 30000);
     }
-
+    
     public void startMapEffect(String msg, int itemId, long time) {
         if (mapEffect != null) {
             return;
@@ -1504,10 +1504,9 @@ public class MapleMap {
             Calendar cal = Calendar.getInstance();
             chr.getClient().announce((MaplePacketCreator.getClockTime(cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND))));
         }
-        if (hasBoat() == 2) {
-            chr.getClient().announce((MaplePacketCreator.boatPacket(true)));
-        } else if (hasBoat() == 1 && (chr.getMapId() != 200090000 || chr.getMapId() != 200090010)) {
-            chr.getClient().announce(MaplePacketCreator.boatPacket(false));
+        if (hasBoat() > 0) {
+            if(hasBoat() == 1) chr.getClient().announce((MaplePacketCreator.boatPacket(true)));
+            else chr.getClient().announce(MaplePacketCreator.boatPacket(false));
         }
         chr.receivePartyMemberHP();
     }
@@ -2120,7 +2119,7 @@ public class MapleMap {
     }
 
     private int hasBoat() {
-        return docked ? 2 : (boat ? 1 : 0);
+        return !boat ? 0 : (docked ? 1 : 2);
     }
 
     public void setBoat(boolean hasBoat) {
@@ -2433,5 +2432,9 @@ public class MapleMap {
         
         restoreMapSpawnPoints();
         instanceMapFirstSpawn();
+    }
+    
+    public void broadcastShip(final boolean state) {
+        broadcastMessage(MaplePacketCreator.boatPacket(state));
     }
 }

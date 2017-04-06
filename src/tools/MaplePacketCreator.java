@@ -4440,6 +4440,7 @@ public class MaplePacketCreator {
 				   return mplew.getPacket();
 			   }
 
+                           
 			   public static byte[] boatPacket(boolean type) {//don't think this is correct..
 				   final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 				   mplew.writeShort(SendOpcode.CONTI_STATE.getValue());
