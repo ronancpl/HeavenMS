@@ -368,14 +368,14 @@ public class MapleMap {
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
         final int mobpos = mob.getPosition().x;
-        int chServerrate = chr.getDropRate();
+        int chRate = chr.getDropRate();
         Item idrop;
         byte d = 1;
         Point pos = new Point(0, mob.getPosition().y);
 
         Map<MonsterStatus, MonsterStatusEffect> stati = mob.getStati();
         if (stati.containsKey(MonsterStatus.SHOWDOWN)) {
-            chServerrate *= (stati.get(MonsterStatus.SHOWDOWN).getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
+            chRate *= (stati.get(MonsterStatus.SHOWDOWN).getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
         }
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
@@ -383,7 +383,7 @@ public class MapleMap {
 
         Collections.shuffle(dropEntry);
         for (final MonsterDropEntry de : dropEntry) {
-            if (Randomizer.nextInt(999999) < de.chance * chServerrate) {
+            if (Randomizer.nextInt(999999) < de.chance * chRate) {
                 if (droptype == 3) {
                     pos.x = (int) (mobpos + (d % 2 == 0 ? (40 * (d + 1) / 2) : -(40 * (d / 2))));
                 } else {
@@ -418,9 +418,7 @@ public class MapleMap {
                 } else {
                     pos.x = (int) (mobpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
                 }
-                if (de.itemId == 0) {
-                    //chr.getCashShop().gainCash(1, 80);
-                } else {
+                if (de.itemId != 0) {
                     if (ItemConstants.getInventoryType(de.itemId) == MapleInventoryType.EQUIP) {
                         idrop = ii.randomizeStats((Equip) ii.getEquipById(de.itemId));
                     } else {
@@ -538,7 +536,6 @@ public class MapleMap {
                 if (damage > 0) {
                     monster.damage(chr, damage);
                     if (!monster.isAlive()) {  // monster just died
-                        //killMonster(monster, chr, true);
                         killed = true;
                     }
                 } else if (monster.getId() >= 8810002 && monster.getId() <= 8810009) {
@@ -2436,5 +2433,17 @@ public class MapleMap {
     
     public void broadcastShip(final boolean state) {
         broadcastMessage(MaplePacketCreator.boatPacket(state));
+    }
+    
+    public boolean isDojoMap() {
+        return mapid >= 925020000 && mapid < 925040000;
+    }
+    
+    public final void resetFully() {
+        resetFully(true);
+    }
+
+    public final void resetFully(final boolean respawn) {
+        resetMapObjects();
     }
 }

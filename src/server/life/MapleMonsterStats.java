@@ -36,6 +36,7 @@ import tools.Pair;
  * @author Frz
  */
 public class MapleMonsterStats {
+    private boolean changeable;
     private int exp, hp, mp, level, PADamage, PDDamage, MADamage, MDDamage, dropPeriod, cp, buffToGive, removeAfter;
     private boolean boss, undead, ffaLoot, isExplosiveReward, firstAttack, removeOnMiss;
     private String name;
@@ -50,6 +51,14 @@ public class MapleMonsterStats {
     private selfDestruction selfDestruction = null;
     private boolean friendly;
 
+    public void setChange(boolean change) {
+        this.changeable = change;
+    }
+
+    public boolean isChangeable() {
+        return changeable;
+    }
+    
     public int getExp() {
         return exp;
     }

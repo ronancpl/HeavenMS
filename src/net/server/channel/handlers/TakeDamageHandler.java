@@ -30,6 +30,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Corsair;
 
@@ -63,7 +64,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
         int damage = slea.readInt();
         int oid = 0, monsteridfrom = 0, pgmr = 0, direction = 0;
         int pos_x = 0, pos_y = 0, fake = 0;
-        boolean is_pgmr = false, is_pg = true;
+        boolean is_pgmr = false, is_pg = true, is_deadly = false;
         int mpattack = 0;
         MapleMonster attacker = null;
         final MapleMap map = player.getMap();
@@ -111,6 +112,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             if (attackInfo != null) {
 	            if (attackInfo.isDeadlyAttack()) {
 	                mpattack = player.getMp() - 1;
+                        is_deadly = true;
 	            }
 	            mpattack += attackInfo.getMpBurn();
 	            MobSkill skill = MobSkillFactory.getMobSkill(attackInfo.getDiseaseSkill(), attackInfo.getDiseaseLevel());
@@ -142,6 +144,13 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
         if (damage == -1) {
             fake = 4020002 + (player.getJob().getId() / 10 - 40) * 100000;
         }
+        
+        //in dojo player cannot use pot, so deadly attacks should be turned off as well
+        if(is_deadly && player.getMap().isDojoMap() && !ServerConstants.USE_DEADLY_DOJO) {
+            damage = 0;
+            mpattack = 0;
+        }
+        
         if (damage == 0) {
             player.getAutobanManager().addMiss();
         } else {

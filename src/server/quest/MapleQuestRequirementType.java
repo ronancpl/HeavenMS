@@ -76,12 +76,12 @@ public enum MapleQuestRequirementType {
             return INFO_EX;
         } else if (name.equals("questComplete")) {
             return COMPLETED_QUEST;
-		} else if(name.equals("start")) {
-			return START;
-		} else if(name.equals("end")) {
-			return END;
-		} else if(name.equals("daybyday")) {
-			return DAY_BY_DAY;
+	} else if(name.equals("start")) {
+		return START;
+	} else if(name.equals("end")) {
+		return END;
+	} else if(name.equals("daybyday")) {
+		return DAY_BY_DAY;
         } else {
             return UNDEFINED;
         }

@@ -55,6 +55,9 @@ public class ServerConstants {
     public static final double PET_AUTOHP_RATIO = 0.99;         //will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;
     
+    //Should bosses use 1HP,1MP attacks in dojo?
+    public static final boolean USE_DEADLY_DOJO = false;
+    
     //Rates
     public static final int EXP_RATE = 10;
     public static final int MESO_RATE = 10;

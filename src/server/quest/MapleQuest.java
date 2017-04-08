@@ -104,7 +104,7 @@ public class MapleQuest {
         MapleData completeReqData = reqData.getChildByPath("1");
         if (completeReqData != null) {
             for (MapleData completeReq : completeReqData.getChildren()) {
-				MapleQuestRequirementType type = MapleQuestRequirementType.getByWZName(completeReq.getName());
+		MapleQuestRequirementType type = MapleQuestRequirementType.getByWZName(completeReq.getName());
                 MapleQuestRequirement req = this.getRequirement(type, completeReq);
 				if(req == null)
 					continue;
@@ -222,6 +222,10 @@ public class MapleQuest {
 		    for (MapleQuestAction a : completeActs.values()) {
 		        a.run(c, selection);
 		    }
+                    
+                    //dont seems to work...
+                    //c.getClient().getSession().write(MaplePacketCreator.showForeignEffect(12)); // Quest completion
+                    //c.getMap().broadcastMessage(c, MaplePacketCreator.showForeignEffect(c.getId(), 12), false);
 		}
     }
 

@@ -63,7 +63,7 @@ import tools.Pair;
 import tools.Randomizer;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
-
+    private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
     private MapleMonsterStats stats;
     private int hp, mp;
     private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
@@ -956,5 +956,37 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public Map<MonsterStatus, MonsterStatusEffect> getStati() {
         return stati;
+    }
+    
+    // ---- one can always have fun trying these pieces of codes below in-game rofl ----
+    
+    public final ChangeableStats getChangedStats() {
+	return ostats;
+    }
+
+    public final int getMobMaxHp() {
+        if (ostats != null) {
+            return ostats.hp;
+        }
+        return stats.getHp();
+    }
+    
+    public final void setOverrideStats(final OverrideMonsterStats ostats) {
+        this.ostats = new ChangeableStats(stats, ostats);
+        this.hp = ostats.getHp();
+        this.mp = ostats.getMp();
+    }
+	
+    public final void changeLevel(final int newLevel) {
+        changeLevel(newLevel, true);
+    }
+
+    public final void changeLevel(final int newLevel, boolean pqMob) {
+        if (!stats.isChangeable()) {
+            return;
+        }
+        this.ostats = new ChangeableStats(stats, newLevel, pqMob);
+        this.hp = ostats.getHp();
+        this.mp = ostats.getMp();
     }
 }

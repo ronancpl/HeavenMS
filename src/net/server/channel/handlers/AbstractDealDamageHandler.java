@@ -273,15 +273,14 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         Skill pickpocket = SkillFactory.getSkill(ChiefBandit.PICKPOCKET);
                         int delay = 0;
                         final int maxmeso = player.getBuffedValue(MapleBuffStat.PICKPOCKET).intValue();
-                        for (Integer eachd : onedList) {
-							
-							eachd += Integer.MAX_VALUE;
+                        for (Integer eachd : onedList) {				
+                            eachd += Integer.MAX_VALUE;
                             if (pickpocket.getEffect(player.getSkillLevel(pickpocket)).makeChanceResult()) {
-								final Integer eachdf;
-								if(eachd < 0)
-									eachdf = eachd + Integer.MAX_VALUE;
-								else
-									eachdf = eachd;
+				final Integer eachdf;
+				if(eachd < 0)
+					eachdf = eachd + Integer.MAX_VALUE;
+				else
+					eachdf = eachd;
 								
                                 TimerManager.getInstance().schedule(new Runnable() {
                                     @Override

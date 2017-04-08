@@ -30,6 +30,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.script.ScriptException;
 
@@ -61,6 +63,8 @@ public class EventInstanceManager {
 	private MapleExpedition expedition = null;
         private List<Integer> mapIds = new LinkedList<Integer>();
         private List<Boolean> isInstanced = new LinkedList<Boolean>();
+        private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
+        private final Lock rL = mutex.readLock(), wL = mutex.writeLock();
         private boolean disposed = false;
 
 	public EventInstanceManager(EventManager em, String name) {
@@ -78,8 +82,16 @@ public class EventInstanceManager {
 		if (chr == null || !chr.isLoggedin()){
 			return;
 		}
-		try {
-			chars.add(chr);
+                
+                try {
+                        wL.lock();
+                        try {
+                                chars.add(chr);
+                        }
+                        finally {
+                                wL.unlock();
+                        }
+                        
 			chr.setEventInstance(this);
 			em.getIv().invokeFunction("playerEntry", this, chr);
 		} catch (ScriptException | NoSuchMethodException ex) {
@@ -125,7 +137,13 @@ public class EventInstanceManager {
 	}
 
 	public void unregisterPlayer(MapleCharacter chr) {
-		chars.remove(chr);
+                wL.lock();
+                try {
+                    chars.remove(chr);
+                } finally {
+                    wL.unlock();
+                }
+            
 		chr.setEventInstance(null);
 	}
 	
@@ -345,5 +363,38 @@ public class EventInstanceManager {
             mapIds.add(mapid);
             isInstanced.add(false);
             return this.getMapFactory().getMap(mapid);
+        }
+        
+        public final boolean disposeIfPlayerBelow(final byte size, final int towarp) {
+            if (disposed) {
+                return true;
+            }
+            MapleMap map = null;
+            if (towarp > 0) {
+                map = this.getMapFactory().getMap(towarp);
+            }
+
+            wL.lock();
+            try {
+                if (chars != null && chars.size() <= size) {
+                    final List<MapleCharacter> chrs = new LinkedList<MapleCharacter>(chars);
+                    for (MapleCharacter chr : chrs) {
+                        if (chr == null) {
+                            continue;
+                        }
+                        unregisterPlayer(chr);
+                        if (towarp > 0) {
+                            chr.changeMap(map, map.getPortal(0));
+                        }
+                    }
+                    dispose();
+                    return true;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                wL.unlock();
+            }
+            return false;
         }
 }

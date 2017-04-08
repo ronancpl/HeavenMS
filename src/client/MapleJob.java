@@ -123,4 +123,17 @@ public enum MapleJob {
     public boolean isA(MapleJob basejob) {        
         return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
     }
+    
+    public int getJobNiche() {
+        return (jobid / 100) % 10;
+        
+        /*
+        case 0: BEGINNER;
+        case 1: WARRIOR;
+        case 2: MAGICIAN;
+        case 3: BOWMAN;  
+        case 4: THIEF;
+        case 5: PIRATE;
+        */
+    }
 }

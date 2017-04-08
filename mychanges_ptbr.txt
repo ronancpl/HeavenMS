@@ -132,3 +132,9 @@ Correção na API sobre progresso das quests.
 06 Abril 2017,
 Tentativa de correção em casos de falta de respawn em certas areas do jogo.
 Otimização de funções que lidam com popular ou despopular areas.
+
+07 Abril 2017,
+Correção nos métodos que completam quests, que não atribuíam corretamente itens que dependem de jobs.
+Agora é possível variar atributos de mobs a serem spawnados (classes ChangeableStats, OverrideStats).
+Removido ataques letais (1HP/1MP) de bosses em Dojo, que tornava impossível a completude do mesmo.
+Adição de novos scripts de evento no jogo.
