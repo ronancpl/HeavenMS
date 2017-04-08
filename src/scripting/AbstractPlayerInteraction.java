@@ -83,6 +83,10 @@ public class AbstractPlayerInteraction {
 	public MapleCharacter getPlayer() {
 		return c.getPlayer();
 	}
+        
+        public MapleCharacter getChar() {
+		return c.getPlayer();
+	}
 
 	public void warp(int map) {
 		getPlayer().changeMap(getWarpMap(map), getWarpMap(map).getPortal(0));

@@ -3,7 +3,8 @@ Changes from the original v83 WZs:
 Map.wz/MapX/*:
 	Fixed entries of portals placed incorrectly.
 
-Item.wz/Etc:
+Item.wz/*:
+	Fixed lacking "slotMax" properties in some items.
 	Set flag "Quest Item" for Springy Worm.
 
 Quest.wz/*:

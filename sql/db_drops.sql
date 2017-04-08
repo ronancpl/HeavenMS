@@ -18845,6 +18845,7 @@
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
   UPDATE drop_data SET questid=6191 WHERE itemid=4031477;
+  UPDATE drop_data SET questid=6190 WHERE itemid=4001111;
 
   # two items named "Sparta": remove the entries where lv100 Sparta is being dropped by low-level mobs.
   UPDATE IGNORE drop_data SET itemid=1402011 WHERE itemid=1302056 AND dropperid < 8000000;

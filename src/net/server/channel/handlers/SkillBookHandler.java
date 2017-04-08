@@ -64,13 +64,12 @@ public final class SkillBookHandler extends AbstractMaplePacketHandler {
                 canuse = false;
             } else if ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")) {
                 canuse = true;
-                if (Randomizer.nextInt(101) < skilldata.get("success") && skilldata.get("success") != 0) {
+                if (MapleItemInformationProvider.rollSuccessChance(skilldata.get("success"))) {
                     success = true;
-                    
                     player.changeSkillLevel(skill2, player.getSkillLevel(skill2), Math.max(skilldata.get("masterLevel"), player.getMasterLevel(skill2)), -1);
                 } else {
                     success = false;
-                    player.dropMessage("The skill book lights up, but the skill winds up as if nothing happened.");
+                    //player.dropMessage("The skill book lights up, but the skill winds up as if nothing happened.");
                 }
                 MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
             } else {

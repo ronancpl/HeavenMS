@@ -153,14 +153,6 @@ public class MapleMap {
         objectWLock = objectLock.writeLock();
     }
     
-    public ReadLock getCharacterReadLock() {
-        return chrRLock;
-    }
-    
-    public WriteLock getCharacterWriteLock() {
-        return chrWLock;
-    }
-
     public void broadcastMessage(MapleCharacter source, final byte[] packet) {
         chrRLock.lock();
         try {
@@ -1293,9 +1285,11 @@ public class MapleMap {
 
     public void addPlayer(final MapleCharacter chr) {
         chrWLock.lock();
+        chrRLock.lock();
         try {
             characters.add(chr);
         } finally {
+            chrRLock.unlock();
             chrWLock.unlock();
         }
         chr.setMapId(mapid);
@@ -1534,9 +1528,11 @@ public class MapleMap {
 
     public void removePlayer(MapleCharacter chr) {
         chrWLock.lock();
+        chrRLock.lock();
         try {
             characters.remove(chr);
         } finally {
+            chrRLock.unlock();
             chrWLock.unlock();
         }
         removeMapObject(chr.getObjectId());
@@ -1794,7 +1790,13 @@ public class MapleMap {
     }
 
     public Collection<MapleCharacter> getCharacters() {
-        return Collections.unmodifiableCollection(this.characters);
+        chrRLock.lock();
+        try {
+            return Collections.unmodifiableCollection(this.characters);
+        }
+        finally {
+            chrRLock.unlock();
+        }
     }
 
     public MapleCharacter getCharacterById(int id) {
@@ -2068,9 +2070,16 @@ public class MapleMap {
     }
 
     public void respawn() {
-        if (characters.isEmpty()) {
-            return;
+        chrRLock.lock();
+        try {
+            if (characters.isEmpty()) {
+                return;
+            }
         }
+        finally {
+            chrRLock.unlock();
+        }
+        
         short numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
         if (numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
@@ -2227,6 +2236,7 @@ public class MapleMap {
                 if (timeLimit != 0 && timeLimit < System.currentTimeMillis()) {
                     warpEveryone(getForcedReturnId());
                 }
+                
                 if (getCharacters().isEmpty()) {
                     resetReactors();
                     killAllMonsters();
@@ -2263,14 +2273,8 @@ public class MapleMap {
     }
 
     public void warpEveryone(int to) {
-        List<MapleCharacter> players;
-        chrRLock.lock();
-        try {
-            players = new ArrayList<>(getCharacters());
-        } finally {
-            chrRLock.unlock();
-        }
-
+        List<MapleCharacter> players = new ArrayList<>(getCharacters());
+        
         for (MapleCharacter chr : players) {
             chr.changeMap(to);
         }
@@ -2315,7 +2319,6 @@ public class MapleMap {
 
     public void warpOutByTeam(int team, int mapid) {
         List<MapleCharacter> chars = new ArrayList<>(getCharacters());
-
         for (MapleCharacter chr : chars) {
             if (chr != null) {
                 if (chr.getTeam() == team) {

@@ -511,7 +511,7 @@ public class MapleItemInformationProvider {
         return scrollId > 2048999 && scrollId < 2049004;
     }
 
-    private double testYourLuck() {
+    private static double testYourLuck() {
         double result = 100.0, rolled;
         int i, j = ServerConstants.SCROLL_CHANCE_RATE;
         
@@ -524,6 +524,9 @@ public class MapleItemInformationProvider {
         return(result);
     }
     
+    public static boolean rollSuccessChance(double prop) {
+        return(testYourLuck() <= prop && prop > 0.0);
+    }
     
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, boolean isGM) {
         if (equip instanceof Equip) {
@@ -534,7 +537,7 @@ public class MapleItemInformationProvider {
             
             System.out.println("GM: " + isGM + "\tWS: " + usingWhiteScroll + "\tITEM: " + scrollId);
             if (((nEquip.getUpgradeSlots() > 0 || isCleanSlate(scrollId))) || isGM) {
-                if(isGM || testYourLuck() <= stats.get("success")) {
+                if(isGM || rollSuccessChance((double)stats.get("success"))) {
                     short flag = nEquip.getFlag();
                     switch (scrollId) {
                         case 2040727:

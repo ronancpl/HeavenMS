@@ -30,12 +30,16 @@ var status = 0;
 var expedition;
 var player;
 var em;
-var barlog_easy = MapleExpeditionType.BALROG_EASY;
-var barlog_hard = MapleExpeditionType.BALROG_HARD;
+//var barlog_easy = MapleExpeditionType.BALROG_EASY;
+//var barlog_hard = MapleExpeditionType.BALROG_HARD;
 
 function start(){
     status = 0;
-    action(1, 0, 0);
+    
+    cm.sendNext("Hi there. I am #b#nMu Young#n#k, the temple Keeper. This expedition is currently unavailable.");
+    cm.dispose();
+    
+    //action(1, 0, 0);
 }
 
 function action(mode, type, selection) {

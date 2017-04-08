@@ -29,11 +29,20 @@ var matQty;
 var cost;
 var stimID;
 
+var cd_item = 4001078;
+var cd_mats = new Array(4011001,4011002,4001079);
+var cd_matQty = new Array(1,1,1);
+var cd_cost = 25000;
+
 function start() {
     cm.getPlayer().setCS(true);
     var selStr = "A dragon's power is not to be underestimated. If you like, I can add its power to one of your weapons. However, the weapon must be powerful enough to hold its potential...#b"
     var options = new Array("What's a stimulator?","Create a Warrior weapon","Create a Bowman weapon","Create a Magician weapon","Create a Thief weapon","Create a Pirate Weapon",
         "Create a Warrior weapon with a Stimulator","Create a Bowman weapon with a Stimulator","Create a Magician weapon with a Stimulator","Create a Thief weapon with a Stimulator","Create a Pirate Weapon with a Stimulator");
+        
+    if(cm.isQuestStarted(7301)) options.push("Make #t4001078#");
+    
+        
     for (var i = 0; i < options.length; i++){
         selStr += "\r\n#L" + i + "# " + options[i] + "#l";
     }
@@ -49,7 +58,7 @@ function action(mode, type, selection) {
     }
     if (status == 1) {
         selectedType = selection;
-        if (selectedType > 5) {
+        if (selectedType > 5 && selectedType < 11) {
             stimulator = true;
             selectedType -= 5;
         }
@@ -88,15 +97,20 @@ function action(mode, type, selection) {
             }
             cm.sendSimple(selStr);
         } else if (selectedType == 5){ //pirate weapon
-			var selStr = "Very well, then which Pirate weapon shall recieve a dragon's power?#b";
-			var weapon = new Array ("Dragon Slash Claw#k - Lv. 110 Knuckle#b","Dragonfire Revolver#k - Lv. 110 Gun#b");
-			for (var i = 0; i < weapon.length; i++){
-				selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";
-			}
-			cm.sendSimple(selStr);
-	    }
+            var selStr = "Very well, then which Pirate weapon shall recieve a dragon's power?#b";
+            var weapon = new Array ("Dragon Slash Claw#k - Lv. 110 Knuckle#b","Dragonfire Revolver#k - Lv. 110 Gun#b");
+            for (var i = 0; i < weapon.length; i++){
+                    selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";
+            }
+            cm.sendSimple(selStr);
+	}
+        else if (selectedType == 11){ //cornian's dagger
+            var selStr = "Oh, are you trying to sneak into these lizards to save Moira? I will support your cause wherever I can. Bring me a couple of resources and I will make you an almost identical piece of #t4001078#.";
+            cm.sendNext(selStr);
+	}
     } else if (status == 2) {
         selectedItem = selection;
+        
         if (selectedType == 1){ //warrior weapon
             var itemSet = new Array(1302059,1312031,1322052,1402036,1412026,1422028,1432038,1442045);
             var matSet = new Array(new Array(1302056,4000244,4000245,4005000),new Array(1312030,4000244,4000245,4005000),new Array(1322045,4000244,4000245,4005000),new Array(1402035,4000244,4000245,4005000),
@@ -135,15 +149,21 @@ function action(mode, type, selection) {
             matQty = matQtySet[selectedItem];
             cost = costSet[selectedItem];
         } else if (selectedType == 5){ //pirate weapon
-			var itemSet = new Array(1482013,1492013);
-			var matSet = new Array(new Array(1482012,4000244,4000245,4005000,4005002),new Array(1492012,4000244,4000245,4005000,4005002));
-			var matQtySet = new Array(new Array(1,20,25,5,3),new Array(1,20,25,3,5));
-			var costSet = new Array(120000,120000);
-			item = itemSet[selectedItem];
-			mats = matSet[selectedItem];
-			matQty = matQtySet[selectedItem];
-			cost = costSet[selectedItem];
-		}
+            var itemSet = new Array(1482013,1492013);
+            var matSet = new Array(new Array(1482012,4000244,4000245,4005000,4005002),new Array(1492012,4000244,4000245,4005000,4005002));
+            var matQtySet = new Array(new Array(1,20,25,5,3),new Array(1,20,25,3,5));
+            var costSet = new Array(120000,120000);
+            item = itemSet[selectedItem];
+            mats = matSet[selectedItem];
+            matQty = matQtySet[selectedItem];
+            cost = costSet[selectedItem];
+        } else if (selectedType == 11){ //cornian's dagger
+            item = cd_item;
+            mats = cd_mats;
+            matQty = cd_matQty;
+            cost = cd_cost;
+        }
+        
         var prompt = "You want me to make a #t" + item + "#? In that case, I'm going to need specific items from you in order to make it. Make sure you have room in your inventory, though!#b";
         if(stimulator){
             stimID = getStimID(item);
