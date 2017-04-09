@@ -43,9 +43,9 @@ public enum ItemFactory {
     CASH_CYGNUS(4, false),
     CASH_ARAN(5, false),
     MERCHANT(6, false);
-    private int value;
-    private boolean account;
-	private static ReentrantLock lock = new ReentrantLock(true);
+    private final int value;
+    private final boolean account;
+    private static final ReentrantLock lock = new ReentrantLock(true);
 
     private ItemFactory(int value, boolean account) {
         this.value = value;

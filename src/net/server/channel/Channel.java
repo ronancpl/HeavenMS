@@ -27,9 +27,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import net.MapleServerHandler;
@@ -71,7 +73,9 @@ public final class Channel {
     private EventScriptManager eventSM;
     private Map<Integer, HiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
-	private ReentrantReadWriteLock merchant_lock = new ReentrantReadWriteLock(true);
+    private ReentrantReadWriteLock merchant_lock = new ReentrantReadWriteLock(true);
+    private ReadLock merchRlock = merchant_lock.readLock();
+    private WriteLock merchWlock = merchant_lock.writeLock();
     private List<MapleExpedition> expeditions = new ArrayList<>();
     private List<MapleExpeditionType> expedType = new ArrayList<>();
     private MapleEvent event;
@@ -130,8 +134,7 @@ public final class Channel {
     }
 
     public void closeAllMerchants() {
-        WriteLock wlock = merchant_lock.writeLock();
-        wlock.lock();
+        merchWlock.lock();
         try {
             final Iterator<HiredMerchant> hmit = hiredMerchants.values().iterator();
             while (hmit.hasNext()) {
@@ -141,7 +144,7 @@ public final class Channel {
         } catch (Exception e) {
 		e.printStackTrace();
         } finally {
-                wlock.unlock();
+                merchWlock.unlock();
         }
     }
     
@@ -228,28 +231,31 @@ public final class Channel {
     }
 
     public Map<Integer, HiredMerchant> getHiredMerchants() {
-        return hiredMerchants;
+        merchRlock.lock();
+        try {
+            return Collections.unmodifiableMap(hiredMerchants);
+        } finally {
+            merchRlock.unlock();
+        }
     }
 
     public void addHiredMerchant(int chrid, HiredMerchant hm) {
-        WriteLock wlock = merchant_lock.writeLock();
-        wlock.lock();
+        merchWlock.lock();
         try {
             hiredMerchants.put(chrid, hm);
         } finally {
-            wlock.unlock();
+            merchWlock.unlock();
         }
     }
 
     public void removeHiredMerchant(int chrid) {
-        WriteLock wlock = merchant_lock.writeLock();
-        wlock.lock();
+        merchWlock.lock();
         try {        
             hiredMerchants.remove(chrid);
         } finally {
-            wlock.unlock();
+            merchWlock.unlock();
         }
-        }
+    }
 
     public int[] multiBuddyFind(int charIdFrom, int[] characterIds) {
         List<Integer> ret = new ArrayList<>(characterIds.length);

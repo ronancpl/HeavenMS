@@ -138,3 +138,9 @@ Correção nos métodos que completam quests, que não atribuíam corretamente itens 
 Agora é possível variar atributos de mobs a serem spawnados (classes ChangeableStats, OverrideStats).
 Removido ataques letais (1HP/1MP) de bosses em Dojo, que tornava impossível a completude do mesmo.
 Adição de novos scripts de evento no jogo.
+
+08 - 09 Abril 2017,
+Adição de efeito: Zombify.
+Adição da expedição BPQ.
+Aprimoramento de métodos que usam acesso concorrente no projeto.
+Diversas pequenas alterações nos WZs do cliente/servidor.

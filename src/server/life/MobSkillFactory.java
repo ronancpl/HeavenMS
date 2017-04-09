@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -42,20 +44,22 @@ public class MobSkillFactory {
     private static Map<String, MobSkill> mobSkills = new HashMap<String, MobSkill>();
     private final static MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
     private static MapleData skillRoot = dataSource.getData("MobSkill.img");
-    private static ReentrantReadWriteLock dataLock = new ReentrantReadWriteLock();
+    private final static ReentrantReadWriteLock dataLock = new ReentrantReadWriteLock();
+    private final static ReadLock rL = dataLock.readLock();
+    private final static WriteLock wL = dataLock.writeLock();
 
     public static MobSkill getMobSkill(final int skillId, final int level) {
         final String key = skillId + "" + level;
-        dataLock.readLock().lock();
+        rL.lock();
         try {
             MobSkill ret = mobSkills.get(key);
             if (ret != null) {
                 return ret;
             }
         } finally {
-            dataLock.readLock().unlock();
+            rL.unlock();
         }
-        dataLock.writeLock().lock();
+        wL.lock();
         try {
             MobSkill ret;
             ret = mobSkills.get(key);
@@ -103,7 +107,7 @@ public class MobSkillFactory {
             }
             return ret;
         } finally {
-            dataLock.writeLock().unlock();
+            wL.unlock();
         }
     }
 }

@@ -24325,11 +24325,16 @@
   <imgdir name="2244">
     <imgdir name="0">
       <int name="npc" value="1061017"/>
-      <int name="lvmin" value="10"/>
+      <int name="lvmin" value="50"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1061017"/>
-      <string name="endscript" value="q2244e"/>
+      <imgdir name="mob">
+        <imgdir name="0">
+          <int name="count" value="200"/>
+          <int name="id" value="8830003"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="2245">

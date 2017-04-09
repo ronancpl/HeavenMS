@@ -26,13 +26,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 public class PlayerStorage {
-    private final ReentrantReadWriteLock locks = new ReentrantReadWriteLock();
-    private final Lock rlock = locks.readLock();
-    private final Lock wlock = locks.writeLock();
+    private final ReentrantReadWriteLock locks = new ReentrantReadWriteLock(true);
+    private final ReadLock rlock = locks.readLock();
+    private final WriteLock wlock = locks.writeLock();
     private final Map<Integer, MapleCharacter> storage = new LinkedHashMap<>();
 
     public void addPlayer(MapleCharacter chr) {
@@ -76,7 +77,7 @@ public class PlayerStorage {
     }
 
     public Collection<MapleCharacter> getAllCharacters() {
-        rlock.lock();    
+        rlock.lock();
         try {
             return storage.values();
         } finally {
@@ -98,6 +99,11 @@ public class PlayerStorage {
     }
     
     public int getSize(){
-    	return storage.size();
+        rlock.lock();
+        try {
+            return storage.size();
+        } finally {
+            rlock.unlock();
+        }
     }
 }

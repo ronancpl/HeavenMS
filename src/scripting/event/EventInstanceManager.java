@@ -30,8 +30,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import javax.script.ScriptException;
 
@@ -64,7 +65,8 @@ public class EventInstanceManager {
         private List<Integer> mapIds = new LinkedList<Integer>();
         private List<Boolean> isInstanced = new LinkedList<Boolean>();
         private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
-        private final Lock rL = mutex.readLock(), wL = mutex.writeLock();
+        private final ReadLock rL = mutex.readLock();
+        private final WriteLock wL = mutex.writeLock();
         private boolean disposed = false;
 
 	public EventInstanceManager(EventManager em, String name) {
@@ -148,11 +150,23 @@ public class EventInstanceManager {
 	}
 	
 	public int getPlayerCount() {
-		return chars.size();
+                rL.lock();
+                try {
+                    return chars.size();
+                }
+                finally {
+                    rL.unlock();
+                }
 	}
 
 	public List<MapleCharacter> getPlayers() {
-		return new ArrayList<>(chars);
+                rL.lock();
+                try {
+                    return new ArrayList<>(chars);
+                }
+                finally {
+                    rL.unlock();
+                }
 	}
 
 	public void registerMonster(MapleMonster mob) {
@@ -247,7 +261,14 @@ public class EventInstanceManager {
         } catch (ScriptException | NoSuchMethodException ex) {
             ex.printStackTrace();
         }
-        chars.clear();
+        
+        wL.lock();
+        try {
+            chars.clear();
+        } finally {
+            wL.unlock();
+        }
+        
         mobs.clear();
         killCount.clear();
         mapFactory = null;
@@ -374,11 +395,10 @@ public class EventInstanceManager {
                 map = this.getMapFactory().getMap(towarp);
             }
 
-            wL.lock();
+            rL.lock();
             try {
                 if (chars != null && chars.size() <= size) {
-                    final List<MapleCharacter> chrs = new LinkedList<MapleCharacter>(chars);
-                    for (MapleCharacter chr : chrs) {
+                    for (MapleCharacter chr : chars) {
                         if (chr == null) {
                             continue;
                         }
@@ -393,7 +413,7 @@ public class EventInstanceManager {
             } catch (Exception ex) {
                 ex.printStackTrace();
             } finally {
-                wL.unlock();
+                rL.unlock();
             }
             return false;
         }

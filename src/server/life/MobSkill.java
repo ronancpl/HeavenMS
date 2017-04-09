@@ -274,7 +274,7 @@ public class MobSkill {
                 }
                 break;
               default:
-            	  System.out.println("Unhandeled Mob skill: " + skillId);
+            	  System.out.println("Unhandled Mob skill: " + skillId);
             	  break;
         }
 		if (stats.size() > 0) {

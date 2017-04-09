@@ -81,7 +81,6 @@ import tools.Pair;
 import tools.Randomizer;
 
 public class MapleMap {
-
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
     private Map<Integer, MapleMapObject> mapobjects = new LinkedHashMap<>();
     private Collection<SpawnPoint> monsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
@@ -875,7 +874,13 @@ public class MapleMap {
     }
 
     public Collection<MapleMapObject> getMapObjects() {
-        return Collections.unmodifiableCollection(mapobjects.values());
+        objectRLock.lock();
+        try {
+            return Collections.unmodifiableCollection(mapobjects.values());
+        }
+        finally {
+            objectRLock.unlock();
+        }
     }
 
     public boolean containsNPC(int npcid) {
@@ -898,7 +903,12 @@ public class MapleMap {
     }
 
     public MapleMapObject getMapObject(int oid) {
-        return mapobjects.get(oid);
+        objectRLock.lock();
+        try {
+            return mapobjects.get(oid);
+        } finally {
+            objectRLock.unlock();
+        }
     }
 
     /**
@@ -1285,11 +1295,9 @@ public class MapleMap {
 
     public void addPlayer(final MapleCharacter chr) {
         chrWLock.lock();
-        chrRLock.lock();
         try {
             characters.add(chr);
         } finally {
-            chrRLock.unlock();
             chrWLock.unlock();
         }
         chr.setMapId(mapid);
@@ -1528,11 +1536,9 @@ public class MapleMap {
 
     public void removePlayer(MapleCharacter chr) {
         chrWLock.lock();
-        chrRLock.lock();
         try {
             characters.remove(chr);
         } finally {
-            chrRLock.unlock();
             chrWLock.unlock();
         }
         removeMapObject(chr.getObjectId());
@@ -1841,6 +1847,8 @@ public class MapleMap {
         player.setPosition(newPosition);
         Collection<MapleMapObject> visibleObjects = player.getVisibleMapObjects();
         MapleMapObject[] visibleObjectsNow = visibleObjects.toArray(new MapleMapObject[visibleObjects.size()]);
+        
+        objectRLock.lock();
         try {
             for (MapleMapObject mo : visibleObjectsNow) {
                 if (mo != null) {
@@ -1853,7 +1861,10 @@ public class MapleMap {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            objectRLock.unlock();
         }
+        
         for (MapleMapObject mo : getMapObjectsInRange(player.getPosition(), 722500, rangedMapobjectTypes)) {
             if (!player.isMapObjectVisible(mo)) {
                 mo.sendSpawnData(player.getClient());
@@ -2399,17 +2410,22 @@ public class MapleMap {
     }
 
     public void toggleHiddenNPC(int id) {
-        for (MapleMapObject obj : mapobjects.values()) {
-            if (obj.getType() == MapleMapObjectType.NPC) {
-                MapleNPC npc = (MapleNPC) obj;
-                if (npc.getId() == id) {
-                    npc.setHide(!npc.isHidden());
-                    if (!npc.isHidden()) //Should only be hidden upon changing maps
-                    {
-                        broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+        objectRLock.lock();
+        try {
+            for (MapleMapObject obj : mapobjects.values()) {
+                if (obj.getType() == MapleMapObjectType.NPC) {
+                    MapleNPC npc = (MapleNPC) obj;
+                    if (npc.getId() == id) {
+                        npc.setHide(!npc.isHidden());
+                        if (!npc.isHidden()) //Should only be hidden upon changing maps
+                        {
+                            broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+                        }
                     }
                 }
             }
+        } finally {
+            objectRLock.unlock();
         }
     }
 

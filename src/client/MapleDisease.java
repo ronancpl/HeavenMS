@@ -26,6 +26,7 @@ public enum MapleDisease {
     SLOW(0x1),
     SEDUCE(0x80),
     FISHABLE(0x100),
+    ZOMBIFY(0x4000),
     CONFUSE(0x80000),
     STUN(0x2000000000000L),
     POISON(0x4000000000000L),
