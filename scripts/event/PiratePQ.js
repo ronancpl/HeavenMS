@@ -1,3 +1,4 @@
+var isPq = true;
 var minPlayers = 1;
 
 function init() {
@@ -27,10 +28,10 @@ em.setProperty("state", "1");
 		eim.registerMonster(mob2);
 		eim.registerMonster(mob3);
 		eim.registerMonster(mob4);
-		mob.changeLevel(level);
-		mob2.changeLevel(level);
-		mob3.changeLevel(level);
-		mob4.changeLevel(level);
+		mob.changeDifficulty(level,isPq);
+		mob2.changeDifficulty(level,isPq);
+		mob3.changeDifficulty(level,isPq);
+		mob4.changeDifficulty(level,isPq);
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(430, 75));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1600, 75));
 		map.spawnMonsterOnGroundBelow(mob3, new java.awt.Point(430, 238));
@@ -43,8 +44,8 @@ em.setProperty("state", "1");
 		var mob2 = em.getMonster(9300113);
 		eim.registerMonster(mob);
 		eim.registerMonster(mob2);
-		mob.changeLevel(level);
-		mob2.changeLevel(level);
+		mob.changeDifficulty(level,isPq);
+		mob2.changeDifficulty(level,isPq);
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, 238));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1700, 238));
 	}
@@ -60,10 +61,10 @@ em.setProperty("state", "1");
 		eim.registerMonster(mob2);
 		eim.registerMonster(mob3);
 		eim.registerMonster(mob4);
-		mob.changeLevel(level);
-		mob2.changeLevel(level);
-		mob3.changeLevel(level);
-		mob4.changeLevel(level);
+		mob.changeDifficulty(level,isPq);
+		mob2.changeDifficulty(level,isPq);
+		mob3.changeDifficulty(level,isPq);
+		mob4.changeDifficulty(level,isPq);
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(430, 75));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1600, 75));
 		map.spawnMonsterOnGroundBelow(mob3, new java.awt.Point(430, 238));
@@ -76,8 +77,8 @@ em.setProperty("state", "1");
 		var mob2 = em.getMonster(9300113);
 		eim.registerMonster(mob);
 		eim.registerMonster(mob2);
-		mob.changeLevel(level);
-		mob2.changeLevel(level);
+		mob.changeDifficulty(level,isPq);
+		mob2.changeDifficulty(level,isPq);
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, 238));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1700, 238));
 	}

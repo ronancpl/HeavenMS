@@ -119,6 +119,9 @@ property settings must follow these:
 	- Run as an administrator;
 	- Opening "lolwut.exe", use Fraysa's method.
 
+Alternatively, there is available the No-Damage Cap version of the MapleStory client. Just extract and use the
+"localhost.exe" from the one package with the given name.
+
 ---- Important note about CLIENT EDITING ----
 
 DO NOT USE the server's XMLs for reimporting into the client's WZ, it WILL generate some kind of bugs afterwards.

@@ -711,7 +711,7 @@ public class MapleMap {
 
     public void killAllMonsters() {
         for (SpawnPoint spawnPoint : monsterSpawn) {
-            spawnPoint.denySpawn(true);
+            spawnPoint.setDenySpawn(true);
         }
         
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
@@ -2051,10 +2051,14 @@ public class MapleMap {
         }
     }
     
-    public void instanceMapFirstSpawn() {
+    public void instanceMapFirstSpawn(int difficulty, boolean isPq) {
         for(SpawnPoint spawnPoint: allMonsterSpawn) {
-            if(spawnPoint.getMobTime() == -1)   //just those allowed to be spawned only once
-                spawnMonster(spawnPoint.getMonster());
+            if(spawnPoint.getMobTime() == -1) {   //just those allowed to be spawned only once
+                MapleMonster monst = spawnPoint.getMonster();
+                monst.changeLevelByDifficulty(difficulty, isPq);
+                
+                spawnMonster(monst);
+            }
         }
     }
 
@@ -2076,7 +2080,7 @@ public class MapleMap {
     
     public void restoreMapSpawnPoints() {
         for (SpawnPoint spawnPoint : monsterSpawn) {
-            spawnPoint.denySpawn(false);
+            spawnPoint.setDenySpawn(false);
         }
     }
 
@@ -2145,6 +2149,10 @@ public class MapleMap {
 
     public void setDocked(boolean isDocked) {
         this.docked = isDocked;
+    }
+    
+    public boolean getDocked() {
+        return this.docked;
     }
 
     public void broadcastGMMessage(MapleCharacter source, final byte[] packet, boolean repeatToSource) {
@@ -2444,25 +2452,39 @@ public class MapleMap {
     }
     
     public void resetMapObjects() {
+        resetMapObjects(1, false);
+    }
+    
+    public final void resetFully() {
+        resetMapObjects();
+    }
+    
+    public void resetPQ(int difficulty) {
+        resetMapObjects(difficulty, true);
+    }
+    
+    public void resetPQ() {
+        resetMapObjects(1, true);
+    }
+    
+    public void resetMapObjects(int difficulty, boolean isPq) {
         clearMapObjects();
         
         restoreMapSpawnPoints();
-        instanceMapFirstSpawn();
+        instanceMapFirstSpawn(difficulty, isPq);
     }
     
     public void broadcastShip(final boolean state) {
         broadcastMessage(MaplePacketCreator.boatPacket(state));
+        this.setDocked(state);
+    }
+    
+    public void broadcastEnemyShip(final boolean state) {
+        broadcastMessage(MaplePacketCreator.crogBoatPacket(state));
+        this.setDocked(state);
     }
     
     public boolean isDojoMap() {
         return mapid >= 925020000 && mapid < 925040000;
-    }
-    
-    public final void resetFully() {
-        resetFully(true);
-    }
-
-    public final void resetFully(final boolean respawn) {
-        resetMapObjects();
     }
 }

@@ -4440,8 +4440,15 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] crogBoatPacket(boolean type) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CONTI_MOVE.getValue());
+                mplew.write(10);
+                mplew.write(type ? 4 : 5);
+                return mplew.getPacket();
+        }
 
-        public static byte[] boatPacket(boolean type) {//don't think this is correct..
+        public static byte[] boatPacket(boolean type) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CONTI_STATE.getValue());
                 mplew.write(type ? 1 : 2);

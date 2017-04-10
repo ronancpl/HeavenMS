@@ -21,7 +21,7 @@
 
 var toMap = new Array(211040200, 220050300, 220000000,240030000);
 var inMap = new Array(211000000, 220000000, 221000000, 240000000);
-var cost = new Array(10000, 25000, 25000,55000);
+var cost = new Array(10000, 25000, 25000, 65000);
 var location;
 var status = 0;
 

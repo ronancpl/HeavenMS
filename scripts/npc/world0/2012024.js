@@ -28,7 +28,7 @@ function start() {
 
 function action(mode, type, selection) {
     if (status == 0) {
-        cm.sendYesNo("Do you wish to go to leave the genie?");
+        cm.sendYesNo("Do you wish to leave the genie?");
         status++;
     } else {
         if (mode < 1) {

@@ -1,6 +1,6 @@
 /*
 This file is part of the OdinMS Maple Story Server
-Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc> 
+Copyright (C) 2008 ~ 2010 Patrick Huy <patrick.huy@frz.cc>
 Matthias Butz <matze@odinms.de>
 Jan Christian Meyer <vimes@odinms.de>
 This program is free software: you can redistribute it and/or modify
@@ -46,5 +46,9 @@ public class ChangeableStats extends OverrideMonsterStats {
         wdef = Math.min(stats.isBoss() ? 30 : 20, (int) Math.round(stats.getPDDamage() * mod));
         mdef = Math.min(stats.isBoss() ? 30 : 20, (int) Math.round(stats.getMDDamage() * mod));
         level = newLevel;
+    }
+
+    public ChangeableStats(MapleMonsterStats stats, float statModifier, boolean pqMob) {
+        this(stats, (int)(statModifier * stats.getLevel()), pqMob);
     }
 }

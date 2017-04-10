@@ -49,7 +49,7 @@ public class SpawnPoint {
         return spawnedMonsters.intValue();
     }
     
-    public void denySpawn(boolean val) {
+    public void setDenySpawn(boolean val) {
         spawnedMonsters.set((val == false) ? 0 : 1);
     }
 

@@ -174,6 +174,16 @@ public class EventManager {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    //PQ method: starts a PQ with a difficulty level, requires function setup(difficulty, leaderid) instead of setup()
+    public void startInstance(MapleParty party, MapleMap map, int difficulty) {
+        try {
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, party.getLeader().getId()));
+            eim.registerParty(party, map);
+        } catch (ScriptException | NoSuchMethodException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     //non-PQ method for starting instance
     public void startInstance(EventInstanceManager eim, String leader) {

@@ -29,7 +29,7 @@
 var status = 0;
 
 function start() {
-    cm.sendYesNo("Do you wish to go to leave the boat?");
+    cm.sendYesNo("Do you wish to leave the boat?");
 }
 
 function action(mode, type, selection) {

@@ -50,7 +50,7 @@ function action(mode, type, selection) {
 		while (it.hasNext()) {
 			var cPlayer = it.next();
 			var ccPlayer = cm.getPlayer().getMap().getCharacterById(cPlayer.getId());
-			if (ccPlayer == null || ccPlayer.getLevel() < 70 || ccPlayer.getLevel() > 255) {
+			if (ccPlayer == null || ccPlayer.getLevel() < 44 || ccPlayer.getLevel() > 55) {
 				next = false;
 				break;
 			}
@@ -61,10 +61,10 @@ function action(mode, type, selection) {
 			if (em == null) {
 				cm.sendOk("Please try again later.");
 			} else {
-				em.startInstance(cm.getPlayer().getParty(), cm.getPlayer().getMap(), 120);
+				em.startInstance(cm.getPlayer().getParty(), cm.getPlayer().getMap(), 1);    //common level only
 			}
 		} else {
-			cm.sendOk("All 2+ members of your party must be here and above level 70.");
+			cm.sendOk("All 2+ members of your party must be here and between level 44 and 55.");
 		}
 	    }
 	}

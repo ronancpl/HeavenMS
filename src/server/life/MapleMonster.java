@@ -981,4 +981,24 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         this.hp = ostats.getHp();
         this.mp = ostats.getMp();
     }
+    
+    private float getDifficultyRate(final int difficulty) {
+        switch(difficulty) {
+            case 6: return(7.7f);
+            case 5: return(5.6f);
+            case 4: return(3.2f);
+            case 3: return(2.1f);
+            case 2: return(1.4f);
+        }
+        
+        return(1.0f);
+    }
+    
+    public final void changeLevelByDifficulty(final int difficulty, boolean pqMob) {
+        changeLevel((int)(this.getLevel() * getDifficultyRate(difficulty)), pqMob);
+    }
+    
+    public final void changeDifficulty(final int difficulty, boolean pqMob) {
+        changeLevelByDifficulty(difficulty, pqMob);
+    }
 }

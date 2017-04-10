@@ -1,14 +1,14 @@
 var minPlayers = 2;
 
 function init() {
-em.setProperty("state", "0");
+        em.setProperty("state", "0");
 	em.setProperty("leader", "true");
 }
 
 function setup(level, leaderid) {
-em.setProperty("state", "1");
+        em.setProperty("state", "1");
 	em.setProperty("leader", "true");
-    var eim = em.newInstance("Ellin" + leaderid);
+        var eim = em.newInstance("Ellin" + leaderid);
 
         eim.setInstanceMap(930000000).resetPQ(level);
 	eim.setInstanceMap(930000100).resetPQ(level);
@@ -21,21 +21,20 @@ em.setProperty("state", "1");
 	eim.setInstanceMap(930000600).resetPQ(level);
 	eim.setInstanceMap(930000700).resetPQ(level);
 
-    eim.startEventTimer(1200000); //20 mins
-    return eim;
+        eim.startEventTimer(20 * 60000); //20 mins
+        return eim;
 }
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(0);
-    player.changeMap(map, map.getPortal(0));
-    player.tryPartyQuest(1206);
+        var map = eim.getMapInstance(0);
+        player.changeMap(map, map.getPortal(0));
 }
 
 function playerRevive(eim, player) {
 }
 
 function scheduledTimeout(eim) {
-    end(eim);
+        end(eim);
 }
 
 function changedMap(eim, player, mapid) {
@@ -68,8 +67,8 @@ function playerExit(eim, player) {
 
 function end(eim) {
     eim.disposeIfPlayerBelow(100, 930000800);
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
 
 function clearPQ(eim) {
