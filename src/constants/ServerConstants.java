@@ -24,6 +24,7 @@ public class ServerConstants {
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
     //Gameplay Configurations
+    public static final boolean USE_MAXRANGE = true;            //will send and receive packets from all events of a map.
     public static final boolean USE_DEBUG = true;
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;

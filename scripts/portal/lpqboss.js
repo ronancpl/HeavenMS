@@ -25,7 +25,7 @@ LudiPQ - 1 - 2 Portal
 
 function enter(pi) {
 	var nextMap = 922010900;
-	var eim = pi.getPlayer().getEventInstance()
+	var eim = pi.getPlayer().getEventInstance();
 	var target = eim.getMapInstance(nextMap);
 	var targetPortal = target.getPortal("st00");
 	// only let people through if the eim is ready
@@ -33,7 +33,8 @@ function enter(pi) {
 	if (avail == null) {
 		// can't go thru eh?
 		pi.getPlayer().dropMessage(5, "Some seal is blocking this door.");
-		return false;	}
+		return false;
+        }
 	else {
 		pi.getPlayer().changeMap(target, targetPortal);
 		return true;

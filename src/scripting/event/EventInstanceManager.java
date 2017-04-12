@@ -256,27 +256,27 @@ public class EventInstanceManager {
 	}
 
 	public void dispose() {
-        try {
-            em.getIv().invokeFunction("dispose", this);
-        } catch (ScriptException | NoSuchMethodException ex) {
-            ex.printStackTrace();
-        }
-        
-        wL.lock();
-        try {
-            chars.clear();
-        } finally {
-            wL.unlock();
-        }
-        
-        mobs.clear();
-        killCount.clear();
-        mapFactory = null;
-        if (expedition != null) {
-                em.getChannelServer().getExpeditions().remove(expedition);
-        }
-        em.disposeInstance(name);
-        em = null;
+            try {
+                em.getIv().invokeFunction("dispose", this);
+            } catch (ScriptException | NoSuchMethodException ex) {
+                ex.printStackTrace();
+            }
+
+            wL.lock();
+            try {
+                chars.clear();
+            } finally {
+                wL.unlock();
+            }
+
+            mobs.clear();
+            killCount.clear();
+            mapFactory = null;
+            if (expedition != null) {
+                    em.getChannelServer().getExpeditions().remove(expedition);
+            }
+            em.disposeInstance(name);
+            em = null;
 	}
 
 	public MapleMapFactory getMapFactory() {

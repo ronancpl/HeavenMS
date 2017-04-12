@@ -78,7 +78,7 @@ function action(mode, type, selection) {
                         cm.dispose();
                     }
                     else {
-                        em.startInstance(cm.getParty(),cm.getPlayer().getMap());
+                        em.startInstance(cm.getParty(),cm.getPlayer().getMap(), 1);
                         party = cm.getParty().getMembers();
                     }
                     cm.dispose();

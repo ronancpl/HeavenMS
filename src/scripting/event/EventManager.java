@@ -38,6 +38,9 @@ import net.server.world.MapleParty;
 import server.TimerManager;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
+import server.life.MapleMonster;
+import server.life.MapleLifeFactory;
+
 import client.MapleCharacter;
 
 /**
@@ -193,5 +196,9 @@ public class EventManager {
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public MapleMonster getMonster(int mid) {
+        return(MapleLifeFactory.getMonster(mid));
     }
 }

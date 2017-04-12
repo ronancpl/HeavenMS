@@ -87,6 +87,10 @@ public class AbstractPlayerInteraction {
         public MapleCharacter getChar() {
 		return c.getPlayer();
 	}
+        
+        public MapleMap getMap() {
+                return c.getPlayer().getMap();
+        }
 
 	public void warp(int map) {
 		getPlayer().changeMap(getWarpMap(map), getWarpMap(map).getPortal(0));
@@ -141,6 +145,14 @@ public class AbstractPlayerInteraction {
 	public MapleMap getMap(int map) {
 		return getWarpMap(map);
 	}
+        
+        public int countAllMonstersOnMap(int map) {
+                return getMap(map).countAllMonsters();
+        }
+        
+        public int countMonster() {
+            return getPlayer().getMap().countAllMonsters();
+        }
         
         public void resetMapObjects(int mapid) {
                 getWarpMap(mapid).resetMapObjects();
@@ -649,10 +661,6 @@ public class AbstractPlayerInteraction {
 			getMap(mapid).removeMapObject(i);
 			getMap(mapid).broadcastMessage(MaplePacketCreator.removeItemFromMap(i.getObjectId(), 0, c.getPlayer().getId()));
 		}
-	}
-
-	public void sendClock(MapleClient d, int time) {
-		d.announce(MaplePacketCreator.getClock((int) (time - System.currentTimeMillis()) / 1000));
 	}
 
 	public void useItem(int id) {

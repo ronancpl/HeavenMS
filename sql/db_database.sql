@@ -12786,8 +12786,8 @@ CREATE TABLE IF NOT EXISTS `drop_data_global` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`, `comments`) VALUES
-(1, 0, 0, 4031865, 1, 1, 0, 125000, 'NX Card 100 PTS'),
-(2, 0, 0, 4031866, 1, 1, 0, 78000, 'NX Card 250 PTS'),
+(1, 0, 0, 4031865, 1, 1, 0, 40000, 'NX Card 100 PTS'),
+(2, 0, 0, 4031866, 1, 1, 0, 25000, 'NX Card 250 PTS'),
 (3, 0, 0, 4001126, 1, 2, 0, 10000, 'Maple Leaves'),
 (4, 0, 0, 2049100, 1, 1, 0, 1500, 'Chaos Scroll 60%'),
 (5, 0, 0, 4001006, 1, 1, 0, 12000, 'Flaming Feather');

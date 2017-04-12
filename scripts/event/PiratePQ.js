@@ -1,20 +1,26 @@
 var isPq = true;
 var minPlayers = 1;
+var entryMap = 925100000;
+var exitMap = 925100700;
 
 function init() {
-em.setProperty("state", "0");
+        em.setProperty("state", "0");
 	em.setProperty("leader", "true");
 }
 
 function setup(level, leaderid) {
-em.setProperty("state", "1");
+        em.setProperty("state", "1");
 	em.setProperty("leader", "true");
-    var eim = em.newInstance("Pirate" + leaderid);
+        var eim = em.newInstance("Pirate" + leaderid);
 	em.setProperty("stage2", "0");
-	em.setProperty("stage2a", "0");
+        em.setProperty("stage2a", "0");
 	em.setProperty("stage3a", "0");
+        em.setProperty("stage2b", "0");
+	em.setProperty("stage3b", "0");
 	em.setProperty("stage4", "0");
 	em.setProperty("stage5", "0");
+        em.setProperty("level", level);
+        em.setProperty("openedChests", "0");
         eim.setInstanceMap(925100000).resetPQ(level);
 	eim.setInstanceMap(925100100).resetPQ(level);
 	var map = eim.setInstanceMap(925100200);
@@ -85,22 +91,25 @@ em.setProperty("state", "1");
 	eim.setInstanceMap(925100302).resetPQ(level);
 	eim.setInstanceMap(925100400).resetPQ(level);
 	eim.setInstanceMap(925100500).resetPQ(level);
-
-    eim.startEventTimer(1200000); //20 mins
-    return eim;
+        
+        respawnStg4(eim);
+        eim.startEventTimer(1200000); //20 mins
+        return eim;
 }
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(0);
+    var map = eim.getMapInstance(entryMap);
     player.changeMap(map, map.getPortal(0));
-    player.tryPartyQuest(1204);
-}
-
-function playerRevive(eim, player) {
 }
 
 function scheduledTimeout(eim) {
     end(eim);
+}
+
+function removePlayer(eim, player) {
+    eim.unregisterPlayer(player);
+    player.getMap().removePlayer(player);
+    player.setMap(exitMap);
 }
 
 function changedMap(eim, player, mapid) {
@@ -114,42 +123,86 @@ function changedMap(eim, player, mapid) {
     }
 }
 
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) { // player presses ok on the death pop up.
+    if (eim.isLeader(player) || party.size() <= minPlayers) { // Check for party leader
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++)
+            playerExit(eim, party.get(i));
+        eim.dispose();
+    } else
+        playerExit(eim, player);
+}
+
+
 function playerDisconnected(eim, player) {
-    return 0;
+    var party = eim.getPlayers();
+    if (eim.isLeader(player) || party.size() < minPlayers) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++)
+            if (party.get(i).equals(player))
+                removePlayer(eim, player);
+            else
+                playerExit(eim, party.get(i));
+        eim.dispose();
+    } else
+        removePlayer(eim, player);
+}
+
+function leftParty(eim, player) {
+    var party = eim.getPlayers();
+    if (party.size() < minPlayers) {
+        for (var i = 0; i < party.size(); i++)
+            playerExit(eim,party.get(i));
+        eim.dispose();
+    } else
+        playerExit(eim, player);
+}
+
+function disbandParty(eim) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
+    }
+    eim.dispose();
+}
+
+function playerExit(eim, player) {
+    eim.unregisterPlayer(player);
+    player.changeMap(exitMap, exitMap.getPortal(0));
 }
 
 function monsterValue(eim, mobId) {
     return 1;
 }
 
-function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-
-    if (eim.disposeIfPlayerBelow(0, 0)) {
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
-}
-
 function end(eim) {
-    eim.disposeIfPlayerBelow(100, 925100700);
-	em.setProperty("state", "0");
-		em.setProperty("leader", "true");
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
+    }
+    eim.dispose();
 }
 
 function clearPQ(eim) {
     end(eim);
 }
 
-function allMonstersDead(eim) {
+function allMonstersDead(eim) {}
+
+function cancelSchedule() {}
+
+function respawnStg4(eim) {
+        //if(em.getProperty("stage4") == "0") {
+                eim.getMapInstance(925100400).instanceMapRespawn();
+                em.schedule("respawnStg4", eim, 10 * 1000);
+        //}
 }
 
-function leftParty (eim, player) {
-    // If only 2 players are left, uncompletable:
-	end(eim);
+function dispose(eim) {
+    em.cancelSchedule();
+    
+    em.setProperty("state", "0");
+    em.setProperty("leader", "true");
 }
-function disbandParty (eim) {
-	end(eim);
-}
-function playerDead(eim, player) {}
-function cancelSchedule() {}

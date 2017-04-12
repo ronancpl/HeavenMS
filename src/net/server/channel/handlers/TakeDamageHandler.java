@@ -49,6 +49,7 @@ import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -69,42 +70,49 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
         MapleMonster attacker = null;
         final MapleMap map = player.getMap();
         if (damagefrom != -3 && damagefrom != -4) {
-        	monsteridfrom = slea.readInt();
-	        oid = slea.readInt();
-            attacker = (MapleMonster) map.getMapObject(oid);
-            List<loseItem> loseItems;
-            if (attacker != null) {
-                if (attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
-                    return;
-                }
-                if (damage > 0) {
-                    loseItems = map.getMonsterById(monsteridfrom).getStats().loseItem();
-                    if (loseItems != null) {
-                        MapleInventoryType type;
-                        final int playerpos = player.getPosition().x;
-                        byte d = 1;
-                        Point pos = new Point(0, player.getPosition().y);
-                        for (loseItem loseItem : loseItems) {
-                            type = MapleItemInformationProvider.getInstance().getInventoryType(loseItem.getId());
-                            for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
-                                if (Randomizer.nextInt(101) >= loseItem.getChance()) {
-                                    if (player.haveItem(loseItem.getId())) {
-                                        pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
-                                        MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
-                                        map.spawnItemDrop(c.getPlayer(), c.getPlayer(), new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, player.getPosition()), true, true);
-                                        d++;
-                                    } else {
-                                        break;
+            monsteridfrom = slea.readInt();
+	    oid = slea.readInt();
+            
+            try {
+                attacker = (MapleMonster) map.getMapObject(oid);
+                List<loseItem> loseItems;
+                if (attacker != null) {
+                    if (attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
+                        return;
+                    }
+                    if (damage > 0) {
+                        loseItems = map.getMonsterById(monsteridfrom).getStats().loseItem();
+                        if (loseItems != null) {
+                            MapleInventoryType type;
+                            final int playerpos = player.getPosition().x;
+                            byte d = 1;
+                            Point pos = new Point(0, player.getPosition().y);
+                            for (loseItem loseItem : loseItems) {
+                                type = MapleItemInformationProvider.getInstance().getInventoryType(loseItem.getId());
+                                for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
+                                    if (Randomizer.nextInt(101) >= loseItem.getChance()) {
+                                        if (player.haveItem(loseItem.getId())) {
+                                            pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
+                                            MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
+                                            map.spawnItemDrop(c.getPlayer(), c.getPlayer(), new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, player.getPosition()), true, true);
+                                            d++;
+                                        } else {
+                                            break;
+                                        }
                                     }
                                 }
                             }
+                            map.removeMapObject(attacker);
                         }
-                        map.removeMapObject(attacker);
                     }
+                } else {
+                    return;
                 }
-            } else {
-                return;
+            } catch(ClassCastException e) {
+                e.printStackTrace();
+                FilePrinter.print(FilePrinter.EXCEPTION_CAUGHT, "Attacker is not a mob-type, rather is a " + map.getMapObject(oid).getClass().getName() + " entity.");
             }
+            
             direction = slea.readByte();
         }
         if (damagefrom != -1 && damagefrom != -2 && attacker != null) {

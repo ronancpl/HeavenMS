@@ -82,7 +82,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int team;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
-    public ReentrantLock monsterLock = new ReentrantLock();
+    private ReentrantLock monsterLock = new ReentrantLock();
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -92,6 +92,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public MapleMonster(MapleMonster monster) {
         super(monster);
         initWithStats(monster.stats);
+    }
+    
+    public void lockMonster() {
+        monsterLock.lock();
+    }
+    
+    public void unlockMonster() {
+        monsterLock.unlock();
     }
 
     private void initWithStats(MapleMonsterStats stats) {
@@ -994,7 +1002,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return(1.0f);
     }
     
-    public final void changeLevelByDifficulty(final int difficulty, boolean pqMob) {
+    private final void changeLevelByDifficulty(final int difficulty, boolean pqMob) {
         changeLevel((int)(this.getLevel() * getDifficultyRate(difficulty)), pqMob);
     }
     

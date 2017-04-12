@@ -1,4 +1,5 @@
 var minPlayers = 2;
+var entryMap = 930000000;
 
 function init() {
         em.setProperty("state", "0");
@@ -26,7 +27,7 @@ function setup(level, leaderid) {
 }
 
 function playerEntry(eim, player) {
-        var map = eim.getMapInstance(0);
+        var map = eim.getMapInstance(entryMap);
         player.changeMap(map, map.getPortal(0));
 }
 

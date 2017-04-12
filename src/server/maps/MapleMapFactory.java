@@ -279,14 +279,20 @@ public class MapleMapFactory {
             builder.append("victoria");
         } else if (mapid >= 200000000 && mapid < 300000000) {
             builder.append("ossyria");
+        } else if (mapid >= 300000000 && mapid < 400000000) {
+            builder.append("elin");
         } else if (mapid >= 540000000 && mapid < 560000000) {
             builder.append("singapore");
         } else if (mapid >= 600000000 && mapid < 620000000) {
             builder.append("MasteriaGL");
-        } else if (mapid >= 670000000 && mapid < 682000000) {
+        } else if (mapid >= 677000000 && mapid < 677100000) {
+            builder.append("Episode1GL");
+        } else if (mapid >= 670000000 && mapid < 690000000) {
             builder.append("weddingGL");
         } else if (mapid >= 682000000 && mapid < 683000000) {
             builder.append("HalloweenGL");
+        } else if (mapid >= 683000000 && mapid < 684000000) {
+            builder.append("event");
         } else if (mapid >= 800000000 && mapid < 900000000) {
             builder.append("jp");
         } else {
