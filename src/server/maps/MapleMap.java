@@ -290,7 +290,7 @@ public class MapleMap {
             this.mapobjects.put(curOID, mapobject);
             for (MapleCharacter chr : characters) {
                 if (condition == null || condition.canSpawn(chr)) {
-                    if (chr.getPosition().distanceSq(mapobject.getPosition()) <= 722500) {
+                    if (chr.getPosition().distanceSq(mapobject.getPosition()) <= getRangedDistance()) {
                         packetbakery.sendPackets(chr.getClient());
                         chr.addVisibleMapObject(mapobject);
                     }
@@ -310,7 +310,7 @@ public class MapleMap {
             mapobject.setObjectId(curOID);
             for (MapleCharacter chr : characters) {
                 if (condition == null || condition.canSpawn(chr)) {
-                    if (chr.getPosition().distanceSq(mapobject.getPosition()) <= 722500) {
+                    if (chr.getPosition().distanceSq(mapobject.getPosition()) <= getRangedDistance()) {
                         packetbakery.sendPackets(chr.getClient());
                         chr.addVisibleMapObject(mapobject);
                     }
@@ -796,7 +796,14 @@ public class MapleMap {
         broadcastMessage(MaplePacketCreator.destroyReactor(reactor));
         reactor.setAlive(false);
         removeMapObject(reactor);
-        reactor.setTimerActive(false);
+        
+        reactor.lockReactor();
+        try {
+            reactor.setShouldCollect(true);
+        } finally {
+            reactor.unlockReactor();
+        }
+        
         if (reactor.getDelay() > 0) {
             tMan.schedule(new Runnable() {
                 @Override
@@ -814,7 +821,14 @@ public class MapleMap {
                 if (o.getType() == MapleMapObjectType.REACTOR) {
                     final MapleReactor r = ((MapleReactor) o);
                     r.setState((byte) 0);
-                    r.setTimerActive(false);
+                    
+                    r.lockReactor();
+                    try {
+                        r.setShouldCollect(true);
+                    } finally {
+                        r.unlockReactor();
+                    }
+                    
                     broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
                 }
             }
@@ -1314,11 +1328,8 @@ public class MapleMap {
                 if (react.getReactItem((byte) 0).getLeft() == item.getItemId() && react.getReactItem((byte) 0).getRight() == item.getQuantity()) {
 
                     if (react.getArea().contains(drop.getPosition())) {
-                        if (!react.isTimerActive()) {
-                            TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
-                            react.setTimerActive(true);
-                            break;
-                        }
+                        TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
+                        break;
                     }
                 }
             }
@@ -1633,7 +1644,7 @@ public class MapleMap {
     public void broadcastMessage(final byte[] packet) {
         broadcastMessage(null, packet, Double.POSITIVE_INFINITY, null);
     }
-
+    
     public void broadcastGMMessage(final byte[] packet) {
         broadcastGMMessage(null, packet, Double.POSITIVE_INFINITY, null);
     }
@@ -1658,7 +1669,7 @@ public class MapleMap {
      * @param ranged
      */
     public void broadcastMessage(MapleCharacter source, final byte[] packet, boolean repeatToSource, boolean ranged) {
-        broadcastMessage(repeatToSource ? null : source, packet, ranged ? 722500 : Double.POSITIVE_INFINITY, source.getPosition());
+        broadcastMessage(repeatToSource ? null : source, packet, ranged ? getRangedDistance() : Double.POSITIVE_INFINITY, source.getPosition());
     }
 
     /**
@@ -1878,11 +1889,11 @@ public class MapleMap {
 
     private void updateMapObjectVisibility(MapleCharacter chr, MapleMapObject mo) {
         if (!chr.isMapObjectVisible(mo)) { // monster entered view range
-            if (mo.getType() == MapleMapObjectType.SUMMON || mo.getPosition().distanceSq(chr.getPosition()) <= 722500) {
+            if (mo.getType() == MapleMapObjectType.SUMMON || mo.getPosition().distanceSq(chr.getPosition()) <= getRangedDistance()) {
                 chr.addVisibleMapObject(mo);
                 mo.sendSpawnData(chr.getClient());
             }
-        } else if (mo.getType() != MapleMapObjectType.SUMMON && mo.getPosition().distanceSq(chr.getPosition()) > 722500) {
+        } else if (mo.getType() != MapleMapObjectType.SUMMON && mo.getPosition().distanceSq(chr.getPosition()) > getRangedDistance()) {
             chr.removeVisibleMapObject(mo);
             mo.sendDestroyData(chr.getClient());
         }
@@ -2081,29 +2092,37 @@ public class MapleMap {
 
         @Override
         public void run() {
-            if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
-                mapitem.itemLock.lock();
-                try {
-                    TimerManager tMan = TimerManager.getInstance();
-                    if (mapitem.isPickedUp()) {
-                        return;
+            reactor.lockReactor();
+            try {
+                if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
+                    mapitem.itemLock.lock();
+                    try {
+                        TimerManager tMan = TimerManager.getInstance();
+                        if (mapitem.isPickedUp()) {
+                            return;
+                        }
+
+                        reactor.setShouldCollect(false);
+                        MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
+                        MapleMap.this.removeMapObject(mapitem);
+                        reactor.hitReactor(c, true);
+
+                        if (reactor.getDelay() > 0) {
+                            tMan.schedule(new Runnable() {
+                                @Override
+                                public void run() {
+                                    reactor.setState((byte) 0);
+                                    broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
+                                }
+                            }, reactor.getDelay());
+                        }
+                    } finally {
+                        mapitem.itemLock.unlock();
                     }
-                    MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
-                    MapleMap.this.removeMapObject(mapitem);
-                    reactor.hitReactor(c);
-                    reactor.setTimerActive(false);
-                    if (reactor.getDelay() > 0) {
-                        tMan.schedule(new Runnable() {
-                            @Override
-                            public void run() {
-                                reactor.setState((byte) 0);
-                                broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
-                            }
-                        }, reactor.getDelay());
-                    }
-                } finally {
-                    mapitem.itemLock.unlock();
                 }
+            }
+            finally {
+                reactor.unlockReactor();
             }
         }
     }
@@ -2167,6 +2186,15 @@ public class MapleMap {
         finally {
             chrRLock.unlock();
         }
+        
+        /*
+        System.out.println("----------------------------------");
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            System.out.println("sp " + spawnPoint.getPosition().getX() + ", " + spawnPoint.getPosition().getY() + ": " + spawnPoint.getDenySpawn());
+        }
+        System.out.println("try " + monsterSpawn.size() + " - " + spawnedMonstersOnMap.get());
+        System.out.println("----------------------------------");
+        */
         
         short numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
         if (numShouldSpawn > 0) {

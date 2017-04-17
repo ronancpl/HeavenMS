@@ -315,7 +315,7 @@ public class Commands {
 			return false;
 		}
 		switch (sub[0]) {
-		case "help":
+                case "help":
 		case "commands":
 			player.yellowMessage("After you vote, talk to Rooney to get a leaf and redeem it for prizes!");
 			player.message("@dispose: Fixes your character if it is stuck.");
@@ -636,6 +636,14 @@ public class Commands {
 				}
 			}
 			break;
+                    
+                //debug only
+                case "map":
+                        if(ServerConstants.USE_DEBUG) {
+                            player.dropMessage("Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
+                            break;
+                        }
+                    
 		default:
 			if (player.gmLevel() == 0) {
 				player.yellowMessage("Player Command " + heading + sub[0] + " does not exist, see @help for a list of commands.");

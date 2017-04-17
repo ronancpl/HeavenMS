@@ -31,7 +31,7 @@ public class SpawnPoint {
     private long nextPossibleSpawn;
     private int mobInterval = 5000;
     private AtomicInteger spawnedMonsters = new AtomicInteger(0);
-    private boolean immobile;
+    private boolean immobile, denySpawn = false;
 
     public SpawnPoint(final MapleMonster monster, Point pos, boolean immobile, int mobTime, int mobInterval, int team) {
         this.monster = monster.getId();
@@ -50,11 +50,15 @@ public class SpawnPoint {
     }
     
     public void setDenySpawn(boolean val) {
-        spawnedMonsters.set((val == false) ? 0 : 1);
+        denySpawn = val;
+    }
+    
+    public boolean getDenySpawn() {
+        return denySpawn;
     }
 
     public boolean shouldSpawn() {
-    	if (mobTime < 0 || spawnedMonsters.get() > 0) {
+    	if (denySpawn || mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
         }
        

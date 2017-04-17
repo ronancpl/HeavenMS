@@ -23,6 +23,13 @@
  *@author Ronan
  */
  
+importPackage(Packages.tools);
+importPackage(java.awt);
+ 
 function act() {
-    rm.getPlayer().getMap().setAllowSpawnPointInRange(false, rm.getReactor().getPosition(), 120.0);
+    var denyWidth = 320, denyHeight = 150;
+    var denyPos = rm.getReactor().getPosition();
+    var denyArea = new Rectangle(denyPos.getX() - denyWidth / 2, denyPos.getY() - denyHeight / 2, denyWidth, denyHeight);
+    
+    rm.getReactor().getMap().setAllowSpawnPointInBox(false, denyArea);
 }
