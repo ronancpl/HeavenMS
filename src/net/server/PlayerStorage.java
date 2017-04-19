@@ -98,7 +98,7 @@ public class PlayerStorage {
 	}
     }
     
-    public int getSize(){
+    public int getSize() {
         rlock.lock();
         try {
             return storage.size();

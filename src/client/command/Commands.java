@@ -643,6 +643,11 @@ public class Commands {
                             player.dropMessage("Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
                             break;
                         }
+                case "mapcount":
+                        if(ServerConstants.USE_DEBUG) {
+                            player.dropMessage("Current map count: (" + player.getMap().getAllPlayers().size() + ").");
+                            break;
+                        }
                     
 		default:
 			if (player.gmLevel() == 0) {

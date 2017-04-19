@@ -122,6 +122,10 @@ property settings must follow these:
 Alternatively, there is available the No-Damage Cap version of the MapleStory client. Just extract and use the
 "localhost.exe" from the one package with the given name.
 
+Important: should the client being refused to connect to the game server, it may be because firewall issues. Head to
+the end of this file to proceed to enabling this connection with the computer's firewall. Alternatively, one can
+deactivate the firewall and try opening the client again.
+
 ---- Important note about CLIENT EDITING ----
 
 DO NOT USE the server's XMLs for reimporting into the client's WZ, it WILL generate some kind of bugs afterwards.
@@ -153,3 +157,30 @@ it's node contents, importing the XML causes no harm at all. However, try not to
 as it may cause data losses. Use the HaRepacker's UI instead to make the changes.
 
 Save the changes and overwrite the older WZ on the MapleStory client folder.
+
+---- Portforwarding the SERVER ----
+
+To use portforward, you will need to have permission to change things on the LAN router. Access yor router using the
+Internet browser. URLs vary accordingly with the manufacturer. To discover it, open the command prompt and type
+"ipconfig" and search for the "default gateway" field. The IP shown there is the URL needed to access the router.
+Also, look for the IP given to your machine (aka "IPv4 address" field), which will be the server one.
+
+The default login/password also varies, so use the link http://www.routerpasswords.com/ as reference. Usually, login
+as "admin" and password as "password" completes the task well.
+
+Now you have logged in the router system, find for anything related to portforwarding. Should the system prompts you
+between portforwarding and portriggering, pick the first, it is what we will be using.
+
+Now, it is needed to enable the right ports for the Internet. For MapleSolaxia, it is basically needed to open ports
+7575 to 7575 + (number of channels) and port 8484. Create a new custom service which enables that range of ports for
+the server's channel and opt to use TCP/UDP protocols. Finally, create a custom service now for using port 8484.
+
+Optionally, if you want to host a webpage, portforward the port 80 (the HTTP port) as well.
+
+It is not done yet, sometimes the firewalls will block connections between the LAN and the Internet. To overcome this,
+it is needed to create some rules for the firewall to permit these connections. Search for the advanced options with
+firewalls on your computer and, with it open, create two rules (one outbound and one inbound).
+
+These rules must target "one application", "enable connections" and must target your MapleStory client (aka localhost).
+
+After all these steps, the portforwarding process should now be complete.

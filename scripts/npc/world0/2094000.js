@@ -22,7 +22,7 @@
 var status = 0;
 var minLevel = 55;
 var maxLevel = 100;
-var minPlayers = 0;
+var minPlayers = 2;
 var maxPlayers = 6;
 
 function start() {
@@ -84,7 +84,7 @@ function action(mode, type, selection) {
                     cm.dispose();
                 }
                 else {
-                    cm.sendOk("Your party is not a party of six.  Make sure all your members are present and qualified to participate in this quest.  I see #b" + levelValid.toString() + " #kmembers are in the right level range, and #b" + inMap.toString() + "#k are in my map. If this seems wrong, #blog out and log back in,#k or reform the party.");
+                    cm.sendOk("Your party is not a party of two to six members. Make sure all your members are present and qualified to participate in this quest.  I see #b" + levelValid.toString() + " #kmembers are in the right level range, and #b" + inMap.toString() + "#k are in my map. If this seems wrong, #blog out and log back in,#k or reform the party.");
                     cm.dispose();
                 }
             }

@@ -5,12 +5,13 @@ var rideTo = new Array(250000100, 200000141);
 var birdRide = new Array(200090300, 200090310);
 var myRide;
 var returnMap;
+var exitMap;
 var map;
-var docked;
 var timeOnRide = 60; //Seconds
 var onRide;
 
 function init() {
+        
 }
 
 function setup() {
@@ -24,27 +25,35 @@ function playerEntry(eim, player) {
 	} else {
 		myRide = 1;
 	}
-	docked = eim.getEm().getChannelServer().getMapFactory().getMap(rideTo[myRide]);
-    returnMap = eim.getMapFactory().getMap(returnTo[myRide]);
-    onRide = eim.getMapFactory().getMap(birdRide[myRide]);
-    player.changeMap(onRide, onRide.getPortal(0));
-    player.getClient().getSession().write(MaplePacketCreator.getClock(timeOnRide));
-    eim.schedule("timeOut", timeOnRide * 1000);
+	exitMap = eim.getEm().getChannelServer().getMapFactory().getMap(rideTo[myRide]);
+        returnMap = eim.getMapFactory().getMap(returnTo[myRide]);
+        onRide = eim.getMapFactory().getMap(birdRide[myRide]);
+        player.changeMap(onRide, onRide.getPortal(0));
+        player.getClient().getSession().write(MaplePacketCreator.getClock(timeOnRide));
+        eim.schedule("timeOut", timeOnRide * 1000);
 }
 
-function timeOut() {
-	onRide.warpEveryone(docked.getId());
+function timeOut(eim) {
+        end(eim);
 }
 
+function playerExit(eim, player, success) {
+        eim.unregisterPlayer(player);
+        player.changeMap(success ? exitMap.getId() : returnMap.getId(), 0);
+}
 
-
+function end(eim) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+            playerExit(eim, party.get(i), true);
+        }
+        eim.dispose();
+}
 
 function playerDisconnected(eim, player) {
-    return 0;
+        playerExit(eim, player, false);
 }
 
 function cancelSchedule() {}
 
-function dispose() {
-    em.cancelSchedule();
-}
+function dispose(eim) {}

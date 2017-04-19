@@ -1184,6 +1184,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }, 10000);
             }
         }
+        else {
+            FilePrinter.printError(FilePrinter.MAPLE_MAP, "Character " + this.getName() + " got stuck when moving to map " + map.getId() + ".");
+        }
         
         //alas, new map has been specified when a warping was being processed...
         if(newWarpMap != -1) {

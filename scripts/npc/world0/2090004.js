@@ -61,7 +61,7 @@ function action(mode, type, selection) {
 		selectedType = selection;
 		var selStr;
 		if (selectedType == 0){ //Make a medicine
-                        itemSet = new Array(2022145,2022146,2022147,2022148,2022149,2022150,2022178,4031554);
+                        itemSet = new Array(2022145,2022146,2022147,2022148,2022149,2022150,2050004,4031554);
                         matSet = new Array(2022116,2022116,new Array(4000281,4000293),new Array(4000276,2002005),new Array(4000288,4000292),4000295,new Array(2022131,2022132),new Array(4000286,4000287,4000293));
 			matQtySet = new Array(3,3,new Array(10,10),new Array(20,1),new Array(20,20),10,new Array(1,1),new Array(20,20,20));
                         matQtyMeso = new Array(0,0,910,950,1940,600,700,1000);
