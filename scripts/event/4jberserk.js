@@ -154,6 +154,8 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
+function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {
     eim.setProperty("canWarp","true");
 }

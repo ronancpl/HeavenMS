@@ -7802,7 +7802,6 @@
 (5100000, 4000048, 1, 1, 0, 200000), 
 (5100000, 4000021, 1, 1, 0, 200000), 
 (5100000, 4003005, 1, 1, 0, 7000), 
-(5100000, 2022066, 1, 1, 0, 3000), 
 (5100000, 2000002, 1, 1, 0, 40000), 
 (5100000, 2000003, 1, 1, 0, 40000), 
 (5100000, 2040804, 1, 1, 0, 750), 
@@ -18794,10 +18793,13 @@
 (9300106, 4031551, 1, 1, 3829, 40000),
 (9300107, 4031551, 1, 1, 3829, 40000),
 (9300119, 4031551, 1, 1, 3829, 40000),
-(9300119, 0, 801, 1199, 0, 400000);
-
+(9300119, 0, 801, 1199, 0, 400000),
+(9300173, 4001161, 1, 1, 0, 200000);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
+
+  # delete item drops from Seruf shell
+  DELETE FROM temp_data WHERE dropperid=4220001;
 
   UPDATE IGNORE temp_data SET chance=700 WHERE itemid=1302056;
 
@@ -18866,6 +18868,7 @@
   UPDATE drop_data SET questid=7777 WHERE itemid=4001359;
   UPDATE drop_data SET questid=7777 WHERE itemid=4001342;
   UPDATE drop_data SET questid=7777 WHERE itemid=4031906;
+  UPDATE drop_data SET questid=7777 WHERE itemid=4032474;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
   UPDATE drop_data SET questid=6191 WHERE itemid=4031477;

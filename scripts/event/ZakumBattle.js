@@ -151,11 +151,11 @@ function finish(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
+
+function cancelSchedule() {}
 
 function altarTimeOut(eim) {
     if (eim != null && eim.getProperty("summoned").equals("false")) {

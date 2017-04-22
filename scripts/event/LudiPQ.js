@@ -146,8 +146,9 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-}
+function monsterKilled(mob, eim) {}
+
+function allMonstersDead(eim) {}
 
 function dispose() {
     em.schedule("OpenLPQ", 10000); // 10 seconds ?

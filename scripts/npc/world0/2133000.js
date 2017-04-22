@@ -1,4 +1,7 @@
 var status = -1;
+var minPlayers = 0;
+
+var minLevel = 44, maxLevel = 170;
 
 function start() {
     action(1,0,0);
@@ -14,9 +17,6 @@ function action(mode, type, selection) {
 	status--;
     }
     if (status == 0) {
-	    cm.removeAll(4001163);
-	    cm.removeAll(4001169);
-	    cm.removeAll(2270004);
 	cm.sendSimple("#b#L0#Give me Altaire Earrings.#l\r\n#L1#Give me Glittering Altaire Earrings.#l\r\n#L3#Give me Brilliant Altaire Earrings.#l\r\n#L2#Attempt Forest of Poison Haze.#l#k");
     } else if (status == 1) {
 	if (selection == 0) {
@@ -54,13 +54,13 @@ function action(mode, type, selection) {
 		while (it.hasNext()) {
 			var cPlayer = it.next();
 			var ccPlayer = cm.getPlayer().getMap().getCharacterById(cPlayer.getId());
-			if (ccPlayer == null || ccPlayer.getLevel() < 44 || ccPlayer.getLevel() > 55) {
+			if (ccPlayer == null || ccPlayer.getLevel() < minLevel || ccPlayer.getLevel() > maxLevel) {
 				next = false;
 				break;
 			}
 			size += (ccPlayer.isGM() ? 4 : 1);
 		}	
-		if (next && size >= 2) {
+		if (next && size >= minPlayers) {
 			var em = cm.getEventManager("Ellin");
 			if (em == null) {
 				cm.sendOk("Please try again later.");
@@ -68,7 +68,7 @@ function action(mode, type, selection) {
 				em.startInstance(cm.getPlayer().getParty(), cm.getPlayer().getMap(), 1);    //common level only
 			}
 		} else {
-			cm.sendOk("All 2+ members of your party must be here and between level 44 and 55.");
+			cm.sendOk("All 2+ members of your party must be here and between level " + minLevel + " and " + maxLevel + ".");
 		}
 	    }
 	}

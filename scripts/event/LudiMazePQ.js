@@ -126,16 +126,14 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-//do nothing; LMPQ has nothing to do with monster killing
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
 
-function dispose(eim) {
+function cancelSchedule() {}
 
-}
+function dispose(eim) {}
+
 function timeOut(eim) {
     if (eim != null) {
         if (eim.getPlayerCount() > 0) {

@@ -73,7 +73,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         
         MapleStatEffect effect = skill.getEffect(skillLevel);
         if (effect.getCooldown() > 0) {
-            if (chr.skillisCooling(skillid)) {
+            if (chr.skillIsCooling(skillid)) {
                 return;
             } else if (skillid != Corsair.BATTLE_SHIP) {
                 c.announce(MaplePacketCreator.skillCooldown(skillid, effect.getCooldown()));

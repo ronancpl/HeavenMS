@@ -89,6 +89,7 @@ function playerDisconnected(eim, player) {
     eim.dispose();
 }
 
+function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {
     var winner = eim.getPlayers().get(0);

@@ -26,6 +26,7 @@ import constants.ServerConstants;
 
 import java.awt.Rectangle;
 import java.util.List;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -46,7 +47,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private MapleMap map;
     private String name;
     private boolean alive;
-    private boolean shouldCollect = true;
+    private boolean shouldCollect;
     private Lock reactorLock = new ReentrantLock(true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
@@ -143,14 +144,14 @@ public class MapleReactor extends AbstractMapleMapObject {
     }
 
     public void forceHitReactor(final byte newState) {
-        setState((byte) newState);
+        this.lockReactor();
         try {
-            this.lockReactor();
+            setState((byte) newState);
             this.setShouldCollect(true);
-        }
-        finally {
+        } finally {
             this.unlockReactor();
         }
+        
         map.broadcastMessage(MaplePacketCreator.triggerReactor(this, (short) 0));
     }
     
@@ -158,16 +159,16 @@ public class MapleReactor extends AbstractMapleMapObject {
         TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
-                hitReactor(c, false);
+                hitReactor(c);
             }
         }, delay);
     }
 
-    public void hitReactor(MapleClient c, boolean itemDrop) {
-        hitReactor(0, (short) 0, 0, c, itemDrop);
+    public void hitReactor(MapleClient c) {
+        hitReactor(0, (short) 0, 0, c);
     }
     
-    public synchronized void hitReactor(int charPos, short stance, int skillid, MapleClient c, boolean itemDrop) {
+    public synchronized void hitReactor(int charPos, short stance, int skillid, MapleClient c) {
         try {
             if(!this.isAlive()) {
                 return;
@@ -196,11 +197,12 @@ public class MapleReactor extends AbstractMapleMapObject {
                             
                             ReactorScriptManager.getInstance().act(c, this);
                         } else { //reactor not broken yet
-                            if (itemDrop) state++; // Duh, if the reactor is triggered by itemdrop, go directly to next state (in this case, instead of staying at 1, it goes to 2)! :)
                             map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
-                            if (state == stats.getNextState(state, b) || itemDrop) {//current state = next state, looping reactor
+                            if (state == stats.getNextState(state, b)) {//current state = next state, looping reactor
                                 ReactorScriptManager.getInstance().act(c, this);
                             }
+                            
+                            setShouldCollect(true);     // refresh collectability on item drop-based reactors
                         }
                         break;
                     }
@@ -209,6 +211,8 @@ public class MapleReactor extends AbstractMapleMapObject {
                 state++;
                 map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
                 ReactorScriptManager.getInstance().act(c, this);
+                setShouldCollect(true);
+                System.out.println("ehh");
             }
         } catch(Exception e) {
             e.printStackTrace();

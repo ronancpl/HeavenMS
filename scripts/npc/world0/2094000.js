@@ -84,7 +84,7 @@ function action(mode, type, selection) {
                     cm.dispose();
                 }
                 else {
-                    cm.sendOk("Your party is not a party of two to six members. Make sure all your members are present and qualified to participate in this quest.  I see #b" + levelValid.toString() + " #kmembers are in the right level range, and #b" + inMap.toString() + "#k are in my map. If this seems wrong, #blog out and log back in,#k or reform the party.");
+                    cm.sendOk("Your party is not a party of 2 to 6 members between level " + minLevel + " and " + maxLevel + ". Make sure all your members are present and qualified to participate in this quest.");
                     cm.dispose();
                 }
             }

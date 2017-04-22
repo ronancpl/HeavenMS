@@ -164,11 +164,11 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
+
+function cancelSchedule() {}
 
 function timeOut() {
     var iter = em.getInstances().iterator();

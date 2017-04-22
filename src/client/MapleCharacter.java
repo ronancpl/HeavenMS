@@ -48,6 +48,8 @@ import java.util.Set;
 //import java.util.TimeZone;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
 import java.util.regex.Pattern;
 
 import net.server.PlayerBuffValueHolder;
@@ -274,6 +276,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private long useDuey;
     private long petLootCd;
     private int newWarpMap = -1;
+    private Lock sLock = new ReentrantLock(true);
 
     private MapleCharacter() {
         setStance(0);
@@ -552,7 +555,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void addSummon(int id, MapleSummon summon) {
-        summons.put(id, summon);
+        sLock.lock();
+        try {
+            summons.put(id, summon);
+        } finally {
+            sLock.unlock();
+        }
     }
 
     public void addVisibleMapObject(MapleMapObject mo) {
@@ -1360,22 +1368,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         }
                     } else if (stat == MapleBuffStat.SUMMON || stat == MapleBuffStat.PUPPET) {
                         int summonId = mbsvh.effect.getSourceId();
-                        MapleSummon summon = summons.get(summonId);
-                        if (summon != null) {
-                            getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
-                            getMap().removeMapObject(summon);
-                            removeVisibleMapObject(summon);
-                            summons.remove(summonId);
-                        }
-                        if (summon.getSkill() == DarkKnight.BEHOLDER) {
-                            if (beholderHealingSchedule != null) {
-                                beholderHealingSchedule.cancel(false);
-                                beholderHealingSchedule = null;
+                        
+                        sLock.lock();
+                        try {
+                            MapleSummon summon = summons.get(summonId);
+                            if (summon != null) {
+                                getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
+                                getMap().removeMapObject(summon);
+                                removeVisibleMapObject(summon);
+                                summons.remove(summonId);
                             }
-                            if (beholderBuffSchedule != null) {
-                                beholderBuffSchedule.cancel(false);
-                                beholderBuffSchedule = null;
+                            if (summon.getSkill() == DarkKnight.BEHOLDER) {
+                                if (beholderHealingSchedule != null) {
+                                    beholderHealingSchedule.cancel(false);
+                                    beholderHealingSchedule = null;
+                                }
+                                if (beholderBuffSchedule != null) {
+                                    beholderBuffSchedule.cancel(false);
+                                    beholderBuffSchedule = null;
+                                }
                             }
+                        } finally {
+                            sLock.unlock();
                         }
                     } else if (stat == MapleBuffStat.DRAGONBLOOD) {
                         dragonBloodSchedule.cancel(false);
@@ -1725,7 +1739,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return ret;
     }
 
-	public List<Pair<MapleBuffStat, Integer>> getAllStatups() {
+    public List<Pair<MapleBuffStat, Integer>> getAllStatups() {
         List<Pair<MapleBuffStat, Integer>> ret = new ArrayList<>();
         for (MapleBuffStat mbs : effects.keySet()) {
             MapleBuffStatValueHolder mbsvh = effects.get(mbs);
@@ -1827,6 +1841,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private List<MapleBuffStat> getBuffStats(MapleStatEffect effect, long startTime) {
         List<MapleBuffStat> stats = new ArrayList<>();
         for (Entry<MapleBuffStat, MapleBuffStatValueHolder> stateffect : effects.entrySet()) {
+            if(stateffect.getValue() == null) continue;
+            
             if (stateffect.getValue().effect.sameSource(effect) && (startTime == -1 || startTime == stateffect.getValue().startTime)) {
                 stats.add(stateffect.getKey());
             }
@@ -2284,6 +2300,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public int getPartyId() {
         return (party != null ? party.getId() : -1);
     }
+    
+    public List<MapleCharacter> getPartyMembers() {
+        List<MapleCharacter> list = new LinkedList<>();
+        
+        if(party != null) {
+            for(MaplePartyCharacter partyMembers: party.getMembers()) {
+                list.add(partyMembers.getPlayer());
+            }
+        }
+        
+        return list;
+    }
 
     public MaplePlayerShop getPlayerShop() {
         return playerShop;
@@ -2500,9 +2528,50 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public int getStr() {
         return str;
     }
-
-    public Map<Integer, MapleSummon> getSummons() {
-        return summons;
+    
+    public Collection<MapleSummon> getSummonsValues() {
+        sLock.lock();
+        try {
+            return summons.values();
+        } finally {
+            sLock.unlock();
+        }
+    }
+    
+    public void clearSummons() {
+        sLock.lock();
+        try {
+            summons.clear();
+        } finally {
+            sLock.unlock();
+        }
+    }
+    
+    public MapleSummon getSummonByKey(int id) {
+        sLock.lock();
+        try {
+            return summons.get(id);
+        } finally {
+            sLock.unlock();
+        }
+    }
+    
+    public boolean isSummonsEmpty() {
+        sLock.lock();
+        try {
+            return summons.isEmpty();
+        } finally {
+            sLock.unlock();
+        }
+    }
+    
+    public boolean containsSummon(MapleSummon summon) {
+        sLock.lock();
+        try {
+            return summons.containsValue(summon);
+        } finally {
+            sLock.unlock();
+        }
     }
 
     public int getTotalStr() {
@@ -4908,7 +4977,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public boolean skillisCooling(int skillId) {
+    public boolean skillIsCooling(int skillId) {
         return coolDowns.containsKey(Integer.valueOf(skillId));
     }
 
@@ -5403,8 +5472,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 continue;
             }
 
-            if ((itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || itemName.contains("Timeless") && nEquip.getItemLevel() < 6) {
-                nEquip.gainItemExp(client, mobexp, itemName.contains("Timeless"));
+            if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) && (itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || itemName.contains("Timeless") && nEquip.getItemLevel() < 6) {
+                nEquip.gainItemExp(client, mobexp, itemName.contains("Reverse"));
             }
         }
     }

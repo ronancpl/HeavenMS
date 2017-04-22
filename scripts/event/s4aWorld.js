@@ -76,9 +76,8 @@ function clearPQ(eim) {
     em.setProperty("started", "false");
 }
 
-function allMonstersDead(eim) {
-//has nothing to do with monster killing
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
+
+function cancelSchedule() {}

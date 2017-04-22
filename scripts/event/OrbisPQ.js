@@ -224,9 +224,9 @@ function finish(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-//Open Portal? o.O
-}
+function monsterKilled(mob, eim) {}
+
+function allMonstersDead(eim) {} //Open Portal? o.O
 
 function cancelSchedule() {
 }

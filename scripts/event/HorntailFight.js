@@ -136,14 +136,13 @@ function finish(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
 
-function timeOut() {
-}
+function cancelSchedule() {}
+
+function timeOut() {}
 
 function debug(eim,msg) {
     var iter = eim.getPlayers().iterator();

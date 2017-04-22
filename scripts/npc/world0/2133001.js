@@ -28,8 +28,13 @@ function action(mode, type, selection) {
 		cm.warpParty(930000500);
 		cm.gainItem(4001169,-20);
 	    } else if (!cm.haveItem(2270004)) {
-		cm.gainItem(2270004,10);
-		cm.sendOk("Good luck in purifying these monsters!");
+                if(cm.canHold(2270004,10)) {
+                    cm.gainItem(2270004,10);
+                    cm.sendOk("Good luck in purifying these monsters!");
+                }
+		else {
+                    cm.sendOk("Make space on your USE inventory before receiving the purifiers!");
+                }
 	    } else {
 		cm.sendOk("We have to purify all these contaminated monsters! Get me 20 Monster Marbles from them!");
 	    }

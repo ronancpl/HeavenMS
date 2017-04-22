@@ -49,8 +49,9 @@ public class ServerConstants {
     //public static final boolean USE_ULTRA_THREE_SNAILS = true;
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //rates are added each 20 levels.
-    public static final int FAME_GAIN_BY_QUEST = 4;  //fame gain each N quest completes, set 0 to disable.
-    public static final int SCROLL_CHANCE_RATE = 10;    //number of tries for success on a scroll, set 0 for default.
+    public static final int USE_EQUIPMNT_LVLUP = 7;             //all equips lvlup at max level as N, set 0 to disable.
+    public static final int FAME_GAIN_BY_QUEST = 4;             //fame gain each N quest completes, set 0 to disable.
+    public static final int SCROLL_CHANCE_RATE = 10;            //number of tries for success on a scroll, set 0 for default.
     
     //Pet auto-pot recovery rates
     public static final double PET_AUTOHP_RATIO = 0.99;         //will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.

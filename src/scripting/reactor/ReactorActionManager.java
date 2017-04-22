@@ -58,8 +58,12 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso) {
         dropItems(meso, mesoChance, minMeso, maxMeso, 0);
     }
-
+    
     public void dropItems(boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
+        dropItems((int)reactor.getPosition().getX(), (int)reactor.getPosition().getY(), meso, mesoChance, minMeso, maxMeso, minItems);
+    }
+
+    public void dropItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
         List<ReactorDropEntry> chances = getDropChances();
         List<ReactorDropEntry> items = new LinkedList<>();
         int numItems = 0;
@@ -79,8 +83,10 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
             numItems++;
         }
         java.util.Collections.shuffle(items);
-        final Point dropPos = reactor.getPosition();
+        
+        final Point dropPos = new Point(posX, posY);
         dropPos.x -= (12 * numItems);
+        
         for (ReactorDropEntry d : items) {
             if (d.itemId == 0) {
                 int range = maxMeso - minMeso;
@@ -98,7 +104,6 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, dropPos, false, false);
             }
             dropPos.x += 25;
-
         }
     }
 

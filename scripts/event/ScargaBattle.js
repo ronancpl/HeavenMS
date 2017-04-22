@@ -36,10 +36,10 @@ function init() {
 }
 
 function setup() {
-    var eim = em.newInstance("ScargaBattle_" + em.getProperty("channel"));
+        var eim = em.newInstance("ScargaBattle_" + em.getProperty("channel"));
 	var timer = 1000 * 60 * fightTime;
 	eim.setProperty("summoned", "false");
-    em.schedule("timeOut", eim, timer);
+        em.schedule("timeOut", eim, timer);
 	eim.startEventTimer(timer);
 	return eim;
 }
@@ -133,21 +133,21 @@ function finish(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-}
+function monsterKilled(mob, eim) {}
 
-function cancelSchedule() {
-}
+function allMonstersDead(eim) {}
+
+function cancelSchedule() {}
 
 function timeOut(eim) {
     if (eim != null) {
         if (eim.getPlayerCount() > 0) {
             var pIter = eim.getPlayers().iterator();
             while (pIter.hasNext()){
-				var player = pIter.next();
-				player.dropMessage(6, "You have run out of time to defeat Scarlion and Targa!");
+		var player = pIter.next();
+		player.dropMessage(6, "You have run out of time to defeat Scarlion and Targa!");
                 playerExit(eim, player);
-			}
+            }
         }
         eim.dispose();
     }

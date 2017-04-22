@@ -255,6 +255,7 @@ public class MapleMapFactory {
         myReactor.setPosition(new Point(x, y));
         myReactor.setDelay(MapleDataTool.getInt(reactor.getChildByPath("reactorTime")) * 1000);
         myReactor.setState((byte) 0);
+        myReactor.setShouldCollect(true);
         myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
         return myReactor;
     }

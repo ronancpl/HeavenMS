@@ -638,17 +638,34 @@ public class Commands {
 			break;
                     
                 //debug only
-                case "map":
+                case "debugpos":
                         if(ServerConstants.USE_DEBUG) {
                             player.dropMessage("Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
-                            break;
                         }
-                case "mapcount":
+                        break;
+                    
+                case "debugmapcount":
                         if(ServerConstants.USE_DEBUG) {
                             player.dropMessage("Current map count: (" + player.getMap().getAllPlayers().size() + ").");
-                            break;
                         }
-                    
+                        break;
+                
+                case "debugevent":
+                        if(ServerConstants.USE_DEBUG) {
+                            if(player.getEventInstance() == null) player.dropMessage("Player currently not in a event.");
+                            else player.dropMessage("Current event name: " + player.getEventInstance().getName() + ".");
+                        }
+                        break;
+                
+                case "debugreactors":
+                        if(ServerConstants.USE_DEBUG) {
+                            player.dropMessage("Current reactor states on map " + player.getMapId() + ":");
+                            for(Pair p: player.getMap().reportReactorStates()) {
+                                player.dropMessage("Reactor id: " + p.getLeft() + " -> State: " + p.getRight() + ".");
+                            }
+                        }
+                        break;
+                            
 		default:
 			if (player.gmLevel() == 0) {
 				player.yellowMessage("Player Command " + heading + sub[0] + " does not exist, see @help for a list of commands.");

@@ -63,7 +63,7 @@ public final class SummonDamageHandler extends AbstractMaplePacketHandler {
             return;
         }
         MapleSummon summon = null;
-        for (MapleSummon sum : player.getSummons().values()) {
+        for (MapleSummon sum : player.getSummonsValues()) {
             if (sum.getObjectId() == oid) {
                 summon = sum;
             }

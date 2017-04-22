@@ -38,7 +38,7 @@ public final class MoveSummonHandler extends AbstractMovementPacketHandler {
         Point startPos = new Point(slea.readShort(), slea.readShort());
         List<LifeMovementFragment> res = parseMovement(slea);
         MapleCharacter player = c.getPlayer();
-        Collection<MapleSummon> summons = player.getSummons().values();
+        Collection<MapleSummon> summons = player.getSummonsValues();
         MapleSummon summon = null;
         for (MapleSummon sum : summons) {
             if (sum.getObjectId() == oid) {

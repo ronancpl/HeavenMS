@@ -120,6 +120,8 @@ function dispose() {}
 
 function clearPQ(eim) {}
 
+function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {}
 
 function timeOut(eim) {

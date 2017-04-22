@@ -22,9 +22,12 @@ function setup(level, leaderid) {
         em.setProperty("level", level);
         em.setProperty("openedChests", "0");
         eim.setInstanceMap(925100000).resetPQ(level);
+        eim.setInstanceMap(925100000).shuffleReactors();
+        
 	eim.setInstanceMap(925100100).resetPQ(level);
 	var map = eim.setInstanceMap(925100200);
 	map.resetPQ(level);
+        map.shuffleReactors();
 	for (var i = 0; i < 5; i++) {
 		var mob = em.getMonster(9300124);
 		var mob2 = em.getMonster(9300125);
@@ -58,6 +61,7 @@ function setup(level, leaderid) {
 	eim.setInstanceMap(925100202).resetPQ(level);
 	map = eim.setInstanceMap(925100300);
 	map.resetPQ(level);
+        map.shuffleReactors();
 	for (var i = 0; i < 5; i++) {
 		var mob = em.getMonster(9300124);
 		var mob2 = em.getMonster(9300125);
@@ -93,7 +97,7 @@ function setup(level, leaderid) {
 	eim.setInstanceMap(925100500).resetPQ(level);
         
         respawnStg4(eim);
-        eim.startEventTimer(1200000); //20 mins
+        eim.startEventTimer(20 * 60000); //20 mins
         return eim;
 }
 
@@ -108,8 +112,7 @@ function scheduledTimeout(eim) {
 
 function removePlayer(eim, player) {
     eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+    player.changeMap(exitMap, 0);
 }
 
 function changedMap(eim, player, mapid) {
@@ -170,7 +173,7 @@ function disbandParty(eim) {
 
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
+    player.changeMap(exitMap, 0);
 }
 
 function monsterValue(eim, mobId) {
@@ -189,15 +192,15 @@ function clearPQ(eim) {
     end(eim);
 }
 
+function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function respawnStg4(eim) {
-        //if(em.getProperty("stage4") == "0") {
-                eim.getMapInstance(925100400).instanceMapRespawn();
-                em.schedule("respawnStg4", eim, 10 * 1000);
-        //}
+function respawnStg4(eim) {    
+    eim.getMapInstance(925100400).instanceMapRespawn();
+    em.schedule("respawnStg4", eim, 10 * 1000);
 }
 
 function dispose(eim) {

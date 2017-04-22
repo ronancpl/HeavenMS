@@ -38,7 +38,7 @@ public final class DamageSummonHandler extends AbstractMaplePacketHandler {
         int monsterIdFrom = slea.readInt();
         if (SkillFactory.getSkill(skillid) != null) {
             MapleCharacter player = c.getPlayer();
-            MapleSummon summon = player.getSummons().get(skillid);
+            MapleSummon summon = player.getSummonByKey(skillid);
             if (summon != null) {
                 summon.addHP(-damage);
                 if (summon.getHP() <= 0) {

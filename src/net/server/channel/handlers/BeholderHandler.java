@@ -37,7 +37,7 @@ public final class BeholderHandler extends AbstractMaplePacketHandler {//Summon 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         //System.out.println(slea.toString());
-        Collection<MapleSummon> summons = c.getPlayer().getSummons().values();
+        Collection<MapleSummon> summons = c.getPlayer().getSummonsValues();
         int oid = slea.readInt();
         MapleSummon summon = null;
         for (MapleSummon sum : summons) {
@@ -53,7 +53,7 @@ public final class BeholderHandler extends AbstractMaplePacketHandler {//Summon 
                 slea.readByte(); //Not sure.
             }            //show to others here
         } else {
-            c.getPlayer().getSummons().clear();
+            c.getPlayer().clearSummons();
         }
     }
 }

@@ -46,6 +46,9 @@ import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import tools.DatabaseConnection;
 import client.MapleCharacter;
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,6 +70,7 @@ public class EventInstanceManager {
         private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
         private final ReadLock rL = mutex.readLock();
         private final WriteLock wL = mutex.writeLock();
+        private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
 
 	public EventInstanceManager(EventManager em, String name) {
@@ -114,8 +118,18 @@ public class EventInstanceManager {
 	}
 
 	public void startEventTimer(long time) {
-		timeStarted = System.currentTimeMillis();
+                timeStarted = System.currentTimeMillis();
 		eventTime = time;
+                
+                event_schedule = TimerManager.getInstance().schedule(new Runnable() {
+                    public void run() {
+                        try {
+                            em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
+                        } catch (ScriptException | NoSuchMethodException ex) {
+                            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }, time);
 	}
 
 	public boolean isTimerStarted() {
@@ -186,6 +200,11 @@ public class EventInstanceManager {
 	
 	public void monsterKilled(MapleMonster mob) {
 		mobs.remove(mob);
+                try {
+                        em.getIv().invokeFunction("monsterKilled", mob, this);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                        ex.printStackTrace();
+                }
 		if (mobs.isEmpty()) {
 			try {
 				em.getIv().invokeFunction("allMonstersDead", this);
@@ -268,6 +287,8 @@ public class EventInstanceManager {
             } finally {
                 wL.unlock();
             }
+            
+            event_schedule.cancel(true);
 
             mobs.clear();
             killCount.clear();

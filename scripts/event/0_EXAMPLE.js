@@ -15,13 +15,22 @@ function changedMap(eim, player, mapid) {
 }
 
 function scheduledTimeout(eim) {
-    // When event timeout..
-
-    // restartEventTimer(long time)
-    // stopEventTimer()
-    // startEventTimer(long time)
-    // isTimerStarted()
+    // When event timeout without before completion..
 }
+
+function timeOut(eim) {
+    if (eim.getPlayerCount() > 0) {
+        var pIter = eim.getPlayers().iterator();
+        while (pIter.hasNext()){
+            var player = pIter.next();
+            player.dropMessage(6, "You have run out of time to complete this event!");
+            playerExit(eim, player);
+        }
+    }
+    eim.dispose();
+}
+
+function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {
     // When invoking unregisterMonster(MapleMonster mob) OR killed

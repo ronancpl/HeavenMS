@@ -180,6 +180,8 @@ function clearPQ(eim) {
     end(eim);
 }
 
+function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {
 }
 

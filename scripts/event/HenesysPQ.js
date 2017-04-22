@@ -165,6 +165,8 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
+function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {}
 
 function dispose() {

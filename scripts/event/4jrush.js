@@ -122,9 +122,9 @@ function clearPQ(eim) {
     eim.dispose();
 }
 
-function allMonstersDead(eim) {
-//do nothing; KPQ has nothing to do with monster killing
-}
+function monsterKilled(mob, eim) {}
+
+function allMonstersDead(eim) {}
 
 function cancelSchedule() {
 }

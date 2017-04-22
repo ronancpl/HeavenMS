@@ -312,14 +312,14 @@ public class Equip extends Item {
         return (int) itemExp;
     }
 
-    public void gainItemExp(MapleClient c, int gain, boolean timeless) {
-        int expneeded = timeless ? (10 * itemLevel + 70) : (5 * itemLevel + 65);
+    public void gainItemExp(MapleClient c, int gain, boolean reverse) {
+        int expneeded = !reverse ? (10 * itemLevel + 70) : (5 * itemLevel + 65);
         float modifier = 364 / expneeded;
         float exp = (expneeded / (1000000 * modifier * modifier)) * gain;
         itemExp += exp;
         if (itemExp >= 364) {
             itemExp = (itemExp - 364);
-            gainLevel(c, timeless);
+            gainLevel(c, !reverse);
         } else {
             c.getPlayer().forceUpdateItem(this);
         }

@@ -223,7 +223,15 @@ public class MapleMap {
             for (MapleMapObject o : mapobjects.values()) {
                 if (o.getType() == MapleMapObjectType.REACTOR) {
                     if (((MapleReactor) o).getState() < 1) {
-                        ((MapleReactor) o).setState((byte) 1);
+                        MapleReactor mr = (MapleReactor) o;
+                        mr.lockReactor();
+                        try {
+                            mr.setState((byte) 1);
+                            mr.setShouldCollect(true);
+                        } finally {
+                            mr.unlockReactor();
+                        }
+                        
                         broadcastMessage(MaplePacketCreator.triggerReactor((MapleReactor) o, 1));
                     }
                 }
@@ -509,6 +517,16 @@ public class MapleMap {
             }
         }
         return count;
+    }
+    
+    public List<Pair> reportReactorStates() {
+        List<Pair> list = new LinkedList<>();
+        
+        for (MapleMapObject m : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR))) {
+            MapleReactor mr = (MapleReactor) m;
+            list.add(new Pair(mr.getId(), mr.getState()));
+        }
+        return list;
     }
     
     public int countAllMonsters() {
@@ -797,13 +815,6 @@ public class MapleMap {
         reactor.setAlive(false);
         removeMapObject(reactor);
         
-        reactor.lockReactor();
-        try {
-            reactor.setShouldCollect(true);
-        } finally {
-            reactor.unlockReactor();
-        }
-        
         if (reactor.getDelay() > 0) {
             tMan.schedule(new Runnable() {
                 @Override
@@ -820,10 +831,10 @@ public class MapleMap {
             for (MapleMapObject o : mapobjects.values()) {
                 if (o.getType() == MapleMapObjectType.REACTOR) {
                     final MapleReactor r = ((MapleReactor) o);
-                    r.setState((byte) 0);
                     
                     r.lockReactor();
                     try {
+                        r.setState((byte) 0);
                         r.setShouldCollect(true);
                     } finally {
                         r.unlockReactor();
@@ -1213,8 +1224,15 @@ public class MapleMap {
     }
 
     private void respawnReactor(final MapleReactor reactor) {
-        reactor.setState((byte) 0);
-        reactor.setAlive(true);
+        reactor.lockReactor();
+        try {
+            reactor.setShouldCollect(true);
+            reactor.setState((byte) 0);
+            reactor.setAlive(true);
+        } finally {
+            reactor.unlockReactor();
+        }
+        
         spawnReactor(reactor);
     }
 
@@ -1533,7 +1551,7 @@ public class MapleMap {
 
         MapleStatEffect summonStat = chr.getStatForBuff(MapleBuffStat.SUMMON);
         if (summonStat != null) {
-            MapleSummon summon = chr.getSummons().get(summonStat.getSourceId());
+            MapleSummon summon = chr.getSummonByKey(summonStat.getSourceId());
             summon.setPosition(chr.getPosition());
             chr.getMap().spawnSummon(summon);
             updateMapObjectVisibility(chr, summon);
@@ -1624,7 +1642,7 @@ public class MapleMap {
         }
         chr.leaveMap();
         chr.cancelMapTimeLimitTask();
-        for (MapleSummon summon : chr.getSummons().values()) {
+        for (MapleSummon summon : chr.getSummonsValues()) {
             if (summon.isStationary()) {
                 chr.cancelBuffStats(MapleBuffStat.PUPPET);
             } else {
@@ -1734,7 +1752,7 @@ public class MapleMap {
                 if (o.getType() == MapleMapObjectType.SUMMON) {
                     MapleSummon summon = (MapleSummon) o;
                     if (summon.getOwner() == chr) {
-                        if (chr.getSummons().isEmpty() || !chr.getSummons().containsValue(summon)) {
+                        if (chr.isSummonsEmpty() || !chr.containsSummon(summon)) {
                             objectWLock.lock();
                             try {
                                 mapobjects.remove(o);
@@ -2105,13 +2123,19 @@ public class MapleMap {
                         reactor.setShouldCollect(false);
                         MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
                         MapleMap.this.removeMapObject(mapitem);
-                        reactor.hitReactor(c, true);
+                        reactor.hitReactor(c);
 
                         if (reactor.getDelay() > 0) {
                             tMan.schedule(new Runnable() {
                                 @Override
                                 public void run() {
-                                    reactor.setState((byte) 0);
+                                    reactor.lockReactor();
+                                        try {
+                                            reactor.setState((byte) 0);
+                                            reactor.setShouldCollect(true);
+                                        } finally {
+                                            reactor.unlockReactor();
+                                        }
                                     broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
                                 }
                             }, reactor.getDelay());
@@ -2120,8 +2144,7 @@ public class MapleMap {
                         mapitem.itemLock.unlock();
                     }
                 }
-            }
-            finally {
+            } finally {
                 reactor.unlockReactor();
             }
         }
@@ -2560,12 +2583,12 @@ public class MapleMap {
         resetMapObjects();
     }
     
-    public void resetPQ(int difficulty) {
-        resetMapObjects(difficulty, true);
+    public void resetPQ() {
+        resetPQ(1);
     }
     
-    public void resetPQ() {
-        resetMapObjects(1, true);
+    public void resetPQ(int difficulty) {
+        resetMapObjects(difficulty, true);
     }
     
     public void resetMapObjects(int difficulty, boolean isPq) {

@@ -160,3 +160,13 @@ Correção de bugs envolvendo reactors no PiratePQ, e potencialmente em outros pon
 Adição de area boss: giant centipede.
 Correção do evento Hak: viajantes não estavam sendo devidamente liberados no fim do evento.
 Adição de documentação para portforwarding do sistema.
+
+21 Abril 2017,
+Implementação do EllinPQ.
+Correção em módulos da classe ActivateItemReactor.
+Atualização em diversos drops nos SQLs.
+
+22 Abril 2017,
+Várias correções envolvendo concorrências em propriedades do MapleCharacter.
+Adição de constante USE_EQUIPMNT_LVLUP: dá pra nivelar qualquer equip até o nível desejado.
+Algumas correções em quests no cliente e no servidor.

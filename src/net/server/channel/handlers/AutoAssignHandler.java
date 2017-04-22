@@ -75,8 +75,8 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             //c.getPlayer().message("----------------------------------------SDL: " + eqpStr + eqpDex + eqpLuk + " BASE STATS --> STR: " + chr.getStr() + " DEX: " + chr.getDex() + " INT: " + chr.getInt() + " LUK: " + chr.getLuk());
             //c.getPlayer().message("SUM EQUIP STATS -> STR: " + str + " DEX: " + dex + " LUK: " + luk + " INT: " + int_);
             
-            //---------- Ronan Lana's AUTOASSIGN -------------
-            //this method excels for possibility to assign APs properly and not blocking the requirements when swapping one guaranteed equipment.
+            // ---------- Ronan Lana's AUTOASSIGN -------------
+            // This method excels for assigning APs in such a way to cover all equipments AP requirements.
             if (chr.getRemainingAp() < 1) {
                 return;
             }
