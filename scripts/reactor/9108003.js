@@ -11,7 +11,7 @@ function act() {
 			rm.mapMessage(6, "Protect the Moon Bunny!!!");
 			var map = em.getMapInstance(rm.getReactor().getMap().getId());
 			map.allowSummonState(true);
-			map.spawnMonsterOnGroudBelow(9300061, -183, -433);
+			map.spawnMonsterOnGroundBelow(9300061, -183, -433);
 		}
 	}
 }

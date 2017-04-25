@@ -2,6 +2,8 @@
  * 4th Job Snipe / Concentration
  */
 
+var minPlayers = 1;
+
 function init() {
     em.setProperty("started", "false");
 }
@@ -42,7 +44,7 @@ function changedMap(eim, player, mapid) {
     if (mapid != 910500000) {
 	eim.unregisterPlayer(player);
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
+	if (eim.disposeIfPlayerBelow(minPlayers, 105090200)) {
 	    em.setProperty("started", "false");
 	}
     }

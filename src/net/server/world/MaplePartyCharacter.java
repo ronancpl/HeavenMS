@@ -79,6 +79,10 @@ public class MaplePartyCharacter {
     public void setChannel(int channel) {
         this.channel = channel;
     }
+    
+    public boolean isLeader() {
+        return getPlayer().isPartyLeader();
+    }
 
     public boolean isOnline() {
         return online;

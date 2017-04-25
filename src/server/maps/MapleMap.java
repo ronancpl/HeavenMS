@@ -1001,13 +1001,9 @@ public class MapleMap {
         return null;
     }
 
-    public void spawnMonsterOnGroudBelow(int id, int x, int y) {
+    public void spawnMonsterOnGroundBelow(int id, int x, int y) {
         MapleMonster mob = MapleLifeFactory.getMonster(id);
         spawnMonsterOnGroundBelow(mob, new Point(x, y));
-    }
-
-    public void spawnMonsterOnGroudBelow(MapleMonster mob, Point pos) {
-        spawnMonsterOnGroundBelow(mob, pos);
     }
 
     public void spawnMonsterOnGroundBelow(MapleMonster mob, Point pos) {
@@ -1642,13 +1638,15 @@ public class MapleMap {
         }
         chr.leaveMap();
         chr.cancelMapTimeLimitTask();
-        for (MapleSummon summon : chr.getSummonsValues()) {
+        
+        for (MapleSummon summon : new ArrayList<>(chr.getSummonsValues())) {
             if (summon.isStationary()) {
                 chr.cancelBuffStats(MapleBuffStat.PUPPET);
             } else {
                 removeMapObject(summon);
             }
         }
+
         if (chr.getDragon() != null) {
             removeMapObject(chr.getDragon());
             if (chr.isHidden()) {

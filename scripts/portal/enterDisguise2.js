@@ -42,5 +42,5 @@ function spawnMob(x, y, id, map) {
 		return;
 		
 	var mob = MapleLifeFactory.getMonster(id);
-	map.spawnMonsterOnGroudBelow(mob, new java.awt.Point(x, y));
+	map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(x, y));
 }

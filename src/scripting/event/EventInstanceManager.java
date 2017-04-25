@@ -83,6 +83,28 @@ public class EventInstanceManager {
 	public EventManager getEm() {
 		return em;
 	}
+        
+        public void giveEventPlayersExp(int gain) {
+                giveEventPlayersExp(gain, -1);
+        }
+        
+        public void giveEventPlayersExp(int gain, int mapId) {
+                rL.lock();
+                try {
+                        if(mapId == -1) {
+                                for(MapleCharacter mc: chars) {
+                                        mc.gainExp(gain * mc.getExpRate(), true, true);
+                                }
+                        }
+                        else {
+                                for(MapleCharacter mc: chars) {
+                                        if(mc.getMapId() == mapId) mc.gainExp(gain * mc.getExpRate(), true, true);
+                                }
+                        }
+                } finally {
+                        rL.unlock();
+                }
+	}
 
 	public void registerPlayer(MapleCharacter chr) {
 		if (chr == null || !chr.isLoggedin()){
@@ -141,7 +163,7 @@ public class EventInstanceManager {
 	}
 
 	public void registerParty(MapleParty party, MapleMap map) {
-		for (MaplePartyCharacter pc : party.getMembers()) {
+		for (MaplePartyCharacter pc : party.getEligibleMembers()) {
 			MapleCharacter c = map.getCharacterById(pc.getId());
 			registerPlayer(c);
 		}
@@ -193,6 +215,14 @@ public class EventInstanceManager {
 	public void movePlayer(MapleCharacter chr) {
 		try {
 			em.getIv().invokeFunction("moveMap", this, chr);
+		} catch (ScriptException | NoSuchMethodException ex) {
+			ex.printStackTrace();
+		}
+	}
+        
+        public void changedMap(MapleCharacter chr, int mapId) {
+		try {
+			em.getIv().invokeFunction("changedMap", this, chr, mapId);
 		} catch (ScriptException | NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
@@ -418,7 +448,7 @@ public class EventInstanceManager {
 
             rL.lock();
             try {
-                if (chars != null && chars.size() <= size) {
+                if (chars != null && chars.size() < size) {
                     for (MapleCharacter chr : chars) {
                         if (chr == null) {
                             continue;

@@ -174,8 +174,9 @@ public class MapleReactor extends AbstractMapleMapObject {
                 return;
             }
             if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid + " , STATE " + stats.getType(state) + " STATESIZE " + stats.getStateSize(state));
-            int reactorType = stats.getType(state);
+            ReactorScriptManager.getInstance().onHit(c, this);
             
+            int reactorType = stats.getType(state);
             if (reactorType < 999 && reactorType != -1) {//type 2 = only hit from right (kerning swamp plants), 00 is air left 02 is ground left
                 if (!(reactorType == 2 && (stance == 0 || stance == 2))) { //get next state
                     for (byte b = 0; b < stats.getStateSize(state); b++) {//YAY?
@@ -212,7 +213,6 @@ public class MapleReactor extends AbstractMapleMapObject {
                 map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
                 ReactorScriptManager.getInstance().act(c, this);
                 setShouldCollect(true);
-                System.out.println("ehh");
             }
         } catch(Exception e) {
             e.printStackTrace();

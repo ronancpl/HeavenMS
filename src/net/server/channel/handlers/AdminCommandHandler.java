@@ -56,7 +56,7 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
                 for (int z = 0; z < toSpawn.length; z++) {
                     int[] toSpawnChild = toSpawn[z];
                     if (Randomizer.nextInt(101) <= toSpawnChild[1]) {
-                        c.getPlayer().getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(toSpawnChild[0]), c.getPlayer().getPosition());
+                        c.getPlayer().getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(toSpawnChild[0]), c.getPlayer().getPosition());
                     }
                 }
                 c.announce(MaplePacketCreator.enableActions());
@@ -143,7 +143,7 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
                 int mobId = slea.readInt();
                 int quantity = slea.readInt();
                 for (int i = 0; i < quantity; i++) {
-                    c.getPlayer().getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(mobId), c.getPlayer().getPosition());
+                    c.getPlayer().getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(mobId), c.getPlayer().getPosition());
                 }
                 break;
             case 0x18: // Maple & Mobhp

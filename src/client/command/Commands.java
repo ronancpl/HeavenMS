@@ -333,6 +333,12 @@ public class Commands {
 			player.message("@whodrops <item name>: Displays monsters that drop an item given an item name.");
 			player.message("@uptime: Shows how long Solaxia has been online.");
 			player.message("@bosshp: Displays the remaining HP of the bosses on your map.");
+                        if(ServerConstants.USE_DEBUG) {
+                            player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
+                            player.message("@debugmapcount: Displays the current number of registered players in the map the player is located.");
+                            player.message("@debugevent: Displays the name of the event in which the player is currently registered.");
+                            player.message("@debugreactors: Displays current info for all reactors on the map the the player is currently located.");
+                        }
 			break;
 		case "time":
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
@@ -652,7 +658,7 @@ public class Commands {
                 
                 case "debugevent":
                         if(ServerConstants.USE_DEBUG) {
-                            if(player.getEventInstance() == null) player.dropMessage("Player currently not in a event.");
+                            if(player.getEventInstance() == null) player.dropMessage("Player currently not in an event.");
                             else player.dropMessage("Current event name: " + player.getEventInstance().getName() + ".");
                         }
                         break;
@@ -700,18 +706,18 @@ public class Commands {
 			}
 			if (sub.length > 2) {
 				for (int i = 0; i < Integer.parseInt(sub[2]); i++) {
-					player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(Integer.parseInt(sub[1])), player.getPosition());
+					player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(Integer.parseInt(sub[1])), player.getPosition());
 				}
 			} else {
-				player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(Integer.parseInt(sub[1])), player.getPosition());
+				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(Integer.parseInt(sub[1])), player.getPosition());
 			}
 		} else if (sub[0].equals("bomb")) {
 			if (sub.length > 1){
 				MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
+				victim.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
 				Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
 			} else {
-				player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(9300166), player.getPosition());
+				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), player.getPosition());
 			}
 		} else if (sub[0].equals("mutemap")) {
 			if(player.getMap().isMuted()) {
@@ -1189,9 +1195,9 @@ public class Commands {
 			}
 			player.dropMessage("There are a total of " + total + " players online.");
 		} else if (sub[0].equals("pap")) {
-			player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8500001), player.getPosition());
+			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8500001), player.getPosition());
 		} else if (sub[0].equals("pianus")) {
-			player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8510000), player.getPosition());
+			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8510000), player.getPosition());
 		} else if (sub[0].equalsIgnoreCase("search")) {
 			StringBuilder sb = new StringBuilder();
 			if (sub.length > 2) {
@@ -1338,7 +1344,7 @@ public class Commands {
 			}
 			break;
 		case "horntail":
-			player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8810026), player.getPosition());
+			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), player.getPosition());
 			break;
 		case "packet":
 			player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
@@ -1490,7 +1496,7 @@ public class Commands {
 		case "zakum":
 			player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
 			for (int x = 8800003; x < 8800011; x++) {
-				player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(x), player.getPosition());
+				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
 			}
 			break;
 		case "clearquestcache":

@@ -164,7 +164,7 @@ function playerExit(eim, player) {
     eim.broadcastPlayerMsg(5, "[Expedition] " + player.getName() + " has left the map.");
     eim.unregisterPlayer(player);
 
-    if (eim.disposeIfPlayerBelow(0, 0)) {
+    if (eim.disposeIfPlayerBelow(minPlayers, 610030010)) {
 	em.setProperty("state", "0");
 		em.setProperty("leader", "true");
 	}

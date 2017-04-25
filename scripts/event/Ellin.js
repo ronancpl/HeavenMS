@@ -1,13 +1,35 @@
-importPackage(Packages.client.inventory);
-importPackage(Packages.tools);
-
-var minPlayers = 2;
+var isPq = true;
+var minPlayers = 4, maxPlayers = 6;
+var minLevel = 44, maxLevel = 55;
 var entryMap = 930000000;
 var exitMap = 930000800;
+var recruitMap = 300030100;
+var clearMap = 930000800;
 
 function init() {
         em.setProperty("state", "0");
 	em.setProperty("leader", "true");
+}
+
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        if(party.size() > 0) {
+            var partyList = party.toArray();
+            
+            for(var i = 0; i < party.size(); i++) {
+                var ch = partyList[i];
+            
+                if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel && ch.getJob().getId() / 1000 == 0) {  //only adventurers
+                        if(ch.isLeader()) hasLeader = true;
+                        eligible.push(ch);
+                }
+            }
+        }
+        
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
+        return eligible;
 }
 
 function setup(level, leaderid) {
@@ -119,8 +141,23 @@ function end(eim) {
     eim.dispose();
 }
 
-function clearPQ(eim) {
-    end(eim);
+function playerClear(eim, player, toMap) {
+    eim.unregisterPlayer(player);
+    
+    if(toMap != null) player.changeMap(toMap);
+    else player.changeMap(clearMap, 0);
+}
+
+function complete(eim, toMap) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerClear(eim, party.get(i), toMap);
+    }
+    eim.dispose();
+}
+
+function clearPQ(eim, toMap) {
+    complete(eim, toMap);
 }
 
 function monsterKilled(mob, eim) {}

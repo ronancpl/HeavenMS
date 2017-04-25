@@ -218,7 +218,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         ex.printStackTrace();
 		}
 	}
-
+        
 	public int getMeso() {
 		return getPlayer().getMeso();
 	}

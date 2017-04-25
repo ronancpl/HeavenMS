@@ -29,6 +29,7 @@ import java.util.List;
 public class MapleParty {
     private MaplePartyCharacter leader;
     private List<MaplePartyCharacter> members = new LinkedList<MaplePartyCharacter>();
+    private List<MaplePartyCharacter> pqMembers = null;
     private int id;
 
     public MapleParty(int id, MaplePartyCharacter chrfor) {
@@ -74,6 +75,19 @@ public class MapleParty {
         return Collections.unmodifiableList(members);
     }
     
+    public List<MaplePartyCharacter> getPartyMembers() {
+        return members;
+    }
+    
+    // used whenever entering PQs: will draw every party member that can attempt a target PQ while ingnoring those unfit.
+    public Collection<MaplePartyCharacter> getEligibleMembers() {
+        return Collections.unmodifiableList(pqMembers);
+    }
+    
+    public void setEligibleMembers(List<MaplePartyCharacter> eliParty) {
+        pqMembers = eliParty;
+    }
+    
     public int getId() {
         return id;
     }
@@ -85,7 +99,7 @@ public class MapleParty {
     public MaplePartyCharacter getLeader() {
         return leader;
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;

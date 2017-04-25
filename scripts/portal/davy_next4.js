@@ -15,11 +15,11 @@ function enter(pi) {
             
             boss.changeDifficulty(level, true);
             
-            pi.getMap(925100500).spawnMonster(boss);
+            pi.getMap(925100500).spawnMonsterOnGroundBelow(boss, new java.awt.Point(777, 140));
 	    pi.warpParty(925100500); //next
             return(true);
 	} else {
-	    pi.playerMessage(5, "The leader must be here");
+	    pi.playerMessage(5, "The leader must be here.");
             return(false);
 	}
     } else {

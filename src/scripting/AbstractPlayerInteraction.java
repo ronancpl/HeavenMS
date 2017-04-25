@@ -93,15 +93,15 @@ public class AbstractPlayerInteraction {
         }
 
 	public void warp(int map) {
-		getPlayer().changeMap(getWarpMap(map), getWarpMap(map).getPortal(0));
+		getPlayer().changeMap(map, 0);
 	}
 
 	public void warp(int map, int portal) {
-		getPlayer().changeMap(getWarpMap(map), getWarpMap(map).getPortal(portal));
+		getPlayer().changeMap(map, portal);
 	}
 
 	public void warp(int map, String portal) {
-		getPlayer().changeMap(getWarpMap(map), getWarpMap(map).getPortal(portal));
+		getPlayer().changeMap(map, portal);
 	}
 
 	public void warpMap(int map) {
@@ -161,6 +161,15 @@ public class AbstractPlayerInteraction {
 	public EventManager getEventManager(String event) {
 		return getClient().getEventManager(event);
 	}
+        
+        public void clearPQ(int toMap) {
+                clearPQ(getWarpMap(toMap));
+        }
+        
+        public void clearPQ(MapleMap toMap) {
+                if(getPlayer().getEventInstance() != null)
+                        getPlayer().getEventInstance().getEm().clearPQ(getPlayer().getEventInstance(), toMap);
+        }
 
         public MapleInventory getInventory(MapleInventoryType type) {
                 return getPlayer().getInventory(type);
@@ -556,14 +565,17 @@ public class AbstractPlayerInteraction {
 			}
 		}
 	}
+        
+        public void giveCharacterExp(int amount, MapleCharacter chr) {
+                chr.gainExp((amount * chr.getExpRate()), true, true);
+        }
 
 	public void givePartyExp(int amount, List<MapleCharacter> party) {
 		for (MapleCharacter chr : party) {
-			chr.gainExp((amount * chr.getExpRate()), true, true);
+			giveCharacterExp(amount, chr);
 		}
 	}
-
-
+        
 	public void givePartyExp(String PQ) {
 		givePartyExp(PQ, true);
 	}

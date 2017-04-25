@@ -47,6 +47,23 @@ public class ReactorScriptManager extends AbstractScriptManager {
     public synchronized static ReactorScriptManager getInstance() {
         return instance;
     }
+    
+    public void onHit(MapleClient c, MapleReactor reactor) {
+        try {
+            ReactorActionManager rm = new ReactorActionManager(c, reactor);
+            Invocable iv = getInvocable("reactor/" + reactor.getId() + ".js", c);
+            if (iv == null) {
+            	return;
+            }
+            engine.put("rm", rm);
+            iv.invokeFunction("hit");
+        } catch(final NoSuchMethodException e) {
+            //do nothing, hit is OPTIONAL
+        }
+        catch (final ScriptException | NullPointerException e) {
+            FilePrinter.printError(FilePrinter.REACTOR + reactor.getId() + ".txt", e);
+        }
+    }
 
     public void act(MapleClient c, MapleReactor reactor) {
         try {

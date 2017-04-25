@@ -170,3 +170,9 @@ Atualização em diversos drops nos SQLs.
 Várias correções envolvendo concorrências em propriedades do MapleCharacter.
 Adição de constante USE_EQUIPMNT_LVLUP: dá pra nivelar qualquer equip até o nível desejado.
 Algumas correções em quests no cliente e no servidor.
+Correção de bug que gerava client stuck para Outlaw, quando chamava 2 summons e mudava de mapa.
+
+23 - 25 Abril 2017,
+Introdução de métodos que auxiliam na normalização dos scripts para PQs.
+Nova PQ: Boss Rush PQ.
+Correção de situações nas PQs Ellin e Pirate.

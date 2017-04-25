@@ -48,8 +48,6 @@ import java.util.Set;
 //import java.util.TimeZone;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.locks.Lock;
 import java.util.regex.Pattern;
 
 import net.server.PlayerBuffValueHolder;
@@ -272,13 +270,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private PartyQuest partyQuest = null;
     private boolean loggedIn = false;
     private MapleDragon dragon = null;
-    private boolean useCS = false;  //chaos scroll upon crafting item.
+    private boolean useCS;  //chaos scroll upon crafting item.
     private long useDuey;
     private long petLootCd;
     private int newWarpMap = -1;
-    private Lock sLock = new ReentrantLock(true);
 
     private MapleCharacter() {
+        useCS = false;
+        
         setStance(0);
         inventory = new MapleInventory[MapleInventoryType.values().length];
         savedLocations = new SavedLocation[SavedLocationType.values().length];
@@ -553,14 +552,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
         return MaxMP;
     }
-
+    
     public void addSummon(int id, MapleSummon summon) {
-        sLock.lock();
-        try {
-            summons.put(id, summon);
-        } finally {
-            sLock.unlock();
-        }
+        summons.put(id, summon);
     }
 
     public void addVisibleMapObject(MapleMapObject mo) {
@@ -1091,9 +1085,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 	return target;
     }
     
-    // for use ONLY inside OnUserEnter map scripts that requires players changing map even before entering it.
+    // for use ONLY inside OnUserEnter map scripts that requires a player to change map while still moving between maps.
     public void warpAhead(int map) {
         newWarpMap = map;
+    }
+    
+    private void eventChangedMap(int map) {
+        if (getEventInstance() != null) getEventInstance().changedMap(MapleCharacter.this, map);
     }
 
     public void changeMap(int map) {
@@ -1101,6 +1099,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, int portal) {
+        eventChangedMap(map);
+        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1112,6 +1112,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, String portal) {
+        eventChangedMap(map);
+        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1123,6 +1125,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, MaplePortal portal) {
+        eventChangedMap(map);
+        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1369,27 +1373,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     } else if (stat == MapleBuffStat.SUMMON || stat == MapleBuffStat.PUPPET) {
                         int summonId = mbsvh.effect.getSourceId();
                         
-                        sLock.lock();
-                        try {
-                            MapleSummon summon = summons.get(summonId);
-                            if (summon != null) {
-                                getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
-                                getMap().removeMapObject(summon);
-                                removeVisibleMapObject(summon);
-                                summons.remove(summonId);
+                        MapleSummon summon = summons.get(summonId);
+                        if (summon != null) {
+                            getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
+                            getMap().removeMapObject(summon);
+                            removeVisibleMapObject(summon);
+                            summons.remove(summonId);
+                        }
+                        if (summon.getSkill() == DarkKnight.BEHOLDER) {
+                            if (beholderHealingSchedule != null) {
+                                beholderHealingSchedule.cancel(false);
+                                beholderHealingSchedule = null;
                             }
-                            if (summon.getSkill() == DarkKnight.BEHOLDER) {
-                                if (beholderHealingSchedule != null) {
-                                    beholderHealingSchedule.cancel(false);
-                                    beholderHealingSchedule = null;
-                                }
-                                if (beholderBuffSchedule != null) {
-                                    beholderBuffSchedule.cancel(false);
-                                    beholderBuffSchedule = null;
-                                }
+                            if (beholderBuffSchedule != null) {
+                                beholderBuffSchedule.cancel(false);
+                                beholderBuffSchedule = null;
                             }
-                        } finally {
-                            sLock.unlock();
                         }
                     } else if (stat == MapleBuffStat.DRAGONBLOOD) {
                         dragonBloodSchedule.cancel(false);
@@ -2530,48 +2529,23 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public Collection<MapleSummon> getSummonsValues() {
-        sLock.lock();
-        try {
-            return summons.values();
-        } finally {
-            sLock.unlock();
-        }
+        return summons.values();
     }
     
     public void clearSummons() {
-        sLock.lock();
-        try {
-            summons.clear();
-        } finally {
-            sLock.unlock();
-        }
+        summons.clear();
     }
     
     public MapleSummon getSummonByKey(int id) {
-        sLock.lock();
-        try {
-            return summons.get(id);
-        } finally {
-            sLock.unlock();
-        }
+        return summons.get(id);
     }
     
     public boolean isSummonsEmpty() {
-        sLock.lock();
-        try {
-            return summons.isEmpty();
-        } finally {
-            sLock.unlock();
-        }
+        return summons.isEmpty();
     }
     
     public boolean containsSummon(MapleSummon summon) {
-        sLock.lock();
-        try {
-            return summons.containsValue(summon);
-        } finally {
-            sLock.unlock();
-        }
+        return summons.containsValue(summon);
     }
 
     public int getTotalStr() {

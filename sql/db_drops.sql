@@ -6682,9 +6682,9 @@
 (4220000, 4000166, 1, 1, 0, 200000), 
 (4220001, 4000166, 1, 1, 0, 200000), 
 (9303014, 4000166, 1, 1, 0, 200000), 
-(4220000, 4032474, 1, 1, 0, 10000), 
-(4220001, 4032474, 1, 1, 0, 10000), 
-(9303014, 4032474, 1, 1, 0, 10000), 
+(4220000, 4032474, 1, 1, 0, 200000), 
+(4220001, 4032474, 1, 1, 0, 200000), 
+(9303014, 4032474, 1, 1, 0, 200000), 
 (4220000, 2000002, 1, 4, 0, 40000), 
 (4220001, 2000002, 1, 4, 0, 40000), 
 (9303014, 2000002, 1, 1, 0, 40000),
@@ -18794,11 +18794,14 @@
 (9300107, 4031551, 1, 1, 3829, 40000),
 (9300119, 4031551, 1, 1, 3829, 40000),
 (9300119, 0, 801, 1199, 0, 400000),
-(9300173, 4001161, 1, 1, 0, 200000);
+(9300173, 4001161, 1, 1, 0, 200000),
+(9500355, 2388015, 1, 1, 0, 24000),
+(9500356, 2388032, 1, 1, 0, 24000),
+(9500357, 2388016, 1, 1, 0, 24000);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
-  # delete item drops from Seruf shell
+  # delete item drops from Seruf in inactive form
   DELETE FROM temp_data WHERE dropperid=4220001;
 
   UPDATE IGNORE temp_data SET chance=700 WHERE itemid=1302056;
@@ -18868,7 +18871,6 @@
   UPDATE drop_data SET questid=7777 WHERE itemid=4001359;
   UPDATE drop_data SET questid=7777 WHERE itemid=4001342;
   UPDATE drop_data SET questid=7777 WHERE itemid=4031906;
-  UPDATE drop_data SET questid=7777 WHERE itemid=4032474;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
   UPDATE drop_data SET questid=6191 WHERE itemid=4031477;
@@ -18878,6 +18880,16 @@
   # two items named "Sparta": remove the entries where lv100 Sparta is being dropped by low-level mobs.
   UPDATE IGNORE drop_data SET itemid=1402011 WHERE itemid=1302056 AND dropperid < 8000000;
   DELETE FROM drop_data WHERE itemid=1302056 AND dropperid < 8000000;
+
+  # remove belts dropping from mobs
+  DELETE FROM drop_data where itemid>=1132000 and itemid<=1132004;
+
+  # remove key of dimension dropping outside PQ
+  DELETE FROM drop_data where itemid=4001023 and dropperid!=9300012;
+
+  # remove every not-card drop from bosses out of their natural habitat
+  DELETE FROM drop_data WHERE dropperid >= 9300184 AND dropperid < 9300215 AND (itemid < 2380000 OR itemid >= 2390000);
+  DELETE FROM drop_data WHERE dropperid >= 9500337 AND dropperid < 9500364 AND (itemid < 2380000 OR itemid >= 2390000);
 
   # update quest reactor items
   UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;
@@ -18898,6 +18910,18 @@
     (2402000, 2022087, 3, -1),
     (2402001, 2022088, 1, -1),
     (2402001, 2022086, 1, -1),
+    (2512001, 4010004, 1, -1),
+    (2512001, 4010005, 1, -1),
+    (2512001, 4010006, 1, -1),
+    (2512001, 4010007, 1, -1),
+    (2512001, 4020007, 1, -1),
+    (2512001, 4020008, 1, -1),
+    (2512001, 4010004, 1, -1),
+    (2512001, 4010005, 1, -1),
+    (2512001, 4010006, 1, -1),
+    (2512001, 4010007, 1, -1),
+    (2512001, 4020007, 1, -1),
+    (2512001, 4020008, 1, -1),
     (2512001, 4010004, 1, -1),
     (2512001, 4010005, 1, -1),
     (2512001, 4010006, 1, -1),

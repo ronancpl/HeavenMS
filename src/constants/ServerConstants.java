@@ -9,11 +9,11 @@ public class ServerConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
 
     // Login Configuration
-    public static final int CHANNEL_LOAD = 100;//Players per channel
-    public static final long RANKING_INTERVAL = 60 * 60 * 1000;//60 minutes, 3600000
+    public static final int CHANNEL_LOAD = 100;                     //Players per channel
+    public static final long RANKING_INTERVAL = 60 * 60 * 1000;     //60 minutes, 3600000
     public static final boolean ENABLE_PIC = false;
     //Event Configuration
-    public static final boolean PERFECT_PITCH = true;  //for lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    public static final boolean PERFECT_PITCH = true;               //for lvl 30 or above, each lvlup player gains 1 perfect pitch.
     // IP Configuration
     public static String HOST;
     //Database Configuration
@@ -25,7 +25,7 @@ public class ServerConstants {
     public static boolean SHUTDOWNHOOK;
     //Gameplay Configurations
     public static final boolean USE_MAXRANGE = true;        //will send and receive packets from all events of a map, rather than those of only view range.
-    public static final boolean USE_DEBUG = true;
+    public static final boolean USE_DEBUG = true;           //will enable some text prints and new commands in the client oriented for debugging.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
@@ -57,7 +57,7 @@ public class ServerConstants {
     public static final double PET_AUTOHP_RATIO = 0.99;         //will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;
     
-    //Should bosses use 1HP,1MP attacks in dojo?
+    //Should bosses really use 1HP,1MP attacks in dojo?
     public static final boolean USE_DEADLY_DOJO = false;
     
     //Rates

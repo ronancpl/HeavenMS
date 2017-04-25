@@ -35,6 +35,7 @@ import javax.script.ScriptException;
 
 import net.server.channel.Channel;
 import net.server.world.MapleParty;
+import net.server.world.MaplePartyCharacter;
 import server.TimerManager;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
@@ -42,6 +43,10 @@ import server.life.MapleMonster;
 import server.life.MapleLifeFactory;
 
 import client.MapleCharacter;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ArrayList;
+import java.lang.reflect.Array;
 
 /**
  *
@@ -86,7 +91,8 @@ public class EventManager {
     }
 
     public void cancelSchedule() {
-        schedule.cancel(true);
+        if(schedule != null)
+            schedule.cancel(true);
     }
 
     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
@@ -173,6 +179,7 @@ public class EventManager {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
             eim.registerParty(party, map);
+            party.setEligibleMembers(null);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -183,6 +190,7 @@ public class EventManager {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, party.getLeader().getId()));
             eim.registerParty(party, map);
+            party.setEligibleMembers(null);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -193,6 +201,33 @@ public class EventManager {
         try {
             iv.invokeFunction("setup", eim);
             eim.setProperty("leader", leader);
+        } catch (ScriptException | NoSuchMethodException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public List<MaplePartyCharacter> getEligibleParty(MapleParty party) {
+        if (party == null) {
+            return(new ArrayList<>());
+        }
+        try {
+            Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembers());
+            
+            if(p != null) {
+                List<MaplePartyCharacter> lmpc = new ArrayList<>((List<MaplePartyCharacter>) p);
+                party.setEligibleMembers(lmpc);
+                return lmpc;
+            }
+        } catch (ScriptException | NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+
+        return(new ArrayList<>());
+    }
+    
+    public void clearPQ(EventInstanceManager eim, MapleMap toMap) {
+        try {
+            iv.invokeFunction("clearPQ", eim, toMap);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }

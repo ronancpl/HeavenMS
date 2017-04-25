@@ -1,11 +1,35 @@
 var isPq = true;
-var minPlayers = 1;
+var minPlayers = 3, maxPlayers = 6;
+var minLevel = 55, maxLevel = 100;
 var entryMap = 925100000;
 var exitMap = 925100700;
+var recruitMap = 251010404;
+var clearMap = 925100600;
 
 function init() {
         em.setProperty("state", "0");
 	em.setProperty("leader", "true");
+}
+
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        if(party.size() > 0) {
+            var partyList = party.toArray();
+            
+            for(var i = 0; i < party.size(); i++) {
+                var ch = partyList[i];
+            
+                if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
+                        if(ch.isLeader()) hasLeader = true;
+                        eligible.push(ch);
+                }
+            }
+        }
+        
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
+        return eligible;
 }
 
 function setup(level, leaderid) {
@@ -119,7 +143,7 @@ function changedMap(eim, player, mapid) {
     if (mapid < 925100000 || mapid > 925100500) {
 	eim.unregisterPlayer(player);
 
-	if (eim.disposeIfPlayerBelow(0, 0)) {
+	if (eim.disposeIfPlayerBelow(minPlayers, exitMap)) {
 		em.setProperty("state", "0");
 		em.setProperty("leader", "true");
 	}
@@ -129,6 +153,7 @@ function changedMap(eim, player, mapid) {
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
+    var party = eim.getPlayers();
     if (eim.isLeader(player) || party.size() <= minPlayers) { // Check for party leader
         var party = eim.getPlayers();
         for (var i = 0; i < party.size(); i++)
@@ -188,8 +213,23 @@ function end(eim) {
     eim.dispose();
 }
 
-function clearPQ(eim) {
-    end(eim);
+function playerClear(eim, player, toMap) {
+    eim.unregisterPlayer(player);
+    
+    if(toMap != null) player.changeMap(toMap);
+    else player.changeMap(clearMap, 0);
+}
+
+function complete(eim, toMap) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerClear(eim, party.get(i), toMap);
+    }
+    eim.dispose();
+}
+
+function clearPQ(eim, toMap) {
+    complete(eim, toMap);
 }
 
 function monsterKilled(mob, eim) {}

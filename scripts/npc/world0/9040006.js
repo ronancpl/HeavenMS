@@ -258,5 +258,5 @@ function randX() {
 
 function spawnMob(id, x, y, map) {
 	var mob = Packages.server.life.MapleLifeFactory.getMonster(id);
-	map.spawnMonsterOnGroudBelow(mob, new Packages.java.awt.Point(x, y));
+	map.spawnMonsterOnGroundBelow(mob, new Packages.java.awt.Point(x, y));
 }
