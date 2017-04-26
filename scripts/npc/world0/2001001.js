@@ -19,14 +19,30 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function start() { 
-    cm.sendYesNo("We have a beautiful christmas tree.\r\nDo you want to see/decorate it?");
-}
 
-function action(made, by, osiris) {
-    if(made == 1)
-        cm.warp(209000001);
-    else
-        cm.sendOk("Come back later.");
-    cm.dispose();
+/* 2001001 - Metal Bucket Snowman
+    @author Ronan
+ */
+
+var status = -1;
+
+function start() { 
+    action(1, 0, 0);
+} 
+function action(mode, type, selection) { 
+    if (mode < 0)
+        cm.dispose();
+    else {
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            cm.sendYesNo("We have a beautiful christmas tree.\r\nDo you want to see/decorate it?");
+        } else if(status == 1) {
+            cm.warp(209000001);
+            cm.dispose();
+        }
+    }
 } 

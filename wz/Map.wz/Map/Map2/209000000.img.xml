@@ -349,12 +349,10 @@
       <int name="y" value="151"/>
       <int name="mobTime" value="0"/>
       <int name="f" value="0"/>
-      <int name="hide" value="0"/>
       <int name="fh" value="31"/>
       <int name="cy" value="154"/>
       <int name="rx0" value="1412"/>
       <int name="rx1" value="1512"/>
-      <string name="limitedname" value="xmasvillage"/>
     </imgdir>
     <imgdir name="13">
       <string name="type" value="n"/>
@@ -2276,6 +2274,14 @@
     </imgdir>
   </imgdir>
   <imgdir name="reactor">
+    <imgdir name="1">
+      <string name="id" value="2092001"/>
+      <int name="x" value="-375"/>
+      <int name="y" value="-150"/>
+      <int name="reactorTime" value="3600"/>
+      <int name="f" value="0"/>
+      <string name="name" value="삼각대"/>
+    </imgdir>
     <imgdir name="0">
       <string name="id" value="2092002"/>
       <int name="x" value="2262"/>

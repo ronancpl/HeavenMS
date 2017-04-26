@@ -19,11 +19,30 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//lol at old script -- Moogra
+
+/* 2001003 - Straw Hat Snowman
+    @author Ronan
+ */
+
+var status = -1;
+
 function start() { 
-    cm.sendYesNo("We have a beautiful christmas tree.\r\nDo you want to see/decorate it?");
+    action(1, 0, 0);
 } 
 function action(mode, type, selection) { 
-    cm.warp(209000001);
-    cm.dispose();
+    if (mode < 0)
+        cm.dispose();
+    else {
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            cm.sendYesNo("We have a beautiful christmas tree.\r\nDo you want to see/decorate it?");
+        } else if(status == 1) {
+            cm.warp(209000003);
+            cm.dispose();
+        }
+    }
 } 

@@ -634,7 +634,6 @@ public class MapleMap {
             removeMapObject(monster);
             monster.dispatchMonsterKilled();
             broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
-            //System.out.println("Counter: " + spawnedMonstersOnMap.toString() + " Size: " + countAllMonsters());
             return;
         }
         if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
@@ -702,6 +701,7 @@ public class MapleMap {
                 }
             }
         }
+        
         MapleCharacter dropOwner = monster.killBy(chr);
         if (withDrops && !monster.dropsDisabled()) {
             if (dropOwner == null) {
@@ -712,7 +712,6 @@ public class MapleMap {
         
         monster.dispatchMonsterKilled();
         broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
-        //System.out.println("Counter: " + spawnedMonstersOnMap.toString() + " Size: " + countAllMonsters());
     }
 
     public void killFriendlies(MapleMonster mob) {
@@ -737,6 +736,8 @@ public class MapleMap {
     }
 
     public void softKillAllMonsters() {
+        
+        
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
             if (monster.getStats().isFriendly()) {
@@ -1329,6 +1330,48 @@ public class MapleMap {
         if (!everlast) {
             TimerManager.getInstance().schedule(new ExpireMapItemJob(drop), 180000);
             activateItemReactors(drop, owner.getClient());
+        }
+    }
+    
+    public final void spawnItemDropList(List<Integer> list, final MapleMapObject dropper, final MapleCharacter owner, Point pos) {
+        spawnItemDropList(list, 1, 1, dropper, owner, pos, true, false);
+    }
+    
+    public final void spawnItemDropList(List<Integer> list, int minCopies, int maxCopies, final MapleMapObject dropper, final MapleCharacter owner, Point pos) {
+        spawnItemDropList(list, minCopies, maxCopies, dropper, owner, pos, true, false);
+    }
+        
+    // spawns item instances of all defined item ids on a list
+    public final void spawnItemDropList(List<Integer> list, int minCopies, int maxCopies, final MapleMapObject dropper, final MapleCharacter owner, Point pos, final boolean ffaDrop, final boolean playerDrop) {
+        int copies = (maxCopies - minCopies) + 1;
+        if(copies < 1) return;
+        
+        Collections.shuffle(list);
+        
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        Random rnd = new Random();
+        
+        final Point dropPos = new Point(pos);
+        dropPos.x -= (12 * list.size());
+        
+        for(int i = 0; i < list.size(); i++) {
+            if(list.get(i) == 0) {
+                spawnMesoDrop(owner != null ? 10 * owner.getMesoRate() : 10, calcDropPos(dropPos, pos), dropper, owner, playerDrop, (byte) (ffaDrop ? 2 : 0));
+            }
+            else {
+                final Item drop;
+                int randomedId = list.get(i);
+
+                if (ii.getInventoryType(randomedId) != MapleInventoryType.EQUIP) {
+                    drop = new Item(randomedId, (short) 0, (short) (rnd.nextInt(copies) + minCopies));
+                } else {
+                    drop = ii.randomizeStats((Equip) ii.getEquipById(randomedId));
+                }
+
+                spawnItemDrop(dropper, owner, drop, calcDropPos(dropPos, pos), ffaDrop, playerDrop);
+            }
+            
+            dropPos.x += 25;
         }
     }
 

@@ -318,7 +318,7 @@ public class EventInstanceManager {
                 wL.unlock();
             }
             
-            event_schedule.cancel(true);
+            if(event_schedule != null) event_schedule.cancel(true);
 
             mobs.clear();
             killCount.clear();

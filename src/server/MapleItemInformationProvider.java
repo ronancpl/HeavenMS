@@ -321,6 +321,28 @@ public class MapleItemInformationProvider {
         }
         return ret;
     }
+    
+    public List<Integer> getItemIdsInRange(int minId, int maxId, boolean ignoreCashItem) {
+        List<Integer> list = new ArrayList<>();
+        
+        if(ignoreCashItem) {
+            for(int i = minId; i <= maxId; i++) {
+                if(getItemData(i) != null && !isCash(i)) {
+                    list.add(i);
+                }
+            }
+        }
+        else {
+            for(int i = minId; i <= maxId; i++) {
+                if(getItemData(i) != null) {
+                    list.add(i);
+                }
+            }
+        }
+        
+        
+        return list;
+    }
 
     public short getSlotMax(MapleClient c, int itemId) {
         if (slotMaxCache.containsKey(itemId)) {

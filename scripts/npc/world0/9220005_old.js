@@ -19,20 +19,16 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package server.maps;
+/* Roudolph Happyville Warp NPC
+   By Moogra
+*/
 
-public enum SavedLocationType {
-    FREE_MARKET, 
-    EVENT, 
-    WORLDTOUR, 
-    FLORINA, 
-    INTRO, 
-    SUNDAY_MARKET, 
-    MIRROR, 
-    DOJO,
-    HAPPYVILLE;
+function start() {
+    cm.sendYesNo("Do you want to go to the Extra Frosty Snow Zone ?#l");
+}
 
-    public static SavedLocationType fromString(String Str) {
-        return valueOf(Str);
-    }
+function action(mode, type, selection) {
+    if (mode > 0)
+        cm.warp(209080000, 0);
+    cm.dispose();
 }

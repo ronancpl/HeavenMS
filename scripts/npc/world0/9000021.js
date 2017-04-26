@@ -1,70 +1,56 @@
 /*
- * Aran / Cygnus Job Advancer
- * v83 MoopleDEV Rev 116
- * Author: ShEtY
+	This file is part of the OdinMS Maple Story Server
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation version 3 as published by
+    the Free Software Foundation. You may not use, modify or distribute
+    this program under any other version of the GNU Affero General Public
+    License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* 9000021 - Gaga
+    BossRushPQ recruiter
+    @author Ronan
  */
 
-var status = -1;
-var ask = "Oh, I see you've grown stronger! Do you wish to job advance?";
-var job;
-var koc = new Array();
-
+var status;
+ 
 function start() {
-   cm.sendNext("Hey #e#h ##n, I'm the Aran & Cygnus Job Advancer.");
+    status = -1;
+    action(1, 0, 0);
 }
 
-function action(m, t, s) {
-    status++;
-    if (m != 1) {
+function action(mode, type, selection) {
+    if (mode < 0)
         cm.dispose();
-        return;
-    }
-    if (status == 0) {
-        if (cm.getJobId() < 1000 ||cm.getJobId() % 10 == 2) {
-            cm.dispose();
-        } else if (cm.getJobId() % 10 == 1 && cm.getJobId() < 2000) {
-            cm.dispose();
-        } else if (cm.getJobId() % 1000 == 0 && cm.getJobId() != 0 && cm.getLevel() >= 10) {
-            if (cm.getJobId() == 1000) {
-                for (var i = 1; i < 6; i++)
-                koc.push(cm.getJobId() + 100 * i);
-                var list = "What class of Cygnus Knight do you wish to advance to?";
-                for (var k = 0; k < koc.length; k++)
-                list += "\r\n#L" + k + "#" + cm.getJobName(koc[k]) + "#l";
-                cm.sendSimple(list);
-            } else if (cm.getJobId() == 2000) {
-                job = cm.getJobId() + 100;
-                cm.sendYesNo(ask);
-            }
+    else {
+        if (mode == 1)
+            status++;
         else
-            cm.dispose();
-        } else if (cm.getJobId() % 1000 != 0) {
-            if (cm.getJobId() % 100 == 0 && cm.getLevel() >= 30) {
-                job = cm.getJobId() + 10;
-                cm.sendYesNo(ask);
-            } else if (cm.getJobId() % 10 == 0 && cm.getLevel() >= 70) {
-                job = cm.getJobId() + 1;
-                cm.sendYesNo(ask);
-            } else if (cm.getJobId() % 10 == 1 && cm.getJobId() >= 2000 && cm.getLevel() >= 120) {
-                job = cm.getJobId() + 1;
-                cm.sendYesNo(ask);
-            }
-        }
-    } else if (status == 1) {
-        if (cm.getJobId() != 1000) {
-            if (cm.getJobId() == 2000) {
-                cm.changeJobById(job);
-                cm.maxMastery();
-                cm.resetStats();
-                cm.dispose();
-            } else {
-                cm.changeJobById(job);
-                cm.dispose();
-            }
-        } else if (cm.getJobId() == 1000) {
-            cm.changeJobById(koc[s]);
-            cm.resetStats();
+            status--;
+        
+        if (status == 0) {
+            cm.sendNext("Hey, traveler! I am #p9000021#, and my job is to recruit travelers like you, who eagers for new challenges daily. Right now, my team is holding contests that thoroughly tests the mental and physical capabilities of adventurers like you.");
+	} else if(status == 1) {
+            cm.sendNext("These contests involve #bsequential boss fights#k, with some resting spots between some sections. These will require some strategy time and enough supplies at hand, as they are not common fights.");
+        } else if(status == 2) {
+            cm.sendAcceptDecline("If you feel you are powerful enough, you can join others like you at where we are hosting the contests of power. ... So, what is your decision? Will you come to where the contests are being held right now?");
+        } else if(status == 3) {
+            cm.sendOk("Very well. Remember, there you can assemble a team or take on the fightings on your own, it's up to you. Good luck!");
+        } else if(status == 4) {
+            cm.warp(970030000);
             cm.dispose();
         }
     }
-}  
+}

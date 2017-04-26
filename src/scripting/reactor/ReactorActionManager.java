@@ -92,7 +92,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 int range = maxMeso - minMeso;
                 int displayDrop = (int) (Math.random() * range) + minMeso;
                 int mesoDrop = (displayDrop * client.getWorldServer().getMesoRate());
-                reactor.getMap().spawnMesoDrop(mesoDrop, dropPos, reactor, client.getPlayer(), false, (byte) 2);
+                reactor.getMap().spawnMesoDrop(mesoDrop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), reactor, client.getPlayer(), false, (byte) 2);
             } else {
                 Item drop;
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -101,7 +101,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 } else {
                     drop = ii.randomizeStats((Equip) ii.getEquipById(d.itemId));
                 }
-                reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, dropPos, false, false);
+                reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), false, false);
             }
             dropPos.x += 25;
         }
