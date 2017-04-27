@@ -26,6 +26,7 @@ import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import scripting.quest.QuestScriptManager;
 import server.quest.MapleQuest;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -67,6 +68,8 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
             slea.readInt();
 			if(quest.canComplete(player, npc)) {
 				QuestScriptManager.getInstance().end(c, questid, npc);
+                                player.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); //show effect when completion 
+                                player.getMap().broadcastMessage(player, MaplePacketCreator.showForeignEffect(player.getId(), 9));//show effect around players I guess
 			}
         }
     }
