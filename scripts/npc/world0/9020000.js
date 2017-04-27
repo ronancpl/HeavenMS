@@ -32,7 +32,7 @@
 var status;
 var minLevel = 21;
 var maxLevel = 255;
-var minPlayers = 3;
+var minPlayers = 1;
 var maxPlayers = 6;
 
 function start() {

@@ -1266,9 +1266,17 @@ public class Commands {
 			player.updateSingleStat(MapleStat.LUK, x);
 		} else if (sub[0].equals("unban")) {
 			try {
-				try (PreparedStatement p = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET banned = -1 WHERE id = " + MapleCharacter.getIdByName(sub[1]))) {
-					p.executeUpdate();
-				}
+                                Connection con = DatabaseConnection.getConnection();
+                                int aid = MapleCharacter.getAccountIdByName(sub[1]);
+                                
+                                PreparedStatement p = con.prepareStatement("UPDATE accounts SET banned = -1 WHERE id = " + aid);
+                                p.executeUpdate();
+                            
+				p = con.prepareStatement("DELETE FROM ipbans WHERE aid = " + aid);
+				p.executeUpdate();
+                                        
+                                p = con.prepareStatement("DELETE FROM macbans WHERE aid = " + aid);
+				p.executeUpdate();
 			} catch (Exception e) {
                                 e.printStackTrace();
 				player.message("Failed to unban " + sub[1]);
@@ -1291,8 +1299,10 @@ public class Commands {
 				try {
 					Connection con = DatabaseConnection.getConnection();
 					if (ip.matches("/[0-9]{1,3}\\..*")) {
-						ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
+						ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?, ?)");
 						ps.setString(1, ip);
+                                                ps.setString(2, String.valueOf(target.getClient().getAccID()));
+                                                
 						ps.executeUpdate();
 						ps.close();
 					}

@@ -2,11 +2,15 @@ MapleSolaxiaV2
 
 Freelance developer: Ronan C. P. Lana
 
-Credits are to be given to the original MapleSolaxia staff and other colaborators, as just some minor changes/patches on the game were applied by myself, in which some of them diverged from the original v83 patch contents.
+Credits are to be given too to Nexon(Duh!), the original MapleSolaxia staff, and other colaborators, as just some changes/patches on the game were applied by myself, in which some of them diverged from the original v83 patch contents.
+
+Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is free to install, use, modify and redistribute the contents, as long as there is no kind of commercial trading involved and the credits to the original creators are maintained within the codes.
 
 This is a NetBeans 8.0.2 Project. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. From now on, considering the use of some of this system's edited WZ and server-side files should be a great asset for new private server instances. My opinion, though! Refer to "README_wzchanges.txt" for more information on what have been changed from Nexon's v83 WZ files.
+
+The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, to aim to get the best of the MapleStory of that era.
 
 ---- Download items ----
 
@@ -17,7 +21,7 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 
 The following link teaches on how to install a MapleStory v83 private server, however IT DIFFERS on what is used here: http://forum.ragezone.com/f428/maplestory-private-server-v83-741739/
 
-Use that link ONLY AS AN ORIENTATION on where here things become ambiguous.
+Use that link ONLY AS AN ORIENTATION on where here things start to become ambiguous.
 
 Firstly, install all the general tools required to run the server:
 	- WampServer2.0i.exe -> recipient of the server.
@@ -61,8 +65,7 @@ Now it must be done CAREFULLY:
 	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_database.sql, and execute it.
 	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_drops.sql, and execute it.
 
-Now it is OPTIONAL, you don't need to run it if you don't want, as it will simply change some NPC shops to set
-some new goods, not present in the original MapleStory, to sell:
+Now it is OPTIONAL, you don't need to run it if you don't want, as it will simply change some NPC shops to set some new goods, not present in the original MapleStory, to sell:
 	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
 
 At the end of the execution of these SQLs, you should have installed a database schema named "maplesolaxia". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually a entry on the table "accounts" at that database with a login and a password.
@@ -120,7 +123,7 @@ As an example of client WZ editing, consider the MobBookUpdate project I develop
 
 At this point, the server-side Monster Book has been updated with the current state of the database's drop data. Then, open HaRepacker 4.2.2 and load "String.wz" from "C:\Nexon\MapleStory". Drop the "MonsterBook.img" node by removing it from the hierarchy tree, then (CONTRARY TO WHAT SHOULD BE DONE NORMALLY!) import the server's "MonsterBook.img.xml".
 
-Take note that this is absolutely dangerous if done unwary. Once the MonsterBook does not hold client specific data in it's node contents, importing the XML causes no harm at all. However, try not to remove/reimport nodes from WZ files, as it may cause data losses. Use the HaRepacker's UI instead to make the changes.
+Take note that this is absolutely dangerous if done unwary. Once the MonsterBook.img does not hold client specific data in it's node contents, importing the XML causes no harm at all. However, try not to remove/reimport nodes from WZ files, as it may cause data losses. Use the HaRepacker's UI instead to make the changes.
 
 Save the changes and overwrite the older WZ on the MapleStory client folder.
 

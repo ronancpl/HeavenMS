@@ -615,7 +615,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 if (ps != null && !ps.isClosed()) {
                     ps.close();
                 }
-				if (rs != null && !rs.isClosed()) {
+		if (rs != null && !rs.isClosed()) {
                     rs.close();
                 }
             } catch (SQLException e) {
@@ -2030,6 +2030,27 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return id;
     }
 
+    public static int getAccountIdByName(String name) {
+        try {
+            int id;
+            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT accountid FROM characters WHERE name = ?")) {
+                ps.setString(1, name);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (!rs.next()) {
+                        rs.close();
+                        ps.close();
+                        return -1;
+                    }
+                    id = rs.getInt("accountid");
+                }
+            }
+            return id;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
     public static int getIdByName(String name) {
         try {
             int id;

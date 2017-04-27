@@ -366,7 +366,7 @@ public class MapleClient {
 					filtered.add(rs.getString("filter"));
 				}
 			}
-			try (PreparedStatement ps = con.prepareStatement("INSERT INTO macbans (mac) VALUES (?)")) {
+			try (PreparedStatement ps = con.prepareStatement("INSERT INTO macbans (mac, aid) VALUES (?, ?)")) {
 				for (String mac : macs) {
 					boolean matched = false;
 					for (String filter : filtered) {
@@ -377,6 +377,7 @@ public class MapleClient {
 					}
 					if (!matched) {
 						ps.setString(1, mac);
+                                                ps.setString(2, String.valueOf(getAccID()));
 						ps.executeUpdate();
 					}
 				}
