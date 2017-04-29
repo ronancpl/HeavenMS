@@ -37,6 +37,7 @@ public class ServerConstants {
     public static final boolean USE_REFRESH_RANK_MOVE = true;
     
     public static final int MAX_AP = 999;
+    public static final int MAX_EVENT_LEVELS = 8;               //event has different levels of rewarding system
     public static final long BLOCK_DUEY_RACE_COND = (long)(0.5 * 1000);
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000);            //time the pet must wait before trying to pick items up.
     
@@ -57,8 +58,7 @@ public class ServerConstants {
     public static final double PET_AUTOHP_RATIO = 0.99;         //will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;
     
-    //Should bosses really use 1HP,1MP attacks in dojo?
-    public static final boolean USE_DEADLY_DOJO = false;
+    public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
     
     //Rates
     public static final int EXP_RATE = 10;

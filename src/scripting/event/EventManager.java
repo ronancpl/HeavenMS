@@ -92,7 +92,7 @@ public class EventManager {
 
     public void cancelSchedule() {
         if(schedule != null)
-            schedule.cancel(true);
+            schedule.cancel(false);
     }
 
     public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {

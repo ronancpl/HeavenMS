@@ -74,6 +74,8 @@ Configure the IP you want to use for your MapleStory server in "configuration.in
 
 Now open NetBeans, and choose to Open a project... Select then the "MapleSolaxia" folder, that should already be a project recognizable by NetBeans. If it doesn't, you have a problem.
 
+Inside the project, you may encounter some code errors. These happens because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems". Locate the "cores" folder inside the root directory of this project and manually configure the missing files with the files that are there.
+
 Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functioning, and then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
 ---- Installing the CLIENT ----

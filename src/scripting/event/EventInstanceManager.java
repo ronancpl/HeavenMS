@@ -46,13 +46,16 @@ import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import tools.DatabaseConnection;
 import client.MapleCharacter;
+import constants.ItemConstants;
+import constants.ServerConstants;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import scripting.AbstractPlayerInteraction;
 
 /**
  *
- * @author Matze
+ * @author Matze, Ronan
  */
 public class EventInstanceManager {
 	private List<MapleCharacter> chars = new ArrayList<>();
@@ -72,7 +75,12 @@ public class EventInstanceManager {
         private final WriteLock wL = mutex.writeLock();
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
-
+        
+        // multi-leveled PQ rewards!
+        private Map<Integer, List<Integer>> collectionSet = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
+        private Map<Integer, List<Integer>> collectionQty = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
+        private Map<Integer, Integer> collectionExp = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
+        
 	public EventInstanceManager(EventManager em, String name) {
 		this.em = em;
 		this.name = name;
@@ -144,16 +152,51 @@ public class EventInstanceManager {
 		eventTime = time;
                 
                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
-                    public void run() {
-                        try {
-                            em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
-                        } catch (ScriptException | NoSuchMethodException ex) {
-                            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                        public void run() {
+                                try {
+                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
+                                        dismissEventTimer();
+                                } catch (ScriptException | NoSuchMethodException ex) {
+                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                         }
-                    }
                 }, time);
 	}
+        
+        public void addEventTimer(long time) {
+                if(event_schedule != null) {
+                        if(event_schedule.cancel(false)) {
+                                long nextTime = getTimeLeft() + time;
+                                eventTime += time;
 
+                                event_schedule = TimerManager.getInstance().schedule(new Runnable() {
+                                        public void run() {
+                                                try {
+                                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
+                                                        dismissEventTimer();
+                                                } catch (ScriptException | NoSuchMethodException ex) {
+                                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
+                                        }
+                                }, nextTime);
+                        }
+                }
+                else {
+                        startEventTimer(time);
+                }
+        }
+        
+        public void cancelEventTimer() {
+                if(event_schedule != null) event_schedule.cancel(false);
+                dismissEventTimer();
+        }
+        
+        private void dismissEventTimer() {
+                event_schedule = null;
+                eventTime = 0;
+                timeStarted = 0;
+        }
+        
 	public boolean isTimerStarted() {
 		return eventTime > 0 && timeStarted > 0;
 	}
@@ -318,7 +361,7 @@ public class EventInstanceManager {
                 wL.unlock();
             }
             
-            if(event_schedule != null) event_schedule.cancel(true);
+            if(event_schedule != null) event_schedule.cancel(false);
 
             mobs.clear();
             killCount.clear();
@@ -388,9 +431,9 @@ public class EventInstanceManager {
 		return props.getProperty(key);
 	}
 
-    public Properties getProperties(){
-    	return props;
-    }
+        public Properties getProperties(){
+            return props;
+        }
 	
 	public void leftParty(MapleCharacter chr) {
 		try {
@@ -425,7 +468,7 @@ public class EventInstanceManager {
 	}
 
 	public boolean isLeader(MapleCharacter chr) {
-		return (chr.getParty().getLeader().getId() == chr.getId());
+		return (chr.getParty().getLeaderId() == chr.getId());
 	}
         
         public final MapleMap setInstanceMap(final int mapid) { //gets instance map from the channelserv
@@ -467,5 +510,107 @@ public class EventInstanceManager {
                 rL.unlock();
             }
             return false;
+        }
+        
+        private List<Integer> convertToIntegerArray(List<Double> list) {
+            List<Integer> intList = new ArrayList<>();
+            for(Double d: list) intList.add(d.intValue());
+            
+            return intList;
+        }
+        
+        public final void setEventRewards(List<Double> rwds, List<Double> qtys) {
+            setEventRewards(1, rwds, qtys);
+        }
+        
+        public final void setEventRewards(int eventLevel, List<Double> rwds, List<Double> qtys) {
+            setEventRewards(eventLevel, rwds, qtys, 0);
+        }
+        
+        public final void setEventRewards(int eventLevel, List<Double> rwds, List<Double> qtys, int expGiven) {
+            // fixed EXP will be rewarded at the same time the random item is given
+            
+            if(eventLevel <= 0 || eventLevel > ServerConstants.MAX_EVENT_LEVELS) return;
+            eventLevel--;    //event level starts from 1
+            
+            List<Integer> rewardIds = convertToIntegerArray(rwds);
+            List<Integer> rewardQtys = convertToIntegerArray(qtys);
+            
+            //rewardsSet and rewardsQty hold temporary values
+            collectionSet.put(eventLevel, rewardIds);
+            collectionQty.put(eventLevel, rewardQtys);
+            collectionExp.put(eventLevel, expGiven);
+        }
+        
+        private byte getRewardListRequirements(int level) {
+            if(level >= collectionSet.size()) return 0;
+            
+            byte rewardTypes = 0;
+            List<Integer> list = collectionSet.get(level);
+            
+            for (Integer itemId : list) {
+                rewardTypes |= (1 << ItemConstants.getInventoryType(itemId).getType());
+            }
+            
+            return rewardTypes;
+        }
+        
+        private boolean hasRewardSlot(MapleCharacter player, int eventLevel) {
+            byte listReq = getRewardListRequirements(eventLevel);   //gets all types of items present in the event reward list
+            
+            //iterating over all valid inventory types
+            for(byte type = 1; type <= 5; type++) {
+                if((listReq >> type) % 2 == 1 && !player.hasEmptySlot(type))
+                    return false;
+            }
+            
+            return true;
+        }
+        
+        public final boolean giveEventReward(MapleCharacter player) {
+            return giveEventReward(player, 1);
+        }
+        
+        //gives out EXP & a random item in a similar fashion of when clearing KPQ, LPQ, etc.
+        public final boolean giveEventReward(MapleCharacter player, int eventLevel) {
+            eventLevel--;       //event level starts counting from 1
+            if(eventLevel >= collectionSet.size()) return true;
+            
+            List<Integer> rewardsSet = collectionSet.get(eventLevel);
+            List<Integer> rewardsQty = collectionQty.get(eventLevel);
+            
+            Integer rewardExp = collectionExp.get(eventLevel);
+            if(rewardExp == null) rewardExp = 0;
+            
+            if(rewardsSet == null || rewardsSet.isEmpty()) {
+                if(rewardExp > 0) player.gainExp(rewardExp);
+                return true;
+            }
+            
+            if(!hasRewardSlot(player, eventLevel)) return false;
+
+            AbstractPlayerInteraction api = new AbstractPlayerInteraction(player.getClient());
+            int rnd = (int)Math.floor(Math.random() * rewardsSet.size());
+            
+            api.gainItem(rewardsSet.get(rnd), rewardsQty.get(rnd).shortValue());
+            if(rewardExp > 0) player.gainExp(rewardExp);
+            return true;
+        }
+        
+        public final boolean isEventTeamTogether() {
+            if(chars.size() <= 1) return true;
+            
+            int mapId = chars.get(0).getMapId();
+            for(int i = 1; i < chars.size(); i++) {
+                if(chars.get(i).getMapId() != mapId) return false;
+            }
+            
+            return true;
+        }
+        
+        public final void warpEventTeam(int warpTo) {
+            for (MapleCharacter chr : chars) {
+                chr.changeMap(warpTo);
+            }
         }
 }

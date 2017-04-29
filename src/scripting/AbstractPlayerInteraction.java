@@ -531,7 +531,7 @@ public class AbstractPlayerInteraction {
 		if(getParty() == null)
 			return false;
 		
-		return getParty().getLeader().equals(getPlayer().getMPC());
+                return getParty().getLeaderId() == getPlayer().getId();
 	}
 
 	public void givePartyItems(int id, short quantity, List<MapleCharacter> party) {

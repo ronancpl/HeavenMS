@@ -803,10 +803,12 @@ public class MapleClient {
 						if (messengerid > 0) {
 							worlda.leaveMessenger(messengerid, chrm);
 						}
-						/*    if (fid > 0) {
-	                	   final MapleFamily family = worlda.getFamily(fid);
-	                	   family.
-	                   }*/                  
+                                                /*      
+						if (fid > 0) {
+                                                        final MapleFamily family = worlda.getFamily(fid);
+                                                        family.
+                                                }
+                                                */                  
 						for (MapleQuestStatus status : player.getStartedQuests()) { //This is for those quests that you have to stay logged in for a certain amount of time
 							MapleQuest quest = status.getQuest();
 							if (quest.getTimeLimit() > 0) {

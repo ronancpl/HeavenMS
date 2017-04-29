@@ -27,14 +27,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class MapleParty {
-    private MaplePartyCharacter leader;
+    private int leaderId;
     private List<MaplePartyCharacter> members = new LinkedList<MaplePartyCharacter>();
     private List<MaplePartyCharacter> pqMembers = null;
     private int id;
 
     public MapleParty(int id, MaplePartyCharacter chrfor) {
-        this.leader = chrfor;
-        this.members.add(this.leader);
+        this.leaderId = chrfor.getId();
+        this.members.add(chrfor);
         this.id = id;
     }
 
@@ -51,7 +51,7 @@ public class MapleParty {
     }
 
     public void setLeader(MaplePartyCharacter victim) {
-        this.leader = victim;
+        this.leaderId = victim.getId();
     }
 
     public void updateMember(MaplePartyCharacter member) {
@@ -95,9 +95,19 @@ public class MapleParty {
     public void setId(int id) {
         this.id = id;
     }
+    
+    public int getLeaderId() {
+        return leaderId;
+    }
 
     public MaplePartyCharacter getLeader() {
-        return leader;
+        for(MaplePartyCharacter mpc: members) {
+            if(mpc.getId() == leaderId) {
+                return mpc;
+            }
+        }
+        
+        return null;
     }
     
     @Override

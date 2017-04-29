@@ -20,22 +20,19 @@
 */
 
 /*
-BossRushPQ - Next Stage
+BossRushPQ - Rest Spot portal
 @author Ronan
 */
 
 function enter(pi) {
-    if(pi.getMap().getMonsters().isEmpty()) {
-        var nextStage;
+        var evLevel = ((pi.getMapId() - 1) % 5) + 1;
         
-        if(pi.getMapId() % 500 != 0) nextStage = pi.getMapId() + 100;
-        else nextStage = 970030001 + ((pi.getMapId() - 970030100) / 500);
-        
-        pi.warp(nextStage);
-        return true;
-    }
-    else {
-        pi.getPlayer().dropMessage(6, "Defeat all monsters before proceeding to the next stage.");
-        return false;
-    }
+        if(pi.getPlayer().getEventInstance().giveEventReward(pi.getPlayer(), evLevel)) {
+                pi.warp(970030000);
+                return true;
+        }
+        else {
+                pi.message("You cannot receive an event prize without having an empty room in your EQUIP, USE, SET-UP or ETC inventory.");
+                return false;
+        }
 }

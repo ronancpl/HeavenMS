@@ -1667,6 +1667,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void gainGachaExp(int gain) {
         updateSingleStat(MapleStat.GACHAEXP, gachaexp.addAndGet(gain));
     }
+    
+    public void gainExp(int gain) {
+        gainExp(gain, true, true);
+    }
 
     public void gainExp(int gain, boolean show, boolean inChat) {
         gainExp(gain, 0, show, inChat, true);
@@ -2730,6 +2734,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public boolean haveItem(int itemid) {
         return getItemQuantity(itemid, false) > 0;
     }
+    
+    public boolean hasEmptySlot(int itemId) {
+        return getInventory(MapleItemInformationProvider.getInstance().getInventoryType(itemId)).getNextFreeSlot() > -1;
+    }
+    
+    public boolean hasEmptySlot(byte invType) {
+        return getInventory(MapleInventoryType.getByType(invType)).getNextFreeSlot() > -1;
+    }
 
     public void increaseGuildCapacity() { //hopefully nothing is null
         if (getMeso() < getGuild().getIncreaseGuildCost(getGuild().getCapacity())) {
@@ -2787,7 +2799,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public boolean isPartyLeader() {
-        return party.getLeader() == party.getMemberById(getId());
+        return party.getLeaderId() == getId();
     }
 
     public void leaveMap() {
