@@ -68,51 +68,9 @@ public final class PetFoodHandler extends AbstractMaplePacketHandler {
         if (use == null || (itemId / 10000) != 212 || use.getItemId() != itemId) {
             return;
         }
-        boolean gainCloseness = false;
-        if (Randomizer.nextInt(101) > 50) {
-            gainCloseness = true;
-        }
-        if (pet.getFullness() < 100) {
-            int newFullness = pet.getFullness() + 30;
-            if (newFullness > 100) {
-                newFullness = 100;
-            }
-            pet.setFullness(newFullness);
-            if (gainCloseness && pet.getCloseness() < 30000) {
-                int newCloseness = pet.getCloseness() + 1;
-                if (newCloseness > 30000) {
-                    newCloseness = 30000;
-                }
-                pet.setCloseness(newCloseness);
-                if (newCloseness >= ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
-                    pet.setLevel((byte) (pet.getLevel() + 1));
-                    c.announce(MaplePacketCreator.showOwnPetLevelUp(chr.getPetIndex(pet)));
-                    chr.getMap().broadcastMessage(MaplePacketCreator.showPetLevelUp(c.getPlayer(), chr.getPetIndex(pet)));
-                }
-            }
-            chr.getMap().broadcastMessage(MaplePacketCreator.commandResponse(chr.getId(), slot, 0, true));
-        } else {
-            if (gainCloseness) {
-                int newCloseness = pet.getCloseness() - 1;
-                if (newCloseness < 0) {
-                    newCloseness = 0;
-                }
-                pet.setCloseness(newCloseness);
-                if (pet.getLevel() > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
-                    pet.setLevel((byte) (pet.getLevel() - 1));
-                }
-            }
-            chr.getMap().broadcastMessage(MaplePacketCreator.commandResponse(chr.getId(), slot, 0, false));
-        }
+        
+        // 50% chance to get +1 closeness
+        pet.gainClosenessFullness(chr, (Randomizer.nextInt(101) <= 50) ? 1 : 0, 30, 1);
         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, pos, (short) 1, false);
-        
-        pet.saveToDb();
-        
-        Item petz = chr.getInventory(MapleInventoryType.CASH).getItem(pet.getPosition());
-        if (petz == null){ //Not a real fix but fuck it you know?
-        	return;
-        }
-        
-        chr.forceUpdateItem(petz);
     }
 }

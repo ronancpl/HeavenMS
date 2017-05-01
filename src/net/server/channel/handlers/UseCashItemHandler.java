@@ -31,7 +31,6 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.ExpTable;
 import constants.ItemConstants;
 
 import java.sql.SQLException;
@@ -435,22 +434,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 MaplePet pet = player.getPet(i);
                 if (pet != null) {
                     if (pet.canConsume(itemId)) {
-                        pet.setFullness(100);
-                        if (pet.getCloseness() + 100 > 30000) {
-                            pet.setCloseness(30000);
-                        } else {
-                            pet.gainCloseness(100);
-                        }
-
-                        while (pet.getCloseness() >= ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
-                            pet.setLevel((byte) (pet.getLevel() + 1));
-                            byte index = player.getPetIndex(pet);
-                            c.announce(MaplePacketCreator.showOwnPetLevelUp(index));
-                            player.getMap().broadcastMessage(MaplePacketCreator.showPetLevelUp(c.getPlayer(), index));
-                        }
-                        Item item = player.getInventory(MapleInventoryType.CASH).getItem(pet.getPosition());
-                        player.forceUpdateItem(item);
-                        player.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.commandResponse(player.getId(), i, 1, true), true);
+                        pet.gainClosenessFullness(player, 100, 100, 1);
                         remove(c, itemId);
                         break;
                     }

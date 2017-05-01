@@ -41,22 +41,18 @@ function action(mode, type, selection) {
 
                 if (status == 0) {
                         if(state == 3) {
-                                if(cm.getPlayer().getEventInstance() != null) {
-                                        if(!cm.isLeader()) {
-                                                cm.sendOk("Your party leader has not spoken to me yet, please wait him/her talk to me.");
+                                if(cm.isLeader()) {
+                                        if(cm.getPlayer().getEventInstance().getPlayerCount() > 1) {
+                                                cm.sendOk("Now, tell your party I will be warping everyone out and rewarding them as they talk to me. The leader goes last.");
                                                 cm.dispose();
                                                 return;
                                         }
                                         else {
-                                                cm.getPlayer().getEventInstance().finishPQ();
+                                                cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now I will be handing your reward as you are being transported out...");
                                         }
-                                }
-                            
-                                if(cm.isLeader()) {
-                                        cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now, tell your party I will be warping everyone out and rewarding them as they talk to me.");
-                                }
+                                }                                
                                 else {
-                                        cm.sendOk("For completing all stages in this event, congratulations! Now you will receive a prize that matches your performance here as I warp you out.");
+                                        cm.sendOk("For #bdefeating all bosses#k in this event, congratulations! Now you will receive a prize that matches your performance here as I warp you out.");
                                 }
                         }
                         else if(state == 2) {
@@ -71,7 +67,7 @@ function action(mode, type, selection) {
                                         }
                                 }
                                 else {
-                                        cm.sendOk("Wait for your party leader to give me the signal to proceed. If you're not feeling too well and want to quit, walk through the portal and you will be transported out, you will receive a prize for coming this far.");
+                                        cm.sendOk("Wait for your party leader to give me the signal to proceed. If you're not feeling too well and want to quit, walk through the portal and you will be transported out, and you will receive a prize for coming this far.");
                                         cm.dispose();
                                         return;
                                 }

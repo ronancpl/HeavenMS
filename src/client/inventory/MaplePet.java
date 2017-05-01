@@ -22,6 +22,7 @@
 package client.inventory;
 
 import com.mysql.jdbc.Statement;
+import constants.ExpTable;
 import java.awt.Point;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,6 +33,8 @@ import server.MapleItemInformationProvider;
 import server.movement.AbsoluteLifeMovement;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
+import client.MapleCharacter;
+import tools.MaplePacketCreator;
 
 /**
  *
@@ -155,12 +158,53 @@ public class MaplePet extends Item {
         this.closeness = closeness;
     }
 
-    public void gainCloseness(int x) {
-        this.closeness += x;
-    }
-
     public byte getLevel() {
         return level;
+    }
+    
+    public void gainClosenessFullness(MapleCharacter owner, int incCloseness, int incFullness, int type) {
+        byte slot = owner.getPetIndex(this);
+        boolean enjoyed;
+        
+        //will NOT increase pet's closeness if tried to feed pet with 100% fullness
+        if (fullness < 100 || incFullness == 0) {   //incFullness == 0: command given
+            int newFullness = fullness + incFullness;
+            if (newFullness > 100) newFullness = 100;
+            fullness = newFullness;
+            
+            if (incCloseness > 0 && closeness < 30000) {
+                int newCloseness = closeness + incCloseness;
+                if (newCloseness > 30000) newCloseness = 30000;
+                
+                closeness = newCloseness;
+                while(newCloseness >= ExpTable.getClosenessNeededForLevel(level)) {
+                    level += 1;
+                    owner.getClient().announce(MaplePacketCreator.showOwnPetLevelUp(slot));
+                    owner.getMap().broadcastMessage(MaplePacketCreator.showPetLevelUp(owner, slot));
+                }
+            }
+            
+            enjoyed = true;
+        } else {
+            if (incCloseness > 0) {
+                int newCloseness = closeness - 1;
+                if (newCloseness < 0) newCloseness = 0;
+                
+                closeness = newCloseness;
+                if (level > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(level)) {
+                    level -= 1;
+                }
+            }
+            
+            enjoyed = false;
+        }
+        
+        owner.getMap().broadcastMessage(MaplePacketCreator.commandResponse(owner.getId(), slot, type, enjoyed));
+        saveToDb();
+        
+        Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());
+        if (petz == null) return;
+        owner.forceUpdateItem(petz);
     }
 
     public void setLevel(byte level) {

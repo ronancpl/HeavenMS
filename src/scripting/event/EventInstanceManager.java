@@ -519,6 +519,10 @@ public class EventInstanceManager {
             return intList;
         }
         
+        public final void setEventRewards(List<Double> rwds, List<Double> qtys, int expGiven) {
+            setEventRewards(1, rwds, qtys, expGiven);
+        }
+        
         public final void setEventRewards(List<Double> rwds, List<Double> qtys) {
             setEventRewards(1, rwds, qtys);
         }

@@ -1171,6 +1171,8 @@ public class MapleMap {
         monster.setMap(this);
         Point spos = new Point(pos.x, pos.y - 1);
         spos = calcPointBelow(spos);
+        if(spos == null) return;
+        
         spos.y--;
         monster.setPosition(spos);
         if (mapid < 925020000 || mapid > 925030000) {

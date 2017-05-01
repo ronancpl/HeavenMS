@@ -16,7 +16,7 @@ function setEventRewards(eim) {
 
         evLevel = 6;    //Rewards at event completion
         itemSet = [1122018, 1122005, 1022088, 1402013, 1032048, 1032070, 1102046, 2330004, 2041013, 2041016, 2041019, 2041022, 2049100, 2049003, 2020012, 2020013, 2020014, 2020015, 2022029, 2022045, 2022068, 2022069, 2022179, 2022180, 4004000, 4004001, 4004002, 4004003, 4004004, 4003000];
-        itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 25, 25, 25, 25, 25, 25, 25, 25, 25, 4, 12, 12, 12, 12, 12, 25];
+        itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 25, 25, 25, 25, 25, 25, 25, 25, 4, 4, 12, 12, 12, 12, 12, 25];
         eim.setEventRewards(evLevel, itemSet, itemQty);
 
         evLevel = 5;    //Rewards at Rest Spot V
@@ -40,7 +40,7 @@ function setEventRewards(eim) {
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
         evLevel = 1;    //Rewards at Rest Spot I
-        itemSet = [1122004, 1012078, 1432008, 1432009, 1032040, 1032009, 1102166, 2070001, 2040002, 2040310, 2040400, 2040600, 2040825, 2040902, 2010000, 2010001, 2010002, 2010003, 2010004, 2020001, 2020002, 2020003, 2022020, 2022022, 4003000];
+        itemSet = [1122004, 1012078, 1432008, 1432009, 1032040, 1032009, 1102166, 2070001, 2040002, 2040310, 2040400, 2040600, 2040825, 2040902, 2010000, 2010001, 2010002, 2010003, 2010004, 2020001, 2020002, 2020003, 2022020, 2022022, 4010000, 4010001, 4010002, 4010003, 4010004, 4010005, 4010006, 4010007, 4003000];
         itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 2, 2, 2, 2, 2, 2, 2, 2, 2];
         eim.setEventRewards(evLevel, itemSet, itemQty);
 }
@@ -61,10 +61,6 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
                 }
             }
         }
-        
-        if(!hasLeader) print("no leader");
-        else if(eligible.length < minPlayers) print("no min");
-        else if(eligible.length < minPlayers) print("no max");
         
         if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
         return eligible;

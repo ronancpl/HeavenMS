@@ -223,7 +223,7 @@ public class MapleQuest {
 		        a.run(c, selection);
 		    }
                     
-                    c.getClient().getSession().write(MaplePacketCreator.showForeignEffect(9)); // Quest completion
+                    c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
                     c.getMap().broadcastMessage(c, MaplePacketCreator.showForeignEffect(c.getId(), 9), false); //use 9 instead of 12 for both
 		}
     }

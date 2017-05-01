@@ -39706,6 +39706,7 @@
           <int name="count" value="4"/>
         </imgdir>
       </imgdir>
+      <int name="nextQuest" value="8249"/>
     </imgdir>
   </imgdir>
   <imgdir name="8249">
@@ -39784,6 +39785,32 @@
         <imgdir name="8">
           <int name="id" value="1102041"/>
           <int name="count" value="1"/>
+          <int name="job" value="1180673"/>
+        </imgdir>
+        <imgdir name="9">
+          <int name="id" value="1102041"/>
+          <int name="count" value="1"/>
+          <int name="job" value="2099202"/>
+        </imgdir>
+        <imgdir name="10">
+          <int name="id" value="1102042"/>
+          <int name="count" value="1"/>
+          <int name="job" value="4198404"/>
+        </imgdir>
+        <imgdir name="11">
+          <int name="id" value="1102041"/>
+          <int name="count" value="1"/>
+          <int name="job" value="8200"/>
+        </imgdir>
+        <imgdir name="12">
+          <int name="id" value="1102041"/>
+          <int name="count" value="1"/>
+          <int name="job" value="16400"/>
+        </imgdir>
+        <imgdir name="13">
+          <int name="id" value="1102041"/>
+          <int name="count" value="1"/>
+          <int name="job" value="32800"/>
         </imgdir>
       </imgdir>
     </imgdir>

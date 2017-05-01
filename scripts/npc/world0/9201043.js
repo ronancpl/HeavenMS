@@ -36,7 +36,7 @@ function action(mode, type, selection) {
         cm.dispose();
     else {
         if (status >= 0 && mode == 0) {
-            cm.sendOk("Ok come back when your'e ready.");
+            cm.sendOk("Ok come back when you're ready.");
             cm.dispose();
             return;
         }

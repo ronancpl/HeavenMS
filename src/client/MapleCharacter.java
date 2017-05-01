@@ -1673,7 +1673,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void gainExp(int gain, boolean show, boolean inChat) {
-        gainExp(gain, 0, show, inChat, true);
+        gainExp(gain, show, inChat, true);
+    }
+    
+    public void gainExp(int gain, boolean show, boolean inChat, boolean white) {
+        gainExp(gain, 0, show, inChat, white);
     }
 
     public void gainExp(int gain, int party, boolean show, boolean inChat, boolean white) {
@@ -5003,9 +5007,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     pet.saveToDb();
                     Item petz = getInventory(MapleInventoryType.CASH).getItem(pet.getPosition());
                     if (petz != null) {
-						forceUpdateItem(petz);
+                        forceUpdateItem(petz);
+                    }
                 }
-            }
             }
         }, 180000, 18000);
         fullnessSchedule[petSlot] = schedule;

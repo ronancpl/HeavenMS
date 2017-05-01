@@ -21,11 +21,6 @@
  */
 package scripting;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import tools.DatabaseConnection;
-
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collections;

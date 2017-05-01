@@ -54,25 +54,12 @@ public final class PetCommandHandler extends AbstractMaplePacketHandler {
         if (petCommand == null) {
             return;
         }
-        boolean success = false;
+        
         if (Randomizer.nextInt(101) <= petCommand.getProbability()) {
-            success = true;
-            if (pet.getCloseness() < 30000) {
-                int newCloseness = pet.getCloseness() + petCommand.getIncrease();
-                if (newCloseness > 30000) {
-                    newCloseness = 30000;
-                }
-                pet.setCloseness(newCloseness);
-                if (newCloseness >= ExpTable.getClosenessNeededForLevel(pet.getLevel())) {
-                    pet.setLevel((byte) (pet.getLevel() + 1));
-                    c.announce(MaplePacketCreator.showOwnPetLevelUp(chr.getPetIndex(pet)));
-                    chr.getMap().broadcastMessage(MaplePacketCreator.showPetLevelUp(c.getPlayer(), chr.getPetIndex(pet)));
-                }
-                pet.saveToDb();
-                Item petz = chr.getInventory(MapleInventoryType.CASH).getItem(pet.getPosition());
-                chr.forceUpdateItem(petz);
-            }
+            pet.gainClosenessFullness(chr, petCommand.getIncrease(), 0, command);
         }
-        chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.commandResponse(chr.getId(), petIndex, command, success), true);
+        else {
+            chr.getMap().broadcastMessage(MaplePacketCreator.commandResponse(chr.getId(), petIndex, command, false));
+        }
     }
 }
