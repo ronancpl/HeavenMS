@@ -32,6 +32,7 @@ import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
+import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
 import scripting.npc.NPCScriptManager;
 import server.MapleInventoryManipulator;
@@ -157,24 +158,19 @@ public class AbstractPlayerInteraction {
 		return getClient().getEventManager(event);
 	}
         
-        public void clearPQ(int toMap) {
-                clearPQ(getWarpMap(toMap));
-        }
+        public EventInstanceManager getEventInstance() {
+		return getPlayer().getEventInstance();
+	}
         
-        public void clearPQ(MapleMap toMap) {
-                if(getPlayer().getEventInstance() != null)
-                        getPlayer().getEventInstance().getEm().clearPQ(getPlayer().getEventInstance(), toMap);
-        }
-
         public MapleInventory getInventory(MapleInventoryType type) {
                 return getPlayer().getInventory(type);
         }
         
-	public boolean hasItem(int itemid){
+	public boolean hasItem(int itemid) {
 		return haveItem(itemid, 1);
 	}
 
-	public boolean hasItem(int itemid, int quantity){
+	public boolean hasItem(int itemid, int quantity) {
 		return haveItem(itemid, quantity);
 	}
 

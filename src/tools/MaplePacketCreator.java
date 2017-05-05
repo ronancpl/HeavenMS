@@ -2508,6 +2508,7 @@ public class MaplePacketCreator {
          * @param progress
          * @return
          */
+        
         public static byte[] updateQuestInfo(short quest, int npc) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_QUEST_INFO.getValue());

@@ -35,28 +35,30 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class KeymapChangeHandler extends AbstractMaplePacketHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		if (slea.available() >= 8) {
+                if (slea.available() >= 8) {
 			int mode = slea.readInt();
 			if(mode == 0) {
 				int numChanges = slea.readInt();
 				for (int i = 0; i < numChanges; i++) {
 					int key = slea.readInt();
 					int type = slea.readByte();
-					int action = slea.readInt();              
+					int action = slea.readInt();
+                                        
 					Skill skill = SkillFactory.getSkill(action);
 					boolean isBanndedSkill = false;
 					if (skill != null) {
-						isBanndedSkill = GameConstants.bannedBindSkills(skill.getId());         
+						isBanndedSkill = GameConstants.bannedBindSkills(skill.getId());
 						if (isBanndedSkill || (!c.getPlayer().isGM() && GameConstants.isGMSkills(skill.getId())) || (!GameConstants.isInJobTree(skill.getId(), c.getPlayer().getJob().getId()) && !c.getPlayer().isGM())) { //for those skills are are "technically" in the beginner tab, like bamboo rain in Dojo or skills you find in PYPQ
 							AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit keymapping.");
 							FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skill.getId() + "\r\n");
 							c.disconnect(true, false);
 							return;
 						}
-						if (c.getPlayer().getSkillLevel(skill) < 1) {
-							continue;
-						}
+						/* if (c.getPlayer().getSkillLevel(skill) < 1) {    HOW WOULD A SKILL EVEN BE AVAILABLE TO KEYBINDING
+							continue;                                   IF THERE IS NOT EVEN A SINGLE POINT USED INTO IT??
+						} */                                              //Nice to know some skills have the same ids as items, heh.
 					}
+                                        
 					c.getPlayer().changeKeybinding(key, new MapleKeyBinding(type, action));
 				}
 			} else if(mode == 1) { // Auto HP Potion

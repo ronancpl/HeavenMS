@@ -189,7 +189,7 @@ function action(mode, type, selection) {
 			cm.sendOk("Due to an unknown error, the request for squad has been denied.");
 			cm.dispose();
 		    }
-		} else if (selection == 3) { // get insode
+		} else if (selection == 3) { // get inside
 		    if (cm.getSquad("PinkBean") != null) {
 			var dd = cm.getEventManager("PinkBeanBattle");
 			dd.startInstance(cm.getSquad("PinkBean"), cm.getMap(), 160104);

@@ -1,6 +1,6 @@
 var isPq = true;
-var minPlayers = 3, maxPlayers = 6;
-var minLevel = 55, maxLevel = 100;
+var minPlayers = 1, maxPlayers = 6;
+var minLevel = 1, maxLevel = 200;
 var entryMap = 925100000;
 var exitMap = 925100700;
 var recruitMap = 251010404;
@@ -35,7 +35,10 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
 function setup(level, leaderid) {
         em.setProperty("state", "1");
 	em.setProperty("leader", "true");
+        
         var eim = em.newInstance("Pirate" + leaderid);
+        eim.setProperty("level", level);
+        
 	em.setProperty("stage2", "0");
         em.setProperty("stage2a", "0");
 	em.setProperty("stage3a", "0");
@@ -43,7 +46,7 @@ function setup(level, leaderid) {
 	em.setProperty("stage3b", "0");
 	em.setProperty("stage4", "0");
 	em.setProperty("stage5", "0");
-        em.setProperty("level", level);
+        
         em.setProperty("openedChests", "0");
         eim.setInstanceMap(925100000).resetPQ(level);
         eim.setInstanceMap(925100000).shuffleReactors();
@@ -125,111 +128,91 @@ function setup(level, leaderid) {
         return eim;
 }
 
+function respawnStg4(eim) {    
+        eim.getMapInstance(925100400).instanceMapRespawn();
+        eim.schedule("respawnStg4", 10 * 1000);
+}
+
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(entryMap);
-    player.changeMap(map, map.getPortal(0));
+        var map = eim.getMapInstance(entryMap);
+        player.changeMap(map, map.getPortal(0));
 }
 
 function scheduledTimeout(eim) {
-    end(eim);
+        end(eim);
 }
 
-function removePlayer(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, 0);
+function playerExit(eim, player) {
+        eim.unregisterPlayer(player);
+        player.changeMap(exitMap, 0);
 }
 
 function changedMap(eim, player, mapid) {
-    if (mapid < 925100000 || mapid > 925100500) {
-	eim.unregisterPlayer(player);
-
-	if (eim.disposeIfPlayerBelow(minPlayers, exitMap)) {
-		em.setProperty("state", "0");
-		em.setProperty("leader", "true");
-	}
-    }
+        if (mapid < 925100000 || mapid > 925100500) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                        eim.unregisterPlayer(player);
+                        end(eim);
+                }
+                else
+                        eim.unregisterPlayer(player);
+        }
 }
 
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
-    var party = eim.getPlayers();
-    if (eim.isLeader(player) || party.size() <= minPlayers) { // Check for party leader
-        var party = eim.getPlayers();
-        for (var i = 0; i < party.size(); i++)
-            playerExit(eim, party.get(i));
-        eim.dispose();
-    } else
-        playerExit(eim, player);
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
 }
 
 
 function playerDisconnected(eim, player) {
-    var party = eim.getPlayers();
-    if (eim.isLeader(player) || party.size() < minPlayers) {
-        var party = eim.getPlayers();
-        for (var i = 0; i < party.size(); i++)
-            if (party.get(i).equals(player))
-                removePlayer(eim, player);
-            else
-                playerExit(eim, party.get(i));
-        eim.dispose();
-    } else
-        removePlayer(eim, player);
+        if (eim.isEventTeamLackingNow(true, minPlayers, player))
+                end(eim);
+        else
+                playerExit(eim, player);
 }
 
 function leftParty(eim, player) {
-    var party = eim.getPlayers();
-    if (party.size() < minPlayers) {
-        for (var i = 0; i < party.size(); i++)
-            playerExit(eim,party.get(i));
-        eim.dispose();
-    } else
-        playerExit(eim, player);
+        if (eim.isEventTeamLackingNow(false, minPlayers, player))
+                end(eim);
+        else
+                playerExit(eim, player);
 }
 
 function disbandParty(eim) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
-}
-
-function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, 0);
+        end(eim);
 }
 
 function monsterValue(eim, mobId) {
-    return 1;
+        return 1;
 }
 
 function end(eim) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+        
+        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
-function playerClear(eim, player, toMap) {
-    eim.unregisterPlayer(player);
-    
-    if(toMap != null) player.changeMap(toMap);
-    else player.changeMap(clearMap, 0);
+function clearPQ(eim) {
+        eim.stopEventTimer();
+        eim.setEventCleared();
+        eim.warpEventTeam(toMap);
+        
+        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
-function complete(eim, toMap) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerClear(eim, party.get(i), toMap);
-    }
-    eim.dispose();
-}
-
-function clearPQ(eim, toMap) {
-    complete(eim, toMap);
+function reopenEvent() {
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
 }
 
 function monsterKilled(mob, eim) {}
@@ -238,14 +221,4 @@ function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function respawnStg4(eim) {    
-    eim.getMapInstance(925100400).instanceMapRespawn();
-    em.schedule("respawnStg4", eim, 10 * 1000);
-}
-
-function dispose(eim) {
-    em.cancelSchedule();
-    
-    em.setProperty("state", "0");
-    em.setProperty("leader", "true");
-}
+function dispose(eim) {}

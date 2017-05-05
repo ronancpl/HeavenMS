@@ -154,56 +154,76 @@ public class EventManager {
     }
 
     //Expedition method: starts an expedition
-    public void startInstance(MapleExpedition exped) {
+    public boolean startInstance(MapleExpedition exped) {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            if(eim == null) return false;
+            
             eim.registerExpedition(exped);
             exped.start();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return true;
     }
 
     //Regular method: player 
-    public void startInstance(MapleCharacter chr) {
+    public boolean startInstance(MapleCharacter chr) {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            if(eim == null) return false;
+            
             eim.registerPlayer(chr);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return true;
     }    
     
     //PQ method: starts a PQ
-    public void startInstance(MapleParty party, MapleMap map) {
+    public boolean startInstance(MapleParty party, MapleMap map) {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            if(eim == null) return false;
+            
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return true;
     }
     
     //PQ method: starts a PQ with a difficulty level, requires function setup(difficulty, leaderid) instead of setup()
-    public void startInstance(MapleParty party, MapleMap map, int difficulty) {
+    public boolean startInstance(MapleParty party, MapleMap map, int difficulty) {
         try {
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, party.getLeader().getId()));
+            if(eim == null) return false;
+            
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return true;
     }
 
     //non-PQ method for starting instance
-    public void startInstance(EventInstanceManager eim, String leader) {
+    public boolean startInstance(EventInstanceManager eim, String leader) {
         try {
+            if(eim == null) return false;
+            
             iv.invokeFunction("setup", eim);
             eim.setProperty("leader", leader);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        return true;
     }
     
     public List<MaplePartyCharacter> getEligibleParty(MapleParty party) {
@@ -223,6 +243,14 @@ public class EventManager {
         }
 
         return(new ArrayList<>());
+    }
+    
+    public void clearPQ(EventInstanceManager eim) {
+        try {
+            iv.invokeFunction("clearPQ", eim);
+        } catch (ScriptException | NoSuchMethodException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void clearPQ(EventInstanceManager eim, MapleMap toMap) {

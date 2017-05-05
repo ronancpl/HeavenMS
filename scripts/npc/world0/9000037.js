@@ -41,18 +41,16 @@ function action(mode, type, selection) {
 
                 if (status == 0) {
                         if(state == 3) {
+                                if(cm.getEventInstance().getProperty("clear") == null) {
+                                        cm.getEventInstance().clearPQ();
+                                        cm.getEventInstance().setProperty("clear", "true");
+                                }
+                            
                                 if(cm.isLeader()) {
-                                        if(cm.getPlayer().getEventInstance().getPlayerCount() > 1) {
-                                                cm.sendOk("Now, tell your party I will be warping everyone out and rewarding them as they talk to me. The leader goes last.");
-                                                cm.dispose();
-                                                return;
-                                        }
-                                        else {
-                                                cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now I will be handing your reward as you are being transported out...");
-                                        }
-                                }                                
+                                        cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now I will be handing your reward as you are being transported out...");
+                                }
                                 else {
-                                        cm.sendOk("For #bdefeating all bosses#k in this event, congratulations! Now you will receive a prize that matches your performance here as I warp you out.");
+                                        cm.sendOk("For #bdefeating all bosses#k in this event, congratulations! You will now receive a prize that matches your performance here as I warp you out.");
                                 }
                         }
                         else if(state == 2) {
@@ -114,7 +112,11 @@ function action(mode, type, selection) {
                                                 if(eli.size() > 0) {
                                                         var prop = em.getProperty("state");
                                                         if (prop != null && prop.equals("0")) { 
-                                                                em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1);
+                                                                if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                                                                    cm.sendOk("A party in your name is already registered in this event.");
+                                                                    cm.dispose();
+                                                                    return;
+                                                                }
                                                                 cm.dispose();
                                                         } else {
                                                                 cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");

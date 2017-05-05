@@ -227,7 +227,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		if (gain > 0 && ServerConstants.USE_AUTOBAN == true) {
 			FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " gained " + gain + " mesos from NPC " + npc + "\r\n");
 		}
-		getPlayer().gainMeso(gain, true, false, true);
+		getPlayer().gainMeso(gain);
 	}
 
 	public void gainExp(int gain) {

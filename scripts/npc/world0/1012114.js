@@ -37,7 +37,7 @@ function action(mode, type, selection) {
             status++;
 		if (status == 51) {
 		    var eim = cm.getEventManager("HenesysPQ").getInstance("HenesysPQ_" + cm.getParty().getLeader().getName());
-			eim.finishPQ();
+			eim.clearPQ();
             cm.dispose();
 			return;
 		}
@@ -89,7 +89,7 @@ function action(mode, type, selection) {
                 cm.sendNextPrev("When the flowers of primrose blooms, the full moon will rise, and that's when the Moon Bunnies will appear and start pounding the mill. Your task is to fight off the monsters to make sure that Moon Bunny can concentrate on making the best rice cake possible.");
             } else if (chosen == 1) {
 				var eim = cm.getEventManager("HenesysPQ").getInstance("HenesysPQ_" + cm.getParty().getLeader().getName());
-				eim.finishPQ();
+				eim.clearPQ();
                 cm.dispose();
             }
         } else if (status == 4) {

@@ -82,7 +82,7 @@ function action(mode, type, selection) {
                     cm.givePartyExp(20000, party);
                 } else
                     cm.givePartyExp(12000, party);
-                eim.finishPQ();
+                eim.clearPQ();
                 cm.dispose();
             }
             else if (selectedType == 2) {

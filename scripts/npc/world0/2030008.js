@@ -117,7 +117,11 @@ function action(mode, type, selection) {
                         if (em == null) {
                             cm.sendOk("This trial is currently under construction.");
                         } else {
-                            em.startInstance(cm.getParty(), cm.getPlayer().getMap());
+                            if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap())) {
+                                cm.sendOk("A party in your name is already registered in this event.");
+                                cm.dispose();
+                                return;
+                            }
                             party = cm.getPlayer().getEventInstance().getPlayers();
                             cm.removeFromParty(4001015, party);
                             cm.removeFromParty(4001018, party);

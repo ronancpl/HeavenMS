@@ -69,9 +69,10 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
 function setup(level, leaderid) {
         em.setProperty("state", "1");
 	em.setProperty("leader", "true");
+        
         var eim = em.newInstance("BossRush" + leaderid);
-	
-        em.setProperty("level", level);
+        eim.setProperty("level", level);
+        
         eim.startEventTimer(45 * 60000); //45 mins
         setEventRewards(eim);
         return eim;
@@ -93,8 +94,7 @@ function playerExit(eim, player) {
 
 function changedMap(eim, player, mapid) {
         if (mapid < 970030001 || mapid > 970042711) {
-                var party = eim.getPlayers();
-                if (eim.isLeader(player) || party.size() <= minPlayers) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);
                 }
@@ -106,8 +106,7 @@ function changedMap(eim, player, mapid) {
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
-        var party = eim.getPlayers();
-        if (eim.isLeader(player) || party.size() <= minPlayers) {
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                 eim.unregisterPlayer(player);
                 end(eim);
         }
@@ -117,16 +116,14 @@ function playerRevive(eim, player) { // player presses ok on the death pop up.
 
 
 function playerDisconnected(eim, player) {
-        var party = eim.getPlayers();
-        if (eim.isLeader(player) || party.size() <= minPlayers)
+        if (eim.isEventTeamLackingNow(true, minPlayers, player))
                 end(eim);
         else
                 playerExit(eim, player);
 }
 
 function leftParty(eim, player) {
-        var party = eim.getPlayers();
-        if (party.size() <= minPlayers)
+        if (eim.isEventTeamLackingNow(false, minPlayers, player))
                 end(eim);
         else
                 playerExit(eim, player);
@@ -137,35 +134,33 @@ function disbandParty(eim) {
 }
 
 function monsterValue(eim, mobId) {
-    return 1;
+        return 1;
 }
 
 function end(eim) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+        
+        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
-function playerClear(eim, player, toMap) {
-    eim.unregisterPlayer(player);
-}
-
-function complete(eim, toMap) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerClear(eim, party.get(i), toMap);
-    }
-    eim.dispose();
-}
-
-function clearPQ(eim, toMap) {
-    complete(eim, toMap);
+function clearPQ(eim) {
+        eim.stopEventTimer();
+        eim.setEventCleared();      // from now on event just finishes when ALL players gets out of the range defined inside changedMap function.
+        
+        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
 function giveRandomEventReward(eim, player) {
-    eim.giveEventReward(player);
+        eim.giveEventReward(player);
+}
+
+function reopenEvent() {
+        em.setProperty("state", "0");
+        em.setProperty("leader", "true");
 }
 
 function monsterKilled(mob, eim) {}
@@ -174,9 +169,4 @@ function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function dispose(eim) {
-    em.cancelSchedule();
-    
-    em.setProperty("state", "0");
-    em.setProperty("leader", "true");
-}
+function dispose(eim) {}

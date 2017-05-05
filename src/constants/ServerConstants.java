@@ -24,6 +24,7 @@ public class ServerConstants {
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
     //Gameplay Configurations
+    public static final boolean USE_CUSTOM_KEYSET = true;
     public static final boolean USE_MAXRANGE = true;        //will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = true;           //will enable some text prints and new commands in the client oriented for debugging.
     public static final boolean USE_MTS = false;

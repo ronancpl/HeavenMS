@@ -90,8 +90,8 @@ public class MapleQuest {
 				
                 MapleQuestRequirement req = this.getRequirement(type, startReq);
 				
-				if(req == null)
-					continue;
+                if(req == null)
+                        continue;
 				
                 if (type.equals(MapleQuestRequirementType.MOB)) {
                     for (MapleData mob : startReq.getChildren()) {
@@ -161,14 +161,45 @@ public class MapleQuest {
     public static MapleQuest getInstance(int id) {
         MapleQuest ret = quests.get(id);
         if (ret == null) {
-			questInfo = questData.getData("QuestInfo.img");
-			questReq = questData.getData("Check.img");
-			questAct = questData.getData("Act.img");
+            questInfo = questData.getData("QuestInfo.img");
+            questReq = questData.getData("Check.img");
+            questAct = questData.getData("Act.img");
 			
             ret = new MapleQuest(id);
             quests.put(id, ret);
         }
         return ret;
+    }
+    
+    private String getIntervalTimeLeft(MapleCharacter c, IntervalRequirement r) {
+        StringBuilder str = new StringBuilder();
+        
+        long futureTime = c.getQuest(MapleQuest.getInstance(getId())).getCompletionTime() + r.getInterval();
+        long leftTime = futureTime - System.currentTimeMillis();
+        
+        byte mode = 0;
+        if(leftTime / (60*1000) > 0) {
+            mode++;     //counts minutes
+            
+            if(leftTime / (60*60*1000) > 0)
+                mode++;     //counts hours
+        }
+        
+        switch(mode) {
+            case 2:
+                int hours   = (int) ((leftTime / (1000*60*60)));
+                str.append(hours + " hours, ");
+                
+            case 1:
+                int minutes = (int) ((leftTime / (1000*60)) % 60);
+                str.append(minutes + " minutes, ");
+                
+            default:
+                int seconds = (int) (leftTime / 1000) % 60 ;
+                str.append(seconds + " seconds");
+        }
+        
+        return str.toString();
     }
 
     public boolean canStart(MapleCharacter c, int npcid) {
@@ -177,6 +208,9 @@ public class MapleQuest {
         }
         for (MapleQuestRequirement r : startReqs.values()) {
             if (!r.check(c, npcid)) {
+                if(r.getType().getType() == MapleQuestRequirementType.INTERVAL.getType()) {
+                    c.message("This quest will become available again in approximately " + getIntervalTimeLeft(c, (IntervalRequirement)r) + ".");
+                }
                 return false;
             }
         }
@@ -198,9 +232,9 @@ public class MapleQuest {
     public void start(MapleCharacter c, int npc) {
         if (autoStart || canStart(c, npc)) {
             for (MapleQuestAction a : startActs.values()) {
-				if (!a.check(c, null)) { // would null be good ?
-					return;
-				}
+                if (!a.check(c, null)) { // would null be good ?
+                        return;
+                }
                 a.run(c, null);
             }
             forceStart(c, npc);
@@ -212,20 +246,20 @@ public class MapleQuest {
     }
 
     public void complete(MapleCharacter c, int npc, Integer selection) {
-		if (autoPreComplete || canComplete(c, npc)) {
-		   for (MapleQuestAction a : completeActs.values()) {
-			  if (!a.check(c, selection)) {
-			 	 return;
-			  }
-		    }
-		    forceComplete(c, npc);
-		    for (MapleQuestAction a : completeActs.values()) {
-		        a.run(c, selection);
-		    }
-                    
-                    c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
-                    c.getMap().broadcastMessage(c, MaplePacketCreator.showForeignEffect(c.getId(), 9), false); //use 9 instead of 12 for both
-		}
+        if (autoPreComplete || canComplete(c, npc)) {
+           for (MapleQuestAction a : completeActs.values()) {
+                  if (!a.check(c, selection)) {
+                         return;
+                  }
+            }
+            forceComplete(c, npc);
+            for (MapleQuestAction a : completeActs.values()) {
+                a.run(c, selection);
+            }
+
+            c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+            c.getMap().broadcastMessage(c, MaplePacketCreator.showForeignEffect(c.getId(), 9), false); //use 9 instead of 12 for both
+        }
     }
 
     public void reset(MapleCharacter c) {
@@ -314,9 +348,9 @@ public class MapleQuest {
 		return ret;
     }
 
-    public int getTimeLimit() {
-        return timeLimit;
-    }
+        public int getTimeLimit() {
+                return timeLimit;
+        }
 	
 	public static void clearCache(int quest) {
 		if(quests.containsKey(quest)){

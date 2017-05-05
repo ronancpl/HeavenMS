@@ -74,7 +74,11 @@ function action(mode, type, selection) {
 					} else {
 						var prop = em.getProperty("LPQOpen");
 						if (prop == null || prop.equals("true")) { 
-							em.startInstance(cm.getParty(), cm.getPlayer().getMap());
+							if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap())) {
+                                                            cm.sendOk("A party in your name is already registered in this event.");
+                                                            cm.dispose();
+                                                            return;
+                                                        }
 							cm.removeAll(4001022);
 							cm.removeAll(4001023);
 							cm.dispose();

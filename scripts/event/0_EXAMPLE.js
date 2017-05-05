@@ -66,7 +66,7 @@ function disbandParty(eim, player) {
 }
 
 function clearPQ(eim) {
-    // Happens when the function EventInstanceManager.finishPQ() is invoked by NPC/Reactor script
+    // Happens when the function EventInstanceManager.clearPQ() is invoked by NPC/Reactor script
 }
 
 function removePlayer(eim, player) {

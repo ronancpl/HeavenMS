@@ -50,7 +50,11 @@ function action(mode, type, selection) {
                                         if(eli.size() > 0) {
                                                 var prop = em.getProperty("state");
                                                 if (prop != null && prop.equals("0")) { 
-                                                        em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1);
+                                                        if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                                                            cm.sendOk("A party in your name is already registered in this event.");
+                                                            cm.dispose();
+                                                            return;
+                                                        }
                                                         cm.dispose();
                                                 } else {
                                                         cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");

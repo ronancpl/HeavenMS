@@ -51,6 +51,6 @@ public abstract class MapleQuestRequirement {
 	public abstract void processData(MapleData data);
 	
 	public MapleQuestRequirementType getType() {
-        return type;
-    }
+            return type;
+        }
 }

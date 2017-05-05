@@ -59,8 +59,13 @@ function start() {
             var em = cm.getEventManager("AmoriaPQ");
             if (em == null)
                 cm.dispose();
-            else
-                em.startInstance(cm.getParty(),cm.getPlayer().getMap());
+            else {
+                if(!em.startInstance(cm.getParty(),cm.getPlayer().getMap())) {
+                    cm.sendOk("A party in your name is already registered in this event.");
+                    cm.dispose();
+                    return;
+                }
+            }
             cm.dispose();
         }
         else {

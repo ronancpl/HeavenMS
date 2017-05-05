@@ -42,6 +42,9 @@ public class IntervalRequirement extends MapleQuestRequirement {
 		questID = quest.getId();
 	}
 	
+        public int getInterval() {
+                return interval;
+        }
 	
 	@Override
 	public void processData(MapleData data) {

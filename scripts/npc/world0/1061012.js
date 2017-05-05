@@ -22,7 +22,9 @@ function start() {
 	    } else if (em.getProperty("started").equals("true")) {
 		cm.sendOk("Someone else is already attempting to defeat the Jr.Balrog in another world." );
 	    } else {
-		em.startInstance(cm.getParty(), cm.getMap());
+		if(!em.startInstance(cm.getParty(), cm.getMap())) {
+                    cm.sendOk("A party in your name is already registered in this event.");
+                }
 	    }
 	}
     }

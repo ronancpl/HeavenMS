@@ -1,7 +1,8 @@
 function enter(pi) {
         if ((pi.getMap().getMonsters().size() == 0 || pi.getMap().getMonsterById(9300183) != null) && (pi.getMap().getReactorByName("") == null || pi.getMap().getReactorByName("").getState() == 1)) {
                 if(pi.isLeader()) {
-                        pi.clearPQ(930000800);
+                        pi.getEventInstance().clearPQ();
+                        pi.getEventInstance().warpEventTeam(930000800);
                         return true;
                 }
                 else {

@@ -59,18 +59,18 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
         } else if (action == 4) { // scripted start quest
             int npc = slea.readInt();
             slea.readInt();
-			if(quest.canStart(player, npc)) {
-				QuestScriptManager.getInstance().start(c, questid, npc);
-			}
+            if(quest.canStart(player, npc)) {
+                QuestScriptManager.getInstance().start(c, questid, npc);
+            }
         } else if (action == 5) { // scripted end quests
             //System.out.println(slea.toString());
             int npc = slea.readInt();
             slea.readInt();
             
             if(quest.canComplete(player, npc)) {
-                    QuestScriptManager.getInstance().end(c, questid, npc);
-                    player.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); //show effect when completion 
-                    player.getMap().broadcastMessage(player, MaplePacketCreator.showForeignEffect(player.getId(), 9));//show effect around players I guess
+                QuestScriptManager.getInstance().end(c, questid, npc);
+                player.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); //show effect when completion 
+                player.getMap().broadcastMessage(player, MaplePacketCreator.showForeignEffect(player.getId(), 9));//show effect around players I guess
             }
         }
     }

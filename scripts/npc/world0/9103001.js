@@ -72,8 +72,11 @@ function action(mode, type, selection) {
                 } else if (!open){
                     cm.sendOk("The PQ is #rclosed#k for now.");
                 } else {
-                    //cm.sendOk("You may enter");//ENTER PQ
-                    em.startInstance(cm.getParty(), cm.getPlayer().getMap());
+                    if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap())) {
+                        cm.sendOk("A party in your name is already registered in this event.");
+                        cm.dispose();
+                        return;
+                    }
                     var party = cm.getPlayer().getEventInstance().getPlayers();
                     cm.removeFromParty(4001106, party);
                 }

@@ -44,7 +44,7 @@ function action(mode, type, selection) {
                 cm.sendNext("Thank you for not only restoring the statue, but rescuing me, Minerva, from the entrapment. May the blessing of the goddess be with you till the end...");
             else if (status == 1) {
                 var eim = cm.getPlayer().getEventInstance();
-                eim.finishPQ();
+                eim.clearPQ();
                 cm.dispose();
             }
         } else if (cm.getPlayer().getMapId() == 920011300) {

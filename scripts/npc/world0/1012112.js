@@ -94,7 +94,11 @@ function action(mode, type, selection) {
                     if (prop == null || prop.equals("0")) { //Start the PQ
 					    cm.removeHPQItems();
                         em.setProperty("latestLeader", cm.getPlayer().getName());
-                        em.startInstance(cm.getParty(), cm.getPlayer().getMap());
+                        if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap())) {
+                            cm.sendOk("A party in your name is already registered in this event.");
+                            cm.dispose();
+                            return;
+                        }
                     } else {
                         cm.sendOk("Someone is already attempting the PQ. Please wait for them to finish, or find another channel.");
                         cm.dispose();

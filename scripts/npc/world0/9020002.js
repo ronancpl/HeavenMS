@@ -46,7 +46,7 @@ function action(mode, type, selection){
     var mapId = cm.getPlayer().getMapId();
     if (mapId == 103000890) {
         if (status == 0) {
-            cm.sendNext("See you next time.");
+            cm.sendNext("To return back to the city, follow this way.");
         } else {
             cm.getPlayer().changeMap(103000000, cm.getClient().getChannelServer().getMapFactory().getMap(103000000).getRandomSpawnpoint());
             cm.removeAll(4001007);
@@ -61,15 +61,7 @@ function action(mode, type, selection){
             }
             cm.sendYesNo(outText);
         } else if (mode == 1) {
-            var eim = cm.getPlayer().getEventInstance(); // Remove them from the PQ!
-            if (eim == null)
-                cm.warp(103000890, "st00"); // Warp player
-            else if (cm.isLeader()) {
-                //cm.getEventManager("KerningPQ").setProperty("KPQOpen" , "true");
-                eim.disbandParty();
-            }
-            else
-                eim.leftParty(cm.getPlayer());
+            cm.warp(103000890, "st00"); // Warp player
             cm.dispose();
         }
     }

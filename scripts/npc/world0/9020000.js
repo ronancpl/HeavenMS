@@ -1,89 +1,91 @@
-/*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * @author: Ronan
+ * @npc: Lakelis
+ * @map: 103000000 - Kerning City
+ * @func: Kerning PQ
 */
 
-/**
--- Odin JavaScript --------------------------------------------------------------------------------
-	Lakelis - Victoria Road: Kerning City (103000000)
--- By ---------------------------------------------------------------------------------------------
-	Stereo
--- Version Info -----------------------------------------------------------------------------------
-	1.0 - First Version by Stereo
----------------------------------------------------------------------------------------------------
-**/
-
-var status;
-var minLevel = 21;
-var maxLevel = 255;
-var minPlayers = 1;
-var maxPlayers = 6;
+var status = 0;
+var minLevel = 1;
+var maxLevel = 200;
+var minPartySize = 1;
+var maxPartySize = 6;
+var state;
 
 function start() {
-    status = -1;
-    action(1, 0, 0);
+	status = -1;
+        state = (cm.getMapId() >= 103000800 && cm.getMapId() <= 103000805) ? 1 : 0;
+	action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-    if (mode == 1)
-        status++;
-    else {
-        cm.dispose();
-        return;
-    }
-    if (status == 0) {
-        if (cm.getParty() == null) { // No Party
-            cm.sendOk("How about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork.  If you want to try it, please tell the #bleader of your party#k to talk to me.");
-            cm.dispose();
-        } else if (!cm.isLeader()) { // Not Party Leader
-            cm.sendOk("If you want to try the quest, please tell the #bleader of your party#k to talk to me.");
-            cm.dispose();
+        if (mode == -1) {
+                cm.dispose();
         } else {
-            var party = cm.getParty().getMembers();
-            var inMap = cm.partyMembersInMap();
-            var levelValid = 0;
-            for (var i = 0; i < party.size(); i++) {
-                if (party.get(i).getLevel() >= minLevel && party.get(i).getLevel() <= maxLevel)
-                    levelValid++;
-            }
-            if (inMap < minPlayers || inMap > maxPlayers) {
-                cm.sendOk("Your party is not a party of "+minPlayers+". Please make sure all your members are present and qualified to participate in this quest.");
-                cm.dispose();
-            } else if (levelValid != inMap) {
-                cm.sendOk("Please make sure all your members are present and qualified to participate in this quest. This PQ requires players ranging from level "+minLevel+" to level "+maxLevel+". I see #b" + levelValid + "#k members are in the right level range. If this seems wrong, #blog out and log back in,#k or reform the party.");
-                cm.dispose();
-            } else {
-                var em = cm.getEventManager("KerningPQ");
-                if (em == null) {
-                    cm.sendOk("This PQ is currently unavailable.");
-                } else if (em.getProperty("KPQOpen").equals("true")) {
-                    // Begin the PQ.
-                    em.startInstance(cm.getParty(), cm.getPlayer().getMap());
-                    party = cm.getParty();
-                    cm.removePartyItems(4001008);
-                    cm.removePartyItems(4001007);
-                    em.setProperty("KPQOpen" , "false");
-                } else {
-                    cm.sendNext("There is already another party inside. Please wait !");
+                if (mode == 0 && status == 0) {
+                        cm.dispose();
+                        return;
                 }
-                cm.dispose();
-            }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+
+                if (status == 0) {
+                        if(state == 1) {
+                                cm.sendYesNo("Do you wish to abandon this area?");
+                        }
+                        else {
+                                cm.sendSimple("#b<Party Quest: 1st Accompaniment>#k\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                        }
+                } else if (status == 1) {
+                        if(state == 1) {
+                                cm.warp(103000000);
+                                cm.dispose();
+                        }
+                        else {
+                                if (selection == 0) {
+                                        if (cm.getParty() == null) {
+                                                cm.sendOk("You can participate in the party quest only if you are in a party.");
+                                                cm.dispose();
+                                        } else if(!cm.isLeader()) {
+                                                cm.sendOk("Your party leader must talk to me to start this party quest.");
+                                                cm.dispose();
+                                        } else {
+                                                var em = cm.getEventManager("KerningPQ");
+                                                if(em == null) {
+                                                        cm.sendOk("The Kerning PQ has encountered an error.");
+                                                        cm.dispose();
+                                                }
+
+                                                var eli = em.getEligibleParty(cm.getParty());
+                                                if(eli.size() > 0) {
+                                                        var prop = em.getProperty("state");
+                                                        if (prop != null && prop.equals("0")) {
+                                                                if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                                                                    cm.sendOk("A party in your name is already registered in this event.");
+                                                                    cm.dispose();
+                                                                    return;
+                                                                }
+                                                                cm.dispose();
+                                                        } else {
+                                                                cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");
+                                                                cm.dispose();
+                                                        }
+                                                }
+                                                else {
+                                                        cm.sendOk("You cannot start this party quest yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
+                                                        cm.dispose();
+                                                }
+                                        }
+                                } else if (selection == 1) {
+                                        cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
+                                        cm.dispose();
+                                } else {
+                                        cm.sendOk("#b<Party Quest: 1st Accompaniment>#k\r\nYour party must pass through many obstacles and puzzles while traversing the sub-objectives of this Party Quest. Coordinate with your team in order to further advance and defeat the final boss and collect the dropped item in order to access the rewards and bonus stage.");
+                                        cm.dispose();
+                                }
+                        }
+                }
         }
-    }
 }

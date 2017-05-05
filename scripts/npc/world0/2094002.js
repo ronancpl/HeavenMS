@@ -20,28 +20,32 @@ function action(mode, type, selection) {
 	cm.dispose();
 	return;
     }
-    var em = cm.getEventManager("PiratePQ");
-    if (em == null) {
-	cm.sendNext("The event isn't started...");
-	cm.dispose();
-	return;
-    }
     
-    level = em.getProperty("level");
     if (!cm.isLeader()) {
 	cm.sendNext("I wish for your leader to talk to me.");
 	cm.dispose();
 	return;
     }
+    
+    var eim = cm.getEventInstance();
+    if (eim == null) {
+        cm.warp(251010404,0);
+	cm.sendNext("How are you even here without being registered on an event?");
+	cm.dispose();
+	return;
+    }
+    
+    level = eim.getProperty("level");
+    
     switch(cm.getPlayer().getMapId()) {
 	case 925100000:
 	    cm.sendNext("We are heading into the Pirate Ship now! To get in, we must destroy all the monsters guarding it.");
 	    cm.dispose();
 	    break;
 	case 925100100:
-	    var emp = em.getProperty("stage2");
+	    var emp = eim.getProperty("stage2");
 	    if (emp == null) {
-		em.setProperty("stage2", "0");
+		eim.setProperty("stage2", "0");
 		emp = "0";
 	    }
 	    if (emp.equals("0")) {
@@ -49,7 +53,7 @@ function action(mode, type, selection) {
 		    cm.sendNext("Excellent! Now hunt me 20 Rising Medals.");
 		    cm.gainItem(4001120,-20);
                     cm.getMap().killAllMonsters();
-		    em.setProperty("stage2", "1");
+		    eim.setProperty("stage2", "1");
 		} else {
 	   	    cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Rookie Medals.");
                     if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300114, level, true);
@@ -59,7 +63,7 @@ function action(mode, type, selection) {
 		    cm.sendNext("Excellent! Now hunt me 20 Veteran Medals.");
 		    cm.gainItem(4001121,-20);
                     cm.getMap().killAllMonsters();
-		    em.setProperty("stage2", "2");
+		    eim.setProperty("stage2", "2");
 		} else {
 	   	    cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Rising Medals.");
                     if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300115, level, true);
@@ -69,7 +73,7 @@ function action(mode, type, selection) {
 		    cm.sendNext("Excellent! Now let us go.");
 		    cm.gainItem(4001122,-20);
                     cm.getMap().killAllMonsters();
-		    em.setProperty("stage2", "3");
+		    eim.setProperty("stage2", "3");
 		} else {
 	   	    cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Veteran Medals.");
                     if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300116, level, true);
@@ -87,9 +91,9 @@ function action(mode, type, selection) {
 	case 925100201:
 	    if (cm.getMap().getMonsters().size() == 0) {
 		cm.sendNext("Excellent.");
-		if (em.getProperty("stage2a") == "0") {
+		if (eim.getProperty("stage2a") == "0") {
 		    cm.getMap().setReactorState();
-		    em.setProperty("stage2a", "1");
+		    eim.setProperty("stage2a", "1");
 		}
 	    } else {
 	   	cm.sendNext("These bellflowers are in hiding. We must liberate them.");
@@ -99,9 +103,9 @@ function action(mode, type, selection) {
 	case 925100301:
 	    if (cm.getMap().getMonsters().size() == 0) {
 		cm.sendNext("Excellent.");
-		if (em.getProperty("stage3a").equals("0")) {
+		if (eim.getProperty("stage3a").equals("0")) {
 		    cm.getMap().setReactorState();
-		    em.setProperty("stage3a", "1");
+		    eim.setProperty("stage3a", "1");
 		}
 	    } else {
 	   	cm.sendNext("These bellflowers are in hiding. We must liberate them.");
@@ -119,7 +123,8 @@ function action(mode, type, selection) {
 	    break;
 	case 925100500:
 	    if (cm.getMap().getMonsters().size() == 0) {
-		cm.clearPQ(925100600);
+		cm.getEventInstance().clearPQ();
+                cm.getEventInstance().warpEventTeam(925100600);
 	    } else {
 	   	cm.sendNext("Defeat all monsters! Even Lord Pirate's minions!");
 	    }

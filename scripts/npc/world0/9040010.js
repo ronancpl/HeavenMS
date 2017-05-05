@@ -34,7 +34,7 @@ function start() {
 						points = 100;
                     cm.getGuild().gainGP(points);
                 }
-                eim.finishPQ();
+                eim.clearPQ();
             }
             else {
                 cm.sendOk("This is your final challenge. Defeat the evil lurking within the Rubian and return it to me. That is all.");

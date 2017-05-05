@@ -151,9 +151,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144};    //fibonacci :3
     
     private static final String LEVEL_200 = "[Congrats] %s has reached Level 200! Congratulate %s on such an amazing achievement!";
+
+    // MapleStory default keyset
     private static final int[] DEFAULT_KEY = {18, 65, 2, 23, 3, 4, 5, 6, 16, 17, 19, 25, 26, 27, 31, 34, 35, 37, 38, 40, 43, 44, 45, 46, 50, 56, 59, 60, 61, 62, 63, 64, 57, 48, 29, 7, 24, 33, 41, 39};
     private static final int[] DEFAULT_TYPE = {4, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 5, 6, 6, 6, 6, 6, 6, 5, 4, 5, 4, 4, 4, 4, 4};
     private static final int[] DEFAULT_ACTION = {0, 106, 10, 1, 12, 13, 18, 24, 8, 5, 4, 19, 14, 15, 2, 17, 11, 3, 20, 16, 9, 50, 51, 6, 7, 53, 100, 101, 102, 103, 104, 105, 54, 22, 52, 21, 25, 26, 23, 27};
+    
+    // MapleSolaxiaV2 custom keyset
+    private static final int[] CUSTOM_KEY = {2, 3, 4, 5, 31, 56, 59, 32, 42, 6, 17, 29, 30, 41, 50, 60, 61, 62, 63, 64, 65, 16, 7, 8};
+    private static final int[] CUSTOM_TYPE = {4, 4, 4, 4, 5, 5, 6, 5, 5, 4, 4, 4, 5, 4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4};
+    private static final int[] CUSTOM_ACTION = {1, 0, 3, 2, 53, 54, 100, 52, 51, 19, 5, 9, 50, 7, 22, 101, 102, 103, 104, 105, 106, 8, 17, 26};
+    
     private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "help", "helper", "alert", "notice", "maplestory", "Solaxia", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
         "nigger", "homo", "suck", "cum", "shit", "shitty", "condom", "security", "official", "rape", "nigga", "sex", "tit", "boner", "orgy", "clit", "asshole", "fatass", "bitch", "support", "gamemaster", "cock", "gaay", "gm",
         "operate", "master", "sysop", "party", "GameMaster", "community", "message", "event", "test", "meso", "Scania", "renewal", "yata", "AsiaSoft", "henesys"};
@@ -354,9 +362,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         ret.getInventory(MapleInventoryType.USE).setSlotLimit(24);
         ret.getInventory(MapleInventoryType.SETUP).setSlotLimit(24);
         ret.getInventory(MapleInventoryType.ETC).setSlotLimit(24);
-        for (int i = 0; i < DEFAULT_KEY.length; i++) {
-            ret.keymap.put(DEFAULT_KEY[i], new MapleKeyBinding(DEFAULT_TYPE[i], DEFAULT_ACTION[i]));
+        
+        // Select a keybinding method
+        int[] selectedKey;
+        int[] selectedType;
+        int[] selectedAction;
+        
+        if(ServerConstants.USE_CUSTOM_KEYSET) {
+            selectedKey = CUSTOM_KEY;
+            selectedType = CUSTOM_TYPE;
+            selectedAction = CUSTOM_ACTION;
         }
+        else {
+            selectedKey = DEFAULT_KEY;
+            selectedType = DEFAULT_TYPE;
+            selectedAction = DEFAULT_ACTION;
+        }
+                
+        for (int i = 0; i < selectedKey.length; i++) {
+            ret.keymap.put(selectedKey[i], new MapleKeyBinding(selectedType[i], selectedAction[i]));
+        }
+        
+        
         //to fix the map 0 lol
         for (int i = 0; i < 5; i++) {
             ret.trockmaps.add(999999999);
@@ -1206,6 +1233,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             newWarpMap = -1;
             changeMap(temp);
         }
+        
+        // if this event map has a gate already opened, render it
+        if(getEventInstance() != null) {
+            getEventInstance().recoverOpenedGate(this, map.getId());
+        }
     }
 
     public void changePage(int page) {
@@ -1713,6 +1745,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void gainFame(int delta) {
         this.addFame(delta);
         this.updateSingleStat(MapleStat.FAME, this.fame);
+    }
+    
+    public void gainMeso(int gain) {
+        gainMeso(gain, true, false, true);
     }
 
     public void gainMeso(int gain, boolean show) {
@@ -3475,7 +3511,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 		int lastQuestProcessed = 0;
         try {
             for (MapleQuestStatus q : quests.values()) {
-				lastQuestProcessed = q.getQuest().getId();
+                lastQuestProcessed = q.getQuest().getId();
                 if (q.getStatus() == MapleQuestStatus.Status.COMPLETED || q.getQuest().canComplete(this, null)) {
                     continue;
                 }
@@ -4037,12 +4073,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 return false;
             }
 
+            // Select a keybinding method
+            int[] selectedKey;
+            int[] selectedType;
+            int[] selectedAction;
+
+            if(ServerConstants.USE_CUSTOM_KEYSET) {
+                selectedKey = CUSTOM_KEY;
+                selectedType = CUSTOM_TYPE;
+                selectedAction = CUSTOM_ACTION;
+            }
+            else {
+                selectedKey = DEFAULT_KEY;
+                selectedType = DEFAULT_TYPE;
+                selectedAction = DEFAULT_ACTION;
+            }
+            
             ps = con.prepareStatement("INSERT INTO keymap (characterid, `key`, `type`, `action`) VALUES (?, ?, ?, ?)");
             ps.setInt(1, id);
-            for (int i = 0; i < DEFAULT_KEY.length; i++) {
-                ps.setInt(2, DEFAULT_KEY[i]);
-                ps.setInt(3, DEFAULT_TYPE[i]);
-                ps.setInt(4, DEFAULT_ACTION[i]);
+            for (int i = 0; i < selectedKey.length; i++) {
+                ps.setInt(2, selectedKey[i]);
+                ps.setInt(3, selectedType[i]);
+                ps.setInt(4, selectedAction[i]);
                 ps.execute();
             }
             ps.close();
@@ -4203,6 +4255,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.addBatch();
             }
             ps.executeBatch();
+            
             deleteWhereCharacterId(con, "DELETE FROM skillmacros WHERE characterid = ?");
             ps = con.prepareStatement("INSERT INTO skillmacros (characterid, skill1, skill2, skill3, name, shout, position) VALUES (?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, getId());

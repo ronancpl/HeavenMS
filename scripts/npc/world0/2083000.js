@@ -85,7 +85,11 @@ function action(mode, type, selection) {
                     }
                     else {
                         // Begin the PQ.
-                        em.startInstance(cm.getParty(),cm.getPlayer().getMap());
+                        if(!em.startInstance(cm.getParty(),cm.getPlayer().getMap())) {
+                            cm.sendOk("A party in your name is already registered in this event.");
+                            cm.dispose();
+                            return;
+                        }
                         //force the two scripts on portals in the map
                         //eim = cm.getPlayer().getEventInstance();
                         var map = eim.getMapInstance(240050100);
