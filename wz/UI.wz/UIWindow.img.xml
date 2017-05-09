@@ -9723,11 +9723,10 @@
       </canvas>
       <uol name="7220004" value="7220003"/>
       <uol name="7220005" value="7220003"/>
-      <canvas name="8130100" width="25" height="25">
+      <canvas name="8150000" width="25" height="25">
         <int name="delay" value="500"/>
         <vector name="origin" x="0" y="0"/>
       </canvas>
-      <uol name="8150000" value="8130100"/>
       <canvas name="8180000" width="25" height="25">
         <int name="delay" value="500"/>
         <vector name="origin" x="0" y="0"/>
@@ -9760,7 +9759,7 @@
         <int name="delay" value="500"/>
         <vector name="origin" x="0" y="0"/>
       </canvas>
-      <canvas name="8220006" width="25" height="25">
+      <canvas name="8220009" width="25" height="25">
         <int name="delay" value="500"/>
         <vector name="origin" x="0" y="0"/>
       </canvas>
@@ -10090,6 +10089,14 @@
       <canvas name="9700035" width="25" height="25">
         <vector name="origin" x="0" y="0"/>
         <int name="z" value="0"/>
+      </canvas>
+      <canvas name="8130100" width="25" height="25">
+        <int name="delay" value="500"/>
+        <vector name="origin" x="0" y="0"/>
+      </canvas>
+      <canvas name="8220006" width="25" height="25">
+        <int name="delay" value="500"/>
+        <vector name="origin" x="0" y="0"/>
       </canvas>
     </imgdir>
     <imgdir name="Gage">

@@ -6,11 +6,8 @@
 */
 
 var status = 0;
-var minLevel = 1;
-var maxLevel = 200;
-var minPartySize = 1;
-var maxPartySize = 6;
 var state;
+var em = null;
 
 function start() {
 	status = -1;
@@ -36,7 +33,13 @@ function action(mode, type, selection) {
                                 cm.sendYesNo("Do you wish to abandon this area?");
                         }
                         else {
-                                cm.sendSimple("#b<Party Quest: 1st Accompaniment>#k\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                                em = cm.getEventManager("KerningPQ");
+                                if(em == null) {
+                                        cm.sendOk("The Kerning PQ has encountered an error.");
+                                        cm.dispose();
+                                }
+                            
+                                cm.sendSimple("#b<Party Quest: 1st Accompaniment>\r\n#k" + em.getProperty("party") + "\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
                         }
                 } else if (status == 1) {
                         if(state == 1) {
@@ -52,31 +55,17 @@ function action(mode, type, selection) {
                                                 cm.sendOk("Your party leader must talk to me to start this party quest.");
                                                 cm.dispose();
                                         } else {
-                                                var em = cm.getEventManager("KerningPQ");
-                                                if(em == null) {
-                                                        cm.sendOk("The Kerning PQ has encountered an error.");
-                                                        cm.dispose();
-                                                }
-
                                                 var eli = em.getEligibleParty(cm.getParty());
                                                 if(eli.size() > 0) {
-                                                        var prop = em.getProperty("state");
-                                                        if (prop != null && prop.equals("0")) {
-                                                                if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
-                                                                    cm.sendOk("A party in your name is already registered in this event.");
-                                                                    cm.dispose();
-                                                                    return;
-                                                                }
-                                                                cm.dispose();
-                                                        } else {
+                                                        if(!em.startInstance(0, cm.getParty(), cm.getPlayer().getMap(), 1)) {
                                                                 cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");
-                                                                cm.dispose();
                                                         }
                                                 }
                                                 else {
                                                         cm.sendOk("You cannot start this party quest yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
-                                                        cm.dispose();
                                                 }
+                                                
+                                                cm.dispose();
                                         }
                                 } else if (selection == 1) {
                                         cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");

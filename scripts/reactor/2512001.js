@@ -25,9 +25,9 @@
  */
  
 function act() {
-	var em = rm.getPlayer().getEventInstance().getEm();
-	var now = parseInt(em.getProperty("openedChests"));
+	var eim = rm.getPlayer().getEventInstance();
+	var now = parseInt(eim.getProperty("openedChests"));
 	var nextNum = now + 1;
-	em.setProperty("openedChests", nextNum.toString());
+	eim.setProperty("openedChests", nextNum.toString());
 	rm.dropItems(true, 1, 50, 100, 15);
 }

@@ -18,7 +18,6 @@
     <float name="fs" value="10.0"/>
     <int name="summonType" value="0"/>
     <int name="removeAfter" value="600"/>
-    <int name="boss" value="1"/>
     <int name="firstAttack" value="1"/>
     <int name="publicReward" value="1"/>
     <imgdir name="skill">
@@ -29,6 +28,7 @@
         <int name="effectAfter" value="0"/>
       </imgdir>
     </imgdir>
+    <int name="boss" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="219" height="153">

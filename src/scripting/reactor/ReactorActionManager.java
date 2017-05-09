@@ -138,22 +138,13 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         pos.y -= 10;
         return pos;
     }
-
+    
     public void spawnNpc(int npcId) {
         spawnNpc(npcId, getPosition());
     }
-
+    
     public void spawnNpc(int npcId, Point pos) {
-        MapleNPC npc = MapleLifeFactory.getNPC(npcId);
-        if (npc != null) {
-            npc.setPosition(pos);
-            npc.setCy(pos.y);
-            npc.setRx0(pos.x + 50);
-            npc.setRx1(pos.x - 50);
-            npc.setFh(reactor.getMap().getFootholds().findBelow(pos).getId());
-            reactor.getMap().addMapObject(npc);
-            reactor.getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-        }
+        spawnNpc(npcId, pos, reactor.getMap());
     }
 
     public MapleReactor getReactor() {

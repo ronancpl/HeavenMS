@@ -29,7 +29,7 @@ public enum SavedLocationType {
     INTRO, 
     SUNDAY_MARKET, 
     MIRROR, 
-    DOJO,
+    BOSSPQ,
     HAPPYVILLE;
 
     public static SavedLocationType fromString(String Str) {

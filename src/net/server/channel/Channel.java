@@ -84,7 +84,7 @@ public final class Channel {
     public Channel(final int world, final int channel) {
         this.world = world;
         this.channel = channel;
-        this.mapFactory = new MapleMapFactory(MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), world, channel);
+        this.mapFactory = new MapleMapFactory(null, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), world, channel);
         try {
             eventSM = new EventScriptManager(this, getEvents());
             port = 7575 + this.channel - 1;

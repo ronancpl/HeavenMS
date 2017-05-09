@@ -346,6 +346,9 @@ public class World {
                 party.updateMember(target);
                 break;
             case CHANGE_LEADER:
+                if(party.getLeader().getPlayer().getEventInstance() != null) {
+                    party.getLeader().getPlayer().getEventInstance().changedLeader(target.getPlayer());
+                }
                 party.setLeader(target);
                 break;
             default:

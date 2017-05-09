@@ -1118,7 +1118,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private void eventChangedMap(int map) {
-        if (getEventInstance() != null) getEventInstance().changedMap(MapleCharacter.this, map);
+        if (getEventInstance() != null) getEventInstance().changedMap(this, map);
     }
 
     public void changeMap(int map) {

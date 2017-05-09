@@ -18,7 +18,6 @@
     <string name="elemAttr" value="I2F2L2H2S2"/>
     <float name="fs" value="10.0"/>
     <int name="summonType" value="1"/>
-    <int name="boss" value="1"/>
     <string name="link" value="9300012"/>
     <int name="ignoreFieldOut" value="1"/>
     <imgdir name="skill">
@@ -39,5 +38,9 @@
       <int name="0" value="9300216"/>
     </imgdir>
     <int name="explosiveReward" value="1"/>
+    <int name="hpTagColor" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="boss" value="1"/>
   </imgdir>
 </imgdir>

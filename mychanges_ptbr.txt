@@ -200,4 +200,11 @@ Reimplementação da Kerning PQ.
 Para quests que podem ser repetidas, adição de mensagem mencionando o tempo restante para recomeçá-la.
 
 04 - 05 Maio 2017,
+Correção de bug no sistema de keybinding em casos onde certas mecanicas de jogo e itens não eram salvos devido a ids conflituosos com certas skills.
 Finalização da reimplementação da Kerning PQ, com adição de novos mecanismos esperados em eventos/PQs.
+Adição de barra de HP para bosses King Slime, Alishar e Snack Bar.
+
+08 Maio 2017,
+Adição de funcionalidade para PQs/eventos: ao sair de evento, remove-se todos os itens listados como exclusivo para evento.
+Diversas correções em mecânicas das PQs/eventos.
+Sistema de lobbys para PQs agora. É possível instanciar mais de uma PQ em um mesmo channel.

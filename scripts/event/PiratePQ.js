@@ -1,53 +1,79 @@
 var isPq = true;
-var minPlayers = 1, maxPlayers = 6;
-var minLevel = 1, maxLevel = 200;
+var minPlayers = 3, maxPlayers = 6;
+var minLevel = 55, maxLevel = 100;
 var entryMap = 925100000;
 var exitMap = 925100700;
 var recruitMap = 251010404;
 var clearMap = 925100600;
 
+var minMapId = 925100000;
+var maxMapId = 925100500;
+
+var lobbyRange = [0, 0];
+
 function init() {
-        em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+        setEventRequirements();
 }
+
+function setLobbyRange() {
+        return lobbyRange;
+}
+
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        em.setProperty("party", reqStr);
+}
+
+function setEventExclusives(eim) {
+        var itemSet = [4001117, 4001120, 4001121, 4001122];
+        eim.setExclusiveItems(itemSet);
+}
+
+function setEventRewards(eim) {}
 
 function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
         var eligible = [];
         var hasLeader = false;
         
         if(party.size() > 0) {
-            var partyList = party.toArray();
-            
-            for(var i = 0; i < party.size(); i++) {
-                var ch = partyList[i];
-            
-                if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
-                        if(ch.isLeader()) hasLeader = true;
-                        eligible.push(ch);
+                var partyList = party.toArray();
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
                 }
-            }
         }
         
         if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
         return eligible;
 }
 
-function setup(level, leaderid) {
-        em.setProperty("state", "1");
-	em.setProperty("leader", "true");
-        
-        var eim = em.newInstance("Pirate" + leaderid);
+function setup(level, lobbyid) {
+        var eim = em.newInstance("Pirate" + lobbyid);
         eim.setProperty("level", level);
         
-	em.setProperty("stage2", "0");
-        em.setProperty("stage2a", "0");
-	em.setProperty("stage3a", "0");
-        em.setProperty("stage2b", "0");
-	em.setProperty("stage3b", "0");
-	em.setProperty("stage4", "0");
-	em.setProperty("stage5", "0");
+	eim.setProperty("stage2", "0");
+        eim.setProperty("stage2a", "0");
+	eim.setProperty("stage3a", "0");
+        eim.setProperty("stage2b", "0");
+	eim.setProperty("stage3b", "0");
+	eim.setProperty("stage4", "0");
+	eim.setProperty("stage5", "0");
         
-        em.setProperty("openedChests", "0");
+        eim.setProperty("openedChests", "0");
         eim.setInstanceMap(925100000).resetPQ(level);
         eim.setInstanceMap(925100000).shuffleReactors();
         
@@ -124,11 +150,14 @@ function setup(level, leaderid) {
 	eim.setInstanceMap(925100500).resetPQ(level);
         
         respawnStg4(eim);
+        
         eim.startEventTimer(20 * 60000); //20 mins
+        setEventRewards(eim);
+        setEventExclusives(eim);
         return eim;
 }
 
-function respawnStg4(eim) {    
+function respawnStg4(eim) {
         eim.getMapInstance(925100400).instanceMapRespawn();
         eim.schedule("respawnStg4", 10 * 1000);
 }
@@ -148,13 +177,20 @@ function playerExit(eim, player) {
 }
 
 function changedMap(eim, player, mapid) {
-        if (mapid < 925100000 || mapid > 925100500) {
+        if (mapid < minMapId || mapid > maxMapId) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);
                 }
                 else
                         eim.unregisterPlayer(player);
+        }
+}
+
+function changedLeader(eim, leader) {
+        var mapid = leader.getMapId();
+        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
+                end(eim);
         }
 }
 
@@ -198,24 +234,21 @@ function end(eim) {
                 playerExit(eim, party.get(i));
         }
         eim.dispose();
-        
-        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
-        eim.warpEventTeam(toMap);
         
-        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
+        eim.warpEventTeam(925100600);
 }
 
-function reopenEvent() {
-        em.setProperty("state", "0");
-        em.setProperty("leader", "true");
+function monsterKilled(mob, eim) {
+        if(mob.isBoss()) {  // lord pirate defeated, spawn the little fella!
+            mob.getMap().broadcastStringMessage(5, "As Lord Pirate dies, Wu Yang is released!");
+            eim.spawnNpc(2094001, new java.awt.Point(777, 140), mob.getMap());
+        }
 }
-
-function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 

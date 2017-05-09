@@ -36,6 +36,7 @@ import server.PortalFactory;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
+import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
 
@@ -43,14 +44,16 @@ public class MapleMapFactory {
 
     private MapleDataProvider source;
     private MapleData nameData;
+    private EventInstanceManager event;
     private Map<Integer, MapleMap> maps = new HashMap<>();
     private int channel, world;
 
-    public MapleMapFactory(MapleDataProvider source, MapleDataProvider stringSource, int world, int channel) {
+    public MapleMapFactory(EventInstanceManager eim, MapleDataProvider source, MapleDataProvider stringSource, int world, int channel) {
         this.source = source;
         this.nameData = stringSource.getData("Map.img");
         this.world = world;
         this.channel = channel;
+        this.event = eim;
     }
     
     public MapleMap getMap(int mapid) {
@@ -75,6 +78,7 @@ public class MapleMapFactory {
                     monsterRate = ((Float) mobRate.getData()).floatValue();
                 }
                 map = new MapleMap(mapid, world, channel, MapleDataTool.getInt("info/returnMap", mapData), monsterRate);
+                map.setEventInstance(event);
                 
                 String onFirstEnter = MapleDataTool.getString(mapData.getChildByPath("info/onFirstUserEnter"), String.valueOf(mapid));
                 map.setOnFirstUserEnter(onFirstEnter.equals("") ? String.valueOf(mapid) : onFirstEnter);
@@ -313,5 +317,10 @@ public class MapleMapFactory {
 
     public Map<Integer, MapleMap> getMaps() {
         return maps;
+    }
+    
+    public void dispose() {
+        for(MapleMap map: maps.values()) map.setEventInstance(null);
+        this.event = null;
     }
 }

@@ -76,6 +76,7 @@ import server.life.SpawnPoint;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
 import server.partyquest.Pyramid;
+import scripting.event.EventInstanceManager;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -100,6 +101,7 @@ public class MapleMap {
     private boolean clock;
     private boolean boat;
     private boolean docked = false;
+    private EventInstanceManager event = null;
     private String mapName;
     private String streetName;
     private MapleMapEffect mapEffect = null;
@@ -151,6 +153,14 @@ public class MapleMap {
         final ReentrantReadWriteLock objectLock = new ReentrantReadWriteLock(true);
         objectRLock = objectLock.readLock();
         objectWLock = objectLock.writeLock();
+    }
+    
+    public void setEventInstance(EventInstanceManager eim) {
+        event = eim;
+    }
+    
+    public EventInstanceManager getEventInstance() {
+        return event;
     }
     
     public void broadcastMessage(MapleCharacter source, final byte[] packet) {
@@ -1114,12 +1124,7 @@ public class MapleMap {
         monster.changeDifficulty(difficulty, isPq);
         
         monster.setMap(this);
-        if (!monster.getMap().getAllPlayer().isEmpty()) {
-            MapleCharacter chr = (MapleCharacter) getAllPlayer().get(0);
-            if (monster.getEventInstance() == null && chr.getEventInstance() != null) {
-                chr.getEventInstance().registerMonster(monster);
-            }
-        }
+        if(getEventInstance() != null) getEventInstance().registerMonster(monster);
 
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
@@ -1700,6 +1705,10 @@ public class MapleMap {
                 this.broadcastMessage(chr, MaplePacketCreator.removeDragon(chr.getId()));
             }
         }
+    }
+    
+    public void broadcastStringMessage(int type, String message) {
+            broadcastMessage(MaplePacketCreator.serverNotice(type, message));
     }
 
     public void broadcastMessage(final byte[] packet) {

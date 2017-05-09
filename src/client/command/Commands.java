@@ -335,7 +335,7 @@ public class Commands {
 			player.message("@bosshp: Displays the remaining HP of the bosses on your map.");
                         if(ServerConstants.USE_DEBUG) {
                             player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
-                            player.message("@debugmapcount: Displays the current number of registered players in the map the player is located.");
+                            player.message("@debugmap: Displays info about the current map the player is located.");
                             player.message("@debugevent: Displays the name of the event in which the player is currently registered.");
                             player.message("@debugreactors: Displays current info for all reactors on the map the the player is currently located.");
                         }
@@ -650,9 +650,9 @@ public class Commands {
                         }
                         break;
                     
-                case "debugmapcount":
+                case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage("Current map count: (" + player.getMap().getAllPlayers().size() + ").");
+                            player.dropMessage("Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().getMonsters().size() + ".");
                         }
                         break;
                 

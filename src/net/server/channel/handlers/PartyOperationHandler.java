@@ -142,7 +142,6 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             case 6: {
                 int newLeader = slea.readInt();
                 MaplePartyCharacter newLeadr = party.getMemberById(newLeader);
-                party.setLeader(newLeadr);
                 world.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, newLeadr);
                 break;
             }

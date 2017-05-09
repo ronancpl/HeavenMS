@@ -47,6 +47,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.lang.reflect.Array;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  *
@@ -56,14 +58,23 @@ public class EventManager {
     private Invocable iv;
     private Channel cserv;
     private Map<String, EventInstanceManager> instances = new HashMap<String, EventInstanceManager>();
+    private Map<String, Integer> instanceLocks = new HashMap<String, Integer>();
+    private List<Boolean> openedLobbys;
     private Properties props = new Properties();
     private String name;
     private ScheduledFuture<?> schedule = null;
+    private Lock l = new ReentrantLock();
+    
+    private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
+    private static final long lobbyDelay = 10;  // 10 seconds cooldown before reopening a lobby
 
     public EventManager(Channel cserv, Invocable iv, String name) {
         this.iv = iv;
         this.cserv = cserv;
         this.name = name;
+        
+        this.openedLobbys = new ArrayList<>();
+        for(int i = 0; i < maxLobbys; i++) this.openedLobbys.add(false);
     }
 
     public void cancel() {
@@ -72,6 +83,23 @@ public class EventManager {
         } catch (ScriptException | NoSuchMethodException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    private List<Integer> convertToIntegerArray(List<Double> list) {
+        List<Integer> intList = new ArrayList<>();
+        for(Double d: list) intList.add(d.intValue());
+
+        return intList;
+    }
+    
+    private List<Integer> getLobbyRange() {
+        try {
+            return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
+        } catch (ScriptException | NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+        
+        return new ArrayList<>();
     }
 
     public void schedule(String methodName, long delay) {
@@ -125,8 +153,14 @@ public class EventManager {
         return ret;
     }
 
-    public void disposeInstance(String name) {
-        instances.remove(name);
+    public void disposeInstance(final String name) {
+        TimerManager.getInstance().schedule(new Runnable() {
+            @Override
+            public void run() {
+                freeLobbyInstance(name);
+                instances.remove(name);
+            }
+        }, lobbyDelay * 1000);
     }
 
     public Invocable getIv() {
@@ -148,16 +182,78 @@ public class EventManager {
     public int getIntProperty(String key) {
         return Integer.parseInt(props.getProperty(key));
     }
+    
+    private void setLockLobby(int lobbyId, boolean lock) {
+        l.lock();
+        try {
+            openedLobbys.set(lobbyId, lock);
+        } finally {
+            l.unlock();
+        }
+    }
+    
+    private boolean startLobbyInstance(int lobbyId) {
+        l.lock();
+        try {
+            if(!openedLobbys.get(lobbyId)) {
+                openedLobbys.set(lobbyId, true);
+                return true;
+            }
+        } finally {
+            l.unlock();
+        }
+        
+        return false;
+    }
+    
+    private void freeLobbyInstance(String lobbyName) {
+        Integer i = instanceLocks.get(lobbyName);
+        if(i == null) return;
+        
+        instanceLocks.remove(lobbyName);
+        if(i > -1) setLockLobby(i, false);
+    }
 
     public String getName() {
         return name;
     }
+    
+    public int availableLobbyInstance() {
+            List<Integer> lr = getLobbyRange();
+            int lb = 0, hb = 0;
+            
+            if(lr.size() >= 2) {
+                lb = Math.max(lr.get(0), 0);
+                hb = Math.min(lr.get(1), maxLobbys - 1);
+            }
+        
+            for(int i = lb; i <= hb; i++) {
+                    if(startLobbyInstance(i)) {
+                            return i;
+                    }
+            }
+            
+            return -1;
+    }
+    
+    public boolean startInstance(MapleExpedition exped) {
+        return startInstance(-1, exped);
+    }
 
     //Expedition method: starts an expedition
-    public boolean startInstance(MapleExpedition exped) {
+    public boolean startInstance(int lobbyId, MapleExpedition exped) {
         try {
+            if(lobbyId > -1) {
+                lobbyId = availableLobbyInstance();
+                if(lobbyId == -1) return false;
+            }
+            
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-            if(eim == null) return false;
+            if(eim == null) {
+                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                return false;
+            }
+            instanceLocks.put(eim.getName(), lobbyId);
             
             eim.registerExpedition(exped);
             exped.start();
@@ -170,9 +266,22 @@ public class EventManager {
 
     //Regular method: player 
     public boolean startInstance(MapleCharacter chr) {
+        return startInstance(-1, chr);
+    }
+    
+    public boolean startInstance(int lobbyId, MapleCharacter chr) {
         try {
+            if(lobbyId > -1) {
+                lobbyId = availableLobbyInstance();
+                if(lobbyId == -1) return false;
+            }
+            
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-            if(eim == null) return false;
+            if(eim == null) {
+                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                return false;
+            }
+            instanceLocks.put(eim.getName(), lobbyId);
             
             eim.registerPlayer(chr);
         } catch (ScriptException | NoSuchMethodException ex) {
@@ -184,9 +293,22 @@ public class EventManager {
     
     //PQ method: starts a PQ
     public boolean startInstance(MapleParty party, MapleMap map) {
+        return startInstance(-1, party, map);
+    }
+    
+    public boolean startInstance(int lobbyId, MapleParty party, MapleMap map) {
         try {
+            if(lobbyId > -1) {
+                lobbyId = availableLobbyInstance();
+                if(lobbyId == -1) return false;
+            }
+            
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-            if(eim == null) return false;
+            if(eim == null) {
+                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                return false;
+            }
+            instanceLocks.put(eim.getName(), lobbyId);
             
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
@@ -199,9 +321,22 @@ public class EventManager {
     
     //PQ method: starts a PQ with a difficulty level, requires function setup(difficulty, leaderid) instead of setup()
     public boolean startInstance(MapleParty party, MapleMap map, int difficulty) {
+        return startInstance(-1, party, map, difficulty);
+    }
+    
+    public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, int difficulty) {
         try {
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, party.getLeader().getId()));
-            if(eim == null) return false;
+            if(lobbyId > -1) {
+                lobbyId = availableLobbyInstance();
+                if(lobbyId == -1) return false;
+            }
+            
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
+            if(eim == null) {
+                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                return false;
+            }
+            instanceLocks.put(eim.getName(), lobbyId);
             
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
@@ -214,8 +349,21 @@ public class EventManager {
 
     //non-PQ method for starting instance
     public boolean startInstance(EventInstanceManager eim, String leader) {
+        return startInstance(-1, eim, leader);
+    }
+    
+    public boolean startInstance(int lobbyId, EventInstanceManager eim, String leader) {
         try {
-            if(eim == null) return false;
+            if(lobbyId > -1) {
+                lobbyId = availableLobbyInstance();
+                if(lobbyId == -1) return false;
+            }
+            
+            if(eim == null) {
+                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                return false;
+            }
+            instanceLocks.put(eim.getName(), lobbyId);
             
             iv.invokeFunction("setup", eim);
             eim.setProperty("leader", leader);

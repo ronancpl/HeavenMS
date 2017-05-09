@@ -17,7 +17,6 @@
     <int name="pushed" value="500"/>
     <float name="fs" value="10.0"/>
     <int name="summonType" value="1"/>
-    <int name="boss" value="1"/>
     <int name="removeAfter" value="600"/>
     <int name="firstAttack" value="1"/>
     <int name="publicReward" value="1"/>
@@ -29,6 +28,7 @@
         <int name="effectAfter" value="0"/>
       </imgdir>
     </imgdir>
+    <int name="boss" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="226" height="265">

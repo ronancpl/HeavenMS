@@ -1,14 +1,41 @@
 var isPq = true;
-var minPlayers = 1, maxPlayers = 6;
-var minLevel = 1, maxLevel = 200;
+var minPlayers = 4, maxPlayers = 6;
+var minLevel = 21, maxLevel = 30;
 var entryMap = 103000800;
 var exitMap = 103000890;
 var recruitMap = 103000000;
 var clearMap = 103000805;
 
+var minMapId = 103000800;
+var maxMapId = 103000805;
+
+var lobbyRange = [0, 0];
+
 function init() {
-        em.setProperty("state", "0");
-	em.setProperty("leader", "true");
+        setEventRequirements();
+}
+
+function setLobbyRange() {
+        return lobbyRange;
+}
+
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        em.setProperty("party", reqStr);
+}
+
+function setEventExclusives(eim) {
+        var itemSet = [4001007, 4001008];
+        eim.setExclusiveItems(itemSet);
 }
 
 function setEventRewards(eim) {
@@ -28,38 +55,37 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
         var hasLeader = false;
         
         if(party.size() > 0) {
-            var partyList = party.toArray();
-            
-            for(var i = 0; i < party.size(); i++) {
-                var ch = partyList[i];
-            
-                if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
-                        if(ch.isLeader()) hasLeader = true;
-                        eligible.push(ch);
+                var partyList = party.toArray();
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
                 }
-            }
         }
         
         if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
         return eligible;
 }
 
-function setup(level, leaderid) {
-        em.setProperty("state", "1");
-	em.setProperty("leader", "true");
-        
-        var eim = em.newInstance("Kerning" + leaderid);
+function setup(level, lobbyid) {
+        var eim = em.newInstance("Kerning" + lobbyid);
         eim.setProperty("level", level);
         
-        respawnStg1(eim);
+        respawnStages(eim);
         eim.startEventTimer(30 * 60000); //30 mins
         setEventRewards(eim);
+        setEventExclusives(eim);
         return eim;
 }
 
-function respawnStg1(eim) {    
+function respawnStages(eim) {    
         eim.getMapInstance(103000800).instanceMapRespawn();
-        eim.schedule("respawnStg1", 10 * 1000);
+        eim.getMapInstance(103000805).instanceMapRespawn();
+        eim.schedule("respawnStages", 10 * 1000);
 }
 
 function playerEntry(eim, player) {
@@ -77,13 +103,20 @@ function playerExit(eim, player) {
 }
 
 function changedMap(eim, player, mapid) {
-        if (mapid < 103000800 || mapid > 103000805) {
+        if (mapid < minMapId || mapid > maxMapId) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);
                 }
                 else
                         eim.unregisterPlayer(player);
+        }
+}
+
+function changedLeader(eim, leader) {
+        var mapid = leader.getMapId();
+        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
+                end(eim);
         }
 }
 
@@ -130,8 +163,6 @@ function end(eim) {
                 playerExit(eim, party.get(i));
         }
         eim.dispose();
-        
-        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
 }
 
 function giveRandomEventReward(eim, player) {
@@ -141,13 +172,6 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
-        
-        em.schedule("reopenEvent", 10 * 1000);     // leaders have 10 seconds cooldown to reach recruit map and retry for a new PQ.
-}
-
-function reopenEvent() {
-        em.setProperty("state", "0");
-        em.setProperty("leader", "true");
 }
 
 function monsterKilled(mob, eim) {}

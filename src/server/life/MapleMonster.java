@@ -52,7 +52,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import scripting.event.EventInstanceManager;
 import server.TimerManager;
 import server.life.MapleLifeFactory.BanishInfo;
 import server.maps.MapleMap;
@@ -68,7 +67,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int hp, mp;
     private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
     private boolean controllerHasAggro, controllerKnowsAboutAggro;
-    private EventInstanceManager eventInstance = null;
     private Collection<MonsterListener> listeners = new LinkedList<>();
     private EnumMap<MonsterStatus, MonsterStatusEffect> stati = new EnumMap<>(MonsterStatus.class);
     private ArrayList<MonsterStatus> alreadyBuffed = new ArrayList<MonsterStatus>();
@@ -342,8 +340,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public void giveExpToCharacter(MapleCharacter attacker, int exp, boolean isKiller, int numExpSharers) {
         if (isKiller) {
-            if (eventInstance != null) {
-                eventInstance.monsterKilled(attacker, this);
+            if (getMap().getEventInstance() != null) {
+                getMap().getEventInstance().monsterKilled(attacker, this);
             }
         }
         final int partyModifier = numExpSharers > 1 ? (110 + (5 * (numExpSharers - 2))) : 0;
@@ -434,17 +432,17 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             System.out.println("[CRITICAL LOSS] toSpawn is null for " + this.getName());
         }
         
-        if (eventInstance != null) {
-            if (!this.getStats().isFriendly()) {
-                eventInstance.monsterKilled(this);
-            }
-        }
-        
         MapleCharacter looter = map.getCharacterById(getHighestDamagerId());
         return looter != null ? looter : killer;
     }
     
     public void dispatchMonsterKilled() {
+        if (getMap().getEventInstance() != null) {
+            if (!this.getStats().isFriendly()) {
+                getMap().getEventInstance().monsterKilled(this);
+            }
+        }
+        
         for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
             listener.monsterKilled(getAnimationTime("die1"));
         }
@@ -562,14 +560,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     @Override
     public MapleMapObjectType getType() {
         return MapleMapObjectType.MONSTER;
-    }
-
-    public void setEventInstance(EventInstanceManager eventInstance) {
-        this.eventInstance = eventInstance;
-    }
-
-    public EventInstanceManager getEventInstance() {
-        return eventInstance;
     }
 
     public boolean isMobile() {

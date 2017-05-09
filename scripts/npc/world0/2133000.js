@@ -6,10 +6,7 @@
 */
 
 var status = 0;
-var minLevel = 1;
-var maxLevel = 200;
-var minPartySize = 1;
-var maxPartySize = 6;
+var em = null;
 
 function start() {
 	status = -1;
@@ -30,7 +27,14 @@ function action(mode, type, selection) {
                         status--;
 
                 if (status == 0) {
-                        cm.sendSimple("#b<Party Quest: Ellin PQ>#k\r\n\r\nWould you like to assemble or join a team to solve the puzzles of the #bForest of Poison Haze#k? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.\r\n#L3#I would like to reclaim a prize.");
+                        em = cm.getEventManager("Ellin");
+                        if(em == null) {
+                                cm.sendOk("The Ellin PQ has encountered an error.");
+                                cm.dispose();
+                                return;
+                        }
+                    
+                        cm.sendSimple("#b<Party Quest: Forest of Poison Haze>\r\n#k" + em.getProperty("party") + "\r\n\r\nWould you like to assemble or join a team to solve the puzzles of the #bForest of Poison Haze#k? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.\r\n#L3#I would like to reclaim a prize.");
                 } else if (status == 1) {
                         if (selection == 0) {
                                 if (cm.getParty() == null) {
@@ -40,37 +44,23 @@ function action(mode, type, selection) {
                                         cm.sendOk("Your party leader must talk to me to start this party quest.");
                                         cm.dispose();
                                 } else {
-                                        var em = cm.getEventManager("Ellin");
-                                        if(em == null) {
-                                                cm.sendOk("The Ellin PQ has encountered an error.");
-                                                cm.dispose();
-                                        }
-
                                         var eli = em.getEligibleParty(cm.getParty());
                                         if(eli.size() > 0) {
-                                                var prop = em.getProperty("state");
-                                                if (prop != null && prop.equals("0")) { 
-                                                        if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
-                                                            cm.sendOk("A party in your name is already registered in this event.");
-                                                            cm.dispose();
-                                                            return;
-                                                        }
-                                                        cm.dispose();
-                                                } else {
+                                                if(!em.startInstance(0, cm.getParty(), cm.getPlayer().getMap(), 1)) {
                                                         cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");
-                                                        cm.dispose();
                                                 }
                                         }
                                         else {
                                                 cm.sendOk("You cannot start this party quest yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
-                                                cm.dispose();
                                         }
+                                        
+                                        cm.dispose();
                                 }
                         } else if (selection == 1) {
                                 cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                 cm.dispose();
                         } else if (selection == 2) {
-                                cm.sendOk("#b<Party Quest: Ellin PQ>#k\r\nIn this PQ, your mission is to progressively make your way through the woods, taking on all baddies in your path, solving many puzzles you encounter and rallying yourselves to take the best of teamwork to overcome time limits and powerful creatures. Clearing the final boss, your team have a chance to obtain a marble that, #bwhen dropped by the fountain at the exit map#k, will guarantee the team extra prizes. Good luck.");
+                                cm.sendOk("#b<Party Quest: Forest of Poison Haze>#k\r\nIn this PQ, your mission is to progressively make your way through the woods, taking on all baddies in your path, solving many puzzles you encounter and rallying yourselves to take the best of teamwork to overcome time limits and powerful creatures. Clearing the final boss, your team have a chance to obtain a marble that, #bwhen dropped by the fountain at the exit map#k, will guarantee the team extra prizes. Good luck.");
                                 cm.dispose();
                         }
                         else {

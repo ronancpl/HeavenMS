@@ -63,6 +63,7 @@ import client.inventory.ModifyInventory;
 import client.inventory.PetDataFactory;
 import constants.ItemConstants;
 import constants.ServerConstants;
+import server.life.MapleNPC;
 
 public class AbstractPlayerInteraction {
 
@@ -694,6 +695,19 @@ public class AbstractPlayerInteraction {
 		c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addFromDB(newItem);
 		c.announce(MaplePacketCreator.modifyInventory(false, Collections.singletonList(new ModifyInventory(0, newItem))));
 	}
+        
+        public void spawnNpc(int npcId, Point pos, MapleMap map) {
+                MapleNPC npc = MapleLifeFactory.getNPC(npcId);
+                if (npc != null) {
+                        npc.setPosition(pos);
+                        npc.setCy(pos.y);
+                        npc.setRx0(pos.x + 50);
+                        npc.setRx1(pos.x - 50);
+                        npc.setFh(map.getFootholds().findBelow(pos).getId());
+                        map.addMapObject(npc);
+                        map.broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+                }
+        }
 
 	public void spawnMonster(int id, int x, int y) {
 		MapleMonster monster = MapleLifeFactory.getMonster(id);

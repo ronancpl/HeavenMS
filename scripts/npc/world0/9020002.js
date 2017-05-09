@@ -49,8 +49,6 @@ function action(mode, type, selection){
             cm.sendNext("To return back to the city, follow this way.");
         } else {
             cm.getPlayer().changeMap(103000000, cm.getClient().getChannelServer().getMapFactory().getMap(103000000).getRandomSpawnpoint());
-            cm.removeAll(4001007);
-            cm.removeAll(4001008);
             cm.dispose();
         }
     } else {
