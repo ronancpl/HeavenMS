@@ -159,12 +159,12 @@ function action(mode, type, selection) {
     } else if (status == 3) {
         var complete = true;			
         
-        if(!cm.canHold(item)) {
+        if(!cm.canHold(item, 1)) {
             cm.sendOk("Check your inventory for a free slot first.");
             cm.dispose();
             return;
         }
-        else if (cm.getMeso() < (cost)){
+        else if (cm.getMeso() < cost){
             cm.sendOk("Sorry, we only accept meso.");
             cm.dispose();
             return;
@@ -177,22 +177,6 @@ function action(mode, type, selection) {
             }
             else if (!cm.haveItem(mats, matQty))
                 complete = false;
-           
-           /*
-            if (mats instanceof Array) {
-                for (var i = 0; complete && i < mats.length; i++) {
-                    if (matQty[i] == 1){
-                        if (!cm.haveItem(mats[i]))
-                            complete = false;
-                    } else {
-                        if (!cm.haveItem(mats[i],matQty[i]))
-                            complete=false;
-                    }
-                }
-            } else {
-                if (!cm.haveItem(mats,matQty))
-                    complete=false;
-            }*/
         }		
         if (stimulator){ //check for stimulator
             if (!cm.haveItem(stimID)) {
@@ -213,7 +197,7 @@ function action(mode, type, selection) {
                 cm.gainItem(stimID, -1);
                 var deleted = Math.floor(Math.random() * 10);
                 if (deleted != 0) {
-                    addRandomItem(item);
+                    cm.gainItem(item, 1, true, true);
                     cm.sendOk("There, the shoes are ready. Be careful, they're still hot.");
                 } else {
                     cm.sendOk("Eek! I think I accidently added too much stimulator and, well, the whole thing is unusable now... Sorry, but I can't offer a refund.");

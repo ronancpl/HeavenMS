@@ -180,7 +180,7 @@ function action(mode, type, selection) {
     else if (status == 4 && mode == 1) {
         var complete = true;
         
-        if(!cm.canHold(item)) {
+        if(!cm.canHold(item, qty)) {
             cm.sendOk("Check your inventory for a free slot first.");
             cm.dispose();
             return;
@@ -200,26 +200,6 @@ function action(mode, type, selection) {
             }
             else if (!cm.haveItem(mats, matQty))
                 complete = false;
-            
-            /* if (mats instanceof Array) {
-                for(var i = 0; complete && i < mats.length; i++)
-                {
-                    if (matQty[i] * qty == 1)   {
-                        if (!cm.haveItem(mats[i]))
-                        {
-                            complete = false;
-                        }
-                    }
-                    else {
-                        if (!cm.haveItem(mats[i],matQty[i] * selection)) complete=false;
-
-                    }
-                }
-            }
-            else {
-                if (!cm.haveItem(mats,matQty * selection)) complete=false;
-
-            } */
         }       
         if (!complete)
             cm.sendOk("I'm afraid you're missing something for the item you want. See you another time, yes?");

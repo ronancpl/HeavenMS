@@ -46,17 +46,19 @@ function action(mode, type, selection) {
             cm.sendYesNo("You don't have anything else to do here, huh? Do you really want to go to #b#m" + maps[selection] + "##k? It'll cost you #b"+ (cm.getJobId() == 0 ? cost[selection] / 10 : cost[selection]) + " mesos#k.");
             selectedMap = selection;
         } else if (status == 3) {
-            if (cm.getMeso() < (cm.getJobId() == 0 ? cost[selection] / 10 : cost[selection])) {
+            if (cm.getJobId() == 0) {
+            	mesos = cost[selectedMap] / 10;
+            } else {
+            	mesos = cost[selectedMap];
+            }
+            
+            if (cm.getMeso() < mesos) {
                 cm.sendNext("You don't have enough mesos. Sorry to say this, but without them, you won't be able to ride the cab.");
                 cm.dispose();
                 return;
             }
-            if (cm.getJobId() == 0) {
-            	mesos = -cost[selectedMap] / 10;
-            } else {
-            	mesos = -cost[selectedMap];
-            }
-            cm.gainMeso(mesos);            
+            
+            cm.gainMeso(-mesos);
             cm.warp(maps[selectedMap], 0);
             cm.dispose();
         }

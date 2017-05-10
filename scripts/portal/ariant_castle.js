@@ -21,33 +21,21 @@
 
 /**
 -- Odin JavaScript --------------------------------------------------------------------------------
-	Xinga - Pilot
+	Portal - To get into Ariant Castle
 -- By ---------------------------------------------------------------------------------------------
-	Information
+	Jayd
 -- Version Info -----------------------------------------------------------------------------------
-	1.0 - First Version by Information
-	2.0 - Second Version by Jayd
+	1.0 - First Version by Jayd
 ---------------------------------------------------------------------------------------------------
 **/
 
-var status = 0;
-
-function start() {
-    cm.sendYesNo("The plane will be taking off soon, will you leave now? You will have to buy the plane ticket again to come in here.");
-}
-
-function action(mode, type, selection) {
-    if (mode != 1) {
-        if (mode == 0)
-            cm.sendOk("Please hold on for a sec, and plane will be taking off. Thanks for your patience.");
-        cm.dispose();
-        return;
-    }
-    status++;
-    if (status == 1) {
-        cm.sendNext("The ticket is not refundable, hope to see you again!");
-    } else if(status == 2){
-		cm.warp(103000000);
-		cm.dispose();
-    }
+function enter(pi) {
+	if (pi.getPlayer().haveItem(4031582) == true) {
+		pi.playPortalSound();
+		pi.warp(260000301);
+		return true;
+	} else {
+		pi.playerMessage(5, "You can enter only if you have a Entry Pass to the Palace.");
+		return false;
+	}
 }

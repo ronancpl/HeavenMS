@@ -197,10 +197,13 @@ function action(mode, type, selection) {
     }
     else if (status == 3 && mode == 1) {
         var complete = true;
-		
-        if (cm.getMeso() < cost)
+		    
+        if(!cm.canHold(item, 1)) {
+            cm.sendOk("Verify for a slot in your inventory first.");
+        }
+        else if (cm.getMeso() < cost)
         {
-            cm.sendOk("I'm afraid my fees are non-negotiable.")
+            cm.sendOk("I'm afraid my fees are non-negotiable.");
         }
         else
         {
@@ -247,7 +250,7 @@ function action(mode, type, selection) {
                 var deleted = Math.floor(Math.random() * 10);
                 if (deleted != 0)
                 {
-                    addRandomItem(item);
+                    cm.gainItem(item, 1, true, true);
                     cm.sendOk("Heeere you go! What do you think? Marvellous, isn't it?");
                 }
                 else

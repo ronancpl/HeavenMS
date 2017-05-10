@@ -167,21 +167,26 @@ function action(mode, type, selection) {
         if (!complete)
             cm.sendOk("Surely you, of all people, would understand the value of having quality items? I can't do that without the items I require.");
         else {
-            if (cm.canHold(item)) {
+            var recvItem = item, recvQty;
+            
+            if (item >= 2060000 && item <= 2060002) //bow arrows
+                recvQty = 1000 - (item - 2060000) * 100;
+            else if (item >= 2061000 && item <= 2061002) //xbow arrows
+                recvQty = 1000 - (item - 2061000) * 100;
+            else if (item == 4003000)//screws
+                recvQty = 15 * qty;
+            else
+                recvQty = qty;
+            
+            if (cm.canHold(recvItem, recvQty)) {
                 if (mats instanceof Array) {
                     for (var i = 0; i < mats.length; i++)
                         cm.gainItem(mats[i], -(matQty[i] * qty));
                 }else
                     cm.gainItem(mats, -(matQty * qty));
                 cm.gainMeso(-(cost * qty));
-                if (item >= 2060000 && item <= 2060002) //bow arrows
-                    cm.gainItem(item, 1000 - (item - 2060000) * 100);
-                else if (item >= 2061000 && item <= 2061002) //xbow arrows
-                    cm.gainItem(item, 1000 - (item - 2061000) * 100);
-                else if (item == 4003000)//screws
-                    cm.gainItem(4003000, 15 * qty);
-                else
-                    cm.gainItem(item, qty);
+                
+                cm.gainItem(recvItem, recvQty);
                 cm.sendOk("A perfect item, as usual. Come and see me if you need anything else.");
             }else {
                 cm.sendOk("Please make sure you have room in your inventory, and talk to me again.");

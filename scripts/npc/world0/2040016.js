@@ -222,10 +222,23 @@ function action(mode, type, selection) {
     }
     else if (status == 4 && mode == 1) {
         var complete = true;
-				
-        if (cm.getMeso() < cost * qty)
+        var recvItem = item, recvQty;
+        
+        if (item >= 2060000 && item <= 2060002) //bow arrows
+            recvQty = 1000 - (item - 2060000) * 100;
+        else if (item >= 2061000 && item <= 2061002) //xbow arrows
+            recvQty = 1000 - (item - 2061000) * 100;
+        else if (item == 4003000)//screws
+            recvQty = 15 * qty;
+        else
+            recvQty = qty;
+        
+        if(!cm.canHold(recvItem, recvQty)) {
+            cm.sendOk("I'm afraid you have no slots available for this transaction.");
+        }
+        else if (cm.getMeso() < cost * qty)
         {
-            cm.sendOk("I'm afraid you cannot afford my services.")
+            cm.sendOk("I'm afraid you cannot afford my services.");
         }
         else
         {
@@ -262,14 +275,7 @@ function action(mode, type, selection) {
             if (cost > 0)
                 cm.gainMeso(-cost * qty);
 				
-            if (item >= 2060000 && item <= 2060002) //bow arrows
-                cm.gainItem(item, 1000 - (item - 2060000) * 100);
-            else if (item >= 2061000 && item <= 2061002) //xbow arrows
-                cm.gainItem(item, 1000 - (item - 2061000) * 100);
-            else if (item == 4003000)//screws
-                cm.gainItem(4003000, 15 * qty);
-            else
-                cm.gainItem(item, qty);
+            cm.gainItem(recvItem, recvQty);
             cm.sendOk("All done. If you need anything else, you know where to find me.");
         }
         cm.dispose();

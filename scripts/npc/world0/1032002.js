@@ -185,7 +185,7 @@ function action(mode, type, selection) {
     else if (status == 3 && mode == 1) {
         var complete = true;
         
-        if(!cm.canHold(item)) {
+        if(!cm.canHold(item, 1)) {
             cm.sendOk("Check your inventory for a free slot first.");
             cm.dispose();
             return;
@@ -205,26 +205,6 @@ function action(mode, type, selection) {
             }
             else if (!cm.haveItem(mats, matQty))
                 complete = false;
-            
-            /*if (mats instanceof Array) {
-                for(var i = 0; complete && i < mats.length; i++)
-                {
-                    if (matQty[i] == 1)	{
-                        if (!cm.haveItem(mats[i]))
-                        {
-                            complete = false;
-                        }
-                    }
-                    else {
-
-                        if (!cm.haveItem(mats[i],matQty[i])) complete=false;
-                    }
-                }
-            }
-            else {
-
-                if (!cm.haveItem(mats,matQty)) complete=false;
-            }*/
         }
 			
         if (!complete)

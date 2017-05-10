@@ -177,11 +177,11 @@ function action(mode, type, selection) {
         if (!complete)
             cm.sendOk("Are you sure you got all the items required? Double check it!");
         else {
-            if (cm.canHold(item)) {
+            if (cm.canHold(item, qty)) {
                 if (mats instanceof Array) {
                     for (var i = 0; i < mats.length; i++)
                         cm.gainItem(mats[i], -(matQty[i] * qty));
-                }else
+                } else
                     cm.gainItem(mats, -(matQty * qty));
                 cm.gainMeso(-(cost * qty));
                 

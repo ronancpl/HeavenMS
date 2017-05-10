@@ -26,13 +26,14 @@
 	Information
 -- Version Info -----------------------------------------------------------------------------------
 	1.0 - First Version by Information
+	2.0 - Second Version by Jayd
 ---------------------------------------------------------------------------------------------------
 **/
 
 var status = 0;
 
 function start() {
-    cm.sendYesNo("The plane will be taking off soon, Will you leave now? You will have buy the plane ticket again to come in here.");
+    cm.sendYesNo("The plane will be taking off soon, will you leave now? You will have to buy the plane ticket again to come in here.");
 }
 
 function action(mode, type, selection) {
@@ -44,9 +45,9 @@ function action(mode, type, selection) {
     }
     status++;
     if (status == 1) {
-        cm.sendNext("I have already told you the ticket is not refunable~ hope to see you again~");
+        cm.sendNext("The ticket is not refundable, hope to see you again!");
     } else if(status == 2){
-	cm.warp(103000000);
-	cm.dispose();
+		cm.warp(103000000);
+		cm.dispose();
     }
 }

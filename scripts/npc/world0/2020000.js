@@ -86,6 +86,7 @@ function action(mode, type, selection) {
             for (var i = 0; i < items.length; i++){
                 selStr += "\r\n#L" + i + "# " + items[i] + "#l";
             }
+            equip = false;
             cm.sendSimple(selStr);
         }
         else if (selectedType == 3){ //crystal refine
@@ -176,8 +177,7 @@ function action(mode, type, selection) {
         cm.sendGetNumber(prompt,1,1,100)
     }
     else if (status == 3 && mode == 1) {
-        if (equip)
-        {
+        if (equip) {
             selectedItem = selection;
             qty = 1;
         }
@@ -187,7 +187,7 @@ function action(mode, type, selection) {
         if (selectedType == 5){ //arrow refine
             var itemSet = new Array(2060000,2061000,2060001,2061001,2060002,2061002);
             var matSet = new Array(new Array (4003001,4003004),new Array (4003001,4003004),new Array (4011000,4003001,4003004),new Array (4011000,4003001,4003004),
-                new Array (4011001,4003001,4003005),new Array (4011001,4003001,4003005));
+            new Array (4011001,4003001,4003005),new Array (4011001,4003001,4003005));
             var matQtySet = new Array (new Array (1,1),new Array (1,1),new Array (1,3,10),new Array (1,3,10),new Array (1,5,15),new Array (1,5,15));
             var costSet = new Array (0,0,0,0,0,0);
             item = itemSet[selectedItem];
@@ -219,59 +219,58 @@ function action(mode, type, selection) {
         cm.sendYesNo(prompt);
     }
     else if (status == 4 && mode == 1) {
-        var complete = true;
-		
-        if (cm.getMeso() < cost * qty)
-        {
-            cm.sendOk("I'm afraid you cannot afford my services.")
+        var recvItem = item, recvQty;
+                
+        if (item >= 2060000 && item <= 2060002) {//bow arrows
+            recvQty  = 1000 - (item - 2060000) * 100;
         }
-        else
-        {
-            if (mats instanceof Array) {
-                for(var i = 0; complete && i < mats.length; i++)
-                {
-                    if (matQty[i] * qty == 1)	{
-                        if (!cm.haveItem(mats[i]))
-                        {
-                            complete = false;
-                        }
-                    }
-                    else {
-                        if (cm.haveItem(matQty[i]*qty))complete=false;
+        else if (item >= 2061000 && item <= 2061002) {//xbow arrows
+            recvQty  = 1000 - (item - 2061000) * 100;
+        }
+        else if (item == 4003000) {//screws
+            recvQty  = 15 * qty;
+        }
+        else {
+            recvQty  = qty;
+        }
 
-                    }
+        if(!cm.canHold(recvItem, recvQty)) {
+            cm.sendOk("I'm afraid you don't have a slot available for the item in your inventory.");
+        } else if (cm.getMeso() < cost * qty) {
+            cm.sendOk("I'm afraid you cannot afford my services.");
+        } else {
+            var complete = true;
+            
+            if (mats instanceof Array) {
+                for(var i = 0; complete && i < mats.length; i++) {
+                    if (!cm.haveItem(mats[i], matQty[i] * qty))
+                        complete = false;
                 }
             }
             else {
-                if (cm.haveItem(matQty*qty))complete=false;
-
+                if (!cm.haveItem(mats, matQty * qty))
+                    complete = false;
             }
-        }
-			
-        if (!complete)
-            cm.sendOk("I can't refine anything for you without the proper items.");
-        else {
-            if (mats instanceof Array) {
-                for (var i = 0; i < mats.length; i++){
-                    cm.gainItem(mats[i], -matQty[i] * qty);
+            
+            if (!complete)
+                cm.sendOk("I can't refine anything for you without the proper items.");
+            else {
+                if (mats instanceof Array) {
+                    for (var i = 0; i < mats.length; i++){
+                        cm.gainItem(mats[i], -matQty[i] * qty);
+                    }
                 }
+                else
+                    cm.gainItem(mats, -matQty * qty);
+
+                if (cost > 0)
+                    cm.gainMeso(-cost * qty);
+
+                cm.gainItem(recvItem, recvQty);
+                cm.sendOk("All done. If you need anything else, just ask.");
             }
-            else
-                cm.gainItem(mats, -matQty * qty);
-					
-            if (cost > 0)
-                cm.gainMeso(-cost * qty);
-				
-            if (item >= 2060000 && item <= 2060002) //bow arrows
-                cm.gainItem(item, 1000 - (item - 2060000) * 100);
-            else if (item >= 2061000 && item <= 2061002) //xbow arrows
-                cm.gainItem(item, 1000 - (item - 2061000) * 100);
-            else if (item == 4003000)//screws
-                cm.gainItem(4003000, 15 * qty);
-            else
-                cm.gainItem(item, qty);
-            cm.sendOk("All done. If you need anything else, just ask.");
         }
+        
         cm.dispose();
     }
 }

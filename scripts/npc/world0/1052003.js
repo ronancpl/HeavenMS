@@ -161,7 +161,7 @@ function action(mode, type, selection) {
     } else if (status == 4) {
         var complete = true;
         
-        if(!cm.canHold(item)) {
+        if(!cm.canHold(item, qty)) {
             cm.sendOk("Check your inventory for a free slot first.");
             cm.dispose();
             return;
@@ -178,18 +178,6 @@ function action(mode, type, selection) {
             }
             else if (!cm.haveItem(mats, matQty))
                 complete = false;
-            
-            /*if (mats instanceof Array) {
-                for (var i = 0; complete && i < mats.length; i++) {
-                    if (matQty[i] * qty == 1) {
-                        complete = cm.haveItem(mats[i]);
-                    } else {
-                        complete = cm.haveItem(mats[i], matQty[i] * qty);
-                    }
-                }
-            } else {
-                complete = cm.haveItem(mats, matQty * qty);
-            }*/
         }
                 
         if (!complete)

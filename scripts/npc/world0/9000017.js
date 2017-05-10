@@ -89,7 +89,7 @@ function action(mode, type, selection) {
         if (cm.getMeso() < cost * qty) {
             cm.sendOk("Come on! We're not here doing you a favor! We all need money to live properly, so bring the cash so we make deal and start the synthesis.");
         }
-        else if(!cm.canHold(item)) {
+        else if(!cm.canHold(item, qty)) {
             cm.sendOk("You didn't check if you got a slot to spare on your inventory before our business, no?");
         }
         else {

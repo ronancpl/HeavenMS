@@ -210,41 +210,17 @@ function action(mode, type, selection) {
 				for(var i = 0; i < mats.length; i++) {
                                         if(!cm.haveItem(mats[i], matQty[i]))
                                                 complete = false;
-                                    
-					/* if (matQty[i] == 1) {
-						if (!cm.haveItem(mats[i])) {
-							complete = false;
-						}
-					}
-					else {
-						var count = 0;
-						var iter = cm.getInventory(4).listById(mats[i]).iterator();
-						while (iter.hasNext()) {
-							count += iter.next().getQuantity();
-						}
-						if (count < matQty[i])
-							complete = false;
-					} */					
 				}
 			}
 			else {
                                 if(!cm.haveItem(mats, matQty))
                                         complete = false;
-                            
-				/* var count = 0;
-				var iter = cm.getInventory(4).listById(mats).iterator();
-				while (iter.hasNext()) {
-					count += iter.next().getQuantity();
-				}
-				if (count < matQty)
-					complete = false;
-                                */
 			}
                         
                         if(java.lang.Math.random() >= 0.9) //A lucky find! Scroll 60%
                             item += 1;
 
-			if (!complete || !cm.canHold(item))
+			if (!complete || !cm.canHold(item, 1))
 				cm.sendOk("Please make sure you are neither lacking ingredients or lacking space in your use inventory.");
 			else {
 				if (mats instanceof Array) {
@@ -255,7 +231,7 @@ function action(mode, type, selection) {
 				else
 					cm.gainItem(mats, -matQty);
 
-				cm.gainItem(item);
+				cm.gainItem(item, 1);
 			}
 
 			cm.dispose();
@@ -265,16 +241,7 @@ function action(mode, type, selection) {
                         
                         if(!cm.haveItem(item, 100))
                                 complete = false;
-			
-			/* var count = 0;
-			var iter = cm.getInventory(4).listById(item).iterator();
-			while (iter.hasNext()) {
-				count += iter.next().getQuantity();
-			}
-			if (count < 100)
-				complete = false;
-                        */
-                            
+			    
                         if(!complete) {
                                 cm.sendOk("Please make sure you are neither lacking ingredients or lacking space in your etc inventory.");
                                 cm.dispose();
