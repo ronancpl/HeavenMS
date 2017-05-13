@@ -19,43 +19,38 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* NPC Base
-	Map Name (Map ID)
-	Extra NPC info.
+/* @author: Ronan
+ * 
+ * Arturo
+	Abandoned Tower <Determine to Adventure> (922011100)
+	Gives LudiPQ Reward.
  */
  
-var prizes = Array(2040602, 2040602, 2040602, 2040601, 2040601, 2040601, 2040601, 2040802, 2040002, 2040402, 
-				   2040505, 2040505, 2040505, 2040505, 2040502, 2044501, 2044601, 2044701,
-				   2041019, 2041016, 2041022, 2041013, 2041007, 2043301, 2040301, 2040801, 2040001, 2040504,
-				   2040501, 2040513, 2043101, 2044001, 2044401, 2040701, 2044301, 2043801, 2043701, 2040401,
-				   2040803, 2040804, 1102000, 1102001, 1102003, 1102004, 1102011, 1102012, 1102013, 1102014);
-var item;	   
 function start() {
     status = -1;
     action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-    if (mode < 0)
-        cm.dispose();
-    else {
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        if (status == 0 && mode == 1) {
-			cm.sendNext("Congratulations on sealing the dimensional crack!");
-		} else if(status == 1) {
-			if(cm.canHold(1102003) && cm.canHold(2040602)) {
-				item = prizes[Math.floor(Math.random() * prizes.length)];
-				cm.sendNextPrev("For all of your hard work, I have a gift for you! Here take this prize.");
-			} else {
-				cm.sendOk("It seems you don't have a free slot in your #rEquip#k and #rUse#k inventories. Please make room and try again.");
-				cm.dispose();
-			}
-		} else if(status == 2) {
-			cm.gainItem(item, 1, true);
-			cm.warp(221024500);
-		}
-    }
+        if (mode < 0)
+                cm.dispose();
+        else {
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+                if (status == 0 && mode == 1) {
+                        cm.sendNext("Congratulations on sealing the dimensional crack! For all of your hard work, I have a gift for you! Here take this prize.");
+                } else if(status == 1) {
+                        var eim = cm.getEventInstance();
+                    
+                        if(!eim.giveEventReward(cm.getPlayer())) {
+                                cm.sendNext("It seems you don't have a free slot in your #rEquip#k, #rUse#k or #rEtc#k inventories. Please make room and try again.");
+                        } else {
+                                cm.warp(221024500);
+                        }
+
+                        cm.dispose();
+                }
+        }
 }

@@ -24,6 +24,11 @@ var selected = -1;
 var party = 0;
 
 function start() {
+        cm.sendOk("The PyramidPQ is currently unavailable.");
+        cm.dispose();
+}
+
+/*function start() {
 	status = -1;
 	var text = "You should NOT talk to this NPC in this map.";
 	if (cm.getMapId() == 926020001)
@@ -35,6 +40,7 @@ function start() {
 		
 	cm.sendSimple(text);
 }
+*/
 
 function action(mode, type, selection) {
 	if (mode == 0 && type == 0) {

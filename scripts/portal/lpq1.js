@@ -1,14 +1,15 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation version 3 as published by
+    the Free Software Foundation. You may not use, modify or distribute
+    this program under any other version of the GNU Affero General Public
+    License.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -18,17 +19,23 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 /*
-Ludi PQ: 1st stage to 2nd stage portal
+LudiPQ - 1 - 2 Portal
+@author Jvlaple
 */
 
 function enter(pi) {
-	var eim = pi.getPlayer().getEventInstance()
-	var target = eim.getMapInstance(922010200);
-	if (eim.getProperty("1stageclear") != null) {
-		pi.getPlayer().changeMap(target, target.getPortal("st00"));
-		return true
-	} else 
-		return false;	
+    var nextMap = 922010300;
+    var eim = pi.getPlayer().getEventInstance();
+    var target = eim.getMapInstance(nextMap);
+    var targetPortal = target.getPortal("st00");
+    var avail = eim.getProperty("2stageclear");
+    if (avail == null) {
+        pi.getPlayer().dropMessage(5, "Some seal is blocking this door.");
+        return false;
+    }
+    else {
+        pi.getPlayer().changeMap(target, targetPortal);
+        return true;
+    }
 }

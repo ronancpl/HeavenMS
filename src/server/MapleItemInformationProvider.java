@@ -223,7 +223,7 @@ public class MapleItemInformationProvider {
             theData = cashStringData;
         } else if (itemId >= 2000000 && itemId < 3000000) {
             theData = consumeStringData;
-        } else if ((itemId >= 1010000 && itemId < 1040000) || (itemId >= 1122000 && itemId < 1123000) || (itemId >= 1142000 && itemId < 1143000)) {
+        } else if ((itemId >= 1010000 && itemId < 1040000) || (itemId >= 1122000 && itemId < 1123000) || (itemId >= 1132000 && itemId < 1133000) || (itemId >= 1142000 && itemId < 1143000)) {
             theData = eqpStringData;
             cat = "Eqp/Accessory";
         } else if (itemId >= 1000000 && itemId < 1010000) {
@@ -250,7 +250,7 @@ public class MapleItemInformationProvider {
         } else if (itemId >= 1060000 && itemId < 1070000) {
             theData = eqpStringData;
             cat = "Eqp/Pants";
-        } else if (itemId >= 1802000 && itemId < 1810000) {
+        } else if (itemId >= 1802000 && itemId < 1842000) {
             theData = eqpStringData;
             cat = "Eqp/PetEquip";
         } else if (itemId >= 1112000 && itemId < 1120000) {

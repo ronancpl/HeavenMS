@@ -794,6 +794,15 @@ public class EventInstanceManager {
                 }
         }
         
+        public final void warpEventTeam(int warpFrom, int warpTo) {
+                List<MapleCharacter> players = getPlayerList();
+                
+                for (MapleCharacter chr : players) {
+                        if(chr.getMapId() == warpFrom)
+                                chr.changeMap(warpTo);
+                }
+        }
+        
         public final void warpEventTeam(int warpTo) {
                 List<MapleCharacter> players = getPlayerList();
                 

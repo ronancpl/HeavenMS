@@ -208,3 +208,7 @@ Adição de barra de HP para bosses King Slime, Alishar e Snack Bar.
 Adição de funcionalidade para PQs/eventos: ao sair de evento, remove-se todos os itens listados como exclusivo para evento.
 Diversas correções em mecânicas das PQs/eventos.
 Sistema de lobbys para PQs agora. É possível instanciar mais de uma PQ em um mesmo channel.
+
+12 - 13 Maio 2017,
+Nova ferramenta: monta uma tabela SQL que armazena id-nome de todos os itens descritos nos arquivos handbook e realiza buscas por nomes, retornando seus ids.
+Implementação da LPQ.

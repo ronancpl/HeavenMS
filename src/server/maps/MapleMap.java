@@ -539,8 +539,16 @@ public class MapleMap {
         return list;
     }
     
-    public int countAllMonsters() {
+    public int countMonsters() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER)).size();
+    }
+    
+    public int countReactors() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR)).size();
+    }
+    
+    public final List<MapleMapObject> getReactors() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR));
     }
 
     public boolean damageMonster(final MapleCharacter chr, final MapleMonster monster, final int damage) {
@@ -616,7 +624,7 @@ public class MapleMap {
     }
 
     public List<MapleMonster> getMonsters() {
-        List<MapleMonster> mobs = new ArrayList<MapleMonster>();
+        List<MapleMonster> mobs = new ArrayList<>();
         for (MapleMapObject object : this.getMapObjects()) {
             if(object instanceof MapleMonster) mobs.add((MapleMonster)object);
         }
@@ -1385,7 +1393,7 @@ public class MapleMap {
     private void activateItemReactors(final MapleMapItem drop, final MapleClient c) {
         final Item item = drop.getItem();
 
-        for (final MapleMapObject o : getAllReactor()) {
+        for (final MapleMapObject o : getReactors()) {
             final MapleReactor react = (MapleReactor) o;
 
             if (react.getReactorType() == 100) {
@@ -1398,10 +1406,6 @@ public class MapleMap {
                 }
             }
         }
-    }
-
-    public final List<MapleMapObject> getAllReactor() {
-        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR));
     }
 
     public void startMapEffect(String msg, int itemId) {

@@ -77,7 +77,7 @@ function action(mode, type, selection) {
                                         return;
                                 }
                             
-                                cm.sendSimple("#b<Party Quest: Boss Rush>\r\n#k" + em.getProperty("party") + "\r\n\r\nWould you like to collaborate with party members to complete the expedition, or are you brave enough to take it on all by yourself? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                                cm.sendSimple("#e#b<Party Quest: Boss Rush>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to collaborate with party members to complete the expedition, or are you brave enough to take it on all by yourself? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
                         }
                 } else if (status == 1) {
                         if(state == 3) {
@@ -122,7 +122,7 @@ function action(mode, type, selection) {
                                         cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                         cm.dispose();
                                 } else {
-                                        cm.sendOk("#b<Party Quest: Boss Rush>#k\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.");
+                                        cm.sendOk("#e#b<Party Quest: Boss Rush>#k#n\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.");
                                         cm.dispose();
                                 }
                         }

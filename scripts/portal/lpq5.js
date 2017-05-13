@@ -18,13 +18,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 /*
 LudiPQ - 1 - 2 Portal
 @author Jvlaple
 */
 
 function enter(pi) {
-	var nextMap = 922010600;
+	var nextMap = 922010700;
 	var eim = pi.getPlayer().getEventInstance()
 	var target = eim.getMapInstance(nextMap);
 	var targetPortal = target.getPortal("st00");
@@ -33,8 +34,12 @@ function enter(pi) {
 	if (avail == null) {
 		// can't go thru eh?
 		pi.getPlayer().dropMessage(5, "Some seal is blocking this door.");
-		return false;	}
+		return false;
+        }
 	else {
+		if(eim.getProperty("6stageclear") == null) {
+			eim.setProperty("6stageclear", "true");
+		}
 		pi.getPlayer().changeMap(target, targetPortal);
 		return true;
 	}

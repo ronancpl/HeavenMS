@@ -21,7 +21,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-Kerning PQ: 3rd stage to 4th stage portal
+Kerning PQ: 4th stage to last stage portal
 */
 
 function enter(pi) {
@@ -31,5 +31,8 @@ function enter(pi) {
         pi.getPlayer().changeMap(target, target.getPortal("st00"));
         return true;
     }
-    return false;
+    else {
+        pi.getPlayer().dropMessage(5, "The portal is not opened yet.");
+        return false;
+    }
 }

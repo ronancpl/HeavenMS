@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-@	Author : Twdtwd
+@	Author : Twdtwd, Ronan
 @
 @	NPC = Violet Balloon
 @	Map = Hidden-Street <Crack on the Wall>
@@ -30,83 +30,63 @@
 @	Description: Used after the boss is killed to trigger the bonus stage.
 */
 
-importPackage(Packages.tools);
-
 var status = 0;
-var party;
-var preamble;
-var gaveItems;
-var nthtext = "last";
+var curMap, stage;
 
 function start() {
+    curMap = cm.getMapId();
+    stage = Math.floor((curMap - 922010100) / 100) + 1;
+    
     status = -1;
     action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-    if (mode == -1) {
-        cm.dispose();
-    }else if (mode == 0){
-        cm.dispose();
-    }else{
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        var eim = cm.getPlayer().getEventInstance();
-        
-        if (status == 0) {
-            party = eim.getPlayers();
-            preamble = eim.getProperty("leader" + nthtext + "preamble");
-            gaveItems = eim.getProperty("leader" + nthtext + "gaveItems");
-            if (preamble == null) {
-                cm.sendOk("Hi. Welcome to the " + nthtext + " stage.");
-                eim.setProperty("leader" + nthtext + "preamble","done");
-                cm.dispose();
-            }else{
-                if(!isLeader()){
-                    if(gaveItems == null){
-                        cm.sendOk("Please tell your #bParty-Leader#k to come talk to me");
-                        cm.dispose();
-                    }else{
-                        cm.sendOk("Hurry, go to the next stage, the portal is open!");
-                        cm.dispose();
-                    }
-                } else if(gaveItems == null){
-                    cm.sendSimple("What's up?\r\n#L0#I've got your passes!#l\r\n"); // #L1#There's something wrong here.#l
-                } else {
-					cm.dispose();
-				}
-            }
-        }else if (status == 1){
-            if (selection == 0) {
-                if(cm.itemQuantity(4001023) >= 1) {
-                    cm.sendOk("Good job! you have collected the #b#t4001023#!#k");
-                }else{
-                    cm.sendOk("Sorry you don't have the #b#t4001023#.#k");
-                    cm.dispose();
-                }
-            }
-        }else if (status == 2){
-            cm.removeAll(4001023);
-            
-			var map = eim.getMapInstance(cm.getPlayer().getMapId());
-			map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
-			map.broadcastMessage(MaplePacketCreator.playSound("Party1/Clear"));
-			//map.broadcastMessage(MaplePacketCreator.environmentChange("gate", 2));
-			
-            cm.givePartyExp("LudiPQLast");
-            eim.setProperty("9stageclear","true");
-            eim.setProperty("leader" + nthtext + "gaveItems","done");
-			eim.schedule("startBonus", 1000);
+            if (mode == -1) {
             cm.dispose();
-        }            
-    }
-}
+        } else if (mode == 0){
+            cm.dispose();
+        } else {
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+                    
+                var eim = cm.getPlayer().getEventInstance();
+                
+                if(eim.getProperty(stage.toString() + "stageclear") != null) {
+                        cm.sendNext("Hurry, goto the next stage, the portal is open!");
+                }
+                else {
+                        if (eim.isLeader(cm.getPlayer())) {
+                                var state = eim.getIntProperty("statusStg" + stage);
 
-function isLeader(){
-    if(cm.getParty() == null)
-        return false;
-    else
-        return cm.isLeader();
+                                if(state == -1) {           // preamble
+                                        cm.sendOk("Hi. Welcome to the #bBOSS stage#k. Kill the Ratz on that platform to reveal the Alishar, and defeat him!");
+                                        eim.setProperty("statusStg" + stage, 0);
+                                }
+                                else {                      // check stage completion
+                                        if (cm.haveItem(4001023, 1)) {
+                                                cm.gainItem(4001023, -1);
+                                                eim.setProperty("statusStg" + stage, 1);
+                                                
+                                                var list = eim.getClearStageBonus(stage);     // will give bonus exp & mesos to everyone in the event
+                                                eim.giveEventPlayersExp(list.get(0));
+                                                eim.giveEventPlayersMeso(list.get(1));
+                                                
+                                                eim.setProperty(stage + "stageclear", "true");
+                                                eim.showClearEffect(true);
+                                                
+                                                eim.clearPQ();
+                                        } else {
+                                                cm.sendNext("Please defeat Alishar and bring me his #b#t4001023#.#k");
+                                        }
+                                }
+                        } else {
+                                cm.sendNext("Please tell your #bParty-Leader#k to come talk to me.");
+                        }
+                }
+                
+                cm.dispose();
+        }
 }

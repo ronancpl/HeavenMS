@@ -31,6 +31,10 @@ var name;
 var status;
 var selectedType = 0;
 
+function numberWithCommas(x) {  // I ain't interessed in finding a way to parse java int to something js will accept through toLocaleString, so be it!
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function start() {
     status = -1;
     action(1, 0, 0); 
@@ -57,11 +61,9 @@ function action(mode, type, selection) {
 
     else if (status == 2) {
         name = cm.getText();
-	var res = false;
+	var res = cm.getPlayer().sellAllItemsFromName(selectedType + 1, name);
 
-	res = cm.getPlayer().sellAllItemsFromName(selectedType + 1, name);
-
-        if(res) cm.sendOk("Transaction complete!");
+        if(res > -1) cm.sendOk("Transaction complete! You received #r" + numberWithCommas(res) + " mesos#k from this action.");
 	else cm.sendOk("There is no #b'" + name + "'#k in your #b" + options[selectedType] + "#k inventory!");
 
         cm.dispose();

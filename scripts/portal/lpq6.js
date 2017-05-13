@@ -20,27 +20,15 @@
 */
 
 /*
-LudiPQ - 1 - 2 Portal
-@author Jvlaple
+Ludi PQ: 5th stage to 6th stage portal
 */
 
 function enter(pi) {
-	var nextMap = 922010700;
-	var eim = pi.getPlayer().getEventInstance()
-	var target = eim.getMapInstance(nextMap);
-	var targetPortal = target.getPortal("st00");
-	// only let people through if the eim is ready
-	var avail = eim.getProperty("5stageclear");
-	if (avail == null) {
-		// can't go thru eh?
-		pi.getPlayer().dropMessage(5, "Some seal is blocking this door.");
-		return false;	}
-	else {
-		if(eim.getProperty("6stageclear") == null) {
-			eim.setProperty("6stageclear", "done");
-			pi.givePartyExp("LudiPQ6th");
-		}
-		pi.getPlayer().changeMap(target, targetPortal);
+	var eim = pi.getPlayer().getEventInstance();
+	var target = eim.getMapInstance(922010800);
+	if (eim.getProperty("7stageclear") != null) {
+		pi.getPlayer().changeMap(target, target.getPortal("st00"));
 		return true;
-	}
+	} else
+		return false;
 }

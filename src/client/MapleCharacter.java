@@ -4871,7 +4871,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return false;
     }
     
-    public boolean sellAllItemsFromName(byte invTypeId, String name) {
+    public int sellAllItemsFromName(byte invTypeId, String name) {
         //player decides from which inventory items should be sold.
         
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -4879,38 +4879,42 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         Item it = getInventory(type).findByName(name);
         if(it == null) {
-            return(false);
+            return(-1);
         }
         
-        sellAllItemsFromPosition(ii, type, it.getPosition());
-        return(true);
+        return(sellAllItemsFromPosition(ii, type, it.getPosition()));
     }
     
-    public void sellAllItemsFromPosition(MapleItemInformationProvider ii, MapleInventoryType type, short pos) {
+    public int sellAllItemsFromPosition(MapleItemInformationProvider ii, MapleInventoryType type, short pos) {
+        int mesoGain = 0;
+        
         for(short i = pos; i <= getInventory(type).getSlotLimit(); i++) {
             if(getInventory(type).getItem(i) == null) continue;
-            standaloneSell(getClient(), ii, type, i, getInventory(type).getItem(i).getQuantity());
+            mesoGain += standaloneSell(getClient(), ii, type, i, getInventory(type).getItem(i).getQuantity());
         }
+        
+        return(mesoGain);
     }
 
-    private void standaloneSell(MapleClient c, MapleItemInformationProvider ii, MapleInventoryType type, short slot, short quantity) {
+    private int standaloneSell(MapleClient c, MapleItemInformationProvider ii, MapleInventoryType type, short slot, short quantity) {
         if (quantity == 0xFFFF || quantity == 0) {
             quantity = 1;
         }
         Item item = getInventory(type).getItem((short) slot);
         if (item == null){ //Basic check
-            return;
+            return(0);
         }
         if (ItemConstants.isRechargable(item.getItemId())) {
             quantity = item.getQuantity();
         }
         if (quantity < 0) {
-            return;
+            return(0);
         }
         short iQuant = item.getQuantity();
         if (iQuant == 0xFFFF) {
             iQuant = 1;
         }
+        
         if (quantity <= iQuant && iQuant > 0) {
             MapleInventoryManipulator.removeFromSlot(c, type, (byte) slot, quantity, false);
             double price;
@@ -4919,11 +4923,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             } else {
                 price = ii.getPrice(item.getItemId());
             }
+            
             int recvMesos = (int) Math.max(Math.ceil(price * quantity), 0);
             if (price != -1 && recvMesos > 0) {
                 gainMeso(recvMesos, false);
+                return(recvMesos);
             }
         }
+        
+        return(0);
     }
     
     public void setShop(MapleShop shop) {

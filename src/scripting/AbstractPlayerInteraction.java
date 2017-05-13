@@ -144,11 +144,11 @@ public class AbstractPlayerInteraction {
 	}
         
         public int countAllMonstersOnMap(int map) {
-                return getMap(map).countAllMonsters();
+                return getMap(map).countMonsters();
         }
         
         public int countMonster() {
-            return getPlayer().getMap().countAllMonsters();
+            return getPlayer().getMap().countMonsters();
         }
         
         public void resetMapObjects(int mapid) {

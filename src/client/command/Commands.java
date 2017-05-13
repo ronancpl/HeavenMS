@@ -652,7 +652,7 @@ public class Commands {
                     
                 case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage("Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().getMonsters().size() + ".");
+                            player.dropMessage("Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ".");
                         }
                         break;
                 

@@ -77,7 +77,13 @@ public class MapleInventory implements Iterable<Item> {
     
     public Item findByName(String name) {
         for (Item item : inventory.values()) {
-            if (name.compareToIgnoreCase(MapleItemInformationProvider.getInstance().getName(item.getItemId())) == 0) {
+            String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
+            if(itemName == null) {
+                System.out.println("[CRITICAL] Item "  + item.getItemId() + " has no name.");
+                continue;
+            }
+            
+            if (name.compareToIgnoreCase(itemName) == 0) {
                 return item;
             }
         }

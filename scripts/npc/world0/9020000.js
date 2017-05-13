@@ -39,7 +39,7 @@ function action(mode, type, selection) {
                                         cm.dispose();
                                 }
                             
-                                cm.sendSimple("#b<Party Quest: 1st Accompaniment>\r\n#k" + em.getProperty("party") + "\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                                cm.sendSimple("#e#b<Party Quest: 1st Accompaniment>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
                         }
                 } else if (status == 1) {
                         if(state == 1) {
@@ -71,7 +71,7 @@ function action(mode, type, selection) {
                                         cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                         cm.dispose();
                                 } else {
-                                        cm.sendOk("#b<Party Quest: 1st Accompaniment>#k\r\nYour party must pass through many obstacles and puzzles while traversing the sub-objectives of this Party Quest. Coordinate with your team in order to further advance and defeat the final boss and collect the dropped item in order to access the rewards and bonus stage.");
+                                        cm.sendOk("#e#b<Party Quest: 1st Accompaniment>#k#n\r\nYour party must pass through many obstacles and puzzles while traversing the sub-objectives of this Party Quest. Coordinate with your team in order to further advance and defeat the final boss and collect the dropped item in order to access the rewards and bonus stage.");
                                         cm.dispose();
                                 }
                         }

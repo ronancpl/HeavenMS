@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-@	Author : Raz
+@	Author : Raz, Ronan
 @
 @	NPC = Sgt.Anderson
 @	Map =  Abandoned Tower <Stage 1>
@@ -28,64 +28,36 @@
 @	NPC Exit-MapId = 221024500
 @
  */
-//4001022 - PASS OF DIMENSION
 
-var status = 0;
+var status;
 
 function start() {
-    cm.sendYesNo("Are you sure you want to leave?");
+    status = -1;
+    action(1,0,0);
 }
 
-function action(mode, type, selection) {
-    if (mode == -1) //ExitChat
+function action(mode, type, selection){
+    if (mode == 1)
+        status++;
+    else {
         cm.dispose();
-    else if (mode == 0) {//No
-        cm.sendOk("OK, Talk to me again if you want to leave here.");
-        cm.dispose();
-    } else {		    //Regular Talk
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        if (cm.getPlayer().getMap().getId() == 109050001) {
-            if(status == 0)
-                cm.sendNext("See ya.");
-            else if (status == 1){
-                cm.warp(109060001);
-                cm.dispose();
-            }
+        return;
+    }
+    var mapId = cm.getPlayer().getMapId();
+    if (mapId == 922010000) {
+        if (status == 0) {
+            cm.sendNext("To return back to the recruitment map, follow this way.");
         } else {
-            if (status == 1)
-                cm.sendNext("Ok, Bye!");
-            else if (status == 2) {
-                var eim = cm.getPlayer().getEventInstance();
-                if (eim == null)
-                    cm.sendOk("Wait, Hey! how'd you get here?\r\nOh well you can leave anyways");
-                else {
-                    if(isLeader()){
-                        eim.disbandParty();
-                        cm.removeFromParty(4001008, eim.getPlayers());
-                    } else {
-                        eim.leftParty(cm.getPlayer());
-                        cm.removeAll(4001008);
-                        cm.removeAll(4031059);
-                        cm.removeAll(4001102);
-                        cm.removeAll(4001108);
-                    }
-                    cm.dispose();
-                }
-            } else if (status == 3) {
-                cm.warp(109050001);
-                cm.removeAll(4001008);
-                cm.removeAll(4031059);
-                cm.removeAll(4001102);
-                cm.removeAll(4001108);
-                cm.dispose();
-            }
+            cm.warp(221024500);
+            cm.dispose();
+        }
+    } else {
+        if (status == 0) {
+            var outText = "Once you leave the map, you'll have to restart the whole quest if you want to try it again.  Do you still want to leave this map?";
+            cm.sendYesNo(outText);
+        } else if (mode == 1) {
+            cm.warp(922010000); // Warp player
+            cm.dispose();
         }
     }
-}
-
-function isLeader(){
-    return cm.getParty() == null ? false : cm.isLeader();
 }

@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-@	Author : Raz
+@	Author : Raz, Ronan
 @
 @	NPC = Sky-Blue Balloon
 @	Map = Hidden-Street <Stage 7>
@@ -30,90 +30,66 @@
 @	Description: You need a ranged person here. The ranged person must kill the three Ratz, and they'll trigger something. What's next is for you to find out! Get me 3 passes!
 */
 
-importPackage(Packages.tools);
+importPackage(Packages.server.life);
 
 var status = 0;
-var party;
-var preamble;
-var gaveItems;
+var curMap, stage;
 
 function start() {
+    curMap = cm.getMapId();
+    stage = Math.floor((curMap - 922010100) / 100) + 1;
+    
     status = -1;
     action(1, 0, 0);
 }
 
-function action(mode, type, selection) {
-    if (mode == -1) {
-        cm.dispose();
-    }else if (mode == 0){
-        cm.dispose();
-    }else{
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        var eim = cm.getPlayer().getEventInstance();
-        var nthtext = "7th";
-        if (status == 0) {
-            party = eim.getPlayers();
-            preamble = eim.getProperty("leader" + nthtext + "preamble");
-            gaveItems = eim.getProperty("leader" + nthtext + "gaveItems");
-            if (preamble == null) {
-                cm.sendOk("Hi. Welcome to the " + nthtext + " stage. You need a ranged person here. The ranged person must kill the three Ratz, and they'll trigger something. What's next is for you to find out! Get me 3 passes!");
-                eim.setProperty("leader" + nthtext + "preamble","done");
-                cm.dispose();
-            }else{
-                if(!isLeader()){
-                    if(gaveItems == null){
-                        cm.sendOk("Please tell your #bParty-Leader#k to come talk to me");
-                        cm.dispose();
-                    }else{
-                        cm.sendOk("Hurry, goto the next stage, the portal is open!");
-                        cm.dispose();
-                    }
-                }
-                if(gaveItems == null){
-                    cm.sendSimple("What's up?\r\n#L0#I've got your passes!#l\r\n"); // #L1#There's something wrong here.#l
-                }
-            }
-        }else if (status == 1){
-            if (selection == 0) {
-                if(cm.getPlayer().getMap().getCharacters().size() != eim.getPlayers().size()) {
-					cm.sendOk("Please wait for all of your party members to get here.");
-					cm.dispose();
-                } else if(cm.itemQuantity(4001022) >= 3){
-                    cm.sendOk("Good job! you have collected all 3 #b#t4001022#'s#k");
-                }else{
-                    cm.sendOk("Sorry you don't have all 3 #b#t4001022#'s#k");
-                    cm.dispose();
-                }
-            } else if (selection == 1) {
-                if (cm.mapMobCount()==0) {
-                    cm.sendOk("Good job! You've killed all the Rombards!");
-                }else{
-                    cm.sendOk("What are you talking about? Kill those Rombards!");
-                    cm.dispose();
-                }
-            }
-        }else if (status == 2){
-            cm.removeAll(4001022);
-            
-			var map = eim.getMapInstance(cm.getPlayer().getMapId());
-			map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
-			map.broadcastMessage(MaplePacketCreator.playSound("Party1/Clear"));
-			map.broadcastMessage(MaplePacketCreator.environmentChange("gate", 2));
-			
-            cm.givePartyExp("LudiPQ7th");
-            eim.setProperty("7stageclear","true");
-            eim.setProperty("leader" + nthtext + "gaveItems","done");
-            cm.dispose();
-        }            
-    }
+function clearStage(stage, eim, curMap) {
+    eim.setProperty(stage + "stageclear", "true");
+    eim.showClearEffect(true);
+    
+    eim.linkToNextStage(stage, "lpq", curMap);  //opens the portal to the next map
 }
 
-function isLeader(){
-    if(cm.getParty() == null)
-        return false;
-    else
-        return cm.isLeader();
+function action(mode, type, selection) {
+        if (mode == -1) {
+            cm.dispose();
+        } else if (mode == 0){
+            cm.dispose();
+        } else {
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+                    
+                var eim = cm.getPlayer().getEventInstance();
+                
+                if(eim.getProperty(stage.toString() + "stageclear") != null) {
+                        cm.sendNext("Hurry, goto the next stage, the portal is open!");
+                }
+                else {
+                        if (eim.isLeader(cm.getPlayer())) {
+                                var state = eim.getIntProperty("statusStg" + stage);
+
+                                if(state == -1) {           // preamble
+                                        cm.sendOk("Hi. Welcome to the #bstage " + stage + "#k. You need ranged personnel here. They must kill the three Ratz, which will trigger something. What's next is for you to find out! Get me 3 passes!");
+                                        eim.setProperty("statusStg" + stage, 0);
+                                }
+                                else if(state == 0) {       // check stage completion
+                                        if (cm.haveItem(4001022, 3)) {
+                                                cm.sendOk("Good job! you have collected all 3 #b#t4001022#'s.#k");
+                                                cm.gainItem(4001022, -3);
+
+                                                eim.setProperty("statusStg" + stage, 1);
+                                                clearStage(stage, eim, curMap);
+                                        } else {
+                                                cm.sendNext("Sorry you don't have all 3 #b#t4001022#'s.#k");
+                                        }
+                                }
+                        } else {
+                                cm.sendNext("Please tell your #bParty-Leader#k to come talk to me.");
+                        }
+                }
+                
+                cm.dispose();
+        }
 }
