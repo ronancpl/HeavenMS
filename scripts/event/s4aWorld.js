@@ -15,7 +15,7 @@ function monsterValue(eim, mobId) {
 function setup() {
     var eim = em.newInstance("s4aWorld");
 
-    eim.setInstanceMap(910500000).resetFully();
+    eim.getInstanceMap(910500000).resetFully();
     eim.startEventTimer(1200000);
 
     em.setProperty("started", "true");

@@ -9,6 +9,8 @@ var clearMap = 970030000;
 var minMapId = 970030001;
 var maxMapId = 970042711;
 
+var eventTime = 5;     //5 minutes
+
 var lobbyRange = [0, 7];
 
 function init() {
@@ -30,6 +32,9 @@ function setEventRequirements() {
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
         
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
         em.setProperty("party", reqStr);
 }
 
@@ -39,12 +44,12 @@ function setEventRewards(eim) {
         var itemSet, itemQty, evLevel;
 
         evLevel = 6;    //Rewards at event completion
-        itemSet = [1122018, 1122005, 1022088, 1402013, 1032048, 1032070, 1102046, 2330004, 2041013, 2041016, 2041019, 2041022, 2049100, 2049003, 2020012, 2020013, 2020014, 2020015, 2022029, 2022045, 2022068, 2022069, 2022180, 2022179, 4004000, 4004001, 4004002, 4004003, 4004004, 4003000];
+        itemSet = [1122018, 1122005, 1022088, 1402013, 1032030, 1032070, 1102046, 2330004, 2041013, 2041016, 2041019, 2041022, 2049100, 2049003, 2020012, 2020013, 2020014, 2020015, 2022029, 2022045, 2022068, 2022069, 2022180, 2022179, 4004000, 4004001, 4004002, 4004003, 4004004, 4003000];
         itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 25, 25, 25, 25, 25, 25, 25, 25, 4, 4, 12, 12, 12, 12, 12, 25];
         eim.setEventRewards(evLevel, itemSet, itemQty);
 
         evLevel = 5;    //Rewards at Rest Spot V
-        itemSet = [1122018, 1122005, 1022088, 1402013, 1032048, 1032070, 1102046, 2330004, 2041013, 2041016, 2041019, 2041022, 2049100, 2049003, 2020012, 2020013, 2020014, 2020015, 2022029, 2022045, 2022068, 2022069, 2022180, 2022179, 4004000, 4004001, 4004002, 4004003, 4004004, 4003000];
+        itemSet = [1122018, 1122005, 1022088, 1402013, 1032030, 1032070, 1102046, 2330004, 2041013, 2041016, 2041019, 2041022, 2049100, 2049003, 2020012, 2020013, 2020014, 2020015, 2022029, 2022045, 2022068, 2022069, 2022180, 2022179, 4004000, 4004001, 4004002, 4004003, 4004004, 4003000];
         itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 15, 15, 15, 15, 15, 15, 15, 2, 2, 8, 8, 8, 8, 8, 12];
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
@@ -95,7 +100,7 @@ function setup(level, lobbyid) {
         eim.setProperty("level", level);
         eim.setProperty("lobby", lobbyid);
         
-        eim.startEventTimer(45 * 60000); //45 mins
+        eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
         return eim;

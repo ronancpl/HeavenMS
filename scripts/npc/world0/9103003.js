@@ -20,21 +20,34 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
- *@Author SharpAceX (Alan)
+ *@Author Ronan
  * Ludibrium Maze Party Quest
  */
 
 var status = 0;
 function start() {
     status = -1;
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection){
-    var eim = cm.getPlayer().getEventInstance();
-    if (eim != null) {
-        eim.unregisterPlayer(cm.getPlayer());
-    }
-    cm.warp(220000000, 0);
-    cm.dispose();
+        if (mode == -1) {
+                cm.dispose();
+        } else {
+                if (mode == 0 && status == 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+
+                if (status == 0) {
+                        cm.sendNext("Come this way to return to Ludibrium.");
+                } else {
+                        cm.warp(220000000, 0);
+                        cm.dispose();
+                }
+        }
 }

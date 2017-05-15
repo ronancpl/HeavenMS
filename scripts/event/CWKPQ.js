@@ -33,7 +33,7 @@ em.setProperty("state", "1");
 	em.setProperty("glpq6", "0");
     var eim = em.newInstance("CWKPQ" + leaderid);
 	for (var i = 0; i < mapz.length; i++) {
-		var map = eim.setInstanceMap(610030000 + mapz[i]);
+		var map = eim.getInstanceMap(610030000 + mapz[i]);
 		if (map != null) {
 			map.resetFully();
 			if (map.getId() == 610030400) {

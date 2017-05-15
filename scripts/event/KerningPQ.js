@@ -1,6 +1,6 @@
 var isPq = true;
-var minPlayers = 1, maxPlayers = 6;
-var minLevel = 21, maxLevel = 200;
+var minPlayers = 3, maxPlayers = 4;
+var minLevel = 21, maxLevel = 30;
 var entryMap = 103000800;
 var exitMap = 103000890;
 var recruitMap = 103000000;
@@ -8,6 +8,8 @@ var clearMap = 103000805;
 
 var minMapId = 103000800;
 var maxMapId = 103000805;
+
+var eventTime = 30;     // 30 minutes
 
 var lobbyRange = [0, 0];
 
@@ -29,6 +31,9 @@ function setEventRequirements() {
         reqStr += "\r\n    Level range: ";
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
         
         em.setProperty("party", reqStr);
 }
@@ -76,7 +81,7 @@ function setup(level, lobbyid) {
         eim.setProperty("level", level);
         
         respawnStages(eim);
-        eim.startEventTimer(30 * 60000); //30 mins
+        eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
         return eim;

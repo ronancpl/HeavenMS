@@ -9,6 +9,8 @@ var clearMap = 925100600;
 var minMapId = 925100000;
 var maxMapId = 925100500;
 
+var eventTime = 20;     // 20 minutes
+
 var lobbyRange = [0, 0];
 
 function init() {
@@ -29,6 +31,9 @@ function setEventRequirements() {
         reqStr += "\r\n    Level range: ";
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
         
         em.setProperty("party", reqStr);
 }
@@ -74,11 +79,11 @@ function setup(level, lobbyid) {
 	eim.setProperty("stage5", "0");
         
         eim.setProperty("openedChests", "0");
-        eim.setInstanceMap(925100000).resetPQ(level);
-        eim.setInstanceMap(925100000).shuffleReactors();
+        eim.getInstanceMap(925100000).resetPQ(level);
+        eim.getInstanceMap(925100000).shuffleReactors();
         
-	eim.setInstanceMap(925100100).resetPQ(level);
-	var map = eim.setInstanceMap(925100200);
+	eim.getInstanceMap(925100100).resetPQ(level);
+	var map = eim.getInstanceMap(925100200);
 	map.resetPQ(level);
         map.shuffleReactors();
 	for (var i = 0; i < 5; i++) {
@@ -99,7 +104,7 @@ function setup(level, lobbyid) {
 		map.spawnMonsterOnGroundBelow(mob3, new java.awt.Point(430, 238));
 		map.spawnMonsterOnGroundBelow(mob4, new java.awt.Point(1600, 238));
 	}
-	map = eim.setInstanceMap(925100201);
+	map = eim.getInstanceMap(925100201);
 	map.resetPQ(level);
 	for (var i = 0; i < 10; i++) {
 		var mob = em.getMonster(9300112);
@@ -111,8 +116,8 @@ function setup(level, lobbyid) {
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, 238));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1700, 238));
 	}
-	eim.setInstanceMap(925100202).resetPQ(level);
-	map = eim.setInstanceMap(925100300);
+	eim.getInstanceMap(925100202).resetPQ(level);
+	map = eim.getInstanceMap(925100300);
 	map.resetPQ(level);
         map.shuffleReactors();
 	for (var i = 0; i < 5; i++) {
@@ -133,7 +138,7 @@ function setup(level, lobbyid) {
 		map.spawnMonsterOnGroundBelow(mob3, new java.awt.Point(430, 238));
 		map.spawnMonsterOnGroundBelow(mob4, new java.awt.Point(1600, 238));
 	}
-	map = eim.setInstanceMap(925100301);
+	map = eim.getInstanceMap(925100301);
 	map.resetPQ(level);
 	for (var i = 0; i < 10; i++) {
 		var mob = em.getMonster(9300112);
@@ -145,13 +150,13 @@ function setup(level, lobbyid) {
 		map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, 238));
 		map.spawnMonsterOnGroundBelow(mob2, new java.awt.Point(1700, 238));
 	}
-	eim.setInstanceMap(925100302).resetPQ(level);
-	eim.setInstanceMap(925100400).resetPQ(level);
-	eim.setInstanceMap(925100500).resetPQ(level);
+	eim.getInstanceMap(925100302).resetPQ(level);
+	eim.getInstanceMap(925100400).resetPQ(level);
+	eim.getInstanceMap(925100500).resetPQ(level);
         
         respawnStg4(eim);
         
-        eim.startEventTimer(20 * 60000); //20 mins
+        eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
         return eim;

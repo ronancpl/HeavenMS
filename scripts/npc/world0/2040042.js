@@ -76,7 +76,7 @@ function action(mode, type, selection) {
                                 }
                                 else if(state == 0) {       // check stage completion
                                         if (cm.haveItem(4001022, 3)) {
-                                                cm.sendOk("Good job! you have collected all 3 #b#t4001022#'s.#k");
+                                                cm.sendOk("Good job! You have collected all 3 #b#t4001022#'s.#k");
                                                 cm.gainItem(4001022, -3);
 
                                                 eim.setProperty("statusStg" + stage, 1);

@@ -552,7 +552,7 @@ public class EventInstanceManager {
 		return (chr.getParty().getLeaderId() == chr.getId());
 	}
         
-        public final MapleMap setInstanceMap(final int mapid) { //gets instance map from the channelserv
+        public final MapleMap getInstanceMap(final int mapid) { //gets instance map from the channelserv
                 if (disposed) {
                         return getMapFactory().getMap(mapid);
                 }

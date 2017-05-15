@@ -1,6 +1,6 @@
 var isPq = true;
-var minPlayers = 1, maxPlayers = 6;
-var minLevel = 1, maxLevel = 200;
+var minPlayers = 5, maxPlayers = 6;
+var minLevel = 35, maxLevel = 50;
 var entryMap = 922010100;
 var exitMap = 922010000;
 var recruitMap = 221024500;
@@ -8,6 +8,8 @@ var clearMap = 922011000;
 
 var minMapId = 922010100;
 var maxMapId = 922011100;
+
+var eventTime = 45;     // 45 minutes
 
 var lobbyRange = [0, 0];
 
@@ -29,6 +31,9 @@ function setEventRequirements() {
         reqStr += "\r\n    Level range: ";
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
         
         em.setProperty("party", reqStr);
 }
@@ -85,33 +90,33 @@ function setup(level, lobbyid) {
         eim.setProperty("statusStg8", -1);
         eim.setProperty("statusStg9", -1);
         
-        eim.setInstanceMap(922010100).resetPQ(level);
-        eim.setInstanceMap(922010200).resetPQ(level);
-        eim.setInstanceMap(922010201).resetPQ(level);
-        eim.setInstanceMap(922010300).resetPQ(level);
-        eim.setInstanceMap(922010400).resetPQ(level);
-        eim.setInstanceMap(922010401).resetPQ(level);
-        eim.setInstanceMap(922010402).resetPQ(level);
-        eim.setInstanceMap(922010403).resetPQ(level);
-        eim.setInstanceMap(922010404).resetPQ(level);
-        eim.setInstanceMap(922010405).resetPQ(level);
-        eim.setInstanceMap(922010500).resetPQ(level);
-        eim.setInstanceMap(922010500).resetPQ(level);
-        eim.setInstanceMap(922010501).resetPQ(level);
-        eim.setInstanceMap(922010502).resetPQ(level);
-        eim.setInstanceMap(922010503).resetPQ(level);
-        eim.setInstanceMap(922010504).resetPQ(level);
-        eim.setInstanceMap(922010505).resetPQ(level);
-        eim.setInstanceMap(922010506).resetPQ(level);
-        eim.setInstanceMap(922010600).resetPQ(level);
-        eim.setInstanceMap(922010700).resetPQ(level);
-        eim.setInstanceMap(922010800).resetPQ(level);
-        eim.setInstanceMap(922010900).resetPQ(level);
-        eim.setInstanceMap(922011000).resetPQ(level);
-        eim.setInstanceMap(922011100).resetPQ(level);
+        eim.getInstanceMap(922010100).resetPQ(level);
+        eim.getInstanceMap(922010200).resetPQ(level);
+        eim.getInstanceMap(922010201).resetPQ(level);
+        eim.getInstanceMap(922010300).resetPQ(level);
+        eim.getInstanceMap(922010400).resetPQ(level);
+        eim.getInstanceMap(922010401).resetPQ(level);
+        eim.getInstanceMap(922010402).resetPQ(level);
+        eim.getInstanceMap(922010403).resetPQ(level);
+        eim.getInstanceMap(922010404).resetPQ(level);
+        eim.getInstanceMap(922010405).resetPQ(level);
+        eim.getInstanceMap(922010500).resetPQ(level);
+        eim.getInstanceMap(922010500).resetPQ(level);
+        eim.getInstanceMap(922010501).resetPQ(level);
+        eim.getInstanceMap(922010502).resetPQ(level);
+        eim.getInstanceMap(922010503).resetPQ(level);
+        eim.getInstanceMap(922010504).resetPQ(level);
+        eim.getInstanceMap(922010505).resetPQ(level);
+        eim.getInstanceMap(922010506).resetPQ(level);
+        eim.getInstanceMap(922010600).resetPQ(level);
+        eim.getInstanceMap(922010700).resetPQ(level);
+        eim.getInstanceMap(922010800).resetPQ(level);
+        eim.getInstanceMap(922010900).resetPQ(level);
+        eim.getInstanceMap(922011000).resetPQ(level);
+        eim.getInstanceMap(922011100).resetPQ(level);
         
         respawnStages(eim);
-        eim.startEventTimer(45 * 60000); //45 mins
+        eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
         return eim;

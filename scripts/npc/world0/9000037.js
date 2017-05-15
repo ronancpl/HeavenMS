@@ -17,6 +17,28 @@ function isFinalBossDone() {
     return cm.getMapId() >= 970032700 && cm.getMapId() < 970032800 && cm.getMap().getMonsters().isEmpty();
 }
 
+function detectTeamLobby(team) {
+    var midLevel = 0;
+    
+    for(var i = 0; i < team.size(); i++) {
+        var player = team.get(i);
+        midLevel += player.getLevel();
+    }
+    midLevel = Math.floor(midLevel / team.size());
+    
+    var lobby;  // teams low level can be allocated at higher leveled lobbys
+    if(midLevel <= 20) lobby = 0;
+    else if(midLevel <= 40) lobby = 1;
+    else if(midLevel <= 60) lobby = 2;
+    else if(midLevel <= 80) lobby = 3;
+    else if(midLevel <= 90) lobby = 4;
+    else if(midLevel <= 100) lobby = 5;
+    else if(midLevel <= 110) lobby = 6;
+    else lobby = 7;
+        
+    return lobby;
+}
+
 function start() {
 	status = -1;
         state = (cm.getMapId() >= 970030001 && cm.getMapId() <= 970042711) ? (!onRestingSpot() ? (isFinalBossDone() ? 3 : 1) : 2) : 0;
@@ -91,7 +113,9 @@ function action(mode, type, selection) {
                                 cm.dispose();
                         } else if(state == 2) {
                                 var restSpot = ((cm.getMapId() - 1) % 5) + 1;
+                                cm.getPlayer().getEventInstance().addEventTimer(restSpot * 4 * 60000);  // adds (restspot number * 4) minutes
                                 cm.getPlayer().getEventInstance().warpEventTeam(970030100 + cm.getEventInstance().getIntProperty("lobby") + (500 * restSpot));
+                                
                                 cm.dispose();
                         } else if(state == 1) {
                                 cm.warp(970030000);
@@ -108,7 +132,12 @@ function action(mode, type, selection) {
                                         } else {
                                                 var eli = em.getEligibleParty(cm.getParty());
                                                 if(eli.size() > 0) {
-                                                        if(!em.startInstance(0, cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                                                        var lobby = detectTeamLobby(eli), i;
+                                                        for(i = lobby; i < 8; i++) {
+                                                                if(em.startInstance(i, cm.getParty(), cm.getPlayer().getMap(), 1)) break;
+                                                        }
+                                                        
+                                                        if(i == 8) {
                                                                 cm.sendOk("Another party has already entered the #rParty Quest#k in this channel. Please try another channel, or wait for the current party to finish.");
                                                         }
                                                 }
@@ -122,7 +151,7 @@ function action(mode, type, selection) {
                                         cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                         cm.dispose();
                                 } else {
-                                        cm.sendOk("#e#b<Party Quest: Boss Rush>#k#n\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.");
+                                        cm.sendOk("#e#b<Party Quest: Boss Rush>#k#n\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.\r\n\r\nThis event also supports #bmultiple lobbies for matchmaking several ranges of team levels#k at once: team up with players with lower level if you want better chances to swiftly set up a boss rush for your team.");
                                         cm.dispose();
                                 }
                         }

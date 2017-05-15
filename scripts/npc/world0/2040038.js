@@ -73,7 +73,7 @@ function action(mode, type, selection) {
                                 }
                                 else {       // check stage completion
                                         if (cm.haveItem(4001022, 32)) {
-                                                cm.sendOk("Good job! you have collected all 32 #b#t4001022#'s.#k");
+                                                cm.sendOk("Good job! You have collected all 32 #b#t4001022#'s.#k");
                                                 cm.gainItem(4001022, -32);
 
                                                 eim.setProperty("statusStg" + stage, 1);

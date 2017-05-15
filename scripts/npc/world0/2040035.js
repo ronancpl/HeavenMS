@@ -45,7 +45,7 @@ function action(mode, type, selection) {
                         var eim = cm.getEventInstance();
                     
                         if(!eim.giveEventReward(cm.getPlayer())) {
-                                cm.sendNext("It seems you don't have a free slot in your #rEquip#k, #rUse#k or #rEtc#k inventories. Please make room and try again.");
+                                cm.sendNext("It seems you don't have a free slot in either your #rEquip#k, #rUse#k or #rEtc#k inventories. Please make room and try again.");
                         } else {
                                 cm.warp(221024500);
                         }

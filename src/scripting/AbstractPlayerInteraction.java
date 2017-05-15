@@ -182,6 +182,10 @@ public class AbstractPlayerInteraction {
 	public boolean haveItem(int itemid, int quantity) {
 		return getPlayer().getItemQuantity(itemid, false) >= quantity;
 	}
+        
+        public int getItemQuantity(int itemid) {
+                return getPlayer().getItemQuantity(itemid, false);
+        }
 
 	public boolean canHold(int itemid) {
             return canHold(itemid, 1);

@@ -20,60 +20,60 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
- *@Author RMZero213
- * Ludibrium Maze Party Quest
- * Do not release anywhere other than RaGEZONE. Give credit if used.
- */
+*	Author : Raz, Ronan
+*
+*	NPC = 9103000 - Pierre
+*	Map =  Ludibrium - Ludibrium Maze 16
+*	NPC MapId = 809050015
+*	Function = Gives LMPQ EXP reward
+*
+*/
 
 var status = 0;
-var minimumCouponsNeeded = 200;
+var qty = 0;
+
 function start() {
     status = -1;
-    action(1,0,0);
+    action(1, 0, 0);
 }
 
-function action(mode, type, selection){
-    if (mode == -1|| (mode == 0 && status == 0))
-        cm.dispose();
-    else {
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        if (status == 0) {
-            if (!isLeader()) {
-                cm.sendOk("Give any coupons to the leader of the party and tell them to talk to me.");
+function action(mode, type, selection) {
+        if (mode == -1) {
                 cm.dispose();
-            } else {
-                cm.sendYesNo("Do you have all the coupons of the party and would like to get out of here?");
-			}
-        } else if (status == 1) {
-			if (cm.itemQuantity(4001106) < minimumCouponsNeeded){
-				cm.sendOk("Sorry, but you do not have at least " + minimumCouponsNeeded + " coupons! Talk to me again when you've collected more!");
-                cm.dispose();
-				return;
-			}
-			var party = cm.getPartyMembers();
-            for (var i = 0; i < party.size(); i++) {
-                if (party.get(i).getMap().getId() != 809050015) {
-                    cm.sendOk("A member of your party is not presently in the map.");
-                    cm.dispose();
-                    return;
+        } else {
+                if (mode == 0 && status == 0) {
+                        cm.dispose();
+                        return;
                 }
-            }
-			var members = cm.getPlayer().getEventInstance().getPlayers();
-			//cm.removeFromParty(4001106, members);
-			cm.gainItem(4001106, -200);
-			cm.givePartyExp("LudiMazePQ");
-			cm.warpParty(809050016);
-            cm.dispose();
-        }	
-    }
-}
-
-function isLeader(){
-    if(cm.getParty() == null)
-        return false;
-    else
-        return cm.isLeader();
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+                
+                if (status == 0) {
+                        if(cm.isLeader()) {
+                                if(!cm.getEventInstance().isEventTeamTogether()) {
+                                        cm.sendOk("One or more event team members is missing, please wait for them to reach here first.");
+                                        cm.dispose();
+                                }
+                                else if(cm.hasItem(4001106, 30)) {
+                                        qty = cm.getItemQuantity(4001106);
+                                        cm.sendYesNo("Splendid! You have retrieved " + qty + " #t4001106# from this run, now your team will receive the fair amount of EXP from this action. Are you ready to get transported out?");
+                                }
+                                else {
+                                        cm.sendOk("Your party cannot finish this PQ yet, as you have not reached the minimum of 30 #t4001106#'s in hand yet.");
+                                        cm.dispose();
+                                }
+                        }
+                        else {
+                                cm.sendOk("Let your party leader talk to me to end this quest.");
+                                cm.dispose();
+                        }
+                } else if(status == 1) {
+                        cm.removeAll(4001106);
+                        cm.getEventInstance().giveEventPlayersExp(50 * qty);
+                        cm.getEventInstance().clearPQ();
+                        cm.dispose();
+                }
+        }
 }

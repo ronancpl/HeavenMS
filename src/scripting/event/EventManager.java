@@ -183,6 +183,15 @@ public class EventManager {
         return Integer.parseInt(props.getProperty(key));
     }
     
+    private boolean getLockLobby(int lobbyId) {
+        l.lock();
+        try {
+            return openedLobbys.get(lobbyId);
+        } finally {
+            l.unlock();
+        }
+    }
+    
     private void setLockLobby(int lobbyId, boolean lock) {
         l.lock();
         try {
@@ -243,9 +252,13 @@ public class EventManager {
     //Expedition method: starts an expedition
     public boolean startInstance(int lobbyId, MapleExpedition exped) {
         try {
-            if(lobbyId > -1) {
+            if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
                 if(lobbyId == -1) return false;
+            }
+            else {
+                if(getLockLobby(lobbyId)) return false;
+                startLobbyInstance(lobbyId);
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
@@ -271,9 +284,13 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleCharacter chr) {
         try {
-            if(lobbyId > -1) {
+            if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
                 if(lobbyId == -1) return false;
+            }
+            else {
+                if(getLockLobby(lobbyId)) return false;
+                startLobbyInstance(lobbyId);
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
@@ -298,9 +315,13 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map) {
         try {
-            if(lobbyId > -1) {
+            if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
                 if(lobbyId == -1) return false;
+            }
+            else {
+                if(getLockLobby(lobbyId)) return false;
+                startLobbyInstance(lobbyId);
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
@@ -326,9 +347,13 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, int difficulty) {
         try {
-            if(lobbyId > -1) {
+            if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
                 if(lobbyId == -1) return false;
+            }
+            else {
+                if(getLockLobby(lobbyId)) return false;
+                startLobbyInstance(lobbyId);
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
@@ -354,9 +379,13 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, EventInstanceManager eim, String leader) {
         try {
-            if(lobbyId > -1) {
+            if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
                 if(lobbyId == -1) return false;
+            }
+            else {
+                if(getLockLobby(lobbyId)) return false;
+                startLobbyInstance(lobbyId);
             }
             
             if(eim == null) {

@@ -20,9 +20,73 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author BubblesDev
+ * @author BubblesDev, Ronan
  * @NPC Tory
  */
+
+var status = 0;
+var em = null;
+
+function start() {
+	status = -1;
+	action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+        if (mode == -1) {
+                cm.dispose();
+        } else {
+                if (mode == 0 && status == 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+                
+                if (status == 0) {
+                        em = cm.getEventManager("HenesysPQ");
+                        if(em == null) {
+                                cm.sendOk("The Henesys PQ has encountered an error.");
+                                cm.dispose();
+                                return;
+                        }
+                    
+                        cm.sendSimple("#e#b<Party Quest: Primrose Hill>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nI'm Tory. Inside here is a beautiful hill where the primrose blooms. There's a tiger that lives in the hill, Growlie, and he seems to be looking for something to eat. Would you like to head over to the hill of primrose and join forces with your party members to help Growlie out?#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                } else if (status == 1) {
+                        if (selection == 0) {
+                                if (cm.getParty() == null) {
+                                        cm.sendOk("Hi there! I'm Tory. This place is covered with mysterious aura of the full moon, and no one person can enter here by him/herself.");
+                                        cm.dispose();
+                                } else if(!cm.isLeader()) {
+                                        cm.sendOk("If you'd like to enter here, the leader of your party will have to talk to me. Talk to your party leader about this.");
+                                        cm.dispose();
+                                } else {
+                                        var eli = em.getEligibleParty(cm.getParty());
+                                        if(eli.size() > 0) {
+                                                if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                                                        cm.sendOk("Someone is already attempting the PQ. Please wait for them to finish, or find another channel.");
+                                                }
+                                        }
+                                        else {
+                                                cm.sendOk("You cannot start this party quest yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
+                                        }
+                                        
+                                        cm.dispose();
+                                }
+                        } else if (selection == 1) {
+                                cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
+                                cm.dispose();
+                        } else {
+                                cm.sendOk("#e#b<Party Quest: Primrose Hill>#k#n\r\nCollect primrose seeds from the flowers at the bottom part of the map and drop them by the platforms above the stage. Primrose seed color must match to grow the seeds, so test until you find the correct combination. When all the seeds have been planted, that is, starting second part of the mission, scout the Moon Bunny while it prepares Rice Cakes for the hungry Growlie. Once Growlie becomes satisfied, your mission is complete.");
+                                cm.dispose();
+                        }
+                }
+        }
+}
+
+/*
 var status = 0;
 var chosen = 0;
 var min = 3;
@@ -143,3 +207,4 @@ function action(mode, type, selection) {
         }
     }
 }
+*/

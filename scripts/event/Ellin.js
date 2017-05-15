@@ -9,6 +9,8 @@ var clearMap = 930000800;
 var minMapId = 930000000;
 var maxMapId = 930000800;
 
+var eventTime = 30;     // 30 minutes
+
 var lobbyRange = [0, 0];
 
 function init() {
@@ -67,20 +69,20 @@ function setup(level, lobbyid) {
         var eim = em.newInstance("Ellin" + lobbyid);
         eim.setProperty("level", level);
         
-        eim.setInstanceMap(930000000).resetPQ(level);
-	eim.setInstanceMap(930000100).resetPQ(level);
-	eim.setInstanceMap(930000200).resetPQ(level);
-	eim.setInstanceMap(930000300).resetPQ(level);
-	eim.setInstanceMap(930000400).resetPQ(level);
-	var map = eim.setInstanceMap(930000500);
+        eim.getInstanceMap(930000000).resetPQ(level);
+	eim.getInstanceMap(930000100).resetPQ(level);
+	eim.getInstanceMap(930000200).resetPQ(level);
+	eim.getInstanceMap(930000300).resetPQ(level);
+	eim.getInstanceMap(930000400).resetPQ(level);
+	var map = eim.getInstanceMap(930000500);
 	map.resetPQ(level);
         map.shuffleReactors();
-	eim.setInstanceMap(930000600).resetPQ(level);
-	eim.setInstanceMap(930000700).resetPQ(level);
+	eim.getInstanceMap(930000600).resetPQ(level);
+	eim.getInstanceMap(930000700).resetPQ(level);
 
         respawnStg2(eim);
         
-        eim.startEventTimer(30 * 60000); //30 mins
+        eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
         return eim;
