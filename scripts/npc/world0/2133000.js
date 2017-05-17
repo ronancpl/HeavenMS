@@ -27,7 +27,7 @@ function action(mode, type, selection) {
                         status--;
 
                 if (status == 0) {
-                        em = cm.getEventManager("Ellin");
+                        em = cm.getEventManager("EllinPQ");
                         if(em == null) {
                                 cm.sendOk("The Ellin PQ has encountered an error.");
                                 cm.dispose();

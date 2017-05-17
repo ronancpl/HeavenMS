@@ -230,15 +230,15 @@ public class EventInstanceManager {
         
         public void stopEventTimer() {
                 if(event_schedule != null) {
-                    event_schedule.cancel(false);
-                    event_schedule = null;
+                        event_schedule.cancel(false);
+                        event_schedule = null;
                 }
                 dismissEventTimer();
         }
         
         private void dismissEventTimer() {
                 for(MapleCharacter chr: getPlayers()) {
-                    chr.getClient().getSession().write(MaplePacketCreator.removeClock());
+                        chr.getClient().getSession().write(MaplePacketCreator.removeClock());
                 }
                 
                 event_schedule = null;
@@ -302,7 +302,7 @@ public class EventInstanceManager {
         private List<MapleCharacter> getPlayerList() {
                 rL.lock();
                 try {
-                    return new LinkedList<>(chars);
+                        return new LinkedList<>(chars);
                 } finally {
                         rL.unlock();
                 }
@@ -412,8 +412,8 @@ public class EventInstanceManager {
         
         public void cancelSchedule() {
             if(event_schedule != null) {
-                event_schedule.cancel(false);
-                event_schedule = null;
+                    event_schedule.cancel(false);
+                    event_schedule = null;
             }
         }
 
@@ -860,11 +860,14 @@ public class EventInstanceManager {
                 }
         }
         
-        public final void linkToNextStage(int thisStage, String eventFamily, int thisMapId) {
+        public final void giveEventPlayersStageReward(int thisStage) {
                 List<Integer> list = getClearStageBonus(thisStage);     // will give bonus exp & mesos to everyone in the event
                 giveEventPlayersExp(list.get(0));
                 giveEventPlayersMeso(list.get(1));
-            
+        }
+        
+        public final void linkToNextStage(int thisStage, String eventFamily, int thisMapId) {
+                giveEventPlayersStageReward(thisStage);
                 thisStage--;    //stages counts from ONE, scripts from ZERO
             
                 MapleMap nextStage = getMapInstance(thisMapId);

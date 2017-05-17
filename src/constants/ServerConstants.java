@@ -86,17 +86,17 @@ public class ServerConstants {
         try {
             p.load(new FileInputStream("configuration.ini"));
 
-    //Server Host
-    ServerConstants.HOST = p.getProperty("HOST");
+            //Server Host
+            ServerConstants.HOST = p.getProperty("HOST");
 
-    //Sql Database
-    ServerConstants.DB_URL = p.getProperty("URL");
-    ServerConstants.DB_USER = p.getProperty("DB_USER");
-    ServerConstants.DB_PASS = p.getProperty("DB_PASS");
+            //Sql Database
+            ServerConstants.DB_URL = p.getProperty("URL");
+            ServerConstants.DB_USER = p.getProperty("DB_USER");
+            ServerConstants.DB_PASS = p.getProperty("DB_PASS");
 
-    //java8 And Shutdownhook
-    ServerConstants.JAVA_8 = p.getProperty("JAVA8").equalsIgnoreCase("TRUE");
-    ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
+            //java8 And Shutdownhook
+            ServerConstants.JAVA_8 = p.getProperty("JAVA8").equalsIgnoreCase("TRUE");
+            ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Pirate PQ
+*/
+
 var isPq = true;
 var minPlayers = 3, maxPlayers = 6;
 var minLevel = 55, maxLevel = 100;

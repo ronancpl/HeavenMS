@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Kerning PQ
+*/
+
 var isPq = true;
 var minPlayers = 3, maxPlayers = 4;
 var minLevel = 21, maxLevel = 30;
@@ -90,7 +95,7 @@ function setup(level, lobbyid) {
 function respawnStages(eim) {    
         eim.getMapInstance(103000800).instanceMapRespawn();
         eim.getMapInstance(103000805).instanceMapRespawn();
-        eim.schedule("respawnStages", 10 * 1000);
+        eim.schedule("respawnStages", 15 * 1000);
 }
 
 function playerEntry(eim, player) {

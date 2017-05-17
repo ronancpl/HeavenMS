@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Ludibrium PQ
+*/
+
 var isPq = true;
 var minPlayers = 5, maxPlayers = 6;
 var minLevel = 35, maxLevel = 50;

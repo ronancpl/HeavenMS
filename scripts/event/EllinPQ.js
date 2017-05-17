@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Ellin PQ
+*/
+
 var isPq = true;
 var minPlayers = 4, maxPlayers = 6;
 var minLevel = 44, maxLevel = 55;

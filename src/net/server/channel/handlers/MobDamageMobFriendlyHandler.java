@@ -48,12 +48,22 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
 		int damage = Randomizer.nextInt(((monster.getMaxHp() / 13 + monster.getPADamage() * 10)) * 2 + 500) / 10; //Beng's formula.
 		//  int damage = monster.getStats().getPADamage() + monster.getStats().getPDDamage() - 1;
 
+                if (monster.getHp() - damage < 1) {     // friendly dies
+                        if(monster.getId() == 9300102) {
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Watch Hog has been injured by the aliens. Better luck next time..."));
+                        }
+                        else if (monster.getId() == 9300061) {  //moon bunny
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny went home because he was sick."));
+                        }
+                        else if(monster.getId() == 9300093) {   //tylus
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of this ambush."));
+                        }
+                        
+                        c.getPlayer().getMap().killFriendlies(monster);
+                }
+                
 		if (monster.getId() == 9300061) {
-			if (monster.getHp() - damage < 1) {
-				monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny went home because he was sick."));
-				c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId()).killFriendlies(monster);
-			}
-			MapleMap map = c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId());
+                        MapleMap map = c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId());
 			map.addBunnyHit();
 		}
 

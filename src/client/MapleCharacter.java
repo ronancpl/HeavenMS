@@ -5054,6 +5054,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void startFullnessSchedule(final int decrease, final MaplePet pet, int petSlot) {
+        if(isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+            return;
+        }
+        
         ScheduledFuture<?> schedule;
         schedule = TimerManager.getInstance().register(new Runnable() {
             @Override

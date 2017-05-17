@@ -19104,13 +19104,17 @@
   DELETE FROM drop_data WHERE itemid=1302056 AND dropperid < 8000000;
 
   # remove belts dropping from mobs
-  DELETE FROM drop_data where itemid>=1132000 and itemid<=1132004;
+  DELETE FROM drop_data WHERE itemid>=1132000 AND itemid<=1132004;
+
+  # remove items being dropped from mobs in HPQ
+  DELETE FROM drop_data WHERE dropperid >= 9300061 AND dropperid <= 9300064;
+  DELETE FROM drop_data WHERE dropperid >= 9300081 AND dropperid <= 9300083;
 
   # remove key of dimension dropping outside PQ
-  DELETE FROM drop_data where itemid=4001023 and dropperid!=9300012;
+  DELETE FROM drop_data WHERE itemid=4001023 AND dropperid!=9300012;
 
   # make Sword Earrings not drop by normal means, just like Shield Earrings
-  DELETE FROM drop_data where itemid=1032030;
+  DELETE FROM drop_data WHERE itemid=1032030;
 
   # remove every not-card drop from bosses out of their natural habitat
   DELETE FROM drop_data WHERE dropperid >= 9300184 AND dropperid < 9300215 AND (itemid < 2380000 OR itemid >= 2390000);
@@ -19192,6 +19196,12 @@
     (2202004, 2020009, 10, -1),
     (2202004, 2020011, 15, -1),
     (2202004, 2020012, 15, -1),
-    (2202004, 2020013, 15, -1);
+    (2202004, 2020013, 15, -1),
+    (9102002, 4001095, 3, -1),
+    (9102003, 4001096, 3, -1),
+    (9102004, 4001097, 3, -1),
+    (9102005, 4001098, 3, -1),
+    (9102006, 4001099, 3, -1),
+    (9102007, 4001100, 3, -1);
 
   #global data already updated

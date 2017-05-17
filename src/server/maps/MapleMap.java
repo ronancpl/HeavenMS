@@ -754,7 +754,9 @@ public class MapleMap {
     }
 
     public void softKillAllMonsters() {
-        
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            spawnPoint.setDenySpawn(true);
+        }
         
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
@@ -768,6 +770,10 @@ public class MapleMap {
     }
 
     public void killAllMonstersNotFriendly() {
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            spawnPoint.setDenySpawn(true);
+        }
+        
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
             if (monster.getStats().isFriendly()) {
@@ -1453,17 +1459,6 @@ public class MapleMap {
         }
         if (mapid == 923010000 && getMonsterById(9300102) == null) { // Kenta's Mount Quest
             spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300102), new Point(77, 426));
-        } else if (mapid == 910010200) {  // Henesys Party Quest Bonus
-            chr.announce(MaplePacketCreator.getClock(60 * 5));
-            TimerManager.getInstance().schedule(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (chr.getMapId() == 910010200) {
-                        chr.changeMap(910010400);
-                    }
-                }
-            }, 5 * 60 * 1000);
         } else if (mapid == 200090060) { // To Rien
             chr.announce(MaplePacketCreator.getClock(60));
             TimerManager.getInstance().schedule(new Runnable() {
@@ -2216,6 +2211,8 @@ public class MapleMap {
     }
 
     public void instanceMapRespawn() {
+        if(!allowSummons) return;
+        
         final int numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
         if (numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
@@ -2256,9 +2253,11 @@ public class MapleMap {
     }
 
     public void respawn() {
+        if(!allowSummons) return;
+        
         chrRLock.lock();
         try {
-            if (characters.isEmpty()) {
+            if(characters.isEmpty()) {
                 return;
             }
         }
@@ -2276,16 +2275,16 @@ public class MapleMap {
         */
         
         short numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
-        if (numShouldSpawn > 0) {
+        if(numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
             Collections.shuffle(randomSpawn);
             short spawned = 0;
-            for (SpawnPoint spawnPoint : randomSpawn) {
-                if (spawnPoint.shouldSpawn()) {
+            for(SpawnPoint spawnPoint : randomSpawn) {
+                if(spawnPoint.shouldSpawn()) {
                     spawnMonster(spawnPoint.getMonster());
                     spawned++;
                     
-                    if (spawned >= numShouldSpawn) {
+                    if(spawned >= numShouldSpawn) {
                         break;
                     }
                 }

@@ -1,195 +1,209 @@
-/* 
-*
-*Henesys PQ : FightDesign ->RaGEZONE / FXP
-*
+/**
+ * @author: Ronan
+ * @event: Henesys PQ
 */
-// Significant maps (this was already here, helpful though)
-// 100000200 - Pig Park
-// 910010000 - 1st Stage
-// 910010100 - Shortcut
-// 910010200 - Bonus
-// 910010300 - Exit
-// Significant items
-// 4001101 - Rice Cake
-// Significant monsters
-// 9300061 - Bunny
-// 9300062 - Flyeye
-// 9300063 - Stirge
-// 9300064 - Goblin Fires
-// Significant NPCs
-// 1012112 - Troy
-// 1012113 - Tommy
-// 1012114 - Growlie
-// map effects
-// Map/Obj/Effect/quest/gate/3 - warp activation glow
-// quest/party/clear - CLEAR text
-// Party1/Clear - clear sound
-/* INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300061,4001101,1);
- */
 
+var isPq = true;
+var minPlayers = 1, maxPlayers = 6;
+var minLevel = 10, maxLevel = 200;
+var entryMap = 910010000;
+var exitMap = 910010300;
+var recruitMap = 100000200;
+var clearMap = 910010100;
 
-importPackage(Packages.net.world);
-importPackage(Packages.tools);
+var minMapId = 910010000;
+var maxMapId = 910010400;
 
-var exitMap;
-var mainMap;
-var minPlayers = 3;
-var pqTime = 10;//10 Minutes
+var eventTime = 10;     // 10 minutes
+
+var lobbyRange = [0, 0];
 
 function init() {
-    exitMap = em.getChannelServer().getMapFactory().getMap(910010400); // <exit>
-    exitClearMap = em.getChannelServer().getMapFactory().getMap(910010100); // <clear>
-    mainMap = em.getChannelServer().getMapFactory().getMap(910010000); // <main>
-    em.setProperty("HPQOpen", "true"); // allows entrance.
+        setEventRequirements();
 }
 
-function monsterValue(eim, mobId) {
-    return 1;
+function setLobbyRange() {
+        return lobbyRange;
 }
 
-
-
-
-function setup() {
-    em.setProperty("HPQOpen", "false")
-    var eim = em.newInstance("HenesysPQ_" + em.getProperty("latestLeader"));
-    eim.setProperty("stage", "0");
-    eim.setProperty("clear", "false");
-    eim.getMapInstance(910010000).allowSummonState(false);
-    eim.getMapInstance(910010000).killAllMonsters();
-    respawn(eim);
-    var timer = 1000 * 60 * pqTime; // 10 minutes
-    em.schedule("timeOut", eim, timer);
-    eim.startEventTimer(timer);
-    return eim;
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
 }
 
-
-function respawn(eim) {	
-	var map = eim.getMapInstance(910010000);
-	if (map.getSummonState()) {	
-		map.instanceMapRespawn();
-	}
-	eim.schedule("respawn", 10000);
+function setEventExclusives(eim) {
+        var itemSet = [4001095, 4001096, 4001097, 4001098, 4001099, 4001100, 4001101];
+        eim.setExclusiveItems(itemSet);
 }
 
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [4001129];
+        itemQty = [1];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [1600];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+}
+
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        if(party.size() > 0) {
+                var partyList = party.toArray();
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
+                }
+        }
+        
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
+        return eligible;
+}
+
+function setup(level, lobbyid) {
+        var eim = em.newInstance("Henesys" + lobbyid);
+        eim.setProperty("level", level);
+        eim.setProperty("stage", "0");
+        
+        eim.getInstanceMap(910010000).resetPQ(level);
+        eim.getInstanceMap(910010000).allowSummonState(false);
+        
+        eim.getInstanceMap(910010200).resetPQ(level);
+        
+        respawnStages(eim);
+        eim.startEventTimer(eventTime * 60000);
+        setEventRewards(eim);
+        setEventExclusives(eim);
+        return eim;
+}
+
+function respawnStages(eim) {
+        eim.getInstanceMap(910010000).instanceMapRespawn();
+        eim.getInstanceMap(910010200).instanceMapRespawn();
+        
+        eim.schedule("respawnStages", 15 * 1000);
+}
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(mainMap.getId());
-    player.changeMap(map, map.getPortal(0));
+        var map = eim.getMapInstance(entryMap);
+        player.changeMap(map, map.getPortal(0));
 }
 
-function playerDead(eim, player) {
-    if (player.isAlive()) {
-        if (eim.isLeader(player)) {
-            var party = eim.getPlayers();
-            for (var i = 0; i < party.size(); i++)
-                playerExit(eim, party.get(i));
-            eim.dispose();
-        } else {
-            var partyz = eim.getPlayers();
-            if (partyz.size() < minPlayers) {
-                for (var j = 0; j < partyz.size(); j++)
-                    playerExit(eim,partyz.get(j));
-                eim.dispose();
-            } else
-                playerExit(eim, player);
+function scheduledTimeout(eim) {
+        if(eim.getProperty("1stageclear") != null) {
+                var curStage = 910010200, toStage = 910010400;
+                eim.warpEventTeam(curStage, toStage);
         }
-    }
-}
-
-function playerDisconnected(eim, player) {
-    if (eim.isLeader(player)) {
-        var party = eim.getPlayers();
-        for (var i = 0; i < party.size(); i++) {
-            if (party.get(i).equals(player)) {
-                removePlayer(eim, player);
-            } else {
-                playerExit(eim, party.get(i));
-            }
+        else {
+                end(eim);
         }
-        eim.dispose();
-    } else {
-        var partyz = eim.getPlayers();
-        if (partyz.size() < minPlayers) {
-            for (var j = 0; j < partyz.size(); j++) {
-                playerExit(eim,partyz.get(j));
-			}
-            eim.dispose();
-        } else {
-            playerExit(eim, player);
-		}
-    }
-}
-
-function leftParty(eim, player) {
-    var party = eim.getPlayers();
-    if (party.size() < minPlayers) {
-        for (var i = 0; i < party.size(); i++)
-            playerExit(eim,party.get(i));
-        eim.dispose();
-    }
-    else
-        playerExit(eim, player);
-}
-
-function disbandParty(eim) {
-    
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
-}
-
-function playerExitClear(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitClearMap, exitClearMap.getPortal(0));
 }
 
 function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
+        eim.unregisterPlayer(player);
+        player.changeMap(exitMap, 0);
 }
 
-function removePlayer(eim, player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+function changedMap(eim, player, mapid) {
+        if (mapid < minMapId || mapid > maxMapId) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                        eim.unregisterPlayer(player);
+                        end(eim);
+                }
+                else
+                        eim.unregisterPlayer(player);
+        }
+}
+
+function changedLeader(eim, leader) {
+        var mapid = leader.getMapId();
+        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
+                end(eim);
+        }
+}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) { // player presses ok on the death pop up.
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function playerDisconnected(eim, player) {
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function leftParty(eim, player) {
+        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function disbandParty(eim) {
+        end(eim);
+}
+
+function monsterValue(eim, mobId) {
+        return 1;
+}
+
+function end(eim) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+}
+
+function giveRandomEventReward(eim, player) {
+        eim.giveEventReward(player);
 }
 
 function clearPQ(eim) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++)
-        playerExitClear(eim, party.get(i));
-    eim.dispose();
+        eim.stopEventTimer();
+        eim.setEventCleared();
+        
+        eim.warpEventTeam(910010100);
 }
 
 function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 
-function dispose() {
-    em.cancelSchedule();
-    em.schedule("OpenHPQ", 5000);
-}
+function cancelSchedule() {}
 
-function cancelSchedule(eim) {
-	//This needed? It causes problem on reloadevents
-    //eim.startEventTimer(0);
-}
+function dispose(eim) {}
 
-function timeOut(eim) {
-    if (eim != null) {
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext())
-                playerExit(eim, pIter.next());
-        }
-        eim.dispose();
-    }
-}
-
-function OpenHPQ() {
-    em.setProperty("HPQOpen", "true");
-} 

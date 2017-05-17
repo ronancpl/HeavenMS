@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Boss Rush PQ
+*/
+
 var isPq = true;
 var minPlayers = 1, maxPlayers = 6;
 var minLevel = 1, maxLevel = 200;

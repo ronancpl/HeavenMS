@@ -1,3 +1,8 @@
+/**
+ * @author: Ronan
+ * @event: Ludibrium Maze PQ
+*/
+
 var isPq = true;
 var minPlayers = 3, maxPlayers = 6;
 var minLevel = 51, maxLevel = 70;
