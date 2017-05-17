@@ -203,8 +203,8 @@ public class MaplePet extends Item {
         saveToDb();
         
         Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());
-        if (petz == null) return;
-        owner.forceUpdateItem(petz);
+        if (petz != null)
+            owner.forceUpdateItem(petz);
     }
 
     public void setLevel(byte level) {

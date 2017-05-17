@@ -1,5 +1,8 @@
 Changes from the original v83 WZs:
 
+Character.wz/*:
+	Upgraded info of some items.
+
 Map.wz/MapX/*:
 	Fixed entries of portals placed incorrectly.
 
@@ -19,7 +22,7 @@ Ronan Lana's MobBookUpdate facility.
 P.S.:
 
 Yeah, these explanations are pretty simplistic, I know. If one really wants to
-compare the two WZ systems, I recommend do the following:
+compare the original v83 WZ with the ones I provided, I recommend do the following:
 	- Open HaRepacker and, for each MapleSolaxiaV2's WZ file, extract all the XMLs
 for "Private Server".
 	- Now, install MapleStory from "ManagerMsv83.exe" on an other folder and do the

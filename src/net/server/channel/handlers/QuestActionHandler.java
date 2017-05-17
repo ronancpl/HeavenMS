@@ -69,8 +69,6 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
             
             if(quest.canComplete(player, npc)) {
                 QuestScriptManager.getInstance().end(c, questid, npc);
-                player.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); //show effect when completion 
-                player.getMap().broadcastMessage(player, MaplePacketCreator.showForeignEffect(player.getId(), 9));//show effect around players I guess
             }
         }
     }
