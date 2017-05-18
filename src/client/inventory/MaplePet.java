@@ -54,6 +54,7 @@ public class MaplePet extends Item {
     private MaplePet(int id, short position, int uniqueid) {
         super(id, position, (short) 1);
         this.uniqueid = uniqueid;
+        this.pos = new Point(0, 0);
     }
 
     public static MaplePet loadFromDb(int itemid, short position, int petid) {

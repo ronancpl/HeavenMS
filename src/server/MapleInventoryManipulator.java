@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import tools.FilePrinter;
 
 import tools.MaplePacketCreator;
 
@@ -182,8 +183,8 @@ public class MapleInventoryManipulator {
                     Item nItem = new Item(item.getItemId(), (short) 0, newQ, petId);
                     nItem.setExpiration(item.getExpiration());
                     nItem.setOwner(item.getOwner());
-					nItem.setFlag(item.getFlag());
-					short newSlot = c.getPlayer().getInventory(type).addItem(nItem);
+                    nItem.setFlag(item.getFlag());
+                    short newSlot = c.getPlayer().getInventory(type).addItem(nItem);
                     if (newSlot == -1) {
                         c.announce(MaplePacketCreator.getInventoryFull());
                         c.announce(MaplePacketCreator.getShowInventoryFull());
@@ -204,7 +205,7 @@ public class MapleInventoryManipulator {
                 c.announce(MaplePacketCreator.enableActions());
             }
         } else if (quantity == 1) {
-        	short newSlot = c.getPlayer().getInventory(type).addItem(item);
+            short newSlot = c.getPlayer().getInventory(type).addItem(item);
             if (newSlot == -1) {
                 c.announce(MaplePacketCreator.getInventoryFull());
                 c.announce(MaplePacketCreator.getShowInventoryFull());
@@ -212,6 +213,9 @@ public class MapleInventoryManipulator {
             }
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, item))));
         } else {
+            FilePrinter.print(FilePrinter.ITEM, "Tried to pickup Equip id " + item.getItemId() + " containing more than 1 quantity --> " + quantity);
+            c.announce(MaplePacketCreator.getInventoryFull());
+            c.announce(MaplePacketCreator.showItemUnavailable());
             return false;
         }
         if (show) {
