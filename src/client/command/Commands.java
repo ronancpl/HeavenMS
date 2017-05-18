@@ -334,10 +334,10 @@ public class Commands {
 			player.message("@uptime: Shows how long Solaxia has been online.");
 			player.message("@bosshp: Displays the remaining HP of the bosses on your map.");
                         if(ServerConstants.USE_DEBUG) {
-                            player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
-                            player.message("@debugmap: Displays info about the current map the player is located.");
-                            player.message("@debugevent: Displays the name of the event in which the player is currently registered.");
-                            player.message("@debugreactors: Displays current info for all reactors on the map the the player is currently located.");
+                        player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
+                        player.message("@debugmap: Displays info about the current map the player is located.");
+                        player.message("@debugevent: Displays the name of the event in which the player is currently registered.");
+                        player.message("@debugreactors: Displays current info for all reactors on the map the the player is currently located.");
                         }
 			break;
 		case "time":
@@ -355,8 +355,9 @@ public class Commands {
 			player.yellowMessage("SourMjolk - Game Master");
 			player.yellowMessage("Kanade - Game Master");
 			player.yellowMessage("Kitsune - Game Master");
-                        player.yellowMessage("Branch Staff");
+                        player.yellowMessage("MapleSolaxiaV2 Staff");
                         player.yellowMessage("Ronan - Freelance Developer");
+                        player.yellowMessage("Vcoc - Freelance Developer");
 			break;
 		case "lastrestart":
 		case "uptime":
@@ -1443,9 +1444,6 @@ public class Commands {
 				victim.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
 			}
 			break;
-		case "horntail":
-			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), player.getPosition());
-			break;
 		case "packet":
 			player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
 			break;
@@ -1616,8 +1614,17 @@ public class Commands {
 		case "zakum":
 			player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
 			for (int x = 8800003; x < 8800011; x++) {
-				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
+                        player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
 			}
+			break;
+		case "horntail": //The animation and the monster are being born at the same time. You need to fix it!
+			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), player.getPosition());
+			for (int x = 8810002; x < 8810010; x++) {
+                        player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
+			}
+			break;
+		case "pinkbean":
+                        player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8820001), player.getPosition());
 			break;
 		case "clearquestcache":
 			MapleQuest.clearCache();
