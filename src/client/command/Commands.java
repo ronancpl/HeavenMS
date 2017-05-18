@@ -337,7 +337,7 @@ public class Commands {
                         player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
                         player.message("@debugmap: Displays info about the current map the player is located.");
                         player.message("@debugevent: Displays the name of the event in which the player is currently registered.");
-                        player.message("@debugreactors: Displays current info for all reactors on the map the the player is currently located.");
+                        player.message("@debugreactors: Displays current info for all reactors on the map.");
                         }
 			break;
 		case "time":
