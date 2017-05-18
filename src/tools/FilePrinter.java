@@ -11,15 +11,15 @@ import java.util.Calendar;
 public class FilePrinter {
 
     public static final String 
-    		ACCOUNT_STUCK = "accountStuck.txt",
-            EXCEPTION_CAUGHT = "exceptionCaught.txt",
-            CLIENT_START = "clientStartError.txt",
-            ADD_PLAYER = "addPlayer.txt",
-            MAPLE_MAP = "mapleMap.txt",
+            ACCOUNT_STUCK = "accountstuck.txt",
+            EXCEPTION_CAUGHT = "exceptioncaught.txt",
+            CLIENT_START = "clientstarterror.txt",
+            ADD_PLAYER = "addplayer.txt",
+            MAPLE_MAP = "maplemap.txt",
             ERROR38 = "error38.txt",
             PACKET_LOG = "log.txt",
             EXCEPTION = "exceptions.txt",
-            PACKET_HANDLER = "PacketHandler/",
+            PACKET_HANDLER = "packethandler/",
             PORTAL = "portals/",
             NPC = "npcs/",
             INVOCABLE = "invocable/",
@@ -29,25 +29,26 @@ public class FilePrinter {
             MOB_MOVEMENT = "mobmovement.txt",
             MAP_SCRIPT = "mapscript/",
             DIRECTION = "directions/",
-            SAVE_CHAR = "saveToDB.txt",
-            INSERT_CHAR = "insertCharacter.txt",
-            LOAD_CHAR = "loadCharFromDB.txt",
-            UNHANDLED_EVENT = "doesNotExist.txt",
+            SAVE_CHAR = "savetodb.txt",
+            INSERT_CHAR = "insertcharacter.txt",
+            LOAD_CHAR = "loadcharfromdb.txt",
+            UNHANDLED_EVENT = "doesnotexist.txt",
             SESSION = "sessions.txt",
             EXPLOITS = "exploits/",
             STORAGE = "storage/",
             PACKET_LOGS = "packetlogs/",
             DELETED_CHARACTERS = "deletedchars/",
             FREDRICK = "fredrick/",
-    		NPC_UNCODED = "uncodedNPCs.txt",
-    		QUEST_UNCODED = "uncodedQuests.txt",
-            SAVING_CHARACTER = "saveChar.txt";//more to come (maps)
+            NPC_UNCODED = "uncodednpcs.txt",
+            QUEST_UNCODED = "uncodedquests.txt",
+            SAVING_CHARACTER = "savechar.txt", //more to come (maps)
+            USED_COMMANDS = "usedcommands";
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //for file system purposes, it's nice to use yyyy-MM-dd
-    private static final String FILE_PATH = "logs/" + sdf.format(Calendar.getInstance().getTime()) + "/";// + sdf.format(Calendar.getInstance().getTime()) + "/"
+    private static final String FILE_PATH = "logs/" + sdf.format(Calendar.getInstance().getTime()) + "/"; // + sdf.format(Calendar.getInstance().getTime()) + "/"
     private static final String ERROR = "error/";
 
     public static void printError(final String name, final Throwable t) {
-    	System.out.println("Error thrown: " + name);
+    	System.out.println("Logs: " + name);
     	System.out.println(getString(t));
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
@@ -73,7 +74,7 @@ public class FilePrinter {
     }
 
     public static void printError(final String name, final Throwable t, final String info) {
-    	System.out.println("Error thrown: " + name);
+    	System.out.println("Logs: " + name);
     	System.out.println(getString(t));
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
@@ -100,7 +101,7 @@ public class FilePrinter {
     }
 
     public static void printError(final String name, final String s) {
-    	System.out.println("Error thrown: " + name);
+    	System.out.println("Logs: " + name);
     	System.out.println(s);
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
@@ -130,7 +131,7 @@ public class FilePrinter {
     }
 
     public static void print(final String name, final String s, boolean line) {
-    	System.out.println("Error thrown: " + name);
+    	System.out.println("Logs: " + name);
     	System.out.println(s);
         FileOutputStream out = null;
         String file = FILE_PATH + name;

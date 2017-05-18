@@ -29,9 +29,13 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.command.Commands;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
-	
+private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm"); //Used to make the calendar work perfectly. @author Victor C.O.C
+
+@Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String s = slea.readMapleAsciiString();
         MapleCharacter chr = c.getPlayer();
@@ -57,7 +61,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                     for (String used : sp) {
                     	command += used + " ";
                     }
-                    FilePrinter.printError("usedCommands.txt", c.getPlayer().getName() + " used: " + heading + command + "\r\n");
+                    FilePrinter.print(FilePrinter.USED_COMMANDS + ".txt", c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
                 }
             }
         } else {
