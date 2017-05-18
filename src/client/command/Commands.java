@@ -700,6 +700,11 @@ public class Commands {
 				SkillFactory.getSkill(i).getEffect(SkillFactory.getSkill(i).getMaxLevel()).applyTo(player);
 			}
 		} else if (sub[0].equals("spawn")) {
+                        if (sub.length < 2) {
+				player.yellowMessage("Syntax: !spawn <mobid>");
+				return false;
+			}
+                    
 			MapleMonster monster = MapleLifeFactory.getMonster(Integer.parseInt(sub[1]));
 			if (monster == null) {
 				return true;
@@ -749,6 +754,11 @@ public class Commands {
 		} else if (sub[0].equals("cleardrops")) {
 			player.getMap().clearDrops(player);
 		} else if (sub[0].equals("go")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !spawn <mobid>");
+				return false;
+			}
+                    
 			if (gotomaps.containsKey(sub[1])) {
 				MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(sub[1]));
 				MaplePortal targetPortal = target.getPortal(0);
@@ -794,6 +804,11 @@ public class Commands {
 				}
 			}
 		} else if (sub[0].equals("warp")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !warp <mapid>");
+				return false;
+			}
+                    
 			try {
 				MapleMap target = c.getChannelServer().getMapFactory().getMap(Integer.parseInt(sub[1]));
 				if (target == null) {
@@ -890,6 +905,11 @@ public class Commands {
 			player.dropMessage("Position: (" + xpos + ", " + ypos + ")");
 			player.dropMessage("Foothold ID: " + fh);
 		} else if (sub[0].equals("dc")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !dc <playername>");
+				return false;
+			}
+                    
 			MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null) {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
@@ -912,11 +932,20 @@ public class Commands {
 			}
 			victim.getClient().disconnect(false, false);
 		} else if (sub[0].equals("exprate")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !exprate <newrate>");
+				return false;
+			}
 			c.getWorldServer().setExpRate(Integer.parseInt(sub[1]));
 		} else if (sub[0].equals("chat")) {
 			player.toggleWhiteChat();
 			player.message("Your chat is now " + (player.getWhiteChat() ? " white" : "normal") + ".");
 		} else if (sub[0].equals("warpto")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !warpto <mapid>");
+				return false;
+			}
+                    
 			MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null) {//If victim isn't on current channel or isnt a character try and find him by loop all channels on current world.
 				for (Channel ch : srv.getChannelsFromWorld(c.getWorld())) {
@@ -950,6 +979,11 @@ public class Commands {
 				player.dropMessage("Unknown player.");
 			}
 		} else if (sub[0].equals("warphere")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !warphere <playername>");
+				return false;
+			}
+                    
 			MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null) {//If victim isn't on current channel, loop all channels on current world.
 				for (Channel ch : srv.getChannelsFromWorld(c.getWorld())) {
@@ -982,10 +1016,19 @@ public class Commands {
 				player.dropMessage("Unknown player.");
 			}
 		} else if (sub[0].equals("fame")) {
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !fame <playername> <gainfame>");
+				return false;
+			}
+                        
 			MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
 			victim.setFame(Integer.parseInt(sub[2]));
 			victim.updateSingleStat(MapleStat.FAME, victim.getFame());
 		} else if (sub[0].equals("giftnx")) {
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !giftnx <playername> <gainnx>");
+				return false;
+			}
 			cserv.getPlayerStorage().getCharacterByName(sub[1]).getCashShop().gainCash(1, Integer.parseInt(sub[2]));
 			player.message("Done");
 		} else if (sub[0].equals("gmshop")) {
@@ -993,8 +1036,16 @@ public class Commands {
 		} else if (sub[0].equals("heal")) {
 			player.setHpMp(30000);
 		} else if (sub[0].equals("vp")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !vp <gainvotepoint>");
+				return false;
+			}
 			c.addVotePoints(Integer.parseInt(sub[1]));
 		} else if (sub[0].equals("id")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !id <id>");
+				return false;
+			}
 			try {
 				try (BufferedReader dis = new BufferedReader(new InputStreamReader(new URL("http://www.mapletip.com/search_java.php?search_value=" + sub[1] + "&check=true").openConnection().getInputStream()))) {
 					String s;
@@ -1006,13 +1057,16 @@ public class Commands {
                                 e.printStackTrace();
 			}
 		} else if (sub[0].equals("item") || sub[0].equals("drop")) {
-			int itemId = Integer.parseInt(sub[1]);
-			short quantity = 1;
-			try {
-				quantity = Short.parseShort(sub[2]);
-			} catch (Exception e) {
-                                e.printStackTrace();
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !item <itemid> <quantity>");
+				return false;
 			}
+                        
+			int itemId = Integer.parseInt(sub[1]);
+                        
+			short quantity = 1;
+                        if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
+			
 			if (sub[0].equals("item")) {
 				int petid = -1;
 				if (ItemConstants.isPet(itemId)) {
@@ -1054,11 +1108,14 @@ public class Commands {
 				}
 			}
 		} else if (sub[0].equals("kill")) {
-			if (sub.length >= 2) {
-				MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
-				victim.setHpMp(0);
-				Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !kill <playername>");
+				return false;
 			}
+			
+                        MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        victim.setHpMp(0);
+                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
 		} else if (sub[0].equals("seed")) {
 			if (player.getMapId() != 910010000) {
 				player.yellowMessage("This command can only be used in HPQ.");
@@ -1095,10 +1152,20 @@ public class Commands {
 		} else if (sub[0].equals("unbug")) {
 			c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.enableActions());
 		} else if (sub[0].equals("level")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !level <newlevel>");
+				return false;
+			}
+                    
 			player.setLevel(Integer.parseInt(sub[1]) - 1);
 			player.gainExp(-player.getExp(), false, false);
 			player.levelUp(false);
 		} else if (sub[0].equals("levelpro")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !levelpro <newlevel>");
+				return false;
+			}
+                    
 			while (player.getLevel() < Math.min(255, Integer.parseInt(sub[1]))) {
 				player.levelUp(false);
 			}
@@ -1129,12 +1196,18 @@ public class Commands {
 				}
 			}
 		} else if (sub[0].equals("mesos")) {
-			player.gainMeso(Integer.parseInt(sub[1]), true);
+                        if (sub.length >= 2) {
+                                player.gainMeso(Integer.parseInt(sub[1]), true);
+                        }
 		} else if (sub[0].equals("notice")) {
 			Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[Notice] " + joinStringFrom(sub, 1)));
 		} else if (sub[0].equals("rip")) {
 			Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[RIP]: " + joinStringFrom(sub, 1)));
 		} else if (sub[0].equals("openportal")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !openportal <portalid>");
+				return false;
+			}
 			player.getMap().getPortal(sub[1]).setPortalState(true);
 		} else if (sub[0].equals("pe")) {
 			String packet = "";
@@ -1164,6 +1237,10 @@ public class Commands {
 				}
 			}
 		} else if (sub[0].equals("closeportal")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !closeportal <portalid>");
+				return false;
+			}
 			player.getMap().getPortal(sub[1]).setPortalState(false);
 		} else if (sub[0].equals("startevent")) {
 			for (MapleCharacter chr : player.getMap().getCharacters()) {
@@ -1199,53 +1276,56 @@ public class Commands {
 		} else if (sub[0].equals("pianus")) {
 			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8510000), player.getPosition());
 		} else if (sub[0].equalsIgnoreCase("search")) {
-			StringBuilder sb = new StringBuilder();
-			if (sub.length > 2) {
-				String search = joinStringFrom(sub, 2);
-				long start = System.currentTimeMillis();//for the lulz
-				MapleData data = null;
-				MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
-				if (!sub[1].equalsIgnoreCase("ITEM")) {
-					if (sub[1].equalsIgnoreCase("NPC")) {
-						data = dataProvider.getData("Npc.img");
-					} else if (sub[1].equalsIgnoreCase("MOB") || sub[1].equalsIgnoreCase("MONSTER")) {
-						data = dataProvider.getData("Mob.img");
-					} else if (sub[1].equalsIgnoreCase("SKILL")) {
-						data = dataProvider.getData("Skill.img");
-					} else if (sub[1].equalsIgnoreCase("MAP")) {
-						sb.append("#bUse the '/m' command to find a map. If it finds a map with the same name, it will warp you to it.");
-					} else {
-						sb.append("#bInvalid search.\r\nSyntax: '/search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
-					}
-					if (data != null) {
-						String name;
-						for (MapleData searchData : data.getChildren()) {
-							name = MapleDataTool.getString(searchData.getChildByPath("name"), "NO-NAME");
-							if (name.toLowerCase().contains(search.toLowerCase())) {
-								sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(name).append("\r\n");
-							}
-						}
-					}
-				} else {
-					for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
-						if (sb.length() < 32654) {//ohlol
-							if (itemPair.getRight().toLowerCase().contains(search.toLowerCase())) {
-								//#v").append(id).append("# #k- 
-								sb.append("#b").append(itemPair.getLeft()).append("#k - #r").append(itemPair.getRight()).append("\r\n");
-							}
-						} else {
-							sb.append("#bCouldn't load all items, there are too many results.\r\n");
-							break;
-						}
-					}
-				}
-				if (sb.length() == 0) {
-					sb.append("#bNo ").append(sub[1].toLowerCase()).append("s found.\r\n");
-				}
-				sb.append("\r\n#kLoaded within ").append((double) (System.currentTimeMillis() - start) / 1000).append(" seconds.");//because I can, and it's free
-			} else {
-				sb.append("#bInvalid search.\r\nSyntax: '/search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !search <type> <name>");
+				return false;
 			}
+                    
+			StringBuilder sb = new StringBuilder();
+			
+                        String search = joinStringFrom(sub, 2);
+                        long start = System.currentTimeMillis();//for the lulz
+                        MapleData data = null;
+                        MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
+                        if (!sub[1].equalsIgnoreCase("ITEM")) {
+                                if (sub[1].equalsIgnoreCase("NPC")) {
+                                        data = dataProvider.getData("Npc.img");
+                                } else if (sub[1].equalsIgnoreCase("MOB") || sub[1].equalsIgnoreCase("MONSTER")) {
+                                        data = dataProvider.getData("Mob.img");
+                                } else if (sub[1].equalsIgnoreCase("SKILL")) {
+                                        data = dataProvider.getData("Skill.img");
+                                } else if (sub[1].equalsIgnoreCase("MAP")) {
+                                        sb.append("#bUse the '/m' command to find a map. If it finds a map with the same name, it will warp you to it.");
+                                } else {
+                                        sb.append("#bInvalid search.\r\nSyntax: '/search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
+                                }
+                                if (data != null) {
+                                        String name;
+                                        for (MapleData searchData : data.getChildren()) {
+                                                name = MapleDataTool.getString(searchData.getChildByPath("name"), "NO-NAME");
+                                                if (name.toLowerCase().contains(search.toLowerCase())) {
+                                                        sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(name).append("\r\n");
+                                                }
+                                        }
+                                }
+                        } else {
+                                for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
+                                        if (sb.length() < 32654) {//ohlol
+                                                if (itemPair.getRight().toLowerCase().contains(search.toLowerCase())) {
+                                                        //#v").append(id).append("# #k- 
+                                                        sb.append("#b").append(itemPair.getLeft()).append("#k - #r").append(itemPair.getRight()).append("\r\n");
+                                                }
+                                        } else {
+                                                sb.append("#bCouldn't load all items, there are too many results.\r\n");
+                                                break;
+                                        }
+                                }
+                        }
+                        if (sb.length() == 0) {
+                                sb.append("#bNo ").append(sub[1].toLowerCase()).append("s found.\r\n");
+                        }
+                        sb.append("\r\n#kLoaded within ").append((double) (System.currentTimeMillis() - start) / 1000).append(" seconds.");//because I can, and it's free
+			
 			c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, sb.toString(), "00 00", (byte) 0));
 		} else if (sub[0].equals("servermessage")) {
 			c.getWorldServer().setServerMessage(joinStringFrom(sub, 1));
@@ -1265,6 +1345,11 @@ public class Commands {
 			player.updateSingleStat(MapleStat.INT, x);
 			player.updateSingleStat(MapleStat.LUK, x);
 		} else if (sub[0].equals("unban")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !unban <playername>");
+				return false;
+			}
+                    
 			try {
                                 Connection con = DatabaseConnection.getConnection();
                                 int aid = MapleCharacter.getAccountIdByName(sub[1]);
@@ -1344,6 +1429,11 @@ public class Commands {
 		MapleCharacter player = c.getPlayer();
 		switch (sub[0]) {
 		case "sp":  //Changed to support giving sp /a
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !sp <newsp>");
+				return;
+			}
+                        
 			if (sub.length == 2) {
 				player.setRemainingSp(Integer.parseInt(sub[1]));
 				player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
@@ -1364,6 +1454,11 @@ public class Commands {
 			player.dropMessage(6, "Total Task: " + tMan.getTaskCount() + " Current Task: " + tMan.getQueuedTasks() + " Active Task: " + tMan.getActiveCount() + " Completed Task: " + tMan.getCompletedTaskCount());
 			break;
 		case "warpworld":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !warpworld <worldid>");
+				return;
+			}
+                    
 			Server server = Server.getInstance();
 			byte worldb = Byte.parseByte(sub[1]);
 			if (worldb <= (server.getWorlds().size() - 1)) {
@@ -1422,16 +1517,17 @@ public class Commands {
 			player.message("These b lurkin: " + names);
 			break;
 		case "getacc":
-			if (sub.length < 1) {
-				player.message("Please provide an IGN.");
-				break;
+			if (sub.length < 2){
+				player.yellowMessage("Syntax: !getacc <playername>");
+				return;
 			}
 			MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
 			player.message(victim.getName() + "'s account name is " + victim.getClient().getAccountName() + ".");
 			break;
 		case "npc":
-			if (sub.length < 1) {
-				break;
+			if (sub.length < 2){
+				player.yellowMessage("Syntax: !npc <npcid>");
+				return;
 			}
 			MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(sub[1]));
 			if (npc != null) {
@@ -1459,6 +1555,10 @@ public class Commands {
 			break;
 		}
 		case "playernpc":
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !playernpc <playername> <npcid>");
+				return;
+			}
 			player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
 			break;
 		case "shutdown":
@@ -1472,6 +1572,11 @@ public class Commands {
 			TimerManager.getInstance().schedule(Server.getInstance().shutdown(false), time);
 			break;
 		case "face":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !face <faceid>");
+				return;
+			}
+                    
 			if (sub.length == 2) {
 				player.setFace(Integer.parseInt(sub[1]));
 				player.equipChanged();
@@ -1482,6 +1587,11 @@ public class Commands {
 			}
 			break;
 		case "hair":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !hair <hairid>");
+				return;
+			}
+                    
 			if (sub.length == 2) {
 				player.setHair(Integer.parseInt(sub[1]));
 				player.equipChanged();
