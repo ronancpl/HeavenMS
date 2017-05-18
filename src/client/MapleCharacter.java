@@ -1330,6 +1330,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public int countItem(int itemid) {
         return inventory[MapleItemInformationProvider.getInstance().getInventoryType(itemid).ordinal()].countById(itemid);
     }
+    
+    public boolean canHold(int itemid) {
+        return canHold(itemid, 1);
+    }
+        
+    public boolean canHold(int itemid, int quantity) {
+        if(haveItem(itemid)) {
+            if(getItemQuantity(itemid, false) + quantity <= MapleItemInformationProvider.getInstance().getSlotMax(client, itemid))
+                return true;
+        }
+
+        return getInventory(MapleItemInformationProvider.getInstance().getInventoryType(itemid)).getNextFreeSlot() > -1;
+    }
 
     public void decreaseBattleshipHp(int decrease) {
         this.battleshipHp -= decrease;

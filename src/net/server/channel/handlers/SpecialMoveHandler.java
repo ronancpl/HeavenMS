@@ -124,7 +124,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             if (skill.getId() != Priest.MYSTIC_DOOR || chr.canDoor()) {
                 skill.getEffect(skillLevel).applyTo(c.getPlayer(), pos);
             } else {
-                chr.message("Please wait 5 seconds before casting Mystic Door again");
+                chr.message("Please wait 5 seconds before casting Mystic Door again.");
                 c.announce(MaplePacketCreator.enableActions());
             }
         } else {

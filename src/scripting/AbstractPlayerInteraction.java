@@ -188,17 +188,12 @@ public class AbstractPlayerInteraction {
         }
 
 	public boolean canHold(int itemid) {
-            return canHold(itemid, 1);
-	}
+                return canHold(itemid, 1);
+        }
         
         public boolean canHold(int itemid, int quantity) {
-            if(haveItem(itemid)) {
-                if(getPlayer().getItemQuantity(itemid, false) + quantity <= MapleItemInformationProvider.getInstance().getSlotMax(c, itemid))
-                    return true;
-            }
-            
-            return getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(itemid)).getNextFreeSlot() > -1;
-	}
+                return getPlayer().canHold(itemid, quantity);
+        }
      
         //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----
         

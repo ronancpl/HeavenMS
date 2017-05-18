@@ -58,6 +58,8 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter player = c.getPlayer();
         if (System.currentTimeMillis() - player.getLastUsedCashItem() < 3000) {
+            player.dropMessage(1, "You have used a cash item recently. Wait a moment and try again.");
+            c.announce(MaplePacketCreator.enableActions());
             return;
         }
         player.setLastUsedCashItem(System.currentTimeMillis());

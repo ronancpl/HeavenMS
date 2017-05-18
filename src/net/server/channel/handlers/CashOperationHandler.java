@@ -38,6 +38,7 @@ import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -53,12 +54,14 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             return;
         }
         final int action = slea.readByte();
+        
         if (action == 0x03 || action == 0x1E) {
             slea.readByte();
             final int useNX = slea.readInt();
             final int snCS = slea.readInt();
             CashItem cItem = CashItemFactory.getItem(snCS);
             if (cItem == null || !cItem.isOnSale() || cs.getCash(useNX) < cItem.getPrice()) {
+                FilePrinter.printError(FilePrinter.ITEM, "Denied to sell cash item with SN " + cItem.getSN());
                 return;
             }
             if (action == 0x03) { // Item
@@ -185,17 +188,18 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             if (chr.getInventory(MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())).addItem(item) != -1) {
                 cs.removeFromInventory(item);
                 c.announce(MaplePacketCreator.takeFromCashInventory(item));
-				if(item instanceof Equip) {
-					Equip equip = (Equip) item;
- 					if(equip.getRingId() >= 0) {
-						MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
-						if (ring.getItemId() > 1112012) {
-                            chr.addFriendshipRing(ring);
-                        } else {
-                            chr.addCrushRing(ring);
+                
+                if(item instanceof Equip) {
+                        Equip equip = (Equip) item;
+                        if(equip.getRingId() >= 0) {
+                                MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
+                                if (ring.getItemId() > 1112012) {
+                                        chr.addFriendshipRing(ring);
+                                } else {
+                                        chr.addCrushRing(ring);
+                                }
                         }
-					}
-				}
+                }
             }
         } else if (action == 0x0E) { // Put into Cash Inventory
             int cashId = slea.readInt();
@@ -250,8 +254,9 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else if (action == 0x20) { // everything is 1 meso...
             int itemId = CashItemFactory.getItem(slea.readInt()).getItemId();
+            
             if (chr.getMeso() > 0) {
-                if (itemId == 4031180 || itemId == 4031192 || itemId == 4031191) {
+                if (chr.canHold(itemId)) {
                     chr.gainMeso(-1, false);
                     MapleInventoryManipulator.addById(c, itemId, (short) 1);
                     c.announce(MaplePacketCreator.showBoughtQuestItem(itemId));
