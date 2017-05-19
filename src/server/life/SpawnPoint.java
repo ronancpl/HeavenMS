@@ -91,6 +91,9 @@ public class SpawnPoint {
                 }
                 spawnedMonsters.decrementAndGet();
             }
+            
+            @Override
+            public void monsterDamaged(MapleCharacter from, int trueDmg) {}
         });
         if (mobTime == 0) {
             nextPossibleSpawn = System.currentTimeMillis() + mobInterval;

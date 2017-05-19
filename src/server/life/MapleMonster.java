@@ -210,6 +210,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         int trueDamage = Math.min(hp, damage); // since magic happens otherwise B^)
         
         if(ServerConstants.USE_DEBUG == true && from != null) from.dropMessage(5, "Hitted MOB " + this.getId());
+        dispatchMonsterDamaged(from, trueDamage);
 
         hp -= damage;
         if (takenDamage.containsKey(from.getId())) {
@@ -368,16 +369,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     personalExp *= (stati.get(MonsterStatus.SHOWDOWN).getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
                 }
             }
-            if (exp < 0) {//O.O ><
-                personalExp = Integer.MAX_VALUE;
-            }
+            
             attacker.gainExp(personalExp, partyExp, true, false, isKiller);
             attacker.mobKilled(getId());
             attacker.increaseEquipExp(personalExp);//better place
         }
     }
 
-    public MapleCharacter killBy(MapleCharacter killer) {
+    public MapleCharacter killBy(final MapleCharacter killer) {
         distributeExperience(killer != null ? killer.getId() : 0);
 
         if (getController() != null) { // this can/should only happen when a hidden gm attacks the monster
@@ -424,11 +423,16 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                             mob.disableDrops();
                         }
                         reviveMap.spawnMonster(mob);
+                        
+                        if(mob.getId() >= 8810010 && mob.getId() <= 8810017 && reviveMap.isHorntailDefeated()) {
+                            for(int i = 8810018; i >= 8810010; i--)
+                                reviveMap.killMonster(reviveMap.getMonsterById(i), killer, true);
+                        }
                     }
                 }
             }, getAnimationTime("die1"));
         }
-        else {
+        else {  // is this even necessary?
             System.out.println("[CRITICAL LOSS] toSpawn is null for " + this.getName());
         }
         
@@ -445,6 +449,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
         for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
             listener.monsterKilled(getAnimationTime("die1"));
+        }
+    }
+    
+    public void dispatchMonsterDamaged(MapleCharacter from, int trueDmg) {
+        for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
+            listener.monsterDamaged(from, trueDmg);
         }
     }
 
@@ -992,7 +1002,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return(1.0f);
     }
     
-    private final void changeLevelByDifficulty(final int difficulty, boolean pqMob) {
+    private void changeLevelByDifficulty(final int difficulty, boolean pqMob) {
         changeLevel((int)(this.getLevel() * getDifficultyRate(difficulty)), pqMob);
     }
     

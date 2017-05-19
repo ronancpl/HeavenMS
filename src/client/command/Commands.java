@@ -101,8 +101,7 @@ import java.util.ArrayList;
 import server.maps.FieldLimit;
 
 public class Commands {
-
-	private static HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
+        private static HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
 
 	private static String[] tips = {
 		"Please only use @gm in emergencies or to report somebody.",
@@ -612,7 +611,7 @@ public class Commands {
 						bar += i < percent ? "|" : ".";
 					}
 					bar += "]";
-					player.yellowMessage(monster.getName() + " has " + percent + "% HP left.");
+					player.yellowMessage(monster.getName() + " (" + monster.getId() + ") has " + percent + "% HP left.");
 					player.yellowMessage("HP: " + bar);
 				}
 			} 
@@ -755,7 +754,7 @@ public class Commands {
 			player.getMap().clearDrops(player);
 		} else if (sub[0].equals("go")) {
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: !spawn <mobid>");
+				player.yellowMessage("Syntax: !go <mapid>");
 				return false;
 			}
                     
@@ -1132,7 +1131,7 @@ public class Commands {
 					e.printStackTrace();
 				}
 			}
-		} else if (sub[0].equals("killall")) {
+		} else if (sub[0].equals("killall")) {  // will need to be used again in case of horntail or multiple state baddies
 			List<MapleMapObject> monsters = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
 			MapleMap map = player.getMap();
 			for (MapleMapObject monstermo : monsters) {
@@ -1147,7 +1146,7 @@ public class Commands {
 			List<MapleMapObject> monsters = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
 			for (MapleMapObject monstermo : monsters) {
 				MapleMonster monster = (MapleMonster) monstermo;
-				player.message("Monster ID: " + monster.getId());
+				player.message("Monster ID: " + monster.getId() + " Aggro target: " + ((monster.getController() != null) ? monster.getController().getName() : "<none>"));
 			}
 		} else if (sub[0].equals("unbug")) {
 			c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.enableActions());
@@ -1428,6 +1427,24 @@ public class Commands {
 	public static void executeAdminCommand(MapleClient c, String[] sub, char heading) {
 		MapleCharacter player = c.getPlayer();
 		switch (sub[0]) {
+                case "zakum":
+                        player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
+                        for (int x = 8800003; x < 8800011; x++) {
+                                player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
+                        }
+                        break;
+                    
+                case "horntail":
+                        final Point targetPoint = player.getPosition();
+                        final MapleMap targetMap = player.getMap();
+                        
+                        targetMap.spawnHorntailOnGroundBelow(targetPoint);
+                        break;
+                    
+                case "pinkbean":
+                       player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8820001), player.getPosition());
+                       break;
+                    
 		case "sp":  //Changed to support giving sp /a
                         if (sub.length < 2){
 				player.yellowMessage("Syntax: !sp <newsp>");
@@ -1443,9 +1460,7 @@ public class Commands {
 				victim.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
 			}
 			break;
-		case "horntail":
-			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), player.getPosition());
-			break;
+                
 		case "packet":
 			player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
 			break;
@@ -1611,12 +1626,6 @@ public class Commands {
 				mapitem.setPickedUp(true);
 				player.getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 2, player.getId()), mapitem.getPosition());
 				player.getMap().removeMapObject(item);
-			}
-			break;
-		case "zakum":
-			player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
-			for (int x = 8800003; x < 8800011; x++) {
-				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), player.getPosition());
 			}
 			break;
 		case "clearquestcache":

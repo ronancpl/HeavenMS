@@ -77,6 +77,7 @@ import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
 import server.partyquest.Pyramid;
 import scripting.event.EventInstanceManager;
+import server.life.MonsterListener;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -611,7 +612,7 @@ public class MapleMap {
             }
             if (monster.getStats().selfDestruction() != null && monster.getStats().selfDestruction().getHp() > -1) {// should work ;p
                 if (monster.getHp() <= monster.getStats().selfDestruction().getHp()) {
-                    killMonster(monster, chr, true, false, monster.getStats().selfDestruction().getAction());
+                    killMonster(monster, chr, true, monster.getStats().selfDestruction().getAction());
                     return true;
                 }
             }
@@ -632,20 +633,12 @@ public class MapleMap {
     }
 
     public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops) {
-        killMonster(monster, chr, withDrops, false, 1);
+        killMonster(monster, chr, withDrops, 1);
     }
 
-    public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops, final boolean secondTime, int animation) {
-        if (monster.getId() == 8810018 && !secondTime) {
-            TimerManager.getInstance().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    killMonster(monster, chr, withDrops, true, 1);
-                    killAllMonsters();
-                }
-            }, 3000);
-            return;
-        }
+    public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops, int animation) {
+        if(monster == null) return;
+        
         if (chr == null) {
             spawnedMonstersOnMap.decrementAndGet();
             monster.setHp(0);
@@ -780,7 +773,7 @@ public class MapleMap {
                 continue;
             }
             
-            killMonster(monster, null, false, false, 1);
+            killMonster(monster, null, false, 1);
         }
     }
 
@@ -792,7 +785,7 @@ public class MapleMap {
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
             
-            killMonster(monster, null, false, false, 1);
+            killMonster(monster, null, false, 1);
         }
     }
 
@@ -1174,7 +1167,7 @@ public class MapleMap {
                 TimerManager.getInstance().schedule(new Runnable() {
                     @Override
                     public void run() {
-                        killMonster(monster, null, false, false, selfDestruction.getAction());
+                        killMonster(monster, null, false, selfDestruction.getAction());
                     }
                 }, selfDestruction.removeAfter() * 1000);
             }
@@ -2665,5 +2658,41 @@ public class MapleMap {
     
     public boolean isDojoMap() {
         return mapid >= 925020000 && mapid < 925040000;
+    }
+    
+    public boolean isHorntailDefeated() {   // all parts of dead horntail can be found here?
+        for(int i = 8810010; i <= 8810017; i++) {
+            if(getMonsterById(i) == null) return false;
+        }
+        
+        return true;
+    }
+    
+    public void spawnHorntailOnGroundBelow(final Point targetPoint) {   // ayy lmao
+        spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), targetPoint);
+        TimerManager.getInstance().schedule(new Runnable() {
+            @Override
+            public void run() {
+                for (int x = 8810002; x <= 8810009; x++) {
+                    spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(x), targetPoint);
+                }
+
+                spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810018), targetPoint);
+                
+                final MapleMonster ht = getMonsterById(8810018);
+                for(int mobId = 8810002; mobId <= 8810009; mobId++) {
+                    getMonsterById(mobId).addListener(new MonsterListener() {
+                        @Override
+                        public void monsterKilled(int aniTime) {}
+
+                        @Override
+                        public void monsterDamaged(MapleCharacter from, int trueDmg) {
+                            ht.damage(from, trueDmg);
+                        }
+                    });
+                }
+            }
+
+        }, 5 * 1000);
     }
 }

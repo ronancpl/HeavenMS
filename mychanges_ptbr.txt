@@ -226,3 +226,7 @@ Implementação da HPQ.
 17 Maio 2017,
 Correção de bug com o item "Pet Name Tag", que não retirava o item após ser usado.
 Correção em bug de uma quest (id 3927) de Ariant que envolve uma "parede".
+
+18 - 19 Maio 2017,
+Implementação das mecânicas do Horntail (spawn e kill).
+Correção de bugs em casos onde valores de EXP ganhos excedem o limite máximo de um inteiro de 32bits.
