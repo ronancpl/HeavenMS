@@ -354,8 +354,9 @@ public class Commands {
 			player.yellowMessage("SourMjolk - Game Master");
 			player.yellowMessage("Kanade - Game Master");
 			player.yellowMessage("Kitsune - Game Master");
-                        player.yellowMessage("Branch Staff");
+                        player.yellowMessage("MapleSolaxiaV2 Staff");
                         player.yellowMessage("Ronan - Freelance Developer");
+                        player.yellowMessage("Vcoc - Freelance Developer");
 			break;
 		case "lastrestart":
 		case "uptime":

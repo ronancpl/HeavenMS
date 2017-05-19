@@ -60,14 +60,14 @@ public class LogHelper {
 	}
 
 	public static void logLeaf(MapleCharacter player, boolean gotPrize, String operation) {
-		String timeStamp = new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date());
+		String timeStamp = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date());
 		String log = player.getName() + (gotPrize ? " used a maple leaf to buy " + operation : " redeemed " + operation + " VP for a leaf") + " - " + timeStamp + "\r\n";
 		FilePrinter.printError("mapleleaves.txt", log);
 	}
 	
 	public static void logGacha(MapleCharacter player, int itemid, String map) {
 		String itemName = MapleItemInformationProvider.getInstance().getName(itemid);
-		String timeStamp = new SimpleDateFormat("dd-M-yyyy hh:mm:ss").format(new Date());
+		String timeStamp = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date());
 		String log = player.getName() + " got a " + itemName + "(" + itemid + ") from the " + map + " gachapon. - " + timeStamp + "\r\n";
 		FilePrinter.printError("gachapon.txt", log);
 	}

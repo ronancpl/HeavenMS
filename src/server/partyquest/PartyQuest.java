@@ -107,7 +107,7 @@ public class PartyQuest {
                 } else if(PQ.equals("LudiPQLast")) {
                     return 800 * level / 5;
                 }
-		FilePrinter.print(FilePrinter.NPC, "Unhandled PartyQuest: " + PQ);
+		FilePrinter.printError(FilePrinter.NPC, "Unhandled PartyQuest: " + PQ);
 		return 0;
 	}
 }

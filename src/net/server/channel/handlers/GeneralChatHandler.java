@@ -29,6 +29,8 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.command.Commands;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
 	
@@ -57,7 +59,9 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                     for (String used : sp) {
                     	command += used + " ";
                     }
-                    FilePrinter.printError("usedCommands.txt", c.getPlayer().getName() + " used: " + heading + command + "\r\n");
+                    
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                    FilePrinter.print(FilePrinter.USED_COMMANDS + ".txt", c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
                 }
             }
         } else {
