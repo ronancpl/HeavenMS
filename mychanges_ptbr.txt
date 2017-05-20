@@ -230,3 +230,8 @@ Correção em bug de uma quest (id 3927) de Ariant que envolve uma "parede".
 18 - 19 Maio 2017,
 Implementação das mecânicas do Horntail (spawn e kill).
 Correção de bugs em casos onde valores de EXP ganhos excedem o limite máximo de um inteiro de 32bits.
+
+20 Maio 2017,
+Adição: mecânica de cadeia para GMs.
+Em conjunto com vcoc, adicionaram-se comandos: !clearslot, !hide/unhide, !jail, !itemvac e !healmap.
+Correção de bug em tabela SQL que continha informação imcompleta para com alguns registros de cards e respectivos mobs.

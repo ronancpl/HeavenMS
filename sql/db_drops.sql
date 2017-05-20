@@ -19015,11 +19015,14 @@
 (9500319, 1422011, 1, 1, 0, 4000),
 (9500319, 1432046, 1, 1, 0, 4000),
 (9500319, 1332030, 1, 1, 0, 4000),
-(9300188, 2388052, 1, 1, 0, 24000),
-(9300196, 2388008, 1, 1, 0, 24000),
-(9300204, 2388015, 1, 1, 0, 24000),
-(9300207, 2388052, 1, 1, 0, 24000),
-(9300209, 2388052, 1, 1, 0, 24000);
+(9300188, 2388052, 1, 1, 0, 8000),
+(9300196, 2388008, 1, 1, 0, 8000),
+(9300204, 2388015, 1, 1, 0, 8000),
+(9300201, 2388039, 1, 1, 0, 8000),
+(9300206, 2388032, 1, 1, 0, 8000),
+(9300207, 2388054, 1, 1, 0, 8000),
+(9300209, 2388053, 1, 1, 0, 8000),
+(9300215, 2388046, 1, 1, 0, 8000);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
@@ -19204,4 +19207,14 @@
     (9102006, 4001099, 3, -1),
     (9102007, 4001100, 3, -1);
 
-  #global data already updated
+  # updates info for all cards on monster book
+  DROP TABLE `monstercarddata`;
+  CREATE TABLE IF NOT EXISTS `monstercarddata` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `cardid` int(11) NOT NULL DEFAULT '0',
+    `mobid` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`) USING BTREE,
+    UNIQUE KEY `id` (`id`)
+  ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+  INSERT INTO `monstercarddata` (`cardid`, `mobid`) (SELECT itemid, min(dropperid) FROM drop_data where itemid>=2380000 and itemid<2390000 group by itemid);

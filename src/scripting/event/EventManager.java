@@ -95,11 +95,13 @@ public class EventManager {
     private List<Integer> getLobbyRange() {
         try {
             return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
-        } catch (ScriptException | NoSuchMethodException ex) {
-            ex.printStackTrace();
+        } catch (ScriptException | NoSuchMethodException ex) { // they didn't define a lobby range
+            List<Integer> defaultList = new ArrayList<>();
+            defaultList.add(0);
+            defaultList.add(maxLobbys);
+            
+            return defaultList;
         }
-        
-        return new ArrayList<>();
     }
 
     public void schedule(String methodName, long delay) {

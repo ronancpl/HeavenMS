@@ -829,4 +829,8 @@ public class AbstractPlayerInteraction {
 		}
 		return null;
 	}
+        
+        public long getJailTimeLeft() {
+                return getPlayer().getJailExpirationTimeLeft();
+        }
 }

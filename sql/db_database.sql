@@ -175,6 +175,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `dataString` varchar(64) NOT NULL DEFAULT '',
   `lastLogoutTime` timestamp NOT NULL DEFAULT '2015-01-01 05:00:00',
   `pendantExp` tinyint(1) NOT NULL DEFAULT '0',
+  `jailexpire` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `accountid` (`accountid`),
   KEY `party` (`party`),

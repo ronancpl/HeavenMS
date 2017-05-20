@@ -64,9 +64,9 @@ public class TimerManager implements TimerManagerMBean {
         });
         //this is a no-no, it actually does nothing..then why the fuck are you doing it?
         stpe.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);
-		stpe.setRemoveOnCancelPolicy(true);
+        stpe.setRemoveOnCancelPolicy(true);
 		
-		stpe.setKeepAliveTime(5, TimeUnit.MINUTES);
+        stpe.setKeepAliveTime(5, TimeUnit.MINUTES);
         stpe.allowCoreThreadTimeOut(true);
 		
         ses = stpe;
@@ -143,7 +143,7 @@ public class TimerManager implements TimerManagerMBean {
             try {
                 r.run();
             } catch (Throwable t) {
-				FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, t);
+                FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, t);
             }
         }
     }

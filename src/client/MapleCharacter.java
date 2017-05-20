@@ -200,7 +200,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int expRate = 1, mesoRate = 1, dropRate = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int married;
-    private long dojoFinish, lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1;
+    private long dojoFinish, lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
     private boolean hidden, canDoor = true, Berserk, hasMerchant, whiteChat = false;
     private int linkedLevel = 0;
@@ -3183,6 +3183,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.face = rs.getInt("face");
             ret.accountid = rs.getInt("accountid");
             ret.mapid = rs.getInt("map");
+            ret.jailExpiration = rs.getLong("jailexpire");
             ret.initialSpawnPoint = rs.getInt("spawnpoint");
             ret.world = rs.getByte("world");
             ret.rank = rs.getInt("rank");
@@ -4154,7 +4155,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             if (gmLevel < 1 && level > 199) {
                 ps.setInt(1, isCygnus() ? 120 : 200);
             } else {
@@ -4248,7 +4249,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.setInt(47, omokties);
             ps.setString(48, dataString);
             ps.setInt(49, quest_fame);
-            ps.setInt(50, id);
+            ps.setLong(50, jailExpiration);
+            ps.setInt(51, id);
 
             int updateRows = ps.executeUpdate();
             if (updateRows < 1) {
@@ -5691,5 +5693,24 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         }
         return sp;
+    }
+    
+    public long getJailExpirationTimeLeft() {
+        return jailExpiration - System.currentTimeMillis();
+    }
+    
+    private void setFutureJailExpiration(long time) {
+        jailExpiration = System.currentTimeMillis() + time;
+    }
+    
+    public void addJailExpirationTime(long time) {
+        long timeLeft = getJailExpirationTimeLeft();
+
+        if(timeLeft <= 0) setFutureJailExpiration(time);
+        else setFutureJailExpiration(timeLeft + time);
+    }
+    
+    public void removeJailExpirationTime() {
+        jailExpiration = 0;
     }
 }
