@@ -1738,7 +1738,7 @@ public class Commands {
 			break;
 		case "face":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: !face <faceid>");
+				player.yellowMessage("Syntax: !face [<playername>] <faceid>");
 				return;
 			}
                     
@@ -1747,13 +1747,17 @@ public class Commands {
 				player.equipChanged();
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				player.setFace(Integer.parseInt(sub[2]));
-				player.equipChanged();
+                                if(victim == null) {
+                                        player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                        return;
+                                }
+				victim.setFace(Integer.parseInt(sub[2]));
+				victim.equipChanged();
 			}
 			break;
 		case "hair":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: !hair <hairid>");
+				player.yellowMessage("Syntax: !hair [<playername>] <hairid>");
 				return;
 			}
                     
@@ -1762,32 +1766,40 @@ public class Commands {
 				player.equipChanged();
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				player.setHair(Integer.parseInt(sub[2]));
-				player.equipChanged();
+                                if(victim == null) {
+                                        player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                        return;
+                                }
+				victim.setHair(Integer.parseInt(sub[2]));
+				victim.equipChanged();
 			}
 			break;
-                    
                 case "itemvac":
-                    List<MapleMapObject> items = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
-                    for (MapleMapObject item : items) {
-                        MapleMapItem mapItem = (MapleMapItem) item;
-                        if (mapItem.getMeso() > 0) {
-                            player.gainMeso(mapItem.getMeso(), true);
-                        } else if (mapItem.getItem().getItemId() >= 5000000 && mapItem.getItem().getItemId() <= 5000100) {
-                            int petId = MaplePet.createPet(mapItem.getItem().getItemId());
-                            if (petId == -1) {
-                                continue;
-                            }
-                            MapleInventoryManipulator.addById(c, mapItem.getItem().getItemId(), mapItem.getItem().getQuantity(), null, petId);
-                        } else {
-                            MapleInventoryManipulator.addFromDrop(c, mapItem.getItem(), true);
+                        List<MapleMapObject> list = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
+                        for (MapleMapObject item : list) {
+                                player.pickupItem(item);
                         }
-                        mapItem.setPickedUp(true);
-                        player.getMap().removeMapObject(item);
-                        player.getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapItem.getObjectId(), 2, player.getId()), mapItem.getPosition());
-                    }
-                    break;
-                    
+                        break;
+                case "forcevac":
+                        List<MapleMapObject> items = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
+                        for (MapleMapObject item : items) {
+                                MapleMapItem mapItem = (MapleMapItem) item;
+                                if (mapItem.getMeso() > 0) {
+                                        player.gainMeso(mapItem.getMeso(), true);
+                                } else if (mapItem.getItem().getItemId() >= 5000000 && mapItem.getItem().getItemId() <= 5000100) {
+                                        int petId = MaplePet.createPet(mapItem.getItem().getItemId());
+                                        if (petId == -1) {
+                                                continue;
+                                        }
+                                        MapleInventoryManipulator.addById(c, mapItem.getItem().getItemId(), mapItem.getItem().getQuantity(), null, petId);
+                                } else {
+                                        MapleInventoryManipulator.addFromDrop(c, mapItem.getItem(), true);
+                                }
+                                mapItem.setPickedUp(true);
+                                player.getMap().removeMapObject(item);
+                                player.getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapItem.getObjectId(), 2, player.getId()), mapItem.getPosition());
+                        }
+                        break;
 		case "clearquestcache":
 			MapleQuest.clearCache();
 			player.dropMessage(5, "Quest Cache Cleared.");

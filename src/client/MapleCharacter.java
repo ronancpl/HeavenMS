@@ -144,6 +144,8 @@ import constants.skills.Spearman;
 import constants.skills.SuperGM;
 import constants.skills.Swordsman;
 import constants.skills.ThunderBreaker;
+import scripting.item.ItemScriptManager;
+import server.maps.MapleMapItem;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
@@ -1325,6 +1327,146 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         monster.setController(this);
         controlled.add(monster);
         client.announce(MaplePacketCreator.controlMonster(monster, false, aggro));
+    }
+    
+    private static boolean useItem(final MapleClient c, final int id) {
+        if (id / 1000000 == 2) {
+            MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            if (ii.isConsumeOnPickup(id)) {
+                if (id > 2022430 && id < 2022434) {
+                    for (MapleCharacter mc : c.getPlayer().getMap().getCharacters()) {
+                        if (mc.getParty() == c.getPlayer().getParty()) {
+                            ii.getItemEffect(id).applyTo(mc);
+                        }
+                    }
+                } else {
+                    ii.getItemEffect(id).applyTo(c.getPlayer());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public final void pickupItem(MapleMapObject ob) {
+        pickupItem(ob, -1);
+    }
+    
+    public final void pickupItem(MapleMapObject ob, int petIndex) {     // yes, one picks the MapleMapObject, not the MapleMapItem
+        if (ob == null) {                                               // pet index refers to the one picking up the item
+            return;
+        }
+		
+        if (ob instanceof MapleMapItem) {
+            MapleMapItem mapitem = (MapleMapItem) ob;
+            if(System.currentTimeMillis() - mapitem.getDropTime() < 900) {
+                client.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
+            boolean isPet = petIndex > -1;
+            final byte[] pickupPacket = MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), (isPet) ? 5 : 2, this.getId(), isPet, petIndex);
+            
+            boolean hasSpaceInventory = true;
+            if (mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866 || mapitem.getMeso() > 0 || MapleItemInformationProvider.getInstance().isConsumeOnPickup(mapitem.getItemId()) || (hasSpaceInventory = MapleInventoryManipulator.checkSpace(client, mapitem.getItemId(), mapitem.getItem().getQuantity(), mapitem.getItem().getOwner()))) {
+                if ((this.getMapId() > 209000000 && this.getMapId() < 209000016) || (this.getMapId() >= 990000500 && this.getMapId() <= 990000502)) {//happyville trees and guild PQ
+                    if (!mapitem.isPlayerDrop() || mapitem.getDropper().getObjectId() == client.getPlayer().getObjectId()) {
+                        if(mapitem.getMeso() > 0) {
+                            this.gainMeso(mapitem.getMeso(), true, true, false);
+                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
+                            this.getMap().removeMapObject(ob);
+                            mapitem.setPickedUp(true);
+                        } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), false)) {
+                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
+                            this.getMap().removeMapObject(ob);
+                            mapitem.setPickedUp(true);
+                        } else {
+                            client.announce(MaplePacketCreator.enableActions());
+                            return;
+                        }
+                    } else {
+                        client.announce(MaplePacketCreator.showItemUnavailable());
+                        client.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    client.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+            
+                synchronized (mapitem) {
+                    if (mapitem.getQuest() > 0 && !this.needQuestItem(mapitem.getQuest(), mapitem.getItemId())) {
+                        client.announce(MaplePacketCreator.showItemUnavailable());
+                        client.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    if (mapitem.isPickedUp()) {
+                        client.announce(MaplePacketCreator.showItemUnavailable());
+                        client.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    if (mapitem.getMeso() > 0) {
+                        if (this.getParty() != null) {
+                            int mesosamm = mapitem.getMeso();
+                            if (mesosamm > 50000 * this.getMesoRate()) {
+                                return;
+                            }
+                            int partynum = 0;
+                            for (MaplePartyCharacter partymem : this.getParty().getMembers()) {
+                                if (partymem.isOnline() && partymem.getMapId() == this.getMap().getId() && partymem.getChannel() == client.getChannel()) {
+                                    partynum++;
+                                }
+                            }
+                            for (MaplePartyCharacter partymem : this.getParty().getMembers()) {
+                                if (partymem.isOnline() && partymem.getMapId() == this.getMap().getId()) {
+                                    MapleCharacter somecharacter = client.getChannelServer().getPlayerStorage().getCharacterById(partymem.getId());
+                                    if (somecharacter != null) {
+                                        somecharacter.gainMeso(mesosamm / partynum, true, true, false);
+                                    }
+                                }
+                            }
+                        } else {
+                            this.gainMeso(mapitem.getMeso(), true, true, false);
+                        }
+                    } else if (mapitem.getItem().getItemId() / 10000 == 243) {
+                        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                        MapleItemInformationProvider.scriptedItem info = ii.getScriptedItemInfo(mapitem.getItem().getItemId());
+                        if (info.runOnPickup()) {
+                            ItemScriptManager ism = ItemScriptManager.getInstance();
+                            String scriptName = info.getScript();
+                            if (ism.scriptExists(scriptName)) {
+                                ism.getItemScript(client, scriptName);
+                            }
+
+                        } else {
+                            if (!MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
+                                client.announce(MaplePacketCreator.enableActions());
+                                return;
+                            }
+                        }
+                    } else if(mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866) {
+                        // Add NX to account, show effect and make item disappear
+                        this.getCashShop().gainCash(1, mapitem.getItemId() == 4031865 ? 100 : 250);
+                    } else if (useItem(client, mapitem.getItem().getItemId())) {
+                        if (mapitem.getItem().getItemId() / 10000 == 238) {
+                            this.getMonsterBook().addCard(client, mapitem.getItem().getItemId());
+                        }
+                    } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
+                    } else if (mapitem.getItem().getItemId() == 4031868) {
+                        this.getMap().broadcastMessage(MaplePacketCreator.updateAriantPQRanking(this.getName(), this.getItemQuantity(4031868, false), false));
+                    } else {
+                        client.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    mapitem.setPickedUp(true);
+                    this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
+                    this.getMap().removeMapObject(ob);
+                }
+            } else if(!hasSpaceInventory) {
+                client.announce(MaplePacketCreator.getInventoryFull());
+                client.announce(MaplePacketCreator.getShowInventoryFull());
+            }
+        }
+        client.announce(MaplePacketCreator.enableActions());
     }
 
     public int countItem(int itemid) {

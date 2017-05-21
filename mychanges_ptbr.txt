@@ -235,3 +235,8 @@ Correção de bugs em casos onde valores de EXP ganhos excedem o limite máximo de 
 Adição: mecânica de cadeia para GMs.
 Em conjunto com vcoc, adicionaram-se comandos: !clearslot, !hide/unhide, !jail, !itemvac e !healmap.
 Correção de bug em tabela SQL que continha informação imcompleta para com alguns registros de cards e respectivos mobs.
+
+21 Maio 2017,
+Refatoração de código referente ao métodos de coleta de item pelos jogadores.
+Retiradas inconsistências entre infos de mobbook e "cartão-de-visitas" do jogador.
+Foi retirado o gargalo no sistema sempre que jogador incorpora um novo card ao mobbook.

@@ -32,13 +32,13 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
 public final class MonsterBook {
-    private int specialCard;
+    private int specialCard = 0;
     private int normalCard = 0;
     private int bookLevel = 1;
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
 
     public void addCard(final MapleClient c, final int cardid) {
-        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeginCardEffect(c.getPlayer().getId()), false);
+        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignCardEffect(c.getPlayer().getId()), false);
         for (Entry<Integer, Integer> all : cards.entrySet()) {
             if (all.getKey() == cardid) {
                 if (all.getValue() > 4) {
@@ -57,7 +57,13 @@ public final class MonsterBook {
         c.announce(MaplePacketCreator.showGainCard());
         calculateLevel();
         
-        c.getPlayer().saveToDB();
+        if (cardid / 1000 >= 2388) {
+            specialCard++;
+        } else {
+            normalCard++;
+        }
+        
+        //c.getPlayer().saveToDB(); //is it REALLY needed to save to DB every new entry?
     }
 
     private void calculateLevel() {

@@ -5526,7 +5526,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] showForeginCardEffect(int id) {
+        public static byte[] showForeignCardEffect(int id) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
                 mplew.writeShort(SendOpcode.SHOW_FOREIGN_EFFECT.getValue());
                 mplew.writeInt(id);
