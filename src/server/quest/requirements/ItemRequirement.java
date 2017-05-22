@@ -73,7 +73,7 @@ public class ItemRequirement extends MapleQuestRequirement {
 				count += item.getQuantity();
 			}
 			//Weird stuff, nexon made some quests only available when wearing gm clothes. This enables us to accept it ><
-			if (iType.equals(MapleInventoryType.EQUIP)) {
+			if (iType.equals(MapleInventoryType.EQUIP) && chr.isGM()) {
 				for (Item item : chr.getInventory(MapleInventoryType.EQUIPPED).listById(itemId)) {
 					count += item.getQuantity();
 				}

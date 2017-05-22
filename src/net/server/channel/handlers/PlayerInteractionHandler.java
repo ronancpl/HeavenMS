@@ -415,7 +415,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             if (chr.getTrade() != null) {
                 if ((quantity <= item.getQuantity() && quantity >= 0) || ItemConstants.isRechargable(item.getItemId())) {
                     if (ii.isDropRestricted(item.getItemId())) { // ensure that undroppable items do not make it to the trade window
-                        if (!((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA || (item.getFlag() & ItemConstants.SPIKES) == ItemConstants.SPIKES)) {
+                        if (!((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA)) {
                             c.announce(MaplePacketCreator.enableActions());
                             return;
                         }

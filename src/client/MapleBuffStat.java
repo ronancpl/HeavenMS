@@ -111,7 +111,7 @@ public enum MapleBuffStat {
     SMART_KNOCKBACK(0x10000000000L, true),
     PYRAMID_PQ(0x20000000000L, true),
     ENERGY_CHARGE(0x4000000000000L, true),
-	DASH2(0x8000000000000L, true), // correct (speed)
+    DASH2(0x8000000000000L, true), // correct (speed)
     DASH(0x10000000000000L, true), // correct (jump)
     MONSTER_RIDING(0x20000000000000L, true),    
     SPEED_INFUSION(0x40000000000000L, true),

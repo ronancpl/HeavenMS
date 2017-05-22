@@ -1197,6 +1197,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         }
         
+        for(Item it: this.getInventory(MapleInventoryType.EQUIPPED).list()) {
+            if((it.getFlag() & ItemConstants.COLD) == ItemConstants.COLD && map.getReturnMapId() == 211000000) return(true);       //protection from cold
+        }
+        
         return false;
     }
     

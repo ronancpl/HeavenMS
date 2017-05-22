@@ -30,6 +30,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
+import constants.ItemConstants;
 import java.util.ArrayList;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
@@ -97,7 +98,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         ScrollResult scrollSuccess = Equip.ScrollResult.FAIL; // fail
         if (scrolled == null) {
             scrollSuccess = Equip.ScrollResult.CURSE;
-        } else if (scrolled.getLevel() > oldLevel || (isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1)) {
+        } else if (scrolled.getLevel() > oldLevel || (isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1) || isFlagModifier(scroll.getItemId(), scrolled.getFlag())) {
             scrollSuccess = Equip.ScrollResult.SUCCESS;
         }
         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, scroll.getPosition(), (short) 1, false);
@@ -123,6 +124,12 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         }
     }
 
+    private boolean isFlagModifier(int scrollId, byte flag) {
+        if(scrollId == 2041058 && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) return true;
+        if(scrollId == 2040727 && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES)) return true;
+        return false;
+    }
+    
     private boolean isCleanSlate(int scrollId) {
         return scrollId > 2048999 && scrollId < 2049004;
     }

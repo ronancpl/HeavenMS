@@ -143,9 +143,6 @@ public class HiredMerchant extends AbstractMapleMapObject {
             if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
                 newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
             }
-            if (newItem.getType() == 2 && (newItem.getFlag() & ItemConstants.SPIKES) == ItemConstants.SPIKES) {
-                newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.SPIKES));
-            }
             if (quantity < 1 || pItem.getBundles() < 1 || !pItem.isExist() || pItem.getBundles() < quantity) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;

@@ -24,8 +24,9 @@
 **/
 importPackage(Packages.tools);
 
-var returnMap;
-var map;
+var entryMap = 922000010;
+var exitMap = 221024400;
+var eventTime = 10; //10 minutes
 var eim;
 
 function init() {
@@ -33,59 +34,45 @@ function init() {
 }
 
 function playerEntry(eim, player) {
-    returnMap = em.getChannelServer().getMapFactory().getMap(221024400);
-    eim = em.getInstance("DollHouse");
-    map = eim.getMapFactory().getMap(922000010);
-    player.changeMap(map, map.getPortal(0));
-    map.shuffleReactors();
+    eim.getInstanceMap(entryMap).shuffleReactors();
+    eim.setExclusiveItems([4031094]);
+    
+    player.changeMap(entryMap, 0);
     em.setProperty("noEntry","true");
-    em.schedule("timeOut", 600000);
-    player.getClient().getSession().write(MaplePacketCreator.getClock(600));
+    
+    player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+    eim.startEventTimer(eventTime * 60000);
 }
-
-
 
 function playerExit(eim, player) {
-    em.setProperty("noEntry","false");
-    player.changeMap(returnMap, returnMap.getPortal(4));
-    //eim.unregisterPlayer(player);	needed no more
-    em.cancel();
-    em.disposeInstance("DollHouse");
+    eim.unregisterPlayer(player);
     eim.dispose();
+    em.setProperty("noEntry","false");
 }
 
-function timeOut() {
-    em.setProperty("noEntry","false");
+function scheduledTimeout(eim) {
     var player = eim.getPlayers().get(0);
-    player.changeMap(returnMap, returnMap.getPortal(4));
-    //eim.unregisterPlayer(player);
-    em.cancel();
-    em.disposeInstance("DollHouse");
-    eim.dispose();
+    playerExit(eim, eim.getPlayers().get(0));
+    player.changeMap(exitMap, 4);
 }
 
 function playerDisconnected(eim, player) {
-    em.setProperty("noEntry","false");
-    player.getMap().removePlayer(player);
-    player.setMap(returnMap);
-    //eim.unregisterPlayer(player);
-    em.cancel();
-    em.disposeInstance("DollHouse");
-    eim.dispose();
+    playerExit(eim, player);
 }
 
 function clear(eim) {
-    em.setProperty("noEntry","false");
     var player = eim.getPlayers().get(0);
-    player.changeMap(returnMap, returnMap.getPortal(4));
-    //eim.unregisterPlayer(player);
-    em.cancel();
-    em.disposeInstance("DollHouse");
+    eim.unregisterPlayer(player);
+    player.changeMap(exitMap, 4);
+    
     eim.dispose();
+    em.setProperty("noEntry","false");
 }
 
-function cancelSchedule() {
+function changedMap(eim, chr, mapid) {
+    if(mapid != entryMap) playerExit(eim, chr);
 }
 
-function dispose() {
-}
+function cancelSchedule() {}
+
+function dispose() {}
