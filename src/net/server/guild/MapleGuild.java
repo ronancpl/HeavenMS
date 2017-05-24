@@ -37,7 +37,6 @@ import java.util.Set;
 
 import net.server.Server;
 import net.server.channel.Channel;
-import tools.LogHelper;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -46,7 +45,7 @@ public class MapleGuild {
     public final static int CHANGE_EMBLEM_COST = 5000000;
 
     private enum BCOp {
-        NONE, DISBAND, EMBELMCHANGE
+        NONE, DISBAND, EMBLEMCHANGE
     }
     private List<MapleGuildCharacter> members;
     private String rankTitles[] = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
@@ -56,8 +55,6 @@ public class MapleGuild {
     private Map<Integer, List<Integer>> notifications = new LinkedHashMap<>();
     private boolean bDirty = true;
 
-
-	
     public MapleGuild(int guildid, int world) {
         this.world = world;
         members = new ArrayList<>();
@@ -97,14 +94,14 @@ public class MapleGuild {
                 return;
             }
             do {
-                members.add(new MapleGuildCharacter(rs.getInt("id"), rs.getInt("level"), rs.getString("name"), (byte) -1, world, rs.getInt("job"), rs.getInt("guildrank"), guildid, false, rs.getInt("allianceRank")));
+                members.add(new MapleGuildCharacter(null, rs.getInt("id"), rs.getInt("level"), rs.getString("name"), (byte) -1, world, rs.getInt("job"), rs.getInt("guildrank"), guildid, false, rs.getInt("allianceRank")));
             } while (rs.next());
             
             ps.close();
             rs.close();
         } catch (SQLException se) {
             se.printStackTrace();
-            System.out.println("unable to read guild information from sql" + se);
+            System.out.println("Unable to read guild information from sql" + se);
         }
     }
 
@@ -261,7 +258,7 @@ public class MapleGuild {
                     if (notifications.get(b).size() > 0) {
                         if (bcop == BCOp.DISBAND) {
                             Server.getInstance().getWorld(world).setGuildAndRank(notifications.get(b), 0, 5, exceptionId);
-                        } else if (bcop == BCOp.EMBELMCHANGE) {
+                        } else if (bcop == BCOp.EMBLEMCHANGE) {
                             Server.getInstance().getWorld(world).changeEmblem(this.id, notifications.get(b), new MapleGuildSummary(this));
                         } else {
                             Server.getInstance().getWorld(world).sendPacket(notifications.get(b), packet, exceptionId);
@@ -283,6 +280,16 @@ public class MapleGuild {
                     break;
                 }
             }
+        }
+    }
+    
+    public void dropGuildMessage(String message) {
+        dropGuildMessage(5, message);
+    }
+    
+    public void dropGuildMessage(int type, String message) {
+        for (MapleGuildCharacter mgc : members) {
+            mgc.getCharacter().dropMessage(type, message);
         }
     }
 
@@ -480,7 +487,7 @@ public class MapleGuild {
         this.logo = logo;
         this.logoColor = logocolor;
         this.writeToDB(false);
-        this.broadcast(null, -1, BCOp.EMBELMCHANGE);
+        this.broadcast(null, -1, BCOp.EMBLEMCHANGE);
     }
 
     public MapleGuildCharacter getMGC(int cid) {
@@ -550,6 +557,20 @@ public class MapleGuild {
         try {
             try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE guilds SET allianceId = ? WHERE guildid = ?")) {
                 ps.setInt(1, aid);
+                ps.setInt(2, id);
+                ps.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void resetAllianceGuildPlayersRank() {
+        try {
+            for(MapleGuildCharacter mgc: members) mgc.setAllianceRank(5);
+            
+            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET allianceRank = ? WHERE guildid = ?")) {
+                ps.setInt(1, 5);
                 ps.setInt(2, id);
                 ps.executeUpdate();
             }

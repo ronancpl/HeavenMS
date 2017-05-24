@@ -287,6 +287,7 @@ public class Server implements Runnable {
         MapleAlliance alliance = alliances.get(aId);
         if (alliance != null) {
             alliance.addGuild(guildId);
+            guilds.get(guildId).setAllianceId(aId);
             return true;
         }
         return false;
@@ -296,6 +297,7 @@ public class Server implements Runnable {
         MapleAlliance alliance = alliances.get(aId);
         if (alliance != null) {
             alliance.removeGuild(guildId);
+            guilds.get(guildId).setAllianceId(0);
             return true;
         }
         return false;
@@ -346,6 +348,16 @@ public class Server implements Runnable {
     public int createGuild(int leaderId, String name) {
         return MapleGuild.createGuild(leaderId, name);
     }
+    
+    public MapleGuild getGuild(int id) {
+        synchronized (guilds) {
+            if (guilds.get(id) != null) {
+                return guilds.get(id);
+            }
+            
+            return null;
+        }
+    }
 
     public MapleGuild getGuild(int id, int world, MapleGuildCharacter mgc) {
         synchronized (guilds) {
@@ -392,6 +404,10 @@ public class Server implements Runnable {
             return true;
         }
         return false;
+    }
+    
+    public void resetAllianceGuildPlayersRank(int gId) {
+        guilds.get(gId).resetAllianceGuildPlayersRank();
     }
 
     public void leaveGuild(MapleGuildCharacter mgc) {
@@ -473,16 +489,16 @@ public class Server implements Runnable {
         }
     }
 	
-	public void guildMessage(int gid, byte[] packet) {
-		guildMessage(gid, packet, -1);
-	}
+    public void guildMessage(int gid, byte[] packet) {
+        guildMessage(gid, packet, -1);
+    }
 	
-	public void guildMessage(int gid, byte[] packet, int exception) {
-		MapleGuild g = guilds.get(gid);
-		if(g != null) {
-			g.broadcast(packet, exception);
-		}
-	}
+    public void guildMessage(int gid, byte[] packet, int exception) {
+        MapleGuild g = guilds.get(gid);
+        if(g != null) {
+            g.broadcast(packet, exception);
+        }
+    }
 
     public PlayerBuffStorage getPlayerBuffStorage() {
         return buffStorage;

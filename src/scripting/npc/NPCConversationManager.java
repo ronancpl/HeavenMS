@@ -25,6 +25,8 @@ import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.LinkedList;
 
 import net.server.Server;
 import net.server.guild.MapleAlliance;
@@ -344,6 +346,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 			Server.getInstance().broadcastMessage(MaplePacketCreator.gachaponMessage(itemGained, map, getPlayer()));
 		}
 	}
+        
+        public void upgradeAlliance() {
+                MapleAlliance alliance = Server.getInstance().getAlliance(c.getPlayer().getGuild().getAllianceId());
+                alliance.increaseCapacity(1);
+        }
 
 	public void disbandAlliance(MapleClient c, int allianceId) {
 		PreparedStatement ps = null;
@@ -368,63 +375,16 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public boolean canBeUsedAllianceName(String name) {
-		if (name.contains(" ") || name.length() > 12) {
-			return false;
-		}
-		try {
-			ResultSet rs;
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT name FROM alliance WHERE name = ?")) {
-				ps.setString(1, name);
-				rs = ps.executeQuery();
-				if (rs.next()) {
-					ps.close();
-					rs.close();
-					return false;
-				}
-			}
-			rs.close();
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+                return MapleAlliance.canBeUsedAllianceName(name);
 	}
-
-	public static MapleAlliance createAlliance(MapleCharacter chr1, MapleCharacter chr2, String name) {
-		int id;
-		int guild1 = chr1.getGuildId();
-		int guild2 = chr2.getGuildId();
-		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO `alliance` (`name`, `guild1`, `guild2`) VALUES (?, ?, ?)", PreparedStatement.RETURN_GENERATED_KEYS)) {
-				ps.setString(1, name);
-				ps.setInt(2, guild1);
-				ps.setInt(3, guild2);
-				ps.executeUpdate();
-				try (ResultSet rs = ps.getGeneratedKeys()) {
-					rs.next();
-					id = rs.getInt(1);
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
-		MapleAlliance alliance = new MapleAlliance(name, id, guild1, guild2);
-		try {
-			Server.getInstance().setGuildAllianceId(guild1, id);
-			Server.getInstance().setGuildAllianceId(guild2, id);
-			chr1.setAllianceRank(1);
-			chr1.saveGuildStatus();
-			chr2.setAllianceRank(2);
-			chr2.saveGuildStatus();
-			Server.getInstance().addAlliance(id, alliance);
-			Server.getInstance().allianceMessage(id, MaplePacketCreator.makeNewAlliance(alliance, chr1.getClient()), -1, -1);
-		} catch (Exception e) {
-                        e.printStackTrace();
-			return null;
-		}
-		return alliance;
-	}
+        
+        public MapleAlliance createAlliance(String name) {
+            return MapleAlliance.createAlliance(getParty(), name);
+        }
+        
+        public int getAllianceCapacity() {
+                return Server.getInstance().getAlliance(getPlayer().getGuild().getAllianceId()).getCapacity();
+        }
 
 	public boolean hasMerchant() {
 		return getPlayer().hasMerchant();

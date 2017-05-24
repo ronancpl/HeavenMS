@@ -316,7 +316,12 @@ public class Commands {
 		switch (sub[0]) {
                 case "help":
 		case "commands":
-			player.yellowMessage("After you vote, talk to Rooney to get a leaf and redeem it for prizes!");
+                    
+                                    
+                case "playercommands": 
+                       player.message("============================================================");
+                       player.message("MapleSolaxiaV2 Player Commands");
+                       player.message("============================================================");
 			player.message("@dispose: Fixes your character if it is stuck.");
 			player.message("@online: Displays a list of all online players.");
 			player.message("@time: Displays the current server time.");
@@ -368,10 +373,6 @@ public class Commands {
  			player.yellowMessage("Solaxia has been online for " + days + " days " + hours + " hours " + minutes + " minutes and " + seconds + " seconds.");
 			break;
 		case "gacha":
-			if (player.gmLevel() == 0) { // Sigh, need it for now...
-				player.yellowMessage("Player Command " + heading + sub[0] + " does not exist, see @help for a list of commands.");
-				return false;
-			}
 			Gachapon gacha = null;
 			String search = joinStringFrom(sub, 1);
 			String gachaName = "";
@@ -478,7 +479,11 @@ public class Commands {
 			player.message("You've been disposed.");
 			break;
 		case "rates":
-			c.resetVoteTime(); 
+			//c.resetVoteTime();
+			player.yellowMessage("BOSSDROP RATE");
+			player.message(">>Total BOSSDROP Rate: " + c.getWorldServer().getBossDropRate() + "x");
+                        player.message(">>------------------------------------------------");
+                        
 			player.yellowMessage("DROP RATE");
                         player.message(">>Base DROP Rate: " + c.getWorldServer().getDropRate() + "x");
                         player.message(">>Your DROP Rate: " + player.getDropRate() / c.getWorldServer().getDropRate() + "x");
@@ -671,7 +676,7 @@ public class Commands {
                             
 		default:
 			if (player.gmLevel() == 0) {
-				player.yellowMessage("Player Command " + heading + sub[0] + " does not exist, see @help for a list of commands.");
+				player.yellowMessage("Player Command " + heading + sub[0] + " does not exist, see @playercommands for a list of commands.");
 			}
 			return false;
 		}
@@ -683,7 +688,12 @@ public class Commands {
 		Channel cserv = c.getChannelServer();
 		Server srv = Server.getInstance();
                 
-                if (sub[0].equals("sp")) {
+                if (sub[0].equals("commands")) {
+                        player.message("============================================================");
+                        player.message("MapleSolaxiaV2 GM/Admin Commands Available");
+                        player.message("============================================================");
+                }
+                else if (sub[0].equals("sp")) {
                         if (sub.length < 2){
 				player.yellowMessage("Syntax: !sp [<playername>] <newsp>");
 				return true;
@@ -1571,7 +1581,6 @@ public class Commands {
                         SkillFactory.getSkill(9101004).getEffect(SkillFactory.getSkill(9101004).getMaxLevel()).applyTo(player);
                 } else if (sub[0].equals("unhide")) {
                         SkillFactory.getSkill(9101004).getEffect(SkillFactory.getSkill(9101004).getMaxLevel()).applyTo(player);
-                        
                 } else if (sub[0].equals("healmap")) {
                         for (MapleCharacter mch : player.getMap().getCharacters()) {
                                 if (mch != null) {
@@ -1581,6 +1590,39 @@ public class Commands {
                                         mch.updateSingleStat(MapleStat.MP, mch.getMaxMp());
                                 }
                         }
+                } else if (sub[0].equals("healperson")) {
+                                MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                                victim.setHp(victim.getMaxHp());
+                                victim.updateSingleStat(MapleStat.HP, victim.getMaxHp());
+                                victim.setMp(victim.getMaxMp());
+                                victim.updateSingleStat(MapleStat.MP, victim.getMaxMp());
+                } else if (sub[0].equals("hurt")) {
+                                MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                                victim.setHp(1);
+                                victim.updateSingleStat(MapleStat.HP, 1);
+                } else if (sub[0].equals("killmap")) {
+                        for (MapleCharacter mch : player.getMap().getCharacters()) {
+                                mch.setHp(0);
+                                mch.updateSingleStat(MapleStat.HP, 0);
+                        }
+                } else if (sub[0].equals("mesorate")) {
+                        if (sub.length < 2){
+                                player.yellowMessage("Syntax: !mesorate <newrate>");
+                                return true;
+                        }
+                        c.getWorldServer().setMesoRate(Integer.parseInt(sub[1]));
+                } else if (sub[0].equals("droprate")) {
+                        if (sub.length < 2){
+                                player.yellowMessage("Syntax: !droprate <newrate>");
+                                return true;
+                        }		
+                        c.getWorldServer().setDropRate(Integer.parseInt(sub[1]));
+                } else if (sub[0].equals("bossdroprate")) {
+                        if (sub.length < 2){
+                                player.yellowMessage("Syntax: !bossdroprate <newrate>");
+                                return true;
+                        }
+                                c.getWorldServer().setBossDropRate(Integer.parseInt(sub[1]));
                 } else if (sub[0].equalsIgnoreCase("night")) {
                         player.getMap().broadcastNightEffect();
                         player.yellowMessage("Done.");
@@ -1806,14 +1848,14 @@ public class Commands {
 			break;
 		case "clearquest":
 			if(sub.length < 1) {
-				player.dropMessage(5, "Plese include a quest ID.");
+				player.dropMessage(5, "Please include a quest ID.");
 				return;
 			}
 			MapleQuest.clearCache(Integer.parseInt(sub[1]));
 			player.dropMessage(5, "Quest Cache for quest " + sub[1] + " cleared.");
 			break;
 		default:
-			player.yellowMessage("Command " + heading + sub[0] + " does not exist.");
+			player.yellowMessage("Command " + heading + sub[0] + " does not exist. See !commands for a list of available commands.");
 			break;
 		}
 	}

@@ -152,6 +152,16 @@ public class World {
     public int getBossDropRate() {
         return bossdroprate;
     }
+    
+    public void setBossDropRate(int bossdrop) {
+        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+            chr.revertRates(false);
+	}
+        this.bossdroprate = bossdrop;
+        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+            chr.setRates();
+        }
+    }
 
     public PlayerStorage getPlayerStorage() {
         return players;

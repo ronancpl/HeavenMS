@@ -55,6 +55,7 @@ import net.server.PlayerCoolDownValueHolder;
 import net.server.PlayerDiseaseValueHolder;
 import net.server.Server;
 import net.server.channel.Channel;
+import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.world.MapleMessenger;
@@ -2205,6 +2206,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             return null;
         }
     }
+    
+    public MapleAlliance getAlliance() {
+        if(mgc != null) {
+            try {
+                return Server.getInstance().getAlliance(getGuild().getAllianceId());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+        return null;
+    }
 
     public int getGuildId() {
         return guildid;
@@ -3351,7 +3364,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.dojoStage = rs.getInt("lastDojoStage");
             ret.dataString = rs.getString("dataString");
             if (ret.guildid > 0) {
-                ret.mgc = new MapleGuildCharacter(ret);
+                ret.mgc = new MapleGuildCharacter(ret); // oh boy, that's quite funny
             }
             int buddyCapacity = rs.getInt("buddyCapacity");
             ret.buddylist = new BuddyList(buddyCapacity);
@@ -4147,8 +4160,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void resetMGC() {
-        this.mgc = null;
+    public void resetMGC(MapleGuildCharacter mgc) {
+        this.mgc = mgc;
     }
 
     public synchronized void saveCooldowns() {
@@ -4179,7 +4192,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.setInt(2, guildrank);
                 ps.setInt(3, allianceRank);
                 ps.setInt(4, id);
-                ps.execute();
+                ps.executeUpdate();
             }
         } catch (SQLException se) {
             se.printStackTrace();

@@ -24,6 +24,10 @@ var choice;
 var guildName;
 var partymembers;
 
+var allianceCost = 2000000;
+var increaseCost = 1000000;
+var allianceLimit = 5;
+
 function start() {
     partymembers = cm.getPartyMembers();
     status = -1;
@@ -37,22 +41,40 @@ function action(mode, type, selection) {
         cm.dispose();
         return;
     }
-    if (status == 0)
-        cm.sendSimple("Hello there! I'm #bLenario#k\r\n#b#L0#Can you please tell me what Guild Union is all about?#l\r\n#L1#How do I make a Guild Union?#l\r\n#L2#I want to make a Guild Union.#l\r\n#L3#I want to add more guilds for the Guild Union.#l\r\n#L4#I want to break up the Guild Union.#l");
+    if (status == 0) {
+        if(cm.getPlayer().getGuildId() < 1 || cm.getPlayer().getGuildRank() != 1) {
+            cm.sendNext("Hello there! I'm #bLenario#k. Just guild masters can attempt to form guild unions.");
+            cm.dispose();
+            return;
+        }
+        if(!cm.isLeader()) {
+            cm.sendNext("Hello there! I'm #bLenario#k. If you want to form a guild, please tell your party leader to talk to me. He/She will be assigned as the Leader of the Guild Union.");
+            cm.dispose();
+            return;
+        }
+        
+        cm.sendSimple("Hello there! I'm #bLenario#k.\r\n#b#L0#Can you please tell me what Guild Union is all about?#l\r\n#L1#How do I make a Guild Union?#l\r\n#L2#I want to make a Guild Union.#l\r\n#L3#I want to add more guilds for the Guild Union.#l\r\n#L4#I want to break up the Guild Union.#l");
+    }
     else if (status == 1) {
         choice = selection;
         if (selection == 0) {
             cm.sendNext("Guild Union is just as it says, a union of a number of guilds to form a super group. I am in charge of managing these Guild Unions.");
             cm.dispose();
         } else if (selection == 1) {
-            cm.sendNext("To make a Guild Union, 2 Guild Masters need to be in a party. The leader of this party will be assigned as the Guild Union Master.");
+            cm.sendNext("To make a Guild Union, two and only two Guild Masters need to be in a party and both must be present on this room on the same channel. The leader of this party will be assigned as the Guild Union Master.");
             cm.dispose();
         } else if(selection == 2) {
-                cm.sendYesNo("Oh, are you interested in forming a Guild Union?");
+            if(cm.getPlayer().getGuild().getAllianceId() > 0) {
+                cm.sendOk("You can not create a Guild Union while your guild is already registered in another.");
+                cm.dispose();
+                return;
+            }
+            
+            cm.sendYesNo("Oh, are you interested in forming a Guild Union? The current fee for this operation is #b" + allianceCost + " mesos#k.");
         } else if (selection == 3) {
             var rank = cm.getPlayer().getMGC().getAllianceRank();
             if (rank == 1)
-                cm.sendOk("Not done yet"); //ExpandGuild Text
+                cm.sendYesNo("Do you want to increase your Alliance by one guild slot? The fee for this procedure is #b" + increaseCost + " mesos#k.");
             else {
                 cm.sendNext("Only the Guild Union Master can expand the number of guilds in the Union.");
                 cm.dispose();
@@ -68,12 +90,29 @@ function action(mode, type, selection) {
         }
     } else if(status == 2) {
         if (choice == 2) {
-            cm.sendGetText("Now please enter the name of your new Guild Union. (max. 12 letters)");
-        } else if (choice == 4) {
-            if (cm.getPlayer().getGuild() == null) {
-                cm.sendNext("You cannot disband a non-existant Guild Union.");
+            if(cm.getMeso() < allianceCost) {
+                cm.sendOk("You don't have enough mesos for this request.");
                 cm.dispose();
-            } else if (cm.getPlayer().getGuild().getAllianceId() <= 0) {
+                return;
+            }
+            cm.sendGetText("Now please enter the name of your new Guild Union. (max. 12 letters)");
+        } else if (choice == 3) {
+            if(cm.getAllianceCapacity() == allianceLimit) {
+                cm.sendOk("Your alliance already reached the maximum capacity for guilds.");
+                cm.dispose();
+                return;
+            }
+            if(cm.getMeso() < increaseCost) {
+                cm.sendOk("You don't have enough mesos for this request.");
+                cm.dispose();
+                return;
+            }
+            
+            cm.upgradeAlliance();
+            cm.gainMeso(-increaseCost);
+            cm.sendOk("Your alliance can now accept one more guild.");
+        } else if (choice == 4) {
+            if (cm.getPlayer().getGuild() == null || cm.getPlayer().getGuild().getAllianceId() <= 0) {
                 cm.sendNext("You cannot disband a non-existant Guild Union.");
                 cm.dispose();
             } else {
@@ -84,17 +123,19 @@ function action(mode, type, selection) {
         }
     } else if (status == 3) {
         guildName = cm.getText();
-        cm.sendYesNo("Will "+ guildName + " be the name of your Guild Union?");
+        cm.sendYesNo("Will '"+ guildName + "' be the name of your Guild Union?");
     } else if (status == 4) {
         if (!cm.canBeUsedAllianceName(guildName)) {
-            cm.sendNext("This name is unavailable, please choose another one"); //Not real text
+            cm.sendNext("This name is unavailable, please choose another one."); //Not real text
             status = 1;
             choice = 2;
         } else {
-            if (cm.createAlliance(partymembers.get(0), partymembers.get(1), guildName) == null)
-                cm.sendOk("An unknown system error has occured.");
-            else
+            if (cm.createAlliance(guildName) == null)
+                cm.sendOk("Please check if you and the other one guild leader in your party are both here on this room right now. No other guild leaders should be present with you 2 on this process.");
+            else {
+                cm.gainMeso(-allianceCost);
                 cm.sendOk("You have successfully formed a Guild Union.");
+            }
             cm.dispose();
         }
     }

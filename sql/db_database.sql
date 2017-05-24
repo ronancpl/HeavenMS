@@ -52,16 +52,13 @@ CREATE TABLE IF NOT EXISTS `alliance` (
   `name` varchar(13) NOT NULL,
   `notice` varchar(128) NOT NULL DEFAULT '',
   `capacity` int(10) unsigned NOT NULL DEFAULT '2',
-  `rank_title1` varchar(45) NOT NULL DEFAULT 'Master',
-  `rank_title2` varchar(45) NOT NULL DEFAULT 'Jr.Master',
-  `rank_title3` varchar(45) NOT NULL DEFAULT 'Member',
-  `rank_title4` varchar(45) NOT NULL DEFAULT 'Member',
-  `rank_title5` varchar(45) NOT NULL DEFAULT 'Member',
-  `guild1` int(10) NOT NULL DEFAULT '-1',
-  `guild2` int(10) NOT NULL DEFAULT '-1',
-  `guild3` int(10) NOT NULL DEFAULT '-1',
-  `guild4` int(10) NOT NULL DEFAULT '-1',
-  `guild5` int(10) NOT NULL DEFAULT '-1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `allianceguilds` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `allianceid` int(10) NOT NULL DEFAULT '-1',
+  `guildid` int(10) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

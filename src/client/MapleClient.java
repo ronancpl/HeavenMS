@@ -786,6 +786,8 @@ public class MapleClient {
 			final MapleGuild guild = player.getGuild();
 
 			if (channel == -1 || shutdown) {
+                                chrg.setCharacter(null);
+                            
                                 removePlayer();
                                 player.saveCooldowns();
                                 player.saveToDB();
@@ -944,7 +946,7 @@ public class MapleClient {
 					}
 					if (rs.getInt("guildid") > 0) {
 						try {
-							Server.getInstance().deleteGuildCharacter(new MapleGuildCharacter(cid, 0, rs.getString("name"), (byte) -1, (byte) -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank")));
+							Server.getInstance().deleteGuildCharacter(new MapleGuildCharacter(player, cid, 0, rs.getString("name"), (byte) -1, (byte) -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank")));
 						} catch (Exception re) {
                                                         re.printStackTrace();
 							return false;

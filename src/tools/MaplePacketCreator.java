@@ -5891,6 +5891,7 @@ public class MaplePacketCreator {
                         mplew.writeInt(mgc.isOnline() ? 1 : 0);
                         mplew.writeInt(guild.getSignature());
                         mplew.writeInt(mgc.getAllianceRank());
+                        System.out.println("alliance rank found " + mgc.getAllianceRank());
                 }
                 mplew.writeInt(guild.getCapacity());
                 mplew.writeShort(guild.getLogoBG());
