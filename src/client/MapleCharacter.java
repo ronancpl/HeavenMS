@@ -1961,7 +1961,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public int getAllianceRank() {
-        return this.allianceRank;
+        return allianceRank;
     }
 
     public int getAllowWarpToId() {
@@ -2200,7 +2200,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public MapleGuild getGuild() {
         try {
-            return Server.getInstance().getGuild(getGuildId(), getWorld(), null);
+            return Server.getInstance().getGuild(getGuildId(), getWorld(), this);
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -2445,6 +2445,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public MapleGuildCharacter getMGC() {
         return mgc;
     }
+    
+    public void setMGC(MapleGuildCharacter mgc) {
+        this.mgc = mgc;
+    }
 
     public MaplePartyCharacter getMPC() {
         if (mpc == null) {
@@ -2548,6 +2552,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         return list;
+    }
+    
+    public boolean isPartyMember(MapleCharacter chr) {
+        for(MapleCharacter mpc: getPartyMembers()) {
+            if(mpc.getId() == chr.getId()) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public MaplePlayerShop getPlayerShop() {
@@ -4160,10 +4174,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void resetMGC(MapleGuildCharacter mgc) {
-        this.mgc = mgc;
-    }
-
     public synchronized void saveCooldowns() {
         if (getAllCooldowns().size() > 0) {
             try {
@@ -4636,9 +4646,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void setAllianceRank(int rank) {
         allianceRank = rank;
-        if (mgc != null) {
-            mgc.setAllianceRank(rank);
-        }
     }
 
     public void setAllowWarpToId(int id) {

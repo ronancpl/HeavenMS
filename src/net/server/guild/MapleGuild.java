@@ -180,6 +180,10 @@ public class MapleGuild {
     public int getLeaderId() {
         return leader;
     }
+    
+    public int setLeaderId(int charId) {
+        return leader = charId;
+    }
 
     public int getGP() {
         return gp;
@@ -283,14 +287,19 @@ public class MapleGuild {
         }
     }
     
-    public void dropGuildMessage(String message) {
-        dropGuildMessage(5, message);
+    public void dropMessage(String message) {
+        dropMessage(5, message);
     }
     
-    public void dropGuildMessage(int type, String message) {
+    public void dropMessage(int type, String message) {
         for (MapleGuildCharacter mgc : members) {
-            mgc.getCharacter().dropMessage(type, message);
+            if(mgc.getCharacter() != null)
+                mgc.getCharacter().dropMessage(type, message);
         }
+    }
+    
+    public void broadcastMessage(byte[] packet) {
+        Server.getInstance().guildMessage(id, packet);
     }
 
     public final void setOnline(int cid, boolean online, int channel) {
@@ -332,20 +341,30 @@ public class MapleGuild {
             }
             ps.close();
             rs.close();
+            
             ps = con.prepareStatement("INSERT INTO guilds (`leader`, `name`, `signature`) VALUES (?, ?, ?)");
             ps.setInt(1, leaderId);
             ps.setString(2, name);
             ps.setInt(3, (int) System.currentTimeMillis());
             ps.execute();
             ps.close();
+            
             ps = con.prepareStatement("SELECT guildid FROM guilds WHERE leader = ?");
             ps.setInt(1, leaderId);
             rs = ps.executeQuery();
             rs.first();
-            int guildid = rs.getInt("guildid");
+            int guildId = rs.getInt("guildid");
             rs.close();
             ps.close();
-            return guildid;
+            
+            ps = con.prepareStatement("UPDATE characters SET guildid = ? WHERE id = ?");
+            ps.setInt(1, guildId);
+            ps.setInt(2, leaderId);
+            ps.executeUpdate();
+            ps.close();
+            
+            con.close();
+            return guildId;
         } catch (Exception e) {
             e.printStackTrace();
             return 0;

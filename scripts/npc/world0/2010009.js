@@ -47,11 +47,6 @@ function action(mode, type, selection) {
             cm.dispose();
             return;
         }
-        if(!cm.isLeader()) {
-            cm.sendNext("Hello there! I'm #bLenario#k. If you want to form a guild, please tell your party leader to talk to me. He/She will be assigned as the Leader of the Guild Union.");
-            cm.dispose();
-            return;
-        }
         
         cm.sendSimple("Hello there! I'm #bLenario#k.\r\n#b#L0#Can you please tell me what Guild Union is all about?#l\r\n#L1#How do I make a Guild Union?#l\r\n#L2#I want to make a Guild Union.#l\r\n#L3#I want to add more guilds for the Guild Union.#l\r\n#L4#I want to break up the Guild Union.#l");
     }
@@ -64,6 +59,11 @@ function action(mode, type, selection) {
             cm.sendNext("To make a Guild Union, two and only two Guild Masters need to be in a party and both must be present on this room on the same channel. The leader of this party will be assigned as the Guild Union Master.");
             cm.dispose();
         } else if(selection == 2) {
+            if(!cm.isLeader()) {
+                cm.sendNext("If you want to form a guild union, please tell your party leader to talk to me. He/She will be assigned as the Leader of the Guild Union.");
+                cm.dispose();
+                return;
+            }
             if(cm.getPlayer().getGuild().getAllianceId() > 0) {
                 cm.sendOk("You can not create a Guild Union while your guild is already registered in another.");
                 cm.dispose();
@@ -111,6 +111,7 @@ function action(mode, type, selection) {
             cm.upgradeAlliance();
             cm.gainMeso(-increaseCost);
             cm.sendOk("Your alliance can now accept one more guild.");
+            cm.dispose();
         } else if (choice == 4) {
             if (cm.getPlayer().getGuild() == null || cm.getPlayer().getGuild().getAllianceId() <= 0) {
                 cm.sendNext("You cannot disband a non-existant Guild Union.");
@@ -131,7 +132,7 @@ function action(mode, type, selection) {
             choice = 2;
         } else {
             if (cm.createAlliance(guildName) == null)
-                cm.sendOk("Please check if you and the other one guild leader in your party are both here on this room right now. No other guild leaders should be present with you 2 on this process.");
+                cm.sendOk("Please check if you and the other one guild leader in your party are both here on this room right now, and make sure both guilds are currently unregistered on unions. No other guild leaders should be present with you 2 on this process.");
             else {
                 cm.gainMeso(-allianceCost);
                 cm.sendOk("You have successfully formed a Guild Union.");

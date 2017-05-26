@@ -32,8 +32,6 @@ import client.MapleCharacter;
 import net.server.Server;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import net.server.guild.MapleGuild;
-import net.server.guild.MapleGuildCharacter;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -122,12 +120,12 @@ public class MapleAlliance {
                     Server.getInstance().resetAllianceGuildPlayersRank(guilds.get(i));
 
                     MapleCharacter chr = guildMasters.get(i);
-                    chr.setAllianceRank((i == 0) ? 1 : 2);
+                    chr.getMGC().setAllianceRank((i == 0) ? 1 : 2);
                     chr.saveGuildStatus();
                 }
 
                 Server.getInstance().addAlliance(id, alliance);
-                Server.getInstance().allianceMessage(id, MaplePacketCreator.makeNewAlliance(alliance, guildMasters.get(0).getClient()), -1, -1);
+                Server.getInstance().allianceMessage(id, MaplePacketCreator.updateAllianceInfo(alliance, guildMasters.get(0).getClient()), -1, -1);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -194,6 +192,14 @@ public class MapleAlliance {
             alliance.name = rs.getString("name");
             alliance.notice = rs.getString("notice");
             
+            String ranks[] = new String[5];
+            ranks[0] = rs.getString("rank1");
+            ranks[1] = rs.getString("rank2");
+            ranks[2] = rs.getString("rank3");
+            ranks[3] = rs.getString("rank4");
+            ranks[4] = rs.getString("rank5");
+            alliance.rankTitles = ranks;
+            
             ps.close();
             rs.close();
             
@@ -218,10 +224,17 @@ public class MapleAlliance {
     public void saveToDB() {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE `alliance` SET capacity = ?, notice = ? WHERE id = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE `alliance` SET capacity = ?, notice = ?, rank1 = ?, rank2 = ?, rank3 = ?, rank4 = ?, rank5 = ? WHERE id = ?");
             ps.setInt(1, this.capacity);
             ps.setString(2, this.notice);
-            ps.setInt(3, this.allianceId);
+            
+            ps.setString(3, this.rankTitles[0]);
+            ps.setString(4, this.rankTitles[1]);
+            ps.setString(5, this.rankTitles[2]);
+            ps.setString(6, this.rankTitles[3]);
+            ps.setString(7, this.rankTitles[4]);
+            
+            ps.setInt(8, this.allianceId);
             ps.executeUpdate();
             ps.close();
             
@@ -243,6 +256,48 @@ public class MapleAlliance {
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public static void disbandAlliance(int allianceId) {
+        PreparedStatement ps = null;
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            
+            ps = con.prepareStatement("DELETE FROM `alliance` WHERE id = ?");
+            ps.setInt(1, allianceId);
+            ps.executeUpdate();
+            ps.close();
+            
+            ps = con.prepareStatement("DELETE FROM `allianceguilds` WHERE allianceid = ?");
+            ps.setInt(1, allianceId);
+            ps.executeUpdate();
+            ps.close();
+            
+            con.close();
+            Server.getInstance().allianceMessage(allianceId, MaplePacketCreator.disbandAlliance(allianceId), -1, -1);
+            Server.getInstance().disbandAlliance(allianceId);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if (con != null && !con.isClosed()) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public void updateAlliancePackets(MapleCharacter chr) {
+        if (allianceId > 0) {
+            this.broadcastMessage(MaplePacketCreator.updateAllianceInfo(this, chr.getClient()));
+            this.broadcastMessage(MaplePacketCreator.allianceNotice(this.getId(), this.getNotice()));
         }
     }
     
@@ -334,14 +389,18 @@ public class MapleAlliance {
         return null;
     }
     
-    public void dropAllianceMessage(String message) {
-        dropAllianceMessage(5, message);
+    public void dropMessage(String message) {
+        dropMessage(5, message);
     }
     
-    public void dropAllianceMessage(int type, String message) {
+    public void dropMessage(int type, String message) {
         for(Integer gId: guilds) {
             MapleGuild guild = Server.getInstance().getGuild(gId);
-            guild.dropGuildMessage(type, message);
+            guild.dropMessage(type, message);
         }
+    }
+    
+    public void broadcastMessage(byte[] packet) {
+        Server.getInstance().allianceMessage(allianceId, packet, -1, -1);
     }
 }

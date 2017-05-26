@@ -135,6 +135,7 @@ public class MapleGuildCharacter {
 
     public void setAllianceRank(int rank) {
         allianceRank = rank;
+        if(character != null) character.setAllianceRank(rank);
     }
 
     public int getAllianceRank() {

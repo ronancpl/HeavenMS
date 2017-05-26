@@ -350,28 +350,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         public void upgradeAlliance() {
                 MapleAlliance alliance = Server.getInstance().getAlliance(c.getPlayer().getGuild().getAllianceId());
                 alliance.increaseCapacity(1);
+                c.announce(MaplePacketCreator.updateAllianceInfo(alliance, c));
         }
 
 	public void disbandAlliance(MapleClient c, int allianceId) {
-		PreparedStatement ps = null;
-		try {
-			ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM `alliance` WHERE id = ?");
-			ps.setInt(1, allianceId);
-			ps.executeUpdate();
-			ps.close();
-			Server.getInstance().allianceMessage(c.getPlayer().getGuild().getAllianceId(), MaplePacketCreator.disbandAlliance(allianceId), -1, -1);
-			Server.getInstance().disbandAlliance(allianceId);
-		} catch (SQLException sqle) {
-			sqle.printStackTrace();
-		} finally {
-			try {
-				if (ps != null && !ps.isClosed()) {
-					ps.close();
-				}
-			} catch (SQLException ex) {
-                                ex.printStackTrace();
-			}
-		}
+		MapleAlliance.disbandAlliance(allianceId);
 	}
 
 	public boolean canBeUsedAllianceName(String name) {

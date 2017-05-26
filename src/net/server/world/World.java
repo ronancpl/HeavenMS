@@ -196,7 +196,7 @@ public class World {
     public MapleGuild getGuild(MapleGuildCharacter mgc) {
         int gid = mgc.getGuildId();
         MapleGuild g;
-        g = Server.getInstance().getGuild(gid, mgc.getWorld(), mgc);
+        g = Server.getInstance().getGuild(gid, mgc.getWorld(), mgc.getCharacter());
         if (gsStore.get(gid) == null) {
             gsStore.put(gid, new MapleGuildSummary(g));
         }
