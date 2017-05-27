@@ -97,18 +97,19 @@ public class MapleMount {
     }
 
     private void increaseTiredness() {
-		if(owner != null) {
-			this.tiredness++;
-			owner.getMap().broadcastMessage(MaplePacketCreator.updateMount(owner.getId(), this, false));
-			if (tiredness > 99) {
-				this.tiredness = 99;
-				owner.dispelSkill(owner.getJobType() * 10000000 + 1004);
-			}
-		} else {
-			if(this.tirednessSchedule != null) {
-				this.tirednessSchedule.cancel(false);
-			}
-		}
+        if(owner != null) {
+            this.tiredness++;
+            owner.getMap().broadcastMessage(MaplePacketCreator.updateMount(owner.getId(), this, false));
+            if (tiredness > 99) {
+                this.tiredness = 99;
+                owner.dispelSkill(owner.getJobType() * 10000000 + 1004);
+                owner.dropMessage("Your mount grew tired! Treat it some revitalizer before riding it again!");
+            }
+        } else {
+            if(this.tirednessSchedule != null) {
+                this.tirednessSchedule.cancel(false);
+            }
+        }
     }
 
     public void setExp(int newexp) {

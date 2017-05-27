@@ -239,7 +239,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private SavedLocation savedLocations[];
     private SkillMacro[] skillMacros = new SkillMacro[5];
     private List<Integer> lastmonthfameids;
-    private Map<Short, MapleQuestStatus> quests;
+    private final Map<Short, MapleQuestStatus> quests;
     private Set<MapleMonster> controlled = new LinkedHashSet<>();
     private Map<Integer, String> entered = new LinkedHashMap<>();
     private Set<MapleMapObject> visibleMapObjects = new LinkedHashSet<>();
@@ -2067,13 +2067,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public final List<MapleQuestStatus> getCompletedQuests() {
-        List<MapleQuestStatus> ret = new LinkedList<>();
-        for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
-                ret.add(q);
+        synchronized (quests) {
+            List<MapleQuestStatus> ret = new LinkedList<>();
+            for (MapleQuestStatus q : quests.values()) {
+                if (q.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
+                    ret.add(q);
+                }
             }
+            
+            return Collections.unmodifiableList(ret);
         }
-        return Collections.unmodifiableList(ret);
     }
 
     public Collection<MapleMonster> getControlledMonsters() {
@@ -2603,46 +2606,58 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public final byte getQuestStatus(final int quest) {
-        for (final MapleQuestStatus q : quests.values()) {
-            if (q.getQuest().getId() == quest) {
-                return (byte) q.getStatus().getId();
+        synchronized (quests) {
+            for (final MapleQuestStatus q : quests.values()) {
+                if (q.getQuest().getId() == quest) {
+                    return (byte) q.getStatus().getId();
+                }
             }
+            return 0;
         }
-        return 0;
     }
 
     public MapleQuestStatus getQuest(MapleQuest quest) {
-        if (!quests.containsKey(quest.getId())) {
-            return new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
+        synchronized (quests) {
+            if (!quests.containsKey(quest.getId())) {
+                return new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
+            }
+            return quests.get(quest.getId());
         }
-        return quests.get(quest.getId());
     }
     
     //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----
     
     public final void setQuestAdd(final MapleQuest quest, final byte status, final String customData) {
-        if (!quests.containsKey(quest.getId())) {
-            final MapleQuestStatus stat = new MapleQuestStatus(quest, MapleQuestStatus.Status.getById((int)status));
-            stat.setCustomData(customData);
-            quests.put(quest.getId(), stat);
+        synchronized (quests) {
+            if (!quests.containsKey(quest.getId())) {
+                final MapleQuestStatus stat = new MapleQuestStatus(quest, MapleQuestStatus.Status.getById((int)status));
+                stat.setCustomData(customData);
+                quests.put(quest.getId(), stat);
+            }
         }
     }
 
     public final MapleQuestStatus getQuestNAdd(final MapleQuest quest) {
-        if (!quests.containsKey(quest.getId())) {
-            final MapleQuestStatus status = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
-            quests.put(quest.getId(), status);
-            return status;
+        synchronized (quests) {
+            if (!quests.containsKey(quest.getId())) {
+                final MapleQuestStatus status = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
+                quests.put(quest.getId(), status);
+                return status;
+            }
+            return quests.get(quest.getId());
         }
-        return quests.get(quest.getId());
     }
 
     public final MapleQuestStatus getQuestNoAdd(final MapleQuest quest) {
-        return quests.get(quest.getId());
+        synchronized (quests) {
+            return quests.get(quest.getId());
+        }
     }
 
     public final MapleQuestStatus getQuestRemove(final MapleQuest quest) {
-        return quests.remove(quest.getId());
+        synchronized (quests) {
+            return quests.remove(quest.getId());
+        }
     }
 
     //---- /\ /\ /\ /\ /\ /\ /\  NOT TESTED  /\ /\ /\ /\ /\ /\ /\ /\ /\ ----
@@ -2742,26 +2757,30 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public final List<MapleQuestStatus> getStartedQuests() {
-        List<MapleQuestStatus> ret = new LinkedList<>();
-        for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
-                ret.add(q);
+        synchronized (quests) {
+            List<MapleQuestStatus> ret = new LinkedList<>();
+            for (MapleQuestStatus q : quests.values()) {
+                if (q.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
+                    ret.add(q);
+                }
             }
+            return Collections.unmodifiableList(ret);
         }
-        return Collections.unmodifiableList(ret);
     }
 
     public final int getStartedQuestsSize() {
-        int i = 0;
-        for (MapleQuestStatus q : quests.values()) {
-            if (q.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
-                if (q.getQuest().getInfoNumber() > 0) {
+        synchronized (quests) {
+            int i = 0;
+            for (MapleQuestStatus q : quests.values()) {
+                if (q.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
+                    if (q.getQuest().getInfoNumber() > 0) {
+                        i++;
+                    }
                     i++;
                 }
-                i++;
             }
+            return i;
         }
-        return i;
     }
 
     public MapleStatEffect getStatForBuff(MapleBuffStat effect) {
@@ -3698,17 +3717,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
 		int lastQuestProcessed = 0;
         try {
-            for (MapleQuestStatus q : quests.values()) {
-                lastQuestProcessed = q.getQuest().getId();
-                if (q.getStatus() == MapleQuestStatus.Status.COMPLETED || q.getQuest().canComplete(this, null)) {
-                    continue;
-                }
-                String progress = q.getProgress(id);
-                if (!progress.isEmpty() && Integer.parseInt(progress) >= q.getQuest().getMobAmountNeeded(id)) {
-                    continue;
-                }
-                if (q.progress(id)) {
-                    client.announce(MaplePacketCreator.updateQuest(q, false));
+            synchronized (quests) {
+                for (MapleQuestStatus q : quests.values()) {
+                    lastQuestProcessed = q.getQuest().getId();
+                    if (q.getStatus() == MapleQuestStatus.Status.COMPLETED || q.getQuest().canComplete(this, null)) {
+                        continue;
+                    }
+                    String progress = q.getProgress(id);
+                    if (!progress.isEmpty() && Integer.parseInt(progress) >= q.getQuest().getMobAmountNeeded(id)) {
+                        continue;
+                    }
+                    if (q.progress(id)) {
+                        client.announce(MaplePacketCreator.updateQuest(q, false));
+                    }
                 }
             }
         } catch (Exception e) {
@@ -4536,27 +4557,30 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             try (PreparedStatement pse = con.prepareStatement("INSERT INTO questprogress VALUES (DEFAULT, ?, ?, ?)")) {
                 psf = con.prepareStatement("INSERT INTO medalmaps VALUES (DEFAULT, ?, ?)");
                 ps.setInt(1, id);
-                for (MapleQuestStatus q : quests.values()) {
-                    ps.setInt(2, q.getQuest().getId());
-                    ps.setInt(3, q.getStatus().getId());
-                    ps.setInt(4, (int) (q.getCompletionTime() / 1000));
-                    ps.setInt(5, q.getForfeited());
-                    ps.executeUpdate();
-                    try (ResultSet rs = ps.getGeneratedKeys()) {
-                        rs.next();
-                        for (int mob : q.getProgress().keySet()) {
-                            pse.setInt(1, rs.getInt(1));
-                            pse.setInt(2, mob);
-                            pse.setString(3, q.getProgress(mob));
-                            pse.addBatch();
+                
+                synchronized (quests) {
+                    for (MapleQuestStatus q : quests.values()) {
+                        ps.setInt(2, q.getQuest().getId());
+                        ps.setInt(3, q.getStatus().getId());
+                        ps.setInt(4, (int) (q.getCompletionTime() / 1000));
+                        ps.setInt(5, q.getForfeited());
+                        ps.executeUpdate();
+                        try (ResultSet rs = ps.getGeneratedKeys()) {
+                            rs.next();
+                            for (int mob : q.getProgress().keySet()) {
+                                pse.setInt(1, rs.getInt(1));
+                                pse.setInt(2, mob);
+                                pse.setString(3, q.getProgress(mob));
+                                pse.addBatch();
+                            }
+                            for (int i = 0; i < q.getMedalMaps().size(); i++) {
+                                psf.setInt(1, rs.getInt(1));
+                                psf.setInt(2, q.getMedalMaps().get(i));
+                                psf.addBatch();
+                            }
+                            pse.executeBatch();
+                            psf.executeBatch();
                         }
-                        for (int i = 0; i < q.getMedalMaps().size(); i++) {
-                            psf.setInt(1, rs.getInt(1));
-                            psf.setInt(2, q.getMedalMaps().get(i));
-                            psf.addBatch();
-                        }
-                        pse.executeBatch();
-                        psf.executeBatch();
                     }
                 }
             }
@@ -5334,7 +5358,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         MapleQuestStatus qs = getQuest(q);
         qs.setInfo(info);
 
-        quests.put(q.getId(), qs);
+        synchronized (quests) {
+            quests.put(q.getId(), qs);
+        }
 
         announce(MaplePacketCreator.updateQuest(qs, false));
         if (qs.getQuest().getInfoNumber() > 0) {
@@ -5354,7 +5380,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void updateQuest(MapleQuestStatus quest) {
-        quests.put(quest.getQuestID(), quest);
+        synchronized (quests) {
+            quests.put(quest.getQuestID(), quest);
+        }
         if (quest.getStatus().equals(MapleQuestStatus.Status.STARTED)) {
             announce(MaplePacketCreator.updateQuest(quest, false));
             if (quest.getQuest().getInfoNumber() > 0) {
@@ -5375,17 +5403,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void questTimeLimit(final MapleQuest quest, int time) {
+    public void questTimeLimit(final MapleQuest quest, int seconds) {
+        final MapleCharacter chr = this;
         ScheduledFuture<?> sf = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
+                if(chr.getQuestStatus(quest.getId()) == MapleQuestStatus.Status.COMPLETED.getId()) return;
+                
                 announce(MaplePacketCreator.questExpire(quest.getId()));
                 MapleQuestStatus newStatus = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
                 newStatus.setForfeited(getQuest(quest).getForfeited() + 1);
                 updateQuest(newStatus);
             }
-        }, time * 60 * 1000);
-        announce(MaplePacketCreator.addQuestTimeLimit(quest.getId(), time * 60 * 1000));
+        }, seconds * 1000);
+        announce(MaplePacketCreator.addQuestTimeLimit(quest.getId(), seconds * 1000));
         timers.add(sf);
     }
 

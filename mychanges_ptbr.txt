@@ -251,3 +251,9 @@ Solução parcial ao problema das Guild Alliances. Pode-se criar uma, sair, expuls
 25 Maio 2017,
 Solução final ao problema das Guild Alliances. Todas as funcionalidades implementadas.
 Registros de objetos MapleGuildCharacter agora esta sincronizado entre MapleCharacter's e MapleGuild's.
+
+26 Maio 2017,
+Correção e proteção a acessos concorrentes em mecânicas de comercialização entre jogadores.
+Quests com limite de tempo agora expiram. Tempo restante também é mostrado na aba da quest.
+Estrutura de dados que lida com status de quests do jogador agora foi protegido para acesso concorrente.
+Montarias, tanto como pets, não ficam com "fome" com o tempo caso os flags PETS_NEVER_HUNGRY estejam setados.

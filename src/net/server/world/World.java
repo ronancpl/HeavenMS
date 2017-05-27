@@ -194,6 +194,8 @@ public class World {
     }
 
     public MapleGuild getGuild(MapleGuildCharacter mgc) {
+        if(mgc == null) return null;
+        
         int gid = mgc.getGuildId();
         MapleGuild g;
         g = Server.getInstance().getGuild(gid, mgc.getWorld(), mgc.getCharacter());

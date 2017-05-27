@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import tools.LogHelper;
 import tools.MaplePacketCreator;
@@ -33,10 +34,11 @@ import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 
 /**
  *
- * @author Matze
+ * @author Matze, Ronan (concurrency safety)
  */
 public class MapleTrade {
     private MapleTrade partner = null;
@@ -44,7 +46,7 @@ public class MapleTrade {
     private List<Item> exchangeItems;
     private int meso = 0;
     private int exchangeMeso;
-    boolean locked = false;
+    private AtomicBoolean locked = new AtomicBoolean(false);
     private MapleCharacter chr;
     private byte number;
     private boolean fullTrade = false;
@@ -73,7 +75,7 @@ public class MapleTrade {
     }
 
     private void lock() {
-        locked = true;
+        locked.set(true);
         partner.getChr().getClient().announce(MaplePacketCreator.getTradeConfirmation());
     }
 
@@ -83,16 +85,18 @@ public class MapleTrade {
     }
 
     private void complete2() {
+        boolean show = ServerConstants.USE_DEBUG;
+        
         items.clear();
         meso = 0;
         for (Item item : exchangeItems) {
             if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) 
                 item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
 
-            MapleInventoryManipulator.addFromDrop(chr.getClient(), item, true);
+            MapleInventoryManipulator.addFromDrop(chr.getClient(), item, show);
         }
         if (exchangeMeso > 0) {
-            chr.gainMeso(exchangeMeso - getFee(exchangeMeso), true, true, true);
+            chr.gainMeso(exchangeMeso - getFee(exchangeMeso), show, true, show);
         }
         exchangeMeso = 0;
         if (exchangeItems != null) {
@@ -102,11 +106,13 @@ public class MapleTrade {
     }
 
     private void cancel() {
+        boolean show = ServerConstants.USE_DEBUG;
+        
         for (Item item : items) {
-            MapleInventoryManipulator.addFromDrop(chr.getClient(), item, true);
+            MapleInventoryManipulator.addFromDrop(chr.getClient(), item, show);
         }
         if (meso > 0) {
-            chr.gainMeso(meso, true, true, true);
+            chr.gainMeso(meso, show, true, show);
         }
         meso = 0;
         if (items != null) {
@@ -120,7 +126,7 @@ public class MapleTrade {
     }
 
     private boolean isLocked() {
-        return locked;
+        return locked.get();
     }
 
     private int getMeso() {
@@ -128,7 +134,7 @@ public class MapleTrade {
     }
 
     public void setMeso(int meso) {
-        if (locked) {
+        if (locked.get()) {
             throw new RuntimeException("Trade is locked.");
         }
         if (meso < 0) {
@@ -166,7 +172,7 @@ public class MapleTrade {
     }
 
     public void setPartner(MapleTrade partner) {
-        if (locked) {
+        if (locked.get()) {
             return;
         }
         this.partner = partner;
@@ -210,9 +216,15 @@ public class MapleTrade {
         if (partner.isLocked()) {
             local.complete1();
             partner.complete1();
-            if (!local.fitsInInventory() || !partner.fitsInInventory()) {
+            if (!local.fitsInInventory()) {
                 cancelTrade(c);
                 c.message("There is not enough inventory space to complete the trade.");
+                partner.getChr().message("Partner does not have enough inventory space to complete the trade.");
+                return;
+            }
+            else if (!partner.fitsInInventory()) {
+                cancelTrade(c);
+                c.message("Partner does not have enough inventory space to complete the trade.");
                 partner.getChr().message("There is not enough inventory space to complete the trade.");
                 return;
             }
@@ -224,13 +236,13 @@ public class MapleTrade {
                 } else {
                     local.getChr().addMesosTraded(local.exchangeMeso);
                 }
-            } else if (c.getTrade().getChr().getLevel() < 15) {
-                if (c.getMesosTraded() + c.getTrade().exchangeMeso > 1000000) {
+            } else if (partner.getChr().getLevel() < 15) {
+                if (partner.getChr().getMesosTraded() + partner.exchangeMeso > 1000000) {
                     cancelTrade(c);
-                    c.getClient().announce(MaplePacketCreator.serverNotice(1, "Characters under level 15 may not trade more than 1 million mesos per day."));
+                    partner.getChr().getClient().announce(MaplePacketCreator.serverNotice(1, "Characters under level 15 may not trade more than 1 million mesos per day."));
                     return;
                 } else {
-                    c.addMesosTraded(local.exchangeMeso);
+                    partner.getChr().addMesosTraded(partner.exchangeMeso);
                 }
             }
             LogHelper.logTrade(local, partner);

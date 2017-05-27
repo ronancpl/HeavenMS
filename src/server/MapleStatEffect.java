@@ -943,7 +943,10 @@ public class MapleStatEffect {
                 if (applyto.getMount() == null) {
                     applyto.mount(ridingLevel, sourceid);
                 }
-                applyto.getMount().startSchedule();
+                
+                if(!(ServerConstants.PETS_NEVER_HUNGRY || applyto.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY)) {
+                    applyto.getMount().startSchedule();
+                }
             }
             if (sourceid == Corsair.BATTLE_SHIP) {
                 givemount = new MapleMount(applyto, 1932000, sourceid);

@@ -46,7 +46,7 @@ public class MapleQuest {
 
     private static Map<Integer, MapleQuest> quests = new HashMap<>();
     protected short infoNumber, id;
-    protected int timeLimit, timeLimit2;
+    protected int timeLimit;
     protected String infoex;
     protected Map<MapleQuestRequirementType, MapleQuestRequirement> startReqs = new EnumMap<>(MapleQuestRequirementType.class);
     protected Map<MapleQuestRequirementType, MapleQuestRequirement> completeReqs = new EnumMap<>(MapleQuestRequirementType.class);
@@ -57,20 +57,22 @@ public class MapleQuest {
     private boolean autoPreComplete, autoComplete;
     private boolean repeatable = false;
     private final static MapleDataProvider questData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Quest.wz"));
-	private static MapleData questInfo;
-	private static MapleData questAct;
-	private static MapleData questReq;
+    private static MapleData questInfo;
+    private static MapleData questAct;
+    private static MapleData questReq;
 	
     private MapleQuest(int id) {
         this.id = (short) id;
 
-		if(questInfo != null) {
-			timeLimit = MapleDataTool.getInt("timeLimit", questInfo, 0);
-			timeLimit2 = MapleDataTool.getInt("timeLimit2", questInfo, 0);
-			autoStart = MapleDataTool.getInt("autoStart", questInfo, 0) == 1;
-			autoPreComplete = MapleDataTool.getInt("autoPreComplete", questInfo, 0) == 1;
-			autoComplete = MapleDataTool.getInt("autoComplete", questInfo, 0) == 1;
-		}
+        if(questInfo != null) {
+            MapleData reqData = questInfo.getChildByPath(String.valueOf(id));
+            
+            timeLimit = MapleDataTool.getInt("timeLimit", reqData, 0);
+            timeLimit = Math.max(timeLimit, MapleDataTool.getInt("timeLimit2", reqData, 0));  // alas, nexon made we deal with 2 timeLimits
+            autoStart = MapleDataTool.getInt("autoStart", reqData, 0) == 1;
+            autoPreComplete = MapleDataTool.getInt("autoPreComplete", reqData, 0) == 1;
+            autoComplete = MapleDataTool.getInt("autoComplete", reqData, 0) == 1;
+        }
 		
         MapleData reqData = questReq.getChildByPath(String.valueOf(id));
         if (reqData == null) {//most likely infoEx
@@ -84,7 +86,7 @@ public class MapleQuest {
                     repeatable = true;
                 }
 				
-				if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
+                if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
                     infoNumber = (short) MapleDataTool.getInt(startReq, 0);
                 }
 				
@@ -280,11 +282,9 @@ public class MapleQuest {
         newStatus.setForfeited(c.getQuest(this).getForfeited());
 
         if (timeLimit > 0) {
-            c.questTimeLimit(this, 30000);//timeLimit * 1000
+            c.questTimeLimit(this, timeLimit);
         }
-        if (timeLimit2 > 0) {//=\
-
-        }
+        
         c.updateQuest(newStatus);
         return true;
     }

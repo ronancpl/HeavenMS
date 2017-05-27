@@ -191,6 +191,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             } else {
                 playerGuild.getMGC(player.getId()).setCharacter(player);
                 player.setMGC(playerGuild.getMGC(player.getId()));
+                
                 server.setGuildMemberOnline(player, true, c.getChannel());
                 c.announce(MaplePacketCreator.showGuildInfo(player));
                 int allianceId = player.getGuild().getAllianceId();
@@ -204,6 +205,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                             player.getGuild().setAllianceId(0);
                         }
                     }
+                    
                     if (newAlliance != null) {
                         c.announce(MaplePacketCreator.updateAllianceInfo(newAlliance, c));
                         c.announce(MaplePacketCreator.allianceNotice(newAlliance.getId(), newAlliance.getNotice()));
@@ -267,11 +269,11 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (player.getMap().getHPDec() > 0) {
             final MapleCharacter mc = player;
             
-            ScheduledFuture<?> hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
-            @Override
-            public void run() {
-                mc.doHurtHp();
-            }
+            TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    mc.doHurtHp();
+                }
             }, 10000);
         }
     }

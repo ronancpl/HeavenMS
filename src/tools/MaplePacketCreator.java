@@ -2337,16 +2337,18 @@ public class MaplePacketCreator {
                 mplew.write(chr.getMarriageRing() != null ? 1 : 0);
                 String guildName = "";
                 String allianceName = "";
-                MapleGuildSummary gs = chr.getClient().getWorldServer().getGuildSummary(chr.getGuildId(), chr.getWorld());
-                if (chr.getGuildId() > 0 && gs != null) {
-                        guildName = gs.getName();
-                        MapleAlliance alliance = Server.getInstance().getAlliance(gs.getAllianceId());
+                if (chr.getGuildId() > 0) {
+                        MapleGuild mg = Server.getInstance().getGuild(chr.getGuildId());
+                        guildName = mg.getName();
+                        
+                        MapleAlliance alliance = Server.getInstance().getAlliance(chr.getGuild().getAllianceId());
                         if (alliance != null) {
                                 allianceName = alliance.getName();
                         }
                 }
                 mplew.writeMapleAsciiString(guildName);
-                mplew.writeMapleAsciiString(allianceName);
+                mplew.writeMapleAsciiString(allianceName);  // does not seems to work
+                
                 mplew.write(0);
                 MaplePet[] pets = chr.getPets();
                 Item inv = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -114);
