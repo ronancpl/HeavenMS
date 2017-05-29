@@ -1,5 +1,7 @@
 //Thief Statue by Wodian
 
+importPackage(Packages.client);
+
 var status = 0;  
 
 function start() {  

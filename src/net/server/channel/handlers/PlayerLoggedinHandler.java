@@ -269,12 +269,14 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (player.getMap().getHPDec() > 0) {
             final MapleCharacter mc = player;
             
-            TimerManager.getInstance().schedule(new Runnable() {
+            ScheduledFuture<?> hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     mc.doHurtHp();
                 }
             }, 10000);
+            
+            mc.setHpDecreaseTask(hpDecreaseTask);
         }
     }
 }

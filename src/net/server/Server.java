@@ -178,7 +178,9 @@ public class Server implements Runnable {
 		
 		
         try {
-            for (int i = 0; i < Integer.parseInt(p.getProperty("worlds")); i++) {
+            Integer worldCount = Math.min(ServerConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
+            
+            for (int i = 0; i < worldCount; i++) {
                 System.out.println("Starting world " + i);
                 World world = new World(i,
                         Integer.parseInt(p.getProperty("flag" + i)),

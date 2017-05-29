@@ -36,6 +36,7 @@ import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.quest.actions.*;
 import server.quest.requirements.*;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 
 /**
@@ -63,21 +64,25 @@ public class MapleQuest {
 	
     private MapleQuest(int id) {
         this.id = (short) id;
-
-        if(questInfo != null) {
-            MapleData reqData = questInfo.getChildByPath(String.valueOf(id));
-            
-            timeLimit = MapleDataTool.getInt("timeLimit", reqData, 0);
-            timeLimit = Math.max(timeLimit, MapleDataTool.getInt("timeLimit2", reqData, 0));  // alas, nexon made we deal with 2 timeLimits
-            autoStart = MapleDataTool.getInt("autoStart", reqData, 0) == 1;
-            autoPreComplete = MapleDataTool.getInt("autoPreComplete", reqData, 0) == 1;
-            autoComplete = MapleDataTool.getInt("autoComplete", reqData, 0) == 1;
-        }
 		
         MapleData reqData = questReq.getChildByPath(String.valueOf(id));
         if (reqData == null) {//most likely infoEx
             return;
         }
+        
+        if(questInfo != null) {
+            MapleData reqInfo = questInfo.getChildByPath(String.valueOf(id));
+            if(reqInfo != null) {
+                timeLimit = MapleDataTool.getInt("timeLimit", reqInfo, 0);
+                timeLimit = Math.max(timeLimit, MapleDataTool.getInt("timeLimit2", reqInfo, 0));  // alas, nexon made we deal with 2 timeLimits
+                autoStart = MapleDataTool.getInt("autoStart", reqInfo, 0) == 1;
+                autoPreComplete = MapleDataTool.getInt("autoPreComplete", reqInfo, 0) == 1;
+                autoComplete = MapleDataTool.getInt("autoComplete", reqInfo, 0) == 1;
+            } else {
+                System.out.println("no data " + id);
+            }
+        }
+        
         MapleData startReqData = reqData.getChildByPath("0");
         if (startReqData != null) {
             for (MapleData startReq : startReqData.getChildren()) {

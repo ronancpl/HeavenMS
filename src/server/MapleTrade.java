@@ -254,10 +254,13 @@ public class MapleTrade {
     }
 
     public static void cancelTrade(MapleCharacter c) {
-        c.getTrade().cancel();
-        if (c.getTrade().getPartner() != null) {
-            c.getTrade().getPartner().cancel();
-            c.getTrade().getPartner().getChr().setTrade(null);
+        MapleTrade trade = c.getTrade();
+        if(trade == null) return;
+        
+        trade.cancel();
+        if (trade.getPartner() != null) {
+            trade.getPartner().cancel();
+            trade.getPartner().getChr().setTrade(null);
         }
         c.setTrade(null);
     }

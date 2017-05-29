@@ -721,41 +721,12 @@ public class MapleClient {
 		try {
 			player.cancelAllBuffs(true);
 			player.cancelAllDebuffs();
-			final MaplePlayerShop mps = player.getPlayerShop();
-			if (mps != null) {
-				mps.removeVisitors();
-				player.setPlayerShop(null);
-			}
-			final HiredMerchant merchant = player.getHiredMerchant();
-			if (merchant != null) {
-				if (merchant.isOwner(player)) {
-					merchant.setOpen(true);
-				} else {
-					merchant.removeVisitor(player);
-				}
-				try {
-					merchant.saveItems(false);
-				} catch (SQLException ex) {
-                                        ex.printStackTrace();
-					System.out.println("Error while saving Hired Merchant items.");
-				}
-			}
-			player.setMessenger(null);
-			final MapleMiniGame game = player.getMiniGame();
-			if (game != null) {
-				player.setMiniGame(null);
-				if (game.isOwner(player)) {
-					player.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(player));
-					game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose());
-				} else {
-					game.removeVisitor(player);
-				}
-			}
+                        
+                        player.closePlayerInteractions();
+                        
 			NPCScriptManager.getInstance().dispose(this);
 			QuestScriptManager.getInstance().dispose(this);
-			if (player.getTrade() != null) {
-				MapleTrade.cancelTrade(player);
-			}
+			
 			if (player.getEventInstance() != null) {
 				player.getEventInstance().playerDisconnected(player);
 			}
@@ -1236,7 +1207,7 @@ public class MapleClient {
 			disconnect(false, false);
 			return;
 		}
-		if (!player.isAlive() || FieldLimit.CHANGECHANNEL.check(player.getMap().getFieldLimit())) {
+		if (!player.isAlive() || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
 			announce(MaplePacketCreator.enableActions());
 			return;
 		}

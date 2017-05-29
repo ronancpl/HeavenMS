@@ -1,4 +1,6 @@
-//Pirate Statue by Wodian
+//Magician Statue by Wodian
+
+importPackage(Packages.client);
 
 var status = 0;  
 
@@ -26,10 +28,10 @@ function action(mode, type, selection) {
             status--;  
         }  
             if (status == 0) { 
-            cm.sendNext("If you want to go to Nautilus press next!");
+            cm.sendNext("If you want to go to Ellinia press next!");
         }
         else if (status == 1) {
-            cm.warp(120000100,0);//guess so... lol?
+            cm.warp(101000000,0);
             cm.dispose();
             }
         }

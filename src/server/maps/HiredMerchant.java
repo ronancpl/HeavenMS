@@ -57,7 +57,7 @@ public class HiredMerchant extends AbstractMapleMapObject {
     private String ownerName = "";
     private String description = "";
     private MapleCharacter[] visitors = new MapleCharacter[3];
-    private List<MaplePlayerShopItem> items = new LinkedList<>();
+    private final List<MaplePlayerShopItem> items = new LinkedList<>();
     private List<Pair<String, Byte>> messages = new LinkedList<>();
     private List<SoldItem> sold = new LinkedList<>();
     private boolean open;

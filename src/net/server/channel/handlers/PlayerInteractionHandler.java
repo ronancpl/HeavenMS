@@ -266,38 +266,9 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             if (chr.getTrade() != null) {
                 MapleTrade.cancelTrade(c.getPlayer());
             } else {
-                MaplePlayerShop shop = chr.getPlayerShop();
-                MapleMiniGame game = chr.getMiniGame();
-                HiredMerchant merchant = chr.getHiredMerchant();
-                if (shop != null) {
-                    if (shop.isOwner(c.getPlayer())) {
-                        for (MaplePlayerShopItem mpsi : shop.getItems()) {
-                            if (mpsi.getBundles() > 2) {
-                                Item iItem = mpsi.getItem().copy();
-                                iItem.setQuantity((short) (mpsi.getBundles() * iItem.getQuantity()));
-                                MapleInventoryManipulator.addFromDrop(c, iItem, false);
-                            } else if (mpsi.isExist()) {
-                                MapleInventoryManipulator.addFromDrop(c, mpsi.getItem(), true);
-                            }
-                        }
-                        chr.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(c.getPlayer()));
-                        shop.removeVisitors();
-                    } else {
-                        shop.removeVisitor(c.getPlayer());
-                    }
-                    chr.setPlayerShop(null);
-                } else if (game != null) {
-                    chr.setMiniGame(null);
-                    if (game.isOwner(c.getPlayer())) {
-                        chr.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(c.getPlayer()));
-                        game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose());
-                    } else {
-                        game.removeVisitor(c.getPlayer());
-                    }
-                } else if (merchant != null) {
-                    merchant.removeVisitor(c.getPlayer());
-                    chr.setHiredMerchant(null);
-                }
+                chr.closePlayerShop();
+                chr.closeMiniGame();
+                chr.closeHiredMerchant(true);
             }
         } else if (mode == Action.OPEN.getCode()) {
             MaplePlayerShop shop = chr.getPlayerShop();

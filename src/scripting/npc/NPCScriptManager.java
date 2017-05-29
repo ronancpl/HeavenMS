@@ -64,10 +64,10 @@ public class NPCScriptManager extends AbstractScriptManager {
                 cms.put(c, cm);
                 Invocable iv = null;
                 if (fileName != null) {
-                    iv = getInvocable("npc/world" + c.getWorld() + "/" + fileName + ".js", c);
+                    iv = getInvocable("npc/" + fileName + ".js", c);
                 }
                 if (iv == null) {
-                    iv = getInvocable("npc/world" + c.getWorld() + "/" + npc + ".js", c);
+                    iv = getInvocable("npc/" + npc + ".js", c);
                 }
                 if (iv == null) {
                     FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + MapleLifeFactory.getNPC(npc).getName() + "(" + npc + ") is not coded.\r\n");
@@ -122,9 +122,9 @@ public class NPCScriptManager extends AbstractScriptManager {
         scripts.remove(c);
         
         if(cm.getScriptName() != null) {
-            resetContext("npc/world" + c.getWorld() + "/" + cm.getScriptName() + ".js", c);
+            resetContext("npc/" + cm.getScriptName() + ".js", c);
         } else {
-            resetContext("npc/world" + c.getWorld() + "/" + cm.getNpc() + ".js", c);
+            resetContext("npc/" + cm.getNpc() + ".js", c);
         }
     }
 

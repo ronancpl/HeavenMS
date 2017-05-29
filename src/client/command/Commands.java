@@ -559,7 +559,7 @@ public class Commands {
 			break;
                 */
 		case "joinevent":
-			if(!FieldLimit.CHANGECHANNEL.check(player.getMap().getFieldLimit())) {
+			if(!FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
 				MapleEvent event = c.getChannelServer().getEvent();
 				if(event != null) {
 					if(event.getMapId() != player.getMapId()) {

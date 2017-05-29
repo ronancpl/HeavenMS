@@ -29,7 +29,7 @@ public enum FieldLimit {
     MOVEMENTSKILLS(0x02),
     SUMMON(0x04),
     DOOR(0x08),
-    CHANGECHANNEL(0x10),
+    CANNOTMIGRATE(0x10),    //change channel, town portal scroll, access cash shop, etc etc
     //NO_NOTES(0x20),
     CANNOTVIPROCK(0x40),
     CANNOTMINIGAME(0x80),

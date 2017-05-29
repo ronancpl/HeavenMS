@@ -24,3 +24,6 @@ CREATE TABLE `_mob_card_counter` (
 );
 
 CALL countMobCardsBySection();
+
+# the query below recovers all MAIN mobs that drops card.
+SELECT cardid, mobid FROM monstercarddata LEFT JOIN drop_data ON monstercarddata.cardid = drop_data.itemid WHERE mobid = dropperid;

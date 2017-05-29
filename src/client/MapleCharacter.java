@@ -70,6 +70,7 @@ import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleMiniGame;
 import server.MaplePlayerShop;
+import server.MaplePlayerShopItem;
 import server.MaplePortal;
 import server.MapleShop;
 import server.MapleStatEffect;
@@ -1206,9 +1207,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
-        if (this.getTrade() != null) {
-            MapleTrade.cancelTrade(this);
-	}
+        this.closePlayerInteractions();
+        
         client.announce(warpPacket);
         map.removePlayer(MapleCharacter.this);
         if (client.getChannelServer().getPlayerStorage().getCharacterById(getId()) != null) {
@@ -2558,8 +2558,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public boolean isPartyMember(MapleCharacter chr) {
-        for(MapleCharacter mpc: getPartyMembers()) {
-            if(mpc.getId() == chr.getId()) {
+        for(MapleCharacter mpcu: getPartyMembers()) {
+            if(mpcu.getId() == chr.getId()) {
                 return true;
             }
         }
@@ -2569,6 +2569,93 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public MaplePlayerShop getPlayerShop() {
         return playerShop;
+    }
+    
+    public void closePlayerInteractions() {
+        closeNpcShop();
+        closeTrade();
+        closePlayerShop();
+        closeMiniGame();
+        closeHiredMerchant(false);
+        closePlayerMessenger();
+    }
+    
+    public void closeNpcShop() {
+        setShop(null);
+    }
+    
+    public void closeTrade() {
+        MapleTrade.cancelTrade(this);
+    }
+    
+    public void closePlayerShop() {
+        MaplePlayerShop mps = this.getPlayerShop();
+        if(mps == null) return;
+        
+        if (mps.isOwner(this)) {
+            for (MaplePlayerShopItem mpsi : mps.getItems()) {
+                if (mpsi.getBundles() >= 2) {
+                    Item iItem = mpsi.getItem().copy();
+                    iItem.setQuantity((short) (mpsi.getBundles() * iItem.getQuantity()));
+                    MapleInventoryManipulator.addFromDrop(this.getClient(), iItem, false);
+                } else if (mpsi.isExist()) {
+                    MapleInventoryManipulator.addFromDrop(this.getClient(), mpsi.getItem(), true);
+                }
+            }
+            this.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(this));
+            mps.removeVisitors();
+        } else {
+            mps.removeVisitor(this);
+        }
+        this.setPlayerShop(null);
+    }
+    
+    public void closeMiniGame() {
+        MapleMiniGame game = this.getMiniGame();
+        if(game == null) return;
+        
+        this.setMiniGame(null);
+        if (game.isOwner(this)) {
+            this.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(this));
+            game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose());
+        } else {
+            game.removeVisitor(this);
+        }
+    }
+    
+    public void closeHiredMerchant(boolean closeMerchant) {
+        HiredMerchant merchant = this.getHiredMerchant();
+        if(merchant == null) return;
+        
+        if(closeMerchant) {
+            merchant.removeVisitor(this);
+            this.setHiredMerchant(null);
+        }
+        else {
+            if (merchant.isOwner(this)) {
+                merchant.setOpen(true);
+            } else {
+                merchant.removeVisitor(this);
+            }
+            try {
+                merchant.saveItems(false);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                System.out.println("Error while saving Hired Merchant items.");
+            }
+        }
+    }
+    
+    public void closePlayerMessenger() {
+        MapleMessenger m = this.getMessenger();
+        if(m == null) return;
+        
+        World w = client.getWorldServer();
+        MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(this, this.getMessengerPosition());
+        
+        w.leaveMessenger(m.getId(), messengerplayer);
+        this.setMessenger(null);
+        this.setMessengerPosition(4);
     }
 
     public MaplePet[] getPets() {

@@ -31,6 +31,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class MessengerHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String input;
         byte mode = slea.readByte();
@@ -59,12 +60,7 @@ public final class MessengerHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             case 0x02:
-                if (messenger != null) {
-                    MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, player.getMessengerPosition());
-                    world.leaveMessenger(messenger.getId(), messengerplayer);
-                    player.setMessenger(null);
-                    player.setMessengerPosition(4);
-                }
+                player.closePlayerMessenger();
                 break;
             case 0x03:
                 if (messenger.getMembers().size() < 3) {
