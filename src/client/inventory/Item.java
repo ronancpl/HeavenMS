@@ -168,5 +168,5 @@ public class Item implements Comparable<Item> {
 
     public MaplePet getPet() {
         return pet;
-    }     
+    }
 }

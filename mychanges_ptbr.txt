@@ -264,3 +264,7 @@ Consertado casos onde jogador tenta acessar o Cash Shop, enquanto abertas janela
 Resolvido alguns problemas com Player Shops, não retornado todos os itens ao jogador ao sair da loja.
 Refatoração de código referente às diversas naturezas de fechamento das janelas interativas (minigames, messenger, npc/player shops, etc), agora utilizando um mesmo código.
 Adição de restrição de acesso ao Cash Shop pelos jogadores presentes nas salas da Free Market (evitando assim fechamento de lojas de jogadores que tentem acessar o CS).
+
+29 - 30 Maio 2017,
+Implementação da estrutura referente aos cupons de UP EXP & drop.
+MapleCouponInstaller: ferramenta desenvolvida para coleta de informações referentes ao rate e faixa de tempo que os cupons se ativam.

@@ -48,8 +48,8 @@ public class MapleIdRetriever {
     
     // ------- SEARCH section arguments --------
     
-    static String inputName = "fetch.txt";
-    static String outputName = "result.txt";
+    static String inputName = "lib/fetch.txt";
+    static String outputName = "lib/result.txt";
 
     /**
      * @param args the command line arguments

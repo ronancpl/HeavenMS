@@ -113,11 +113,11 @@ public class World {
     public void setExpRate(int exp) {
     	//System.out.println("Setting server EXP Rate to " + exp * ServerConstants.EXP_RATE + "x.");
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.revertRates(false);
+            chr.revertWorldRates();
 	}
         this.exprate = exp;
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.setRates();
+            chr.setWorldRates();
         }
     }
 
@@ -127,11 +127,11 @@ public class World {
 
     public void setDropRate(int drop) {
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.revertRates(false);
+            chr.revertWorldRates();
 	}
         this.droprate = drop;
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.setRates();
+            chr.setWorldRates();
         }
     }
 
@@ -141,11 +141,11 @@ public class World {
 
     public void setMesoRate(int meso) {
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.revertRates(false);
+            chr.revertWorldRates();
 	}
         this.mesorate = meso;
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.setRates();
+            chr.setWorldRates();
         }
     }
 
@@ -155,11 +155,11 @@ public class World {
     
     public void setBossDropRate(int bossdrop) {
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.revertRates(false);
+            chr.revertWorldRates();
 	}
         this.bossdroprate = bossdrop;
         for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.setRates();
+            chr.setWorldRates();
         }
     }
 

@@ -10,9 +10,12 @@ public class ServerConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
 
     //Login Configuration
-    public static final int CHANNEL_LOAD = 100;                 //Players per channel.
+    public static final int CHANNEL_LOAD = 100;                 //Max players per channel.
+    
+    public static final long PURGING_INTERVAL = 5 * 60 * 1000;
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
-    public static final boolean ENABLE_PIC = false;             //Escolha true/false para ativar ou desativar o Pic.
+    public static final long COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
+    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic.
 		
     //Ip Configuration
     public static String HOST;
@@ -54,6 +57,7 @@ public class ServerConstants {
     //Public static final boolean USE_ULTRA_THREE_SNAILS = true;
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
+    public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //Nope, not working yet. //all equips lvlup at max level as N, set 0 to disable.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.
@@ -63,7 +67,7 @@ public class ServerConstants {
     public static final double PET_AUTOMP_RATIO = 0.99;
     
     //Dojo Configuration
-    public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?.
+    public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
 	
     //Pet Hungry Configuration
     public static final boolean PETS_NEVER_HUNGRY = false;      //If true, pets will never grow hungry.

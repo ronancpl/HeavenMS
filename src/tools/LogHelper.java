@@ -32,7 +32,7 @@ public class LogHelper {
 			log += item.getQuantity() + " " + itemName + " from " + name2 + " to " + name1 + " \r\n";;
 		}
 		log += "\r\n\r\n";
-		FilePrinter.printError("trades.txt", log);
+		FilePrinter.print("trades.txt", log);
 	}
 
 	public static void logExpedition(MapleExpedition expedition) {
@@ -49,7 +49,7 @@ public class LogHelper {
 			log += message;
 		}
 		log += "\r\n\r\n";
-		FilePrinter.printError("expeditions.txt", log);
+		FilePrinter.print("expeditions.txt", log);
 	}
 	
 	public static String getTimeString(long then){
@@ -62,13 +62,13 @@ public class LogHelper {
 	public static void logLeaf(MapleCharacter player, boolean gotPrize, String operation) {
 		String timeStamp = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date());
 		String log = player.getName() + (gotPrize ? " used a maple leaf to buy " + operation : " redeemed " + operation + " VP for a leaf") + " - " + timeStamp + "\r\n";
-		FilePrinter.printError("mapleleaves.txt", log);
+		FilePrinter.print("mapleleaves.txt", log);
 	}
 	
 	public static void logGacha(MapleCharacter player, int itemid, String map) {
 		String itemName = MapleItemInformationProvider.getInstance().getName(itemid);
 		String timeStamp = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(new Date());
 		String log = player.getName() + " got a " + itemName + "(" + itemid + ") from the " + map + " gachapon. - " + timeStamp + "\r\n";
-		FilePrinter.printError("gachapon.txt", log);
+		FilePrinter.print("gachapon.txt", log);
 	}
 }

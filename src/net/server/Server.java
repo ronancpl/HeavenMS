@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -62,10 +63,13 @@ import tools.Pair;
 import client.MapleCharacter;
 import client.SkillFactory;
 import constants.ServerConstants;
+import java.util.Calendar;
 import server.quest.MapleQuest;
 
 public class Server implements Runnable {
-
+    private final Map<Integer, Integer> couponRates = new LinkedHashMap<>();
+    private final List<Integer> activeCoupons = new LinkedList<>();
+    
     private IoAcceptor acceptor;
     private List<Map<Integer, String>> channels = new LinkedList<>();
     private List<World> worlds = new ArrayList<>();
@@ -123,6 +127,107 @@ public class Server implements Runnable {
     public String getIP(int world, int channel) {
         return channels.get(world).get(channel);
     }
+    
+    private long getTimeLeftForNextHour() {
+        Calendar nextHour = Calendar.getInstance();
+        nextHour.add(Calendar.HOUR, 1);
+        nextHour.set(Calendar.MINUTE, 0);
+        nextHour.set(Calendar.SECOND, 0);
+        
+        return Math.max(0, nextHour.getTimeInMillis() - System.currentTimeMillis());
+    }
+    
+    public Map<Integer, Integer> getCouponRates() {
+        return couponRates;
+    }
+    
+    private void loadCouponRates(Connection c) throws SQLException {
+        PreparedStatement ps = c.prepareStatement("SELECT couponid, rate FROM nxcoupons");
+        ResultSet rs = ps.executeQuery();
+        
+        while(rs.next()) {
+            int cid = rs.getInt("couponid");
+            int rate = rs.getInt("rate");
+            
+            couponRates.put(cid, rate);
+        }
+        
+        rs.close();
+        ps.close();
+    }
+    
+    public List<Integer> getActiveCoupons() {
+        synchronized(activeCoupons) {
+            return activeCoupons;
+        }
+    }
+    
+    public void commitActiveCoupons() {
+        for(World world: getWorlds()) {
+            for(MapleCharacter chr: world.getPlayerStorage().getAllCharacters()) {
+                if(!chr.isLoggedin()) continue;
+
+                chr.revertCouponRates();
+                chr.setCouponRates();
+            }
+        }
+    }
+    
+    public void toggleCoupon(Integer couponId) {
+        if(MapleItemInformationProvider.getInstance().isRateCoupon(couponId)) {
+            synchronized(activeCoupons) {
+                if(activeCoupons.contains(couponId)) {
+                    activeCoupons.remove(couponId);
+                }
+                else {
+                    activeCoupons.add(couponId);
+                }
+
+                commitActiveCoupons();
+            }
+        }
+    }
+    
+    public void updateActiveCoupons() throws SQLException {
+        synchronized(activeCoupons) {
+            activeCoupons.clear();
+            Calendar c = Calendar.getInstance();
+
+            int weekDay = c.get(Calendar.DAY_OF_WEEK);
+            int hourDay = c.get(Calendar.HOUR_OF_DAY);
+
+            Connection con = null;
+            try {
+                con = DatabaseConnection.getConnection();
+
+                int weekdayMask = (1 << weekDay);
+                PreparedStatement ps = con.prepareStatement("SELECT couponid FROM nxcoupons WHERE (activeday & ?) = ? AND starthour <= ? AND endhour > ?");
+                ps.setInt(1, weekdayMask);
+                ps.setInt(2, weekdayMask);
+                ps.setInt(3, hourDay);
+                ps.setInt(4, hourDay);
+
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    activeCoupons.add(rs.getInt("couponid"));
+                }
+
+                rs.close();
+                ps.close();
+
+                con.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+
+                try {
+                    if(con != null && !con.isClosed())
+                        con.close();
+                } catch (SQLException ex2) {
+                    ex2.printStackTrace();
+                }
+            }
+        }
+    }
 
     @Override
     public void run() {
@@ -150,6 +255,9 @@ public class Server implements Runnable {
             ps = c.prepareStatement("UPDATE characters SET HasMerchant = 0");
             ps.executeUpdate();
             ps.close();
+            
+            loadCouponRates(c);
+            updateActiveCoupons();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
@@ -157,10 +265,14 @@ public class Server implements Runnable {
         IoBuffer.setAllocator(new SimpleBufferAllocator());
         acceptor = new NioSocketAcceptor();
         acceptor.getFilterChain().addLast("codec", (IoFilter) new ProtocolCodecFilter(new MapleCodecFactory()));
+        
         TimerManager tMan = TimerManager.getInstance();
         tMan.start();
-        tMan.register(tMan.purge(), 300000);//Purging ftw...
-        tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL);
+        tMan.register(tMan.purge(), ServerConstants.PURGING_INTERVAL);//Purging ftw...
+        
+        long timeLeft = getTimeLeftForNextHour();
+        tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
+        tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();
@@ -175,7 +287,6 @@ public class Server implements Runnable {
 	timeToTake = System.currentTimeMillis();
 	MapleQuest.loadAllQuest();
 	System.out.println("Quest loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
-		
 		
         try {
             Integer worldCount = Math.min(ServerConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));

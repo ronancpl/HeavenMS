@@ -1294,6 +1294,11 @@ public class MapleItemInformationProvider {
     public boolean isCash(int itemId) {
         return itemId / 1000000 == 5 || getEquipStats(itemId).get("cash") == 1;
     }
+    
+    public boolean isRateCoupon(int itemId) {
+        int itemType = itemId / 1000;
+        return itemType == 5211 || itemType == 5360;
+    }
 
     public Collection<Item> canWearEquipment(MapleCharacter chr, Collection<Item> items) {
         MapleInventory inv = chr.getInventory(MapleInventoryType.EQUIPPED);

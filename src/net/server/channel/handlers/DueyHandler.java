@@ -100,7 +100,8 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	if (!ServerConstants.USE_DUEY){
-    		return;
+            c.announce(MaplePacketCreator.enableActions());
+            return;
     	}
             
         byte operation = slea.readByte();
@@ -196,6 +197,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                 dp = dueypack;
                 if(dp == null) {
                     System.out.println("Error: Null Duey package!");
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 
@@ -203,7 +205,6 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                     if (!MapleInventoryManipulator.checkSpace(c, dp.getItem().getItemId(), dp.getItem().getQuantity(), dp.getItem().getOwner())) {
                         c.getPlayer().dropMessage(1, "Your inventory is full");
                         c.announce(MaplePacketCreator.enableActions());
-                        
                         return;
                     } else {
                         MapleInventoryManipulator.addFromDrop(c, dp.getItem(), false);

@@ -149,7 +149,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 				} else {
 					c.announce(MaplePacketCreator.enableActions());
 				}
-				//chr.setRates();
+				//chr.setWorldRates();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

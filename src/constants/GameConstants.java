@@ -89,9 +89,9 @@ public class GameConstants {
         return skillId > 1111002 && skillId < 1111007 || skillId == 11111002 || skillId == 11111003;
     }
     
-	public static boolean hasSPTable(MapleJob job) {
+    public static boolean hasSPTable(MapleJob job) {
         switch (job) {
-			case EVAN:
+            case EVAN:
             case EVAN1:
             case EVAN2:
             case EVAN3:

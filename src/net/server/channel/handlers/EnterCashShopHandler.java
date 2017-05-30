@@ -35,33 +35,32 @@ import tools.data.input.SeekableLittleEndianAccessor;
  */
 public class EnterCashShopHandler extends AbstractMaplePacketHandler {
     @Override
-	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         try {
-        	MapleCharacter mc = c.getPlayer();
+            MapleCharacter mc = c.getPlayer();
 
-        	if (mc.getCashShop().isOpened()) {
-                    return;
-                }
-                
-                mc.closePlayerInteractions();
-        	
-		Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
-	        mc.cancelBuffEffects();
-	        mc.cancelExpirationTask();
-                
-		c.announce(MaplePacketCreator.openCashShop(c, false));
-                c.announce(MaplePacketCreator.showCashInventory(c));
-		c.announce(MaplePacketCreator.showGifts(mc.getCashShop().loadGifts()));
-		c.announce(MaplePacketCreator.showWishList(mc, false));
-		c.announce(MaplePacketCreator.showCash(mc));
-                        
-                
-		c.getChannelServer().removePlayer(mc);
-                mc.getMap().removePlayer(mc);
-                mc.getCashShop().open(true);
-                mc.saveToDB();
+            if (mc.getCashShop().isOpened()) {
+                return;
+            }
+
+            mc.closePlayerInteractions();
+
+            Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
+            mc.cancelBuffEffects();
+            mc.cancelExpirationTask();
+
+            c.announce(MaplePacketCreator.openCashShop(c, false));
+            c.announce(MaplePacketCreator.showCashInventory(c));
+            c.announce(MaplePacketCreator.showGifts(mc.getCashShop().loadGifts()));
+            c.announce(MaplePacketCreator.showWishList(mc, false));
+            c.announce(MaplePacketCreator.showCash(mc));
+
+            c.getChannelServer().removePlayer(mc);
+            mc.getMap().removePlayer(mc);
+            mc.getCashShop().open(true);
+            mc.saveToDB();
         } catch (Exception e) {
             e.printStackTrace();
         }
-	}
+    }
 }

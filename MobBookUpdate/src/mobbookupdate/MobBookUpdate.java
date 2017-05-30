@@ -21,7 +21,7 @@ import java.io.*;
  * the Maplestory database specified by the URL below.
  *
  * In other words all items drops from monsters listed inside the Mob Book feature will be patched to match exactly like the item
- * drop list specified by the URL's Maplestory database .
+ * drop list specified by the URL's Maplestory database.
  *
  * The original file "MonsterBook.img.xml" from String.wz must be copied to the directory of this application and only then
  * executed. This program will generate another file that must replace the original server file to make the effects take place
@@ -37,8 +37,8 @@ public class MobBookUpdate {
     static String username = "root";
     static String password = "";
 
-    static String fileName = "MonsterBook.img.xml";
-    static String newFile = "MonsterBook_updated.img.xml";
+    static String fileName = "lib/MonsterBook.img.xml";
+    static String newFile = "lib/MonsterBook_updated.img.xml";
 
     static Connection con = null;
     static PrintWriter printWriter = null;
@@ -113,6 +113,9 @@ public class MobBookUpdate {
                 printWriter.println(toPrint);
                 cont++;
             }
+            
+            rs.close();
+            ps.close();
         }
         catch(SQLException e) {
             e.printStackTrace();

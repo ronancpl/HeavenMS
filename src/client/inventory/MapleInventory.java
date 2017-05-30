@@ -39,12 +39,14 @@ import server.MapleItemInformationProvider;
  * @author Matze
  */
 public class MapleInventory implements Iterable<Item> {
+    private MapleCharacter owner;
     private Map<Short, Item> inventory = new LinkedHashMap<>();
     private byte slotLimit;
     private MapleInventoryType type;
     private boolean checked = false;
     
-    public MapleInventory(MapleInventoryType type, byte slotLimit) {
+    public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
+        this.owner = mc;
         this.inventory = new LinkedHashMap<>();
         this.type = type;
         this.slotLimit = slotLimit;
@@ -91,13 +93,13 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public int countById(int itemId) {
-        int possesed = 0;
+        int qty = 0;
         for (Item item : inventory.values()) {
             if (item.getItemId() == itemId) {
-                possesed += item.getQuantity();
+                qty += item.getQuantity();
             }
         }
-        return possesed;
+        return qty;
     }
 
     public List<Item> listById(int itemId) {
@@ -122,7 +124,7 @@ public class MapleInventory implements Iterable<Item> {
         if (slotId < 0 || item == null) {
             return -1;
         }
-        inventory.put(slotId, item);
+        addSlot(slotId, item);
         item.setPosition(slotId);
         return slotId;
     }
@@ -131,7 +133,7 @@ public class MapleInventory implements Iterable<Item> {
         if (item.getPosition() < 0 && !type.equals(MapleInventoryType.EQUIPPED)) {
             return;
         }
-        inventory.put(item.getPosition(), item);
+        addSlot(item.getPosition(), item);
     }
 
     public void move(short sSlot, short dSlot, short slotMax) {
@@ -193,8 +195,24 @@ public class MapleInventory implements Iterable<Item> {
         }
     }
 
+    public void addSlot(short slot, Item item) {
+        inventory.put(slot, item);
+        
+        if(MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
+            System.out.println("reformulating");
+            owner.revertCouponRates();
+            owner.setCouponRates();
+        }
+    }
+    
     public void removeSlot(short slot) {
-        inventory.remove(slot);
+        Item item = inventory.remove(slot);
+        
+        if(item != null && MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
+            System.out.println("reformulating");
+            owner.revertCouponRates();
+            owner.setCouponRates();
+        }
     }
 
     public boolean isFull() {

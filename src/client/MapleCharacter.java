@@ -201,7 +201,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int possibleReports = 10;
     private int dojoPoints, vanquisherStage, dojoStage, dojoEnergy, vanquisherKills;
     private int warpToId;
-    private int expRate = 1, mesoRate = 1, dropRate = 1;
+    private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int married;
     private long dojoFinish, lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1, jailExpiration = -1;
@@ -245,6 +245,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Map<Integer, String> entered = new LinkedHashMap<>();
     private Set<MapleMapObject> visibleMapObjects = new LinkedHashSet<>();
     private Map<Skill, SkillEntry> skills = new LinkedHashMap<>();
+    private Map<Integer, Integer> activeCoupons = new LinkedHashMap<>();
+    private Map<Integer, Integer> activeCouponRates = new LinkedHashMap<>();
     private EnumMap<MapleBuffStat, MapleBuffStatValueHolder> effects = new EnumMap<>(MapleBuffStat.class);
     private Map<Integer, MapleKeyBinding> keymap = new LinkedHashMap<>();
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
@@ -301,7 +303,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if (type == MapleInventoryType.CASH) {
                 b = 96;
             }
-            inventory[type.ordinal()] = new MapleInventory(type, (byte) b);
+            inventory[type.ordinal()] = new MapleInventory(this, type, (byte) b);
         }
         for (int i = 0; i < SavedLocationType.values().length; i++) {
             savedLocations[i] = null;
@@ -3269,9 +3271,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             
             this.yellowMessage("We see you reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
         }
-        if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the drop + meso rate
-            revertRates(true);
-            addRates();
+        if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the drop & meso rate
+            revertPlayerRates();
+            setPlayerRates();
             this.yellowMessage("You managed to get level " + level + "! Getting experience and items seems a little easier now, huh?");
         }
         
@@ -3380,33 +3382,117 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void addRates() {        
+    public void setPlayerRates() {        
         this.expRate  *=  EXP_RATE_GAIN[this.level / 20];
         this.mesoRate *= MESO_RATE_GAIN[this.level / 20];
         this.dropRate *= DROP_RATE_GAIN[this.level / 20];
     }
 
-    public void revertRates(boolean lvlup) {
-        if(lvlup == true) {
-            this.expRate  /=  EXP_RATE_GAIN[(this.level - 1) / 20];
-            this.mesoRate /= MESO_RATE_GAIN[(this.level - 1) / 20];
-            this.dropRate /= DROP_RATE_GAIN[(this.level - 1) / 20];
-        }
-        else {
-            World worldz = Server.getInstance().getWorld(world);
-
-            this.expRate /= worldz.getExpRate();
-            this.mesoRate /= worldz.getMesoRate();
-            this.dropRate /= worldz.getDropRate();
-        }
+    public void revertPlayerRates() {
+        this.expRate  /=  EXP_RATE_GAIN[(this.level - 1) / 20];
+        this.mesoRate /= MESO_RATE_GAIN[(this.level - 1) / 20];
+        this.dropRate /= DROP_RATE_GAIN[(this.level - 1) / 20];
     }
     
-    public void setRates() {
+    public void revertWorldRates() {
         World worldz = Server.getInstance().getWorld(world);
-        
+
+        this.expRate /= worldz.getExpRate();
+        this.mesoRate /= worldz.getMesoRate();
+        this.dropRate /= worldz.getDropRate();
+    }
+    
+    public void setWorldRates() {
+        World worldz = Server.getInstance().getWorld(world);
         this.expRate *= worldz.getExpRate();
         this.mesoRate *= worldz.getMesoRate();
         this.dropRate *= worldz.getDropRate();
+    }
+    
+    public void revertCouponRates() {
+        revertCouponsEffects();
+    }
+    
+    public void setCouponRates() {
+        setActiveCoupons();
+        activateCouponsEffects();
+    }
+    
+    private boolean isExpCoupon(int couponId) {
+        return couponId / 1000 == 5211;
+    }
+    
+    private int getCouponMultiplier(int couponId) {
+        return activeCouponRates.get(couponId);
+    }
+    
+    private void setExpCouponRate(int couponId, int couponQty) {
+        this.expCoupon *= (getCouponMultiplier(couponId) * couponQty);
+    }
+    
+    private void setDropCouponRate(int couponId, int couponQty) {
+        this.dropCoupon *= (getCouponMultiplier(couponId) * couponQty);
+        this.mesoCoupon *= (getCouponMultiplier(couponId) * couponQty);
+    }
+    
+    private void revertCouponsEffects() {
+        this.expRate /= this.expCoupon;
+        this.dropRate /= this.dropCoupon;
+        this.mesoRate /= this.mesoCoupon;
+        
+        this.expCoupon = 1;
+        this.dropCoupon = 1;
+        this.mesoCoupon = 1;
+    }
+    
+    private void activateCouponsEffects() {
+        if(ServerConstants.USE_STACK_COUPON_RATES) {
+            for(Entry<Integer,Integer> coupon: activeCoupons.entrySet()) {
+                int couponId = coupon.getKey();
+                int couponQty = coupon.getValue();
+
+                if(isExpCoupon(couponId)) setExpCouponRate(couponId, couponQty);
+                else setDropCouponRate(couponId, couponQty);
+            }
+        }
+        else {
+            int maxExpRate = 1, maxDropRate = 1;
+            
+            for(Entry<Integer,Integer> coupon: activeCoupons.entrySet()) {
+                int couponId = coupon.getKey();
+
+                if(isExpCoupon(couponId)) maxExpRate = Math.max(maxExpRate, getCouponMultiplier(couponId));
+                else maxDropRate = Math.max(maxDropRate, getCouponMultiplier(couponId));
+            }
+            
+            this.expCoupon = maxExpRate;
+            this.dropCoupon = maxDropRate;
+            this.mesoCoupon = maxDropRate;
+        }
+        
+        this.expRate *= this.expCoupon;
+        this.dropRate *= this.dropCoupon;
+        this.mesoRate *= this.mesoCoupon;
+    }
+    
+    private void setActiveCoupons() {
+        activeCoupons.clear();
+        activeCouponRates.clear();
+        
+        Map<Integer, Integer> coupons = Server.getInstance().getCouponRates();
+        List<Integer> active = Server.getInstance().getActiveCoupons();
+        
+        for(Item it: this.getInventory(MapleInventoryType.CASH).list()) {
+            if(MapleItemInformationProvider.getInstance().isRateCoupon(it.getItemId()) && active.contains(it.getItemId())) {
+                Integer count = activeCoupons.get(it.getItemId());
+                
+                if(count != null) activeCoupons.put(it.getItemId(), count + 1);
+                else {
+                    activeCoupons.put(it.getItemId(), 1);
+                    activeCouponRates.put(it.getItemId(), coupons.get(it.getItemId()));
+                }
+            }
+        }
     }
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
@@ -3732,10 +3818,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.maplemount.setActive(false);
             
             if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) {
-                ret.addRates();
+                ret.setPlayerRates();
             }
-            ret.setRates();
-
+            
+            ret.setWorldRates();
+            ret.setCouponRates();
+            
             return ret;
         } catch (SQLException | RuntimeException e) {
             e.printStackTrace();

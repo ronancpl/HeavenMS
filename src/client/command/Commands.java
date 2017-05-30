@@ -673,6 +673,29 @@ public class Commands {
                             }
                         }
                         break;
+                    
+                case "debugservercoupons":
+                case "debugcoupons":
+                        if(ServerConstants.USE_DEBUG) {
+                            String s = "Currently active SERVER coupons: ";
+                            for(Integer i : Server.getInstance().getActiveCoupons()) {
+                                s += (i + " ");
+                            }
+                            
+                            player.dropMessage(s);
+                        }
+                        break;
+                    
+                case "debugplayercoupons":
+                        if(ServerConstants.USE_DEBUG) {
+                            String s = "Currently active PLAYER coupons: ";
+                            for(Integer i : Server.getInstance().getActiveCoupons()) {
+                                s += (i + " ");
+                            }
+                            
+                            player.dropMessage(s);
+                        }
+                        break;
                             
 		default:
 			if (player.gmLevel() == 0) {
@@ -958,6 +981,12 @@ public class Commands {
 				victim = player;
 			}
 			victim.getClient().disconnect(false, false);
+                } else if (sub[0].equals("togglecoupon")) {
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !togglecoupon <itemid>");
+				return true;
+			}
+                        Server.getInstance().toggleCoupon(Integer.parseInt(sub[1]));
 		} else if (sub[0].equals("exprate")) {
                         if (sub.length < 2){
 				player.yellowMessage("Syntax: !exprate <newrate>");

@@ -50,7 +50,7 @@ public final class DistributeSPHandler extends AbstractMaplePacketHandler {
         	AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
         	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
     		c.disconnect(true, false);
-            return;
+                return;
         }
         if (skillid % 10000000 > 999 && skillid % 10000000 < 1003) {
             int total = 0;
