@@ -50,6 +50,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
+import constants.ServerConstants;
 import java.util.concurrent.ScheduledFuture;
 import server.TimerManager;
 
@@ -278,5 +279,12 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             
             mc.setHpDecreaseTask(hpDecreaseTask);
         }
+        
+        player.dispelBuffCoupons();
+        player.resetPlayerRates();
+        
+        if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
+        player.setWorldRates();
+        player.setCouponRates();
     }
 }

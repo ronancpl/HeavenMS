@@ -275,29 +275,29 @@ public class MapleInventoryManipulator {
     }
 
     public static void removeById(MapleClient c, MapleInventoryType type, int itemId, int quantity, boolean fromDrop, boolean consume) {
-    int removeQuantity = quantity;
-    MapleInventory inv = c.getPlayer().getInventory(type);
+        int removeQuantity = quantity;
+        MapleInventory inv = c.getPlayer().getInventory(type);
 	int slotLimit = type == MapleInventoryType.EQUIPPED ? 128 : inv.getSlotLimit();
 	
-    for (short i = 0; i <= slotLimit; i++) {
-    	Item item = inv.getItem((short) (type == MapleInventoryType.EQUIPPED ? -i : i));
-    	if (item != null) {
-    		if (item.getItemId() == itemId || item.getCashId() == itemId) {        		
-	            if (removeQuantity <= item.getQuantity()) {
-	                removeFromSlot(c, type, item.getPosition(), (short) removeQuantity, fromDrop, consume);
-	                removeQuantity = 0;
-	                break;
-	            } else {
-	                removeQuantity -= item.getQuantity();
-	                removeFromSlot(c, type, item.getPosition(), item.getQuantity(), fromDrop, consume);
-	            }
-    		}
-    	}
+        for (short i = 0; i <= slotLimit; i++) {
+            Item item = inv.getItem((short) (type == MapleInventoryType.EQUIPPED ? -i : i));
+            if (item != null) {
+                if (item.getItemId() == itemId || item.getCashId() == itemId) {
+                    if (removeQuantity <= item.getQuantity()) {
+                        removeFromSlot(c, type, item.getPosition(), (short) removeQuantity, fromDrop, consume);
+                        removeQuantity = 0;
+                        break;
+                    } else {
+                        removeQuantity -= item.getQuantity();
+                        removeFromSlot(c, type, item.getPosition(), item.getQuantity(), fromDrop, consume);
+                    }
+                }
+            }
+        }
+        if (removeQuantity > 0) {
+            throw new RuntimeException("[HACK] Not enough items available of Item:" + itemId + ", Quantity (After Quantity/Over Current Quantity): " + (quantity - removeQuantity) + "/" + quantity);
+        }
     }
-    if (removeQuantity > 0) {
-        throw new RuntimeException("[HACK] Not enough items available of Item:" + itemId + ", Quantity (After Quantity/Over Current Quantity): " + (quantity - removeQuantity) + "/" + quantity);
-    }
-}
 
     public static void move(MapleClient c, MapleInventoryType type, short src, short dst) {
         if (src < 0 || dst < 0) {

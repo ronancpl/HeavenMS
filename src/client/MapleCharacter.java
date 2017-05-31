@@ -1691,7 +1691,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void cancelAllDebuffs() {
         diseases.clear();
     }
-
+    
     public void dispelSkill(int skillid) {
         LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<>(effects.values());
         for (MapleBuffStatValueHolder mbsvh : allBuffs) {
@@ -3418,6 +3418,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         activateCouponsEffects();
     }
     
+    public void resetPlayerRates() {
+        expRate = 1;
+        mesoRate = 1;
+        dropRate = 1;
+        
+        expCoupon = 1;
+        mesoCoupon = 1;
+        dropCoupon = 1;
+    }
+    
     private boolean isExpCoupon(int couponId) {
         return couponId / 1000 == 5211;
     }
@@ -3436,6 +3446,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private void revertCouponsEffects() {
+        dispelBuffCoupons();
+        
         this.expRate /= this.expCoupon;
         this.dropRate /= this.dropCoupon;
         this.mesoRate /= this.mesoCoupon;
@@ -3451,19 +3463,33 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 int couponId = coupon.getKey();
                 int couponQty = coupon.getValue();
 
+                commitBuffCoupon(couponId);
                 if(isExpCoupon(couponId)) setExpCouponRate(couponId, couponQty);
                 else setDropCouponRate(couponId, couponQty);
             }
         }
         else {
-            int maxExpRate = 1, maxDropRate = 1;
+            int maxExpRate = 1, maxDropRate = 1, maxExpCouponId = -1, maxDropCouponId = -1;
             
             for(Entry<Integer,Integer> coupon: activeCoupons.entrySet()) {
                 int couponId = coupon.getKey();
 
-                if(isExpCoupon(couponId)) maxExpRate = Math.max(maxExpRate, getCouponMultiplier(couponId));
-                else maxDropRate = Math.max(maxDropRate, getCouponMultiplier(couponId));
+                if(isExpCoupon(couponId)) {
+                    if(maxExpRate < getCouponMultiplier(couponId)) {
+                        maxExpCouponId = couponId;
+                        maxExpRate = getCouponMultiplier(couponId);
+                    }
+                }
+                else {
+                    if(maxDropRate < getCouponMultiplier(couponId)) {
+                        maxDropCouponId = couponId;
+                        maxDropRate = getCouponMultiplier(couponId);
+                    }
+                }
             }
+            
+            if(maxExpCouponId > -1) commitBuffCoupon(maxExpCouponId);
+            if(maxDropCouponId > -1) commitBuffCoupon(maxDropCouponId);
             
             this.expCoupon = maxExpRate;
             this.dropCoupon = maxDropRate;
@@ -3491,6 +3517,24 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     activeCoupons.put(it.getItemId(), 1);
                     activeCouponRates.put(it.getItemId(), coupons.get(it.getItemId()));
                 }
+            }
+        }
+    }
+    
+    private void commitBuffCoupon(int couponid) {
+        if(!isLoggedin() || getCashShop().isOpened()) return;
+        
+        MapleStatEffect mse = MapleItemInformationProvider.getInstance().getItemEffect(couponid);
+        mse.applyTo(this);
+    }
+    
+    public void dispelBuffCoupons() {
+        LinkedList<MapleBuffStatValueHolder> allBuffs = new LinkedList<>(effects.values());
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
+        for (MapleBuffStatValueHolder mbsvh : allBuffs) {
+            if (ii.isRateCoupon(mbsvh.effect.getSourceId())) {
+                cancelEffect(mbsvh.effect, false, mbsvh.startTime);
             }
         }
     }
@@ -3816,13 +3860,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.maplemount.setLevel(mountlevel);
             ret.maplemount.setTiredness(mounttiredness);
             ret.maplemount.setActive(false);
-            
-            if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) {
-                ret.setPlayerRates();
-            }
-            
-            ret.setWorldRates();
-            ret.setCouponRates();
             
             return ret;
         } catch (SQLException | RuntimeException e) {

@@ -124,7 +124,7 @@ public class MapleCouponInstaller {
     }
     
     private static void processDayTimeString(String time) {
-        String day = time.substring(0, 2);
+        String day = time.substring(0, 3);
         int d = getDayOfWeek(day);
         
         activeDay |= (1 << d);
