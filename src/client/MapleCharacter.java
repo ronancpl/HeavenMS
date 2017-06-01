@@ -150,10 +150,6 @@ import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
-    private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
-    private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
-    private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144};    //fibonacci :3
-    
     private static final String LEVEL_200 = "[Congrats] %s has reached Level 200! Congratulate %s on such an amazing achievement!";
 
     // MapleStory default keyset
@@ -3383,15 +3379,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void setPlayerRates() {        
-        this.expRate  *=  EXP_RATE_GAIN[this.level / 20];
-        this.mesoRate *= MESO_RATE_GAIN[this.level / 20];
-        this.dropRate *= DROP_RATE_GAIN[this.level / 20];
+        this.expRate  *=  GameConstants.getPlayerBonusExpRate(this.level / 20);
+        this.mesoRate *= GameConstants.getPlayerBonusMesoRate(this.level / 20);
+        this.dropRate *= GameConstants.getPlayerBonusDropRate(this.level / 20);
     }
 
     public void revertPlayerRates() {
-        this.expRate  /=  EXP_RATE_GAIN[(this.level - 1) / 20];
-        this.mesoRate /= MESO_RATE_GAIN[(this.level - 1) / 20];
-        this.dropRate /= DROP_RATE_GAIN[(this.level - 1) / 20];
+        this.expRate  /=  GameConstants.getPlayerBonusExpRate((this.level - 1) / 20);
+        this.mesoRate /= GameConstants.getPlayerBonusMesoRate((this.level - 1) / 20);
+        this.dropRate /= GameConstants.getPlayerBonusDropRate((this.level - 1) / 20);
     }
     
     public void revertWorldRates() {
@@ -3945,7 +3941,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
         } catch (Exception e) {
-			FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, e, "MapleCharacter.mobKilled. CID: " + this.id + " last Quest Processed: " + lastQuestProcessed);
+            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, e, "MapleCharacter.mobKilled. CID: " + this.id + " last Quest Processed: " + lastQuestProcessed);
         }
     }
 
@@ -5964,7 +5960,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         pendantExp = 0;
     }
 
-    public void increaseEquipExp(int mobexp) {
+    public void increaseEquipExp(int expGain) {
+        if(expGain < 0) expGain = Integer.MAX_VALUE;
+        
         MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
         for (Item item : getInventory(MapleInventoryType.EQUIPPED).list()) {
             Equip nEquip = (Equip) item;
@@ -5973,8 +5971,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 continue;
             }
 
-            if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) && (itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || itemName.contains("Timeless") && nEquip.getItemLevel() < 6) {
-                nEquip.gainItemExp(client, mobexp, itemName.contains("Reverse"));
+            if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) || (itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || (itemName.contains("Timeless") && nEquip.getItemLevel() < 6)) {
+                nEquip.gainItemExp(client, expGain);
             }
         }
     }

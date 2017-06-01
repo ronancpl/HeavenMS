@@ -58,7 +58,9 @@ public class ServerConstants {
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
-    public static final int USE_EQUIPMNT_LVLUP = 7;             //Nope, not working yet. //all equips lvlup at max level as N, set 0 to disable.
+    public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
+    public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
+    public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 0 to disable.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.
     
@@ -70,8 +72,8 @@ public class ServerConstants {
     public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
 	
     //Pet Hungry Configuration
-    public static final boolean PETS_NEVER_HUNGRY = false;      //If true, pets will never grow hungry.
-    public static final boolean GM_PETS_NEVER_HUNGRY = true;    //If true, pets of GMs will never grow hungry.
+    public static final boolean PETS_NEVER_HUNGRY = false;      //If true, pets and mounts will never grow hungry.
+    public static final boolean GM_PETS_NEVER_HUNGRY = true;    //If true, pets and mounts owned by GMs will never grow hungry.
 	
     //Rates And Experience
     public static final int EXP_RATE = 10;

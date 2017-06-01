@@ -22,11 +22,14 @@
 package client.inventory;
 
 import client.MapleClient;
+import constants.ServerConstants;
+import constants.ExpTable;
 import java.util.LinkedList;
 import java.util.List;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.Randomizer;
 
 public class Equip extends Item {
 
@@ -49,11 +52,10 @@ public class Equip extends Item {
     private float itemExp;
     private int ringid = -1;
     private boolean wear = false;
+    private boolean isElemental = false;    // timeless or reverse
 
     public Equip(int id, short position) {
-        super(id, position, (short) 1);
-        this.itemExp = 0;
-        this.itemLevel = 1;
+        this(id, position, 0);
     }
 
     public Equip(int id, short position, int slots) {
@@ -61,6 +63,9 @@ public class Equip extends Item {
         this.upgradeSlots = (byte) slots;
         this.itemExp = 0;
         this.itemLevel = 1;
+        
+        String itemName = MapleItemInformationProvider.getInstance().getName(id);
+        if(itemName != null) this.isElemental = (itemName.contains("Timeless") || itemName.contains("Reverse"));
     }
 
     @Override
@@ -254,8 +259,59 @@ public class Equip extends Item {
         this.level = level;
     }
 
-    public void gainLevel(MapleClient c, boolean timeless) {
-        List<Pair<String, Integer>> stats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel, timeless);
+    private int getStatModifier(boolean isAttribute) {
+        if(ServerConstants.USE_EQUIPMNT_LVLUP_POWER) {
+            if(isAttribute) return 2;
+            else return 4;
+        }
+        else {
+            if(isAttribute) return 4;
+            else return 16;
+        }
+    }
+    
+    private void getUnitStatUpgrade(List<Pair<String, Integer>> stats, String name, int curStat, boolean isAttribute) {
+        int maxUpgrade = Randomizer.rand(0, 1 + (curStat / getStatModifier(isAttribute)));
+        if(maxUpgrade == 0) return;
+            
+        stats.add(new Pair<>(name, maxUpgrade));  // each 4 stat point grants a bonus stat upgrade on equip level up.
+    }
+    
+    private void getUnitSlotUpgrade(List<Pair<String, Integer>> stats, String name) {
+        if(Math.random() < 0.1) {
+            stats.add(new Pair<>(name, 1));  // 10% success on getting a slot upgrade.
+        }
+    }
+    
+    private void improveDefaultStats(List<Pair<String, Integer>> stats) {
+        if(dex > 0) getUnitStatUpgrade(stats, "incDEX", dex, true);
+        if(str > 0) getUnitStatUpgrade(stats, "incSTR", str, true);
+        if(_int > 0) getUnitStatUpgrade(stats, "incINT",_int, true);
+        if(luk > 0) getUnitStatUpgrade(stats, "incLUK", luk, true);
+        if(hp > 0) getUnitStatUpgrade(stats, "incMHP", hp, false);
+        if(mp > 0) getUnitStatUpgrade(stats, "incMMP", mp, false);
+        if(watk > 0) getUnitStatUpgrade(stats, "incPAD", watk, false);
+        if(matk > 0) getUnitStatUpgrade(stats, "incMAD", matk, false);
+        if(wdef > 0) getUnitStatUpgrade(stats, "incPDD", wdef, false);
+        if(mdef > 0) getUnitStatUpgrade(stats, "incMDD", mdef, false);
+        if(avoid > 0) getUnitStatUpgrade(stats, "incEVA", avoid, false);
+        if(acc > 0) getUnitStatUpgrade(stats, "incACC", acc, false);
+        if(speed > 0) getUnitStatUpgrade(stats, "incSpeed", speed, false);
+        if(jump > 0) getUnitStatUpgrade(stats, "incJump", jump, false);
+    }
+    
+    public void gainLevel(MapleClient c) {
+        List<Pair<String, Integer>> stats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
+        if(stats.isEmpty()) improveDefaultStats(stats);
+        
+        if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+            getUnitSlotUpgrade(stats, "incVicious");
+            getUnitSlotUpgrade(stats, "incSlot");
+        }
+        
+        itemLevel++;
+        if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage(6, "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' has LEVELED UP to level " + itemLevel + "!");
+        
         for (Pair<String, Integer> stat : stats) {
             switch (stat.getLeft()) {
                 case "incDEX":
@@ -300,9 +356,22 @@ public class Equip extends Item {
                 case "incJump":
                     jump += stat.getRight();
                     break;
+                    
+                case "incVicious":
+                    if(vicious > 0) {
+                        vicious -= stat.getRight();
+                        if(vicious < 0) vicious = 0;
+                        
+                        c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+                    }
+                    
+                    break;
+                case "incSlot":
+                    upgradeSlots += stat.getRight();
+                    c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+                    break;
             }
         }
-        this.itemLevel++;
         c.announce(MaplePacketCreator.showEquipmentLevelUp());
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignEffect(c.getPlayer().getId(), 15));
         c.getPlayer().forceUpdateItem(this);
@@ -311,17 +380,41 @@ public class Equip extends Item {
     public int getItemExp() {
         return (int) itemExp;
     }
+    
+    private double normalizedMasteryExp(int reqLevel) {
+        return Math.max((2622.71 * Math.exp(reqLevel * 0.0533649)) - 6000.0, 15);
+    }
+    
+    public void gainItemExp(MapleClient c, int gain) {  // Ronan's Equip Exp gain method
+        if(itemLevel >= 30) return;
+        
+        int reqLevel = MapleItemInformationProvider.getInstance().getEquipStats(this.getItemId()).get("reqLevel");
+        
+        float masteryModifier = (float)ExpTable.getExpNeededForLevel(1) / (float)normalizedMasteryExp(reqLevel);
+        float elementModifier = (isElemental) ? 1.2f : 1.0f;
+        
+        float baseExpGain = gain * elementModifier * masteryModifier;
+        
+        itemExp += baseExpGain;
+        int expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
+        
+        //System.out.println("Gain: " + gain + " Mastery: " + masteryModifier + "Base gain: " + baseExpGain + " item current exp: " + itemExp + " / " + expNeeded);
+        
+        if (itemExp >= expNeeded) {
+            while(itemExp >= expNeeded) {
+                itemExp = (itemExp - expNeeded);
+                gainLevel(c);
 
-    public void gainItemExp(MapleClient c, int gain, boolean reverse) {
-        int expneeded = !reverse ? (10 * itemLevel + 70) : (5 * itemLevel + 65);
-        float modifier = 364 / expneeded;
-        float exp = (expneeded / (1000000 * modifier * modifier)) * gain;
-        itemExp += exp;
-        if (itemExp >= 364) {
-            itemExp = (itemExp - 364);
-            gainLevel(c, !reverse);
+                if(itemLevel == ServerConstants.USE_EQUIPMNT_LVLUP) {
+                    itemExp = 0.0f;
+                    break;
+                }
+                
+                expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
+            }
         } else {
             c.getPlayer().forceUpdateItem(this);
+            //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
         }
     }
 

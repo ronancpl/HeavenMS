@@ -8,7 +8,7 @@ Regarding distributability and usage of the code presented here: like it was bef
 
 This is a NetBeans 8.0.2 Project. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
-In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. From now on, considering the use of some of this system's edited WZ and server-side files should be a great asset for new private server instances. My opinion, though! Refer to "README_wzchanges.txt" for more information on what have been changed from Nexon's v83 WZ files.
+In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what have been changed from Nexon's v83 WZ files.
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, to aim to get the best of the MapleStory of that era.
 

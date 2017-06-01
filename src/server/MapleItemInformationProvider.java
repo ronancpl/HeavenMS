@@ -1453,20 +1453,11 @@ public class MapleItemInformationProvider {
          return ret;
     }
 
-    public List<Pair<String, Integer>> getItemLevelupStats(int itemId, int level, boolean timeless) {
+    public List<Pair<String, Integer>> getItemLevelupStats(int itemId, int level) {
         List<Pair<String, Integer>> list = new LinkedList<>();
         MapleData data = getItemData(itemId);
         MapleData data1 = data.getChildByPath("info").getChildByPath("level");
-        /*if ((timeless && level == 5) || (!timeless && level == 3)) {
-         MapleData skilldata = data1.getChildByPath("case").getChildByPath("1").getChildByPath(timeless ? "6" : "4");
-         if (skilldata != null) {
-         List<MapleData> skills = skilldata.getChildByPath("Skill").getChildren();
-         for (int i = 0; i < skilldata.getChildByPath("Skill").getChildren().size(); i++) {
-         System.out.println(MapleDataTool.getInt(skills.get(i).getChildByPath("id")));
-         if (Math.random() < 0.1) list.add(new Pair<String, Integer>("Skill" + 0, MapleDataTool.getInt(skills.get(i).getChildByPath("id"))));
-         }
-         }
-         }*/
+        
         if (data1 != null) {
             MapleData data2 = data1.getChildByPath("info").getChildByPath(Integer.toString(level));
             if (data2 != null) {

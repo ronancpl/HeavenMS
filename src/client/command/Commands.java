@@ -648,28 +648,28 @@ public class Commands {
                 //debug only
                 case "debugpos":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage("Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
+                            player.dropMessage(6, "Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
                         }
                         break;
                     
                 case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage("Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ".");
+                            player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ".");
                         }
                         break;
                 
                 case "debugevent":
                         if(ServerConstants.USE_DEBUG) {
-                            if(player.getEventInstance() == null) player.dropMessage("Player currently not in an event.");
-                            else player.dropMessage("Current event name: " + player.getEventInstance().getName() + ".");
+                            if(player.getEventInstance() == null) player.dropMessage(6, "Player currently not in an event.");
+                            else player.dropMessage(6, "Current event name: " + player.getEventInstance().getName() + ".");
                         }
                         break;
                 
                 case "debugreactors":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage("Current reactor states on map " + player.getMapId() + ":");
+                            player.dropMessage(6, "Current reactor states on map " + player.getMapId() + ":");
                             for(Pair p: player.getMap().reportReactorStates()) {
-                                player.dropMessage("Reactor id: " + p.getLeft() + " -> State: " + p.getRight() + ".");
+                                player.dropMessage(6, "Reactor id: " + p.getLeft() + " -> State: " + p.getRight() + ".");
                             }
                         }
                         break;
@@ -682,7 +682,7 @@ public class Commands {
                                 s += (i + " ");
                             }
                             
-                            player.dropMessage(s);
+                            player.dropMessage(6, s);
                         }
                         break;
                     
@@ -693,7 +693,7 @@ public class Commands {
                                 s += (i + " ");
                             }
                             
-                            player.dropMessage(s);
+                            player.dropMessage(6, s);
                         }
                         break;
                             

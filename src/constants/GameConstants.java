@@ -7,6 +7,23 @@ import constants.skills.Aran;
  * @author kevintjuh93
  */
 public class GameConstants {
+    // Ronan's rates upgrade system
+    private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+    private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66};
+    private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144};    //fibonacci :3
+    
+    public static int getPlayerBonusMesoRate(int slot) {
+        return(MESO_RATE_GAIN[slot]);
+    }
+    
+    public static int getPlayerBonusDropRate(int slot) {
+        return(DROP_RATE_GAIN[slot]);
+    }
+    
+    public static int getPlayerBonusExpRate(int slot) {
+        return(EXP_RATE_GAIN[slot]);
+    }
+    
     private static final int[] mobHpVal = {0, 15, 20, 25, 35, 50, 65, 80, 95, 110, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350,
         375, 405, 435, 465, 495, 525, 580, 650, 720, 790, 900, 990, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800,
         1900, 2000, 2100, 2200, 2300, 2400, 2520, 2640, 2760, 2880, 3000, 3200, 3400, 3600, 3800, 4000, 4300, 4600, 4900, 5200,
