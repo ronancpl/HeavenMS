@@ -294,6 +294,19 @@ public class MapleAlliance {
         }
     }
     
+    public static void removeGuildFromAlliance(int allianceId, int guildId, int worldId) {
+        MapleAlliance alliance = Server.getInstance().getAlliance(allianceId);
+                
+        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.removeGuildFromAlliance(alliance, guildId, worldId), -1, -1);
+        Server.getInstance().removeGuildFromAlliance(alliance.getId(), guildId);
+
+        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.getGuildAlliances(alliance, worldId), -1, -1);
+        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
+        Server.getInstance().guildMessage(guildId, MaplePacketCreator.disbandAlliance(alliance.getId()));
+
+        alliance.dropMessage("[" + Server.getInstance().getGuild(guildId, worldId) + "] guild has left the union.");
+    }
+    
     public void updateAlliancePackets(MapleCharacter chr) {
         if (allianceId > 0) {
             this.broadcastMessage(MaplePacketCreator.updateAllianceInfo(this, chr.getClient()));

@@ -192,12 +192,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
             nextPendingRequest(c);
         } else if (mode == 3) { // delete
             int otherCid = slea.readInt();
-            if (buddylist.containsVisible(otherCid)) {
-                notifyRemoteChannel(c, c.getWorldServer().find(otherCid), otherCid, BuddyOperation.DELETED);
-            }
-            buddylist.remove(otherCid);
-            c.announce(MaplePacketCreator.updateBuddylist(player.getBuddylist().getBuddies()));
-            nextPendingRequest(c);
+            player.deleteBuddy(otherCid);
         }
     }
 

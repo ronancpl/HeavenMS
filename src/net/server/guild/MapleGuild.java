@@ -136,6 +136,7 @@ public class MapleGuild {
     public void writeToDB(boolean bDisband) {
         try {
             Connection con = DatabaseConnection.getConnection();
+            
             if (!bDisband) {
                 StringBuilder builder = new StringBuilder();
                 builder.append("UPDATE guilds SET GP = ?, logo = ?, logoColor = ?, logoBG = ?, logoBGColor = ?, ");
@@ -496,6 +497,13 @@ public class MapleGuild {
     }
 
     public void disbandGuild() {
+        if(allianceId > 0) {
+            MapleAlliance alliance = Server.getInstance().getAlliance(allianceId);
+            
+            if(alliance.getLeader().getGuildId() != id) MapleAlliance.removeGuildFromAlliance(allianceId, id, world);
+            else MapleAlliance.disbandAlliance(allianceId);
+        }
+        
         this.writeToDB(true);
         this.broadcast(null, -1, BCOp.DISBAND);
     }

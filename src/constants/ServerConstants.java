@@ -15,7 +15,7 @@ public class ServerConstants {
     public static final long PURGING_INTERVAL = 5 * 60 * 1000;
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     public static final long COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
-    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic.
+    public static final boolean ENABLE_PIC = true;             //Pick true/false to enable or disable Pic.
 		
     //Ip Configuration
     public static String HOST;
@@ -33,6 +33,7 @@ public class ServerConstants {
     public static final boolean USE_CUSTOM_KEYSET = true;
     public static final boolean USE_MAXRANGE = true;        	//Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = true;           	//Will enable some text prints and new commands in the client oriented for debugging.
+    public static final boolean USE_DEBUG_SHOW_RCVD_PACKETS = false;
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;

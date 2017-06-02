@@ -60,6 +60,7 @@ import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
+import constants.ServerConstants;
 import scripting.event.EventManager;
 import scripting.npc.NPCConversationManager;
 import scripting.npc.NPCScriptManager;
@@ -445,6 +446,8 @@ public class MapleClient {
 	}
 
 	public boolean checkPic(String other) {
+                if(!ServerConstants.ENABLE_PIC) return true;
+            
 		picattempt++;
 		if (picattempt > 5) {
 			getSession().close(true);
@@ -899,50 +902,12 @@ public class MapleClient {
 	}
 
 	public boolean deleteCharacter(int cid) {
-		Connection con = DatabaseConnection.getConnection();
-		
-		MapleCharacter player = Server.getInstance().getWorld(0).getPlayerStorage().getCharacterById(cid);
-		if (player != null){
-			player.getClient().disconnect(false, false);
-			disconnect(false, false);
-			return false; //DC both and return, fuck that
-		}
-		try {
-			try (PreparedStatement ps = con.prepareStatement("SELECT id, guildid, guildrank, name, allianceRank FROM characters WHERE id = ? AND accountid = ?")) {
-				ps.setInt(1, cid);
-				ps.setInt(2, accId);
-				try (ResultSet rs = ps.executeQuery()) {
-					if (!rs.next()) {
-						return false;
-					}
-					if (rs.getInt("guildid") > 0) {
-						try {
-							Server.getInstance().deleteGuildCharacter(new MapleGuildCharacter(player, cid, 0, rs.getString("name"), (byte) -1, (byte) -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank")));
-						} catch (Exception re) {
-                                                        re.printStackTrace();
-							return false;
-						}
-					}
-				}
-			}
-			
-			try (PreparedStatement ps = con.prepareStatement("DELETE FROM wishlists WHERE charid = ?")) {
-				ps.setInt(1, cid);
-				ps.executeUpdate();
-			}
-			try (PreparedStatement ps = con.prepareStatement("DELETE FROM characters WHERE id = ?")) {
-				ps.setInt(1, cid);
-				ps.executeUpdate();
-			}
-			String[] toDel = {"famelog", "inventoryitems", "keymap", "queststatus", "savedlocations", "skillmacros", "skills", "eventstats"};
-			for (String s : toDel) {
-				MapleCharacter.deleteWhereCharacterId(con, "DELETE FROM `" + s + "` WHERE characterid = ?", cid);
-			}
-			return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+                try {
+                        return MapleCharacter.deleteCharFromDB(MapleCharacter.loadCharFromDB(cid, this, false));
+                } catch(SQLException ex) {
+                        ex.printStackTrace();
+                        return false;
+                }
 	}
 
 	public String getAccountName() {

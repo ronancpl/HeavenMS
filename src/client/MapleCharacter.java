@@ -1524,6 +1524,213 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ex.printStackTrace();
         }
     }
+    
+    private void nextPendingRequest(MapleClient c) {
+        CharacterNameAndId pendingBuddyRequest = c.getPlayer().getBuddylist().pollPendingRequest();
+        if (pendingBuddyRequest != null) {
+            c.announce(MaplePacketCreator.requestBuddylistAdd(pendingBuddyRequest.getId(), c.getPlayer().getId(), pendingBuddyRequest.getName()));
+        }
+    }
+    
+    private void notifyRemoteChannel(MapleClient c, int remoteChannel, int otherCid, BuddyList.BuddyOperation operation) {
+        MapleCharacter player = c.getPlayer();
+        if (remoteChannel != -1) {
+            c.getWorldServer().buddyChanged(otherCid, player.getId(), player.getName(), c.getChannel(), operation);
+        }
+    }
+    
+    public void deleteBuddy(int otherCid) {
+        BuddyList bl = getBuddylist();
+        
+        if (bl.containsVisible(otherCid)) {
+            notifyRemoteChannel(client, client.getWorldServer().find(otherCid), otherCid, BuddyList.BuddyOperation.DELETED);
+        }
+        bl.remove(otherCid);
+        client.announce(MaplePacketCreator.updateBuddylist(getBuddylist().getBuddies()));
+        nextPendingRequest(client);
+    }
+    
+    public static boolean deleteCharFromDB(MapleCharacter player) {
+            int cid = player.getId(), accId = -1, world = 0;
+            
+            Connection con = DatabaseConnection.getConnection();
+            try {
+                    try (PreparedStatement ps = con.prepareStatement("SELECT accountid, world FROM characters WHERE id = ?")) {
+                            ps.setInt(1, cid);
+
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    if(rs.next()) {
+                                            accId = rs.getInt("accountid");
+                                            world = rs.getInt("world");
+                                    }
+                            }
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT buddyid FROM buddies WHERE characterid = ?")) {
+                            ps.setInt(1, cid);
+
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    while(rs.next()) {
+                                            int buddyid = rs.getInt("buddyid");
+                                            MapleCharacter buddy = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(buddyid);
+                                            
+                                            if(buddy != null) {
+                                                    buddy.deleteBuddy(cid);
+                                            }
+                                    }
+                            }
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM buddies WHERE characterid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT threadid FROM bbs_threads WHERE postercid = ?")) {
+                            ps.setInt(1, cid);
+                            
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    while (rs.next()) {
+                                            int tid = rs.getInt("threadid");
+                                        
+                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM bbs_replies WHERE threadid = ?")) {
+                                                    ps2.setInt(1, tid);
+                                                    ps2.executeUpdate();
+                                            }
+                                    }
+                            }
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM bbs_threads WHERE postercid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT id, guildid, guildrank, name, allianceRank FROM characters WHERE id = ? AND accountid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.setInt(2, accId);
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    if (rs.next() && rs.getInt("guildid") > 0) {
+                                            Server.getInstance().deleteGuildCharacter(new MapleGuildCharacter(player, cid, 0, rs.getString("name"), (byte) -1, (byte) -1, 0, rs.getInt("guildrank"), rs.getInt("guildid"), false, rs.getInt("allianceRank")));
+                                    }
+                            }
+                    }
+                    
+                    if(con.isClosed()) con = DatabaseConnection.getConnection();    //wtf tho
+
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM wishlists WHERE charid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM cooldowns WHERE charid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM area_info WHERE charid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM monsterbook WHERE charid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM characters WHERE id = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM famelog WHERE characterid_to = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT inventoryitemid, petid FROM inventoryitems WHERE characterid = ?")) {
+                            ps.setInt(1, cid);
+                            
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    while (rs.next()) {
+                                            int inventoryitemid = rs.getInt("inventoryitemid");
+                                        
+                                            try (PreparedStatement ps2 = con.prepareStatement("SELECT ringid FROM inventoryequipment WHERE inventoryitemid = ?")) {
+                                                    ps2.setInt(1, inventoryitemid);
+
+                                                    try (ResultSet rs2 = ps2.executeQuery()) {
+                                                            while (rs2.next()) {
+                                                                    int ringid = rs2.getInt("ringid");
+                                                                    
+                                                                    if(ringid > -1) {
+                                                                            try (PreparedStatement ps3 = con.prepareStatement("DELETE FROM rings WHERE id = ?")) {
+                                                                                    ps3.setInt(1, ringid);
+                                                                                    ps3.executeUpdate();
+                                                                            }
+                                                                    }
+                                                            }
+                                                    }
+                                            }
+                                        
+                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM inventoryequipment WHERE inventoryitemid = ?")) {
+                                                    ps2.setInt(1, inventoryitemid);
+                                                    ps2.executeUpdate();
+                                            }
+                                            
+                                            if(rs.getInt("petid") > -1) {
+                                                    try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM pets WHERE petid = ?")) {
+                                                            ps2.setInt(1, rs.getInt("petid"));
+                                                            ps2.executeUpdate();
+                                                    }
+                                            }
+                                    }
+                            }
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT queststatusid FROM queststatus WHERE characterid = ?")) {
+                            ps.setInt(1, cid);
+                            
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    while (rs.next()) {
+                                            int queststatusid = rs.getInt("queststatusid");
+                                        
+                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM medalmaps WHERE queststatusid = ?")) {
+                                                    ps2.setInt(1, queststatusid);
+                                                    ps2.executeUpdate();
+                                            }
+                                            
+                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM questprogress WHERE queststatusid = ?")) {
+                                                    ps2.setInt(1, queststatusid);
+                                                    ps2.executeUpdate();
+                                            }
+                                    }
+                            }
+                    }
+                    
+                    try (PreparedStatement ps = con.prepareStatement("SELECT id FROM mts_cart WHERE cid = ?")) {
+                            ps.setInt(1, cid);
+                            
+                            try (ResultSet rs = ps.executeQuery()) {
+                                    while (rs.next()) {
+                                            int mtsid = rs.getInt("id");
+                                        
+                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM mts_items WHERE id = ?")) {
+                                                    ps2.setInt(1, mtsid);
+                                                    ps2.executeUpdate();
+                                            }
+                                    }
+                            }
+                    }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM mts_cart WHERE cid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
+                    
+                    String[] toDel = {"famelog", "inventoryitems", "keymap", "queststatus", "savedlocations", "trocklocations", "skillmacros", "skills", "eventstats", "server_queue"};
+                    for (String s : toDel) {
+                            MapleCharacter.deleteWhereCharacterId(con, "DELETE FROM `" + s + "` WHERE characterid = ?", cid);
+                    }
+                    
+                    con.close();
+                    return true;
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    return false;
+            }
+    }
 
     private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement(sql)) {

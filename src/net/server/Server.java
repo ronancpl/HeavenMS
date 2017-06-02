@@ -484,6 +484,10 @@ public class Server implements Runnable {
         }
     }
 
+    public MapleGuild getGuild(int id, int world) {
+            return getGuild(id, world, null);
+    }
+    
     public MapleGuild getGuild(int id, int world, MapleCharacter mc) {
         synchronized (guilds) {
             if (guilds.get(id) != null) {

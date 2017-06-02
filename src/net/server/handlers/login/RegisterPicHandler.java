@@ -16,10 +16,10 @@ public final class RegisterPicHandler extends AbstractMaplePacketHandler {
         slea.readByte();
         int charId = slea.readInt();
         String macs = slea.readMapleAsciiString();
-		String hwid = slea.readMapleAsciiString();
+        String hwid = slea.readMapleAsciiString();
 		
         c.updateMacs(macs);
-		c.updateHWID(hwid);
+        c.updateHWID(hwid);
 		
         if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);

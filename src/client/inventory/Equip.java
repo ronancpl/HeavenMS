@@ -26,6 +26,8 @@ import constants.ServerConstants;
 import constants.ExpTable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -52,7 +54,7 @@ public class Equip extends Item {
     private float itemExp;
     private int ringid = -1;
     private boolean wear = false;
-    private boolean isElemental = false;    // timeless or reverse
+    private boolean isUpgradeable, isElemental = false;    // timeless or reverse
 
     public Equip(int id, short position) {
         this(id, position, 0);
@@ -260,6 +262,8 @@ public class Equip extends Item {
     }
 
     private int getStatModifier(boolean isAttribute) {
+        // each set of stat points grants a chance for a bonus stat point upgrade at equip level up.
+        
         if(ServerConstants.USE_EQUIPMNT_LVLUP_POWER) {
             if(isAttribute) return 2;
             else return 4;
@@ -270,11 +274,42 @@ public class Equip extends Item {
         }
     }
     
+    private int randomizeStatUpgrade(int limit) {
+        Map<Integer, Integer> pool = new HashMap<>();
+        
+        pool.put(0, 1);
+        pool.put(1, 1);
+        for(int i = 2; i <= limit; i++) {
+            for(int j = 0; j < i; j++) {
+                pool.put(j, pool.get(j) + 1);
+            }
+            pool.put(i, 1);
+        }
+        
+        int poolCount = 0;
+        for(Integer i: pool.values()) {
+            poolCount += i;
+        }
+        
+        int rnd = Randomizer.rand(0, poolCount);
+        int stat = 0;
+        for(Integer i: pool.values()) {
+            if(rnd < i) break;
+            
+            stat++;
+            rnd -= i;
+        }
+        
+        return(stat);
+    }
+    
     private void getUnitStatUpgrade(List<Pair<String, Integer>> stats, String name, int curStat, boolean isAttribute) {
-        int maxUpgrade = Randomizer.rand(0, 1 + (curStat / getStatModifier(isAttribute)));
+        isUpgradeable = true;
+        
+        int maxUpgrade = randomizeStatUpgrade((int)(1 + (curStat / getStatModifier(isAttribute))));
         if(maxUpgrade == 0) return;
             
-        stats.add(new Pair<>(name, maxUpgrade));  // each 4 stat point grants a bonus stat upgrade on equip level up.
+        stats.add(new Pair<>(name, maxUpgrade));
     }
     
     private void getUnitSlotUpgrade(List<Pair<String, Integer>> stats, String name) {
@@ -302,76 +337,103 @@ public class Equip extends Item {
     
     public void gainLevel(MapleClient c) {
         List<Pair<String, Integer>> stats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
-        if(stats.isEmpty()) improveDefaultStats(stats);
-        
-        if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-            getUnitSlotUpgrade(stats, "incVicious");
-            getUnitSlotUpgrade(stats, "incSlot");
+        if(!stats.isEmpty()) {
+            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                if(vicious > 0) getUnitSlotUpgrade(stats, "incVicious");
+                getUnitSlotUpgrade(stats, "incSlot");
+            }
+        }
+        else {
+            isUpgradeable = false;
+            
+            do {
+                improveDefaultStats(stats);
+
+                if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                    if(vicious > 0) getUnitSlotUpgrade(stats, "incVicious");
+                    getUnitSlotUpgrade(stats, "incSlot");
+                }
+            } while(stats.isEmpty() && isUpgradeable);
         }
         
         itemLevel++;
-        if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage(6, "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' has LEVELED UP to level " + itemLevel + "!");
+        boolean gotVicious = false, gotSlot = false;
         
+        String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
         for (Pair<String, Integer> stat : stats) {
             switch (stat.getLeft()) {
                 case "incDEX":
                     dex += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "DEX ";
                     break;
                 case "incSTR":
                     str += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "STR ";
                     break;
                 case "incINT":
                     _int += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "INT ";
                     break;
                 case "incLUK":
                     luk += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "LUK ";
                     break;
                 case "incMHP":
                     hp += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "HP ";
                     break;
                 case "incMMP":
                     mp += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "MP ";
                     break;
                 case "incPAD":
                     watk += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "WATK ";
                     break;
                 case "incMAD":
                     matk += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "MATK ";
                     break;
                 case "incPDD":
                     wdef += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "WDEF ";
                     break;
                 case "incMDD":
                     mdef += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "MDEF ";
                     break;
                 case "incEVA":
                     avoid += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "AVOID ";
                     break;
                 case "incACC":
                     acc += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "ACC ";
                     break;
                 case "incSpeed":
                     speed += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "SPEED ";
                     break;
                 case "incJump":
                     jump += stat.getRight();
+                    lvupStr += "+" + stat.getRight() + "JUMP ";
                     break;
                     
                 case "incVicious":
-                    if(vicious > 0) {
-                        vicious -= stat.getRight();
-                        if(vicious < 0) vicious = 0;
-                        
-                        c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
-                    }
-                    
+                    vicious -= stat.getRight();
+                    gotVicious = true;
                     break;
                 case "incSlot":
                     upgradeSlots += stat.getRight();
-                    c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+                    gotSlot = true;
                     break;
             }
         }
+        
+        c.getPlayer().dropMessage(6, lvupStr);
+        if(gotVicious) c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+        if(gotSlot) c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+        
         c.announce(MaplePacketCreator.showEquipmentLevelUp());
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignEffect(c.getPlayer().getId(), 15));
         c.getPlayer().forceUpdateItem(this);
