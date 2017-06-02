@@ -61,6 +61,7 @@ import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
 import constants.ServerConstants;
+import scripting.AbstractPlayerInteraction;
 import scripting.event.EventManager;
 import scripting.npc.NPCConversationManager;
 import scripting.npc.NPCScriptManager;
@@ -145,6 +146,10 @@ public class MapleClient {
 	public void setPlayer(MapleCharacter player) {
 		this.player = player;
 	}
+        
+        public AbstractPlayerInteraction getAbstractPlayerInteraction() {
+                return new AbstractPlayerInteraction(this);
+        }
 
 	public void sendCharList(int server) {
 		this.session.write(MaplePacketCreator.getCharList(this, server));

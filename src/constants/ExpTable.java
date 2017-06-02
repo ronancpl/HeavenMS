@@ -40,6 +40,6 @@ public final class ExpTable {
     }
     
     public static int getEquipExpNeededForLevel(int level) {
-        return level > 30 ? 2000000000 : exp[level];
+        return equip[level];
     }
 }

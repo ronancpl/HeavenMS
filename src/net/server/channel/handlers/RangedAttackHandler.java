@@ -54,11 +54,11 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
         MapleCharacter player = c.getPlayer();
         player.setPetLootCd(System.currentTimeMillis());
 		
-		/*long timeElapsed = System.currentTimeMillis() - player.getAutobanManager().getLastSpam(8);
-		if(timeElapsed < 300) {
-			AutobanFactory.FAST_ATTACK.alert(player, "Time: " + timeElapsed);
-		}
-		player.getAutobanManager().spam(8);*/
+        /*long timeElapsed = System.currentTimeMillis() - player.getAutobanManager().getLastSpam(8);
+        if(timeElapsed < 300) {
+            AutobanFactory.FAST_ATTACK.alert(player, "Time: " + timeElapsed);
+        }
+        player.getAutobanManager().spam(8);*/
 		
         AttackInfo attack = parseDamage(slea, player, true, false);
         
@@ -141,19 +141,19 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
             }
             boolean soulArrow = player.getBuffedValue(MapleBuffStat.SOULARROW) != null;
             boolean shadowClaw = player.getBuffedValue(MapleBuffStat.SHADOW_CLAW) != null;
-	            if (projectile != 0) {
-		            if (!soulArrow && !shadowClaw && attack.skill != 11101004 && attack.skill != 15111007 && attack.skill != 14101006) {
-		                byte bulletConsume = bulletCount;
-		                
-		                if (effect != null && effect.getBulletConsume() != 0) {
-		                    bulletConsume = (byte) (effect.getBulletConsume() * (hasShadowPartner ? 2 : 1));           
-		                }
-		            
-                            if(slot < 0) System.out.println("<ERROR> Projectile to use was unable to be found.");
-                            else MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, bulletConsume, false, true);
-		    }
+            if (projectile != 0) {
+                if (!soulArrow && !shadowClaw && attack.skill != 11101004 && attack.skill != 15111007 && attack.skill != 14101006) {
+                    byte bulletConsume = bulletCount;
+
+                    if (effect != null && effect.getBulletConsume() != 0) {
+                        bulletConsume = (byte) (effect.getBulletConsume() * (hasShadowPartner ? 2 : 1));           
+                    }
+
+                    if(slot < 0) System.out.println("<ERROR> Projectile to use was unable to be found.");
+                    else MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, bulletConsume, false, true);
+                }
             }
-	        if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {                
+            if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {                
             	int visProjectile = projectile; //visible projectile sent to players
                 if (ItemConstants.isThrowingStar(projectile)) {
                     MapleInventory cash = player.getInventory(MapleInventoryType.CASH);

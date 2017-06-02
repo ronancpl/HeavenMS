@@ -275,3 +275,7 @@ Adicionado novo sistema de EXP e nivelamento para todos os equipamentos, para al
 
 01 Junho 2017,
 Consertadas mecânicas principais para deletar character, possivelmente eliminando quaisquer resíduos do mesmo da DB. Requer que ENABLE_PIC esteja ativado para funcionar.
+
+02 Junho 2017,
+Otimizado e corrigido problemas de queda de desempenho ao atribuir lvups a itens com stats muito elevados, que ocasionavam crashs no servidor.
+Adicionado funcionalidade USE_ULTRA_THREE_SNAILS. Valor mostrado não é condizente com o dano contabilizado (motivo: client edit).

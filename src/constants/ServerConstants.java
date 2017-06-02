@@ -43,7 +43,7 @@ public class ServerConstants {
     public static final boolean USE_AUTOBAN = false;            //Commands the server to detect infractors automatically.
     public static final boolean USE_ANOTHER_AUTOASSIGN = true;  //Based on distributing AP accordingly with higher secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final int MAX_AP = 999;
+    public static final int MAX_AP = 20000;                     //Max AP alloted on the auto-assigner.
     public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
     public static final long BLOCK_DUEY_RACE_COND = (long)(0.5 * 1000);
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
@@ -53,14 +53,15 @@ public class ServerConstants {
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
     public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
     public static final boolean USE_ENHANCED_CRAFTING = true;   //Applys chaos scroll on every equip crafted.
-    public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Still needs some client editing to work.
-    public static final boolean USE_ULTRA_RECOVERY = true;      //Huehue another client edit.
-    //Public static final boolean USE_ULTRA_THREE_SNAILS = true;
+    public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Haste-like speed & jump upgrade.
+    public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
+    public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
+    public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 120; //Max stat upgrade an equipment can have on a levelup.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 0 to disable.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.

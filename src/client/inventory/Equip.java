@@ -48,6 +48,24 @@ public class Equip extends Item {
             return value;
         }
     }
+    
+    private static enum StatUpgrade {
+
+        incDEX(0), incSTR(1), incINT(2), incLUK(3),
+        incMHP(4), incMMP(5), incPAD(6), incMAD(7),
+        incPDD(8), incMDD(9), incEVA(10), incACC(11),
+        incSpeed(12), incJump(13), incVicious(14), incSlot(15);
+        private int value = -1;
+
+        private StatUpgrade(int value) {
+            this.value = value;
+        }
+
+        private int getValue() {
+            return value;
+        }
+    }
+    
     private byte upgradeSlots;
     private byte level, flag, itemLevel;
     private short str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, vicious;
@@ -277,13 +295,10 @@ public class Equip extends Item {
     private int randomizeStatUpgrade(int limit) {
         Map<Integer, Integer> pool = new HashMap<>();
         
-        pool.put(0, 1);
-        pool.put(1, 1);
-        for(int i = 2; i <= limit; i++) {
-            for(int j = 0; j < i; j++) {
-                pool.put(j, pool.get(j) + 1);
-            }
-            pool.put(i, 1);
+        int top = Math.min(limit, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_GAIN);
+        pool.put(0, top);
+        for(int i = 1; i <= top; i++) {
+            pool.put(i, top - i + 1);
         }
         
         int poolCount = 0;
@@ -303,7 +318,7 @@ public class Equip extends Item {
         return(stat);
     }
     
-    private void getUnitStatUpgrade(List<Pair<String, Integer>> stats, String name, int curStat, boolean isAttribute) {
+    private void getUnitStatUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name, int curStat, boolean isAttribute) {
         isUpgradeable = true;
         
         int maxUpgrade = randomizeStatUpgrade((int)(1 + (curStat / getStatModifier(isAttribute))));
@@ -312,118 +327,134 @@ public class Equip extends Item {
         stats.add(new Pair<>(name, maxUpgrade));
     }
     
-    private void getUnitSlotUpgrade(List<Pair<String, Integer>> stats, String name) {
+    private void getUnitSlotUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name) {
         if(Math.random() < 0.1) {
             stats.add(new Pair<>(name, 1));  // 10% success on getting a slot upgrade.
         }
     }
     
-    private void improveDefaultStats(List<Pair<String, Integer>> stats) {
-        if(dex > 0) getUnitStatUpgrade(stats, "incDEX", dex, true);
-        if(str > 0) getUnitStatUpgrade(stats, "incSTR", str, true);
-        if(_int > 0) getUnitStatUpgrade(stats, "incINT",_int, true);
-        if(luk > 0) getUnitStatUpgrade(stats, "incLUK", luk, true);
-        if(hp > 0) getUnitStatUpgrade(stats, "incMHP", hp, false);
-        if(mp > 0) getUnitStatUpgrade(stats, "incMMP", mp, false);
-        if(watk > 0) getUnitStatUpgrade(stats, "incPAD", watk, false);
-        if(matk > 0) getUnitStatUpgrade(stats, "incMAD", matk, false);
-        if(wdef > 0) getUnitStatUpgrade(stats, "incPDD", wdef, false);
-        if(mdef > 0) getUnitStatUpgrade(stats, "incMDD", mdef, false);
-        if(avoid > 0) getUnitStatUpgrade(stats, "incEVA", avoid, false);
-        if(acc > 0) getUnitStatUpgrade(stats, "incACC", acc, false);
-        if(speed > 0) getUnitStatUpgrade(stats, "incSpeed", speed, false);
-        if(jump > 0) getUnitStatUpgrade(stats, "incJump", jump, false);
+    private void improveDefaultStats(List<Pair<StatUpgrade, Integer>> stats) {
+        if(dex > 0) getUnitStatUpgrade(stats, StatUpgrade.incDEX, dex, true);
+        if(str > 0) getUnitStatUpgrade(stats, StatUpgrade.incSTR, str, true);
+        if(_int > 0) getUnitStatUpgrade(stats, StatUpgrade.incINT,_int, true);
+        if(luk > 0) getUnitStatUpgrade(stats, StatUpgrade.incLUK, luk, true);
+        if(hp > 0) getUnitStatUpgrade(stats, StatUpgrade.incMHP, hp, false);
+        if(mp > 0) getUnitStatUpgrade(stats, StatUpgrade.incMMP, mp, false);
+        if(watk > 0) getUnitStatUpgrade(stats, StatUpgrade.incPAD, watk, false);
+        if(matk > 0) getUnitStatUpgrade(stats, StatUpgrade.incMAD, matk, false);
+        if(wdef > 0) getUnitStatUpgrade(stats, StatUpgrade.incPDD, wdef, false);
+        if(mdef > 0) getUnitStatUpgrade(stats, StatUpgrade.incMDD, mdef, false);
+        if(avoid > 0) getUnitStatUpgrade(stats, StatUpgrade.incEVA, avoid, false);
+        if(acc > 0) getUnitStatUpgrade(stats, StatUpgrade.incACC, acc, false);
+        if(speed > 0) getUnitStatUpgrade(stats, StatUpgrade.incSpeed, speed, false);
+        if(jump > 0) getUnitStatUpgrade(stats, StatUpgrade.incJump, jump, false);
     }
     
-    public void gainLevel(MapleClient c) {
-        List<Pair<String, Integer>> stats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
+    private void gainLevel(MapleClient c) {
+        List<Pair<StatUpgrade, Integer>> stats = new LinkedList<>();
+                
+        if(isElemental) {
+            List<Pair<String, Integer>> elementalStats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
+            
+            for(Pair<String, Integer> p: elementalStats) {
+                if(p.getRight() > 0) stats.add(new Pair(StatUpgrade.valueOf(p.getLeft()), p.getRight()));
+            }
+        }
+        
         if(!stats.isEmpty()) {
             if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-                if(vicious > 0) getUnitSlotUpgrade(stats, "incVicious");
-                getUnitSlotUpgrade(stats, "incSlot");
+                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
             }
         }
         else {
             isUpgradeable = false;
             
-            do {
-                improveDefaultStats(stats);
-
-                if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-                    if(vicious > 0) getUnitSlotUpgrade(stats, "incVicious");
-                    getUnitSlotUpgrade(stats, "incSlot");
+            improveDefaultStats(stats);
+            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
+            }
+            
+            if(isUpgradeable) {
+                while(stats.isEmpty()) {
+                    improveDefaultStats(stats);
+                    if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                        if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                        getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
+                    }
                 }
-            } while(stats.isEmpty() && isUpgradeable);
+            }
         }
         
         itemLevel++;
         boolean gotVicious = false, gotSlot = false;
         
         String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
-        for (Pair<String, Integer> stat : stats) {
+        for (Pair<StatUpgrade, Integer> stat : stats) {
             switch (stat.getLeft()) {
-                case "incDEX":
+                case incDEX:
                     dex += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "DEX ";
                     break;
-                case "incSTR":
+                case incSTR:
                     str += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "STR ";
                     break;
-                case "incINT":
+                case incINT:
                     _int += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "INT ";
                     break;
-                case "incLUK":
+                case incLUK:
                     luk += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "LUK ";
                     break;
-                case "incMHP":
+                case incMHP:
                     hp += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "HP ";
                     break;
-                case "incMMP":
+                case incMMP:
                     mp += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "MP ";
                     break;
-                case "incPAD":
+                case incPAD:
                     watk += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "WATK ";
                     break;
-                case "incMAD":
+                case incMAD:
                     matk += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "MATK ";
                     break;
-                case "incPDD":
+                case incPDD:
                     wdef += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "WDEF ";
                     break;
-                case "incMDD":
+                case incMDD:
                     mdef += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "MDEF ";
                     break;
-                case "incEVA":
+                case incEVA:
                     avoid += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "AVOID ";
                     break;
-                case "incACC":
+                case incACC:
                     acc += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "ACC ";
                     break;
-                case "incSpeed":
+                case incSpeed:
                     speed += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "SPEED ";
                     break;
-                case "incJump":
+                case incJump:
                     jump += stat.getRight();
                     lvupStr += "+" + stat.getRight() + "JUMP ";
                     break;
                     
-                case "incVicious":
+                case incVicious:
                     vicious -= stat.getRight();
                     gotVicious = true;
                     break;
-                case "incSlot":
+                case incSlot:
                     upgradeSlots += stat.getRight();
                     gotSlot = true;
                     break;
@@ -453,14 +484,14 @@ public class Equip extends Item {
         int reqLevel = MapleItemInformationProvider.getInstance().getEquipStats(this.getItemId()).get("reqLevel");
         
         float masteryModifier = (float)ExpTable.getExpNeededForLevel(1) / (float)normalizedMasteryExp(reqLevel);
-        float elementModifier = (isElemental) ? 1.2f : 1.0f;
+        float elementModifier = (isElemental) ? 0.85f : 0.6f;
         
         float baseExpGain = gain * elementModifier * masteryModifier;
         
         itemExp += baseExpGain;
         int expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
         
-        //System.out.println("Gain: " + gain + " Mastery: " + masteryModifier + "Base gain: " + baseExpGain + " item current exp: " + itemExp + " / " + expNeeded);
+        //System.out.println("'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + "Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded);
         
         if (itemExp >= expNeeded) {
             while(itemExp >= expNeeded) {

@@ -371,8 +371,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
             
             attacker.gainExp(personalExp, partyExp, true, false, isKiller);
-            attacker.mobKilled(getId());
             attacker.increaseEquipExp(personalExp);
+            attacker.mobKilled(getId());
         }
     }
 
