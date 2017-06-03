@@ -1295,6 +1295,16 @@ public class MapleItemInformationProvider {
         return itemId / 1000000 == 5 || getEquipStats(itemId).get("cash") == 1;
     }
     
+    public boolean isUpgradeable(int itemId) {
+        Item it = this.getEquipById(itemId);
+        Equip eq = (Equip)it;
+        
+        return (eq.getUpgradeSlots() > 0 || eq.getStr() > 0 || eq.getDex() > 0 || eq.getInt() > 0 || eq.getLuk() > 0 ||
+                eq.getWatk() > 0 || eq.getMatk() > 0 || eq.getWdef() > 0 || eq.getMdef() > 0 || eq.getAcc() > 0 ||
+                eq.getAvoid() > 0 || eq.getSpeed() > 0 || eq.getJump() > 0 || eq.getHp() > 0 || eq.getMp() > 0);
+    }
+    
+    
     public boolean isRateCoupon(int itemId) {
         int itemType = itemId / 1000;
         return itemType == 5211 || itemType == 5360;

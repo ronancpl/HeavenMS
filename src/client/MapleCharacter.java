@@ -3454,7 +3454,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (this.guildid > 0) {
             getGuild().broadcast(MaplePacketCreator.levelUpMessage(2, level, name), this.getId());
         }
-        if (ServerConstants.PERFECT_PITCH && level >= 30) {
+        if (ServerConstants.USE_PERFECT_PITCH && level >= 30) {
             //milestones?
             if (MapleInventoryManipulator.checkSpace(client, 4310000, (short) 1, "")) {
                 MapleInventoryManipulator.addById(client, 4310000, (short) 1);
@@ -6181,6 +6181,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) || (itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || (itemName.contains("Timeless") && nEquip.getItemLevel() < 6)) {
                 nEquip.gainItemExp(client, expGain);
             }
+        }
+    }
+    
+    public void showAllEquipFeatures() {
+        MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
+        
+        for (Item item : getInventory(MapleInventoryType.EQUIPPED).list()) {
+            Equip nEquip = (Equip) item;
+            String itemName = mii.getName(nEquip.getItemId());
+            if (itemName == null) {
+                continue;
+            }
+            
+            nEquip.showEquipFeatures(client);
         }
     }
 

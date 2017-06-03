@@ -87,7 +87,9 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                 if (advComboSkillLevel > 0) {
                     ceffect = advcombo.getEffect(advComboSkillLevel);
                 } else {
-                    ceffect = combo.getEffect(player.getSkillLevel(combo));
+                    int comboLv = player.getSkillLevel(combo);
+                    if(comboLv <= 0) comboLv = SkillFactory.getSkill(oid).getMaxLevel();
+                    ceffect = combo.getEffect(comboLv);
                 }
                 if (orbcount < ceffect.getX() + 1) {
                     int neworbcount = orbcount + 1;
@@ -96,7 +98,10 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                             neworbcount++;
                         }
                     }
-                    int duration = combo.getEffect(player.getSkillLevel(oid)).getDuration();
+                    
+                    int olv = player.getSkillLevel(oid);
+                    if(olv <= 0) olv = SkillFactory.getSkill(oid).getMaxLevel();
+                    int duration = combo.getEffect(olv).getDuration();
                     List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, neworbcount));
                     player.setBuffedValue(MapleBuffStat.COMBO, neworbcount);                 
                     duration -= (int) (System.currentTimeMillis() - player.getBuffedStarttime(MapleBuffStat.COMBO));

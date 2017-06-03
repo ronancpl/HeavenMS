@@ -32,6 +32,7 @@ import constants.ServerConstants;
 /**
  * @author Matze
  * @author Quit
+ * @author Ronan
  */
 public class RankingWorker implements Runnable {
     private Connection con;
@@ -43,16 +44,17 @@ public class RankingWorker implements Runnable {
         reset.executeUpdate();
     }
 
-    private void updateRanking(int job) throws SQLException {
-        String sqlCharSelect = "SELECT c.id, " + (job != -1 ? "c.jobRank, c.jobRankMove" : "c.rank, c.rankMove") + ", a.lastlogin AS lastlogin, a.loggedin FROM characters AS c LEFT JOIN accounts AS a ON c.accountid = a.id ";
+    private void updateRanking(int job, int world) throws SQLException {
+        String sqlCharSelect = "SELECT c.id, " + (job != -1 ? "c.jobRank, c.jobRankMove" : "c.rank, c.rankMove") + ", a.lastlogin AS lastlogin, a.loggedin FROM characters AS c LEFT JOIN accounts AS a ON c.accountid = a.id WHERE c.world = ? ";
         if (job != -1) {
-            sqlCharSelect += "WHERE c.job DIV 100 = ? ";
+            sqlCharSelect += "AND c.job DIV 100 = ? ";
         }
         sqlCharSelect += "ORDER BY c.level DESC , c.exp DESC , c.fame DESC , c.meso DESC";
-        PreparedStatement charSelect = con.prepareStatement(sqlCharSelect);
         
+        PreparedStatement charSelect = con.prepareStatement(sqlCharSelect);
+        charSelect.setInt(1, world);
         if (job != -1) {
-            charSelect.setInt(1, job);
+            charSelect.setInt(2, job);
         }
         ResultSet rs = charSelect.executeQuery();
         PreparedStatement ps = con.prepareStatement("UPDATE characters SET " + (job != -1 ? "jobRank = ?, jobRankMove = ? " : "rank = ?, rankMove = ? ") + "WHERE id = ?");
@@ -87,12 +89,14 @@ public class RankingWorker implements Runnable {
                 resetMoveRank(false);
             }
             
-            updateRanking(-1);    //overall ranking
-            for (int i = 0; i <= MapleJob.getMax(); i++) {
-                updateRanking(i);
+            for(int j = 0; j < Server.getInstance().getWorlds().size(); j++) {
+                updateRanking(-1, j);    //overall ranking
+                for (int i = 0; i <= MapleJob.getMax(); i++) {
+                    updateRanking(i, j);
+                }
+                con.commit();
             }
             
-            con.commit();
             con.setAutoCommit(true);
             lastUpdate = System.currentTimeMillis();
         } catch (SQLException ex) {

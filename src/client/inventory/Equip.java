@@ -60,10 +60,6 @@ public class Equip extends Item {
         private StatUpgrade(int value) {
             this.value = value;
         }
-
-        private int getValue() {
-            return value;
-        }
     }
     
     private byte upgradeSlots;
@@ -475,13 +471,14 @@ public class Equip extends Item {
     }
     
     private double normalizedMasteryExp(int reqLevel) {
-        return Math.max((2622.71 * Math.exp(reqLevel * 0.0533649)) - 6000.0, 15);
+        return Math.max((2622.71 * Math.exp(reqLevel * 0.0733649)) - 6000.0, 15);
     }
     
     public void gainItemExp(MapleClient c, int gain) {  // Ronan's Equip Exp gain method
-        if(itemLevel >= 30) return;
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        if(!ii.isUpgradeable(this.getItemId()) || itemLevel >= 30) return;
         
-        int reqLevel = MapleItemInformationProvider.getInstance().getEquipStats(this.getItemId()).get("reqLevel");
+        int reqLevel = ii.getEquipStats(this.getItemId()).get("reqLevel");
         
         float masteryModifier = (float)ExpTable.getExpNeededForLevel(1) / (float)normalizedMasteryExp(reqLevel);
         float elementModifier = (isElemental) ? 0.85f : 0.6f;
@@ -491,7 +488,7 @@ public class Equip extends Item {
         itemExp += baseExpGain;
         int expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
         
-        //System.out.println("'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + "Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded);
+        if(ServerConstants.USE_DEBUG_SHOW_INFO_EQPEXP) System.out.println("'" + ii.getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + " Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded);
         
         if (itemExp >= expNeeded) {
             while(itemExp >= expNeeded) {
@@ -507,8 +504,31 @@ public class Equip extends Item {
             }
         } else {
             c.getPlayer().forceUpdateItem(this);
-            //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
+            //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + ii.getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
         }
+    }
+    
+    private boolean reachedMaxLevel(String eqpName) {
+        if(isElemental) {
+            if(eqpName.contains("Timeless")) {
+                if(itemLevel < 6) return false;
+            } else {
+                if(itemLevel < 4) return false;
+            }
+        }
+        
+        if(itemLevel < ServerConstants.USE_EQUIPMNT_LVLUP) return false;
+        return true;
+    }
+    
+    public void showEquipFeatures(MapleClient c) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        if(!ii.isUpgradeable(this.getItemId())) return;
+        
+        String eqpName = ii.getName(getItemId());
+        String eqpInfo = reachedMaxLevel(eqpName) ? " - MAX LEVEL" : (" EXP: " + itemExp + " / " + ExpTable.getEquipExpNeededForLevel(itemLevel));
+        
+        c.getPlayer().dropMessage(5, "'" + eqpName + "' -> Level: " + itemLevel + eqpInfo);
     }
 
     public void setItemExp(int exp) {

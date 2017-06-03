@@ -677,6 +677,10 @@ public class MapleStatEffect {
         
         if (primary) {
             if (itemConNo != 0) {
+                if(!applyto.getClient().getAbstractPlayerInteraction().hasItem(itemCon, itemConNo)) {
+                    applyto.getClient().announce(MaplePacketCreator.enableActions());
+                    return false;
+                }
                 MapleInventoryManipulator.removeById(applyto.getClient(), MapleItemInformationProvider.getInstance().getInventoryType(itemCon), itemCon, itemConNo, false, true);
             }
         }

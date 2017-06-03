@@ -131,7 +131,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         short packetId = slea.readShort();
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         
-        if(ServerConstants.USE_DEBUG_SHOW_RCVD_PACKETS) System.out.println("Received packet id " + packetId);
+        if(ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET) System.out.println("Received packet id " + packetId);
         final MaplePacketHandler packetHandler = processor.getHandler(packetId);
         if (packetHandler != null && packetHandler.validateState(client)) {
             try {

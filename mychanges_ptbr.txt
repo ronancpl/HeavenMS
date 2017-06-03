@@ -279,3 +279,9 @@ Consertadas mecânicas principais para deletar character, possivelmente eliminand
 02 Junho 2017,
 Otimizado e corrigido problemas de queda de desempenho ao atribuir lvups a itens com stats muito elevados, que ocasionavam crashs no servidor.
 Adicionado funcionalidade USE_ULTRA_THREE_SNAILS. Valor mostrado não é condizente com o dano contabilizado (motivo: client edit).
+
+03 Junho 2017,
+Sistema de PIN agora completamente funcional.
+Corrigido sistema de ranking para agora mostrar player rankings de acordo com o mundo que ele se encontra.
+Adicionado barra de HP para o boss da BalrogPQ.
+Equips apenas cosméticos (sem stats e/ou possibilidade de melhorar) não mais ganham EXP e, consequentemente, nivelam.

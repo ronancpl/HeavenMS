@@ -62,10 +62,10 @@ public class BalrogPQ {
         public void run(){
                 if(fmap.getCharacters().size() <= 3){
                     if(fmap.getCharacters().size() > 0){
-                    for(MapleCharacter chrs : fmap.getCharacters()){
-                        chrs.message("[The Order]: What? You're down to that many mercenaries? I need you get you out of there.");
-                        chrs.changeMap(105100100);
-                    }
+                        for(MapleCharacter chrs : fmap.getCharacters()){
+                            chrs.message("[The Order]: What? You're down to that many mercenaries? I need to get you out of there.");
+                            chrs.changeMap(105100100);
+                        }
                     }
                     fmap.killAllMonsters();
                     close();

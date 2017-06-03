@@ -310,14 +310,12 @@ public class Commands {
 	public static boolean executePlayerCommand(MapleClient c, String[] sub, char heading) {
 		MapleCharacter player = c.getPlayer();
 		if (heading == '!' && player.gmLevel() == 0) {
-			player.yellowMessage("You may not use !" + sub[0] + ", please try /" + sub[0]);
+			player.yellowMessage("You may not use !" + sub[0] + ", please try @" + sub[0] + ". For a full list of commands, try @help.");
 			return false;
 		}
 		switch (sub[0]) {
                 case "help":
 		case "commands":
-                    
-                                    
                 case "playercommands": 
                        player.message("============================================================");
                        player.message("MapleSolaxiaV2 Player Commands");
@@ -337,6 +335,7 @@ public class Commands {
 			player.message("@whodrops <item name>: Displays monsters that drop an item given an item name.");
 			player.message("@uptime: Shows how long Solaxia has been online.");
 			player.message("@bosshp: Displays the remaining HP of the bosses on your map.");
+                        player.message("@equiplv: Displays relations of level and experience of every item you have equipped.");
                         if(ServerConstants.USE_DEBUG) {
                                 player.message("@debugpos: Displays the coordinates on the map the player is currently located.");
                                 player.message("@debugmap: Displays info about the current map the player is located.");
@@ -478,6 +477,11 @@ public class Commands {
 			c.removeClickedNPC();
 			player.message("You've been disposed.");
 			break;
+                    
+                case "equiplv":
+                        player.showAllEquipFeatures();
+                        break;
+                    
 		case "rates":
 			//c.resetVoteTime();
 			player.yellowMessage("BOSSDROP RATE");

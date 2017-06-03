@@ -694,8 +694,10 @@ public class MaplePacketCreator {
                 mplew.writeLong(0);//isquietban time
                 mplew.writeLong(c.getSessionId()); //creation time
                 mplew.writeInt(0);
-                mplew.writeShort(2);//PIN
-
+                
+                if (ServerConstants.ENABLE_PIN) mplew.writeShort(0);
+                else mplew.writeShort(2);
+                
                 return mplew.getPacket();
         }
 

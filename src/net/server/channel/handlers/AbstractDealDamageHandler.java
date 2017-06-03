@@ -601,7 +601,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             MapleStatEffect effect = skill.getEffect(ret.skilllevel);
 
             if (magic) {
-				// Since the skill is magic based, use the magic formula
+                // Since the skill is magic based, use the magic formula
                 if(chr.getJob() == MapleJob.IL_ARCHMAGE || chr.getJob() == MapleJob.IL_MAGE) {
                     int skillLvl = chr.getSkillLevel(ILMage.ELEMENT_AMPLIFICATION);
                     if(skillLvl > 0)
@@ -611,7 +611,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if(skillLvl > 0)
                         calcDmgMax = calcDmgMax * SkillFactory.getSkill(FPMage.ELEMENT_AMPLIFICATION).getEffect(skillLvl).getY() / 100;
                 } else if(chr.getJob() == MapleJob.BLAZEWIZARD3 || chr.getJob() == MapleJob.BLAZEWIZARD4) {
-					int skillLvl = chr.getSkillLevel(BlazeWizard.ELEMENT_AMPLIFICATION);
+                    int skillLvl = chr.getSkillLevel(BlazeWizard.ELEMENT_AMPLIFICATION);
                     if(skillLvl > 0)
                         calcDmgMax = calcDmgMax * SkillFactory.getSkill(BlazeWizard.ELEMENT_AMPLIFICATION).getEffect(skillLvl).getY() / 100;
                 } else if(chr.getJob() == MapleJob.EVAN7 || chr.getJob() == MapleJob.EVAN8 || chr.getJob() == MapleJob.EVAN9 || chr.getJob() == MapleJob.EVAN10) {
@@ -622,16 +622,16 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 
                 calcDmgMax *= effect.getMatk();
                 if(ret.skill == Cleric.HEAL) {
-					// This formula is still a bit wonky, but it is fairly accurate.
+                    // This formula is still a bit wonky, but it is fairly accurate.
                     calcDmgMax = (int) Math.round((chr.getTotalInt() * 4.8 + chr.getTotalLuk() * 4) * chr.getTotalMagic() / 1000);
                     calcDmgMax = calcDmgMax * effect.getHp() / 100; 
                 }
-			} else if(ret.skill == Hermit.SHADOW_MESO) {
-				// Shadow Meso also has its own formula
-				calcDmgMax = effect.getMoneyCon() * 10;
-				calcDmgMax = (int) Math.floor(calcDmgMax * 1.5);
+                } else if(ret.skill == Hermit.SHADOW_MESO) {
+                    // Shadow Meso also has its own formula
+                    calcDmgMax = effect.getMoneyCon() * 10;
+                    calcDmgMax = (int) Math.floor(calcDmgMax * 1.5);
             } else {
-				// Normal damage formula for skills
+                // Normal damage formula for skills
                 calcDmgMax = calcDmgMax * effect.getDamage() / 100;
             }
         }
@@ -646,9 +646,12 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 MapleStatEffect ceffect = SkillFactory.getSkill(advcomboid).getEffect(chr.getSkillLevel(advcomboid));
                 calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + 0.20 + (comboBuff - 5) * 0.04);
             } else {
-				// Normal Combo
-                MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(chr.getSkillLevel(oid));
-                calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (chr.getSkillLevel(oid) / 6)) / 100);
+                // Normal Combo
+                int skillLv = chr.getSkillLevel(oid);
+                if(skillLv <= 0) skillLv = SkillFactory.getSkill(oid).getMaxLevel();
+                
+                MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(skillLv);
+                calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (skillLv / 6)) / 100);
             }
             
             if(GameConstants.isFinisherSkill(ret.skill)) {

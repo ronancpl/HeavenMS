@@ -15,7 +15,8 @@ public class ServerConstants {
     public static final long PURGING_INTERVAL = 5 * 60 * 1000;
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     public static final long COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
-    public static final boolean ENABLE_PIC = true;             //Pick true/false to enable or disable Pic.
+    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character needs this feature ENABLED.
+    public static final boolean ENABLE_PIN = false;             //Pick true/false to enable or disable Pin.
 		
     //Ip Configuration
     public static String HOST;
@@ -33,7 +34,8 @@ public class ServerConstants {
     public static final boolean USE_CUSTOM_KEYSET = true;
     public static final boolean USE_MAXRANGE = true;        	//Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = true;           	//Will enable some text prints and new commands in the client oriented for debugging.
-    public static final boolean USE_DEBUG_SHOW_RCVD_PACKETS = false;
+    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false;     //Prints on the cmd all received packet ids.
+    public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false;     //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
@@ -47,7 +49,7 @@ public class ServerConstants {
     public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
     public static final long BLOCK_DUEY_RACE_COND = (long)(0.5 * 1000);
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
-    public static final boolean PERFECT_PITCH = true;	        //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    public static final boolean USE_PERFECT_PITCH = true;	        //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
     
     //Some Gameplay Enhancing Configuration
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
@@ -61,8 +63,8 @@ public class ServerConstants {
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
-    public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 120; //Max stat upgrade an equipment can have on a levelup.
-    public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 0 to disable.
+    public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
+    public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.
     
