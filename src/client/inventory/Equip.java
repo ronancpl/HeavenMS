@@ -288,30 +288,19 @@ public class Equip extends Item {
         }
     }
     
-    private int randomizeStatUpgrade(int limit) {
-        Map<Integer, Integer> pool = new HashMap<>();
+    private int randomizeStatUpgrade(int top) {
+        int limit = Math.min(top, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_GAIN);
         
-        int top = Math.min(limit, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_GAIN);
-        pool.put(0, top);
-        for(int i = 1; i <= top; i++) {
-            pool.put(i, top - i + 1);
-        }
-        
-        int poolCount = 0;
-        for(Integer i: pool.values()) {
-            poolCount += i;
-        }
-        
+        int poolCount = (limit * (limit + 1) / 2) + limit;
         int rnd = Randomizer.rand(0, poolCount);
+        
         int stat = 0;
-        for(Integer i: pool.values()) {
-            if(rnd < i) break;
-            
-            stat++;
-            rnd -= i;
+        if(rnd >= limit) {
+            rnd -= limit;
+            stat = 1 + (int)Math.floor((-1 + Math.sqrt((8 * rnd) + 1)) / 2);
         }
         
-        return(stat);
+        return stat;
     }
     
     private void getUnitStatUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name, int curStat, boolean isAttribute) {

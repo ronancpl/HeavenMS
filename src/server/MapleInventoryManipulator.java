@@ -143,6 +143,10 @@ public class MapleInventoryManipulator {
         return true;
     }
     
+    public static boolean addFromDrop(MapleClient c, Item item) {
+        return addFromDrop(c, item, true);
+    }
+    
     public static boolean addFromDrop(MapleClient c, Item item, boolean show) {
         return addFromDrop(c, item, show, -1);
     }

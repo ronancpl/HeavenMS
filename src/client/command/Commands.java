@@ -92,6 +92,8 @@ import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import client.inventory.Item;
+import client.inventory.Equip;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
@@ -306,6 +308,23 @@ public class Commands {
 		gotomaps.put("ht", 240050400);
 		gotomaps.put("fm", 910000000);
 	}
+        
+        private static void hardsetItemStats(Equip equip, short stat) {
+            equip.setStr(stat);
+            equip.setDex(stat);
+            equip.setInt(stat);
+            equip.setLuk(stat);
+            equip.setMatk(stat);
+            equip.setWatk(stat);
+            equip.setAcc(stat);
+            equip.setAvoid(stat);
+            equip.setJump(stat);
+            equip.setSpeed(stat);
+            equip.setWdef(stat);
+            equip.setMdef(stat);
+            equip.setHp(stat);
+            equip.setMp(stat);
+        }
 
 	public static boolean executePlayerCommand(MapleClient c, String[] sub, char heading) {
 		MapleCharacter player = c.getPlayer();
@@ -748,11 +767,129 @@ public class Commands {
 				victim.setRemainingAp(Integer.parseInt(sub[2]));
 				victim.updateSingleStat(MapleStat.AVAILABLEAP, victim.getRemainingAp());
 			}
-		} else if (sub[0].equals("buffme")) {
-			final int[] array = {9001000, 9101002, 9101003, 9101008, 2001002, 1101007, 1005, 2301003, 5121009, 1111002, 4111001, 4111002, 4211003, 4211005, 1321000, 2321004, 3121002};
+		} else if (sub[0].equals("empowerme")) {
+			final int[] array = {9001000, 9001001, 9101002, 9101003, 9101008, 2001002, 1101007, 1005, 2301003, 5121009, 1111002, 4111001, 4111002, 4211003, 4211005, 1321000, 2321004, 3121002};
 			for (int i : array) {
 				SkillFactory.getSkill(i).getEffect(SkillFactory.getSkill(i).getMaxLevel()).applyTo(player);
 			}
+                        
+                } else if (sub[0].equals("buffme")) {
+                        //GM Skills : Haste(Super) - Holy Symbol - Bless - Hyper Body - Echo of Hero
+                        SkillFactory.getSkill(9101001).getEffect(SkillFactory.getSkill(9101001).getMaxLevel()).applyTo(player);
+                        SkillFactory.getSkill(9101002).getEffect(SkillFactory.getSkill(9101002).getMaxLevel()).applyTo(player);
+                        SkillFactory.getSkill(9101003).getEffect(SkillFactory.getSkill(9101003).getMaxLevel()).applyTo(player);
+                        SkillFactory.getSkill(9101008).getEffect(SkillFactory.getSkill(9101008).getMaxLevel()).applyTo(player);
+                        SkillFactory.getSkill(1005).getEffect(SkillFactory.getSkill(1005).getMaxLevel()).applyTo(player);
+                        player.setHp(player.getMaxHp());
+                        player.updateSingleStat(MapleStat.HP, player.getMaxHp());
+                        player.setMp(player.getMaxMp());
+                        player.updateSingleStat(MapleStat.MP, player.getMaxMp());
+                } else if (sub[0].equals("buffmap")) {
+                        for (MapleCharacter chr : player.getMap().getCharacters()){
+                                //GM Skills : Haste(Super) - Holy Symbol - Bless - Hyper Body - Echo of Hero
+                                SkillFactory.getSkill(9101001).getEffect(SkillFactory.getSkill(9101001).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101002).getEffect(SkillFactory.getSkill(9101002).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101003).getEffect(SkillFactory.getSkill(9101003).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101008).getEffect(SkillFactory.getSkill(9101008).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(1005).getEffect(SkillFactory.getSkill(1005).getMaxLevel()).applyTo(chr);
+                                chr.setHp(chr.getMaxHp());
+                                chr.updateSingleStat(MapleStat.HP, chr.getMaxHp());
+                                chr.setMp(chr.getMaxMp());
+                                chr.updateSingleStat(MapleStat.MP, chr.getMaxMp());
+                        }
+                } else if (sub[0].equals("buff")) {
+                        if (sub.length < 2){
+                                player.yellowMessage("Syntax: !buff <buffid>");
+                                return true;
+			}
+                        int skillid=Integer.parseInt(sub[1]);
+                        
+                        Skill skill = SkillFactory.getSkill(skillid);
+                        if(skill != null) skill.getEffect(skill.getMaxLevel()).applyTo(player);
+                } else if (sub[0].equals("proitem")) {
+                        if (sub.length < 3) {
+                                player.dropMessage("Syntax: !proitem <itemid> <statvalue>");
+                                return true;
+                        }
+                        
+                        int itemid = 0;
+                        short multiply = 0;
+
+                        itemid = Integer.parseInt(sub[1]);
+                        multiply = Short.parseShort(sub[2]);
+
+                        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                        Item item = ii.getEquipById(itemid);
+                        MapleInventoryType type = ii.getInventoryType(itemid);
+                        if (type.equals(MapleInventoryType.EQUIP)) {
+                                hardsetItemStats((Equip) item, multiply);
+                                MapleInventoryManipulator.addFromDrop(c, item);
+
+                        } else {
+                                player.dropMessage("Make sure it's an equippable item.");
+                        }
+                        
+                } else if (sub[0].equals("seteqstat")) {
+                        if (sub.length < 2) {
+                                player.dropMessage("Syntax: !seteqstat <statvalue>");
+                                return true;
+                        }
+                        
+                        int val = Integer.parseInt(sub[1]);
+                    
+                        MapleInventory equip = player.getInventory(MapleInventoryType.EQUIP);
+                        for (byte i = 0; i < 101; i++) {
+                        try {
+                                Equip eu = (Equip) equip.getItem(i);
+                                int item = equip.getItem(i).getItemId();
+                                short hand = eu.getHands();
+                                byte level = eu.getLevel();
+                                Equip nItem = new Equip(item, i);
+                                nItem.setStr(eu.getStr()); // STR
+                                nItem.setDex(eu.getDex()); // DEX
+                                nItem.setInt(eu.getInt()); // INT
+                                nItem.setLuk(eu.getLuk()); //LUK
+                                nItem.setWatk(eu.getWatk()); //WA
+
+                                //All Previous stats excluding the top 5
+                                nItem.setWdef(eu.getWdef());
+                                nItem.setAcc(eu.getHands());
+                                nItem.setAvoid(eu.getAvoid());
+                                nItem.setExpiration(eu.getExpiration());
+                                nItem.setJump(eu.getJump());
+                                nItem.setLevel(eu.getLevel());
+                                nItem.setMatk(eu.getMatk());
+                                nItem.setMdef(eu.getMdef());
+                                nItem.setMp(eu.getMp());
+                                nItem.setOwner(eu.getOwner());
+                                nItem.setSpeed(eu.getSpeed());
+                                nItem.setUpgradeSlots((byte) eu.getUpgradeSlots());
+                                nItem.setHands(eu.getHands());
+                                nItem.setLevel(eu.getLevel());
+                                short incval= (short)val;
+                                nItem.setWdef(incval);
+                                nItem.setAcc(incval);
+                                nItem.setAvoid(incval);
+                                nItem.setJump(incval);
+                                nItem.setMatk(incval);
+                                nItem.setMdef(incval);
+                                nItem.setMp(incval);
+                                nItem.setSpeed(incval);
+                                nItem.setUpgradeSlots((byte) eu.getUpgradeSlots());
+                                nItem.setHands(incval);
+                                nItem.setWatk(incval);
+                                nItem.setDex(incval);
+                                nItem.setInt(incval);
+                                nItem.setStr(incval);
+                                nItem.setLuk(incval);
+                                Item tempItem = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem((byte) i);
+                                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, (byte)i, tempItem.getQuantity(), false, true);
+                                player.getInventory(MapleInventoryType.EQUIP).addFromDB(nItem);
+                        } catch(Exception e){}
+                        }
+                        c.getSession().write(MaplePacketCreator.getCharInfo(player));
+                        //player.getMap().removePlayer(player);
+                        //player.getMap().addPlayer(player);
 		} else if (sub[0].equals("spawn")) {
                         if (sub.length < 2) {
 				player.yellowMessage("Syntax: !spawn <mobid>");

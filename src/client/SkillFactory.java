@@ -91,9 +91,9 @@ public class SkillFactory {
     private static MapleDataProvider datasource = MapleDataProviderFactory.getDataProvider(MapleDataProviderFactory.fileInWZPath("Skill.wz"));
 
     public static Skill getSkill(int id) {
-		if (!skills.isEmpty()) {
-		    return skills.get(Integer.valueOf(id));
-		}
+        if (!skills.isEmpty()) {
+            return skills.get(Integer.valueOf(id));
+        }
         return null;
     }
 

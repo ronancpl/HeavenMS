@@ -32,6 +32,7 @@ public class ServerConstants {
 	
     //Gameplay Configuration
     public static final boolean USE_CUSTOM_KEYSET = true;
+    public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;        	//Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = true;           	//Will enable some text prints and new commands in the client oriented for debugging.
     public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false;     //Prints on the cmd all received packet ids.
