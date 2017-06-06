@@ -94,10 +94,10 @@ public class GameConstants {
         if(!isInBranchJobTree(skillJob, jobId, 0)) {
             for(int i = 1; i <= 3; i++) {
                 if(hasDivergedBranchJobTree(skillJob, jobId, i)) return false;
-                if(isInBranchJobTree(skillJob, jobId, i)) return true;
+                if(isInBranchJobTree(skillJob, jobId, i)) return (skillJob <= jobId);
             }
         } else {
-            return true;
+            return (skillJob <= jobId);
         }
         
         return false;

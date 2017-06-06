@@ -708,9 +708,11 @@ public class MapleStatEffect {
          AutobanFactory.MPCON.addPoint(applyfrom.getAutobanManager(), "mpCon hack for skill:" + sourceid + "; Player MP: " + applyto.getMp() + " MP Needed: " + getMpCon());
          } */
         if (hpchange != 0) {
-            if (hpchange < 0 && (-hpchange) >= applyto.getHp() && (!applyto.hasDisease(MapleDisease.ZOMBIFY) || hpCon == 0)) {
-                applyto.getClient().announce(MaplePacketCreator.enableActions());
-                return false;
+            if (hpchange < 0 && (-hpchange) >= applyto.getHp() && (!applyto.hasDisease(MapleDisease.ZOMBIFY) || hpCon > 0)) {
+                if(!ServerConstants.USE_PERMISSIVE_BUFFS) {
+                    applyto.getClient().announce(MaplePacketCreator.enableActions());
+                    return false;
+                }
             }
             int newHp = applyto.getHp() + hpchange;
             if (newHp < 1) {
@@ -722,8 +724,13 @@ public class MapleStatEffect {
         int newMp = applyto.getMp() + mpchange;
         if (mpchange != 0) {
             if (mpchange < 0 && -mpchange > applyto.getMp()) {
-                applyto.getClient().announce(MaplePacketCreator.enableActions());
-                return false;
+                if(!ServerConstants.USE_PERMISSIVE_BUFFS) {
+                    applyto.getClient().announce(MaplePacketCreator.enableActions());
+                    return false;
+                }
+                else {
+                    newMp = 0;
+                }
             }
 
             applyto.setMp(newMp);

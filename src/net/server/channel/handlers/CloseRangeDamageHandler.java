@@ -39,6 +39,7 @@ import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import constants.GameConstants;
+import constants.ServerConstants;
 import constants.skills.Crusader;
 import constants.skills.DawnWarrior;
 import constants.skills.DragonKnight;
@@ -88,25 +89,30 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                     ceffect = advcombo.getEffect(advComboSkillLevel);
                 } else {
                     int comboLv = player.getSkillLevel(combo);
-                    if(comboLv <= 0) comboLv = SkillFactory.getSkill(oid).getMaxLevel();
-                    ceffect = combo.getEffect(comboLv);
-                }
-                if (orbcount < ceffect.getX() + 1) {
-                    int neworbcount = orbcount + 1;
-                    if (advComboSkillLevel > 0 && ceffect.makeChanceResult()) {
-                        if (neworbcount <= ceffect.getX()) {
-                            neworbcount++;
-                        }
-                    }
+                    if(comboLv <= 0 && ServerConstants.USE_PERMISSIVE_BUFFS) comboLv = SkillFactory.getSkill(oid).getMaxLevel();
                     
-                    int olv = player.getSkillLevel(oid);
-                    if(olv <= 0) olv = SkillFactory.getSkill(oid).getMaxLevel();
-                    int duration = combo.getEffect(olv).getDuration();
-                    List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, neworbcount));
-                    player.setBuffedValue(MapleBuffStat.COMBO, neworbcount);                 
-                    duration -= (int) (System.currentTimeMillis() - player.getBuffedStarttime(MapleBuffStat.COMBO));
-                    c.announce(MaplePacketCreator.giveBuff(oid, duration, stat));
-                    player.getMap().broadcastMessage(player, MaplePacketCreator.giveForeignBuff(player.getId(), stat), false);
+                    if(comboLv > 0) ceffect = combo.getEffect(comboLv);
+                    else ceffect = null;
+                }
+                if(ceffect != null) {
+                    if (orbcount < ceffect.getX() + 1) {
+                        int neworbcount = orbcount + 1;
+                        if (advComboSkillLevel > 0 && ceffect.makeChanceResult()) {
+                            if (neworbcount <= ceffect.getX()) {
+                                neworbcount++;
+                            }
+                        }
+
+                        int olv = player.getSkillLevel(oid);
+                        if(olv <= 0) olv = SkillFactory.getSkill(oid).getMaxLevel();
+                        
+                        int duration = combo.getEffect(olv).getDuration();
+                        List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, neworbcount));
+                        player.setBuffedValue(MapleBuffStat.COMBO, neworbcount);                 
+                        duration -= (int) (System.currentTimeMillis() - player.getBuffedStarttime(MapleBuffStat.COMBO));
+                        c.announce(MaplePacketCreator.giveBuff(oid, duration, stat));
+                        player.getMap().broadcastMessage(player, MaplePacketCreator.giveForeignBuff(player.getId(), stat), false);
+                    }
                 }
             } else if (player.getSkillLevel(player.isCygnus() ? SkillFactory.getSkill(15100004) : SkillFactory.getSkill(5110001)) > 0 && (player.getJob().isA(MapleJob.MARAUDER) || player.getJob().isA(MapleJob.THUNDERBREAKER2))) {
                 for (int i = 0; i < attack.numAttacked; i++) {

@@ -272,24 +272,28 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     player.checkMonsterAggro(monster);
                     if (player.getBuffedValue(MapleBuffStat.PICKPOCKET) != null && (attack.skill == 0 || attack.skill == Rogue.DOUBLE_STAB || attack.skill == Bandit.SAVAGE_BLOW || attack.skill == ChiefBandit.ASSAULTER || attack.skill == ChiefBandit.BAND_OF_THIEVES || attack.skill == Shadower.ASSASSINATE || attack.skill == Shadower.TAUNT || attack.skill == Shadower.BOOMERANG_STEP)) {
                         Skill pickpocket = SkillFactory.getSkill(ChiefBandit.PICKPOCKET);
-                        int delay = 0;
-                        final int maxmeso = player.getBuffedValue(MapleBuffStat.PICKPOCKET).intValue();
-                        for (Integer eachd : onedList) {				
-                            eachd += Integer.MAX_VALUE;
-                            if (pickpocket.getEffect(player.getSkillLevel(pickpocket)).makeChanceResult()) {
-				final Integer eachdf;
-				if(eachd < 0)
-					eachdf = eachd + Integer.MAX_VALUE;
-				else
-					eachdf = eachd;
-								
-                                TimerManager.getInstance().schedule(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        player.getMap().spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, (double) 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2);
-                                    }
-                                }, delay);
-                                delay += 100;
+                        int picklv = (player.getSkillLevel(pickpocket) > 0 || !ServerConstants.USE_PERMISSIVE_BUFFS) ? player.getSkillLevel(pickpocket) : pickpocket.getMaxLevel();
+                        if(picklv > 0) {
+                            int delay = 0;
+                            final int maxmeso = player.getBuffedValue(MapleBuffStat.PICKPOCKET).intValue();
+                            for (Integer eachd : onedList) {				
+                                eachd += Integer.MAX_VALUE;
+
+                                if (pickpocket.getEffect(picklv).makeChanceResult()) {
+                                    final Integer eachdf;
+                                    if(eachd < 0)
+                                            eachdf = eachd + Integer.MAX_VALUE;
+                                    else
+                                            eachdf = eachd;
+
+                                    TimerManager.getInstance().schedule(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            player.getMap().spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, (double) 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2);
+                                        }
+                                    }, delay);
+                                    delay += 100;
+                                }
                             }
                         }
                     } else if (attack.skill == Marauder.ENERGY_DRAIN || attack.skill == ThunderBreaker.ENERGY_DRAIN || attack.skill == NightWalker.VAMPIRE || attack.skill == Assassin.DRAIN) {
@@ -648,14 +652,16 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             } else {
                 // Normal Combo
                 int skillLv = chr.getSkillLevel(oid);
-                if(skillLv <= 0) skillLv = SkillFactory.getSkill(oid).getMaxLevel();
+                if(skillLv <= 0 && ServerConstants.USE_PERMISSIVE_BUFFS) skillLv = SkillFactory.getSkill(oid).getMaxLevel();
                 
-                MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(skillLv);
-                calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (skillLv / 6)) / 100);
+                if(skillLv > 0) {
+                    MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(skillLv);
+                    calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (skillLv / 6)) / 100);
+                }
             }
             
             if(GameConstants.isFinisherSkill(ret.skill)) {
-				// Finisher skills do more damage based on how many orbs the player has.
+                // Finisher skills do more damage based on how many orbs the player has.
                 int orbs = comboBuff - 1;
                 if(orbs == 2) 
                     calcDmgMax *= 1.2;

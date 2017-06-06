@@ -2087,15 +2087,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         int equip = (int)Math.min((long)((gain / 10) * pendantExp), Integer.MAX_VALUE);
         
         long total = gain + equip + party;
+        gainExpInternal(total, equip, party, show, inChat, white);
+    }
+    
+    private void gainExpInternal(long gain, int equip, int party, boolean show, boolean inChat, boolean white) {
+        long total = gain;
         if (level < getMaxLevel()) {
-            if ((long) this.exp.get() + total > (long) Integer.MAX_VALUE) {
-                int gainFirst = ExpTable.getExpNeededForLevel(level) - this.exp.get();
-                total -= gainFirst + 1;
-                this.gainExp(gainFirst + 1, party, false, inChat, white);
+            long leftover = 0;
+            long nextExp = exp.get() + total;
+            
+            if (nextExp > (long)Integer.MAX_VALUE) {
+                total = Integer.MAX_VALUE - exp.get();
+                leftover = nextExp - Integer.MAX_VALUE;
             }
-            updateSingleStat(MapleStat.EXP, this.exp.addAndGet((int)Math.min(total, Integer.MAX_VALUE)));
+            updateSingleStat(MapleStat.EXP, exp.addAndGet((int)total));
             if (show && gain != 0) {
-                client.announce(MaplePacketCreator.getShowExpGain(gain, equip, party, inChat, white));
+                client.announce(MaplePacketCreator.getShowExpGain((int)Math.min(gain, Integer.MAX_VALUE), equip, party, inChat, white));
             }
             while (exp.get() >= ExpTable.getExpNeededForLevel(level)) {
                 levelUp(true);
@@ -2105,6 +2112,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     break;
                 }
             }
+            
+            if(leftover > 0) gainExpInternal(leftover, equip, party, false, inChat, white);
         }
     }
 

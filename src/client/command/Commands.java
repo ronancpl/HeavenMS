@@ -791,10 +791,10 @@ public class Commands {
                 } else if (sub[0].equals("buffmap")) {
                         for (MapleCharacter chr : player.getMap().getCharacters()){
                                 //GM Skills : Haste(Super) - Holy Symbol - Bless - Hyper Body - Echo of Hero
-                                SkillFactory.getSkill(4101004).getEffect(SkillFactory.getSkill(4101004).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(2311003).getEffect(SkillFactory.getSkill(2311003).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(1301007).getEffect(SkillFactory.getSkill(1301007).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(2301004).getEffect(SkillFactory.getSkill(2301004).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101001).getEffect(SkillFactory.getSkill(9101001).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101002).getEffect(SkillFactory.getSkill(9101002).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101003).getEffect(SkillFactory.getSkill(9101003).getMaxLevel()).applyTo(chr);
+                                SkillFactory.getSkill(9101008).getEffect(SkillFactory.getSkill(9101008).getMaxLevel()).applyTo(chr);
                                 SkillFactory.getSkill(1005).getEffect(SkillFactory.getSkill(1005).getMaxLevel()).applyTo(chr);
                                 chr.setHp(chr.getMaxHp());
                                 chr.updateSingleStat(MapleStat.HP, chr.getMaxHp());
@@ -847,13 +847,14 @@ public class Commands {
                                         Equip eu = (Equip) equip.getItem(i);
                                         if(eu == null) continue;
                                         
-                                        short incval= (short)newStat;
+                                        short incval = (short)newStat;
                                         eu.setWdef(incval);
                                         eu.setAcc(incval);
                                         eu.setAvoid(incval);
                                         eu.setJump(incval);
                                         eu.setMatk(incval);
                                         eu.setMdef(incval);
+                                        eu.setHp(incval);
                                         eu.setMp(incval);
                                         eu.setSpeed(incval);
                                         eu.setHands(incval);
@@ -1376,7 +1377,7 @@ public class Commands {
 				}
 			}
                         player.yellowMessage("Skills maxed out.");
-		} else if (sub[0].equals("mesos")) {
+                } else if (sub[0].equals("mesos")) {
                         if (sub.length >= 2) {
                                 player.gainMeso(Integer.parseInt(sub[1]), true);
                         }
@@ -1930,6 +1931,27 @@ public class Commands {
 			} else if (sub.length > 1) {
 				time *= Integer.parseInt(sub[1]);
 			}
+                        
+                        if(time > 1) {
+                            int seconds = (int) (time / 1000) % 60 ;
+                            int minutes = (int) ((time / (1000*60)) % 60);
+                            int hours   = (int) ((time / (1000*60*60)) % 24);
+                            int days    = (int) ((time / (1000*60*60*24)));
+
+                            String strTime = "";
+                            if(days > 0) strTime += days + " days, ";
+                            if(hours > 0) strTime += hours + " hours, ";
+                            strTime += minutes + " minutes, ";
+                            strTime += seconds + " seconds";
+
+                            for(World w : Server.getInstance().getWorlds()) {
+                                for(MapleCharacter chr: w.getPlayerStorage().getAllCharacters()) {
+                                    chr.dropMessage("Server is undergoing maintenance process, and will be shutdown in " + strTime + ". Prepare yourself to quit safely in the mean time.");
+                                }
+                            }
+                        }
+                        
+                        
 			TimerManager.getInstance().schedule(Server.getInstance().shutdown(false), time);
 			break;
 		case "face":
