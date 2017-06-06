@@ -59,7 +59,7 @@ public final class SkillBookHandler extends AbstractMaplePacketHandler {
             if (skilldata == null) {
                 return;
             }
-			Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
+            Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
             if (skilldata.get("skillid") == 0) {
                 canuse = false;
             } else if ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")) {

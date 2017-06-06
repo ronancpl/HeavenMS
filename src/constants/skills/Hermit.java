@@ -32,5 +32,5 @@ public class Hermit {
     public static final int SHADOW_WEB = 4111003;
     public static final int SHADOW_MESO = 4111004;
     public static final int AVENGER = 4111005;
-    public static final int FLASH_JUML = 4111006;
+    public static final int FLASH_JUMP = 4111006;
 }

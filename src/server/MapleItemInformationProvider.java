@@ -33,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.HashSet;
 
 import net.server.Server;
 import provider.MapleData;
@@ -49,6 +51,7 @@ import tools.Randomizer;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
+import client.Skill;
 import client.SkillFactory;
 import client.autoban.AutobanFactory;
 import client.inventory.Equip;
@@ -62,6 +65,7 @@ import constants.ItemConstants;
 import constants.skills.Assassin;
 import constants.skills.Gunslinger;
 import constants.skills.NightWalker;
+import server.life.MapleMonsterInformationProvider;
 
 /**
  *
@@ -1508,6 +1512,58 @@ public class MapleItemInformationProvider {
         }
 
         return list;
+    }
+    
+    public Set<String> getWhoDrops(Integer itemId) {
+        Set<String> list = new HashSet<>();
+
+        try {
+            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM drop_data WHERE itemid = ? LIMIT 50");
+            ps.setInt(1, itemId);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                String resultName = MapleMonsterInformationProvider.getMobNameFromId(rs.getInt("dropperid"));
+                if (resultName != null) {
+                    list.add(resultName);
+                }
+            }
+            rs.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return list;
+    }
+    
+    private boolean canUseSkillBook(MapleCharacter player, Integer skillBookId) {
+        Map<String, Integer> skilldata = MapleItemInformationProvider.getInstance().getSkillStats(skillBookId, player.getJob().getId());
+        if(skilldata == null || skilldata.get("skillid") == 0) return false;
+            
+        Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
+        return (skilldata.get("skillid") != 0 && ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")));
+    }
+    
+    public List<Integer> usableMasteryBooks(MapleCharacter player) {
+        List<Integer> masterybook = new LinkedList<>();
+        for(Integer i = 2290000; i <= 2290125; i++) {
+            if(canUseSkillBook(player, i)) {
+                masterybook.add(i);
+            }
+        }
+        
+        return masterybook;
+    }
+    
+    public List<Integer> usableSkillBooks(MapleCharacter player) {
+        List<Integer> skillbook = new LinkedList<>();
+        for(Integer i = 2280000; i <= 2280012; i++) {
+            if(canUseSkillBook(player, i)) {
+                skillbook.add(i);
+            }
+        }
+        
+        return skillbook;
     }
 
     public class scriptedItem {

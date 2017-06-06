@@ -70,12 +70,37 @@ public class GameConstants {
         return job == 2000 || (job >= 2100 && job <= 2112);
     }
     
+    private static boolean isInBranchJobTree(int skillJobId, int jobId, int branchType) {
+        int branch = (int)(Math.pow(10, branchType));
+        
+        int skillBranch = (int)(skillJobId / branch) * branch;
+        int jobBranch = (int)(jobId / branch) * branch;
+        
+        return skillBranch == jobBranch;
+    }
+    
+    private static boolean hasDivergedBranchJobTree(int skillJobId, int jobId, int branchType) {
+        int branch = (int)(Math.pow(10, branchType));
+        
+        int skillBranch = (int)(skillJobId / branch);
+        int jobBranch = (int)(jobId / branch);
+        
+        return skillBranch != jobBranch && skillBranch % 10 != 0;
+    }
+    
     public static boolean isInJobTree(int skillId, int jobId) {
-    	int skill = skillId / 10000;
-    	if ((jobId - skill) + skill == jobId) {
-    		return true;
-    	}
-    	return false;
+        int skillJob = skillId / 10000;
+        
+        if(!isInBranchJobTree(skillJob, jobId, 0)) {
+            for(int i = 1; i <= 3; i++) {
+                if(hasDivergedBranchJobTree(skillJob, jobId, i)) return false;
+                if(isInBranchJobTree(skillJob, jobId, i)) return true;
+            }
+        } else {
+            return true;
+        }
+        
+        return false;
     }
     
     public static boolean isPqSkill(final int skill) {

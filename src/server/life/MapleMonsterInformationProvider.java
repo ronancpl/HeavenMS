@@ -109,12 +109,12 @@ public class MapleMonsterInformationProvider {
 
 			while (rs.next()) {
 				ret.add(
-						new MonsterDropEntry(
-								rs.getInt("itemid"),
-								rs.getInt("chance"),
-								rs.getInt("minimum_quantity"),
-								rs.getInt("maximum_quantity"),
-								rs.getShort("questid")));
+                                    new MonsterDropEntry(
+                                        rs.getInt("itemid"),
+                                        rs.getInt("chance"),
+                                        rs.getInt("minimum_quantity"),
+                                        rs.getInt("maximum_quantity"),
+                                        rs.getShort("questid")));
 			}
 		} catch (SQLException e) {
                     e.printStackTrace();
@@ -155,7 +155,25 @@ public class MapleMonsterInformationProvider {
 		return retMobs;
 	}
 
-	public static String getMobNameFromID(int id)
+	public static String getMobNameFromId(int id)
+	{
+		try
+		{
+			return MapleLifeFactory.getMonster(id).getName();
+		} 
+                catch (NullPointerException npe)
+		{
+			return null; //nonexistant mob
+		}
+                catch (Exception e)
+		{
+                        e.printStackTrace();
+                        System.err.println("Nonexistant mob id " + id);
+			return null; //nonexistant mob
+		}
+	}
+        
+        public static String getMobNameFromID(int id)
 	{
 		try
 		{

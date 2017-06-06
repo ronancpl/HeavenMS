@@ -63,6 +63,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.ExpTable;
 import constants.ServerConstants;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -457,4 +459,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		dispose();
 		return true;
 	}
+        
+        public Object[] getAvailableMasteryBooks() {
+                return MapleItemInformationProvider.getInstance().usableMasteryBooks(this.getPlayer()).toArray();
+        }
+        
+        public Object[] getAvailableSkillBooks() {
+                return MapleItemInformationProvider.getInstance().usableSkillBooks(this.getPlayer()).toArray();
+        }
+        
+        public Object[] getNamesWhoDropsItem(Integer itemId) {
+                return MapleItemInformationProvider.getInstance().getWhoDrops(itemId).toArray();
+        }
+        
 }
