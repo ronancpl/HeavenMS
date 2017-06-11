@@ -53,7 +53,7 @@ function setup() {
 	return eim;
 }
 
-
+function afterSetup(eim) {}
 
 function playerEntry(eim,player) {
 	var altar = eim.getMapInstance(altarMap.getId());

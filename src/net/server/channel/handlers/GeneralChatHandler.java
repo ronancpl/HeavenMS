@@ -61,7 +61,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                     }
                     
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                    FilePrinter.print(FilePrinter.USED_COMMANDS + ".txt", c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
+                    FilePrinter.print(FilePrinter.USED_COMMANDS, c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
                 }
             }
         } else {

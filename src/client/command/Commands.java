@@ -72,6 +72,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
+import server.maps.MapleReactor;
 import server.quest.MapleQuest;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
@@ -104,7 +105,10 @@ import constants.skills.Cleric;
 import constants.skills.Priest;
 import constants.skills.Spearman;
 import java.util.ArrayList;
+import server.life.SpawnPoint;
 import server.maps.FieldLimit;
+import server.movement.LifeMovementFragment;
+import server.movement.TeleportMovement;
 
 public class Commands {
         private static HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
@@ -328,6 +332,10 @@ public class Commands {
             equip.setMdef(stat);
             equip.setHp(stat);
             equip.setMp(stat);
+            
+            byte flag = equip.getFlag();
+            flag |= ItemConstants.UNTRADEABLE;
+            equip.setFlag(flag);
         }
 
 	public static boolean executePlayerCommand(MapleClient c, String[] sub, char heading) {
@@ -673,6 +681,22 @@ public class Commands {
 			break;
                     
                 //debug only
+                case "debugnearestportal":
+                        if(ServerConstants.USE_DEBUG) {
+                            MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
+                            if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
+                            else player.dropMessage(6, "There is no portal on this map.");
+                        }
+                        break;
+                
+                case "debugnearestspawnpoint":
+                        if(ServerConstants.USE_DEBUG) {
+                            SpawnPoint sp = player.getMap().findClosestSpawnpoint(player.getPosition());
+                            if(sp != null) player.dropMessage(6, "Closest spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + ((sp.getMonster() != null) ? sp.getMonster().getId() : "null") + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
+                            else player.dropMessage(6, "There is no mob spawn point on this map.");
+                        }
+                        break;
+                    
                 case "debugpos":
                         if(ServerConstants.USE_DEBUG) {
                             player.dropMessage(6, "Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
@@ -681,7 +705,7 @@ public class Commands {
                     
                 case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ".");
+                            player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ".");
                         }
                         break;
                 
@@ -695,8 +719,10 @@ public class Commands {
                 case "debugreactors":
                         if(ServerConstants.USE_DEBUG) {
                             player.dropMessage(6, "Current reactor states on map " + player.getMapId() + ":");
-                            for(Pair p: player.getMap().reportReactorStates()) {
-                                player.dropMessage(6, "Reactor id: " + p.getLeft() + " -> State: " + p.getRight() + ".");
+                            
+                            for(MapleMapObject mmo: player.getMap().getReactors()) {
+                                MapleReactor mr = (MapleReactor) mmo;
+                                player.dropMessage(6, "Reactor id: " + mr.getId() + " name: '" + mr.getName() + "' -> Type: " + mr.getReactorType() + " State: " + mr.getState() + " Event State: " + mr.getEventState() + " Position: x " + mr.getPosition().getX() + " y " + mr.getPosition().getY() + ".");
                             }
                         }
                         break;
@@ -863,6 +889,11 @@ public class Commands {
                                         eu.setInt(incval);
                                         eu.setStr(incval);
                                         eu.setLuk(incval);
+                                        
+                                        byte flag = eu.getFlag();
+                                        flag |= ItemConstants.UNTRADEABLE;
+                                        eu.setFlag(flag);
+                                        
                                         player.forceUpdateItem(eu);
                                 } catch(Exception e){
                                         e.printStackTrace();
@@ -904,7 +935,7 @@ public class Commands {
 				player.getMap().setMuted(true);
 				player.dropMessage(5, "The map you are in has been muted.");
 			}
-		} else if (sub[0].equals("checkdmg")) {
+                } else if (sub[0].equals("checkdmg")) {
 			MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
 			int maxBase = victim.calculateMaxBaseDamage(victim.getTotalWatk());
 			Integer watkBuff = victim.getBuffedValue(MapleBuffStat.WATK);

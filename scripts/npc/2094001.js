@@ -61,53 +61,53 @@ function action(mode, type, selection) {
                                 cm.sendSimple("Thank you for saving me! How can I help you?\r\n#b#L0#Get me out of here.\r\n#L1#Give me Pirate Hat.");
                         } else if (status == 1) {
                                 if (selection == 0) {
-                                        if (!cm.canHold(4001129, 1)) {
+                                        if (!cm.canHold(4001158, 1)) {
                                                 cm.sendOk("Please make room in ETC.");
                                                 cm.dispose();
                                                 return;
                                         }
-                                        cm.gainItem(4001129, 1);
+                                        cm.gainItem(4001158, 1);
                                         cm.warp(251010404,0);
                                 } else {
                                         if (cm.haveItem(1003267, 1)) {
                                                 cm.sendOk("You have the best hat.");
                                         } else if (cm.haveItem(1002573, 1)) {
-                                                if (cm.haveItem(4001129, 20)) {	
+                                                if (cm.haveItem(4001158, 20)) {	
                                                         if (cm.canHold(1003267,1)) {
                                                                 cm.gainItem(1002573, -1);
-                                                                cm.gainItem(4001129, -20);
+                                                                cm.gainItem(4001158, -20);
                                                                 cm.gainItem(1003267,1);
                                                                 cm.sendOk("I have given you the hat.");
                                                         } else {
                                                                 cm.sendOk("Please make room in your EQUIP inventory before receiving the hat.");
                                                         }
                                                 } else {
-                                                        cm.sendOk("You need 20 #t4001129# to get the next hat.");
+                                                        cm.sendOk("You need 20 #t4001158# to get the next hat.");
                                                 }
                                         } else if (cm.haveItem(1002572, 1)) {
-                                                if (cm.haveItem(4001129, 20)) {
+                                                if (cm.haveItem(4001158, 20)) {
                                                         if (cm.canHold(1002573,1)) {
                                                                 cm.gainItem(1002572, -1);
-                                                                cm.gainItem(4001129, -20);
+                                                                cm.gainItem(4001158, -20);
                                                                 cm.gainItem(1002573,1);
                                                                 cm.sendOk("I have given you the hat.");
                                                         } else {
                                                                 cm.sendOk("Please make room in your EQUIP inventory before receiving the hat.");
                                                         }
                                                 } else {
-                                                        cm.sendOk("You need 20 #t4001129# to get the next hat.");
+                                                        cm.sendOk("You need 20 #t4001158# to get the next hat.");
                                                 }
                                         } else {
-                                                if (cm.haveItem(4001129, 20)) {	
+                                                if (cm.haveItem(4001158, 20)) {	
                                                         if (cm.canHold(1002572,1)) {
-                                                                cm.gainItem(4001129, -20);
+                                                                cm.gainItem(4001158, -20);
                                                                 cm.gainItem(1002572,1);
                                                                 cm.sendOk("I have given you the hat.");
                                                         } else {
                                                                 cm.sendOk("Please make room in your EQUIP inventory before receiving the hat.");
                                                         }
                                                 } else {
-                                                        cm.sendOk("You need 20 #t4001129# to get the next hat.");
+                                                        cm.sendOk("You need 20 #t4001158# to get the next hat.");
                                                 }
                                         }
                                 }

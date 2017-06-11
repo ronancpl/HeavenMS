@@ -23,6 +23,8 @@ function setup() {
     return eim;
 }
 
+function afterSetup(eim) {}
+
 function playerEntry(eim, player) {
     var map = eim.getMapFactory().getMap(910500000);
     player.changeMap(map, map.getPortal(0));

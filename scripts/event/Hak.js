@@ -19,6 +19,8 @@ function setup() {
 	return eim;
 }
 
+function afterSetup(eim) {}
+
 function playerEntry(eim, player) {
 	if (player.getMapId() == returnTo[0]) {
 		myRide = 0;

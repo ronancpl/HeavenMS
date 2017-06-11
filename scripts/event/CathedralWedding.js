@@ -69,6 +69,8 @@ function setup(eim) {
     return eim;
 }
 
+function afterSetup(eim) {}
+
 function playerEntry(eim, player) {
     var map = eim.getMapInstance(680000200);
     player.changeMap(map, map.getPortal(0));

@@ -93,6 +93,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawnStg2(eim) {    
     if(!eim.getMapInstance(930000200).getAllPlayer().isEmpty()) eim.getMapInstance(930000200).instanceMapRespawn();
     eim.schedule("respawnStg2", 4 * 1000);

@@ -111,6 +111,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function playerEntry(eim, player) {
         var map = eim.getMapInstance(entryMap + eim.getIntProperty("lobby"));
         player.changeMap(map, map.getPortal(0));

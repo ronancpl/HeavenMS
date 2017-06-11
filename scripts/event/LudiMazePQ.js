@@ -97,6 +97,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawnStages(eim) {}
 
 function playerEntry(eim, player) {

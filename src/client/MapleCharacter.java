@@ -743,7 +743,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.loggedIn = true;
         c.setAccountName(this.client.getAccountName());//No null's for accountName
         this.client = c;
-        MaplePortal portal = map.findClosestSpawnpoint(getPosition());
+        MaplePortal portal = map.findClosestPlayerSpawnpoint(getPosition());
         if (portal == null) {
             portal = map.getPortal(0);
         }
@@ -4814,7 +4814,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if (map == null || map.getId() == 610020000 || map.getId() == 610020001) {
                 ps.setInt(24, 0);
             } else {
-                MaplePortal closest = map.findClosestSpawnpoint(getPosition());
+                MaplePortal closest = map.findClosestPlayerSpawnpoint(getPosition());
                 if (closest != null) {
                     ps.setInt(24, closest.getId());
                 } else {

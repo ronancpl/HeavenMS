@@ -101,7 +101,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 } else {
                     drop = ii.randomizeStats((Equip) ii.getEquipById(d.itemId));
                 }
-                reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), false, false);
+                reactor.getMap().spawnItemDrop(reactor, getPlayer(), drop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), (byte)(getPlayer().getParty() != null ? 1 : 0), false);
             }
             dropPos.x += 25;
         }
@@ -127,7 +127,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         spawnMonster(id, qty, new Point(x, y));
     }
 
-    private void spawnMonster(int id, int qty, Point pos) {
+    public void spawnMonster(int id, int qty, Point pos) {
         for (int i = 0; i < qty; i++) {
             reactor.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(id), pos);
         }

@@ -411,7 +411,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     if (c.getChannelServer().getMapFactory().getMap(victim.getMapId()).getForcedReturnId() == 999999999 || victim.getMapId() < 100000000) {
                         if (victim.gmLevel() <= player.gmLevel()) {
                             if (itemId == 5041000 || victim.getMapId() / player.getMapId() == 1) { //viprock & same continent
-                                player.changeMap(target, target.findClosestSpawnpoint(victim.getPosition()));
+                                player.changeMap(target, target.findClosestPlayerSpawnpoint(victim.getPosition()));
                                 success = true;
                             } else {
                                 player.dropMessage(1, "You cannot teleport between continents with this teleport rock.");

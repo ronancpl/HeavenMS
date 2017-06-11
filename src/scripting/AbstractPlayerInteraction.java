@@ -88,9 +88,10 @@ public class AbstractPlayerInteraction {
         public MapleMap getMap() {
                 return c.getPlayer().getMap();
         }
-
-	public void warp(int map) {
-		getPlayer().changeMap(map, 0);
+        
+	public void warp(int mapid) {
+                MapleMap map = getWarpMap(mapid);
+		getPlayer().changeMap(map, map.getRandomPlayerSpawnpoint());
 	}
 
 	public void warp(int map, int portal) {

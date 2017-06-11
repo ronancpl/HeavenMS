@@ -92,6 +92,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawnStages(eim) {    
         eim.getMapInstance(103000800).instanceMapRespawn();
         eim.getMapInstance(103000805).instanceMapRespawn();

@@ -1,294 +1,248 @@
-/* 
- * This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+/**
+ * @author: Ronan
+ * @event: Orbis PQ
+*/
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+var isPq = true;
+var minPlayers = 5, maxPlayers = 6;
+var minLevel = 51, maxLevel = 70;
+var entryMap = 920010000;
+var exitMap = 920011200;
+var recruitMap = 200080101;
+var clearMap = 920011300;
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+var minMapId = 920010000;
+var maxMapId = 920011300;
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-	
-	THIS  FILE WAS MADE BY JVLAPLE. REMOVING THIS NOTICE MEANS YOU CAN'T USE THIS SCRIPT OR ANY OTHER SCRIPT PROVIDED BY JVLAPLE.
- */
+var eventTime = 45;     // 45 minutes
 
-/*
- * @Author Jvlaple
- * 
- * Orbis Party Quest
- */
-
-importPackage(java.lang);
-importPackage(Packages.world);
-importPackage(Packages.client);
-importPackage(Packages.server.maps);
-importPackage(Packages.server.life);
-importPackage(Packages.scripting.npc);
-
-var exitMap;
-var instanceId;
-var minPlayers = 1;
+var lobbyRange = [0, 0];
 
 function init() {
-    instanceId = 1;
+        setEventRequirements();
 }
 
-
-
-function monsterValue(eim, mobId) {
-    return 1;
+function setLobbyRange() {
+        return lobbyRange;
 }
 
-function setup() {
-    instanceId = em.getChannelServer().getInstanceId();
-    exitMap = em.getChannelServer().getMapFactory().getMap(920011200); //Teh exit map :) <---------t
-    var instanceName = "OrbisPQ" + instanceId;
-    var eim = em.newInstance(instanceName);
-    var mf = eim.getMapFactory();
-    em.getChannelServer().addInstanceId();
-    var map = mf.getMap(920010000);//wutt
-    //map.shuffleReactors();
-    // eim.addMapInstance(920010000,map);
-    //var firstPortal = eim.getMapInstance(920010000).getPortal("in00");
-    //firstPortal.setScriptName("hontale_BtoB1");
-    //Fuck this timer
-    //eim.setProperty("bulbWay", 0);
-    //Define all Maps and PortalScripts
-    var centerMap = eim.getMapInstance(920010100);
-    centerMap.getPortal(13).setScriptName("orbisPQSealedRoom");
-    centerMap.getPortal(4).setScriptName("orbisPQWalkway");
-    centerMap.getPortal(12).setScriptName("orbisPQStorage");
-    centerMap.getPortal(5).setScriptName("orbisPQLobby");
-    centerMap.getPortal(14).setScriptName("orbisPQOnTheWayUp");
-    centerMap.getPortal(15).setScriptName("orbisPQLounge");
-    centerMap.getPortal(16).setScriptName("orbisPQRoomOfDarkness");
-    var walkwayMap = eim.getMapInstance(920010200);
-    var storageMap = eim.getMapInstance(920010300);
-    var lobbyMap = eim.getMapInstance(920010400);
-    var sealedRoomMap = eim.getMapInstance(920010500);
-    var loungeMap = eim.getMapInstance(920010600);
-    var onTheWayUpMap = eim.getMapInstance(920010700);
-    var bossMap = eim.getMapInstance(920010800);
-    var jailMap = eim.getMapInstance(920010900);
-    var roomOfDarknessMap = eim.getMapInstance(920011000);
-    var bonusMap = eim.getMapInstance(920011100);
-    var endMap = eim.getMapInstance(920011300);
-    walkwayMap.getPortal(13).setScriptName("orbisPQWalkwayExit");
-    storageMap.getPortal(1).setScriptName("orbisPQStorageExit");
-    lobbyMap.getPortal(8).setScriptName("orbisPQLobbyExit");
-    sealedRoomMap.getPortal(3).setScriptName("orbisPQSRExit");
-    loungeMap.getPortal(17).setScriptName("orbisPQLoungeExit");
-    onTheWayUpMap.getPortal(23).setScriptName("orbisPQOnTheWayUpExit");
-    bossMap.getPortal(1).setScriptName("orbisPQGardenExit");
-    roomOfDarknessMap.getPortal(1).setScriptName("orbisPQRoomOfDarknessExit");
-    //-->Fuck we are done with portals -.-
-    eim.setProperty("killedCellions", "0");
-    eim.setProperty("papaSpawned", "no");
-    em.schedule("timeOut", 60 * 60000);
-    em.schedule("broadcastClock", 1500);
-    eim.setProperty("entryTimestamp",System.currentTimeMillis() + (60 * 60000));
-	
-    return eim;
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
 }
+
+function setEventExclusives(eim) {
+        var itemSet = [4001044, 4001045, 4001046, 4001047, 4001048, 4001049, 4001050, 4001051, 4001052, 4001053, 4001054, 4001055, 4001056, 4001057, 4001058, 4001059, 4001060, 4001061, 4001062, 4001063];
+        eim.setExclusiveItems(itemSet);
+}
+
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [2040602, 2040802, 2040002, 2040402, 2040505, 2040502, 2040601, 2044501, 2044701, 2044601, 2041019, 2041016, 2041022, 2041013, 2041007, 2043301, 2040301, 2040801, 2040001, 2040004, 2040504, 2040501, 2040513, 2043101, 2044201, 2044401, 2040701, 2044301, 2043801, 2040401, 2043701, 2040803, 2000003, 2000002, 2000004, 2000006, 2000005, 2022000, 2001001, 2001002, 2022003, 2001000, 2020014, 2020015, 4003000, 1102015, 1102016, 1102017, 1102018, 1102021, 1102022, 1102023, 1102024, 1102084, 1102085, 1102086, 1032019, 1032020, 1032021, 1032014, 2070011, 4010003, 4010000, 4010006, 4010002, 4010005, 4010004, 4010001, 4020001, 4020002, 4020008, 4020007, 4020003, 4020000, 4020004, 4020005, 4020006, 2210000, 2210001, 2210002, 2070006, 2070005, 2070007, 2070004, 2061003, 2060003, 2060004, 2061004, 2100000, 2100001, 2100002, 2100003, 2100004, 2100005];
+        itemQty = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 100, 100, 15, 80, 5, 25, 20, 20, 25, 20, 15, 10, 45, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 15, 15, 10, 15, 15, 15, 15, 15, 15, 10, 10, 15, 15, 15, 15, 15, 5, 5, 5, 1, 1, 1, 1, 2000, 2000, 2000, 2000, 1, 1, 1, 1, 1, 1];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+}
+
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        if(party.size() > 0) {
+                var partyList = party.toArray();
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
+                }
+        }
+        
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
+        return eligible;
+}
+
+function setup(level, lobbyid) {
+        var eim = em.newInstance("Orbis" + lobbyid);
+        eim.setProperty("level", level);
+        
+        eim.setProperty("statusStg1", -1);
+        eim.setProperty("statusStg2", -1);
+        eim.setProperty("statusStg3", -1);
+        eim.setProperty("statusStg4", -1);
+        eim.setProperty("statusStg5", -1);
+        eim.setProperty("statusStg6", -1);
+        eim.setProperty("statusStg7", -1);
+        eim.setProperty("statusStg8", -1);
+        eim.setProperty("statusStg7_c", 0);
+        eim.setProperty("statusStgBonus", 0);
+        
+        
+        eim.getInstanceMap(920010000).resetPQ(level);
+        eim.getInstanceMap(920010100).resetPQ(level);
+        eim.getInstanceMap(920010200).resetPQ(level);
+        eim.getInstanceMap(920010300).resetPQ(level);
+        eim.getInstanceMap(920010400).resetPQ(level);
+        eim.getInstanceMap(920010500).resetPQ(level);
+        eim.getInstanceMap(920010600).resetPQ(level);
+        eim.getInstanceMap(920010601).resetPQ(level);
+        eim.getInstanceMap(920010602).resetPQ(level);
+        eim.getInstanceMap(920010603).resetPQ(level);
+        eim.getInstanceMap(920010604).resetPQ(level);
+        eim.getInstanceMap(920010700).resetPQ(level);
+        eim.getInstanceMap(920010800).resetPQ(level);
+        eim.getInstanceMap(920010900).resetPQ(level);
+        eim.getInstanceMap(920010910).resetPQ(level);
+        eim.getInstanceMap(920010911).resetPQ(level);
+        eim.getInstanceMap(920010912).resetPQ(level);
+        eim.getInstanceMap(920010920).resetPQ(level);
+        eim.getInstanceMap(920010921).resetPQ(level);
+        eim.getInstanceMap(920010922).resetPQ(level);
+        eim.getInstanceMap(920010930).resetPQ(level);
+        eim.getInstanceMap(920010931).resetPQ(level);
+        eim.getInstanceMap(920010932).resetPQ(level);
+        eim.getInstanceMap(920011000).resetPQ(level);
+        eim.getInstanceMap(920011100).resetPQ(level);
+        eim.getInstanceMap(920011200).resetPQ(level);
+        eim.getInstanceMap(920011300).resetPQ(level);
+        
+        respawnStages(eim);
+        
+        var d = new Date();
+        eim.getInstanceMap(920010400).getReactorByName("music").setEventState(d.getDay());
+        
+        eim.startEventTimer(eventTime * 60000);
+        setEventRewards(eim);
+        setEventExclusives(eim);
+        
+        return eim;
+}
+
+function afterSetup(eim) {
+        var rnd = Math.floor(Math.random() * 4);
+        eim.applyEventPlayersItemBuff(2022090 + rnd);
+}
+
+function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(920010000);
-    player.changeMap(map, map.getPortal(0));
-    player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock((Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000));
-    var texttt = "Hi, my name is Eak, the Chamberlain of the Goddess. Don't be alarmed; you won't be able to see me right now. Back when the Goddess turned into a block of stone, I simultaneously lost my own power. If you gather up the power of the Magic Cloud of Orbis, however, then I'll be able to recover my body and re-transform back to my original self. Please collect #b20#k Magic Clouds and bring them back to me. Right now, you'll only see me as a tiny, flickering light."
-    player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getNPCTalk(2013001, /*(byte)*/ 0, texttt, "00 00"));
-//player.getClient().getSession().write(net.sf.odinms.scripting.npc.NPCScriptManager.dispose(eim.getClient()));
-//THE CLOCK IS SHIT
-//player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock(1800));
+        var map = eim.getMapInstance(entryMap);
+        player.changeMap(map, map.getPortal(0));
+        
+        var texttt = "Hi, my name is Eak, the Chamberlain of the Goddess. Don't be alarmed; you won't be able to see me right now. Back when the Goddess turned into a block of stone, I simultaneously lost my own power. If you gather up the power of the Magic Cloud of Orbis, however, then I'll be able to recover my body and re-transform back to my original self. Please collect #b20#k Magic Clouds and bring them back to me. Right now, you'll only see me as a tiny, flickering light.";
+        player.getClient().getSession().write(Packages.tools.MaplePacketCreator.getNPCTalk(2013001, /*(byte)*/ 0, texttt, "00 00", /*(byte)*/ 0));
 }
 
-function playerDead(eim, player) {
-}
-
-function playerRevive(eim, player) {
-    if (eim.isLeader(player)) { //check for party leader
-        //boot whole party and end
-        var party = eim.getPlayers();
-        for (var i = 0; i < party.size(); i++) {
-            playerExit(eim, party.get(i));
+function scheduledTimeout(eim) {
+        if(eim.getIntProperty("statusStg8") == 1) {
+                eim.warpEventTeam(920011300);
         }
-        eim.dispose();
-    }
-    else { //boot dead player
-        // If only 5 players are left, uncompletable:
-        var party = eim.getPlayers();
-        if (party.size() <= minPlayers) {
-            for (var i = 0; i < party.size(); i++) {
-                playerExit(eim,party.get(i));
-            }
-            eim.dispose();
+        else {
+                end(eim);
         }
-        else
-            playerExit(eim, player);
-    }
-}
-
-function playerDisconnected(eim, player) {
-    if (eim.isLeader(player)) { //check for party leader
-        //PWN THE PARTY (KICK OUT)
-        var party = eim.getPlayers();
-        for (var i = 0; i < party.size(); i++) {
-            if (party.get(i).equals(player)) {
-                removePlayer(eim, player);
-            }
-            else {
-                playerExit(eim, party.get(i));
-            }
-        }
-        eim.dispose();
-    }
-    else { //KICK THE D/CED CUNT
-        // If only 5 players are left, uncompletable:
-        var party = eim.getPlayers();
-        if (party.size() < minPlayers) {
-            for (var i = 0; i < party.size(); i++) {
-                playerExit(eim,party.get(i));
-            }
-            eim.dispose();
-        }
-        else
-            playerExit(eim, player);
-    }
-}
-
-function leftParty(eim, player) {			
-    // If only 5 players are left, uncompletable:
-    var party = eim.getPlayers();
-    if (party.size() <= minPlayers) {
-        for (var i = 0; i < party.size(); i++) {
-            playerExit(eim,party.get(i));
-        }
-        eim.dispose();
-    }
-    else
-        playerExit(eim, player);
-}
-
-function disbandParty(eim) {
-    //boot whole party and end
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
 }
 
 function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-    player.cancelAllBuffs(); //We don't want people going out with wonky blessing >=(
-    player.changeMap(exitMap, exitMap.getPortal(0));
+        eim.unregisterPlayer(player);
+        player.changeMap(exitMap, 0);
 }
 
-//Those offline cuntts
-function removePlayer(eim, player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+function changedMap(eim, player, mapid) {
+        if (mapid < minMapId || mapid > maxMapId) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                        eim.unregisterPlayer(player);
+                        end(eim);
+                }
+                else
+                        eim.unregisterPlayer(player);
+        }
+}
+
+function changedLeader(eim, leader) {
+        var mapid = leader.getMapId();
+        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
+                end(eim);
+        }
+}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) { // player presses ok on the death pop up.
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function playerDisconnected(eim, player) {
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function leftParty(eim, player) {
+        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function disbandParty(eim) {
+        end(eim);
+}
+
+function monsterValue(eim, mobId) {
+        return 1;
+}
+
+function end(eim) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+}
+
+function giveRandomEventReward(eim, player) {
+        eim.giveEventReward(player);
 }
 
 function clearPQ(eim) {
-    // W00t! Bonus!!
-    var iter = eim.getPlayers().iterator();
-    var bonusMap = eim.getMapInstance(920011100);
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.changeMap(bonusMap, bonusMap.getPortal(0));
-        eim.setProperty("entryTimestamp",System.currentTimeMillis() + (1 * 60000));
-        player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock(60));
-    }
-    eim.schedule("finish", 60000)
-}
-
-function finish(eim) {
-    var dMap = eim.getMapInstance(920011300);
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        eim.unregisterPlayer(player);
-        player.changeMap(dMap, dMap.getPortal(0));
-    }
-    eim.dispose();
+        eim.stopEventTimer();
+        eim.setEventCleared();
 }
 
 function monsterKilled(mob, eim) {}
 
-function allMonstersDead(eim) {} //Open Portal? o.O
+function allMonstersDead(eim) {}
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}
 
-function timeOut() {
-    var iter = em.getInstances().iterator();
-    while (iter.hasNext()) {
-        var eim = iter.next();
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext()) {
-                playerExit(eim, pIter.next());
-            }
-        }
-        eim.dispose();
-    }
-}
+function dispose(eim) {}
 
-function playerClocks(eim, player) {
-    if (player.getMap().hasTimer() == false){
-        player.getClient().getSession().write(net.sf.odinms.tools.MaplePacketCreator.getClock((Long.parseLong(eim.getProperty("entryTimestamp")) - System.currentTimeMillis()) / 1000));
-    //player.getMap().setTimer(true);
-    }
-}
-
-function playerTimer(eim, player) {
-    if (player.getMap().hasTimer() == false) {
-        player.getMap().setTimer(true);
-    }
-}
-
-function broadcastClock(eim, player) {
-    //var party = eim.getPlayers();
-    var iter = em.getInstances().iterator();
-    while (iter.hasNext()) {
-        var eim = iter.next();
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext()) {
-                playerClocks(eim, pIter.next());
-            }
-        }
-    //em.schedule("broadcastClock", 1600);
-    }
-    // for (var kkl = 0; kkl < party.size(); kkl++) {
-    // party.get(kkl).getMap().setTimer(true);
-    // }
-    var iterr = em.getInstances().iterator();
-    while (iterr.hasNext()) {
-        var eim = iterr.next();
-        if (eim.getPlayerCount() > 0) {
-            var pIterr = eim.getPlayers().iterator();
-            while (pIterr.hasNext()) {
-                //playerClocks(eim, pIter.next());
-                playerTimer(eim, pIterr.next());
-            }
-        }
-    //em.schedule("broadcastClock", 1600);
-    }
-    em.schedule("broadcastClock", 1600);
-}
-
-function dispose() {
-
-}

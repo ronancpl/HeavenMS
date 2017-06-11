@@ -127,6 +127,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
@@ -136,11 +138,11 @@ function playerEntry(eim, player) {
 
 function scheduledTimeout(eim) {
         if(eim.getProperty("9stageclear") != null) {
-            var curStage = 922011000, toStage = 922011100;
-            eim.warpEventTeam(curStage, toStage);
+                var curStage = 922011000, toStage = 922011100;
+                eim.warpEventTeam(curStage, toStage);
         }
         else {
-            end(eim);
+                end(eim);
         }
 }
 

@@ -45,6 +45,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -530,16 +531,6 @@ public class MapleMap {
         return count;
     }
     
-    public List<Pair> reportReactorStates() {
-        List<Pair> list = new LinkedList<>();
-        
-        for (MapleMapObject m : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR))) {
-            MapleReactor mr = (MapleReactor) m;
-            list.add(new Pair(mr.getId(), mr.getState()));
-        }
-        return list;
-    }
-    
     public int countMonsters() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER)).size();
     }
@@ -550,6 +541,14 @@ public class MapleMap {
     
     public final List<MapleMapObject> getReactors() {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.REACTOR));
+    }
+    
+    public int countItems() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM)).size();
+    }
+    
+    public final List<MapleMapObject> getItems() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
     }
 
     public boolean damageMonster(final MapleCharacter chr, final MapleMonster monster, final int damage) {
@@ -886,22 +885,6 @@ public class MapleMap {
         }
     }
 
-    public MapleReactor getReactorById(int Id) {
-        objectRLock.lock();
-        try {
-            for (MapleMapObject obj : mapobjects.values()) {
-                if (obj.getType() == MapleMapObjectType.REACTOR) {
-                    if (((MapleReactor) obj).getId() == Id) {
-                        return (MapleReactor) obj;
-                    }
-                }
-            }
-            return null;
-        } finally {
-            objectRLock.unlock();
-        }
-    }
-
     /**
      * Automagically finds a new controller for the given monster from the chars
      * on the map...
@@ -1001,6 +984,22 @@ public class MapleMap {
     public MapleReactor getReactorByOid(int oid) {
         MapleMapObject mmo = getMapObject(oid);
         return (mmo != null && mmo.getType() == MapleMapObjectType.REACTOR) ? (MapleReactor) mmo : null;
+    }
+    
+    public MapleReactor getReactorById(int Id) {
+        objectRLock.lock();
+        try {
+            for (MapleMapObject obj : mapobjects.values()) {
+                if (obj.getType() == MapleMapObjectType.REACTOR) {
+                    if (((MapleReactor) obj).getId() == Id) {
+                        return (MapleReactor) obj;
+                    }
+                }
+            }
+            return null;
+        } finally {
+            objectRLock.unlock();
+        }
     }
 
     public MapleReactor getReactorByName(String name) {
@@ -1327,10 +1326,14 @@ public class MapleMap {
             }
         }, duration);
     }
-
+    
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final boolean ffaDrop, final boolean playerDrop) {
+        spawnItemDrop(dropper, owner, item, pos, (byte)(ffaDrop ? 2 : 0), playerDrop);
+    }
+
+    public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
         final Point droppos = calcDropPos(pos, pos);
-        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, (byte) (ffaDrop ? 2 : 0), playerDrop);
+        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, dropType, playerDrop);
         drop.setDropTime(System.currentTimeMillis());
 
         spawnAndAddRangedMapObject(drop, new DelayedPacketCreation() {
@@ -1396,7 +1399,7 @@ public class MapleMap {
             final MapleReactor react = (MapleReactor) o;
 
             if (react.getReactorType() == 100) {
-                if (react.getReactItem((byte) 0).getLeft() == item.getItemId() && react.getReactItem((byte) 0).getRight() == item.getQuantity()) {
+                if (react.getReactItem(react.getEventState()).getLeft() == item.getItemId() && react.getReactItem(react.getEventState()).getRight() == item.getQuantity()) {
 
                     if (react.getArea().contains(drop.getPosition())) {
                         TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
@@ -1634,6 +1637,30 @@ public class MapleMap {
         chr.receivePartyMemberHP();
     }
 
+    public MaplePortal getRandomPlayerSpawnpoint() {
+        List<MaplePortal> spawnPoints = new ArrayList<>();
+        for (MaplePortal portal : portals.values()) {
+            if (portal.getType() >= 0 && portal.getType() <= 2) {
+                spawnPoints.add(portal);
+            }
+        }
+        MaplePortal portal = spawnPoints.get(new Random().nextInt(spawnPoints.size()));
+        return portal != null ? portal : getPortal(0);
+    }
+    
+    public MaplePortal findClosestPlayerSpawnpoint(Point from) {
+        MaplePortal closest = null;
+        double shortestDistance = Double.POSITIVE_INFINITY;
+        for (MaplePortal portal : portals.values()) {
+            double distance = portal.getPosition().distanceSq(from);
+            if (portal.getType() >= 0 && portal.getType() <= 2 && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
+                closest = portal;
+                shortestDistance = distance;
+            }
+        }
+        return closest;
+    }
+    
     public MaplePortal findClosestPortal(Point from) {
         MaplePortal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
@@ -1647,15 +1674,8 @@ public class MapleMap {
         return closest;
     }
 
-    public MaplePortal getRandomSpawnpoint() {
-        List<MaplePortal> spawnPoints = new ArrayList<>();
-        for (MaplePortal portal : portals.values()) {
-            if (portal.getType() >= 0 && portal.getType() <= 2) {
-                spawnPoints.add(portal);
-            }
-        }
-        MaplePortal portal = spawnPoints.get(new Random().nextInt(spawnPoints.size()));
-        return portal != null ? portal : getPortal(0);
+    public Collection<MaplePortal> getPortals() {
+        return Collections.unmodifiableCollection(portals.values());
     }
 
     public void removePlayer(MapleCharacter chr) {
@@ -2003,23 +2023,6 @@ public class MapleMap {
         }
     }
 
-    public MaplePortal findClosestSpawnpoint(Point from) {
-        MaplePortal closest = null;
-        double shortestDistance = Double.POSITIVE_INFINITY;
-        for (MaplePortal portal : portals.values()) {
-            double distance = portal.getPosition().distanceSq(from);
-            if (portal.getType() >= 0 && portal.getType() <= 2 && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
-                closest = portal;
-                shortestDistance = distance;
-            }
-        }
-        return closest;
-    }
-
-    public Collection<MaplePortal> getPortals() {
-        return Collections.unmodifiableCollection(portals.values());
-    }
-
     public String getMapName() {
         return mapName;
     }
@@ -2244,6 +2247,19 @@ public class MapleMap {
             }
         }
     }
+    
+    public SpawnPoint findClosestSpawnpoint(Point from) {
+        SpawnPoint closest = null;
+        double shortestDistance = Double.POSITIVE_INFINITY;
+        for (SpawnPoint sp : monsterSpawn) {
+            double distance = sp.getPosition().distanceSq(from);
+            if (distance < shortestDistance) {
+                closest = sp;
+                shortestDistance = distance;
+            }
+        }
+        return closest;
+    }
 
     public void respawn() {
         if(!allowSummons) return;
@@ -2283,6 +2299,38 @@ public class MapleMap {
                 }
             }
         }
+    }
+    
+    public final int getNumPlayersInArea(final int index) {
+        return getNumPlayersInRect(getArea(index));
+    }
+
+    public final int getNumPlayersInRect(final Rectangle rect) {
+        int ret = 0;
+
+        chrRLock.lock();
+        try {
+            final Iterator<MapleCharacter> ltr = characters.iterator();
+            while (ltr.hasNext()) {
+                if (rect.contains(ltr.next().getPosition())) {
+                    ret++;
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        return ret;
+    }
+
+    public final int getNumPlayersItemsInArea(final int index) {
+        return getNumPlayersItemsInRect(getArea(index));
+    }
+
+    public final int getNumPlayersItemsInRect(final Rectangle rect) {
+        int retP = getNumPlayersInRect(rect);
+        int retI = getMapObjectsInBox(rect, Arrays.asList(MapleMapObjectType.ITEM)).size();
+
+        return retP + retI;
     }
 
     private static interface DelayedPacketCreation {

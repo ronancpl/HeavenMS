@@ -43,12 +43,15 @@ import net.server.world.MaplePartyCharacter;
 import provider.MapleDataProviderFactory;
 import server.MaplePortal;
 import server.TimerManager;
+import server.MapleStatEffect;
 import server.expeditions.MapleExpedition;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import tools.DatabaseConnection;
 import client.MapleCharacter;
+import client.SkillFactory;
+import client.Skill;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.awt.Point;
@@ -56,6 +59,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import scripting.AbstractPlayerInteraction;
+import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
@@ -112,6 +116,35 @@ public class EventInstanceManager {
 	public EventManager getEm() {
 		return em;
 	}
+        
+        public void applyEventPlayersItemBuff(int itemId) {
+                List<MapleCharacter> players = getPlayerList();
+                MapleStatEffect mse = MapleItemInformationProvider.getInstance().getItemEffect(itemId);
+                
+                if(mse != null) {
+                        for (MapleCharacter player: players) {
+                                mse.applyTo(player);
+                        }
+                }
+        }
+        
+        public void applyEventPlayersSkillBuff(int skillId) {
+                applyEventPlayersSkillBuff(skillId, Integer.MAX_VALUE);
+        }
+        
+        public void applyEventPlayersSkillBuff(int skillId, int skillLv) {
+                List<MapleCharacter> players = getPlayerList();
+                Skill skill = SkillFactory.getSkill(skillId);
+                
+                if(skill != null) {
+                        MapleStatEffect mse = skill.getEffect(Math.min(skillLv, skill.getMaxLevel()));
+                        if(mse != null) {
+                                for (MapleCharacter player: players) {
+                                        mse.applyTo(player);
+                                }
+                        }
+                }
+        }
         
         public void giveEventPlayersExp(int gain) {
                 giveEventPlayersExp(gain, -1);
@@ -193,6 +226,7 @@ public class EventInstanceManager {
                 timeStarted = System.currentTimeMillis();
 		eventTime = time;
                 
+                for(MapleCharacter chr: getPlayers()) chr.announce(MaplePacketCreator.getClock((int) (time / 1000)));
                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
                         public void run() {
                                 try {
@@ -496,6 +530,14 @@ public class EventInstanceManager {
 		return map;
 	}
 
+        public void setIntProperty(String key, Integer value) {
+                setProperty(key, value);
+        }
+        
+        public void setProperty(String key, Integer value) {
+                setProperty(key, "" + value);
+        }
+        
 	public void setProperty(String key, String value) {
 		props.setProperty(key, value);
 	}
@@ -512,8 +554,12 @@ public class EventInstanceManager {
                 return props;
         }
         
-        public int getIntProperty(String key) {
-                return Integer.parseInt(props.getProperty(key));
+        public Integer getIntProperty(String key) {
+                try {
+                        return Integer.parseInt(props.getProperty(key));
+                } catch(Exception e) {
+                        return null;
+                }
         }
 	
 	public void leftParty(MapleCharacter chr) {
@@ -808,6 +854,23 @@ public class EventInstanceManager {
                 
                 for (MapleCharacter chr : players) {
                         chr.changeMap(warpTo);
+                }
+        }
+        
+        public final void warpEventTeamToMapSpawnPoint(int warpFrom, int warpTo, int toSp) {
+                List<MapleCharacter> players = getPlayerList();
+                
+                for (MapleCharacter chr : players) {
+                        if(chr.getMapId() == warpFrom)
+                                chr.changeMap(warpTo, toSp);
+                }
+        }
+        
+        public final void warpEventTeamToMapSpawnPoint(int warpTo, int toSp) {
+                List<MapleCharacter> players = getPlayerList();
+                
+                for (MapleCharacter chr : players) {
+                        chr.changeMap(warpTo, toSp);
                 }
         }
         

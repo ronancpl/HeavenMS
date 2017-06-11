@@ -19,16 +19,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*@author Jvlaple
- *Reactor : Orbis PQ Bonus Reactor - 2002014.js
+/*@author Ronan
+ *Reactor : OrbisPQ Bonus Reactor - 2002014.js
  * Drops all the Bonus Items
  */
  
 function act() {
-	rand = Math.floor(Math.random() * 4);
-	if (rand < 1) rand = 1;
-	//We'll make it drop a lot of crap :D
-	for (var i = 0; i<rand; i++) {
-		rm.dropItems(true, 1, 30, 60, 15);
-	}
+        rm.dropItems(true, 1, 100, 400, 15);
+    
+        var eim = rm.getEventInstance();
+        if(eim.getProperty("statusStgBonus") != "1") {
+            rm.spawnNpc(2013002, new java.awt.Point(46, 840));
+            eim.setProperty("statusStgBonus", "1");
+        }
 }

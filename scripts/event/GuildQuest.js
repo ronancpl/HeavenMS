@@ -87,6 +87,8 @@ function begin(eim) {
 //}
 }
 
+function afterSetup(eim) {}
+
 function timeOut(eim) {
 	end(eim, "Your allotted time to finish the quest has passed.");
 }

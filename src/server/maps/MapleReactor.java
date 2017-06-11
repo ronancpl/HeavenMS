@@ -43,6 +43,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private int rid;
     private MapleReactorStats stats;
     private byte state;
+    private byte evstate;
     private int delay;
     private MapleMap map;
     private String name;
@@ -51,6 +52,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private Lock reactorLock = new ReentrantLock(true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
+        this.evstate = (byte)0;
         this.stats = stats;
         this.rid = rid;
         alive = true;
@@ -75,9 +77,17 @@ public class MapleReactor extends AbstractMapleMapObject {
     public void setState(byte state) {
         this.state = state;
     }
-
+    
     public byte getState() {
         return state;
+    }
+    
+    public void setEventState(byte substate) {
+        this.evstate = substate;
+    }
+    
+    public byte getEventState() {
+        return evstate;
     }
     
     public MapleReactorStats getStats() {

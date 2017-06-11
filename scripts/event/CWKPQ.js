@@ -21,6 +21,8 @@ em.setProperty("state", "0");
 	em.setProperty("leader", "true");
 }
 
+function afterSetup(eim) {}
+
 function setup(eim, leaderid) {
 em.setProperty("state", "1");
 	em.setProperty("leader", "true");

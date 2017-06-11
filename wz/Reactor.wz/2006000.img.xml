@@ -52,6 +52,16 @@
         <int name="delay" value="150"/>
       </canvas>
     </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100"/>
+        <int name="state" value="1"/>
+        <string name="0" value="4001063"/>
+        <int name="1" value="20"/>
+        <vector name="lt" x="-100" y="-100"/>
+        <vector name="rb" x="100" y="100"/>
+      </imgdir>
+    </imgdir>
   </imgdir>
   <imgdir name="1">
     <uol name="0" value="../0/0"/>

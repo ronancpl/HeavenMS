@@ -460,6 +460,10 @@ public class Equip extends Item {
     }
     
     private double normalizedMasteryExp(int reqLevel) {
+        // Trivia: at equips requiring level 200, one gaining MAX INTEGER exp points will have their equip
+        // exp gain normalized to roughly 5.752 points (1/3 of the needed to pass the equipment to lvl 2)!
+        // Good thing there is not much lvl 140+ equipments in the game!
+        
         return Math.max((2622.71 * Math.exp(reqLevel * 0.0733649)) - 6000.0, 15);
     }
     

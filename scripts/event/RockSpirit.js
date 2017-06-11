@@ -38,6 +38,8 @@ function setup() {
 	return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawn(eim) {
 	var map = eim.getMapInstance(startMap.getId());
 	var map2 = eim.getMapInstance(otherMap.getId());

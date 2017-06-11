@@ -83,17 +83,17 @@ function action(mode, type, selection) {
                                         cm.sendOk("#e#b<Party Quest: Primrose Hill>#k#n\r\nCollect primrose seeds from the flowers at the bottom part of the map and drop them by the platforms above the stage. Primrose seed color must match to grow the seeds, so test until you find the correct combination. When all the seeds have been planted, that is, starting second part of the mission, scout the Moon Bunny while it prepares Rice Cakes for the hungry Growlie. Once Growlie becomes satisfied, your mission is complete.");
                                         cm.dispose();
                                 } else {
-                                        cm.sendYesNo("So you want to exchange #b20 #b#t4001129##k for the event-designed hat?");
+                                        cm.sendYesNo("So you want to exchange #b20 #b#t4001158##k for the event-designed hat?");
                                 }
                         } else {
-                                if(cm.hasItem(4001129, 20)) {
+                                if(cm.hasItem(4001158, 20)) {
                                         if(cm.canHold(1002798)) {
-                                                cm.gainItem(4001129, -20);
+                                                cm.gainItem(4001158, -20);
                                                 cm.gainItem(1002798, 20);
                                                 cm.sendNext("Here it is. Enjoy!");
                                         }
                                 } else {
-                                        cm.sendNext("You don't have enough #t4001129# to buy it yet!");
+                                        cm.sendNext("You don't have enough #t4001158# to buy it yet!");
                                 }
                                 
                                 cm.dispose();

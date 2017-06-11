@@ -121,7 +121,7 @@ public class MapleGenericPortal implements MaplePortal {
         } else if (getTargetMapId() != 999999999) {
             MapleMap to = c.getPlayer().getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : c.getPlayer().getEventInstance().getMapInstance(getTargetMapId());
             MaplePortal pto = to.getPortal(getTarget());
-            if (pto == null) {// fallback for missing portals - no real life case anymore - intresting for not implemented areas
+            if (pto == null) {// fallback for missing portals - no real life case anymore - interesting for not implemented areas
                 pto = to.getPortal(0);
             }
             c.getPlayer().changeMap(to, pto); //late resolving makes this harder but prevents us from loading the whole world at once

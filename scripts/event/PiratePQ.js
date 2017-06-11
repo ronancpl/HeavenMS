@@ -167,6 +167,8 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function afterSetup(eim) {}
+
 function respawnStg4(eim) {
         eim.getMapInstance(925100400).instanceMapRespawn();
         eim.schedule("respawnStg4", 10 * 1000);

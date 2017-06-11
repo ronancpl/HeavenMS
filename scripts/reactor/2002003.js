@@ -25,4 +25,9 @@
  
 function act() {
 	rm.dropItems();
+        
+        var eim = rm.getEventInstance();
+        eim.giveEventPlayersExp(3500);
+        eim.setProperty("statusStg7", "1");
+        eim.showClearEffect(true);
 }

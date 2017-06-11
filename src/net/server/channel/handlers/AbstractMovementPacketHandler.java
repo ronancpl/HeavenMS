@@ -66,10 +66,10 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                 case 12:
                 case 13: // Shot-jump-back thing
                 case 16: // Float
-				case 18:
-				case 19: // Springs on maps
+                case 18:
+                case 19: // Springs on maps
                 case 20: // Aran Combat Step
-				case 22: {
+                case 22: {
                     short xpos = lea.readShort();
                     short ypos = lea.readShort();
                     byte newstate = lea.readByte();
@@ -83,7 +83,7 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                 case 7: // assaulter
                 case 8: // assassinate
                 case 9: // rush
-				case 11: //chair
+                case 11: //chair
                 {
 //                case 14: {
                     short xpos = lea.readShort();
@@ -138,7 +138,7 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                     break;
                 }
                 default:
-					System.out.println("Unhandled Case:" + command);
+                    System.out.println("Unhandled Case:" + command);
                     return null;
             }
         }

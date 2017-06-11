@@ -52,7 +52,7 @@ function setEventRewards(eim) {
         var itemSet, itemQty, evLevel, expStages;
 
         evLevel = 1;    //Rewards at clear PQ
-        itemSet = [4001129];
+        itemSet = [4001158];
         itemQty = [1];
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
@@ -97,6 +97,8 @@ function setup(level, lobbyid) {
         setEventExclusives(eim);
         return eim;
 }
+
+function afterSetup(eim) {}
 
 function respawnStages(eim) {
         eim.getInstanceMap(910010000).instanceMapRespawn();
