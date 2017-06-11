@@ -303,6 +303,12 @@ public class EventInstanceManager {
 	public void unregisterPlayer(MapleCharacter chr) {
                 wL.lock();
                 try {
+                        try {
+                                em.getIv().invokeFunction("playerUnregistered", EventInstanceManager.this, chr);
+                        } catch (ScriptException | NoSuchMethodException ex) {
+                                Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    
                         chars.remove(chr);
                         gridRemove(chr);
                         dropExclusiveItems(chr);
@@ -554,12 +560,8 @@ public class EventInstanceManager {
                 return props;
         }
         
-        public Integer getIntProperty(String key) {
-                try {
-                        return Integer.parseInt(props.getProperty(key));
-                } catch(Exception e) {
-                        return null;
-                }
+        public int getIntProperty(String key) {
+                return Integer.parseInt(props.getProperty(key));
         }
 	
 	public void leftParty(MapleCharacter chr) {

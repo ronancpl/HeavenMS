@@ -189,6 +189,8 @@ function disbandParty(eim) {
     eim.dispose();
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     player.cancelAllBuffs(); //We don't want people going out with wonky blessing >=(

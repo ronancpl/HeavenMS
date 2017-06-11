@@ -108,6 +108,8 @@ function leftParty(eim,player) { // do nothing in Zakum
 function disbandParty(eim) { // do nothing in Zakum
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim,player) {
     eim.unregisterPlayer(player);
     player.changeMap(exitMap, exitMap.getPortal(0));

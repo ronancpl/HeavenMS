@@ -719,7 +719,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void setLastCombo(long time) {;
+    public void setLastCombo(long time) {
         lastcombo = time;
     }
 
@@ -1128,8 +1128,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, int portal) {
-        eventChangedMap(map);
-        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1141,8 +1139,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, String portal) {
-        eventChangedMap(map);
-        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1154,8 +1150,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map, MaplePortal portal) {
-        eventChangedMap(map);
-        
         MapleMap warpMap;
         if (getEventInstance() != null) {
             warpMap = getEventInstance().getMapInstance(map);
@@ -1171,6 +1165,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(final MapleMap to, final MaplePortal pto) {
+        eventChangedMap(to.getId());
         changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
     }
 

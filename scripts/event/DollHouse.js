@@ -44,6 +44,8 @@ function playerEntry(eim, player) {
     eim.startEventTimer(eventTime * 60000);
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     eim.dispose();

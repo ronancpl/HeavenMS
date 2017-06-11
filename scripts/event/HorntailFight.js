@@ -95,10 +95,11 @@ function monsterValue(eim, mobId) {
     return 1;
 }
 
-function leftParty(eim,player) {
-}
-function disbandParty(eim) {
-}
+function leftParty(eim,player) {}
+
+function disbandParty(eim) {}
+
+function playerUnregistered(eim, player) {}
 
 function playerExit(eim,player) {
     eim.unregisterPlayer(player);

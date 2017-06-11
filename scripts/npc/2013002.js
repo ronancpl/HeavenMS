@@ -20,8 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- *2013002.js - Minevra the Goddess
- *@author Jvlaple
+ *2013002.js - Minerva the Goddess
+ *@author Ronan
  */
 var status = 0;
 

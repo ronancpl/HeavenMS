@@ -127,6 +127,8 @@ function scheduledTimeout(eim) {
         end(eim);
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
         eim.unregisterPlayer(player);
         player.changeMap(exitMap, 0);

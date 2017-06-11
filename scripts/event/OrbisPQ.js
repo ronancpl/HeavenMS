@@ -93,6 +93,7 @@ function setup(level, lobbyid) {
         eim.setProperty("statusStg6", -1);
         eim.setProperty("statusStg7", -1);
         eim.setProperty("statusStg8", -1);
+        eim.setProperty("statusStg2_c", 0);
         eim.setProperty("statusStg7_c", 0);
         eim.setProperty("statusStgBonus", 0);
         
@@ -159,6 +160,13 @@ function scheduledTimeout(eim) {
         else {
                 end(eim);
         }
+}
+
+function playerUnregistered(eim, player) {
+        player.cancelEffect(2022090);
+        player.cancelEffect(2022091);
+        player.cancelEffect(2022092);
+        player.cancelEffect(2022093);
 }
 
 function playerExit(eim, player) {
@@ -245,4 +253,3 @@ function allMonstersDead(eim) {}
 function cancelSchedule() {}
 
 function dispose(eim) {}
-

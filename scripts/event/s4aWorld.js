@@ -68,6 +68,8 @@ function disbandParty(eim) {
     em.setProperty("started", "false");
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     var map = eim.getMapFactory().getMap(105090200);

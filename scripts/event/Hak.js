@@ -39,6 +39,8 @@ function timeOut(eim) {
         end(eim);
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player, success) {
         eim.unregisterPlayer(player);
         player.changeMap(success ? exitMap.getId() : returnMap.getId(), 0);

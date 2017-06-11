@@ -144,6 +144,8 @@ function leftParty(eim, player) { //ignore for GQ
 function disbandParty(eim) { //ignore for GQ
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
     eim.unregisterPlayer(player);
     player.changeMap(exitMap, exitMap.getPortal(0));

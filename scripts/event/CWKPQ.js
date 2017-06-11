@@ -162,6 +162,8 @@ function monsterValue(eim, mobId) {
     return 1;
 }
 
+function playerUnregistered(eim, player) {}
+
 function playerExit(eim, player) {
     eim.broadcastPlayerMsg(5, "[Expedition] " + player.getName() + " has left the map.");
     eim.unregisterPlayer(player);

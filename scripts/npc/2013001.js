@@ -269,7 +269,11 @@ function action(mode, type, selection) {
                 cm.sendNext("Please, find a way to defeat Papa Pixie! Once you've found the Dark Nependeath by placing seeds, you've found Papa Pixie! Defeat it, and get the Root of Life to save Minerva!!!"); 
                 break;
             case 920010900:
-                cm.sendNext("This is the jail of the tower. You may find some goodies here, just be sure to clear the puzzles ahead as fast as possible.");
+                if(eim.getProperty("statusStg8") == "1") {
+                    cm.sendNext("This is the jail of the tower. You may find some goodies here, just be sure to clear the puzzles ahead as fast as possible.");
+                } else {
+                    cm.sendNext("Down there you will not find any statue pieces. Go up the ladder to return to the center tower and search elsewhere. You can come back here to get the goodies that lies down there once you have saved Minerva.");
+                }
                 break;
             case 920011000:
                 if(cm.getMap().countMonsters() > 0) {
