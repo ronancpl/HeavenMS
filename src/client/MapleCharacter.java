@@ -182,7 +182,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int currentPage, currentType = 0, currentTab = 1;
     private int chair;
     private int itemEffect;
-    private int guildid, guildrank, allianceRank;
+    private int guildid, guildRank, allianceRank;
     private int messengerposition = 4;
     private int slots = 0;
     private int energybar;
@@ -1203,11 +1203,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.closePlayerInteractions();
         
         client.announce(warpPacket);
-        map.removePlayer(MapleCharacter.this);
+        map.removePlayer(this);
         if (client.getChannelServer().getPlayerStorage().getCharacterById(getId()) != null) {
             map = to;
             setPosition(pos);
-            map.addPlayer(MapleCharacter.this);
+            map.addPlayer(this);
             if (party != null) {
                 mpc.setMapId(to.getId());
                 silentPartyUpdate();
@@ -1808,7 +1808,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void disbandGuild() {
-        if (guildid < 1 || guildrank != 1) {
+        if (guildid < 1 || guildRank != 1) {
             return;
         }
         try {
@@ -2436,7 +2436,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public int getGuildRank() {
-        return guildrank;
+        return guildRank;
     }
 
     public int getHair() {
@@ -3810,7 +3810,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             int mountlevel = rs.getInt("mountlevel");
             int mounttiredness = rs.getInt("mounttiredness");
             ret.guildid = rs.getInt("guildid");
-            ret.guildrank = rs.getInt("guildrank");
+            ret.guildRank = rs.getInt("guildrank");
             ret.allianceRank = rs.getInt("allianceRank");
             ret.familyId = rs.getInt("familyId");
             ret.bookCover = rs.getInt("monsterbookcover");
@@ -3820,9 +3820,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.dojoPoints = rs.getInt("dojoPoints");
             ret.dojoStage = rs.getInt("lastDojoStage");
             ret.dataString = rs.getString("dataString");
-            if (ret.guildid > 0) {
-                ret.mgc = new MapleGuildCharacter(ret); // oh boy, that's quite funny
-            }
+            if (ret.guildid > 0) ret.mgc = new MapleGuildCharacter(ret);
             int buddyCapacity = rs.getInt("buddyCapacity");
             ret.buddylist = new BuddyList(buddyCapacity);
             ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit(rs.getByte("equipslots"));
@@ -4639,7 +4637,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         try {
             try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET guildid = ?, guildrank = ?, allianceRank = ? WHERE id = ?")) {
                 ps.setInt(1, guildid);
-                ps.setInt(2, guildrank);
+                ps.setInt(2, guildRank);
                 ps.setInt(3, allianceRank);
                 ps.setInt(4, id);
                 ps.executeUpdate();
@@ -5087,10 +5085,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void setAllianceRank(int rank) {
-        allianceRank = rank;
-    }
-
     public void setAllowWarpToId(int id) {
         this.warpToId = id;
     }
@@ -5205,14 +5199,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         } else {
             mgc = null;
+            guildRank = 5;
+            allianceRank = 5;
         }
     }
 
     public void setGuildRank(int _rank) {
-        guildrank = _rank;
-        if (mgc != null) {
-            mgc.setGuildRank(_rank);
-        }
+        guildRank = _rank;
+    }
+    
+    public void setAllianceRank(int _rank) {
+        allianceRank = _rank;
     }
 
     public void setHair(int hair) {

@@ -22,6 +22,7 @@
 package net.server.channel.handlers;
 
 import net.server.guild.MapleGuildResponse;
+import net.server.guild.MapleGuildCharacter;
 import net.server.guild.MapleGuild;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
@@ -30,7 +31,6 @@ import java.util.Iterator;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import net.server.Server;
-import net.server.guild.MapleAlliance;
 
 public final class GuildOperationHandler extends AbstractMaplePacketHandler {
     private boolean isGuildNameAcceptable(String name) {
@@ -123,16 +123,13 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 mc.gainMeso(-MapleGuild.CREATE_GUILD_COST, true, false, true);
-                mc.setGuildId(gid);
-                mc.setGuildRank(1);
-                mc.setAllianceRank(5);
                 
-                MapleGuild guild = Server.getInstance().getGuild(mc.getGuildId(), c.getWorld(), mc);  // initialize guild structure
-                guild.getMGC(guild.getLeaderId()).setCharacter(mc);
+                Server.getInstance().getWorld(mc.getWorld()).setGuildAndRank(mc.getId(), gid, 1);
+                Server.getInstance().setGuildMemberOnline(mc, true, mc.getClient().getChannel());
+                
                 c.announce(MaplePacketCreator.showGuildInfo(mc));
                 
                 c.getPlayer().dropMessage(1, "You have successfully created a Guild.");
-                respawnPlayer(mc);
                 break;
             case 0x05:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {

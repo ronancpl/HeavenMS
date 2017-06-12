@@ -499,11 +499,8 @@ public class Server implements Runnable {
             }
             
             if(mc != null) {
-                MapleGuildCharacter mgc = mc.getMGC();
-                if (mgc != null) {
-                    g.setOnline(mgc.getId(), true, mgc.getChannel());
-                    mc.setMGC(g.getMGC(mc.getId()));                    // i really REALLY must make player MGC the same as the guild MGC
-                }
+                g.addGuildMember(mc.getMGC());                   // i really REALLY must make player MGC the same as the guild MGC
+                g.setOnline(mc.getId(), true, mc.getClient().getChannel());
             }
             
             guilds.put(id, g);

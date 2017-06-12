@@ -3730,8 +3730,6 @@ public class MaplePacketCreator {
                 if (g == null) { //failed to read from DB - don't show a guild
                         mplew.write(0);
                         return mplew.getPacket();
-                } else {
-                        c.setGuildRank(c.getGuildRank());
                 }
                 mplew.write(1); //bInGuild
                 mplew.writeInt(g.getId());

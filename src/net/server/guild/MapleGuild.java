@@ -47,7 +47,7 @@ public class MapleGuild {
     private enum BCOp {
         NONE, DISBAND, EMBLEMCHANGE
     }
-    private List<MapleGuildCharacter> members;
+    private final List<MapleGuildCharacter> members;
     private String rankTitles[] = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
     private String name, notice;
     private int id, gp, logo, logoColor, leader, capacity, logoBG, logoBGColor, signature, allianceId;

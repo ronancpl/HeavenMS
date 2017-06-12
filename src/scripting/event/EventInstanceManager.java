@@ -117,6 +117,18 @@ public class EventInstanceManager {
 		return em;
 	}
         
+        public int getEventPlayersJobs() {
+                //Bits -> 0: BEGINNER 1: WARRIOR 2: MAGICIAN
+                //        3: BOWMAN 4: THIEF 5: PIRATE
+            
+                int mask = 0;
+                for(MapleCharacter chr: getPlayers()) {
+                        mask |= (1 << chr.getJob().getJobNiche());
+                }
+                
+                return mask;
+        }
+        
         public void applyEventPlayersItemBuff(int itemId) {
                 List<MapleCharacter> players = getPlayerList();
                 MapleStatEffect mse = MapleItemInformationProvider.getInstance().getItemEffect(itemId);

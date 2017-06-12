@@ -138,9 +138,18 @@ function setup(level, lobbyid) {
         return eim;
 }
 
+function isTeamAllJobs(eim) {
+        var eventJobs = eim.getEventPlayersJobs();
+        var rangeJobs = parseInt('111110', 2);
+        
+        return ((eventJobs & rangeJobs) == rangeJobs);
+}
+
 function afterSetup(eim) {
-        var rnd = Math.floor(Math.random() * 4);
-        eim.applyEventPlayersItemBuff(2022090 + rnd);
+        if(isTeamAllJobs(eim)) {
+                var rnd = Math.floor(Math.random() * 4);
+                eim.applyEventPlayersItemBuff(2022090 + rnd);
+        }
 }
 
 function respawnStages(eim) {}
