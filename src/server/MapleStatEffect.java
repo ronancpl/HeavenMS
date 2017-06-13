@@ -749,7 +749,7 @@ public class MapleStatEffect {
                     	return false;
                     }
                 }
-                applyto.changeMap(target);
+                applyto.changeMap(target, target.getRandomPlayerSpawnpoint());
             } else {
                 return false;
             }

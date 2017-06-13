@@ -1124,7 +1124,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(int map) {
-        changeMap(map, 0);
+        MapleMap warpMap;
+        if (getEventInstance() != null) {
+            warpMap = getEventInstance().getMapInstance(map);
+        } else {
+            warpMap = client.getChannelServer().getMapFactory().getMap(map);
+        }
+        
+        changeMap(warpMap, warpMap.getRandomPlayerSpawnpoint());
     }
 
     public void changeMap(int map, int portal) {
@@ -3342,6 +3349,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public boolean isPartyLeader() {
         return party.getLeaderId() == getId();
+    }
+    
+    public boolean isGuildLeader() {    // true on guild master or jr. master
+        return guildid > 0 && guildRank < 3;
     }
 
     public void leaveMap() {

@@ -221,7 +221,7 @@ public class WZIMGFile {
                     System.out.println("Unknown UOL marker: " + uolmarker + " " + entry.getName());
             }
         } else {
-            throw new RuntimeException("Unhandeled extended type: " + type);
+            throw new RuntimeException("Unhandled extended type: " + type);
         }
     }
 }

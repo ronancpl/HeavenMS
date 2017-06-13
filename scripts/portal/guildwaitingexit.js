@@ -20,8 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-        if (pi.getPlayer().getEventInstance() != null) {
-                pi.getPlayer().getEventInstance().removePlayer(pi.getPlayer());
-        }
+        pi.warp(101030104);
         return true;
 }

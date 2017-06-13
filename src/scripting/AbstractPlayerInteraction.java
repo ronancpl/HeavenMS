@@ -528,12 +528,20 @@ public class AbstractPlayerInteraction {
 	public MapleParty getParty() {
 		return getPlayer().getParty();
 	}
+        
+        public boolean isGuildLeader() {
+                return getPlayer().isGuildLeader();
+        }
 
 	public boolean isLeader() {
 		if(getParty() == null)
 			return false;
 		
                 return getParty().getLeaderId() == getPlayer().getId();
+	}
+        
+        public boolean isEventLeader() {
+		return getEventInstance() != null && getPlayer().getId() == getEventInstance().getLeaderId();
 	}
 
 	public void givePartyItems(int id, short quantity, List<MapleCharacter> party) {

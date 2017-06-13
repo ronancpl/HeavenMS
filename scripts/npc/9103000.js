@@ -51,7 +51,7 @@ function action(mode, type, selection) {
                         status--;
                 
                 if (status == 0) {
-                        if(cm.isLeader()) {
+                        if(cm.isEventLeader()) {
                                 if(!cm.getEventInstance().isEventTeamTogether()) {
                                         cm.sendOk("One or more event team members is missing, please wait for them to reach here first.");
                                         cm.dispose();

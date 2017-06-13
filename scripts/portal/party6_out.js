@@ -1,6 +1,6 @@
 function enter(pi) {
         if ((pi.getMap().getMonsters().size() == 0 || pi.getMap().getMonsterById(9300183) != null) && (pi.getMap().getReactorByName("") == null || pi.getMap().getReactorByName("").getState() == 1)) {
-                if(pi.isLeader()) {
+                if(pi.isEventLeader()) {
                         pi.getEventInstance().clearPQ();
                         return true;
                 }

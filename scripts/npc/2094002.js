@@ -22,7 +22,7 @@ function action(mode, type, selection) {
         return;
     }
     
-    if (!cm.isLeader()) {
+    if (!cm.isEventLeader()) {
 	cm.sendYesNo("I wish for your leader to talk to me. Alternatively, you may be wanting to quit. Are you going to abandon this campaign?");
     }
     else {

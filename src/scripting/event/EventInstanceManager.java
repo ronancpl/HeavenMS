@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -69,7 +70,8 @@ import tools.MaplePacketCreator;
  * @author Matze, Ronan
  */
 public class EventInstanceManager {
-	private List<MapleCharacter> chars = new ArrayList<>();
+	private Map<Integer, MapleCharacter> chars = new HashMap<>();
+        private int leaderId = -1;
 	private List<MapleMonster> mobs = new LinkedList<>();
 	private Map<MapleCharacter, Integer> killCount = new HashMap<>();
 	private EventManager em;
@@ -103,7 +105,7 @@ public class EventInstanceManager {
         // registers all opened gates on the event. Will help late characters to encounter next stages gates already opened
         private Set<Integer> openedGates = new HashSet<>();
         
-        // forces deletion of items not supposed to be holding out of the event, dealt on a player's leave moment.
+        // forces deletion of items not supposed to be held outside of the event, dealt on a player's leaving moment.
         private Set<Integer> exclusiveItems = new HashSet<>();
         
 	public EventInstanceManager(EventManager em, String name) {
@@ -209,7 +211,7 @@ public class EventInstanceManager {
                 try {
                         wL.lock();
                         try {
-                                chars.add(chr);
+                                chars.put(chr.getId(), chr);
                         }
                         finally {
                                 wL.unlock();
@@ -238,12 +240,15 @@ public class EventInstanceManager {
                 timeStarted = System.currentTimeMillis();
 		eventTime = time;
                 
-                for(MapleCharacter chr: getPlayers()) chr.announce(MaplePacketCreator.getClock((int) (time / 1000)));
+                for(MapleCharacter chr: getPlayers()) {
+                        chr.announce(MaplePacketCreator.getClock((int) (time / 1000)));
+                }
+                
                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
                         public void run() {
                                 try {
-                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
                                         dismissEventTimer();
+                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
                                 } catch (ScriptException | NoSuchMethodException ex) {
                                         Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -260,8 +265,8 @@ public class EventInstanceManager {
                                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
                                         public void run() {
                                                 try {
-                                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
                                                         dismissEventTimer();
+                                                        em.getIv().invokeFunction("scheduledTimeout", EventInstanceManager.this);
                                                 } catch (ScriptException | NoSuchMethodException ex) {
                                                         Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
                                                 }
@@ -274,14 +279,6 @@ public class EventInstanceManager {
                 }
         }
         
-        public void stopEventTimer() {
-                if(event_schedule != null) {
-                        event_schedule.cancel(false);
-                        event_schedule = null;
-                }
-                dismissEventTimer();
-        }
-        
         private void dismissEventTimer() {
                 for(MapleCharacter chr: getPlayers()) {
                         chr.getClient().getSession().write(MaplePacketCreator.removeClock());
@@ -292,6 +289,14 @@ public class EventInstanceManager {
                 timeStarted = 0;
         }
         
+        public void stopEventTimer() {
+                if(event_schedule != null) {
+                        event_schedule.cancel(false);
+                        event_schedule = null;
+                }
+                dismissEventTimer();
+        }
+        
 	public boolean isTimerStarted() {
 		return eventTime > 0 && timeStarted > 0;
 	}
@@ -300,6 +305,12 @@ public class EventInstanceManager {
 		return eventTime - (System.currentTimeMillis() - timeStarted);
 	}
 
+        public void registerParty(MapleCharacter chr) {
+                if(chr.isPartyLeader()) {
+                        registerParty(chr.getParty(), chr.getMap());
+                }
+        }
+        
 	public void registerParty(MapleParty party, MapleMap map) {
 		for (MaplePartyCharacter pc : party.getEligibleMembers()) {
 			MapleCharacter c = map.getCharacterById(pc.getId());
@@ -321,7 +332,7 @@ public class EventInstanceManager {
                                 Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     
-                        chars.remove(chr);
+                        chars.remove(chr.getId());
                         gridRemove(chr);
                         dropExclusiveItems(chr);
                 } finally {
@@ -344,7 +355,7 @@ public class EventInstanceManager {
 	public List<MapleCharacter> getPlayers() {
                 rL.lock();
                 try {
-                        return new ArrayList<>(chars);
+                        return new ArrayList<>(chars.values());
                 }
                 finally {
                         rL.unlock();
@@ -354,7 +365,7 @@ public class EventInstanceManager {
         private List<MapleCharacter> getPlayerList() {
                 rL.lock();
                 try {
-                        return new LinkedList<>(chars);
+                        return new LinkedList<>(chars.values());
                 } finally {
                         rL.unlock();
                 }
@@ -478,7 +489,7 @@ public class EventInstanceManager {
 
                 wL.lock();
                 try {
-                        for(MapleCharacter chr: chars) chr.setEventInstance(null);
+                        for(MapleCharacter chr: chars.values()) chr.setEventInstance(null);
                         chars.clear();
                         
                         mobs.clear();
@@ -610,6 +621,10 @@ public class EventInstanceManager {
 
 	public boolean isLeader(MapleCharacter chr) {
 		return (chr.getParty().getLeaderId() == chr.getId());
+	}
+        
+        public boolean isEventLeader(MapleCharacter chr) {
+		return (chr.getId() == getLeaderId());
 	}
         
         public final MapleMap getInstanceMap(final int mapid) { //gets instance map from the channelserv
@@ -829,10 +844,27 @@ public class EventInstanceManager {
                 return eventCleared;
         }
         
+        private boolean isEventTeamLeaderOn() {
+                for(MapleCharacter chr: getPlayers()) {
+                        if(chr.getId() == getLeaderId()) return true;
+                }
+                
+                return false;
+        }
+        
+        public final boolean checkEventTeamLacking(boolean testLeader, int minPlayers) {
+                if(eventCleared && getPlayerCount() > 1) return false;
+                
+                if(!eventCleared && testLeader && !isEventTeamLeaderOn()) return true;
+                if(getPlayerCount() < minPlayers) return true;
+                
+                return false;
+        }
+        
         public final boolean isEventTeamLackingNow(boolean testLeader, int minPlayers, MapleCharacter quitter) {
                 if(eventCleared && getPlayerCount() > 1) return false;
                 
-                if(!eventCleared && testLeader && getLeader().getId() == quitter.getId()) return true;
+                if(!eventCleared && testLeader && getLeaderId() == quitter.getId()) return true;
                 if(getPlayerCount() <= minPlayers) return true;
                 
                 return false;
@@ -842,12 +874,16 @@ public class EventInstanceManager {
                 rL.lock();
                 try {
                         if(chars.size() <= 1) return true;
-
-                        int mapId = chars.get(0).getMapId();
-                        for(int i = 1; i < chars.size(); i++) {
-                                if(chars.get(i).getMapId() != mapId) return false;
+                        
+                        Iterator<MapleCharacter> iterator = chars.values().iterator();
+                        MapleCharacter mc = iterator.next();
+                        int mapId = mc.getMapId();
+                        
+                        for (; iterator.hasNext();) {
+                                mc = iterator.next();
+                                if(mc.getMapId() != mapId) return false;
                         }
-
+                        
                         return true;
                 } finally {
                         rL.unlock();
@@ -888,16 +924,30 @@ public class EventInstanceManager {
                 }
         }
         
-        public final MapleCharacter getLeader() {
+        public final int getLeaderId() {
                 rL.lock();
                 try {
-                        for (MapleCharacter chr : chars) {
-                                if(chr.isPartyLeader()) return chr;
-                        }
-                        
-                        return null;
+                        return leaderId;
                 } finally {
                         rL.unlock();
+                }
+        }
+        
+        public MapleCharacter getLeader() {
+                rL.lock();
+                try {
+                        return chars.get(leaderId);
+                } finally {
+                        rL.unlock();
+                }
+        }
+        
+        public final void setLeader(MapleCharacter chr) {
+                wL.lock();
+                try {
+                        leaderId = chr.getId();
+                } finally {
+                        wL.unlock();
                 }
         }
         

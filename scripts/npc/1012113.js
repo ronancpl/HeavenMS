@@ -38,7 +38,7 @@ function action(mode, type, selection) {
                         if (status == 0) {
                                 cm.sendNext("Hello, there! I'm Tommy. There's a Pig Town nearby where we're standing. The pigs there are rowdy and uncontrollable to the point where they have stolen numerous weapons from travelers. They were kicked out from their towns, and are currently hiding out at the Pig Town.");
                         } else if (status == 1) {
-                                if(cm.isLeader()) {
+                                if(cm.isEventLeader()) {
                                         cm.sendYesNo("What do you think about making your way there with your party members and teach those rowdy pigs a lesson?");
                                 }
                                 else {

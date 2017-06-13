@@ -136,7 +136,7 @@ function action(mode, type, selection) {
                                 }
                         }
                         else if(curMap == 103000800) {   // stage 1
-                                if(cm.isLeader()) {
+                                if(cm.isEventLeader()) {
                                         var numpasses = eim.getPlayerCount() - 1;     // minus leader
 
                                         if(cm.hasItem(4001008, numpasses)) {
@@ -184,7 +184,7 @@ function action(mode, type, selection) {
                                 var nthtext = "2nd", nthobj = "ropes", nthverb = "hang", nthpos = "hang on the ropes too low";
                                 var nextStgId = 103000802;
 
-                                if(!eim.isLeader(cm.getPlayer())) {
+                                if(!eim.isEventLeader(cm.getPlayer())) {
                                         cm.sendOk("Follow the instructions given by your party leader to proceed through this stage.");
                                 }
                                 else if(eim.getProperty(stgProperty) == null) {
@@ -214,7 +214,7 @@ function action(mode, type, selection) {
                                 var nthtext = "3rd", nthobj = "platforms", nthverb = "stand", nthpos = "stand too close to the edges";
                                 var nextStgId = 103000803;
 
-                                if(!eim.isLeader(cm.getPlayer())) {
+                                if(!eim.isEventLeader(cm.getPlayer())) {
                                         cm.sendOk("Follow the instructions given by your party leader to proceed through this stage.");
                                 }
                                 else if(eim.getProperty(stgProperty) == null) {
@@ -244,7 +244,7 @@ function action(mode, type, selection) {
                                 var nthtext = "4th", nthobj = "barrels", nthverb = "stand", nthpos = "stand too close to the edges";
                                 var nextStgId = 103000804;
 
-                                if(!eim.isLeader(cm.getPlayer())) {
+                                if(!eim.isEventLeader(cm.getPlayer())) {
                                         cm.sendOk("Follow the instructions given by your party leader to proceed through this stage.");
                                 }
                                 else if(eim.getProperty(stgProperty) == null) {
@@ -267,7 +267,7 @@ function action(mode, type, selection) {
 
                                 cm.dispose();
                         } else if(curMap == 103000804) {
-                                if (eim.isLeader(cm.getPlayer())) {
+                                if (eim.isEventLeader(cm.getPlayer())) {
                                         if (cm.haveItem(4001008, 10)) {
                                                 cm.sendNext("Here's the portal that leads you to the last, bonus stage. It's a stage that allows you to defeat regular monsters a little easier. You'll be given a set amount of time to hunt as much as possible, but you can always leave the stage in the middle of it through the NPC. Again, congratulations on clearing all the stages. Let your party talk to me to receive their prizes as they are allowed to pass to the bonus stage. Take care...");
                                                 cm.gainItem(4001008, -10);

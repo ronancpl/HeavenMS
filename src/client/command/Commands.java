@@ -684,7 +684,7 @@ public class Commands {
                 case "debugnearestportal":
                         if(ServerConstants.USE_DEBUG) {
                             MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
-                            if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
+                            if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
                             else player.dropMessage(6, "There is no portal on this map.");
                         }
                         break;
@@ -692,7 +692,7 @@ public class Commands {
                 case "debugnearestspawnpoint":
                         if(ServerConstants.USE_DEBUG) {
                             SpawnPoint sp = player.getMap().findClosestSpawnpoint(player.getPosition());
-                            if(sp != null) player.dropMessage(6, "Closest spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + ((sp.getMonster() != null) ? sp.getMonster().getId() : "null") + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
+                            if(sp != null) player.dropMessage(6, "Closest mob spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + ((sp.getMonster() != null) ? sp.getMonster().getId() : "null") + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
                             else player.dropMessage(6, "There is no mob spawn point on this map.");
                         }
                         break;

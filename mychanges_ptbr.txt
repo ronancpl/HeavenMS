@@ -310,3 +310,7 @@ Incrementada a documentação referente aos métodos usados nos scripts de eventos.
 
 12 Junho 2016,
 Correção de falha em criação de guilds, não atribuindo corretamente o título de mestre da guild ao criador.
+
+13 Junho 2016,
+Mudança nas mecânicas de busca por portais ao transportar cada jogador: quando não for definido, escolhe-se um spawn point aleatoriamente.
+Implementação de fila de espera para Guilds na GPQ (funciona em harmonia com o sistema de lobbys).

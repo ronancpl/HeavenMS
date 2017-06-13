@@ -1640,7 +1640,7 @@ public class MapleMap {
     public MaplePortal getRandomPlayerSpawnpoint() {
         List<MaplePortal> spawnPoints = new ArrayList<>();
         for (MaplePortal portal : portals.values()) {
-            if (portal.getType() >= 0 && portal.getType() <= 2) {
+            if (portal.getType() >= 0 && portal.getType() <= 1) {
                 spawnPoints.add(portal);
             }
         }
@@ -1653,7 +1653,7 @@ public class MapleMap {
         double shortestDistance = Double.POSITIVE_INFINITY;
         for (MaplePortal portal : portals.values()) {
             double distance = portal.getPosition().distanceSq(from);
-            if (portal.getType() >= 0 && portal.getType() <= 2 && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
+            if (portal.getType() >= 0 && portal.getType() <= 1 && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
                 closest = portal;
                 shortestDistance = distance;
             }

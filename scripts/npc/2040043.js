@@ -89,7 +89,7 @@ function action(mode, type, selection) {
                         cm.sendNext("Hurry, goto the next stage, the portal is open!");
                 }
                 else {
-                        if (eim.isLeader(cm.getPlayer())) {
+                        if (eim.isEventLeader(cm.getPlayer())) {
                                 var state = eim.getIntProperty("statusStg" + stage);
 
                                 if(state == -1) {           // preamble

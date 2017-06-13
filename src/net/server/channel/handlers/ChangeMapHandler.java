@@ -88,7 +88,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 							chr.setStance(0);
 						}
 						chr.setHp(50);
-						chr.changeMap(to, to.getPortal(0));
+						chr.changeMap(to, to.getRandomPlayerSpawnpoint());
 					}
 				} else if (targetid != -1 && chr.isGM()) {
 					MapleMap to = c.getChannelServer().getMapFactory().getMap(targetid);

@@ -57,7 +57,7 @@ public class PlayerStorage {
     public MapleCharacter getCharacterByName(String name) {
         rlock.lock();    
         try {
-            for (MapleCharacter chr : storage.values()) {            
+            for (MapleCharacter chr : storage.values()) {
                 if (chr.getName().toLowerCase().equals(name.toLowerCase()))
                     return chr;
             }

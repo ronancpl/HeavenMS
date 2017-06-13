@@ -19,197 +19,266 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * @Author Lerk
- * 
- * Guild Quest 
- */
+/**
+ * @author: Ronan
+ * @event: Sharenian Guild PQ
+*/
 
-var exitMap;
-var waitingListCurrent = 0;
- 
-importPackage(Packages.world);
-importPackage(Packages.client);
-importPackage(Packages.server.maps);
-importPackage(java.lang);
+var isPq = true;
+var minPlayers = 1, maxPlayers = 30;
+var minLevel = 1, maxLevel = 200;
+var entryMap = 990000000;
+var exitMap = 990001100;
+var recruitMap = 101030104;
+var clearMap = 990001101;
+
+var minMapId = 990000000;
+var maxMapId = 990001101;
+
+var waitTime = 3;
+var eventTime = 90;     // 90 minutes
+
+var lobbyRange = [0, 0];
 
 function init() {
-    em.setProperty("shuffleReactors","false");
-	em.setProperty("canEnter", "true");
-	em.setProperty("gpqOpen", "true");
+        setEventRequirements();
 }
 
-function monsterValue(eim, mobId) { //should only trigger on ergoth
-    if (mobId == 9300028) { //but, just to be safe...
-        var rubian = new Packages.client.inventory.Item(4001024, 0, 1);
-        var map = eim.getMapInstance(990000900);
-        var reactor = map.getReactorByName("boss");
-        map.spawnItemDrop(reactor, eim.getPlayers().get(0), rubian, reactor.getPosition(), true, false);
-    }
-    return -1;
+function setLobbyRange() {
+        return lobbyRange;
 }
 
-
-
-function setup(eim) {
-    exitMap = em.getChannelServer().getMapFactory().getMap(990001100); //returning path
+function setEventRequirements() {
+        var reqStr = "";
         
-    //shuffle reactors in two maps for stage 3
-    eim.getMapInstance(990000501).shuffleReactors();
-    eim.getMapInstance(990000502).shuffleReactors();
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
         
-    //force no-respawn on certain map reactors
-    eim.getMapInstance(990000611).getReactorByName("").setDelay(-1);
-    eim.getMapInstance(990000620).getReactorByName("").setDelay(-1);
-    eim.getMapInstance(990000631).getReactorByName("").setDelay(-1);
-    eim.getMapInstance(990000641).getReactorByName("").setDelay(-1);
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
         
-    //activate three minutes after start
-	eim.setProperty("entryTimestamp", Packages.java.lang.System.currentTimeMillis());
-    eim.setProperty("canEnter","true");
-    eim.schedule("begin", 60000);
-	eim.startEventTimer(60000);
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
 }
 
-function begin(eim) {
-    eim.setProperty("canEnter","false");
-    var party = eim.getPlayers();
-    //if (party.size() < 6) { //not enough to start
-    //        end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
-    //} else {
-    var iter = party.iterator();
-    while (iter.hasNext()) {
-        iter.next().dropMessage(6,"The quest has begun.");
-    }
-	
-	eim.startEventTimer(1000 * 60 * 90);
-	eim.schedule("timeOut", 1000 * 60 * 90);
-//}
+function setEventExclusives(eim) {
+        var itemSet = [1032033, 4001024, 4001025, 4001026, 4001027, 4001028, 4001029, 4001030, 4001031, 4001032, 4001033, 4001034, 4001035, 4001037];
+        eim.setExclusiveItems(itemSet);
 }
 
-function afterSetup(eim) {}
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages;
 
-function timeOut(eim) {
-	end(eim, "Your allotted time to finish the quest has passed.");
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [];
+        itemQty = [];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
 }
+
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        var guildId = 0;
+        
+        if(party.size() > 0) {
+                var partyList = party.toArray();
+                
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+                        if(ch.isLeader()) {
+                                guildId = ch.getGuildId();
+                                break;
+                        }
+                }
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel && ch.getGuildId() == guildId) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
+                }
+        }
+        
+        if(!(hasLeader)) eligible = [];
+        return eligible;
+}
+
+function setup(level, lobbyid) {
+        var eim = em.newInstance("Guild" + lobbyid);
+        eim.setProperty("level", level);
+        
+        eim.setProperty("guild", 0);
+        eim.setProperty("canJoin", 1);
+        eim.setProperty("statusStg1", -1);
+        
+        eim.getInstanceMap(990000000).resetPQ(level);
+        eim.getInstanceMap(990000100).resetPQ(level);
+        eim.getInstanceMap(990000200).resetPQ(level);
+        eim.getInstanceMap(990000300).resetPQ(level);
+        eim.getInstanceMap(990000301).resetPQ(level);
+        eim.getInstanceMap(990000400).resetPQ(level);
+        eim.getInstanceMap(990000401).resetPQ(level);
+        eim.getInstanceMap(990000410).resetPQ(level);
+        eim.getInstanceMap(990000420).resetPQ(level);
+        eim.getInstanceMap(990000430).resetPQ(level);
+        eim.getInstanceMap(990000431).resetPQ(level);
+        eim.getInstanceMap(990000440).resetPQ(level);
+        eim.getInstanceMap(990000500).resetPQ(level);
+        eim.getInstanceMap(990000501).resetPQ(level);
+        eim.getInstanceMap(990000502).resetPQ(level);
+        eim.getInstanceMap(990000600).resetPQ(level);
+        eim.getInstanceMap(990000610).resetPQ(level);
+        eim.getInstanceMap(990000611).resetPQ(level);
+        eim.getInstanceMap(990000620).resetPQ(level);
+        eim.getInstanceMap(990000630).resetPQ(level);
+        eim.getInstanceMap(990000631).resetPQ(level);
+        eim.getInstanceMap(990000640).resetPQ(level);
+        eim.getInstanceMap(990000641).resetPQ(level);
+        eim.getInstanceMap(990000700).resetPQ(level);
+        eim.getInstanceMap(990000800).resetPQ(level);
+        eim.getInstanceMap(990000900).resetPQ(level);
+        eim.getInstanceMap(990001000).resetPQ(level);
+        eim.getInstanceMap(990001100).resetPQ(level);
+        eim.getInstanceMap(990001101).resetPQ(level);
+        
+        respawnStages(eim);
+        
+        var ts = Date.now();
+        ts += (60000 * waitTime);
+        eim.setProperty("entryTimestamp", "" + ts);
+        
+        eim.startEventTimer(waitTime * 60000);    
+        
+        setEventRewards(eim);
+        setEventExclusives(eim);
+        
+        return eim;
+}
+
+/*
+function isTeamAllJobs(eim) {
+        var eventJobs = eim.getEventPlayersJobs();
+        var rangeJobs = parseInt('111110', 2);
+        
+        return ((eventJobs & rangeJobs) == rangeJobs);
+}
+*/
+
+function afterSetup(eim) {
+        eim.setProperty("guild", "" + eim.getLeader().getGuildId());
+}
+
+function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(990000000);
-    player.changeMap(map, map.getPortal(0));
+        var map = eim.getMapInstance(entryMap);
+        player.changeMap(map, map.getPortal(0));
+        
+        var texttt = "So, here is the brief. You guys should be warned that, once out on the fortress outskirts, anyone that would not be equipping the #b#t1032033##k will die instantly due to the deteriorated state of the air around there. That being said, once your team move out to the next stage, make sure to #bhit the glowing rocks#k in that region and #bequip the dropped item#k before advancing stages. That will protect you thoroughly from the air sickness. Good luck!";
+        player.getClient().getSession().write(Packages.tools.MaplePacketCreator.getNPCTalk(9040000, /*(byte)*/ 0, texttt, "00 00", /*(byte)*/ 0));
 }
 
-function playerRevive(eim, player) {
-    var returnMap = 990000200;
-    if (eim.getProperty("canEnter").equals("true")) {
-        returnMap = 990000000;
-    }
-    player.setHp(50);
-    player.setStance(0);
-    player.changeMap(eim.getMapInstance(returnMap), eim.getMapInstance(returnMap).getPortal(0));
-    return false;
-}
-
-function playerDead(eim, player) {
-}
-
-function playerDisconnected(eim, player) {
-    var party = eim.getPlayers();
-    if (player.getName().equals(eim.getProperty("leader"))) { //check for party leader
-        //boot all players and end
-        var iter = party.iterator();
-        while (iter.hasNext()) {
-            var pl = iter.next();
-            pl.dropMessage(6,"The leader of the instance has disconnected, and the remaining players shall be warped out.");
-            if (pl.equals(player)) {
-                removePlayer(eim, pl);
-            }
-            else {
-                eim.unregisterPlayer(pl);
-                pl.changeMap(exitMap, exitMap.getPortal(0));
-            }
+function scheduledTimeout(eim) {
+        if(eim.getIntProperty("canJoin") == 1) {
+                eim.setProperty("canJoin", 0);
+    
+                if(eim.checkEventTeamLacking(true, minPlayers)) {
+                        end(eim);
+                } else {
+                        eim.startEventTimer(eventTime * 60000);
+                }
+        } else {
+                end(eim);
         }
-        eim.dispose();
-    }
-    else { //boot d/ced player and check if enough players left
-        removePlayer(eim, player);
-        if (party.size() < 6) { //five after player booted
-            end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
-        }
-    }
-}
-
-function leftParty(eim, player) { //ignore for GQ
-}
-
-function disbandParty(eim) { //ignore for GQ
 }
 
 function playerUnregistered(eim, player) {}
 
 function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    var party = eim.getPlayers();
-    if (party.size() < 6) { //five after player booted
-        end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
-    }
-}
-
-function end(eim, msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.dropMessage(6,msg);
         eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
-    }
-    eim.dispose();
+        player.changeMap(exitMap, 0);
 }
 
-//for offline players
-function removePlayer(eim, player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+function changedMap(eim, player, mapid) {
+        if (mapid < minMapId || mapid > maxMapId) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
+                        eim.unregisterPlayer(player);
+                        end(eim);
+                }
+                else
+                        eim.unregisterPlayer(player);
+        }
+}
+
+function changedLeader(eim, leader) {}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) { // player presses ok on the death pop up.
+        if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function playerDisconnected(eim, player) {
+        if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
+}
+
+function leftParty(eim, player) {}
+
+function disbandParty(eim) {
+        end(eim);
+}
+
+function monsterValue(eim, mobId) {
+        return 1;
+}
+
+function end(eim) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
+}
+
+function giveRandomEventReward(eim, player) {
+        eim.giveEventReward(player);
 }
 
 function clearPQ(eim) {
-    var iter = eim.getPlayers().iterator();
-    var bonusMap = eim.getMapInstance(990001000);
-	eim.startEventTimer(40000);
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.changeMap(bonusMap, bonusMap.getPortal(0));
-    }
-    eim.schedule("finish", 40000)
-}
-
-function finish(eim) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
-    }
-    eim.dispose();
+        eim.stopEventTimer();
+        eim.setEventCleared();
 }
 
 function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}
 
 function dispose(eim) {
-	em.schedule("openGPQ", 5000);
+        em.schedule("reopenGuildQuest", em.getLobbyDelay() * 1.5 * 1000);
 }
 
-function openGPQ() {
-	em.setProperty("gpqOpen", "true");
-}
-
-
-function timeOut() {
-	
+function reopenGuildQuest() {
+        em.attemptStartGuildInstance();
 }

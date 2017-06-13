@@ -35,7 +35,7 @@ function action(mode, type, selection) {
                         status++;
                     
                 if (status == 0) {
-                        if (cm.isLeader()) {
+                        if (cm.isEventLeader()) {
                                 cm.sendSimple("Growl! I am Growlie, always ready to protect this place. What brought you here?\r\n#b#L0# Please tell me what this place is all about.#l\r\n#L1# I have brought #t4001101#.#l\r\n#L2# I would like to leave this place.#l");
                         } else {
                                 cm.sendSimple("Growl! I am Growlie, always ready to protect this place. What brought you here?\r\n#b#L0# Please tell me what this place is all about.#l\r\n#L2# I would like to leave this place.#l");

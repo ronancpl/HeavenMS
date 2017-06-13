@@ -27,7 +27,7 @@ BossRushPQ - Rest Spot portal
 function enter(pi) {
         var evLevel = ((pi.getMapId() - 1) % 5) + 1;
         
-        if(pi.getPlayer().getEventInstance().isLeader(pi.getPlayer()) && pi.getPlayer().getEventInstance().getPlayerCount() > 1) {
+        if(pi.getPlayer().getEventInstance().isEventLeader(pi.getPlayer()) && pi.getPlayer().getEventInstance().getPlayerCount() > 1) {
                 pi.message("Being the party leader, you cannot leave before your teammates leave first or you pass leadership.");
                 return false;
         }

@@ -65,7 +65,7 @@ function action(mode, type, selection) {
                                         cm.getEventInstance().setProperty("clear", "true");
                                 }
                             
-                                if(cm.isLeader()) {
+                                if(cm.isEventLeader()) {
                                         cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now I will be handing your reward as you are being transported out...");
                                 }
                                 else {
@@ -73,7 +73,7 @@ function action(mode, type, selection) {
                                 }
                         }
                         else if(state == 2) {
-                                if(cm.isLeader()) {
+                                if(cm.isEventLeader()) {
                                         if(cm.getPlayer().getEventInstance().isEventTeamTogether()) {
                                                 cm.sendYesNo("Is your party ready to proceed to the next stages? Walk through the portal if you think you're done, the time is now.. Now, do you guys REALLY want to proceed?");
                                         }
@@ -126,7 +126,7 @@ function action(mode, type, selection) {
                                         if (cm.getParty() == null) {
                                                 cm.sendOk("You can participate in the party quest only if you are in a party.");
                                                 cm.dispose();
-                                        } else if(!cm.isLeader()) {
+                                        } else if(!cm.isEventLeader()) {
                                                 cm.sendOk("Your party leader must talk to me to start this party quest.");
                                                 cm.dispose();
                                         } else {

@@ -46,6 +46,6 @@ function playerDisconnected(eim, player) {
 
 function cancelSchedule() {}
 
-function dispose() {
-    em.cancelSchedule();
+function dispose(eim) {
+    eim.cancelSchedule();
 }

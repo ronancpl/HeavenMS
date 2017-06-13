@@ -43,7 +43,7 @@ function action(mode, type, selection) {
                     
                 if(cm.getMapId() == 925100500) {
                         if (status == 0) {
-                                if(cm.isLeader()) {
+                                if(cm.isEventLeader()) {
                                         cm.sendOk("I have been saved thanks to your efforts! Thank you, guys!");
                                 }
                                 else {

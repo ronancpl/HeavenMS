@@ -37,6 +37,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Set;
+import java.util.HashSet;
 
 import net.server.PlayerStorage;
 import net.server.Server;
@@ -65,6 +67,7 @@ public class World {
     private Map<Integer, MapleFamily> families = new LinkedHashMap<>();
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
+    private Set<Integer> queuedGuilds = new HashSet<>();
 
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int bossdroprate) {
         this.id = world;
@@ -300,6 +303,18 @@ public class World {
         }
     }
 
+    public boolean isGuildQueued(int guildId) {
+        return queuedGuilds.contains(guildId);
+    }
+    
+    public void putGuildQueued(int guildId) {
+        queuedGuilds.add(guildId);
+    }
+    
+    public void removeGuildQueued(int guildId) {
+        queuedGuilds.remove(guildId);
+    }
+    
     public MapleParty createParty(MaplePartyCharacter chrfor) {
         int partyid = runningPartyId.getAndIncrement();
         MapleParty party = new MapleParty(partyid, chrfor);
@@ -364,13 +379,14 @@ public class World {
                 party.updateMember(target);
                 break;
             case CHANGE_LEADER:
-                if(party.getLeader().getPlayer().getEventInstance() != null) {
-                    party.getLeader().getPlayer().getEventInstance().changedLeader(target.getPlayer());
+                MapleCharacter mc = party.getLeader().getPlayer();
+                if(mc.getEventInstance() != null && mc.getEventInstance().isEventLeader(mc)) {
+                    mc.getEventInstance().changedLeader(target.getPlayer());
                 }
                 party.setLeader(target);
                 break;
             default:
-                System.out.println("Unhandeled updateParty operation " + operation.name());
+                System.out.println("Unhandled updateParty operation " + operation.name());
         }
         updateParty(party, operation, target);
     }

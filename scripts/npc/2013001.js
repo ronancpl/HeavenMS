@@ -44,7 +44,7 @@ function action(mode, type, selection) {
             cm.dispose();
             return;
         }
-        if (!cm.isLeader()) {
+        if (!cm.isEventLeader()) {
             if(cm.getPlayer().getMapId() == 920010000) {
                 cm.warp(920010000, 2);
                 cm.dispose();
