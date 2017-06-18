@@ -19,24 +19,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
-Stage 2: Spear destinations - Guild Quest
-
-@Author Lerk, Ronan
-*/
+// Opened GPQ boss room, players may now revive and stay on the GPQ
 
 function act() {
-        var react = rm.getPlayer().getEventInstance().getMapInstance(990000400).getReactorByName("speargate");
-        react.forceHitReactor(react.getState() + 1);
-        
-        if(react.getState() == 4) {
-                var eim = rm.getPlayer().getEventInstance();
-
-                var maps = [990000400, 990000410, 990000420, 990000430, 990000431, 990000440];
-                for(var i = 0; i < maps.length; i++) {
-                        eim.showClearEffect(false, maps[i]);
-                }
-                
-                rm.getGuild().gainGP(20);
+        if(rm.getEventInstance() != null) {
+                rm.getEventInstance().setProperty("canRevive", "1");
         }
 }

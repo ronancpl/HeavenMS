@@ -49,6 +49,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private String name;
     private boolean alive;
     private boolean shouldCollect;
+    private boolean attackHit;
     private Lock reactorLock = new ReentrantLock(true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
@@ -114,6 +115,10 @@ public class MapleReactor extends AbstractMapleMapObject {
     public int getReactorType() {
         return stats.getType(state);
     }
+    
+    public boolean isRecentHitFromAttack() {
+        return attackHit;
+    }
 
     public void setMap(MapleMap map) {
         this.map = map;
@@ -175,14 +180,17 @@ public class MapleReactor extends AbstractMapleMapObject {
     }
 
     public void hitReactor(MapleClient c) {
-        hitReactor(0, (short) 0, 0, c);
+        hitReactor(false, 0, (short) 0, 0, c);
     }
     
-    public synchronized void hitReactor(int charPos, short stance, int skillid, MapleClient c) {
+    public synchronized void hitReactor(boolean wHit, int charPos, short stance, int skillid, MapleClient c) {
         try {
             if(!this.isAlive()) {
                 return;
             }
+            
+            attackHit = wHit;
+            
             if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid + " , STATE " + stats.getType(state) + " STATESIZE " + stats.getStateSize(state));
             ReactorScriptManager.getInstance().onHit(c, this);
             

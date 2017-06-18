@@ -42,7 +42,7 @@ function start() {
             break;
         }
     if (hasRing)
-        cm.sendNext("You've reached the end of the wedding. You will recieve an Onyx Chest for Bride and Groom and an Onyx Chest. Exchange them at Pila, she is at the top of Amoria.");
+        cm.sendNext("You've reached the end of the wedding. You will receive an Onyx Chest for Bride and Groom and an Onyx Chest. Exchange them at Pila, she is at the top of Amoria.");
     else if (cm.haveItem(4000313)) {
         cm.sendNext("Wow the end of the wedding already ? Good bye then.!");
         status = 20;

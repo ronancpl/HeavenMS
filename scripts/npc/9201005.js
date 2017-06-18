@@ -70,7 +70,7 @@ function action(mode, type, selection) {
 					cm.sendOk("You already have a Gold Maple Leaf. Go give them to your guests before you go into the wedding.");
 					cm.dispose();
                 } else if (hasEngageRing) {
-					cm.sendOk("You have recieved 15 Gold Maple Leaves.");
+					cm.sendOk("You have received 15 Gold Maple Leaves.");
 					cm.gainItem(4000313,15);
 					cm.dispose();
 				} else {

@@ -59,7 +59,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
         TOCLIENT_SAMEACC_ERROR(0x0D),
         TOCLIENT_SUCCESSFULLY_SENT(0x12),
         TOCLIENT_SUCCESSFUL_MSG(0x17),
-        TOCLIENT_PACKAGE_MSG(0x1B); // Ending byte; 4 if recieved. 3 if delete.
+        TOCLIENT_PACKAGE_MSG(0x1B); // Ending byte; 4 if received. 3 if delete.
         final byte code;
 
         private Actions(int code) {

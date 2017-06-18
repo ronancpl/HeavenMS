@@ -131,13 +131,7 @@ public class AbstractPlayerInteraction {
 	}
 
 	public MapleMap getWarpMap(int map) {
-		MapleMap target;
-		if (getPlayer().getEventInstance() == null) {
-			target = c.getChannelServer().getMapFactory().getMap(map);
-		} else {
-			target = getPlayer().getEventInstance().getMapInstance(map);
-		}
-		return target;
+		return getPlayer().getWarpMap(map);
 	}
 
 	public MapleMap getMap(int map) {
@@ -529,11 +523,15 @@ public class AbstractPlayerInteraction {
 		return getPlayer().getParty();
 	}
         
+        public boolean isLeader() {
+                return isPartyLeader();
+        }
+        
         public boolean isGuildLeader() {
                 return getPlayer().isGuildLeader();
         }
 
-	public boolean isLeader() {
+        public boolean isPartyLeader() {
 		if(getParty() == null)
 			return false;
 		

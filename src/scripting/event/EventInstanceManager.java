@@ -952,7 +952,11 @@ public class EventInstanceManager {
         }
         
         public final void showWrongEffect() {
-                MapleMap map = getMapInstance(getLeader().getMapId());
+                showWrongEffect(getLeader().getMapId());
+        }
+        
+        public final void showWrongEffect(int mapId) {
+                MapleMap map = getMapInstance(mapId);
                 map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/wrong_kor"));
                 map.broadcastMessage(MaplePacketCreator.playSound("Party1/Failed"));
         }
@@ -962,7 +966,11 @@ public class EventInstanceManager {
         }
         
         public final void showClearEffect(boolean hasGate) {
-                MapleMap map = getMapInstance(getLeader().getMapId());
+                showClearEffect(hasGate, getLeader().getMapId());
+        }
+        
+        public final void showClearEffect(boolean hasGate, int mapId) {
+                MapleMap map = getMapInstance(mapId);
                 map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
                 map.broadcastMessage(MaplePacketCreator.playSound("Party1/Clear"));
                 if(hasGate) {

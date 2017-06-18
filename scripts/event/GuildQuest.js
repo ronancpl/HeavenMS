@@ -30,13 +30,14 @@ var minLevel = 1, maxLevel = 200;
 var entryMap = 990000000;
 var exitMap = 990001100;
 var recruitMap = 101030104;
-var clearMap = 990001101;
+var clearMap = 990001000;
 
 var minMapId = 990000000;
 var maxMapId = 990001101;
 
-var waitTime = 3;
+var waitTime = 3;       //  3 minutes
 var eventTime = 90;     // 90 minutes
+var bonusTime = 0.5;    // 30 seconds
 
 var lobbyRange = [0, 0];
 
@@ -119,7 +120,7 @@ function setup(level, lobbyid) {
         
         eim.setProperty("guild", 0);
         eim.setProperty("canJoin", 1);
-        eim.setProperty("statusStg1", -1);
+        eim.setProperty("canRevive", 0);
         
         eim.getInstanceMap(990000000).resetPQ(level);
         eim.getInstanceMap(990000100).resetPQ(level);
@@ -175,7 +176,9 @@ function isTeamAllJobs(eim) {
 */
 
 function afterSetup(eim) {
-        eim.setProperty("guild", "" + eim.getLeader().getGuildId());
+        var leader = em.getChannelServer().getPlayerStorage().getCharacterById(eim.getLeaderId());
+        if(leader != null)
+                eim.setProperty("guild", "" + leader.getGuildId());
 }
 
 function respawnStages(eim) {}
@@ -189,16 +192,20 @@ function playerEntry(eim, player) {
 }
 
 function scheduledTimeout(eim) {
-        if(eim.getIntProperty("canJoin") == 1) {
-                eim.setProperty("canJoin", 0);
-    
-                if(eim.checkEventTeamLacking(true, minPlayers)) {
-                        end(eim);
-                } else {
-                        eim.startEventTimer(eventTime * 60000);
-                }
+        if(eim.isEventCleared()) {
+                eim.warpEventTeam(990001100);
         } else {
-                end(eim);
+                if(eim.getIntProperty("canJoin") == 1) {
+                        eim.setProperty("canJoin", 0);
+
+                        if(eim.checkEventTeamLacking(true, minPlayers)) {
+                                end(eim);
+                        } else {
+                                eim.startEventTimer(eventTime * 60000);
+                        }
+                } else {
+                        end(eim);
+                }
         }
 }
 
@@ -222,15 +229,33 @@ function changedMap(eim, player, mapid) {
 
 function changedLeader(eim, leader) {}
 
-function playerDead(eim, player) {}
+function playerDead(eim, player) {
+        if(player.getMapId() == 990000900) {
+                if(player.getMap().countAlivePlayers() == 0 && player.getMap().countMonsters() > 0) {
+                        end(eim);
+                }
+        }
+}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
-        if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
-                eim.unregisterPlayer(player);
-                end(eim);
+        if(eim.getIntProperty("canRevive") == 0) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
+                        eim.unregisterPlayer(player);
+                        player.setHp(50);
+                        player.changeMap(exitMap);
+                        
+                        end(eim);
+                }
+                else {
+                        eim.unregisterPlayer(player);
+                        player.setHp(50);
+                        player.changeMap(exitMap);
+                }
+                
+                return false;
         }
-        else
-                eim.unregisterPlayer(player);
+        
+        return true;
 }
 
 function playerDisconnected(eim, player) {
@@ -267,6 +292,9 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
+        
+        eim.warpEventTeam(clearMap);
+        eim.startEventTimer(bonusTime * 60000);
 }
 
 function monsterKilled(mob, eim) {}

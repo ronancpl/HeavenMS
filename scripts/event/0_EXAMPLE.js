@@ -10,7 +10,7 @@ var clearMap;                   // Upon event clearing, players may be moved to 
 var minMapId;                   // Event takes place inside these map id interval. Players found out is instantly dropped from the event.
 var maxMapId;
 
-var eventTime;                  // Max time alloted for the event, in minutes.
+var eventTime;                  // Max time allotted for the event, in minutes.
 
 var lobbyRange = [0, 0];        // Range of concurrent lobbies (min range is 0, max range is 7).
 

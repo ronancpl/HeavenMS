@@ -281,8 +281,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private boolean loggedIn = false;
     private MapleDragon dragon = null;
     private boolean useCS;  //chaos scroll upon crafting item.
-    private long useDuey;
+    private long npcCd;
     private long petLootCd;
+    private long lastHpDec = 0;
     private int newWarpMap = -1;
 
     private MapleCharacter() {
@@ -308,10 +309,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         setPosition(new Point(0, 0));
         
         petLootCd = System.currentTimeMillis();
-    }
-    
-    public void setHpDecreaseTask(ScheduledFuture<?> mapDotTask) {
-        hpDecreaseTask = mapDotTask;
     }
     
     public MapleJob getJobStyle() {
@@ -413,12 +410,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         useCS = cs;
     }
     
-    public long getDuey() {
-        return useDuey;
+    public long getNpcCooldown() {
+        return npcCd;
     }
     
-    public void setDuey(long d) {
-        useDuey = d;
+    public void setNpcCooldown(long d) {
+        npcCd = d;
     }
 
     public void addCooldown(int skillId, long startTime, long length, ScheduledFuture<?> timer) {
@@ -1104,7 +1101,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    protected MapleMap getWarpMap(int map) {
+    public MapleMap getWarpMap(int map) {
 	MapleMap target;
 	if (getEventInstance() == null) {
             target = client.getChannelServer().getMapFactory().getMap(map);
@@ -1221,14 +1218,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 client.announce(MaplePacketCreator.updateParty(client.getChannel(), party, PartyOperation.SILENT_UPDATE, null));
                 updatePartyMemberHP();
             }
-            if (getMap().getHPDec() > 0) {
-                hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        doHurtHp();
-                    }
-                }, 10000);
-            }
+            
+            if (getMap().getHPDec() > 0) resetHpDecreaseTask();
         }
         else {
             FilePrinter.printError(FilePrinter.MAPLE_MAP, "Character " + this.getName() + " got stuck when moving to map " + map.getId() + ".");
@@ -1381,7 +1372,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
                             this.getMap().removeMapObject(ob);
                             mapitem.setPickedUp(true);
-                        } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), false)) {
+                        } else if(mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866) {
+                            // Add NX to account, show effect and make item disappear
+                            this.getCashShop().gainCash(1, mapitem.getItemId() == 4031865 ? 100 : 250);
+                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
+                            this.getMap().removeMapObject(ob);
+                            mapitem.setPickedUp(true);
+                        } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
                             this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
                             this.getMap().removeMapObject(ob);
                             mapitem.setPickedUp(true);
@@ -1928,9 +1925,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void doHurtHp() {
+    private void doHurtHp() {
         if (!(this.getInventory(MapleInventoryType.EQUIPPED).findById(getMap().getHPDecProtect()) != null || buffMapProtection())) {
             addHP(-getMap().getHPDec());
+            lastHpDec = System.currentTimeMillis();
         }
         
         hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
@@ -1940,7 +1938,25 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         }, 10000);
     }
-
+    
+    public void resetHpDecreaseTask() {
+        if (hpDecreaseTask != null) {
+            hpDecreaseTask.cancel(false);
+        }
+        
+        long lastHpTask = System.currentTimeMillis() - lastHpDec;
+        if(lastHpTask >= 10000) {
+            doHurtHp();
+        } else {
+            hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    doHurtHp();
+                }
+            }, lastHpTask);
+        }
+    }
+    
     public void dropMessage(String message) {
         dropMessage(0, message);
     }
@@ -2086,14 +2102,24 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
 	
         if(gain < 0) gain = Integer.MAX_VALUE;   // integer overflow, heh.
+        if(party < 0) party = Integer.MAX_VALUE;   // integer overflow, heh.
         int equip = (int)Math.min((long)((gain / 10) * pendantExp), Integer.MAX_VALUE);
         
         long total = gain + equip + party;
         gainExpInternal(total, equip, party, show, inChat, white);
     }
     
+    public void loseExp(int loss, boolean show, boolean inChat) {
+        loseExp(loss, show, inChat, true);
+    }
+    
+    public void loseExp(int loss, boolean show, boolean inChat, boolean white) {
+        gainExpInternal(-loss, 0, 0, show, inChat, white);
+    }
+    
     private void gainExpInternal(long gain, int equip, int party, boolean show, boolean inChat, boolean white) {
-        long total = gain;
+        long total = Math.max(gain, -exp.get());
+        
         if (level < getMaxLevel()) {
             long leftover = 0;
             long nextExp = exp.get() + total;
@@ -4265,9 +4291,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
             if (getExp() > XPdummy) {
-                gainExp(-XPdummy, false, false);
+                loseExp(XPdummy, false, false);
             } else {
-                gainExp(-getExp(), false, false);
+                loseExp(getExp(), false, false);
             }
         }
         if (getBuffedValue(MapleBuffStat.MORPH) != null) {

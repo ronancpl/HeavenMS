@@ -38,6 +38,9 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             return;
         }
         
+        if(System.currentTimeMillis() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT)
+            return;
+        
         int oid = slea.readInt();
         MapleMapObject obj = c.getPlayer().getMap().getMapObject(oid);
         if (obj instanceof MapleNPC) {
@@ -45,10 +48,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Talking to NPC " + npc.getId());
             
             if (npc.getId() == 9010009) {   //is duey
-                if(System.currentTimeMillis() - c.getPlayer().getDuey() < ServerConstants.BLOCK_DUEY_RACE_COND)
-                    return;
-                    
-                c.getPlayer().setDuey(System.currentTimeMillis());
+                c.getPlayer().setNpcCooldown(System.currentTimeMillis());
                 c.announce(MaplePacketCreator.sendDuey((byte) 8, DueyHandler.loadItems(c.getPlayer())));
             } else if (npc.hasShop()) {
                 if (c.getPlayer().getShop() != null) {

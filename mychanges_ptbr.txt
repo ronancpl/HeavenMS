@@ -292,25 +292,32 @@ Diversos ajustes finos nos comandos existentes.
 Adicionados novos comandos: proitem, seteqstats, buffme, buffmap.
 Vários ajustes finos em alguns comandos.
 
-05 Junho 2016,
+05 Junho 2017,
 Novo NPC Skillbook announcer: Abdula.
 Consertada a função que retorna se uma skill pertence ou não à árvore de habilidades do jogador.
 
-06 Junho 2016,
+06 Junho 2017,
 Corrigido command empowerme.
 Corrigidos exploits relacionados a algumas das skills do empowerme.
 Corrigido possivel loop infinito no sistema de EXP.
 
-07 - 10 Junho 2016,
+07 - 10 Junho 2017,
 Implementação da OPQ.
 
-11 Junho 2016,
+11 Junho 2017,
 Correção de alguns bugs vindos com o commit da OPQ.
 Incrementada a documentação referente aos métodos usados nos scripts de eventos.
 
-12 Junho 2016,
+12 Junho 2017,
 Correção de falha em criação de guilds, não atribuindo corretamente o título de mestre da guild ao criador.
 
-13 Junho 2016,
+13 Junho 2017,
 Mudança nas mecânicas de busca por portais ao transportar cada jogador: quando não for definido, escolhe-se um spawn point aleatoriamente.
 Implementação de fila de espera para Guilds na GPQ (funciona em harmonia com o sistema de lobbys).
+
+14 Junho 2017,
+Correção de bug envolvendo abuso de conversa com NPC logo após o sinal de dispose, ocasionando frequentemente crashes no cliente.
+
+15 - 17 Junho 2017,
+Correção de bug na função de atribuição de EXP, que não permitia receber valores negativos de EXP.
+Implementação da GPQ.

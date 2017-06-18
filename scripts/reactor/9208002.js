@@ -21,9 +21,14 @@
 
 /* @Author Lerk
  * 
- * 9208000.js: Guild Quest - Gatekeeper Puzzle Reactor
+ * 9208002.js: Guild Quest - Gatekeeper Puzzle Reactor
  * 
 */
+
+function padWithZeroes(n, width) {
+    while(n.length < width) n = '0' + n;
+    return n;
+}
 
 function act() {
     var eim = rm.getPlayer().getEventInstance();
@@ -32,18 +37,24 @@ function act() {
         if (status != null && !status.equals("waiting")) {
             var stage = parseInt(eim.getProperty("stage1phase"));
             if (status.equals("display")) {
-                var prevCombo = eim.getProperty("stage1combo");
-                prevCombo += rm.getReactor().getObjectId();
-                eim.setProperty("stage1combo",prevCombo);
-                if (prevCombo.length == (3 * (stage + 3))) { //end of displaying
-                    eim.setProperty("stage1status","active");
-                    rm.mapMessage(5, "The combo has been displayed; Proceed with caution.");
-                    eim.setProperty("stage1guess","");
+                if(!rm.getReactor().isRecentHitFromAttack()) {
+                    var prevCombo = eim.getProperty("stage1combo");
+                    var n = "" + rm.getReactor().getObjectId();
+                    prevCombo += padWithZeroes(n, 3);
+
+                    eim.setProperty("stage1combo",prevCombo);
+                    if (prevCombo.length == (3 * (stage + 3))) { //end of displaying
+                        eim.setProperty("stage1status","active");
+                        rm.mapMessage(5, "The combo has been displayed; Proceed with caution.");
+                        eim.setProperty("stage1guess","");
+                    }
                 }
             } else { //active
-                var prevGuess = eim.getProperty("stage1guess");
-                if (prevGuess.length != (3 * stage + 9)) {
-                    prevGuess += rm.getReactor().getObjectId();
+                var prevGuess = "" + eim.getProperty("stage1guess");
+                if (prevGuess.length != (3 * (stage + 3))) {
+                    var n = "" + rm.getReactor().getObjectId();
+                    prevGuess += padWithZeroes(n, 3);
+                
                     eim.setProperty("stage1guess",prevGuess);
                 }
             }

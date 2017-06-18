@@ -28,6 +28,7 @@ Save location to return.
 */
 
 function enter(pi) {
+        pi.getEventInstance().gridInsert(pi.getPlayer(), 3);
 	pi.warp(990000700, "st00");
 	return true;
 }

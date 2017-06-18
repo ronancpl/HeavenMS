@@ -145,8 +145,16 @@ public class EventManager {
         }, timestamp);
     }
 
+    public World getWorldServer() {
+        return wserv;
+    }
+    
     public Channel getChannelServer() {
         return cserv;
+    }
+    
+    public Invocable getIv() {
+        return iv;
     }
 
     public EventInstanceManager getInstance(String name) {
@@ -171,10 +179,6 @@ public class EventManager {
                 instances.remove(name);
             }
         }, lobbyDelay * 1000);
-    }
-
-    public Invocable getIv() {
-        return iv;
     }
 
     public void setProperty(String key, String value) {
@@ -298,8 +302,8 @@ public class EventManager {
         return startInstance(-1, chr);
     }
     
-    public boolean startInstance(int lobbyId, MapleCharacter chr) {
-        return startInstance(lobbyId, chr, chr, 1);
+    public boolean startInstance(int lobbyId, MapleCharacter leader) {
+        return startInstance(lobbyId, null, leader, 1);
     }
     
     public boolean startInstance(int lobbyId, MapleCharacter chr, MapleCharacter leader, int difficulty) {
@@ -321,7 +325,7 @@ public class EventManager {
             instanceLocks.put(eim.getName(), lobbyId);
             eim.setLeader(leader);
             
-            eim.registerPlayer(chr);
+            if(chr != null) eim.registerPlayer(chr);
             iv.invokeFunction("afterSetup", eim);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -502,7 +506,8 @@ public class EventManager {
     private void exportReadyGuild(Integer guildId) {
         MapleGuild mg = server.getGuild(guildId);
         String callout = "Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
-                       + " and    JUST STARTED THE STRATEGY PHASE. After 3 minutes, no more guild members will be allowed to join the effort.";
+                       + " and    HAS JUST STARTED THE STRATEGY PHASE. After 3 minutes, no more guild members will be allowed to join the effort."
+                       + " Check out Shuang at the excavation site in Perion for more info.";
         
         mg.dropMessage(0, callout);
     }

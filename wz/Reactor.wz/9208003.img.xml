@@ -49,6 +49,12 @@
         <int name="delay" value="100"/>
       </canvas>
     </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="0"/>
+      </imgdir>
+    </imgdir>
   </imgdir>
   <imgdir name="1">
     <canvas name="0" width="135" height="214">

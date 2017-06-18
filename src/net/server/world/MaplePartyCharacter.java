@@ -111,6 +111,10 @@ public class MaplePartyCharacter {
     public int getJobId() {
         return jobid;
     }
+    
+    public int getGuildId() {
+        return character.getGuildId();
+    }
 
     public void updateDoor(MapleDoor door) {
     	this.door.add(door);

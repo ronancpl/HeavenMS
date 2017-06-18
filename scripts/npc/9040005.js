@@ -25,10 +25,7 @@ function start() {
 
 function action(mode, type, selection) {
 	if(mode == 1) {
-		var eim = cm.getPlayer().getEventInstance();
-		if(eim != null) {
-			eim.removePlayer(cm.getPlayer());
-		}
+		cm.warp(990001100);
 	}
 	cm.dispose();
 }

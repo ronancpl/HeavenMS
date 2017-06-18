@@ -147,12 +147,12 @@ function action(mode, type, selection) {
                     var players = Array();
                     var total = 0;
                     for (var i = 0; i < 3; i++) {
-                        var z = cm.getMap().getNumPlayersItemsInArea(i);
+                        var z = cm.getMap().getNumPlayersInArea(i);
                         players.push(z);
                         total += z;
                     }
                     if (total != 3) {
-                        cm.sendOk("There needs to be 3 players OR items on the platforms.");
+                        cm.sendOk("There needs to be exactly 3 players on these platforms.");
                     } else {
                         var num_correct = 0;
                         for (var i = 0; i < 3; i++) {

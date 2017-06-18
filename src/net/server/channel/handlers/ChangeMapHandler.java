@@ -49,7 +49,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 		}
 		if (slea.available() == 0) { //Cash Shop :)
 			if(!chr.getCashShop().isOpened()) {                 
-                            c.disconnect(false, false);               
+                                c.disconnect(false, false);
 				return;           
 			}
 			String[] socket = c.getChannelServer().getIP().split(":");
@@ -84,14 +84,14 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 							chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));
 						} else {
 							chr.cancelAllBuffs(false);
-							to = chr.getMap().getReturnMap();
+							to = chr.getWarpMap(chr.getMap().getReturnMapId());
 							chr.setStance(0);
 						}
 						chr.setHp(50);
 						chr.changeMap(to, to.getRandomPlayerSpawnpoint());
 					}
 				} else if (targetid != -1 && chr.isGM()) {
-					MapleMap to = c.getChannelServer().getMapFactory().getMap(targetid);
+					MapleMap to = chr.getWarpMap(targetid);
 					chr.changeMap(to, to.getPortal(0));
 				} else if (targetid != -1 && !chr.isGM()) {//Thanks celino for saving me some time (:
 					final int divi = chr.getMapId() / 100;
@@ -124,7 +124,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 						}
 					}
 					if (warp) {
-						final MapleMap to = c.getChannelServer().getMapFactory().getMap(targetid);
+						final MapleMap to = chr.getWarpMap(targetid);
 						chr.changeMap(to, to.getPortal(0));
 					}
 				}

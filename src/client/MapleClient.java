@@ -972,7 +972,7 @@ public class MapleClient {
 	}
 
 	public void setScriptEngine(String name, ScriptEngine e) {
-		engines.put(name, e);
+                engines.put(name, e);
 	}
 
 	public ScriptEngine getScriptEngine(String name) {
@@ -980,7 +980,7 @@ public class MapleClient {
 	}
 
 	public void removeScriptEngine(String name) {
-		engines.remove(name);
+                engines.remove(name);
 	}
 
 	public ScheduledFuture<?> getIdleTask() {

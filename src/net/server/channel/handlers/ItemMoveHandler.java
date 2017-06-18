@@ -54,6 +54,8 @@ public final class ItemMoveHandler extends AbstractMaplePacketHandler {
         } else {
             MapleInventoryManipulator.move(c, type, src, action);
         }
+        
+        if (c.getPlayer().getMap().getHPDec() > 0) c.getPlayer().resetHpDecreaseTask();
         c.getPlayer().getAutobanManager().spam(6);
     }
 }

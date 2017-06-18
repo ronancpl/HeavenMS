@@ -37,9 +37,9 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String s = slea.readMapleAsciiString();
         MapleCharacter chr = c.getPlayer();
-		if(chr.getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
-			return;
-		}
+        if(chr.getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
+                return;
+        }
         if (s.length() > Byte.MAX_VALUE && !chr.isGM()) {
         	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit in General Chat.");
         	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + s.length() + "\r\n");
@@ -70,13 +70,13 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
 				chr.dropMessage(5, "The map you are in is currently muted. Please try again later.");
 				return;
 			}
-            if (!chr.isHidden()){
+            if (!chr.isHidden()) {
             	chr.getMap().broadcastMessage(MaplePacketCreator.getChatText(chr.getId(), s, chr.getWhiteChat(), show));	
             } else {
                 chr.getMap().broadcastGMMessage(MaplePacketCreator.getChatText(chr.getId(), s, chr.getWhiteChat(), show));
             }
         }
-		chr.getAutobanManager().spam(7);
+        chr.getAutobanManager().spam(7);
     }
 }
 

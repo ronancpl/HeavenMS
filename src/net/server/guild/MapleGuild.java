@@ -540,7 +540,7 @@ public class MapleGuild {
         this.gp += amount;
         this.writeToDB(false);
         this.guildMessage(MaplePacketCreator.updateGP(this.id, this.gp));
-		this.guildMessage(MaplePacketCreator.getGPMessage(amount));
+        this.guildMessage(MaplePacketCreator.getGPMessage(amount));
     }
     
     public void removeGP(int amount){

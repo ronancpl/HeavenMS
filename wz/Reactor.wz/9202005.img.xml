@@ -102,6 +102,14 @@
     <canvas name="0" width="1" height="1">
       <vector name="origin" x="0" y="0"/>
     </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="5"/>
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+    </imgdir>
   </imgdir>
   <string name="action" value="syarenItem5"/>
 </imgdir>

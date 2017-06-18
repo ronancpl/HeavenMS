@@ -97,8 +97,8 @@ public class AutobanManager {
      * 3: ItemIdSort<br>
      * 4: SpecialMove<br>
      * 5: UseCatchItem<br>
-	 * 6: Item Drop<br>
-	 * 7: Chat<br>
+     * 6: Item Drop<br>
+     * 7: Chat<br>
      *
      * @param type type
      * @return Timestamp checker

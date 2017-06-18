@@ -68,7 +68,7 @@ function action(mode, type, selection) {
             cm.sendNext("A stimulator is a special potion that I can add into the process of creating certain items. It gives it stats as though it had dropped from a monster. However, it is possible to have no change, and it is also possible for the item to be below average. There's also a 10% chance of not getting any item when using a stimulator, so please choose wisely.")
             cm.dispose();
         } else if (selectedType == 1){ //warrior weapon
-            var selStr = "Very well, then which Warrior weapon shall recieve a dragon's power?#b";
+            var selStr = "Very well, then which Warrior weapon shall receive a dragon's power?#b";
             var weapon = new Array ("Dragon Carbella#k - Lv. 110 One-Handed Sword#b","Dragon Axe#k - Lv. 110 One-Handed Axe#b","Dragon Mace#k - Lv. 110 One-Handed BW#b","Dragon Claymore#k - Lv. 110 Two-Handed Sword#b","Dragon Battle Axe#k - Lv. 110 Two-Handed Axe#b","Dragon Flame#k - Lv. 110 Two-Handed BW#b",
                 "Dragon Faltizan#k - Lv. 110 Spear#b","Dragon Chelbird#k - Lv. 110 Polearm#b");
             for (var i = 0; i < weapon.length; i++){
@@ -76,28 +76,28 @@ function action(mode, type, selection) {
             }
             cm.sendSimple(selStr);
         } else if (selectedType == 2){ //bowman weapon
-            var selStr = "Very well, then which Bowman weapon shall recieve a dragon's power?#b";
+            var selStr = "Very well, then which Bowman weapon shall receive a dragon's power?#b";
             var weapon = new Array ("Dragon Shiner Bow#k - Lv. 110 Bow#b","Dragon Shiner Cross#k - Lv. 110 Crossbow#b");
             for (var i = 0; i < weapon.length; i++){
                 selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";
             }
             cm.sendSimple(selStr);
         } else if (selectedType == 3){ //magician weapon
-            var selStr = "Very well, then which Magician weapon shall recieve a dragon's power?#b";
+            var selStr = "Very well, then which Magician weapon shall receive a dragon's power?#b";
             var weapon = new Array ("Dragon Wand#k - Lv. 108 Wand#b","Dragon Staff#k - Lv. 110 Staff#b");
             for (var i = 0; i < weapon.length; i++){
                 selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";
             }
             cm.sendSimple(selStr);
         } else if (selectedType == 4){ //thief weapon
-            var selStr = "Very well, then which Thief weapon shall recieve a dragon's power?#b";
+            var selStr = "Very well, then which Thief weapon shall receive a dragon's power?#b";
             var weapon = new Array ("Dragon Kanzir#k - Lv. 110 STR Dagger#b","Dragon Kreda#k - Lv. 110 LUK Dagger#b","Dragon Green Sleve#k - Lv. 110 Claw#b");
             for (var i = 0; i < weapon.length; i++){
                 selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";
             }
             cm.sendSimple(selStr);
         } else if (selectedType == 5){ //pirate weapon
-            var selStr = "Very well, then which Pirate weapon shall recieve a dragon's power?#b";
+            var selStr = "Very well, then which Pirate weapon shall receive a dragon's power?#b";
             var weapon = new Array ("Dragon Slash Claw#k - Lv. 110 Knuckle#b","Dragonfire Revolver#k - Lv. 110 Gun#b");
             for (var i = 0; i < weapon.length; i++){
                     selStr += "\r\n#L" + i + "# " + weapon[i] + "#l";

@@ -65,6 +65,14 @@
       <int name="delay" value="150"/>
     </canvas>
     <int name="repeat" value="1"/>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="1"/>
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+    </imgdir>
   </imgdir>
   <imgdir name="1">
     <canvas name="0" width="231" height="231">
@@ -128,6 +136,14 @@
       <int name="delay" value="150"/>
     </canvas>
     <int name="repeat" value="1"/>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="2"/>
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+    </imgdir>
   </imgdir>
   <imgdir name="2">
     <canvas name="0" width="231" height="231">
@@ -191,6 +207,14 @@
       <int name="delay" value="150"/>
     </canvas>
     <int name="repeat" value="1"/>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="3"/>
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+    </imgdir>
   </imgdir>
   <imgdir name="3">
     <canvas name="0" width="231" height="231">
@@ -315,10 +339,16 @@
         <int name="delay" value="120"/>
       </canvas>
     </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="0"/>
+        <int name="state" value="4"/>
+      </imgdir>
+    </imgdir>
   </imgdir>
   <imgdir name="4">
     <canvas name="0" width="1" height="1">
-      <vector name="origin" x="0" y="0"/>
+      <vector name="origin" x="115" y="222"/>
     </canvas>
   </imgdir>
 </imgdir>

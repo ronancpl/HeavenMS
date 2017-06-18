@@ -47,11 +47,15 @@ public class ServerConstants {
     public static final boolean USE_AUTOBAN = false;            //Commands the server to detect infractors automatically.
     public static final boolean USE_ANOTHER_AUTOASSIGN = true;  //Based on distributing AP accordingly with higher secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final int MAX_AP = 20000;                     //Max AP alloted on the auto-assigner.
-    public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
-    public static final long BLOCK_DUEY_RACE_COND = (long)(0.5 * 1000);
-    public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
     public static final boolean USE_PERFECT_PITCH = true;	        //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    
+    
+    public static final int MAX_AP = 20000;                     //Max AP allotted on the auto-assigner.
+    public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
+    public static final long BLOCK_NPC_RACE_CONDT = (long)(0.5 * 1000); //Time the player client must wait before reopening a conversation with an NPC.
+    public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
+    
+    public static final int ITEM_EXPIRE_TIME = 3 * 60 * 1000;   //Time before items start disappearing. Recommended to be set up to 3 minutes.
     
     //Some Gameplay Enhancing Configuration
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.

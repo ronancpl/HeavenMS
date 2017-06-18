@@ -22,6 +22,7 @@
 package client.command;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -708,11 +709,23 @@ public class Commands {
                             player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ".");
                         }
                         break;
-                
+                    
                 case "debugevent":
                         if(ServerConstants.USE_DEBUG) {
                             if(player.getEventInstance() == null) player.dropMessage(6, "Player currently not in an event.");
                             else player.dropMessage(6, "Current event name: " + player.getEventInstance().getName() + ".");
+                        }
+                        break;
+                    
+                case "debugareas":
+                        if(ServerConstants.USE_DEBUG) {
+                            player.dropMessage(6, "Configured areas on map " + player.getMapId() + ":");
+                            
+                            byte index = 0;
+                            for(Rectangle rect: player.getMap().getAreas()) {
+                                player.dropMessage(6, "Id: " + index + " -> posX: " + rect.getX() + " posY: '" + rect.getY() + "' dX: " + rect.getWidth() + " dY: " + rect.getHeight() + ".");
+                                index++;
+                            }
                         }
                         break;
                 
@@ -722,7 +735,7 @@ public class Commands {
                             
                             for(MapleMapObject mmo: player.getMap().getReactors()) {
                                 MapleReactor mr = (MapleReactor) mmo;
-                                player.dropMessage(6, "Reactor id: " + mr.getId() + " name: '" + mr.getName() + "' -> Type: " + mr.getReactorType() + " State: " + mr.getState() + " Event State: " + mr.getEventState() + " Position: x " + mr.getPosition().getX() + " y " + mr.getPosition().getY() + ".");
+                                player.dropMessage(6, "Id: " + mr.getId() + " Oid: " + mr.getObjectId() + " name: '" + mr.getName() + "' -> Type: " + mr.getReactorType() + " State: " + mr.getState() + " Event State: " + mr.getEventState() + " Position: x " + mr.getPosition().getX() + " y " + mr.getPosition().getY() + ".");
                             }
                         }
                         break;
@@ -986,7 +999,7 @@ public class Commands {
 		} else if (sub[0].equals("whereami")) { //This is so not going to work on the first commit
 			player.yellowMessage("Map ID: " + player.getMap().getId());
 			player.yellowMessage("Players on this map:");
-			for (MapleMapObject mmo : player.getMap().getAllPlayer()) {
+			for (MapleMapObject mmo : player.getMap().getPlayers()) {
 				MapleCharacter chr = (MapleCharacter) mmo;
 				player.dropMessage(5, ">> " + chr.getName());
 			}
@@ -1203,18 +1216,25 @@ public class Commands {
 				}
 			}
 			if (victim != null) {
+                                boolean changingEvent = true;
+                            
 				if (victim.getEventInstance() != null) {
-					victim.getEventInstance().unregisterPlayer(victim);
+                                        if(player.getEventInstance() != null && victim.getEventInstance().getLeaderId() == player.getEventInstance().getLeaderId()) {
+                                                changingEvent = false;
+                                        }
+                                        else {
+                                                victim.getEventInstance().unregisterPlayer(victim);
+                                        }
 				}
 				//Attempt to join the warpers instance.
-				if (player.getEventInstance() != null) {
+				if (player.getEventInstance() != null && changingEvent) {
 					if (player.getClient().getChannel() == victim.getClient().getChannel()) {//just in case.. you never know...
 						player.getEventInstance().registerPlayer(victim);
 						victim.changeMap(player.getEventInstance().getMapInstance(player.getMapId()), player.getMap().findClosestPortal(player.getPosition()));
 					} else {
 						player.dropMessage("Target isn't on your channel, not able to warp into event instance.");
 					}
-				} else {//If victim isn't in an event instance, just warp them.
+				} else {//If victim isn't in an event instance or is in the same event instance as the one the caller is, just warp them.
 					victim.changeMap(player.getMapId(), player.getMap().findClosestPortal(player.getPosition()));
 				}
 				if (player.getClient().getChannel() != victim.getClient().getChannel()) {//And then change channel if needed.
@@ -1348,7 +1368,7 @@ public class Commands {
 				MapleMonster monster = (MapleMonster) monstermo;
 				if (!monster.getStats().isFriendly()) {
 					map.killMonster(monster, player, true);
-					monster.giveExpToCharacter(player, monster.getExp() * c.getPlayer().getExpRate(), true, 1);
+					//monster.giveExpToCharacter(player, monster.getExp() * c.getPlayer().getExpRate(), true, 1);
 				}
 			}
 			player.dropMessage("Killed " + monsters.size() + " monsters.");
@@ -1367,7 +1387,7 @@ public class Commands {
 			}
                     
 			player.setLevel(Integer.parseInt(sub[1]) - 1);
-			player.gainExp(-player.getExp(), false, false);
+			player.loseExp(player.getExp(), false, false);
 			player.levelUp(false);
 		} else if (sub[0].equals("levelpro")) {
                         if (sub.length < 2){
@@ -1381,7 +1401,7 @@ public class Commands {
 		} else if (sub[0].equals("maxstat")) {
 			final String[] s = {"setall", String.valueOf(Short.MAX_VALUE)};
 			executeGMCommand(c, s, heading);
-                        player.gainExp(-player.getExp(), false, false);
+                        player.loseExp(player.getExp(), false, false);
 			player.setLevel(255);
 			player.setFame(13337);
 			player.setMaxHp(30000);

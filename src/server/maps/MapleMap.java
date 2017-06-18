@@ -479,7 +479,7 @@ public class MapleMap {
             }
         }, null);
 
-        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), 180000);
+        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
         activateItemReactors(mdrop, chr.getClient());
     }
 
@@ -495,7 +495,7 @@ public class MapleMap {
             }
         }, null);
 
-        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), 180000);
+        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
     }
 
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
@@ -551,6 +551,56 @@ public class MapleMap {
         return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
     }
 
+    public int countPlayers() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER)).size();
+    }
+    
+    public List<MapleMapObject> getPlayers() {
+        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER));
+    }
+    
+    public List<MapleCharacter> getAllPlayers() {
+        List<MapleCharacter> character = new LinkedList<>();
+        chrRLock.lock();
+        try {
+            for (MapleCharacter a : characters) {
+                character.add(a);
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        return character;
+    }
+    
+    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chr) {
+        List<MapleCharacter> character = new LinkedList<>();
+        chrRLock.lock();
+        try {
+            for (MapleCharacter a : characters) {
+                if (chr.contains(a.getClient().getPlayer())) {
+                    if (box.contains(a.getPosition())) {
+                        character.add(a);
+                    }
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        return character;
+    }
+    
+    public int countAlivePlayers() {
+        int count = 0;
+        
+        for(MapleCharacter mc: getAllPlayers()) {
+            if(mc.isAlive()) count++;
+        }
+        
+        return count;
+    }
+    
     public boolean damageMonster(final MapleCharacter chr, final MapleMonster monster, final int damage) {
         if (monster.getId() == 8800000) {
             for (MapleMapObject object : chr.getMap().getMapObjects()) {
@@ -658,7 +708,7 @@ public class MapleMap {
         int buff = monster.getBuffToGive();
         if (buff > -1) {
             MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
-            for (MapleMapObject mmo : this.getAllPlayer()) {
+            for (MapleMapObject mmo : this.getPlayers()) {
                 MapleCharacter character = (MapleCharacter) mmo;
                 if (character.isAlive()) {
                     MapleStatEffect statEffect = mii.getItemEffect(buff);
@@ -725,14 +775,14 @@ public class MapleMap {
     }
 
     public void killFriendlies(MapleMonster mob) {
-        this.killMonster(mob, (MapleCharacter) getAllPlayer().get(0), false);
+        this.killMonster(mob, (MapleCharacter) getPlayers().get(0), false);
     }
 
     public void killMonster(int monsId) {
         for (MapleMapObject mmo : getMapObjects()) {
             if (mmo instanceof MapleMonster) {
                 if (((MapleMonster) mmo).getId() == monsId) {
-                    this.killMonster((MapleMonster) mmo, (MapleCharacter) getAllPlayer().get(0), false);
+                    this.killMonster((MapleMonster) mmo, (MapleCharacter) getPlayers().get(0), false);
                 }
             }
         }
@@ -786,43 +836,6 @@ public class MapleMap {
             
             killMonster(monster, null, false, 1);
         }
-    }
-
-    public List<MapleMapObject> getAllPlayer() {
-        return getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER));
-    }
-    
-    
-    public List<MapleCharacter> getAllPlayers() {
-        List<MapleCharacter> character = new LinkedList<>();
-        chrRLock.lock();
-        try {
-            for (MapleCharacter a : characters) {
-                character.add(a);
-            }
-        } finally {
-            chrRLock.unlock();
-        }
-        
-        return character;
-    }
-    
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chr) {
-        List<MapleCharacter> character = new LinkedList<>();
-        chrRLock.lock();
-        try {
-            for (MapleCharacter a : characters) {
-                if (chr.contains(a.getClient().getPlayer())) {
-                    if (box.contains(a.getPosition())) {
-                        character.add(a);
-                    }
-                }
-            }
-        } finally {
-            chrRLock.unlock();
-        }
-        
-        return character;
     }
 
     public void destroyReactor(int oid) {
@@ -1052,12 +1065,12 @@ public class MapleMap {
         final ScheduledFuture<?> monsterItemDrop = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (MapleMap.this.getMonsterById(m.getId()) != null && !MapleMap.this.getAllPlayer().isEmpty()) {
+                if (MapleMap.this.getMonsterById(m.getId()) != null && !MapleMap.this.getPlayers().isEmpty()) {
                     if (item.getItemId() == 4001101) {
                         MapleMap.this.riceCakes++;
                         MapleMap.this.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny made rice cake number " + (MapleMap.this.riceCakes)));
                     }
-                    spawnItemDrop(m, (MapleCharacter) getAllPlayer().get(0), item, m.getPosition(), false, false);
+                    spawnItemDrop(m, (MapleCharacter) getPlayers().get(0), item, m.getPosition(), false, false);
                 }
             }
         }, delay, delay);
@@ -1345,7 +1358,7 @@ public class MapleMap {
         broadcastMessage(MaplePacketCreator.dropItemFromMapObject(drop, dropper.getPosition(), droppos, (byte) 0));
 
         if (!everlast) {
-            TimerManager.getInstance().schedule(new ExpireMapItemJob(drop), 180000);
+            TimerManager.getInstance().schedule(new ExpireMapItemJob(drop), ServerConstants.ITEM_EXPIRE_TIME);
             activateItemReactors(drop, owner.getClient());
         }
     }
@@ -1438,7 +1451,7 @@ public class MapleMap {
         }
         chr.setMapId(mapid);
         if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
-            if (getAllPlayer().size() <= 1) {
+            if (countPlayers() <= 1) {
                 chr.enteredScript(onFirstUserEnter, mapid);
                 MapScriptManager.getInstance().getMapScript(chr.getClient(), onFirstUserEnter, true);
             }
@@ -2116,6 +2129,28 @@ public class MapleMap {
         }
         return null;
     }
+    
+    public void makeDisappearItemFromMap(MapleMapObject mapobj) {
+        if(mapobj instanceof MapleMapItem) {
+            makeDisappearItemFromMap((MapleMapItem) mapobj);
+        }
+    }
+    
+    public void makeDisappearItemFromMap(MapleMapItem mapitem) {
+        if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
+            mapitem.itemLock.lock();
+            try {
+                if (mapitem.isPickedUp()) {
+                    return;
+                }
+                MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
+                mapitem.setPickedUp(true);
+            } finally {
+                mapitem.itemLock.unlock();
+                MapleMap.this.removeMapObject(mapitem);
+            }
+        }
+    }
 
     private class ExpireMapItemJob implements Runnable {
 
@@ -2127,19 +2162,7 @@ public class MapleMap {
 
         @Override
         public void run() {
-            if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
-                mapitem.itemLock.lock();
-                try {
-                    if (mapitem.isPickedUp()) {
-                        return;
-                    }
-                    MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
-                    mapitem.setPickedUp(true);
-                } finally {
-                    mapitem.itemLock.unlock();
-                    MapleMap.this.removeMapObject(mapitem);
-                }
-            }
+            makeDisappearItemFromMap(mapitem);
         }
     }
 

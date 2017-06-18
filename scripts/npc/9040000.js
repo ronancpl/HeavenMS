@@ -68,7 +68,7 @@ function action(mode, type, selection) {
                                 if(cm.getPlayer().getGuildId() > 0) {
                                         var eim = findLobby(cm.getPlayer().getGuildId());
                                         if(eim == null) {
-                                                cm.sendOk("You don't have a guild registered and currently on strategy time to assist on this channel.");
+                                                cm.sendOk("Your guild is not currently on strategy time on this channel. Check again if your guild is currently planning a Guild Quest or, if so, the channel they are allotted on.");
                                         } else {
                                                 if(cm.isLeader()) {
                                                         em.getEligibleParty(cm.getParty());
@@ -83,16 +83,22 @@ function action(mode, type, selection) {
                                 
                                 cm.dispose();
                         } else {
-                                cm.sendOk("#e#b<Guild Quest: Sharenian Ruins>#k#n\r\n Team up with your guild members in an auspicious attempt to recover the Rubian from the skeleton's grasp, with teamwork overcoming many puzzles and challenges awaiting inside the Sharenian tombs. Great rewards can be obtained upon the instance completion, and Guild Points can be racked up for your Guild.");
+                                var reqStr = "";
+                                reqStr += "\r\n\r\n    Team requirements:\r\n\r\n";
+                                reqStr += "     - 1 team member #rbelow or equal level 30#k.\r\n";
+                                reqStr += "     - 1 team member who is a #rThief with Dark Sight#k skill and #rmaxed Haste#k.\r\n";
+                                reqStr += "     - 1 team member who is a Magician with #rmaxed Teleport#k.\r\n";
+                                reqStr += "     - 1 team member who is a #rlong ranged attacker#k like Bowman, Assassin, or Gunslinger.\r\n";
+                                reqStr += "     - 1 team member with #rgood jumping skills#k like Assassin with maxed Flash Jump or Gunslinger with Wings.\r\n";
+                            
+                                cm.sendOk("#e#b<Guild Quest: Sharenian Ruins>#k#n\r\n Team up with your guild members in an auspicious attempt to recover the Rubian from the skeleton's grasp, with teamwork overcoming many puzzles and challenges awaiting inside the Sharenian tombs. Great rewards can be obtained upon the instance completion, and Guild Points can be racked up for your Guild." + reqStr);
                                 cm.dispose();
                         }
                 } else if (status == 2) {
                         if (sel == 0) {
                                 var entry = em.addGuildToQueue(cm.getPlayer().getGuildId(), cm.getPlayer().getId());
                                 if(entry > 0) {
-                                        if(entry == 1) {
-                                                cm.sendOk("Your guild has been registered successfully. A message will pop on your chat keeping your guild aware about the registration status. Now, #rimportant#k: as the leader of this instance, #ryou must already be present on this channel#k the right moment your guild is called for the strategy time. #bThe missubmission of this action will void#k your guild registration as a whole, and the next guild will be called immediately. Must be noted also, that if you become absent from the end of the strategy time to any point on the duration of the instance, it will render the instance interrupted, and your guild will be moved out instantly, moving again the queue.");
-                                        }
+                                        cm.sendOk("Your guild has been registered successfully. A message will pop on your chat keeping your guild aware about the registration status.\r\n\r\nNow, #rimportant#k: as the leader of this instance, #ryou must already be present on this channel#k the right moment your guild is called for the strategy time. #bThe missubmission of this action will void#k your guild registration as a whole, and the next guild will be called immediately. Must be noted also, that if you become absent from the end of the strategy time to any point on the duration of the instance, it will render the instance interrupted, and your guild will be moved out instantly, moving again the queue.");
                                 } else if(entry == 0) {
                                         cm.sendOk("The queue on this channel is already full. Please be patient and try again after a while, or try on another channel.");
                                 } else {
