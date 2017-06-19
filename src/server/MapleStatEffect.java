@@ -223,6 +223,40 @@ public class MapleStatEffect {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.JUMP, Integer.valueOf(ret.jump));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.PYRAMID_PQ, Integer.valueOf(ret.berserk));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
+            
+            if(MapleItemInformationProvider.getInstance().isRateCoupon(sourceid)) {
+                switch(MapleDataTool.getInt("expR", source, 0)) {
+                    case 1:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP1, 1);
+                        break;
+                        
+                    case 2:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP2, 1);
+                        break;
+                            
+                    case 3:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP3, 1);
+                        break;
+                                
+                    case 4:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP4, 1);
+                        break;
+                }
+                
+                switch(MapleDataTool.getInt("drpR", source, 0)) {
+                    case 1:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP1, 1);
+                        break;
+                        
+                    case 2:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP2, 1);
+                        break;
+                            
+                    case 3:
+                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP3, 1);
+                        break;
+                }
+            }
         }
         MapleData ltd = source.getChildByPath("lt");
         if (ltd != null) {
@@ -928,7 +962,7 @@ public class MapleStatEffect {
     }
 
     private void applyBuffEffect(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary) {
-        if (!isMonsterRiding()) {
+        if (!isMonsterRiding() && !isCouponBuff()) {
             applyto.cancelEffect(this, true, -1);
         }
 
@@ -1253,6 +1287,10 @@ public class MapleStatEffect {
         return skill && sourceid == ChiefBandit.CHAKRA;
     }
 
+    private boolean isCouponBuff() {
+        return MapleItemInformationProvider.getInstance().isRateCoupon(sourceid);
+    }
+    
     public boolean isMonsterRiding() {
         return skill && (sourceid % 10000000 == 1004 || sourceid == Corsair.BATTLE_SHIP || sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP
                 || sourceid == Beginner.YETI_MOUNT1 || sourceid == Beginner.YETI_MOUNT2 || sourceid == Beginner.WITCH_BROOMSTICK || sourceid == Beginner.BALROG_MOUNT

@@ -167,8 +167,7 @@ public class Server implements Runnable {
             for(MapleCharacter chr: world.getPlayerStorage().getAllCharacters()) {
                 if(!chr.isLoggedin()) continue;
 
-                chr.revertCouponRates();
-                chr.setCouponRates();
+                chr.updateCouponRates();
             }
         }
     }

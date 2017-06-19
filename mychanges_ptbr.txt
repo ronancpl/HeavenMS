@@ -321,3 +321,12 @@ Correção de bug envolvendo abuso de conversa com NPC logo após o sinal de dispos
 15 - 17 Junho 2017,
 Correção de bug na função de atribuição de EXP, que não permitia receber valores negativos de EXP.
 Implementação da GPQ.
+
+18 Junho 2017,
+Correção de problema de concorrência referente às alterações nos rates do server.
+Consertado bugs referentes ao comando "level", não reatribuindo rates apropriadamente.
+
+19 Junho 2017,
+Consertado cupons não aparecendo apropriadamente na região de buffs.
+Consertado alguns problemas de concorrência com cupons.
+Consertado alguns problemas de concorrência com character buffs.

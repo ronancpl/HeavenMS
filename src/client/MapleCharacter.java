@@ -46,6 +46,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 //import java.util.TimeZone;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -257,6 +259,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> expiretask;
     private ScheduledFuture<?> recoveryTask;
     private List<ScheduledFuture<?>> timers = new ArrayList<>();
+    private Lock couponLock = new ReentrantLock();
     private NumberFormat nf = new DecimalFormat("#,###,###,###");
     private ArrayList<Integer> excluded = new ArrayList<>();
     private MonsterBook monsterbook;
@@ -700,9 +703,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void cancelBuffStats(MapleBuffStat stat) {
+    public synchronized void cancelBuffStats(MapleBuffStat stat) {
         List<MapleBuffStat> buffStatList = Arrays.asList(stat);
-        deregisterBuffStats(buffStatList);
+        dropBuffStats(deregisterBuffStats(buffStatList));
         cancelPlayerBuffs(buffStatList);
     }
 
@@ -789,7 +792,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         cancelEffect(MapleItemInformationProvider.getInstance().getItemEffect(itemId), false, -1);
     }
 
-    public void cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime) {
+    public synchronized void cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime) {
+        cancelEffect(effect, overwrite, startTime, true);
+    }
+    
+    private void cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime, boolean firstCancel) {
+        dropBuffStats(cancelEffectInternal(effect, overwrite, startTime));
+    }
+    
+    private List<MapleBuffStatValueHolder> cancelEffectInternal(MapleStatEffect effect, boolean overwrite, long startTime) {
         List<MapleBuffStat> buffstats;
         if (!overwrite) {
             buffstats = getBuffStats(effect, startTime);
@@ -800,7 +811,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 buffstats.add(statup.getLeft());
             }
         }
-        deregisterBuffStats(buffstats);
+        List<MapleBuffStatValueHolder> toCancel = deregisterBuffStats(buffstats);
         if (effect.isMagicDoor()) {
             if (!getDoors().isEmpty()) {
                 MapleDoor door = getDoors().iterator().next();
@@ -842,6 +853,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (!overwrite) {
             cancelPlayerBuffs(buffstats);
         }
+        
+        return toCancel;
     }
 
     public void cancelEffectFromBuffStat(MapleBuffStat stat) {
@@ -1745,60 +1758,63 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    private void deregisterBuffStats(List<MapleBuffStat> stats) {
-        synchronized (stats) {
-            List<MapleBuffStatValueHolder> effectsToCancel = new ArrayList<>(stats.size());
-            for (MapleBuffStat stat : stats) {
-                MapleBuffStatValueHolder mbsvh = effects.get(stat);
-                if (mbsvh != null) {
-                    effects.remove(stat);
-                    boolean addMbsvh = true;
-                    for (MapleBuffStatValueHolder contained : effectsToCancel) {
-                        if (mbsvh.startTime == contained.startTime && contained.effect == mbsvh.effect) {
-                            addMbsvh = false;
-                        }
-                    }
-                    if (addMbsvh) {
-                        effectsToCancel.add(mbsvh);
-                    }
-                    if (stat == MapleBuffStat.RECOVERY) {
-                        if (recoveryTask != null) {
-                            recoveryTask.cancel(false);
-                            recoveryTask = null;
-                        }
-                    } else if (stat == MapleBuffStat.SUMMON || stat == MapleBuffStat.PUPPET) {
-                        int summonId = mbsvh.effect.getSourceId();
-                        
-                        MapleSummon summon = summons.get(summonId);
-                        if (summon != null) {
-                            getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
-                            getMap().removeMapObject(summon);
-                            removeVisibleMapObject(summon);
-                            summons.remove(summonId);
-                        }
-                        if (summon.getSkill() == DarkKnight.BEHOLDER) {
-                            if (beholderHealingSchedule != null) {
-                                beholderHealingSchedule.cancel(false);
-                                beholderHealingSchedule = null;
-                            }
-                            if (beholderBuffSchedule != null) {
-                                beholderBuffSchedule.cancel(false);
-                                beholderBuffSchedule = null;
-                            }
-                        }
-                    } else if (stat == MapleBuffStat.DRAGONBLOOD) {
-                        dragonBloodSchedule.cancel(false);
-                        dragonBloodSchedule = null;
+    private void dropBuffStats(List<MapleBuffStatValueHolder> effectsToCancel) {
+        for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
+            if (cancelEffectCancelTasks.schedule != null) {
+                cancelEffectCancelTasks.schedule.cancel(false);
+                this.cancelEffect(cancelEffectCancelTasks.effect, false, -1, false);
+            }
+        }
+    }
+    
+    private List<MapleBuffStatValueHolder> deregisterBuffStats(List<MapleBuffStat> stats) {
+        List<MapleBuffStatValueHolder> effectsToCancel = new ArrayList<>(stats.size());
+        for (MapleBuffStat stat : stats) {
+            MapleBuffStatValueHolder mbsvh = effects.get(stat);
+            if (mbsvh != null) {
+                effects.remove(stat);
+                boolean addMbsvh = true;
+                for (MapleBuffStatValueHolder contained : effectsToCancel) {
+                    if (mbsvh.startTime == contained.startTime && contained.effect == mbsvh.effect) {
+                        addMbsvh = false;
                     }
                 }
-            }
-            for (MapleBuffStatValueHolder cancelEffectCancelTasks : effectsToCancel) {
-                if (cancelEffectCancelTasks.schedule != null) {
-                    cancelEffectCancelTasks.schedule.cancel(false);
-                    this.cancelEffect(cancelEffectCancelTasks.effect, false, -1);
+                if (addMbsvh) {
+                    effectsToCancel.add(mbsvh);
+                }
+                if (stat == MapleBuffStat.RECOVERY) {
+                    if (recoveryTask != null) {
+                        recoveryTask.cancel(false);
+                        recoveryTask = null;
+                    }
+                } else if (stat == MapleBuffStat.SUMMON || stat == MapleBuffStat.PUPPET) {
+                    int summonId = mbsvh.effect.getSourceId();
+
+                    MapleSummon summon = summons.get(summonId);
+                    if (summon != null) {
+                        getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
+                        getMap().removeMapObject(summon);
+                        removeVisibleMapObject(summon);
+                        summons.remove(summonId);
+                    }
+                    if (summon.getSkill() == DarkKnight.BEHOLDER) {
+                        if (beholderHealingSchedule != null) {
+                            beholderHealingSchedule.cancel(false);
+                            beholderHealingSchedule = null;
+                        }
+                        if (beholderBuffSchedule != null) {
+                            beholderBuffSchedule.cancel(false);
+                            beholderBuffSchedule = null;
+                        }
+                    }
+                } else if (stat == MapleBuffStat.DRAGONBLOOD) {
+                    dragonBloodSchedule.cancel(false);
+                    dragonBloodSchedule = null;
                 }
             }
         }
+
+        return effectsToCancel;
     }
 
     public void disableDoor() {
@@ -2015,6 +2031,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             expiretask = TimerManager.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
+                    MapleItemInformationProvider miip = MapleItemInformationProvider.getInstance();
+                    boolean deletedCoupon = false;
+                    
                     long expiration, currenttime = System.currentTimeMillis();
                     Set<Skill> keys = getSkills().keySet();
                     for (Iterator<Skill> i = keys.iterator(); i.hasNext();) {
@@ -2038,12 +2057,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             } else if (expiration != -1 && expiration < currenttime) {
                                 client.announce(MaplePacketCreator.itemExpired(item.getItemId()));
                                 toberemove.add(item);
+                                if(miip.isRateCoupon(item.getItemId())) {
+                                    deletedCoupon = true;
+                                }
                             }
                         }
                         for (Item item : toberemove) {
                             MapleInventoryManipulator.removeFromSlot(client, inv.getType(), item.getPosition(), item.getQuantity(), true);
                         }
                         toberemove.clear();
+                        
+                        if(deletedCoupon) {
+                            updateCouponRates();
+                        }
                     }
                 }
             }, 60000);
@@ -2378,10 +2404,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return new ArrayList<>(doors);
     }
 
-    public int getDropRate() {
-        return dropRate;
-    }
-
     public int getEnergyBar() {
         return energybar;
     }
@@ -2404,6 +2426,38 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public int getExpRate() {
         return expRate;
+    }
+    
+    public int getCouponExpRate() {
+        return expCoupon;
+    }
+    
+    public int getRawExpRate() {
+        return expRate / (expCoupon * client.getWorldServer().getExpRate());
+    }
+    
+    public int getDropRate() {
+        return dropRate;
+    }
+    
+    public int getCouponDropRate() {
+        return dropCoupon;
+    }
+    
+    public int getRawDropRate() {
+        return dropRate / (dropCoupon * client.getWorldServer().getDropRate());
+    }
+    
+    public int getMesoRate() {
+        return mesoRate;
+    }
+    
+    public int getCouponMesoRate() {
+        return mesoCoupon;
+    }
+    
+    public int getRawMesoRate() {
+        return mesoRate / (mesoCoupon * client.getWorldServer().getMesoRate());
     }
 
     public int getFace() {
@@ -2673,10 +2727,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public int getMerchantMeso() {
         return merchantmeso;
-    }
-
-    public int getMesoRate() {
-        return mesoRate;
     }
 
     public int getMesosTraded() {
@@ -3511,12 +3561,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 for (byte i = 1; i < 5; i++) {
                     gainSlots(i, 4, true);
                 }
-            }
-            
-            this.yellowMessage("We see you reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
+                
+                this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
+            }            
         }
         if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the drop & meso rate
-            revertPlayerRates();
+            revertLastPlayerRates();
             setPlayerRates();
             this.yellowMessage("You managed to get level " + level + "! Getting experience and items seems a little easier now, huh?");
         }
@@ -3626,24 +3676,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void setPlayerRates() {        
+    public void setPlayerRates() {
         this.expRate  *=  GameConstants.getPlayerBonusExpRate(this.level / 20);
         this.mesoRate *= GameConstants.getPlayerBonusMesoRate(this.level / 20);
         this.dropRate *= GameConstants.getPlayerBonusDropRate(this.level / 20);
     }
 
-    public void revertPlayerRates() {
+    public void revertLastPlayerRates() {
         this.expRate  /=  GameConstants.getPlayerBonusExpRate((this.level - 1) / 20);
         this.mesoRate /= GameConstants.getPlayerBonusMesoRate((this.level - 1) / 20);
         this.dropRate /= GameConstants.getPlayerBonusDropRate((this.level - 1) / 20);
     }
     
-    public void revertWorldRates() {
-        World worldz = Server.getInstance().getWorld(world);
-
-        this.expRate /= worldz.getExpRate();
-        this.mesoRate /= worldz.getMesoRate();
-        this.dropRate /= worldz.getDropRate();
+    public void revertPlayerRates() {
+        this.expRate  /=  GameConstants.getPlayerBonusExpRate(this.level / 20);
+        this.mesoRate /= GameConstants.getPlayerBonusMesoRate(this.level / 20);
+        this.dropRate /= GameConstants.getPlayerBonusDropRate(this.level / 20);
     }
     
     public void setWorldRates() {
@@ -3653,13 +3701,30 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.dropRate *= worldz.getDropRate();
     }
     
-    public void revertCouponRates() {
+    public void revertWorldRates() {
+        World worldz = Server.getInstance().getWorld(world);
+        this.expRate /= worldz.getExpRate();
+        this.mesoRate /= worldz.getMesoRate();
+        this.dropRate /= worldz.getDropRate();
+    }
+    
+    private void setCouponRates() {
+        setActiveCoupons();
+        activateCouponsEffects();
+    }
+    
+    private void revertCouponRates() {
         revertCouponsEffects();
     }
     
-    public void setCouponRates() {
-        setActiveCoupons();
-        activateCouponsEffects();
+    public void updateCouponRates() {
+        try {
+            couponLock.lock();
+            revertCouponRates();
+            setCouponRates();
+        } finally {
+            couponLock.unlock();
+        }
     }
     
     public void resetPlayerRates() {
@@ -4508,6 +4573,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }, buffInterval, buffInterval);
             }
         } else if (effect.isRecovery()) {
+            int healInterval = (ServerConstants.USE_ULTRA_RECOVERY) ? 2500 : 5000;
+            
             final byte heal = (byte) effect.getX();
             recoveryTask = TimerManager.getInstance().register(new Runnable() {
                 @Override
@@ -4516,12 +4583,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     client.announce(MaplePacketCreator.showOwnRecovery(heal));
                     getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showRecovery(id, heal), false);
                 }
-            }, 5000, 5000);
+            }, healInterval, healInterval);
         }
         
         //is it possible to maintain a list of statup effects of the same type concurrently? Pair<MapleBuffStat, Itemid>
         for (Pair<MapleBuffStat, Integer> statup : effect.getStatups()) {
-            effects.put(statup.getLeft(), new MapleBuffStatValueHolder(effect, starttime, schedule, statup.getRight().intValue()));
+            effects.put(statup.getLeft(), new MapleBuffStatValueHolder(effect, starttime, schedule, statup.getRight()));
         }
         recalcLocalStats();
     }

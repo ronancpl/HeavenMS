@@ -522,19 +522,22 @@ public class Commands {
                         
 			player.yellowMessage("DROP RATE");
                         player.message(">>Base DROP Rate: " + c.getWorldServer().getDropRate() + "x");
-                        player.message(">>Your DROP Rate: " + player.getDropRate() / c.getWorldServer().getDropRate() + "x");
+                        player.message(">>Your DROP Rate: " + player.getRawDropRate() + "x");
+                        if(player.getCouponDropRate() != 1) player.message(">>Your Coupon DROP Rate: " + player.getCouponDropRate() + "x");
                         player.message(">>------------------------------------------------");
 			player.message(">>Total DROP Rate: " + player.getDropRate() + "x");
 
 			player.yellowMessage("MESO RATE");
 			player.message(">>Base MESO Rate: " + c.getWorldServer().getMesoRate() + "x");
-                        player.message(">>Your MESO Rate: " + player.getMesoRate() / c.getWorldServer().getMesoRate() + "x");
+                        player.message(">>Your MESO Rate: " + player.getRawMesoRate() + "x");
+                        if(player.getCouponMesoRate() != 1) player.message(">>Your Coupon MESO Rate: " + player.getCouponMesoRate() + "x");
                         player.message(">>------------------------------------------------");
 			player.message(">>Total MESO Rate: " + player.getMesoRate() + "x");
 
 			player.yellowMessage("EXP RATE");
 			player.message(">>Base EXP Rate: " + c.getWorldServer().getExpRate() + "x");
-                        player.message(">>Your EXP Rate: " + player.getExpRate() / c.getWorldServer().getExpRate() + "x");
+                        player.message(">>Your EXP Rate: " + player.getRawExpRate() + "x");
+                        if(player.getCouponExpRate() != 1) player.message(">>Your Coupon EXP Rate: " + player.getCouponExpRate() + "x");
                         player.message(">>------------------------------------------------");
                         player.message(">>Total EXP Rate: " + player.getExpRate() + "x");
 			/*if(c.getWorldServer().getExpRate() > ServerConstants.EXP_RATE) {
@@ -1386,8 +1389,12 @@ public class Commands {
 				return true;
 			}
                     
-			player.setLevel(Integer.parseInt(sub[1]) - 1);
-			player.loseExp(player.getExp(), false, false);
+                        player.loseExp(player.getExp(), false, false);
+                        
+			player.revertPlayerRates();
+                        player.setLevel(Math.min(Integer.parseInt(sub[1]), player.getMaxLevel()) - 1);
+                        player.setPlayerRates();
+                        
 			player.levelUp(false);
 		} else if (sub[0].equals("levelpro")) {
                         if (sub.length < 2){
@@ -1402,7 +1409,9 @@ public class Commands {
 			final String[] s = {"setall", String.valueOf(Short.MAX_VALUE)};
 			executeGMCommand(c, s, heading);
                         player.loseExp(player.getExp(), false, false);
+                        player.revertPlayerRates();
 			player.setLevel(255);
+                        player.setPlayerRates();
 			player.setFame(13337);
 			player.setMaxHp(30000);
 			player.setMaxMp(30000);
@@ -1410,8 +1419,6 @@ public class Commands {
 			player.updateSingleStat(MapleStat.FAME, 13337);
 			player.updateSingleStat(MapleStat.MAXHP, 30000);
 			player.updateSingleStat(MapleStat.MAXMP, 30000);
-                        player.revertPlayerRates();
-                        player.setPlayerRates();
                         player.yellowMessage("Stats maxed out.");
 		} else if (sub[0].equals("maxskills")) {
 			for (MapleData skill_ : MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/" + "String.wz")).getData("Skill.img").getChildren()) {

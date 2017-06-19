@@ -269,11 +269,10 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         
         if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();
         
-        player.dispelBuffCoupons();
         player.resetPlayerRates();
         
         if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
         player.setWorldRates();
-        player.setCouponRates();
+        player.updateCouponRates();
     }
 }

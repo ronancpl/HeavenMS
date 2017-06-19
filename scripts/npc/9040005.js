@@ -25,7 +25,7 @@ function start() {
 
 function action(mode, type, selection) {
 	if(mode == 1) {
-		cm.warp(990001100);
+		cm.warp(101030104);
 	}
 	cm.dispose();
 }

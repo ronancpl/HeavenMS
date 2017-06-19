@@ -62,8 +62,11 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else if (status == 3) {
-        if (cm.haveItem(4031801))
+        if (cm.haveItem(4031801)) {
             cm.gainItem(4031801, -1);
+        } else {
+            cm.gainMeso(-150);
+        }
         cm.warp(104000000);
         cm.dispose();
     }

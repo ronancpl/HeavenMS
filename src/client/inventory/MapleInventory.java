@@ -199,8 +199,7 @@ public class MapleInventory implements Iterable<Item> {
         inventory.put(slot, item);
         
         if(MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
-            owner.revertCouponRates();
-            owner.setCouponRates();
+            owner.updateCouponRates();
         }
     }
     
@@ -208,8 +207,7 @@ public class MapleInventory implements Iterable<Item> {
         Item item = inventory.remove(slot);
         
         if(item != null && MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
-            owner.revertCouponRates();
-            owner.setCouponRates();
+            owner.updateCouponRates();
         }
     }
 

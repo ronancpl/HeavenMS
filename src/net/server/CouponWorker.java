@@ -19,21 +19,11 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package net.server;
 
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import constants.ServerConstants;
-import tools.DatabaseConnection;
-
-import net.server.world.World;
-import client.MapleCharacter;
+import tools.FilePrinter;
 
 /**
  * @author Ronan
@@ -46,7 +36,7 @@ public class CouponWorker implements Runnable {
             Server.getInstance().updateActiveCoupons();
             Server.getInstance().commitActiveCoupons();
         } catch(SQLException sqle) {
-            sqle.printStackTrace();
+            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unexpected SQL error: " + sqle.getMessage() + "\n\n");
         }
     }
 }

@@ -22,42 +22,48 @@
 package client;
 
 public enum MapleBuffStat {
-    //SLOW(0x1),
-    MORPH(0x2),
-    RECOVERY(0x4),
-    MAPLE_WARRIOR(0x8),
-    STANCE(0x10),
-    SHARP_EYES(0x20),
-    MANA_REFLECTION(0x40),
-    //ALWAYS_RIGHT(0X80),
+    //SLOW(0x1L),
+    MORPH(0x2L),
+    RECOVERY(0x4L),
+    MAPLE_WARRIOR(0x8L),
+    STANCE(0x10L),
+    SHARP_EYES(0x20L),
+    MANA_REFLECTION(0x40L),
+    //ALWAYS_RIGHT(0X80L),
     
     //------ bgn EDITED SLOT (was unused before) --------
     MAP_PROTECTION(0x100000000000000L),
     //------ end EDITED SLOT ----------------------------
     
-    SHADOW_CLAW(0x100),
-    INFINITY(0x200),
-    HOLY_SHIELD(0x400),
-    HAMSTRING(0x800),
-    BLIND(0x1000),
-    CONCENTRATE(0x2000),
-     //4000
-    ECHO_OF_HERO(0x8000),
-    //10000
-    GHOST_MORPH(0x20000),
-    AURA(0x40000),
-    CONFUSE(0x80000),
-    //100000
-    //200000
-    //400000
-    //800000
-    //1000000
-    //2000000
-    //4000000
-    BERSERK_FURY(0x8000000),
-    DIVINE_BODY(0x10000000),
+    SHADOW_CLAW(0x100L),
+    INFINITY(0x200L),
+    HOLY_SHIELD(0x400L),
+    HAMSTRING(0x800L),
+    BLIND(0x1000L),
+    CONCENTRATE(0x2000L),
+     //4000L
+    ECHO_OF_HERO(0x8000L),
+    //10000L
+    GHOST_MORPH(0x20000L),
+    AURA(0x40000L),
+    CONFUSE(0x80000L),
+    
+    // ---- COUPON feature (was unused anyway) ----
+    
+    COUPON_EXP1(0x100000L),
+    COUPON_EXP2(0x200000L),
+    COUPON_EXP3(0x400000L),
+    COUPON_EXP4(0x800000L),
+    COUPON_DRP1(0x1000000L),
+    COUPON_DRP2(0x2000000L),
+    COUPON_DRP3(0x4000000L),
+    
+    // ---- end COUPON feature ----
+    
+    BERSERK_FURY(0x8000000L),
+    DIVINE_BODY(0x10000000L),
     SPARK(0x20000000L),
-    //40000000
+    //40000000L
     FINALATTACK(0x80000000L),
     BATTLESHIP(0xA00000040L), // weird one
     WATK(0x100000000L),

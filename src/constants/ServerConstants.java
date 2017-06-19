@@ -39,7 +39,7 @@ public class ServerConstants {
     public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false;     //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
-    public static final boolean USE_PERMISSIVE_BUFFS = true;    //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
+    public static final boolean USE_PERMISSIVE_BUFFS = false;    //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
     public static final boolean USE_DUEY = true;
     public static final boolean USE_ITEM_SORT = true;
     public static final boolean USE_ITEM_SORT_BY_NAME = false;  //Item sorting based on name rather than id.

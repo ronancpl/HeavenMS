@@ -32,9 +32,10 @@ import constants.ServerConstants;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Set;
@@ -114,12 +115,15 @@ public class World {
     }
 
     public void setExpRate(int exp) {
-    	//System.out.println("Setting server EXP Rate to " + exp * ServerConstants.EXP_RATE + "x.");
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
+        
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.revertWorldRates();
 	}
         this.exprate = exp;
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.setWorldRates();
         }
     }
@@ -129,11 +133,15 @@ public class World {
     }
 
     public void setDropRate(int drop) {
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
+        
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.revertWorldRates();
 	}
         this.droprate = drop;
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.setWorldRates();
         }
     }
@@ -143,11 +151,15 @@ public class World {
     }
 
     public void setMesoRate(int meso) {
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
+        
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.revertWorldRates();
 	}
         this.mesorate = meso;
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
+        for(MapleCharacter chr : list) {
+            if(!chr.isLoggedin()) continue;
             chr.setWorldRates();
         }
     }
@@ -157,13 +169,7 @@ public class World {
     }
     
     public void setBossDropRate(int bossdrop) {
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.revertWorldRates();
-	}
         this.bossdroprate = bossdrop;
-        for(MapleCharacter chr : getPlayerStorage().getAllCharacters()) {
-            chr.setWorldRates();
-        }
     }
 
     public PlayerStorage getPlayerStorage() {
