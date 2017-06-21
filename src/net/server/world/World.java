@@ -206,8 +206,7 @@ public class World {
         if(mgc == null) return null;
         
         int gid = mgc.getGuildId();
-        MapleGuild g;
-        g = Server.getInstance().getGuild(gid, mgc.getWorld(), mgc.getCharacter());
+        MapleGuild g = Server.getInstance().getGuild(gid, mgc.getWorld(), mgc.getCharacter());
         if (gsStore.get(gid) == null) {
             gsStore.put(gid, new MapleGuildSummary(g));
         }
@@ -274,13 +273,10 @@ public class World {
             bDifferentGuild = true;
         } else {
             bDifferentGuild = guildid != mc.getGuildId();
-            mc.setGuildId(guildid);
+            mc.getMGC().setGuildId(guildid);
+            mc.getMGC().setGuildRank(rank);
             
-            MapleGuildCharacter mgc = mc.getMGC();
-            if(mgc != null) {
-                mgc.setGuildRank(rank);
-                if(bDifferentGuild) mgc.setAllianceRank(5);
-            }
+            if(bDifferentGuild) mc.getMGC().setAllianceRank(5);
             
             mc.saveGuildStatus();
         }

@@ -98,7 +98,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.addGuildToAlliance(alliance, guildid, c), -1, -1);
                                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.updateAllianceInfo(alliance, c), -1, -1);
                                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
-                                victim.getGuild().dropMessage("Your guild has joined in the [" + alliance.getName() + "] union.");
+                                victim.getGuild().dropMessage("Your guild has joined the [" + alliance.getName() + "] union.");
                             }
                         }
                     }
@@ -164,6 +164,8 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                 String notice = slea.readMapleAsciiString();
                 Server.getInstance().setAllianceNotice(alliance.getId(), notice);
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), notice), -1, -1);
+                
+                alliance.dropMessage(5, "* Alliance Notice : " + notice);
                 break;
             default:
                 c.getPlayer().dropMessage("Feature not available");

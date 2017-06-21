@@ -51,6 +51,7 @@ import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import constants.ServerConstants;
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ScheduledFuture;
 import server.TimerManager;
 
@@ -187,12 +188,10 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             MapleGuild playerGuild = server.getGuild(player.getGuildId(), player.getWorld(), player);
             if (playerGuild == null) {
                 player.deleteGuild(player.getGuildId());
-                player.setMGC(null);
-                player.setGuildId(0);
+                player.getMGC().setGuildId(0);
             } else {
                 playerGuild.getMGC(player.getId()).setCharacter(player);
                 player.setMGC(playerGuild.getMGC(player.getId()));
-                
                 server.setGuildMemberOnline(player, true, c.getChannel());
                 c.announce(MaplePacketCreator.showGuildInfo(player));
                 int allianceId = player.getGuild().getAllianceId();
@@ -206,12 +205,13 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                             player.getGuild().setAllianceId(0);
                         }
                     }
-                    
                     if (newAlliance != null) {
                         c.announce(MaplePacketCreator.updateAllianceInfo(newAlliance, c));
                         c.announce(MaplePacketCreator.allianceNotice(newAlliance.getId(), newAlliance.getNotice()));
                         
-                        server.allianceMessage(allianceId, MaplePacketCreator.allianceMemberOnline(player, true), player.getId(), -1);
+                        if (newcomer) {
+                            server.allianceMessage(allianceId, MaplePacketCreator.allianceMemberOnline(player, true), player.getId(), -1);
+                        }
                     }
                 }
             }

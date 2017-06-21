@@ -93,6 +93,7 @@ public class MapleMap {
     private Collection<MapleCharacter> characters = new LinkedHashSet<>();
     private Map<Integer, MaplePortal> portals = new HashMap<>();
     private Map<Integer, Integer> backgroundTypes = new HashMap<>();
+    private Map<String, Integer> environment = new LinkedHashMap<String, Integer>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
     private int mapid;
@@ -250,6 +251,28 @@ public class MapleMap {
             }
         } finally {
             objectRLock.unlock();
+        }
+    }
+    
+    public final void limitReactor(final int rid, final int num) {
+        List<MapleReactor> toDestroy = new ArrayList<>();
+        Map<Integer, Integer> contained = new LinkedHashMap<>();
+        
+        for (MapleMapObject obj : getReactors()) {
+            MapleReactor mr = (MapleReactor) obj;
+            if (contained.containsKey(mr.getId())) {
+                if (contained.get(mr.getId()) >= num) {
+                    toDestroy.add(mr);
+                } else {
+                    contained.put(mr.getId(), contained.get(mr.getId()) + 1);
+                }
+            } else {
+                contained.put(mr.getId(), 1);
+            }
+        }
+        
+        for (MapleReactor mr : toDestroy) {
+            destroyReactor(mr.getObjectId());
         }
     }
 
@@ -837,6 +860,22 @@ public class MapleMap {
             killMonster(monster, null, false, 1);
         }
     }
+    
+    public final void destroyReactors(final int first, final int last) {
+        List<MapleReactor> toDestroy = new ArrayList<>();
+        List<MapleMapObject> reactors = getReactors();
+        
+        for (MapleMapObject obj : reactors) {
+            MapleReactor mr = (MapleReactor) obj;
+            if (mr.getId() >= first && mr.getId() <= last) {
+                toDestroy.add(mr);
+            }
+        }
+        
+        for (MapleReactor mr : toDestroy) {
+            destroyReactor(mr.getObjectId());
+        }
+    }
 
     public void destroyReactor(int oid) {
         final MapleReactor reactor = getReactorByOid(oid);
@@ -895,6 +934,25 @@ public class MapleMap {
             }
         } finally {
             objectRLock.unlock();
+        }
+    }
+    
+    public final void shuffleReactors(int first, int last) {
+        List<Point> points = new ArrayList<>();
+        List<MapleMapObject> reactors = getReactors();
+        List<MapleMapObject> targets = new LinkedList<>();
+        
+        for (MapleMapObject obj : reactors) {
+            MapleReactor mr = (MapleReactor) obj;
+            if (mr.getId() >= first && mr.getId() <= last) {
+                points.add(mr.getPosition());
+                targets.add(obj);
+            }
+        }
+        Collections.shuffle(points);
+        for (MapleMapObject obj : targets) {
+            MapleReactor mr = (MapleReactor) obj;
+            mr.setPosition(points.remove(points.size() - 1));
         }
     }
 
@@ -2035,6 +2093,27 @@ public class MapleMap {
             }
         }
     }
+    
+    // \/\/\/\/\/\/ CWKPQ things \/\/\/\/\/\/
+    
+    public final void toggleEnvironment(final String ms) {
+        if (environment.containsKey(ms)) {
+            moveEnvironment(ms, environment.get(ms) == 1 ? 2 : 1);
+        } else {
+            moveEnvironment(ms, 1);
+        }
+    }
+
+    public final void moveEnvironment(final String ms, final int type) {
+        broadcastMessage(MaplePacketCreator.environmentChange(ms, type));
+        environment.put(ms, type);
+    }
+
+    public final Map<String, Integer> getEnvironment() {
+        return environment;
+    }
+    
+    // /\/\/\/\/\/\/\ CWKPQ things /\/\/\/\/\/\
 
     public String getMapName() {
         return mapName;

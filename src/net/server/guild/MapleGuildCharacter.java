@@ -111,15 +111,20 @@ public class MapleGuildCharacter {
 
     public void setGuildId(int gid) {
         guildid = gid;
+        character.setGuildId(gid);
     }
     
     public int getGuildRank() {
         return guildrank;
     }
 
+    public void setOfflineGuildRank(int rank) {
+        guildrank = rank;
+    }
+    
     public void setGuildRank(int rank) {
         guildrank = rank;
-        if(character != null) character.setGuildRank(rank);
+        character.setGuildRank(rank);
     }
     
     public int getAllianceRank() {
@@ -128,7 +133,7 @@ public class MapleGuildCharacter {
     
     public void setAllianceRank(int rank) {
         allianceRank = rank;
-        if(character != null) character.setAllianceRank(rank);
+        character.setAllianceRank(rank);
     }
 
     public boolean isOnline() {

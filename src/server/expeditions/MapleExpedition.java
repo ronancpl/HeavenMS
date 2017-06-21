@@ -80,8 +80,8 @@ public class MapleExpedition {
 	private MapleMap startMap;
 	private ArrayList<String> bossLogs;
 	private ScheduledFuture<?> schedule;
-	private List<MapleCharacter> members = new ArrayList<MapleCharacter>();
-	private List<MapleCharacter> banned = new ArrayList<MapleCharacter>();
+	private List<MapleCharacter> members = new ArrayList<>();
+	private List<Integer> banned = new ArrayList<>();
 	private long startTime;
 
 	public MapleExpedition(MapleCharacter player, MapleExpeditionType met) {
@@ -126,7 +126,7 @@ public class MapleExpedition {
 	public void start(){
 		registering = false;
 		startMap.broadcastMessage(MaplePacketCreator.removeClock());
-		broadcastExped(MaplePacketCreator.serverNotice(6, "The expedition has started! The expedition leader is waiting inside!"));
+		broadcastExped(MaplePacketCreator.serverNotice(6, "The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
 		Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(6, type.toString() + " Expedition started with leader: " + leader.getName()));
 	}
@@ -135,7 +135,7 @@ public class MapleExpedition {
 		if (!registering){
 			return "Sorry, this expedition is already underway. Registration is closed!";
 		}
-		if (banned.contains(player)){
+		if (banned.contains(player.getId())){
 			return "Sorry, you've been banned from this expedition by #b" + leader.getName() + "#k.";
 		}
 		if (members.size() >= type.getMaxSize()){ //Would be a miracle if anybody ever saw this
@@ -155,7 +155,13 @@ public class MapleExpedition {
 	}
 
 	public boolean removeMember(MapleCharacter chr) {
-		return members.remove(chr);
+		if(members.remove(chr)) {
+                    broadcastExped(MaplePacketCreator.serverNotice(6, chr.getName() + " has left the expedition."));
+                    chr.dropMessage(6, "You have left this expedition.");
+                    return true;
+                }
+                
+                return false;
 	}
 
 	public MapleExpeditionType getType() {
@@ -192,9 +198,14 @@ public class MapleExpedition {
 	}
 
 	public void ban(MapleCharacter player) {
-		if (!banned.contains(player)) {
-			banned.add(player);
+		if (!banned.contains(player.getId())) {
+			banned.add(player.getId());
 			members.remove(player);
+                        
+                        broadcastExped(MaplePacketCreator.serverNotice(6, player.getName() + " has been banned from the expedition."));
+                        
+                        player.announce(MaplePacketCreator.removeClock());
+                        player.dropMessage(6, "You have been banned from this expedition.");
 		}
 	}
 

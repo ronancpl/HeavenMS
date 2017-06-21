@@ -352,7 +352,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         public void upgradeAlliance() {
                 MapleAlliance alliance = Server.getInstance().getAlliance(c.getPlayer().getGuild().getAllianceId());
                 alliance.increaseCapacity(1);
-                c.announce(MaplePacketCreator.updateAllianceInfo(alliance, c));
+                
+                Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.getGuildAlliances(alliance, c.getWorld()), -1, -1);
+                Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
         }
 
 	public void disbandAlliance(MapleClient c, int allianceId) {

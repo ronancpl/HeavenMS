@@ -121,10 +121,13 @@ public class MapleAlliance {
 
                     MapleCharacter chr = guildMasters.get(i);
                     chr.getMGC().setAllianceRank((i == 0) ? 1 : 2);
+                    Server.getInstance().getGuild(chr.getGuildId()).getMGC(chr.getId()).setAllianceRank((i == 0) ? 1 : 2);
                     chr.saveGuildStatus();
                 }
 
                 Server.getInstance().addAlliance(id, alliance);
+                
+                System.out.println("\n\n\n\n----");
                 Server.getInstance().allianceMessage(id, MaplePacketCreator.updateAllianceInfo(alliance, guildMasters.get(0).getClient()), -1, -1);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -304,7 +307,7 @@ public class MapleAlliance {
         Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
         Server.getInstance().guildMessage(guildId, MaplePacketCreator.disbandAlliance(alliance.getId()));
 
-        alliance.dropMessage("[" + Server.getInstance().getGuild(guildId, worldId) + "] guild has left the union.");
+        alliance.dropMessage("[" + Server.getInstance().getGuild(guildId, worldId).getName() + "] guild has left the union.");
     }
     
     public void updateAlliancePackets(MapleCharacter chr) {

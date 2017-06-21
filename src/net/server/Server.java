@@ -498,7 +498,9 @@ public class Server implements Runnable {
             }
             
             if(mc != null) {
-                g.addGuildMember(mc.getMGC());                   // i really REALLY must make player MGC the same as the guild MGC
+                mc.setMGC(g.getMGC(mc.getId()));
+                if(g.getMGC(mc.getId()) == null) System.out.println("null for " + mc.getName() + " when loading " + id);
+                g.getMGC(mc.getId()).setCharacter(mc);
                 g.setOnline(mc.getId(), true, mc.getClient().getChannel());
             }
             
@@ -520,10 +522,10 @@ public class Server implements Runnable {
         g.setOnline(mc.getId(), bOnline, channel);
     }
 
-    public int addGuildMember(MapleGuildCharacter mgc) {
+    public int addGuildMember(MapleGuildCharacter mgc, MapleCharacter chr) {
         MapleGuild g = guilds.get(mgc.getGuildId());
         if (g != null) {
-            return g.addGuildMember(mgc);
+            return g.addGuildMember(mgc, chr);
         }
         return 0;
     }

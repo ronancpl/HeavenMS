@@ -235,7 +235,18 @@ public class EventInstanceManager {
 			ex.printStackTrace();
 		}
 	}
+        
+        public void dropMessage(int type, String message) {
+                for (MapleCharacter chr : getPlayers()) {
+                        chr.dropMessage(type, message);
+                }
+        }
 
+        public void restartEventTimer(long time) {
+                stopEventTimer();
+                startEventTimer(time);
+        }
+        
 	public void startEventTimer(long time) {
                 timeStarted = System.currentTimeMillis();
 		eventTime = time;

@@ -279,7 +279,7 @@ public class EventManager {
                 startLobbyInstance(lobbyId);
             }
             
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getId()));
             if(eim == null) {
                 if(lobbyId > -1) setLockLobby(lobbyId, false);
                 return false;

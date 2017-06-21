@@ -26,5 +26,5 @@
  
 function start() {
     cm.warp(610030020);
-	cm.dispose();
+    cm.dispose();
 }

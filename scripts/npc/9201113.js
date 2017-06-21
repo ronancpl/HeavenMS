@@ -48,10 +48,7 @@ function action(mode, type, selection) {
         return;
     }
     if (status == 0) {
-        if (player.getClient().getChannel() != 1) { //Only channel 1
-            cm.sendOk("Sorry, Crimsonwood Keep Party Quest may only be attempted on #bChannel 1#k.");
-            cm.dispose();
-        } else if (player.getLevel() < cwkpq.getMinLevel() && player.getLevel() > cwkpq.getMaxLevel()) { //Don't fit requirement
+        if (player.getLevel() < cwkpq.getMinLevel() && player.getLevel() > cwkpq.getMaxLevel()) { //Don't fit requirement
             cm.sendOk("You do not meet the criteria to take attempt Crimsonwood Keep Party Quest!");
             cm.dispose();
         } else if (expedition == null) { //Start an expedition
@@ -109,14 +106,14 @@ function action(mode, type, selection) {
             cm.sendSimple(text);
             status = 6;
         } else if (selection == 2) {
-            cm.sendOk("The expedition will begin and you will now be escorted to the #bEntrance to cwkpq Altar#k.");
+            cm.sendOk("The expedition will begin and you will now be escorted to the #bEntrance to CWKPQ Altar#k.");
             status = 4;
         } else if (selection == 3) {
-			player.getMap().broadcastMessage(MaplePacketCreator.removeClock());
-			player.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, expedition.getLeader().getName() + " has ended the expedition."));
-			cm.endExpedition(expedition);
+            player.getMap().broadcastMessage(MaplePacketCreator.removeClock());
+            player.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, expedition.getLeader().getName() + " has ended the expedition."));
+            cm.endExpedition(expedition);
             cm.sendOk("The expedition has now ended. Sometimes the best strategy is to run away.");
-			cm.dispose();
+            cm.dispose();
             return;
         }
     } else if (status == 4) {
@@ -132,15 +129,15 @@ function action(mode, type, selection) {
             cm.dispose();
             return;
         }
-        cm.sendOk("Good luck! Crimsonwood Keep Party Quest is a worthy challenge!");
-		em.setProperty("leader", player.getName());
+        
+        em.setProperty("leader", player.getName());
         em.setProperty("channel", player.getClient().getChannel());
         em.startInstance(expedition);
         cm.dispose();
         return;
     } else if (status == 6) {
         if (selection > 0) {
-           var banned = expedition.getMembers().get(selection);
+            var banned = expedition.getMembers().get(selection - 1);
             expedition.ban(banned);
             cm.sendOk("You have banned " + banned.getName() + " from the expedition.");
             cm.dispose();
