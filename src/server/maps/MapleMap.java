@@ -276,6 +276,17 @@ public class MapleMap {
         }
     }
 
+    public boolean isAllReactorState(final int reactorId, final int state) {
+        for (MapleMapObject mo : getReactors()) {
+            MapleReactor r = (MapleReactor) mo;
+            
+            if (r.getId() == reactorId && r.getState() != state) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public int getForcedReturnId() {
         return forcedReturnMap;
     }
@@ -955,6 +966,41 @@ public class MapleMap {
             mr.setPosition(points.remove(points.size() - 1));
         }
     }
+    
+    public final void shuffleReactors(List<Object> list) {
+        List<Point> points = new ArrayList<>();
+        List<MapleMapObject> listObjects = new ArrayList<>();
+        
+        List<MapleMapObject> reactors = getReactors();
+        List<MapleMapObject> targets = new LinkedList<>();
+        
+        objectRLock.lock();
+        try {
+            for (Object obj : list) {
+                if(obj instanceof MapleMapObject) {
+                    MapleMapObject mmo = (MapleMapObject) obj;
+                    
+                    if(mapobjects.containsValue(mmo)) {
+                        listObjects.add(mmo);
+                    }
+                }
+            }
+        } finally {
+            objectRLock.unlock();
+        }
+        
+        for (MapleMapObject obj : listObjects) {
+            MapleReactor mr = (MapleReactor) obj;
+            
+            points.add(mr.getPosition());
+            targets.add(obj);
+        }
+        Collections.shuffle(points);
+        for (MapleMapObject obj : targets) {
+            MapleReactor mr = (MapleReactor) obj;
+            mr.setPosition(points.remove(points.size() - 1));
+        }
+    }
 
     /**
      * Automagically finds a new controller for the given monster from the chars
@@ -1479,6 +1525,10 @@ public class MapleMap {
                 }
             }
         }
+    }
+    
+    public void changeEnvironment(String mapObj, int newState) {
+        broadcastMessage(MaplePacketCreator.environmentChange(mapObj, newState));
     }
 
     public void startMapEffect(String msg, int itemId) {
@@ -2105,7 +2155,7 @@ public class MapleMap {
     }
 
     public final void moveEnvironment(final String ms, final int type) {
-        broadcastMessage(MaplePacketCreator.environmentChange(ms, type));
+        broadcastMessage(MaplePacketCreator.environmentMove(ms, type));
         environment.put(ms, type);
     }
 

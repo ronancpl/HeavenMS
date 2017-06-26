@@ -674,6 +674,10 @@ public class AbstractPlayerInteraction {
 		c.announce(MaplePacketCreator.disableMinimap());
 	}
 
+        public boolean isAllReactorState(final int reactorId, final int state) {
+                return c.getPlayer().getMap().isAllReactorState(reactorId, state);
+        }
+        
 	public void resetMap(int mapid) {
 		getMap(mapid).resetReactors();
 		getMap(mapid).killAllMonsters();

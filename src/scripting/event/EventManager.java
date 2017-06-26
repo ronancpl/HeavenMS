@@ -184,15 +184,19 @@ public class EventManager {
     public void setProperty(String key, String value) {
         props.setProperty(key, value);
     }
-
-    public String getProperty(String key) {
-        return props.getProperty(key);
+    
+    public void setIntProperty(String key, int value) {
+        setProperty(key, value);
     }
     
     public void setProperty(String key, int value) {
         props.setProperty(key, value + "");
     }
 
+    public String getProperty(String key) {
+        return props.getProperty(key);
+    }
+    
     public int getIntProperty(String key) {
         return Integer.parseInt(props.getProperty(key));
     }
@@ -279,7 +283,7 @@ public class EventManager {
                 startLobbyInstance(lobbyId);
             }
             
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getId()));
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
             if(eim == null) {
                 if(lobbyId > -1) setLockLobby(lobbyId, false);
                 return false;

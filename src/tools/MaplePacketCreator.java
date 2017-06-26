@@ -3682,6 +3682,16 @@ public class MaplePacketCreator {
                 mplew.writeMapleAsciiString(env);
                 return mplew.getPacket();
         }
+        
+        public static byte[] environmentMove(String env, int mode) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+                mplew.writeShort(SendOpcode.FIELD_EFFECT.getValue());
+                mplew.write(mode);
+                mplew.writeMapleAsciiString(env);
+
+                return mplew.getPacket();
+        }
 
         public static byte[] startMapEffect(String msg, int itemid, boolean active) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();

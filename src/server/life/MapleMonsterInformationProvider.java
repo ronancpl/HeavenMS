@@ -178,7 +178,12 @@ public class MapleMonsterInformationProvider {
 		try
 		{
 			return MapleLifeFactory.getMonster(id).getName();
-		} catch (Exception e)
+		}
+                catch (NullPointerException npe)
+		{
+			return null; //nonexistant mob
+		}
+                catch (Exception e)
 		{
                         e.printStackTrace();
                         System.err.println("Nonexistant mob id " + id);

@@ -1,3 +1,5 @@
+var minPlayers = 1;
+
 var mapz = Array(100, 200, 300, 400, 500, 510, 520, 521, 522, 530, 540, 550, 600, 700, 800);
 var a = Array("a", "b", "c", "d", "e", "f", "g", "h", "i");
 /*
@@ -23,31 +25,83 @@ function init() {
 
 function afterSetup(eim) {}
 
-function setup(leaderid) {
-    em.setProperty("state", "1");
-    em.setProperty("leader", "true");
-    em.setProperty("current_instance", "0");
-    em.setProperty("glpq1", "0");
-    em.setProperty("glpq2", "0");
-    em.setProperty("glpq3", "0");
-    em.setProperty("glpq4", "0");
-    em.setProperty("glpq5", "0");
-    em.setProperty("glpq6", "0");
+function getNameFromList(index, array) {
+    return array[index];
+}
 
-    var eim = em.newInstance("CWKPQ" + leaderid);
+function generateMapReactors(map) {
+    
+    var jobReactors = [ [0, 0, -1, -1, 0],
+                        [-1, 4, 3, 3, 3],
+                        [1, 3, 4, 2, 2],
+                        [2, -1, 0, 1, -1], 
+                        [3, 2, 1, 0, -1],
+                        [4, 1, -1, 4, 1],
+                        [-1, 2, 4],
+                        [-1, -1]
+                      ];
+                      
+    var rndIndex;
+    var jobFound;
+    while(true) {
+        jobFound = {};
+        rndIndex = [];
+        
+        for(var i = 0; i < jobReactors.length; i++) {
+            var jobReactorSlot = jobReactors[i];
+            
+            var idx = Math.floor(Math.random() * jobReactorSlot.length);
+            jobFound["" + jobReactorSlot[idx]] = 1;
+            rndIndex.push(idx);
+        }
+        
+        if(Object.keys(jobFound).length == 6) break;
+    }
+    
+    var toDeploy = [];
+    
+    toDeploy.push(getNameFromList(rndIndex[0], ["4skill0a", "4skill0b", "4fake1c", "4fake1d", "4skill0e"]));
+    toDeploy.push(getNameFromList(rndIndex[1], ["4fake0a", "4skill4b", "4skill3c", "4skill3d", "4skill3e"]));
+    toDeploy.push(getNameFromList(rndIndex[2], ["4skill1a", "4skill3b", "4skill4c", "4skill2d", "4skill2e"]));
+    toDeploy.push(getNameFromList(rndIndex[3], ["4skill2a", "4fake1b", "4skill0c", "4skill1d", "4fake1e"]));
+    toDeploy.push(getNameFromList(rndIndex[4], ["4skill3a", "4skill2b", "4skill1c", "4skill0d", "4fake0e"]));
+    toDeploy.push(getNameFromList(rndIndex[5], ["4skill4a", "4skill1b", "4fake0c", "4skill4d", "4skill1e"]));
+    toDeploy.push(getNameFromList(rndIndex[6], ["4fake1a", "4skill2c", "4skill4e"]));
+    toDeploy.push(getNameFromList(rndIndex[7], ["4fake0b", "4fake0d"]));
+    
+    var toRandomize = new Array();
+    
+    for(var i = 0; i < toDeploy.length; i++) {
+        var react = map.getReactorByName(toDeploy[i]);
+        
+        react.setState(1);
+        toRandomize.push(react);
+    }
+    
+    map.shuffleReactors(toRandomize);
+}
+
+function setup(channel) {
+    var eim = em.newInstance("CWKPQ" + channel);
+    
+    eim.setProperty("state", "1");
+    eim.setProperty("leader", "true");
+    eim.setProperty("current_instance", "0");
+    eim.setProperty("glpq1", "0");
+    eim.setProperty("glpq2", "0");
+    eim.setProperty("glpq3", "0");
+    eim.setProperty("glpq3_p", "0");
+    eim.setProperty("glpq4", "0");
+    eim.setProperty("glpq5", "0");
+    eim.setProperty("glpq5_room", "0");
+    eim.setProperty("glpq6", "0");
+
     for (var i = 0; i < mapz.length; i++) {
         var map = eim.getInstanceMap(610030000 + mapz[i]);
         if (map != null) {
             map.resetFully();
             if (map.getId() == 610030400) {
-                map.setReactorState(); //because everything is at 0 =[
-                map.limitReactor(6109016, 1);
-                map.limitReactor(6109017, 1);
-                map.limitReactor(6109018, 1);
-                map.limitReactor(6109019, 1);
-                map.limitReactor(6109020, 1);
-                map.shuffleReactors(6109016, 6109020);
-                map.destroyReactors(6108000, 6108005); //destroy the fake ones, non-GMS like or is this necessary
+                generateMapReactors(map);
 
                 //add environments
                 for (var x = 0; x < a.length; x++) {
@@ -86,18 +140,18 @@ function setup(leaderid) {
 
 function playerEntry(eim, player) {
     eim.dropMessage(5, "[Expedition] " + player.getName() + " has entered the map.");
-    var map = eim.getMapInstance(610030100 + (parseInt(em.getProperty("current_instance")) * 100));
+    var map = eim.getMapInstance(610030100 + (eim.getIntProperty("current_instance") * 100));
     player.changeMap(map, map.getPortal(0));
 }
 
 function spawnGuardians(eim) {
-    var map = eim.getMapInstance(0);
+    var map = eim.getMapInstance(610030100);
     if (map.countPlayers() <= 0) {
 	return;
     }
-    eim.dropMessage(5, "The Master Guardians have detected you.");
+    map.broadcastStringMessage(5, "The Master Guardians have detected you.");
     for (var i = 0; i < 20; i++) { //spawn 20 guardians
-	var mob = em.getMonster(9400594);
+	var mob = eim.getMonster(9400594);
 	eim.registerMonster(mob);
 	map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(1000, 336));
     }
@@ -115,39 +169,39 @@ function changedMap(eim, player, mapid) {
     } else {
 	switch(mapid) {
 	    case 610030200:
-		if (em.getProperty("current_instance").equals("0")) {
+		if (eim.getIntProperty("current_instance") == 0) {
 		    eim.restartEventTimer(600000); //10 mins
-		    em.setProperty("current_instance", "1");
+		    eim.setIntProperty("current_instance", 1);
 		}
 		break;
 	    case 610030300:
-		if (em.getProperty("current_instance").equals("1")) {
+		if (eim.getIntProperty("current_instance") == 1) {
 		    eim.restartEventTimer(600000); //10 mins
-		    em.setProperty("current_instance", "2");
+		    eim.setIntProperty("current_instance", 2);
 		}
 		break;
 	    case 610030400:
-		if (em.getProperty("current_instance").equals("2")) {
+		if (eim.getIntProperty("current_instance") == 2) {
 		    eim.restartEventTimer(600000); //10 mins
-		    em.setProperty("current_instance", "3");
+		    eim.setIntProperty("current_instance", 3);
 		}
 		break;
 	    case 610030500:
-		if (em.getProperty("current_instance").equals("3")) {
+		if (eim.getIntProperty("current_instance") == 3) {
 		    eim.restartEventTimer(1200000); //20 mins
-		    em.setProperty("current_instance", "4");
+		    eim.setIntProperty("current_instance", 4);
 		}
 		break;
 	    case 610030600:
-		if (em.getProperty("current_instance").equals("4")) {
+		if (eim.getIntProperty("current_instance") == 4) {
 		    eim.restartEventTimer(3600000); //1 hr
-		    em.setProperty("current_instance", "5");
+		    eim.setIntProperty("current_instance", 5);
 		}
 		break;
 	    case 610030800:
-		if (em.getProperty("current_instance").equals("5")) {
+		if (eim.getIntProperty("current_instance") == 5) {
 		    eim.restartEventTimer(60000); //1 min
-		    em.setProperty("current_instance", "6");
+		    eim.setIntProperty("current_instance", 6);
 		}
 		break;
         }
@@ -182,7 +236,6 @@ function end(eim) {
 
 function clearPQ(eim) {
     eim.setEventCleared();
-    end(eim);
 }
 
 function monsterKilled(mob, eim) {}
@@ -192,3 +245,4 @@ function leftParty (eim, player) {}
 function disbandParty (eim) {}
 function playerDead(eim, player) {}
 function cancelSchedule() {}
+function dispose(eim) {}

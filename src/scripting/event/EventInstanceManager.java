@@ -24,6 +24,7 @@ package scripting.event;
 import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import tools.Pair;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -103,7 +104,7 @@ public class EventInstanceManager {
         private Map<Integer, Integer> playerGrid = new HashMap<>();
         
         // registers all opened gates on the event. Will help late characters to encounter next stages gates already opened
-        private Set<Integer> openedGates = new HashSet<>();
+        private Map<Integer, Pair<String, Integer>> openedGates = new HashMap<>();
         
         // forces deletion of items not supposed to be held outside of the event, dealt on a player's leaving moment.
         private Set<Integer> exclusiveItems = new HashSet<>();
@@ -698,6 +699,10 @@ public class EventInstanceManager {
                 }
         }
         
+        public MapleMonster getMonster(int mid) {
+                return(MapleLifeFactory.getMonster(mid));
+        }
+        
         private List<Integer> convertToIntegerArray(List<Double> list) {
                 List<Integer> intList = new ArrayList<>();
                 for(Double d: list) intList.add(d.intValue());
@@ -981,14 +986,22 @@ public class EventInstanceManager {
         }
         
         public final void showClearEffect(boolean hasGate, int mapId) {
+                showClearEffect(hasGate, mapId, "gate", 2);
+        }
+        
+        public final void showClearEffect(int mapId, String mapObj, int newState) {
+                showClearEffect(true, mapId, mapObj, newState);
+        }
+        
+        public final void showClearEffect(boolean hasGate, int mapId, String mapObj, int newState) {
                 MapleMap map = getMapInstance(mapId);
                 map.broadcastMessage(MaplePacketCreator.showEffect("quest/party/clear"));
                 map.broadcastMessage(MaplePacketCreator.playSound("Party1/Clear"));
                 if(hasGate) {
-                        map.broadcastMessage(MaplePacketCreator.environmentChange("gate", 2));
+                        map.broadcastMessage(MaplePacketCreator.environmentChange(mapObj, newState));
                         wL.lock();
                         try {
-                                openedGates.add(map.getId());
+                                openedGates.put(map.getId(), new Pair<>(mapObj, newState));
                         } finally {
                                 wL.unlock();
                         }
@@ -998,8 +1011,9 @@ public class EventInstanceManager {
         public final void recoverOpenedGate(MapleCharacter chr, int thisMapId) {
                 rL.lock();
                 try {
-                        if(openedGates.contains(thisMapId)) {
-                                chr.announce(MaplePacketCreator.environmentChange("gate", 2));
+                        if(openedGates.containsKey(thisMapId)) {
+                                Pair<String, Integer> gateData = openedGates.get(thisMapId);
+                                chr.announce(MaplePacketCreator.environmentChange(gateData.getLeft(), gateData.getRight()));
                         }
                 } finally {
                         rL.unlock();
