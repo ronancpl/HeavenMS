@@ -291,8 +291,9 @@ public class EventManager {
             instanceLocks.put(eim.getName(), lobbyId);
             eim.setLeader(leader);
             
-            eim.registerExpedition(exped);
             exped.start();
+            eim.registerExpedition(exped);
+            
             iv.invokeFunction("afterSetup", eim);
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);

@@ -67,32 +67,34 @@ public class MapleMapFactory {
                 }
                 String mapName = getMapName(mapid);
                 MapleData mapData = source.getData(mapName);
-                String link = MapleDataTool.getString(mapData.getChildByPath("info/link"), "");
+                MapleData infoData = mapData.getChildByPath("info");
+                
+                String link = MapleDataTool.getString(infoData.getChildByPath("link"), "");
                 if (!link.equals("")) { //nexon made hundreds of dojo maps so to reduce the size they added links.
                     mapName = getMapName(Integer.parseInt(link));
                     mapData = source.getData(mapName);
                 }
                 float monsterRate = 0;
-                MapleData mobRate = mapData.getChildByPath("info/mobRate");
+                MapleData mobRate = infoData.getChildByPath("mobRate");
                 if (mobRate != null) {
                     monsterRate = ((Float) mobRate.getData()).floatValue();
                 }
-                map = new MapleMap(mapid, world, channel, MapleDataTool.getInt("info/returnMap", mapData), monsterRate);
+                map = new MapleMap(mapid, world, channel, MapleDataTool.getInt("returnMap", infoData), monsterRate);
                 map.setEventInstance(event);
                 
-                String onFirstEnter = MapleDataTool.getString(mapData.getChildByPath("info/onFirstUserEnter"), String.valueOf(mapid));
+                String onFirstEnter = MapleDataTool.getString(infoData.getChildByPath("onFirstUserEnter"), String.valueOf(mapid));
                 map.setOnFirstUserEnter(onFirstEnter.equals("") ? String.valueOf(mapid) : onFirstEnter);
                 
-                String onEnter = MapleDataTool.getString(mapData.getChildByPath("info/onUserEnter"), String.valueOf(mapid));
+                String onEnter = MapleDataTool.getString(infoData.getChildByPath("onUserEnter"), String.valueOf(mapid));
                 map.setOnUserEnter(onEnter.equals("") ? String.valueOf(mapid) : onEnter);
                 
-                map.setFieldLimit(MapleDataTool.getInt(mapData.getChildByPath("info/fieldLimit"), 0));
-                map.setMobInterval((short) MapleDataTool.getInt(mapData.getChildByPath("info/createMobInterval"), 5000));
+                map.setFieldLimit(MapleDataTool.getInt(infoData.getChildByPath("fieldLimit"), 0));
+                map.setMobInterval((short) MapleDataTool.getInt(infoData.getChildByPath("createMobInterval"), 5000));
                 PortalFactory portalFactory = new PortalFactory();
                 for (MapleData portal : mapData.getChildByPath("portal")) {
                     map.addPortal(portalFactory.makePortal(MapleDataTool.getInt(portal.getChildByPath("pt")), portal));
                 }
-                MapleData timeMob = mapData.getChildByPath("info/timeMob");
+                MapleData timeMob = infoData.getChildByPath("timeMob");
                 if (timeMob != null) {
                     map.timeMob(MapleDataTool.getInt(timeMob.getChildByPath("id")),
                             MapleDataTool.getString(timeMob.getChildByPath("message")));
@@ -198,15 +200,15 @@ public class MapleMapFactory {
                 }
 
                 map.setClock(mapData.getChildByPath("clock") != null);
-                map.setEverlast(mapData.getChildByPath("info/everlast") != null);
-                map.setTown(mapData.getChildByPath("info/town") != null);
-                map.setHPDec(MapleDataTool.getIntConvert("info/decHP", mapData, 0));
-                map.setHPDecProtect(MapleDataTool.getIntConvert("info/protectItem", mapData, 0));
-                map.setForcedReturnMap(MapleDataTool.getInt(mapData.getChildByPath("info/forcedReturn"), 999999999));
+                map.setEverlast(infoData.getChildByPath("everlast") != null);
+                map.setTown(infoData.getChildByPath("town") != null);
+                map.setHPDec(MapleDataTool.getIntConvert("decHP", infoData, 0));
+                map.setHPDecProtect(MapleDataTool.getIntConvert("protectItem", infoData, 0));
+                map.setForcedReturnMap(MapleDataTool.getInt(infoData.getChildByPath("forcedReturn"), 999999999));
                 map.setBoat(mapData.getChildByPath("shipObj") != null);
-                map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", mapData.getChildByPath("info"), -1));
-                map.setFieldType(MapleDataTool.getIntConvert("info/fieldType", mapData, 0));
-                map.setMobCapacity(MapleDataTool.getIntConvert("fixedMobCapacity", mapData.getChildByPath("info"), 500));//Is there a map that contains more than 500 mobs?
+                map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", infoData, -1));
+                map.setFieldType(MapleDataTool.getIntConvert("fieldType", infoData, 0));
+                map.setMobCapacity(MapleDataTool.getIntConvert("fixedMobCapacity", infoData, 500));//Is there a map that contains more than 500 mobs?
                 
                 HashMap<Integer, Integer> backTypes = new HashMap<>();
                 try {
@@ -292,7 +294,7 @@ public class MapleMapFactory {
             builder.append("MasteriaGL");
         } else if (mapid >= 677000000 && mapid < 677100000) {
             builder.append("Episode1GL");
-        } else if (mapid >= 670000000 && mapid < 690000000) {
+        } else if (mapid >= 670000000 && mapid < 682000000) {
             builder.append("weddingGL");
         } else if (mapid >= 682000000 && mapid < 683000000) {
             builder.append("HalloweenGL");

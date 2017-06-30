@@ -5,18 +5,25 @@ function start() {
 }
 
 function action(mode, type, selection) {
-        if (mode == 1) {
-                status++;
-        } else {
-                status--;
+        var eim = cm.getEventInstance();
+        if (eim != null && eim.getIntProperty("glpq6") == 3) {
+                cm.sendOk("... Well played. You overtook the Twisted Masters. Pass through that gate to receive your prizes.");
+                cm.dispose();
+                return;
         }
+        
         if (!cm.isEventLeader()) {
                 cm.sendNext("I wish for your leader to talk to me.");
                 cm.dispose();
                 return;
         }
+    
+        if (mode == 1) {
+                status++;
+        } else {
+                status--;
+        }
 
-        var eim = cm.getEventInstance();
         if (eim != null) {
                 if (eim.getIntProperty("glpq6") == 0) {
                         if (status == 0) {
@@ -44,10 +51,6 @@ function action(mode, type, selection) {
                                 } else if (status == 1) {
                                         cm.sendNext("Well, no matter! The Twisted Masters will be glad to welcome you.");
                                         cm.mapMessage(6, "Twisted Masters approach!");
-
-                                        //MV or Heron
-                                        var mob = eim.getMonster(9400589);
-                                        cm.getMap().spawnMonsterOnGroundBelow(mob, new java.awt.Point(-1000, 276));
 
                                         //Margana
                                         var mob = eim.getMonster(9400590);
@@ -79,6 +82,8 @@ function action(mode, type, selection) {
                                 eim.setIntProperty("glpq6", 3);
                                 
                                 eim.showClearEffect(true);
+                                eim.giveEventPlayersStageReward(6);
+                                
                                 eim.clearPQ();
                                 cm.dispose();
                         } else {
@@ -86,6 +91,7 @@ function action(mode, type, selection) {
                                 cm.dispose();
                         }
                 } else {
+                        cm.sendOk("... Well played. You overtook the Twisted Masters. Pass through that gate to receive your prizes.");
                         cm.dispose();
                 }
         } else {

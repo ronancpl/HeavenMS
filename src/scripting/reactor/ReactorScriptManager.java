@@ -112,7 +112,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
         touching(c, reactor, false);
     }
 
-    public void touching(MapleClient c, MapleReactor reactor, boolean touching) {
+    public synchronized void touching(MapleClient c, MapleReactor reactor, boolean touching) {
         try {
             ReactorActionManager rm = new ReactorActionManager(c, reactor);
             Invocable iv = getInvocable("reactor/" + reactor.getId() + ".js", c);

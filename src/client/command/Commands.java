@@ -696,7 +696,7 @@ public class Commands {
                 case "debugnearestspawnpoint":
                         if(ServerConstants.USE_DEBUG) {
                             SpawnPoint sp = player.getMap().findClosestSpawnpoint(player.getPosition());
-                            if(sp != null) player.dropMessage(6, "Closest mob spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + ((sp.getMonster() != null) ? sp.getMonster().getId() : "null") + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
+                            if(sp != null) player.dropMessage(6, "Closest mob spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + sp.getMonsterId() + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
                             else player.dropMessage(6, "There is no mob spawn point on this map.");
                         }
                         break;
@@ -710,6 +710,12 @@ public class Commands {
                 case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
                             player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ".");
+                        }
+                        break;
+                    
+                case "debugmobsp":
+                        if(ServerConstants.USE_DEBUG) {
+                            player.getMap().reportMonsterSpawnPoints(player);
                         }
                         break;
                     

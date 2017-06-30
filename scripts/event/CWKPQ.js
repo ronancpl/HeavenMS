@@ -1,26 +1,66 @@
-var minPlayers = 1;
-
-var mapz = Array(100, 200, 300, 400, 500, 510, 520, 521, 522, 530, 540, 550, 600, 700, 800);
-var a = Array("a", "b", "c", "d", "e", "f", "g", "h", "i");
-/*
-a1,3,6
-b1-7
-c1,3,6
-d1-7
-e1-7
-f1,3,6
-g1-7
-h1,3,6
-i1-7
+/**
+ * @author: Ronan
+ * @event: Crimsonwood Keep PQ
 */
 
-var pos_x = Array(944,401,28,-332,-855);
-var pos_y = Array(-204,-384,-504,-384,-204);
-var pos_y2 = Array(-144, -444, -744, -1044, -1344, -1644);
+var isPq = true;
+var minPlayers = 6, maxPlayers = 30;
+var minLevel = 100, maxLevel = 255;
+var entryMap = 610030100;
+var exitMap = 610030020;
+var recruitMap = 610030020;
+var clearMap = 610030020;
+
+var minMapId = 610030100;
+var maxMapId = 610030800;
+
+var eventTime = 2;     // 2 minutes for first stg
+
+var lobbyRange = [0, 0];
 
 function init() {
-    em.setProperty("state", "0");
-    em.setProperty("leader", "true");
+        setEventRequirements();
+}
+
+function setLobbyRange() {
+        return lobbyRange;
+}
+
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
+}
+
+function setEventExclusives(eim) {
+        var itemSet = [4001256, 4001257, 4001258, 4001259, 4001260];
+        eim.setExclusiveItems(itemSet);
+}
+
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages, mesoStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [];
+        itemQty = [];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [2500, 8000, 18000, 25000, 30000, 40000];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+        
+        mesoStages = [500, 1000, 2000, 5000, 8000, 20000];    //bonus meso given on CLEAR stage signal
+        eim.setEventClearStageMeso(mesoStages);
 }
 
 function afterSetup(eim) {}
@@ -84,8 +124,6 @@ function generateMapReactors(map) {
 function setup(channel) {
     var eim = em.newInstance("CWKPQ" + channel);
     
-    eim.setProperty("state", "1");
-    eim.setProperty("leader", "true");
     eim.setProperty("current_instance", "0");
     eim.setProperty("glpq1", "0");
     eim.setProperty("glpq2", "0");
@@ -95,45 +133,65 @@ function setup(channel) {
     eim.setProperty("glpq5", "0");
     eim.setProperty("glpq5_room", "0");
     eim.setProperty("glpq6", "0");
+    
+    eim.setProperty("glpq_f0", "0");
+    eim.setProperty("glpq_f1", "0");
+    eim.setProperty("glpq_f2", "0");
+    eim.setProperty("glpq_f3", "0");
+    eim.setProperty("glpq_f4", "0");
+    eim.setProperty("glpq_f5", "0");
+    eim.setProperty("glpq_f6", "0");
+    eim.setProperty("glpq_f7", "0");
+    eim.setProperty("glpq_s", "0");
 
-    for (var i = 0; i < mapz.length; i++) {
-        var map = eim.getInstanceMap(610030000 + mapz[i]);
-        if (map != null) {
-            map.resetFully();
-            if (map.getId() == 610030400) {
-                generateMapReactors(map);
-
-                //add environments
-                for (var x = 0; x < a.length; x++) {
-                    for (var y = 1; y <= 7; y++) {
-                        if (x == 1 || x == 3 || x == 4 || x == 6 || x == 8) {
-                            if (y != 2 && y != 4 && y != 5 && y != 7) {
-                                map.moveEnvironment(a[x] + "" + y, 1);
-                            }
-                        } else {
-                            map.moveEnvironment(a[x] + "" + y, 1);
-                        }
-                    }
+    var level = 1;
+    eim.getInstanceMap(610030100).resetPQ(level);
+    eim.getInstanceMap(610030200).resetPQ(level);
+    eim.getInstanceMap(610030300).resetPQ(level);
+    eim.getInstanceMap(610030400).resetPQ(level);
+    eim.getInstanceMap(610030500).resetPQ(level);
+    eim.getInstanceMap(610030510).resetPQ(level);
+    eim.getInstanceMap(610030520).resetPQ(level);
+    eim.getInstanceMap(610030521).resetPQ(level);
+    eim.getInstanceMap(610030522).resetPQ(level);
+    eim.getInstanceMap(610030530).resetPQ(level);
+    eim.getInstanceMap(610030540).resetPQ(level);
+    eim.getInstanceMap(610030550).resetPQ(level);
+    eim.getInstanceMap(610030600).resetPQ(level);
+    eim.getInstanceMap(610030700).resetPQ(level);
+    eim.getInstanceMap(610030800).resetPQ(level);
+    
+    generateMapReactors(eim.getInstanceMap(610030400));
+    eim.getInstanceMap(610030550).shuffleReactors();
+    
+    //add environments
+    var a = Array("a", "b", "c", "d", "e", "f", "g", "h", "i");
+    var map = eim.getInstanceMap(610030400);
+    for (var x = 0; x < a.length; x++) {
+        for (var y = 1; y <= 7; y++) {
+            if (x == 1 || x == 3 || x == 4 || x == 6 || x == 8) {
+                if (y != 2 && y != 4 && y != 5 && y != 7) {
+                    map.moveEnvironment(a[x] + "" + y, 1);
                 }
-            } else if (map.getId() == 610030510) { //warrior room, crimson guardians
-                for (var z = 0; z < pos_y2.length; z++) {
-                    var mob = em.getMonster(9400582);
-                    eim.registerMonster(mob);
-                    map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, pos_y2[z]));
-                }
-            //skipping mage room, ehh
-            } else if (map.getId() == 610030540) { //bowman room, spawn master guardians
-                for (var z = 0; z < pos_x.length; z++) {
-                    var mob = em.getMonster(9400594);
-                    eim.registerMonster(mob);
-                    map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(pos_x[z], pos_y[z]));
-                }
-            } else if (map.getId() == 610030550) {
-                map.shuffleReactors(); //pirate room
+            } else {
+                map.moveEnvironment(a[x] + "" + y, 1);
             }
         }
     }
-    eim.startEventTimer(120000); //2 MIN for first stg
+    
+    var pos_x = Array(944,401,28,-332,-855);
+    var pos_y = Array(-204,-384,-504,-384,-204);
+    var map = eim.getInstanceMap(610030540);
+    for (var z = 0; z < pos_x.length; z++) {
+        var mob = em.getMonster(9400594);
+        eim.registerMonster(mob);
+        map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(pos_x[z], pos_y[z]));
+    }
+    
+    eim.startEventTimer(eventTime * 60000);
+    setEventRewards(eim);
+    setEventExclusives(eim);
+    
     eim.schedule("spawnGuardians", 60000);
     return eim;
 }
@@ -157,15 +215,21 @@ function spawnGuardians(eim) {
     }
 }
 
-function playerRevive(eim, player) {}
-
 function scheduledTimeout(eim) {
     end(eim);
 }
 
 function changedMap(eim, player, mapid) {
-    if (mapid < 610030100 || mapid > 610030800) {
-	playerExit(eim,player);
+    if (mapid < minMapId || mapid > maxMapId) {
+	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.unregisterPlayer(player);
+            end(eim);
+        }
+        else {
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.unregisterPlayer(player);
+        }
     } else {
 	switch(mapid) {
 	    case 610030200:
@@ -208,9 +272,37 @@ function changedMap(eim, player, mapid) {
     }
 }
 
-function playerDisconnected(eim, player) {
-    return 0;
+function changedLeader(eim, leader) {}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.unregisterPlayer(player);
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
+    }
 }
+
+function playerDisconnected(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.unregisterPlayer(player);
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
+    }
+}
+
+function leftParty (eim, player) {}
+
+function disbandParty (eim) {}
 
 function monsterValue(eim, mobId) {
     return 1;
@@ -219,30 +311,31 @@ function monsterValue(eim, mobId) {
 function playerUnregistered(eim, player) {}
 
 function playerExit(eim, player) {
-    eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
     eim.unregisterPlayer(player);
-
-    if (eim.disposeIfPlayerBelow(minPlayers, 610030010)) {
-        em.setProperty("state", "0");
-        em.setProperty("leader", "true");
-    }
+    player.changeMap(exitMap, 0);
 }
 
 function end(eim) {
-    eim.disposeIfPlayerBelow(100, 610030010);
-    em.setProperty("state", "0");
-    em.setProperty("leader", "true");
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
+    }
+    eim.dispose();
+}
+
+function giveRandomEventReward(eim, player) {
+    eim.giveEventReward(player);
 }
 
 function clearPQ(eim) {
+    eim.stopEventTimer();
     eim.setEventCleared();
 }
 
 function monsterKilled(mob, eim) {}
+
 function allMonstersDead(eim) {}
 
-function leftParty (eim, player) {}
-function disbandParty (eim) {}
-function playerDead(eim, player) {}
 function cancelSchedule() {}
+
 function dispose(eim) {}

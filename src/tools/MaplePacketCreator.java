@@ -3686,10 +3686,10 @@ public class MaplePacketCreator {
         public static byte[] environmentMove(String env, int mode) {
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
-                mplew.writeShort(SendOpcode.FIELD_EFFECT.getValue());
-                mplew.write(mode);
+                mplew.writeShort(SendOpcode.FIELD_OBSTACLE_ONOFF.getValue());
                 mplew.writeMapleAsciiString(env);
-
+                mplew.writeInt(mode);
+                
                 return mplew.getPacket();
         }
 

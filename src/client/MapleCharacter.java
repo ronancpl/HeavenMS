@@ -1249,6 +1249,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if(getEventInstance() != null) {
             getEventInstance().recoverOpenedGate(this, map.getId());
         }
+        
+        // if this map has obstacle components moving, make it do so for this client
+        for(Entry<String, Integer> e: map.getEnvironment().entrySet()) {
+            announce(MaplePacketCreator.environmentMove(e.getKey(), e.getValue()));
+        }
     }
 
     public void changePage(int page) {

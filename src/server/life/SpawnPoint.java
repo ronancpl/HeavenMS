@@ -61,7 +61,6 @@ public class SpawnPoint {
     	if (denySpawn || mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
         }
-       
         return nextPossibleSpawn <= System.currentTimeMillis();
     }
 
@@ -99,6 +98,10 @@ public class SpawnPoint {
             nextPossibleSpawn = System.currentTimeMillis() + mobInterval;
         }
         return mob;
+    }
+    
+    public int getMonsterId() {
+        return monster;
     }
 
     public Point getPosition() {

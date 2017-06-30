@@ -10,13 +10,6 @@ function start() {
                 cm.dispose();
         } else if (cm.getPlayer().getMapId() == 610030521) {
                 if (cm.getPlayer().getMap().countMonsters() == 0) {
-                        cm.warp(610030522,0);
-                } else {
-                        cm.sendOk("Eliminate all monsters.");
-                }
-                cm.dispose();
-        } else if (cm.getPlayer().getMapId() == 610030522) {
-                if (cm.getPlayer().getMap().countMonsters() == 0) {
                         var eim = cm.getEventInstance();
                         var stgStatus = eim.getIntProperty("glpq5_room");
                         var jobNiche = cm.getPlayer().getJob().getJobNiche();
@@ -31,10 +24,20 @@ function start() {
                                 } else {
                                         cm.sendOk("Make room on your ETC inventory first.");
                                 }
+                        } else {
+                                cm.sendOk("The weapon inside this room has already been retrieved.");
                         }
                 } else {
                         cm.sendOk("Eliminate all monsters.");
                 }
                 cm.dispose();
+        } /* else if (cm.getPlayer().getMapId() == 610030522) {
+                if (cm.getPlayer().getMap().countMonsters() == 0) {
+                        cm.warp(610030522,0);
+                } else {
+                        cm.sendOk("Eliminate all monsters.");
+                }
+                cm.dispose();
         }
+        */
 }

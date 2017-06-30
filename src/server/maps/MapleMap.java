@@ -1216,10 +1216,8 @@ public class MapleMap {
     
     public void spawnAllMonsterIdFromMapSpawnList(int id, int difficulty, boolean isPq) {
         for(SpawnPoint sp: allMonsterSpawn) {
-            MapleMonster mm = sp.getMonster();
-            
-            if(mm.getId() == id) {
-                spawnMonster(mm, difficulty, isPq);
+            if(sp.getMonsterId() == id) {
+                spawnMonster(sp.getMonster(), difficulty, isPq);
             }
         }
     }
@@ -1230,8 +1228,7 @@ public class MapleMap {
     
     public void spawnAllMonstersFromMapSpawnList(int difficulty, boolean isPq) {
         for(SpawnPoint sp: allMonsterSpawn) {
-            MapleMonster mm = sp.getMonster();
-            spawnMonster(mm, difficulty, isPq);
+            spawnMonster(sp.getMonster(), difficulty, isPq);
         }
     }
 
@@ -2065,6 +2062,13 @@ public class MapleMap {
         SpawnPoint sp = new SpawnPoint(monster, newpos, !monster.isMobile(), mobTime, mobInterval, team);
         allMonsterSpawn.add(sp);
     }
+    
+    public void reportMonsterSpawnPoints(MapleCharacter chr) {
+        chr.dropMessage(6, "Mob spawnpoints on map " + getId() + ", with available Mob SPs " + monsterSpawn.size() + ", used " + spawnedMonstersOnMap.get() + ":");
+        for(SpawnPoint sp: allMonsterSpawn) {
+            chr.dropMessage(6, "  id: " + sp.getMonsterId() + " canSpawn: " + !sp.getDenySpawn() + " numSpawned: " + sp.getSpawned() + " x: " + sp.getPosition().getX() + " y: " + sp.getPosition().getY() + " time: " + sp.getMobTime() + " team: " + sp.getTeam());
+        }
+    }
 
     public Collection<MapleCharacter> getCharacters() {
         chrRLock.lock();
@@ -2144,11 +2148,11 @@ public class MapleMap {
         }
     }
     
-    // \/\/\/\/\/\/ CWKPQ things \/\/\/\/\/\/
-    
     public final void toggleEnvironment(final String ms) {
-        if (environment.containsKey(ms)) {
-            moveEnvironment(ms, environment.get(ms) == 1 ? 2 : 1);
+        Map<String, Integer> env = getEnvironment();
+        
+        if (env.containsKey(ms)) {
+            moveEnvironment(ms, env.get(ms) == 1 ? 2 : 1);
         } else {
             moveEnvironment(ms, 1);
         }
@@ -2156,14 +2160,23 @@ public class MapleMap {
 
     public final void moveEnvironment(final String ms, final int type) {
         broadcastMessage(MaplePacketCreator.environmentMove(ms, type));
-        environment.put(ms, type);
+        
+        objectWLock.lock();
+        try {
+            environment.put(ms, type);
+        } finally {
+            objectWLock.unlock();
+        }
     }
 
     public final Map<String, Integer> getEnvironment() {
-        return environment;
+        objectRLock.lock();
+        try {
+            return Collections.unmodifiableMap(environment);
+        } finally {
+            objectRLock.unlock();
+        }
     }
-    
-    // /\/\/\/\/\/\/\ CWKPQ things /\/\/\/\/\/\
 
     public String getMapName() {
         return mapName;
@@ -2352,8 +2365,7 @@ public class MapleMap {
     public void instanceMapFirstSpawn(int difficulty, boolean isPq) {
         for(SpawnPoint spawnPoint: allMonsterSpawn) {
             if(spawnPoint.getMobTime() == -1) {   //just those allowed to be spawned only once
-                MapleMonster monst = spawnPoint.getMonster();
-                spawnMonster(monst);
+                spawnMonster(spawnPoint.getMonster());
             }
         }
     }

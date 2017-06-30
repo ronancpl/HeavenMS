@@ -1,5 +1,4 @@
 function act() {
-    
         var eim = rm.getEventInstance();
         if (eim != null) {
                 var mapId = rm.getMap().getId();
@@ -9,7 +8,9 @@ function act() {
                         eim.setIntProperty("glpq2", eim.getIntProperty("glpq2") + 1);
                         if (eim.getIntProperty("glpq2") == 5) { //all 5 done
                                 eim.dropMessage(6, "The Antellion grants you access to the next portal! Proceed!");
+                                
                                 eim.showClearEffect(mapId, "2pt", 2);
+                                eim.giveEventPlayersStageReward(2);
                         }
                 } else if (mapId == 610030300) {
                         eim.dropMessage(6, "The Warrior Sigil has been activated! You hear gears turning! The Menhir Defense System is active! Run!");
@@ -17,11 +18,10 @@ function act() {
                         rm.getMap().moveEnvironment("menhir0", 1);
                         if (eim.getIntProperty("glpq3") == 5 && eim.getIntProperty("glpq3_p") == 5) {
                                 eim.dropMessage(6, "The Antellion grants you access to the next portal! Proceed!");
+                                
                                 eim.showClearEffect(mapId, "3pt", 2);
+                                eim.giveEventPlayersStageReward(3);
                         }
                 }
         }
-    
-   
-   //rm.getMap().moveEnvironment("menhir0", 1);
 }

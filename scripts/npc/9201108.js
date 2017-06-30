@@ -24,6 +24,8 @@ function start() {
                                 } else {
                                         cm.sendOk("Make room on your ETC inventory first.");
                                 }
+                        } else {
+                                cm.sendOk("The weapon inside this room has already been retrieved.");
                         }
                 } else {
                         cm.sendOk("Eliminate all Master Guardians.");

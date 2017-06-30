@@ -6,16 +6,16 @@
 var status = -1;
 
 function start() {
-		if (cm.getPlayer().getLevel() < 120) {
-			cm.sendOk("There is a level requirement of 120 to attempt Pink Bean.");
-			cm.dispose();
-			return;
-		}
-		if (cm.getPlayer().getClient().getChannel() != 5) {
-			cm.sendOk("Pink Bean may only be attempted on channel 5.");
-			cm.dispose();
-			return;
-		}
+    if (cm.getPlayer().getLevel() < 120) {
+            cm.sendOk("There is a level requirement of 120 to attempt Pink Bean.");
+            cm.dispose();
+            return;
+    }
+    if (cm.getPlayer().getClient().getChannel() != 5) {
+            cm.sendOk("Pink Bean may only be attempted on channel 5.");
+            cm.dispose();
+            return;
+    }
     var em = cm.getEventManager("PinkBeanBattle");
 
     if (em == null) {

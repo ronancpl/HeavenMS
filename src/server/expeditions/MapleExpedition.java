@@ -87,7 +87,7 @@ public class MapleExpedition {
 	public MapleExpedition(MapleCharacter player, MapleExpeditionType met) {
 		leader = player;
 		members.add(leader);
-		startMap = player.getMap();
+                startMap = player.getMap();
 		type = met;
 		bossLogs = new ArrayList<String>();
 		beginRegistration();
@@ -95,19 +95,23 @@ public class MapleExpedition {
 
 	private void beginRegistration() {
 		registering = true;
-		startMap.broadcastMessage(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
+                leader.announce(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
 		startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, leader.getName() + " has been declared the expedition captain. Please register for the expedition."));
 		scheduleRegistrationEnd();
 	}
 
 	private void scheduleRegistrationEnd() {
 		final MapleExpedition exped = this;
+                startTime = System.currentTimeMillis() + type.getRegistrationTime() * 60 * 1000;
+                
 		schedule = TimerManager.getInstance().schedule(new Runnable() { 
 			@Override
 			public void run() {
 				if (registering){
 					leader.getClient().getChannelServer().getExpeditions().remove(exped);
 					startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "Time limit has been reached. Expedition has been disbanded."));
+                                        
+                                        broadcastExped(MaplePacketCreator.removeClock());
 				}
 				dispose(false);
 			}
@@ -115,7 +119,9 @@ public class MapleExpedition {
 	}
 
 	public void dispose(boolean log){
-		if (schedule != null){
+                broadcastExped(MaplePacketCreator.removeClock());
+            
+                if (schedule != null){
 			schedule.cancel(false);
 		}
 		if (log && !registering){
@@ -125,7 +131,7 @@ public class MapleExpedition {
 
 	public void start(){
 		registering = false;
-		startMap.broadcastMessage(MaplePacketCreator.removeClock());
+		broadcastExped(MaplePacketCreator.removeClock());
 		broadcastExped(MaplePacketCreator.serverNotice(6, "The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
 		Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(6, type.toString() + " Expedition started with leader: " + leader.getName()));
@@ -142,6 +148,7 @@ public class MapleExpedition {
 			return "Sorry, this expedition is full!";
 		}
 		if (members.add(player)){
+                        player.announce(MaplePacketCreator.getClock((int)(startTime - System.currentTimeMillis()) / 1000));
 			broadcastExped(MaplePacketCreator.serverNotice(6, player.getName() + " has joined the expedition!"));
 			return "You have registered for the expedition successfully!";
 		} 
@@ -156,6 +163,7 @@ public class MapleExpedition {
 
 	public boolean removeMember(MapleCharacter chr) {
 		if(members.remove(chr)) {
+                    chr.announce(MaplePacketCreator.removeClock());
                     broadcastExped(MaplePacketCreator.serverNotice(6, chr.getName() + " has left the expedition."));
                     chr.dropMessage(6, "You have left this expedition.");
                     return true;
@@ -175,6 +183,10 @@ public class MapleExpedition {
 	public MapleCharacter getLeader(){
 		return leader;
 	}
+        
+        public MapleMap getRecruitingMap() {
+                return startMap;
+        }
 
 	public boolean contains(MapleCharacter player) {
 		for (MapleCharacter member : members){

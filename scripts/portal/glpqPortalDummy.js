@@ -3,11 +3,15 @@ function enter(pi) {
     
     if (react.getState() < 1) {
         react.forceHitReactor(1);
-        pi.getEventInstance().setIntProperty("glpq1", 1);
+        
+        var eim = pi.getEventInstance();
+        eim.setIntProperty("glpq1", 1);
         
         pi.getEventInstance().dropMessage(5, "A strange force starts being emitted from the portal apparatus, showing a hidden path once blocked now open.");
         pi.warp(610030100, 0);
+        
         pi.getEventInstance().showClearEffect();
+        eim.giveEventPlayersStageReward(1);
         return true;
     }
     

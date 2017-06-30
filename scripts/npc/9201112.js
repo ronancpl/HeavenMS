@@ -24,11 +24,6 @@ function action(mode, type, selection) {
             cm.dispose();
             return;
         }
-        if (!cm.isEventLeader()) {
-            cm.sendNext("I wish for your leader to talk to me.");
-            cm.dispose();
-            return;
-        }
         switch(cm.getPlayer().getMapId()) {
             case 610030100:
                 if (status == 0) {
@@ -38,7 +33,6 @@ function action(mode, type, selection) {
                 } else if (status == 2) {
                     cm.sendNext("You can find the portal somewhere around here... you'd better find it, quick. I'll catch up.");
                     cm.dispose();
-                    eim.setProperty("glpq1", "1");
                 }
                 break;
             case 610030200:
@@ -51,9 +45,9 @@ function action(mode, type, selection) {
                break;
             case 610030300:
                if (status == 0) {
-                    cm.sendNext("Now what we have here are more Sigils. All five Adventurers have to climb to the very top and go through the portal.");
+                    cm.sendNext("Now what we have here are more Sigils. At least five Adventurers have to climb to the very top and go through the portal. Stay aware though: not every wall or ground on this map is what it seems to be, so tread lightly!");
                } else if (status == 1) {
-                    cm.sendNext("Beware of these death traps: Menhirs. They really pack a punch.");
+                    cm.sendNext("Oh, and beware of these death traps: Menhirs. They really pack a punch. Good luck.");
                     cm.dispose();
                }
                break;
@@ -61,7 +55,7 @@ function action(mode, type, selection) {
                if (status == 0) {
                     cm.sendNext("Now what we have here are more Sigils. However, some of them don't work. Here all jobs must fill their roles, as at least one of these Sigils are activated by their job skills, however there can be more than one per job, so be sure to test them all.");
                } else if (status == 1) {
-                    cm.sendNext("These Stirges will get in your way, but they're merely a distraction. Try every one of these Sigils until they work.");
+                    cm.sendNext("These Stirges will get in your way, but they're merely a distraction. To get rid of them, get five adventurers to stand on the middle-left platform simultaneously. To pass, try every one of these Sigils until they work.");
                     cm.dispose();
                }
                break;

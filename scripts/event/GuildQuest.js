@@ -269,9 +269,7 @@ function playerDisconnected(eim, player) {
 
 function leftParty(eim, player) {}
 
-function disbandParty(eim) {
-        end(eim);
-}
+function disbandParty(eim) {}
 
 function monsterValue(eim, mobId) {
         return 1;

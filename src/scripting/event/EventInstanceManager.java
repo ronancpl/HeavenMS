@@ -332,7 +332,16 @@ public class EventInstanceManager {
 
 	public void registerExpedition(MapleExpedition exped) {
 		expedition = exped;
-		registerPlayer(exped.getLeader());
+                registerExpeditionTeam(exped, exped.getRecruitingMap().getId());
+	}
+        
+        private void registerExpeditionTeam(MapleExpedition exped, int recruitMap) {
+		expedition = exped;
+                
+                for(MapleCharacter chr: exped.getMembers()) {
+                        if(chr.getMapId() == recruitMap)
+                                registerPlayer(chr);
+                }
 	}
 
 	public void unregisterPlayer(MapleCharacter chr) {
@@ -516,7 +525,10 @@ public class EventInstanceManager {
                 killCount.clear();
                 
                 if (expedition != null) {
+                        expedition.dispose(true);    
                         em.getChannelServer().getExpeditions().remove(expedition);
+                        
+                        expedition = null;
                 }
                 if(!eventCleared) em.disposeInstance(name);
                 em = null;
