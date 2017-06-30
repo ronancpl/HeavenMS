@@ -242,6 +242,8 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 if(pet != null)
                     player.startFullnessSchedule(PetDataFactory.getHunger(pet.getItemId()), pet, player.getPetIndex(pet));
             }
+            
+            player.reloadQuestExpirations();
         }
         
         c.announce(MaplePacketCreator.updateGender(player));
@@ -263,7 +265,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             if (player.isGM()){
             	Server.getInstance().broadcastGMMessage(MaplePacketCreator.earnTitleMessage("GM " + player.getName() + " has logged in"));
             }
-            
             
         }
         

@@ -348,3 +348,7 @@ Reestruturação parcial do esquema de footholds do stage 4 da CWKPQ.
 28 - 29 Junho 2017,
 Acabamento final da CWKPQ.
 Corrigido bug no esquema de recuperação de diretórios dos mapas, referenciados em String.wz.
+
+30 Junho 2017,
+Corrigido bug em mecânica de hpDec que permitia aos jogadores postergarem o efeito de decréscimo de HP.
+Elaborada funcionalidade que permite salvar o "tempo até expirar" para quests com janela de tempo muito alta (as que usam "timeLimit2").

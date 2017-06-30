@@ -69,7 +69,7 @@ public class EventManager {
     private List<Boolean> openedLobbys;
     private Properties props = new Properties();
     private String name;
-    private Lock l = new ReentrantLock();
+    private Lock lobbyLock = new ReentrantLock();
     
     private static final int limitGuilds = 10;  // max numbers of guilds in queue for GPQ.
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
@@ -202,32 +202,32 @@ public class EventManager {
     }
     
     private boolean getLockLobby(int lobbyId) {
-        l.lock();
+        lobbyLock.lock();
         try {
             return openedLobbys.get(lobbyId);
         } finally {
-            l.unlock();
+            lobbyLock.unlock();
         }
     }
     
     private void setLockLobby(int lobbyId, boolean lock) {
-        l.lock();
+        lobbyLock.lock();
         try {
             openedLobbys.set(lobbyId, lock);
         } finally {
-            l.unlock();
+            lobbyLock.unlock();
         }
     }
     
     private boolean startLobbyInstance(int lobbyId) {
-        l.lock();
+        lobbyLock.lock();
         try {
             if(!openedLobbys.get(lobbyId)) {
                 openedLobbys.set(lobbyId, true);
                 return true;
             }
         } finally {
-            l.unlock();
+            lobbyLock.unlock();
         }
         
         return false;

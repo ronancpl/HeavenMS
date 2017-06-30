@@ -47,7 +47,7 @@ public class MapleQuest {
 
     private static Map<Integer, MapleQuest> quests = new HashMap<>();
     protected short infoNumber, id;
-    protected int timeLimit;
+    protected int timeLimit, timeLimit2;
     protected String infoex;
     protected Map<MapleQuestRequirementType, MapleQuestRequirement> startReqs = new EnumMap<>(MapleQuestRequirementType.class);
     protected Map<MapleQuestRequirementType, MapleQuestRequirement> completeReqs = new EnumMap<>(MapleQuestRequirementType.class);
@@ -74,7 +74,7 @@ public class MapleQuest {
             MapleData reqInfo = questInfo.getChildByPath(String.valueOf(id));
             if(reqInfo != null) {
                 timeLimit = MapleDataTool.getInt("timeLimit", reqInfo, 0);
-                timeLimit = Math.max(timeLimit, MapleDataTool.getInt("timeLimit2", reqInfo, 0));  // alas, nexon made we deal with 2 timeLimits
+                timeLimit2 = MapleDataTool.getInt("timeLimit2", reqInfo, 0);
                 autoStart = MapleDataTool.getInt("autoStart", reqInfo, 0) == 1;
                 autoPreComplete = MapleDataTool.getInt("autoPreComplete", reqInfo, 0) == 1;
                 autoComplete = MapleDataTool.getInt("autoComplete", reqInfo, 0) == 1;
@@ -287,7 +287,12 @@ public class MapleQuest {
         newStatus.setForfeited(c.getQuest(this).getForfeited());
 
         if (timeLimit > 0) {
+            newStatus.setExpirationTime(System.currentTimeMillis() + (timeLimit * 1000));
             c.questTimeLimit(this, timeLimit);
+        }
+        if (timeLimit2 > 0) {
+            newStatus.setExpirationTime(System.currentTimeMillis() + timeLimit2);
+            c.questTimeLimit2(this, newStatus.getExpirationTime());
         }
         
         c.updateQuest(newStatus);
