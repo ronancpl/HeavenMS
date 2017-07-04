@@ -255,8 +255,8 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if(attack.skill == DragonKnight.DRAGON_ROAR || attack.skill == SuperGM.SUPER_DRAGON_ROAR)
                         distanceToDetect += 250000;
                     
-					if(attack.skill == Shadower.BOOMERANG_STEP)
-						distanceToDetect += 60000;
+                    if(attack.skill == Shadower.BOOMERANG_STEP)
+                        distanceToDetect += 60000;
                     
                     if(distance > distanceToDetect) {
                         AutobanFactory.DISTANCE_HACK.alert(player, "Distance Sq to monster: " + distance + " SID: " + attack.skill + " MID: " + monster.getId());

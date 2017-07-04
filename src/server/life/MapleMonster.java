@@ -209,7 +209,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         int trueDamage = Math.min(hp, damage); // since magic happens otherwise B^)
         
-        if(ServerConstants.USE_DEBUG == true && from != null) from.dropMessage(5, "Hitted MOB " + this.getId());
+        if(ServerConstants.USE_DEBUG == true && from != null) from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
         dispatchMonsterDamaged(from, trueDamage);
 
         hp -= damage;

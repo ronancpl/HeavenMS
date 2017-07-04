@@ -50,7 +50,7 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
             chr.addHP(healHP);
             
             chr.getMap().broadcastMessage(chr, MaplePacketCreator.showHpHealed(chr.getId(), healHP), false);
-            chr.checkBerserk();
+            chr.checkBerserk(chr.isHidden());
             abm.spam(0, timestamp);
         }
         short healMP = slea.readShort();

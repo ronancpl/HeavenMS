@@ -810,6 +810,10 @@ public class MapleStatEffect {
         }
         SummonMovementType summonMovementType = getSummonMovementType();
         if (overTime || isCygnusFA() || summonMovementType != null) {
+            if (summonMovementType != null && pos != null) {
+                applyto.cancelBuffStats(MapleBuffStat.SUMMON);  // if player has a summon already, drop it
+            }
+            
             applyBuffEffect(applyfrom, applyto, primary);
         }
 
@@ -1105,7 +1109,7 @@ public class MapleStatEffect {
         }
         if (hpR != 0) {
             hpchange += (int) (applyfrom.getCurrentMaxHp() * hpR) / (applyfrom.hasDisease(MapleDisease.ZOMBIFY) ? 2 : 1);
-            applyfrom.checkBerserk();
+            applyfrom.checkBerserk(applyfrom.isHidden());
         }
         if (primary) {
             if (hpCon != 0) {

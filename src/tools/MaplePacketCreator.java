@@ -1996,7 +1996,26 @@ public class MaplePacketCreator {
                 serializeMovementList(mplew, moves);
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] summonAttack(int cid, int summonOid, byte direction, List<SummonAttackEntry> allDamage) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                //b2 00 29 f7 00 00 9a a3 04 00 c8 04 01 94 a3 04 00 06 ff 2b 00
+                mplew.writeShort(SendOpcode.SUMMON_ATTACK.getValue());
+                mplew.writeInt(cid);
+                mplew.writeInt(summonOid);
+                mplew.write(direction);
+                mplew.write(4);
+                mplew.write(allDamage.size());
+                for (SummonAttackEntry attackEntry : allDamage) {
+                        mplew.writeInt(attackEntry.getMonsterOid()); // oid
+                        mplew.write(6); // who knows
+                        mplew.writeInt(attackEntry.getDamage()); // damage
+                }
+                
+                return mplew.getPacket();
+        }
+        
+        /*
         public static byte[] summonAttack(int cid, int summonSkillId, byte direction, List<SummonAttackEntry> allDamage) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 //b2 00 29 f7 00 00 9a a3 04 00 c8 04 01 94 a3 04 00 06 ff 2b 00
@@ -2013,6 +2032,7 @@ public class MaplePacketCreator {
                 }
                 return mplew.getPacket();
         }
+        */
 
         public static byte[] closeRangeAttack(MapleCharacter chr, int skill, int skilllevel, int stance, int numAttackedAndDamage, Map<Integer, List<Integer>> damage, int speed, int direction, int display) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -3506,14 +3526,14 @@ public class MaplePacketCreator {
                 mplew.writeInt(oid);
                 return mplew.getPacket();
         }
-
-        public static byte[] damageSummon(int cid, int summonSkillId, int damage, int unkByte, int monsterIdFrom) {
+        
+        public static byte[] damageSummon(int cid, int oid, int damage, int monsterIdFrom) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DAMAGE_SUMMON.getValue());
                 mplew.writeInt(cid);
-                mplew.writeInt(summonSkillId);
-                mplew.write(unkByte);
-                mplew.writeInt(damage);
+                mplew.writeInt(oid);
+                mplew.write(12);
+                mplew.writeInt(damage);         // damage display doesn't seems to work...
                 mplew.writeInt(monsterIdFrom);
                 mplew.write(0);
                 return mplew.getPacket();

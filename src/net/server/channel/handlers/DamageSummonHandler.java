@@ -27,25 +27,28 @@ import client.MapleClient;
 import client.SkillFactory;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleSummon;
+import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class DamageSummonHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        int skillid = slea.readInt(); //Bugged? might not be skillid.
-        int unkByte = slea.readByte();
+        int oid = slea.readInt();
+        slea.skip(1);   // -1
         int damage = slea.readInt();
         int monsterIdFrom = slea.readInt();
-        if (SkillFactory.getSkill(skillid) != null) {
-            MapleCharacter player = c.getPlayer();
-            MapleSummon summon = player.getSummonByKey(skillid);
-            if (summon != null) {
-                summon.addHP(-damage);
-                if (summon.getHP() <= 0) {
-                    player.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
-                }
+        
+        MapleCharacter player = c.getPlayer();
+        MapleMapObject mmo = player.getMap().getMapObject(oid);
+        
+        if(mmo != null && mmo instanceof MapleSummon) {
+            MapleSummon summon = (MapleSummon) mmo;
+        
+            summon.addHP(-damage);
+            if (summon.getHP() <= 0) {
+                player.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
             }
-            player.getMap().broadcastMessage(player, MaplePacketCreator.damageSummon(player.getId(), skillid, damage, unkByte, monsterIdFrom), summon.getPosition());
+            player.getMap().broadcastMessage(player, MaplePacketCreator.damageSummon(player.getId(), oid, damage, monsterIdFrom), summon.getPosition());
         }
     }
 }

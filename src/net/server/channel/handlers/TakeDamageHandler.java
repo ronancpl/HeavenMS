@@ -224,7 +224,11 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
         }
         if (!player.isHidden()) {
             map.broadcastMessage(player, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, player.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
-            player.checkBerserk();
+            player.checkBerserk(true);
+        }
+        else {
+            map.broadcastGMMessage(player, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, player.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
+            player.checkBerserk(false);
         }
         if (map.getId() >= 925020000 && map.getId() < 925030000) {
             player.setDojoEnergy(player.isGM() ? 300 : player.getDojoEnergy() < 300 ? player.getDojoEnergy() + 1 : 0); //Fking gm's

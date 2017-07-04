@@ -2068,6 +2068,9 @@ public class Commands {
                                 MapleMapItem mapItem = (MapleMapItem) item;
                                 if (mapItem.getMeso() > 0) {
                                         player.gainMeso(mapItem.getMeso(), true);
+                                } else if(mapItem.getItemId() == 4031865 || mapItem.getItemId() == 4031866) {
+                                        // Add NX to account, show effect and make item disappear
+                                        player.getCashShop().gainCash(1, mapItem.getItemId() == 4031865 ? 100 : 250);
                                 } else if (mapItem.getItem().getItemId() >= 5000000 && mapItem.getItem().getItemId() <= 5000100) {
                                         int petId = MaplePet.createPet(mapItem.getItem().getItemId());
                                         if (petId == -1) {

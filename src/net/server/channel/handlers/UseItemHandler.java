@@ -75,7 +75,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
             remove(c, slot);
             
             ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer());
-            c.getPlayer().checkBerserk();
+            c.getPlayer().checkBerserk(c.getPlayer().isHidden());
         }
     }
 

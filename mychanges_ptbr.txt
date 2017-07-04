@@ -352,3 +352,7 @@ Corrigido bug no esquema de recuperação de diretórios dos mapas, referenciados e
 30 Junho 2017,
 Corrigido bug em mecânica de hpDec que permitia aos jogadores postergarem o efeito de decréscimo de HP.
 Elaborada funcionalidade que permite salvar o "tempo até expirar" para quests com janela de tempo muito alta (as que usam "timeLimit2").
+
+03 Julho 2017,
+Corrigido cliente não mostrando dano tomado pelo player se ele está com GM escondido para os outros GMs.
+Corrigido cliente não mostrando dano dado pelo summon para outros players.

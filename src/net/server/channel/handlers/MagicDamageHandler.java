@@ -58,10 +58,9 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
 			}
 		}
 
-		byte[] packet = MaplePacketCreator.magicAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, -1, attack.speed, attack.direction, attack.display);
-		if (attack.skill == Evan.FIRE_BREATH || attack.skill == Evan.ICE_BREATH || attack.skill == FPArchMage.BIG_BANG || attack.skill == ILArchMage.BIG_BANG || attack.skill == Bishop.BIG_BANG) {
-			packet = MaplePacketCreator.magicAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, attack.charge, attack.speed, attack.direction, attack.display);
-		}
+                int charge = (attack.skill == Evan.FIRE_BREATH || attack.skill == Evan.ICE_BREATH || attack.skill == FPArchMage.BIG_BANG || attack.skill == ILArchMage.BIG_BANG || attack.skill == Bishop.BIG_BANG) ? attack.charge : -1;
+                byte[] packet = MaplePacketCreator.magicAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, charge, attack.speed, attack.direction, attack.display);
+		
 		player.getMap().broadcastMessage(player, packet, false, true);
 		MapleStatEffect effect = attack.getAttackEffect(player, null);
 		Skill skill = SkillFactory.getSkill(attack.skill);

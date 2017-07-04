@@ -133,7 +133,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                 player.setHp(1);
             }
             player.updateSingleStat(MapleStat.HP, player.getHp());
-            player.checkBerserk();
+            player.checkBerserk(player.isHidden());
         }
         if (attack.numAttacked > 0 && attack.skill == 1211002) {
             boolean advcharge_prob = false;
