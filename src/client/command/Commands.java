@@ -709,7 +709,7 @@ public class Commands {
                     
                 case "debugmap":
                         if(ServerConstants.USE_DEBUG) {
-                            player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ".");
+                            player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ", Objects: " + player.getMap().getMapObjects().size() + ".");
                         }
                         break;
                     
@@ -764,7 +764,7 @@ public class Commands {
                 case "debugplayercoupons":
                         if(ServerConstants.USE_DEBUG) {
                             String s = "Currently active PLAYER coupons: ";
-                            for(Integer i : Server.getInstance().getActiveCoupons()) {
+                            for(Integer i : player.getActiveCoupons()) {
                                 s += (i + " ");
                             }
                             

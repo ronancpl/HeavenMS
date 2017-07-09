@@ -839,33 +839,30 @@ public class MapleStatEffect {
             }
         }
         if (isMagicDoor() && !FieldLimit.DOOR.check(applyto.getMap().getFieldLimit())) { // Magic Door
-        	int y = applyto.getFh();
-        	if (y == 0) {
-        		y = applyto.getPosition().y;
-        	}
+            int y = applyto.getFh();
+            if (y == 0) {
+                    y = applyto.getPosition().y;
+            }
             Point doorPosition = new Point(applyto.getPosition().x, y);
-            MapleDoor door = new MapleDoor(applyto, doorPosition);                     
-            if (applyto.getParty() != null) {// out of town door
-                for (MaplePartyCharacter partyMembers : applyto.getParty().getMembers()) {
-                	partyMembers.getPlayer().addDoor(door);
-                	partyMembers.updateDoor(door);
+            MapleDoor door = new MapleDoor(applyto, doorPosition);
+            
+            if(door.getOwnerId() != -1) {
+                if (applyto.getParty() != null) {
+                    for (MaplePartyCharacter partyMember : applyto.getParty().getMembers()) {
+                        partyMember.getPlayer().addDoor(door.getOwnerId(), door);
+                        partyMember.addDoor(door.getOwnerId(), door);
+                    }
+                    applyto.silentPartyUpdate();
+                } else {
+                    applyto.addDoor(door.getOwnerId(), door);
                 }
-                applyto.silentPartyUpdate();
+
+                door.getTarget().spawnDoor(door.getAreaDoor());
+                door.getTown().spawnDoor(door.getTownDoor());
             } else {
-            	applyto.addDoor(door);
-            }   
-            applyto.getMap().spawnDoor(door);
-            door = new MapleDoor(door); //The town door
-            if (applyto.getParty() != null) {// update town doors
-                for (MaplePartyCharacter partyMembers : applyto.getParty().getMembers()) {
-                	partyMembers.getPlayer().addDoor(door);
-                	partyMembers.updateDoor(door);
-                }
-                applyto.silentPartyUpdate();
-            } else {
-            	applyto.addDoor(door);
-            }   
-            door.getTown().spawnDoor(door);
+                applyto.dropMessage(5, "There are no door portals available for the town at this moment. Try again later.");
+                applyto.cancelBuffStats(MapleBuffStat.SOULARROW);  // cancel door buff
+            }
             applyto.disableDoor();
         }  else if (isMist()) {
             Rectangle bounds = calculateBoundingBox(sourceid == NightWalker.POISON_BOMB ? pos : applyfrom.getPosition(), applyfrom.isFacingLeft());
@@ -966,7 +963,7 @@ public class MapleStatEffect {
     }
 
     private void applyBuffEffect(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary) {
-        if (!isMonsterRiding() && !isCouponBuff()) {
+        if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
         }
 
@@ -1295,6 +1292,10 @@ public class MapleStatEffect {
         return MapleItemInformationProvider.getInstance().isRateCoupon(sourceid);
     }
     
+    private boolean isMysticDoor() {
+        return skill && sourceid == Priest.MYSTIC_DOOR;
+    }
+    
     public boolean isMonsterRiding() {
         return skill && (sourceid % 10000000 == 1004 || sourceid == Corsair.BATTLE_SHIP || sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP
                 || sourceid == Beginner.YETI_MOUNT1 || sourceid == Beginner.YETI_MOUNT2 || sourceid == Beginner.WITCH_BROOMSTICK || sourceid == Beginner.BALROG_MOUNT
@@ -1432,7 +1433,7 @@ public class MapleStatEffect {
     
     public boolean hasNoIcon() {
         return (sourceid == 3111002 || sourceid == 3211002 || + // puppet, puppet
-                sourceid == 3211005 || sourceid == 2311002 || + // golden eagle, mystic door
+                sourceid == 3211005 || +                        // golden eagle
                 sourceid == 2121005 || sourceid == 2221005 || + // elquines, ifrit
                 sourceid == 2321003 || sourceid == 3121006 || + // bahamut, phoenix
                 sourceid == 3221005 || sourceid == 3111005 || + // frostprey, silver hawk

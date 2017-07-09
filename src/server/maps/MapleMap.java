@@ -45,6 +45,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -94,6 +96,7 @@ public class MapleMap {
     private Map<Integer, MaplePortal> portals = new HashMap<>();
     private Map<Integer, Integer> backgroundTypes = new HashMap<>();
     private Map<String, Integer> environment = new LinkedHashMap<String, Integer>();
+    private Set<Integer> usedDoors = new HashSet<>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
     private int mapid;
@@ -1360,24 +1363,74 @@ public class MapleMap {
         spawnReactor(reactor);
     }
 
-    public void spawnDoor(final MapleDoor door) {
+    public void spawnDoor(final MapleDoorObject door) {
         spawnAndAddRangedMapObject(door, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                c.announce(MaplePacketCreator.spawnDoor(door.getOwner().getId(), door.getTargetPosition(), false));
-                if (door.getOwner().getParty() != null && (door.getOwner() == c.getPlayer() || door.getOwner().getParty().containsMembers(c.getPlayer().getMPC()))) {
-                    c.announce(MaplePacketCreator.partyPortal(door.getTown().getId(), door.getTarget().getId(), door.getTargetPosition()));
+                if (door.getFrom().getId() == c.getPlayer().getMapId()) {
+                    c.announce(MaplePacketCreator.spawnPortal(door.getFrom().getId(), door.getTo().getId(), door.toPosition()));
+                    if(!door.inTown()) c.announce(MaplePacketCreator.spawnDoor(door.getOwnerId(), door.getPosition(), false));
+                    
+                    if (c.getPlayer().getParty() != null && (door.getOwnerId() == c.getPlayer().getId() || c.getPlayer().getParty().getMemberById(door.getOwnerId()) != null)) {
+                        c.announce(MaplePacketCreator.partyPortal(door.getTown().getId(), door.getArea().getId(), door.getAreaPosition()));
+                    }
                 }
-                c.announce(MaplePacketCreator.spawnPortal(door.getTown().getId(), door.getTarget().getId(), door.getTargetPosition()));
+
                 c.announce(MaplePacketCreator.enableActions());
             }
         }, new SpawnCondition() {
             @Override
             public boolean canSpawn(MapleCharacter chr) {
-                return chr.getMapId() == door.getTarget().getId() || chr == door.getOwner() && chr.getParty() == null;
+                return chr.getMapId() == door.getFrom().getId();
             }
         });
-
+    }
+    
+    public boolean setUsingDoorPortal(MaplePortal port) {
+        objectWLock.lock();
+        try {
+            if(usedDoors.contains(port.getId())) return false;
+            
+            usedDoors.add(port.getId());
+            return true;
+        } finally {
+            objectWLock.unlock();
+        }
+    }
+    
+    public void setDisposeDoorPortal(MaplePortal port) {
+        objectWLock.lock();
+        try {
+            usedDoors.remove(port.getId());
+        } finally {
+            objectWLock.unlock();
+        }
+    }
+    
+    public boolean getNotUsingDoorPortal() {
+        objectRLock.lock();
+        try {
+            return usedDoors.isEmpty();
+        } finally {
+            objectRLock.unlock();
+        }
+    }
+    
+    public List<MaplePortal> getAvailableDoorPortals() {
+        objectRLock.lock();
+        try {
+            List<MaplePortal> availablePortals = new ArrayList<>();
+            
+            for (MaplePortal port : getPortals()) {
+                if (port.getType() == MaplePortal.DOOR_PORTAL && !usedDoors.contains(port.getId())) {
+                    availablePortals.add(port);
+                }
+            }
+            
+            return availablePortals;
+        } finally {
+            objectRLock.unlock();
+        }
     }
 
     public void spawnSummon(final MapleSummon summon) {
@@ -2095,7 +2148,7 @@ public class MapleMap {
     }
 
     private void updateMapObjectVisibility(MapleCharacter chr, MapleMapObject mo) {
-        if (!chr.isMapObjectVisible(mo)) { // monster entered view range
+        if (!chr.isMapObjectVisible(mo)) { // item entered view range
             if (mo.getType() == MapleMapObjectType.SUMMON || mo.getPosition().distanceSq(chr.getPosition()) <= getRangedDistance()) {
                 chr.addVisibleMapObject(mo);
                 mo.sendSpawnData(chr.getClient());

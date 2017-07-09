@@ -74,7 +74,9 @@ import constants.skills.WhiteKnight;
 import constants.skills.WindArcher;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import provider.MapleData;
@@ -122,9 +124,9 @@ public class SkillFactory {
         int skillType = MapleDataTool.getInt("skillType", data, -1);
         String elem = MapleDataTool.getString("elemAttr", data, null);
         if (elem != null) {
-            ret.element = Element.getFromChar(elem.charAt(0));
+            ret.setElement(Element.getFromChar(elem.charAt(0)));
         } else {
-            ret.element = Element.NEUTRAL;
+            ret.setElement(Element.NEUTRAL);
         }
         MapleData effect = data.getChildByPath("effect");
         if (skillType != -1) {
@@ -148,7 +150,7 @@ public class SkillFactory {
 	    } else {
 	    	action = true;
 	    }
-	    ret.action = action;
+	    ret.setAction(action);
             MapleData hit = data.getChildByPath("hit");
             MapleData ball = data.getChildByPath("ball");
             isBuff = effect != null && hit == null && ball == null;
@@ -371,12 +373,12 @@ public class SkillFactory {
         }
 
         for (MapleData level : data.getChildByPath("level")) {
-            ret.effects.add(MapleStatEffect.loadSkillEffectFromData(level, id, isBuff));
+            ret.addLevelEffect(MapleStatEffect.loadSkillEffectFromData(level, id, isBuff));
         }
-        ret.animationTime = 0;
+        ret.setAnimationTime(0);
         if (effect != null) {
             for (MapleData effectEntry : effect) {
-                ret.animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
+                ret.incAnimationTime(MapleDataTool.getIntConvert("delay", effectEntry, 0));
             }
         }
         return ret;

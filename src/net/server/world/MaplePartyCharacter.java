@@ -21,12 +21,16 @@
 */
 package net.server.world;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.LinkedHashMap;
 import java.util.Collection;
 
 import server.maps.MapleDoor;
+import server.MapleStatEffect;
 import client.MapleCharacter;
 import client.MapleJob;
+import java.util.Collections;
 
 public class MaplePartyCharacter {
     private String name;
@@ -35,7 +39,7 @@ public class MaplePartyCharacter {
     private int channel, world;
     private int jobid;
     private int mapid;
-	private ArrayList<MapleDoor> door = new ArrayList<MapleDoor>();
+    private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
     private boolean online;
     private MapleJob job;
     private MapleCharacter character;
@@ -51,8 +55,8 @@ public class MaplePartyCharacter {
         this.mapid = maplechar.getMapId();
         this.online = true;
         this.job = maplechar.getJob();
-        for (MapleDoor doors : maplechar.getDoors()) {
-        	this.door.add(doors);
+        for (Entry<Integer, MapleDoor> entry : maplechar.getDoors().entrySet()) {
+            doors.put(entry.getKey(), entry.getValue());
         }
     }
 
@@ -116,12 +120,16 @@ public class MaplePartyCharacter {
         return character.getGuildId();
     }
 
-    public void updateDoor(MapleDoor door) {
-    	this.door.add(door);
+    public void addDoor(Integer owner, MapleDoor door) {
+    	this.doors.put(owner, door);
+    }
+    
+    public void removeDoor(Integer owner) {
+    	this.doors.remove(owner);
     }
     
     public Collection<MapleDoor> getDoors() {
-    	return door;
+    	return Collections.unmodifiableCollection(doors.values());
     }
     
     @Override

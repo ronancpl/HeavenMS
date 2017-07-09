@@ -27,12 +27,12 @@ import server.MapleStatEffect;
 import server.life.Element;
 
 public class Skill {
-    public int id;
-    public List<MapleStatEffect> effects = new ArrayList<>();
-    public Element element;
-    public int animationTime;
-    public int job;
-    public boolean action;
+    private int id;
+    private List<MapleStatEffect> effects = new ArrayList<>();
+    private Element element;
+    private int animationTime;
+    private int job;
+    private boolean action;
 
     public Skill(int id) {
         this.id = id;
@@ -61,6 +61,10 @@ public class Skill {
     	return job % 10 == 2;
     }
 
+    public void setElement(Element elem) {
+        element = elem;
+    }
+    
     public Element getElement() {
         return element;
     }
@@ -68,12 +72,28 @@ public class Skill {
     public int getAnimationTime() {
         return animationTime;
     }
+    
+    public void setAnimationTime(int time) {
+        animationTime = time;
+    }
+    
+    public void incAnimationTime(int time) {
+        animationTime += time;
+    }
 
     public boolean isBeginnerSkill() {
         return id % 10000000 < 10000;
     }
+    
+    public void setAction(boolean act) {
+        action = act;
+    }
 
     public boolean getAction() {
         return action;
+    }
+    
+    public void addLevelEffect(MapleStatEffect effect) {
+        effects.add(effect);
     }
 }
