@@ -19,12 +19,14 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Door that warps you inside the CWKPQ start map. Needs GMS-like checks.
+/* Door that warps you inside the CWKPQ start map.
  * 
- * @Author Alan (SharpAceX)
+ * @Author Ronan
  */
  
 function start() {
-    cm.warp(610030020);
+    if(cm.haveItem(3992041, 1)) cm.warp(610030020);
+    else cm.getPlayer().dropMessage(5, "The giant gate of iron will not budge no matter what, however there is a key-shaped socket visible.");
+    
     cm.dispose();
 }

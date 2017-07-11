@@ -71,14 +71,20 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == 0) {
-	cm.sendOk("Hmmm...it shouldn't be a bad deal for you. Come see me at the right time and you may get a much better item to be offered. Anyway, let me know when you have a change of mind.");
+    if (mode <= 0) {
+	cm.sendOk("Hmmm...it shouldn't be a bad deal for you. Come see me at the right time and you may get a much better item to be offered. Anyway, let me know if you have a change of mind.");
 	cm.dispose();
 	return;
     }
     
     status++;
     if (status == 0) { // first interaction with NPC
+        if(cm.getQuestStatus(8225) != 2) {
+            cm.sendNext("Hey, I'm not a bandit, ok?");
+            cm.dispose();
+            return;
+        }
+        
 	cm.sendNext("Hey, got a little bit of time? Well, my job is to collect items here and sell them elsewhere, but these days the monsters have become much more hostile so it have been difficult to get good items... What do you think? Do you want to do some business with me?");
     } else if (status == 1) {
 	cm.sendYesNo("The deal is simple. You get me something I need, I get you something you need. The problem is, I deal with a whole bunch of people, so the items I have to offer may change every time you see me. What do you think? Still want to do it?");

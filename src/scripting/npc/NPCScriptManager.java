@@ -50,11 +50,11 @@ public class NPCScriptManager extends AbstractScriptManager {
         return instance;
     }
 
-    public void start(MapleClient c, int npc, MapleCharacter chr) {
-        start(c, npc, null, chr);
+    public boolean start(MapleClient c, int npc, MapleCharacter chr) {
+        return start(c, npc, null, chr);
     }
 
-    public void start(MapleClient c, int npc, String fileName, MapleCharacter chr) {
+    public boolean start(MapleClient c, int npc, String fileName, MapleCharacter chr) {
         try {
             NPCConversationManager cm = new NPCConversationManager(c, npc, fileName);
             if (cms.containsKey(c)) {
@@ -69,12 +69,9 @@ public class NPCScriptManager extends AbstractScriptManager {
                 if (iv == null) {
                     iv = getInvocable("npc/" + npc + ".js", c);
                 }
-                if (iv == null) {
-                    FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + MapleLifeFactory.getNPC(npc).getName() + "(" + npc + ") is not coded.\r\n");
-                }
                 if (iv == null || NPCScriptManager.getInstance() == null) {
                     dispose(c);
-                    return;
+                    return false;
                 }
                 engine.put("cm", cm);
                 scripts.put(c, iv);
@@ -91,12 +88,18 @@ public class NPCScriptManager extends AbstractScriptManager {
             } else {
                 c.announce(MaplePacketCreator.enableActions());
             }
+            
+            return true;
         } catch (final UndeclaredThrowableException | ScriptException ute) {
             FilePrinter.printError(FilePrinter.NPC + npc + ".txt", ute);
             dispose(c);
+            
+            return false;
         } catch (final Exception e) {
             FilePrinter.printError(FilePrinter.NPC + npc + ".txt", e);
             dispose(c);
+            
+            return false;
         }
     }
 

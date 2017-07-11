@@ -135,10 +135,10 @@ public class MapleQuest {
         if (startActData != null) {
             for (MapleData startAct : startActData.getChildren()) {
                 MapleQuestActionType questActionType = MapleQuestActionType.getByWZName(startAct.getName());
-				MapleQuestAction act = this.getAction(questActionType, startAct);
+                MapleQuestAction act = this.getAction(questActionType, startAct);
 				
-				if(act == null)
-					continue;
+                if(act == null)
+                    continue;
 				
                 startActs.put(questActionType, act);
             }
@@ -146,11 +146,11 @@ public class MapleQuest {
         MapleData completeActData = actData.getChildByPath("1");
         if (completeActData != null) {
             for (MapleData completeAct : completeActData.getChildren()) {
-				MapleQuestActionType questActionType = MapleQuestActionType.getByWZName(completeAct.getName());
-				MapleQuestAction act = this.getAction(questActionType, completeAct);
-				
-				if(act == null)
-					continue;
+                MapleQuestActionType questActionType = MapleQuestActionType.getByWZName(completeAct.getName());
+                MapleQuestAction act = this.getAction(questActionType, completeAct);
+
+                if(act == null)
+                    continue;
 				
                 completeActs.put(questActionType, act);
             }
@@ -158,11 +158,11 @@ public class MapleQuest {
     }
 	
 	public boolean isAutoComplete() {
-		return autoPreComplete || autoComplete;
+            return autoPreComplete || autoComplete;
 	}
 	
 	public boolean isAutoStart() {
-		return autoStart;
+            return autoStart;
 	}
 
     public static MapleQuest getInstance(int id) {

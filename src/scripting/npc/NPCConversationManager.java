@@ -38,6 +38,7 @@ import provider.MapleDataProviderFactory;
 import scripting.AbstractPlayerInteraction;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
+import server.MapleShopFactory;
 import server.events.gm.MapleEvent;
 import server.gachapon.MapleGachapon;
 import server.gachapon.MapleGachapon.MapleGachaponItem;
@@ -315,6 +316,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public void resetStats() {
 		getPlayer().resetStats();
 	}
+        
+        public void openShopNPC(int id) {
+            MapleShopFactory.getInstance().getShop(id).sendShop(c);
+        }
 
 	public void maxMastery() {
 		for (MapleData skill_ : MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/" + "String.wz")).getData("Skill.img").getChildren()) {

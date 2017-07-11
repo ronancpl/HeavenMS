@@ -7,7 +7,7 @@ function start() {
         		cm.sendOk("As every Thief knows, the best attack is the one you never see coming. So, to best illustrate this, you'll be in a chamber with platforms and ledges that you can only get to with Haste, as well as All-Seeing Eyes that your dagger or claw must close--permanently. After all the All-Seeing Eyes have been eliminated, get ti the Thief Statue and lay claim to the Primal Claw! Good luck!");
 			break;
 		case 610030000:
-			cm.sendOk("Once known as the 'Prince of Shadows', Grandmaster Ryo possessed supreme speed and power with short-ranged daggers and longer chain-like Claw. A part-time member of the Bosshunters, he was reowned for unparalleled ability to blend into the very nigth itself. His legend grew during a battle with Crimson Balrog, where he moved so swiftly that Balrog's attacks only caught air. Ryo also performed occasional 'retrievals' for those less fortunate than himself.");
+			cm.sendOk("Once known as the 'Prince of Shadows', Grandmaster Ryo possessed supreme speed and power with short-ranged daggers and longer chain-like Claw. A part-time member of the Bosshunters, he was reowned for unparalleled ability to blend into the very night itself. His legend grew during a battle with Crimson Balrog, where he moved so swiftly that Balrog's attacks only caught air. Ryo also performed occasional 'retrievals' for those less fortunate than himself.");
 			break;
 		case 610030530:
 			if (cm.isAllReactorState(6108004, 1)) {

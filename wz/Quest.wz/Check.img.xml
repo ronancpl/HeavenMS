@@ -63032,11 +63032,9 @@
     <imgdir name="0">
       <int name="npc" value="9201098"/>
       <int name="lvmin" value="70"/>
-      <string name="startscript" value="q8222s"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="9201098"/>
-      <string name="endscript" value="q8222e"/>
       <imgdir name="item">
         <imgdir name="0">
           <int name="id" value="4032006"/>
@@ -63098,6 +63096,12 @@
   <imgdir name="8225">
     <imgdir name="1">
       <int name="npc" value="9201100"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="3992040"/>
+          <int name="count" value="1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="9201100"/>
@@ -63107,12 +63111,6 @@
         <imgdir name="0">
           <int name="id" value="8224"/>
           <int name="state" value="2"/>
-        </imgdir>
-      </imgdir>
-      <imgdir name="item">
-        <imgdir name="0">
-          <int name="id" value="3992040"/>
-          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -63153,6 +63151,13 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="9201051"/>
+      <string name="endscript" value="q8227e"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4032032"/>
+          <int name="count" value="1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="8228">
@@ -63171,8 +63176,8 @@
       <string name="endscript" value="q8228e"/>
       <imgdir name="item">
         <imgdir name="0">
-          <int name="id" value="4032018"/>
-          <int name="count" value="0"/>
+          <int name="id" value="4032032"/>
+          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -63181,6 +63186,12 @@
     <imgdir name="1">
       <int name="npc" value="9201096"/>
       <string name="endscript" value="q8229e"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4032018"/>
+          <int name="count" value="1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="9201051"/>

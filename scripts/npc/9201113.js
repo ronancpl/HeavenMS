@@ -56,7 +56,7 @@ function action(mode, type, selection) {
                 cm.sendOk("You do not meet the criteria to take attempt Crimsonwood Keep Party Quest!");
                 cm.dispose();
             } else if (expedition == null) { //Start an expedition
-                cm.sendSimple("#e#b<Party Quest: Crimsonwood Keep>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble a team to attempt a #rCrimsonwood Keep Party Quest#k?\r\n#b#L1#Lets get this going!#l\r\n\#L2#No, I think I'll wait a bit...#l");
+                cm.sendSimple("#e#b<Party Quest: Crimsonwood Keep>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble a team to attempt the #rCrimsonwood Keep Party Quest#k?\r\n#b#L1#Lets get this going!#l\r\n\#L2#No, I think I'll wait a bit...#l");
                 status = 1;
             } else if (expedition.isLeader(player)) { //If you're the leader, manage the exped
                 cm.sendSimple(list);

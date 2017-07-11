@@ -233,13 +233,17 @@ public class AbstractPlayerInteraction {
 		c.getPlayer().updateQuest(status);
 	}
 
-	public MapleQuestStatus.Status getQuestStatus(int id) {
-		return c.getPlayer().getQuest(MapleQuest.getInstance(id)).getStatus();
+	public int getQuestStatus(int id) {
+		return c.getPlayer().getQuest(MapleQuest.getInstance(id)).getStatus().getId();
 	}
-
+        
+        private MapleQuestStatus.Status getQuestStat(int id) {
+                return c.getPlayer().getQuest(MapleQuest.getInstance(id)).getStatus();
+        }
+        
 	public boolean isQuestCompleted(int quest) {
 		try {
-			return getQuestStatus(quest) == MapleQuestStatus.Status.COMPLETED;
+			return getQuestStat(quest) == MapleQuestStatus.Status.COMPLETED;
 		} catch (NullPointerException e) {
                         e.printStackTrace();
 			return false;
@@ -252,7 +256,7 @@ public class AbstractPlayerInteraction {
         
 	public boolean isQuestStarted(int quest) {
 		try {
-			return getQuestStatus(quest) == MapleQuestStatus.Status.STARTED;
+			return getQuestStat(quest) == MapleQuestStatus.Status.STARTED;
 		} catch (NullPointerException e) {
                         e.printStackTrace();
 			return false;

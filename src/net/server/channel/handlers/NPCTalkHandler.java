@@ -28,6 +28,7 @@ import scripting.npc.NPCScriptManager;
 import server.life.MapleNPC;
 import server.maps.MapleMapObject;
 import server.maps.PlayerNPCs;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -38,8 +39,10 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        if(System.currentTimeMillis() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT)
+        if(System.currentTimeMillis() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT) {
+            c.announce(MaplePacketCreator.enableActions());
             return;
+        }
         
         int oid = slea.readInt();
         MapleMapObject obj = c.getPlayer().getMap().getMapObject(oid);
@@ -50,11 +53,6 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             if (npc.getId() == 9010009) {   //is duey
                 c.getPlayer().setNpcCooldown(System.currentTimeMillis());
                 c.announce(MaplePacketCreator.sendDuey((byte) 8, DueyHandler.loadItems(c.getPlayer())));
-            } else if (npc.hasShop()) {
-                if (c.getPlayer().getShop() != null) {
-                    return;
-                }
-                npc.sendShop(c);
             } else {
                 if (c.getCM() != null || c.getQM() != null) {
                     c.announce(MaplePacketCreator.enableActions());
@@ -64,7 +62,18 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
                     // Custom handling for gachapon scripts to reduce the amount of scripts needed.
                     NPCScriptManager.getInstance().start(c, npc.getId(), "gachapon", null);
                 } else {
-                    NPCScriptManager.getInstance().start(c, npc.getId(), null);
+                    boolean hasNpcScript = NPCScriptManager.getInstance().start(c, npc.getId(), null);
+                    if (!hasNpcScript) {
+                        if (!npc.hasShop()) {
+                            FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + npc.getName() + "(" + npc.getId() + ") is not coded.\r\n");
+                            return;
+                        } else if(c.getPlayer().getShop() != null) {
+                            c.announce(MaplePacketCreator.enableActions());
+                            return;
+                        }
+                        
+                        npc.sendShop(c);
+                    }
                 }
             }
         } else if (obj instanceof PlayerNPCs) {

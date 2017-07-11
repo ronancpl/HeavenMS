@@ -80,7 +80,7 @@ public class ItemAction extends MapleQuestAction {
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        Map<Integer, Integer> props = new HashMap<>();
+                Map<Integer, Integer> props = new HashMap<>();
 		for(ItemData item : items.values()) {
 			if(item.getProp() != null && item.getProp() != -1 && canGetItem(item, chr)) {
 				for (int i = 0; i < item.getProp(); i++) {
@@ -133,7 +133,7 @@ public class ItemAction extends MapleQuestAction {
 	@Override
 	public boolean check(MapleCharacter chr, Integer extSelection) {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        EnumMap<MapleInventoryType, Integer> props = new EnumMap<>(MapleInventoryType.class);
+                EnumMap<MapleInventoryType, Integer> props = new EnumMap<>(MapleInventoryType.class);
 		List<Pair<Item, MapleInventoryType>> itemList = new ArrayList<>();
 		for(ItemData item : items.values()) {
 			if (!canGetItem(item, chr)) {

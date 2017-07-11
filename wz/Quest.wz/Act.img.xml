@@ -39358,6 +39358,13 @@
     <imgdir name="0">
     </imgdir>
     <imgdir name="1">
+      <int name="exp" value="85000"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4032006"/>
+          <int name="count" value="-10"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="8223">
@@ -39391,12 +39398,6 @@
     </imgdir>
     <imgdir name="1">
       <int name="exp" value="15000"/>
-      <imgdir name="item">
-        <imgdir name="0">
-          <int name="id" value="3992040"/>
-          <int name="count" value="1"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="8226">
