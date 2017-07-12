@@ -45,17 +45,21 @@ public class MapleDoor {
         this.ownerId = owner.getId();
         this.target = owner.getMap();
         
-        this.town = this.target.getReturnMap();
-        this.townPortal = allocateFreePortal();
-        
-        if(townPortal != null) {
-            this.areaDoor = new MapleDoorObject(ownerId, town, target, false, targetPosition, townPortal.getPosition());
-            this.townDoor = new MapleDoorObject(ownerId, target, town, true, townPortal.getPosition(), targetPosition);
-            
-            this.areaDoor.setPairOid(this.townDoor.getObjectId());
-            this.townDoor.setPairOid(this.areaDoor.getObjectId());
+        if(target.canDeployDoor(targetPosition)) {
+            this.town = this.target.getReturnMap();
+            this.townPortal = allocateFreePortal();
+
+            if(townPortal != null) {
+                this.areaDoor = new MapleDoorObject(ownerId, town, target, false, targetPosition, townPortal.getPosition());
+                this.townDoor = new MapleDoorObject(ownerId, target, town, true, townPortal.getPosition(), targetPosition);
+
+                this.areaDoor.setPairOid(this.townDoor.getObjectId());
+                this.townDoor.setPairOid(this.areaDoor.getObjectId());
+            } else {
+                this.ownerId = -1;
+            }
         } else {
-            this.ownerId = -1;
+            this.ownerId = -2;
         }
     }
     

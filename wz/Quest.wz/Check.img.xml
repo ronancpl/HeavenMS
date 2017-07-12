@@ -62974,17 +62974,10 @@
   <imgdir name="8220">
     <imgdir name="0">
       <int name="npc" value="9201055"/>
-      <int name="interval" value="0"/>
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="8228"/>
           <int name="state" value="2"/>
-        </imgdir>
-      </imgdir>
-      <imgdir name="item">
-        <imgdir name="0">
-          <int name="id" value="4032018"/>
-          <int name="count" value="0"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -63198,7 +63191,7 @@
       <string name="startscript" value="q8229s"/>
       <imgdir name="quest">
         <imgdir name="0">
-          <int name="id" value="8228"/>
+          <int name="id" value="8220"/>
           <int name="state" value="2"/>
         </imgdir>
       </imgdir>

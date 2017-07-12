@@ -2386,7 +2386,9 @@ public class MaplePacketCreator {
                         }
                 }
                 mplew.write(0); //end of pets
-                if (chr.getMount() != null && chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18) != null) {
+                
+                Item mount;     //mounts can potentially crash the client if the player's level is not properly checked
+                if (chr.getMount() != null && (mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18)) != null && MapleItemInformationProvider.getInstance().getEquipStats(mount.getItemId()).get("reqLevel") <= chr.getLevel()) {
                         mplew.write(chr.getMount().getId()); //mount
                         mplew.writeInt(chr.getMount().getLevel()); //level
                         mplew.writeInt(chr.getMount().getExp()); //exp

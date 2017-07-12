@@ -46,14 +46,9 @@ function end(mode, type, selection) {
         }
     }
     if (status == 0){
-        if(!qm.canHold(4032018, 1)) {
-            qm.sendOk("I'm afraid you don't have a slot available on your ETC inventory.");
-        }
-        else if(qm.haveItem(4032032, 1)) {
+        if(qm.haveItem(4032032, 1)) {
+            qm.sendOk("Hello, native of this world. So you have a message that needs translation? My people back in Versal is known for mastering many foreign languages, this one may very well be some we know. Please stand by...");
             qm.gainItem(4032032, -1);
-            qm.gainItem(4032018, 1);
-
-            qm.sendOk("Hello, native of this world. So you have a message that needs translation? My people back in Versal is known for mastering many foreign languages, this one may very well be some we know. Please stand by... Here, the translated transcript.");
             qm.forceCompleteQuest();
         } else {
             qm.sendOk("I'm afraid you don't have the letter you claimed to have with you.");

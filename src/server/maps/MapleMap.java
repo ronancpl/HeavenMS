@@ -433,6 +433,11 @@ public class MapleMap {
         }
         return ret;
     }
+    
+    public boolean canDeployDoor(Point pos) {
+        Point toStep = calcPointBelow(pos);
+        return toStep != null && toStep.distance(pos) < 20;
+    }
 
     private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob) {
         if (mob.dropsDisabled() || !dropsOn) {

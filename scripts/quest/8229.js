@@ -25,11 +25,11 @@ function start(mode, type, selection) {
 	else if (status == 1){
             if(qm.haveItem(4032018, 1)) {
                 qm.forceStartQuest();
-            } else if (qm.canHold(4032018, 1)) {
+            } else if(qm.canHold(4032018, 1)) {
                 qm.gainItem(4032018, 1);
                 qm.forceStartQuest();
             } else {
-                qm.sendOk("Hey. There's no slot on your ETC.");
+                qm.sendOk("Oy, you need a slot in your ETC to get the communique.");
             }
 
             qm.dispose();
