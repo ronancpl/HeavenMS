@@ -21,11 +21,11 @@ function action(mode, type, selection) {
 	    cm.sendNext("We have to eliminate all these contaminated reactors!");
 	    break;
 	case 930000300:
-	    cm.warpParty(930000400);
+            cm.getEventInstance().warpEventTeam(930000400);
 	    break;
 	case 930000400:
 	    if (cm.haveItem(4001169,20)) {
-		cm.warpParty(930000500);
+                cm.getEventInstance().warpEventTeam(930000500);
 		cm.gainItem(4001169,-20);
 	    } else if (!cm.haveItem(2270004)) {
                 if(cm.canHold(2270004,10)) {

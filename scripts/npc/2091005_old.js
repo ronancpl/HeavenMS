@@ -133,13 +133,13 @@ function action(mode, type, selection) {
                 } else if (!isBetween30) {
                     cm.sendNext("Your partys level ranges are too broad to enter. Please make sure all of your party members are within #r30 levels#k of each other.");
                 } else {
-					for (var i = 1 ; i < 39; i++) { //only 32 stages, but 38 maps
-						if(cm.getClient().getChannelServer().getMapFactory().getMap(925020000 + 100 * i).getCharacters().size() > 0) {
-							cm.sendOk("Someone is already in the Dojo.");
-							cm.dispose();
-							return;
-						}
-					}
+                    for (var i = 1 ; i < 39; i++) { //only 32 stages, but 38 maps
+                            if(cm.getClient().getChannelServer().getMapFactory().getMap(925020000 + 100 * i).getCharacters().size() > 0) {
+                                    cm.sendOk("Someone is already in the Dojo.");
+                                    cm.dispose();
+                                    return;
+                            }
+                    }
                     cm.getClient().getChannelServer().getMapFactory().getMap(925020100).resetReactors();
                     cm.getClient().getChannelServer().getMapFactory().getMap(925020100).killAllMonsters();
                     cm.warpParty(925020100);

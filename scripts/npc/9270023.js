@@ -31,22 +31,30 @@ var fface = Array(21001, 21002, 21003, 21004, 21005, 21006, 21008, 21012, 21014,
 var facenew = Array();
 
 function start() {
-    cm.sendSimple("If you use this regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k, I will do it anyways for you. But don't forget, it will be random!\r\n\#L2#OK!#l");
+    cm.sendSimple("If you use this regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k, I will do it anyways for you. But don't forget, it will be random!\r\n\#L2#OK! (Uses #i5152037# #t5152037#)#l");
 }
 
 function action(mode, type, selection) {
     if (mode == -1) 
         cm.dispose();
     else {
-        if (mode == 0 && status == 0) 
+        if (mode == 0 && status >= 0) {
             cm.dispose();
+            return;
+        }
+        
         if (mode == 1)
             status++;
         else
             status--;
-        if (status == 1)
-            cm.dispose();
-        else if (selection == 2) {
+        
+        if (status == 1) {
+            if (!cm.haveItem(5152037)) {
+                cm.sendOk("Hmm ... it looks like you don't have the coupon specifically for this place. Sorry to say this, but without the coupon, there's no plastic surgery for you...");
+                cm.dispose();
+                return;
+            }
+            
             facenew = Array();
             if (cm.getPlayer().getGender() == 0)
                 for(var i = 0; i < mface.length; i++) 
@@ -56,13 +64,11 @@ function action(mode, type, selection) {
                     facenew.push(fface[i] + cm.getPlayer().getFace()% 1000 - (cm.getPlayer().getFace()% 100));
             cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152037##k?");
         } else if (status == 2){
+            cm.gainItem(5152037 , -1);
+            cm.setFace(facenew[Math.floor(Math.random() * facenew.length)]);
+            cm.sendOk("Enjoy your new and improved face!");
+            
             cm.dispose();
-            if (cm.haveItem(5152037)){
-                cm.gainItem(5152037 , -1);
-                cm.setFace(facenew[Math.floor(Math.random() * facenew.length)]);
-                cm.sendOk("Enjoy your new and improved face!");
-            } else 
-                cm.sendOk("Hmm ... it looks like you don't have the coupon specifically for this place. Sorry to say this, but without the coupon, there's no plastic surgery for you...");
         }
     }
 }

@@ -21,31 +21,34 @@
 */
 /* Aldol
  * 
- * @Author Alan (SharpAceX)
+ * @Author Ronan
  */
- importPackage(Packages.server.expeditions);
+ 
+var status;
  
 function start() {
-    cm.sendYesNo("If you leave now, you won't be able to return. Are you sure you want to leave?");
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	var scarga = MapleExpeditionType.SCARGA;
-    var expedition = cm.getExpedition(scarga);
-    if (mode < 1)
-        cm.dispose();
-    else {
-        if (cm.getPlayer().getMap().getCharacters().size() < 2){
-            cm.getPlayer().getMap().killAllMonsters();
-            cm.getPlayer().getMap().resetReactors();
-			if (expedition != null){
-				cm.endExpedition(expedition);
-			}
+        if (mode == -1) {
+                cm.dispose();
+        } else {
+                if (mode == 0 && status == 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+    
+                if (status == 0) {
+                        cm.sendYesNo("If you leave now, you won't be able to return. Are you sure you want to leave?");
+                } else if (status == 1) {
+                        cm.warp(551030100, 2);
+                        cm.dispose();
+                }
         }
-        if (cm.getPlayer().getEventInstance() != null)
-            cm.getPlayer().getEventInstance().removePlayer(cm.getPlayer());
-        else
-            cm.warp(551030100);
-        cm.dispose();
-    }
 }

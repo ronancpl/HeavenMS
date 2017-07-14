@@ -7,7 +7,7 @@ function enter(pi) {
         var jailedTime = pi.getJailTimeLeft();
     
         if(jailedTime <= 0) {
-                pi.warp(300000010,0);
+                pi.warp(300000010,"in01");
                 return(true);
         }
         else {

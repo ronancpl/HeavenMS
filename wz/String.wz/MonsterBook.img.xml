@@ -166,33 +166,32 @@
     <imgdir name="reward">
       <int name="0" value="1002039" />
       <int name="1" value="1002613" />
-      <int name="2" value="1012031" />
-      <int name="3" value="1032001" />
-      <int name="4" value="1041018" />
-      <int name="5" value="1041061" />
-      <int name="6" value="1061013" />
-      <int name="7" value="1061057" />
-      <int name="8" value="1092003" />
-      <int name="9" value="1302006" />
-      <int name="10" value="1382000" />
-      <int name="11" value="1432012" />
-      <int name="12" value="1442000" />
-      <int name="13" value="1482000" />
-      <int name="14" value="2000000" />
-      <int name="15" value="2000001" />
-      <int name="16" value="2000003" />
-      <int name="17" value="2040802" />
-      <int name="18" value="2060000" />
-      <int name="19" value="2061000" />
-      <int name="20" value="2380008" />
-      <int name="21" value="4000005" />
-      <int name="22" value="4001344" />
-      <int name="23" value="4001356" />
-      <int name="24" value="4001360" />
-      <int name="25" value="4010001" />
-      <int name="26" value="4020000" />
-      <int name="27" value="4030009" />
-      <int name="28" value="4031773" />
+      <int name="2" value="1032001" />
+      <int name="3" value="1041018" />
+      <int name="4" value="1041061" />
+      <int name="5" value="1061013" />
+      <int name="6" value="1061057" />
+      <int name="7" value="1092003" />
+      <int name="8" value="1302006" />
+      <int name="9" value="1382000" />
+      <int name="10" value="1432012" />
+      <int name="11" value="1442000" />
+      <int name="12" value="1482000" />
+      <int name="13" value="2000000" />
+      <int name="14" value="2000001" />
+      <int name="15" value="2000003" />
+      <int name="16" value="2040802" />
+      <int name="17" value="2060000" />
+      <int name="18" value="2061000" />
+      <int name="19" value="2380008" />
+      <int name="20" value="4000005" />
+      <int name="21" value="4001344" />
+      <int name="22" value="4001356" />
+      <int name="23" value="4001360" />
+      <int name="24" value="4010001" />
+      <int name="25" value="4020000" />
+      <int name="26" value="4030009" />
+      <int name="27" value="4031773" />
     </imgdir>
     <string name="episode" value=" Lv. :  10\nForm : Plant\nSpecial Trait : Vulnerable to Fire Attribute Attacks.\n\nA slightly darker version of Stump, the tree stump monster. These monsters are often spotted around mountain highlands. While they are very similar to the Stump in their dried-up appearance, but these Dark Stumps have some moisture left in their bodies, still growing leaves somewhere inside their body. The Dark Stump has a lot stronger attacks and defenses as compared to Stump, so be careful not to confuse the two, especially if you're a beginner!" />
   </imgdir>
@@ -1269,11 +1268,12 @@
       <int name="50" value="2070000" />
       <int name="51" value="2210006" />
       <int name="52" value="2330000" />
-      <int name="53" value="4000000" />
-      <int name="54" value="4000016" />
-      <int name="55" value="4000019" />
-      <int name="56" value="4010000" />
-      <int name="57" value="4020000" />
+      <int name="53" value="2388000" />
+      <int name="54" value="4000000" />
+      <int name="55" value="4000016" />
+      <int name="56" value="4000019" />
+      <int name="57" value="4010000" />
+      <int name="58" value="4020000" />
     </imgdir>
     <string name="episode" value=" Lv. :  20\nForm : Mammal\n\nThe oldest snail in Maple World. It has a huge body that has developed over the years and white mustache that suits his old age. He enjoys the morning dew, so one may frequently spot him wandering around to consume the dew on green leaves every morning. If fortunate enough, one can acquire a Rainbow-colored Snail Shell which is said to grant its owner a wish." />
   </imgdir>
@@ -2995,62 +2995,61 @@
       <int name="2" value="1002170" />
       <int name="3" value="1002185" />
       <int name="4" value="1002628" />
-      <int name="5" value="1012031" />
-      <int name="6" value="1040080" />
-      <int name="7" value="1040084" />
-      <int name="8" value="1040085" />
-      <int name="9" value="1041076" />
-      <int name="10" value="1041083" />
-      <int name="11" value="1041086" />
-      <int name="12" value="1050039" />
-      <int name="13" value="1051026" />
-      <int name="14" value="1052113" />
-      <int name="15" value="1072087" />
-      <int name="16" value="1072107" />
-      <int name="17" value="1072117" />
-      <int name="18" value="1072118" />
-      <int name="19" value="1072126" />
-      <int name="20" value="1072300" />
-      <int name="21" value="1082025" />
-      <int name="22" value="1082064" />
-      <int name="23" value="1082073" />
-      <int name="24" value="1082074" />
-      <int name="25" value="1082195" />
-      <int name="26" value="1322027" />
-      <int name="27" value="2000001" />
-      <int name="28" value="2000003" />
-      <int name="29" value="2012002" />
-      <int name="30" value="2040402" />
-      <int name="31" value="2040502" />
-      <int name="32" value="2040602" />
-      <int name="33" value="2040701" />
-      <int name="34" value="2040801" />
-      <int name="35" value="2040901" />
-      <int name="36" value="2041001" />
-      <int name="37" value="2041004" />
-      <int name="38" value="2041010" />
-      <int name="39" value="2041016" />
-      <int name="40" value="2041017" />
-      <int name="41" value="2041043" />
-      <int name="42" value="2041045" />
-      <int name="43" value="2043001" />
-      <int name="44" value="2043101" />
-      <int name="45" value="2043201" />
-      <int name="46" value="2044002" />
-      <int name="47" value="2044112" />
-      <int name="48" value="2044201" />
-      <int name="49" value="2044412" />
-      <int name="50" value="2060000" />
-      <int name="51" value="2061000" />
-      <int name="52" value="2070009" />
-      <int name="53" value="2388025" />
-      <int name="54" value="4000003" />
-      <int name="55" value="4000005" />
-      <int name="56" value="4000018" />
-      <int name="57" value="4000195" />
-      <int name="58" value="4003001" />
-      <int name="59" value="4010000" />
-      <int name="60" value="4020001" />
+      <int name="5" value="1040080" />
+      <int name="6" value="1040084" />
+      <int name="7" value="1040085" />
+      <int name="8" value="1041076" />
+      <int name="9" value="1041083" />
+      <int name="10" value="1041086" />
+      <int name="11" value="1050039" />
+      <int name="12" value="1051026" />
+      <int name="13" value="1052113" />
+      <int name="14" value="1072087" />
+      <int name="15" value="1072107" />
+      <int name="16" value="1072117" />
+      <int name="17" value="1072118" />
+      <int name="18" value="1072126" />
+      <int name="19" value="1072300" />
+      <int name="20" value="1082025" />
+      <int name="21" value="1082064" />
+      <int name="22" value="1082073" />
+      <int name="23" value="1082074" />
+      <int name="24" value="1082195" />
+      <int name="25" value="1322027" />
+      <int name="26" value="2000001" />
+      <int name="27" value="2000003" />
+      <int name="28" value="2012002" />
+      <int name="29" value="2040402" />
+      <int name="30" value="2040502" />
+      <int name="31" value="2040602" />
+      <int name="32" value="2040701" />
+      <int name="33" value="2040801" />
+      <int name="34" value="2040901" />
+      <int name="35" value="2041001" />
+      <int name="36" value="2041004" />
+      <int name="37" value="2041010" />
+      <int name="38" value="2041016" />
+      <int name="39" value="2041017" />
+      <int name="40" value="2041043" />
+      <int name="41" value="2041045" />
+      <int name="42" value="2043001" />
+      <int name="43" value="2043101" />
+      <int name="44" value="2043201" />
+      <int name="45" value="2044002" />
+      <int name="46" value="2044112" />
+      <int name="47" value="2044201" />
+      <int name="48" value="2044412" />
+      <int name="49" value="2060000" />
+      <int name="50" value="2061000" />
+      <int name="51" value="2070009" />
+      <int name="52" value="2388025" />
+      <int name="53" value="4000003" />
+      <int name="54" value="4000005" />
+      <int name="55" value="4000018" />
+      <int name="56" value="4000195" />
+      <int name="57" value="4003001" />
+      <int name="58" value="4010000" />
+      <int name="59" value="4020001" />
     </imgdir>
     <string name="episode" value=" Lv. :  35\nForm : Plant\n\nAccording to Winston, who has devoted a good chunk of his life to studying the plateaus of Perion, Perion in ancient times was not a dry and barren land. Rather, he suggests that it was a place of which bountiful forests rivaled those of current Ellinia. The soil in Perion had been saturated with moisture and nutrients in the past, supporting the necessary conditions for huge plants like Stumpy to grow. However, it has turned into a dry land, and Stumpy, which can be considered a legacy of ancient Perion, now survives on what, little, is left of the barren land.    " />
   </imgdir>
@@ -6154,12 +6153,13 @@
       <int name="13" value="2040901" />
       <int name="14" value="2044602" />
       <int name="15" value="2044902" />
-      <int name="16" value="4000360" />
-      <int name="17" value="4004002" />
-      <int name="18" value="4020005" />
-      <int name="19" value="4130000" />
-      <int name="20" value="4130004" />
-      <int name="21" value="4130006" />
+      <int name="16" value="2383016" />
+      <int name="17" value="4000360" />
+      <int name="18" value="4004002" />
+      <int name="19" value="4020005" />
+      <int name="20" value="4130000" />
+      <int name="21" value="4130004" />
+      <int name="22" value="4130006" />
     </imgdir>
     <string name="episode" value=" Lv. :  50\nForm : Enchanted\n\nA form of Mithril enhanced by mixing other metals to rival the powerful strength of Orihalcon, rendering it more powerful than regular Mithril Mutae.." />
   </imgdir>
@@ -6187,14 +6187,15 @@
       <int name="14" value="2040323" />
       <int name="15" value="2040422" />
       <int name="16" value="2043017" />
-      <int name="17" value="4000364" />
-      <int name="18" value="4004004" />
-      <int name="19" value="4007000" />
-      <int name="20" value="4007006" />
-      <int name="21" value="4020005" />
-      <int name="22" value="4130001" />
-      <int name="23" value="4130005" />
-      <int name="24" value="4130006" />
+      <int name="17" value="2383028" />
+      <int name="18" value="4000364" />
+      <int name="19" value="4004004" />
+      <int name="20" value="4007000" />
+      <int name="21" value="4007006" />
+      <int name="22" value="4020005" />
+      <int name="23" value="4130001" />
+      <int name="24" value="4130005" />
+      <int name="25" value="4130006" />
     </imgdir>
     <string name="episode" value=" Lv. :  54\nForm : Enchanted\n\nA robot built by alchemists in Magatia. It is small but has the power that will exceed your expectation, and also has an extremely intricate internal structure. " />
   </imgdir>
@@ -13480,28 +13481,27 @@
       <int name="0" value="222010402" />
     </imgdir>
     <imgdir name="reward">
-      <int name="0" value="1032030" />
-      <int name="1" value="1302012" />
-      <int name="2" value="1312010" />
-      <int name="3" value="1322019" />
-      <int name="4" value="1332018" />
-      <int name="5" value="1332019" />
-      <int name="6" value="1382007" />
-      <int name="7" value="1412008" />
-      <int name="8" value="1432007" />
-      <int name="9" value="2000004" />
-      <int name="10" value="2000005" />
-      <int name="11" value="2043001" />
-      <int name="12" value="2043101" />
-      <int name="13" value="2043301" />
-      <int name="14" value="2043701" />
-      <int name="15" value="2044001" />
-      <int name="16" value="2044201" />
-      <int name="17" value="2044301" />
-      <int name="18" value="2044501" />
-      <int name="19" value="2044601" />
-      <int name="20" value="2044701" />
-      <int name="21" value="2388053" />
+      <int name="0" value="1302012" />
+      <int name="1" value="1312010" />
+      <int name="2" value="1322019" />
+      <int name="3" value="1332018" />
+      <int name="4" value="1332019" />
+      <int name="5" value="1382007" />
+      <int name="6" value="1412008" />
+      <int name="7" value="1432007" />
+      <int name="8" value="2000004" />
+      <int name="9" value="2000005" />
+      <int name="10" value="2043001" />
+      <int name="11" value="2043101" />
+      <int name="12" value="2043301" />
+      <int name="13" value="2043701" />
+      <int name="14" value="2044001" />
+      <int name="15" value="2044201" />
+      <int name="16" value="2044301" />
+      <int name="17" value="2044501" />
+      <int name="18" value="2044601" />
+      <int name="19" value="2044701" />
+      <int name="20" value="2388053" />
     </imgdir>
     <string name="episode" value="레벨 : Lv.90\n형태 : 식물형\n\n바깥보다는 집을 좋아하는 머쉬맘의 특성 때문일까? 머쉬맘의 변종인 블루 머쉬맘도 자신이 머무를 집을 찾았다. 그런데 집은 집인데 아무래도 주소를 잘못찾은 듯! 아랫마을 도깨비집에 난데없이 나타난 블루 머쉬맘 때문에 도깨비들이 곤욕을 치르고 있다. 갑자기 튀어나와서 왕도깨비들을 깜짝 놀라키고 있는 블루 머쉬맘은 왕도깨비들의 불만스러운 잔소리에도 아랑곳하지 않는다. 다 쓰러져가는 도깨비집이 무척이나 마음에 드는 듯 하다." />
   </imgdir>
@@ -14059,7 +14059,7 @@
   </imgdir>
   <imgdir name="9500317">
     <imgdir name="map">
-      <int name="0" value="209080000" />
+      <int name="0" value="999999998" />
     </imgdir>
     <imgdir name="reward">
       <int name="0" value="4001141" />
@@ -14069,7 +14069,7 @@
   </imgdir>
   <imgdir name="9500320">
     <imgdir name="map">
-      <int name="0" value="209080000" />
+      <int name="0" value="999999998" />
     </imgdir>
     <imgdir name="reward" />
     <string name="episode" value=" Lv. : Unknown\nForm : Mammal\nSpecial Trait : Looks just like a reindeer.\n\nSanta Cliff's once adored and loved pet. This Rudolf that used to live with Santa Cliff in Happyville came out for a walk on its own and lost its way back home. Some has claimed that this Rudolf has been seen around Maple World which sounds quite likely considering that it travels fast and tends to be curious about everything; however, it is nowhere to be found. Cliff is still clinging onto hope that his Rudolph will one day come back to his arms, but he hasn't had any luck.\nBecause it looks a lot like the reindeers that live in Mu Lung, there have been countless false notifications, claiming that Rudolph has been found. Remember to contact Cliff in Happyville if you happen to find the lost Rudolph; it has a big, round red nose so you'll know when you see it!" />

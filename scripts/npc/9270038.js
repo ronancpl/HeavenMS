@@ -53,11 +53,17 @@ function action(mode, type, selection) {
 		oldSelection = selection;
 	}else if(status == 1){
 		if(oldSelection == 0){
-			if (cm.getPlayer().getMeso() > 4999 && cm.getPlayer().haveItem(4031732) == false) {
-				cm.gainMeso(-5000);
-				cm.gainItem(4031732);
-				cm.sendOk("Thank you for choosing Wizet Airline! Enjoy your flight!");
-				cm.dispose();
+			if (cm.getPlayer().getMeso() > 4999 && !cm.getPlayer().haveItem(4031732)) {
+                                if(cm.getPlayer().canHold(4031732, 1)) {
+                                        cm.gainMeso(-5000);
+                                        cm.gainItem(4031732);
+                                        cm.sendOk("Thank you for choosing Wizet Airline! Enjoy your flight!");
+                                        cm.dispose();
+                                }
+				else {
+                                        cm.sendOk("You don't have a free slot on your ETC inventory for the ticket, please make a room beforehand.");
+                                        cm.dispose();
+                                }
 			} else {
 				cm.sendOk("You do not have enough mesos or you've already purchased a ticket.");
 				cm.dispose();

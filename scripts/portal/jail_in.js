@@ -4,6 +4,6 @@
 */
 
 function enter(pi) {
-        pi.warp(300000012,0);
+        pi.warp(300000012,"portal");
         return(true);
 }

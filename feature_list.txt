@@ -10,9 +10,11 @@ Feature list:
 PQs:
 * HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ 100%.
 * CWKPQ as Expedition-based event 100%.
+* Expeditions: Scarga 100%.
 * GuildPQ 100% + Guild queue with multi-lobby systems available.
 * Brand-new PQ: Boss Rush PQ 100%.
 * BalrogPQ semi-functional.
+* Capt. Latanica remade as an event (parties can now fight the boss).
 
 Quests:
 * Doll house quest 100%.
@@ -39,7 +41,8 @@ Server potentials:
 * Player level rates.
 * Gain fame by quests.
 * Every monsterbook card is now droppable by overworld mobs.
-* Added Boss HP Bar for dozens of bosses (needs provided custom wz);
+* Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
+* Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * Custom jail system (needs provided custom wz).
 * Delete Character 100% (requires ENABLE_PIC activated).
 

@@ -20,7 +20,7 @@
 */
 /*Jack
  *
- *@author SharpAceX (Alan)
+ *@author SharpAceX (Alan), Ronan
  */
 importPackage(Packages.server.expeditions);
 importPackage(Packages.tools);

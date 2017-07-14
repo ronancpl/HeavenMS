@@ -15,7 +15,7 @@ function action(mode, type, selection) {
 	    if (!cm.haveItem(4001163)) {
 	    	cm.sendNext("Get me the Purple Stone of Magic from here.");
 	    } else {
-		cm.warpParty(930000600);
+		cm.getEventInstance().warpEventTeam(930000600);
 	    }
 	    break;
     }

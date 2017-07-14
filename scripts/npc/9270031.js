@@ -19,12 +19,13 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function enter(pi) {
-    try {
-        var toMap = pi.getPlayer().getSavedLocation("FREE_MARKET");
-        pi.warp(toMap, pi.getMarketPortalId(toMap));
-    } catch(err) {
-        pi.warp(100000000);
-    }
-    return true;
+/* Dave & Iris
+	 ()
+	
+	
+*/
+
+function start() {
+    cm.sendOk("We had our wedding at Amoria, such a beautiful place, and their people are even more amiable. Now our honeymoon on this paradisiac place... Ah, glorious, glorious!");
+    cm.dispose();
 }

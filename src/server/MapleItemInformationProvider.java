@@ -561,7 +561,6 @@ public class MapleItemInformationProvider {
             Map<String, Integer> stats = this.getEquipStats(scrollId);
             Map<String, Integer> eqstats = this.getEquipStats(equip.getItemId());
             
-            System.out.println("GM: " + isGM + "\tWS: " + usingWhiteScroll + "\tITEM: " + scrollId);
             if (((nEquip.getUpgradeSlots() > 0 || isCleanSlate(scrollId))) || isGM) {
                 if(isGM || rollSuccessChance((double)stats.get("success"))) {
                     short flag = nEquip.getFlag();

@@ -1604,7 +1604,7 @@ public class MapleMap {
             }
         }, time);
     }
-
+    
     public void addPlayer(final MapleCharacter chr) {
         chrWLock.lock();
         try {
@@ -1848,6 +1848,16 @@ public class MapleMap {
             }
         }
         return closest;
+    }
+    
+    public MaplePortal findMarketPortal() {
+        for (MaplePortal portal : portals.values()) {
+            String ptScript = portal.getScriptName();
+            if(ptScript != null && ptScript.contains("market")) {
+                return portal;
+            }
+        }
+        return null;
     }
 
     public Collection<MaplePortal> getPortals() {
@@ -2769,7 +2779,7 @@ public class MapleMap {
     private boolean specialEquip() {//Maybe I shouldn't use fieldType :\
         return fieldType == 4 || fieldType == 19;
     }
-
+    
     public void setCoconut(MapleCoconut nut) {
         this.coconut = nut;
     }

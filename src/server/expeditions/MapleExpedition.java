@@ -111,9 +111,8 @@ public class MapleExpedition {
 					leader.getClient().getChannelServer().getExpeditions().remove(exped);
 					startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "Time limit has been reached. Expedition has been disbanded."));
                                         
-                                        broadcastExped(MaplePacketCreator.removeClock());
+                                        dispose(false);
 				}
-				dispose(false);
 			}
 		}, type.getRegistrationTime() * 60 * 1000);
 	}

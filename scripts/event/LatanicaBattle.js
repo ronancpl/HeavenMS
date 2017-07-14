@@ -1,18 +1,18 @@
 /**
  * @author: Ronan
- * @event: Henesys PQ
+ * @event: Vs Latanica
 */
 
 var isPq = true;
-var minPlayers = 3, maxPlayers = 6;
-var minLevel = 10, maxLevel = 255;
-var entryMap = 910010000;
-var exitMap = 910010300;
-var recruitMap = 100000200;
-var clearMap = 910010100;
+var minPlayers = 1, maxPlayers = 6;
+var minLevel = 1, maxLevel = 255;
+var entryMap = 541010100;
+var exitMap = 541010110;
+var recruitMap = 541010060;
+var clearMap = 541010110;
 
-var minMapId = 910010000;
-var maxMapId = 910010400;
+var minMapId = 541010100;
+var maxMapId = 541010100;
 
 var eventTime = 10;     // 10 minutes
 
@@ -44,7 +44,7 @@ function setEventRequirements() {
 }
 
 function setEventExclusives(eim) {
-        var itemSet = [4001095, 4001096, 4001097, 4001098, 4001099, 4001100, 4001101];
+        var itemSet = [];
         eim.setExclusiveItems(itemSet);
 }
 
@@ -52,11 +52,11 @@ function setEventRewards(eim) {
         var itemSet, itemQty, evLevel, expStages;
 
         evLevel = 1;    //Rewards at clear PQ
-        itemSet = [4001158];
-        itemQty = [1];
+        itemSet = [];
+        itemQty = [];
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
-        expStages = [1600];    //bonus exp given on CLEAR stage signal
+        expStages = [];    //bonus exp given on CLEAR stage signal
         eim.setEventClearStageExp(expStages);
 }
 
@@ -82,14 +82,11 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
 }
 
 function setup(level, lobbyid) {
-        var eim = em.newInstance("Henesys" + lobbyid);
+        var eim = em.newInstance("Latanica" + lobbyid);
         eim.setProperty("level", level);
-        eim.setProperty("stage", "0");
+        eim.setProperty("boss", "0");
         
-        eim.getInstanceMap(910010000).resetPQ(level);
-        eim.getInstanceMap(910010000).allowSummonState(false);
-        
-        eim.getInstanceMap(910010200).resetPQ(level);
+        eim.getInstanceMap(541010100).resetPQ(level);
         
         respawnStages(eim);
         eim.startEventTimer(eventTime * 60000);
@@ -100,12 +97,7 @@ function setup(level, lobbyid) {
 
 function afterSetup(eim) {}
 
-function respawnStages(eim) {
-        eim.getInstanceMap(910010000).instanceMapRespawn();
-        eim.getInstanceMap(910010200).instanceMapRespawn();
-        
-        eim.schedule("respawnStages", 15 * 1000);
-}
+function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
         var map = eim.getMapInstance(entryMap);
@@ -113,13 +105,7 @@ function playerEntry(eim, player) {
 }
 
 function scheduledTimeout(eim) {
-        if(eim.getProperty("1stageclear") != null) {
-                var curStage = 910010200, toStage = 910010400;
-                eim.warpEventTeam(curStage, toStage);
-        }
-        else {
-                end(eim);
-        }
+        end(eim);
 }
 
 function playerUnregistered(eim, player) {}
@@ -186,6 +172,7 @@ function monsterValue(eim, mobId) {
 
 function end(eim) {
         var party = eim.getPlayers();
+        
         for (var i = 0; i < party.size(); i++) {
                 playerExit(eim, party.get(i));
         }
@@ -199,11 +186,19 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
-        
-        eim.warpEventTeam(910010100);
 }
 
-function monsterKilled(mob, eim) {}
+function isLatanica(mob) {
+        var mobid = mob.getId();
+        return mobid == 9420513;
+}
+
+function monsterKilled(mob, eim) {
+        if(isLatanica(mob)) {
+                eim.showClearEffect();
+                eim.clearPQ();
+        }
+}
 
 function allMonstersDead(eim) {}
 

@@ -1,163 +1,188 @@
-/* 
- * This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+/**
+ * @author: Ronan
+ * @event: Scarga Battle
+*/
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+var isPq = true;
+var minPlayers = 6, maxPlayers = 30;
+var minLevel = 70, maxLevel = 255;
+var entryMap = 551030200;
+var exitMap = 551030100;
+var recruitMap = 551030100;
+var clearMap = 551030100;
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+var minMapId = 551030200;
+var maxMapId = 551030200;
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+var eventTime = 60;     // 60 minutes for boss stg
 
-/*
- * @Author SharpAceX(Alan)
- * Scarga Battle
- */
-
-var exitMap;
-var battleMap;
-var minPlayers = 1;
-var fightTime = 60;
+var lobbyRange = [0, 0];
 
 function init() {
-    em.setProperty("shuffleReactors","false");
-	exitMap = em.getChannelServer().getMapFactory().getMap(551030100);
-	battleMap = em.getChannelServer().getMapFactory().getMap(551030200);
+        setEventRequirements();
 }
 
-function setup() {
-        var eim = em.newInstance("ScargaBattle_" + em.getProperty("channel"));
-	var timer = 1000 * 60 * fightTime;
-	eim.setProperty("summoned", "false");
-        em.schedule("timeOut", eim, timer);
-	eim.startEventTimer(timer);
-	return eim;
+function setLobbyRange() {
+        return lobbyRange;
+}
+
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
+}
+
+function setEventExclusives(eim) {
+        var itemSet = [];
+        eim.setExclusiveItems(itemSet);
+}
+
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages, mesoStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [];
+        itemQty = [];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+        
+        mesoStages = [];    //bonus meso given on CLEAR stage signal
+        eim.setEventClearStageMeso(mesoStages);
 }
 
 function afterSetup(eim) {}
 
-function playerEntry(eim,player) {
-	var battle = eim.getMapInstance(battleMap.getId());
-    player.changeMap(battle, battle.getPortal(0));
+function setup(channel) {
+    var eim = em.newInstance("Scarga" + channel);
+    eim.setProperty("canJoin", 1);
+    eim.setProperty("defeatedBoss", 1);
 
-    if (battle == null)
-        debug(eim, "The battle map was not properly linked.");
+    var level = 1;
+    eim.getInstanceMap(551030200).resetPQ(level);
+    
+    eim.startEventTimer(eventTime * 60000);
+    setEventRewards(eim);
+    setEventExclusives(eim);
+    
+    return eim;
 }
 
-function playerRevive(eim,player) {
-    player.setHp(500);
-    player.setStance(0);
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    var exped = eim.getPlayers();
-    if (exped.size() < minPlayers)
-        end(eim,"There are not enough players remaining, the battle is over.");
-    return false;
+function playerEntry(eim, player) {
+    eim.dropMessage(5, "[Expedition] " + player.getName() + " has entered the map.");
+    var map = eim.getMapInstance(entryMap);
+    player.changeMap(map, map.getPortal(0));
 }
 
-function playerDead(eim,player) {
+function scheduledTimeout(eim) {
+    end(eim);
 }
 
-function playerDisconnected(eim,player) {
-    var exped = eim.getPlayers();
-    if (player.getName().equals(eim.getProperty("leader"))) {
-        var iter = exped.iterator();
-        while (iter.hasNext()) {
-            iter.next().getPlayer().dropMessage(6, "The leader of the expedition has disconnected.");
-		}
+function changedMap(eim, player, mapid) {
+    if (mapid < minMapId || mapid > maxMapId) {
+	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.unregisterPlayer(player);
+            end(eim);
+        }
+        else {
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.unregisterPlayer(player);
+        }
     }
-    //If the expedition is too small.
-    if (exped.size() < minPlayers) {
-        end(eim,"There are not enough players remaining. The Battle is over.");
+}
+
+function changedLeader(eim, leader) {}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.unregisterPlayer(player);
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
     }
 }
 
-function monsterValue(eim,mobId) { // potentially display time of death? does not seem to work
-    return -1;
+function playerDisconnected(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.unregisterPlayer(player);
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
+    }
 }
 
-function leftParty(eim,player) {
-}
+function leftParty (eim, player) {}
 
-function disbandParty(eim) {
+function disbandParty (eim) {}
+
+function monsterValue(eim, mobId) {
+    return 1;
 }
 
 function playerUnregistered(eim, player) {}
 
-function playerExit(eim,player) {
+function playerExit(eim, player) {
     eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    if (eim.getPlayers().size() < minPlayers) {//not enough after someone left
-        end(eim, "There are no longer enough players to continue, and those remaining shall be warped out.");
-	}
+    player.changeMap(exitMap, 0);
 }
 
-function end(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.getPlayer().dropMessage(6,msg);
-        eim.unregisterPlayer(player);
-        if (player != null){
-            player.changeMap(exitMap, exitMap.getPortal(0));
-		}
+function end(eim) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
     }
     eim.dispose();
 }
 
-function removePlayer(eim,player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+function giveRandomEventReward(eim, player) {
+    eim.giveEventReward(player);
 }
 
-function clearPQ(eim) { //When the hell does this get executed?
-    end(eim,"As the sound of battle fades away, you feel strangely unsatisfied.");
+function clearPQ(eim) {
+    eim.stopEventTimer();
+    eim.setEventCleared();
 }
 
-function finish(eim) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
+function isScarga(mob) {
+        var mobid = mob.getId();
+        return (mobid == 9420544) || (mobid == 9420549);
+}
+
+function monsterKilled(mob, eim) {
+    if(isScarga(mob)) {
+        var killed = eim.getIntProperty("defeatedBoss");
+        if(killed == 1) {
+            eim.showClearEffect();
+            eim.clearPQ();
+        }
+        
+        eim.setIntProperty("defeatedBoss", killed + 1);
     }
-    eim.dispose();
 }
-
-function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function timeOut(eim) {
-    if (eim != null) {
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext()){
-		var player = pIter.next();
-		player.dropMessage(6, "You have run out of time to defeat Scarlion and Targa!");
-                playerExit(eim, player);
-            }
-        }
-        eim.dispose();
-    }
-}
-
-function debug(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        iter.next().getClient().getSession().write(Packages.tools.MaplePacketCreator.serverNotice(6,msg));
-    }
-}
+function dispose(eim) {}

@@ -22,7 +22,6 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
-import client.MapleJob;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
@@ -43,10 +42,10 @@ import tools.Randomizer;
 
 /**
  *
- * @author Tyler (Twdtwd)
+ * @author Tyler (Twdtwd), Ronan
  */
 public class ItemAction extends MapleQuestAction {
-	Map<Integer, ItemData> items = new HashMap<>();
+	List<ItemData> items = new ArrayList<>();
 	
 	public ItemAction(MapleQuest quest, MapleData data) {
 		super(MapleQuestActionType.ITEM, quest);
@@ -73,27 +72,25 @@ public class ItemAction extends MapleQuestAction {
 			if (iEntry.getChildByPath("job") != null)
 				job = MapleDataTool.getInt(iEntry.getChildByPath("job"));
 			
-			items.put(id, new ItemData(id, count, prop, job, gender));
+			items.add(new ItemData(id, count, prop, job, gender));
 		}
 	}
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                Map<Integer, Integer> props = new HashMap<>();
-		for(ItemData item : items.values()) {
+                int props = 0, rndProps = 0, accProps = 0;
+		for(ItemData item : items) {
 			if(item.getProp() != null && item.getProp() != -1 && canGetItem(item, chr)) {
-				for (int i = 0; i < item.getProp(); i++) {
-					props.put(props.size(), item.getId());
-				}
+                                props += item.getProp();
 			}
 		}
-		int selection = 0;
+		
 		int extNum = 0;
-		if (props.size() > 0) {
-			selection = props.get(Randomizer.nextInt(props.size()));
+		if (props > 0) {
+			rndProps = Randomizer.nextInt(props);
 		}
-		for (ItemData iEntry : items.values()) {
+		for (ItemData iEntry : items) {
 			if (!canGetItem(iEntry, chr)) {
 				continue;
 			}
@@ -101,8 +98,15 @@ public class ItemAction extends MapleQuestAction {
 				if(iEntry.getProp() == -1) {
 					if(extSelection != extNum++)
 						continue;
-				} else if(iEntry.getId() != selection)
-					continue;
+				} else {
+                                        accProps += iEntry.getProp();
+                                        
+                                        if(accProps <= rndProps) {
+                                                continue;
+                                        } else {
+                                                accProps = Integer.MIN_VALUE;
+                                        }
+                                }
 			}
 			
 			if(iEntry.getCount() < 0) { // Remove Items
@@ -135,7 +139,7 @@ public class ItemAction extends MapleQuestAction {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 EnumMap<MapleInventoryType, Integer> props = new EnumMap<>(MapleInventoryType.class);
 		List<Pair<Item, MapleInventoryType>> itemList = new ArrayList<>();
-		for(ItemData item : items.values()) {
+		for(ItemData item : items) {
 			if (!canGetItem(item, chr)) {
 				continue;
 			}
@@ -188,17 +192,6 @@ public class ItemAction extends MapleQuestAction {
                             break;
                         }
                     }
-                    /*
-                    if (!jobFound && item.jobEx > 0) {
-                        final List<Integer> codeEx = getJobBySimpleEncoding(item.jobEx);
-                        for (int codec : codeEx) {
-                            if ((codec / 100 % 10) == (chr.getJob().getId() / 100 % 10)) {
-                                jobFound = true;
-                                break;
-                            }
-                        }
-                    }
-                    */
                     return jobFound;
                 }
         return true;

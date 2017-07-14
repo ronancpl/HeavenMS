@@ -1041,11 +1041,10 @@ public class Commands {
 					return true;
 				}
 				if (player.getEventInstance() != null) {
-					player.getEventInstance().removePlayer(player);
+					player.getEventInstance().leftParty(player);
 				}
-				player.changeMap(target, target.getPortal(0));
+				player.changeMap(target, target.getRandomPlayerSpawnpoint());
 			} catch (Exception ex) {
-                                ex.printStackTrace();
 				player.yellowMessage("Map ID " + sub[1] + " is invalid.");
 				return true;
 			}

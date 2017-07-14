@@ -861,7 +861,7 @@ public class MapleStatEffect {
                 door.getTown().spawnDoor(door.getTownDoor());
             } else {
                 if(door.getOwnerId() == -1) applyto.dropMessage(5, "There are no door portals available for the town at this moment. Try again later.");
-                else applyto.dropMessage(5, "This position is not suitable for a Mystic Door, try elsewhere.");
+                else applyto.dropMessage(5, "Mystic Door cannot be cast on a slope, try elsewhere.");
                 
                 applyto.cancelBuffStats(MapleBuffStat.SOULARROW);  // cancel door buff
             }

@@ -29,26 +29,34 @@ import java.awt.Point;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ScheduledFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.script.Invocable;
+import javax.script.ScriptException;
 import scripting.AbstractPlayerInteraction;
+import scripting.event.EventInstanceManager;
+import scripting.event.EventManager;
 import server.MapleItemInformationProvider;
+import server.TimerManager;
 import server.life.MapleLifeFactory;
-import server.life.MapleNPC;
 import server.maps.MapMonitor;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
-import tools.MaplePacketCreator;
 
 /**
- * @author Lerk
+ * @author Lerk, Ronan
  */
 public class ReactorActionManager extends AbstractPlayerInteraction {
     private MapleReactor reactor;
     private MapleClient client;
+    private Invocable iv;
 
-    public ReactorActionManager(MapleClient c, MapleReactor reactor) {
+    public ReactorActionManager(MapleClient c, MapleReactor reactor, Invocable iv) {
         super(c);
         this.reactor = reactor;
         this.client = c;
+        this.iv = iv;
     }
 
     public void dropItems() {
@@ -153,5 +161,33 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
 
     public void spawnFakeMonster(int id) {
         reactor.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(id), getPosition());
+    }
+    
+    public ScheduledFuture<?> schedule(String methodName, long delay) {
+        return schedule(methodName, null, delay);
+    }
+
+    public ScheduledFuture<?> schedule(final String methodName, final EventInstanceManager eim, long delay) {
+        return TimerManager.getInstance().schedule(new Runnable() {
+            public void run() {
+                try {
+                    iv.invokeFunction(methodName, eim);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                    Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }, delay);
+    }
+
+    public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
+        return TimerManager.getInstance().scheduleAtTimestamp(new Runnable() {
+            public void run() {
+                try {
+                    iv.invokeFunction(methodName, (Object) null);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                    Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }, timestamp);
     }
 }

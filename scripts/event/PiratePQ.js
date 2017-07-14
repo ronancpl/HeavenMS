@@ -257,8 +257,13 @@ function clearPQ(eim) {
         eim.warpEventTeam(925100600);
 }
 
+function isLordPirate(mob) {
+        var mobid = mob.getId();
+        return (mobid == 9300105) || (mobid == 9300106) || (mobid == 9300107) || (mobid == 9300119);
+}
+
 function monsterKilled(mob, eim) {
-        if(mob.isBoss()) {  // lord pirate defeated, spawn the little fella!
+        if(isLordPirate(mob)) {  // lord pirate defeated, spawn the little fella!
             mob.getMap().broadcastStringMessage(5, "As Lord Pirate dies, Wu Yang is released!");
             eim.spawnNpc(2094001, new java.awt.Point(777, 140), mob.getMap());
         }

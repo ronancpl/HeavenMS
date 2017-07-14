@@ -89,9 +89,16 @@ public class AbstractPlayerInteraction {
                 return c.getPlayer().getMap();
         }
         
+        public int getMarketPortalId(int mapId) {
+            return getMarketPortalId(getWarpMap(mapId));
+        }
+        
+        private int getMarketPortalId(MapleMap map) {
+            return (map.findMarketPortal() != null) ? map.findMarketPortal().getId() : map.getRandomPlayerSpawnpoint().getId();
+        }
+        
 	public void warp(int mapid) {
-                MapleMap map = getWarpMap(mapid);
-		getPlayer().changeMap(map, map.getRandomPlayerSpawnpoint());
+		getPlayer().changeMap(mapid);
 	}
 
 	public void warp(int map, int portal) {
@@ -107,11 +114,20 @@ public class AbstractPlayerInteraction {
 	}
 
 	public void warpParty(int id) {
-		for (MapleCharacter mc : getPartyMembers()) {
-			if (id == 925020100) {
-				mc.setDojoParty(true);
-			}
-			mc.changeMap(getWarpMap(id));
+                if (getPlayer().getParty() != null) {
+                        MaplePartyCharacter leader = getPlayer().getParty().getMemberById(getPlayer().getParty().getLeaderId());
+                        if(leader != null) {
+                                int leaderMapId = leader.getMapId();
+            
+                                for (MapleCharacter mc : getPartyMembers()) {
+                                        if(mc.getMapId() == leaderMapId) {
+                                                if (id == 925020100) {
+                                                        mc.setDojoParty(true);
+                                                }
+                                                mc.changeMap(id);
+                                        }
+                                }
+                        }
 		}
 	}
 

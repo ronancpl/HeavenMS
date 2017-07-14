@@ -38,7 +38,7 @@ function enter(pi) {
 			    }
 			}
 		    } else {
-		    	pi.playerMessage(5, "You are not the leader of the party.");
+		    	pi.playerMessage(5, "Only solo or party leaders are supposed to enter the Mini-Dungeon.");
 		    	return false;
 		    }
 		} else {

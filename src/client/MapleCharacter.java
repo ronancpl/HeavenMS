@@ -288,6 +288,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private long petLootCd;
     private long lastHpDec = 0;
     private int newWarpMap = -1;
+    private boolean canWarpMap = true;  //only one "warp" must be used per call, and this will define the right one.
+    private int canWarpCounter = 0;     //counts how many times "inner warps" have been called.
 
     private MapleCharacter() {
         useCS = false;
@@ -1141,6 +1143,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void eventChangedMap(int map) {
         if (getEventInstance() != null) getEventInstance().changedMap(this, map);
     }
+    
+    public void changeMapBanish(int mapid, String portal, String msg) {
+        dropMessage(5, msg);
+        MapleMap map_ = client.getChannelServer().getMapFactory().getMap(mapid);
+        changeMap(map_, map_.getPortal(portal));
+    }
 
     public void changeMap(int map) {
         MapleMap warpMap;
@@ -1190,21 +1198,31 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         changeMap(to, to.getPortal(0));
     }
 
-    public void changeMap(final MapleMap to, final MaplePortal pto) {
-        eventChangedMap(to.getId());
+    // not always the MapleMap target will be the map the player will be inserted, why would this even exist? Whatever.
+    public void changeMap(final MapleMap target, final MaplePortal pto) {
+        canWarpCounter++;
+        
+        eventChangedMap(target.getId());    // player can be dropped from an event here, hence the new warping target.
+        MapleMap to = getWarpMap(target.getId());
         changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
+        canWarpMap = false;
+        
+        canWarpCounter--;
+        if(canWarpCounter == 0) canWarpMap = true;
     }
 
-    public void changeMap(final MapleMap to, final Point pos) {
+    public void changeMap(final MapleMap target, final Point pos) {
+        canWarpCounter++;
+        
+        eventChangedMap(target.getId());
+        MapleMap to = getWarpMap(target.getId());
         changeMapInternal(to, pos, MaplePacketCreator.getWarpToMap(to, 0x80, this));//Position :O (LEFT)
+        canWarpMap = false;
+        
+        canWarpCounter--;
+        if(canWarpCounter == 0) canWarpMap = true;
     }
-
-    public void changeMapBanish(int mapid, String portal, String msg) {
-        dropMessage(5, msg);
-        MapleMap map_ = client.getChannelServer().getMapFactory().getMap(mapid);
-        changeMap(map_, map_.getPortal(portal));
-    }
-
+    
     private boolean buffMapProtection() {    
         for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbs : effects.entrySet()) {
             if(mbs.getKey() == MapleBuffStat.MAP_PROTECTION) {
@@ -1226,8 +1244,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
-        this.closePlayerInteractions();
+        if(!canWarpMap) return;
         
+        this.closePlayerInteractions();
         client.announce(warpPacket);
         map.removePlayer(this);
         if (client.getChannelServer().getPlayerStorage().getCharacterById(getId()) != null) {
@@ -1249,6 +1268,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         //alas, new map has been specified when a warping was being processed...
         if(newWarpMap != -1) {
+            canWarpMap = true;
+            
             int temp = newWarpMap;
             newWarpMap = -1;
             changeMap(temp);

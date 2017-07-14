@@ -1,36 +1,32 @@
-//importPackage(server.maps);
-//importPackage(net.channel);
-//importPackage(tools);
-//
-//function enter(pi) {
-//    var mapid = 541010100;
-//    var map = ChannelServer.getInstance(pi.getPlayer().getClient().getChannel()).getMapFactory().getMap(mapid);
-//    var mapchars = map.getCharacters();
-//    if (mapchars.isEmpty()) {
-//        var mapobjects = map.getMapObjects();
-//        var iter = mapobjects.iterator();
-//        while (iter.hasNext()) {
-//            o = iter.next();
-//            if (o.getType() == MapleMapObjectType.MONSTER){
-//                map.removeMapObject(o);
-//            }
-//        }
-//        map.resetReactors();
-//    } else {
-//        var mapobjects = map.getMapObjects();
-//        var boss = null;
-//        var iter = mapobjects.iterator();
-//        while (iter.hasNext()) {
-//            o = iter.next();
-//            if (o.getType() == MapleMapObjectType.MONSTER){
-//                boss = o;
-//            }
-//        }
-//        if (boss != null) {
-//            pi.getPlayer().dropMessage(5, "The battle against the boss has already begun, so you may not enter this place.");
-//            return false;
-//        }
-//    }
-//    pi.warp(541010100, "sp");
-//    return true;
-//}
+/* By RonanLana */
+
+function enter(pi) {
+        if (!pi.haveItem(4000381)) {
+                pi.playerMessage(5, "You do not have White Essence.");
+                return false;
+        } else {
+                var em = pi.getEventManager("LatanicaBattle");
+
+                if (pi.getParty() == null) {
+                        pi.playerMessage(5, "You are currently not in a party, create one to attempt the boss.");
+                        return false;
+                } else if(!pi.isLeader()) {
+                        pi.playerMessage(5, "Your party leader must enter the portal to start the battle.");
+                        return false;
+                } else {
+                        var eli = em.getEligibleParty(pi.getParty());
+                        if(eli.size() > 0) {
+                                if(!em.startInstance(pi.getParty(), pi.getPlayer().getMap(), 1)) {
+                                        pi.playerMessage(5, "The battle against the boss has already begun, so you may not enter this place.");
+                                        return false;
+                                }
+                        }
+                        else {  //this should never appear
+                                pi.playerMessage(5, "You cannot start this battle yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
+                                return false;
+                        }
+
+                        return true;
+                }
+        }
+}

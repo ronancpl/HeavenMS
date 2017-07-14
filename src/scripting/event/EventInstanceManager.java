@@ -524,12 +524,7 @@ public class EventInstanceManager {
                 cancelSchedule();
                 killCount.clear();
                 
-                if (expedition != null) {
-                        expedition.dispose(true);    
-                        em.getChannelServer().getExpeditions().remove(expedition);
-                        
-                        expedition = null;
-                }
+                disposeExpedition();
                 if(!eventCleared) em.disposeInstance(name);
                 em = null;
 	}
@@ -863,9 +858,19 @@ public class EventInstanceManager {
                 }
         }
         
+        private void disposeExpedition() {
+                if (expedition != null) {
+                        expedition.dispose(eventCleared);    
+                        em.getChannelServer().getExpeditions().remove(expedition);
+                        
+                        expedition = null;
+                }
+        }
+        
         public final void setEventCleared() {
                 eventCleared = true;
                 em.disposeInstance(name);
+                disposeExpedition();
         }
         
         public final boolean isEventCleared() {
