@@ -949,7 +949,7 @@ public class MaplePacketCreator {
         /**
          * Gets an empty stat update.
          *
-         * @return The empy stat update packet.
+         * @return The empty stat update packet.
          */
         public static byte[] enableActions() {
                 return updatePlayerStats(EMPTY_STATUPDATE, true, null);
@@ -1325,7 +1325,7 @@ public class MaplePacketCreator {
                 mplew.writeBool(MiniMap);
                 return mplew.getPacket();
         }
-
+        
         /**
          * Gets a spawn monster packet.
          *
@@ -2076,7 +2076,7 @@ public class MaplePacketCreator {
                         List<Integer> onedList = damage.get(oned);
                         if (onedList != null) {
                                 lew.writeInt(oned.intValue());
-                                lew.write(0xFF);
+                                lew.write(0x0);
                                 if (skill == 4211006) {
                                         lew.write(onedList.size());
                                 }
@@ -5676,11 +5676,21 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] removeNPC(int oid) { //Make npc's invisible
+        public static byte[] removeNPC(int oid) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.REMOVE_NPC.getValue());
+                mplew.writeInt(oid);
+                
+                return mplew.getPacket();
+        }
+        
+        public static byte[] removeNPCController(int objectid) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
                 mplew.writeShort(SendOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
                 mplew.write(0);
-                mplew.writeInt(oid);
+                mplew.writeInt(objectid);
+
                 return mplew.getPacket();
         }
 

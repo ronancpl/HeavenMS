@@ -20,7 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-*	Author : Raz, Ronan
+*	Author : Raz
+*	Author : Ronan
 *
 *	NPC = 9103000 - Pierre
 *	Map =  Ludibrium - Ludibrium Maze 16

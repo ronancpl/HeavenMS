@@ -20,7 +20,8 @@
 */
 /*Aldol
  *
- *@author SharpAceX (Alan), Ronan
+ *@author SharpAceX (Alan)
+ *@author Ronan
  */
 importPackage(Packages.server.expeditions);
 importPackage(Packages.tools);
@@ -31,6 +32,7 @@ var expedition;
 var player;
 var em;
 var exped = MapleExpeditionType.SCARGA;
+var expedName = "Scarga";
 var expedBoss = "Scarlion and Targa";
 var expedMap = "Spooky World";
 var expedItem = 4032246;
@@ -60,7 +62,7 @@ function action(mode, type, selection) {
                 cm.sendOk("You do not meet the criteria to battle " + expedBoss + "!");
                 cm.dispose();
             } else if (expedition == null) { //Start an expedition
-                cm.sendSimple("#e#b<Expedition: Scarlion & Targa>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble a team to take on #r" + expedBoss + "#k?\r\n#b#L1#Lets get this going!#l\r\n\#L2#No, I think I'll wait a bit...#l");
+                cm.sendSimple("#e#b<Expedition: " + expedName + ">\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble a team to take on #r" + expedBoss + "#k?\r\n#b#L1#Lets get this going!#l\r\n\#L2#No, I think I'll wait a bit...#l");
                 status = 1;
             } else if (expedition.isLeader(player)) { //If you're the leader, manage the exped
                 cm.sendSimple(list);
@@ -75,7 +77,7 @@ function action(mode, type, selection) {
                 }
             } else if (expedition.isInProgress()) { //Only if the expedition is in progress
                 if (expedition.contains(player)) { //If you're registered, warp you in
-                    var eim = em.getInstance("Scarga" + player.getClient().getChannel());
+                    var eim = em.getInstance(expedName + player.getClient().getChannel());
                     if(eim.getIntProperty("canJoin") == 1) {
                         eim.registerPlayer(player);
                     } else {

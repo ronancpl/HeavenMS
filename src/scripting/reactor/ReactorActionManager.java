@@ -45,7 +45,8 @@ import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
 
 /**
- * @author Lerk, Ronan
+ * @author Lerk
+ * @author Ronan
  */
 public class ReactorActionManager extends AbstractPlayerInteraction {
     private MapleReactor reactor;
@@ -57,6 +58,14 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         this.reactor = reactor;
         this.client = c;
         this.iv = iv;
+    }
+
+    public void hitReactor() {
+        reactor.hitReactor(client);
+    }
+    
+    public void destroyNpc(int npcId) {
+        reactor.getMap().destroyNPC(npcId);
     }
 
     public void dropItems() {

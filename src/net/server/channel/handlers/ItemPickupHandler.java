@@ -29,7 +29,8 @@ import client.MapleClient;
 
 /**
  *
- * @author Matze, Ronan
+ * @author Matze
+ * @author Ronan
  */
 public final class ItemPickupHandler extends AbstractMaplePacketHandler {
 

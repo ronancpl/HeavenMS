@@ -40,11 +40,10 @@ import server.MapleItemInformationProvider;
 /**
  *
  * @author BubblesDev
+ * @author Ronan
  */
 
 class PairedQuicksort {
-    /* by RonanLana */
-    
     private int i = 0;
     private int j = 0;
     private final ArrayList<Integer> intersect;

@@ -31,7 +31,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import constants.ServerConstants;
 
 /**
- * @author TheRamon, Ronan
+ * @author TheRamon
+ * @author Ronan
  */
 public final class PetLootHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {

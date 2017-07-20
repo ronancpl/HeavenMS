@@ -722,6 +722,14 @@ public class MapleMap {
         }
         return mobs;
     }
+    
+    public void broadcastHorntailVictory() {
+        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
+            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
+                player.dropMessage("To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
+            }
+        }
+    }
 
     public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops) {
         killMonster(monster, chr, withDrops, 1);
@@ -760,13 +768,7 @@ public class MapleMap {
                 }
             }
         }
-        if (monster.getId() == 8810018 && chr.getMapId() == 240060200) {
-            for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-                for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                    player.dropMessage("To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
-                }
-            }
-        }
+        
         spawnedMonstersOnMap.decrementAndGet();
         monster.setHp(0);
         //if (monster.getStats().selfDestruction() == null) {//FUU BOMBS D:
@@ -1083,6 +1085,24 @@ public class MapleMap {
             objectRLock.unlock();
         }
         return false;
+    }
+    
+    public void destroyNPC(int npcid) {
+        List<MapleMapObject> npcs = getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.NPC));
+        
+        objectWLock.lock();
+        try {
+            for (MapleMapObject obj : npcs) {
+                if (((MapleNPC) obj).getId() == npcid) {
+                    broadcastMessage(MaplePacketCreator.removeNPCController(obj.getObjectId()));
+                    broadcastMessage(MaplePacketCreator.removeNPC(obj.getObjectId()));
+                    
+                    this.mapobjects.remove(Integer.valueOf(obj.getObjectId()));
+                }
+            }
+        } finally {
+            objectWLock.unlock();
+        }
     }
 
     public MapleMapObject getMapObject(int oid) {
@@ -1905,8 +1925,12 @@ public class MapleMap {
         }
     }
     
+    public void dropMessage(int type, String message) {
+        broadcastStringMessage(type, message);
+    }
+    
     public void broadcastStringMessage(int type, String message) {
-            broadcastMessage(MaplePacketCreator.serverNotice(type, message));
+        broadcastMessage(MaplePacketCreator.serverNotice(type, message));
     }
 
     public void broadcastMessage(final byte[] packet) {
@@ -2888,7 +2912,7 @@ public class MapleMap {
             objectRLock.unlock();
         }
     }
-
+    
     public void setMobInterval(short interval) {
         this.mobInterval = interval;
     }

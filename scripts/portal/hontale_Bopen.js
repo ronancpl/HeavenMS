@@ -29,10 +29,10 @@ function enter(pi) {
         var target = eim.getMapInstance(nextMap);
         var targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("2stageclear");
+        var avail = eim.getProperty("1stageclear");
         if (avail == null) {
             // do nothing; send message to player
-            pi.getPlayer().dropMessage(6, "This door is closed.");
+            pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
             return false;
         }else {
             pi.getPlayer().changeMap(target, targetPortal);
@@ -45,10 +45,10 @@ function enter(pi) {
         var target = eim.getMapInstance(nextMap);
         var targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("3stageclear");
+        var avail = eim.getProperty("2stageclear");
         if (avail == null) {
             // do nothing; send message to player
-            pi.getPlayer().dropMessage(6, "This door is closed.");
+            pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
             return false;
         }else {
             pi.getPlayer().changeMap(target, targetPortal);
@@ -61,10 +61,10 @@ function enter(pi) {
         var target = eim.getMapInstance(nextMap);
         var targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("4stageclear");
+        var avail = eim.getProperty("3stageclear");
         if (avail == null) {
             // do nothing; send message to player
-            pi.getPlayer().dropMessage(6, "This door is closed.");
+            pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
             return false;
         }else {
             pi.getPlayer().changeMap(target, targetPortal);
@@ -77,10 +77,10 @@ function enter(pi) {
         var target = eim.getMapInstance(nextMap);
         var targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("5stageclear");
+        var avail = eim.getProperty("4stageclear");
         if (avail == null) {
             // do nothing; send message to player
-            pi.getPlayer().dropMessage(6, "This door is closed.");
+            pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
             return false;
         }else {
             pi.getPlayer().changeMap(target, targetPortal);
@@ -88,14 +88,26 @@ function enter(pi) {
         }
     }
     else if (pi.getPlayer().getMapId() == 240050105) {
-        if (pi.haveItem(4001091, 6) && pi.isLeader()) {
-            pi.gainItem(4001091, -6);
-            pi.getPlayer().dropMessage(6, "The six keys break the seal for a flash...");
-            pi.warp(240050100, "st00");
+        var nextMap = 240050100;
+        var eim = pi.getPlayer().getEventInstance()
+        var target = eim.getMapInstance(nextMap);
+        var targetPortal = target.getPortal("st00");
+        
+        var avail = eim.getProperty("5stageclear");
+        if (avail == null) {
+            if (pi.haveItem(4001092) && pi.isEventLeader()) {
+                pi.getEventInstance().showClearEffect();
+                pi.getPlayer().dropMessage(6, "The leader's key break the seal for a flash...");
+                pi.getPlayer().changeMap(target, targetPortal);
+                eim.setIntProperty("5stageclear", 1);
+                return true;
+            } else {
+                pi.getPlayer().dropMessage(6, "Horntail\'s Seal is blocking this door. Only the leader with the key can lift this seal.");
+                return false;
+            }
+        }else {
+            pi.getPlayer().changeMap(target, targetPortal);
             return true;
-        } else {
-            pi.getPlayer().dropMessage(6, "Horntail\'s Seal is blocking this door.");
-            return false;
         }
     }
     return true;

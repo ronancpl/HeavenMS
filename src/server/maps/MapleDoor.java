@@ -30,7 +30,8 @@ import client.MapleCharacter;
 
 /**
  *
- * @author Matze, Ronan
+ * @author Matze
+ * @author Ronan
  */
 public class MapleDoor {
     private int ownerId;

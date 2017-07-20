@@ -1,4 +1,5 @@
-/* Author: aaroncsn(MapleSea Like), Ronan Lana
+/* @author aaroncsn(MapleSea Like)
+ * @author Ronan
 	NPC Name: 		Mr. Do
 	Map(s): 		Mu Lung: Mu Lung(2500000000)
 	Description: 		Potion Creator

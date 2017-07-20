@@ -25,7 +25,7 @@
 	Refining NPC:
 	* Accessories refiner
         * 
-        * By Ronan Lana
+        * @author Ronan Lana
 */
 
 var status = -1;

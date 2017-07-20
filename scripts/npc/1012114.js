@@ -2,7 +2,7 @@
   Growlie (that fatass uhh.. hungry lion or whatever)
   FightDesign @RageZONE
 
-  Ronan
+  @author Ronan
   */
 
 var status = 0;

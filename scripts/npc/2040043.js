@@ -20,7 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-@	Author : Twdtwd, Ronan
+@	Author : Twdtwd
+@       Author : Ronan
 @
 @	NPC = Blue Balloon
 @	Map = Hidden-Street <Stage 8>

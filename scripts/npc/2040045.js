@@ -21,7 +21,8 @@
 */
 
 /*
-@	Author : Raz, Ronan
+@	Author : Raz
+@       Author : Ronan
 @
 @	NPC = Pink Balloon
 @	Map = Hidden-Street <Stage B>

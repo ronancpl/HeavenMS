@@ -20,7 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-@	Author : Raz, Ronan
+@	Author : Raz
+@       Author : Ronan
 @
 @	NPC = Green Balloon
 @	Map = Hidden-Street <Stage 5>

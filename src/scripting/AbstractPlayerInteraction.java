@@ -748,13 +748,13 @@ public class AbstractPlayerInteraction {
                         map.broadcastMessage(MaplePacketCreator.spawnNPC(npc));
                 }
         }
-
+        
 	public void spawnMonster(int id, int x, int y) {
 		MapleMonster monster = MapleLifeFactory.getMonster(id);
 		monster.setPosition(new Point(x, y));
 		getPlayer().getMap().spawnMonster(monster);
 	}
-
+        
 	public MapleMonster getMonsterLifeFactory(int mid) {
 		return MapleLifeFactory.getMonster(mid);
 	}

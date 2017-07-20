@@ -22,7 +22,7 @@
 
 /**
  *Crystal of Roots
- *@Author: Moogra
+ *@Author: Ronan
  *@NPC: Crystal of Roots
  */
 function start() {
@@ -33,11 +33,9 @@ function action(mode, type, selection) {
     if (mode < 1)
         cm.dispose();
     else {
-        cm.warp(240040700);
-        if (cm.getPlayer().getMap().getCharacters().size() < 2){
-            cm.getPlayer().getMap().killAllMonsters();
-            cm.getPlayer().getMap().resetReactors();
-        }
+        if(cm.getMapId() > 240050400) cm.warp(240050600);
+        else cm.warp(240040700);
+        
         cm.dispose();
     }
 }

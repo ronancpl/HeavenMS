@@ -20,7 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* 
- * @Author TheRamon, Ronan
+ * @Author TheRamon
+ * @Author Ronan
  * 
  * Sharen III's Soul, Sharenian: Sharen III's Grave (990000700)
  * 

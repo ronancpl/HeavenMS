@@ -2,7 +2,7 @@
         Refining NPC: 
 	* Chaos scroll SYNTHETIZER (rofl)
         * 
-        * By RonanLana
+        * @author RonanLana
 */
 
 var status = 0;

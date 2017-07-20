@@ -70,6 +70,7 @@ public class ServerConstants {
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
+    public static final int MAX_EQUIPMNT_STAT = 32767;            //Max stat on an equipment by leveling up.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.

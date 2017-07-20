@@ -837,18 +837,11 @@ public class Commands {
                         player.setMp(player.getMaxMp());
                         player.updateSingleStat(MapleStat.MP, player.getMaxMp());
                 } else if (sub[0].equals("buffmap")) {
-                        for (MapleCharacter chr : player.getMap().getCharacters()){
-                                //GM Skills : Haste(Super) - Holy Symbol - Bless - Hyper Body - Echo of Hero
-                                SkillFactory.getSkill(9101001).getEffect(SkillFactory.getSkill(9101001).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(9101002).getEffect(SkillFactory.getSkill(9101002).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(9101003).getEffect(SkillFactory.getSkill(9101003).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(9101008).getEffect(SkillFactory.getSkill(9101008).getMaxLevel()).applyTo(chr);
-                                SkillFactory.getSkill(1005).getEffect(SkillFactory.getSkill(1005).getMaxLevel()).applyTo(chr);
-                                chr.setHp(chr.getMaxHp());
-                                chr.updateSingleStat(MapleStat.HP, chr.getMaxHp());
-                                chr.setMp(chr.getMaxMp());
-                                chr.updateSingleStat(MapleStat.MP, chr.getMaxMp());
-                        }
+                        SkillFactory.getSkill(9101001).getEffect(SkillFactory.getSkill(9101001).getMaxLevel()).applyTo(player, true);
+                        SkillFactory.getSkill(9101002).getEffect(SkillFactory.getSkill(9101002).getMaxLevel()).applyTo(player, true);
+                        SkillFactory.getSkill(9101003).getEffect(SkillFactory.getSkill(9101003).getMaxLevel()).applyTo(player, true);
+                        SkillFactory.getSkill(9101008).getEffect(SkillFactory.getSkill(9101008).getMaxLevel()).applyTo(player, true);
+                        SkillFactory.getSkill(1005).getEffect(SkillFactory.getSkill(1005).getMaxLevel()).applyTo(player, true);
                 } else if (sub[0].equals("buff")) {
                         if (sub.length < 2){
                                 player.yellowMessage("Syntax: !buff <buffid>");
@@ -905,7 +898,6 @@ public class Commands {
                                         eu.setHp(incval);
                                         eu.setMp(incval);
                                         eu.setSpeed(incval);
-                                        eu.setHands(incval);
                                         eu.setWatk(incval);
                                         eu.setDex(incval);
                                         eu.setInt(incval);

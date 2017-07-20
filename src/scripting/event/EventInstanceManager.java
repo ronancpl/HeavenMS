@@ -68,7 +68,8 @@ import tools.MaplePacketCreator;
 
 /**
  *
- * @author Matze, Ronan
+ * @author Matze
+ * @author Ronan
  */
 public class EventInstanceManager {
 	private Map<Integer, MapleCharacter> chars = new HashMap<>();
@@ -415,11 +416,13 @@ public class EventInstanceManager {
 	}
         
         public void changedLeader(MapleCharacter ldr) {
-		try {
+                try {
 			em.getIv().invokeFunction("changedLeader", this, ldr);
 		} catch (ScriptException | NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
+                
+                leaderId = ldr.getId();
 	}
 	
 	public void monsterKilled(MapleMonster mob) {
@@ -1000,6 +1003,10 @@ public class EventInstanceManager {
         
         public final void showClearEffect(boolean hasGate) {
                 showClearEffect(hasGate, getLeader().getMapId());
+        }
+        
+        public final void showClearEffect(int mapId) {
+                showClearEffect(false, mapId);
         }
         
         public final void showClearEffect(boolean hasGate, int mapId) {

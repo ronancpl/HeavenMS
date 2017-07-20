@@ -90,43 +90,46 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 						chr.setHp(50);
 						chr.changeMap(to, to.getRandomPlayerSpawnpoint());
 					}
-				} else if (targetid != -1 && chr.isGM()) {
-					MapleMap to = chr.getWarpMap(targetid);
-					chr.changeMap(to, to.getPortal(0));
-				} else if (targetid != -1 && !chr.isGM()) {//Thanks celino for saving me some time (:
-					final int divi = chr.getMapId() / 100;
-					boolean warp = false;
-					if (divi == 0) {
-						if (targetid == 10000) {
-							warp = true;
-						}
-					} else if (divi == 20100) {
-						if (targetid == 104000000) {
-							c.announce(MaplePacketCreator.lockUI(false));
-							c.announce(MaplePacketCreator.disableUI(false));
-							warp = true;
-						}
-					} else if (divi == 9130401) { // Only allow warp if player is already in Intro map, or else = hack
-						if (targetid == 130000000 || targetid / 100 == 9130401) { // Cygnus introduction
-							warp = true;
-						}
-					} else if (divi == 9140900) { // Aran Introduction
-						if (targetid == 914090011 || targetid == 914090012 || targetid == 914090013 || targetid == 140090000) {
-							warp = true;
-						}
-					} else if (divi / 10 == 1020) { // Adventurer movie clip Intro
-						if (targetid == 1020000) {
-							warp = true;
-						}
-					} else if(divi / 10 >= 980040 && divi / 10 <= 980045) {
-						if(targetid == 980040000) {
-							warp = true;
-						}
-					}
-					if (warp) {
-						final MapleMap to = chr.getWarpMap(targetid);
-						chr.changeMap(to, to.getPortal(0));
-					}
+				} else if (targetid != -1) {
+                                        if(chr.isGM()) {
+                                                MapleMap to = chr.getWarpMap(targetid);
+                                                chr.changeMap(to, to.getPortal(0));
+                                        }
+                                        else {
+                                                final int divi = chr.getMapId() / 100;
+                                                boolean warp = false;
+                                                if (divi == 0) {
+                                                        if (targetid == 10000) {
+                                                                warp = true;
+                                                        }
+                                                } else if (divi == 20100) {
+                                                        if (targetid == 104000000) {
+                                                                c.announce(MaplePacketCreator.lockUI(false));
+                                                                c.announce(MaplePacketCreator.disableUI(false));
+                                                                warp = true;
+                                                        }
+                                                } else if (divi == 9130401) { // Only allow warp if player is already in Intro map, or else = hack
+                                                        if (targetid == 130000000 || targetid / 100 == 9130401) { // Cygnus introduction
+                                                                warp = true;
+                                                        }
+                                                } else if (divi == 9140900) { // Aran Introduction
+                                                        if (targetid == 914090011 || targetid == 914090012 || targetid == 914090013 || targetid == 140090000) {
+                                                                warp = true;
+                                                        }
+                                                } else if (divi / 10 == 1020) { // Adventurer movie clip Intro
+                                                        if (targetid == 1020000) {
+                                                                warp = true;
+                                                        }
+                                                } else if(divi / 10 >= 980040 && divi / 10 <= 980045) {
+                                                        if(targetid == 980040000) {
+                                                                warp = true;
+                                                        }
+                                                }
+                                                if (warp) {
+                                                        final MapleMap to = chr.getWarpMap(targetid);
+                                                        chr.changeMap(to, to.getPortal(0));
+                                                }
+                                        }
 				}
 				if (portal != null && !portal.getPortalStatus()) {
 					c.announce(MaplePacketCreator.blockedMessage(1));

@@ -22,7 +22,8 @@
 /*
 Stage 2: Spear destinations - Guild Quest
 
-@Author Lerk, Ronan
+@Author Lerk
+@Author Ronan
 */
 
 function act() {

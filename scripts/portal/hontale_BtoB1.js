@@ -24,20 +24,15 @@
 */
 
 function enter(pi) {
-    var nextMap = 240050101;
-    var eim = pi.getPlayer().getEventInstance()
-    var target = eim.getMapInstance(nextMap);
-    var targetPortal = target.getPortal("sp");
-    // only let people through if the eim is ready
-    var avail = eim.getProperty("1stageclear");
-    if (!pi.haveItem(4001092, 1)) {
-        // do nothing; send message to player
-        pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
+    if (pi.getMap().countPlayers() == 1) {
+        pi.getPlayer().dropMessage(6, "As the last player on this map, you are compelled to wait for the incoming keys.");
         return false;
     }else {
-        pi.gainItem(4001092, -1);
-        pi.getPlayer().dropMessage(6, "The key disentegrates as Horntail\'s Seal is broken for a flash...");
-        pi.getPlayer().changeMap(target, targetPortal);
+        if(pi.haveItem(4001087)) {
+            pi.getPlayer().dropMessage(6, "You cannot pass to the next map holding the 1st Crystal Key in your inventory.");
+            return false;
+        }
+        pi.warp(240050101);
         return true;
     }
 }

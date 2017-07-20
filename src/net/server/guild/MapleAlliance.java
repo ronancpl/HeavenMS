@@ -37,7 +37,8 @@ import tools.MaplePacketCreator;
 
 /**
  *
- * @author XoticStory, Ronan.
+ * @author XoticStory
+ * @author Ronan
  */
 public class MapleAlliance {
     final private List<Integer> guilds = new LinkedList<>();

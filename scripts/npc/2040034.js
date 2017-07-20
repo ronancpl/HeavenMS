@@ -1,5 +1,6 @@
 /**
- * @author: Eric, Ronan
+ * @author: Eric
+ * @author: Ronan
  * @npc: Red Sign
  * @map: 101st Floor Eos Tower (221024500)
  * @func: Ludi PQ

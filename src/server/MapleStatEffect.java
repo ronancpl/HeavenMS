@@ -699,14 +699,19 @@ public class MapleStatEffect {
     }
 
     public boolean applyTo(MapleCharacter chr) {
-        return applyTo(chr, chr, true, null);
+        return applyTo(chr, chr, true, null, false);
+    }
+    
+    public boolean applyTo(MapleCharacter chr, boolean useMaxRange) {
+        return applyTo(chr, chr, true, null, useMaxRange);
     }
 
     public boolean applyTo(MapleCharacter chr, Point pos) {
-        return applyTo(chr, chr, true, pos);
+        return applyTo(chr, chr, true, pos, false);
     }
 
-    private boolean applyTo(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary, Point pos) {
+    // primary: the player caster of the buff
+    private boolean applyTo(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary, Point pos, boolean useMaxRange) {
         if (skill && (sourceid == GM.HIDE || sourceid == SuperGM.HIDE)) {
             applyto.toggleHide(false);
             return true;
@@ -724,11 +729,14 @@ public class MapleStatEffect {
             }
         }
         List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
-        if (!primary && isResurrection()) {
-            hpchange = applyto.getMaxHp();
-            applyto.setStance(0);
-            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
-            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapobject(applyto), false);
+        if (!primary) {
+            if(isResurrection()) {
+                hpchange = applyto.getMaxHp();
+                applyto.setStance(0);
+                
+                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
+                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapobject(applyto), false);
+            }
         }
         if (isDispel() && makeChanceResult()) {
             applyto.dispelDebuffs();
@@ -818,7 +826,7 @@ public class MapleStatEffect {
         }
 
         if (primary && (overTime || isHeal())) {
-            applyBuff(applyfrom);
+            applyBuff(applyfrom, useMaxRange);
         }
 
         if (primary && isMonsterBuff()) {
@@ -872,13 +880,17 @@ public class MapleStatEffect {
             applyfrom.getMap().spawnMist(mist, getDuration(), mist.isPoisonMist(), false, mist.isRecoveryMist());
         } else if(isTimeLeap()) {
             applyto.removeAllCooldownsExcept(Buccaneer.TIME_LEAP, true);
+        } else if(isHyperBody() && !primary) {
+            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
+            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapobject(applyto), false);
         }
+        
         return true;
     }
 
-    private void applyBuff(MapleCharacter applyfrom) {
+    private void applyBuff(MapleCharacter applyfrom, boolean useMaxRange) {
         if (isPartyBuff() && (applyfrom.getParty() != null || isGmBuff())) {
-            Rectangle bounds = calculateBoundingBox(applyfrom.getPosition(), applyfrom.isFacingLeft());
+            Rectangle bounds = (!useMaxRange) ? calculateBoundingBox(applyfrom.getPosition(), applyfrom.isFacingLeft()) : new Rectangle(Integer.MIN_VALUE / 2, Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE);
             List<MapleMapObject> affecteds = applyfrom.getMap().getMapObjectsInRect(bounds, Arrays.asList(MapleMapObjectType.PLAYER));
             List<MapleCharacter> affectedp = new ArrayList<>(affecteds.size());
             for (MapleMapObject affectedmo : affecteds) {
@@ -890,7 +902,7 @@ public class MapleStatEffect {
                 }
             }
             for (MapleCharacter affected : affectedp) {
-                applyTo(applyfrom, affected, false, null);
+                applyTo(applyfrom, affected, false, null, useMaxRange);
                 affected.getClient().announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 2));
                 affected.getMap().broadcastMessage(affected, MaplePacketCreator.showBuffeffect(affected.getId(), sourceid, 2), false);
             }
@@ -1378,6 +1390,10 @@ public class MapleStatEffect {
 
     private boolean isCygnusFA() {
         return skill && (sourceid == DawnWarrior.FINAL_ATTACK || sourceid == WindArcher.FINAL_ATTACK);
+    }
+    
+    private boolean isHyperBody() {
+        return skill && (sourceid == Spearman.HYPER_BODY || sourceid == GM.HYPER_BODY || sourceid == SuperGM.HYPER_BODY);
     }
 
     private boolean isComboReset() {

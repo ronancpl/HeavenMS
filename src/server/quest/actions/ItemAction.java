@@ -42,7 +42,8 @@ import tools.Randomizer;
 
 /**
  *
- * @author Tyler (Twdtwd), Ronan
+ * @author Tyler (Twdtwd)
+ * @author Ronan
  */
 public class ItemAction extends MapleQuestAction {
 	List<ItemData> items = new ArrayList<>();

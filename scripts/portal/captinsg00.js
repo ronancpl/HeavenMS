@@ -1,4 +1,4 @@
-/* By RonanLana */
+/* @author RonanLana */
 
 function enter(pi) {
         if (!pi.haveItem(4000381)) {

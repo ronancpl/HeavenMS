@@ -29,7 +29,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author Matze, Ronan
+ * @author Matze
+ * @author Ronan
  */
 public final class DoorHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {

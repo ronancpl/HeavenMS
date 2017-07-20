@@ -1,155 +1,209 @@
-/* 
- * This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+/**
+ * @author: Ronan
+ * @event: Horntail Battle
+*/
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+importPackage(Packages.server.life);
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+var isPq = true;
+var minPlayers = 1, maxPlayers = 30;
+var minLevel = 100, maxLevel = 255;
+var entryMap = 240060000;
+var exitMap = 240050600;
+var recruitMap = 240050400;
+var clearMap = 240050600;
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+var minMapId = 240060000;
+var maxMapId = 240060200;
 
-/*
- * @Author SharpAceX(Alan)
- * Horntail fight
- */
+var eventTime = 15;     // 15 minutes
 
-importPackage(Packages.server.expeditions);
+var lobbyRange = [0, 0];
 
-var exitMap;
-var minPlayers = 1;
-var fightTime = 60;
-
-var trial1; //Cave of Life - The Cave of Trial I
-var trial2; // Cave of Life - The Cave of Trial II
-var fightMap; // Cave of Life - Horntail's Cave
-var exitMap;
-	
 function init() {
-    em.setProperty("shuffleReactors","false");
-	trial1 = em.getChannelServer().getMapFactory().getMap(240060000); //Cave of Life - The Cave of Trial I
-	trial2 = em.getChannelServer().getMapFactory().getMap(240060100); // Cave of Life - The Cave of Trial II
-	fightMap = em.getChannelServer().getMapFactory().getMap(240060200); // Cave of Life - Horntail's Cave
-	exitMap = em.getChannelServer().getMapFactory().getMap(211042300);
+        setEventRequirements();
 }
 
+function setLobbyRange() {
+        return lobbyRange;
+}
 
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
+}
 
+function setEventExclusives(eim) {
+        var itemSet = [];
+        eim.setExclusiveItems(itemSet);
+}
 
-function setup() {
-    var eim = em.newInstance("HorntailFight_" + em.getProperty("channel"));
-	var timer = 1000 * 60 * fightTime;
-    em.schedule("timeOut", eim, timer);
-    eim.startEventTimer(timer);
-	return eim;
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages, mesoStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [];
+        itemQty = [];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+        
+        mesoStages = [];    //bonus meso given on CLEAR stage signal
+        eim.setEventClearStageMeso(mesoStages);
 }
 
 function afterSetup(eim) {}
 
-function playerEntry(eim,player) {
-    var map = eim.getMapInstance(trial1.getId());
-    player.changeMap(map,map.getPortal(0));
-    if (exitMap == null)
-        debug(eim,"The exit map was not properly linked.");
+function setup(channel) {
+    var eim = em.newInstance("Scarga" + channel);
+    eim.setProperty("canJoin", 1);
+    eim.setProperty("defeatedBoss", 0);
+    eim.setProperty("defeatedHead", 0);
+
+    var level = 1;
+    eim.getInstanceMap(240060000).resetPQ(level);
+    eim.getInstanceMap(240060100).resetPQ(level);
+    eim.getInstanceMap(240060200).resetPQ(level);
+    
+    var map, mob;
+    map = eim.getInstanceMap(240060000);
+    mob = MapleLifeFactory.getMonster(8810000);
+    map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(960, 120));
+    
+    map = eim.getInstanceMap(240060100);
+    mob = MapleLifeFactory.getMonster(8810001);
+    map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(-420, 120));
+    
+    eim.startEventTimer(eventTime * 60000);
+    setEventRewards(eim);
+    setEventExclusives(eim);
+    
+    return eim;
 }
 
-function playerRevive(eim,player) {
-    player.setHp(500);
-    player.setStance(0);
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    var party = eim.getPlayers();
-    if (party.size() < minPlayers)
-        end(eim,"There are not enough players remaining, the Battle is over.");
-    return false;
+function playerEntry(eim, player) {
+    eim.dropMessage(5, "[Expedition] " + player.getName() + " has entered the map.");
+    var map = eim.getMapInstance(entryMap);
+    player.changeMap(map, map.getPortal(0));
 }
 
-function playerDead(eim,player) {
+function scheduledTimeout(eim) {
+    end(eim);
 }
 
-function playerDisconnected(eim,player) {
-    var party = eim.getPlayers();
-    if (player.getName().equals(eim.getProperty("leader"))) {
-        // tell members
-        var iter = party.iterator();
-        while (iter.hasNext())
-            iter.next().getPlayer().dropMessage(6,"The leader of the instance has disconnected.");
+function changedMap(eim, player, mapid) {
+    if (mapid < minMapId || mapid > maxMapId) {
+	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.unregisterPlayer(player);
+            end(eim);
+        }
+        else {
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.unregisterPlayer(player);
+        }
     }
-    // and, if the party is too small
-    if (party.size() < minPlayers) {
-        end(eim,"There are not enough players remaining. The Battle is over.");
+}
+
+function changedLeader(eim, leader) {}
+
+function playerDead(eim, player) {}
+
+function playerRevive(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.unregisterPlayer(player);
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
     }
 }
+
+function playerDisconnected(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.unregisterPlayer(player);
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
+    }
+}
+
+function leftParty (eim, player) {}
+
+function disbandParty (eim) {}
 
 function monsterValue(eim, mobId) {
     return 1;
 }
 
-function leftParty(eim,player) {}
-
-function disbandParty(eim) {}
-
 function playerUnregistered(eim, player) {}
 
-function playerExit(eim,player) {
+function playerExit(eim, player) {
     eim.unregisterPlayer(player);
-    player.changeMap(exitMap,exitMap.getPortal(0));
-    if (eim.getPlayers().size() < minPlayers)//not enough after someone left
-        end(eim,"There are no longer enough players to continue, and those remaining shall be warped out.");
+    player.changeMap(exitMap, 0);
 }
 
-function end(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.getPlayer().dropMessage(6,msg);
-        eim.unregisterPlayer(player);
-        if (player != null)
-            player.changeMap(exitMap, exitMap.getPortal(0));
+function end(eim) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
     }
     eim.dispose();
 }
 
-// for offline folk
-function removePlayer(eim,player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+function giveRandomEventReward(eim, player) {
+    eim.giveEventReward(player);
 }
 
-function clearPQ(eim) {}
+function clearPQ(eim) {
+    eim.stopEventTimer();
+    eim.setEventCleared();
+}
 
-function finish(eim) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
+function isHorntailHead(mob) {
+    var mobid = mob.getId();
+    return (mobid == 8810000 || mobid == 8810001);
+}
+
+function isHorntail(mob) {
+    var mobid = mob.getId();
+    return (mobid == 8810018);
+}
+
+function monsterKilled(mob, eim) {
+    if(isHorntail(mob)) {
+        eim.setIntProperty("defeatedBoss", 1);
+        eim.showClearEffect(mob.getMap().getId());
+        eim.clearPQ();
+        
+        mob.getMap().broadcastHorntailVictory();
+    } else if(isHorntailHead(mob)) {
+        var killed = eim.getIntProperty("defeatedHead");
+        eim.setIntProperty("defeatedHead", killed + 1);
+        eim.showClearEffect(mob.getMap().getId());
     }
-    eim.dispose();
 }
-
-function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function timeOut() {}
-
-function debug(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        iter.next().getClient().getSession().write(Packages.tools.MaplePacketCreator.serverNotice(6,msg));
-    }
-}
+function dispose(eim) {}

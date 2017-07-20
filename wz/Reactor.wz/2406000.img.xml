@@ -2,6 +2,7 @@
 <imgdir name="2406000.img">
   <imgdir name="info">
     <string name="name" value="나인스피릿의둥지"/>
+    <int name="activateByTouch" value="1"/>
   </imgdir>
   <imgdir name="0">
     <canvas name="0" width="115" height="45">
@@ -44,6 +45,12 @@
         <int name="z" value="-2"/>
         <int name="delay" value="120"/>
       </canvas>
+    </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="6"/>
+        <int name="state" value="1"/>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="1">

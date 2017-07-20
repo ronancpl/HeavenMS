@@ -23,7 +23,7 @@
 	Victoria Road : Henesys
 	
 	NPC Bazaar:
-        * By Ronan Lana
+        * @author Ronan Lana
 */
 
 var options = ["EQUIP","USE","SET-UP","ETC"];

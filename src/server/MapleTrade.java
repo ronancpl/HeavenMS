@@ -38,7 +38,8 @@ import constants.ServerConstants;
 
 /**
  *
- * @author Matze, Ronan (concurrency safety)
+ * @author Matze
+ * @author Ronan (concurrency safety)
  */
 public class MapleTrade {
     private MapleTrade partner = null;

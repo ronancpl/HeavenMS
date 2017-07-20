@@ -54,6 +54,7 @@ public class MapleNPC extends AbstractLoadedMapleLife {
 
     @Override
     public void sendDestroyData(MapleClient client) {
+        client.announce(MaplePacketCreator.removeNPCController(getObjectId()));
         client.announce(MaplePacketCreator.removeNPC(getObjectId()));
     }
 

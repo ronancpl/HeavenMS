@@ -376,63 +376,79 @@ public class Equip extends Item {
         boolean gotVicious = false, gotSlot = false;
         
         String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
+        
+        Integer statUp, maxStat = ServerConstants.MAX_EQUIPMNT_STAT;
         for (Pair<StatUpgrade, Integer> stat : stats) {
             switch (stat.getLeft()) {
                 case incDEX:
-                    dex += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "DEX ";
+                    statUp = Math.min(stat.getRight(), maxStat - dex);
+                    dex += statUp;
+                    lvupStr += "+" + statUp + "DEX ";
                     break;
                 case incSTR:
-                    str += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "STR ";
+                    statUp = Math.min(stat.getRight(), maxStat - str);
+                    str += statUp;
+                    lvupStr += "+" + statUp + "STR ";
                     break;
                 case incINT:
-                    _int += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "INT ";
+                    statUp = Math.min(stat.getRight(), maxStat - _int);
+                    _int += statUp;
+                    lvupStr += "+" + statUp + "INT ";
                     break;
                 case incLUK:
-                    luk += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "LUK ";
+                    statUp = Math.min(stat.getRight(), maxStat - luk);
+                    luk += statUp;
+                    lvupStr += "+" + statUp + "LUK ";
                     break;
                 case incMHP:
-                    hp += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "HP ";
+                    statUp = Math.min(stat.getRight(), maxStat - hp);
+                    hp += statUp;
+                    lvupStr += "+" + statUp + "HP ";
                     break;
                 case incMMP:
-                    mp += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "MP ";
+                    statUp = Math.min(stat.getRight(), maxStat - mp);
+                    mp += statUp;
+                    lvupStr += "+" + statUp + "MP ";
                     break;
                 case incPAD:
-                    watk += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "WATK ";
+                    statUp = Math.min(stat.getRight(), maxStat - watk);
+                    watk += statUp;
+                    lvupStr += "+" + statUp + "WATK ";
                     break;
                 case incMAD:
-                    matk += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "MATK ";
+                    statUp = Math.min(stat.getRight(), maxStat - matk);
+                    matk += statUp;
+                    lvupStr += "+" + statUp + "MATK ";
                     break;
                 case incPDD:
-                    wdef += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "WDEF ";
+                    statUp = Math.min(stat.getRight(), maxStat - wdef);
+                    wdef += statUp;
+                    lvupStr += "+" + statUp + "WDEF ";
                     break;
                 case incMDD:
-                    mdef += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "MDEF ";
+                    statUp = Math.min(stat.getRight(), maxStat - mdef);
+                    mdef += statUp;
+                    lvupStr += "+" + statUp + "MDEF ";
                     break;
                 case incEVA:
-                    avoid += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "AVOID ";
+                    statUp = Math.min(stat.getRight(), maxStat - avoid);
+                    avoid += statUp;
+                    lvupStr += "+" + statUp + "AVOID ";
                     break;
                 case incACC:
-                    acc += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "ACC ";
+                    statUp = Math.min(stat.getRight(), maxStat - acc);
+                    acc += statUp;
+                    lvupStr += "+" + statUp + "ACC ";
                     break;
                 case incSpeed:
-                    speed += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "SPEED ";
+                    statUp = Math.min(stat.getRight(), maxStat - speed);
+                    speed += statUp;
+                    lvupStr += "+" + statUp + "SPEED ";
                     break;
                 case incJump:
-                    jump += stat.getRight();
-                    lvupStr += "+" + stat.getRight() + "JUMP ";
+                    statUp = Math.min(stat.getRight(), maxStat - jump);
+                    jump += statUp;
+                    lvupStr += "+" + statUp + "JUMP ";
                     break;
                     
                 case incVicious:
