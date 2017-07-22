@@ -21,23 +21,28 @@
 */
 package net.server.channel.handlers;
 
-import client.MapleCharacter;
 import java.awt.Point;
 import java.io.File;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleStat;
+import client.SkillFactory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
-import client.SkillFactory;
-import java.sql.SQLException;
-import tools.DatabaseConnection;
 import net.AbstractMaplePacketHandler;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
+import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
+import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class SpawnPetHandler extends AbstractMaplePacketHandler {
@@ -89,6 +94,10 @@ public final class SpawnPetHandler extends AbstractMaplePacketHandler {
             if (lead) {
                 chr.shiftPetsRight();
             }
+            
+            List<Pair<MapleStat, Integer>> stats = new ArrayList<>(1);
+        	stats.add(new Pair<>(MapleStat.PET, petid));
+            
             Point pos = chr.getPosition();
             pos.y -= 12;
             pet.setPos(pos);
@@ -98,8 +107,7 @@ public final class SpawnPetHandler extends AbstractMaplePacketHandler {
             pet.saveToDb();
             chr.addPet(pet);
             chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showPet(c.getPlayer(), pet, false, false), true);
-            c.announce(MaplePacketCreator.petStatUpdate(c.getPlayer()));
-            c.announce(MaplePacketCreator.enableActions());
+            c.announce(MaplePacketCreator.updatePlayerStats(stats, c.getPlayer()));
             chr.startFullnessSchedule(PetDataFactory.getHunger(pet.getItemId()), pet, chr.getPetIndex(pet));
         }
     }
