@@ -995,9 +995,11 @@ public class MaplePacketCreator {
                 for (Pair<MapleStat, Integer> statupdate : mystats) {
                         if (statupdate.getLeft().getValue() >= 1) {
                                 if (statupdate.getLeft().getValue() == 0x1) {
-                                        mplew.writeShort(statupdate.getRight().shortValue());
+                                        mplew.write(statupdate.getRight().byteValue());
                                 } else if (statupdate.getLeft().getValue() <= 0x4) {
-                                        mplew.writeInt(statupdate.getRight());
+                                        mplew.writeInt(statupdate.getRight().intValue());
+                                } else if (statupdate.getLeft().getValue() == 0x08) {
+                            		mplew.writeLong(statupdate.getRight().longValue());
                                 } else if (statupdate.getLeft().getValue() < 0x20) {
                                         mplew.write(statupdate.getRight().shortValue());
                                 } else if (statupdate.getLeft().getValue() == 0x8000) {
@@ -4318,27 +4320,7 @@ public class MaplePacketCreator {
                 mplew.write(0);
                 return mplew.getPacket();
         }
-
-        public static byte[] petStatUpdate(MapleCharacter chr) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.STAT_CHANGED.getValue());
-                int mask = 0;
-                mask |= MapleStat.PET.getValue();
-                mplew.write(0);
-                mplew.writeInt(mask);
-                MaplePet[] pets = chr.getPets();
-                for (int i = 0; i < 3; i++) {
-                        if (pets[i] != null) {
-                                mplew.writeInt(pets[i].getUniqueId());
-                                mplew.writeInt(0);
-                        } else {
-                                mplew.writeLong(0);
-                        }
-                }
-                mplew.write(0);
-                return mplew.getPacket();
-        }
-
+        
         public static byte[] showForcedEquip(int team) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.FORCED_MAP_EQUIP.getValue());
