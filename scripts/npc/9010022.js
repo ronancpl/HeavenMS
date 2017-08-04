@@ -59,7 +59,7 @@ function action(mode, type, selection) {
                     cm.warp(980010000, 3); 
                     break; 
                 case 1: 
-                    cm.warp(925020000); 
+                    cm.warp(925020000, 0); 
                     break; 
                 case 2: 
                     cm.warp(980000000, 3); 

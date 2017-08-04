@@ -116,12 +116,15 @@ import constants.skills.WindArcher;
 /**
  * @author Matze
  * @author Frz
+ * @author Ronan
  */
 public class MapleStatEffect {
 
     private short watk, matk, wdef, mdef, acc, avoid, speed, jump;
     private short hp, mp;
     private double hpR, mpR;
+    private short mhpRRate, mmpRRate;
+    private byte mhpR, mmpR;
     private short mpCon, hpCon;
     private int duration;
     private boolean overTime, repeatEffect;
@@ -224,37 +227,48 @@ public class MapleStatEffect {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.PYRAMID_PQ, Integer.valueOf(ret.berserk));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
             
-            if(MapleItemInformationProvider.getInstance().isRateCoupon(sourceid)) {
-                switch(MapleDataTool.getInt("expR", source, 0)) {
-                    case 1:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP1, 1);
-                        break;
-                        
-                    case 2:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP2, 1);
-                        break;
-                            
-                    case 3:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP3, 1);
-                        break;
-                                
-                    case 4:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP4, 1);
-                        break;
-                }
-                
-                switch(MapleDataTool.getInt("drpR", source, 0)) {
-                    case 1:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP1, 1);
-                        break;
-                        
-                    case 2:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP2, 1);
-                        break;
-                            
-                    case 3:
-                        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP3, 1);
-                        break;
+            if(!skill) {
+                if(isDojoBuff(sourceid)) {
+                    ret.mhpR = (byte) MapleDataTool.getInt("mhpR", source, 0);
+                    ret.mhpRRate = (short) (MapleDataTool.getInt("mhpRRate", source, 0) * 100);
+                    ret.mmpR = (byte) MapleDataTool.getInt("mmpRRate", source, 0);
+                    ret.mmpRRate = (short) (MapleDataTool.getInt("mmpRRate", source, 0) * 100);
+
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.HPREC, Integer.valueOf(ret.mhpR));
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MPREC, Integer.valueOf(ret.mmpR));
+                    
+                } else if(isRateCoupon(sourceid)) {
+                    switch(MapleDataTool.getInt("expR", source, 0)) {
+                        case 1:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP1, 1);
+                            break;
+
+                        case 2:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP2, 1);
+                            break;
+
+                        case 3:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP3, 1);
+                            break;
+
+                        case 4:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_EXP4, 1);
+                            break;
+                    }
+
+                    switch(MapleDataTool.getInt("drpR", source, 0)) {
+                        case 1:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP1, 1);
+                            break;
+
+                        case 2:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP2, 1);
+                            break;
+
+                        case 3:
+                            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP3, 1);
+                            break;
+                    }
                 }
             }
         }
@@ -819,7 +833,8 @@ public class MapleStatEffect {
         SummonMovementType summonMovementType = getSummonMovementType();
         if (overTime || isCygnusFA() || summonMovementType != null) {
             if (summonMovementType != null && pos != null) {
-                applyto.cancelBuffStats(MapleBuffStat.SUMMON);  // if player has a summon already, drop it
+                if(summonMovementType.getValue() == summonMovementType.STATIONARY.getValue()) applyto.cancelBuffStats(MapleBuffStat.PUPPET);
+                else applyto.cancelBuffStats(MapleBuffStat.SUMMON);
             }
             
             applyBuffEffect(applyfrom, applyto, primary);
@@ -854,7 +869,7 @@ public class MapleStatEffect {
             Point doorPosition = new Point(applyto.getPosition().x, y);
             MapleDoor door = new MapleDoor(applyto, doorPosition);
             
-            if(door.getOwnerId() > -1) {
+            if(door.getOwnerId() >= 0) {
                 if (applyto.getParty() != null) {
                     for (MaplePartyCharacter partyMember : applyto.getParty().getMembers()) {
                         partyMember.getPlayer().addDoor(door.getOwnerId(), door);
@@ -867,13 +882,17 @@ public class MapleStatEffect {
 
                 door.getTarget().spawnDoor(door.getAreaDoor());
                 door.getTown().spawnDoor(door.getTownDoor());
+                
+                applyto.disableDoor();
             } else {
-                if(door.getOwnerId() == -1) applyto.dropMessage(5, "There are no door portals available for the town at this moment. Try again later.");
-                else applyto.dropMessage(5, "Mystic Door cannot be cast on a slope, try elsewhere.");
+                MapleInventoryManipulator.addFromDrop(applyto.getClient(), new Item(4006000, (short) 0, (short) 1), false);
+                
+                if(door.getOwnerId() == -3) applyto.dropMessage(5, "Mystic Door cannot be cast far from a spawn point. Nearest one is at " + door.getDoorStatus().getRight() + "pts " + door.getDoorStatus().getLeft());
+                else if(door.getOwnerId() == -2) applyto.dropMessage(5, "Mystic Door cannot be cast on a slope, try elsewhere.");
+                else applyto.dropMessage(5, "There are no door portals available for the town at this moment. Try again later.");
                 
                 applyto.cancelBuffStats(MapleBuffStat.SOULARROW);  // cancel door buff
             }
-            applyto.disableDoor();
         }  else if (isMist()) {
             Rectangle bounds = calculateBoundingBox(sourceid == NightWalker.POISON_BOMB ? pos : applyfrom.getPosition(), applyfrom.isFacingLeft());
             MapleMist mist = new MapleMist(bounds, applyfrom, this);
@@ -1046,10 +1065,10 @@ public class MapleStatEffect {
             }
             if (isDash()) {
                 buff = MaplePacketCreator.givePirateBuff(statups, sourceid, seconds);
-                mbuff = MaplePacketCreator.giveForgeinPirateBuff(applyto.getId(), sourceid, seconds, localstatups);
+                mbuff = MaplePacketCreator.giveForeignPirateBuff(applyto.getId(), sourceid, seconds, localstatups);
             } else if (isInfusion()) {
             	buff = MaplePacketCreator.givePirateBuff(localstatups, sourceid, seconds);
-                mbuff = MaplePacketCreator.giveForgeinPirateBuff(applyto.getId(), sourceid, seconds, localstatups);
+                mbuff = MaplePacketCreator.giveForeignPirateBuff(applyto.getId(), sourceid, seconds, localstatups);
             } else if (isDs()) {
                 List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<>(MapleBuffStat.DARKSIGHT, 0));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), dsstat);
@@ -1277,6 +1296,19 @@ public class MapleStatEffect {
     public boolean isRecovery() {
         return sourceid == Beginner.RECOVERY || sourceid == Noblesse.RECOVERY || sourceid == Legend.RECOVERY || sourceid == Evan.RECOVERY;
     }
+    
+    public boolean isDojoBuff() {
+        return sourceid >= 2022359 && sourceid <= 2022421;
+    }
+    
+    public static boolean isDojoBuff(int sourceid) {
+        return sourceid >= 2022359 && sourceid <= 2022421;
+    }
+    
+    public static boolean isRateCoupon(int sourceid) {
+        int itemType = sourceid / 1000;
+        return itemType == 5211 || itemType == 5360;
+    }
 
     private boolean isDs() {
         return skill && (sourceid == Rogue.DARK_SIGHT || sourceid == WindArcher.WIND_WALK || sourceid == NightWalker.DARK_SIGHT);
@@ -1303,7 +1335,7 @@ public class MapleStatEffect {
     }
 
     private boolean isCouponBuff() {
-        return MapleItemInformationProvider.getInstance().isRateCoupon(sourceid);
+        return isRateCoupon(sourceid);
     }
     
     private boolean isMysticDoor() {
@@ -1498,6 +1530,22 @@ public class MapleStatEffect {
 
     public short getMp() {
         return mp;
+    }
+    
+    public byte getHpR() {
+        return mhpR;
+    }
+
+    public byte getMpR() {
+        return mmpR;
+    }
+    
+    public short getHpRRate() {
+        return mhpRRate;
+    }
+
+    public short getMpRRate() {
+        return mmpRRate;
     }
 
     public short getHpCon() {

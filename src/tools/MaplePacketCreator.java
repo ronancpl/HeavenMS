@@ -1064,16 +1064,16 @@ public class MaplePacketCreator {
         /**
          * Gets a packet to spawn a door.
          *
-         * @param oid The door's owner ID.
+         * @param ownerid The door's owner ID.
          * @param pos The position of the door.
          * @param launched Already deployed the door. 
          * @return The remove door packet.
          */
-        public static byte[] spawnDoor(int oid, Point pos, boolean launched) {
+        public static byte[] spawnDoor(int ownerid, Point pos, boolean launched) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(11);
                 mplew.writeShort(SendOpcode.SPAWN_DOOR.getValue());
                 mplew.writeBool(launched);
-                mplew.writeInt(oid);
+                mplew.writeInt(ownerid);
                 mplew.writePos(pos);
                 return mplew.getPacket();
         }
@@ -1081,11 +1081,11 @@ public class MaplePacketCreator {
         /**
          * Gets a packet to remove a door.
          *
-         * @param oid The door's ID.
+         * @param ownerid The door's owner ID.
          * @param town
          * @return The remove door packet.
          */
-        public static byte[] removeDoor(int oid, boolean town) {
+        public static byte[] removeDoor(int ownerid, boolean town) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(10);
                 if (town) {
                         mplew.writeShort(SendOpcode.SPAWN_PORTAL.getValue());
@@ -1094,7 +1094,7 @@ public class MaplePacketCreator {
                 } else {
                         mplew.writeShort(SendOpcode.REMOVE_DOOR.getValue());
                         mplew.write(0);
-                        mplew.writeInt(oid);
+                        mplew.writeInt(ownerid);
                 }
                 return mplew.getPacket();
         }
@@ -2003,7 +2003,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(cid);
                 mplew.writeInt(summonOid);
                 mplew.write(direction);
-                mplew.write(4);
+                mplew.write(direction);
                 mplew.write(allDamage.size());
                 for (SummonAttackEntry attackEntry : allDamage) {
                         mplew.writeInt(attackEntry.getMonsterOid()); // oid
@@ -3185,6 +3185,18 @@ public class MaplePacketCreator {
                 mplew.write(tagBgColor);
                 return mplew.getPacket();
         }
+        
+        public static byte[] customShowBossHP(byte call, int oid, int currHP, int maxHP, byte tagColor, byte tagBgColor) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.FIELD_EFFECT.getValue());
+                mplew.write(call);
+                mplew.writeInt(oid);
+                mplew.writeInt(currHP);
+                mplew.writeInt(maxHP);
+                mplew.write(tagColor);
+                mplew.write(tagBgColor);
+                return mplew.getPacket();
+        }
 
         public static byte[] giveFameResponse(int mode, String charname, int newfame) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -3235,7 +3247,7 @@ public class MaplePacketCreator {
                     
                         for (MapleDoor door : partychar.getDoors()) {
                                 if(door.getOwnerId() == partychar.getId()) {
-                                        MapleDoorObject mdo = door.getTownDoor();
+                                        MapleDoorObject mdo = door.getAreaDoor();
                                         mplew.writeInt(mdo.getTo().getId());
                                         mplew.writeInt(mdo.getFrom().getId());
                                         mplew.writeInt(mdo.getPosition().x);
@@ -3760,7 +3772,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(0);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] mapEffect(String path) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.FIELD_EFFECT.getValue());
@@ -5149,7 +5161,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] giveForgeinPirateBuff(int cid, int buffid, int time, List<Pair<MapleBuffStat, Integer>> statups) {
+        public static byte[] giveForeignPirateBuff(int cid, int buffid, int time, List<Pair<MapleBuffStat, Integer>> statups) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 boolean infusion = buffid == Buccaneer.SPEED_INFUSION || buffid == ThunderBreaker.SPEED_INFUSION || buffid == Corsair.SPEED_INFUSION;
                 mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());

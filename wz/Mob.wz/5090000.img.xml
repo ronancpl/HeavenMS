@@ -12,8 +12,8 @@
     <int name="MADamage" value="180"/>
     <int name="MDDamage" value="180"/>
     <int name="acc" value="130"/>
-    <int name="eva" value="999"/>
-    <int name="exp" value="180"/>
+    <int name="eva" value="42"/>
+    <int name="exp" value="5600"/>
     <int name="undead" value="1"/>
     <int name="pushed" value="400"/>
     <float name="fs" value="10.0"/>
@@ -36,6 +36,9 @@
         </imgdir>
       </imgdir>
     </imgdir>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="101" height="98">

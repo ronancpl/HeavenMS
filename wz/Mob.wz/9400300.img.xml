@@ -22,6 +22,9 @@
     <int name="publicReward" value="1"/>
     <int name="explosiveReward" value="1"/>
     <string name="elemAttr" value="F3"/>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="regen">
     <canvas name="0" width="118" height="143">

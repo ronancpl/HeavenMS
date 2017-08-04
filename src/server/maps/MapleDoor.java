@@ -22,11 +22,11 @@
 package server.maps;
 
 import java.awt.Point;
-import java.util.Collections;
-import java.util.List;
+import tools.Pair;
 
 import server.MaplePortal;
 import client.MapleCharacter;
+import constants.ServerConstants;
 
 /**
  *
@@ -38,6 +38,7 @@ public class MapleDoor {
     private MapleMap town;
     private MaplePortal townPortal;
     private MapleMap target;
+    private Pair<String, Integer> posStatus = null;
     
     private MapleDoorObject townDoor;
     private MapleDoorObject areaDoor;
@@ -47,43 +48,37 @@ public class MapleDoor {
         this.target = owner.getMap();
         
         if(target.canDeployDoor(targetPosition)) {
-            this.town = this.target.getReturnMap();
-            this.townPortal = allocateFreePortal();
+            if(ServerConstants.USE_ENFORCE_MDOOR_POSITION) {
+                 posStatus = target.getDoorPositionStatus(targetPosition);
+            }
+            
+            if(posStatus == null) {
+                this.town = this.target.getReturnMap();
+                this.townPortal = getDoorPortal(owner.getDoorSlot());
 
-            if(townPortal != null) {
-                this.areaDoor = new MapleDoorObject(ownerId, town, target, false, targetPosition, townPortal.getPosition());
-                this.townDoor = new MapleDoorObject(ownerId, target, town, true, townPortal.getPosition(), targetPosition);
+                if(townPortal != null) {
+                    this.areaDoor = new MapleDoorObject(ownerId, town, target, false, targetPosition, townPortal.getPosition());
+                    this.townDoor = new MapleDoorObject(ownerId, target, town, true, townPortal.getPosition(), targetPosition);
 
-                this.areaDoor.setPairOid(this.townDoor.getObjectId());
-                this.townDoor.setPairOid(this.areaDoor.getObjectId());
+                    this.areaDoor.setPairOid(this.townDoor.getObjectId());
+                    this.townDoor.setPairOid(this.areaDoor.getObjectId());
+                } else {
+                    this.ownerId = -1;
+                }
             } else {
-                this.ownerId = -1;
+                this.ownerId = -3;
             }
         } else {
             this.ownerId = -2;
         }
     }
     
-    public void freeAllocatedPortal() {
-        if(townPortal != null) {
-            town.setDisposeDoorPortal(townPortal);
+    private MaplePortal getDoorPortal(int slot) {
+        try {
+            return town.getAvailableDoorPortals().get(slot);
+        } catch (IndexOutOfBoundsException e) {
+            return town.getAvailableDoorPortals().get(0);
         }
-    }
-    
-    private MaplePortal allocateFreePortal() {
-        List<MaplePortal> availablePortals = town.getAvailableDoorPortals();
-        if(availablePortals.isEmpty() || !town.getNotUsingDoorPortal()) return null;
-        
-        Collections.shuffle(availablePortals);
-        while(!availablePortals.isEmpty()) {
-            MaplePortal port = availablePortals.remove(0);
-            
-            if(town.setUsingDoorPortal(port)) {
-                return port;
-            }
-        }
-        
-        return null;
     }
     
     public int getOwnerId() {
@@ -110,4 +105,7 @@ public class MapleDoor {
         return target;
     }
 
+    public Pair<String, Integer> getDoorStatus() {
+        return posStatus;
+    }
 }

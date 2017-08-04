@@ -52,10 +52,12 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import server.quest.MapleQuest;
 
 /**
  *
  * @author Matze
+ * @author Ronan
  */
 public class EventManager {
     private Invocable iv;
@@ -67,9 +69,12 @@ public class EventManager {
     private final Queue<Integer> queuedGuilds = new LinkedList<>();
     private final Map<Integer, Integer> queuedGuildLeaders = new HashMap<>();
     private List<Boolean> openedLobbys;
+    private List<EventInstanceManager> readyInstances = new LinkedList<>();
+    private Integer readyId = 0;
     private Properties props = new Properties();
     private String name;
     private Lock lobbyLock = new ReentrantLock();
+    private Lock queueLock = new ReentrantLock();
     
     private static final int limitGuilds = 10;  // max numbers of guilds in queue for GPQ.
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
@@ -166,7 +171,14 @@ public class EventManager {
     }
 
     public EventInstanceManager newInstance(String name) {
-        EventInstanceManager ret = new EventInstanceManager(this, name);
+        EventInstanceManager ret = getReadyInstance();
+        
+        if(ret == null) {
+            ret = new EventInstanceManager(this, name);
+        } else {
+            ret.setName(name);
+        }
+        
         instances.put(name, ret);
         return ret;
     }
@@ -510,8 +522,8 @@ public class EventManager {
     
     private void exportReadyGuild(Integer guildId) {
         MapleGuild mg = server.getGuild(guildId);
-        String callout = "Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
-                       + " and    HAS JUST STARTED THE STRATEGY PHASE. After 3 minutes, no more guild members will be allowed to join the effort."
+        String callout = "[Guild Quest] Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
+                       + " and HAS JUST STARTED THE STRATEGY PHASE. After 3 minutes, no more guild members will be allowed to join the effort."
                        + " Check out Shuang at the excavation site in Perion for more info.";
         
         mg.dropMessage(0, callout);
@@ -519,7 +531,7 @@ public class EventManager {
     
     private void exportMovedQueueToGuild(Integer guildId, int place) {
         MapleGuild mg = server.getGuild(guildId);
-        String callout = "Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
+        String callout = "[Guild Quest] Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
                        + " and is currently on the " + ordinal(place) + " place on the waiting queue.";
         
         mg.dropMessage(0, callout);
@@ -605,5 +617,65 @@ public class EventManager {
         }
         
         return startInstance(chr);
+    }
+    
+    public void startQuest(MapleCharacter chr, int id, int npcid) {
+        try {
+            MapleQuest.getInstance(id).forceStart(chr, npcid);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void completeQuest(MapleCharacter chr, int id, int npcid) {
+        try {
+            MapleQuest.getInstance(id).forceComplete(chr, npcid);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private void fillEimQueue() {
+        Thread t = new Thread(new EventManagerWorker());  //call new thread to fill up readied instances queue
+        t.start();
+    }
+    
+    private EventInstanceManager getReadyInstance() {
+        queueLock.lock();
+        try {
+            if(readyInstances.isEmpty()) {
+                fillEimQueue();
+                return null;
+            }
+            
+            EventInstanceManager eim = readyInstances.remove(0);
+            fillEimQueue();
+                    
+            return eim;
+        } finally {
+            queueLock.unlock();
+        }
+    }
+    
+    private void instantiateQueuedInstance() {
+        queueLock.lock();
+        try {
+            if(readyInstances.size() >= Math.ceil((double)maxLobbys / 3.0)) return;
+            
+            readyInstances.add(new EventInstanceManager(this, "sampleName" + readyId));
+            readyId++;
+        } finally {
+            queueLock.unlock();
+        }
+        
+        instantiateQueuedInstance();    // keep filling the queue until reach threshold.
+    }
+    
+    private class EventManagerWorker implements Runnable {
+    
+        @Override
+        public void run() {
+            instantiateQueuedInstance();
+        }
     }
 }

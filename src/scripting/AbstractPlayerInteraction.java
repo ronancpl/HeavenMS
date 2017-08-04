@@ -60,10 +60,10 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
-import client.inventory.PetDataFactory;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import server.life.MapleNPC;
+import tools.Pair;
 
 public class AbstractPlayerInteraction {
 
@@ -113,22 +113,24 @@ public class AbstractPlayerInteraction {
 		getPlayer().getMap().warpEveryone(map);
 	}
 
-	public void warpParty(int id) {
-                if (getPlayer().getParty() != null) {
-                        MaplePartyCharacter leader = getPlayer().getParty().getMemberById(getPlayer().getParty().getLeaderId());
-                        if(leader != null) {
-                                int leaderMapId = leader.getMapId();
-            
-                                for (MapleCharacter mc : getPartyMembers()) {
-                                        if(mc.getMapId() == leaderMapId) {
-                                                if (id == 925020100) {
-                                                        mc.setDojoParty(true);
-                                                }
-                                                mc.changeMap(id);
-                                        }
-                                }
+        public void warpParty(int id) {
+                warpParty(id, 0);
+        }
+        
+        public void warpParty(int id, int portalId) {
+                warpParty(id, portalId, getMapId(), getMapId());
+        }
+        
+        public void warpParty(int id, int fromMinId, int fromMaxId) {
+                warpParty(id, 0, fromMinId, fromMaxId);
+        }
+        
+	public void warpParty(int id, int portalId, int fromMinId, int fromMaxId) {
+                for (MapleCharacter mc : getPartyMembers()) {
+                        if(mc.getMapId() >= fromMinId && mc.getMapId() <= fromMaxId) {
+                                mc.changeMap(id, portalId);
                         }
-		}
+                }
 	}
 
 	public List<MapleCharacter> getPartyMembers() {
@@ -204,6 +206,29 @@ public class AbstractPlayerInteraction {
         
         public boolean canHold(int itemid, int quantity) {
                 return getPlayer().canHold(itemid, quantity);
+        }
+        
+        private List<Integer> convertToIntegerArray(List<Double> list) {
+                List<Integer> intList = new LinkedList<>();
+                for(Double d: list) intList.add(d.intValue());
+
+                return intList;
+        }
+        
+        public boolean canHoldAll(List<Double> itemids, List<Double> quantity) {
+                return canHoldAll(convertToIntegerArray(itemids), convertToIntegerArray(quantity), true);
+        }
+        
+        private boolean canHoldAll(List<Integer> itemids, List<Integer> quantity, boolean isInteger) {
+            int size = Math.min(itemids.size(), quantity.size());
+            
+            List<Pair<Item, MapleInventoryType>> addedItems = new LinkedList<>();
+            for(int i = 0; i < size; i++) {
+                Item it = new Item(itemids.get(i), (short) 0, quantity.get(i).shortValue());
+                addedItems.add(new Pair<>(it, MapleItemInformationProvider.getInstance().getInventoryType(itemids.get(i))));
+            }
+            
+            return MapleInventory.checkSpots(c.getPlayer(), addedItems);
         }
      
         //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----

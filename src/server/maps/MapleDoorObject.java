@@ -51,9 +51,10 @@ public class MapleDoorObject extends AbstractMapleMapObject {
         toPos = toPosition;
     }
     
-    public void warp(MapleCharacter chr, boolean toTown) {
+    public void warp(final MapleCharacter chr, boolean toTown) {
         if (chr.getId() == ownerId || (chr.getParty() != null && chr.getParty().getMemberById(ownerId) != null)) {
-            chr.changeMap(to, toPos);
+            if(chr.getParty() == null && (to.isLastDoorOwner(chr.getId()) || toTown)) chr.changeMap(to, toPos);
+            else chr.changeMap(to, to.findClosestPlayerSpawnpoint(toPos));    // weird issues happens with party, relocating players elsewhere....
         } else {
             chr.getClient().announce(MaplePacketCreator.blockedMessage(6));
             chr.getClient().announce(MaplePacketCreator.enableActions());
@@ -63,13 +64,12 @@ public class MapleDoorObject extends AbstractMapleMapObject {
     @Override
     public void sendSpawnData(MapleClient client) {
         if (from.getId() == client.getPlayer().getMapId()) {
-            client.announce(MaplePacketCreator.spawnPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
-            
-            if(!this.inTown()) client.announce(MaplePacketCreator.spawnDoor(this.getOwnerId(), this.getPosition(), true));
-            
             if (client.getPlayer().getParty() != null && (ownerId == client.getPlayer().getId() || client.getPlayer().getParty().getMemberById(ownerId) != null)) {
-                client.announce(MaplePacketCreator.partyPortal(this.getTown().getId(), this.getArea().getId(), this.getAreaPosition()));
+                client.announce(MaplePacketCreator.partyPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
             }
+            
+            client.announce(MaplePacketCreator.spawnPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
+            if(!this.inTown()) client.announce(MaplePacketCreator.spawnDoor(this.getOwnerId(), this.getPosition(), true));
         }
     }
 

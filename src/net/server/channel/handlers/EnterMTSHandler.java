@@ -44,7 +44,8 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	if (!ServerConstants.USE_MTS){
-    		return;
+            c.announce(MaplePacketCreator.enableActions());
+            return;
     	}
         MapleCharacter chr = c.getPlayer();
         if (!chr.isAlive()) {

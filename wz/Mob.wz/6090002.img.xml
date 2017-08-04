@@ -4,16 +4,16 @@
     <int name="boss" value="1"/>
     <int name="bodyAttack" value="1"/>
     <int name="level" value="68"/>
-    <int name="maxHP" value="12500"/>
-    <int name="maxMP" value="300"/>
+    <int name="maxHP" value="13689000"/>
+    <int name="maxMP" value="200000"/>
     <int name="speed" value="-20"/>
     <int name="PADamage" value="200"/>
     <int name="PDDamage" value="190"/>
     <int name="MADamage" value="290"/>
     <int name="MDDamage" value="270"/>
     <int name="acc" value="130"/>
-    <int name="eva" value="999"/>
-    <int name="exp" value="265"/>
+    <int name="eva" value="70"/>
+    <int name="exp" value="89928"/>
     <int name="undead" value="1"/>
     <int name="pushed" value="1300"/>
     <float name="fs" value="10.0"/>
@@ -36,6 +36,9 @@
         </imgdir>
       </imgdir>
     </imgdir>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="123" height="107">

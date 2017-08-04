@@ -51,7 +51,7 @@ function action(mode, type, selection) {
                                         if (cm.getParty() == null) {
                                                 cm.sendOk("You can participate in the party quest only if you are in a party.");
                                                 cm.dispose();
-                                        } else if(!cm.isEventLeader()) {
+                                        } else if(!cm.isLeader()) {
                                                 cm.sendOk("Your party leader must talk to me to start this party quest.");
                                                 cm.dispose();
                                         } else {

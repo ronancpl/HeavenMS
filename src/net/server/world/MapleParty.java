@@ -25,11 +25,19 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Map;
+import java.util.Comparator;
 
 public class MapleParty {
     private int leaderId;
     private List<MaplePartyCharacter> members = new LinkedList<MaplePartyCharacter>();
     private List<MaplePartyCharacter> pqMembers = null;
+    
+    private Map<Integer, Integer> histMembers = new HashMap<>();
+    private int nextEntry = 0;
+    
     private int id;
 
     public MapleParty(int id, MaplePartyCharacter chrfor) {
@@ -43,10 +51,15 @@ public class MapleParty {
     }
 
     public void addMember(MaplePartyCharacter member) {
+        histMembers.put(member.getId(), nextEntry);
+        nextEntry++;
+        
         members.add(member);
     }
 
     public void removeMember(MaplePartyCharacter member) {
+        histMembers.remove(member.getId());
+        
         members.remove(member);
     }
 
@@ -108,6 +121,26 @@ public class MapleParty {
         }
         
         return null;
+    }
+    
+    public byte getPartyDoor(int cid) {
+        List<Entry<Integer, Integer>> histList = new LinkedList<>(histMembers.entrySet());
+        Collections.sort(histList, new Comparator<Entry<Integer, Integer>>()
+            {
+                @Override
+                public int compare( Entry<Integer, Integer> o1, Entry<Integer, Integer> o2 )
+                {
+                    return ( o1.getValue() ).compareTo( o2.getValue() );
+                }
+            });
+        
+        byte slot = 0;
+        for(Entry<Integer, Integer> e: histList) {
+            if(e.getKey() == cid) break;
+            slot++;
+        }
+        
+        return slot;
     }
     
     @Override

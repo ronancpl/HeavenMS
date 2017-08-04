@@ -122,7 +122,7 @@ function action(mode, type, selection) {
                                             }
                                         }
 
-                                        if (playersOnCombo == 5 || cm.getPlayer().gmLevel() > 0) {
+                                        if (playersOnCombo == 5 || cm.getPlayer().gmLevel() > 1) {
                                             var combo = eim.getProperty("stage" + stage + "combo").split(',');
                                             var correctCombo = true;
                                             for (i = 0; i < objset.length && correctCombo; i++)
@@ -130,7 +130,7 @@ function action(mode, type, selection) {
                                                     //cm.mapMessage(5, "Combo failed on " + (i + 1));
                                                     correctCombo = false;
                                                 }
-                                            if (correctCombo || cm.getPlayer().gmLevel() > 0) {
+                                            if (correctCombo || cm.getPlayer().gmLevel() > 1) {
                                                 eim.setProperty("statusStg" + stage, 1);
                                                 clearStage(stage, eim, curMap);
                                                 cm.dispose();

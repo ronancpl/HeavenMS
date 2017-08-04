@@ -27,8 +27,8 @@ function enter(pi) {
     if(pi.isQuestStarted(6134)) {
         pi.warp(922020000, 0);
         return true;
-    } else {
-        pi.getPlayer().message("A mysterious force won't let you in.");
-        return false;
     }
+    
+    pi.getPlayer().message("A mysterious force won't let you in.");
+    return false;
 }

@@ -10,7 +10,7 @@ Feature list:
 PQs:
 * HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/HorntailPQ 100%.
 * CWKPQ as Expedition-based event 100%.
-* Expeditions: Scarga/Horntail 100%.
+* Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean 100%.
 * GuildPQ 100% + Guild queue with multi-lobby systems available.
 * Brand-new PQ: Boss Rush PQ 100%.
 * BalrogPQ semi-functional.
@@ -20,6 +20,8 @@ Quests:
 * Doll house quest 100%.
 * Quests can now reward properly items when matching a reward item with the player's job.
 * Loads of quests have been patched.
+* Quest rewards according to jobs works properly.
+* Rewarding system now checks for stacking opportunities on the inventory before checking for new slots.
 
 Player Social Network:
 * Guild and Alliance system fully functional.
@@ -42,16 +44,24 @@ Server potentials:
 * Gain fame by quests.
 * Every monsterbook card is now droppable by overworld mobs.
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
+* Mastery book announcer displaying droppers of needed books of a player, read underlying DB.
+* Inventory auto-gather and auto-sorting feature.
+* Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
+* If multiple bosses on the same area, client will prioritize Boss HP bar of the target of the player.
 * Custom jail system (needs provided custom wz).
 * Delete Character 100% (requires ENABLE_PIC activated).
+* Boats, elevator and other travelling mechanics fully working.
 
 Admin/GM commands:
+* Server commands layered by GM levels.
 * New commands.
-* Zakum/Horntail/Pinkbean 100%.
+* Spawn Zakum/Horntail/Pinkbean 100%.
 
 Project:
 * Organized project code.
-* Highly configurable server (see server flags at ServerConstants).
-* Fixed/added some missing packets for MoveEnvironment and summons.
+* Highly configurable server (see all server flags at ServerConstants).
+* Fixed/added some missing packets for MoveEnvironment, summons and others.
+* Reviewed some Java object aspects that needed concurrency protection.
+
 ---------------------------

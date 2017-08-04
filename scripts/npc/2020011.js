@@ -105,7 +105,7 @@ function action(mode, type, selection){
         } else {
             if (cm.getPlayer().getLevel() >= 50){
             	cm.sendNext("Ok, go.");
-                cm.getPlayer().setPartyQuestItemObtained("z");
+                if(!cm.isQuestStarted(100200)) cm.startQuest(100200);
             }else
                 cm.sendNext("You're weak.");
             cm.dispose();

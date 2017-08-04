@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-    if (pi.getPlayer().getEventInstance().getProperty("canWarp")) {
+    if (pi.getPlayer().getMap().countMonsters() == 0) {
         pi.warp(910500200, "out01");
         return true;
     }

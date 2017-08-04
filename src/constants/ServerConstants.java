@@ -33,21 +33,22 @@ public class ServerConstants {
     //Gameplay Configuration
     public static final boolean USE_CUSTOM_KEYSET = true;
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
-    public static final boolean USE_MAXRANGE = true;        	//Will send and receive packets from all events of a map, rather than those of only view range.
-    public static final boolean USE_DEBUG = true;           	//Will enable some text prints and new commands in the client oriented for debugging.
-    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false;     //Prints on the cmd all received packet ids.
-    public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false;     //Prints on the cmd all equip exp gain info.
+    public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
+    public static final boolean USE_DEBUG = false;                  //Will enable some text prints on the client, oriented for debugging purposes.
+    public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false; //Prints on the cmd all received packet ids.
+    public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
-    public static final boolean USE_PERMISSIVE_BUFFS = false;    //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
     public static final boolean USE_DUEY = true;
     public static final boolean USE_ITEM_SORT = true;
-    public static final boolean USE_ITEM_SORT_BY_NAME = false;  //Item sorting based on name rather than id.
+    public static final boolean USE_ITEM_SORT_BY_NAME = false;      //Item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
-    public static final boolean USE_AUTOBAN = false;            //Commands the server to detect infractors automatically.
-    public static final boolean USE_ANOTHER_AUTOASSIGN = true;  //Based on distributing AP accordingly with higher secondary stat on equipments.
+    public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
+    public static final boolean USE_ANOTHER_AUTOASSIGN = true;      //Based on distributing AP accordingly with higher secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final boolean USE_PERFECT_PITCH = true;	        //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    public static final boolean USE_PERFECT_PITCH = true;	    //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
+    public static final boolean USE_PERMISSIVE_BUFFS = false;       //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
+    public static final boolean USE_ENFORCE_MDOOR_POSITION = true;  //Forces mystic door to be spawned near spawnpoints. (since things bugs out other way, and this helps players locate the door faster)
     
     
     public static final int MAX_AP = 20000;                     //Max AP allotted on the auto-assigner.
@@ -69,9 +70,12 @@ public class ServerConstants {
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
+    public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to futher recover player`s HP and MP.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
     public static final int MAX_EQUIPMNT_STAT = 32767;            //Max stat on an equipment by leveling up.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
+    public static final byte CHAIR_EXTRA_HEAL_HP = 70;          //Each extra heal proc increasing HP.
+    public static final byte CHAIR_EXTRA_HEAL_MP = 42;          //Each extra heal proc increasing MP.
     public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     public static final int SCROLL_CHANCE_RATE = 10;            //Number of tries for success on a scroll, set 0 for default.
     

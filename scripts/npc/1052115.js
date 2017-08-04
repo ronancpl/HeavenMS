@@ -65,8 +65,8 @@ function action(mode, type, selection) {
 				cm.sendOk("Please defeat at least 10,000 monsters in the Station and look for me again. Kills : " + mons);
 			} else if (cm.canHold(1142141) && !cm.haveItem(1142141)){
 				cm.gainItem(1142141,1);
-				cm.forceStartQuest(29931);
-				cm.forceCompleteQuest(29931);
+				cm.startQuest(29931);
+				cm.completeQuest(29931);
 			} else {
 				cm.sendOk("Please make room.");
 			}

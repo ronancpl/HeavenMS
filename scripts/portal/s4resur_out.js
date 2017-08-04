@@ -21,13 +21,19 @@
 */
 /**
  * @author DiscoveryMS (Twdtwd)
- * @purpose Warps to the Forgotten Passage and gives you the needed item for the resurection.
+ * @purpose Warps to the Forgotten Passage and gives you the needed item for the resurrection.
  */
 function enter(pi) {
     if(pi.isQuestStarted(6134)) {
-        pi.warp(220070400, 3);
-        pi.gainItem(4031448, 1);
-        return true;
+        if(pi.canHold(4031448)) {
+            pi.gainItem(4031448, 1);
+            pi.warp(220070400, 3);
+        
+            return true;
+        } else {
+            pi.getPlayer().message("Make room on your ETC to receive the quest item.");
+            return false;
+        }
     } else {
         pi.warp(220070400, 3);
         return true;

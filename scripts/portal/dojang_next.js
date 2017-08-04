@@ -20,16 +20,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @Author Moogra
+ * @Author Moogra, Ronan
  */
 function enter(pi) {
-    if (pi.getPlayer().getMap().getReactorByName("door").getState() == 1) {
-        if ((pi.getPlayer().getMapId() / 100) % 100 != 38) {
-            if (pi.getPlayer().getMap().getCharacters().size() == 1) {
-                pi.resetMap(pi.getPlayer().getMapId());
-            }
+    var gate = pi.getPlayer().getMap().getReactorByName("door");
+    
+    if ((gate != null && gate.getState() == 1) || pi.getMap().countMonsters() == 0) {
+        if (Math.floor(pi.getPlayer().getMapId() / 100) % 100 < 38) {
             pi.getPlayer().message("You received " + pi.getPlayer().addDojoPointsByMap() + " training points. Your total training points score is now " + pi.getPlayer().getDojoPoints() + ".");
-            pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+            
+            if(((Math.floor((pi.getPlayer().getMap().getId() + 100) / 100)) % 100) % 6 == 0) {
+                if(Math.floor(pi.getPlayer().getMapId() / 10000) == 92503) {
+                    pi.warpParty(pi.getPlayer().getMap().getId() + 100, 925030100, 925033804);
+                } else {
+                    pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+                }
+            } else {
+                pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+            }
         } else {
             pi.warp(925020003, 0);
             pi.getPlayer().gainExp(2000 * pi.getPlayer().getDojoPoints(), true, true, true);

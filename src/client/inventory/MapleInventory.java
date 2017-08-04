@@ -27,16 +27,19 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Map;
 
 import tools.Pair;
 import client.MapleCharacter;
+import client.MapleClient;
 import constants.ItemConstants;
 import server.MapleItemInformationProvider;
+import server.MapleInventoryManipulator;
 
 /**
  *
- * @author Matze
+ * @author Matze, Ronan
  */
 public class MapleInventory implements Iterable<Item> {
     private MapleCharacter owner;
@@ -100,6 +103,37 @@ public class MapleInventory implements Iterable<Item> {
             }
         }
         return qty;
+    }
+    
+    public int freeSlotCountById(int itemId, int required) {
+        List<Item> itemList = listById(itemId);
+        int openSlot = 0;
+        
+        if(!ItemConstants.isRechargable(itemId)) {
+            for (Item item : itemList) {
+                required -= item.getQuantity();
+
+                if(required >= 0) {
+                    openSlot++;
+                    if(required == 0) return openSlot;
+                } else {
+                    return openSlot;
+                }
+            }
+        } else {
+            for (Item item : itemList) {
+                required -= 1;
+
+                if(required >= 0) {
+                    openSlot++;
+                    if(required == 0) return openSlot;
+                } else {
+                    return openSlot;
+                }
+            }
+        }
+        
+        return -1;
     }
 
     public List<Item> listById(int itemId) {
@@ -218,6 +252,10 @@ public class MapleInventory implements Iterable<Item> {
     public boolean isFull(int margin) {
         return inventory.size() + margin >= slotLimit;
     }
+    
+    public boolean isFullAfterSomeItems(int margin, int used) {
+        return inventory.size() + margin >= slotLimit - used;
+    }
 
     public short getNextFreeSlot() {
         if (isFull()) {
@@ -250,25 +288,42 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
-    	int equipSlot = 0, useSlot = 0, setupSlot = 0, etcSlot = 0, cashSlot = 0;
-    	for (Pair<Item, MapleInventoryType> item : items) {
-    		if (item.getRight().getType() == MapleInventoryType.EQUIP.getType())
-    			equipSlot++;
-			if (item.getRight().getType() == MapleInventoryType.USE.getType())
-    			useSlot++;
-			if (item.getRight().getType() == MapleInventoryType.SETUP.getType())
-    			setupSlot++;
-			if (item.getRight().getType() == MapleInventoryType.ETC.getType())
-    			etcSlot++;
-			if (item.getRight().getType() == MapleInventoryType.CASH.getType())
-    			cashSlot++;
+        List<Integer> zeroedList = new ArrayList<>(5);
+        for(byte i = 0; i < 5; i++) zeroedList.add(0);
+        
+        return checkSpots(chr, items, zeroedList);
+    }
+    
+    public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed) {
+        // assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0.
+        
+        Map<Integer, Short> rcvItems = new LinkedHashMap<>();
+        Map<Integer, Byte> rcvTypes = new LinkedHashMap<>();
+        
+        for (Pair<Item, MapleInventoryType> item : items) {
+                Integer itemId = item.left.getItemId();
+                Short qty = rcvItems.get(itemId);
+            
+    		if(qty == null) {
+                        rcvItems.put(itemId, item.left.getQuantity());
+                        rcvTypes.put(itemId, item.right.getType());
+                } else {
+                        rcvItems.put(itemId, (short)(qty + item.left.getQuantity()));
+                }
     	}
-    	
-    	if (chr.getInventory(MapleInventoryType.EQUIP).isFull(equipSlot - 1)) return false;
-    	else if (chr.getInventory(MapleInventoryType.USE).isFull(useSlot - 1)) return false;
-    	else if (chr.getInventory(MapleInventoryType.SETUP).isFull(setupSlot - 1)) return false;
-    	else if (chr.getInventory(MapleInventoryType.ETC).isFull(etcSlot - 1)) return false;
-    	else if (chr.getInventory(MapleInventoryType.CASH).isFull(cashSlot - 1)) return false;
+        
+        MapleClient c = chr.getClient();
+        for(Entry<Integer, Short> it: rcvItems.entrySet()) {
+                int itemType = rcvTypes.get(it.getKey()) - 1;
+                int usedSlots = typesSlotsUsed.get(itemType);
+                
+                int result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getKey(), it.getValue(), "", usedSlots);
+                boolean hasSpace = ((result % 2) != 0);
+                
+                if(!hasSpace) return false;
+                typesSlotsUsed.set(itemType, (result >> 1));
+        }
+        
     	return true;
     }
     

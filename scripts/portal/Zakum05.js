@@ -24,15 +24,16 @@
 */
  
 function enter(pi) {
-    if (!pi.haveItem(4001017)) {
-        pi.getPlayer().dropMessage(6,"You do not have the Eye of Fire.  You may not face the boss.");
+    if (!pi.isQuestStarted(100200)) {
+        pi.getPlayer().dropMessage(5,"You need approval from the masters to battle. You may not attempt the boss right now.");
         return false;
-    } 
-	//var exped = pi.getEventManager("ZakumBattle").getInstance("ZakumBattle_" + pi.getPlayer().getClient().getChannel());
-	//if (exped != null) {
-	//	pi.getPlayer().dropMessage(6,"The battle at Zakum's Altar is currently underway.");
-    //    return false;
-	//}
+    }
+    
+    if (!pi.isQuestCompleted(100201)) {
+        pi.getPlayer().dropMessage(5,"You do not have completed all the trials yet. You may not attempt the boss right now.");
+        return false;
+    }
+    
     pi.warp(211042400,"west00");
     return true;
 }

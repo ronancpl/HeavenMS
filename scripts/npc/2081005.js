@@ -33,7 +33,7 @@ function isTransformed(ch) {
 
 function start() {
     if(!(isTransformed(cm.getPlayer()) || cm.haveItem(4001086))) {
-        cm.sendOk("This is the cave of the mighty Horntail, supreme ruler of the Leafre Canyons, outsiders are not welcome. Get lost!");
+        cm.sendOk("This is the cave of the mighty Horntail, supreme ruler of the Leafre Canyons. Only those #bdeemed worthy#k to meet him can pass here, #boutsiders#k are not welcome. Get lost!");
         cm.dispose();
         return;
     }

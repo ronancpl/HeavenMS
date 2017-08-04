@@ -24,6 +24,9 @@
     <imgdir name="revive">
       <int name="0" value="9400300"/>
     </imgdir>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="58" height="76">

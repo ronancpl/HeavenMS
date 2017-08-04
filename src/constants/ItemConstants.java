@@ -56,6 +56,19 @@ public final class ItemConstants {
     public static boolean isBullet(int itemId) {
         return itemId / 10000 == 233;
     }
+    
+    public static boolean isPotion(int itemId) {
+        return itemId / 1000 == 2000;
+    }
+    
+    public static boolean isFood(int itemId) {
+        int useType = itemId / 1000;
+        return useType == 2022 || useType == 2010 || useType == 2020;
+    }
+    
+    public static boolean isConsumable(int itemId) {
+        return isPotion(itemId) || isFood(itemId);
+    }
 
     public static boolean isRechargable(int itemId) {
         return isThrowingStar(itemId) || isBullet(itemId);
@@ -67,6 +80,10 @@ public final class ItemConstants {
 
     public static boolean isArrowForBow(int itemId) {
         return itemId / 1000 == 2060;
+    }
+    
+    public static boolean isArrow(int itemId) {
+        return isArrowForBow(itemId) || isArrowForCrossBow(itemId);
     }
 
     public static boolean isPet(int itemId) {

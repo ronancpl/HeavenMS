@@ -23,13 +23,12 @@
  * 
  * Adobis's Mission I : Breath of Lava <Level 2> (280020001)
  * Zakum Quest NPC 
- * Custom Quest 100202 -> Done this stage once
  */
  
-var status;
+var status = -1;
  
 function start() {
-    cm.sendNext("Congratulations on getting this far!  Well, I suppose I'd better give you your #bBreath of Fire#k.  You've certainly earned it!");
+    action(1, 0, 0);
 }
  
 function action(mode, type, selection) {
@@ -37,16 +36,22 @@ function action(mode, type, selection) {
         cm.dispose();
     else {
         status++;
-        if (status == 1)
-            cm.sendNextPrev("Well, time for you to head off.");
-        else if (status == 2) {
-            cm.gainItem(4031062,1);
-            cm.warp(211042300);
-            if (cm.isQuestCompleted(100202)) {
-                cm.startQuest(100202);
-                cm.completeQuest(100202);
-                cm.gainExp(10000 * qm.getPlayer().getExpRate());
+        
+        if (status == 0) {
+            cm.sendNext("Congratulations on getting this far!  Well, I suppose I'd better give you your #bBreath of Fire#k.  You've certainly earned it!");
+        } else if (status == 1) {
+            if(!cm.canHold(4031062)) {
+                cm.sendOk("Try freeing a slot to receive the #b#t4031062##k.");
+                cm.dispose();
+                return;
             }
+            
+            cm.sendNext("Well, time for you to head off.");
+        } else if (status == 2) {
+            cm.gainItem(4031062,1);
+            cm.gainExp(10000 * cm.getPlayer().getExpRate());
+            cm.warp(211042300);
+            
             cm.dispose();
         }
     }

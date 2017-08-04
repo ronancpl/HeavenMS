@@ -31,26 +31,19 @@
  importPackage(Packages.server.expeditions);
  
 function start() {
-    cm.sendYesNo("If you leave now, you'll have to start over. Are you sure you want to leave?");
+    if(cm.getMapId() == 280030000) {
+        if(!cm.getEventInstance().isEventCleared()) cm.sendYesNo("If you leave now, you'll have to start over. Are you sure you want to leave?");
+        else cm.sendYesNo("You guys finally overthrew Zakum, what a superb feat! Congratulations! Are you sure you want to leave now?");
+    } else {
+        cm.sendYesNo("If you leave now, you'll have to start over. Are you sure you want to leave?");
+    }
 }
 
 function action(mode, type, selection) {
-	var zakum = MapleExpeditionType.ZAKUM;
-    var expedition = cm.getExpedition(zakum);
     if (mode < 1)
         cm.dispose();
     else {
-        if (cm.getPlayer().getMap().getCharacters().size() < 2){
-            cm.getPlayer().getMap().killAllMonsters();
-            cm.getPlayer().getMap().resetReactors();
-			if (expedition != null){
-				cm.endExpedition(expedition);
-			}
-        }
-        if (cm.getPlayer().getEventInstance() != null)
-            cm.getPlayer().getEventInstance().removePlayer(cm.getPlayer());
-        else
-            cm.warp(211042300);
+        cm.warp(211042300);
         cm.dispose();
     }
 }

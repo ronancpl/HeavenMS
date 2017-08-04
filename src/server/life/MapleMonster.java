@@ -179,7 +179,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public boolean isBoss() {
-        return stats.isBoss() || isHT();
+        return stats.isBoss();
     }
 
     public int getAnimationTime(String name) {
@@ -209,18 +209,19 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         int trueDamage = Math.min(hp, damage); // since magic happens otherwise B^)
         
-        if(ServerConstants.USE_DEBUG == true && from != null) from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
+        if(ServerConstants.USE_DEBUG == true) from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
         dispatchMonsterDamaged(from, trueDamage);
 
-        hp -= damage;
-        if (takenDamage.containsKey(from.getId())) {
-            takenDamage.get(from.getId()).addAndGet(trueDamage);
-        } else {
+        hp -= trueDamage;
+        if (!takenDamage.containsKey(from.getId())) {
             takenDamage.put(from.getId(), new AtomicInteger(trueDamage));
+        } else {
+            takenDamage.get(from.getId()).addAndGet(trueDamage);
         }
 
         if (hasBossHPBar()) {
-            from.getMap().broadcastMessage(makeBossHPBarPacket(), getPosition());
+            from.setPlayerAggro(this.hashCode());
+            from.getMap().broadcastBossHpMessage(this, this.hashCode(), makeBossHPBarPacket(), getPosition());
         } else if (!isBoss()) {
             int remainingHP = (int) Math.max(1, hp * 100f / getMaxHp());
             byte[] packet = MaplePacketCreator.showMonsterHP(getObjectId(), remainingHP);
@@ -531,11 +532,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public boolean hasBossHPBar() {
-        return (isBoss() && getTagColor() > 0) || isHT();
-    }
-
-    private boolean isHT() {
-        return getId() == 8810018;
+        return isBoss() && getTagColor() > 0;
     }
 
     @Override
@@ -558,7 +555,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 this.getMap().killAllMonsters();
                 return;
             }
-            c.announce(makeBossHPBarPacket());
+            c.announceBossHpBar(this, this.hashCode(), makeBossHPBarPacket());
         }
     }
 

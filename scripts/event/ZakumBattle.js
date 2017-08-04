@@ -1,195 +1,192 @@
-/* 
- * This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+/**
+ * @author: Ronan
+ * @event: Zakum Battle
+*/
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
+importPackage(Packages.server.life);
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+var isPq = true;
+var minPlayers = 6, maxPlayers = 30;
+var minLevel = 50, maxLevel = 255;
+var entryMap = 280030000;
+var exitMap = 211042400;
+var recruitMap = 211042400;
+var clearMap = 211042400;
 
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+var minMapId = 280030000;
+var maxMapId = 280030000;
 
-/*
- * @Author Stereo
- * @Modified By XkelvinchiaX(Kelvin)
- * @Modified By Moogra
- * @Modified By SharpAceX(Alan)
- * Zakum Battle
- */
+var eventTime = 60;     // 60 minutes
 
-var exitMap;
-var altarMap;
-var minPlayers = 1;
-var fightTime = 75;
-var altarTime = 15;
-var gate;
+var lobbyRange = [0, 0];
 
 function init() {
-    em.setProperty("shuffleReactors","false");
-	exitMap = em.getChannelServer().getMapFactory().getMap(211042300);
-	altarMap = em.getChannelServer().getMapFactory().getMap(280030000);// Last Mission: Zakum's Altar
-	gate = exitMap.getReactorByName("gate");
-	gate.setState(0);//Open gate
+        setEventRequirements();
 }
 
-function setup() {
-    var eim = em.newInstance("ZakumBattle_" + em.getProperty("channel"));
-	var timer = 1000 * 60 * fightTime;
-	eim.setProperty("summoned", "false");
-    em.schedule("timeOut", eim, timer);
-	em.schedule("altarTimeOut", eim, 1000 * 60 * altarTime);
-    eim.startEventTimer(timer);
-	gate.setState(1);//Close gate
-	return eim;
+function setLobbyRange() {
+        return lobbyRange;
+}
+
+function setEventRequirements() {
+        var reqStr = "";
+        
+        reqStr += "\r\n    Number of players: ";
+        if(maxPlayers - minPlayers >= 1) reqStr += minPlayers + " ~ " + maxPlayers;
+        else reqStr += minPlayers;
+        
+        reqStr += "\r\n    Level range: ";
+        if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
+        else reqStr += minLevel;
+        
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
+        em.setProperty("party", reqStr);
+}
+
+function setEventExclusives(eim) {
+        var itemSet = [];
+        eim.setExclusiveItems(itemSet);
+}
+
+function setEventRewards(eim) {
+        var itemSet, itemQty, evLevel, expStages, mesoStages;
+
+        evLevel = 1;    //Rewards at clear PQ
+        itemSet = [];
+        itemQty = [];
+        eim.setEventRewards(evLevel, itemSet, itemQty);
+        
+        expStages = [];    //bonus exp given on CLEAR stage signal
+        eim.setEventClearStageExp(expStages);
+        
+        mesoStages = [];    //bonus meso given on CLEAR stage signal
+        eim.setEventClearStageMeso(mesoStages);
 }
 
 function afterSetup(eim) {}
 
-function playerEntry(eim,player) {
-	var altar = eim.getMapInstance(altarMap.getId());
-    player.changeMap(altar, altar.getPortal(0));
+function setup(channel) {
+    var eim = em.newInstance("Zakum" + channel);
+    eim.setProperty("canJoin", 1);
+    eim.setProperty("defeatedBoss", 0);
 
-	player.dropMessage(5, "The Zakum Shrine will close if you do not summon Zakum in " + altarTime + " minutes.");
-    if (altarMap == null)
-        debug(eim, "The altar map was not properly linked.");
+    var level = 1;
+    eim.getInstanceMap(280030000).resetPQ(level);
+    
+    eim.startEventTimer(eventTime * 60000);
+    setEventRewards(eim);
+    setEventExclusives(eim);
+    
+    return eim;
 }
 
-function playerRevive(eim,player) {
-    player.setHp(500);
-    player.setStance(0);
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    var exped = eim.getPlayers();
-    if (exped.size() < minPlayers)
-        end(eim,"There are not enough players remaining, the Zakum battle is over.");
-    return false;
+function playerEntry(eim, player) {
+    eim.dropMessage(5, "[Expedition] " + player.getName() + " has entered the map.");
+    var map = eim.getMapInstance(entryMap);
+    player.changeMap(map, map.getPortal(0));
 }
 
-function playerDead(eim,player) {
+function scheduledTimeout(eim) {
+    end(eim);
 }
 
-function playerDisconnected(eim,player) {
-    var exped = eim.getPlayers();
-    if (player.getName().equals(eim.getProperty("leader"))) {
-        var iter = exped.iterator();
-        while (iter.hasNext()) {
-            iter.next().getPlayer().dropMessage(6, "The leader of the expedition has disconnected.");
-		}
+function changedMap(eim, player, mapid) {
+    if (mapid < minMapId || mapid > maxMapId) {
+	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.unregisterPlayer(player);
+            end(eim);
+        }
+        else {
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.unregisterPlayer(player);
+        }
     }
-    //If the expedition is too small.
-    if (exped.size() < minPlayers) {
-        end(eim,"There are not enough players remaining. The Battle is over.");
-    }
 }
 
-function monsterValue(eim,mobId) { // potentially display time of death? does not seem to work
-    if (mobId == 8800002) { // 3rd body
-        var iter = eim.getPlayers().iterator();
-        while (iter.hasNext()) {
-            iter.next().dropMessage(6, "Congratulations on defeating Zakum!");
-		}
-    }
-    return -1;
-}
+function changedLeader(eim, leader) {}
 
-function leftParty(eim,player) { // do nothing in Zakum
-}
+function playerDead(eim, player) {}
 
-function disbandParty(eim) { // do nothing in Zakum
-}
-
-function playerUnregistered(eim, player) {}
-
-function playerExit(eim,player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    if (eim.getPlayers().size() < minPlayers) {//not enough after someone left
-        end(eim, "There are no longer enough players to continue, and those remaining shall be warped out.");
-	}
-}
-
-function end(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.getPlayer().dropMessage(6,msg);
+function playerRevive(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
         eim.unregisterPlayer(player);
-        if (player != null){
-            player.changeMap(exitMap, exitMap.getPortal(0));
-		}
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        end(eim);
     }
-	gate.setState(0);//Open gate
-    eim.dispose();
-}
-
-function removePlayer(eim,player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
-}
-
-function clearPQ(eim) { //When the hell does this get executed?
-    end(eim,"As the sound of battle fades away, you feel strangely unsatisfied.");
-
-}
-
-function finish(eim) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
         eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
+    }
+}
+
+function playerDisconnected(eim, player) {
+    if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.unregisterPlayer(player);
+        end(eim);
+    }
+    else {
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.unregisterPlayer(player);
+    }
+}
+
+function leftParty (eim, player) {}
+
+function disbandParty (eim) {}
+
+function monsterValue(eim, mobId) {
+    return 1;
+}
+
+function playerUnregistered(eim, player) {
+    if(eim.isEventCleared()) {
+        em.completeQuest(player, 100200, 2030010);
+    }
+}
+
+function playerExit(eim, player) {
+    eim.unregisterPlayer(player);
+    player.changeMap(exitMap, 0);
+}
+
+function end(eim) {
+    var party = eim.getPlayers();
+    for (var i = 0; i < party.size(); i++) {
+        playerExit(eim, party.get(i));
     }
     eim.dispose();
 }
 
-function monsterKilled(mob, eim) {}
+function giveRandomEventReward(eim, player) {
+    eim.giveEventReward(player);
+}
+
+function clearPQ(eim) {
+    eim.stopEventTimer();
+    eim.setEventCleared();
+}
+
+function isZakum(mob) {
+    var mobid = mob.getId();
+    return (mobid == 8800002);
+}
+
+function monsterKilled(mob, eim) {
+    if(isZakum(mob)) {
+        eim.setIntProperty("defeatedBoss", 1);
+        eim.showClearEffect(mob.getMap().getId());
+        eim.clearPQ();
+        
+        mob.getMap().broadcastZakumVictory();
+    }
+}
 
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function altarTimeOut(eim) {
-    if (eim != null && eim.getProperty("summoned").equals("false")) {
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext()){
-				var player = pIter.next();
-				player.dropMessage(6, "The Shrine has closed since you did not summon Zakum within " + altarTime + " minutes.");
-                playerExit(eim, player);
-			}
-        }
-        eim.dispose();
-    }
-}
-
-function timeOut(eim) {
-    if (eim != null) {
-        if (eim.getPlayerCount() > 0) {
-            var pIter = eim.getPlayers().iterator();
-            while (pIter.hasNext()){
-				var player = pIter.next();
-				player.dropMessage(6, "You have run out of time to defeat Zakum!");
-                playerExit(eim, player);
-			}
-        }
-        eim.dispose();
-    }
-}
-
-function debug(eim,msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        iter.next().getClient().getSession().write(Packages.tools.MaplePacketCreator.serverNotice(6,msg));
-    }
-}
+function dispose(eim) {}

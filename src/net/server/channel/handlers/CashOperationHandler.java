@@ -213,7 +213,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             mi.removeSlot(item.getPosition());
             c.announce(MaplePacketCreator.putIntoCashInventory(item, c.getAccID()));
         } else if (action == 0x1D) { //crush ring (action 28)
-			slea.readInt();//Birthday
+            slea.readInt();//Birthday
            // if (checkBirthday(c, birthday)) { //We're using a default birthday, so why restrict rings to only people who know of it? 
                 int toCharge = slea.readInt();
                 int SN = slea.readInt();
@@ -317,40 +317,6 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
     }
 
     public static boolean canBuy(CashItem item, int cash) {
-        return item != null && item.isOnSale() && item.getPrice() <= cash && !blocked(item.getItemId());
-    }
-
-    public static boolean blocked(int id){
-    	switch(id){ //All 2x exp cards
-    	case 5211000:
-    	case 5211004:
-    	case 5211005:
-    	case 5211006:
-    	case 5211007:
-    	case 5211008:
-    	case 5211009:
-    	case 5211010:
-    	case 5211011:
-    	case 5211012:
-    	case 5211013:
-    	case 5211014:
-    	case 5211015:
-    	case 5211016:
-    	case 5211017:
-    	case 5211018:
-    	case 5211037:
-    	case 5211038:
-    	case 5211039:
-    	case 5211040:
-    	case 5211041:
-    	case 5211042:
-    	case 5211043:
-    	case 5211044:
-    	case 5211045:
-    	case 5211049:
-    		return true;
-    	default:
-    		return false;
-    	}
+        return item != null && item.isOnSale() && item.getPrice() <= cash;
     }
 }

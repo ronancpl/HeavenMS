@@ -227,7 +227,7 @@ public class MapleInventoryManipulator {
         }
         return true;
     }
-
+    
     public static boolean checkSpace(MapleClient c, int itemid, int quantity, String owner) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         MapleInventoryType type = ii.getInventoryType(itemid);
@@ -261,6 +261,52 @@ public class MapleInventoryManipulator {
         } else {
             return !c.getPlayer().getInventory(type).isFull();
         }
+    }
+
+    public static int checkSpaceProgressively(MapleClient c, int itemid, int quantity, String owner, int usedSlots) {
+        // return value --> bit0: if has space for this one;
+        //                  value after: new slots filled;
+        
+        int returnValue;
+        
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        MapleInventoryType type = ii.getInventoryType(itemid);
+        if (!type.equals(MapleInventoryType.EQUIP)) {
+            short slotMax = ii.getSlotMax(c, itemid);
+            if (!ItemConstants.isRechargable(itemid)) {
+                List<Item> existing = c.getPlayer().getInventory(type).listById(itemid);
+                
+                if (existing.size() > 0) // first update all existing slots to slotMax
+                {
+                    for (Item eItem : existing) {
+                        short oldQ = eItem.getQuantity();
+                        if (oldQ < slotMax && owner.equals(eItem.getOwner())) {
+                            short newQ = (short) Math.min(oldQ + quantity, slotMax);
+                            quantity -= (newQ - oldQ);
+                        }
+                        if (quantity <= 0) {
+                            break;
+                        }
+                    }
+                }
+            }
+            final int numSlotsNeeded;
+            if (slotMax > 0) {
+                numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
+            } else if (ItemConstants.isRechargable(itemid)) {
+                numSlotsNeeded = 1;
+            } else {
+                numSlotsNeeded = 1;
+            }
+            
+            returnValue = ((numSlotsNeeded + usedSlots) << 1);
+            returnValue += (numSlotsNeeded == 0 || !c.getPlayer().getInventory(type).isFullAfterSomeItems(numSlotsNeeded - 1, usedSlots)) ? 1 : 0;
+        } else {
+            returnValue = ((1 + usedSlots) << 1);
+            returnValue += (!c.getPlayer().getInventory(type).isFullAfterSomeItems(0, usedSlots)) ? 1 : 0;
+        }
+        
+        return returnValue;
     }
 
     public static void removeFromSlot(MapleClient c, MapleInventoryType type, short slot, short quantity, boolean fromDrop) {

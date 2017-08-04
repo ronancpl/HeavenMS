@@ -28,17 +28,18 @@
 
 var status;
 var selectedType;
-var scrolls;
+var gotAllDocs;
 
 function start() {
-    cm.sendSimple("...#b\r\n#L0#What am I supposed to do here?#l\r\n#L1#I brought items!#l\r\n#L2#I want to get out!#l");
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
     if (mode == -1)
         cm.dispose();
     else {
-        if (mode == 0 && status == 0) {
+        if (mode == 0) {
             cm.dispose();
             return;
         }
@@ -46,50 +47,95 @@ function action(mode, type, selection) {
             status++;
         else
             status--;
-        if (status == 1) {
-            selectedType = selection;
-            if (selection == 0) {
-                cm.sendNext("To reveal the power of Zakum, you'll have to recreate its core. Hidden somewhere in this dungeon is a \"Fire Ore\" which is one of the necessary materials for that core. Find it, and bring it to me.\r\n\r\nOh, and could you do me a favour? There's also a number of Paper Documents lying under rocks around here. If you can get 30 of them, I can reward you for your efforts.")
-                cm.dispose();
+        
+        var eim = cm.getPlayer().getEventInstance();
+        
+        if (status == 0) {
+            if(!eim.isEventCleared()) {
+                cm.sendSimple("...#b\r\n#L0#What am I supposed to do here?#l\r\n#L1#I brought items!#l\r\n#L2#I want to get out!#l");
+            } else {
+                cm.sendNext("You completed this ordeal, now receive your prize.");
             }
-            else if (selection == 1) {
-                if (!cm.haveItem(4001018)) { //documents
-                    cm.sendNext("Please bring the Fire Ore with you.")
+        }
+        else if (status == 1) {
+            if(!eim.isEventCleared()) {
+                selectedType = selection;
+                if (selection == 0) {
+                    cm.sendNext("To reveal the power of Zakum, you'll have to recreate its core. Hidden somewhere in this dungeon is a #b\"Fire Ore\"#k which is one of the necessary materials for that core. Find it, and bring it to me.\r\n\r\nOh, and could you do me a favour? There's also a number of #bPaper Documents#k lying under rocks around here. If you can get 30 of them, I can reward you for your efforts.");
                     cm.dispose();
+                    return;
                 }
-                else {
-                    if (!cm.haveItem(4001015, 30)) { //documents
-                        cm.sendYesNo("So, you brought the fire ore with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. Make sure your whole party has room in their inventory before proceeding.");
-                        scrolls = false;
+                else if (selection == 1) {
+                    if(!cm.isEventLeader()) {
+                        cm.sendNext("Please let your leader bring the materials to me to complete this ordeal.");
+                        cm.dispose();
+                        return;
+                    }
+
+                    if (!cm.haveItem(4001018)) { //fire ore
+                        cm.sendNext("Please bring the #bFire Ore#k with you.");
+                        cm.dispose();
+                    }
+                    else {
+                        gotAllDocs = cm.haveItem(4001015, 30);
+                        if (!gotAllDocs) { //documents
+                            cm.sendYesNo("So, you brought the fire ore with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. Make sure your whole party has room in their inventory before proceeding.");
+                        } else {
+                            cm.sendYesNo("So, you brought the fire ore and the documents with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. As well, since you brought the documents with you, I can also give you a special item which will #bbring you to the mine's entrance at any time#k. Make sure your whole party has room in their inventory before proceeding.");
+                        }
+                    }
+                } else if (selection == 2)
+                    cm.sendYesNo("Are you sure you want to exit? If you're the party leader, your party will also be removed from the mines.");
+            } else {
+                if(eim.getProperty("gotDocuments") == 1) {
+                    if(eim.gridCheck(cm.getPlayer()) == -1) {
+                        if(cm.canHoldAll([2030007, 4031061], [5, 1])) {
+                            cm.gainItem(2030007, 5);
+                            cm.gainItem(4031061, 1);
+
+                            eim.gridInsert(cm.getPlayer(), 1);
+                        } else {
+                            cm.sendOk("Make sure you have room in your inventory before proceeding.");
+                        }
                     } else {
-                        cm.sendYesNo("So, you brought the fire ore and the documents with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. As well, since you brought the documents with you, I can also give you a special item which will bring you to the mine's entrance at any time. Make sure your whole party has room in their inventory before proceeding.");
-                        scrolls = true;
+                        cm.sendOk("You have already received your share. You can now exit the mines through the portal over there.");
+                    }
+                } else {
+                    if(eim.gridCheck(cm.getPlayer()) == -1) {
+                        if(cm.canHold(4031061, 1)) {
+                            cm.gainItem(4031061, 1);
+
+                            eim.gridInsert(cm.getPlayer(), 1);
+                        } else {
+                            cm.sendOk("Make sure you have room in your inventory before proceeding.");
+                        }
+                    } else {
+                        cm.sendOk("You have already received your share. You can now exit the mines through the portal over there.");
                     }
                 }
-            } else if (selection == 2)
-                cm.sendYesNo("Are you sure you want to exit? If you're the party leader, your party will also be removed from the mines.")
+                
+                cm.dispose();
+            }
+            
         }
         else if (status == 2) {
-            var eim = cm.getPlayer().getEventInstance();
             if (selectedType == 1) {
-                var party = eim.getPlayers();
                 cm.gainItem(4001018, -1);
-                if (scrolls)
+                
+                if(gotAllDocs) {
                     cm.gainItem(4001015, -30);
-                cm.givePartyItems(4031061, 1, party);
-                if (scrolls) {
-                    cm.givePartyItems(2030007, 5, party);
-                    cm.givePartyExp(20000, party);
-                } else
-                    cm.givePartyExp(12000, party);
+                    
+                    eim.setProperty("gotDocuments", 1);
+                    eim.giveEventPlayersExp(20000);
+                } else {
+                    eim.giveEventPlayersExp(12000);
+                }
+                
                 eim.clearPQ();
                 cm.dispose();
             }
             else if (selectedType == 2) {
-                if (cm.isLeader())
-                    eim.disbandParty();
-                else
-                    eim.leaveParty(cm.getPlayer());
+                cm.warp(211042300);
                 cm.dispose();
             }
         }

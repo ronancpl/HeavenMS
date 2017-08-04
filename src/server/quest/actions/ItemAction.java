@@ -22,14 +22,15 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
+import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
@@ -73,12 +74,24 @@ public class ItemAction extends MapleQuestAction {
 			if (iEntry.getChildByPath("job") != null)
 				job = MapleDataTool.getInt(iEntry.getChildByPath("job"));
 			
-			items.add(new ItemData(id, count, prop, job, gender));
+			items.add(new ItemData(Integer.parseInt(iEntry.getName()), id, count, prop, job, gender));
 		}
+                
+                Collections.sort(items, new Comparator<ItemData>()
+                {
+                    @Override
+                    public int compare( ItemData o1, ItemData o2 )
+                    {
+                        return o1.map - o2.map;
+                    }
+                });
 	}
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
+                List<Pair<Integer, Integer>> takeItem = new LinkedList<>();
+                List<Pair<Integer, Integer>> giveItem = new LinkedList<>();
+            
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 int props = 0, rndProps = 0, accProps = 0;
 		for(ItemData item : items) {
@@ -110,69 +123,114 @@ public class ItemAction extends MapleQuestAction {
                                 }
 			}
 			
-			if(iEntry.getCount() < 0) { // Remove Items
-				MapleInventoryType type = ii.getInventoryType(iEntry.getId());
-				int quantity = iEntry.getCount() * -1; // Invert
-				if(type.equals(MapleInventoryType.EQUIP)) {
-					if(chr.getInventory(type).countById(iEntry.getId()) < quantity) {
-						// Not enough in the equip inventoty, so check Equipped...
-						if(chr.getInventory(MapleInventoryType.EQUIPPED).countById(iEntry.getId()) > quantity) {
-							// Found it equipped, so change the type to equipped.
-							type = MapleInventoryType.EQUIPPED;
-						}
-					}
-				}
-				MapleInventoryManipulator.removeById(chr.getClient(), type, iEntry.getId(), quantity, true, false);
-				chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getId(), (short) iEntry.getCount(), true));
-			} else {
-				if (chr.getInventory(MapleItemInformationProvider.getInstance().getInventoryType(iEntry.getId())).getNextFreeSlot() > -1) {
-					MapleInventoryManipulator.addById(chr.getClient(), iEntry.getId(), (short) iEntry.getCount());
-					chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getId(), (short) iEntry.getCount(), true));
-				} else {
-					chr.dropMessage(1, "Inventory Full");
-				}
+			if(iEntry.getCount() < 0) { // Remove Item
+				takeItem.add(new Pair<>(iEntry.getId(), iEntry.getCount()));
+			} else {                    // Give Item
+                                giveItem.add(new Pair<>(iEntry.getId(), iEntry.getCount()));
 			}
 		}
+                
+                // must take all needed items before giving others
+                
+                for(Pair<Integer, Integer> iEntry: takeItem) {
+                        MapleInventoryType type = ii.getInventoryType(iEntry.getLeft());
+                        int quantity = iEntry.getRight() * -1; // Invert
+                        if(type.equals(MapleInventoryType.EQUIP)) {
+                                if(chr.getInventory(type).countById(iEntry.getLeft()) < quantity) {
+                                        // Not enough in the equip inventoty, so check Equipped...
+                                        if(chr.getInventory(MapleInventoryType.EQUIPPED).countById(iEntry.getLeft()) > quantity) {
+                                                // Found it equipped, so change the type to equipped.
+                                                type = MapleInventoryType.EQUIPPED;
+                                        }
+                                }
+                        }
+
+                        MapleInventoryManipulator.removeById(chr.getClient(), type, iEntry.getLeft(), quantity, true, false);
+                        chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getLeft(), (short) iEntry.getRight().shortValue(), true));
+                }
+                
+                for(Pair<Integer, Integer> iEntry: giveItem) {
+                        MapleInventoryManipulator.addById(chr.getClient(), iEntry.getLeft(), (short) iEntry.getRight().shortValue());
+                        chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getLeft(), (short) iEntry.getRight().shortValue(), true));
+                }
 	}
 	
 	@Override
 	public boolean check(MapleCharacter chr, Integer extSelection) {
 		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                EnumMap<MapleInventoryType, Integer> props = new EnumMap<>(MapleInventoryType.class);
-		List<Pair<Item, MapleInventoryType>> itemList = new ArrayList<>();
-		for(ItemData item : items) {
-			if (!canGetItem(item, chr)) {
+                
+		List<Pair<Item, MapleInventoryType>> gainList = new LinkedList<>();
+                List<Pair<Item, MapleInventoryType>> selectList = new LinkedList<>();
+                List<Pair<Item, MapleInventoryType>> randomList = new LinkedList<>();
+                
+                List<Integer> allSlotUsed = new ArrayList(5);
+                for(byte i = 0; i < 5; i++) allSlotUsed.add(0);
+                
+                for(ItemData item : items) {
+                        if (!canGetItem(item, chr)) {
 				continue;
 			}
+                        
 			MapleInventoryType type = ii.getInventoryType(item.getId());
 			if(item.getProp() != null) {
-				if(!props.containsKey(type)) {
-					props.put(type, item.getId());
-				}
-				continue;
-			}
-			
-			if(item.getCount() > 0) {
-				// Make sure they can hold the item.
-				Item toItem = new Item(item.getId(), (short) 0, (short) item.getCount());
-				itemList.add(new Pair<>(toItem, type));
+                                Item toItem = new Item(item.getId(), (short) 0, (short) item.getCount());
+                            
+                                if(item.getProp() < 0) {
+                                        selectList.add(new Pair<>(toItem, type));
+                                } else {
+                                        randomList.add(new Pair<>(toItem, type));
+                                }
+				
 			} else {
-				// Make sure they actually have the item.
-				int quantity = item.getCount() * -1;
-				if(chr.getInventory(type).countById(item.getId()) < quantity) {
-					if(type.equals(MapleInventoryType.EQUIP) && chr.getInventory(MapleInventoryType.EQUIPPED).countById(item.getId()) > quantity)
-						continue;
-					return false;
-				}
-			}
+                                if(item.getCount() > 0) {
+                                        // Make sure they can hold the item.
+                                        Item toItem = new Item(item.getId(), (short) 0, (short) item.getCount());
+                                        gainList.add(new Pair<>(toItem, type));
+                                } else {
+                                        // Make sure they actually have the item.
+                                        int quantity = item.getCount() * -1;
+                                        
+                                        int freeSlotCount = chr.getInventory(type).freeSlotCountById(item.getId(), quantity);
+                                        if(freeSlotCount == -1) {
+                                                if(type.equals(MapleInventoryType.EQUIP) && chr.getInventory(MapleInventoryType.EQUIPPED).countById(item.getId()) > quantity)
+                                                        continue;
+                                                
+                                                chr.dropMessage(1, "Please check if you have enough items in your inventory.");
+                                                return false;
+                                        } else {
+                                                int idx = type.getType() - 1;   // more slots available from the given items!
+                                                allSlotUsed.set(idx, allSlotUsed.get(idx) - freeSlotCount);
+                                        }
+                                }
+                        }
 		}
-		for(Integer itemID : props.values()) {
-			MapleInventoryType type = ii.getInventoryType(itemID);
-			Item toItem = new Item(itemID, (short) 0, (short) 1);
-			itemList.add(new Pair<>(toItem, type));
-		}
-		
-		if (!MapleInventory.checkSpots(chr, itemList)) {
+                
+                if(!randomList.isEmpty()) {
+                        int result;
+                        MapleClient c = chr.getClient();
+                        
+                        List<Integer> rndUsed = new ArrayList(5);
+                        for(byte i = 0; i < 5; i++) rndUsed.add(allSlotUsed.get(i));
+                    
+                        for(Pair<Item, MapleInventoryType> it: randomList) {
+                                int idx = it.getRight().getType() - 1;
+                            
+                                result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getLeft().getItemId(), it.getLeft().getQuantity(), "", rndUsed.get(idx));
+                                if(result % 2 == 0) {
+                                    chr.dropMessage(1, "Please check if you have enough space in your inventory.");
+                                    return false;
+                                }
+                                
+                                allSlotUsed.set(idx, Math.max(allSlotUsed.get(idx), result >> 1));
+                        }
+                }
+                
+                if(!selectList.isEmpty()) {
+                        Pair<Item, MapleInventoryType> selected = selectList.get(extSelection);
+                        gainList.add(selected);
+                }
+                
+		if (!MapleInventory.checkSpots(chr, gainList, allSlotUsed)) {
 			chr.dropMessage(1, "Please check if you have enough space in your inventory.");
 			return false;
 		}
@@ -199,11 +257,12 @@ public class ItemAction extends MapleQuestAction {
     }
 	
 	private class ItemData {
-		private final int id, count, job, gender;
+		private final int map, id, count, job, gender;
 		private final Integer prop;
 		
-		public ItemData(int id, int count, Integer prop, int job, int gender) {
-			this.id = id;
+		public ItemData(int map, int id, int count, Integer prop, int job, int gender) {
+			this.map = map;
+                        this.id = id;
 			this.count = count;
 			this.prop = prop;
 			this.job = job;

@@ -25,8 +25,15 @@
  */
 function enter(pi) {
     if(pi.isQuestStarted(6153)) {
-        pi.warp(910500200, 0);
-        return true;
+        if(pi.getWarpMap(910500200).countPlayers() == 0) {
+            pi.resetMapObjects(910500200);
+            pi.warp(910500200, 0);
+            
+            return true;
+        } else {
+            pi.getPlayer().message("Some other player is currently inside.");
+            return false;
+        }
     } else {
         pi.getPlayer().message("A mysterious force won't let you in.");
         return false;

@@ -22,5 +22,5 @@
 
 function start(ms) {   	       
 	ms.unlockUI();
-	ms.forceStartQuest(22015);
+	ms.getClient().getQM().forceStartQuest(22015);
 }

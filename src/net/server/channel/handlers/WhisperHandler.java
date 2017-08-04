@@ -60,7 +60,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             if (player != null) {
                 player.getClient().announce(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getChannel(), text));
                 
-                if(player.isHidden() && player.gmLevel() > c.getPlayer().gmLevel()) {
+                if(player.isHidden() && player.gmLevel() >= c.getPlayer().gmLevel()) {
                     c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                 } else {
                     c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 1));
@@ -71,7 +71,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                         world.whisper(c.getPlayer().getName(), recipient, c.getChannel(), text);
                         
                         player = world.getPlayerStorage().getCharacterByName(recipient);
-                        if(player.isHidden() && player.gmLevel() > c.getPlayer().gmLevel())
+                        if(player.isHidden() && player.gmLevel() >= c.getPlayer().gmLevel())
                             c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                         else
                             c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 1));
@@ -97,7 +97,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                     ps.setString(1, recipient);
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
-                        if (rs.getInt("gm") > c.getPlayer().gmLevel()) {
+                        if (rs.getInt("gm") >= c.getPlayer().gmLevel()) {
                             c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                             return;
                         }

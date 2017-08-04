@@ -20,15 +20,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*	
- * @author:  kevintjuh93/moogra
+ * @author:  kevintjuh93, moogra
  * @portal:  dojang_exit
  * @purpose: warps user out
  */
 
 function enter(pi) {
-	var map = pi.getPlayer().getSavedLocation("MIRROR");
-	if(map == -1)
-		map = 100000000;
+    var map = pi.getPlayer().getSavedLocation("MIRROR");
+    if(map == -1) map = 100000000;
+    
     pi.warp(map);
     return true;
 }

@@ -64,12 +64,12 @@ public class QuestActionManager extends NPCConversationManager {
         return forceCompleteQuest(quest);
     }
     
-    // For compatability with some older scripts...
+    // For compatibility with some older scripts...
     public void startQuest() {
         forceStartQuest();
     }
     
-    // For compatability with some older scripts...
+    // For compatibility with some older scripts...
     public void completeQuest() {
         forceCompleteQuest();
     }

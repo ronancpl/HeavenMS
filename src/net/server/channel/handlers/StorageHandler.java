@@ -57,7 +57,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			byte slot = slea.readByte();
 			if (slot < 0 || slot > storage.getSlots()) { // removal starts at zero
 				AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
-				FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to work with storage slot " + slot + "\r\n");
+				FilePrinter.print(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to work with storage slot " + slot + "\r\n");
 				c.disconnect(true, false);
 				return;
 			}
@@ -79,7 +79,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 				if (MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {                
 					item = storage.takeOut(slot);//actually the same but idc
 					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-					FilePrinter.printError(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");			
+					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
 					if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
 						item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
 					}
@@ -97,7 +97,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			MapleInventory Inv = chr.getInventory(slotType);
 			if (slot < 1 || slot > Inv.getSlotLimit()) { //player inv starts at one
 				AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
-				FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to store item at slot " + slot + "\r\n");
+				FilePrinter.print(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to store item at slot " + slot + "\r\n");
 				c.disconnect(true, false);
 				return;
 			}
@@ -124,7 +124,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 					storage.store(item);
 					storage.sendStored(c, ii.getInventoryType(itemId));
 					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-					FilePrinter.printError(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	
+					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	
 				}
 			}
 		} else if (mode == 7) { // meso
@@ -145,7 +145,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 				}
 				storage.setMeso(storageMesos - meso);
 				chr.gainMeso(meso, false, true, false);
-				FilePrinter.printError(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos\r\n");					
+				FilePrinter.print(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos\r\n");
 			} else {
 				return;
 			}

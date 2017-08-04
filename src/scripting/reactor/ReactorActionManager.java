@@ -40,6 +40,7 @@ import scripting.event.EventManager;
 import server.MapleItemInformationProvider;
 import server.TimerManager;
 import server.life.MapleLifeFactory;
+import server.life.MapleMonster;
 import server.maps.MapMonitor;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
@@ -162,6 +163,14 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     
     public void spawnNpc(int npcId, Point pos) {
         spawnNpc(npcId, pos, reactor.getMap());
+    }
+    
+    public void hitMonsterWithReactor(int id, int hitsToKill) {  // until someone comes with a better solution, why not?
+        MapleMonster mm = reactor.getMap().getMonsterById(id);
+        if(mm != null) {
+            int damage = (int)Math.ceil(mm.getMaxHp() / hitsToKill);
+            reactor.getMap().damageMonster(this.getPlayer(), mm, damage);
+        }
     }
 
     public MapleReactor getReactor() {

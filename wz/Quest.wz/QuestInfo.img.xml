@@ -10679,12 +10679,11 @@ Able to proceed to &apos;For the peace of Victoria Island...&apos; as next quest
     <int name="viewMedalItem" value="1142084"/>
   </imgdir>
   <imgdir name="29510">
-    <string name="name" value="Endless Journey Medal"/>
-    <int name="area" value="50"/>
-    <int name="autoStart" value="1"/>
-    <string name="0" value="Let&apos;s go find Cassandra."/>
-    <string name="1" value="Get ready! Maple has another surprise for you! A chance to receive the Maple Lover Medal! Log in to MapleStory for an hour everyday for 15 days to collect the 15-Day Dreamer Medals!"/>
-    <string name="2" value="Get ready! Maple has another surprise for you! A chance to receive the Maple Lover Medal! Log in to MapleStory for an hour everyday for 15 days to collect the 15-Day Dreamer Medals!"/>
+    <string name="name" value="Foxwit&apos;s Research"/>
+    <int name="area" value="45"/>
+    <string name="0" value="Let&apos;s go find Foxwit."/>
+    <string name="1" value="Foxwit needs the drops of some raid bosses to research the cause of the recent upheavals. Guess it&apos;s time to join some expeditions.\n\n#i4021010##t4021010#  #b#c4021010##k / 1\n#i4032133##t4032133#  #b#c4032133##k / 1"/>
+    <string name="2" value="I have returned the items Foxwit asked for. The rewards were esplendid."/>
   </imgdir>
   <imgdir name="29512">
     <string name="name" value="Monster Expert"/>
@@ -19226,11 +19225,14 @@ Able to proceed to &apos;Merry-go-round in Kampung&apos; as next quest.
     <string name="2" value=" I surely wish she makes a good couple with that special someone. Hahaha...But then again, it&apos;s a little disturbing, come to think of it. I better ask her what&apos;s up next time."/>
     <int name="area" value="30"/>
   </imgdir>
-  <imgdir name="8052">
-    <string name="name" value="Umi&apos;s Spiced Veggies"/>
-    <string name="0" value="Umi of Showa Town sounds like she&apos;s stuck in a tough spot. I should go talk to her."/>
-    <string name="1" value="She said she needed a solid rock to help her make spice vegetables. A solid rock...speaking of which, I remember hearing that #b#o6400100##k the monster collects them. \n#t04000131#  #b#c04000131##k/80"/>
-    <string name="2" value="Umi&apos;s spiced vegetables sure sound enticing. I should go get some later~!"/>
+  <imgdir name="7778">
+    <string name="name" value="Konpei&apos;s Gambit"/>
+    <string name="0" value="Konpei is thinking on a way to take down the threat that so long has been endangering the region of Showa. Let&apos;s listen to what he has to say."/>
+    <string name="1" value="Konpei said that to finish this problem our only solution is to seize the evil from it&apos;s root. That said, it is advisable to #rparty up with other maplers#k to take down the Elite 3 of the Showa gang. As proof of the progress, he requested the drop of these 3 guys. The reward of this one better make up for it!\n
+\n#t04000139#  #b#c04000139##k/1
+\n#t04000140#  #b#c04000140##k/1
+\n#t04000141#  #b#c04000141##k/1"/>
+    <string name="2" value="After an intense battle, the dominance of the Showa gang came to an end. As their chief has been taken down, the mob that long plagued the region started to dissipate. Wothy to mention the reward he gave to me was very, very welcome!"/>
     <int name="area" value="48"/>
   </imgdir>
   <imgdir name="8053">
@@ -23788,5 +23790,12 @@ Able to proceed to &apos;Merry-go-round in Kampung&apos; as next quest.
     <string name="2" value="3"/>
     <int name="timeLimit" value="600"/>
     <int name="autoStart" value="1"/>
+  </imgdir>
+  <imgdir name="8052">
+    <string name="name" value="Umi&apos;s Spiced Veggies"/>
+    <string name="0" value="Umi of Showa Town sounds like she&apos;s stuck in a tough spot. I should go talk to her."/>
+    <string name="1" value="She said she needed a solid rock to help her make spice vegetables. A solid rock...speaking of which, I remember hearing that #b#o6400100##k the monster collects them. \n#t04000131#  #b#c04000131##k/80"/>
+    <string name="2" value="Umi&apos;s spiced vegetables sure sound enticing. I should go get some later~!"/>
+    <int name="area" value="48"/>
   </imgdir>
 </imgdir>

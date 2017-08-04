@@ -8,15 +8,15 @@ Map.wz/MapX/*:
 
 Item.wz/*:
 	Fixed lacking "slotMax" properties in some items.
-	Set flag "Quest Item" for Springy Worm.
+	Set flag "Quest Item" for some items.
 
 Quest.wz/*:
 	Fixed a bunch of quests, now giving the proper output. Added new quests.
 
 String.wz/*:
 	Fixed some NPC speeches.
-	Updated MonsterBook with current drop data on the sql's DB, using
-Ronan Lana's MobBookUpdate facility.
+	Updated MonsterBook with current drop data on the sql's DB, using Ronan's
+MobBookUpdate facility.
 
 
 P.S.:

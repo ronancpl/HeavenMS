@@ -22,11 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting.npc;
 
 import java.io.File;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.LinkedList;
 
 import net.server.Server;
 import net.server.guild.MapleAlliance;
@@ -48,7 +44,6 @@ import server.partyquest.Pyramid;
 import server.partyquest.Pyramid.PyramidMode;
 import server.quest.MapleQuest;
 import tools.LogHelper;
-import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
@@ -60,12 +55,8 @@ import client.Skill;
 import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
-import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.ExpTable;
 import constants.ServerConstants;
-import java.util.Map;
-import java.util.Set;
 
 /**
  *

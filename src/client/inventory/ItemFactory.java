@@ -134,9 +134,9 @@ public enum ItemFactory {
     public synchronized void saveItems(List<Pair<Item, MapleInventoryType>> items, int id, Connection con) throws SQLException {
         PreparedStatement ps = null;
         PreparedStatement pse = null;
-		ResultSet rs = null;
-		
-		lock.lock();
+        ResultSet rs = null;
+
+        lock.lock();
 		
         try {
             StringBuilder query = new StringBuilder();

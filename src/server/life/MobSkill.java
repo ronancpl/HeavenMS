@@ -104,8 +104,8 @@ public class MobSkill {
 
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill) {
         MapleDisease disease = null;
-		Map<MonsterStatus, Integer> stats = new ArrayMap<MonsterStatus, Integer>();
-		List<Integer> reflection = new LinkedList<Integer>();
+        Map<MonsterStatus, Integer> stats = new ArrayMap<MonsterStatus, Integer>();
+        List<Integer> reflection = new LinkedList<Integer>();
         switch (skillId) {
             case 100:
             case 110:
@@ -274,9 +274,9 @@ public class MobSkill {
                     }
                 }
                 break;
-              default:
-            	  System.out.println("Unhandled Mob skill: " + skillId);
-            	  break;
+            default:
+                System.out.println("Unhandled Mob skill: " + skillId);
+                break;
         }
 		if (stats.size() > 0) {
 		    if (lt != null && rb != null && skill) {

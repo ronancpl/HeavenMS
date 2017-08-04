@@ -39,7 +39,7 @@ public class PlayerBuffStorage {
     public void addBuffsToStorage(int chrid, List<PlayerBuffValueHolder> toStore) {
         mutex.lock();
         try {
-            buffs.put(chrid, toStore);//Old one will be replace if it's in here.
+            buffs.put(chrid, toStore);//Old one will be replaced if it's in here.
         } finally {
             mutex.unlock();
         }

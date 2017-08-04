@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -80,6 +81,11 @@ public final class Channel {
     private List<MapleExpeditionType> expedType = new ArrayList<>();
     private MapleEvent event;
     private boolean finishedShutdown = false;
+    private int usedDojo = 0;
+    private int[] dojoStage;
+    private long[] dojoFinishTime;
+    private ScheduledFuture<?>[] dojoTask;
+    private Map<Integer, Integer> dojoParty = new HashMap<>();
     
     public Channel(final int world, final int channel) {
         this.world = world;
@@ -103,6 +109,15 @@ public final class Channel {
             	expedType.add(exped);
             }
             eventSM.init();
+            
+            dojoStage = new int[20];
+            dojoFinishTime = new long[20];
+            dojoTask = new ScheduledFuture<?>[20];
+            for(int i = 0; i < 20; i++) {
+                dojoStage[i] = 0;
+                dojoFinishTime[i] = 0;
+                dojoTask[i] = null;
+            }
             
             System.out.println("    Channel " + getId() + ": Listening on port " + port);
         } catch (Exception e) {
@@ -311,5 +326,135 @@ public final class Channel {
     
     public void setStoredVar(int key, int val) {
         this.storedVars.put(key, val);
+    }
+    
+    public synchronized int lookupPartyDojo(MapleParty party) {
+        if(party == null) return -1;
+        
+        Integer i = dojoParty.get(party.hashCode());
+        return (i != null) ? i : -1;
+    }
+    
+    public int getAvailableDojo(boolean isPartyDojo) {
+        return getAvailableDojo(isPartyDojo, null);
+    }
+    
+    public synchronized int getAvailableDojo(boolean isPartyDojo, MapleParty party) {
+        int dojoList = this.usedDojo;
+        int range, slot = 0;
+        
+        if(!isPartyDojo) {
+            dojoList = dojoList >> 5;
+            range = 15;
+        } else {
+            range = 5;
+        }
+        
+        while((dojoList & 1) != 0) {
+            dojoList = (dojoList >> 1);
+            slot++;
+        }
+        
+        if(slot < range) {
+            if(party != null) {
+                if(dojoParty.containsKey(party.hashCode())) return -2;
+                dojoParty.put(party.hashCode(), slot);
+            }
+                
+            this.usedDojo |= (1 << ((!isPartyDojo ? 5 : 0) + slot));
+            return slot;
+        } else {
+            return -1;
+        }
+    }
+    
+    private void freeDojoSlot(int slot, MapleParty party) {
+        int mask = 0b11111111111111111111;
+        mask ^= (1 << slot);
+        
+        usedDojo &= mask;
+        if(party != null) dojoParty.remove(party.hashCode());
+    }
+    
+    private int getDojoSlot(int dojoMapId) {
+        return (dojoMapId % 100) + ((dojoMapId / 10000 == 92502) ? 5 : 0);
+    }
+    
+    public void resetDojoMap(int fromMapId) {
+        for(int i = 0; i < (((fromMapId / 100) % 100 <= 36) ? 5 : 2); i++) {
+            this.getMapFactory().getMap(fromMapId + (100 * i)).resetMapObjects();
+        }
+    }
+    
+    public void resetDojo(int dojoMapId) {
+        resetDojo(dojoMapId, 0);
+    }
+    
+    public void resetDojo(int dojoMapId, int thisStg) {
+        int slot = getDojoSlot(dojoMapId);
+        this.dojoStage[slot] = thisStg;
+        
+        if(this.dojoTask[slot] != null) {
+            this.dojoTask[slot].cancel(false);
+            this.dojoTask[slot] = null;
+        }
+    }
+    
+    public void startDojoSchedule(final int dojoMapId) {
+        final int slot = getDojoSlot(dojoMapId);
+        final int stage = (dojoMapId / 100) % 100;
+        if(stage <= dojoStage[slot]) return;
+        
+        long clockTime = (stage > 36 ? 15 : stage / 6 + 5) * 60000;
+        this.dojoTask[slot] = TimerManager.getInstance().schedule(new Runnable() {
+            @Override
+            public void run() {
+                final int delta = (dojoMapId) % 100;
+                final int dojoBaseMap = (slot < 5) ? 925030000 : 925020000;
+                MapleParty party = null;
+                
+                for (int i = 0; i < 5; i++) { //only 32 stages, but 38 maps
+                    for(MapleCharacter chr: getMapFactory().getMap(dojoBaseMap + (100 * (stage + i)) + delta).getAllPlayers()) {
+                        if(chr.getMap().isDojoMap()) {
+                            chr.timeoutFromDojo();
+                        }
+                        party = chr.getParty();
+                    }
+                }
+                
+                freeDojoSlot(slot, party);
+            }
+        }, clockTime + 3000);   // let the TIMES UP display for 3 seconds, then warp
+        
+        dojoFinishTime[slot] = System.currentTimeMillis() + clockTime;
+    }
+    
+    public void dismissDojoSchedule(int dojoMapId, MapleParty party) {
+        int slot = getDojoSlot(dojoMapId);
+        int stage = (dojoMapId / 100) % 100;
+        if(stage <= dojoStage[slot]) return;
+        
+        if(this.dojoTask[slot] != null) {
+            this.dojoTask[slot].cancel(false);
+            this.dojoTask[slot] = null;
+        }
+        
+        freeDojoSlot(slot, party);
+    }
+    
+    public boolean setDojoProgress(int dojoMapId) {
+        int slot = getDojoSlot(dojoMapId);
+        int dojoStg = (dojoMapId / 100) % 100;
+        
+        if(this.dojoStage[slot] < dojoStg) {
+            this.dojoStage[slot] = dojoStg;
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public long getDojoFinishTime(int dojoMapId) {
+        return dojoFinishTime[getDojoSlot(dojoMapId)];
     }
 }

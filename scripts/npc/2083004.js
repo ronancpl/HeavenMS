@@ -45,7 +45,7 @@ function action(mode, type, selection) {
 
     player = cm.getPlayer();
     expedition = cm.getExpedition(exped);
-    em = cm.getEventManager("HorntailFight");
+    em = cm.getEventManager("HorntailBattle");
 
     if (mode == -1) {
         cm.dispose();
@@ -127,8 +127,8 @@ function action(mode, type, selection) {
                 cm.sendSimple(text);
                 status = 6;
             } else if (selection == 2) {
-                //var min = exped.getMinSize();
-                var min = 1;
+                var min = exped.getMinSize();
+                
                 var size = expedition.getMembers().size();
                 if (size < min) {
                     cm.sendOk("You need at least " + min + " players registered in your expedition.");

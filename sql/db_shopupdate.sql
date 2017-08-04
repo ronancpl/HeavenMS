@@ -4,8 +4,9 @@ UPDATE shopitems SET itemid=2120000, price=100 WHERE shopitemid=20;
 UPDATE shopitems SET itemid=1812000, price=1000 WHERE shopitemid=21;
 UPDATE shopitems SET itemid=1812001, price=1000 WHERE shopitemid=22;
 
-# Scroll shop at Spindle
+# Scroll shop at Spindle, chair shop at Kino Konoko
 INSERT INTO `shops` (`shopid`,`npcid`) VALUES
+(9110002,9110002),
 (9201082,9201082);
 
 INSERT IGNORE INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
@@ -82,3 +83,22 @@ INSERT IGNORE INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitc
 (994783, 9201082, 4001017, 60000000, 0, 71);
 
 UPDATE shopitems SET price = 11*price WHERE (`position` >= 27 and `position` <= 67 and `shopid` = 9201082);
+
+INSERT IGNORE INTO `shopitems` (`shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
+(9120002, 3010005, 5000, 0, 80),
+(9120002, 3010004, 5000, 0, 84),
+(9120002, 3010006, 5000, 0, 88),
+(9120002, 3010003, 5000, 0, 92),
+(9120002, 3010002, 5000, 0, 96),
+(9120002, 2061003, 40, 0, 100),
+(9201020, 3010011, 1200, 0, 92),
+(9201020, 3010009, 4200, 0, 96),
+(9201020, 3010014, 15000, 0, 100),
+(1031100, 3010015, 20000, 0, 100),
+(1081000, 3010013, 100000, 0, 100),
+(9110002, 3010019, 200000, 0, 80),
+(9110002, 3010017, 1000000, 0, 84),
+(9110002, 3010016, 1000000, 0, 88),
+(9110002, 3010008, 1000000, 0, 92),
+(9110002, 3010007, 1000000, 0, 96),
+(9110002, 3011000, 4200000, 0, 100);

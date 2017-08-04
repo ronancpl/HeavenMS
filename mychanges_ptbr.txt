@@ -382,3 +382,49 @@ Corrigido bugs com "buffmap" desconectando players em certos casos.
 16 - 17 Julho 2017,
 Adicionados HTPQ e expedição Horntail.
 Corrigido bugs com levelup de equipamentos provocando Integer overflow (stats negativos) nos clientes.
+Corrigido ataque de Octopus (summon) não revelando direção a clientes de terceiros.
+Corrigido caso onde player usando chair morre sem desequipar a chair, levando clientes a mostrar chairs ao lado do player.
+Nova feature: cura extra de chairs de mapa.
+
+18 - 19 Julho 2017,
+Corrigido varias falhas de concorrencia na classe dos players.
+Corrigido reator das portas do dojo as vezes lancando nulls.
+Adicionado sistema de lobbys pro Dojo (multiplas partys podendo acessar salas do Dojo concorrentemente, com limite).
+Adicionado proteção de acesso concorrente a certas propriedades dos players.
+
+21 Julho 2017,
+Corrigido scripts dojang_Eff (agora aplicando para todos) e dojang_1st (agora somente para o primeiro player entrando no mapa).
+Dojo agora funcional, com sistema de lobbys aplicado.
+Bosses no dojo agora dropam buffs e mobs poções.
+
+22 - 23 Julho 2017,
+Corrigido vários aspectos errôneos referente ao funcionamento das Mystic Doors.
+Comando adicionado: recharge.
+Adicionado/modificado alguns scripts de portais relacionados a mapas de skills de 4th job.
+
+24 Julho 2017,
+Adicionada mecânica permitindo quests entregarem itens mesmo que não haja slots vazios para garantir tal ação.
+
+25 Julho 2017,
+Adicionadas barras de HP para bosses da região de Zipangu/Showa.
+Adicionada expedição para bosses de Showa.
+Adicionados chairs a venda por NPCs ao longo de Maple World.
+
+26 - 27 Julho 2017,
+HP Bar de bosses agora aparecem de forma inteligente, de acordo com quem o jogador está alvejando.
+Adicionadas expedições para Zakum e Pinkbean.
+
+31 Julho 2017,
+Otimizado carregamento de skills ao iniciar o server.
+Workaround em bosses tais como Riche e Ice Witch, anteriormente inderrotáveis.
+
+01 Agosto 2017,
+Adicionado drop data para tais bosses anteriormente inderrotáveis.
+
+02 Agosto 2017,
+Consertado bug em alguns eventos, relacionado à função isEventLeader.
+Consertado quests não dando item certo apropriadamente, no caso de escolhas.
+
+03 Agosto 2017,
+Quests agora retiram itens antes de entregar recompensas.
+Após a primeira inicialização, PQs inicializarão mais rápido, uma vez que há um sistema preparador de EIMs ativo.

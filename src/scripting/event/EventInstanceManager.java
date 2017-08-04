@@ -116,6 +116,10 @@ public class EventInstanceManager {
 		mapFactory = new MapleMapFactory(this, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), (byte) 0, (byte) 1);//Fk this
 		mapFactory.setChannel(em.getChannelServer().getId());
 	}
+        
+        public void setName(String name) {
+                this.name = name;
+        }
 
 	public EventManager getEm() {
 		return em;
@@ -239,8 +243,10 @@ public class EventInstanceManager {
 	}
         
         public void dropMessage(int type, String message) {
-                for (MapleCharacter chr : getPlayers()) {
-                        chr.dropMessage(type, message);
+                if(!eventCleared) {
+                        for (MapleCharacter chr : getPlayers()) {
+                                chr.dropMessage(type, message);
+                        }
                 }
         }
 
@@ -346,21 +352,22 @@ public class EventInstanceManager {
 	}
 
 	public void unregisterPlayer(MapleCharacter chr) {
+                try {
+                        em.getIv().invokeFunction("playerUnregistered", EventInstanceManager.this, chr);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                        
                 wL.lock();
                 try {
-                        try {
-                                em.getIv().invokeFunction("playerUnregistered", EventInstanceManager.this, chr);
-                        } catch (ScriptException | NoSuchMethodException ex) {
-                                Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    
                         chars.remove(chr.getId());
-                        gridRemove(chr);
-                        dropExclusiveItems(chr);
                 } finally {
                         wL.unlock();
                 }
-            
+                
+                gridRemove(chr);
+                dropExclusiveItems(chr);
+                
 		chr.setEventInstance(null);
 	}
 	
@@ -832,33 +839,37 @@ public class EventInstanceManager {
         
         //gives out EXP & a random item in a similar fashion of when clearing KPQ, LPQ, etc.
         public final boolean giveEventReward(MapleCharacter player, int eventLevel) {
+                List<Integer> rewardsSet, rewardsQty;
+                Integer rewardExp;
+            
                 rL.lock();
                 try {
                         eventLevel--;       //event level starts counting from 1
                         if(eventLevel >= collectionSet.size()) return true;
 
-                        List<Integer> rewardsSet = collectionSet.get(eventLevel);
-                        List<Integer> rewardsQty = collectionQty.get(eventLevel);
+                        rewardsSet = collectionSet.get(eventLevel);
+                        rewardsQty = collectionQty.get(eventLevel);
 
-                        Integer rewardExp = collectionExp.get(eventLevel);
-                        if(rewardExp == null) rewardExp = 0;
-
-                        if(rewardsSet == null || rewardsSet.isEmpty()) {
-                                if(rewardExp > 0) player.gainExp(rewardExp);
-                                return true;
-                        }
-
-                        if(!hasRewardSlot(player, eventLevel)) return false;
-
-                        AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
-                        int rnd = (int)Math.floor(Math.random() * rewardsSet.size());
-
-                        api.gainItem(rewardsSet.get(rnd), rewardsQty.get(rnd).shortValue());
-                        if(rewardExp > 0) player.gainExp(rewardExp);
-                        return true;
+                        rewardExp = collectionExp.get(eventLevel);
                 } finally {
                         rL.unlock();
                 }
+                        
+                if(rewardExp == null) rewardExp = 0;
+
+                if(rewardsSet == null || rewardsSet.isEmpty()) {
+                        if(rewardExp > 0) player.gainExp(rewardExp);
+                        return true;
+                }
+
+                if(!hasRewardSlot(player, eventLevel)) return false;
+
+                AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
+                int rnd = (int)Math.floor(Math.random() * rewardsSet.size());
+
+                api.gainItem(rewardsSet.get(rnd), rewardsQty.get(rnd).shortValue());
+                if(rewardExp > 0) player.gainExp(rewardExp);
+                return true;
         }
         
         private void disposeExpedition() {
@@ -898,10 +909,12 @@ public class EventInstanceManager {
         }
         
         public final boolean isEventTeamLackingNow(boolean testLeader, int minPlayers, MapleCharacter quitter) {
-                if(eventCleared && getPlayerCount() > 1) return false;
-                
-                if(!eventCleared && testLeader && getLeaderId() == quitter.getId()) return true;
-                if(getPlayerCount() <= minPlayers) return true;
+                if(eventCleared) {
+                        if(getPlayerCount() <= 1) return true;
+                } else {
+                        if(testLeader && getLeaderId() == quitter.getId()) return true;
+                        if(getPlayerCount() <= minPlayers) return true;
+                }
                 
                 return false;
         }

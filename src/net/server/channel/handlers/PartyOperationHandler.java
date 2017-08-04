@@ -51,7 +51,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                         player.setParty(party);
                         player.setMPC(partyplayer);
                         player.silentPartyUpdate();
-                    c.announce(MaplePacketCreator.partyCreated(partyplayer));
+                        c.announce(MaplePacketCreator.partyCreated(partyplayer));
                 } else {
                     c.announce(MaplePacketCreator.serverNotice(5, "You can't create a party as you are already in one."));
                 }

@@ -35,7 +35,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected byte type;
     protected boolean pickedUp = false, playerDrop;
     protected long dropTime;
-    public ReentrantLock itemLock = new ReentrantLock();
+    private ReentrantLock itemLock = new ReentrantLock();
 
     public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
 	setPosition(position);
@@ -107,16 +107,24 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	this.pickedUp = pickedUp;
     }
 	
-	public long getDropTime() {
-		return dropTime;
-	}
-	
-	public void setDropTime(long time) {
-		this.dropTime  = time;
-	}
+    public long getDropTime() {
+        return dropTime;
+    }
+
+    public void setDropTime(long time) {
+        this.dropTime  = time;
+    }
 
     public byte getDropType() {
 	return type;
+    }
+    
+    public void lockItem() {
+        itemLock.lock();
+    }
+    
+    public void unlockItem() {
+        itemLock.unlock();
     }
 
     @Override

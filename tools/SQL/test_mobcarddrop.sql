@@ -27,3 +27,13 @@ CALL countMobCardsBySection();
 
 # the query below recovers all MAIN mobs that drops card.
 SELECT cardid, mobid FROM monstercarddata LEFT JOIN drop_data ON monstercarddata.cardid = drop_data.itemid WHERE mobid = dropperid;
+
+# the query below recovers MISSING cards from mobs that drops card.
+SELECT cardid, mobid FROM monstercarddata WHERE cardid NOT IN (
+SELECT cardid FROM monstercarddata LEFT JOIN drop_data ON monstercarddata.cardid = drop_data.itemid WHERE mobid = dropperid
+);
+
+# LENGTHY query that also recovers MISSING cards from mobs that drops card.
+SELECT id FROM handbook WHERE id NOT IN (
+  SELECT DISTINCT itemid FROM drop_data
+) AND id>=2380000 AND id<2390000;

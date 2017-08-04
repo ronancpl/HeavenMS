@@ -44,11 +44,26 @@ function action(mode, type, selection) {
                 else
                         status--;
     
-                if (status == 0) {
-                        cm.sendYesNo("If you leave now, you won't be able to return. Are you sure you want to leave?");
-                } else if (status == 1) {
-                        cm.warp(551030100, 2);
-                        cm.dispose();
+                var eim = cm.getEventInstance();
+                if(!eim.isEventCleared()) {
+                        if (status == 0) {
+                                cm.sendYesNo("If you leave now, you won't be able to return. Are you sure you want to leave?");
+                        } else if (status == 1) {
+                                cm.warp(551030100, 2);
+                                cm.dispose();
+                        }
+                } else {
+                        if (status == 0) {
+                                cm.sendNext("You guys defeated both Scarlion and Targa! Wonderful! Take this memento as a prize for your bravery.");
+                        } else if (status == 1) {
+                                if(!eim.giveEventReward(cm.getPlayer())) {
+                                        cm.sendNext("Please make room on your inventory first!");
+                                } else {
+                                        cm.warp(551030100, 2);
+                                }
+
+                                cm.dispose();
+                        }
                 }
         }
 }

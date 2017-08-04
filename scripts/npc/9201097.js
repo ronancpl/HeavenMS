@@ -21,6 +21,7 @@ eQuestPrizes[0] = new Array ([1002801,1],  // Raven Ninja Bandana
     [1472031,1],        // Black Mamba
     [2044701,1],        // Claw for ATT 60%
     [2044501,1],        // Bow for ATT 60%
+    [3010041,1],        // Skull Throne
     [0, 750000]);       // Mesos
     
 eQuestPrizes[1] = new Array ([1332077,1],  // Raven's Beak
@@ -31,6 +32,7 @@ eQuestPrizes[1] = new Array ([1332077,1],  // Raven's Beak
     [2043201,1],        // One Handed BW for Att 60%
     [2044401,1],        // Polearm for Att 60%
     [2044301,1],        // Spear for Att 60%
+    [3010041,1],        // Skull Throne
     [0,1250000]);       // Mesos
     
 eQuestPrizes[2] = new Array ([1472072,1],   //Raven's Claw
@@ -42,6 +44,7 @@ eQuestPrizes[2] = new Array ([1472072,1],   //Raven's Claw
     [2043023,1],        // One-Handed Sword for Att 100%[2]
     [2043101,1],        // One-Handed Axe for Att 60%
     [2043301,1],        // Dagger for Att 60%
+    [3010040,1],        // The Stirge Seat
     [0,2500000]);       // Mesos
     
 eQuestPrizes[3] = new Array ([1002801,1],   //Raven Ninja Bandana
@@ -51,6 +54,7 @@ eQuestPrizes[3] = new Array ([1002801,1],   //Raven Ninja Bandana
     [4032015,1],        // Tao of Shadows
     [2043701,1],        // Wand for Magic Att 60%
     [2043801,1],        // Staff for Magic Att 60%
+    [3010040,1],        // The Stirge Seat
     [0,1750000]);       // Mesos
 
 eQuestPrizes[4] = new Array ([0,3500000]);	// Mesos
@@ -96,7 +100,7 @@ function action(mode, type, selection) {
 	requiredItem = eQuestChoices[selection];
         
         if(selection < 4) qnt = 50;
-        else qnt=25;
+        else qnt = 25;
         
 	cm.sendYesNo("Let's see, you want to trade your #b" + qnt +  " #t" + requiredItem + "##k with my stuff, right? Before trading make sure you have an empty slot available on your use or etc. inventory. Now, do you want to trade with me?");
     }else if (status == 4){

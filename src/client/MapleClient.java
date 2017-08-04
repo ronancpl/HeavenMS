@@ -69,6 +69,7 @@ import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
 import server.MapleMiniGame;
 import server.MaplePlayerShop;
+import server.life.MapleMonster;
 import server.MapleTrade;
 import server.TimerManager;
 import server.maps.*;
@@ -1164,6 +1165,25 @@ public class MapleClient {
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
+	}
+        
+        public synchronized void announceBossHpBar(MapleMonster mm, final int mobHash, final byte[] packet) {
+                long timeNow = System.currentTimeMillis();
+                int targetHash = player.getTargetHpBarHash();
+                
+                if(mobHash != targetHash) {
+                        if(timeNow - player.getTargetHpBarTime() >= 5 * 1000) {
+                                // is there a way to INTERRUPT this annoying thread running on the client that drops the boss bar after some time at every attack?
+                                announce(packet);
+                                
+                                player.setTargetHpBarHash(mobHash);
+                                player.setTargetHpBarTime(timeNow);
+                        }
+                } else {
+                        announce(packet);
+                        
+                        player.setTargetHpBarTime(timeNow);
+                }
 	}
 
 	public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3

@@ -3332,11 +3332,29 @@
       </imgdir>
     </imgdir>
   </imgdir>
-  <imgdir name="1039">
+  <imgdir name="7778">
     <imgdir name="0">
     </imgdir>
     <imgdir name="1">
-      <int name="exp" value="100"/>
+      <int name="exp" value="777777"/>
+      <imgdir name="item">
+        <imgdir name="1">
+          <int name="id" value="4000140"/>
+          <int name="count" value="-1"/>
+        </imgdir>
+        <imgdir name="3">
+          <int name="id" value="1122012"/>
+          <int name="count" value="1"/>
+        </imgdir>
+        <imgdir name="0">
+          <int name="id" value="4000139"/>
+          <int name="count" value="-1"/>
+        </imgdir>
+        <imgdir name="2">
+          <int name="id" value="4000141"/>
+          <int name="count" value="-1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="10390">
@@ -17201,6 +17219,55 @@
     <imgdir name="0">
     </imgdir>
     <imgdir name="1">
+      <imgdir name="item">
+        <imgdir name="1">
+          <int name="id" value="4021010"/>
+          <int name="count" value="-1"/>
+        </imgdir>
+        <imgdir name="2">
+          <int name="id" value="2010006"/>
+          <int name="count" value="50"/>
+        </imgdir>
+        <imgdir name="3">
+          <int name="id" value="2002021"/>
+          <int name="count" value="80"/>
+          <int name="prop" value="1"/>
+        </imgdir>
+        <imgdir name="4">
+          <int name="id" value="2002020"/>
+          <int name="count" value="80"/>
+          <int name="prop" value="1"/>
+        </imgdir>
+        <imgdir name="7">
+          <int name="id" value="1442030"/>
+          <int name="count" value="1"/>
+          <int name="prop" value="-1"/>
+        </imgdir>
+        <imgdir name="6">
+          <int name="id" value="4011004"/>
+          <int name="count" value="2"/>
+          <int name="prop" value="1"/>
+        </imgdir>
+        <imgdir name="9">
+          <int name="id" value="4010004"/>
+          <int name="count" value="18"/>
+          <int name="prop" value="-1"/>
+        </imgdir>
+        <imgdir name="0">
+          <int name="id" value="4032133"/>
+          <int name="count" value="-1"/>
+        </imgdir>
+        <imgdir name="5">
+          <int name="id" value="4010006"/>
+          <int name="count" value="15"/>
+        </imgdir>
+        <imgdir name="8">
+          <int name="id" value="4010006"/>
+          <int name="count" value="18"/>
+          <int name="prop" value="-1"/>
+        </imgdir>
+      </imgdir>
+      <int name="exp" value="50000"/>
     </imgdir>
   </imgdir>
   <imgdir name="29512">
@@ -55774,6 +55841,13 @@
       </imgdir>
       <int name="exp" value="150000"/>
       <int name="pop" value="2"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1039">
+    <imgdir name="0">
+    </imgdir>
+    <imgdir name="1">
+      <int name="exp" value="100"/>
     </imgdir>
   </imgdir>
 </imgdir>
