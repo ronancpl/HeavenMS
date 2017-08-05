@@ -210,7 +210,7 @@
       <int name="moveTo" value="120000000"/>
     </imgdir>
   </imgdir>
-  <imgdir name="02030020">
+  <imgdir name="02030100">
     <imgdir name="info">
       <canvas name="icon" width="32" height="30">
         <vector name="origin" x="0" y="29"/>
@@ -218,10 +218,10 @@
       <canvas name="iconRaw" width="32" height="28">
         <vector name="origin" x="0" y="29"/>
       </canvas>
-      <int name="price" value="250"/>
+      <int name="price" value="225"/>
     </imgdir>
     <imgdir name="spec">
-      <int name="moveTo" value="600000000"/>
+      <int name="moveTo" value="999999999"/>
     </imgdir>
   </imgdir>
   <imgdir name="02031000">
@@ -378,6 +378,20 @@
     </imgdir>
     <imgdir name="spec">
       <int name="randomMoveInFieldSet" value="1"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02030020">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="30">
+        <vector name="origin" x="0" y="29"/>
+      </canvas>
+      <canvas name="iconRaw" width="32" height="28">
+        <vector name="origin" x="0" y="29"/>
+      </canvas>
+      <int name="price" value="250"/>
+    </imgdir>
+    <imgdir name="spec">
+      <int name="moveTo" value="600000000"/>
     </imgdir>
   </imgdir>
 </imgdir>

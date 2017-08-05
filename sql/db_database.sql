@@ -1,4 +1,4 @@
-#YOU MUST EXECUTE NEXT SQL: 'db_drops.sql'
+#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -21180,8 +21180,8 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 ( 57, 3992038, 500, 115),
 
 -- missing CBD shop data
-(9270027, 2022213, 6800, 0, 104),
-(9270027, 2022212, 3200, 0, 108);
+(9270027, 2022213, 6800, 104),
+(9270027, 2022212, 3200, 108);
 
 CREATE TABLE IF NOT EXISTS `skillmacros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

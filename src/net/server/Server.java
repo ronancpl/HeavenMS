@@ -278,7 +278,7 @@ public class Server implements Runnable {
         System.out.println("Skills loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
 
         timeToTake = System.currentTimeMillis();
-        MapleItemInformationProvider.getInstance().getAllItems();
+        //MapleItemInformationProvider.getInstance().getAllItems(); //unused, rofl
 
         CashItemFactory.getSpecialCashItems();
         System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");

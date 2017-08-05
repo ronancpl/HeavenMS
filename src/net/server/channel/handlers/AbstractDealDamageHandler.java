@@ -216,9 +216,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                 TimerManager.getInstance().schedule(new Runnable() {
                                     @Override
                                     public void run() {
-                                        map.removeMapObject(mapitem);
-                                        map.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem.getPosition());
-                                        mapitem.setPickedUp(true);
+                                        map.pickItemDrop(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem);
                                     }
                                 }, delay);
                                 delay += 100;

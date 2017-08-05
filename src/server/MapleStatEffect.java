@@ -796,16 +796,30 @@ public class MapleStatEffect {
         if (moveTo != -1) {
             if (moveTo != applyto.getMapId()) {
                 MapleMap target;
+                MaplePortal pt;
+                
                 if (moveTo == 999999999) {
-                    target = applyto.getMap().getReturnMap();
+                    if(sourceid != 2030100) {
+                        target = applyto.getMap().getReturnMap();
+                        pt = target.getRandomPlayerSpawnpoint();
+                    } else {
+                        if(!applyto.canRecoverLastBanish()) return false;
+                    
+                        Pair<Integer, Integer> lastBanishInfo = applyto.getLastBanishData();
+                        target = applyto.getWarpMap(lastBanishInfo.getLeft());
+                        pt = target.getPortal(lastBanishInfo.getRight());
+                    }
                 } else {
                     target = applyto.getClient().getWorldServer().getChannel(applyto.getClient().getChannel()).getMapFactory().getMap(moveTo);
                     int targetid = target.getId() / 10000000;
                     if (targetid != 60 && applyto.getMapId() / 10000000 != 61 && targetid != applyto.getMapId() / 10000000 && targetid != 21 && targetid != 20 && targetid != 12 && (applyto.getMapId() / 10000000 != 10 && applyto.getMapId() / 10000000 != 12)) {
                     	return false;
                     }
+                    
+                    pt = target.getRandomPlayerSpawnpoint();
                 }
-                applyto.changeMap(target, target.getRandomPlayerSpawnpoint());
+                
+                applyto.changeMap(target, pt);
             } else {
                 return false;
             }

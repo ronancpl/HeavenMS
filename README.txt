@@ -6,7 +6,7 @@ Credits are to be given too to Nexon(Duh!), the original MapleSolaxia staff and 
 
 Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is free to install, use, modify and redistribute the contents, as long as there is no kind of commercial trading involved and the credits to the original creators are maintained within the codes.
 
-This is a NetBeans 8.0.2 Project, that must be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
+This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what have been changed from Nexon's v83 WZ files.
 

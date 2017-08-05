@@ -428,3 +428,9 @@ Consertado quests não dando item certo apropriadamente, no caso de escolhas.
 03 Agosto 2017,
 Quests agora retiram itens antes de entregar recompensas.
 Após a primeira inicialização, PQs inicializarão mais rápido, uma vez que há um sistema preparador de EIMs ativo.
+
+04 - 05 Agosto 2017,
+Novo scroll: antibanish. Retorna ao local de onde foi banido pela ultima vez.
+Resolvido alguns problemas de concorrência com MapleMapFactory.
+Removidos drops inexistentes da DB.
+Resolvido problema com GMs de level alto recebendo bloqueio MWLB.

@@ -25,12 +25,12 @@ import java.util.ArrayList;
  * IMPORTANT: this will fail for fetching MAP ID (you shouldn't be using this program for these, just checking them up in the
  * handbook is enough anyway).
  * 
- * Set whether you are first installing the handbook on the SQL Server (true) or just fetching whatever is on your "fetch.txt"
- * file (false) on the INSTALL_SQLTABLE property and build the project. With all done, run the Java executable.
+ * Set whether you are first installing the handbook on the SQL Server (TRUE) or just fetching whatever is on your "fetch.txt"
+ * file (FALSE) on the INSTALL_SQLTABLE property and build the project. With all done, run the Java executable.
  * 
  */
 public class MapleIdRetriever {
-    private final static boolean INSTALL_SQLTABLE = false;
+    private final static boolean INSTALL_SQLTABLE = true;
     
     static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
     static String driver = "com.mysql.jdbc.Driver";

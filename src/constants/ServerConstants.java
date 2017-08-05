@@ -31,7 +31,7 @@ public class ServerConstants {
     public static boolean SHUTDOWNHOOK;
 	
     //Gameplay Configuration
-    public static final boolean USE_CUSTOM_KEYSET = true;
+    public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the MapleSolaxiaV2's custom keybindings when creating characters.
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = false;                  //Will enable some text prints on the client, oriented for debugging purposes.
@@ -56,7 +56,10 @@ public class ServerConstants {
     public static final long BLOCK_NPC_RACE_CONDT = (long)(0.5 * 1000); //Time the player client must wait before reopening a conversation with an NPC.
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
     
-    public static final int ITEM_EXPIRE_TIME = 3 * 60 * 1000;   //Time before items start disappearing. Recommended to be set up to 3 minutes.
+    //Dangling Items Configuration
+    public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.
+    public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring task on maps, which checks for dangling item objects on the map item history.
+    public static final int ITEM_LIMIT_ON_MAP = 777;            //Max number of items allowed on a map.
     
     //Some Gameplay Enhancing Configuration
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
@@ -70,6 +73,7 @@ public class ServerConstants {
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
+    public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes blocks mobs from banishing wearer.
     public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to futher recover player`s HP and MP.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
     public static final int MAX_EQUIPMNT_STAT = 32767;            //Max stat on an equipment by leveling up.

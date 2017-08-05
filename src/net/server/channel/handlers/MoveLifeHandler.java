@@ -21,8 +21,10 @@
 */
 package net.server.channel.handlers;
 
+import client.MapleCharacter;
 import client.MapleClient;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 import server.life.MapleMonster;
 import server.life.MobSkill;
@@ -38,6 +40,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class MoveLifeHandler extends AbstractMovementPacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        List<MapleCharacter> banishPlayers = new ArrayList<>();
+        
         int objectid = slea.readInt();
         short moveid = slea.readShort();
         MapleMapObject mmo = c.getPlayer().getMap().getMapObject(objectid);
@@ -66,7 +70,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
         if ((skill_1 >= 100 && skill_1 <= 200) && monster.hasSkill(skill_1, skill_2)) {
             MobSkill skillData = MobSkillFactory.getMobSkill(skill_1, skill_2);
             if (skillData != null && monster.canUseSkill(skillData)) {
-                skillData.applyEffect(c.getPlayer(), monster, true);
+                skillData.applyEffect(c.getPlayer(), monster, true, banishPlayers);
             }
         }
         slea.readByte();
@@ -98,6 +102,10 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
             c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.moveMonster(skillByte, skill, skill_1, skill_2, skill_3, skill_4, objectid, startPos, res), monster.getPosition());
             updatePosition(res, monster, -1);
             c.getPlayer().getMap().moveMonster(monster, monster.getPosition());
+        }
+        
+        for (MapleCharacter chr : banishPlayers) {
+            chr.changeMapBanish(monster.getBanish().getMap(), monster.getBanish().getPortal(), monster.getBanish().getMsg());
         }
     }
 }

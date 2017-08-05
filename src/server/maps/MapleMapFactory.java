@@ -25,10 +25,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Collection;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -46,6 +51,8 @@ public class MapleMapFactory {
     private MapleData nameData;
     private EventInstanceManager event;
     private Map<Integer, MapleMap> maps = new HashMap<>();
+    private ReadLock mapsRLock;
+    private WriteLock mapsWLock;
     private int channel, world;
 
     public MapleMapFactory(EventInstanceManager eim, MapleDataProvider source, MapleDataProvider stringSource, int world, int channel) {
@@ -54,14 +61,32 @@ public class MapleMapFactory {
         this.world = world;
         this.channel = channel;
         this.event = eim;
+        
+        ReentrantReadWriteLock rrwl = new ReentrantReadWriteLock();
+        this.mapsRLock = rrwl.readLock();
+        this.mapsWLock = rrwl.writeLock();
     }
     
     public MapleMap getMap(int mapid) {
         Integer omapid = Integer.valueOf(mapid);
-        MapleMap map = maps.get(omapid);
+        MapleMap map;
+        
+        mapsRLock.lock();
+        try {
+            map = maps.get(omapid);
+        } finally {
+            mapsRLock.unlock();
+        }
+        
         if (map == null) {
             synchronized (this) {
-                map = maps.get(omapid);
+                mapsRLock.lock();
+                try {
+                    map = maps.get(omapid);
+                } finally {
+                    mapsRLock.unlock();
+                }
+                
                 if (map != null) {
                     return map;
                 }
@@ -224,14 +249,24 @@ public class MapleMapFactory {
                 }
                 map.setBackgroundTypes(backTypes);
                 
-                maps.put(omapid, map);
+                mapsWLock.lock();
+                try {
+                    maps.put(omapid, map);
+                } finally {
+                    mapsWLock.unlock();
+                }
             }
         }
         return map;
     }
 
     public boolean isMapLoaded(int mapId) {
-        return maps.containsKey(mapId);
+        mapsRLock.lock();
+        try {
+            return maps.containsKey(mapId);
+        } finally {
+            mapsRLock.unlock();
+        }
     }
 
     private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {
@@ -318,11 +353,25 @@ public class MapleMapFactory {
     }
 
     public Map<Integer, MapleMap> getMaps() {
-        return maps;
+        mapsRLock.lock();
+        try {
+            return Collections.unmodifiableMap(maps);
+        } finally {
+            mapsRLock.unlock();
+        }
     }
     
     public void dispose() {
-        for(MapleMap map: maps.values()) map.setEventInstance(null);
+        Collection<MapleMap> mapValues;
+        
+        mapsRLock.lock();
+        try {
+            mapValues = maps.values();
+        } finally {
+            mapsRLock.unlock();
+        }
+        
+        for(MapleMap map: mapValues) map.setEventInstance(null);
         this.event = null;
     }
 }

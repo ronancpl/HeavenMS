@@ -54,6 +54,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import java.lang.ref.WeakReference;
 import net.server.Server;
 import net.server.channel.Channel;
 import scripting.map.MapScriptManager;
@@ -90,10 +91,12 @@ public class MapleMap {
     private Collection<SpawnPoint> monsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private Collection<SpawnPoint> allMonsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private AtomicInteger spawnedMonstersOnMap = new AtomicInteger(0);
+    private AtomicInteger droppedItemCount = new AtomicInteger(0);
     private Collection<MapleCharacter> characters = new LinkedHashSet<>();
     private Map<Integer, MaplePortal> portals = new HashMap<>();
     private Map<Integer, Integer> backgroundTypes = new HashMap<>();
     private Map<String, Integer> environment = new LinkedHashMap<>();
+    private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
     private int mapid;
@@ -123,6 +126,8 @@ public class MapleMap {
     private int fieldLimit = 0;
     private int mobCapacity = -1;
     private ScheduledFuture<?> mapMonitor = null;
+    private ScheduledFuture<?> itemMonitor = null;
+    private short itemMonitorTimeout;
     private Pair<Integer, String> timeMob = null;
     private short mobInterval = 5000;
     private boolean allowSummons = true; // All maps should have this true at the beginning
@@ -556,6 +561,98 @@ public class MapleMap {
         }
     }
 
+    private void stopItemMonitor() {
+        chrWLock.lock();
+        try {
+            itemMonitor.cancel(false);
+            itemMonitor = null;
+        } finally {
+            chrWLock.unlock();
+        }
+    }
+    
+    private void cleanItemMonitor() {
+        objectWLock.lock();
+        try {
+            registeredDrops.removeAll(Collections.singleton(null));
+        } finally {
+            objectWLock.unlock();
+        }
+    }
+    
+    private void startItemMonitor() {
+        chrWLock.lock();
+        try {
+            itemMonitor = TimerManager.getInstance().register(new Runnable() {
+                @Override
+                public void run() {
+                    if (getCharacters().isEmpty()) {
+                        if(itemMonitorTimeout == 0) {
+                            stopItemMonitor();
+                            return;
+                        } else {
+                            itemMonitorTimeout--;
+                        }
+                    } else {
+                        itemMonitorTimeout = 1;
+                    }
+                    
+                    if(!registeredDrops.isEmpty()) cleanItemMonitor();
+                }
+            }, ServerConstants.ITEM_MONITOR_TIME, ServerConstants.ITEM_MONITOR_TIME);
+                    
+            itemMonitorTimeout = 1;
+        } finally {
+            chrWLock.unlock();
+        }
+    }
+    
+    private boolean hasItemMonitor() {
+        chrRLock.lock();
+        try {
+            return itemMonitor != null;
+        } finally {
+            chrRLock.unlock();
+        }
+    }
+    
+    private void registerItemDrop(MapleMapItem mdrop) {
+        if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
+            MapleMapObject mapobj;
+            
+            objectWLock.lock();
+            try {
+                mapobj = registeredDrops.remove(0).get();
+                while(mapobj == null) {
+                    mapobj = registeredDrops.remove(0).get();
+                }
+            } finally {
+                objectWLock.unlock();
+            }
+
+            makeDisappearItemFromMap(mapobj);
+        }
+        
+        if(!everlast) TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
+        
+        objectWLock.lock();
+        try {
+            registeredDrops.add(new WeakReference<>((MapleMapObject) mdrop));
+        } finally {
+            objectWLock.unlock();
+        }
+        
+        droppedItemCount.incrementAndGet();
+    }
+    
+    public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) {
+        broadcastMessage(pickupPacket, mdrop.getPosition());
+        
+        this.removeMapObject(mdrop);
+        mdrop.setPickedUp(true);
+        droppedItemCount.decrementAndGet();
+    }
+    
     private void spawnDrop(final Item idrop, final Point dropPos, final MapleMonster mob, final MapleCharacter chr, final byte droptype, final short questid) {
         final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, mob, chr, droptype, false, questid);
         mdrop.setDropTime(System.currentTimeMillis());
@@ -568,7 +665,7 @@ public class MapleMap {
             }
         }, null);
 
-        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
+        registerItemDrop(mdrop);
         activateItemReactors(mdrop, chr.getClient());
     }
 
@@ -584,7 +681,7 @@ public class MapleMap {
             }
         }, null);
 
-        TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
+        registerItemDrop(mdrop);
     }
 
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
@@ -1569,21 +1666,19 @@ public class MapleMap {
 
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
         final Point droppos = calcDropPos(pos, pos);
-        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, dropType, playerDrop);
-        drop.setDropTime(System.currentTimeMillis());
+        final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, dropType, playerDrop);
+        mdrop.setDropTime(System.currentTimeMillis());
 
-        spawnAndAddRangedMapObject(drop, new DelayedPacketCreation() {
+        spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                c.announce(MaplePacketCreator.dropItemFromMapObject(drop, dropper.getPosition(), droppos, (byte) 1));
+                c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 1));
             }
         }, null);
-        broadcastMessage(MaplePacketCreator.dropItemFromMapObject(drop, dropper.getPosition(), droppos, (byte) 0));
+        broadcastMessage(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 0));
 
-        if (!everlast) {
-            TimerManager.getInstance().schedule(new ExpireMapItemJob(drop), ServerConstants.ITEM_EXPIRE_TIME);
-            activateItemReactors(drop, owner.getClient());
-        }
+        registerItemDrop(mdrop);
+        activateItemReactors(mdrop, owner.getClient());
     }
     
     public final void spawnItemDropList(List<Integer> list, final MapleMapObject dropper, final MapleCharacter owner, Point pos) {
@@ -1677,8 +1772,12 @@ public class MapleMap {
             chrWLock.unlock();
         }
         chr.setMapId(mapid);
-        if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
-            if (countPlayers() <= 1) {
+            
+        itemMonitorTimeout = 1;
+        if (getCharacters().size() <= 1) {
+            if(!hasItemMonitor()) startItemMonitor();
+            
+            if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
                 chr.enteredScript(onFirstUserEnter, mapid);
                 MapScriptManager.getInstance().getMapScript(chr.getClient(), onFirstUserEnter, true);
             }
@@ -2289,10 +2388,11 @@ public class MapleMap {
     public void movePlayer(MapleCharacter player, Point newPosition) {
         player.setPosition(newPosition);
         Collection<MapleMapObject> visibleObjects = player.getVisibleMapObjects();
-        MapleMapObject[] visibleObjectsNow = visibleObjects.toArray(new MapleMapObject[visibleObjects.size()]);
         
         objectRLock.lock();
         try {
+            MapleMapObject[] visibleObjectsNow = visibleObjects.toArray(new MapleMapObject[visibleObjects.size()]);
+            
             for (MapleMapObject mo : visibleObjectsNow) {
                 if (mo != null) {
                     if (mapobjects.get(mo.getObjectId()) == mo) {
@@ -2453,11 +2553,9 @@ public class MapleMap {
                 if (mapitem.isPickedUp()) {
                     return;
                 }
-                MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
-                mapitem.setPickedUp(true);
+                MapleMap.this.pickItemDrop(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem);
             } finally {
                 mapitem.unlockItem();
-                MapleMap.this.removeMapObject(mapitem);
             }
         }
     }

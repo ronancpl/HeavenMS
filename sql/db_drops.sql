@@ -1,4 +1,7 @@
-﻿  #THIS SQL MUST BE USED AFTER 'db_database.sql'
+﻿#THIS SQL MUST BE USED AFTER 'db_database.sql'
+#NEXT SQL 'db_shopupdate.sql' IS OPTIONAL
+
+USE `maplesolaxia`;
 
   INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
   #-- copy+paste inside here as many drop data as possible from the spider (drop generator) files --
@@ -20051,3 +20054,48 @@
   ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
   INSERT INTO `monstercarddata` (`cardid`, `mobid`) (SELECT itemid, min(dropperid) FROM drop_data where itemid>=2380000 and itemid<2390000 group by itemid);
+
+  # delete all unused content on drop data
+  DELETE FROM `drop_data` WHERE itemid=400000;
+  DELETE FROM `drop_data` WHERE itemid=400001;
+  DELETE FROM `drop_data` WHERE itemid=400002;
+  DELETE FROM `drop_data` WHERE itemid=400003;
+  DELETE FROM `drop_data` WHERE itemid=400004;
+  DELETE FROM `drop_data` WHERE itemid=400005;
+  DELETE FROM `drop_data` WHERE itemid=400006;
+  DELETE FROM `drop_data` WHERE itemid=400009;
+  DELETE FROM `drop_data` WHERE itemid=400010;
+  DELETE FROM `drop_data` WHERE itemid=400011;
+  DELETE FROM `drop_data` WHERE itemid=401000;
+  DELETE FROM `drop_data` WHERE itemid=404000;
+  DELETE FROM `drop_data` WHERE itemid=1002926;
+  DELETE FROM `drop_data` WHERE itemid=1002927;
+  DELETE FROM `drop_data` WHERE itemid=1027090;
+  DELETE FROM `drop_data` WHERE itemid=1302096;
+  DELETE FROM `drop_data` WHERE itemid=2002205;
+  DELETE FROM `drop_data` WHERE itemid=2040033;
+  DELETE FROM `drop_data` WHERE itemid=2040536;
+  DELETE FROM `drop_data` WHERE itemid=2040827;
+  DELETE FROM `drop_data` WHERE itemid=2040913;
+  DELETE FROM `drop_data` WHERE itemid=2040935;
+  DELETE FROM `drop_data` WHERE itemid=2043109;
+  DELETE FROM `drop_data` WHERE itemid=2043309;
+  DELETE FROM `drop_data` WHERE itemid=2043709;
+  DELETE FROM `drop_data` WHERE itemid=2044009;
+  DELETE FROM `drop_data` WHERE itemid=2044209;
+  DELETE FROM `drop_data` WHERE itemid=2044309;
+  DELETE FROM `drop_data` WHERE itemid=2044609;
+  DELETE FROM `drop_data` WHERE itemid=2049212;
+  DELETE FROM `drop_data` WHERE itemid=2049214;
+  DELETE FROM `drop_data` WHERE itemid=4000306;
+  DELETE FROM `drop_data` WHERE itemid=4000343;
+  DELETE FROM `drop_data` WHERE itemid=4000420;
+  DELETE FROM `drop_data` WHERE itemid=4000429;
+  DELETE FROM `drop_data` WHERE itemid=4000430;
+  DELETE FROM `drop_data` WHERE itemid=4000431;
+  DELETE FROM `drop_data` WHERE itemid=4000432;
+  DELETE FROM `drop_data` WHERE itemid=4000433;
+  DELETE FROM `drop_data` WHERE itemid=4000434;
+  DELETE FROM `drop_data` WHERE itemid=4000435;
+  DELETE FROM `drop_data` WHERE itemid=4032192;
+  DELETE FROM `drop_data` WHERE itemid=8143000;

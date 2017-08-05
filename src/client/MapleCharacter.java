@@ -294,6 +294,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private short extraRecInterval;
     private int targetHpBarHash = 0;
     private long targetHpBarTime = 0;
+    private int banishMap = -1;
+    private int banishSp = -1;
+    private long banishTime = 0;
 
     private MapleCharacter() {
         useCS = false;
@@ -1192,10 +1195,42 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (getEventInstance() != null) getEventInstance().changedMap(this, map);
     }
     
+    public boolean canRecoverLastBanish() {
+        return System.currentTimeMillis() - this.banishTime < 5 * 60 * 1000;
+    }
+    
+    public Pair<Integer, Integer> getLastBanishData() {
+        return new Pair<>(this.banishMap, this.banishSp);
+    }
+    
+    private void clearBanishPlayerData() {
+        this.banishMap = -1;
+        this.banishSp = -1;
+        this.banishTime = 0;
+    }
+    
+    private void setBanishPlayerData(int banishMap, int banishSp, long banishTime) {
+        this.banishMap = banishMap;
+        this.banishSp = banishSp;
+        this.banishTime = banishTime;
+    }
+    
     public void changeMapBanish(int mapid, String portal, String msg) {
+        if(ServerConstants.USE_SPIKES_AVOID_BANISH) {
+            for(Item it: this.getInventory(MapleInventoryType.EQUIPPED).list()) {
+                if((it.getFlag() & ItemConstants.SPIKES) == ItemConstants.SPIKES) return;
+            }
+        }
+        
+        int banMap = this.getMapId();
+        int banSp = this.getMap().findClosestPlayerSpawnpoint(this.getPosition()).getId();
+        long banTime = System.currentTimeMillis();
+        
         dropMessage(5, msg);
         MapleMap map_ = client.getChannelServer().getMapFactory().getMap(mapid);
         changeMap(map_, map_.getPortal(portal));
+        
+        setBanishPlayerData(banMap, banSp, banTime);
     }
 
     public void changeMap(int map) {
@@ -1298,6 +1333,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
         
+        this.clearBanishPlayerData();
         this.closePlayerInteractions();
         this.resetPlayerAggro();
         
@@ -1468,19 +1504,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     if (!mapitem.isPlayerDrop() || mapitem.getDropper().getObjectId() == client.getPlayer().getObjectId()) {
                         if(mapitem.getMeso() > 0) {
                             this.gainMeso(mapitem.getMeso(), true, true, false);
-                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
-                            this.getMap().removeMapObject(ob);
-                            mapitem.setPickedUp(true);
+                            this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else if(mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866) {
                             // Add NX to account, show effect and make item disappear
                             this.getCashShop().gainCash(1, mapitem.getItemId() == 4031865 ? 100 : 250);
-                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
-                            this.getMap().removeMapObject(ob);
-                            mapitem.setPickedUp(true);
+                            this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
-                            this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
-                            this.getMap().removeMapObject(ob);
-                            mapitem.setPickedUp(true);
+                            this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else {
                             client.announce(MaplePacketCreator.enableActions());
                             return;
@@ -1558,9 +1588,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         client.announce(MaplePacketCreator.enableActions());
                         return;
                     }
-                    mapitem.setPickedUp(true);
-                    this.getMap().broadcastMessage(pickupPacket, mapitem.getPosition());
-                    this.getMap().removeMapObject(ob);
+                    
+                    this.getMap().pickItemDrop(pickupPacket, mapitem);
                 }
             } else if(!hasSpaceInventory) {
                 client.announce(MaplePacketCreator.getInventoryFull());
@@ -5473,13 +5502,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             psf.close();
             ps = con.prepareStatement("UPDATE accounts SET gm = ? WHERE id = ?");
-            ps.setInt(1, gmLevel);
+            ps.setInt(1, gmLevel > 1 ? 1 : 0);
             ps.setInt(2, client.getAccID());
             ps.executeUpdate();
             ps.close();
 			
             con.commit();
-			con.setAutoCommit(true);
+            con.setAutoCommit(true);
 			
             if (cashshop != null) {
                 cashshop.save(con);

@@ -112,7 +112,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     }
 
     public void setDropTime(long time) {
-        this.dropTime  = time;
+        this.dropTime = time;
     }
 
     public byte getDropType() {

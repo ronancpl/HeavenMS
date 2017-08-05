@@ -1961,9 +1961,8 @@ public class Commands {
                                 } else {
                                         MapleInventoryManipulator.addFromDrop(c, mapItem.getItem(), true);
                                 }
-                                mapItem.setPickedUp(true);
-                                player.getMap().removeMapObject(item);
-                                player.getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapItem.getObjectId(), 2, player.getId()), mapItem.getPosition());
+                                
+                                player.getMap().pickItemDrop(MaplePacketCreator.removeItemFromMap(mapItem.getObjectId(), 2, player.getId()), mapItem);
                             }
                         break;
                             

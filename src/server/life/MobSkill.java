@@ -102,7 +102,7 @@ public class MobSkill {
         this.limit = limit;
     }
 
-    public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill) {
+    public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill, List<MapleCharacter> banishPlayers) {
         MapleDisease disease = null;
         Map<MonsterStatus, Integer> stats = new ArrayMap<MonsterStatus, Integer>();
         List<Integer> reflection = new LinkedList<Integer>();
@@ -174,10 +174,10 @@ public class MobSkill {
             case 129: // Banish
                 if (lt != null && rb != null && skill) {
                     for (MapleCharacter chr : getPlayersInRange(monster, player)) {
-                        chr.changeMapBanish(monster.getBanish().getMap(), monster.getBanish().getPortal(), monster.getBanish().getMsg());
+                        banishPlayers.add(chr);
                     }
                 } else {
-                    player.changeMapBanish(monster.getBanish().getMap(), monster.getBanish().getPortal(), monster.getBanish().getMsg());
+                    banishPlayers.add(player);
                 }
                 break;
             case 131: // Mist

@@ -1531,9 +1531,9 @@
     <string name="name" value="Nautilus Return Scroll"/>
     <string name="desc" value="This scroll enables you to return to the Pirate village, Nautilus. This is a one use item and will disappear after use."/>
   </imgdir>
-  <imgdir name="2030020">
-    <string name="name" value="Return to New Leaf City Scroll"/>
-    <string name="desc" value="Use this scroll to venture back to New Leaf City whenever you want!"/>
+  <imgdir name="2030100">
+    <string name="name" value="Return Scroll - Banished Area"/>
+    <string name="desc" value="Returns you to the map where you were last banished. Requires immediate use and not have changed maps."/>
   </imgdir>
   <imgdir name="2031000">
     <string name="name" value="Masked Man&apos;s Invitation"/>
@@ -9183,5 +9183,9 @@
   <imgdir name="2012008">
     <string name="name" value="Unripe Onyx Apple"/>
     <string name="desc" value="A mysterious and unripe Onyx Apple. When consumed, it grants the following: ATT +60, Magic ATT +70, DEF +10 for 1 minute."/>
+  </imgdir>
+  <imgdir name="2030020">
+    <string name="name" value="Return to New Leaf City Scroll"/>
+    <string name="desc" value="Use this scroll to venture back to New Leaf City whenever you want!"/>
   </imgdir>
 </imgdir>

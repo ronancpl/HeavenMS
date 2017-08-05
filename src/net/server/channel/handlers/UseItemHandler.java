@@ -66,12 +66,21 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
                 remove(c, slot);
                 return;
             }
-            if (isTownScroll(itemId)) {
+            else if (isTownScroll(itemId)) {
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
                     remove(c, slot);
                 }
                 return;
             }
+            else if (isAntibanishScroll(itemId)) {
+                if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
+                    remove(c, slot);
+                } else {
+                    c.getPlayer().dropMessage(5, "You cannot recover from a banish state at the moment.");
+                }
+                return;
+            }
+            
             remove(c, slot);
             
             ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer());
@@ -84,7 +93,11 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
         c.announce(MaplePacketCreator.enableActions());
     }
 
-    private boolean isTownScroll(int itemId) {
+    private static boolean isTownScroll(int itemId) {
         return itemId >= 2030000 && itemId < 2030021;
+    }
+    
+    private static boolean isAntibanishScroll(int itemId) {
+        return itemId == 2030100;
     }
 }
