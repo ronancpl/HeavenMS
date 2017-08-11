@@ -83,6 +83,8 @@ function action(mode, type, selection) {
                         }
                         
                         cm.sendPrev(sendStr);
+                } else if(status == 2) {
+                        cm.dispose();
                 }
         }
 }

@@ -44,7 +44,6 @@ import server.partyquest.Pyramid;
 import server.partyquest.Pyramid.PyramidMode;
 import server.quest.MapleQuest;
 import tools.LogHelper;
-import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -56,26 +55,34 @@ import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MaplePet;
-import constants.ServerConstants;
 
 /**
  *
  * @author Matze
  */
 public class NPCConversationManager extends AbstractPlayerInteraction {
-
 	private int npc;
+        private int npcOid;
 	private String scriptName;
 	private String getText;
-
-	public NPCConversationManager(MapleClient c, int npc, String scriptName) {
+        
+        public NPCConversationManager(MapleClient c, int npc, String scriptName) {
+               this(c, npc, -1, scriptName);
+        }
+        
+	public NPCConversationManager(MapleClient c, int npc, int oid, String scriptName) {
 		super(c);
 		this.npc = npc;
+                this.npcOid = oid;
 		this.scriptName = scriptName;
 	}
 
 	public int getNpc() {
 		return npc;
+	}
+        
+        public int getNpcObjectId() {
+		return npcOid;
 	}
 
 	public String getScriptName() {
@@ -220,9 +227,6 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public void gainMeso(int gain) {
-		if (gain > 0 && ServerConstants.USE_AUTOBAN == true) {
-			FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " gained " + gain + " mesos from NPC " + npc + "\r\n");
-		}
 		getPlayer().gainMeso(gain);
 	}
 

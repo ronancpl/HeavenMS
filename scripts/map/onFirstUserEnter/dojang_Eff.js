@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
- *@Author:     Moogra, Traitor
+ *@Author:     Moogra, Traitor, Ronan
  *@Map(s):     All Dojo fighting maps
  *@Function:   Spawns dojo monsters and handles time
 */
@@ -28,21 +28,23 @@
 
 function start(ms) {
     ms.getPlayer().resetEnteredScript();
-    var stage = (ms.getPlayer().getMap().getId() / 100) % 100;
-    if (stage % 6 == 1)
-        ms.getPlayer().setDojoStart();
-    if (ms.getPlayer().getMap().getCharacters().size() == 1)
-        ms.getPlayer().showDojoClock();
+    var stage = Math.floor(ms.getMapId() / 100) % 100;
+    var callBoss = false;
+    
+    if (stage % 6 == 1) {
+        ms.getClient().getChannelServer().startDojoSchedule(ms.getMapId());
+    } else if(stage % 6 == 0) {
+        ms.getClient().getChannelServer().dismissDojoSchedule(ms.getMapId(), ms.getParty());
+    }
+        
+    callBoss = ms.getClient().getChannelServer().setDojoProgress(ms.getMapId());
+    
     if (stage % 6 > 0) {
         var realstage = stage - ((stage / 6) | 0);
-        ms.dojoEnergy();
         var mob = ms.getMonsterLifeFactory(9300183 + realstage);
-        if (mob != null && ms.getPlayer().getMap().getMonsterById(9300183 + realstage) == null && ms.getPlayer().getMap().getMonsterById(9300216) == null) {
+        if (callBoss && mob != null && ms.getPlayer().getMap().getMonsterById(9300216) == null) {
             mob.setBoss(false);
             ms.getPlayer().getMap().spawnDojoMonster(mob);
-            ms.playSound("Dojang/start");
-            ms.showEffect("dojang/start/stage");
-            ms.showEffect("dojang/start/number/" + realstage);
         }
     }
 }

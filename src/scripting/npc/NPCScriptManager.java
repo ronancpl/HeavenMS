@@ -32,7 +32,6 @@ import javax.script.Invocable;
 import javax.script.ScriptException;
 
 import scripting.AbstractScriptManager;
-import server.life.MapleLifeFactory;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 
@@ -53,10 +52,18 @@ public class NPCScriptManager extends AbstractScriptManager {
     public boolean start(MapleClient c, int npc, MapleCharacter chr) {
         return start(c, npc, null, chr);
     }
-
+    
+    public boolean start(MapleClient c, int npc, int oid, MapleCharacter chr) {
+        return start(c, npc, oid, null, chr);
+    }
+    
     public boolean start(MapleClient c, int npc, String fileName, MapleCharacter chr) {
+        return start(c, npc, -1, fileName, chr);
+    }
+
+    public boolean start(MapleClient c, int npc, int oid, String fileName, MapleCharacter chr) {
         try {
-            NPCConversationManager cm = new NPCConversationManager(c, npc, fileName);
+            NPCConversationManager cm = new NPCConversationManager(c, npc, oid, fileName);
             if (cms.containsKey(c)) {
                 dispose(c);
             }

@@ -293,11 +293,12 @@ public class MapleMapFactory {
         MapleReactor myReactor = new MapleReactor(MapleReactorFactory.getReactor(Integer.parseInt(id)), Integer.parseInt(id));
         int x = MapleDataTool.getInt(reactor.getChildByPath("x"));
         int y = MapleDataTool.getInt(reactor.getChildByPath("y"));
+        myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
         myReactor.setPosition(new Point(x, y));
         myReactor.setDelay(MapleDataTool.getInt(reactor.getChildByPath("reactorTime")) * 1000);
         myReactor.setState((byte) 0);
-        myReactor.setShouldCollect(true);
-        myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
+        
+        myReactor.resetReactorActions();
         return myReactor;
     }
 

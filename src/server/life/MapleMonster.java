@@ -445,6 +445,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (getMap().getEventInstance() != null) {
             if (!this.getStats().isFriendly()) {
                 getMap().getEventInstance().monsterKilled(this);
+            } else {
+                getMap().getEventInstance().friendlyKilled(this);
             }
         }
         

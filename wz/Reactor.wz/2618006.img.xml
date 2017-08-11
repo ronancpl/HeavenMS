@@ -8,21 +8,6 @@
       <vector name="origin" x="0" y="0"/>
       <int name="z" value="0"/>
       <int name="delay" value="120"/>
-      <int name="a0" value="0"/>
-    </canvas>
-  </imgdir>
-  <imgdir name="1">
-    <canvas name="0" width="1" height="1">
-      <vector name="origin" x="0" y="0"/>
-      <int name="z" value="0"/>
-      <int name="delay" value="120"/>
-    </canvas>
-  </imgdir>
-  <imgdir name="2">
-    <canvas name="0" width="1" height="1">
-      <vector name="origin" x="0" y="0"/>
-      <int name="z" value="0"/>
-      <int name="delay" value="120"/>
     </canvas>
     <imgdir name="hit">
       <canvas name="0" width="116" height="29">
@@ -191,8 +176,14 @@
         <int name="delay" value="100"/>
       </canvas>
     </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101"/>
+        <int name="state" value="1"/>
+      </imgdir>
+    </imgdir>
   </imgdir>
-  <imgdir name="3">
+  <imgdir name="1">
     <canvas name="0" width="196" height="216">
       <vector name="origin" x="100" y="216"/>
       <int name="z" value="0"/>

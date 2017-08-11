@@ -45,6 +45,12 @@
         <int name="z" value="0"/>
       </canvas>
     </imgdir>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101"/>
+        <int name="state" value="1"/>
+      </imgdir>
+    </imgdir>
   </imgdir>
   <imgdir name="1">
     <canvas name="0" width="83" height="143">

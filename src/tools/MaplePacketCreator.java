@@ -3701,6 +3701,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        // is there a way to trigger reactors without performing the hit animation?
         public static byte[] triggerReactor(MapleReactor reactor, int stance) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 Point pos = reactor.getPosition();

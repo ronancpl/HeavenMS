@@ -19338,12 +19338,13 @@ USE `maplesolaxia`;
   DELETE FROM drop_data WHERE dropperid >= 9300081 AND dropperid <= 9300083;
 
   # remove items being dropped from summoned mobs in PQs
-
   DELETE FROM drop_data WHERE dropperid >= 9300015 AND dropperid <= 9300017;
   DELETE FROM drop_data WHERE dropperid >= 9300054 AND dropperid <= 9300056;
   DELETE FROM drop_data WHERE dropperid >= 9300143 AND dropperid <= 9300144;
   DELETE FROM drop_data WHERE dropperid >= 8810019 AND dropperid <= 8810023;
   DELETE FROM drop_data WHERE dropperid = 9500100;
+
+  DELETE FROM drop_data where dropperid >= 9300141 AND dropperid <= 9300154 AND (itemid < 4001130 OR itemid >= 4001136);
 
   # remove key of dimension dropping outside PQ
   DELETE FROM drop_data WHERE itemid=4001023 AND dropperid!=9300012;
@@ -19863,7 +19864,11 @@ USE `maplesolaxia`;
 (9300270, 2022431, 1, 1, 0, 200000),
 (9300270, 2022432, 1, 1, 0, 200000),
 (9300270, 2022433, 1, 1, 0, 200000),
-(6090002, 4000414, 1, 1, 0, 400000);
+(6090002, 4000414, 1, 1, 0, 400000),
+
+(9300147, 4001132, 1, 1, 0, 400000),
+(9300148, 4001133, 1, 1, 0, 100000);
+
 
   # update quest reactor items
   UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;
@@ -20041,7 +20046,62 @@ USE `maplesolaxia`;
     (6102002, 2022277, 5, -1),
     (6102003, 2022277, 5, -1),
     (6102004, 2022277, 5, -1),
-    (6102005, 2022277, 5, -1);
+    (6102005, 2022277, 5, -1),
+    (2612000, 2020000, 2, -1),
+    (2612000, 2020001, 2, -1),
+    (2612000, 2020002, 2, -1),
+    (2612000, 2020003, 2, -1),
+    (2612000, 2020004, 2, -1),
+    (2612000, 2020005, 2, -1),
+    (2612000, 2020006, 2, -1),
+    (2612000, 2020007, 3, -1),
+    (2612000, 2020008, 3, -1),
+    (2612000, 2020009, 3, -1),
+    (2612000, 2020010, 3, -1),
+    (2612001, 2020000, 2, -1),
+    (2612001, 2020001, 2, -1),
+    (2612001, 2020002, 2, -1),
+    (2612001, 2020003, 2, -1),
+    (2612001, 2020004, 2, -1),
+    (2612001, 2020005, 2, -1),
+    (2612001, 2020006, 2, -1),
+    (2612001, 2020007, 3, -1),
+    (2612001, 2020008, 3, -1),
+    (2612001, 2020009, 3, -1),
+    (2612001, 2020010, 3, -1),
+    (2612002, 2020000, 2, -1),
+    (2612002, 2020001, 2, -1),
+    (2612002, 2020002, 2, -1),
+    (2612002, 2020003, 2, -1),
+    (2612002, 2020004, 2, -1),
+    (2612002, 2020005, 2, -1),
+    (2612002, 2020006, 2, -1),
+    (2612002, 2020007, 3, -1),
+    (2612002, 2020008, 3, -1),
+    (2612002, 2020009, 3, -1),
+    (2612002, 2020010, 3, -1),
+    (2612003, 2020000, 2, -1),
+    (2612003, 2020001, 2, -1),
+    (2612003, 2020002, 2, -1),
+    (2612003, 2020003, 2, -1),
+    (2612003, 2020004, 2, -1),
+    (2612003, 2020005, 2, -1),
+    (2612003, 2020006, 2, -1),
+    (2612003, 2020007, 3, -1),
+    (2612003, 2020008, 3, -1),
+    (2612003, 2020009, 3, -1),
+    (2612003, 2020010, 3, -1),
+    (2612004, 2020000, 2, -1),
+    (2612004, 2020001, 2, -1),
+    (2612004, 2020002, 2, -1),
+    (2612004, 2020003, 2, -1),
+    (2612004, 2020004, 2, -1),
+    (2612004, 2020005, 2, -1),
+    (2612004, 2020006, 2, -1),
+    (2612004, 2020007, 3, -1),
+    (2612004, 2020008, 3, -1),
+    (2612004, 2020009, 3, -1),
+    (2612004, 2020010, 3, -1);
 
   # updates info for all cards on monster book
   DROP TABLE `monstercarddata`;
@@ -20099,3 +20159,42 @@ USE `maplesolaxia`;
   DELETE FROM `drop_data` WHERE itemid=4000435;
   DELETE FROM `drop_data` WHERE itemid=4032192;
   DELETE FROM `drop_data` WHERE itemid=8143000;
+
+  # delete all unused content on reactor drop data
+  DELETE FROM `reactordrops` WHERE itemid=1102260;
+  DELETE FROM `reactordrops` WHERE itemid=1342019;
+  DELETE FROM `reactordrops` WHERE itemid=1342020;
+  DELETE FROM `reactordrops` WHERE itemid=1532022;
+  DELETE FROM `reactordrops` WHERE itemid=1532023;
+  DELETE FROM `reactordrops` WHERE itemid=2022712;
+  DELETE FROM `reactordrops` WHERE itemid=3010126;
+  DELETE FROM `reactordrops` WHERE itemid=3012000;
+  DELETE FROM `reactordrops` WHERE itemid=4010008;
+  DELETE FROM `reactordrops` WHERE itemid=4010010;
+  DELETE FROM `reactordrops` WHERE itemid=4022000;
+  DELETE FROM `reactordrops` WHERE itemid=4022001;
+  DELETE FROM `reactordrops` WHERE itemid=4022002;
+  DELETE FROM `reactordrops` WHERE itemid=4022003;
+  DELETE FROM `reactordrops` WHERE itemid=4022004;
+  DELETE FROM `reactordrops` WHERE itemid=4022005;
+  DELETE FROM `reactordrops` WHERE itemid=4022006;
+  DELETE FROM `reactordrops` WHERE itemid=4022007;
+  DELETE FROM `reactordrops` WHERE itemid=4022008;
+  DELETE FROM `reactordrops` WHERE itemid=4022009;
+  DELETE FROM `reactordrops` WHERE itemid=4022010;
+  DELETE FROM `reactordrops` WHERE itemid=4022011;
+  DELETE FROM `reactordrops` WHERE itemid=4022012;
+  DELETE FROM `reactordrops` WHERE itemid=4022013;
+  DELETE FROM `reactordrops` WHERE itemid=4022014;
+  DELETE FROM `reactordrops` WHERE itemid=4022015;
+  DELETE FROM `reactordrops` WHERE itemid=4022016;
+  DELETE FROM `reactordrops` WHERE itemid=4022017;
+  DELETE FROM `reactordrops` WHERE itemid=4022018;
+  DELETE FROM `reactordrops` WHERE itemid=4022019;
+  DELETE FROM `reactordrops` WHERE itemid=4022020;
+  DELETE FROM `reactordrops` WHERE itemid=4022021;
+  DELETE FROM `reactordrops` WHERE itemid=4022022;
+  DELETE FROM `reactordrops` WHERE itemid=4022023;
+  DELETE FROM `reactordrops` WHERE itemid=4032362;
+  DELETE FROM `reactordrops` WHERE itemid=4032363;
+  DELETE FROM `reactordrops` WHERE itemid=4032980;

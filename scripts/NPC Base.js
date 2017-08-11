@@ -32,10 +32,12 @@ function start() {
 }
 
 function action(mode, type, selection) {
+        //print("mode" + mode + "type " + type + " selection" + selection + "\n");
+        
         if (mode == -1) {
                 cm.dispose();
         } else {
-                if (mode == 0 && status == 0) {
+                if (mode == 0 && type > 0) {    // hope types 2 & 3 works as well, as 1 and 4 END CHAT
                         cm.dispose();
                         return;
                 }

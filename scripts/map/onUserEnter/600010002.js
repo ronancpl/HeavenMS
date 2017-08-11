@@ -1,5 +1,3 @@
-importPackage(Packages.tools);
-
 var eventName = "Subway";
 var toMap = 600010003;
 

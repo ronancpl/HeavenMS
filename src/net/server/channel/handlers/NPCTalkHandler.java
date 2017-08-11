@@ -62,7 +62,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
                     // Custom handling for gachapon scripts to reduce the amount of scripts needed.
                     NPCScriptManager.getInstance().start(c, npc.getId(), "gachapon", null);
                 } else {
-                    boolean hasNpcScript = NPCScriptManager.getInstance().start(c, npc.getId(), null);
+                    boolean hasNpcScript = NPCScriptManager.getInstance().start(c, npc.getId(), oid, null);
                     if (!hasNpcScript) {
                         if (!npc.hasShop()) {
                             FilePrinter.printError(FilePrinter.NPC_UNCODED, "NPC " + npc.getName() + "(" + npc.getId() + ") is not coded.\r\n");

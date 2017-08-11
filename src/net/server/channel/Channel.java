@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -374,6 +375,16 @@ public final class Channel {
         
         usedDojo &= mask;
         if(party != null) dojoParty.remove(party.hashCode());
+        else if(dojoParty.containsValue(slot)) {    // they left the dojo before completing it, no party there!
+            Set<Entry<Integer, Integer>> es = Collections.unmodifiableSet(dojoParty.entrySet());
+            
+            for(Entry<Integer, Integer> e: es) {
+                if(e.getValue() == slot) {
+                    dojoParty.remove(e.getKey());
+                    break;
+                }
+            }
+        }
     }
     
     private int getDojoSlot(int dojoMapId) {
@@ -405,7 +416,7 @@ public final class Channel {
         final int stage = (dojoMapId / 100) % 100;
         if(stage <= dojoStage[slot]) return;
         
-        long clockTime = (stage > 36 ? 15 : stage / 6 + 5) * 60000;
+        long clockTime = (stage > 36 ? 15 : (stage / 6) + 5) * 60000;
         this.dojoTask[slot] = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {

@@ -108,9 +108,9 @@ public class Commands {
         private static HashMap<String, Integer> gotomaps = new HashMap<String, Integer>();
 
 	private static String[] tips = {
-		"Please only use /gm in emergencies or to report somebody.",
+		"Please only use @gm in emergencies or to report somebody.",
 		"To report a bug or make a suggestion, use the forum.",
-		"Please do not use /gm to ask if a GM is online.",
+		"Please do not use @gm to ask if a GM is online.",
 		"Do not ask if you can receive help, just state your issue.",
 		"Do not say 'I have a bug to report', just state it.",
 	};
@@ -387,7 +387,7 @@ public class Commands {
 				}
 			}
 			if (gacha == null){
-				player.yellowMessage("Please use /gacha <name> where name corresponds to one of the below:");
+				player.yellowMessage("Please use @gacha <name> where name corresponds to one of the below:");
 				for (String name : names){
 					player.yellowMessage(name);
 				}
@@ -405,7 +405,7 @@ public class Commands {
                     
 		case "whatdropsfrom":
 			if (sub.length < 2) {
-				player.dropMessage(5, "Please do /whatdropsfrom <monster name>");
+				player.dropMessage(5, "Please do @whatdropsfrom <monster name>");
                         break;
 			}
 			String monsterName = joinStringFrom(sub, 1);
@@ -439,7 +439,7 @@ public class Commands {
                     
 		case "whodrops":
 			if (sub.length < 2) {
-				player.dropMessage(5, "Please do /whodrops <item name>");
+				player.dropMessage(5, "Please do @whodrops <item name>");
                         break;
 			}
 			String searchString = joinStringFrom(sub, 1);
@@ -551,7 +551,7 @@ public class Commands {
 		case "bug":
                     
 			if (sub.length < 2) {
-				player.dropMessage(5, "Message too short and not sent. Please do /bug <bug>");
+				player.dropMessage(5, "Message too short and not sent. Please do @bug <bug>");
 				break;
 			}
 			message = joinStringFrom(sub, 1);
@@ -691,7 +691,7 @@ public class Commands {
                         
                 case "goto":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /goto <map name>");
+				player.yellowMessage("Syntax: @goto <map name>");
 				break;
 			}
                     
@@ -738,7 +738,7 @@ public class Commands {
 			for (MapleMapObject npcs : player.getMap().getMapObjects()) {
 				if (npcs instanceof MapleNPC) {
 					MapleNPC npc = (MapleNPC) npcs;
-					player.dropMessage(5, ">> " + npc.getName() + " - " + npc.getId());
+					player.dropMessage(5, ">> " + npc.getName() + " - " + npc.getId() + " - Oid: " + npc.getObjectId());
 				}
 			}
 			player.yellowMessage("Monsters on this map:");
@@ -775,7 +775,7 @@ public class Commands {
                         
                 case "sp":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /sp [<playername>] <newsp>");
+				player.yellowMessage("Syntax: !sp [<playername>] <newsp>");
 				break;
 			}
                         
@@ -791,7 +791,7 @@ public class Commands {
                     
                 case "ap":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /ap [<playername>] <newap>");
+				player.yellowMessage("Syntax: !ap [<playername>] <newap>");
 				break;
 			}
                     
@@ -822,7 +822,7 @@ public class Commands {
                     
                 case "buff":
                         if (sub.length < 2){
-                                player.yellowMessage("Syntax: /buff <buffid>");
+                                player.yellowMessage("Syntax: !buff <buffid>");
                                 break;
 			}
                         int skillid=Integer.parseInt(sub[1]);
@@ -835,7 +835,7 @@ public class Commands {
 			if (sub.length > 1){
 				victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
 				victim.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
-				Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used /bomb on " + victim.getName()));
+				Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
 			} else {
 				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), player.getPosition());
 			}
@@ -843,7 +843,7 @@ public class Commands {
                     
                 case "dc":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /dc <playername>");
+				player.yellowMessage("Syntax: !dc <playername>");
 				break;
 			}
                     
@@ -876,7 +876,7 @@ public class Commands {
                     
                 case "clearslot":
                         if (sub.length < 2) {
-                                player.yellowMessage("Syntax: /clearslot <all, equip, use, setup, etc or cash.>");
+                                player.yellowMessage("Syntax: !clearslot <all, equip, use, setup, etc or cash.>");
                                 break;
                         }
                         String type = sub[1];
@@ -963,7 +963,7 @@ public class Commands {
                     
                 case "warp":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /warp <mapid>");
+				player.yellowMessage("Syntax: !warp <mapid>");
 				break;
 			}
                     
@@ -985,7 +985,7 @@ public class Commands {
                     
                 case "warpto":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: /warpto <playername> <mapid>");
+				player.yellowMessage("Syntax: !warpto <playername> <mapid>");
 				break;
 			}
                     
@@ -1026,7 +1026,7 @@ public class Commands {
                 case "warphere":
                 case "summon":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /warphere <playername>");
+				player.yellowMessage("Syntax: !warphere <playername>");
 				break;
 			}
                     
@@ -1081,7 +1081,7 @@ public class Commands {
                 case "item":
                 case "drop":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /item <itemid> <quantity>");
+				player.yellowMessage("Syntax: !item <itemid> <quantity>");
 				break;
 			}
                         
@@ -1109,7 +1109,7 @@ public class Commands {
                     
                 case "level":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /level <newlevel>");
+				player.yellowMessage("Syntax: !level <newlevel>");
 				break;
 			}
                     
@@ -1124,7 +1124,7 @@ public class Commands {
                     
 		case "levelpro":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /levelpro <newlevel>");
+				player.yellowMessage("Syntax: !levelpro <newlevel>");
 				break;
 			}
                     
@@ -1146,7 +1146,7 @@ public class Commands {
                     break;
                     
                 case "maxstat":
-			final String[] s = {"setall", String.valueOf(Short.MAX_VALUE)};
+			final String[] s = {"setstat", String.valueOf(Short.MAX_VALUE)};
 			executeSolaxiaCommandLv2(cserv, srv, c, s);
                         player.loseExp(player.getExp(), false, false);
                         player.revertPlayerRates();
@@ -1187,7 +1187,7 @@ public class Commands {
                     
                 case "search":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: /search <type> <name>");
+				player.yellowMessage("Syntax: !search <type> <name>");
 				break;
 			}
                     
@@ -1205,9 +1205,9 @@ public class Commands {
                                 } else if (sub[1].equalsIgnoreCase("SKILL")) {
                                         data = dataProvider.getData("Skill.img");
                                 } else if (sub[1].equalsIgnoreCase("MAP")) {
-                                        sb.append("#bUse the '/m' command to find a map. If it finds a map with the same name, it will warp you to it.");
+                                        sb.append("#bUse the '!m' command to find a map. If it finds a map with the same name, it will warp you to it.");
                                 } else {
-                                        sb.append("#bInvalid search.\r\nSyntax: '/search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
+                                        sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
                                 }
                                 if (data != null) {
                                         String name;
@@ -1241,7 +1241,7 @@ public class Commands {
                     
                 case "jail":
                         if (sub.length < 2) {
-				player.yellowMessage("Syntax: /jail <playername> [<minutes>]");
+				player.yellowMessage("Syntax: !jail <playername> [<minutes>]");
 				break;
 			}
                         
@@ -1249,7 +1249,7 @@ public class Commands {
                         if(sub.length >= 3) {
                                 minutesJailed = Integer.valueOf(sub[2]);
                                 if(minutesJailed <= 0) {
-                                        player.yellowMessage("Syntax: /jail <playername> [<minutes>]");
+                                        player.yellowMessage("Syntax: !jail <playername> [<minutes>]");
                                         break;
                                 }
                         }
@@ -1277,7 +1277,7 @@ public class Commands {
                     
                 case "unjail":
                         if (sub.length < 2) {
-				player.yellowMessage("Syntax: /unjail <playername>");
+				player.yellowMessage("Syntax: !unjail <playername>");
 				break;
 			}
                         
@@ -1313,7 +1313,7 @@ public class Commands {
                 switch(sub[0]) {    
 		case "spawn":
                         if (sub.length < 2) {
-				player.yellowMessage("Syntax: /spawn <mobid>");
+				player.yellowMessage("Syntax: !spawn <mobid>");
 				break;
 			}
                     
@@ -1400,7 +1400,7 @@ public class Commands {
                         } else if(sub.length == 2) {
                                 statUpdate = Integer.valueOf(sub[1]);
                         } else {
-				player.yellowMessage("Syntax: /sethpmp [<playername>] <value>");
+				player.yellowMessage("Syntax: !sethpmp [<playername>] <value>");
                         }
                     
                         victim.setHp(statUpdate);
@@ -1411,7 +1411,7 @@ public class Commands {
                    
 		case "music":
 			if (sub.length < 2) {
-				player.yellowMessage("Syntax: /music <song>");
+				player.yellowMessage("Syntax: !music <song>");
 				for (String s : songs){
 					player.yellowMessage(s);
 				}
@@ -1433,7 +1433,7 @@ public class Commands {
                     
 		case "monitor":
 			if (sub.length < 1){
-				player.yellowMessage("Syntax: /monitor <ign>");
+				player.yellowMessage("Syntax: !monitor <ign>");
 				break;
 			}
 			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
@@ -1460,7 +1460,7 @@ public class Commands {
                     
 		case "ignore":
 			if (sub.length < 1){
-				player.yellowMessage("Syntax: /ignore <ign>");
+				player.yellowMessage("Syntax: !ignore <ign>");
 				break;
 			}
 			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
@@ -1495,7 +1495,7 @@ public class Commands {
         
                 case "togglecoupon":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /togglecoupon <itemid>");
+				player.yellowMessage("Syntax: !togglecoupon <itemid>");
 				break;
 			}
                         Server.getInstance().toggleCoupon(Integer.parseInt(sub[1]));
@@ -1508,7 +1508,7 @@ public class Commands {
              
 		case "fame":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: /fame <playername> <gainfame>");
+				player.yellowMessage("Syntax: !fame <playername> <gainfame>");
 				break;
 			}
                         
@@ -1519,7 +1519,7 @@ public class Commands {
                     
 		case "giftnx":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: /giftnx <playername> <gainnx>");
+				player.yellowMessage("Syntax: !giftnx <playername> <gainnx>");
 				break;
 			}
 			cserv.getPlayerStorage().getCharacterByName(sub[1]).getCashShop().gainCash(1, Integer.parseInt(sub[2]));
@@ -1528,7 +1528,7 @@ public class Commands {
       
 		case "vp":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /vp <gainvotepoint>");
+				player.yellowMessage("Syntax: !vp <gainvotepoint>");
 				break;
 			}
 			c.addVotePoints(Integer.parseInt(sub[1]));
@@ -1536,7 +1536,7 @@ public class Commands {
                     
 		case "id":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /id <id>");
+				player.yellowMessage("Syntax: !id <id>");
 				break;
 			}
 			try {
@@ -1580,13 +1580,13 @@ public class Commands {
                     
 		case "kill":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /kill <playername>");
+				player.yellowMessage("Syntax: !kill <playername>");
 				break;
 			}
 			
                         victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
                         victim.setHpMp(0);
-                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used /kill on " + victim.getName()));
+                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
                     break;
                     
 		case "seed":
@@ -1630,7 +1630,7 @@ public class Commands {
                     
 		case "openportal":
                         if (sub.length < 2){
-                            player.yellowMessage("Syntax: /openportal <portalid>");
+                            player.yellowMessage("Syntax: !openportal <portalid>");
                             break;
 			}
 			player.getMap().getPortal(sub[1]).setPortalState(true);
@@ -1638,7 +1638,7 @@ public class Commands {
                     
                 case "closeportals":
                         if (sub.length < 2){
-                            player.yellowMessage("Syntax: /closeportal <portalid>");
+                            player.yellowMessage("Syntax: !closeportal <portalid>");
                             break;
 			}
 			player.getMap().getPortal(sub[1]).setPortalState(false);
@@ -1712,7 +1712,7 @@ public class Commands {
                     
 		case "ban":
 			if (sub.length < 3) {
-				player.yellowMessage("Syntax: /ban <IGN> <Reason> (Please be descriptive)");
+				player.yellowMessage("Syntax: !ban <IGN> <Reason> (Please be descriptive)");
 				break;
 			}
 			String ign = sub[1];
@@ -1762,7 +1762,7 @@ public class Commands {
                     
                 case "unban":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /unban <playername>");
+				player.yellowMessage("Syntax: !unban <playername>");
 				break;
 			}
                     
@@ -1842,7 +1842,7 @@ public class Commands {
                     
                     case "proitem":
                         if (sub.length < 3) {
-                                player.yellowMessage("Syntax: /proitem <itemid> <statvalue>");
+                                player.yellowMessage("Syntax: !proitem <itemid> <statvalue>");
                                 break;
                         }
                         
@@ -1866,7 +1866,7 @@ public class Commands {
                     
                     case "seteqstat":
                         if (sub.length < 2) {
-                                player.yellowMessage("Syntax: /seteqstat <statvalue>");
+                                player.yellowMessage("Syntax: !seteqstat <statvalue>");
                                 break;
                         }
                         
@@ -1907,14 +1907,14 @@ public class Commands {
                     
                     case "exprate":
                             if (sub.length < 2){
-				player.yellowMessage("Syntax: /exprate <newrate>");
+				player.yellowMessage("Syntax: !exprate <newrate>");
 				break;
                         }
                             c.getWorldServer().setExpRate(Integer.parseInt(sub[1]));
                                 break;
                     case "mesorate":
                             if (sub.length < 2){
-                                player.yellowMessage("Syntax: /mesorate <newrate>");
+                                player.yellowMessage("Syntax: !mesorate <newrate>");
                                 break;
                         }
                             c.getWorldServer().setMesoRate(Integer.parseInt(sub[1]));
@@ -1922,7 +1922,7 @@ public class Commands {
                     
                     case "droprate":
                             if (sub.length < 2){
-                                player.yellowMessage("Syntax: /droprate <newrate>");
+                                player.yellowMessage("Syntax: !droprate <newrate>");
                                 break;
                         }		
                             c.getWorldServer().setDropRate(Integer.parseInt(sub[1]));
@@ -1930,7 +1930,7 @@ public class Commands {
                     
                     case "bossdroprate":
                             if (sub.length < 2){
-                                player.yellowMessage("Syntax: /bossdroprate <newrate>");
+                                player.yellowMessage("Syntax: !bossdroprate <newrate>");
                                 break;
                         }
                             c.getWorldServer().setBossDropRate(Integer.parseInt(sub[1]));
@@ -1994,7 +1994,7 @@ public class Commands {
                             
                     case "playernpc":
                             if (sub.length < 3){
-                            player.yellowMessage("Syntax: /playernpc <playername> <npcid>");
+                            player.yellowMessage("Syntax: !playernpc <playername> <npcid>");
                             break;
                         }
                             player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
@@ -2002,7 +2002,7 @@ public class Commands {
                         
                     case "face":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /face [<playername>] <faceid>");
+				player.yellowMessage("Syntax: !face [<playername>] <faceid>");
 				break;
 			}
                     
@@ -2022,7 +2022,7 @@ public class Commands {
                     
                     case "hair":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /hair [<playername>] <hairid>");
+				player.yellowMessage("Syntax: !hair [<playername>] <hairid>");
 				break;
 			}
                     
@@ -2159,7 +2159,7 @@ public class Commands {
                 switch(sub[0]) {
 		case "warpworld":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: /warpworld <worldid>");
+				player.yellowMessage("Syntax: !warpworld <worldid>");
 				break;
 			}
                     
@@ -2190,7 +2190,7 @@ public class Commands {
 					chr.saveToDB();
 				}
 			}
-			String message = player.getName() + " used /saveall.";
+			String message = player.getName() + " used !saveall.";
 			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, message));
 			player.message("All players saved successfully.");
 			break;
@@ -2225,7 +2225,7 @@ public class Commands {
                     
 		case "getacc":
 			if (sub.length < 2){
-				player.yellowMessage("Syntax: /getacc <playername>");
+				player.yellowMessage("Syntax: !getacc <playername>");
 				break;
 			}
 			victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
@@ -2234,7 +2234,7 @@ public class Commands {
                     
 		case "npc":
 			if (sub.length < 2){
-				player.yellowMessage("Syntax: /npc <npcid>");
+				player.yellowMessage("Syntax: !npc <npcid>");
 				break;
 			}
 			MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(sub[1]));
@@ -2258,7 +2258,7 @@ public class Commands {
 				victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
 				player.equipChanged();
 			} else {
-				player.message("Syntax: /job <job id> <opt: IGN of another person>");
+				player.message("Syntax: !job <job id> <opt: IGN of another person>");
 			}
 			break;
 
@@ -2317,10 +2317,10 @@ public class Commands {
         
         public static boolean executeSolaxiaCommand(Channel cserv, Server srv, MapleClient c, String[] sub, int gmLevel) {
                 if(gmLevel == -1) {
-                        c.getPlayer().yellowMessage("Command '" + sub[0] + "' is not available. See /commands for a list of available commands.");
+                        c.getPlayer().yellowMessage("Command '" + sub[0] + "' is not available. See @commands for a list of available commands.");
                         return false;
                 }
-            
+                
                 boolean executedCommand;
                 switch(gmLevel) {
                 case 0: //Player

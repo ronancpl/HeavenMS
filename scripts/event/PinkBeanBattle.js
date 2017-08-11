@@ -216,7 +216,7 @@ function monsterKilled(mob, eim) {
     if(isPinkBean(mob)) {
         eim.setIntProperty("defeatedBoss", 1);
         eim.showClearEffect(mob.getMap().getId());
-        mob.getMap().killAllMonstersNotFriendly();
+        mob.getMap().killAllMonsters();
         eim.clearPQ();
         
         var ch = eim.getIntProperty("channel");

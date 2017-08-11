@@ -88,6 +88,10 @@ function timeOut(eim) {
 
 function monsterKilled(mob, eim) {}
 
+function friendlyKilled(mob, eim) {
+    // Happens when a friendly mob dies
+}
+
 function allMonstersDead(eim) {
     // When invoking unregisterMonster(MapleMonster mob) OR killed
     // Happens only when size = 0
@@ -134,7 +138,7 @@ function disbandParty(eim, player) {
 }
 
 function removePlayer(eim, player) {
-    // Happens when the funtion NPCConversationalManager.removePlayerFromInstance() is invoked
+    // Happens when the funtion NPCConversationManager.removePlayerFromInstance() is invoked
 }
 
 function registerCarnivalParty(eim, carnivalparty) {

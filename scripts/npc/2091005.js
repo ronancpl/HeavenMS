@@ -97,7 +97,7 @@ function action(mode, type, selection) {
 
                                     if(avDojo < 0) {
                                         if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                        else cm.sendOk("Your party already is using the dojo. Wait for them to finish to enter.");
+                                        else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
                                     }
                                     else {
                                         cm.getClient().getChannelServer().getMapFactory().getMap(925020010 + avDojo).resetMapObjects();
@@ -119,7 +119,7 @@ function action(mode, type, selection) {
 
                                 if(avDojo < 0) {
                                     if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                    else cm.sendOk("Your party already is using the dojo. Wait for them to finish to enter.");
+                                    else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
                                     cm.getPlayer().setDojoStage(dojoWarp);
                                 }
                                 else {
@@ -136,7 +136,7 @@ function action(mode, type, selection) {
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                else cm.sendOk("Your party already is using the dojo. Wait for them to finish to enter.");
+                                else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
                             }
                             else {
                                 cm.getClient().getChannelServer().resetDojoMap(925020100 + avDojo);
@@ -174,7 +174,7 @@ function action(mode, type, selection) {
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                else cm.sendOk("Your party already is using the dojo. Wait for them to finish to enter.");
+                                else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
                             }
                             else {
                                 cm.getClient().getChannelServer().resetDojoMap(925030100 + avDojo);
@@ -302,7 +302,7 @@ function action(mode, type, selection) {
 
                     if(avDojo < 0) {
                         if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                        else cm.sendOk("Your party already is using the dojo. Wait for them to finish to enter.");
+                        else cm.sendOk("Your party already registered for the dojo. Wait for the end of the registration time to enter again.");
                     }
                     else {
                         var baseStg = hasParty ? 925030000 : 925020000;

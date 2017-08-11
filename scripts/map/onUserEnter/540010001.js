@@ -1,5 +1,3 @@
-importPackage(Packages.tools);
-
 var eventName = "AirPlane";
 var toMap = 540010002;
 

@@ -1227,7 +1227,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         long banTime = System.currentTimeMillis();
         
         dropMessage(5, msg);
-        MapleMap map_ = client.getChannelServer().getMapFactory().getMap(mapid);
+        MapleMap map_ = getWarpMap(mapid);
         changeMap(map_, map_.getPortal(portal));
         
         setBanishPlayerData(banMap, banSp, banTime);

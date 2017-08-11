@@ -29,11 +29,13 @@ import tools.Pair;
 
 /**
  * @author Lerk
+ * @author Ronan
  */
 public class MapleReactorStats {
     private Point tl;
     private Point br;
-    private Map<Byte, List<StateData>> stateInfo = new HashMap<Byte, List<StateData>>();
+    private Map<Byte, List<StateData>> stateInfo = new HashMap<>();
+    private Map<Byte, Integer> timeoutInfo = new HashMap<>();
 
     public void setTL(Point tl) {
         this.tl = tl;
@@ -51,8 +53,18 @@ public class MapleReactorStats {
         return br;
     }
 
-    public void addState(byte state, List<StateData> data) {
+    public void addState(byte state, List<StateData> data, int timeOut) {
         stateInfo.put(state, data);
+        if(timeOut > -1) timeoutInfo.put(state, timeOut);
+    }
+    
+    public int getTimeout(byte state) {
+        Integer i = timeoutInfo.get(state);
+        return (i == null) ? -1 : i;
+    }
+    
+    public byte getTimeoutState(byte state) {
+        return stateInfo.get(state).get(stateInfo.get(state).size() - 1).getNextState();
     }
 
     public byte getStateSize(byte state) {

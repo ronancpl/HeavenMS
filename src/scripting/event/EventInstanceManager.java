@@ -447,6 +447,14 @@ public class EventInstanceManager {
 			}
 		}
 	}
+        
+        public void friendlyKilled(MapleMonster mob) {
+		try {
+                        em.getIv().invokeFunction("friendlyKilled", mob, this);
+                } catch (ScriptException | NoSuchMethodException ex) {
+                        //optional
+                }
+	}
 
 	public void playerKilled(MapleCharacter chr) {
 		try {

@@ -246,12 +246,12 @@ public class MapleMap {
                         mr.lockReactor();
                         try {
                             mr.setState((byte) 1);
-                            mr.setShouldCollect(true);
+                            mr.resetReactorActions();
+                            
+                            broadcastMessage(MaplePacketCreator.triggerReactor((MapleReactor) o, 1));
                         } finally {
                             mr.unlockReactor();
                         }
-                        
-                        broadcastMessage(MaplePacketCreator.triggerReactor((MapleReactor) o, 1));
                     }
                 }
             }
@@ -1076,6 +1076,7 @@ public class MapleMap {
         final MapleReactor reactor = getReactorByOid(oid);
         TimerManager tMan = TimerManager.getInstance();
         broadcastMessage(MaplePacketCreator.destroyReactor(reactor));
+        reactor.cancelReactorTimeout();
         reactor.setAlive(false);
         removeMapObject(reactor);
         
@@ -1099,12 +1100,12 @@ public class MapleMap {
                     r.lockReactor();
                     try {
                         r.setState((byte) 0);
-                        r.setShouldCollect(true);
+                        r.resetReactorActions();
+                        
+                        broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
                     } finally {
                         r.unlockReactor();
                     }
-                    
-                    broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
                 }
             }
         } finally {
@@ -1547,8 +1548,8 @@ public class MapleMap {
     private void respawnReactor(final MapleReactor reactor) {
         reactor.lockReactor();
         try {
-            reactor.setShouldCollect(true);
             reactor.setState((byte) 0);
+            reactor.resetReactorActions();
             reactor.setAlive(true);
         } finally {
             reactor.unlockReactor();
@@ -1979,7 +1980,7 @@ public class MapleMap {
     public MaplePortal getRandomPlayerSpawnpoint() {
         List<MaplePortal> spawnPoints = new ArrayList<>();
         for (MaplePortal portal : portals.values()) {
-            if (portal.getType() >= 0 && portal.getType() <= 1) {
+            if (portal.getType() >= 0 && portal.getType() <= 1 && portal.getTargetMapId() == 999999999) {
                 spawnPoints.add(portal);
             }
         }
@@ -2608,13 +2609,14 @@ public class MapleMap {
                                 @Override
                                 public void run() {
                                     reactor.lockReactor();
-                                        try {
-                                            reactor.setState((byte) 0);
-                                            reactor.setShouldCollect(true);
-                                        } finally {
-                                            reactor.unlockReactor();
-                                        }
-                                    broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
+                                    try {
+                                        reactor.setState((byte) 0);
+                                        reactor.resetReactorActions();
+
+                                        broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
+                                    } finally {
+                                        reactor.unlockReactor();
+                                    }
                                 }
                             }, reactor.getDelay());
                         }

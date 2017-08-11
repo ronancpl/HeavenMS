@@ -166,7 +166,7 @@ function giveRandomEventReward(eim, player) {
 }
 
 function clearPQ(eim) {
-    eim.getInstanceMap(801040100).killAllMonstersNotFriendly();
+    eim.getInstanceMap(801040100).killAllMonsters();
     
     eim.stopEventTimer();
     eim.setEventCleared();

@@ -1,5 +1,3 @@
-importPackage(Packages.tools);
-
 var eventName = "Genie";
 var toMap = 200090410;
 

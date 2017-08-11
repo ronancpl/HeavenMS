@@ -4,11 +4,20 @@ Ronan - Freelance Developer
 Vcoc - Freelance Developer
 
 ---------------------------
+DISCLAIMER:
+---------------------------
+This is NOT intended to be a PURE v83 MapleStory server emulator (acting
+under the clean WZ files, provided by Nexon/Wizet). There has been provided
+a whole array of edited WZ on the Drive to be used for this server. Although
+normal WZs will load properly, there is no guarantee in-game bugs and issues
+may arise because of some incompatibilities with the clean files.
+
+---------------------------
 Feature list:
 ---------------------------
 
 PQs:
-* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/HorntailPQ 100%.
+* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ 100%.
 * CWKPQ as Expedition-based event 100%.
 * Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean 100%.
 * GuildPQ 100% + Guild queue with multi-lobby systems available.
@@ -63,6 +72,6 @@ Project:
 * Organized project code.
 * Highly configurable server (see all server flags at ServerConstants).
 * Fixed/added some missing packets for MoveEnvironment, summons and others.
-* Reviewed some Java object aspects that needed concurrency protection.
+* Reviewed many Java object aspects that needed concurrency protection.
 
 ---------------------------

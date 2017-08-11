@@ -47,7 +47,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                         return;
                 }
                 char heading = s.charAt(0);
-                if (heading == '/') {
+                if (heading == '!' || heading == '@') {     // client seems to not send command with '/' heading to the server, if not a GM account
                         String[] sp = s.split(" ");
                         sp[0] = sp[0].toLowerCase().substring(1);
 
