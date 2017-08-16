@@ -1464,14 +1464,31 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (id / 1000000 == 2) {
             MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             if (ii.isConsumeOnPickup(id)) {
-                if (id > 2022430 && id < 2022434) {
-                    for (MapleCharacter mc : c.getPlayer().getMap().getCharacters()) {
-                        if (mc.getParty() == c.getPlayer().getParty()) {
-                            ii.getItemEffect(id).applyTo(mc);
+                if (ii.isPartyItem(id)) {
+                    List<MapleCharacter> pchr = c.getPlayer().getPartyMembersOnSameMap();
+                    
+                    if(!ii.isPartyAllcure(id)) {
+                        if(!pchr.isEmpty()) {
+                            for (MapleCharacter mc : pchr) {
+                                ii.getItemEffect(id).applyTo(mc);
+                                mc.checkBerserk(mc.isHidden());
+                            }
+                        } else {
+                            ii.getItemEffect(id).applyTo(c.getPlayer());
+                            c.getPlayer().checkBerserk(c.getPlayer().isHidden());
+                        }
+                    } else {
+                        if(!pchr.isEmpty()) {
+                            for (MapleCharacter mc : pchr) {
+                                mc.dispelDebuffs();
+                            }
+                        } else {
+                            c.getPlayer().dispelDebuffs();
                         }
                     }
                 } else {
                     ii.getItemEffect(id).applyTo(c.getPlayer());
+                    c.getPlayer().checkBerserk(c.getPlayer().isHidden());
                 }
                 return true;
             }
@@ -1940,7 +1957,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             extraRecoveryTask = null;
                         }
                         
-                        if(extraHpRec > 0 || extraMpRec > 0) {
+                        if(extraHpRec != 0 || extraMpRec != 0) {
                             startExtraTaskInternal(extraHpRec, extraMpRec, extraRecInterval);
                         }
                     }
@@ -3167,6 +3184,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return list;
     }
     
+    public List<MapleCharacter> getPartyMembersOnSameMap() {
+        List<MapleCharacter> list = new LinkedList<>();
+        int thisMapHash = this.getMap().hashCode();
+        
+        if(party != null) {
+            for(MaplePartyCharacter partyMembers: party.getMembers()) {
+                if(partyMembers.getPlayer().getMap().hashCode() == thisMapHash) list.add(partyMembers.getPlayer());
+            }
+        }
+        
+        return list;
+    }
+    
     public boolean isPartyMember(MapleCharacter chr) {
         for(MapleCharacter mpcu: getPartyMembers()) {
             if(mpcu.getId() == chr.getId()) {
@@ -3188,6 +3218,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         closeMiniGame();
         closeHiredMerchant(false);
         closePlayerMessenger();
+        
+        client.closePlayerScriptInteractions();
     }
     
     public void closeNpcShop() {
@@ -3595,11 +3627,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     private void guildUpdate() {
+        mgc.setLevel(level);
+        mgc.setJobId(job.getId());
+        
         if (this.guildid < 1) {
             return;
         }
-        mgc.setLevel(level);
-        mgc.setJobId(job.getId());
+        
         try {
             Server.getInstance().memberLevelJobUpdate(this.mgc);
             //Server.getInstance().getGuild(guildid, world, mgc).gainGP(40);
@@ -4955,7 +4989,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showRecovery(id, heal), false);
                 }
             }, healInterval, healInterval);
-        } else if (effect.isDojoBuff()) {
+        } else if (effect.isDojoBuff() || effect.getSourceId() == 2022337) {
             boolean isRecoveryBuff = false;
             if(effect.getHpRRate() > 0) {
                 extraHpRec = effect.getHpR();
@@ -4968,7 +5002,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 extraRecInterval = effect.getMpRRate();
                 isRecoveryBuff = true;
             }
-                
+            
             if(isRecoveryBuff) {
                 stopExtraTask();
                 startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder

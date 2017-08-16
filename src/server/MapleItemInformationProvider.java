@@ -1312,6 +1312,14 @@ public class MapleItemInformationProvider {
         int itemType = itemId / 1000;
         return itemType == 5211 || itemType == 5360;
     }
+    
+    public boolean isPartyItem(int itemId) {
+        return itemId >= 2022430 && itemId <= 2022433;
+    }
+    
+    public boolean isPartyAllcure(int itemId) {
+        return itemId == 2022433;
+    }
 
     public Collection<Item> canWearEquipment(MapleCharacter chr, Collection<Item> items) {
         MapleInventory inv = chr.getInventory(MapleInventoryType.EQUIPPED);

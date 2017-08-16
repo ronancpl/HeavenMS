@@ -732,8 +732,6 @@ public class MapleClient {
 			player.cancelAllDebuffs();
                         
                         player.closePlayerInteractions();
-                        
-			NPCScriptManager.getInstance().dispose(this);
 			QuestScriptManager.getInstance().dispose(this);
 			
 			if (player.getEventInstance() != null) {
@@ -764,6 +762,8 @@ public class MapleClient {
 			final MapleMessengerCharacter chrm = new MapleMessengerCharacter(player, 0);
 			final MapleGuildCharacter chrg = player.getMGC();
 			final MapleGuild guild = player.getGuild();
+                        
+                        player.cancelMagicDoor();
 
 			if (channel == -1 || shutdown) {
                                 if(chrg != null) chrg.setCharacter(null);
@@ -1254,4 +1254,9 @@ public class MapleClient {
 	public void removeClickedNPC(){
 		lastNpcClick = 0;
 	}
+        
+        public void closePlayerScriptInteractions() {
+                this.removeClickedNPC();
+                NPCScriptManager.getInstance().dispose(this);
+        }
 }

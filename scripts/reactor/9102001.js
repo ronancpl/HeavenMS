@@ -24,5 +24,5 @@
  * Box of Magic Library
  */
 function act() {
-    rm.dropItems();
+    rm.dropItems(true, 2, 25, 100);
 }

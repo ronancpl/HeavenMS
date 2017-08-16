@@ -41,7 +41,7 @@ function action(mode, type, selection) {
 			if(cm.isQuestStarted(3900) && cm.getPlayer().getQuestInfo(3900) != 5) {
 				cm.sendOk("#b(You drink the water from the oasis and feel refreshed.)", 2);
 				//TODO: Update quest progress.
-				cm.getPlayer().updateQuestInfo(3900, 5);
+				cm.getPlayer().updateQuestInfo(3900, "5");
 			}
 			cm.dispose();
 		}

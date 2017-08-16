@@ -43959,12 +43959,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2140001"/>
-      <int name="infoNumber" value="7081"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="1"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3507e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3508">
@@ -44097,6 +44092,7 @@
           <int name="state" value="2"/>
         </imgdir>
       </imgdir>
+      <string name="startscript" value="q3514s"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2140002"/>
@@ -44282,10 +44278,10 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2140000"/>
-      <int name="infoNumber" value="7402"/>
-      <imgdir name="infoex">
+      <imgdir name="mob">
         <imgdir name="0">
-          <string name="value" value="1"/>
+          <int name="id" value="8820001"/>
+          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
     </imgdir>

@@ -4698,8 +4698,11 @@
       <int name="price" value="1"/>
     </imgdir>
     <imgdir name="spec">
-      <int name="hpR" value="-100"/>
-      <int name="mpR" value="-100"/>
+      <int name="time" value="300000"/>
+      <int name="mhpRRate" value="5"/>
+      <int name="mhpR" value="-100"/>
+      <int name="mmpR" value="-100"/>
+      <int name="mmpRRate" value="5"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022338">

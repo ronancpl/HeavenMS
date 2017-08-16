@@ -228,10 +228,10 @@ public class MapleStatEffect {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
             
             if(!skill) {
-                if(isDojoBuff(sourceid)) {
+                if(isDojoBuff(sourceid) || sourceid == 2022337) {
                     ret.mhpR = (byte) MapleDataTool.getInt("mhpR", source, 0);
                     ret.mhpRRate = (short) (MapleDataTool.getInt("mhpRRate", source, 0) * 100);
-                    ret.mmpR = (byte) MapleDataTool.getInt("mmpRRate", source, 0);
+                    ret.mmpR = (byte) MapleDataTool.getInt("mmpR", source, 0);
                     ret.mmpRRate = (short) (MapleDataTool.getInt("mmpRRate", source, 0) * 100);
 
                     addBuffStatPairToListIfNotZero(statups, MapleBuffStat.HPREC, Integer.valueOf(ret.mhpR));

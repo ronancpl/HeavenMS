@@ -21,9 +21,9 @@
 */
 /**
  * @author BubblesDev
- * @purpose Drops Blue Primrose Seeds (4001100)
+ * @purpose Sky-ride to Orbis box
  * @map Primrose Hill
  */
 function act() {
-    rm.dropItems();
+    rm.dropItems(true, 2, 25, 100);
 }

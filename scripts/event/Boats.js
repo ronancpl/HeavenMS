@@ -44,8 +44,8 @@ function scheduleNew() {
 
 function stopentry() {
     em.setProperty("entry","false");
-    Orbis_Boat_Cabin.resetReactors();   //boxes
-    Ellinia_Boat_Cabin.resetReactors();
+    Orbis_Boat_Cabin.clearMapObjects();   //boxes
+    Ellinia_Boat_Cabin.clearMapObjects();
 }
 
 function takeoff() {

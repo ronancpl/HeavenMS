@@ -29,6 +29,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
 import constants.ItemConstants;
+import constants.ServerConstants;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -549,12 +550,12 @@ public class MapleInventoryManipulator {
             if (weddingRing) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
             } else if (c.getPlayer().getMap().getEverlast()) {
-                if (ii.isDropRestricted(target.getItemId()) || MapleItemInformationProvider.getInstance().isCash(target.getItemId())) {
+                if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
                 } else {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos, true, true);
                 }
-            } else if (ii.isDropRestricted(target.getItemId()) || MapleItemInformationProvider.getInstance().isCash(target.getItemId())) {
+            } else if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
             } else {
                 c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos, true, true);
@@ -566,12 +567,12 @@ public class MapleInventoryManipulator {
                 c.getPlayer().equipChanged();
             }
             if (c.getPlayer().getMap().getEverlast()) {
-                if (ii.isDropRestricted(itemId) || ii.isCash(itemId)) {
+                if (ii.isDropRestricted(itemId) || ii.isCash(itemId) || isDroppedItemRestricted(source)) {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos);
                 } else {
                     c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos, true, true);
                 }
-            } else if (ii.isDropRestricted(itemId) || ii.isCash(itemId)) {
+            } else if (ii.isDropRestricted(itemId) || ii.isCash(itemId) || isDroppedItemRestricted(source)) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos);           
             } else {
                 c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos, true, true);
@@ -579,6 +580,10 @@ public class MapleInventoryManipulator {
         }
     }
 
+    private static boolean isDroppedItemRestricted(Item it) {
+        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && ((it.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE);
+    }
+    
     private static boolean isOverall(int itemId) {
         return itemId / 10000 == 105;
     }

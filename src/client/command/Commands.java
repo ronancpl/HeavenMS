@@ -338,9 +338,8 @@ public class Commands {
                 switch(sub[0]) {
                 case "help":
 		case "commands":
-                case "playercommands": 
-                        player.setCS(true);
-                        c.getAbstractPlayerInteraction().openNpc(9201143);
+                case "playercommands":
+                        c.getAbstractPlayerInteraction().openNpc(9201143, "commands");
                         break;
                     
 		case "time":
@@ -1095,7 +1094,14 @@ public class Commands {
 				if (ItemConstants.isPet(itemId)) {
 					petid = MaplePet.createPet(itemId);
 				}
-				MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, -1);
+                                
+                                byte flag = 0;
+                                if(player.gmLevel() < 3) {
+                                    flag |= ItemConstants.ACCOUNT_SHARING;
+                                    flag |= ItemConstants.UNTRADEABLE;
+                                }
+                                
+                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, flag, -1);
 			} else {
 				Item toDrop;
 				if (MapleItemInformationProvider.getInstance().getInventoryType(itemId) == MapleInventoryType.EQUIP) {
@@ -1103,6 +1109,16 @@ public class Commands {
 				} else {
 					toDrop = new Item(itemId, (short) 0, quantity);
 				}
+                                
+                                toDrop.setOwner(player.getName());
+                                if(player.gmLevel() < 3) {
+                                    byte b = toDrop.getFlag();
+                                    b |= ItemConstants.ACCOUNT_SHARING;
+                                    b |= ItemConstants.UNTRADEABLE;
+                                    
+                                    toDrop.setFlag(b);
+                                }
+                                
 				c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), toDrop, c.getPlayer().getPosition(), true, true);
 			}
                     break; 
@@ -1294,6 +1310,19 @@ public class Commands {
                                 player.dropMessage(sub[1] + " not found on this channel! Make sure your target is logged on and on the same channel as yours.");
                         }
                     break;
+                    
+                case "job":
+			if (sub.length == 2) {
+				player.changeJob(MapleJob.getById(Integer.parseInt(sub[1])));
+				player.equipChanged();
+			} else if (sub.length == 3) {
+				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
+				victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
+				player.equipChanged();
+			} else {
+				player.message("Syntax: !job <job id> <opt: IGN of another person>");
+			}
+			break;
                             
                 case "unbug":
                         c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.enableActions());
@@ -1407,6 +1436,8 @@ public class Commands {
                         victim.setMp(statUpdate);
                         victim.updateSingleStat(MapleStat.HP, statUpdate);
                         victim.updateSingleStat(MapleStat.MP, statUpdate);
+                        
+                        victim.checkBerserk(victim.isHidden());
                     break;
                    
 		case "music":
@@ -1823,6 +1854,23 @@ public class Commands {
                         player.yellowMessage("Done.");
                     break;
                     
+                case "npc":
+			if (sub.length < 2){
+				player.yellowMessage("Syntax: !npc <npcid>");
+				break;
+			}
+			MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(sub[1]));
+			if (npc != null) {
+				npc.setPosition(player.getPosition());
+				npc.setCy(player.getPosition().y);
+				npc.setRx0(player.getPosition().x + 50);
+				npc.setRx1(player.getPosition().x - 50);
+				npc.setFh(player.getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId());
+				player.getMap().addMapObject(npc);
+				player.getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+			}
+			break;
+                    
                 default:
                         return false;
                 }
@@ -1854,6 +1902,7 @@ public class Commands {
 
                         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                         Item it = ii.getEquipById(itemid);
+                        it.setOwner(player.getName());
                         MapleInventoryType type = ii.getInventoryType(itemid);
                         if (type.equals(MapleInventoryType.EQUIP)) {
                                 hardsetItemStats((Equip) it, multiply);
@@ -1909,31 +1958,35 @@ public class Commands {
                             if (sub.length < 2){
 				player.yellowMessage("Syntax: !exprate <newrate>");
 				break;
-                        }
+                            }
                             c.getWorldServer().setExpRate(Integer.parseInt(sub[1]));
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Exp Rate has been changed to " + sub[1] + "x."));
                                 break;
                     case "mesorate":
                             if (sub.length < 2){
                                 player.yellowMessage("Syntax: !mesorate <newrate>");
                                 break;
-                        }
+                            }
                             c.getWorldServer().setMesoRate(Integer.parseInt(sub[1]));
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Meso Rate has been changed to " + sub[1] + "x."));
                         break;
                     
                     case "droprate":
                             if (sub.length < 2){
                                 player.yellowMessage("Syntax: !droprate <newrate>");
                                 break;
-                        }		
+                            }		
                             c.getWorldServer().setDropRate(Integer.parseInt(sub[1]));
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Drop Rate has been changed to " + sub[1] + "x."));
                         break;
                     
                     case "bossdroprate":
                             if (sub.length < 2){
                                 player.yellowMessage("Syntax: !bossdroprate <newrate>");
                                 break;
-                        }
+                            }
                             c.getWorldServer().setBossDropRate(Integer.parseInt(sub[1]));
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Boss Drop Rate has been changed to " + sub[1] + "x."));
                         break;
                     
                     case "itemvac":
@@ -2006,18 +2059,21 @@ public class Commands {
 				break;
 			}
                     
-			if (sub.length == 2) {
-				player.setFace(Integer.parseInt(sub[1]));
-				player.equipChanged();
-			} else {
-				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                if(victim == null) {
-                                        player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                        break;
+                        try {
+                                if (sub.length == 2) {
+                                        player.setFace(Integer.parseInt(sub[1]));
+                                        player.equipChanged();
+                                } else {
+                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
+                                        if(victim == null) {
+                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                                break;
+                                        }
+                                        victim.setFace(Integer.parseInt(sub[2]));
+                                        victim.equipChanged();
                                 }
-				victim.setFace(Integer.parseInt(sub[2]));
-				victim.equipChanged();
-			}
+                        } catch(Exception e) {}
+                        
 			break;
                     
                     case "hair":
@@ -2026,18 +2082,26 @@ public class Commands {
 				break;
 			}
                     
-			if (sub.length == 2) {
-				player.setHair(Integer.parseInt(sub[1]));
-				player.equipChanged();
-			} else {
-				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                if(victim == null) {
-                                        player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                        break;
+                        try {
+                                if (sub.length == 2) {
+                                        player.setHair(Integer.parseInt(sub[1]));
+                                        player.equipChanged();
+
+                                        player.getMap().removePlayer(player);
+                                        player.getMap().addPlayer(player);
+                                } else {
+                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
+                                        if(victim == null) {
+                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                                break;
+                                        }
+                                        victim.setHair(Integer.parseInt(sub[2]));
+                                        victim.equipChanged();
+
+                                        victim.getMap().removePlayer(victim);
+                                        victim.getMap().addPlayer(victim);
                                 }
-				victim.setHair(Integer.parseInt(sub[2]));
-				victim.equipChanged();
-			}
+                        } catch(Exception e) {}
 			break;
                             
                 default:
@@ -2230,36 +2294,6 @@ public class Commands {
 			}
 			victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
 			player.message(victim.getName() + "'s account name is " + victim.getClient().getAccountName() + ".");
-			break;
-                    
-		case "npc":
-			if (sub.length < 2){
-				player.yellowMessage("Syntax: !npc <npcid>");
-				break;
-			}
-			MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(sub[1]));
-			if (npc != null) {
-				npc.setPosition(player.getPosition());
-				npc.setCy(player.getPosition().y);
-				npc.setRx0(player.getPosition().x + 50);
-				npc.setRx1(player.getPosition().x - 50);
-				npc.setFh(player.getMap().getFootholds().findBelow(c.getPlayer().getPosition()).getId());
-				player.getMap().addMapObject(npc);
-				player.getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-			}
-			break;
-                    
-		case "job":
-			if (sub.length == 2) {
-				player.changeJob(MapleJob.getById(Integer.parseInt(sub[1])));
-				player.equipChanged();
-			} else if (sub.length == 3) {
-				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
-				player.equipChanged();
-			} else {
-				player.message("Syntax: !job <job id> <opt: IGN of another person>");
-			}
 			break;
 
 		case "shutdown":

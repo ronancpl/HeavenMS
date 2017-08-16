@@ -10,9 +10,7 @@ var map;
 var timeOnRide = 60; //Seconds
 var onRide;
 
-function init() {
-        
-}
+function init() {}
 
 function setup() {
 	var eim = em.newInstance("Hak_" + + em.getProperty("player"));

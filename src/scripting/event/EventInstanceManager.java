@@ -414,12 +414,10 @@ public class EventInstanceManager {
 		}
 	}
         
-        public void changedMap(MapleCharacter chr, int mapId) {
+        public void changedMap(MapleCharacter chr, int mapId) {     // optional
 		try {
 			em.getIv().invokeFunction("changedMap", this, chr, mapId);
-		} catch (ScriptException | NoSuchMethodException ex) {
-			ex.printStackTrace();
-		}
+		} catch (ScriptException | NoSuchMethodException ex) {}
 	}
         
         public void changedLeader(MapleCharacter ldr) {

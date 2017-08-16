@@ -26,8 +26,6 @@ import constants.ServerConstants;
 import constants.ExpTable;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -376,6 +374,7 @@ public class Equip extends Item {
         boolean gotVicious = false, gotSlot = false;
         
         String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
+        String showStr = "#e'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "'#b is now #elevel #r" + itemLevel + "#k#b!";
         
         Integer statUp, maxStat = ServerConstants.MAX_EQUIPMNT_STAT;
         for (Pair<StatUpgrade, Integer> stat : stats) {
@@ -462,9 +461,17 @@ public class Equip extends Item {
             }
         }
         
+        if(gotVicious) {
+            //c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+            lvupStr += "+VICIOUS ";
+        }
+        if(gotSlot) {
+            //c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
+            lvupStr += "+UPGSLOT ";
+        }
+        
+        showLevelupMessage(showStr, c); // thx to polaris devs !
         c.getPlayer().dropMessage(6, lvupStr);
-        if(gotVicious) c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
-        if(gotSlot) c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
         
         c.announce(MaplePacketCreator.showEquipmentLevelUp());
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignEffect(c.getPlayer().getId(), 15));
@@ -476,11 +483,16 @@ public class Equip extends Item {
     }
     
     private double normalizedMasteryExp(int reqLevel) {
-        // Trivia: at equips requiring level 200, one gaining MAX INTEGER exp points will have their equip
-        // exp gain normalized to roughly 5.752 points (1/3 of the needed to pass the equipment to lvl 2)!
-        // Good thing there is not much lvl 140+ equipments in the game!
+        // Conversion factor between mob exp and equip exp gain. Through many calculations, the expected for equipment levelup
+        // from level 1 to 2 is killing about 100~200 mobs of the same level range, on a 1x EXP rate scenario.
         
-        return Math.max((2622.71 * Math.exp(reqLevel * 0.0733649)) - 6000.0, 15);
+        if(reqLevel >= 78) {
+            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * (10413.648 * Math.exp(reqLevel * 0.03275)), 15);
+        } else if(reqLevel >= 38) {
+            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * ( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);
+        } else {
+            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * (  248.219 * Math.exp(reqLevel * 0.11093)), 15);
+        }
     }
     
     public void gainItemExp(MapleClient c, int gain) {  // Ronan's Equip Exp gain method
@@ -497,7 +509,7 @@ public class Equip extends Item {
         itemExp += baseExpGain;
         int expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
         
-        if(ServerConstants.USE_DEBUG_SHOW_INFO_EQPEXP) System.out.println("'" + ii.getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + " Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded);
+        if(ServerConstants.USE_DEBUG_SHOW_INFO_EQPEXP) System.out.println("'" + ii.getName(this.getItemId()) + "' -> EXP Gain: " + gain + " Mastery: " + masteryModifier + " Base gain: " + baseExpGain + " exp: " + itemExp + " / " + expNeeded + ", Kills TNL: " + expNeeded / (baseExpGain / c.getPlayer().getExpRate()));
         
         if (itemExp >= expNeeded) {
             while(itemExp >= expNeeded) {
@@ -540,6 +552,11 @@ public class Equip extends Item {
         c.getPlayer().dropMessage(5, "'" + eqpName + "' -> Level: " + itemLevel + eqpInfo);
     }
 
+    public final void showLevelupMessage(String msg, MapleClient c) {
+        c.announce(MaplePacketCreator.sendHint(msg, 500, 10));
+        c.announce(MaplePacketCreator.enableActions());
+    }
+    
     public void setItemExp(int exp) {
         this.itemExp = exp;
     }

@@ -271,6 +271,8 @@ public class MapleMapFactory {
 
     private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {
         AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(Integer.parseInt(id), type);
+        if(life == null) System.out.println("lf null");
+        if(myLife == null) System.out.println("mlf null");
         myLife.setCy(MapleDataTool.getInt(life.getChildByPath("cy")));
         MapleData dF = life.getChildByPath("f");
         if (dF != null) {
@@ -293,11 +295,10 @@ public class MapleMapFactory {
         MapleReactor myReactor = new MapleReactor(MapleReactorFactory.getReactor(Integer.parseInt(id)), Integer.parseInt(id));
         int x = MapleDataTool.getInt(reactor.getChildByPath("x"));
         int y = MapleDataTool.getInt(reactor.getChildByPath("y"));
-        myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
         myReactor.setPosition(new Point(x, y));
         myReactor.setDelay(MapleDataTool.getInt(reactor.getChildByPath("reactorTime")) * 1000);
         myReactor.setState((byte) 0);
-        
+        myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
         myReactor.resetReactorActions();
         return myReactor;
     }

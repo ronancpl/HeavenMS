@@ -36,7 +36,7 @@ public class ServerConstants {
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
     public static final boolean USE_DEBUG = true;                  //Will enable some text prints on the client, oriented for debugging purposes.
     public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false; //Prints on the cmd all received packet ids.
-    public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
+    public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = true; //Prints on the cmd all equip exp gain info.
     public static final boolean USE_MTS = false;
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
@@ -49,7 +49,7 @@ public class ServerConstants {
     public static final boolean USE_PERFECT_PITCH = true;	    //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
     public static final boolean USE_PERMISSIVE_BUFFS = false;       //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
     public static final boolean USE_ENFORCE_MDOOR_POSITION = true;  //Forces mystic door to be spawned near spawnpoints. (since things bugs out other way, and this helps players locate the door faster)
-    
+    public static final boolean USE_ERASE_UNTRADEABLE_DROP = true; //Forces flagged untradeable items to disappear when dropped.
     
     public static final int MAX_AP = 20000;                     //Max AP allotted on the auto-assigner.
     public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
@@ -100,6 +100,7 @@ public class ServerConstants {
     public static final int DROP_RATE = 10;
     public static final int BOSS_DROP_RATE = 20;
     public static final int PARTY_EXPERIENCE_MOD = 1;           //Change for event stuff.
+    public static final double EQUIP_EXPERIENCE_MOD = 10.0;     //Rate for equipment exp needed, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
     public static final double PQ_BONUS_EXP_MOD = 0.5;
     
     //Event End Timestamp

@@ -77,7 +77,11 @@ public class MapleDoor {
         try {
             return town.getAvailableDoorPortals().get(slot);
         } catch (IndexOutOfBoundsException e) {
-            return town.getAvailableDoorPortals().get(0);
+            try {
+                return town.getAvailableDoorPortals().get(0);
+            } catch (IndexOutOfBoundsException ex) {
+                return null;
+            }
         }
     }
     

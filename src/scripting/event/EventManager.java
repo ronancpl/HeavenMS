@@ -320,7 +320,7 @@ public class EventManager {
     }
     
     public boolean startInstance(int lobbyId, MapleCharacter leader) {
-        return startInstance(lobbyId, null, leader, 1);
+        return startInstance(lobbyId, leader, leader, 1);
     }
     
     public boolean startInstance(int lobbyId, MapleCharacter chr, MapleCharacter leader, int difficulty) {

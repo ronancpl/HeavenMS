@@ -560,6 +560,10 @@ public class MapleMap {
             }
         }
     }
+    
+    public void dropFromReactor(final MapleCharacter chr, final MapleReactor reactor, Item drop, Point dropPos, short questid) {
+        spawnDrop(drop, this.calcDropPos(dropPos, reactor.getPosition()), reactor, chr, (byte)(chr.getParty() != null ? 1 : 0), questid);
+    }
 
     private void stopItemMonitor() {
         chrWLock.lock();
@@ -653,14 +657,14 @@ public class MapleMap {
         droppedItemCount.decrementAndGet();
     }
     
-    private void spawnDrop(final Item idrop, final Point dropPos, final MapleMonster mob, final MapleCharacter chr, final byte droptype, final short questid) {
-        final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, mob, chr, droptype, false, questid);
+    private void spawnDrop(final Item idrop, final Point dropPos, final MapleMapObject dropper, final MapleCharacter chr, final byte droptype, final short questid) {
+        final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, dropper, chr, droptype, false, questid);
         mdrop.setDropTime(System.currentTimeMillis());
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
                 if (questid <= 0 || (c.getPlayer().getQuestStatus(questid) == 1 && c.getPlayer().needQuestItem(questid, idrop.getItemId()))) {
-                    c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, mob.getPosition(), dropPos, (byte) 1));
+                    c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), dropPos, (byte) 1));
                 }
             }
         }, null);
@@ -2591,37 +2595,39 @@ public class MapleMap {
         public void run() {
             reactor.lockReactor();
             try {
-                if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
-                    mapitem.lockItem();
-                    try {
-                        TimerManager tMan = TimerManager.getInstance();
-                        if (mapitem.isPickedUp()) {
-                            return;
-                        }
+                if(reactor.getReactorType() == 100) {
+                    if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
+                        mapitem.lockItem();
+                        try {
+                            TimerManager tMan = TimerManager.getInstance();
+                            if (mapitem.isPickedUp()) {
+                                return;
+                            }
 
-                        reactor.setShouldCollect(false);
-                        MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
-                        MapleMap.this.removeMapObject(mapitem);
-                        reactor.hitReactor(c);
+                            reactor.setShouldCollect(false);
+                            MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
+                            MapleMap.this.removeMapObject(mapitem);
+                            reactor.hitReactor(c);
 
-                        if (reactor.getDelay() > 0) {
-                            tMan.schedule(new Runnable() {
-                                @Override
-                                public void run() {
-                                    reactor.lockReactor();
-                                    try {
-                                        reactor.setState((byte) 0);
-                                        reactor.resetReactorActions();
+                            if (reactor.getDelay() > 0) {
+                                tMan.schedule(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        reactor.lockReactor();
+                                        try {
+                                            reactor.setState((byte) 0);
+                                            reactor.resetReactorActions();
 
-                                        broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
-                                    } finally {
-                                        reactor.unlockReactor();
+                                            broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
+                                        } finally {
+                                            reactor.unlockReactor();
+                                        }
                                     }
-                                }
-                            }, reactor.getDelay());
+                                }, reactor.getDelay());
+                            }
+                        } finally {
+                            mapitem.unlockItem();
                         }
-                    } finally {
-                        mapitem.unlockItem();
                     }
                 }
             } finally {

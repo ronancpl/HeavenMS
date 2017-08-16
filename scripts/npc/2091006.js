@@ -53,7 +53,7 @@ function action(mode, type, selection) {
                 if (mode == 0) {
                     cm.sendNext("#b(As I took my hand off the bulletin board, the mysterious energy that was covering my disappeared as well.)");
                 } else {
-                    cm.getPlayer().saveLocation("DOJO");
+                    cm.getPlayer().saveLocation("MIRROR");
                     cm.warp(925020000, 4);
                 }
                 cm.dispose();
