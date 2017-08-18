@@ -328,7 +328,7 @@ public class Server implements Runnable {
         
         System.out.println("Listening on port 8484\r\n\r\n");
 
-        System.out.println("Solaxia is now online.");
+        System.out.println("Solaxia is now online.\r\n");
         online = true;
     }
 

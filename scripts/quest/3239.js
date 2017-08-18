@@ -8,7 +8,7 @@ function end(mode, type, selection) {
     } else {
 	if(qm.haveItem(4031092, 10)) {
 		if(qm.canHold(4031092)) {
-			qm.sendOk("Well done! You brought back all the #t4031092# the were missing. Here, get this scroll as a token of my gratitude...");
+			qm.sendOk("Well done! You brought back all the #t4031092# that were missing. Here, get this scroll as a token of my gratitude...");
 			qm.gainItem(4031092, -10);
 
 			rnd = Math.floor(Math.random() * 4);

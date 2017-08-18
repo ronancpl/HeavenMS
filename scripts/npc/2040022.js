@@ -210,7 +210,7 @@ function action(mode, type, selection) {
             if (mats instanceof Array) {
                 for(var i = 0; complete && i < mats.length; i++)
                 {
-                    if (matQty[i] == 1)	{
+                    if (matQty[i] * selection == 1) {
                         if (!cm.haveItem(mats[i]))
                         {
                             complete = false;

@@ -74,7 +74,9 @@ public class SkillAction extends MapleQuestAction {
 	public void run(MapleCharacter chr, Integer extSelection) {
 		for(SkillData skill : skillData.values()) {
 			Skill skillObject = SkillFactory.getSkill(skill.getId());
-            boolean shouldLearn = false;
+                        if(skillObject == null) continue;
+                        
+                        boolean shouldLearn = false;
 			
 			if(skill.jobsContains(chr.getJob()) || skillObject.isBeginnerSkill())
 				shouldLearn = true;

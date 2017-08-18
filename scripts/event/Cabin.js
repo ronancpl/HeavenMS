@@ -94,8 +94,8 @@ function takeoff() {
 }
 
 function arrived() {
-    Cabin_to_Orbis.warpEveryone(Orbis_Station.getId());
-    Cabin_to_Leafre.warpEveryone(Leafre_Station.getId());
+    Cabin_to_Orbis.warpEveryone(Orbis_Station.getId(), 0);
+    Cabin_to_Leafre.warpEveryone(Leafre_Station.getId(), 0);
     
     Orbis_docked.broadcastShip(true);
     Leafre_docked.broadcastShip(true);

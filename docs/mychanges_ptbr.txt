@@ -452,3 +452,16 @@ Reactors agora dropam itens de quest somente se o player possui a mesma ativada.
 16 Agosto 2017,
 Consertado corrente de quests da Temple of Time. Agora Pink Bean é alcancável.
 Adicionadas algumas chairs ao SQL.
+
+17 Agosto 2017,
+Consertado Orbis Tower<B2> ainda aplicando DOT ao player, mesmo com bolha ativada.
+Adicionado Boss HPBar em Rombot.
+Consertado problema de keybinding para USEs com id batendo com id de skills fora da arvore de habilidades do jogador.
+Consertado bug em scripts de alguns forjadores de itens que não verificava corretamente a quantidade de itens a tirar do jogador antes de fazer o item.
+Adidionado loots para mobs de Kerning Square.
+Consertado comandos de hair e face.
+
+18 Agosto 2017,
+Consertado skill Dispel não aparecendo efeito aos outros jogadores.
+Atualizados alguns scripts de viagens transferindo jogadores a pontos aleatorios nas chegadas.
+Atualizado relatorio de drop data no monster book.

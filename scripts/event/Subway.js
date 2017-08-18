@@ -38,8 +38,8 @@ function takeoff() {
 }
 
 function arrived() {
-    Subway_to_KC.warpEveryone(KC_docked.getId());
-    Subway_to_NLC.warpEveryone(NLC_docked.getId());
+    Subway_to_KC.warpEveryone(KC_docked.getId(), 0);
+    Subway_to_NLC.warpEveryone(NLC_docked.getId(), 0);
     scheduleNew();
 }
 

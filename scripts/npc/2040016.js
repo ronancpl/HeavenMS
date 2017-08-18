@@ -246,13 +246,13 @@ function action(mode, type, selection) {
                 for(var i = 0; complete && i < mats.length; i++)
                 {
                     if (matQty[i] * qty == 1)	{
-                        if (!cm.haveItem(mats[i]))
+                        if (!cm.haveItem(mats[i] * qty))
                         {
                             complete = false;
                         }
                     }
                     else {
-                        if (!cm.haveItem(mats[i],matQty[i]*qty)) complete=false;
+                        if (!cm.haveItem(mats[i],matQty[i] * qty)) complete=false;
                     }
                 }
             }

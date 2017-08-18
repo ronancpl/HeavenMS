@@ -8,7 +8,7 @@ var NLC = false;
 var em;
 
 function start() {
-	cm.sendSimple("Pick your destination.\n\r\n#L0##bKerning City Subway#l\r\n#L1##bKerning square Shopping Center (Get on the subway)#l\n\n\r\n#L2#Enter Contruction Site#l\r\n#L3#New Leaf City#l");
+	cm.sendSimple("Pick your destination.\n\r\n#L0##bKerning Square Shopping Center#l\n\n\r\n#L1#Enter Contruction Site#l\r\n#L2#New Leaf City#l");
 }
 
 function action(mode, type, selection) {
@@ -25,17 +25,13 @@ function action(mode, type, selection) {
     }
     if (status == 1) {
         if (selection == 0) {
-    		cm.warp(103000101);
-    		cm.dispose();
-    		return;
-        } else if (selection == 1) {
     		var train = cm.getEventManager("KerningTrain");
         	train.newInstance("KerningTrain");
         	train.setProperty("player", cm.getPlayer().getName());
         	train.startInstance(cm.getPlayer());
         	cm.dispose();
         	return;
-        } else if (selection == 2) {
+        } else if (selection == 1) {
             if (cm.haveItem(4031036) || cm.haveItem(4031037) || cm.haveItem(4031038)) {
                 text += " You will be brought in immediately. Which ticket you would like to use?#b";
                 for (var i = 0; i < 3; i++) {
@@ -50,7 +46,7 @@ function action(mode, type, selection) {
             	cm.dispose();
             	return;
             }
-        } else if (selection == 3) {
+        } else if (selection == 2) {
         	if (!cm.haveItem(4031711) && cm.getPlayer().getMapId() == 103000100) {
 	    		cm.sendOk("It seems you don't have a ticket! You can buy one from Bell.");
 	    		cm.dispose();

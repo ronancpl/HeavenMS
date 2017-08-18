@@ -40,8 +40,8 @@ function takeoff() {
 }
 
 function arrived() {
-    Plane_to_CBD.warpEveryone(CBD_docked.getId());
-    Plane_to_KC.warpEveryone(KC_docked.getId());
+    Plane_to_CBD.warpEveryone(CBD_docked.getId(), 0);
+    Plane_to_KC.warpEveryone(KC_docked.getId(), 7);
         
     scheduleNew();
 }

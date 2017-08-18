@@ -55,8 +55,8 @@ function takeoff() {
 }
 
 function arrived() {
-    Train_to_Orbis.warpEveryone(Orbis_Station.getId());
-    Train_to_Ludibrium.warpEveryone(Ludibrium_Station.getId());
+    Train_to_Orbis.warpEveryone(Orbis_Station.getId(), 0);
+    Train_to_Ludibrium.warpEveryone(Ludibrium_Station.getId(), 0);
     Orbis_docked.broadcastShip(true);
     Ludibrium_docked.broadcastShip(true);
     scheduleNew();

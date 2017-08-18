@@ -1548,21 +1548,31 @@ public class Commands {
 			victim.updateSingleStat(MapleStat.FAME, victim.getFame());
                     break;
                     
-		case "giftnx":
+		case "givenx":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: !giftnx <playername> <gainnx>");
+				player.yellowMessage("Syntax: !givenx <playername> <gainnx>");
 				break;
 			}
 			cserv.getPlayerStorage().getCharacterByName(sub[1]).getCashShop().gainCash(1, Integer.parseInt(sub[2]));
 			player.message("NX given.");
                     break;
       
-		case "vp":
-                        if (sub.length < 2){
-				player.yellowMessage("Syntax: !vp <gainvotepoint>");
+		case "givevp":
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !givevp <playername> <gainvotepoint>");
 				break;
 			}
-			c.addVotePoints(Integer.parseInt(sub[1]));
+                        cserv.getPlayerStorage().getCharacterByName(sub[1]).getClient().addVotePoints(Integer.parseInt(sub[2]));
+                        player.message("VP given.");
+                    break;
+                
+                case "givems":
+                        if (sub.length < 3){
+				player.yellowMessage("Syntax: !givemx <playername> <gainmx>");
+				break;
+			}
+                        cserv.getPlayerStorage().getCharacterByName(sub[1]).gainMeso(Integer.parseInt(sub[2]), true);
+                        player.message("MESO given.");
                     break;
                     
 		case "id":
@@ -1871,6 +1881,79 @@ public class Commands {
 			}
 			break;
                     
+                case "face":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !face [<playername>] <faceid>");
+				break;
+			}
+                    
+                        try {
+                                if (sub.length == 2) {
+                                        int itemId = Integer.parseInt(sub[1]);
+                                        if(!(itemId >= 20000 && itemId < 22000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                                player.yellowMessage("Face id '" + sub[1] + "' does not exist.");
+                                                break;
+                                        }
+                                    
+                                        player.setFace(itemId);
+                                        player.updateSingleStat(MapleStat.FACE, itemId);
+                                        player.equipChanged();
+                                } else {
+                                        int itemId = Integer.parseInt(sub[2]);
+                                        if(!(itemId >= 20000 && itemId < 22000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                                player.yellowMessage("Face id '" + sub[2] + "' does not exist.");
+                                                break;
+                                        }
+                                    
+                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
+                                        if(victim == null) {
+                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                                break;
+                                        }
+                                        victim.setFace(itemId);
+                                        victim.updateSingleStat(MapleStat.FACE, itemId);
+                                        victim.equipChanged();
+                                }
+                        } catch(Exception e) {}
+                        
+			break;
+                    
+                case "hair":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !hair [<playername>] <hairid>");
+				break;
+			}
+                    
+                        try {
+                                if (sub.length == 2) {
+                                        int itemId = Integer.parseInt(sub[1]);
+                                        if(!(itemId >= 30000 && itemId < 32000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                                player.yellowMessage("Hair id '" + sub[1] + "' does not exist.");
+                                                break;
+                                        }
+                                    
+                                        player.setHair(itemId);
+                                        player.updateSingleStat(MapleStat.HAIR, itemId);
+                                        player.equipChanged();
+                                } else {
+                                        int itemId = Integer.parseInt(sub[2]);
+                                        if(!(itemId >= 30000 && itemId < 32000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                                player.yellowMessage("Hair id '" + sub[2] + "' does not exist.");
+                                                break;
+                                        }
+                                    
+                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
+                                        if(victim == null) {
+                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
+                                                break;
+                                        }
+                                        victim.setHair(itemId);
+                                        victim.updateSingleStat(MapleStat.HAIR, itemId);
+                                        victim.equipChanged();
+                                }
+                        } catch(Exception e) {}
+			break;
+                    
                 default:
                         return false;
                 }
@@ -2053,57 +2136,6 @@ public class Commands {
                             player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
 			break;
                         
-                    case "face":
-                        if (sub.length < 2){
-				player.yellowMessage("Syntax: !face [<playername>] <faceid>");
-				break;
-			}
-                    
-                        try {
-                                if (sub.length == 2) {
-                                        player.setFace(Integer.parseInt(sub[1]));
-                                        player.equipChanged();
-                                } else {
-                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                        if(victim == null) {
-                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                                break;
-                                        }
-                                        victim.setFace(Integer.parseInt(sub[2]));
-                                        victim.equipChanged();
-                                }
-                        } catch(Exception e) {}
-                        
-			break;
-                    
-                    case "hair":
-                        if (sub.length < 2){
-				player.yellowMessage("Syntax: !hair [<playername>] <hairid>");
-				break;
-			}
-                    
-                        try {
-                                if (sub.length == 2) {
-                                        player.setHair(Integer.parseInt(sub[1]));
-                                        player.equipChanged();
-
-                                        player.getMap().removePlayer(player);
-                                        player.getMap().addPlayer(player);
-                                } else {
-                                        victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                        if(victim == null) {
-                                                player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                                break;
-                                        }
-                                        victim.setHair(Integer.parseInt(sub[2]));
-                                        victim.equipChanged();
-
-                                        victim.getMap().removePlayer(victim);
-                                        victim.getMap().addPlayer(victim);
-                                }
-                        } catch(Exception e) {}
-			break;
-                            
                 default:
                         return false;
                 }

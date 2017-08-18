@@ -64,9 +64,9 @@ function action(mode, type, selection) {
         		rock.startInstance(cm.getPlayer());
     			cm.dispose();
     			return;
-			} else {
-				cm.sendOk("#rVIP#k? Yeah that is funny #rMr. VIP#k, now get lost before I call security."); 
-			}
+                } else {
+                        cm.sendOk("#rVIP#k? Yeah that is funny #rMr. VIP#k, now get lost before I call security."); 
+                }
     	}
     	cm.dispose();
     }

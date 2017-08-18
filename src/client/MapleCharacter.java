@@ -1315,7 +1315,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     byte value = (byte)mbs.getValue().value;
                     
                     if(value == 1 && thisMap.getReturnMapId() == 211000000) return true;       //protection from cold
-                    else if(value == 2 && thisMap.getReturnMapId() == 230000000) return true;  //breathing underwater
+                    else if(value == 2 && (thisMap.getReturnMapId() == 211000000 || thisMap.getReturnMapId() == 230000000)) return true;  //breathing underwater
                     else return false;
                 }
             }    
@@ -2035,6 +2035,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         extraRecoveryTask = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
+                if (getBuffSource(MapleBuffStat.HPREC) == -1 && getBuffSource(MapleBuffStat.MPREC) == -1) {
+                    stopExtraTask();
+                    return;
+                }
+                
                 if(hp < localmaxhp) {
                     if(healHP > 0) {
                         client.announce(MaplePacketCreator.showOwnRecovery(healHP));
@@ -3457,7 +3462,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public Map<Skill, SkillEntry> getSkills() {
         return Collections.unmodifiableMap(skills);
     }
-
+    
     public int getSkillLevel(int skill) {
         SkillEntry ret = skills.get(SkillFactory.getSkill(skill));
         if (ret == null) {
@@ -4979,16 +4984,35 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         } else if (effect.isRecovery()) {
             int healInterval = (ServerConstants.USE_ULTRA_RECOVERY) ? 2500 : 5000;
-            
             final byte heal = (byte) effect.getX();
-            recoveryTask = TimerManager.getInstance().register(new Runnable() {
-                @Override
-                public void run() {
-                    addHP(heal);
-                    client.announce(MaplePacketCreator.showOwnRecovery(heal));
-                    getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showRecovery(id, heal), false);
-                }
-            }, healInterval, healInterval);
+            
+            chrLock.lock();
+            try {
+                recoveryTask = TimerManager.getInstance().register(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getBuffSource(MapleBuffStat.RECOVERY) == -1) {
+                            chrLock.lock();
+                            try {
+                                if (recoveryTask != null) {
+                                    recoveryTask.cancel(false);
+                                    recoveryTask = null;
+                                }
+                            } finally {
+                                chrLock.unlock();
+                            }
+
+                            return;
+                        }
+
+                        addHP(heal);
+                        client.announce(MaplePacketCreator.showOwnRecovery(heal));
+                        getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showRecovery(id, heal), false);
+                    }
+                }, healInterval, healInterval);
+            } finally {
+                chrLock.unlock();
+            }
         } else if (effect.isDojoBuff() || effect.getSourceId() == 2022337) {
             boolean isRecoveryBuff = false;
             if(effect.getHpRRate() > 0) {

@@ -26,7 +26,7 @@ function action(mode, type, selection) {
 				return;
 			}
 			
-			cm.warp(922000009);
+			cm.warp(922000009, 0);
 			if(!(cm.isQuestStarted(3239) && cm.haveItem(4031092, 10))) cm.removeAll(4031092);
 			cm.dispose();
 		}
@@ -36,9 +36,14 @@ function action(mode, type, selection) {
 				cm.dispose();
 				return;
 			}
+                        
+                        if(cm.getWarpMap(922000000).countPlayers() == 0) {
+                                cm.warp(922000000, 0);
+                                if(!(cm.isQuestStarted(3239) && cm.haveItem(4031092, 10))) cm.removeAll(4031092);
+                        } else {
+                                cm.sendOk("Someone else is already attempting the parts. Wait for them to finish before you enter.");
+                        }
 	
-			cm.warp(922000000);
-                        if(!(cm.isQuestStarted(3239) && cm.haveItem(4031092, 10))) cm.removeAll(4031092);
 			cm.dispose();		
 		}
 	}

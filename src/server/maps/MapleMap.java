@@ -2956,6 +2956,14 @@ public class MapleMap {
             chr.changeMap(to);
         }
     }
+    
+    public void warpEveryone(int to, int pto) {
+        List<MapleCharacter> players = new ArrayList<>(getCharacters());
+        
+        for (MapleCharacter chr : players) {
+            chr.changeMap(to, pto);
+        }
+    }
 
     // BEGIN EVENTS
     public void setSnowball(int team, MapleSnowball ball) {

@@ -86,6 +86,7 @@ function setup(channel) {
     eim.getInstanceMap(270050300).resetPQ(level);
     
     var mob = MapleLifeFactory.getMonster(8820000);
+    mob.disableDrops();
     eim.getInstanceMap(270050100).spawnMonsterOnGroundBelow(mob, new java.awt.Point(0, -42));
     
     eim.startEventTimer(eventTime * 60000);

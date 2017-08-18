@@ -8,9 +8,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-DROP DATABASE IF EXISTS `maplesolaxia`;
-CREATE DATABASE `maplesolaxia` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `maplesolaxia`;
+DROP DATABASE IF EXISTS `maplesolaxia2`;
+CREATE DATABASE `maplesolaxia2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `maplesolaxia2`;
 
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -16220,7 +16220,7 @@ INSERT INTO `monstercarddata` (`id`, `cardid`, `mobid`) VALUES
 (287, 2388040, 8220004),
 (288, 2388041, 8220005),
 (289, 2388042, 8220006),
-(290, 2388043, 8820001),
+(290, 2388043, 8820000),
 (291, 2380013, 9300274),
 (292, 2388055, 8830000),
 (293, 2380014, 1110130),
@@ -16460,7 +16460,7 @@ INSERT INTO `reactordrops` (`reactordropid`, `reactorid`, `itemid`, `chance`, `q
 (15, 1102002, 4000136, 1, -1),
 (16, 2002000, 2000002, 4, -1),
 (17, 2002000, 2000001, 2, -1),
-(18, 2002000, 4031198, 2, -1),
+(18, 2002000, 4031198, 2, 3043),
 (19, 2112000, 2000004, 1, -1),
 (20, 2112001, 2020001, 1, -1),
 (21, 2112004, 4001016, 1, -1),

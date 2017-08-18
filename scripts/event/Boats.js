@@ -61,10 +61,10 @@ function takeoff() {
 }
 
 function arrived() {
-    Boat_to_Orbis.warpEveryone(Orbis_Station.getId());
-    Orbis_Boat_Cabin.warpEveryone(Orbis_Station.getId());
-    Boat_to_Ellinia.warpEveryone(Ellinia_docked.getId());
-    Ellinia_Boat_Cabin.warpEveryone(Ellinia_docked.getId());
+    Boat_to_Orbis.warpEveryone(Orbis_Station.getId(), 0);
+    Orbis_Boat_Cabin.warpEveryone(Orbis_Station.getId(), 0);
+    Boat_to_Ellinia.warpEveryone(Ellinia_docked.getId(), 1);
+    Ellinia_Boat_Cabin.warpEveryone(Ellinia_docked.getId(), 1);
     Orbis_docked.broadcastShip(true);
     Ellinia_docked.broadcastShip(true);
     Boat_to_Orbis.broadcastEnemyShip(false);

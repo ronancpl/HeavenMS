@@ -45,6 +45,8 @@ import constants.skills.DarkKnight;
 import constants.skills.Hero;
 import constants.skills.Paladin;
 import constants.skills.Priest;
+import constants.skills.Hermit;
+import constants.skills.SuperGM;
 
 
 public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
@@ -111,6 +113,12 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             int gain = lose * (ef.getY() / 100);
             chr.setMp(chr.getMp() + gain);
             chr.updateSingleStat(MapleStat.MP, chr.getMp());
+        } else if (skillid == Hermit.FLASH_JUMP) {
+            slea.skip(2);   // always 0? Also 3rd party FJ effect doesn't seem to work, agh!
+            //chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid), (byte)0), false);
+        } else if (skillid == Priest.DISPEL || skillid == SuperGM.HEAL_PLUS_DISPEL) {
+            slea.skip((skillid == Priest.DISPEL) ? 10 : 11);
+            chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid)), false);
         } else if (skillid % 10000000 == 1004) {
             slea.readShort();
         }

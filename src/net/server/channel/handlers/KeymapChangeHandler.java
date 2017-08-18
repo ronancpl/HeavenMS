@@ -44,22 +44,24 @@ public final class KeymapChangeHandler extends AbstractMaplePacketHandler {
 					int type = slea.readByte();
 					int action = slea.readInt();
                                         
-					Skill skill = SkillFactory.getSkill(action);
-					boolean isBanndedSkill;
-					if (skill != null) {
-						isBanndedSkill = GameConstants.bannedBindSkills(skill.getId());
-						if (isBanndedSkill || (!c.getPlayer().isGM() && GameConstants.isGMSkills(skill.getId())) || (!GameConstants.isInJobTree(skill.getId(), c.getPlayer().getJob().getId()) && !c.getPlayer().isGM())) { //for those skills are are "technically" in the beginner tab, like bamboo rain in Dojo or skills you find in PYPQ
-							//AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit keymapping.");
-							//FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skill.getId() + "\r\n");
-							//c.disconnect(true, false);
-							//return;
-                                                    
-                                                        continue;   // fk that
-						}
-						/* if (c.getPlayer().getSkillLevel(skill) < 1) {    HOW WOULD A SKILL EVEN BE AVAILABLE TO KEYBINDING
-							continue;                                   IF THERE IS NOT EVEN A SINGLE POINT USED INTO IT??
-						} */                                              //Nice to know some skills have the same ids as items, heh.
-					}
+                                        if(type == 1) {
+                                                Skill skill = SkillFactory.getSkill(action);
+                                                boolean isBanndedSkill;
+                                                if (skill != null) {
+                                                        isBanndedSkill = GameConstants.bannedBindSkills(skill.getId());
+                                                        if (isBanndedSkill || (!c.getPlayer().isGM() && GameConstants.isGMSkills(skill.getId())) || (!GameConstants.isInJobTree(skill.getId(), c.getPlayer().getJob().getId()) && !c.getPlayer().isGM())) { //for those skills are are "technically" in the beginner tab, like bamboo rain in Dojo or skills you find in PYPQ
+                                                                //AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit keymapping.");
+                                                                //FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skill.getId() + "\r\n");
+                                                                //c.disconnect(true, false);
+                                                                //return;
+
+                                                                continue;   // fk that
+                                                        }
+                                                        /* if (c.getPlayer().getSkillLevel(skill) < 1) {    HOW WOULD A SKILL EVEN BE AVAILABLE TO KEYBINDING
+                                                                continue;                                   IF THERE IS NOT EVEN A SINGLE POINT USED INTO IT??
+                                                        } */
+                                                }
+                                        }
                                         
 					c.getPlayer().changeKeybinding(key, new MapleKeyBinding(type, action));
 				}

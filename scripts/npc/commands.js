@@ -6,10 +6,6 @@
         Script: commands.js
 */
 
-/*
-Please, keep the commands organized!
-*/
-
 var status;
 
 var comm_lv6 = [];
@@ -73,7 +69,7 @@ function writeSolaxiaCommandsLv5() {    //Developer
         addCommand("debugreactors", "");
         addCommand("debugcoupons", "");
         addCommand("debugplayercoupons", "");
-		addCommand("debugtimer", "");
+        addCommand("debugtimer", "");
 }
 
 function writeSolaxiaCommandsLv4() {    //SuperGM
@@ -92,7 +88,7 @@ function writeSolaxiaCommandsLv4() {    //SuperGM
         addCommand("zakum", "");
         addCommand("horntail", "");
         addCommand("pinkbean", "");
-		addCommand("pap", "");
+        addCommand("pap", "");
         addCommand("pianus", "");
         addCommand("playernpc", "");
         addCommand("face", "");
@@ -115,19 +111,20 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("music", "");
         addCommand("monitor", "");
         addCommand("monitors", "");
-		addCommand("ignore", "");
+        addCommand("ignore", "");
         addCommand("ignored", "");
         addCommand("pos", "");
         addCommand("togglecoupon", "");
         addCommand("chat", "");
         addCommand("fame", "");
-        addCommand("giftnx", ""); //Ronan, muda esse comando para "givenx", faz mais sentido. XD
-        addCommand("vp", ""); //Ronan, muda esse comando para "givevp", faz mais sentido. XD
+        addCommand("givenx", "");
+        addCommand("givevp", "");
+        addCommand("givems", "");
         addCommand("id", "");
         addCommand("expeds", "");
         addCommand("kill", "");
         addCommand("seed", "");
-		addCommand("killall", "");
+        addCommand("killall", "");
         addCommand("notice", "");
         addCommand("rip", "");
         addCommand("openportal", "");
@@ -139,12 +136,12 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("warpsnowball", "");
         addCommand("ban", "");
         addCommand("unban", "");
-		addCommand("healmap", "");
+        addCommand("healmap", "");
         addCommand("healperson", "");
         addCommand("hurt", "");
         addCommand("killmap", "");
         addCommand("night", "");
-		addCommand("npc", "");
+        addCommand("npc", "");
 }
 
 function writeSolaxiaCommandsLv2() {    //JrGM
@@ -177,7 +174,7 @@ function writeSolaxiaCommandsLv2() {    //JrGM
         addCommand("search", "");
         addCommand("jail", "");
         addCommand("unjail", "");
-		addCommand("job", "");
+        addCommand("job", "");
         addCommand("unbug", "");
 }
 
@@ -208,7 +205,7 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("online", "");
         addCommand("gm", "");
         addCommand("bug", "");
-	//	addCommand("points", ""); //Caso for usar o comando @points, a linha ja foi adicionada, basta remover os //
+	//addCommand("points", "");
         addCommand("joinevent", "");
         addCommand("leaveevent", "");
         addCommand("bosshp", "");
@@ -246,7 +243,7 @@ function action(mode, type, selection) {
 
                 if (status == 0) {
                         var sendStr = "There are all available commands for you:\r\n\r\n#b";
-                        for(var i = 0; i < cm.getPlayer().gmLevel(); i++) {
+                        for(var i = 0; i <= cm.getPlayer().gmLevel(); i++) {
                             sendStr += "#L" + i + "#" + levels[i] + "#l\r\n";
                         }
 
@@ -255,18 +252,21 @@ function action(mode, type, selection) {
                         var lvComm, lvDesc;
 
                         if(selection == 0) {
+                                lvComm = comm_lv0;
+                                lvDesc = desc_lv0;
+                        } else if(selection == 1) {
                                 lvComm = comm_lv1;
                                 lvDesc = desc_lv1;
-                        } else if(selection == 1) {
+                        } else if(selection == 2) {
                                 lvComm = comm_lv2;
                                 lvDesc = desc_lv2;
-                        } else if(selection == 2) {
+                        } else if(selection == 3) {
                                 lvComm = comm_lv3;
                                 lvDesc = desc_lv3;
-                        } else if(selection == 3) {
+                        } else if(selection == 4) {
                                 lvComm = comm_lv4;
                                 lvDesc = desc_lv4;
-                        } else if(selection == 4) {
+                        } else if(selection == 5) {
                                 lvComm = comm_lv5;
                                 lvDesc = desc_lv5;
                         } else {

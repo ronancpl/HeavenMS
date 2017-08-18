@@ -929,7 +929,7 @@ public class MapleStatEffect {
             for (MapleMapObject affectedmo : affecteds) {
                 MapleCharacter affected = (MapleCharacter) affectedmo;
                 if (affected != applyfrom && (isGmBuff() || applyfrom.getParty().equals(affected.getParty()))) {
-                    if ((isResurrection() && !affected.isAlive()) || (!isResurrection() && affected.isAlive())) {
+                    if ((!isResurrection() && affected.isAlive()) || (isResurrection() && !affected.isAlive())) {
                         affectedp.add(affected);
                     }
                 }

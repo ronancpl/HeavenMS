@@ -62,7 +62,7 @@ function goingDownNow() {
 function isUpNow() {
     em.setProperty("goingDown", "false"); // clear
     em.getChannelServer().getMapFactory().getMap(222020200).resetReactors();
-    em.getChannelServer().getMapFactory().getMap(222020111).warpEveryone(222020200);
+    em.getChannelServer().getMapFactory().getMap(222020111).warpEveryone(222020200, 0);
 
     goDown();
 }
@@ -70,7 +70,7 @@ function isUpNow() {
 function isDownNow() {
     em.setProperty("goingUp", "false"); // clear
     em.getChannelServer().getMapFactory().getMap(222020100).resetReactors();
-    em.getChannelServer().getMapFactory().getMap(222020211).warpEveryone(222020100);
+    em.getChannelServer().getMapFactory().getMap(222020211).warpEveryone(222020100, 4);
     
     goUp();
 }

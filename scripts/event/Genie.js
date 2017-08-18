@@ -72,8 +72,8 @@ function takeoff() {
 }
 
 function arrived() {
-    Genie_to_Orbis.warpEveryone(Orbis_Station.getId());
-    Genie_to_Ariant.warpEveryone(Ariant_docked.getId());
+    Genie_to_Orbis.warpEveryone(Orbis_Station.getId(), 0);
+    Genie_to_Ariant.warpEveryone(Ariant_docked.getId(), 1);
     Orbis_docked.broadcastShip(true);
     Ariant_docked.broadcastShip(true);
     
