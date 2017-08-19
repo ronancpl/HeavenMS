@@ -696,16 +696,8 @@ public class MaplePacketCreator {
 
                 mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
 
-                if (ServerConstants.ENABLE_PIN && ServerConstants.ENABLE_PIC) {
-                        mplew.writeBool(!c.getPic().isEmpty());
-                } else {
-                        mplew.write(0); // ENABLE_PIN ? 0: Enable, 1: Disable
-                }
-                if (ServerConstants.ENABLE_PIC) {
-                        mplew.write(c.getPic().isEmpty() ? 0 : 1);
-                } else {
-                        mplew.write(2); // ENABLE_PIC ? 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
-                }
+                mplew.write(ServerConstants.ENABLE_PIN ? 0 : 1);
+                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic().isEmpty() ? 0 : 1) : 2);
                 
                 return mplew.getPacket();
         }
@@ -869,11 +861,8 @@ public class MaplePacketCreator {
                 for (MapleCharacter chr : chars) {
                         addCharEntry(mplew, chr, false);      
                 }
-                if (ServerConstants.ENABLE_PIC) {
-                        mplew.write(c.getPic().isEmpty() ? 0 : 1);
-                } else {
-                        mplew.write(2); // ENABLE_PIC ? 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
-                }
+
+                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic().isEmpty() ? 0 : 1) : 2);
                 mplew.writeInt(c.getCharacterSlots());
                 return mplew.getPacket();
         }
