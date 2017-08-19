@@ -688,16 +688,24 @@ public class MaplePacketCreator {
                 //toWrite = toWrite |= 0x100; only in higher versions
                 mplew.write(toWrite >= 0x80 ? 0x80 : 0);//0x80 is admin, 0x20 and 0x40 = subgm
                 mplew.writeBool(c.getGMLevel() > 0);
-                //mplew.writeShort(toWrite > 0x80 ? 0x80 : toWrite); only in higher versions...
                 mplew.writeMapleAsciiString(c.getAccountName());
                 mplew.write(0);
                 mplew.write(0); //isquietbanned
                 mplew.writeLong(0);//isquietban time
                 mplew.writeLong(c.getSessionId()); //creation time
-                mplew.writeInt(0);
-                
-                if (ServerConstants.ENABLE_PIN) mplew.writeShort(0);
-                else mplew.writeShort(2);
+
+                mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
+
+                if (ServerConstants.ENABLE_PIN && ServerConstants.ENABLE_PIC) {
+                        mplew.writeBool(!c.getPic().isEmpty());
+                } else {
+                        mplew.write(0); // ENABLE_PIN ? 0: Enable, 1: Disable
+                }
+                if (ServerConstants.ENABLE_PIC) {
+                        mplew.write(c.getPic().isEmpty() ? 0 : 1);
+                } else {
+                        mplew.write(2); // ENABLE_PIC ? 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
+                }
                 
                 return mplew.getPacket();
         }
@@ -862,11 +870,10 @@ public class MaplePacketCreator {
                         addCharEntry(mplew, chr, false);      
                 }
                 if (ServerConstants.ENABLE_PIC) {
-                        mplew.write(c.getPic() == null || c.getPic().length() == 0 ? 0 : 1);
+                        mplew.write(c.getPic().isEmpty() ? 0 : 1);
                 } else {
-                        mplew.write(2);
+                        mplew.write(2); // ENABLE_PIC ? 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
                 }
-
                 mplew.writeInt(c.getCharacterSlots());
                 return mplew.getPacket();
         }
