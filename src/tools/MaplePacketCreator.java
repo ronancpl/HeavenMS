@@ -670,34 +670,36 @@ public class MaplePacketCreator {
         }
 
         /**
-         * Gets a successful authentication and PIN Request packet.
+         * Gets a successful authentication packet.
          *
          * @param c
          * @param account The account name.
-         * @return The PIN request packet.
+         * @return the successful authentication packet
          */
         public static byte[] getAuthSuccess(MapleClient c) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.LOGIN_STATUS.getValue());
                 mplew.writeInt(0);
                 mplew.writeShort(0);
-                mplew.writeInt(c.getAccID()); //user id
+                mplew.writeInt(c.getAccID());
                 mplew.write(c.getGender());
-                mplew.writeBool(c.getGMLevel() > 0); //admin byte
-                short toWrite = (short) (c.getGMLevel() * 64);
-                //toWrite = toWrite |= 0x100; only in higher versions
-                mplew.write(toWrite >= 0x80 ? 0x80 : 0);//0x80 is admin, 0x20 and 0x40 = subgm
+                
                 mplew.writeBool(c.getGMLevel() > 0);
+                
+                mplew.write(0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                mplew.write(0); // Country Code.
+                
                 mplew.writeMapleAsciiString(c.getAccountName());
                 mplew.write(0);
-                mplew.write(0); //isquietbanned
-                mplew.writeLong(0);//isquietban time
-                mplew.writeLong(c.getSessionId()); //creation time
+                
+                mplew.write(0); // IsQuietBan
+        		mplew.writeLong(0);//IsQuietBanTimeStamp
+        		mplew.writeLong(0); //CreationTimeStamp
 
                 mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
 
-                mplew.write(ServerConstants.ENABLE_PIN ? 0 : 1);
-                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic().isEmpty() ? 0 : 1) : 2);
+                mplew.write(ServerConstants.ENABLE_PIN ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
+                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic() == null ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
                 
                 return mplew.getPacket();
         }
@@ -862,7 +864,7 @@ public class MaplePacketCreator {
                         addCharEntry(mplew, chr, false);      
                 }
 
-                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic().isEmpty() ? 0 : 1) : 2);
+                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic() == null ? 0 : 1) : 2);
                 mplew.writeInt(c.getCharacterSlots());
                 return mplew.getPacket();
         }
