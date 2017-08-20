@@ -1,7 +1,7 @@
 ﻿#THIS SQL IS OPTIONAL, TO BE USED AFTER 'db_drops.sql'
 #THIS REQUIRES PROVIDED WZ FILES
 
-USE `maplesolaxia2`;
+USE `maplesolaxia`;
 
 UPDATE shopitems SET itemid=1812005, price=1000 WHERE shopitemid=18;
 UPDATE shopitems SET itemid=1812004, price=1000 WHERE shopitemid=19;
