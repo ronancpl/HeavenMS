@@ -18,7 +18,7 @@ import java.io.*;
  * @author RonanLana
  *
  * This application simply gets from the MonsterBook.img.xml all mobid's and
- * puts the on a SQL table with the correspondent mob cardid.
+ * puts them on a SQL table with the correspondent mob cardid.
  *
  */
 public class MobBookIndexer {

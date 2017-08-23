@@ -76,7 +76,7 @@ function end(mode, type, selection) {
         } else if (status == 5) {
             qm.sendYesNo("Now do you understand? Every action comes with consequences, and pets are no exception. The egg of the snail shall hatch soon.");
         } else if (status == 6) {
-            qm.gainItem(5000054, 1, false, true, 5 * 1000);  // rune snail (5hrs)
+            qm.gainItem(5000054, 1, false, true, 5 * 60 * 60 * 1000);  // rune snail (5hrs)
             
             qm.gainItem(4032086, -1); // Mysterious Egg * -1
             qm.forceCompleteQuest();
