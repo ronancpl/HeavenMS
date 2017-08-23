@@ -83,6 +83,7 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 ps.setInt(2, player.getPartner().getId());
                 ps.executeUpdate();
                 ps.close();
+                con.close();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

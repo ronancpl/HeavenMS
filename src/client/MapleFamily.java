@@ -21,6 +21,7 @@
  */
 package client;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +39,8 @@ public class MapleFamily {
 
 	public MapleFamily(int cid) {
 		try {
-			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT familyid FROM family_character WHERE cid = ?");
+                        Connection con = DatabaseConnection.getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT familyid FROM family_character WHERE cid = ?");
 			ps.setInt(1, cid);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
@@ -46,6 +48,7 @@ public class MapleFamily {
 			}
 			ps.close();
 			rs.close();
+                        con.close();
 			getMapleFamily();
 		} catch (SQLException ex) {
                     ex.printStackTrace();
@@ -54,7 +57,8 @@ public class MapleFamily {
 
 	private static void getMapleFamily() {
 		try {
-			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM family_character WHERE familyid = ?");
+                        Connection con = DatabaseConnection.getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT * FROM family_character WHERE familyid = ?");
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
@@ -72,6 +76,7 @@ public class MapleFamily {
 			}
 			rs.close();
 			ps.close();
+                        con.close();
 		} catch (SQLException sqle) {
                     sqle.printStackTrace();
 		}

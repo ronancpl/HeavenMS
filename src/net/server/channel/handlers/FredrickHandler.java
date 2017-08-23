@@ -113,6 +113,7 @@ public class FredrickHandler extends AbstractMaplePacketHandler {
                 ps.setInt(2, chr.getId());
                 ps.execute();
             }
+            con.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

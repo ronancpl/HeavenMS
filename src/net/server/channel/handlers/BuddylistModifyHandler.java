@@ -72,6 +72,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
+        con.close();
         return ret;
     }
 
@@ -129,6 +130,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                             }
                             rs.close();
                             ps.close();
+                            con.close();
                         }
                         if (buddyAddResult == BuddyAddResult.BUDDYLIST_FULL) {
                             c.announce(MaplePacketCreator.serverNotice(1, "\"" + addName + "\"'s Buddylist is full"));
@@ -146,6 +148,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                                     ps.setInt(2, player.getId());
                                     ps.executeUpdate();
                                 }
+                                con.close();
                             }
                             buddylist.put(new BuddylistEntry(charWithId.getName(), group, otherCid, displayChannel, true));
                             c.announce(MaplePacketCreator.updateBuddylist(buddylist.getBuddies()));
@@ -177,6 +180,7 @@ public class BuddylistModifyHandler extends AbstractMaplePacketHandler {
                                 }
                             }
                         }
+                        con.close();
                     } else {
                         otherName = otherChar.getName();
                     }

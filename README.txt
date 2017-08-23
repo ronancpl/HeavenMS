@@ -86,12 +86,9 @@ The client's set-up is quite straightforward:
 	- Extract into the client folder the "localhost.exe" from Localhostv83.
 	- Overwrite the original WZ files with the ones provided from "client_wz" folder on the Google Drive.
 
-If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. The "localhost.exe" uses the following byte addresses to store the server's IP address:
-	- 006FE084;
-	- 006FE094;
-	- 006FE0A4;
+If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Text String" "127.0.0.1", and applying the changes wherever it fits.
 
-To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under these 3 addresses. Save the changes and exit the editor.
+To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under the 3 addresses. Save the changes and exit the editor.
 
 Open the "localhost.exe" client. If by any means the program did not open, and checking que server log your ping has been listened and you are using Windows 8 or 10, it probably might be some compatibility issue. Extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the MapleStory client folder ("C:\Nexon\MapleStory"). Your "localhost.exe" property settings must follow these:
 	- Run in compatibility mode: Windows 7;
@@ -100,8 +97,6 @@ Open the "localhost.exe" client. If by any means the program did not open, and c
 	- Unchecked disable display on high DPI settings;
 	- Run as an administrator;
 	- Opening "lolwut.exe", use Fraysa's method.
-
-Alternatively, there is available the No-Damage Cap version of the MapleStory client. Just extract and use the "localhost.exe" from the one package with the given name.
 
 Important: should the client being refused to connect to the game server, it may be because firewall issues. Head to the end of this file to proceed to enabling this connection with the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
 

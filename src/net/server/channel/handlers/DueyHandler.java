@@ -78,7 +78,8 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
             if (accountid) {
                 text = "SELECT id,accountid FROM characters WHERE name = ?";
             }
-            ps = DatabaseConnection.getConnection().prepareStatement(text);
+            Connection con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement(text);
             ps.setString(1, name);
             int id_;
             try (ResultSet rs = ps.executeQuery()) {
@@ -90,6 +91,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                 id_ = accountid ? rs.getInt("accountid") : rs.getInt("id");
             }
             ps.close();
+            con.close();
             return id_;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,8 +179,9 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
             int packageid = slea.readInt();
             List<DueyPackages> packages = new LinkedList<>();
             DueyPackages dp = null;
-            Connection con = DatabaseConnection.getConnection();
+            Connection con = null;
             try {
+                con = DatabaseConnection.getConnection();
                 DueyPackages dueypack;
                 try (PreparedStatement ps = con.prepareStatement("SELECT * FROM dueypackages LEFT JOIN dueyitems USING (PackageId) WHERE PackageId = ?")) {
                     ps.setInt(1, packageid);
@@ -223,6 +226,8 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                             
                 removeItemFromDB(packageid);
                 c.announce(MaplePacketCreator.removeItemFromDuey(false, packageid));
+                
+                con.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -234,8 +239,9 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
     }
 
     private void addItemToDB(Item item, int quantity, int mesos, String sName, int recipientID) {
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         try {
+            con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("INSERT INTO dueypackages (RecieverId, SenderName, Mesos, TimeStamp, Checked, Type) VALUES (?, ?, ?, ?, ?, ?)")) {
                 ps.setInt(1, recipientID);
                 ps.setString(2, sName);
@@ -287,6 +293,8 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                     }
                 }
             }
+            
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -294,8 +302,9 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
 
     public static List<DueyPackages> loadItems(MapleCharacter chr) {
         List<DueyPackages> packages = new LinkedList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         try {
+            con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("SELECT * FROM dueypackages dp LEFT JOIN dueyitems di ON dp.PackageId=di.PackageId WHERE RecieverId = ?")) {
                 ps.setInt(1, chr.getId());
                 try (ResultSet rs = ps.executeQuery()) {
@@ -309,6 +318,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
                 }
             }
             
+            con.close();
             return packages;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -346,8 +356,10 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
     }
 
     private void removeItemFromDB(int packageid) {
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         try {
+            con = DatabaseConnection.getConnection();
+            
             PreparedStatement ps = con.prepareStatement("DELETE FROM dueypackages WHERE PackageId = ?");
             ps.setInt(1, packageid);
             ps.executeUpdate();
@@ -356,6 +368,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
             ps.setInt(1, packageid);
             ps.executeUpdate();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

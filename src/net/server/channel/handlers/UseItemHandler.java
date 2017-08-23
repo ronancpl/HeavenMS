@@ -25,6 +25,7 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -66,13 +67,13 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
                 remove(c, slot);
                 return;
             }
-            else if (isTownScroll(itemId)) {
+            else if (ItemConstants.isTownScroll(itemId)) {
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
                     remove(c, slot);
                 }
                 return;
             }
-            else if (isAntibanishScroll(itemId)) {
+            else if (ItemConstants.isAntibanishScroll(itemId)) {
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
                     remove(c, slot);
                 } else {
@@ -91,13 +92,5 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
     private void remove(MapleClient c, short slot) {
         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
         c.announce(MaplePacketCreator.enableActions());
-    }
-
-    private static boolean isTownScroll(int itemId) {
-        return itemId >= 2030000 && itemId < 2030021;
-    }
-    
-    private static boolean isAntibanishScroll(int itemId) {
-        return itemId == 2030100;
     }
 }

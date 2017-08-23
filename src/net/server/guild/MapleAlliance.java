@@ -64,7 +64,8 @@ public class MapleAlliance {
         }
         try {
             ResultSet rs;
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT name FROM alliance WHERE name = ?")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT name FROM alliance WHERE name = ?")) {
                 ps.setString(1, name);
                 rs = ps.executeQuery();
                 if (rs.next()) {
@@ -74,6 +75,7 @@ public class MapleAlliance {
                 }
             }
             rs.close();
+            con.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -166,7 +168,6 @@ public class MapleAlliance {
             
             ps.close();
             con.close();
-            
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
@@ -217,7 +218,6 @@ public class MapleAlliance {
             
             ps.close();
             rs.close();
-            
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();

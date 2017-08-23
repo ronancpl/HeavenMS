@@ -23,6 +23,7 @@ package net.server.handlers.login;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -40,7 +41,9 @@ public final class ViewCharHandler extends AbstractMaplePacketHandler {
             short charsNum;
             List<Integer> worlds;
             List<MapleCharacter> chars;
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT world, id FROM characters WHERE accountid = ?")) {
+            
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT world, id FROM characters WHERE accountid = ?")) {
                 ps.setInt(1, c.getAccID());
                 charsNum = 0;
                 worlds = new ArrayList<>();
@@ -75,6 +78,8 @@ public final class ViewCharHandler extends AbstractMaplePacketHandler {
                 }
                 c.announce(MaplePacketCreator.showAllCharacterInfo(w, chrsinworld));
             }
+            
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

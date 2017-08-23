@@ -35,6 +35,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
+import java.sql.Connection;
 
 /**
  *
@@ -93,7 +94,8 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 }
             } else { // not found
                 try {
-                    PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT gm FROM characters WHERE name = ?");
+                    Connection con = DatabaseConnection.getConnection();
+                    PreparedStatement ps = con.prepareStatement("SELECT gm FROM characters WHERE name = ?");
                     ps.setString(1, recipient);
                     ResultSet rs = ps.executeQuery();
                     if (rs.next()) {
@@ -104,6 +106,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                     }
                     rs.close();
                     ps.close();
+                    con.close();
                     byte channel = (byte) (c.getWorldServer().find(recipient) - 1);
                     if (channel > -1) {
                         c.announce(MaplePacketCreator.getFindReply(recipient, channel, 3));

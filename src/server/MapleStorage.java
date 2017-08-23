@@ -61,11 +61,14 @@ public class MapleStorage {
 
     private static MapleStorage create(int id, int world) {
         try {
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO storages (accountid, world, slots, meso) VALUES (?, ?, 4, 0)")) {
                 ps.setInt(1, id);
                 ps.setInt(2, world);
                 ps.executeUpdate();
             }
+            
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -84,6 +87,7 @@ public class MapleStorage {
             if (!rs.next()) {
                 rs.close();
                 ps.close();
+                con.close();
                 return create(id, world);
             } else {
                 storeId = rs.getInt("storageid");
@@ -94,6 +98,8 @@ public class MapleStorage {
                     ret.items.add(item.getLeft());
                 }
             }
+            
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

@@ -61,6 +61,7 @@ public enum ItemFactory {
 		
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Connection con = DatabaseConnection.getConnection();
         try {
             StringBuilder query = new StringBuilder();
             query.append("SELECT * FROM `inventoryitems` LEFT JOIN `inventoryequipment` USING(`inventoryitemid`) WHERE `type` = ? AND `");
@@ -70,8 +71,7 @@ public enum ItemFactory {
                 query.append(" AND `inventorytype` = ").append(MapleInventoryType.EQUIPPED.getType());
             }
 
-
-            ps = DatabaseConnection.getConnection().prepareStatement(query.toString());
+            ps = con.prepareStatement(query.toString());
             ps.setInt(1, value);
             ps.setInt(2, id);
             rs = ps.executeQuery();
@@ -120,12 +120,16 @@ public enum ItemFactory {
 
             rs.close();
             ps.close();
+            con.close();
         } finally {
-            if (rs != null) {
+            if (rs != null && !rs.isClosed()) {
                 rs.close();
             }
-            if (ps != null) {
+            if (ps != null && !ps.isClosed()) {
                 ps.close();
+            }
+            if (con != null && !con.isClosed()) {
+                con.close();
             }
         }
         return items;

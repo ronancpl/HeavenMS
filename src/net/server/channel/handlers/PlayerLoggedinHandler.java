@@ -113,20 +113,23 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (buffs != null) {
             player.silentGiveBuffs(buffs);
         }
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps = null;
         PreparedStatement pss = null;
         ResultSet rs = null;
         try {
+            con = DatabaseConnection.getConnection();
             ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE RecieverId = ? and Checked = 1");
             ps.setInt(1, player.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
                 try {
-                    pss = DatabaseConnection.getConnection().prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
+                    Connection con2 = DatabaseConnection.getConnection();
+                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
                     pss.setInt(1, player.getId());
                     pss.executeUpdate();
                     pss.close();
+                    con2.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -144,6 +147,9 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
                 if (ps != null) {
                     ps.close();
+                }
+                if (con != null) {
+                    con.close();
                 }
             } catch (SQLException ex) {
                 //ignore

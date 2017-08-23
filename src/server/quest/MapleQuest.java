@@ -36,7 +36,6 @@ import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.quest.actions.*;
 import server.quest.requirements.*;
-import tools.FilePrinter;
 import tools.MaplePacketCreator;
 
 /**
@@ -113,8 +112,9 @@ public class MapleQuest {
             for (MapleData completeReq : completeReqData.getChildren()) {
 		MapleQuestRequirementType type = MapleQuestRequirementType.getByWZName(completeReq.getName());
                 MapleQuestRequirement req = this.getRequirement(type, completeReq);
-				if(req == null)
-					continue;
+                
+                if(req == null)
+                        continue;
 				
                 if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
                     infoNumber = (short) MapleDataTool.getInt(completeReq, 0);
@@ -230,6 +230,9 @@ public class MapleQuest {
         }
         for (MapleQuestRequirement r : completeReqs.values()) {
             if (r == null || !r.check(c, npcid)) {
+                if(r.getType() == MapleQuestRequirementType.MESO) { // TODO: find a way to tell the client about the new MESO requirement type.
+                    c.dropMessage(5, "You don't have enough mesos to complete this quest.");
+                }
                 return false;
             }
         }
@@ -401,6 +404,9 @@ public class MapleQuest {
 				break;
 			case MAX_LEVEL:
 				ret = new MaxLevelRequirement(this, data);
+				break;
+                        case MESO:
+				ret = new MesoRequirement(this, data);
 				break;
 			case MIN_LEVEL:
 				ret = new MinLevelRequirement(this, data);

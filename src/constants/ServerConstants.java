@@ -4,6 +4,11 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 public class ServerConstants {
+    //Database Configuration
+    public static String DB_URL = "";
+    public static String DB_USER = "";
+    public static String DB_PASS = "";
+    public static final short DB_EXPERIMENTAL_POOLS = 4;        //[EXPERIMENTAL] Installs a set number of database drivers/pools to hub connections. Set 0 to default.
 	
     //World And Version
     public static short VERSION = 83;
@@ -20,11 +25,6 @@ public class ServerConstants {
 		
     //Ip Configuration
     public static String HOST;
-	
-    //Database Configuration
-    public static String DB_URL = "";
-    public static String DB_USER = "";
-    public static String DB_PASS = "";
 	
     //Other Configuration
     public static boolean JAVA_8;
@@ -59,7 +59,7 @@ public class ServerConstants {
     //Dangling Items Configuration
     public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.
     public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring task on maps, which checks for dangling item objects on the map item history.
-    public static final int ITEM_LIMIT_ON_MAP = 777;            //Max number of items allowed on a map.
+    public static final int ITEM_LIMIT_ON_MAP = 250;            //Max number of items allowed on a map.
     
     //Some Gameplay Enhancing Configuration
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.

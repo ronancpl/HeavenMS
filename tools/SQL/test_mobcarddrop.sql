@@ -37,3 +37,9 @@ SELECT cardid FROM monstercarddata LEFT JOIN drop_data ON monstercarddata.cardid
 SELECT id FROM handbook WHERE id NOT IN (
   SELECT DISTINCT itemid FROM drop_data
 ) AND id>=2380000 AND id<2390000;
+
+# retrieves number of drops of each represented mob in the monster book
+SELECT dropperid, count(*) FROM drop_data WHERE dropperid IN (SELECT mobid FROM monstercardwz) GROUP BY dropperid ORDER BY dropperid;
+
+# retrieves the rows where the number of drops of those mobs on monsterbook is lacking
+SELECT dropperid, count(*) FROM drop_data WHERE dropperid IN (SELECT mobid FROM monstercardwz) GROUP BY dropperid HAVING count(*) < 5 ORDER BY dropperid;

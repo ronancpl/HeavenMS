@@ -91,7 +91,8 @@ public final class MonsterBook {
     }
 
     public void loadCards(final int charid) throws SQLException {
-        try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT cardid, level FROM monsterbook WHERE charid = ? ORDER BY cardid ASC")) {
+        Connection con = DatabaseConnection.getConnection();
+        try (PreparedStatement ps = con.prepareStatement("SELECT cardid, level FROM monsterbook WHERE charid = ? ORDER BY cardid ASC")) {
             ps.setInt(1, charid);
             try (ResultSet rs = ps.executeQuery()) {
                 int cardid, level;
@@ -107,6 +108,8 @@ public final class MonsterBook {
                 }
             }
         }
+        
+        con.close();
         calculateLevel();
     }
 
@@ -139,6 +142,7 @@ public final class MonsterBook {
             ps = con.prepareStatement(query.toString());
             ps.execute();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

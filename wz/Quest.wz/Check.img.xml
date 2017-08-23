@@ -57328,7 +57328,7 @@
   <imgdir name="7778">
     <imgdir name="0">
       <int name="npc" value="9120015"/>
-      <int name="level" value="100"/>
+      <int name="lvmin" value="100"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="9120015"/>
@@ -62420,6 +62420,7 @@
       <int name="lvmin" value="50"/>
     </imgdir>
     <imgdir name="1">
+      <int name="money" value="5000000"/>
       <int name="npc" value="9120005"/>
     </imgdir>
   </imgdir>
@@ -62851,8 +62852,7 @@
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2041017"/>
-      <imgdir name="lvmin">
-      </imgdir>
+      <int name="lvmin" value="50"/>
       <int name="interval" value="4320"/>
     </imgdir>
   </imgdir>
@@ -63580,6 +63580,7 @@
   <imgdir name="8248">
     <imgdir name="0">
       <int name="npc" value="9209001"/>
+      <int name="lvmin" value="30"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="9209001"/>
@@ -63661,6 +63662,7 @@
           <int name="state" value="2"/>
         </imgdir>
       </imgdir>
+      <int name="lvmin" value="30"/>
     </imgdir>
   </imgdir>
   <imgdir name="8251">

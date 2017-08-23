@@ -450,7 +450,8 @@ public class Commands {
 					Pair<Integer, String> data = listIterator.next();
 					output += "#b" + data.getRight() + "#k is dropped by:\r\n";
 					try {
-						PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM drop_data WHERE itemid = ? LIMIT 50");
+                                                Connection con = DatabaseConnection.getConnection();
+						PreparedStatement ps = con.prepareStatement("SELECT * FROM drop_data WHERE itemid = ? LIMIT 50");
 						ps.setInt(1, data.getLeft());
 						ResultSet rs = ps.executeQuery();
 						while(rs.next()) {
@@ -461,6 +462,7 @@ public class Commands {
 						}
 						rs.close();
 						ps.close();
+                                                con.close();
 					} catch (Exception e) {
 						player.dropMessage("There was a problem retreiving the required data. Please try again.");
 						e.printStackTrace();
@@ -641,13 +643,16 @@ public class Commands {
 		case "ranks":
 			PreparedStatement ps = null;
 			ResultSet rs = null;
+                        Connection con = null;
 			try {
-				ps = DatabaseConnection.getConnection().prepareStatement("SELECT `characters`.`name`, `characters`.`level` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` = '0' AND `accounts`.`banned` = '0' ORDER BY level DESC, exp DESC LIMIT 50");
+                                con = DatabaseConnection.getConnection();
+				ps = con.prepareStatement("SELECT `characters`.`name`, `characters`.`level` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` = '0' AND `accounts`.`banned` = '0' ORDER BY level DESC, exp DESC LIMIT 50");
 				rs = ps.executeQuery();
 				
 				player.announce(MaplePacketCreator.showPlayerRanks(9010000, rs));
 				ps.close();
 				rs.close();
+                                con.close();
 			} catch(SQLException ex) {
 				ex.printStackTrace();
 			} finally {
@@ -657,6 +662,9 @@ public class Commands {
 					}
 					if(rs != null && !rs.isClosed()) {
 						rs.close();
+					}
+                                        if(con != null && !con.isClosed()) {
+						con.close();
 					}
 				} catch (SQLException e) {
                                         e.printStackTrace();
@@ -1774,6 +1782,8 @@ public class Commands {
 						ps.executeUpdate();
 						ps.close();
 					}
+                                        
+                                        con.close();
 				} catch (SQLException ex) {
                                         ex.printStackTrace();
 					c.getPlayer().message("Error occured while banning IP address");
@@ -1819,6 +1829,8 @@ public class Commands {
                                         
                                 p = con.prepareStatement("DELETE FROM macbans WHERE aid = " + aid);
 				p.executeUpdate();
+                                
+                                con.close();
 			} catch (Exception e) {
                                 e.printStackTrace();
 				player.message("Failed to unban " + sub[1]);

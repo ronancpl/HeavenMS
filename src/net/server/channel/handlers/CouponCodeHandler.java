@@ -58,6 +58,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
                     ps.setString(2, code);
                     ps.executeUpdate();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -90,7 +91,8 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
     private int getNXCode(String code, String type) {
         int item = -1;
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT `" + type + "` FROM nxcode WHERE code = ?");
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT `" + type + "` FROM nxcode WHERE code = ?");
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -98,6 +100,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -106,7 +109,8 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
 
     private boolean getNXCodeValid(String code, boolean validcode) {
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT `valid` FROM nxcode WHERE code = ?");
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT `valid` FROM nxcode WHERE code = ?");
             ps.setString(1, code);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -114,6 +118,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

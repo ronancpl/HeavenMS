@@ -26,6 +26,7 @@ import client.inventory.MapleInventoryType;
 /**
  *
  * @author Jay Estrella
+ * @author Ronan
  */
 public final class ItemConstants {
     public final static int LOCK = 0x01;
@@ -88,6 +89,45 @@ public final class ItemConstants {
 
     public static boolean isPet(int itemId) {
         return itemId / 1000 == 5000;
+    }
+    
+    public static boolean isTownScroll(int itemId) {
+        return itemId >= 2030000 && itemId < 2030021;
+    }
+    
+    public static boolean isAntibanishScroll(int itemId) {
+        return itemId == 2030100;
+    }
+    
+    public static boolean isCleanSlate(int scrollId) {
+        return scrollId > 2048999 && scrollId < 2049004;
+    }
+    
+    public static boolean isFlagModifier(int scrollId, byte flag) {
+        if(scrollId == 2041058 && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) return true;
+        if(scrollId == 2040727 && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES)) return true;
+        return false;
+    }
+    
+    public static boolean isChaosScroll(int scrollId) {
+    	return scrollId >= 2049100 && scrollId <= 2049103;
+    }
+    
+    public static boolean isRateCoupon(int itemId) {
+        int itemType = itemId / 1000;
+        return itemType == 5211 || itemType == 5360;
+    }
+    
+    public static boolean isExpCoupon(int couponId) {
+        return couponId / 1000 == 5211;
+    }
+    
+    public static boolean isPartyItem(int itemId) {
+        return itemId >= 2022430 && itemId <= 2022433;
+    }
+    
+    public static boolean isPartyAllcure(int itemId) {
+        return itemId == 2022433;
     }
 
     public static MapleInventoryType getInventoryType(final int itemId) {

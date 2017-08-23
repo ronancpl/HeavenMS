@@ -57,6 +57,7 @@ import client.Skill;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.awt.Point;
+import java.sql.Connection;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -570,13 +571,16 @@ public class EventInstanceManager {
 
 	public void saveWinner(MapleCharacter chr) {
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO eventstats (event, instance, characterid, channel) VALUES (?, ?, ?, ?)")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("INSERT INTO eventstats (event, instance, characterid, channel) VALUES (?, ?, ?, ?)")) {
 				ps.setString(1, em.getName());
 				ps.setString(2, getName());
 				ps.setInt(3, chr.getId());
 				ps.setInt(4, chr.getClient().getChannel());
 				ps.executeUpdate();
 			}
+                        
+                        con.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}

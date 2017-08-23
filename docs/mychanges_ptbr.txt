@@ -465,3 +465,14 @@ Consertado comandos de hair e face.
 Consertado skill Dispel não aparecendo efeito aos outros jogadores.
 Atualizados alguns scripts de viagens transferindo jogadores a pontos aleatorios nas chegadas.
 Atualizado relatorio de drop data no monster book.
+
+20 - 22 Agosto 2017,
+Refatoradas algumas referências de identificação de itens, quando constantes, para ser realizados pelo classe estática ItemConstants ao invés da classe MapleItemInformationProvider.
+Adicionados door portals em Kerning City Square.
+Refatorado acesso ao DB. Conexões agora podem ser lançadas em paralelo, com um limite máximo de conexões. Excedente espera até que um fique livre.
+Adicionado MESO como quest RequirementType. Quests agora podem checar por meso de um jogador.
+Mais drop data e HPBar em bosses.
+
+23 Agosto 2017,
+Consertado problema com overflow ao scrollar equips resultando em equips com stats negativos.
+Consertado pets não expirando corretamente (possivelmente crashando o cliente se no meio do jogo).

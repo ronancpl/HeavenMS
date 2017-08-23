@@ -30,6 +30,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
+import java.sql.Connection;
 
 public final class NoteActionHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -56,17 +57,19 @@ public final class NoteActionHandler extends AbstractMaplePacketHandler {
                 slea.readByte(); //Fame, but we read it from the database :)
                 PreparedStatement ps;
                 try {
-                    ps = DatabaseConnection.getConnection().prepareStatement("SELECT `fame` FROM notes WHERE id=? AND deleted=0");
+                    Connection con = DatabaseConnection.getConnection();
+                    ps = con.prepareStatement("SELECT `fame` FROM notes WHERE id=? AND deleted=0");
                     ps.setInt(1, id);
                     ResultSet rs = ps.executeQuery();
                     if (rs.next())
                             fame += rs.getInt("fame");
                     rs.close();
 
-                    ps = DatabaseConnection.getConnection().prepareStatement("UPDATE notes SET `deleted` = 1 WHERE id = ?");
+                    ps = con.prepareStatement("UPDATE notes SET `deleted` = 1 WHERE id = ?");
                     ps.setInt(1, id);
                     ps.executeUpdate();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

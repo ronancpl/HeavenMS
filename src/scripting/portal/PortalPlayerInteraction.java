@@ -22,6 +22,7 @@
 package scripting.portal;
 
 import client.MapleClient;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -46,14 +47,16 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
     public boolean hasLevel30Character() {
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Connection con = null;
         try {
-            ps = DatabaseConnection.getConnection().prepareStatement("SELECT `level` FROM `characters` WHERE accountid = ?");
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT `level` FROM `characters` WHERE accountid = ?");
             ps.setInt(1, getPlayer().getAccountID());
             rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("level") >= 30) {
-                	ps.close();	
-                	rs.close();
+                    ps.close();
+                    rs.close();
                     return true;
                 }
             }
@@ -67,11 +70,15 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
                 if (rs != null && !rs.isClosed()) {
                     rs.close();
                 }
+                if (con != null && !con.isClosed()) {
+                    con.close();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
-        return false;
+        
+        return getPlayer().getLevel() >= 30;
     }
 
     public void blockPortal() {

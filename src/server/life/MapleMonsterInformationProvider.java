@@ -59,9 +59,10 @@ public class MapleMonsterInformationProvider {
 	private void retrieveGlobal() {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+                Connection con = null;
 
 		try {
-			final Connection con = DatabaseConnection.getConnection();
+                        con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT * FROM drop_data_global WHERE chance > 0");
 			rs = ps.executeQuery();
 
@@ -76,17 +77,22 @@ public class MapleMonsterInformationProvider {
 								rs.getInt("maximum_quantity"),
 								rs.getShort("questid")));
 			}
+                        
 			rs.close();
 			ps.close();
+                        con.close();
 		} catch (SQLException e) {
                         System.err.println("Error retrieving drop" + e);
 		} finally {
 			try {
-				if (ps != null) { 
+				if (ps != null && !ps.isClosed()) { 
 					ps.close();
 				}
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
+				}
+                                if (con != null && !con.isClosed()) {
+					con.close();
 				}
 			} catch (SQLException ignore) {
                                 ignore.printStackTrace();
@@ -102,8 +108,10 @@ public class MapleMonsterInformationProvider {
 
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+                Connection con = null;
 		try {
-			ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM drop_data WHERE dropperid = ?");
+                        con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("SELECT * FROM drop_data WHERE dropperid = ?");
 			ps.setInt(1, monsterId);
 			rs = ps.executeQuery();
 
@@ -116,16 +124,21 @@ public class MapleMonsterInformationProvider {
                                         rs.getInt("maximum_quantity"),
                                         rs.getShort("questid")));
 			}
+                        
+                        con.close();
 		} catch (SQLException e) {
-                    e.printStackTrace();
+                        e.printStackTrace();
 			return ret;
 		} finally {
 			try {
-				if (ps != null) {
+				if (ps != null && !ps.isClosed()) {
 					ps.close();
 				}
-				if (rs != null) {
+				if (rs != null && !rs.isClosed()) {
 					rs.close();
+				}
+                                if (con != null && !con.isClosed()) {
+					con.close();
 				}
 			} catch (SQLException ignore) {
                                 ignore.printStackTrace();

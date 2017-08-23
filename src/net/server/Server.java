@@ -55,13 +55,13 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
 import server.CashShop.CashItemFactory;
-import server.MapleItemInformationProvider;
 import server.TimerManager;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.Pair;
 import client.MapleCharacter;
 import client.SkillFactory;
+import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.Calendar;
 import server.quest.MapleQuest;
@@ -173,7 +173,7 @@ public class Server implements Runnable {
     }
     
     public void toggleCoupon(Integer couponId) {
-        if(MapleItemInformationProvider.getInstance().isRateCoupon(couponId)) {
+        if(ItemConstants.isRateCoupon(couponId)) {
             synchronized(activeCoupons) {
                 if(activeCoupons.contains(couponId)) {
                     activeCoupons.remove(couponId);
@@ -219,8 +219,9 @@ public class Server implements Runnable {
                 ex.printStackTrace();
 
                 try {
-                    if(con != null && !con.isClosed())
+                    if(con != null && !con.isClosed()) {
                         con.close();
+                    }
                 } catch (SQLException ex2) {
                     ex2.printStackTrace();
                 }
@@ -245,9 +246,9 @@ public class Server implements Runnable {
         if(ServerConstants.SHUTDOWNHOOK)
             Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
         
-        //DatabaseConnection.getConnection();
-        Connection c = DatabaseConnection.getConnection();
+        Connection c = null;
         try {
+            c = DatabaseConnection.getConnection();
             PreparedStatement ps = c.prepareStatement("UPDATE accounts SET loggedin = 0");
             ps.executeUpdate();
             ps.close();
@@ -257,6 +258,8 @@ public class Server implements Runnable {
             
             loadCouponRates(c);
             updateActiveCoupons();
+            
+            c.close();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

@@ -58,8 +58,9 @@ public class MapleGuild {
     public MapleGuild(int guildid, int world) {
         this.world = world;
         members = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         try {
+            con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM guilds WHERE guildid = " + guildid);
             ResultSet rs = ps.executeQuery();
             if (!rs.first()) {
@@ -99,6 +100,7 @@ public class MapleGuild {
             
             ps.close();
             rs.close();
+            con.close();
         } catch (SQLException se) {
             se.printStackTrace();
             System.out.println("Unable to read guild information from sql" + se);
@@ -169,6 +171,8 @@ public class MapleGuild {
                 ps.close();
                 this.broadcast(MaplePacketCreator.guildDisband(this.id));
             }
+            
+            con.close();
         } catch (SQLException se) {
             se.printStackTrace();
         }
@@ -413,13 +417,16 @@ public class MapleGuild {
                             Server.getInstance().getWorld(mgc.getWorld()).setGuildAndRank(cid, 0, 5);
                         } else {
                             try {
-                                try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO notes (`to`, `from`, `message`, `timestamp`) VALUES (?, ?, ?, ?)")) {
+                                Connection con = DatabaseConnection.getConnection();
+                                try (PreparedStatement ps = con.prepareStatement("INSERT INTO notes (`to`, `from`, `message`, `timestamp`) VALUES (?, ?, ?, ?)")) {
                                     ps.setString(1, mgc.getName());
                                     ps.setString(2, initiator.getName());
                                     ps.setString(3, "You have been expelled from the guild.");
                                     ps.setLong(4, System.currentTimeMillis());
                                     ps.executeUpdate();
                                 }
+                                
+                                con.close();
                             } catch (SQLException e) {
                                 e.printStackTrace();
                                 System.out.println("expelMember - MapleGuild " + e);
@@ -572,11 +579,13 @@ public class MapleGuild {
     public static void displayGuildRanks(MapleClient c, int npcid) {
         try {
             ResultSet rs;
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT `name`, `GP`, `logoBG`, `logoBGColor`, `logo`, `logoColor` FROM guilds WHERE NOT `guildid` = '1' ORDER BY `GP` DESC LIMIT 50")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT `name`, `GP`, `logoBG`, `logoBGColor`, `logo`, `logoColor` FROM guilds WHERE NOT `guildid` = '1' ORDER BY `GP` DESC LIMIT 50")) {
                 rs = ps.executeQuery();
                 c.announce(MaplePacketCreator.showGuildRanks(npcid, rs));
             }
             rs.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("failed to display guild ranks. " + e);
@@ -590,11 +599,14 @@ public class MapleGuild {
     public void setAllianceId(int aid) {
         this.allianceId = aid;
         try {
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE guilds SET allianceId = ? WHERE guildid = ?")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("UPDATE guilds SET allianceId = ? WHERE guildid = ?")) {
                 ps.setInt(1, aid);
                 ps.setInt(2, id);
                 ps.executeUpdate();
             }
+            
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -608,11 +620,14 @@ public class MapleGuild {
                 }
             }
             
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET allianceRank = ? WHERE guildid = ?")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET allianceRank = ? WHERE guildid = ?")) {
                 ps.setInt(1, 5);
                 ps.setInt(2, id);
                 ps.executeUpdate();
             }
+            
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

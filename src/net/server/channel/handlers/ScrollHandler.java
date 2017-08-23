@@ -69,7 +69,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         Item scroll = useInventory.getItem(slot);
         Item wscroll = null;
 
-        if (((Equip) toScroll).getUpgradeSlots() < 1 && !isCleanSlate(scroll.getItemId())) {
+        if (((Equip) toScroll).getUpgradeSlots() < 1 && !ItemConstants.isCleanSlate(scroll.getItemId())) {
             c.announce(MaplePacketCreator.getInventoryFull());
             return;
         }
@@ -85,24 +85,24 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
             }
         }
 
-        if (!isChaosScroll(scroll.getItemId()) && !isCleanSlate(scroll.getItemId())) {
+        if (!ItemConstants.isChaosScroll(scroll.getItemId()) && !ItemConstants.isCleanSlate(scroll.getItemId())) {
             if (!canScroll(scroll.getItemId(), toScroll.getItemId())) {
                 return;
             }
         }
         
-        if (isCleanSlate(scroll.getItemId()) && !(toScroll.getLevel() + toScroll.getUpgradeSlots() < ii.getEquipStats(toScroll.getItemId()).get("tuc"))) { //upgrade slots can be over because of hammers
+        if (ItemConstants.isCleanSlate(scroll.getItemId()) && !(toScroll.getLevel() + toScroll.getUpgradeSlots() < ii.getEquipStats(toScroll.getItemId()).get("tuc"))) { //upgrade slots can be over because of hammers
             return;
         }
         Equip scrolled = (Equip) ii.scrollEquipWithId(toScroll, scroll.getItemId(), whiteScroll, c.getPlayer().isGM());
         ScrollResult scrollSuccess = Equip.ScrollResult.FAIL; // fail
         if (scrolled == null) {
             scrollSuccess = Equip.ScrollResult.CURSE;
-        } else if (scrolled.getLevel() > oldLevel || (isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1) || isFlagModifier(scroll.getItemId(), scrolled.getFlag())) {
+        } else if (scrolled.getLevel() > oldLevel || (ItemConstants.isCleanSlate(scroll.getItemId()) && scrolled.getUpgradeSlots() == oldSlots + 1) || ItemConstants.isFlagModifier(scroll.getItemId(), scrolled.getFlag())) {
             scrollSuccess = Equip.ScrollResult.SUCCESS;
         }
         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, scroll.getPosition(), (short) 1, false);
-        if (whiteScroll && !isCleanSlate(scroll.getItemId())) {
+        if (whiteScroll && !ItemConstants.isCleanSlate(scroll.getItemId())) {
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, wscroll.getPosition(), (short) 1, false, false);
         }
         final List<ModifyInventory> mods = new ArrayList<>();
@@ -124,20 +124,6 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private boolean isFlagModifier(int scrollId, byte flag) {
-        if(scrollId == 2041058 && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) return true;
-        if(scrollId == 2040727 && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES)) return true;
-        return false;
-    }
-    
-    private boolean isCleanSlate(int scrollId) {
-        return scrollId > 2048999 && scrollId < 2049004;
-    }
-    
-    private boolean isChaosScroll(int scrollId) {
-    	return scrollId >= 2049100 && scrollId <= 2049103;
-    }
-    
     public boolean canScroll(int scrollid, int itemid) {
         int sid = scrollid / 100;
         

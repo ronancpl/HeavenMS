@@ -47,9 +47,9 @@ function action(mode, type, selection) {
             }
         } else if (status == 2) {
             var map = cm.getPlayer().getSavedLocation("WORLDTOUR");
-            if (map == undefined)
-                map = 104000000;
-            cm.warp(map, parseInt(Math.random() * 5));
+            if (map == undefined) map = 104000000;
+            
+            cm.warp(map);
             cm.dispose();
         }
     } else {
@@ -69,7 +69,7 @@ function action(mode, type, selection) {
         } else if (status == 4) {
             cm.gainMeso(-3000);
             cm.getPlayer().saveLocation("WORLDTOUR");
-            cm.warp(800000000);
+            cm.warp(800000000, 0);
             cm.dispose();
         }
     }

@@ -28,6 +28,7 @@ import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.MapleFamily;
 import constants.ServerConstants;
+import java.sql.Connection;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -252,12 +253,15 @@ public class World {
 
     public void setOfflineGuildStatus(int guildid, int guildrank, int cid) {
         try {
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET guildid = ?, guildrank = ? WHERE id = ?")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = ?, guildrank = ? WHERE id = ?")) {
                 ps.setInt(1, guildid);
                 ps.setInt(2, guildrank);
                 ps.setInt(3, cid);
                 ps.execute();
             }
+            
+            con.close();
         } catch (SQLException se) {
             se.printStackTrace();
         }

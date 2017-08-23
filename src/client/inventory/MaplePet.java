@@ -34,6 +34,7 @@ import server.movement.AbsoluteLifeMovement;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import client.MapleCharacter;
+import java.sql.Connection;
 import tools.MaplePacketCreator;
 
 /**
@@ -60,7 +61,8 @@ public class MaplePet extends Item {
     public static MaplePet loadFromDb(int itemid, short position, int petid) {
         try {
             MaplePet ret = new MaplePet(itemid, position, petid);
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT name, level, closeness, fullness, summoned FROM pets WHERE petid = ?"); // Get pet details..
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT name, level, closeness, fullness, summoned FROM pets WHERE petid = ?"); // Get pet details..
             ps.setInt(1, petid);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -71,6 +73,7 @@ public class MaplePet extends Item {
             ret.setSummoned(rs.getInt("summoned") == 1);
             rs.close();
             ps.close();
+            con.close();
             return ret;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,7 +83,8 @@ public class MaplePet extends Item {
 
     public void saveToDb() {
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, summoned = ? WHERE petid = ?");
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, summoned = ? WHERE petid = ?");
             ps.setString(1, getName());
             ps.setInt(2, getLevel());
             ps.setInt(3, getCloseness());
@@ -89,6 +93,7 @@ public class MaplePet extends Item {
             ps.setInt(6, getUniqueId());
             ps.executeUpdate();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -96,7 +101,8 @@ public class MaplePet extends Item {
 
     public static int createPet(int itemid) {
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, 1, 0, 100, 0)", Statement.RETURN_GENERATED_KEYS);
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, 1, 0, 100, 0)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, MapleItemInformationProvider.getInstance().getName(itemid));
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
@@ -106,6 +112,7 @@ public class MaplePet extends Item {
             }
             rs.close();
             ps.close();
+            con.close();
             return ret;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +122,8 @@ public class MaplePet extends Item {
 
     public static int createPet(int itemid, byte level, int closeness, int fullness) {
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, ?, ?, ?, 0)", Statement.RETURN_GENERATED_KEYS);
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, ?, ?, ?, 0)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, MapleItemInformationProvider.getInstance().getName(itemid));
             ps.setByte(2, level);
             ps.setInt(3, closeness);
@@ -125,9 +133,10 @@ public class MaplePet extends Item {
             int ret = -1;
             if (rs.next()) {
                 ret = rs.getInt(1);
-                rs.close();
-                ps.close();
             }
+            rs.close();
+            ps.close();
+            con.close();
             return ret;
         } catch (SQLException e) {
             e.printStackTrace();

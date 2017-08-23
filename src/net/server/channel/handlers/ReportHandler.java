@@ -84,8 +84,9 @@ public final class ReportHandler extends AbstractMaplePacketHandler {
 	public void addReport(int reporterid, int victimid, int reason, String description, String chatlog) {
 		Calendar calendar = Calendar.getInstance();
 		Timestamp currentTimestamp = new java.sql.Timestamp(calendar.getTime().getTime());
-		Connection con = DatabaseConnection.getConnection();
+		Connection con = null;
 		try {
+                        con = DatabaseConnection.getConnection();
 			PreparedStatement ps = con.prepareStatement("INSERT INTO reports (`reporttime`, `reporterid`, `victimid`, `reason`, `chatlog`, `description`) VALUES (?, ?, ?, ?, ?, ?)");
 			ps.setString(1, currentTimestamp.toGMTString().toString());
 			ps.setInt(2, reporterid);
@@ -96,6 +97,7 @@ public final class ReportHandler extends AbstractMaplePacketHandler {
 			ps.addBatch();
 			ps.executeBatch();
 			ps.close();
+                        con.close();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}

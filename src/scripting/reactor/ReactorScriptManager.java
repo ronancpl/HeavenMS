@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting.reactor;
 
 import client.MapleClient;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
@@ -82,7 +83,8 @@ public class ReactorScriptManager extends AbstractScriptManager {
         if (ret == null) {
             ret = new LinkedList<>();
             try {
-                try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT itemid, chance, questid FROM reactordrops WHERE reactorid = ? AND chance >= 0")) {
+                Connection con = DatabaseConnection.getConnection();
+                try (PreparedStatement ps = con.prepareStatement("SELECT itemid, chance, questid FROM reactordrops WHERE reactorid = ? AND chance >= 0")) {
                     ps.setInt(1, rid);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
@@ -90,6 +92,8 @@ public class ReactorScriptManager extends AbstractScriptManager {
                         }
                     }
                 }
+                
+                con.close();
             } catch (Throwable e) {
                 FilePrinter.printError(FilePrinter.REACTOR + rid + ".txt", e);
             }

@@ -23,6 +23,7 @@ package client;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Deque;
@@ -109,7 +110,9 @@ public class BuddyList {
 
     public void loadFromDb(int characterId) {
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT b.buddyid, b.pending, b.group, c.name as buddyname FROM buddies as b, characters as c WHERE c.id = b.buddyid AND b.characterid = ?");
+            Connection con = DatabaseConnection.getConnection();
+            
+            PreparedStatement ps = con.prepareStatement("SELECT b.buddyid, b.pending, b.group, c.name as buddyname FROM buddies as b, characters as c WHERE c.id = b.buddyid AND b.characterid = ?");
             ps.setInt(1, characterId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -121,10 +124,11 @@ public class BuddyList {
             }
             rs.close();
             ps.close();
-            ps = DatabaseConnection.getConnection().prepareStatement("DELETE FROM buddies WHERE pending = 1 AND characterid = ?");
+            ps = con.prepareStatement("DELETE FROM buddies WHERE pending = 1 AND characterid = ?");
             ps.setInt(1, characterId);
             ps.executeUpdate();
             ps.close();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

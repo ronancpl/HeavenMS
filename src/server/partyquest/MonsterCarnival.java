@@ -147,8 +147,9 @@ public class MonsterCarnival {
         }
 
         public void saveResults() {
-            Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 try {
+                    con = DatabaseConnection.getConnection();
                     PreparedStatement ps = con.prepareStatement("INSERT INTO carnivalresults VALUES (?,?,?,?)");
                     for (MapleCharacter chr : red.getMembers()) {
                         ps.setInt(1, chr.getId());
@@ -165,6 +166,7 @@ public class MonsterCarnival {
                         ps.execute();
                     }
                     ps.close();
+                    con.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }

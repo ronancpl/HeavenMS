@@ -232,7 +232,7 @@ public class MapleInventory implements Iterable<Item> {
     public void addSlot(short slot, Item item) {
         inventory.put(slot, item);
         
-        if(MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
+        if(ItemConstants.isRateCoupon(item.getItemId())) {
             owner.updateCouponRates();
         }
     }
@@ -240,7 +240,7 @@ public class MapleInventory implements Iterable<Item> {
     public void removeSlot(short slot) {
         Item item = inventory.remove(slot);
         
-        if(item != null && MapleItemInformationProvider.getInstance().isRateCoupon(item.getItemId())) {
+        if(item != null && ItemConstants.isRateCoupon(item.getItemId())) {
             owner.updateCouponRates();
         }
     }

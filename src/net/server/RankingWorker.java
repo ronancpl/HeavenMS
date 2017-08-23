@@ -99,12 +99,14 @@ public class RankingWorker implements Runnable {
             
             con.setAutoCommit(true);
             lastUpdate = System.currentTimeMillis();
+            con.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
             
             try {
                 con.rollback();
                 con.setAutoCommit(true);
+                if(!con.isClosed()) con.close();
             } catch (SQLException ex2) {
                 ex2.printStackTrace();
             }

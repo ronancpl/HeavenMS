@@ -51,7 +51,7 @@ public class MapleRing implements Comparable<MapleRing> {
     public static MapleRing loadFromDb(int ringId) {
         try {
             MapleRing ret = null;
-            Connection con = DatabaseConnection.getConnection(); // Get a connection to the database
+            Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM rings WHERE id = ?"); // Get ring details..
             ps.setInt(1, ringId);
             ResultSet rs = ps.executeQuery();
@@ -60,6 +60,7 @@ public class MapleRing implements Comparable<MapleRing> {
             }
             rs.close();
             ps.close();
+            con.close();
             return ret;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -102,6 +103,7 @@ public class MapleRing implements Comparable<MapleRing> {
             ps.setInt(2, ringID[0]);
             ps.executeUpdate();
             ps.close();
+            con.close();
             return ringID[0];
         } catch (SQLException ex) {
             ex.printStackTrace();

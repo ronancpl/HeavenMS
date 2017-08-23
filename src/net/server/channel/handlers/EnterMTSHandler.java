@@ -75,7 +75,8 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
         List<MTSItemInfo> items = new ArrayList<>();
         int pages = 0;
         try {
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM mts_items WHERE tab = 1 AND transfer = 0 ORDER BY id DESC LIMIT 16, 16");
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM mts_items WHERE tab = 1 AND transfer = 0 ORDER BY id DESC LIMIT 16, 16");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 if (rs.getInt("type") != 1) {
@@ -110,13 +111,15 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
-            ps = DatabaseConnection.getConnection().prepareStatement("SELECT COUNT(*) FROM mts_items");
+            
+            ps = con.prepareStatement("SELECT COUNT(*) FROM mts_items");
             rs = ps.executeQuery();
             if (rs.next()) {
                 pages = (int) Math.ceil(rs.getInt(1) / 16);
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -128,7 +131,8 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
     private List<MTSItemInfo> getNotYetSold(int cid) {
         List<MTSItemInfo> items = new ArrayList<>();
         try {
-            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM mts_items WHERE seller = ? AND transfer = 0 ORDER BY id DESC")) {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM mts_items WHERE seller = ? AND transfer = 0 ORDER BY id DESC")) {
                 ps.setInt(1, cid);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -164,6 +168,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                     }
                 }
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -210,6 +215,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                     }
                 }
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

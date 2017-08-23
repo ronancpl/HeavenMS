@@ -233,6 +233,7 @@ public class MapleShop {
             } else {
                 rs.close();
                 ps.close();
+                con.close();
                 return null;
             }
             ps = con.prepareStatement("SELECT * FROM shopitems WHERE shopid = ? ORDER BY position DESC");
@@ -255,6 +256,7 @@ public class MapleShop {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -23,8 +23,10 @@ package server.maps;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -168,7 +170,9 @@ public class MapleMapFactory {
                         map.addMapleArea(new Rectangle(x1, y1, (x2 - x1), (y2 - y1)));
                     }
                 }
-                try { try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM playernpcs WHERE map = ?")) {
+                try {
+                    Connection con = DatabaseConnection.getConnection();
+                    try (PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs WHERE map = ?")) {
                         ps.setInt(1, omapid);
                         try (ResultSet rs = ps.executeQuery()) {
                             while (rs.next()) {
@@ -176,7 +180,9 @@ public class MapleMapFactory {
                             }
                         }
                     }
-                } catch (Exception e) {
+                    
+                    con.close();
+                } catch (SQLException e) {
                     e.printStackTrace();
                 }
                 

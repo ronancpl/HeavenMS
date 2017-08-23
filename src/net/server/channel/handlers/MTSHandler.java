@@ -101,8 +101,10 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(itemid);
                 Item i = c.getPlayer().getInventory(type).getItem(slot).copy();
                 if (i != null && c.getPlayer().getMeso() >= 5000) {
-                    Connection con = DatabaseConnection.getConnection();
+                    Connection con = null;
                     try {
+                        con = DatabaseConnection.getConnection();
+                        
                         PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM mts_items WHERE seller = ?");
                         ps.setInt(1, c.getPlayer().getId());
                         ResultSet rs = ps.executeQuery();
@@ -201,6 +203,8 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         ps.executeUpdate();
                         ps.close();
                         MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
+                        
+                        con.close();
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
@@ -254,8 +258,9 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.notYetSoldInv(getNotYetSold(c.getPlayer().getId())));
             } else if (op == 7) { //cancel sale
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 try {
+                    con = DatabaseConnection.getConnection();
                     PreparedStatement ps = con.prepareStatement("UPDATE mts_items SET transfer = 1 WHERE id = ? AND seller = ?");
                     ps.setInt(1, id);
                     ps.setInt(2, c.getPlayer().getId());
@@ -265,6 +270,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     ps.setInt(1, id);
                     ps.executeUpdate();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -274,10 +280,11 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.transferInventory(getTransfer(c.getPlayer().getId())));
             } else if (op == 8) { //transfer item from transfer inv.
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 PreparedStatement ps;
                 ResultSet rs;
                 try {
+                    con = DatabaseConnection.getConnection();
                     ps = con.prepareStatement("SELECT * FROM mts_items WHERE seller = ? AND transfer = 1  AND id= ? ORDER BY id DESC");
                     ps.setInt(1, c.getPlayer().getId());
                     ps.setInt(2, id);
@@ -329,14 +336,16 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     }
                     rs.close();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                     System.out.println("MTS Transfer error: " + e);
                 }
             } else if (op == 9) { //add to cart
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 try {
+                    con = DatabaseConnection.getConnection();
                     try (PreparedStatement ps1 = con.prepareStatement("SELECT * FROM mts_items WHERE id = ? AND seller <> ?")) {
                         ps1.setInt(1, id);//Previene que agregues al cart tus propios items
                         ps1.setInt(2, c.getPlayer().getId());
@@ -357,6 +366,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             }
                         }
                     }
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -367,13 +377,15 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.notYetSoldInv(getNotYetSold(c.getPlayer().getId())));
             } else if (op == 10) { //delete from cart
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 try {
+                    con = DatabaseConnection.getConnection();
                     try (PreparedStatement ps = con.prepareStatement("DELETE FROM mts_cart WHERE itemid = ? AND cid = ?")) {
                         ps.setInt(1, id);
                         ps.setInt(2, c.getPlayer().getId());
                         ps.executeUpdate();
                     }
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -386,10 +398,11 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             } else if (op == 14) { //buy auction item now
             } else if (op == 16) { //buy
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 PreparedStatement ps;
                 ResultSet rs;
                 try {
+                    con = DatabaseConnection.getConnection();
                     ps = con.prepareStatement("SELECT * FROM mts_items WHERE id = ? ORDER BY id DESC");
                     ps.setInt(1, id);
                     rs = ps.executeQuery();
@@ -442,16 +455,18 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     }
                     rs.close();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                     c.announce(MaplePacketCreator.MTSFailBuy());
                 }
             } else if (op == 17) { //buy from cart
                 int id = slea.readInt(); //id of the item
-                Connection con = DatabaseConnection.getConnection();
+                Connection con = null;
                 PreparedStatement ps;
                 ResultSet rs;
                 try {
+                    con = DatabaseConnection.getConnection();
                     ps = con.prepareStatement("SELECT * FROM mts_items WHERE id = ? ORDER BY id DESC");
                     ps.setInt(1, id);
                     rs = ps.executeQuery();
@@ -500,6 +515,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                     }
                     rs.close();
                     ps.close();
+                    con.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                     c.announce(MaplePacketCreator.MTSFailBuy());
@@ -514,10 +530,11 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
 
     public List<MTSItemInfo> getNotYetSold(int cid) {
         List<MTSItemInfo> items = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
         try {
+            con = DatabaseConnection.getConnection();
             ps = con.prepareStatement("SELECT * FROM mts_items WHERE seller = ? AND transfer = 0 ORDER BY id DESC");
             ps.setInt(1, cid);
             rs = ps.executeQuery();
@@ -554,6 +571,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -562,11 +580,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
 
     public byte[] getCart(int cid) {
         List<MTSItemInfo> items = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
         int pages = 0;
         try {
+            con = DatabaseConnection.getConnection();
             ps = con.prepareStatement("SELECT * FROM mts_cart WHERE cid = ? ORDER BY id DESC");
             ps.setInt(1, cid);
             rs = ps.executeQuery();
@@ -620,6 +639,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -628,10 +648,11 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
 
     public List<MTSItemInfo> getTransfer(int cid) {
         List<MTSItemInfo> items = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
         try {
+            con = DatabaseConnection.getConnection();
             ps = con.prepareStatement("SELECT * FROM mts_items WHERE transfer = 1 AND seller = ? ORDER BY id DESC");
             ps.setInt(1, cid);
             rs = ps.executeQuery();
@@ -668,6 +689,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -676,11 +698,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
 
     private static byte[] getMTS(int tab, int type, int page) {
         List<MTSItemInfo> items = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
         int pages = 0;
         try {
+            con = DatabaseConnection.getConnection();
             if (type != 0) {
                 ps = con.prepareStatement("SELECT * FROM mts_items WHERE tab = ? AND type = ? AND transfer = 0 ORDER BY id DESC LIMIT ?, 16");
             } else {
@@ -741,6 +764,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
             }
             rs.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -768,11 +792,12 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
         } else {
             listaitems = " AND sellername LIKE CONCAT('%','" + search + "', '%')";
         }
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
         PreparedStatement ps;
         ResultSet rs;
         int pages = 0;
         try {
+            con = DatabaseConnection.getConnection();
             if (type != 0) {
                 ps = con.prepareStatement("SELECT * FROM mts_items WHERE tab = ? " + listaitems + " AND type = ? AND transfer = 0 ORDER BY id DESC LIMIT ?, 16");
             } else {
@@ -835,6 +860,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 rs.close();
                 ps.close();
             }
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

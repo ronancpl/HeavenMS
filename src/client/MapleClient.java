@@ -180,7 +180,8 @@ public class MapleClient {
 		PreparedStatement ps;
 		List<CharNameAndId> chars = new ArrayList<>(15);
 		try {
-			ps = DatabaseConnection.getConnection().prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
+                        Connection con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
 			ps.setInt(1, this.getAccID());
 			ps.setInt(2, serverId);
 			try (ResultSet rs = ps.executeQuery()) {
@@ -189,6 +190,7 @@ public class MapleClient {
 				}
 			}
 			ps.close();
+                        con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -202,7 +204,8 @@ public class MapleClient {
 	public boolean hasBannedIP() {
 		boolean ret = false;
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT COUNT(*) FROM ipbans WHERE ? LIKE CONCAT(ip, '%')")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) FROM ipbans WHERE ? LIKE CONCAT(ip, '%')")) {
 				ps.setString(1, session.getRemoteAddress().toString());
 				try (ResultSet rs = ps.executeQuery()) {
 					rs.next();
@@ -211,6 +214,7 @@ public class MapleClient {
 					}
 				}
 			}
+                        con.close();
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -222,7 +226,8 @@ public class MapleClient {
 			return voteTime;
 		}
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT date FROM bit_votingrecords WHERE UPPER(account) = UPPER(?)")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("SELECT date FROM bit_votingrecords WHERE UPPER(account) = UPPER(?)")) {
 				ps.setString(1, accountName);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (!rs.next()) {
@@ -231,6 +236,7 @@ public class MapleClient {
 					voteTime = rs.getInt("date");
 				}
 			}
+                        con.close();
 		} catch (SQLException e) {
 			FilePrinter.printError("hasVotedAlready.txt", e);
 			return -1;
@@ -255,8 +261,10 @@ public class MapleClient {
 		
 		boolean ret = false;
 		PreparedStatement ps = null;
+                Connection con = null;
 		try {
-			ps = DatabaseConnection.getConnection().prepareStatement("SELECT COUNT(*) FROM hwidbans WHERE hwid LIKE ?");
+                        con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("SELECT COUNT(*) FROM hwidbans WHERE hwid LIKE ?");
 			ps.setString(1, hwid);
 			ResultSet rs = ps.executeQuery();
 			if(rs != null && rs.next()) {
@@ -269,6 +277,10 @@ public class MapleClient {
 			try {
 				if(ps != null && !ps.isClosed()) {
 					ps.close();
+				}
+                                
+                                if(con != null && !con.isClosed()) {
+					con.close();
 				}
 			} catch (SQLException e){
                             e.printStackTrace();
@@ -293,7 +305,9 @@ public class MapleClient {
 				}
 			}
 			sql.append(")");
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(sql.toString())) {
+                        
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement(sql.toString())) {
 				i = 0;
 				for (String mac : macs) {
 					i++;
@@ -305,7 +319,9 @@ public class MapleClient {
 						ret = true;
 					}
 				}
-			}
+			} finally {
+                                con.close();
+                        }
 		} catch (Exception e) {
                     e.printStackTrace();
 		}
@@ -314,21 +330,25 @@ public class MapleClient {
 	
 	private void loadHWIDIfNescessary() throws SQLException {
 		if(hwid == null) {
-			try(PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT hwid FROM accounts WHERE id = ?")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try(PreparedStatement ps = con.prepareStatement("SELECT hwid FROM accounts WHERE id = ?")) {
 				ps.setInt(1, accId);
 				try(ResultSet rs = ps.executeQuery()) {
 					if(rs.next()) {
 						hwid = rs.getString("hwid");
 					}
 				}
-			}
+			} finally {
+                                con.close();
+                        }
 		}
 	}
 
 	// TODO: Recode to close statements...
 	private void loadMacsIfNescessary() throws SQLException {
 		if (macs.isEmpty()) {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT macs FROM accounts WHERE id = ?")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("SELECT macs FROM accounts WHERE id = ?")) {
 				ps.setInt(1, accId);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
@@ -339,15 +359,19 @@ public class MapleClient {
 						}
 					}
 				}
-			}
+			} finally {
+                                con.close();
+                        }
 		}
 	}
 	
 	public void banHWID() {
-		Connection con = DatabaseConnection.getConnection();
 		PreparedStatement ps = null;
+                Connection con = null;
 		try {
 			loadHWIDIfNescessary();
+                        
+                        con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("INSERT INTO hwidbans (hwid) VALUES (?)");
 			ps.setString(1, hwid);
 			ps.executeUpdate();
@@ -355,8 +379,12 @@ public class MapleClient {
 			e.printStackTrace();
 		} finally {
 			try {
-				if(ps != null && !ps.isClosed())
+				if(ps != null && !ps.isClosed()) {
 					ps.close();
+                                }
+                                if(con != null && !con.isClosed()) {
+					con.close();
+                                }
 			} catch (SQLException e) {
                             e.printStackTrace();
 			}
@@ -364,9 +392,11 @@ public class MapleClient {
 	}
 
 	public void banMacs() {
-		Connection con = DatabaseConnection.getConnection();
+		Connection con = null;
 		try {
 			loadMacsIfNescessary();
+                        
+                        con = DatabaseConnection.getConnection();
 			List<String> filtered = new LinkedList<>();
 			try (PreparedStatement ps = con.prepareStatement("SELECT filter FROM macfilters"); ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
@@ -389,6 +419,8 @@ public class MapleClient {
 					}
 				}
 			}
+                        
+                        con.close();
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -408,11 +440,14 @@ public class MapleClient {
 	public void setPin(String pin) {
 		this.pin = pin;
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET pin = ? WHERE id = ?")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET pin = ? WHERE id = ?")) {
 				ps.setString(1, pin);
 				ps.setInt(2, accId);
 				ps.executeUpdate();
-			}
+			} finally {
+                                con.close();
+                        }
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -437,11 +472,14 @@ public class MapleClient {
 	public void setPic(String pic) {
 		this.pic = pic;
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET pic = ? WHERE id = ?")) {
+                        Connection con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET pic = ? WHERE id = ?")) {
 				ps.setString(1, pic);
 				ps.setInt(2, accId);
 				ps.executeUpdate();
-			}
+			} finally {
+                                con.close();
+                        }
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -471,10 +509,11 @@ public class MapleClient {
 			getSession().close(true);
 		}
 		int loginok = 5;
-		Connection con = DatabaseConnection.getConnection();
+		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+                        con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, gm, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
@@ -522,6 +561,9 @@ public class MapleClient {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
+                                if (con != null && !con.isClosed()) {
+					con.close();
+				}
 			} catch (SQLException e) {
                             e.printStackTrace();
 			}
@@ -533,11 +575,12 @@ public class MapleClient {
 	}
 
 	public Calendar getTempBanCalendar() {
-		Connection con = DatabaseConnection.getConnection();
+		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		final Calendar lTempban = Calendar.getInstance();
 		try {
+                        con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT `tempban` FROM accounts WHERE id = ?");
 			ps.setInt(1, getAccID());
 			rs = ps.executeQuery();
@@ -559,6 +602,9 @@ public class MapleClient {
 				}
 				if (rs != null) {
 					rs.close();
+				}
+                                if (con != null && !con.isClosed()) {
+					con.close();
 				}
 			} catch (SQLException e) {
                             e.printStackTrace();
@@ -595,8 +641,10 @@ public class MapleClient {
 			this.hwid = hwid.toString();
 			
 			PreparedStatement ps = null;
+                        Connection con = null;
 			try {
-				ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET hwid = ? WHERE id = ?");
+                                con = DatabaseConnection.getConnection();
+				ps = con.prepareStatement("UPDATE accounts SET hwid = ? WHERE id = ?");
 				ps.setString(1, this.hwid);
 				ps.setInt(2, accId);
 				ps.executeUpdate();
@@ -607,6 +655,9 @@ public class MapleClient {
 				try {
 					if(ps != null && !ps.isClosed()) {
 						ps.close();
+					}
+                                        if(con != null && !con.isClosed()) {
+						con.close();
 					}
 				} catch (SQLException e) {
                                     e.printStackTrace();
@@ -629,8 +680,10 @@ public class MapleClient {
 				newMacData.append(", ");
 			}
 		}
+                Connection con = null;
 		try {
-			ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
+                        con = DatabaseConnection.getConnection();
+			ps = con.prepareStatement("UPDATE accounts SET macs = ? WHERE id = ?");
 			ps.setString(1, newMacData.toString());
 			ps.setInt(2, accId);
 			ps.executeUpdate();
@@ -642,8 +695,11 @@ public class MapleClient {
 				if (ps != null && !ps.isClosed()) {
 					ps.close();
 				}
+                                if (con != null && !con.isClosed()) {
+					con.close();
+				}
 			} catch (SQLException ex) {
-                            ex.printStackTrace();
+                                ex.printStackTrace();
 			}
 		}
 	}
@@ -664,6 +720,8 @@ public class MapleClient {
 				ps.setInt(2, getAccID());
 				ps.executeUpdate();
 			}
+                        
+                        con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -714,6 +772,8 @@ public class MapleClient {
 			} else {
 				loggedIn = false;
 			}
+                        
+                        con.close();
 			return state;
 		} catch (SQLException e) {
 			loggedIn = false;
@@ -1006,7 +1066,8 @@ public class MapleClient {
 			return true;
 		}
 		try {
-			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT `tos` FROM accounts WHERE id = ?");
+                        Connection con = DatabaseConnection.getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT `tos` FROM accounts WHERE id = ?");
 			ps.setInt(1, accId);
 			ResultSet rs = ps.executeQuery();
 
@@ -1017,10 +1078,11 @@ public class MapleClient {
 			}
 			ps.close();
 			rs.close();
-			ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET tos = 1 WHERE id = ?");
+			ps = con.prepareStatement("UPDATE accounts SET tos = 1 WHERE id = ?");
 			ps.setInt(1, accId);
 			ps.executeUpdate();
 			ps.close();
+                        con.close();
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -1030,7 +1092,8 @@ public class MapleClient {
 	public int getVotePoints(){
 		int points = 0;
 		try {
-			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT `votes` FROM accounts WHERE id = ?");
+                        Connection con = DatabaseConnection.getConnection();
+			PreparedStatement ps = con.prepareStatement("SELECT `votes` FROM accounts WHERE id = ?");
 			ps.setInt(1, accId);
 			ResultSet rs = ps.executeQuery();
 
@@ -1040,6 +1103,7 @@ public class MapleClient {
 			ps.close();
 			rs.close();
 
+                        con.close();
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}
@@ -1070,6 +1134,8 @@ public class MapleClient {
 				ps.setInt(2, accId);
 				ps.executeUpdate();
 			}
+                        
+                        con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -1107,15 +1173,19 @@ public class MapleClient {
 
 	public boolean gainCharacterSlot() {
 		if (characterSlots < 15) {
-			Connection con = DatabaseConnection.getConnection();
+			Connection con = null;
 			try {
+                                con = DatabaseConnection.getConnection();
+                                
 				try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET characterslots = ? WHERE id = ?")) {
 					ps.setInt(1, this.characterSlots += 1);
 					ps.setInt(2, accId);
 					ps.executeUpdate();
 				}
+                                
+                                con.close();
 			} catch (SQLException e) {
-                            e.printStackTrace();
+                                e.printStackTrace();
 			}
 			return true;
 		}
@@ -1123,10 +1193,11 @@ public class MapleClient {
 	}
 
 	public final byte getGReason() {
-		final Connection con = DatabaseConnection.getConnection();
+		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
+                        con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT `greason` FROM `accounts` WHERE id = ?");
 			ps.setInt(1, accId);
 			rs = ps.executeQuery();
@@ -1143,8 +1214,11 @@ public class MapleClient {
 				if (rs != null) {
 					rs.close();
 				}
+                                if (con != null) {
+					con.close();
+				}
 			} catch (SQLException e) {
-                            e.printStackTrace();
+                                e.printStackTrace();
 			}
 		}
 		return 0;
@@ -1156,12 +1230,16 @@ public class MapleClient {
 
 	public void setGender(byte m) {
 		this.gender = m;
+                Connection con = null;
 		try {
-			try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET gender = ? WHERE id = ?")) {
+                        con = DatabaseConnection.getConnection();
+			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET gender = ? WHERE id = ?")) {
 				ps.setByte(1, gender);
 				ps.setInt(2, accId);
 				ps.executeUpdate();
 			}
+                        
+                        con.close();
 		} catch (SQLException e) {
                     e.printStackTrace();
 		}

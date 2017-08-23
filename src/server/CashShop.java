@@ -162,8 +162,10 @@ public class CashShop {
             }
             PreparedStatement ps = null;
             ResultSet rs = null;
+            Connection con = null;
             try {
-                ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM specialcashitems");
+                con = DatabaseConnection.getConnection();
+                ps = con.prepareStatement("SELECT * FROM specialcashitems");
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     specialcashitems.add(new SpecialCashItem(rs.getInt("sn"), rs.getInt("modifier"), rs.getByte("info")));
@@ -172,8 +174,9 @@ public class CashShop {
                 ex.printStackTrace();
             } finally {
                 try {
-                    if (rs != null) rs.close();
-                    if (ps != null) ps.close();
+                    if (rs != null && !rs.isClosed()) rs.close();
+                    if (ps != null && !ps.isClosed()) ps.close();
+                    if (con != null && !con.isClosed()) con.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -206,8 +209,10 @@ public class CashShop {
             specialcashitems.clear();
             PreparedStatement ps = null;
             ResultSet rs = null;
+            Connection con = null;
             try {
-                ps = DatabaseConnection.getConnection().prepareStatement("SELECT * FROM specialcashitems");
+                con = DatabaseConnection.getConnection();
+                ps = con.prepareStatement("SELECT * FROM specialcashitems");
                 rs = ps.executeQuery();
                 while (rs.next()) {
                     specialcashitems.add(new SpecialCashItem(rs.getInt("sn"), rs.getInt("modifier"), rs.getByte("info")));
@@ -216,14 +221,16 @@ public class CashShop {
                 ex.printStackTrace();
             } finally {
                 try {
-                    if (rs != null) rs.close();
-                    if (ps != null) ps.close();
+                    if (rs != null && !rs.isClosed()) rs.close();
+                    if (ps != null && !ps.isClosed()) ps.close();
+                    if (con != null && !con.isClosed()) con.close();
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
             }            
         }
     }
+    
     private int accountId, characterId, nxCredit, maplePoint, nxPrepaid;
     private boolean opened;
     private ItemFactory factory;
@@ -274,9 +281,11 @@ public class CashShop {
 
             rs.close();
             ps.close();
+            con.close();
         } finally {
-            if (ps != null) ps.close();
-            if (rs != null) rs.close();
+            if (ps != null && !ps.isClosed()) ps.close();
+            if (rs != null && !rs.isClosed()) rs.close();
+            if (con != null && !con.isClosed()) con.close();
         }
     }
 
@@ -361,31 +370,35 @@ public class CashShop {
 
     public void gift(int recipient, String from, String message, int sn, int ringid) {
         PreparedStatement ps = null;
+        Connection con = null;
         try {
-            ps = DatabaseConnection.getConnection().prepareStatement("INSERT INTO `gifts` VALUES (DEFAULT, ?, ?, ?, ?, ?)");
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("INSERT INTO `gifts` VALUES (DEFAULT, ?, ?, ?, ?, ?)");
             ps.setInt(1, recipient);
             ps.setString(2, from);
             ps.setString(3, message);
             ps.setInt(4, sn);
             ps.setInt(5, ringid);
             ps.executeUpdate();
+            con.close();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         } finally {
             try {
-                if (ps != null) ps.close();
+                if (ps != null && !ps.isClosed()) ps.close();
+                if (con != null && !con.isClosed()) con.close();
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-
     public List<Pair<Item, String>> loadGifts() {
         List<Pair<Item, String>> gifts = new ArrayList<>();
-        Connection con = DatabaseConnection.getConnection();
+        Connection con = null;
 
         try {
+            con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM `gifts` WHERE `to` = ?");
             ps.setInt(1, characterId);
             ResultSet rs = ps.executeQuery();
@@ -419,6 +432,7 @@ public class CashShop {
             ps.setInt(1, characterId);
             ps.executeUpdate();
             ps.close();
+            con.close();
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }

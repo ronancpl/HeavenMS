@@ -416,29 +416,31 @@ public class AbstractPlayerInteraction {
 		Item item = null;
                 MaplePet evolved = null;
                 int petId = -1;
-		if (id >= 5000000 && id <= 5000100) {
-                        petId = MaplePet.createPet(id);
-                        
-                        if(from != null) {
-                            evolved = MaplePet.loadFromDb(id, (short) 0, petId);
-                            
-                            Point pos = getPlayer().getPosition();
-                            pos.y -= 12;
-                            evolved.setPos(pos);
-                            evolved.setFh(getPlayer().getMap().getFootholds().findBelow(evolved.getPos()).getId());
-                            evolved.setStance(0);
-                            evolved.setSummoned(true);
-
-                            evolved.setName(from.getName());
-                            evolved.setCloseness(from.getCloseness());
-                            evolved.setFullness(from.getFullness());
-                            evolved.setLevel(from.getLevel());
-                            evolved.saveToDb();
-                        }
-                        
-			//MapleInventoryManipulator.addById(c, id, (short) 1, null, petId, expires == -1 ? -1 : System.currentTimeMillis() + expires);
-		}
+		
 		if (quantity >= 0) {
+                        if (id >= 5000000 && id <= 5000100) {
+                                petId = MaplePet.createPet(id);
+
+                                if(from != null) {
+                                    evolved = MaplePet.loadFromDb(id, (short) 0, petId);
+
+                                    Point pos = getPlayer().getPosition();
+                                    pos.y -= 12;
+                                    evolved.setPos(pos);
+                                    evolved.setFh(getPlayer().getMap().getFootholds().findBelow(evolved.getPos()).getId());
+                                    evolved.setStance(0);
+                                    evolved.setSummoned(true);
+
+                                    evolved.setName(from.getName());
+                                    evolved.setCloseness(from.getCloseness());
+                                    evolved.setFullness(from.getFullness());
+                                    evolved.setLevel(from.getLevel());
+                                    evolved.saveToDb();
+                                }
+
+                                //MapleInventoryManipulator.addById(c, id, (short) 1, null, petId, expires == -1 ? -1 : System.currentTimeMillis() + expires);
+                        }
+                    
 			MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 
 			if (ii.getInventoryType(id).equals(MapleInventoryType.EQUIP)) {
@@ -687,7 +689,7 @@ public class AbstractPlayerInteraction {
 	}
 
 	public void removeAll(int id, MapleClient cl) {
-		MapleInventoryType invType =   MapleItemInformationProvider.getInstance().getInventoryType(id);
+		MapleInventoryType invType = MapleItemInformationProvider.getInstance().getInventoryType(id);
 		int possessed = cl.getPlayer().getInventory(invType).countById(id);
 		if (possessed > 0) {
 			MapleInventoryManipulator.removeById(cl, MapleItemInformationProvider.getInstance().getInventoryType(id), id, possessed, true, false);

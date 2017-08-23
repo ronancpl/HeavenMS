@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import client.MapleClient;
+import java.sql.Connection;
 import java.sql.SQLException;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
@@ -54,7 +55,9 @@ public class PlayerNPCs extends AbstractMapleMapObject {
             RX1 = rs.getInt("rx1");
             npcId = rs.getInt("ScriptId");
             setPosition(new Point(rs.getInt("x"), CY));
-            PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("SELECT equippos, equipid FROM playernpcs_equip WHERE NpcId = ?");
+            
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT equippos, equipid FROM playernpcs_equip WHERE NpcId = ?");
             ps.setInt(1, rs.getInt("id"));
             ResultSet rs2 = ps.executeQuery();
             while (rs2.next()) {
@@ -62,6 +65,7 @@ public class PlayerNPCs extends AbstractMapleMapObject {
             }
             rs2.close();
             ps.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

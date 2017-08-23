@@ -167,10 +167,14 @@ public class HiredMerchant extends AbstractMapleMapObject {
                         owner.addMerchantMesos(price);
                     } else {
                         try {
-                            try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET MerchantMesos = MerchantMesos + " + price + " WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                            Connection con = DatabaseConnection.getConnection();
+                            
+                            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET MerchantMesos = MerchantMesos + " + price + " WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
                                 ps.setInt(1, ownerId);
                                 ps.executeUpdate();
                             }
+                            
+                            con.close();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -204,57 +208,67 @@ public class HiredMerchant extends AbstractMapleMapObject {
 
         map.removeMapObject(this);
 		
-		MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
-			if(player != null) {
-				player.setHasMerchant(false);
-			} else {
-				try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
-					ps.setInt(1, ownerId);
-					ps.executeUpdate();
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-			}
+        MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
+        if(player != null) {
+                player.setHasMerchant(false);
+        } else {
+                try {
+                        Connection con = DatabaseConnection.getConnection();
+                        PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+                        ps.setInt(1, ownerId);
+                        ps.executeUpdate();
+
+                        ps.close();
+                        con.close();
+                } catch (SQLException ex) {
+                        ex.printStackTrace();
+                }
+        }
 
         map = null;
         schedule = null;
     }
 
 	public void closeShop(MapleClient c, boolean timeout) {
-        map.removeMapObject(this);
-        map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(ownerId));
-        c.getChannelServer().removeHiredMerchant(ownerId);
-        try {
-			MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
-			if(player != null) {
-				player.setHasMerchant(false);
-			} else {
-				try (PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
-					ps.setInt(1, ownerId);
-					ps.executeUpdate();
-				}
-			}
-            if (check(c.getPlayer(), getItems()) && !timeout) {
-                for (MaplePlayerShopItem mpsi : getItems()) {
-                    if (mpsi.isExist() && (mpsi.getItem().getType() == MapleInventoryType.EQUIP.getType())) {
-                        MapleInventoryManipulator.addFromDrop(c, mpsi.getItem(), false);
-                    } else if (mpsi.isExist()) {
-                        MapleInventoryManipulator.addById(c, mpsi.getItem().getItemId(), (short) (mpsi.getBundles() * mpsi.getItem().getQuantity()), null, -1, mpsi.getItem().getFlag(), mpsi.getItem().getExpiration());
-                    }
-                }
-                items.clear();
-            }
+            map.removeMapObject(this);
+            map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(ownerId));
+            c.getChannelServer().removeHiredMerchant(ownerId);
+            
             try {
-                this.saveItems(timeout);
+                MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
+                if(player != null) {
+                        player.setHasMerchant(false);
+                } else {
+                        Connection con = DatabaseConnection.getConnection();
+                        try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                                ps.setInt(1, ownerId);
+                                ps.executeUpdate();
+                        }
+                        con.close();
+                }
+
+                if (check(c.getPlayer(), getItems()) && !timeout) {
+                    for (MaplePlayerShopItem mpsi : getItems()) {
+                        if (mpsi.isExist() && (mpsi.getItem().getType() == MapleInventoryType.EQUIP.getType())) {
+                            MapleInventoryManipulator.addFromDrop(c, mpsi.getItem(), false);
+                        } else if (mpsi.isExist()) {
+                            MapleInventoryManipulator.addById(c, mpsi.getItem().getItemId(), (short) (mpsi.getBundles() * mpsi.getItem().getQuantity()), null, -1, mpsi.getItem().getFlag(), mpsi.getItem().getExpiration());
+                        }
+                    }
+                    items.clear();
+                }
+
+                try {
+                    this.saveItems(timeout);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                items.clear();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            items.clear();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        schedule.cancel(false);
+            schedule.cancel(false);
     }
 
     public String getOwner() {
@@ -343,8 +357,10 @@ public class HiredMerchant extends AbstractMapleMapObject {
                 itemsWithType.add(new Pair<>(newItem, MapleInventoryType.getByType(newItem.getType())));
             }
         }
-		
-        ItemFactory.MERCHANT.saveItems(itemsWithType, this.ownerId, DatabaseConnection.getConnection());
+	
+        Connection con = DatabaseConnection.getConnection();
+        ItemFactory.MERCHANT.saveItems(itemsWithType, this.ownerId, con);
+        con.close();
     }
 
     private static boolean check(MapleCharacter chr, List<MaplePlayerShopItem> items) {

@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * 
  */
 public class MapleIdRetriever {
-    private final static boolean INSTALL_SQLTABLE = true;
+    private final static boolean INSTALL_SQLTABLE = false;
     
     static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
     static String driver = "com.mysql.jdbc.Driver";
