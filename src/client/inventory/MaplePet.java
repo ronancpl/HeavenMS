@@ -81,6 +81,19 @@ public class MaplePet extends Item {
         }
     }
 
+    public void deleteFromDb() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM pets WHERE `petid` = ?");
+            ps.setInt(1, this.getUniqueId());
+            ps.executeUpdate();
+            ps.close();
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public void saveToDb() {
         try {
             Connection con = DatabaseConnection.getConnection();
@@ -210,6 +223,7 @@ public class MaplePet extends Item {
         }
         
         owner.getMap().broadcastMessage(MaplePacketCreator.commandResponse(owner.getId(), slot, type, enjoyed));
+        if(owner.getMount() != null) owner.getMap().broadcastMessage(MaplePacketCreator.updateMount(owner.getId(), owner.getMount(), false));
         saveToDb();
         
         Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());

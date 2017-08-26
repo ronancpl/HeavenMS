@@ -1655,6 +1655,12 @@ public class Commands {
 				}
 			}
                     break;
+                
+                case "maxenergy":
+                        c.getPlayer().setDojoEnergy(10000);
+                        c.announce(MaplePacketCreator.getEnergy("energy", 10000));
+                        System.out.println("gauge " + player.getDojoEnergy());
+                        break;
                     
 		case "killall":
 			List<MapleMapObject> monsters = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
@@ -1976,7 +1982,6 @@ public class Commands {
         
         public static boolean executeSolaxiaCommandLv4(Channel cserv, Server srv, MapleClient c, String[] sub) { //SuperGM
                 MapleCharacter player = c.getPlayer();
-                MapleCharacter victim;
         
                 switch(sub[0]) {
                     case "servermessage":

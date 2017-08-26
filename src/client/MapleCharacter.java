@@ -153,16 +153,6 @@ import server.maps.MapleMapItem;
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static final String LEVEL_200 = "[Congrats] %s has reached Level 200! Congratulate %s on such an amazing achievement!";
 
-    // MapleStory default keyset
-    private static final int[] DEFAULT_KEY = {18, 65, 2, 23, 3, 4, 5, 6, 16, 17, 19, 25, 26, 27, 31, 34, 35, 37, 38, 40, 43, 44, 45, 46, 50, 56, 59, 60, 61, 62, 63, 64, 57, 48, 29, 7, 24, 33, 41, 39};
-    private static final int[] DEFAULT_TYPE = {4, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 5, 6, 6, 6, 6, 6, 6, 5, 4, 5, 4, 4, 4, 4, 4};
-    private static final int[] DEFAULT_ACTION = {0, 106, 10, 1, 12, 13, 18, 24, 8, 5, 4, 19, 14, 15, 2, 17, 11, 3, 20, 16, 9, 50, 51, 6, 7, 53, 100, 101, 102, 103, 104, 105, 54, 22, 52, 21, 25, 26, 23, 27};
-    
-    // MapleSolaxiaV2 custom keyset
-    private static final int[] CUSTOM_KEY = {2, 3, 4, 5, 31, 56, 59, 32, 42, 6, 17, 29, 30, 41, 50, 60, 61, 62, 63, 64, 65, 16, 7, 8};
-    private static final int[] CUSTOM_TYPE = {4, 4, 4, 4, 5, 5, 6, 5, 5, 4, 4, 4, 5, 4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4};
-    private static final int[] CUSTOM_ACTION = {1, 0, 3, 2, 53, 54, 100, 52, 51, 19, 5, 9, 50, 7, 22, 101, 102, 103, 104, 105, 106, 8, 17, 26};
-    
     private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "help", "helper", "alert", "notice", "maplestory", "Solaxia", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
         "nigger", "homo", "suck", "cum", "shit", "shitty", "condom", "security", "official", "rape", "nigga", "sex", "tit", "boner", "orgy", "clit", "asshole", "fatass", "bitch", "support", "gamemaster", "cock", "gaay", "gm",
         "operate", "master", "sysop", "party", "GameMaster", "community", "message", "event", "test", "meso", "Scania", "renewal", "yata", "AsiaSoft", "henesys"};
@@ -380,14 +370,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         int[] selectedAction;
         
         if(ServerConstants.USE_CUSTOM_KEYSET) {
-            selectedKey = CUSTOM_KEY;
-            selectedType = CUSTOM_TYPE;
-            selectedAction = CUSTOM_ACTION;
+            selectedKey = GameConstants.getCustomKey(true);
+            selectedType = GameConstants.getCustomType(true);
+            selectedAction = GameConstants.getCustomAction(true);
         }
         else {
-            selectedKey = DEFAULT_KEY;
-            selectedType = DEFAULT_TYPE;
-            selectedAction = DEFAULT_ACTION;
+            selectedKey = GameConstants.getCustomKey(false);
+            selectedType = GameConstants.getCustomType(false);
+            selectedAction = GameConstants.getCustomAction(false);
         }
                 
         for (int i = 0; i < selectedKey.length; i++) {
@@ -5297,14 +5287,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             int[] selectedAction;
 
             if(ServerConstants.USE_CUSTOM_KEYSET) {
-                selectedKey = CUSTOM_KEY;
-                selectedType = CUSTOM_TYPE;
-                selectedAction = CUSTOM_ACTION;
+                selectedKey = GameConstants.getCustomKey(true);
+                selectedType = GameConstants.getCustomType(true);
+                selectedAction = GameConstants.getCustomAction(true);
             }
             else {
-                selectedKey = DEFAULT_KEY;
-                selectedType = DEFAULT_TYPE;
-                selectedAction = DEFAULT_ACTION;
+                selectedKey = GameConstants.getCustomKey(false);
+                selectedType = GameConstants.getCustomType(false);
+                selectedAction = GameConstants.getCustomAction(false);
             }
             
             ps = con.prepareStatement("INSERT INTO keymap (characterid, `key`, `type`, `action`) VALUES (?, ?, ?, ?)");
@@ -5736,7 +5726,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void setDojoEnergy(int x) {
-        this.dojoEnergy = x;
+        this.dojoEnergy = Math.min(x, 10000);
     }
 
     public void setDojoPoints(int x) {

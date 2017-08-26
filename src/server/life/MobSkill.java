@@ -29,6 +29,7 @@ import java.util.List;
 import client.MapleCharacter;
 import client.MapleDisease;
 import client.status.MonsterStatus;
+import constants.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
 import tools.Randomizer;
@@ -224,53 +225,56 @@ public class MobSkill {
                 if (monster.getMap().getSpawnedMonstersOnMap() < 80) {
                     for (Integer mobId : getSummons()) {
                         MapleMonster toSpawn = MapleLifeFactory.getMonster(mobId);
-                        toSpawn.setPosition(monster.getPosition());
-                        int ypos, xpos;
-                        xpos = (int) monster.getPosition().getX();
-                        ypos = (int) monster.getPosition().getY();
-                        switch (mobId) {
-                            case 8500003: // Pap bomb high
-                                toSpawn.setFh((int) Math.ceil(Math.random() * 19.0));
-                                ypos = -590;
-                                break;
-                            case 8500004: // Pap bomb
-                                xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
-                                if (ypos != -590) {
-                                    ypos = (int) monster.getPosition().getY();
-                                }
-                                break;
-                            case 8510100: //Pianus bomb
-                                if (Math.ceil(Math.random() * 5) == 1) {
-                                    ypos = 78;
-                                    xpos = (int) Randomizer.nextInt(5) + (Randomizer.nextInt(2) == 1 ? 180 : 0);
-                                } else {
+                        if(toSpawn != null) {
+                            if(GameConstants.isBossRush(monster.getMap().getId())) toSpawn.disableDrops();  // no littering on BRPQ pls
+                            
+                            toSpawn.setPosition(monster.getPosition());
+                            int ypos, xpos;
+                            xpos = (int) monster.getPosition().getX();
+                            ypos = (int) monster.getPosition().getY();
+                            switch (mobId) {
+                                case 8500003: // Pap bomb high
+                                    toSpawn.setFh((int) Math.ceil(Math.random() * 19.0));
+                                    ypos = -590;
+                                    break;
+                                case 8500004: // Pap bomb
                                     xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
-                                }
-                                break;          
+                                    if (ypos != -590) {
+                                        ypos = (int) monster.getPosition().getY();
+                                    }
+                                    break;
+                                case 8510100: //Pianus bomb
+                                    if (Math.ceil(Math.random() * 5) == 1) {
+                                        ypos = 78;
+                                        xpos = (int) Randomizer.nextInt(5) + (Randomizer.nextInt(2) == 1 ? 180 : 0);
+                                    } else {
+                                        xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
+                                    }
+                                    break;          
+                            }
+                            switch (monster.getMap().getId()) {
+                                case 220080001: //Pap map
+                                    if (xpos < -890) {
+                                        xpos = (int) (Math.ceil(Math.random() * 150) - 890);
+                                    } else if (xpos > 230) {
+                                        xpos = (int) (230 - Math.ceil(Math.random() * 150));
+                                    }
+                                    break;
+                                case 230040420: // Pianus map
+                                    if (xpos < -239) {
+                                        xpos = (int) (Math.ceil(Math.random() * 150) - 239);
+                                    } else if (xpos > 371) {
+                                        xpos = (int) (371 - Math.ceil(Math.random() * 150));
+                                    }
+                                    break;
+                            }
+                            toSpawn.setPosition(new Point(xpos, ypos));
+                            if (toSpawn.getId() == 8500004) {
+                                    monster.getMap().spawnFakeMonster(toSpawn);
+                            } else {
+                                    monster.getMap().spawnMonsterWithEffect(toSpawn, getSpawnEffect(), toSpawn.getPosition());
+                            }
                         }
-                        switch (monster.getMap().getId()) {
-                            case 220080001: //Pap map
-                                if (xpos < -890) {
-                                    xpos = (int) (Math.ceil(Math.random() * 150) - 890);
-                                } else if (xpos > 230) {
-                                    xpos = (int) (230 - Math.ceil(Math.random() * 150));
-                                }
-                                break;
-                            case 230040420: // Pianus map
-                                if (xpos < -239) {
-                                    xpos = (int) (Math.ceil(Math.random() * 150) - 239);
-                                } else if (xpos > 371) {
-                                    xpos = (int) (371 - Math.ceil(Math.random() * 150));
-                                }
-                                break;
-                        }
-                        toSpawn.setPosition(new Point(xpos, ypos));
-                        if (toSpawn.getId() == 8500004) {
-                        	monster.getMap().spawnFakeMonster(toSpawn);
-                        } else {
-                        	monster.getMap().spawnMonsterWithEffect(toSpawn, getSpawnEffect(), toSpawn.getPosition());
-                        }
-                        
                     }
                 }
                 break;

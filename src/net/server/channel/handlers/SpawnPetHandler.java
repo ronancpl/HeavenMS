@@ -66,19 +66,11 @@ public final class SpawnPetHandler extends AbstractMaplePacketHandler {
                 if (petId == -1) {
                     return;
                 }
-                try {
-                    Connection con = DatabaseConnection.getConnection();
-                    PreparedStatement ps = con.prepareStatement("DELETE FROM pets WHERE `petid` = ?");
-                    ps.setInt(1, pet.getUniqueId());
-                    ps.executeUpdate();
-                    ps.close();
-                    con.close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
                 long expiration = chr.getInventory(MapleInventoryType.CASH).getItem(slot).getExpiration();
                 MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, petid, (short) 1, false, false);
                 MapleInventoryManipulator.addById(c, evolveid, (short) 1, null, petId, expiration);
+                pet.deleteFromDb();
+                
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }

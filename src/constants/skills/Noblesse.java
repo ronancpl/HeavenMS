@@ -35,7 +35,7 @@ public class Noblesse {
     public static final int MAKER = 10001007;
     public static final int BAMBOO_RAIN = 10001009;
     public static final int INVINCIBLE_BARRIER = 10001010;
-    public static final int BERSERK_FURY = 10001011;
+    public static final int POWER_EXPLOSION = 10001011;
     public static final int SPACESHIP = 1001014;
     public static final int SPACE_DASH = 1001015;
     public static final int YETI_MOUNT1 = 10001019;

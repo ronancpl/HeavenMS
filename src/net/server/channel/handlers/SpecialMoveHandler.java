@@ -69,9 +69,13 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         Skill skill = SkillFactory.getSkill(skillid);
         int skillLevel = chr.getSkillLevel(skill);
         if (skillid % 10000000 == 1010 || skillid % 10000000 == 1011) {
+            if (c.getPlayer().getDojoEnergy() < 10000) { // PE hacking or maybe just lagging
+                return;
+            }
             skillLevel = 1;
-            chr.setDojoEnergy(0);
-            c.announce(MaplePacketCreator.getEnergy("energy", 0));
+            c.getPlayer().setDojoEnergy(0);
+            c.announce(MaplePacketCreator.getEnergy("energy", c.getPlayer().getDojoEnergy()));
+            c.announce(MaplePacketCreator.serverNotice(5, "As you used the secret skill, your energy bar has been reset."));
         }
         if (skillLevel == 0 || skillLevel != __skillLevel) return;
         

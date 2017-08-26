@@ -12,7 +12,7 @@
 importPackage(Packages.client);
 importPackage(Packages.server);
 
-var status = 0;
+var status;
 
 function start() {
 	status = -1;
@@ -23,7 +23,7 @@ function action(mode, type, selection) {
 	if (mode == -1) {
 		cm.dispose();
 	} else {
-		if (mode == 0) {
+		if (mode == 0 && type > 0) {
 			cm.sendOk("Alright, see you next time.");
 			cm.dispose();
 			return;
@@ -32,21 +32,22 @@ function action(mode, type, selection) {
 			status++;
 		else
 			status--;
+                    
 		if (status == 0) {
-			cm.sendYesNo("I am Mar the Fairy. If you have a dragon at level 15 or higher and a rock of evolution. I can evolve your dragon. If you are lucky, you may even get a black one! Would you like me to do so?");
+			cm.sendYesNo("I am Mar the Fairy. If you have a dragon at level 15 or higher and a rock of evolution, I can evolve your dragon. If you are lucky, you may even get a black one! Would you like me to do so?");
 		} else if (status == 1) {
 			if (cm.haveItem(5000028, 1)) {
 				cm.gainItem(5000028, -1);
 				cm.gainItem(5000029, 1);
 				cm.sendOk("I don't know how you got that egg, but it has hatched, apparently!");
 				cm.dispose();
-			} else if (cm.getChar().getPet() == null) {
-				cm.sendOk("Make sure your pet is equipped.");
+			} else if (cm.getPlayer().getPet(0) == null) {
+				cm.sendOk("Make sure your pet is equipped on slot 1.");
 				cm.dispose();
-			} else if (cm.getChar().getPet().getItemId() < 5000029 || cm.getChar().getPet().getItemId() > 5000033 || !cm.haveItem(5380000,1)) {
-				cm.sendOk("You do not meet the requirements. You need #i5380000##t5380000#, as well as either one of #d#i5000029##t5000029##k, #g#i5000030##t5000030##k, #r#i5000031##t5000031##k, #b#i5000032##t5000032##k, or #e#i5000033##t5000033##n equipped. Please come back when you do.");
+			} else if (cm.getPlayer().getPet(0).getItemId() < 5000029 || cm.getPlayer().getPet(0).getItemId() > 5000033 || !cm.haveItem(5380000,1)) {
+				cm.sendOk("You do not meet the requirements. You need #i5380000##t5380000#, as well as either one of #d#i5000029##t5000029##k, #g#i5000030##t5000030##k, #r#i5000031##t5000031##k, #b#i5000032##t5000032##k, or #e#i5000033##t5000033##n equipped on slot 1. Please come back when you do.");
 				cm.dispose();
-			} else if (cm.getChar().getPet().getLevel() < 15) {
+			} else if (cm.getPlayer().getPet(0).getLevel() < 15) {
 				cm.sendOk("Your pet must be level 15 or above to evolve.");
 				cm.dispose();
 			} else if (cm.haveItem(5000029,2) || cm.haveItem(5000030,2) || cm.haveItem(5000031,2) || cm.haveItem(5000032,2) || cm.haveItem(5000033,2)) {
@@ -61,15 +62,16 @@ function action(mode, type, selection) {
                                     }
                                 }
                                 if(i == 3) {
-                                    cm.getPlayer().message("Pet could not be evolved.");
+                                    cm.sendOk("You either don't have a pet dragon ready to evolve or you lack #b#t5380000##k.");
+                                    cm.dispose();
                                     return;
                                 }
                             
-				var id = cm.getPlayer().getPet().getItemId();
-				var name = cm.getPlayer().getPet().getName();
-				var level = cm.getPlayer().getPet().getLevel();
-				var closeness = cm.getPlayer().getPet().getCloseness();
-				var fullness = cm.getPlayer().getPet().getFullness();
+				var id = cm.getPlayer().getPet(i).getItemId();
+				//var name = cm.getPlayer().getPet(i).getName();
+				//var level = cm.getPlayer().getPet(i).getLevel();
+				//var closeness = cm.getPlayer().getPet(i).getCloseness();
+				//var fullness = cm.getPlayer().getPet(i).getFullness();
 				//MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 				if (id < 5000029 || id > 5000033) {
 					cm.sendOk("Something wrong, try again.");
@@ -94,10 +96,8 @@ function action(mode, type, selection) {
 				 	name = MapleItemInformationProvider.getInstance().getName(after);
 				}*/
                 
-				//cm.unequipPet(cm.getC());
-                                cm.getPlayer().unequipAllPets(); //IMPORTANT, you can bug/crash yourself if you don't unequip the pet to be deleted
 				cm.gainItem(5380000, -1);
-				qm.evolvePet(i, after);
+				cm.evolvePet(i, after);
                                 
 				cm.sendOk("Your dragon has now evolved!! It used to be a #i" + id + "##t" + id + "#, and now it's a #i" + after + "##t" + after + "#!");
 				cm.dispose();

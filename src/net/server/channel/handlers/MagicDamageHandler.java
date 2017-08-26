@@ -31,6 +31,7 @@ import client.MapleCharacter.CancelCooldownAction;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
+import constants.ServerConstants;
 import constants.skills.Bishop;
 import constants.skills.Evan;
 import constants.skills.FPArchMage;
@@ -49,7 +50,7 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
 		player.getAutobanManager().spam(8);*/
 
 		AttackInfo attack = parseDamage(slea, player, false, true);
-
+                
 		if (player.getBuffEffect(MapleBuffStat.MORPH) != null) {
 			if(player.getBuffEffect(MapleBuffStat.MORPH).isMorphWithoutAttack()) {
 				// How are they attacking when the client won't let them?
@@ -57,6 +58,12 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
 				return; 
 			}
 		}
+                
+                if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
+                        player.setDojoEnergy(player.getDojoEnergy() +  + ServerConstants.DOJO_ENERGY_ATK);
+                        c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+                        System.out.println("gauge " + player.getDojoEnergy());
+                }
 
                 int charge = (attack.skill == Evan.FIRE_BREATH || attack.skill == Evan.ICE_BREATH || attack.skill == FPArchMage.BIG_BANG || attack.skill == ILArchMage.BIG_BANG || attack.skill == Bishop.BIG_BANG) ? attack.charge : -1;
                 byte[] packet = MaplePacketCreator.magicAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, charge, attack.speed, attack.direction, attack.display);

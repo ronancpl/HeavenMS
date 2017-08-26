@@ -68,6 +68,14 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
             }
         }
         
+        if (c.getPlayer().getDojoEnergy() < 10000 && (attack.skill == 1009 || attack.skill == 10001009 || attack.skill == 20001009)) // PE hacking or maybe just lagging
+            return;
+        if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
+            player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
+            c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+            System.out.println("gauge " + player.getDojoEnergy());
+        }
+        
         player.getMap().broadcastMessage(player, MaplePacketCreator.closeRangeAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, attack.speed, attack.direction, attack.display), false, true);
         int numFinisherOrbs = 0;
         Integer comboBuff = player.getBuffedValue(MapleBuffStat.COMBO);
@@ -152,7 +160,16 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         if (numFinisherOrbs == 0 && GameConstants.isFinisherSkill(attack.skill)) {
             return;
         }
-        if (attack.skill > 0) {
+        if (attack.skill % 10000000 == 1009) { // bamboo
+            if (c.getPlayer().getDojoEnergy() < 10000) { // PE hacking or maybe just lagging
+                return;
+            }
+            
+            player.setDojoEnergy(0);
+            c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+            c.announce(MaplePacketCreator.serverNotice(5, "As you used the secret skill, your energy bar has been reset."));
+            System.out.println("gauge " + player.getDojoEnergy());
+        } else if (attack.skill > 0) {
             Skill skill = SkillFactory.getSkill(attack.skill);
             MapleStatEffect effect_ = skill.getEffect(player.getSkillLevel(skill));
             if (effect_.getCooldown() > 0) {

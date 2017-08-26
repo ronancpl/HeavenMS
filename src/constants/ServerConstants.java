@@ -8,7 +8,7 @@ public class ServerConstants {
     public static String DB_URL = "";
     public static String DB_USER = "";
     public static String DB_PASS = "";
-    public static final short DB_EXPERIMENTAL_POOLS = 4;        //[EXPERIMENTAL] Installs a set number of database drivers/pools to hub connections. Set 0 to default.
+    public static final boolean DB_EXPERIMENTAL_POOL = true;   //[EXPERIMENTAL] Installs a connection pool to hub DB connections. Set false to default.
 	
     //World And Version
     public static short VERSION = 83;
@@ -30,7 +30,7 @@ public class ServerConstants {
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
 	
-    //Gameplay Configuration
+    //Server Flags
     public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the MapleSolaxiaV2's custom keybindings when creating characters.
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events of a map, rather than those of only view range.
@@ -46,10 +46,18 @@ public class ServerConstants {
     public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
     public static final boolean USE_ANOTHER_AUTOASSIGN = true;      //Based on distributing AP accordingly to required secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final boolean USE_PERFECT_PITCH = true;	    //For lvl 30 or above, each lvlup player gains 1 perfect pitch.
     public static final boolean USE_PERMISSIVE_BUFFS = false;       //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
     public static final boolean USE_ENFORCE_MDOOR_POSITION = true;  //Forces mystic door to be spawned near spawnpoints. (since things bugs out other way, and this helps players locate the door faster)
     public static final boolean USE_ERASE_UNTRADEABLE_DROP = true;  //Forces flagged untradeable items to disappear when dropped.
+    
+    //Server Rates And Experience
+    public static final int EXP_RATE = 10;
+    public static final int MESO_RATE = 10;
+    public static final int DROP_RATE = 10;
+    public static final int BOSS_DROP_RATE = 20;
+    public static final int PARTY_EXPERIENCE_MOD = 1;           //Change for event stuff.
+    public static final double EQUIP_EXPERIENCE_MOD = 10.0;     //Rate for equipment exp needed, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
+    public static final double PQ_BONUS_EXP_MOD = 0.5;
     
     public static final int MAX_AP = 20000;                     //Max AP allotted on the auto-assigner.
     public static final int MAX_EVENT_LEVELS = 8;               //Event has different levels of rewarding system.
@@ -61,16 +69,26 @@ public class ServerConstants {
     public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring task on maps, which checks for dangling item objects on the map item history.
     public static final int ITEM_LIMIT_ON_MAP = 250;            //Max number of items allowed on a map.
     
-    //Some Gameplay Enhancing Configuration
+    //Some Gameplay Enhancing Configurations
+    //Scroll Configuration
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
     public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
     public static final boolean USE_ENHANCED_CRAFTING = true;   //Applys chaos scroll on every equip crafted.
+    
+    //Beginner Skills Configuration
     public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Haste-like speed & jump upgrade.
     public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
     public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
+    
+    //Character Configuration
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
     public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
+    public static final boolean USE_PERFECT_PITCH = true;	//For lvl 30 or above, each lvlup grants player 1 perfect pitch.
+    public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
+    public static final int SCROLL_CHANCE_RATE = 10;            //Number of rolls for success on a scroll, set 0 for default.
+    
+    //Equipment Configuration
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
     public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes blocks mobs from banishing wearer.
@@ -80,8 +98,6 @@ public class ServerConstants {
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
     public static final byte CHAIR_EXTRA_HEAL_HP = 70;          //Each chair extra heal proc increasing HP.
     public static final byte CHAIR_EXTRA_HEAL_MP = 42;          //Each chair extra heal proc increasing MP.
-    public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
-    public static final int SCROLL_CHANCE_RATE = 10;            //Number of rolls for success on a scroll, set 0 for default.
     
     //Pet Auto-Pot Recovery Rates
     public static final double PET_AUTOHP_RATIO = 0.99;         //Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
@@ -89,20 +105,13 @@ public class ServerConstants {
     
     //Dojo Configuration
     public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
+    public static final int DOJO_ENERGY_ATK = 100;              //Dojo energy gain when deal attack
+    public static final int DOJO_ENERGY_DMG =  20;              //Dojo energy gain when recv attack
 	
-    //Pet Hungry Configuration
+    //Pet Hunger Configuration
     public static final boolean PETS_NEVER_HUNGRY = false;      //If true, pets and mounts will never grow hungry.
     public static final boolean GM_PETS_NEVER_HUNGRY = true;    //If true, pets and mounts owned by GMs will never grow hungry.
 	
-    //Rates And Experience
-    public static final int EXP_RATE = 10;
-    public static final int MESO_RATE = 10;
-    public static final int DROP_RATE = 10;
-    public static final int BOSS_DROP_RATE = 20;
-    public static final int PARTY_EXPERIENCE_MOD = 1;           //Change for event stuff.
-    public static final double EQUIP_EXPERIENCE_MOD = 10.0;     //Rate for equipment exp needed, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
-    public static final double PQ_BONUS_EXP_MOD = 0.5;
-    
     //Event End Timestamp
     public static final long EVENT_END_TIMESTAMP = 1428897600000L;
 	

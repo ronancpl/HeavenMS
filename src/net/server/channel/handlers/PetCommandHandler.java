@@ -60,6 +60,7 @@ public final class PetCommandHandler extends AbstractMaplePacketHandler {
         }
         else {
             chr.getMap().broadcastMessage(MaplePacketCreator.commandResponse(chr.getId(), petIndex, command, false));
+            if(chr.getMount() != null) chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr.getId(), chr.getMount(), false));
         }
     }
 }

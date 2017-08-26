@@ -12,16 +12,38 @@ public class GameConstants {
     private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105};
     private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610};    //fibonacci :3
     
-    public static int getPlayerBonusMesoRate(int slot) {
-        return(MESO_RATE_GAIN[slot]);
-    }
-    
     public static int getPlayerBonusDropRate(int slot) {
         return(DROP_RATE_GAIN[slot]);
     }
     
+    public static int getPlayerBonusMesoRate(int slot) {
+        return(MESO_RATE_GAIN[slot]);
+    }
+    
     public static int getPlayerBonusExpRate(int slot) {
         return(EXP_RATE_GAIN[slot]);
+    }
+    
+    // MapleStory default keyset
+    private static final int[] DEFAULT_KEY = {18, 65, 2, 23, 3, 4, 5, 6, 16, 17, 19, 25, 26, 27, 31, 34, 35, 37, 38, 40, 43, 44, 45, 46, 50, 56, 59, 60, 61, 62, 63, 64, 57, 48, 29, 7, 24, 33, 41, 39};
+    private static final int[] DEFAULT_TYPE = {4, 6, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 4, 4, 5, 6, 6, 6, 6, 6, 6, 5, 4, 5, 4, 4, 4, 4, 4};
+    private static final int[] DEFAULT_ACTION = {0, 106, 10, 1, 12, 13, 18, 24, 8, 5, 4, 19, 14, 15, 2, 17, 11, 3, 20, 16, 9, 50, 51, 6, 7, 53, 100, 101, 102, 103, 104, 105, 54, 22, 52, 21, 25, 26, 23, 27};
+    
+    // MapleSolaxiaV2 custom keyset
+    private static final int[] CUSTOM_KEY = {2, 3, 4, 5, 31, 56, 59, 32, 42, 6, 17, 29, 30, 41, 50, 60, 61, 62, 63, 64, 65, 16, 7, 9, 13, 8};
+    private static final int[] CUSTOM_TYPE = {4, 4, 4, 4, 5, 5, 6, 5, 5, 4, 4, 4, 5, 4, 4, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4};
+    private static final int[] CUSTOM_ACTION = {1, 0, 3, 2, 53, 54, 100, 52, 51, 19, 5, 9, 50, 7, 22, 101, 102, 103, 104, 105, 106, 8, 17, 26, 20, 4};
+    
+    public static int[] getCustomKey(boolean customKeyset) {
+        return(customKeyset ? CUSTOM_KEY : DEFAULT_KEY);
+    }
+    
+    public static int[] getCustomType(boolean customKeyset) {
+        return(customKeyset ? CUSTOM_TYPE : DEFAULT_TYPE);
+    }
+    
+    public static int[] getCustomAction(boolean customKeyset) {
+        return(customKeyset ? CUSTOM_ACTION : DEFAULT_ACTION);
     }
     
     private static final int[] mobHpVal = {0, 15, 20, 25, 35, 50, 65, 80, 95, 110, 125, 150, 175, 200, 225, 250, 275, 300, 325, 350,
@@ -113,6 +135,10 @@ public class GameConstants {
 
     public static boolean isGMSkills(final int skill) {
     	return skill >= 9001000 && skill <= 9101008 || skill >= 8001000 && skill <= 8001001; 
+    }
+    
+    public static boolean isBossRush(int mapid) {
+        return mapid >= 970030100 && mapid <= 970042711;
     }
     
     public static boolean isDojo(int mapid) {

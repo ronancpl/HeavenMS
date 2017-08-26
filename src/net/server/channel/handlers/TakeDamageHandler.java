@@ -30,6 +30,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import constants.GameConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Corsair;
@@ -232,9 +233,10 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             map.broadcastGMMessage(player, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, player.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
             player.checkBerserk(false);
         }
-        if (map.getId() >= 925020000 && map.getId() < 925030000) {
-            player.setDojoEnergy(player.isGM() ? 300 : player.getDojoEnergy() < 300 ? player.getDojoEnergy() + 1 : 0); //Fking gm's
-            player.getClient().announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+        if (GameConstants.isDojo(map.getId())) {
+            player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_DMG);
+            c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+            System.out.println("gauge " + player.getDojoEnergy());
         }
         
         for (MapleCharacter chr : banishPlayers) {  // chill, if this list ever gets non-empty an attacker does exist, trust me :)

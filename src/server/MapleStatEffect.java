@@ -336,11 +336,6 @@ public class MapleStatEffect {
                 case Legend.BALROG_MOUNT:
                     statups.add(new Pair<>(MapleBuffStat.MONSTER_RIDING, Integer.valueOf(sourceid)));
                     break;
-                case Beginner.BERSERK_FURY:
-                case Noblesse.BERSERK_FURY:
-                case Evan.BERSERK_FURY:
-                    statups.add(new Pair<>(MapleBuffStat.BERSERK_FURY, Integer.valueOf(1)));
-                    break;
                 case Beginner.INVINCIBLE_BARRIER:
                 case Noblesse.INVINCIBLE_BARRIER:
                 case Legend.INVICIBLE_BARRIER:
@@ -520,6 +515,9 @@ public class MapleStatEffect {
                 case NightWalker.CLAW_BOOSTER:
                 case ThunderBreaker.KNUCKLER_BOOSTER:
                 case Evan.MAGIC_BOOSTER:
+                case Beginner.POWER_EXPLOSION:
+                case Noblesse.POWER_EXPLOSION:
+                case Legend.POWER_EXPLOSION:
                     statups.add(new Pair<>(MapleBuffStat.BOOSTER, Integer.valueOf(x)));
                     break;
                 case Hero.MAPLE_WARRIOR:

@@ -124,6 +124,7 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("expeds", "");
         addCommand("kill", "");
         addCommand("seed", "");
+        addCommand("maxenergy", "");
         addCommand("killall", "");
         addCommand("notice", "");
         addCommand("rip", "");

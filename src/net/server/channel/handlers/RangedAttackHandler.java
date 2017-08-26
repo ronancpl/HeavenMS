@@ -39,6 +39,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MapleWeaponType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Buccaneer;
 import constants.skills.NightLord;
@@ -68,6 +69,12 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                 player.getClient().disconnect(false, false);
                 return; 
             }
+        }
+        
+        if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
+            player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
+            c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
+            System.out.println("gauge " + player.getDojoEnergy());
         }
         
         if (attack.skill == Buccaneer.ENERGY_ORB || attack.skill == ThunderBreaker.SPARK || attack.skill == Shadower.TAUNT || attack.skill == NightLord.TAUNT) {

@@ -431,7 +431,7 @@ public class AbstractPlayerInteraction {
                                     evolved.setStance(0);
                                     evolved.setSummoned(true);
 
-                                    evolved.setName(from.getName());
+                                    evolved.setName(from.getName().compareTo(MapleItemInformationProvider.getInstance().getName(from.getItemId())) != 0 ? from.getName() : MapleItemInformationProvider.getInstance().getName(id));
                                     evolved.setCloseness(from.getCloseness());
                                     evolved.setFullness(from.getFullness());
                                     evolved.setLevel(from.getLevel());

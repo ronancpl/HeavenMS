@@ -6,7 +6,8 @@ importPackage(Packages.server.life);
 var closeTime = 50 * 1000; //The time to close the gate
 var beginTime = 60 * 1000; //The time to begin the ride
 var rideTime = 120 * 1000; //The time that require move to destination
-var invasionTime = 30 * 1000; //The time to balrog ship approach
+var invasionStartTime = 30 * 1000; //The time to balrog ship approach
+var invasionDelayTime = 15 * 1000; //The time to balrog ship approach
 var invasionDelay = 5 * 1000; //The time that spawn balrog
 var Orbis_btf;
 var Boat_to_Orbis;
@@ -56,7 +57,7 @@ function takeoff() {
     
     em.setProperty("docked","false");
     
-    em.schedule("approach", invasionTime);
+    if(Math.random() < 0.42) em.schedule("approach", (invasionStartTime + (Math.random() * invasionDelayTime)));
     em.schedule("arrived", rideTime);
 }
 
