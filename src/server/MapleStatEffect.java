@@ -754,6 +754,8 @@ public class MapleStatEffect {
             applyto.dispelDebuffs();
         } else if (isHeroWill()) {
             applyto.dispelDebuff(MapleDisease.SEDUCE);
+            applyto.dispelDebuff(MapleDisease.ZOMBIFY);
+            applyto.dispelDebuffs();
         }
         if (isComboReset()) {
             applyto.setCombo((short) 0);
@@ -763,7 +765,7 @@ public class MapleStatEffect {
          } */
         if (hpchange != 0) {
             if (hpchange < 0 && (-hpchange) >= applyto.getHp() && (!applyto.hasDisease(MapleDisease.ZOMBIFY) || hpCon > 0)) {
-                if(!ServerConstants.USE_PERMISSIVE_BUFFS) {
+                if(!applyto.isGM()) {
                     applyto.getClient().announce(MaplePacketCreator.enableActions());
                     return false;
                 }
@@ -778,7 +780,7 @@ public class MapleStatEffect {
         int newMp = applyto.getMp() + mpchange;
         if (mpchange != 0) {
             if (mpchange < 0 && -mpchange > applyto.getMp()) {
-                if(!ServerConstants.USE_PERMISSIVE_BUFFS) {
+                if(!applyto.isGM()) {
                     applyto.getClient().announce(MaplePacketCreator.enableActions());
                     return false;
                 }

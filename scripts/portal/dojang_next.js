@@ -23,28 +23,36 @@
  * @Author Moogra, Ronan
  */
 function enter(pi) {
-    var gate = pi.getPlayer().getMap().getReactorByName("door");
+    var currwarp = Date.now();
     
-    if ((gate != null && gate.getState() == 1) || pi.getMap().countMonsters() == 0) {
-        if (Math.floor(pi.getPlayer().getMapId() / 100) % 100 < 38) {
-            pi.getPlayer().message("You received " + pi.getPlayer().addDojoPointsByMap() + " training points. Your total training points score is now " + pi.getPlayer().getDojoPoints() + ".");
-            
-            if(((Math.floor((pi.getPlayer().getMap().getId() + 100) / 100)) % 100) % 6 == 0) {
-                if(Math.floor(pi.getPlayer().getMapId() / 10000) == 92503) {
-                    pi.warpParty(pi.getPlayer().getMap().getId() + 100, 925030100, 925033804);
+    if(currwarp - pi.getPlayer().getNpcCooldown() < 3000) return false; // this script can be ran twice when passing the dojo portal... strange.
+    pi.getPlayer().setNpcCooldown(currwarp);
+    
+    var gate = pi.getPlayer().getMap().getReactorByName("door");
+    if(gate != null) {
+        if (gate.getState() == 1 || pi.getMap().countMonsters() == 0) {
+            if (Math.floor(pi.getPlayer().getMapId() / 100) % 100 < 38) {
+                pi.getPlayer().message("You received " + pi.getPlayer().addDojoPointsByMap() + " training points. Your total training points score is now " + pi.getPlayer().getDojoPoints() + ".");
+
+                if(((Math.floor((pi.getPlayer().getMap().getId() + 100) / 100)) % 100) % 6 == 0) {
+                    if(Math.floor(pi.getPlayer().getMapId() / 10000) == 92503) {
+                        pi.warpParty(pi.getPlayer().getMap().getId() + 100, 925030100, 925033804);
+                    } else {
+                        pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+                    }
                 } else {
                     pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
                 }
             } else {
-                pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+                pi.warp(925020003, 0);
+                pi.getPlayer().gainExp(2000 * pi.getPlayer().getDojoPoints(), true, true, true);
             }
+            return true;
         } else {
-            pi.warp(925020003, 0);
-            pi.getPlayer().gainExp(2000 * pi.getPlayer().getDojoPoints(), true, true, true);
+            pi.getPlayer().message("The door is not open yet.");
+            return false;
         }
-        return true;
     } else {
-        pi.getPlayer().message("The door is not open yet.");
         return false;
     }
 }

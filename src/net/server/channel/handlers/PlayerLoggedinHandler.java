@@ -51,9 +51,6 @@ import client.inventory.MaplePet;
 import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import constants.ServerConstants;
-import java.lang.ref.WeakReference;
-import java.util.concurrent.ScheduledFuture;
-import server.TimerManager;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -152,7 +149,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     con.close();
                 }
             } catch (SQLException ex) {
-                //ignore
                 ex.printStackTrace();
             }
         }
@@ -226,13 +222,17 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.showNote();
         if (player.getParty() != null) {
             MaplePartyCharacter pchar = player.getMPC();
+            
+            //Use this in case of enabling party HPbar HUD when logging in, however "you created a party" will appear on chat.
+            //c.announce(MaplePacketCreator.partyCreated(pchar));
+            
             pchar.setChannel(c.getChannel());
             pchar.setMapId(player.getMapId());
             pchar.setOnline(true);
             world.updateParty(player.getParty().getId(), PartyOperation.LOG_ONOFF, pchar);
+            player.updatePartyMemberHP();
         }
-        player.updatePartyMemberHP();
-
+        
         if (player.getInventory(MapleInventoryType.EQUIPPED).findById(1122017) != null) {
             player.equipPendantOfSpirit();
         }
@@ -258,7 +258,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.changeSkillLevel(SkillFactory.getSkill(10000000 * player.getJobType() + 12), (byte) (player.getLinkedLevel() / 10), 20, -1);
         player.checkBerserk(player.isHidden());
         player.expirationTask();
-        //player.setWorldRates();
         if (GameConstants.hasSPTable(player.getJob()) && player.getJob().getId() != 2001) {
                 player.createDragon();
         }
@@ -277,7 +276,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();
         
         player.resetPlayerRates();
-        
         if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
         player.setWorldRates();
         player.updateCouponRates();

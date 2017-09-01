@@ -73,7 +73,6 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
             player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
-            System.out.println("gauge " + player.getDojoEnergy());
         }
         
         player.getMap().broadcastMessage(player, MaplePacketCreator.closeRangeAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, attack.allDamage, attack.speed, attack.direction, attack.display), false, true);
@@ -97,7 +96,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                     ceffect = advcombo.getEffect(advComboSkillLevel);
                 } else {
                     int comboLv = player.getSkillLevel(combo);
-                    if(comboLv <= 0 && ServerConstants.USE_PERMISSIVE_BUFFS) comboLv = SkillFactory.getSkill(oid).getMaxLevel();
+                    if(comboLv <= 0 || player.isGM()) comboLv = SkillFactory.getSkill(oid).getMaxLevel();
                     
                     if(comboLv > 0) ceffect = combo.getEffect(comboLv);
                     else ceffect = null;
@@ -168,7 +167,6 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
             player.setDojoEnergy(0);
             c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
             c.announce(MaplePacketCreator.serverNotice(5, "As you used the secret skill, your energy bar has been reset."));
-            System.out.println("gauge " + player.getDojoEnergy());
         } else if (attack.skill > 0) {
             Skill skill = SkillFactory.getSkill(attack.skill);
             MapleStatEffect effect_ = skill.getEffect(player.getSkillLevel(skill));

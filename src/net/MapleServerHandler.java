@@ -24,7 +24,7 @@ package net;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 import net.server.Server;
 
@@ -47,6 +47,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private PacketProcessor processor;
     private int world = -1, channel = -1;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private static AtomicLong sessionId = new AtomicLong(7777);
     
     public MapleServerHandler() {
         this.processor = PacketProcessor.getProcessor(-1, -1);
@@ -97,8 +98,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         MapleClient client = new MapleClient(sendCypher, recvCypher, session);
         client.setWorld(world);
         client.setChannel(channel);
-        Random r = new Random();
-        client.setSessionId(r.nextLong()); // Generates a random session id.  
+        client.setSessionId(sessionId.getAndIncrement()); // Generates a reasonable session id.
         session.write(MaplePacketCreator.getHello(ServerConstants.VERSION, ivSend, ivRecv));
         session.setAttribute(MapleClient.CLIENT_KEY, client);
     }

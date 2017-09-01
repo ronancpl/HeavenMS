@@ -526,7 +526,10 @@ public class MapleMap {
                         if (chr.getBuffedValue(MapleBuffStat.MESOUP) != null) {
                             mesos = (int) (mesos * chr.getBuffedValue(MapleBuffStat.MESOUP).doubleValue() / 100.0);
                         }
-                        spawnMesoDrop(mesos * chr.getMesoRate(), calcDropPos(pos, mob.getPosition()), mob, chr, false, droptype);
+                        mesos = mesos * chr.getMesoRate();
+                        if(mesos <= 0) mesos = Integer.MAX_VALUE;
+                        
+                        spawnMesoDrop(mesos, calcDropPos(pos, mob.getPosition()), mob, chr, false, droptype);
                     }
                 } else {
                     if (ItemConstants.getInventoryType(de.itemId) == MapleInventoryType.EQUIP) {
@@ -1468,7 +1471,7 @@ public class MapleMap {
             } else if (monster.getId() == 9300093) {
                 monsterItemDrop(monster, new Item(4031495, (short) 0, (short) 1), monster.getDropPeriodTime());
             } else {
-                FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId());
+                FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId() + "\r\n");
             }
         }
         spawnedMonstersOnMap.incrementAndGet();

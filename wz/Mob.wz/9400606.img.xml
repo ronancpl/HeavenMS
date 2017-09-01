@@ -17,6 +17,10 @@
     <int name="pushed" value="3000"/>
     <float name="fs" value="10.0"/>
     <int name="summonType" value="1"/>
+    <int name="boss" value="1"/>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="stand">
     <canvas name="0" width="281" height="390">

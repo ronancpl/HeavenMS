@@ -214,7 +214,7 @@ public class MaplePet extends Item {
                 if (newCloseness < 0) newCloseness = 0;
                 
                 closeness = newCloseness;
-                if (level > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(level)) {
+                if (level > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(level - 1)) {
                     level -= 1;
                 }
             }

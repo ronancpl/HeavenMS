@@ -97,11 +97,13 @@ function action(mode, type, selection) {
 
                                     if(avDojo < 0) {
                                         if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                        else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
+                                        else cm.sendOk("Either your party is already using the Dojo or your party's allotted time on the Dojo has not expired yet. Wait for them to finish to enter.");
                                     }
                                     else {
                                         cm.getClient().getChannelServer().getMapFactory().getMap(925020010 + avDojo).resetMapObjects();
                                         cm.getClient().getChannelServer().resetDojo(925020010 + avDojo);
+                                        
+                                        cm.resetDojoEnergy();
                                         cm.warp(925020010 + avDojo, 0);
                                     }
 
@@ -119,13 +121,15 @@ function action(mode, type, selection) {
 
                                 if(avDojo < 0) {
                                     if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                    else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
+                                    else cm.sendOk("Either your party is already using the Dojo or your party's allotted time on the Dojo has not expired yet. Wait for them to finish to enter.");
                                     cm.getPlayer().setDojoStage(dojoWarp);
                                 }
                                 else {
                                     var warpDojoMap = ((mode == 1) ? 925020000 + (dojoWarp + 1) * 100 + avDojo : 925020100 + avDojo);
                                     cm.getClient().getChannelServer().resetDojoMap(warpDojoMap);
                                     cm.getClient().getChannelServer().resetDojo(warpDojoMap);
+                                    
+                                    cm.resetDojoEnergy();
                                     cm.warp(warpDojoMap, 0);
                                 }
 
@@ -136,11 +140,13 @@ function action(mode, type, selection) {
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
+                                else cm.sendOk("Either your party is already using the Dojo or your party's allotted time on the Dojo has not expired yet. Wait for them to finish to enter.");
                             }
                             else {
                                 cm.getClient().getChannelServer().resetDojoMap(925020100 + avDojo);
                                 cm.getClient().getChannelServer().resetDojo(925020100 + avDojo);
+                                
+                                cm.resetDojoEnergy();
                                 cm.warp(925020100 + avDojo, 0);
                             }
 
@@ -174,11 +180,13 @@ function action(mode, type, selection) {
 
                             if(avDojo < 0) {
                                 if(avDojo == -1) cm.sendOk("All Dojo's are being used already. Wait for awhile before trying again.");
-                                else cm.sendOk("Your party is already using the dojo. Wait for them to finish to enter.");
+                                else cm.sendOk("Either your party is already using the Dojo or your party's allotted time on the Dojo has not expired yet. Wait for them to finish to enter.");
                             }
                             else {
                                 cm.getClient().getChannelServer().resetDojoMap(925030100 + avDojo);
                                 cm.getClient().getChannelServer().resetDojo(925030100 + avDojo);
+                                
+                                cm.resetPartyDojoEnergy();
                                 cm.warpParty(925030100 + avDojo);
                             }
 
@@ -209,7 +217,7 @@ function action(mode, type, selection) {
                             var belt = belts[selection];
                             var level = belt_level[selection];
                             var points = belt_points[selection];
-                            if (cm.getPlayer().getDojoPoints() > points) {
+                            if (cm.getPlayer().getDojoPoints() >= points) {
                                 if (cm.getPlayer().getLevel() > level) {
                                     cm.gainItem(belt, 1);
                                     cm.sendNext("There is the #i" + belt + "# #b#t" + belt + "##k. You have proven your valor to ascend on the Dojo ranks. Well done!");
@@ -350,8 +358,12 @@ function action(mode, type, selection) {
                 if (mode == 0) {
                     cm.sendNext("Stop changing your mind! Soon, you'll be crying, begging me to go back.");
                 } else if (mode == 1) {
+                    var dojoMapId = cm.getPlayer().getMap().getId();
+                    
                     cm.warp(925020002, 0);
                     cm.getPlayer().message("Can you make up your mind please?");
+                    
+                    cm.getClient().getChannelServer().freeDojoSectionIfEmpty(dojoMapId);
                 }
                 cm.dispose();
             }

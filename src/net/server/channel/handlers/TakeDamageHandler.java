@@ -236,7 +236,6 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
         if (GameConstants.isDojo(map.getId())) {
             player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_DMG);
             c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
-            System.out.println("gauge " + player.getDojoEnergy());
         }
         
         for (MapleCharacter chr : banishPlayers) {  // chill, if this list ever gets non-empty an attacker does exist, trust me :)

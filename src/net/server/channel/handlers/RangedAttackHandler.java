@@ -74,7 +74,6 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
         if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
             player.setDojoEnergy(player.getDojoEnergy() + ServerConstants.DOJO_ENERGY_ATK);
             c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
-            System.out.println("gauge " + player.getDojoEnergy());
         }
         
         if (attack.skill == Buccaneer.ENERGY_ORB || attack.skill == ThunderBreaker.SPARK || attack.skill == Shadower.TAUNT || attack.skill == NightLord.TAUNT) {

@@ -374,8 +374,11 @@ public final class Channel {
         mask ^= (1 << slot);
         
         usedDojo &= mask;
-        if(party != null) dojoParty.remove(party.hashCode());
-        else if(dojoParty.containsValue(slot)) {    // they left the dojo before completing it, no party there!
+        if(party != null) {
+            if(dojoParty.remove(party.hashCode()) != null) return;
+        }
+        
+        if(dojoParty.containsValue(slot)) {    // strange case, no party there!
             Set<Entry<Integer, Integer>> es = Collections.unmodifiableSet(dojoParty.entrySet());
             
             for(Entry<Integer, Integer> e: es) {
@@ -409,6 +412,20 @@ public final class Channel {
             this.dojoTask[slot].cancel(false);
             this.dojoTask[slot] = null;
         }
+    }
+    
+    public void freeDojoSectionIfEmpty(int dojoMapId) {
+            final int slot = getDojoSlot(dojoMapId);
+            final int delta = (dojoMapId) % 100;
+            final int stage = (dojoMapId / 100) % 100;
+            final int dojoBaseMap = (dojoMapId >= 925030000) ? 925030000 : 925020000;
+
+            for (int i = 0; i < 5; i++) { //only 32 stages, but 38 maps
+                MapleMap dojoMap = getMapFactory().getMap(dojoBaseMap + (100 * (stage + i)) + delta);
+                if(!dojoMap.getAllPlayers().isEmpty()) return;
+            }
+            
+            freeDojoSlot(slot, null);
     }
     
     public void startDojoSchedule(final int dojoMapId) {

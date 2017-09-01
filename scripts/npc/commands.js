@@ -42,6 +42,7 @@ function writeSolaxiaCommandsLv6() {    //Admin
         comm_cursor = comm_lv6;
         desc_cursor = desc_lv6;
 
+        addCommand("setgmlevel", "");
         addCommand("warpworld", "");
         addCommand("saveall", "");
         addCommand("dcall", "");
@@ -90,9 +91,8 @@ function writeSolaxiaCommandsLv4() {    //SuperGM
         addCommand("pinkbean", "");
         addCommand("pap", "");
         addCommand("pianus", "");
+        addCommand("cake", "");
         addCommand("playernpc", "");
-        addCommand("face", "");
-        addCommand("hair", "");
 }
 
 function writeSolaxiaCommandsLv3() {    //GM
@@ -143,6 +143,8 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("killmap", "");
         addCommand("night", "");
         addCommand("npc", "");
+        addCommand("face", "");
+        addCommand("hair", "");
 }
 
 function writeSolaxiaCommandsLv2() {    //JrGM

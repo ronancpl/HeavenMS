@@ -31,27 +31,39 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-//import java.util.ArrayList;
 import java.util.Collection;
-//import java.util.List;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author Generic
+ * @author Generic, Ronan
  */
 public class AutoAssignHandler extends AbstractMaplePacketHandler {
+    
+    private static int getNthHighestStat(List<Short> statList, short rank) {    // ranks from 0
+        return(statList.size() <= rank ? 0 : statList.get(rank));
+    }
     
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        MapleJob stance;
         
-        if(ServerConstants.USE_ANOTHER_AUTOASSIGN == true) {
-            int eqpStr = 0, eqpDex = 0, eqpLuk = 0;
+        slea.skip(8);
+        if (chr.getRemainingAp() < 1) return;
+        
+        if(ServerConstants.USE_ANOTHER_AUTOASSIGNER == true) {
+            // ---------- Ronan Lana's AUTOASSIGNER -------------
+            // This method excels for assigning APs in such a way to cover all equipments AP requirements.
+            
             int str = 0, dex = 0, luk = 0, int_ = 0;
+            List<Short> eqpStrList = new ArrayList<>();
+            List<Short> eqpDexList = new ArrayList<>();
+            List<Short> eqpLukList = new ArrayList<>();
             
             MapleInventory iv = chr.getInventory(MapleInventoryType.EQUIPPED);
             Collection<Item> equippedC = iv.list();
@@ -59,29 +71,33 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
 
             for (Item item : equippedC) {   //selecting the biggest AP value of each stat from each equipped item.
             	nEquip = (Equip)item;
-                if(nEquip.getStr() > eqpStr) eqpStr = nEquip.getStr();
+                if(nEquip.getStr() > 0) eqpStrList.add(nEquip.getStr());
                 str += nEquip.getStr();
                 
-                if(nEquip.getDex() > eqpDex) eqpDex = nEquip.getDex();
+                if(nEquip.getDex() > 0) eqpDexList.add(nEquip.getDex());
                 dex += nEquip.getDex();
                 
-                if(nEquip.getLuk() > eqpLuk) eqpLuk = nEquip.getLuk();
+                if(nEquip.getLuk() > 0) eqpLukList.add(nEquip.getLuk());
                 luk += nEquip.getLuk();
                 
-                //if(nEquip.getInt() > eqpInt) eqpInt = nEquip.getInt(); //not needed...
+                //if(nEquip.getInt() > 0) eqpIntList.add(nEquip.getInt()); //not needed...
                 int_ += nEquip.getInt();
             }
+            
+            Collections.sort(eqpStrList, Collections.reverseOrder());
+            Collections.sort(eqpDexList, Collections.reverseOrder());
+            Collections.sort(eqpLukList, Collections.reverseOrder());
+            
+            //Autoassigner looks up the 1st/2nd placed equips for their stats to calculate the optimal upgrade.
+            int eqpStr = getNthHighestStat(eqpStrList, (short) 0) + getNthHighestStat(eqpStrList, (short) 1);
+            int eqpDex = getNthHighestStat(eqpDexList, (short) 0) + getNthHighestStat(eqpDexList, (short) 1);
+            int eqpLuk = getNthHighestStat(eqpLukList, (short) 0) + getNthHighestStat(eqpLukList, (short) 1);
 
-            //c.getPlayer().message("----------------------------------------SDL: " + eqpStr + eqpDex + eqpLuk + " BASE STATS --> STR: " + chr.getStr() + " DEX: " + chr.getDex() + " INT: " + chr.getInt() + " LUK: " + chr.getLuk());
+            //c.getPlayer().message("----------------------------------------");
+            //c.getPlayer().message("SDL: s" + eqpStr + " d" + eqpDex + " l" + eqpLuk + " BASE STATS --> STR: " + chr.getStr() + " DEX: " + chr.getDex() + " INT: " + chr.getInt() + " LUK: " + chr.getLuk());
             //c.getPlayer().message("SUM EQUIP STATS -> STR: " + str + " DEX: " + dex + " LUK: " + luk + " INT: " + int_);
             
-            // ---------- Ronan Lana's AUTOASSIGN -------------
-            // This method excels for assigning APs in such a way to cover all equipments AP requirements.
-            if (chr.getRemainingAp() < 1) {
-                return;
-            }
-            
-            stance = c.getPlayer().getJobStyle();
+            MapleJob stance = c.getPlayer().getJobStyle();
             int prStat = 0, scStat = 0, trStat = 0, temp, tempAp = chr.getRemainingAp(), CAP;
             
             MapleStat primary, secondary, tertiary = MapleStat.INT;
@@ -294,10 +310,6 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.serverNotice(1, "Better AP applications detected:\r\nSTR: +" + str + "\r\nDEX: +" + dex + "\r\nINT: +" + int_ + "\r\nLUK: +" + luk));
         }
         else {
-            slea.skip(8);
-            if (chr.getRemainingAp() < 1) {
-                return;
-            }
             int total = 0;
             int extras = 0;
             if(slea.available() < 16) {

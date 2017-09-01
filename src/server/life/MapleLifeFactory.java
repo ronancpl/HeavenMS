@@ -72,7 +72,7 @@ public class MapleLifeFactory {
             stats.setMp(MapleDataTool.getIntConvert("maxMP", monsterInfoData, 0));
             stats.setExp(MapleDataTool.getIntConvert("exp", monsterInfoData, 0));
             stats.setLevel(MapleDataTool.getIntConvert("level", monsterInfoData));
-			stats.setRemoveAfter(MapleDataTool.getIntConvert("removeAfter", monsterInfoData, 0));
+            stats.setRemoveAfter(MapleDataTool.getIntConvert("removeAfter", monsterInfoData, 0));
             stats.setBoss(MapleDataTool.getIntConvert("boss", monsterInfoData, 0) > 0);
             stats.setExplosiveReward(MapleDataTool.getIntConvert("explosiveReward", monsterInfoData, 0) > 0);
             stats.setFfaLoot(MapleDataTool.getIntConvert("publicReward", monsterInfoData, 0) > 0);

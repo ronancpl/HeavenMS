@@ -62,7 +62,6 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
                 if (player.getMap().isDojoMap() && attack.numAttacked > 0) {
                         player.setDojoEnergy(player.getDojoEnergy() +  + ServerConstants.DOJO_ENERGY_ATK);
                         c.announce(MaplePacketCreator.getEnergy("energy", player.getDojoEnergy()));
-                        System.out.println("gauge " + player.getDojoEnergy());
                 }
 
                 int charge = (attack.skill == Evan.FIRE_BREATH || attack.skill == Evan.ICE_BREATH || attack.skill == FPArchMage.BIG_BANG || attack.skill == ILArchMage.BIG_BANG || attack.skill == Bishop.BIG_BANG) ? attack.charge : -1;

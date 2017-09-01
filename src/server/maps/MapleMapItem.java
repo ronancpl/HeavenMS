@@ -77,9 +77,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     }
 
     public final int getItemId() {
-	if (getMeso() > 0) {
-	    return meso;
-	}
+	if (meso > 0) return meso;
 	return item.getItemId();
     }
 

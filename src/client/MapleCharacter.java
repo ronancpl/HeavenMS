@@ -1528,7 +1528,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else if(mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866) {
                             // Add NX to account, show effect and make item disappear
-                            this.getCashShop().gainCash(1, mapitem.getItemId() == 4031865 ? 100 : 250);
+                            int nxGain = mapitem.getItemId() == 4031865 ? 100 : 250;
+                            this.getCashShop().gainCash(1, nxGain);
+                            
+                            showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)");
+                            
                             this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
                             this.getMap().pickItemDrop(pickupPacket, mapitem);
@@ -1597,7 +1601,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         }
                     } else if(mapitem.getItemId() == 4031865 || mapitem.getItemId() == 4031866) {
                         // Add NX to account, show effect and make item disappear
-                        this.getCashShop().gainCash(1, mapitem.getItemId() == 4031865 ? 100 : 250);
+                        int nxGain = mapitem.getItemId() == 4031865 ? 100 : 250;
+                        this.getCashShop().gainCash(1, nxGain);
+                        
+                        showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)");
                     } else if (useItem(client, mapitem.getItem().getItemId())) {
                         if (mapitem.getItem().getItemId() / 10000 == 238) {
                             this.getMonsterBook().addCard(client, mapitem.getItem().getItemId());
@@ -2166,6 +2173,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         dispelDebuff(MapleDisease.POISON);
         dispelDebuff(MapleDisease.SEAL);
         dispelDebuff(MapleDisease.WEAKEN);
+        dispelDebuff(MapleDisease.SLOW);
     }
 
     public void cancelAllDebuffs() {
@@ -3225,8 +3233,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public boolean isPartyMember(MapleCharacter chr) {
+        return isPartyMember(chr.getId());
+    }
+    
+    public boolean isPartyMember(int cid) {
         for(MapleCharacter mpcu: getPartyMembers()) {
-            if(mpcu.getId() == chr.getId()) {
+            if(mpcu.getId() == cid) {
                 return true;
             }
         }
@@ -3236,6 +3248,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public MaplePlayerShop getPlayerShop() {
         return playerShop;
+    }
+    
+    public void setGMLevel(int level) {
+        this.gmLevel = Math.min(level, 6);
+        this.gmLevel = Math.max(level, 0);
     }
     
     public void closePlayerInteractions() {
@@ -3430,9 +3447,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     //---- /\ /\ /\ /\ /\ /\ /\  NOT TESTED  /\ /\ /\ /\ /\ /\ /\ /\ /\ ----
     
     public boolean needQuestItem(int questid, int itemid) {
-        if (questid <= 0) {
-            return true; //For non quest items :3
-        }
+        if (questid <= 0) return true; //For non quest items :3
+        if (this.getQuestStatus(questid) != 1) return false;
+        
         MapleQuest quest = MapleQuest.getInstance(questid);
         return getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid) < quest.getItemAmountNeeded(itemid);
     }
@@ -4119,8 +4136,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private void setCouponRates() {
-        setActiveCoupons();
-        activateCouponsEffects();
+        List<Integer> couponEffects;
+        
+        chrLock.lock();
+        try {
+            setActiveCoupons();
+            couponEffects = activateCouponsEffects();
+        } finally {
+            chrLock.unlock();
+        }
+        
+        for(Integer couponId: couponEffects) {
+            commitBuffCoupon(couponId);
+        }
     }
     
     private void revertCouponRates() {
@@ -4167,13 +4195,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.mesoCoupon = 1;
     }
     
-    private void activateCouponsEffects() {
+    private List<Integer> activateCouponsEffects() {
+        List<Integer> toCommitEffect = new LinkedList<>();
+        
         if(ServerConstants.USE_STACK_COUPON_RATES) {
             for(Entry<Integer,Integer> coupon: activeCoupons.entrySet()) {
                 int couponId = coupon.getKey();
                 int couponQty = coupon.getValue();
 
-                commitBuffCoupon(couponId);
+                toCommitEffect.add(couponId);
+                
                 if(ItemConstants.isExpCoupon(couponId)) setExpCouponRate(couponId, couponQty);
                 else setDropCouponRate(couponId, couponQty);
             }
@@ -4198,8 +4229,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
             
-            if(maxExpCouponId > -1) commitBuffCoupon(maxExpCouponId);
-            if(maxDropCouponId > -1) commitBuffCoupon(maxDropCouponId);
+            if(maxExpCouponId > -1) toCommitEffect.add(maxExpCouponId);
+            if(maxDropCouponId > -1) toCommitEffect.add(maxDropCouponId);
             
             this.expCoupon = maxExpRate;
             this.dropCoupon = maxDropRate;
@@ -4209,30 +4240,27 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.expRate *= this.expCoupon;
         this.dropRate *= this.dropCoupon;
         this.mesoRate *= this.mesoCoupon;
+        
+        return toCommitEffect;
     }
     
     private void setActiveCoupons() {
-        chrLock.lock();
-        try {
-            activeCoupons.clear();
-            activeCouponRates.clear();
+        activeCoupons.clear();
+        activeCouponRates.clear();
 
-            Map<Integer, Integer> coupons = Server.getInstance().getCouponRates();
-            List<Integer> active = Server.getInstance().getActiveCoupons();
+        Map<Integer, Integer> coupons = Server.getInstance().getCouponRates();
+        List<Integer> active = Server.getInstance().getActiveCoupons();
 
-            for(Item it: this.getInventory(MapleInventoryType.CASH).list()) {
-                if(ItemConstants.isRateCoupon(it.getItemId()) && active.contains(it.getItemId())) {
-                    Integer count = activeCoupons.get(it.getItemId());
+        for(Item it: this.getInventory(MapleInventoryType.CASH).list()) {
+            if(ItemConstants.isRateCoupon(it.getItemId()) && active.contains(it.getItemId())) {
+                Integer count = activeCoupons.get(it.getItemId());
 
-                    if(count != null) activeCoupons.put(it.getItemId(), count + 1);
-                    else {
-                        activeCoupons.put(it.getItemId(), 1);
-                        activeCouponRates.put(it.getItemId(), coupons.get(it.getItemId()));
-                    }
+                if(count != null) activeCoupons.put(it.getItemId(), count + 1);
+                else {
+                    activeCoupons.put(it.getItemId(), 1);
+                    activeCouponRates.put(it.getItemId(), coupons.get(it.getItemId()));
                 }
             }
-        } finally {
-            chrLock.unlock();
         }
     }
     
@@ -4261,7 +4289,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public Set<Integer> getActiveCoupons() {
-        return Collections.unmodifiableSet(activeCoupons.keySet());
+        chrLock.lock();
+        try {
+            return Collections.unmodifiableSet(activeCoupons.keySet());
+        } finally {
+            chrLock.unlock();
+        }    
     }
 
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
@@ -5006,7 +5039,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }, buffInterval, buffInterval);
             }
         } else if (effect.isRecovery()) {
-            int healInterval = (ServerConstants.USE_ULTRA_RECOVERY) ? 2500 : 5000;
+            int healInterval = (ServerConstants.USE_ULTRA_RECOVERY) ? 2000 : 5000;
             final byte heal = (byte) effect.getX();
             
             chrLock.lock();
@@ -6198,10 +6231,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     
     public void timeoutFromDojo() {
         if(map.isDojoMap()) {
-            client.getPlayer().changeMap(client.getChannelServer().getMapFactory().getMap(925020000));
+            client.getPlayer().changeMap(client.getChannelServer().getMapFactory().getMap(925020002));
         }
     }
-
+    
+    public void showHint(String msg) {
+        client.announceHint(msg);
+    }
+    
     public void showNote() {
         try {
             Connection con = DatabaseConnection.getConnection();

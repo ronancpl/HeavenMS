@@ -22,24 +22,24 @@
 package server;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import tools.LogHelper;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
 import constants.ServerConstants;
+import tools.Pair;
 
 /**
  *
  * @author Matze
- * @author Ronan (concurrency safety)
+ * @author Ronan (concurrency safety & check available slots)
  */
 public class MapleTrade {
     private MapleTrade partner = null;
@@ -192,22 +192,12 @@ public class MapleTrade {
     }
     
     private boolean fitsInInventory() {
-        MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
-        Map<MapleInventoryType, Integer> neededSlots = new LinkedHashMap<>();
+        List<Pair<Item, MapleInventoryType>> tradeItems = new LinkedList<>();
         for (Item item : exchangeItems) {
-            MapleInventoryType type = mii.getInventoryType(item.getItemId());
-            if (neededSlots.get(type) == null) {
-                neededSlots.put(type, 1);
-            } else {
-                neededSlots.put(type, neededSlots.get(type) + 1);
-            }
+            tradeItems.add(new Pair(item, MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())));
         }
-        for (Map.Entry<MapleInventoryType, Integer> entry : neededSlots.entrySet()) {
-            if (chr.getInventory(entry.getKey()).isFull(entry.getValue() - 1)) {
-                return false;
-            }
-        }
-        return true;
+        
+        return MapleInventory.checkSpotsAndOwnership(chr, tradeItems);
     }
 
     public static void completeTrade(MapleCharacter c) {

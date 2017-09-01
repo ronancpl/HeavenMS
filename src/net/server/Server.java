@@ -67,8 +67,8 @@ import java.util.Calendar;
 import server.quest.MapleQuest;
 
 public class Server implements Runnable {
-    private final Map<Integer, Integer> couponRates = new LinkedHashMap<>();
-    private final List<Integer> activeCoupons = new LinkedList<>();
+    private static final Map<Integer, Integer> couponRates = new LinkedHashMap<>();
+    private static final List<Integer> activeCoupons = new LinkedList<>();
     
     private IoAcceptor acceptor;
     private List<Map<Integer, String>> channels = new LinkedList<>();

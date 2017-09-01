@@ -270,7 +270,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     player.checkMonsterAggro(monster);
                     if (player.getBuffedValue(MapleBuffStat.PICKPOCKET) != null && (attack.skill == 0 || attack.skill == Rogue.DOUBLE_STAB || attack.skill == Bandit.SAVAGE_BLOW || attack.skill == ChiefBandit.ASSAULTER || attack.skill == ChiefBandit.BAND_OF_THIEVES || attack.skill == Shadower.ASSASSINATE || attack.skill == Shadower.TAUNT || attack.skill == Shadower.BOOMERANG_STEP)) {
                         Skill pickpocket = SkillFactory.getSkill(ChiefBandit.PICKPOCKET);
-                        int picklv = (player.getSkillLevel(pickpocket) > 0 || !ServerConstants.USE_PERMISSIVE_BUFFS) ? player.getSkillLevel(pickpocket) : pickpocket.getMaxLevel();
+                        int picklv = (player.isGM()) ? pickpocket.getMaxLevel() : player.getSkillLevel(pickpocket);
                         if(picklv > 0) {
                             int delay = 0;
                             final int maxmeso = player.getBuffedValue(MapleBuffStat.PICKPOCKET).intValue();
@@ -650,7 +650,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             } else {
                 // Normal Combo
                 int skillLv = chr.getSkillLevel(oid);
-                if(skillLv <= 0 && ServerConstants.USE_PERMISSIVE_BUFFS) skillLv = SkillFactory.getSkill(oid).getMaxLevel();
+                if(skillLv <= 0 || chr.isGM()) skillLv = SkillFactory.getSkill(oid).getMaxLevel();
                 
                 if(skillLv > 0) {
                     MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(skillLv);

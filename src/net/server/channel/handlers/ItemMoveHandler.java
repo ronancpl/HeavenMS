@@ -35,16 +35,17 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class ItemMoveHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.skip(4); 
+        slea.skip(4);
         if(c.getPlayer().getAutobanManager().getLastSpam(6) + 300 > System.currentTimeMillis()) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
         
         MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
-        byte src = (byte) slea.readShort();
-        byte action = (byte) slea.readShort();
+        short src = slea.readShort();     //is there any reason to use byte instead of short in src and action?
+        short action = slea.readShort();
         short quantity = slea.readShort();
+        
         if (src < 0 && action > 0) {
             MapleInventoryManipulator.unequip(c, src, action);
         } else if (action < 0) {

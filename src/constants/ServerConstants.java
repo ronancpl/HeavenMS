@@ -44,9 +44,8 @@ public class ServerConstants {
     public static final boolean USE_ITEM_SORT_BY_NAME = false;      //Item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
     public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
-    public static final boolean USE_ANOTHER_AUTOASSIGN = true;      //Based on distributing AP accordingly to required secondary stat on equipments.
+    public static final boolean USE_ANOTHER_AUTOASSIGNER = true;    //Based on distributing AP accordingly to required secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final boolean USE_PERMISSIVE_BUFFS = false;       //WARNING: Allows players that does not have increased certain buff-type skills to use it's effect. Used mainly on buff-cast commands, however making this active may generate a source for possible client-edited exploits.
     public static final boolean USE_ENFORCE_MDOOR_POSITION = true;  //Forces mystic door to be spawned near spawnpoints. (since things bugs out other way, and this helps players locate the door faster)
     public static final boolean USE_ERASE_UNTRADEABLE_DROP = true;  //Forces flagged untradeable items to disappear when dropped.
     
@@ -66,7 +65,7 @@ public class ServerConstants {
     
     //Dangling Items Configuration
     public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.
-    public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring task on maps, which checks for dangling item objects on the map item history.
+    public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring tasks on maps, which checks for dangling item objects on the map item history.
     public static final int ITEM_LIMIT_ON_MAP = 250;            //Max number of items allowed on a map.
     
     //Some Gameplay Enhancing Configurations
@@ -91,8 +90,8 @@ public class ServerConstants {
     //Equipment Configuration
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
-    public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes blocks mobs from banishing wearer.
-    public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to further recover player`s HP and MP.
+    public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes prevents mobs from banishing wearer.
+    public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to further recover player's HP and MP.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
     public static final int MAX_EQUIPMNT_STAT = 32767;            //Max stat on an equipment by leveling up.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.

@@ -801,6 +801,16 @@ public class AbstractPlayerInteraction {
 	public void goDojoUp() {
 		c.announce(MaplePacketCreator.dojoWarpUp());
 	}
+        
+        public void resetDojoEnergy() {
+                c.getPlayer().setDojoEnergy(0);
+        }
+        
+        public void resetPartyDojoEnergy() {
+                for(MapleCharacter pchr: c.getPlayer().getPartyMembersOnSameMap()) {
+                        pchr.setDojoEnergy(0);
+                }
+        }
 
 	public void enableActions() {
 		c.announce(MaplePacketCreator.enableActions());

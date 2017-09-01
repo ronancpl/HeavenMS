@@ -482,3 +482,22 @@ Acesso à DB usando HikariCP (melhor ganho em desempenho e código mais enxuto).
 Resolvido bugs com hatch egg e evolvePet.
 Adicionado energy bar e skills funcionais no Dojo.
 Consertado cash pet food retirando stats de mount em Character Info.
+
+26 Agosto 2017,
+Consertado bug no sistema de exp de pets.
+Refatorado sistema de trades, agora verificando por slots disponíveis similarmente ao sistema usado pelas rewards de quests.
+
+27 Agosto 2017,
+Hero's Will retira a maioria dos diseases. Tonico retira slow além de weakness.
+Consertado comando itemvac coletando quest itens e itens de outros jogadores.
+Novo comando: cake. Chama cake boss com valor customizável de HP.
+
+28 Agosto 2017,
+Parties agora podem sair do Dojo sem precisar esperar o timeout expirar.
+Ao entrar no Dojo, jogadores tem energy points resetados pra zero.
+Adicionado informação de NX ganho ao coletar cupons.
+Pets em outros slots agora equipam devidamente.
+
+31 Agosto 2017,
+Refatorado autoassigner para focar nos stats primários a partir da avaliação do valor base do stat secundário com o 1º e 2º equips mais forte, ao invés de somente o 1º.
+Corrigido bug de acesso concorrente no sistema de rate cupons.

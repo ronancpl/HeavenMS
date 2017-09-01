@@ -47,7 +47,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                         return;
                 }
                 char heading = s.charAt(0);
-                if (heading == '/' || heading == '!' || heading == '@') {     // client seems to not send command with '/' heading to the server, if not a GM account
+                if (heading == '!' || heading == '@') {
                         String[] sp = s.split(" ");
                         sp[0] = sp[0].toLowerCase().substring(1);
 
@@ -59,8 +59,8 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
 
                             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                             FilePrinter.print(FilePrinter.USED_COMMANDS, c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
-                        }            
-                } else {
+                        }
+                } else if (heading != '/') {
                         int show = slea.readByte();
                         if(chr.getMap().isMuted() && !chr.isGM()) {
                                 chr.dropMessage(5, "The map you are in is currently muted. Please try again later.");

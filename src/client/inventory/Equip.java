@@ -553,8 +553,7 @@ public class Equip extends Item {
     }
 
     public final void showLevelupMessage(String msg, MapleClient c) {
-        c.announce(MaplePacketCreator.sendHint(msg, 500, 10));
-        c.announce(MaplePacketCreator.enableActions());
+        c.getPlayer().showHint(msg);
     }
     
     public void setItemExp(int exp) {

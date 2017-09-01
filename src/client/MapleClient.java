@@ -60,6 +60,7 @@ import net.server.world.World;
 import org.apache.mina.core.session.IoSession;
 
 import client.inventory.MapleInventoryType;
+import constants.GameConstants;
 import constants.ServerConstants;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventManager;
@@ -798,7 +799,12 @@ public class MapleClient {
 				player.getEventInstance().playerDisconnected(player);
 			}
 			if (player.getMap() != null) {
+                                int mapId = player.getMapId();
 				player.getMap().removePlayer(player);
+                                
+                                if(GameConstants.isDojo(mapId)) {
+                                        this.getChannelServer().freeDojoSectionIfEmpty(mapId);
+                                }
 			}
 
 		} catch (final Throwable t) {
@@ -1030,6 +1036,10 @@ public class MapleClient {
 
 	public int getGMLevel() {
 		return gmlevel;
+	}
+        
+        public void setGMLevel(int level) {
+		gmlevel = level;
 	}
 
 	public void setScriptEngine(String name, ScriptEngine e) {
@@ -1263,11 +1273,15 @@ public class MapleClient {
                         player.setTargetHpBarTime(timeNow);
                 }
 	}
-
+        
 	public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3
 		session.write(packet);
 	}
 
+        public void announceHint(String msg) {
+                announce(MaplePacketCreator.sendHint(msg, 500, 10));
+                announce(MaplePacketCreator.enableActions());
+        }
 
 	public void changeChannel(int channel) {
 		Server server = Server.getInstance();

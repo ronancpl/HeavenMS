@@ -100,6 +100,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import java.util.ArrayList;
 import server.life.SpawnPoint;
 import server.maps.FieldLimit;
@@ -698,7 +699,7 @@ public class Commands {
                         
                 case "goto":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: @goto <map name>");
+				player.yellowMessage("Syntax: !goto <map name>");
 				break;
 			}
                     
@@ -791,8 +792,15 @@ public class Commands {
 				player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.setRemainingSp(Integer.parseInt(sub[2]));
-				victim.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
+                                
+                                if(victim != null) {
+                                        victim.setRemainingSp(Integer.parseInt(sub[2]));
+                                        victim.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
+
+                                        player.dropMessage(5, "SP given.");
+                                } else {
+                                        player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                                }
 			}
                     break;
                     
@@ -807,8 +815,13 @@ public class Commands {
 				player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.setRemainingAp(Integer.parseInt(sub[2]));
-				victim.updateSingleStat(MapleStat.AVAILABLEAP, victim.getRemainingAp());
+                                
+                                if(victim != null) {
+                                        victim.setRemainingAp(Integer.parseInt(sub[2]));
+                                        victim.updateSingleStat(MapleStat.AVAILABLEAP, victim.getRemainingAp());
+                                } else {
+                                        player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                                }
 			}
                     break;
                     
@@ -841,8 +854,13 @@ public class Commands {
                 case "bomb":
 			if (sub.length > 1){
 				victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
-				Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
+                                
+                                if(victim != null) {
+                                        victim.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
+                                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
+                                } else {
+                                        player.message("Player '" + sub[1] + "' could not be found on this world.");
+                                }
 			} else {
 				player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), player.getPosition());
 			}
@@ -1093,6 +1111,10 @@ public class Commands {
 			}
                         
 			int itemId = Integer.parseInt(sub[1]);
+                        if(MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                player.yellowMessage("Item id '" + sub[1] + "' does not exist.");
+                                break;
+                        }
                         
 			short quantity = 1;
                         if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
@@ -1138,10 +1160,11 @@ public class Commands {
 			}
                     
                         player.loseExp(player.getExp(), false, false);
-                        
-			player.revertPlayerRates();
                         player.setLevel(Math.min(Integer.parseInt(sub[1]), player.getMaxLevel()) - 1);
-                        player.setPlayerRates();
+                        
+                        player.resetPlayerRates();
+                        if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
+                        player.setWorldRates();
                         
 			player.levelUp(false);
                     break;
@@ -1173,10 +1196,13 @@ public class Commands {
 			final String[] s = {"setstat", String.valueOf(Short.MAX_VALUE)};
 			executeSolaxiaCommandLv2(cserv, srv, c, s);
                         player.loseExp(player.getExp(), false, false);
-                        player.revertPlayerRates();
 			player.setLevel(255);
-                        player.setPlayerRates();
-			player.setFame(13337);
+                        
+                        player.resetPlayerRates();
+                        if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
+                        player.setWorldRates();
+			
+                        player.setFame(13337);
 			player.setMaxHp(30000);
 			player.setMaxMp(30000);
 			player.updateSingleStat(MapleStat.LEVEL, 255);
@@ -1190,9 +1216,7 @@ public class Commands {
 			for (MapleData skill_ : MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/" + "String.wz")).getData("Skill.img").getChildren()) {
 				try {
 					skill = SkillFactory.getSkill(Integer.parseInt(skill_.getName()));
-					if (GameConstants.isInJobTree(skill.getId(), player.getJob().getId())) {
-						player.changeSkillLevel(skill, (byte) skill.getMaxLevel(), skill.getMaxLevel(), -1);
-					}
+                                        player.changeSkillLevel(skill, (byte) skill.getMaxLevel(), skill.getMaxLevel(), -1);
 				} catch (NumberFormatException nfe) {
                                         nfe.printStackTrace();
 					break;
@@ -1228,8 +1252,9 @@ public class Commands {
                                         data = dataProvider.getData("Mob.img");
                                 } else if (sub[1].equalsIgnoreCase("SKILL")) {
                                         data = dataProvider.getData("Skill.img");
-                                } else if (sub[1].equalsIgnoreCase("MAP")) {
-                                        sb.append("#bUse the '!m' command to find a map. If it finds a map with the same name, it will warp you to it.");
+                                /*} else if (sub[1].equalsIgnoreCase("MAP")) {
+                                        TODO
+                                */
                                 } else {
                                         sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
                                 }
@@ -1288,14 +1313,14 @@ public class Commands {
                                         MapleMap target = cserv.getMapFactory().getMap(mapid);
                                         MaplePortal targetPortal = target.getPortal(0);
                                         victim.changeMap(target, targetPortal);
-                                        player.dropMessage(victim.getName() + " was jailed for " + minutesJailed + " minutes.");
+                                        player.message(victim.getName() + " was jailed for " + minutesJailed + " minutes.");
                                 }
                                 else {
-                                        player.dropMessage(victim.getName() + "'s time in jail has been extended for " + minutesJailed + " minutes.");
+                                        player.message(victim.getName() + "'s time in jail has been extended for " + minutesJailed + " minutes.");
                                 }
                                 
                         } else {
-                                player.dropMessage(sub[1] + " not found on this channel! Make sure your target is logged on and on the same channel as yours.");  
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
                         }
                     break; 
                     
@@ -1308,14 +1333,14 @@ public class Commands {
                         victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
                         if (victim != null) {
                                 if(victim.getJailExpirationTimeLeft() <= 0) {
-                                    player.dropMessage("This player is already free.");
+                                    player.message("This player is already free.");
                                     break;
                                 }
                                 victim.removeJailExpirationTime();
-                                victim.dropMessage("By lack of concrete proof you are now unjailed. Enjoy freedom!");
-                                player.dropMessage(victim.getName() + " was unjailed.");
+                                victim.message("By lack of concrete proof you are now unjailed. Enjoy freedom!");
+                                player.message(victim.getName() + " was unjailed.");
                         } else {
-                                player.dropMessage(sub[1] + " not found on this channel! Make sure your target is logged on and on the same channel as yours.");
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
                         }
                     break;
                     
@@ -1325,8 +1350,13 @@ public class Commands {
 				player.equipChanged();
 			} else if (sub.length == 3) {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-				victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
-				player.equipChanged();
+                                
+                                if(victim != null) {
+                                        victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
+                                        player.equipChanged();
+                                } else {
+                                        player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                                }
 			} else {
 				player.message("Syntax: !job <job id> <opt: IGN of another person>");
 			}
@@ -1379,17 +1409,21 @@ public class Commands {
                     
                 case "checkdmg":
 			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
-			int maxBase = victim.calculateMaxBaseDamage(victim.getTotalWatk());
-			Integer watkBuff = victim.getBuffedValue(MapleBuffStat.WATK);
-			Integer matkBuff = victim.getBuffedValue(MapleBuffStat.MATK);
-			Integer blessing = victim.getSkillLevel(10000000 * player.getJobType() + 12);
-			if(watkBuff == null) watkBuff = 0;
-			if(matkBuff == null) matkBuff = 0;
+                        if(victim != null) {
+                                int maxBase = victim.calculateMaxBaseDamage(victim.getTotalWatk());
+                                Integer watkBuff = victim.getBuffedValue(MapleBuffStat.WATK);
+                                Integer matkBuff = victim.getBuffedValue(MapleBuffStat.MATK);
+                                Integer blessing = victim.getSkillLevel(10000000 * player.getJobType() + 12);
+                                if(watkBuff == null) watkBuff = 0;
+                                if(matkBuff == null) matkBuff = 0;
 
-			player.dropMessage(5, "Cur Str: " + victim.getTotalStr() + " Cur Dex: " + victim.getTotalDex() + " Cur Int: " + victim.getTotalInt() + " Cur Luk: " + victim.getTotalLuk());
-			player.dropMessage(5, "Cur WATK: " + victim.getTotalWatk() + " Cur MATK: " + victim.getTotalMagic());
-			player.dropMessage(5, "Cur WATK Buff: " + watkBuff + " Cur MATK Buff: " + matkBuff + " Cur Blessing Level: " + blessing);
-			player.dropMessage(5, victim.getName() + "'s maximum base damage (before skills) is " + maxBase);
+                                player.dropMessage(5, "Cur Str: " + victim.getTotalStr() + " Cur Dex: " + victim.getTotalDex() + " Cur Int: " + victim.getTotalInt() + " Cur Luk: " + victim.getTotalLuk());
+                                player.dropMessage(5, "Cur WATK: " + victim.getTotalWatk() + " Cur MATK: " + victim.getTotalMagic());
+                                player.dropMessage(5, "Cur WATK Buff: " + watkBuff + " Cur MATK Buff: " + matkBuff + " Cur Blessing Level: " + blessing);
+                                player.dropMessage(5, victim.getName() + "'s maximum base damage (before skills) is " + maxBase);
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this world.");
+                        }
                     break;
                     
 		case "inmap":
@@ -1440,12 +1474,16 @@ public class Commands {
 				player.yellowMessage("Syntax: !sethpmp [<playername>] <value>");
                         }
                     
-                        victim.setHp(statUpdate);
-                        victim.setMp(statUpdate);
-                        victim.updateSingleStat(MapleStat.HP, statUpdate);
-                        victim.updateSingleStat(MapleStat.MP, statUpdate);
-                        
-                        victim.checkBerserk(victim.isHidden());
+                        if(victim != null) {
+                                victim.setHp(statUpdate);
+                                victim.setMp(statUpdate);
+                                victim.updateSingleStat(MapleStat.HP, statUpdate);
+                                victim.updateSingleStat(MapleStat.MP, statUpdate);
+
+                                victim.checkBerserk(victim.isHidden());
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this world.");
+                        }
                     break;
                    
 		case "music":
@@ -1477,7 +1515,7 @@ public class Commands {
 			}
 			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null){
-				player.yellowMessage("Player not found!");
+				player.message("Player '" + sub[1] + "' could not be found on this world.");
 				break;
 			}
 			boolean monitored = MapleLogger.monitored.contains(victim.getName());
@@ -1504,7 +1542,7 @@ public class Commands {
 			}
 			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null){
-				player.yellowMessage("Player not found!");
+				player.message("Player '" + sub[1] + "' could not be found on this world.");
 				break;
 			}
 			boolean monitored_ = MapleLogger.ignored.contains(victim.getName());
@@ -1552,8 +1590,13 @@ public class Commands {
 			}
                         
 			victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
-			victim.setFame(Integer.parseInt(sub[2]));
-			victim.updateSingleStat(MapleStat.FAME, victim.getFame());
+                        if(victim != null) {
+                                victim.setFame(Integer.parseInt(sub[2]));
+                                victim.updateSingleStat(MapleStat.FAME, victim.getFame());
+                                player.message("FAME given.");
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                     
 		case "givenx":
@@ -1561,8 +1604,14 @@ public class Commands {
 				player.yellowMessage("Syntax: !givenx <playername> <gainnx>");
 				break;
 			}
-			cserv.getPlayerStorage().getCharacterByName(sub[1]).getCashShop().gainCash(1, Integer.parseInt(sub[2]));
-			player.message("NX given.");
+			
+                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
+                                victim.getCashShop().gainCash(1, Integer.parseInt(sub[2]));
+                                player.message("NX given.");
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
       
 		case "givevp":
@@ -1570,8 +1619,14 @@ public class Commands {
 				player.yellowMessage("Syntax: !givevp <playername> <gainvotepoint>");
 				break;
 			}
-                        cserv.getPlayerStorage().getCharacterByName(sub[1]).getClient().addVotePoints(Integer.parseInt(sub[2]));
-                        player.message("VP given.");
+                        
+                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
+                                victim.getClient().addVotePoints(Integer.parseInt(sub[2]));
+                                player.message("VP given.");
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                 
                 case "givems":
@@ -1579,8 +1634,14 @@ public class Commands {
 				player.yellowMessage("Syntax: !givemx <playername> <gainmx>");
 				break;
 			}
-                        cserv.getPlayerStorage().getCharacterByName(sub[1]).gainMeso(Integer.parseInt(sub[2]), true);
-                        player.message("MESO given.");
+                        
+                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
+                                victim.gainMeso(Integer.parseInt(sub[2]), true);
+                                player.message("MESO given.");
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                     
 		case "id":
@@ -1634,8 +1695,12 @@ public class Commands {
 			}
 			
                         victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
-                        victim.setHpMp(0);
-                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
+                        if(victim != null) {
+                                victim.setHpMp(0);
+                                Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                     
 		case "seed":
@@ -1659,7 +1724,6 @@ public class Commands {
                 case "maxenergy":
                         c.getPlayer().setDojoEnergy(10000);
                         c.announce(MaplePacketCreator.getEnergy("energy", 10000));
-                        System.out.println("gauge " + player.getDojoEnergy());
                         break;
                     
 		case "killall":
@@ -1857,17 +1921,25 @@ public class Commands {
                     break;
                     
                 case "healperson":
-                                victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
                                 victim.setHp(victim.getMaxHp());
                                 victim.updateSingleStat(MapleStat.HP, victim.getMaxHp());
                                 victim.setMp(victim.getMaxMp());
                                 victim.updateSingleStat(MapleStat.MP, victim.getMaxMp());
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                     
                 case "hurt":
-                                victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
                                 victim.setHp(1);
                                 victim.updateSingleStat(MapleStat.HP, 1);
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                        }
                     break;
                     
                 case "killmap":
@@ -1925,12 +1997,12 @@ public class Commands {
                                     
                                         victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
                                         if(victim == null) {
+                                                victim.setFace(itemId);
+                                                victim.updateSingleStat(MapleStat.FACE, itemId);
+                                                victim.equipChanged();
+                                        } else {
                                                 player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                                break;
                                         }
-                                        victim.setFace(itemId);
-                                        victim.updateSingleStat(MapleStat.FACE, itemId);
-                                        victim.equipChanged();
                                 }
                         } catch(Exception e) {}
                         
@@ -1961,13 +2033,13 @@ public class Commands {
                                         }
                                     
                                         victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                        if(victim == null) {
+                                        if(victim != null) {
+                                                victim.setHair(itemId);
+                                                victim.updateSingleStat(MapleStat.HAIR, itemId);
+                                                victim.equipChanged();
+                                        } else {
                                                 player.yellowMessage("Player '" + sub[1] + "' has not been found on this channel.");
-                                                break;
                                         }
-                                        victim.setHair(itemId);
-                                        victim.updateSingleStat(MapleStat.HAIR, itemId);
-                                        victim.equipChanged();
                                 }
                         } catch(Exception e) {}
 			break;
@@ -1987,7 +2059,7 @@ public class Commands {
                     case "servermessage":
 			c.getWorldServer().setServerMessage(joinStringFrom(sub, 1));
                         break;
-                    
+                        
                     case "proitem":
                         if (sub.length < 3) {
                                 player.yellowMessage("Syntax: !proitem <itemid> <statvalue>");
@@ -2056,19 +2128,24 @@ public class Commands {
                     
                     case "exprate":
                             if (sub.length < 2){
-				player.yellowMessage("Syntax: !exprate <newrate>");
-				break;
-                            }
-                            c.getWorldServer().setExpRate(Integer.parseInt(sub[1]));
-                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Exp Rate has been changed to " + sub[1] + "x."));
+                                player.yellowMessage("Syntax: !exprate <newrate>");
                                 break;
+                            }
+                            
+                            int exprate = Math.max(Integer.parseInt(sub[1]), 1);
+                            c.getWorldServer().setExpRate(exprate);
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Exp Rate has been changed to " + exprate + "x."));
+                        break;
+                        
                     case "mesorate":
                             if (sub.length < 2){
                                 player.yellowMessage("Syntax: !mesorate <newrate>");
                                 break;
                             }
-                            c.getWorldServer().setMesoRate(Integer.parseInt(sub[1]));
-                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Meso Rate has been changed to " + sub[1] + "x."));
+                            
+                            int mesorate = Math.max(Integer.parseInt(sub[1]), 1);
+                            c.getWorldServer().setMesoRate(mesorate);
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Meso Rate has been changed to " + mesorate + "x."));
                         break;
                     
                     case "droprate":
@@ -2076,8 +2153,10 @@ public class Commands {
                                 player.yellowMessage("Syntax: !droprate <newrate>");
                                 break;
                             }		
-                            c.getWorldServer().setDropRate(Integer.parseInt(sub[1]));
-                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Drop Rate has been changed to " + sub[1] + "x."));
+                            
+                            int droprate = Math.max(Integer.parseInt(sub[1]), 1);
+                            c.getWorldServer().setDropRate(droprate);
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Drop Rate has been changed to " + droprate + "x."));
                         break;
                     
                     case "bossdroprate":
@@ -2085,14 +2164,21 @@ public class Commands {
                                 player.yellowMessage("Syntax: !bossdroprate <newrate>");
                                 break;
                             }
-                            c.getWorldServer().setBossDropRate(Integer.parseInt(sub[1]));
-                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Boss Drop Rate has been changed to " + sub[1] + "x."));
+                            
+                            int bossdroprate = Math.max(Integer.parseInt(sub[1]), 1);
+                            c.getWorldServer().setBossDropRate(bossdroprate);
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Boss Drop Rate has been changed to " + bossdroprate + "x."));
                         break;
                     
                     case "itemvac":
-                                List<MapleMapObject> list = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
-                                for (MapleMapObject item : list) {
-                                player.pickupItem(item);
+                            List<MapleMapObject> list = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
+                            for (MapleMapObject item : list) {
+                                MapleMapItem mapItem = (MapleMapItem) item;
+                                int ownerId = mapItem.getOwner();
+                                
+                                if(ownerId <= 0 || player.getId() == ownerId || player.isPartyMember(ownerId) || System.currentTimeMillis() - mapItem.getDropTime() >= 15 * 1000) {
+                                    player.pickupItem(item);
+                                }
                             }
                         break;
                             
@@ -2143,6 +2229,19 @@ public class Commands {
                     
                     case "pianus":
 			player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8510000), player.getPosition());
+                        break;
+                        
+                    case "cake":
+                        MapleMonster monster = MapleLifeFactory.getMonster(9400606);
+                        if(sub.length > 1) {
+                            int newHp = Integer.parseInt(sub[1]);
+                            if(newHp < 0) newHp = Integer.MAX_VALUE;
+                            
+                            monster.getStats().setHp(newHp);
+                            monster.setHp(newHp);
+                        }
+                        
+                        player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
                         break;
                             
                     case "playernpc":
@@ -2270,6 +2369,25 @@ public class Commands {
                 MapleCharacter victim;
         
                 switch(sub[0]) {
+                case "setgmlevel":
+                        if (sub.length < 3){
+                                player.yellowMessage("Syntax: !setgmlevel <playername> <newlevel>");
+                                break;
+                        }
+
+                        int newLevel = Integer.parseInt(sub[2]);
+                        MapleCharacter target = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        if(target != null) {
+                            target.setGMLevel(newLevel);
+                            target.getClient().setGMLevel(newLevel);
+                            
+                            target.dropMessage("You are now a level " + newLevel + " GM");
+                            player.dropMessage(target + " is now a level " + newLevel + " GM");
+                        } else {
+                            player.dropMessage("Player '"+ sub[1] +"' was not found on this channel.");
+                        }
+                        break;
+                    
 		case "warpworld":
                         if (sub.length < 2){
 				player.yellowMessage("Syntax: !warpworld <worldid>");
@@ -2341,8 +2459,12 @@ public class Commands {
 				player.yellowMessage("Syntax: !getacc <playername>");
 				break;
 			}
-			victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
-			player.message(victim.getName() + "'s account name is " + victim.getClient().getAccountName() + ".");
+			victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null) {
+                                player.message(victim.getName() + "'s account name is " + victim.getClient().getAccountName() + ".");
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this world.");
+                        }
 			break;
 
 		case "shutdown":

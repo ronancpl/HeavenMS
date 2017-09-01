@@ -4234,7 +4234,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static void addPetInfo(final MaplePacketLittleEndianWriter mplew, MaplePet pet, boolean showpet) {
+        private static void addPetInfo(final MaplePacketLittleEndianWriter mplew, MaplePet pet, boolean showpet) {
                 mplew.write(1);
                 if (showpet) {
                         mplew.write(0);

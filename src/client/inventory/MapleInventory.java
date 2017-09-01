@@ -327,6 +327,66 @@ public class MapleInventory implements Iterable<Item> {
     	return true;
     }
     
+    private static long fnvHash32(final String k) {
+        final int FNV_32_INIT = 0x811c9dc5;
+        final int FNV_32_PRIME = 0x01000193;
+
+        int rv = FNV_32_INIT;
+        final int len = k.length();
+        for(int i = 0; i < len; i++) {
+            rv ^= k.charAt(i);
+            rv *= FNV_32_PRIME;
+        }
+        
+        return rv >= 0 ? rv : (2L * Integer.MAX_VALUE) + rv;
+    }
+    
+    private static Long hashKey(Integer itemId, String owner) {
+        return (itemId.longValue() << 32L) + fnvHash32(owner);
+    }
+    
+    public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
+        List<Integer> zeroedList = new ArrayList<>(5);
+        for(byte i = 0; i < 5; i++) zeroedList.add(0);
+        
+        return checkSpotsAndOwnership(chr, items, zeroedList);
+    }
+    
+    public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed) {
+        // assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0.
+        
+        Map<Long, Short> rcvItems = new LinkedHashMap<>();
+        Map<Long, Byte> rcvTypes = new LinkedHashMap<>();
+        Map<Long, String> rcvOwners = new LinkedHashMap<>();
+        
+        for (Pair<Item, MapleInventoryType> item : items) {
+                Long itemHash = hashKey(item.left.getItemId(), item.left.getOwner());
+                Short qty = rcvItems.get(itemHash);
+            
+    		if(qty == null) {
+                        rcvItems.put(itemHash, item.left.getQuantity());
+                        rcvTypes.put(itemHash, item.right.getType());
+                        rcvOwners.put(itemHash, item.left.getOwner());
+                } else {
+                        rcvItems.put(itemHash, (short)(qty + item.left.getQuantity()));
+                }
+    	}
+        
+        MapleClient c = chr.getClient();
+        for(Entry<Long, Short> it: rcvItems.entrySet()) {
+                int itemType = rcvTypes.get(it.getKey()) - 1;
+                int usedSlots = typesSlotsUsed.get(itemType);
+                
+                Long itemId = it.getKey() >> 32L;
+                int result = MapleInventoryManipulator.checkSpaceProgressively(c, itemId.intValue(), it.getValue(), rcvOwners.get(it.getKey()), usedSlots);
+                boolean hasSpace = ((result % 2) != 0);
+                
+                if(!hasSpace) return false;
+                typesSlotsUsed.set(itemType, (result >> 1));
+        }
+        
+    	return true;
+    }
     
     public MapleInventoryType getType() {
         return type;

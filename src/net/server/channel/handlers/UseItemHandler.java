@@ -59,6 +59,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
                 return;
 	    } else if (itemId == 2050002) {
 		c.getPlayer().dispelDebuff(MapleDisease.WEAKEN);
+                c.getPlayer().dispelDebuff(MapleDisease.SLOW);
                 remove(c, slot);
                 return;
             } else if (itemId == 2050003) {
