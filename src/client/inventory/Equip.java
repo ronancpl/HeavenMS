@@ -542,14 +542,14 @@ public class Equip extends Item {
         return true;
     }
     
-    public void showEquipFeatures(MapleClient c) {
+    public String showEquipFeatures(MapleClient c) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        if(!ii.isUpgradeable(this.getItemId())) return;
+        if(!ii.isUpgradeable(this.getItemId())) return "";
         
         String eqpName = ii.getName(getItemId());
-        String eqpInfo = reachedMaxLevel(eqpName) ? " - MAX LEVEL" : (" EXP: " + itemExp + " / " + ExpTable.getEquipExpNeededForLevel(itemLevel));
+        String eqpInfo = reachedMaxLevel(eqpName) ? " #e#rMAX LEVEL#k#n" : (" EXP: #e#b" + (int)itemExp + "#k#n / " + ExpTable.getEquipExpNeededForLevel(itemLevel));
         
-        c.getPlayer().dropMessage(5, "'" + eqpName + "' -> Level: " + itemLevel + eqpInfo);
+        return "'" + eqpName + "' -> LV: #e#b" + itemLevel + "#k#n    " + eqpInfo + "\r\n";
     }
 
     public final void showLevelupMessage(String msg, MapleClient c) {

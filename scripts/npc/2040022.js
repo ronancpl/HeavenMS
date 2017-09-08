@@ -200,10 +200,14 @@ function action(mode, type, selection) {
 		    
         if(!cm.canHold(item, 1)) {
             cm.sendOk("Verify for a slot in your inventory first.");
+            cm.dispose();
+            return;
         }
         else if (cm.getMeso() < cost)
         {
             cm.sendOk("I'm afraid my fees are non-negotiable.");
+            cm.dispose();
+            return;
         }
         else
         {

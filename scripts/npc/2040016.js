@@ -259,25 +259,26 @@ function action(mode, type, selection) {
             else {
                 if (!cm.haveItem(mats, matQty * qty)) complete=false;
             }
-        }
-			
-        if (!complete)
-            cm.sendOk("Hold it, I can't finish that without all of the proper materials. Bring them first, then we'll talk.");
-        else {
-            if (mats instanceof Array) {
-                for (var i = 0; i < mats.length; i++){
-                    cm.gainItem(mats[i], -matQty[i] * qty);
+            
+            if (!complete)
+                cm.sendOk("Hold it, I can't finish that without all of the proper materials. Bring them first, then we'll talk.");
+            else {
+                if (mats instanceof Array) {
+                    for (var i = 0; i < mats.length; i++){
+                        cm.gainItem(mats[i], -matQty[i] * qty);
+                    }
                 }
+                else
+                    cm.gainItem(mats, -matQty * qty);
+
+                if (cost > 0)
+                    cm.gainMeso(-cost * qty);
+
+                cm.gainItem(recvItem, recvQty);
+                cm.sendOk("All done. If you need anything else, you know where to find me.");
             }
-            else
-                cm.gainItem(mats, -matQty * qty);
-					
-            if (cost > 0)
-                cm.gainMeso(-cost * qty);
-				
-            cm.gainItem(recvItem, recvQty);
-            cm.sendOk("All done. If you need anything else, you know where to find me.");
         }
+	
         cm.dispose();
     }
 }

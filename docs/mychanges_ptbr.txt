@@ -501,3 +501,23 @@ Pets em outros slots agora equipam devidamente.
 31 Agosto 2017,
 Refatorado autoassigner para focar nos stats primários a partir da avaliação do valor base do stat secundário com o 1º e 2º equips mais forte, ao invés de somente o 1º.
 Corrigido bug de acesso concorrente no sistema de rate cupons.
+
+01 Setembro 2017,
+Comando rates e equiplv agora usam visual ao invés de escrever no chat.
+Corrigido NPC crafters crashando o cliente no caso onde o player não tem slot disponível para o novo item.
+
+02 Setembro 2017,
+Refatorado sistema de schedules para mounts e pets. Agora o server passa a instanciar as chamadas às funções que definem "cansaço" nos animais, ao invés de instanciar uma task para cada.
+
+04 Setembro 2017,
+Adicionado sistema de exclusão de itens (pet feature) no server.
+Party recebe update de HP de jogadores ao ressucitarem na city.
+Flash Jump's levam o update necessário ao trocar de job. 3a pessoa agora pode ver a animação do FJ.
+
+05 Setembro 2017,
+Corrigido mais alguns aspectos do autoassigner.
+Corrigido itens saindo para fora do mapa. Nova posição do drop leva em conta as bordas da camera do jogador.
+
+07 Setembro 2017,
+Adicionado Vega's Spell.
+3rd job event agora possui tempo-limite e verifica se há jogadores já enfrentando o desafio.

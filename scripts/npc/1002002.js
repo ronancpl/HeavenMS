@@ -60,7 +60,7 @@ function action(mode, type, selection) {
                 if(selection == 0)
                     cm.gainMeso(-1500);
                 cm.getPlayer().saveLocation("FLORINA");
-                cm.warp(110000000);
+                cm.warp(110000000, "st00");
             }
             cm.dispose();
         }

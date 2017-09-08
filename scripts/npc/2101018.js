@@ -1,8 +1,8 @@
 /*
-	This file is part of the OdinMS Maple Story Server
+    This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    Matthias Butz <matze@odinms.de>
+    Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -13,11 +13,18 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    See the GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+	NPC NAME: Cesar (1)
+	NPC ID: 2101018
+	Author: Vcoc
+	Function: AriantPQ
 */
 
 status = -1;
@@ -33,7 +40,7 @@ function start() {
 function action(mode, type, selection){
     status++;
     if (status == 4){
-        cm.getPlayer().saveLocation("ARIANT");
+        cm.getPlayer().saveLocation("MIRROR");
         cm.warp(980010000, 3);
         cm.dispose();
     }

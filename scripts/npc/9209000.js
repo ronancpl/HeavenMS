@@ -34,7 +34,7 @@ function action(mode, type, selection) {
             masterybook = cm.getAvailableMasteryBooks();
 
             if(skillbook.length == 0 && masterybook.length == 0) {
-                cm.sendOk(greeting + "There are no more books available to further improve your job skills for now. Either you maxed out everything or you didn't reach the minimum requisites for some skill books yet.");
+                cm.sendOk(greeting + "There are no more books available to further improve your job skills for now. Either you #bmaxed out everything#k or #byou didn't reach the minimum requisites to use some skill books#k yet.");
                 cm.dispose();
 
             } else if(skillbook.length > 0 && masterybook.length > 0) {

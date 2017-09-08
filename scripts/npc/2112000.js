@@ -96,7 +96,8 @@ function action(mode, type, selection) {
 
                                                 var mapobj = eim.getMapInstance(926100401);
                                                 var bossobj = MapleLifeFactory.getMonster(9300139);
-                                                mapobj.spawnMonsterOnGroundBelow(bossobj, new Packages.java.awt.Point(250, 100));
+                                                
+                                                mapobj.spawnMonsterWithEffect(bossobj, 13, new Packages.java.awt.Point(250, 100));
 
                                                 eim.setIntProperty("statusStg7", 1);
                                                 eim.setIntProperty("yuletePassed", -1);
@@ -106,7 +107,8 @@ function action(mode, type, selection) {
 
                                                 var mapobj = eim.getMapInstance(926100401);
                                                 var bossobj = MapleLifeFactory.getMonster(9300140);
-                                                mapobj.spawnMonsterOnGroundBelow(bossobj, new Packages.java.awt.Point(250, 100));
+                                                
+                                                mapobj.spawnMonsterWithEffect(bossobj, 14, new Packages.java.awt.Point(250, 100));
 
                                                 eim.setIntProperty("statusStg7", 2);
                                                 eim.setIntProperty("yuletePassed", -1);

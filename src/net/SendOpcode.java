@@ -201,7 +201,7 @@ public enum SendOpcode {
     MOVE_PET(0xAA),
     PET_CHAT(0xAB),
     PET_NAMECHANGE(0xAC),
-    PET_SHOW(0xAD),
+    PET_EXCEPTION_LIST(0xAD),
     PET_COMMAND(0xAE),
     SPAWN_SPECIAL_MAPOBJECT(0xAF),
     REMOVE_SPECIAL_MAPOBJECT(0xB0),
@@ -334,7 +334,8 @@ public enum SendOpcode {
     ENABLE_TV(0x157),
     MTS_OPERATION2(0x15B),
     MTS_OPERATION(0x15C),
-    VICIOUS_HAMMER(0x162);
+    VICIOUS_HAMMER(0x162),
+    VEGA_SCROLL(0x166);
     private int code = -2;
 
     private SendOpcode(int code) {

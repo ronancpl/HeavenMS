@@ -83,6 +83,7 @@ import client.MapleCharacter.SkillEntry;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamilyEntry;
+import client.MapleJob;
 import client.MapleKeyBinding;
 import client.MapleMount;
 import client.MapleQuestStatus;
@@ -1823,7 +1824,16 @@ public class MaplePacketCreator {
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.writeShort(0);
                 mplew.write(0);
+                
                 mplew.writeShort(chr.getJob().getId());
+                
+                /* replace "mplew.writeShort(chr.getJob().getId())" with this snippet for 3rd party FJ animation on all classes
+                if (chr.getJob().isA(MapleJob.HERMIT) || chr.getJob().isA(MapleJob.DAWNWARRIOR2) || chr.getJob().isA(MapleJob.NIGHTWALKER2)) {
+			mplew.writeShort(chr.getJob().getId());
+                } else {
+			mplew.writeShort(412);
+                }*/
+                
                 addCharLook(mplew, chr, false);
                 mplew.writeInt(chr.getInventory(MapleInventoryType.CASH).countById(5110000));
                 mplew.writeInt(chr.getItemEffect());
@@ -2000,7 +2010,7 @@ public class MaplePacketCreator {
                 mplew.writeShort(SendOpcode.SUMMON_ATTACK.getValue());
                 mplew.writeInt(cid);
                 mplew.writeInt(summonOid);
-                mplew.write(direction);
+                mplew.write(0);     // char level
                 mplew.write(direction);
                 mplew.write(allDamage.size());
                 for (SummonAttackEntry attackEntry : allDamage) {
@@ -4327,6 +4337,19 @@ public class MaplePacketCreator {
                 mplew.write(0);
                 mplew.writeMapleAsciiString(newname);
                 mplew.write(0);
+                return mplew.getPacket();
+        }
+        
+        public static final byte[] loadExceptionList(final int cid, final int petId, final byte petIdx, final List<Integer> data) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PET_EXCEPTION_LIST.getValue());
+                mplew.writeInt(cid);
+                mplew.write(petIdx);
+                mplew.writeLong(petId);
+                mplew.write(data.size());
+                for (final Integer ids : data) {
+                        mplew.writeInt(ids);
+                }
                 return mplew.getPacket();
         }
 
@@ -6884,6 +6907,13 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] sendVegaScroll(int op) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
+                mplew.writeShort(SendOpcode.VEGA_SCROLL.getValue());
+                mplew.write(op);
+                return mplew.getPacket();
+        }
+        
         public static byte[] resetForcedStats() {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(2);
                 mplew.writeShort(SendOpcode.FORCED_STAT_RESET.getValue());

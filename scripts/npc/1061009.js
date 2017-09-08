@@ -19,34 +19,52 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Door of Dimension
+/* 1061009 - Door of Dimension
 	Enter 3rd job event
 */
 
-function start() {
-    if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)) {
-        if (cm.getPlayer().getMapId() == 105070001 && (cm.getJobId() >= 110 && cm.getJobId() <= 130))
-            cm.warp(108010300);
-        else if (cm.getPlayer().getMapId() == 105040305 && (cm.getJobId() >= 310 && cm.getJobId() <= 320))
-            cm.warp(108010100);
-        else if (cm.getPlayer().getMapId() == 100040106 && (cm.getJobId() >= 210 && cm.getJobId() <= 230))
-            cm.warp(108010200);
-        else if (cm.getPlayer().getMapId() == 107000402 && (cm.getJobId() >= 410 && cm.getJobId() <= 420))
-            cm.warp(108010400);
-        else if (cm.getPlayer().getMapId() == 105070200 && (cm.getJobId() >= 510 && cm.getJobId() <= 520))
-            cm.warp(108010500);
-    }
-    cm.dispose();
-/*20 minutes*/
+function jobString(niche) {
+    if(niche == 1) return "warrior";
+    else if(niche == 2) return "magician";
+    else if(niche == 3) return "bowman";
+    else if(niche == 4) return "thief";
+    else if(niche == 5) return "pirate";
+    
+    return "beginner";
 }
 
-/*
+function canEnterDimensionMap(mapid, jobid) {
+    if (mapid == 105070001 && (jobid >= 110 && jobid <= 130))
+        return true;
+    else if (mapid == 105040305 && (jobid >= 310 && jobid <= 320))
+        return true;
+    else if (mapid == 100040106 && (jobid >= 210 && jobid <= 230))
+        return true;
+    else if (mapid == 107000402 && (jobid >= 410 && jobid <= 420))
+        return true;
+    else if (mapid == 105070200 && (jobid >= 510 && jobid <= 520))
+        return true;
+    
+    return false;
+}
 
-1061010 - Crystal NPC
-*/
-/*var em = cm.getEventManager("3rdjob");
+function start() {
+    if (canEnterDimensionMap(cm.getMapId(), cm.getJob().getId()) && cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)) {
+        var js = jobString(cm.getPlayer().getJob().getJobNiche());
+        
+        var em = cm.getEventManager("3rdJob_" + js);
         if (em == null)
-            cm.sendOk("Sorry, but 3rd job advancement is closed.");
-        else
-            em.newInstance(cm.getPlayer().getName()).registerPlayer(cm.getPlayer());
-*/
+            cm.sendOk("Sorry, but 3rd job advancement (" + js + ") is closed.");
+        else {
+            if (em.getProperty("noEntry") == "false") {
+                var eim = em.newInstance("3rdjob_" + js);
+                eim.registerPlayer(cm.getPlayer());
+            }
+            else {
+                cm.sendOk("Someone else is already challenging the clone. Please wait until the area is cleared.");
+            }
+        }
+    }
+    
+    cm.dispose();
+}

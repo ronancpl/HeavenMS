@@ -375,7 +375,7 @@ public class AbstractPlayerInteraction {
             getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showPet(c.getPlayer(), evolved, false, false), true);
             c.announce(MaplePacketCreator.petStatUpdate(c.getPlayer()));
             c.announce(MaplePacketCreator.enableActions());
-            getPlayer().startFullnessSchedule(PetDataFactory.getHunger(evolved.getItemId()), evolved, getPlayer().getPetIndex(evolved));
+            chr.getClient().getWorldServer().registerPetHunger(chr, chr.getPetIndex(evolved));
             */
             
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, target.getPosition(), (short) 1, false);
@@ -452,7 +452,7 @@ public class AbstractPlayerInteraction {
                                 }
                                 
                                 if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true)
-                                    item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, c.getPlayer().isGM());
+                                    item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 0, c.getPlayer().isGM());
 			} else {
 				item = new Item(id, (short) 0, quantity, petId);
 			}

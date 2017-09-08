@@ -62,10 +62,12 @@ function action(mode, type, selection) {
 			cm.sendYesNo("The plane is taking off soon, are you sure you want to leave now? The ticket is not refundable.");
 			airport = 1;
 		} else if (cm.getMapId() == 540010002) {
-			cm.sendYesNo("We're reaching Kerning City in a minute, are you sure you want to leave now? The ticket is not refundable.");
+			cm.sendOk("We're reaching Kerning City in a minute, please sit down and wait.");
+                        cm.dispose();
 			s2k = 1;
 		} else if (cm.getMapId() == 540010101) {
-			cm.sendYesNo("We're reaching Singapore in a minute, are you sure you want to leave now? The ticket is not refundable.");
+			cm.sendOk("We're reaching Singapore in a minute, please sit down and wait.");
+                        cm.dispose();
 			k2s = 1;
 		}
 	} else if(status == 1) {

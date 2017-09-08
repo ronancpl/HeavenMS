@@ -24,15 +24,10 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import java.awt.Point;
 import java.io.File;
-import java.sql.PreparedStatement;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import client.inventory.PetDataFactory;
 import client.SkillFactory;
-import java.sql.Connection;
-import java.sql.SQLException;
-import tools.DatabaseConnection;
 import net.AbstractMaplePacketHandler;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -95,7 +90,8 @@ public final class SpawnPetHandler extends AbstractMaplePacketHandler {
             chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showPet(c.getPlayer(), pet, false, false), true);
             c.announce(MaplePacketCreator.petStatUpdate(c.getPlayer()));
             c.announce(MaplePacketCreator.enableActions());
-            chr.startFullnessSchedule(PetDataFactory.getHunger(pet.getItemId()), pet, chr.getPetIndex(pet));
+                    
+            chr.getClient().getWorldServer().registerPetHunger(chr, chr.getPetIndex(pet));
         }
     }
 }

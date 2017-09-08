@@ -85,28 +85,32 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     if (damage > 0) {
-                        loseItems = map.getMonsterById(monsteridfrom).getStats().loseItem();
-                        if (loseItems != null) {
-                            MapleInventoryType type;
-                            final int playerpos = player.getPosition().x;
-                            byte d = 1;
-                            Point pos = new Point(0, player.getPosition().y);
-                            for (loseItem loseItem : loseItems) {
-                                type = MapleItemInformationProvider.getInstance().getInventoryType(loseItem.getId());
-                                for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
-                                    if (Randomizer.nextInt(101) >= loseItem.getChance()) {
-                                        if (player.haveItem(loseItem.getId())) {
-                                            pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
-                                            MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
-                                            map.spawnItemDrop(c.getPlayer(), c.getPlayer(), new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, player.getPosition()), true, true);
-                                            d++;
-                                        } else {
-                                            break;
+                        MapleMonster assaulter = map.getMonsterById(monsteridfrom);
+                        
+                        if(assaulter != null) {
+                            loseItems = assaulter.getStats().loseItem();
+                            if (loseItems != null) {
+                                MapleInventoryType type;
+                                final int playerpos = player.getPosition().x;
+                                byte d = 1;
+                                Point pos = new Point(0, player.getPosition().y);
+                                for (loseItem loseItem : loseItems) {
+                                    type = MapleItemInformationProvider.getInstance().getInventoryType(loseItem.getId());
+                                    for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
+                                        if (Randomizer.nextInt(101) >= loseItem.getChance()) {
+                                            if (player.haveItem(loseItem.getId())) {
+                                                pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
+                                                MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
+                                                map.spawnItemDrop(c.getPlayer(), c.getPlayer(), new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, player.getPosition()), true, true);
+                                                d++;
+                                            } else {
+                                                break;
+                                            }
                                         }
                                     }
                                 }
+                                map.removeMapObject(attacker);
                             }
-                            map.removeMapObject(attacker);
                         }
                     }
                 } else {

@@ -280,7 +280,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
 	public void gainCloseness(int closeness) {
 		for (MaplePet pet : getPlayer().getPets()) {
-                        pet.gainClosenessFullness(getPlayer(), closeness, 0, 0);
+                        if(pet != null) pet.gainClosenessFullness(getPlayer(), closeness, 0, 0);
 		}
 	}
 

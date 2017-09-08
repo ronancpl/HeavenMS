@@ -88,6 +88,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 							chr.setStance(0);
 						}
 						chr.setHp(50);
+                                                chr.updatePartyMemberHP();
 						chr.changeMap(to, to.getRandomPlayerSpawnpoint());
 					}
 				} else if (targetid != -1) {

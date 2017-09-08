@@ -28,9 +28,11 @@ import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import client.inventory.Equip;
+import client.inventory.Equip.ScrollResult;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.inventory.ModifyInventory;
 import constants.ItemConstants;
 
 import java.sql.SQLException;
@@ -56,7 +58,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        MapleCharacter player = c.getPlayer();
+        final MapleCharacter player = c.getPlayer();
         if (System.currentTimeMillis() - player.getLastUsedCashItem() < 3000) {
             player.dropMessage(1, "You have used a cash item recently. Wait a moment and try again.");
             c.announce(MaplePacketCreator.enableActions());
@@ -514,7 +516,65 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.sendHammerData(equip.getVicious()));
             player.forceUpdateItem(equip);
         } else if (itemType == 561) { //VEGA'S SPELL
-            c.announce(MaplePacketCreator.enableActions());
+            if (slea.readInt() != 1) {
+                return;
+            }
+            
+            final byte eSlot = (byte) slea.readInt();
+            final Item eitem = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem(eSlot);
+            
+            if (slea.readInt() != 2) {
+                return;
+            }
+            
+            final byte uSlot = (byte) slea.readInt();
+            final Item uitem = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(uSlot);
+            if (eitem == null || uitem == null) {
+                return;
+            }
+            
+            //should have a check here against PE hacks
+            
+            Equip toScroll = (Equip) eitem;
+            if (toScroll.getUpgradeSlots() < 1) {
+                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                return;
+            }
+            
+            c.getPlayer().toggleBlockCashShop();
+            
+            final int curlevel = toScroll.getLevel();
+            c.getSession().write(MaplePacketCreator.sendVegaScroll(0x40));
+            
+            final Equip scrolled = (Equip) ii.scrollEquipWithId(toScroll, uitem.getItemId(), false, itemId, c.getPlayer().isGM());
+            c.getSession().write(MaplePacketCreator.sendVegaScroll(scrolled.getLevel() > curlevel ? 0x41 : 0x43));
+            //opcodes 0x42, 0x44: "this item cannot be used"; 0x39, 0x45: crashes
+            
+            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, uSlot, (short) 1, false);
+            remove(c, itemId);
+            
+            final MapleClient client = c;
+            TimerManager.getInstance().schedule(new Runnable() {
+            	@Override
+            	public void run() {
+                    if(!player.isLoggedin()) return;
+                    
+                    player.toggleBlockCashShop();
+                    
+                    final List<ModifyInventory> mods = new ArrayList<>();
+                    mods.add(new ModifyInventory(3, scrolled));
+                    mods.add(new ModifyInventory(0, scrolled));
+                    client.announce(MaplePacketCreator.modifyInventory(true, mods));
+
+                    ScrollResult scrollResult = scrolled.getLevel() > curlevel ? ScrollResult.SUCCESS : ScrollResult.FAIL;
+                    player.getMap().broadcastMessage(MaplePacketCreator.getScrollEffect(player.getId(), scrollResult, false));
+                    if (eSlot < 0 && (scrollResult == ScrollResult.SUCCESS)) {
+                        player.equipChanged();
+                    }
+
+                    client.getSession().write(MaplePacketCreator.enableActions());
+            	}
+            }, 1000 * 3);
         } else {
             System.out.println("NEW CASH ITEM: " + itemType + "\n" + slea.toString());
             c.announce(MaplePacketCreator.enableActions());

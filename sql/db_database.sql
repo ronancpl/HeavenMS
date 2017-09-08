@@ -16369,6 +16369,13 @@ CREATE TABLE IF NOT EXISTS `pets` (
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `petignores` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `petid` int(10) unsigned NOT NULL ,
+  `itemid` int(10) unsigned NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `playernpcs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(13) NOT NULL,
@@ -20658,7 +20665,7 @@ INSERT INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `po
 (6486, 1337, 5072000, 1, 0, 8),
 (6487, 1337, 5390000, 1, 0, 9),
 (6488, 1337, 5390001, 1, 0, 10),
-(6489, 1337, 5390001, 1, 0, 11),
+(6489, 1337, 5390002, 1, 0, 11),
 (6490, 1337, 1452044, 1, 0, 12),
 (6491, 1337, 1472052, 1, 0, 13),
 (6492, 1337, 1462039, 1, 0, 14),
@@ -21214,7 +21221,8 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 (1052116, 2000003, 200, 208),
 (1052116, 2000002, 320, 212),
 (1052116, 2000001, 160, 216),
-(1052116, 2000000, 50, 220);
+(1052116, 2000000, 50, 220),
+(9120002, 2061003, 40, 0, 100);
 
 CREATE TABLE IF NOT EXISTS `skillmacros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

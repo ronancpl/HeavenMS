@@ -559,7 +559,7 @@ public class MapleItemInformationProvider {
         return (short)Math.min(Short.MAX_VALUE, value);
     }
     
-    public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, boolean isGM) {
+    public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
         if (equip instanceof Equip) {
             Equip nEquip = (Equip) equip;
             
@@ -567,7 +567,14 @@ public class MapleItemInformationProvider {
             Map<String, Integer> eqstats = this.getEquipStats(equip.getItemId());
             
             if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || isGM) {
-                if(isGM || rollSuccessChance((double)stats.get("success"))) {
+                double prop = (double)stats.get("success");
+                if (vegaItemId == 5610000) {
+                    prop = 30.0;
+                } else if (vegaItemId == 5610001) {
+                    prop = 90.0;
+                }
+                
+                if(isGM || rollSuccessChance(prop)) {
                     short flag = nEquip.getFlag();
                     switch (scrollId) {
                         case 2040727:

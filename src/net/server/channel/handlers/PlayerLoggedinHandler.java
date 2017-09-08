@@ -48,7 +48,6 @@ import client.MapleFamily;
 import client.SkillFactory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import client.inventory.PetDataFactory;
 import constants.GameConstants;
 import constants.ServerConstants;
 
@@ -246,7 +245,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if(newcomer) {
             for(MaplePet pet : player.getPets()) {
                 if(pet != null)
-                    player.startFullnessSchedule(PetDataFactory.getHunger(pet.getItemId()), pet, player.getPetIndex(pet));
+                    world.registerPetHunger(player, player.getPetIndex(pet));
             }
             
             player.reloadQuestExpirations();
@@ -261,6 +260,9 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (GameConstants.hasSPTable(player.getJob()) && player.getJob().getId() != 2001) {
                 player.createDragon();
         }
+        
+        player.commitExcludedItems();
+        
         if (newcomer){
             /*
             if (!c.hasVotedAlready()){
@@ -279,5 +281,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
         player.setWorldRates();
         player.updateCouponRates();
+        
+        player.receivePartyMemberHP();
     }
 }

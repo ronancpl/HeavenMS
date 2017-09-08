@@ -4,7 +4,6 @@
     <string name="bgm" value="Bgm01/MoonlightShadow"/>
     <int name="cloud" value="0"/>
     <int name="swim" value="0"/>
-    <int name="forcedReturn" value="999999999"/>
     <int name="hideMinimap" value="0"/>
     <string name="mapDesc" value=""/>
     <string name="mapName" value=""/>
@@ -14,7 +13,8 @@
     <int name="returnMap" value="193000000"/>
     <int name="town" value="0"/>
     <int name="version" value="10"/>
-    <int name="fieldLimit" value="8192"/>
+    <int name="fieldLimit" value="270972"/>
+    <int name="forcedReturn" value="193000000"/>
   </imgdir>
   <imgdir name="miniMap">
     <canvas name="canvas" width="120" height="187">
@@ -3104,14 +3104,6 @@
       <string name="pn" value="up11"/>
     </imgdir>
     <imgdir name="12">
-      <int name="x" value="1139"/>
-      <int name="y" value="-1100"/>
-      <int name="pt" value="1"/>
-      <int name="tm" value="999999999"/>
-      <string name="tn" value=""/>
-      <string name="pn" value="up12"/>
-    </imgdir>
-    <imgdir name="13">
       <int name="x" value="-115"/>
       <int name="y" value="-1358"/>
       <int name="pt" value="1"/>
@@ -3119,7 +3111,7 @@
       <string name="tn" value="out00"/>
       <string name="pn" value="in00"/>
     </imgdir>
-    <imgdir name="14">
+    <imgdir name="13">
       <int name="x" value="-54"/>
       <int name="y" value="-2182"/>
       <int name="pt" value="1"/>
@@ -3127,13 +3119,15 @@
       <string name="tn" value="out01"/>
       <string name="pn" value="in01"/>
     </imgdir>
-    <imgdir name="15">
-      <int name="x" value="291"/>
-      <int name="y" value="-1225"/>
-      <int name="pt" value="2"/>
-      <int name="tm" value="193000000"/>
-      <string name="tn" value="st00"/>
-      <string name="pn" value="out00"/>
+    <imgdir name="14">
+      <int name="x" value="1134"/>
+      <int name="y" value="-1100"/>
+      <int name="pt" value="1"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="up12"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
     </imgdir>
   </imgdir>
   <imgdir name="reactor">
@@ -5879,6 +5873,18 @@
       <int name="f" value="0"/>
       <string name="type" value="m"/>
       <int name="fh" value="63"/>
+    </imgdir>
+    <imgdir name="78">
+      <string name="id" value="1052013"/>
+      <int name="x" value="858"/>
+      <int name="y" value="-1111"/>
+      <int name="cy" value="-1103"/>
+      <int name="mobTime" value="0"/>
+      <int name="rx0" value="838"/>
+      <int name="rx1" value="878"/>
+      <int name="f" value="0"/>
+      <string name="type" value="n"/>
+      <int name="fh" value="132"/>
     </imgdir>
   </imgdir>
 </imgdir>

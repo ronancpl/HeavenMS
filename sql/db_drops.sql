@@ -19816,8 +19816,9 @@ USE `maplesolaxia`;
 (9420501, 1492005, 1, 1, 0, 2000),
 (8820001, 2388043, 1, 1, 0, 24000);
 
-  # delete item drops from Seruf in inactive form
+  # delete item drops from bosses in inactive form
   DELETE FROM temp_data WHERE dropperid=4220001;
+  DELETE FROM temp_data WHERE dropperid=5220001;
 
   # delete item drops from summoned Slimes
   DELETE FROM temp_data WHERE dropperid=9500100;
@@ -19917,8 +19918,8 @@ USE `maplesolaxia`;
   DELETE FROM drop_data WHERE dropperid >= 9300054 AND dropperid <= 9300056;
   DELETE FROM drop_data WHERE dropperid >= 9300143 AND dropperid <= 9300144;
   DELETE FROM drop_data WHERE dropperid >= 8810019 AND dropperid <= 8810023;
+  DELETE FROM drop_data WHERE dropperid = 9300157;
   DELETE FROM drop_data WHERE dropperid = 9500100;
-
   DELETE FROM drop_data where dropperid >= 9300141 AND dropperid <= 9300154 AND (itemid < 4001130 OR itemid >= 4001136);
 
   # remove key of dimension dropping outside PQ
@@ -19930,6 +19931,41 @@ USE `maplesolaxia`;
   # remove every non-card drop from bosses out of their natural habitat
   DELETE FROM drop_data WHERE dropperid >= 9300184 AND dropperid < 9300215 AND (itemid < 2380000 OR itemid >= 2390000);
   DELETE FROM drop_data WHERE dropperid >= 9500337 AND dropperid < 9500364 AND (itemid < 2380000 OR itemid >= 2390000);
+
+  # reinsert loot for Dark Nependeath
+  DELETE FROM drop_data WHERE dropperid=4130104;
+  INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(4130104, 4000062, 1, 1, 0, 600000),
+(4130104, 2041014, 1, 1, 0, 300),
+(4130104, 4004004, 1, 1, 0, 10000),
+(4130104, 2000002, 1, 1, 0, 20000),
+(4130104, 2000004, 1, 1, 0, 20000),
+(4130104, 2000003, 1, 1, 0, 20000),
+(4130104, 4020006, 1, 1, 0, 9000),
+(4130104, 4010003, 1, 1, 0, 9000),
+(4130104, 4004000, 1, 1, 0, 10000),
+(4130104, 1302013, 1, 1, 0, 700),
+(4130104, 2044201, 1, 1, 0, 300),
+(4130104, 4006001, 1, 1, 0, 10000),
+(4130104, 1051027, 1, 1, 0, 700),
+(4130104, 1002092, 1, 1, 0, 1500),
+(4130104, 1040080, 1, 1, 0, 800),
+(4130104, 1060068, 1, 1, 0, 800),
+(4130104, 1072110, 1, 1, 0, 800),
+(4130104, 1082063, 1, 1, 0, 1000),
+(4130104, 1041087, 1, 1, 0, 800),
+(4130104, 1061086, 1, 1, 0, 800),
+(4130104, 1040095, 1, 1, 0, 800),
+(4130104, 1060084, 1, 1, 0, 800),
+(4130104, 1082084, 1, 1, 0, 1000),
+(4130104, 1072132, 1, 1, 0, 800),
+(4130104, 4130000, 1, 1, 0, 6000),
+(4130104, 4130003, 1, 1, 0, 6000),
+(4130104, 4130013, 1, 1, 0, 6000),
+(4130104, 2383003, 1, 1, 0, 8000),
+(4130104, 0, 172, 258, 0, 400000),
+(4130104, 1040096, 1, 1, 0, 700),
+(4130104, 1060085, 1, 1, 0, 700);
 
   # reinsert dojo loot
   INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES

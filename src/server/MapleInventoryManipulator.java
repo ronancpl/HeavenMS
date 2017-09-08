@@ -537,7 +537,7 @@ public class MapleInventoryManipulator {
                 c.getPlayer().setChalkboard(null);
             }
         }
-        if ((!ItemConstants.isRechargable(itemId) && c.getPlayer().getItemQuantity(itemId, true) < quantity) || quantity < 0 || source == null) {
+        if (source == null || (!ItemConstants.isRechargable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
         Point dropPos = new Point(c.getPlayer().getPosition());

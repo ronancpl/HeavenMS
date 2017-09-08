@@ -38,6 +38,11 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
         try {
             MapleCharacter mc = c.getPlayer();
 
+            if (mc.cannotEnterCashShop()) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
             if (mc.getCashShop().isOpened()) {
                 return;
             }

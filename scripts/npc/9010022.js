@@ -27,29 +27,31 @@ function action(mode, type, selection) {
                 cm.dispose(); 
             } else { 
                 var selStr = ""; 
-                if (cm.getLevel() >= 20 && cm.getLevel() <= 30) { 
+                /*if (cm.getLevel() >= 20 && cm.getLevel() <= 30) { NOT IMPLEMENTED
                     selStr += "#0# Ariant Coliseum"; 
-                } 
+                } */
 
                 if (cm.getLevel() >= 25) { 
                     selStr += "#1# Mu Lung Dojo"; 
                 } 
 
-                if (cm.getLevel() >= 30 && cm.getLevel() <= 50) { 
+                /*if (cm.getLevel() >= 30 && cm.getLevel() <= 50) { NOT IMPLEMENTED
                     selStr += "#2# Monster Carnival 1"; 
                 } 
 
-                if (cm.getLevel() >= 51 && cm.getLevel() <= 70) { 
+                if (cm.getLevel() >= 51 && cm.getLevel() <= 70) { NOT IMPLEMENTED
                     selStr += "#3# Monster Carnival 2"; 
                 } 
 
-                if (cm.getLevel() >= 40) { 
+                if (cm.getLevel() >= 40) { NOT IMPLEMENTED
                     selStr += "#5# Nett's Pyramid"; 
                 } 
 
-                if (cm.getLevel() >= 25 && cm.getLevel() <= 30) { 
+                if (cm.getLevel() >= 25 && cm.getLevel() <= 30) { NOT IMPLEMENTED
                     selStr += "#6# Construction Site"; 
                 } 
+                */
+                
                 cm.sendDimensionalMirror(selStr); 
             } 
         } else if (status == 1) { 

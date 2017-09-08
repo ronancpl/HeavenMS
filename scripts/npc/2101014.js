@@ -1,8 +1,8 @@
 /*
-	This file is part of the OdinMS Maple Story Server
+    This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    Matthias Butz <matze@odinms.de>
+    Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -13,11 +13,18 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    See the GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+	NPC NAME: Cesar (2)
+	NPC ID: 2101014
+	Author: Vcoc
+	Function: AriantPQ
 */
 
 status = -1;
@@ -36,7 +43,7 @@ function start() {
             if(cm.getPlayerCount(980010101 + (i * 100)) > 0)
                 continue;
             else
-                text += "\r\n#L" + i + "# Battle Arena " + (i + 1) + "([" + cm.getPlayerCount(980010100 + (i * 100)) + "/" + cm.getPlayer().getAriantSlotsRoom(i) + "] users" + cm.getPlayer().getAriantRoomLeaderName(i) + "/Lv 20~29 )#l";
+                text += "\r\n#L" + i + "# Battle Arena " + (i + 1) + "([" + cm.getPlayerCount(980010100 + (i * 100)) + "/" + cm.getPlayer().getAriantSlotsRoom(i) + "]  users: " + cm.getPlayer().getAriantRoomLeaderName(i) + ")#l";
         else{
             empty[i] = true;
             text += "\r\n#L" + i + "# Battle Arena " + (i + 1) + "( Empty )#l";
@@ -95,7 +102,7 @@ function action(mode, type, selection){
     }else if (status == 2)
         cm.sendNextPrev("It's simple. If you absorb the power of the monster #b#t2270002##k, then you'll make #b#t4031868##k, which is something Queen Areda loves. The combatant with the most jewels wins the match. It's actually a smart idea to prevent others from absorbing in order to win.");
     else if (status == 3)
-        cm.sendNextPrev("One thing. #rYou may not use pets for this.#k Understood?~!");
+        cm.sendNextPrev("One thing. Using #b#t2100067##k, you can steal #b#t4031868##k from your enemies. Warning: #rYou may not use pets for this.#k Understood?!");
     else if (status == 4)
         cm.dispose();
 }

@@ -80,9 +80,10 @@ function action(mode, type, selection) {
                     cm.dispose();
                 } else
                     access = true;
-            } if (access) {
+            }
+            if (access) {
                 cm.getPlayer().saveLocation("FLORINA");
-                cm.warp(110000000);
+                cm.warp(110000000, "st00");
                 cm.dispose();
             }
         } else if (status == 3) 

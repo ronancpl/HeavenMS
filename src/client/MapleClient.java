@@ -154,7 +154,7 @@ public class MapleClient {
         }
 
 	public void sendCharList(int server) {
-		this.session.write(MaplePacketCreator.getCharList(this, server));
+		this.announce(MaplePacketCreator.getCharList(this, server));
 	}
 
 	public List<MapleCharacter> loadCharacters(int serverId) {
@@ -1318,6 +1318,7 @@ public class MapleClient {
 		}
 		player.getInventory(MapleInventoryType.EQUIPPED).checked(false); //test
 		player.getMap().removePlayer(player);
+                player.clearBanishPlayerData();
 		player.getClient().getChannelServer().removePlayer(player);
 		player.getClient().updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 		try {

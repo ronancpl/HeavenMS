@@ -21,10 +21,6 @@
 */
 package client;
 
-import java.util.concurrent.ScheduledFuture;
-import server.TimerManager;
-import tools.MaplePacketCreator;
-
 /**
  * @author PurpleMadness Patrick :O
  */
@@ -34,7 +30,6 @@ public class MapleMount {
     private int tiredness;
     private int exp;
     private int level;
-    private ScheduledFuture<?> tirednessSchedule;
     private MapleCharacter owner;
     private boolean active;
 
@@ -95,21 +90,10 @@ public class MapleMount {
             tiredness = 0;
         }
     }
-
-    private void increaseTiredness() {
-        if(owner != null) {
-            this.tiredness++;
-            owner.getMap().broadcastMessage(MaplePacketCreator.updateMount(owner.getId(), this, false));
-            if (tiredness > 99) {
-                this.tiredness = 99;
-                owner.dispelSkill(owner.getJobType() * 10000000 + 1004);
-                owner.dropMessage(6, "Your mount grew tired! Treat it some revitalizer before riding it again!");
-            }
-        } else {
-            if(this.tirednessSchedule != null) {
-                this.tirednessSchedule.cancel(false);
-            }
-        }
+    
+    public int incrementAndGetTiredness() {
+        this.tiredness++;
+        return this.tiredness;
     }
 
     public void setExp(int newexp) {
@@ -124,21 +108,6 @@ public class MapleMount {
         this.itemid = newitemid;
     }
 
-    public void startSchedule() {
-        this.tirednessSchedule = TimerManager.getInstance().register(new Runnable() {
-            @Override
-            public void run() {
-                increaseTiredness();
-            }
-        }, 60000, 60000);
-    }
-
-    public void cancelSchedule() {
-        if (this.tirednessSchedule != null) {
-            this.tirednessSchedule.cancel(false);
-        }
-    }
-
     public void setActive(boolean set) {
         this.active = set;
     }
@@ -148,8 +117,7 @@ public class MapleMount {
     }
     
     public void empty() {
-        cancelSchedule();
-        this.tirednessSchedule = null;
+        if(owner != null) owner.getClient().getWorldServer().unregisterMountHunger(owner);
         this.owner = null;
     }    
 }

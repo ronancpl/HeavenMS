@@ -52,12 +52,16 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
+        int[] statGain = new int[4];
+        int[] statEqpd = new int[4];
+        
+        statGain[0] = 0; statGain[1] = 0; statGain[2] = 0; statGain[3] = 0;
         
         slea.skip(8);
         if (chr.getRemainingAp() < 1) return;
         
-        if(ServerConstants.USE_ANOTHER_AUTOASSIGNER == true) {
-            // ---------- Ronan Lana's AUTOASSIGNER -------------
+        if(ServerConstants.USE_SERVER_AUTOASSIGNER) {
+            // --------- Ronan Lana's AUTOASSIGNER ---------
             // This method excels for assigning APs in such a way to cover all equipments AP requirements.
             
             int str = 0, dex = 0, luk = 0, int_ = 0;
@@ -84,6 +88,11 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                 int_ += nEquip.getInt();
             }
             
+            statEqpd[0] = str;
+            statEqpd[1] = dex;
+            statEqpd[2] = luk;
+            statEqpd[3] = int_;
+            
             Collections.sort(eqpStrList, Collections.reverseOrder());
             Collections.sort(eqpDexList, Collections.reverseOrder());
             Collections.sort(eqpLukList, Collections.reverseOrder());
@@ -100,7 +109,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             MapleJob stance = c.getPlayer().getJobStyle();
             int prStat = 0, scStat = 0, trStat = 0, temp, tempAp = chr.getRemainingAp(), CAP;
             
-            MapleStat primary, secondary, tertiary = MapleStat.INT;
+            MapleStat primary, secondary, tertiary = MapleStat.LUK;
             switch(stance) {
                 case MAGICIAN:
                     CAP = 165;
@@ -124,6 +133,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                     
                     primary = MapleStat.INT;
                     secondary = MapleStat.LUK;
+                    tertiary = MapleStat.DEX;
                     
                     break;
                 
@@ -197,6 +207,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                     scStat += temp;
                     tempAp -= temp;
                     
+                    // thieves will upgrade STR as well only if a level-based threshold is reached.
                     if(chr.getStr() >= Math.max(13, (int)(0.4 * chr.getLevel()))) {
                         if(chr.getStr() < 50) {
                             trStat = (chr.getLevel() - 10) - (chr.getStr() + str - eqpStr);
@@ -205,7 +216,6 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                             trStat = Math.min(50 - chr.getStr(), trStat);
                             trStat = Math.min(tempAp, trStat);
                             tempAp -= trStat;
-                            tertiary = MapleStat.STR;
                         }
                     
                         temp = (20 + (chr.getLevel() / 2)) - Math.max(50, trStat + chr.getStr() + str - eqpStr);
@@ -234,6 +244,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                     
                     primary = MapleStat.LUK;
                     secondary = MapleStat.DEX;
+                    tertiary = MapleStat.STR;
                     
                     break;
                     
@@ -289,25 +300,28 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             }
             
             //-------------------------------------------------------------------------------------
-            int total = 0;
+            
             int extras = 0;
             
-            total += trStat;
-            extras += gainStatByType(chr, tertiary, trStat);
+            extras = gainStatByType(chr, primary, statGain, statEqpd, prStat + extras);
+            extras = gainStatByType(chr, secondary, statGain, statEqpd, scStat + extras);
+            extras = gainStatByType(chr, tertiary, statGain, statEqpd, trStat + extras);
+                        
+            if(extras > 0) {    //redistribute surplus in priority order
+                extras = gainStatByType(chr, primary, statGain, statEqpd, extras);
+                extras = gainStatByType(chr, secondary, statGain, statEqpd, extras);
+                extras = gainStatByType(chr, tertiary, statGain, statEqpd, extras);
+                gainStatByType(chr, getQuaternaryStat(stance), statGain, statEqpd, extras);
+            }
             
-            total += scStat;
-            extras += gainStatByType(chr, secondary, scStat);
-                
-            total += prStat;
-            extras += gainStatByType(chr, primary, prStat);
-
-            int remainingAp = (chr.getRemainingAp() - total) + extras;
+            int remainingAp = (chr.getRemainingAp() - getAccumulatedStatGain(statGain));
             chr.setRemainingAp(remainingAp);
             chr.updateSingleStat(MapleStat.AVAILABLEAP, remainingAp);
             c.announce(MaplePacketCreator.enableActions());
+            
             //----------------------------------------------------------------------------------------
             
-            c.announce(MaplePacketCreator.serverNotice(1, "Better AP applications detected:\r\nSTR: +" + str + "\r\nDEX: +" + dex + "\r\nINT: +" + int_ + "\r\nLUK: +" + luk));
+            c.announce(MaplePacketCreator.serverNotice(1, "Better AP applications detected:\r\nSTR: +" + statGain[0] + "\r\nDEX: +" + statGain[1] + "\r\nINT: +" + statGain[3] + "\r\nLUK: +" + statGain[2]));
         }
         else {
             int total = 0;
@@ -317,6 +331,18 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                 c.disconnect(false, false);
                 return;
             }
+            
+            MapleInventory iv = chr.getInventory(MapleInventoryType.EQUIPPED);
+            Collection<Item> equippedC = iv.list();
+            for (Item item : equippedC) {   //selecting the biggest AP value of each stat from each equipped item.
+            	Equip nEquip = (Equip)item;
+                
+                statEqpd[0] += nEquip.getStr();
+                statEqpd[1] += nEquip.getDex();
+                statEqpd[2] += nEquip.getLuk();
+                statEqpd[3] += nEquip.getInt();
+            }
+            
             for (int i = 0; i < 2; i++) {
                 int type = slea.readInt();
                 int tempVal = slea.readInt();
@@ -324,8 +350,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 total += tempVal;
-                System.out.println(tempVal);
-                extras += gainStatByType(chr, MapleStat.getBy5ByteEncoding(type), tempVal);
+                extras += gainStatByType(chr, MapleStat.getBy5ByteEncoding(type), statGain, statEqpd, tempVal);
             }
             int remainingAp = (chr.getRemainingAp() - total) + extras;
             chr.setRemainingAp(remainingAp);
@@ -334,42 +359,68 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private int gainStatByType(MapleCharacter chr, MapleStat type, int gain) {
+    private int gainStatByType(MapleCharacter chr, MapleStat type, int[] statGain, int[] statEqpd, int gain) {
+        if(gain <= 0) return 0;
+        
         int newVal = 0;
         if (type.equals(MapleStat.STR)) {
-            newVal = chr.getStr() + gain;
+            newVal = chr.getStr() + statEqpd[0] + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                chr.setStr(ServerConstants.MAX_AP);
+                statGain[0] += gain - (newVal - ServerConstants.MAX_AP);
+                chr.setStr(ServerConstants.MAX_AP - statEqpd[0]);
             } else {
+                statGain[0] += gain;
                 chr.setStr(newVal);
             }
         } else if (type.equals(MapleStat.INT)) {
-            newVal = chr.getInt() + gain;
+            newVal = chr.getInt() + statEqpd[3] + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                chr.setInt(ServerConstants.MAX_AP);
+                statGain[3] += gain - (newVal - ServerConstants.MAX_AP);
+                chr.setInt(ServerConstants.MAX_AP - statEqpd[3]);
             } else {
+                statGain[3] += gain;
                 chr.setInt(newVal);
             }
         } else if (type.equals(MapleStat.LUK)) {
-            newVal = chr.getLuk() + gain;
+            newVal = chr.getLuk() + statEqpd[2] + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                chr.setLuk(ServerConstants.MAX_AP);
+                statGain[2] += gain - (newVal - ServerConstants.MAX_AP);
+                chr.setLuk(ServerConstants.MAX_AP - statEqpd[2]);
             } else {
+                statGain[2] += gain;
                 chr.setLuk(newVal);
             }
         } else if (type.equals(MapleStat.DEX)) {
-            newVal = chr.getDex() + gain;
+            newVal = chr.getDex() + statEqpd[1] + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                chr.setDex(ServerConstants.MAX_AP);
+                statGain[1] += gain - (newVal - ServerConstants.MAX_AP);
+                chr.setDex(ServerConstants.MAX_AP - statEqpd[1]);
             } else {
+                statGain[1] += gain;
                 chr.setDex(newVal);
             }
         }
+        
         if (newVal > ServerConstants.MAX_AP) {
             chr.updateSingleStat(type, ServerConstants.MAX_AP);
             return newVal - ServerConstants.MAX_AP;
         }
         chr.updateSingleStat(type, newVal);
         return 0;
+    }
+    
+    private MapleStat getQuaternaryStat(MapleJob stance) {
+        if(stance != MapleJob.MAGICIAN) return MapleStat.INT;
+        return MapleStat.STR;
+    }
+    
+    private int getAccumulatedStatGain(int[] statGain) {
+        int acc = 0;
+        
+        for(byte i = 0; i < statGain.length; i++) {
+            acc += statGain[i];
+        }
+        
+        return acc;
     }
 }

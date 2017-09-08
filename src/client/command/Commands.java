@@ -489,42 +489,41 @@ public class Commands {
                 case "equiplv":
                         player.showAllEquipFeatures();
                         break;
-                    
-		case "rates":
-			//c.resetVoteTime();
-			player.yellowMessage("BOSSDROP RATE");
-			player.message(">>Total BOSSDROP Rate: " + c.getWorldServer().getBossDropRate() + "x");
-                        player.message(">>------------------------------------------------");
+
+                case "showrates":
+                        String showMsg = "#eEXP RATE#n" + "\r\n";
+                        showMsg += "Server EXP Rate: #k" + c.getWorldServer().getExpRate() + "x#k" + "\r\n";
+                        showMsg += "Player EXP Rate: #k" + player.getRawExpRate() + "x#k" + "\r\n";
+                        if(player.getCouponExpRate() != 1) showMsg += "Coupon EXP Rate: #k" + player.getCouponExpRate() + "x#k" + "\r\n";
+                        showMsg += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + "\r\n";
                         
-			player.yellowMessage("DROP RATE");
-                        player.message(">>Base DROP Rate: " + c.getWorldServer().getDropRate() + "x");
-                        player.message(">>Your DROP Rate: " + player.getRawDropRate() + "x");
-                        if(player.getCouponDropRate() != 1) player.message(">>Your Coupon DROP Rate: " + player.getCouponDropRate() + "x");
-                        player.message(">>------------------------------------------------");
-			player.message(">>Total DROP Rate: " + player.getDropRate() + "x");
-
-			player.yellowMessage("MESO RATE");
-			player.message(">>Base MESO Rate: " + c.getWorldServer().getMesoRate() + "x");
-                        player.message(">>Your MESO Rate: " + player.getRawMesoRate() + "x");
-                        if(player.getCouponMesoRate() != 1) player.message(">>Your Coupon MESO Rate: " + player.getCouponMesoRate() + "x");
-                        player.message(">>------------------------------------------------");
-			player.message(">>Total MESO Rate: " + player.getMesoRate() + "x");
-
-			player.yellowMessage("EXP RATE");
-			player.message(">>Base EXP Rate: " + c.getWorldServer().getExpRate() + "x");
-                        player.message(">>Your EXP Rate: " + player.getRawExpRate() + "x");
-                        if(player.getCouponExpRate() != 1) player.message(">>Your Coupon EXP Rate: " + player.getCouponExpRate() + "x");
-                        player.message(">>------------------------------------------------");
-                        player.message(">>Total EXP Rate: " + player.getExpRate() + "x");
-			/*if(c.getWorldServer().getExpRate() > ServerConstants.EXP_RATE) {
-				player.message(">>Event EXP bonus: " + (c.getWorldServer().getExpRate() - ServerConstants.EXP_RATE) + "x");
-			}
-			player.message(">>Voted EXP bonus: " + (c.hasVotedAlready() ? "1x" : "0x (If you vote now, you will earn an additional 1x EXP!)"));
-			
-			if (player.getLevel() < 10) {
-				player.message("Players under level 10 always have 1x exp.");
-			}*/
-			break;
+                        showMsg += "\r\n" + "#eMESO RATE#n" + "\r\n";
+                        showMsg += "Server MESO Rate: #k" + c.getWorldServer().getMesoRate() + "x#k" + "\r\n";
+                        showMsg += "Player MESO Rate: #k" + player.getRawMesoRate() + "x#k" + "\r\n";
+                        if(player.getCouponMesoRate() != 1) showMsg += "Coupon MESO Rate: #k" + player.getCouponMesoRate() + "x#k" + "\r\n";
+                        showMsg += "MESO Rate: #e#b" + player.getMesoRate() + "x#k#n" + "\r\n";
+                        
+                        showMsg += "\r\n" + "#eDROP RATE#n" + "\r\n";
+                        showMsg += "Server DROP Rate: #k" + c.getWorldServer().getDropRate() + "x#k" + "\r\n";
+                        showMsg += "Player DROP Rate: #k" + player.getRawDropRate() + "x#k" + "\r\n";
+                        if(player.getCouponDropRate() != 1) showMsg += "Coupon DROP Rate: #k" + player.getCouponDropRate() + "x#k" + "\r\n";
+                        showMsg += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
+                    
+                        showMsg += "\r\n" + "#eBOSSDROP RATE#n" + "\r\n";
+                        showMsg += "Server BOSSDROP Rate: #e#b" + c.getWorldServer().getBossDropRate() + "x#k#n" + "\r\n";
+                        
+                        player.showHint(showMsg);
+                    break;
+                     
+                case "rates":
+                        String showMsg_ = "#eCHARACTER RATES#n" + "\r\n\r\n";
+                        showMsg_ += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + "\r\n";
+                        showMsg_ += "MESO Rate: #e#b" + player.getMesoRate() + "x#k#n" + "\r\n";
+                        showMsg_ += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
+                        showMsg_ += "BOSSDROP Rate: #e#b" + c.getWorldServer().getBossDropRate() + "x#k#n" + "\r\n";
+                        
+                        player.showHint(showMsg_);
+                    break;
                     
 		case "online":
 			for (Channel ch : Server.getInstance().getChannelsFromWorld(player.getWorld())) {
@@ -788,13 +787,21 @@ public class Commands {
 			}
                         
 			if (sub.length == 2) {
-				player.setRemainingSp(Integer.parseInt(sub[1]));
+                                int newSp = Integer.parseInt(sub[1]);
+                                if(newSp < 0) newSp = 0;
+                                else if(newSp > ServerConstants.MAX_AP) newSp = ServerConstants.MAX_AP;
+                            
+				player.setRemainingSp(newSp);
 				player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
                                 
                                 if(victim != null) {
-                                        victim.setRemainingSp(Integer.parseInt(sub[2]));
+                                        int newSp = Integer.parseInt(sub[2]);
+                                        if(newSp < 0) newSp = 0;
+                                        else if(newSp > ServerConstants.MAX_AP) newSp = ServerConstants.MAX_AP;
+                                    
+                                        victim.setRemainingSp(newSp);
                                         victim.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
 
                                         player.dropMessage(5, "SP given.");
@@ -809,15 +816,23 @@ public class Commands {
 				player.yellowMessage("Syntax: !ap [<playername>] <newap>");
 				break;
 			}
-                    
+                        
 			if (sub.length < 3) {
-				player.setRemainingAp(Integer.parseInt(sub[1]));
+                                int newAp = Integer.parseInt(sub[1]);
+                                if(newAp < 0) newAp = 0;
+                                else if(newAp > ServerConstants.MAX_AP) newAp = ServerConstants.MAX_AP;
+                            
+				player.setRemainingAp(newAp);
 				player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
 			} else {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
                                 
                                 if(victim != null) {
-                                        victim.setRemainingAp(Integer.parseInt(sub[2]));
+                                        int newAp = Integer.parseInt(sub[2]);
+                                        if(newAp < 0) newAp = 0;
+                                        else if(newAp > ServerConstants.MAX_AP) newAp = ServerConstants.MAX_AP;
+                                        
+                                        victim.setRemainingAp(newAp);
                                         victim.updateSingleStat(MapleStat.AVAILABLEAP, victim.getRemainingAp());
                                 } else {
                                         player.message("Player '" + sub[1] + "' could not be found on this channel.");
@@ -1181,15 +1196,28 @@ public class Commands {
                     break;
                     
                 case "setstat":
-			final int x = Short.parseShort(sub[1]);
-			player.setStr(x);
-			player.setDex(x);
-			player.setInt(x);
-			player.setLuk(x);
-			player.updateSingleStat(MapleStat.STR, x);
-			player.updateSingleStat(MapleStat.DEX, x);
-			player.updateSingleStat(MapleStat.INT, x);
-			player.updateSingleStat(MapleStat.LUK, x);
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !setstat <newstat>");
+				break;
+			}
+                    
+                        int x;
+                        try {
+                            x = Integer.parseInt(sub[1]);
+                            
+                            if(x > Short.MAX_VALUE) x = Short.MAX_VALUE;
+                            else if(x < 0) x = 0;
+                            
+                            player.setStr(x);
+                            player.setDex(x);
+                            player.setInt(x);
+                            player.setLuk(x);
+                            player.updateSingleStat(MapleStat.STR, x);
+                            player.updateSingleStat(MapleStat.DEX, x);
+                            player.updateSingleStat(MapleStat.INT, x);
+                            player.updateSingleStat(MapleStat.LUK, x);
+                            
+                        } catch(NumberFormatException nfe) {}
                     break;
                     
                 case "maxstat":
@@ -2278,14 +2306,14 @@ public class Commands {
                         player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
                         break;
                     
-                case "debugnearestportal":
+                case "debugportal":
                         MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
                         if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
                         else player.dropMessage(6, "There is no portal on this map.");
                         
                         break;
                 
-                case "debugnearestspawnpoint":
+                case "debugspawnpoint":
                         SpawnPoint sp = player.getMap().findClosestSpawnpoint(player.getPosition());
                         if(sp != null) player.dropMessage(6, "Closest mob spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + sp.getMonsterId() + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
                         else player.dropMessage(6, "There is no mob spawn point on this map.");
@@ -2381,8 +2409,8 @@ public class Commands {
                             target.setGMLevel(newLevel);
                             target.getClient().setGMLevel(newLevel);
                             
-                            target.dropMessage("You are now a level " + newLevel + " GM");
-                            player.dropMessage(target + " is now a level " + newLevel + " GM");
+                            target.dropMessage("You are now a level " + newLevel + " GM. See @commands for a list of available commands.");
+                            player.dropMessage(target + " is now a level " + newLevel + " GM.");
                         } else {
                             player.dropMessage("Player '"+ sub[1] +"' was not found on this channel.");
                         }

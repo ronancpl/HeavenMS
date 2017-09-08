@@ -22,7 +22,6 @@
 package net.server.channel.handlers;
 
 import client.MapleCharacter;
-import constants.ExpTable;
 import client.MapleClient;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
@@ -61,7 +60,10 @@ public final class PetFoodHandler extends AbstractMaplePacketHandler {
                 }
             }
         }
+        
         MaplePet pet = chr.getPet(slot);
+        if(pet == null) return;
+        
         short pos = slea.readShort();
         int itemId = slea.readInt();
         Item use = chr.getInventory(MapleInventoryType.USE).getItem(pos);

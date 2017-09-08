@@ -99,6 +99,7 @@ public class MapleMap {
     private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
+    private Rectangle mapArea = new Rectangle();
     private int mapid;
     private AtomicInteger runningOid = new AtomicInteger(100);
     private int returnMapId;
@@ -433,7 +434,15 @@ public class MapleMap {
         Point ret = calcPointBelow(new Point(initial.x, initial.y - 85));
         if (ret == null) {
             return fallback;
+        } else if(!mapArea.contains(ret)) {
+            if(initial.y > mapArea.y + mapArea.height) return fallback; // found drop pos underneath the map :O
+            
+            int borderX = (initial.x < mapArea.x) ? mapArea.x : mapArea.x + mapArea.width;
+            ret = calcPointBelow(new Point(borderX, initial.y - 85));
+            
+            if(ret == null) return fallback;
         }
+        
         return ret;
     }
     
@@ -1886,7 +1895,7 @@ public class MapleMap {
             }, 30 * 60 * 1000);
         }
         MaplePet[] pets = chr.getPets();
-        for (int i = 0; i < chr.getPets().length; i++) {
+        for (int i = 0; i < pets.length; i++) {
             if (pets[i] != null) {
                 pets[i].setPos(getGroundBelow(chr.getPosition()));
                 chr.announce(MaplePacketCreator.showPet(chr, pets[i], false, false));
@@ -2314,7 +2323,15 @@ public class MapleMap {
     public MapleFootholdTree getFootholds() {
         return footholds;
     }
-
+    
+    public void setMapPointBoundings(int px, int py, int h, int w) {
+        mapArea.setBounds(px, py, w, h);
+    }
+    
+    public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {
+        mapArea.setBounds(vrLeft, vrTop, vrRight - vrLeft, vrBottom - vrTop);
+    }
+    
     /**
      * it's threadsafe, gtfo :D
      *
@@ -2657,6 +2674,26 @@ public class MapleMap {
             int spawned = 0;
             for (SpawnPoint spawnPoint : randomSpawn) {
                 if(spawnPoint.shouldSpawn()) {
+                    spawnMonster(spawnPoint.getMonster());
+                    spawned++;
+                    if (spawned >= numShouldSpawn) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    public void instanceMapForceRespawn() {
+        if(!allowSummons) return;
+        
+        final int numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
+        if (numShouldSpawn > 0) {
+            List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
+            Collections.shuffle(randomSpawn);
+            int spawned = 0;
+            for (SpawnPoint spawnPoint : randomSpawn) {
+                if(spawnPoint.shouldForceSpawn()) {
                     spawnMonster(spawnPoint.getMonster());
                     spawned++;
                     if (spawned >= numShouldSpawn) {

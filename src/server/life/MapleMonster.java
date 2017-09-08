@@ -150,7 +150,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return stats.getExp();
     }
 
-    int getLevel() {
+    public int getLevel() {
         return stats.getLevel();
     }
 

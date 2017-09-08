@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
@@ -41,7 +42,11 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.concurrent.ScheduledFuture;
 
+import server.TimerManager;
+import net.server.PetFullnessWorker;
+import net.server.MountTirednessWorker;
 import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -49,7 +54,6 @@ import net.server.channel.CharacterIdChannelPair;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.guild.MapleGuildSummary;
-import tools.LogHelper;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -70,6 +74,14 @@ public class World {
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     private Set<Integer> queuedGuilds = new HashSet<>();
+    
+    private Map<Integer, Byte> activePets = new LinkedHashMap<>();
+    private ScheduledFuture<?> petsSchedule;
+    private long petUpdate;
+    
+    private Map<Integer, Byte> activeMounts = new LinkedHashMap<>();
+    private ScheduledFuture<?> mountsSchedule;
+    private long mountUpdate;
 
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int bossdroprate) {
         this.id = world;
@@ -81,6 +93,12 @@ public class World {
         this.bossdroprate = bossdroprate;
         runningPartyId.set(1);
         runningMessengerId.set(1);
+        
+        petUpdate = System.currentTimeMillis();
+        mountUpdate = petUpdate;
+        
+        petsSchedule = TimerManager.getInstance().register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
+        mountsSchedule = TimerManager.getInstance().register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
     }
 
     public List<Channel> getChannels() {
@@ -181,7 +199,7 @@ public class World {
         channels.get(chr.getClient().getChannel() - 1).removePlayer(chr);
         players.removePlayer(chr.getId());
     }
-
+    
     public int getId() {
         return id;
     }
@@ -657,6 +675,100 @@ public class World {
             }
         }
     }
+    
+    private static Integer getPetKey(MapleCharacter chr, byte petSlot) {    // assuming max 3 pets
+        return (chr.getId() << 2) + petSlot;
+    }
+    
+    public void registerPetHunger(MapleCharacter chr, byte petSlot) {
+        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+            return;
+        }
+        
+        Integer key = getPetKey(chr, petSlot);
+        synchronized(activePets) {
+            byte initProc;
+            if(System.currentTimeMillis() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
+            else initProc = ServerConstants.PET_EXHAUST_COUNT - 1;
+            
+            activePets.put(key, initProc);
+        }
+    }
+    
+    public void unregisterPetHunger(MapleCharacter chr, byte petSlot) {
+        Integer key = getPetKey(chr, petSlot);
+        synchronized(activePets) {
+            activePets.remove(key);
+        }
+    }
+    
+    public void runPetSchedule() {
+        Map<Integer, Byte> deployedPets;
+        synchronized(activePets) {
+            petUpdate = System.currentTimeMillis();
+            deployedPets = Collections.unmodifiableMap(activePets);
+        }
+        
+        for(Map.Entry<Integer, Byte> dp: deployedPets.entrySet()) {
+            MapleCharacter chr = this.getPlayerStorage().getCharacterById(dp.getKey() / 4);
+            if(chr == null || !chr.isLoggedin()) continue;
+            
+            Byte dpVal = (byte)(dp.getValue() + 1);
+            if(dpVal == ServerConstants.PET_EXHAUST_COUNT) {
+                chr.runFullnessSchedule(dp.getKey() % 4);
+                dpVal = 0;
+            }
+            
+            synchronized(activePets) {
+                activePets.put(dp.getKey(), dpVal);
+            }
+        }
+    }
+    
+    public void registerMountHunger(MapleCharacter chr) {
+        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+            return;
+        }
+        
+        Integer key = chr.getId();
+        synchronized(activeMounts) {
+            byte initProc;
+            if(System.currentTimeMillis() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
+            else initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 1;
+            
+            activeMounts.put(key, initProc);
+        }
+    }
+    
+    public void unregisterMountHunger(MapleCharacter chr) {
+        Integer key = chr.getId();
+        synchronized(activeMounts) {
+            activeMounts.remove(key);
+        }
+    }
+    
+    public void runMountSchedule() {
+        Map<Integer, Byte> deployedMounts;
+        synchronized(activeMounts) {
+            mountUpdate = System.currentTimeMillis();
+            deployedMounts = Collections.unmodifiableMap(activeMounts);
+        }
+        
+        for(Map.Entry<Integer, Byte> dp: deployedMounts.entrySet()) {
+            MapleCharacter chr = this.getPlayerStorage().getCharacterById(dp.getKey());
+            if(chr == null || !chr.isLoggedin()) continue;
+            
+            Byte dpVal = (byte)(dp.getValue() + 1);
+            if(dpVal == ServerConstants.MOUNT_EXHAUST_COUNT) {
+                chr.runTirednessSchedule();
+                dpVal = 0;
+            }
+            
+            synchronized(activeMounts) {
+                activeMounts.put(dp.getKey(), dpVal);
+            }
+        }
+    }
 
     public void setServerMessage(String msg) {
         for (Channel ch : channels) {
@@ -674,6 +786,17 @@ public class World {
         for (Channel ch : getChannels()) {
             ch.shutdown();
         }
+        
+        if(petsSchedule != null) {
+            petsSchedule.cancel(false);
+            petsSchedule = null;
+        }
+        
+        if(mountsSchedule != null) {
+            mountsSchedule.cancel(false);
+            mountsSchedule = null;
+        }
+        
         players.disconnectAll();
     }
 }

@@ -21,10 +21,14 @@
 */
 package net.server.channel.handlers;
 
+import java.util.Set;
+
 import client.MapleCharacter;
 import client.MapleClient;
+import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import net.AbstractMaplePacketHandler;
+import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -52,6 +56,30 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
         slea.skip(13);
         int oid = slea.readInt();
         MapleMapObject ob = chr.getMap().getMapObject(oid);
+        if(ob == null) {
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
+        
+        if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812007) != null) {
+            final Set<Integer> petIgnore = chr.getExcludedItems();
+            MapleMapItem mapitem = (MapleMapItem) ob;
+            
+            if(!petIgnore.isEmpty()) {
+                if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812000) != null) { // Meso magnet
+                    if (mapitem.getMeso() > 0 && petIgnore.contains(Integer.MAX_VALUE)) {
+                        c.getSession().write(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                } else if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812001) != null) { // Item Pouch
+                    if (petIgnore.contains(mapitem.getItem().getItemId())) {
+                        c.getSession().write(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                }
+            }
+        }
+        
         chr.pickupItem(ob, petIndex);
     }
 }

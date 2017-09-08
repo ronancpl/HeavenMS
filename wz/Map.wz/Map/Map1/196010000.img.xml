@@ -5,12 +5,10 @@
     <int name="cloud" value="0"/>
     <int name="town" value="0"/>
     <int name="returnMap" value="193000000"/>
-    <int name="forcedReturn" value="999999999"/>
     <float name="mobRate" value="0.8"/>
     <string name="bgm" value="Bgm05/WolfWood"/>
     <string name="mapMark" value="ElNathDungeon"/>
     <int name="hideMinimap" value="0"/>
-    <int name="fieldLimit" value="8192"/>
     <int name="VRTop" value="-2020"/>
     <int name="VRLeft" value="-402"/>
     <int name="VRBottom" value="660"/>
@@ -18,6 +16,8 @@
     <float name="fs" value="0.2"/>
     <int name="decHP" value="10"/>
     <int name="swim" value="0"/>
+    <int name="fieldLimit" value="270972"/>
+    <int name="forcedReturn" value="193000000"/>
   </imgdir>
   <imgdir name="back">
     <imgdir name="0">

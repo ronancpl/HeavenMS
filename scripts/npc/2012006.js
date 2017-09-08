@@ -22,7 +22,7 @@ function action(mode, type, selection) {
         sel = selection;
         cm.sendNext("Ok #h #, I will send you to the platform for #m" + (200000110 + (sel * 10)) + "#");
 	}else if (status == 1) {
-        cm.warp(200000110 + (sel * 10));
+        cm.warp(200000110 + (sel * 10), "west00");
         cm.dispose();
     }
 }

@@ -127,6 +127,27 @@ public class MapleMapFactory {
                             MapleDataTool.getString(timeMob.getChildByPath("message")));
                 }
 
+                int bounds[] = new int[4];
+                bounds[0] = MapleDataTool.getInt(infoData.getChildByPath("VRTop"));
+                bounds[1] = MapleDataTool.getInt(infoData.getChildByPath("VRBottom"));
+                
+                if(bounds[0] == bounds[1]) {    // old-style baked map
+                    MapleData minimapData = mapData.getChildByPath("miniMap");
+                    if(minimapData != null) {
+                        bounds[0] = MapleDataTool.getInt(minimapData.getChildByPath("centerX")) * -1;
+                        bounds[1] = MapleDataTool.getInt(minimapData.getChildByPath("centerY")) * -1;
+                        bounds[2] = MapleDataTool.getInt(minimapData.getChildByPath("height"));
+                        bounds[3] = MapleDataTool.getInt(minimapData.getChildByPath("width"));
+
+                        map.setMapPointBoundings(bounds[0], bounds[1], bounds[2], bounds[3]);
+                    }
+                } else {
+                    bounds[2] = MapleDataTool.getInt(infoData.getChildByPath("VRLeft"));
+                    bounds[3] = MapleDataTool.getInt(infoData.getChildByPath("VRRight"));
+                    
+                    map.setMapLineBoundings(bounds[0], bounds[1], bounds[2], bounds[3]);
+                }
+                
                 List<MapleFoothold> allFootholds = new LinkedList<>();
                 Point lBound = new Point();
                 Point uBound = new Point();

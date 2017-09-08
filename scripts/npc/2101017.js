@@ -1,8 +1,8 @@
 /*
-	This file is part of the OdinMS Maple Story Server
+    This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    Matthias Butz <matze@odinms.de>
+    Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -13,11 +13,18 @@
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+    See the GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/*
+	NPC NAME: Cesar (3)
+	NPC ID: 2101017
+	Author: Vcoc
+	Function: AriantPQ
 */
 
 importPackage(Packages.tools);
@@ -55,10 +62,10 @@ function action(mode, type, selection){
             if(sel == 0){
                 if(cm.haveItem(2270002))
                     cm.sendNext("You already have #b#t2270002##k.");
-                else if(cm.canHold(2270002) && cm.canHold(2100067)){
-                    if(cm.haveItem(2100067))
-                        cm.removeAll(2100067);
-                    cm.gainItem(2270002, 32);
+            else if(cm.canHold(2270002) && cm.canHold(2100067)){
+                if(cm.haveItem(2100067))
+                    cm.removeAll(2100067);
+                    cm.gainItem(2270002, 50);
                     cm.gainItem(2100067, 5);
                     cm.sendNext("Now lower the HP of the monsters, and use #b#t2270002##k to absorb their power!");
                 }else
@@ -70,6 +77,9 @@ function action(mode, type, selection){
                 cm.sendYesNo("Are you sure you want to leave?"); //No GMS like.
         } else if (status == 1){
             if(type == 1){
+                cm.removeAll(4031868);
+                cm.removeAll(2270002);
+                cm.removeAll(2100067);
                 cm.warp(980010020);
                 cm.dispose();
                 return;
@@ -78,7 +88,7 @@ function action(mode, type, selection){
         } else if (status == 2)
             cm.sendNextPrev("It's simple. If you absorb the power of the monster #b#t2270002##k, then you'll make #b#t4031868##k, which is something Queen Areda loves. The combatant with the most jewels wins the match. It's actually a smart idea to prevent others from absorbing in order to win.");
         else if (status == 3)
-            cm.sendNextPrev("One thing. #rYou may not use pets for this.#k Understood?~!");
+            cm.sendNextPrev("One thing. Using #b#t2100067##k, you can steal #b#t4031868##k from your enemies. Warning: #rYou may not use pets for this.#k Understood?!");
         else if (status == 4)
             cm.dispose();
     }else{

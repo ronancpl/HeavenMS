@@ -60,8 +60,8 @@ function writeSolaxiaCommandsLv5() {    //Developer
 
         addCommand("debugmonster", "");
         addCommand("debugpacket", "");
-        addCommand("debugnearestportal", "");
-        addCommand("debugnearestspawnpoint", "");
+        addCommand("debugportal", "");
+        addCommand("debugspawnpoint", "");
         addCommand("debugpos", "");
         addCommand("debugmap", "");
         addCommand("debugmobsp", "");
@@ -204,6 +204,7 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("whodrops", "");
         addCommand("dispose", "");
         addCommand("equiplv", "");
+        addCommand("showrates", "");
         addCommand("rates", "");
         addCommand("online", "");
         addCommand("gm", "");

@@ -752,7 +752,7 @@ public class MapleStatEffect {
         }
         if (isDispel() && makeChanceResult()) {
             applyto.dispelDebuffs();
-        } else if (isHeroWill()) {
+        } else if (isCureAllAbnormalStatus()) {
             applyto.dispelDebuff(MapleDisease.SEDUCE);
             applyto.dispelDebuff(MapleDisease.ZOMBIFY);
             applyto.dispelDebuffs();
@@ -1042,9 +1042,7 @@ public class MapleStatEffect {
                     applyto.mount(ridingLevel, sourceid);
                 }
                 
-                if(!(ServerConstants.PETS_NEVER_HUNGRY || applyto.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY)) {
-                    applyto.getMount().startSchedule();
-                }
+                applyto.getClient().getWorldServer().registerMountHunger(applyto);
             }
             if (sourceid == Corsair.BATTLE_SHIP) {
                 givemount = new MapleMount(applyto, 1932000, sourceid);
@@ -1399,7 +1397,7 @@ public class MapleStatEffect {
         return skill && (sourceid == Priest.DISPEL || sourceid == SuperGM.HEAL_PLUS_DISPEL);
     }
 
-    private boolean isHeroWill() {
+    private boolean isCureAllAbnormalStatus() {
         if (skill) {
             switch (sourceid) {
                 case Hero.HEROS_WILL:
@@ -1418,7 +1416,8 @@ public class MapleStatEffect {
                 default:
                     return false;
             }
-        }
+        } else if (sourceid == 2022544) return true;
+        
         return false;
     }
 
