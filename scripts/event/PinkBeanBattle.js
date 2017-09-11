@@ -109,12 +109,12 @@ function scheduledTimeout(eim) {
 function changedMap(eim, player, mapid) {
     if (mapid < minMapId || mapid > maxMapId) {
 	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
-            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue this expedition.");
             eim.unregisterPlayer(player);
             end(eim);
         }
         else {
-            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the expedition.");
             eim.unregisterPlayer(player);
         }
     }
@@ -129,12 +129,12 @@ function playerDead(eim, player) {
     eim.setIntProperty("fallenPlayers", count);
     
     if(count == 5) {
-        eim.dropMessage(5, "[Expedition] Too much players have fallen, Pink Bean is now deemed undefeatable, the expedition is over.");
+        eim.dropMessage(5, "[Expedition] Too many players have fallen, Pink Bean is now deemed undefeatable; the expedition is over.");
         end(eim);
     } else if(count == 4) {
-        eim.dropMessage(5, "[Expedition] Pink Bean is glowing stronger than ever, last stand mode everyone!");
+        eim.dropMessage(5, "[Expedition] Pink Bean is growing stronger than ever, last stand mode everyone!");
     } else if(count == 3) {
-        eim.dropMessage(5, "[Expedition] Casualty count is starting to get out of control. Take care folks.");
+        eim.dropMessage(5, "[Expedition] Casualty count is starting to get out of control. Battle with care.");
     }
 }
 
@@ -144,12 +144,12 @@ function playerRevive(eim, player) {
 
 function playerDisconnected(eim, player) {
     if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
-        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue this expedition.");
         eim.unregisterPlayer(player);
         end(eim);
     }
     else {
-        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the expedition.");
         eim.unregisterPlayer(player);
     }
 }
@@ -235,7 +235,7 @@ function monsterKilled(mob, eim) {
                 mapObj.spawnItemDrop(dropper, dropper, itemObj, reactObj.getPosition(), true, true);
 
 
-                eim.dropMessage(6, "With the last of his guardians' fall, Pink Bean loses his invulnerability. The real fight starts now!");
+                eim.dropMessage(6, "With the last of its guardians fallen, Pink Bean loses its invulnerability. The real fight starts now!");
             } else {
                 stage++;
                 eim.setIntProperty("stage", stage);

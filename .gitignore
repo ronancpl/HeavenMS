@@ -2,15 +2,15 @@
 .idea/
 
 # Netbeans project files
-nbproject
-tools/MapleCouponInstaller/nbproject
-tools/MapleIdRetriever/nbproject
-tools/MobBookIndexer/nbproject
-tools/MobBookUpdate/nbproject
+nbproject/
+tools/MapleCouponInstaller/nbproject/
+tools/MapleIdRetriever/nbproject/
+tools/MobBookIndexer/nbproject/
+tools/MobBookUpdate/nbproject/
 
 # build files
-build
-tools/MapleCouponInstaller/build
-tools/MapleIdRetriever/build
-tools/MobBookIndexer/build
-tools/MobBookUpdate/build
+build/
+tools/MapleCouponInstaller/build/
+tools/MapleIdRetriever/build/
+tools/MobBookIndexer/build/
+tools/MobBookUpdate/build/
