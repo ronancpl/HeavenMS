@@ -2325,11 +2325,11 @@ public class MapleMap {
     }
     
     public void setMapPointBoundings(int px, int py, int h, int w) {
-        mapArea.setBounds(px, py, w, h);
+        mapArea.setBounds(px + 7, py, w - 14, h);
     }
     
     public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {
-        mapArea.setBounds(vrLeft, vrTop, vrRight - vrLeft, vrBottom - vrTop);
+        mapArea.setBounds(vrLeft + 7, vrTop, vrRight - vrLeft - 14, vrBottom - vrTop);
     }
     
     /**

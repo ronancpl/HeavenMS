@@ -208,7 +208,7 @@ function action(mode, type, selection) {
                             var selStr = "You have #b" + cm.getPlayer().getDojoPoints() + "#k training points. Master prefers those with great talent. If you obtain more points than the average, you can receive a belt depending on your score.\r\n";
                             for (var i = 0; i < belts.length; i++) {
                                 if (cm.getPlayer().getItemQuantity(belts[i], true) > 0) {
-                                    selStr += "\r\n#L" + i + "##i" + belts[i] + "# #t" + belts[i] + "# (Obtained)";
+                                    selStr += "\r\n#L" + i + "##i" + belts[i] + "# #t" + belts[i] + "# (Already on inventory)";
                                 } else
                                     selStr += "\r\n#L" + i + "##i" + belts[i] + "# #t" + belts[i] + "#";
                             }
@@ -220,6 +220,7 @@ function action(mode, type, selection) {
                             if (cm.getPlayer().getDojoPoints() >= points) {
                                 if (cm.getPlayer().getLevel() > level) {
                                     cm.gainItem(belt, 1);
+                                    cm.getPlayer().setDojoPoints(cm.getPlayer().getDojoPoints() - points);
                                     cm.sendNext("There is the #i" + belt + "# #b#t" + belt + "##k. You have proven your valor to ascend on the Dojo ranks. Well done!");
                                 }
                                 else

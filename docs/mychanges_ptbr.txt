@@ -521,3 +521,10 @@ Corrigido itens saindo para fora do mapa. Nova posição do drop leva em conta as 
 07 Setembro 2017,
 Adicionado Vega's Spell.
 3rd job event agora possui tempo-limite e verifica se há jogadores já enfrentando o desafio.
+
+10 Setembro 2017,
+Protegido contra acesso concorrente classes MonsterBook e MapleInventory.
+Nova feature: autosaver.
+
+11 Setembro 2017,
+Consertado pet ignore não recuperando dados dos pets em alguns casos.

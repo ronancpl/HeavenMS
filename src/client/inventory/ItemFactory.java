@@ -141,7 +141,6 @@ public enum ItemFactory {
         ResultSet rs = null;
 
         lock.lock();
-		
         try {
             StringBuilder query = new StringBuilder();
             query.append("DELETE `inventoryitems`, `inventoryequipment` FROM `inventoryitems` LEFT JOIN `inventoryequipment` USING(`inventoryitemid`) WHERE `type` = ? AND `");

@@ -21222,7 +21222,7 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 (1052116, 2000002, 320, 212),
 (1052116, 2000001, 160, 216),
 (1052116, 2000000, 50, 220),
-(9120002, 2061003, 40, 0, 100);
+(9120002, 2061003, 40, 100);
 
 CREATE TABLE IF NOT EXISTS `skillmacros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

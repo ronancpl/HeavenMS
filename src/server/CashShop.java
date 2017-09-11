@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import provider.MapleData;
 import provider.MapleDataProvider;
@@ -43,6 +45,7 @@ import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.ItemConstants;
+import java.util.Collections;
 
 /*
  * @author Flav
@@ -99,12 +102,13 @@ public class CashShop {
                 item = new Item(itemId, (byte) 0, count, petid);
             }
 
-            if (ItemConstants.EXPIRING_ITEMS)
-				if(itemId == 5211048 || itemId == 5360042) { // 4 Hour 2X coupons, the period is 1, but we don't want them to last a day.
-					item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 4));
-				} else {
-					item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * period));
-				}
+            if (ItemConstants.EXPIRING_ITEMS) {
+                    if(itemId == 5211048 || itemId == 5360042) { // 4 Hour 2X coupons, the period is 1, but we don't want them to last a day.
+                            item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 4));
+                    } else {
+                            item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * period));
+                    }
+            }
             item.setSN(sn);
             return item;
         }
@@ -237,6 +241,7 @@ public class CashShop {
     private List<Item> inventory = new ArrayList<>();
     private List<Integer> wishList = new ArrayList<>();
     private int notes = 0;
+    private Lock lock = new ReentrantLock();
 
     public CashShop(int accountId, int characterId, int jobType) throws SQLException {
         this.accountId = accountId;
@@ -325,13 +330,18 @@ public class CashShop {
     }
 
     public List<Item> getInventory() {
-        return inventory;
+        lock.lock();
+        try {
+            return Collections.unmodifiableList(inventory);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public Item findByCashId(int cashId) {
         boolean isRing = false;
         Equip equip = null;
-        for (Item item : inventory) {
+        for (Item item : getInventory()) {
             if (item.getType() == 1) {
                 equip = (Equip) item;
                 isRing = equip.getRingId() > -1;
@@ -345,11 +355,21 @@ public class CashShop {
     }
 
     public void addToInventory(Item item) {
-        inventory.add(item);
+        lock.lock();
+        try {
+            inventory.add(item);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void removeFromInventory(Item item) {
-        inventory.remove(item);
+        lock.lock();
+        try {
+            inventory.remove(item);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public List<Integer> getWishList() {
@@ -458,7 +478,8 @@ public class CashShop {
         ps.close();
         List<Pair<Item, MapleInventoryType>> itemsWithType = new ArrayList<>();
 
-        for (Item item : inventory) {
+        List<Item> inv = getInventory();
+        for (Item item : inv) {
             itemsWithType.add(new Pair<>(item, MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())));
         }
 
@@ -466,7 +487,7 @@ public class CashShop {
         ps = con.prepareStatement("DELETE FROM `wishlists` WHERE `charid` = ?");
         ps.setInt(1, characterId);
         ps.executeUpdate();
-		ps.close();
+        ps.close();
         ps = con.prepareStatement("INSERT INTO `wishlists` VALUES (DEFAULT, ?, ?)");
         ps.setInt(1, characterId);
 

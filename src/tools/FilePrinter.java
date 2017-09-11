@@ -41,6 +41,7 @@ public class FilePrinter {
             FREDRICK = "fredrick/",
             NPC_UNCODED = "uncodedNPCs.txt",
             QUEST_UNCODED = "uncodedQuests.txt",
+            AUTOSAVING_CHARACTER = "saveCharAuto.txt",
             SAVING_CHARACTER = "saveChar.txt",
             USED_COMMANDS = "usedCommands.txt";//more to come (maps)
     

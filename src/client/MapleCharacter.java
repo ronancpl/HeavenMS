@@ -4529,26 +4529,31 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
             
-            PreparedStatement ps2;
-            ResultSet rs2;
-            for(byte i = 0; i < 3; i++) {
-                MaplePet pet = ret.getPet(i);
-                if(pet == null) continue;
-                
-                int petId = pet.getUniqueId();
-                ps2 = con.prepareStatement("SELECT itemid FROM petignores WHERE petid = ?"); // Get pet details..
+            PreparedStatement ps2, ps3;
+            ResultSet rs2, rs3;
+            
+            ps3 = con.prepareStatement("SELECT petid FROM inventoryitems WHERE characterid = ? AND petid > -1");
+            ps3.setInt(1, charid);
+            rs3 = ps3.executeQuery();
+            while(rs3.next()) {
+                int petId = rs3.getInt("petid");
+
+                ps2 = con.prepareStatement("SELECT itemid FROM petignores WHERE petid = ?");
                 ps2.setInt(1, petId);
-                
+
                 ret.resetExcluded(petId);
 
                 rs2 = ps2.executeQuery();
                 while(rs2.next()) {
                     ret.addExcluded(petId, rs2.getInt("itemid"));
                 }
-                
+
                 ps2.close();
                 rs2.close();
             }
+            ps3.close();
+            rs3.close();
+            
             ret.commitExcludedItems();
             
             if (channelserver) {
@@ -5525,10 +5530,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    // synchronize this call instead of trying to give access all at once (?)
-    public synchronized void saveToDB() {
+    public void saveToDB() {
+        if(ServerConstants.USE_AUTOSAVE) {
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    saveToDB(true);
+                }
+            };
+            
+            Thread t = new Thread(r);  //spawns a new thread to deal with this
+            t.start();
+        } else {
+            saveToDB(true);
+        }
+    }
+    
+    public synchronized void saveToDB(boolean notAutosave) {
         Calendar c = Calendar.getInstance();
-        FilePrinter.print(FilePrinter.SAVING_CHARACTER, "Attempting to save " + name + " at " + c.getTime().toString());
+        
+        if(notAutosave) FilePrinter.print(FilePrinter.SAVING_CHARACTER, "Attempting to save " + name + " at " + c.getTime().toString());
+        else FilePrinter.print(FilePrinter.AUTOSAVING_CHARACTER, "Attempting to autosave " + name + " at " + c.getTime().toString());
+        
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();
@@ -5577,7 +5600,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             ps.setInt(22, meso.get());
             ps.setInt(23, hpMpApUsed);
-            if (map == null || map.getId() == 610020000 || map.getId() == 610020001) {
+            if (map == null || map.getId() == 610020000 || map.getId() == 610020001) {  // reset to first spawnpoint on those maps
                 ps.setInt(24, 0);
             } else {
                 MaplePortal closest = map.findClosestPlayerSpawnpoint(getPosition());
@@ -5648,7 +5671,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 petLock.unlock();
             }
             
-            for(Entry<Integer, Set<Integer>> es: getExcluded().entrySet()) {
+            for(Entry<Integer, Set<Integer>> es: getExcluded().entrySet()) {    // this set is already protected
                 try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM petignores WHERE petid=?")) {
                     ps2.setInt(1, es.getKey());
                     ps2.executeUpdate();
@@ -5667,8 +5690,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             deleteWhereCharacterId(con, "DELETE FROM keymap WHERE characterid = ?");
             ps = con.prepareStatement("INSERT INTO keymap (characterid, `key`, `type`, `action`) VALUES (?, ?, ?, ?)");
             ps.setInt(1, id);
-            for (Entry<Integer, MapleKeyBinding> keybinding : keymap.entrySet()) {
-                ps.setInt(2, keybinding.getKey().intValue());
+            
+            Set<Entry<Integer, MapleKeyBinding>> keybindingItems = Collections.unmodifiableSet(keymap.entrySet());
+            for (Entry<Integer, MapleKeyBinding> keybinding : keybindingItems) {
+                ps.setInt(2, keybinding.getKey());
                 ps.setInt(3, keybinding.getValue().getType());
                 ps.setInt(4, keybinding.getValue().getAction());
                 ps.addBatch();
@@ -5691,14 +5716,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
             ps.executeBatch();
+            
             List<Pair<Item, MapleInventoryType>> itemsWithType = new ArrayList<>();
-
             for (MapleInventory iv : inventory) {
                 for (Item item : iv.list()) {
                     itemsWithType.add(new Pair<>(item, iv.getType()));
                 }
             }
-
             ItemFactory.INVENTORY.saveItems(itemsWithType, id, con);
 			
             deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?");
@@ -6283,7 +6307,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (slots <= 96) {
             inventory[type].setSlotLimit(slots);
 
-            saveToDB();
+            this.saveToDB();
             if (update) {
                 client.announce(MaplePacketCreator.updateInventorySlotLimit(type, slots));
             }
@@ -6552,6 +6576,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         getMap().broadcastMessage(this, MaplePacketCreator.showPet(this, pet, true, hunger), true);
         
         removePet(pet, shift_left);
+        commitExcludedItems();
+        
         client.announce(MaplePacketCreator.petStatUpdate(this));
         client.announce(MaplePacketCreator.enableActions());
     }

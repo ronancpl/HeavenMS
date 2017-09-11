@@ -45,8 +45,9 @@ import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
 
 import server.TimerManager;
-import net.server.PetFullnessWorker;
+import net.server.CharacterAutosaverWorker;
 import net.server.MountTirednessWorker;
+import net.server.PetFullnessWorker;
 import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -82,7 +83,9 @@ public class World {
     private Map<Integer, Byte> activeMounts = new LinkedHashMap<>();
     private ScheduledFuture<?> mountsSchedule;
     private long mountUpdate;
-
+    
+    private ScheduledFuture<?> charactersSchedule;
+    
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int bossdroprate) {
         this.id = world;
         this.flag = flag;
@@ -99,6 +102,7 @@ public class World {
         
         petsSchedule = TimerManager.getInstance().register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
         mountsSchedule = TimerManager.getInstance().register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
+        charactersSchedule = TimerManager.getInstance().register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
     }
 
     public List<Channel> getChannels() {

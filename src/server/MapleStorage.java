@@ -36,6 +36,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -47,10 +49,11 @@ import tools.Pair;
 public class MapleStorage {
 
     private int id;
-    private List<Item> items;
     private int meso;
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
+    private List<Item> items;
+    private Lock lock = new ReentrantLock();
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;
@@ -135,7 +138,8 @@ public class MapleStorage {
             }
             List<Pair<Item, MapleInventoryType>> itemsWithType = new ArrayList<>();
 
-            for (Item item : items) {
+            List<Item> list = getItems();
+            for (Item item : list) {
                 itemsWithType.add(new Pair<>(item, MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())));
             }
 
@@ -146,30 +150,56 @@ public class MapleStorage {
     }
 
     public Item getItem(byte slot) {
-        return items.get(slot);
+        lock.lock();
+        try {
+            return items.get(slot);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public Item takeOut(byte slot) {
-        Item ret = items.remove(slot);
+        Item ret;
+        
+        lock.lock();
+        try {
+            ret = items.remove(slot);
+        } finally {
+            lock.unlock();
+        }
+        
         MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(ret.getItemId());
         typeItems.put(type, new ArrayList<>(filterItems(type)));
         return ret;
     }
 
     public void store(Item item) {
-        items.add(item);
+        lock.lock();
+        try {
+            items.add(item);
+        } finally {
+            lock.unlock();
+        }
+        
         MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId());
         typeItems.put(type, new ArrayList<>(filterItems(type)));
     }
 
     public List<Item> getItems() {
-        return Collections.unmodifiableList(items);
+        lock.lock();
+        try {
+            return Collections.unmodifiableList(items);
+        } finally {
+            lock.unlock();
+        }
     }
 
     private List<Item> filterItems(MapleInventoryType type) {
+        List<Item> storageItems = getItems();
         List<Item> ret = new LinkedList<>();
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        for (Item item : items) {
+        
+        for (Item item : storageItems) {
             if (ii.getInventoryType(item.getItemId()) == type) {
                 ret.add(item);
             }
@@ -179,7 +209,8 @@ public class MapleStorage {
 
     public byte getSlot(MapleInventoryType type, byte slot) {
         byte ret = 0;
-        for (Item item : items) {
+        List<Item> storageItems = getItems();
+        for (Item item : storageItems) {
             if (item == typeItems.get(type).get(slot)) {
                 return ret;
             }
@@ -190,21 +221,29 @@ public class MapleStorage {
 
     public void sendStorage(MapleClient c, int npcId) {
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        Collections.sort(items, new Comparator<Item>() {
-            @Override
-            public int compare(Item o1, Item o2) {
-                if (ii.getInventoryType(o1.getItemId()).getType() < ii.getInventoryType(o2.getItemId()).getType()) {
-                    return -1;
-                } else if (ii.getInventoryType(o1.getItemId()) == ii.getInventoryType(o2.getItemId())) {
-                    return 0;
+        
+        lock.lock();
+        try {
+            Collections.sort(items, new Comparator<Item>() {
+                @Override
+                public int compare(Item o1, Item o2) {
+                    if (ii.getInventoryType(o1.getItemId()).getType() < ii.getInventoryType(o2.getItemId()).getType()) {
+                        return -1;
+                    } else if (ii.getInventoryType(o1.getItemId()) == ii.getInventoryType(o2.getItemId())) {
+                        return 0;
+                    }
+                    return 1;
                 }
-                return 1;
-            }
-        });
-        for (MapleInventoryType type : MapleInventoryType.values()) {
-            typeItems.put(type, new ArrayList<>(items));
+            });
+        } finally {
+            lock.unlock();
         }
-        c.announce(MaplePacketCreator.getStorage(npcId, slots, items, meso));
+        
+        List<Item> storageItems = getItems();
+        for (MapleInventoryType type : MapleInventoryType.values()) {
+            typeItems.put(type, new ArrayList<>(storageItems));
+        }
+        c.announce(MaplePacketCreator.getStorage(npcId, slots, storageItems, meso));
     }
 
     public void sendStored(MapleClient c, MapleInventoryType type) {
@@ -231,7 +270,12 @@ public class MapleStorage {
     }
 
     public boolean isFull() {
-        return items.size() >= slots;
+        lock.lock();
+        try {
+            return items.size() >= slots;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void close() {

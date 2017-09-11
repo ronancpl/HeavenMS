@@ -29,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import tools.Pair;
 import client.MapleCharacter;
@@ -36,6 +38,7 @@ import client.MapleClient;
 import constants.ItemConstants;
 import server.MapleItemInformationProvider;
 import server.MapleInventoryManipulator;
+import tools.FilePrinter;
 
 /**
  *
@@ -47,6 +50,7 @@ public class MapleInventory implements Iterable<Item> {
     private byte slotLimit;
     private MapleInventoryType type;
     private boolean checked = false;
+    private Lock lock = new ReentrantLock();
     
     public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
         this.owner = mc;
@@ -64,15 +68,34 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public byte getSlotLimit() {
-	return slotLimit;
+        lock.lock();
+        try {
+            return slotLimit;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void setSlotLimit(int newLimit) {
-	slotLimit = (byte) newLimit;
+        lock.lock();
+        try {
+            slotLimit = (byte) newLimit;
+        } finally {
+            lock.unlock();
+        }
     }
 
+    public Collection<Item> list() {
+        lock.lock();
+        try {
+            return Collections.unmodifiableCollection(inventory.values());
+        } finally {
+            lock.unlock();
+        }
+    }
+    
     public Item findById(int itemId) {
-        for (Item item : inventory.values()) {
+        for (Item item : list()) {
             if (item.getItemId() == itemId) {
                 return item;
             }
@@ -81,10 +104,10 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public Item findByName(String name) {
-        for (Item item : inventory.values()) {
+        for (Item item : list()) {
             String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
             if(itemName == null) {
-                System.out.println("[CRITICAL] Item "  + item.getItemId() + " has no name.");
+                FilePrinter.printError(FilePrinter.EXCEPTION, "[CRITICAL] Item "  + item.getItemId() + " has no name.");
                 continue;
             }
             
@@ -97,7 +120,7 @@ public class MapleInventory implements Iterable<Item> {
 
     public int countById(int itemId) {
         int qty = 0;
-        for (Item item : inventory.values()) {
+        for (Item item : list()) {
             if (item.getItemId() == itemId) {
                 qty += item.getQuantity();
             }
@@ -138,7 +161,7 @@ public class MapleInventory implements Iterable<Item> {
 
     public List<Item> listById(int itemId) {
         List<Item> ret = new ArrayList<>();
-        for (Item item : inventory.values()) {
+        for (Item item : list()) {
             if (item.getItemId() == itemId) {
                 ret.add(item);
             }
@@ -147,10 +170,6 @@ public class MapleInventory implements Iterable<Item> {
             Collections.sort(ret);
         }
         return ret;
-    }
-
-    public Collection<Item> list() {
-        return inventory.values();
     }
 
     public short addItem(Item item) {
@@ -171,29 +190,34 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public void move(short sSlot, short dSlot, short slotMax) {
-        Item source = (Item) inventory.get(sSlot);
-        Item target = (Item) inventory.get(dSlot);
-        if (source == null) {
-            return;
-        }
-        if (target == null) {
-            source.setPosition(dSlot);
-            inventory.put(dSlot, source);
-            inventory.remove(sSlot);
-        } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId())) {
-            if (type.getType() == MapleInventoryType.EQUIP.getType()) {
+        lock.lock();
+        try {
+            Item source = (Item) inventory.get(sSlot);
+            Item target = (Item) inventory.get(dSlot);
+            if (source == null) {
+                return;
+            }
+            if (target == null) {
+                source.setPosition(dSlot);
+                inventory.put(dSlot, source);
+                inventory.remove(sSlot);
+            } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId())) {
+                if (type.getType() == MapleInventoryType.EQUIP.getType()) {
+                    swap(target, source);
+                }
+                if (source.getQuantity() + target.getQuantity() > slotMax) {
+                    short rest = (short) ((source.getQuantity() + target.getQuantity()) - slotMax);
+                    source.setQuantity(rest);
+                    target.setQuantity(slotMax);
+                } else {
+                    target.setQuantity((short) (source.getQuantity() + target.getQuantity()));
+                    inventory.remove(sSlot);
+                }
+            } else {
                 swap(target, source);
             }
-            if (source.getQuantity() + target.getQuantity() > slotMax) {
-                short rest = (short) ((source.getQuantity() + target.getQuantity()) - slotMax);
-                source.setQuantity(rest);
-                target.setQuantity(slotMax);
-            } else {
-                target.setQuantity((short) (source.getQuantity() + target.getQuantity()));
-                inventory.remove(sSlot);
-            }
-        } else {
-            swap(target, source);
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -208,7 +232,12 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public Item getItem(short slot) {
-        return inventory.get(slot);
+        lock.lock();
+        try {
+            return inventory.get(slot);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void removeItem(short slot) {
@@ -216,7 +245,7 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public void removeItem(short slot, short quantity, boolean allowZero) {
-        Item item = inventory.get(slot);
+        Item item = getItem(slot);
         if (item == null) {// TODO is it ok not to throw an exception here?
             return;
         }
@@ -230,7 +259,12 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public void addSlot(short slot, Item item) {
-        inventory.put(slot, item);
+        lock.lock();
+        try {
+            inventory.put(slot, item);
+        } finally {
+            lock.unlock();
+        }
         
         if(ItemConstants.isRateCoupon(item.getItemId())) {
             owner.updateCouponRates();
@@ -238,7 +272,13 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public void removeSlot(short slot) {
-        Item item = inventory.remove(slot);
+        Item item;
+        lock.lock();
+        try {
+            item = inventory.remove(slot);
+        } finally {
+            lock.unlock();
+        }
         
         if(item != null && ItemConstants.isRateCoupon(item.getItemId())) {
             owner.updateCouponRates();
@@ -246,40 +286,67 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public boolean isFull() {
-        return inventory.size() >= slotLimit;
+        lock.lock();
+        try {
+            return inventory.size() >= slotLimit;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public boolean isFull(int margin) {
-        return inventory.size() + margin >= slotLimit;
+        lock.lock();
+        try {
+            return inventory.size() + margin >= slotLimit;
+        } finally {
+            lock.unlock();
+        }
     }
     
     public boolean isFullAfterSomeItems(int margin, int used) {
-        return inventory.size() + margin >= slotLimit - used;
+        lock.lock();
+        try {
+            return inventory.size() + margin >= slotLimit - used;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public short getNextFreeSlot() {
         if (isFull()) {
             return -1;
         }
-        for (short i = 1; i <= slotLimit; i++) {
-            if (!inventory.keySet().contains(i)) {
-                return i;
+        
+        lock.lock();
+        try {
+            for (short i = 1; i <= slotLimit; i++) {
+                if (!inventory.containsKey(i)) {
+                    return i;
+                }
             }
+            return -1;
+        } finally {
+            lock.unlock();
         }
-        return -1;
     }
 
     public short getNumFreeSlot() {
 	if (isFull()) {
 	    return 0;
 	}
-	short free = 0;
-	for (short i = 1; i <= slotLimit; i++) {
-        if (!inventory.keySet().contains(i)) {
-        	free++;
-	    }
-	}
-	return free;
+        
+        lock.lock();
+        try {
+            short free = 0;
+            for (short i = 1; i <= slotLimit; i++) {
+                if (!inventory.containsKey(i)) {
+                    free++;
+                }
+            }
+            return free;
+        } finally {
+            lock.unlock();
+        }
     }
     
     public static boolean checkSpot(MapleCharacter chr, Item item) {
@@ -394,7 +461,7 @@ public class MapleInventory implements Iterable<Item> {
 
     @Override
     public Iterator<Item> iterator() {
-        return Collections.unmodifiableCollection(inventory.values()).iterator();
+        return Collections.unmodifiableCollection(list()).iterator();
     }
 
     public Collection<MapleInventory> allInventories() {
@@ -404,7 +471,7 @@ public class MapleInventory implements Iterable<Item> {
     public Item findByCashId(int cashId) {
         boolean isRing = false;
         Equip equip = null;
-	for (Item item : inventory.values()) {
+	for (Item item : list()) {
             if (item.getType() == MapleInventoryType.EQUIP.getType()) {
                 equip = (Equip) item;
                 isRing = equip.getRingId() > -1;
@@ -417,10 +484,20 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public boolean checked() {
-        return checked;
+        lock.lock();
+        try {
+            return checked;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void checked(boolean yes) {
-        checked = yes;
+        lock.lock();
+        try {
+            checked = yes;
+        } finally {
+            lock.unlock();
+        }
     }
 }

@@ -25,9 +25,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -36,85 +40,140 @@ public final class MonsterBook {
     private int normalCard = 0;
     private int bookLevel = 1;
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
+    private Lock lock = new ReentrantLock();
 
+    private Set<Entry<Integer, Integer>> getCardSet() {
+        lock.lock();
+        try {
+            return Collections.unmodifiableSet(cards.entrySet());
+        } finally {
+            lock.unlock();
+        }
+    }
+    
     public void addCard(final MapleClient c, final int cardid) {
         c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignCardEffect(c.getPlayer().getId()), false);
-        for (Entry<Integer, Integer> all : cards.entrySet()) {
-            if (all.getKey() == cardid) {
-                if (all.getValue() > 4) {
-                    c.announce(MaplePacketCreator.addCard(true, cardid, all.getValue()));
-                } else {
-                    all.setValue(all.getValue() + 1);
-                    c.announce(MaplePacketCreator.addCard(false, cardid, all.getValue()));
-                    c.announce(MaplePacketCreator.showGainCard());
-                    calculateLevel();
+        
+        Integer qty;
+        lock.lock();
+        try {
+            qty = cards.get(cardid);
+            
+            if(qty != null) {
+                if(qty < 5) {
+                    cards.put(cardid, qty + 1);
                 }
-                return;
+            } else {
+                cards.put(cardid, 1);
+                qty = 0;
+                
+                if (cardid / 1000 >= 2388) {
+                    specialCard++;
+                } else {
+                    normalCard++;
+                }
             }
+        } finally {
+            lock.unlock();
         }
-        cards.put(cardid, 1);
-        c.announce(MaplePacketCreator.addCard(false, cardid, 1));
-        c.announce(MaplePacketCreator.showGainCard());
-        calculateLevel();
         
-        if (cardid / 1000 >= 2388) {
-            specialCard++;
+        if(qty < 5) {
+            calculateLevel();   // current leveling system only accounts unique cards...
+            
+            c.announce(MaplePacketCreator.addCard(false, cardid, qty + 1));
+            c.announce(MaplePacketCreator.showGainCard());
         } else {
-            normalCard++;
+            c.announce(MaplePacketCreator.addCard(true, cardid, 5));
         }
-        
-        //c.getPlayer().saveToDB(); //is it REALLY needed to save to DB every new entry?
     }
 
     private void calculateLevel() {
-        bookLevel = (int) Math.max(1, Math.sqrt((normalCard + specialCard) / 5));
+        lock.lock();
+        try {
+            bookLevel = (int) Math.max(1, Math.sqrt((normalCard + specialCard) / 5));
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int getBookLevel() {
-        return bookLevel;
+        lock.lock();
+        try {
+            return bookLevel;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public Map<Integer, Integer> getCards() {
-        return cards;
+        lock.lock();
+        try {
+            return Collections.unmodifiableMap(cards);
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int getTotalCards() {
-        return specialCard + normalCard;
+        lock.lock();
+        try {
+            return specialCard + normalCard;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int getNormalCard() {
-        return normalCard;
+        lock.lock();
+        try {
+            return normalCard;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int getSpecialCard() {
-        return specialCard;
+        lock.lock();
+        try {
+            return specialCard;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void loadCards(final int charid) throws SQLException {
-        Connection con = DatabaseConnection.getConnection();
-        try (PreparedStatement ps = con.prepareStatement("SELECT cardid, level FROM monsterbook WHERE charid = ? ORDER BY cardid ASC")) {
-            ps.setInt(1, charid);
-            try (ResultSet rs = ps.executeQuery()) {
-                int cardid, level;
-                while (rs.next()) {
-                    cardid = rs.getInt("cardid");
-                    level = rs.getInt("level");
-                    if (cardid / 1000 >= 2388) {
-                        specialCard++;
-                    } else {
-                        normalCard++;
+        lock.lock();
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT cardid, level FROM monsterbook WHERE charid = ? ORDER BY cardid ASC")) {
+                ps.setInt(1, charid);
+                try (ResultSet rs = ps.executeQuery()) {
+                    int cardid, level;
+                    while (rs.next()) {
+                        cardid = rs.getInt("cardid");
+                        level = rs.getInt("level");
+                        if (cardid / 1000 >= 2388) {
+                            specialCard++;
+                        } else {
+                            normalCard++;
+                        }
+                        cards.put(cardid, level);
                     }
-                    cards.put(cardid, level);
                 }
             }
+
+            con.close();
+        } finally {
+            lock.unlock();
         }
         
-        con.close();
         calculateLevel();
     }
 
     public void saveCards(final int charid) {
-        if (cards.isEmpty()) {
+        Set<Entry<Integer, Integer>> cardSet = getCardSet();
+        
+        if (cardSet.isEmpty()) {
             return;
         }
         try {
@@ -125,7 +184,7 @@ public final class MonsterBook {
             ps.close();
             boolean first = true;
             StringBuilder query = new StringBuilder();
-            for (Entry<Integer, Integer> all : cards.entrySet()) {
+            for (Entry<Integer, Integer> all : cardSet) {
                 if (first) {
                     query.append("INSERT INTO monsterbook VALUES (");
                     first = false;
