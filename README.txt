@@ -8,9 +8,9 @@ Regarding distributability and usage of the code presented here: like it was bef
 
 This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
-In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what have been changed from Nexon's v83 WZ files.
+In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
 
-The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, to aim to get the best of the MapleStory of that era.
+The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, we aim to get the best of the MapleStory of that era.
 
 ---- Download items ----
 
@@ -78,6 +78,8 @@ Inside the project, you may encounter some code errors. These happens because yo
 
 Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functioning, and then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
+Advanced: If you prefer to compile using ant instead of netbeans, you can use ant build to compile and package a jar with the libraries in the dist/lib folder already on the classpath. Execute "launch_standalone.bat" on the root of the project to run the server in this case.
+
 ---- Installing the CLIENT ----
 
 The client's set-up is quite straightforward:
@@ -90,7 +92,7 @@ If you are not using "localhost" as the target IP on the server's config file, y
 
 To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under the 3 addresses. Save the changes and exit the editor.
 
-Open the "localhost.exe" client. If by any means the program did not open, and checking que server log your ping has been listened and you are using Windows 8 or 10, it probably might be some compatibility issue. Extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the MapleStory client folder ("C:\Nexon\MapleStory"). Your "localhost.exe" property settings must follow these:
+Open the "localhost.exe" client. If by any means the program did not open, and checking the server log your server is listening on a port and you are using Windows 8 or 10, it probably might be some compatibility issue. Extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the MapleStory client folder ("C:\Nexon\MapleStory"). Your "localhost.exe" property settings must follow these:
 	- Run in compatibility mode: Windows 7;
 	- Unchecked reduced color mode;
 	- 640 x 480 resolution;
@@ -98,7 +100,7 @@ Open the "localhost.exe" client. If by any means the program did not open, and c
 	- Run as an administrator;
 	- Opening "lolwut.exe", use Fraysa's method.
 
-Important: should the client being refused to connect to the game server, it may be because firewall issues. Head to the end of this file to proceed to enabling this connection with the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
+Important: Should the client be refused a connection to the game server, it may be because of a firewall issue. Head to the end of this file to proceed in allowing this connection through the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
 
 ---- Important note about CLIENT EDITING ----
 
@@ -126,11 +128,11 @@ Save the changes and overwrite the older WZ on the MapleStory client folder.
 
 ---- Portforwarding the SERVER ----
 
-To use portforward, you will need to have permission to change things on the LAN router. Access yor router using the Internet browser. URLs vary accordingly with the manufacturer. To discover it, open the command prompt and type "ipconfig" and search for the "default gateway" field. The IP shown there is the URL needed to access the router. Also, look for the IP given to your machine (aka "IPv4 address" field), which will be the server one. 
+To use portforward, you will need to have permission to change things on the LAN router. Access your router using the Internet browser. URLs vary accordingly with the manufacturer. To discover it, open the command prompt and type "ipconfig" and search for the "default gateway" field. The IP shown there is the URL needed to access the router. Also, look for the IP given to your machine (aka "IPv4 address" field), which will be the server one. 
 
 The default login/password also varies, so use the link http://www.routerpasswords.com/ as reference. Usually, login as "admin" and password as "password" completes the task well.
 
-Now you have logged in the router system, find for anything related to portforwarding. Should the system prompts you between portforwarding and portriggering, pick the first, it is what we will be using.
+Now you have logged in the router system, search for anything related to portforwarding. Should the system prompt you between portforwarding and portriggering, pick the first, it is what we will be using.
 
 Now, it is needed to enable the right ports for the Internet. For MapleSolaxia, it is basically needed to open ports 7575 to 7575 + (number of channels) and port 8484. Create a new custom service which enables that range of ports for the server's channel and opt to use TCP/UDP protocols. Finally, create a custom service now for using port 8484.
 

@@ -70,4 +70,31 @@
     nbproject/build-impl.xml file. 
 
     -->
+
+    <property name="src" location="src"/>
+    <property name="class-files" location="build"/>
+    <property name="jar" location="dist"/>
+    <property name="compile-time-lib" location="cores"/>
+    <property name="run-time-lib" location="${jar}/lib"/>
+    <property name="source-name" value="MapleSolaxia"/>
+
+    <target name="clean">
+        <delete dir="${class-files}"/>
+    </target>
+
+    <target name="build" depends="clean">
+        <mkdir dir="${class-files}/"/>
+        <javac includeantruntime="false" fork="true" srcdir="${src}/" destdir="${class-files}/" debug="false">
+            <classpath>
+                <pathelement path="${class-files}/"/>
+                <fileset dir="${compile-time-lib}/">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>             <!--	  <compilerarg value="-verbose"/> -->
+        </javac>
+        <jar jarfile="${jar}/${source-name}_STANDALONE.jar" basedir="${class-files}/">
+            <zipgroupfileset dir="${run-time-lib}/" includes="*.jar"/>
+        </jar>
+    </target>
+
 </project>
