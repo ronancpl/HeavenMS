@@ -20,7 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- *3rd Job Event - Thief
+ * @Author Ronan
+ * 3rd Job Event - Thief
 **/
 importPackage(Packages.tools);
 

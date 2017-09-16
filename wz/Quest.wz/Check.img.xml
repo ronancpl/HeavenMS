@@ -15288,6 +15288,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="10000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20525">
@@ -15352,6 +15353,7 @@
           <int name="count" value="200"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="5000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20526">
@@ -15410,6 +15412,7 @@
     <imgdir name="1">
       <int name="npc" value="1102002"/>
       <string name="endscript" value="q20526e"/>
+      <int name="endmeso" value="10000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20527">
@@ -76694,7 +76697,7 @@
         </imgdir>
         <imgdir name="4">
           <int name="count" value="30"/>
-          <int name="id" value="4000440"/>
+          <int name="id" value="4031871"/>
         </imgdir>
         <imgdir name="5">
           <int name="id" value="4032475"/>

@@ -98,7 +98,6 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
-import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.ArrayList;
@@ -1252,6 +1251,12 @@ public class Commands {
 					continue;
 				}
 			}
+                        
+                        if(player.getJob().isA(MapleJob.ARAN1)) {
+                                skill = SkillFactory.getSkill(5001005);
+                                player.changeSkillLevel(skill, (byte) -1, -1, -1);
+                        }
+                        
                         player.yellowMessage("Skills maxed out.");
                     break;
                     
@@ -1659,7 +1664,7 @@ public class Commands {
                 
                 case "givems":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: !givemx <playername> <gainmx>");
+				player.yellowMessage("Syntax: !givems <playername> <gainmx>");
 				break;
 			}
                         
@@ -1783,7 +1788,7 @@ public class Commands {
 			player.getMap().getPortal(sub[1]).setPortalState(true);
                     break;
                     
-                case "closeportals":
+                case "closeportal":
                         if (sub.length < 2){
                             player.yellowMessage("Syntax: !closeportal <portalid>");
                             break;
@@ -1844,10 +1849,11 @@ public class Commands {
 					for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters()) {
 						s += MapleCharacter.makeMapleReadable(chr.getName()) + ", ";
 					}
-					player.dropMessage(s.substring(0, s.length() - 2));
+					player.dropMessage(6, s.substring(0, s.length() - 2));
 				}
 			}
-			player.dropMessage("There are a total of " + total + " players online.");
+			player.dropMessage(6, "There are a total of " + total + " players online.");
+                        player.showHint("Players online: #e#r" + total + "#k#n.");
                     break;
        
 		case "warpsnowball":
@@ -2273,14 +2279,14 @@ public class Commands {
                         break;
                             
                     case "playernpc":
-                            if (sub.length < 3){
+                        if (sub.length < 3){
                             player.yellowMessage("Syntax: !playernpc <playername> <npcid>");
                             break;
                         }
-                            player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
+                        player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
 			break;
                         
-                default:
+                    default:
                         return false;
                 }
                 

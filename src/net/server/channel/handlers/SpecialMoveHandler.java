@@ -45,7 +45,6 @@ import constants.skills.DarkKnight;
 import constants.skills.Hero;
 import constants.skills.Paladin;
 import constants.skills.Priest;
-import constants.skills.Hermit;
 import constants.skills.SuperGM;
 
 

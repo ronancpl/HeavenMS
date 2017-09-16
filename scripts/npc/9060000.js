@@ -38,7 +38,7 @@ function action(mode, type, selection){
     
     if(status == 0) cm.sendOk("Well okay, I will send you back.");
     else {
-        cm.warp(923010100);
+        cm.getEventInstance().clearPQ();
         cm.dispose();
     }
 }

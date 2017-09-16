@@ -303,15 +303,15 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             
             int extras = 0;
             
-            extras = gainStatByType(chr, primary, statGain, statEqpd, prStat + extras);
-            extras = gainStatByType(chr, secondary, statGain, statEqpd, scStat + extras);
-            extras = gainStatByType(chr, tertiary, statGain, statEqpd, trStat + extras);
+            extras = gainStatByType(chr, primary, statGain, prStat + extras);
+            extras = gainStatByType(chr, secondary, statGain, scStat + extras);
+            extras = gainStatByType(chr, tertiary, statGain, trStat + extras);
                         
             if(extras > 0) {    //redistribute surplus in priority order
-                extras = gainStatByType(chr, primary, statGain, statEqpd, extras);
-                extras = gainStatByType(chr, secondary, statGain, statEqpd, extras);
-                extras = gainStatByType(chr, tertiary, statGain, statEqpd, extras);
-                gainStatByType(chr, getQuaternaryStat(stance), statGain, statEqpd, extras);
+                extras = gainStatByType(chr, primary, statGain, extras);
+                extras = gainStatByType(chr, secondary, statGain, extras);
+                extras = gainStatByType(chr, tertiary, statGain, extras);
+                gainStatByType(chr, getQuaternaryStat(stance), statGain, extras);
             }
             
             int remainingAp = (chr.getRemainingAp() - getAccumulatedStatGain(statGain));
@@ -350,7 +350,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 total += tempVal;
-                extras += gainStatByType(chr, MapleStat.getBy5ByteEncoding(type), statGain, statEqpd, tempVal);
+                extras += gainStatByType(chr, MapleStat.getBy5ByteEncoding(type), statGain, tempVal);
             }
             int remainingAp = (chr.getRemainingAp() - total) + extras;
             chr.setRemainingAp(remainingAp);
@@ -359,42 +359,42 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private int gainStatByType(MapleCharacter chr, MapleStat type, int[] statGain, int[] statEqpd, int gain) {
+    private int gainStatByType(MapleCharacter chr, MapleStat type, int[] statGain, int gain) {
         if(gain <= 0) return 0;
         
         int newVal = 0;
         if (type.equals(MapleStat.STR)) {
-            newVal = chr.getStr() + statEqpd[0] + gain;
+            newVal = chr.getStr() + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                statGain[0] += gain - (newVal - ServerConstants.MAX_AP);
-                chr.setStr(ServerConstants.MAX_AP - statEqpd[0]);
+                statGain[0] += (gain - (newVal - ServerConstants.MAX_AP));
+                chr.setStr(ServerConstants.MAX_AP);
             } else {
                 statGain[0] += gain;
                 chr.setStr(newVal);
             }
         } else if (type.equals(MapleStat.INT)) {
-            newVal = chr.getInt() + statEqpd[3] + gain;
+            newVal = chr.getInt() + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                statGain[3] += gain - (newVal - ServerConstants.MAX_AP);
-                chr.setInt(ServerConstants.MAX_AP - statEqpd[3]);
+                statGain[3] += (gain - (newVal - ServerConstants.MAX_AP));
+                chr.setInt(ServerConstants.MAX_AP);
             } else {
                 statGain[3] += gain;
                 chr.setInt(newVal);
             }
         } else if (type.equals(MapleStat.LUK)) {
-            newVal = chr.getLuk() + statEqpd[2] + gain;
+            newVal = chr.getLuk() + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                statGain[2] += gain - (newVal - ServerConstants.MAX_AP);
-                chr.setLuk(ServerConstants.MAX_AP - statEqpd[2]);
+                statGain[2] += (gain - (newVal - ServerConstants.MAX_AP));
+                chr.setLuk(ServerConstants.MAX_AP);
             } else {
                 statGain[2] += gain;
                 chr.setLuk(newVal);
             }
         } else if (type.equals(MapleStat.DEX)) {
-            newVal = chr.getDex() + statEqpd[1] + gain;
+            newVal = chr.getDex() + gain;
             if (newVal > ServerConstants.MAX_AP) {
-                statGain[1] += gain - (newVal - ServerConstants.MAX_AP);
-                chr.setDex(ServerConstants.MAX_AP - statEqpd[1]);
+                statGain[1] += (gain - (newVal - ServerConstants.MAX_AP));
+                chr.setDex(ServerConstants.MAX_AP);
             } else {
                 statGain[1] += gain;
                 chr.setDex(newVal);

@@ -196,7 +196,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private boolean hidden, canDoor = true, Berserk, hasMerchant, whiteChat = false;
     private int linkedLevel = 0;
     private String linkedName = null;
-    private boolean finishedDojoTutorial, dojoParty;
+    private boolean finishedDojoTutorial;
     private String name;
     private String chalktext;
     private String dataString;
@@ -245,7 +245,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private EnumMap<MapleDisease, MapleDiseaseValueHolder> diseases = new EnumMap<>(MapleDisease.class);
     private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
-    private ScheduledFuture<?>[] fullnessSchedule = new ScheduledFuture<?>[3];
     private ScheduledFuture<?> hpDecreaseTask;
     private ScheduledFuture<?> beholderHealingSchedule, beholderBuffSchedule, BerserkSchedule;
     private ScheduledFuture<?> expiretask;
@@ -4082,8 +4081,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         statup.add(new Pair<>(MapleStat.LEVEL, level));
         statup.add(new Pair<>(MapleStat.MAXHP, maxhp));
         statup.add(new Pair<>(MapleStat.MAXMP, maxmp));
-        statup.add(new Pair<>(MapleStat.STR, str));
-        statup.add(new Pair<>(MapleStat.DEX, dex));
+        statup.add(new Pair<>(MapleStat.STR, Math.min(str, Short.MAX_VALUE)));
+        statup.add(new Pair<>(MapleStat.DEX, Math.min(dex, Short.MAX_VALUE)));
         if (job.getId() % 1000 > 0) {
         	remainingSp[GameConstants.getSkillBook(job.getId())] += 3;
         	statup.add(new Pair<>(MapleStat.AVAILABLESP, remainingSp[GameConstants.getSkillBook(job.getId())]));

@@ -37,7 +37,7 @@ public class Aran {
     public static final int BODY_PRESSURE = 21101003;
     public static final int COMBO_DRAIN = 21100005;
     public static final int COMBO_SMASH = 21100004;
-    public static final int COMBO_PENRIL = 21110004;
+    public static final int COMBO_FENRIR = 21110004;
     public static final int COMBO_CRITICAL = 21110000;
     public static final int FULL_SWING = 21110002;
     public static final int ROLLING_SPIN = 21110006;

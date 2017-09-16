@@ -71,6 +71,7 @@ public class ServerConstants {
     
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
+    public static final boolean USE_PERFECT_GM_SCROLL = true;   //Scrolls from GMs never uses up slots nor fails.
     public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
     public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
     public static final boolean USE_ENHANCED_CRAFTING = true;   //Applys chaos scroll on every equip crafted.
@@ -93,8 +94,8 @@ public class ServerConstants {
     public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stats upgrades at equip level up.
     public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes prevents mobs from banishing wearer.
     public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to further recover player's HP and MP.
-    public static final int MAX_EQUIPMNT_LVLUP_STAT_GAIN = 10000; //Max stat upgrade an equipment can have on a levelup.
-    public static final int MAX_EQUIPMNT_STAT = 32767;            //Max stat on an equipment by leveling up.
+    public static final int MAX_EQUIPMNT_LVLUP_STAT_UP = 10000; //Max stat upgrade an equipment can have on a levelup.
+    public static final int MAX_EQUIPMNT_STAT = 32767;          //Max stat on an equipment by leveling up.
     public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
     public static final byte CHAIR_EXTRA_HEAL_HP = 70;          //Each chair extra heal proc increasing HP.
     public static final byte CHAIR_EXTRA_HEAL_MP = 42;          //Each chair extra heal proc increasing MP.

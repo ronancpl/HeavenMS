@@ -19,16 +19,35 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+        @Author Ronan
+
+        2060005 - Kenta
+	Enter 3rd job mount event
+**/
+
 function start() {
-    if(cm.isQuestCompleted(6002))
+    if(cm.isQuestCompleted(6002)) {
         cm.sendOk("Thanks for saving the pork.");
-    else if(cm.getWarpMap(923010000).getCharacters().size() > 0)
-        cm.sendOk("There is currently someone in this map, come back later.");
-    else if(cm.isQuestStarted(6002)) {
-        cm.resetMapObjects(923010000);
-        cm.warp(923010000);
     }
-        
-    else cm.sendSimple("Only few adventurers, from a selected public, are eligible to protect the Watch Hog.");
+    else if(cm.isQuestStarted(6002)) {
+        var em = cm.getEventManager("3rdJob_mount");
+        if (em == null)
+            cm.sendOk("Sorry, but 3rd job advancement (mount) is closed.");
+        else {
+            if (em.getProperty("noEntry") == "false") {
+                var eim = em.newInstance("3rdjob_mount");
+                eim.registerPlayer(cm.getPlayer());
+            }
+            else {
+                cm.sendOk("There is currently someone in this map, come back later.");
+            }
+        }
+    }
+    else {
+        cm.sendSimple("Only few adventurers, from a selected public, are eligible to protect the Watch Hog.");
+    }
+    
     cm.dispose();
 }

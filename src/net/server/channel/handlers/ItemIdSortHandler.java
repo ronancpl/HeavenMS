@@ -167,7 +167,7 @@ class PairedQuicksort {
     public PairedQuicksort(ArrayList<Item> A, int primarySort, int secondarySort) {
         intersect = new ArrayList<>();
         
-        MapleQuicksort(0, A.size() - 1, A, primarySort);
+        if(A.size() > 0) MapleQuicksort(0, A.size() - 1, A, primarySort);
         
         intersect.add(0);
         for(int ind = 1; ind < A.size(); ind++) {
@@ -178,7 +178,7 @@ class PairedQuicksort {
         intersect.add(A.size());
         
         for(int ind = 0; ind < intersect.size() - 1; ind++) {
-            MapleQuicksort(intersect.get(ind), intersect.get(ind + 1) - 1, A, secondarySort);
+            if(intersect.get(ind + 1) > intersect.get(ind)) MapleQuicksort(intersect.get(ind), intersect.get(ind + 1) - 1, A, secondarySort);
         }
     }
 }

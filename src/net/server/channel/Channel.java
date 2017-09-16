@@ -240,8 +240,8 @@ public final class Channel {
 
         @Override
         public void run() {
-            for (Entry<Integer, MapleMap> map : mapFactory.getMaps().entrySet()) {
-                map.getValue().respawn();
+            for (MapleMap map : mapFactory.getMaps().values()) {
+                map.respawn();
             }
         }
     }

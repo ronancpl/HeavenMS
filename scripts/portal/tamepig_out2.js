@@ -25,10 +25,12 @@ function enter(pi) {
         pi.removeAll(4031508);
     }
     
-    pi.warp(230000003, "out00");
-    if (pi.getClient().getChannelServer().getMapFactory().getMap(923010000).getCharacters().size() == 0) {
-        pi.getClient().getChannelServer().getMapFactory().getMap(923010000).clearMapObjects();
-    }
+    var pCount = pi.getPlayer().countItem(4031507);
+    var rCount = pi.getPlayer().countItem(4031508);
+
+    if(pCount > 5) pi.gainItem(4031507, -1 * (pCount - 5));
+    if(rCount > 5) pi.gainItem(4031508, -1 * (rCount - 5));
     
+    pi.warp(230000003, "out00");
     return true;
 }

@@ -129,7 +129,7 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("notice", "");
         addCommand("rip", "");
         addCommand("openportal", "");
-        addCommand("closeportals", "");
+        addCommand("closeportal", "");
         addCommand("pe", "");
         addCommand("startevent", "");
         addCommand("endevent", "");

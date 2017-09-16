@@ -1386,7 +1386,7 @@ public class MapleMap {
         final ScheduledFuture<?> monsterItemDrop = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (MapleMap.this.getMonsterById(m.getId()) != null && !MapleMap.this.getPlayers().isEmpty()) {
+                if (m.isAlive() && !MapleMap.this.getPlayers().isEmpty()) {
                     if (item.getItemId() == 4001101) {
                         MapleMap.this.riceCakes++;
                         MapleMap.this.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny made rice cake number " + (MapleMap.this.riceCakes)));
@@ -1395,7 +1395,7 @@ public class MapleMap {
                 }
             }
         }, delay, delay);
-        if (getMonsterById(m.getId()) == null) {
+        if (!m.isAlive()) {
             monsterItemDrop.cancel(true);
         }
     }

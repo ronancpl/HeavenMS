@@ -79,12 +79,12 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
         if (attack.skill == Buccaneer.ENERGY_ORB || attack.skill == ThunderBreaker.SPARK || attack.skill == Shadower.TAUNT || attack.skill == NightLord.TAUNT) {
             player.getMap().broadcastMessage(player, MaplePacketCreator.rangedAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, 0, attack.allDamage, attack.speed, attack.direction, attack.display), false);
             applyAttack(attack, player, 1);
-        } else if (attack.skill == Aran.COMBO_SMASH || attack.skill == Aran.COMBO_PENRIL || attack.skill == Aran.COMBO_TEMPEST) {
+        } else if (attack.skill == Aran.COMBO_SMASH || attack.skill == Aran.COMBO_FENRIR || attack.skill == Aran.COMBO_TEMPEST) {
             player.getMap().broadcastMessage(player, MaplePacketCreator.rangedAttack(player, attack.skill, attack.skilllevel, attack.stance, attack.numAttackedAndDamage, 0, attack.allDamage, attack.speed, attack.direction, attack.display), false);
             if (attack.skill == Aran.COMBO_SMASH && player.getCombo() >= 30) {
             	player.setCombo((short) 0);
             	applyAttack(attack, player, 1);
-            } else if (attack.skill == Aran.COMBO_PENRIL && player.getCombo() >= 100) {
+            } else if (attack.skill == Aran.COMBO_FENRIR && player.getCombo() >= 100) {
             	player.setCombo((short) 0);
             	applyAttack(attack, player, 2);
             } else if (attack.skill == Aran.COMBO_TEMPEST && player.getCombo() >= 200) {

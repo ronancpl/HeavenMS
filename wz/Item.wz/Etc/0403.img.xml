@@ -6911,6 +6911,7 @@
       <int name="price" value="1"/>
       <int name="slotMax" value="1"/>
       <int name="notSale" value="1"/>
+      <int name="pquest" value="1"/>
     </imgdir>
   </imgdir>
   <imgdir name="04031595">
@@ -6924,6 +6925,7 @@
       <int name="price" value="1"/>
       <int name="slotMax" value="10"/>
       <int name="notSale" value="1"/>
+      <int name="pquest" value="1"/>
     </imgdir>
   </imgdir>
   <imgdir name="04031596">
@@ -6936,6 +6938,7 @@
       </canvas>
       <int name="price" value="1"/>
       <int name="notSale" value="1"/>
+      <int name="pquest" value="1"/>
     </imgdir>
   </imgdir>
   <imgdir name="04031597">
@@ -6949,6 +6952,7 @@
       <int name="price" value="1"/>
       <int name="slotMax" value="150"/>
       <int name="notSale" value="1"/>
+      <int name="pquest" value="1"/>
     </imgdir>
   </imgdir>
   <imgdir name="04031606">
@@ -11579,8 +11583,7 @@
       <canvas name="iconRaw" width="32" height="29">
         <vector name="origin" x="0" y="32"/>
       </canvas>
-      <int name="price" value="1"/>
-      <int name="tradeBlock" value="1"/>
+      <int name="price" value="10000"/>
       <int name="notSale" value="1"/>
       <int name="slotMax" value="1"/>
     </imgdir>

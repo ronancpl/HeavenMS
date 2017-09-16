@@ -56,7 +56,7 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny went home because he was sick."));
                         }
                         else if(monster.getId() == 9300093) {   //tylus
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of this ambush."));
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of the ambush."));
                         }
                         else if(monster.getId() == 9300137) {   //juliet
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted on the middle of the combat."));

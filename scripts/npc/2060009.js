@@ -34,10 +34,10 @@ function action(mode, type, selection) {
                     cm.gainMeso(-1000);
             } else
                 cm.gainItem(4031242,-1);
-            cm.warp(230030200);
+            cm.warp(230030200, 2);
             cm.dispose();
             return;
-        }else if(selection == 1){
+        } else if (selection == 1) {
 			 if (cm.getPlayer().getMeso() < 10000) {
 				cm.sendOk("I don't think you have enough money...");
 				cm.dispose();

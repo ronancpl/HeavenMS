@@ -46,7 +46,7 @@ function action(mode, type, selection) {
                         status--;
     
                 if(status == 0) {
-                        if(cm.getLevel() < 120 || Math.round(cm.getJobId() / 100) != 2) {
+                        if(cm.getLevel() < 120 || Math.floor(cm.getJobId() / 100) != 2) {
                                 cm.sendOk("Please don't bother me right now, I am trying to concentrate.");
                                 cm.dispose();
                         } else if (!cm.isQuestCompleted(6914)) {

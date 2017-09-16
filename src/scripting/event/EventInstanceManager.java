@@ -1084,6 +1084,17 @@ public class EventInstanceManager {
                 }
         }
         
+        public final void linkPortalToScript(int thisStage, String portalName, String scriptName, int thisMapId) {
+                giveEventPlayersStageReward(thisStage);
+                thisStage--;    //stages counts from ONE, scripts from ZERO
+            
+                MapleMap nextStage = getMapInstance(thisMapId);
+                MaplePortal portal = nextStage.getPortal(portalName);
+                if (portal != null) {
+                        portal.setScriptName(scriptName);
+                }
+        }
+        
         // registers a player status in an event
         public final void gridInsert(MapleCharacter chr, int newStatus) {
                 wL.lock();

@@ -812,7 +812,7 @@ public class MapleClient {
 		}
 	}
 
-	public final void disconnect(boolean shutdown, boolean cashshop) {//once per MapleClient instance
+	public final synchronized void disconnect(boolean shutdown, boolean cashshop) {//once per MapleClient instance
                 if (disconnecting) {
 			return;
 		}

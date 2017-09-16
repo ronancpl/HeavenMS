@@ -66,11 +66,11 @@ function action(mode, type, selection){
                 cm.getPlayer().removePartyQuestItem("JBQ");
             }
 
-            if(cm.getJobId() / 10 == 41) cm.sendNext("You have officially been anointed as a #bHermit#k from here on out. The skill book introduces a slew of new attacking skills for Hermits using shadows as a way of duplication and replacement, including such skills as #bShadow Meso#k (replacing MP with mesos and attack monsters with the damage based on the amount of mesos thrown) and #bCopy cat#k (creating a shadow that mimics every move, enabling a Hermit to attack a monster as if two Hermits are there). Use those skills to take on the monsters that may have been difficult to conquer before.");
+            if(Math.floor(cm.getJobId() / 10) == 41) cm.sendNext("You have officially been anointed as a #bHermit#k from here on out. The skill book introduces a slew of new attacking skills for Hermits using shadows as a way of duplication and replacement, including such skills as #bShadow Meso#k (replacing MP with mesos and attack monsters with the damage based on the amount of mesos thrown) and #bCopy cat#k (creating a shadow that mimics every move, enabling a Hermit to attack a monster as if two Hermits are there). Use those skills to take on the monsters that may have been difficult to conquer before.");
 	    else cm.sendNext("You have officially been anointed as a #bChief Bandit#k from here on out. One of the new additions to the skill book is a skill called #bBand of Thieves#k, in which you can summon fellow Bandits to attack multiple monsters at once. Chief Bandits can also utilize mesos in numerous ways, from attacking monsters (#bMeso Explosion#k, which explodes the mesos on the ground), to defending yourself (#bMeso Guard#k, which decreases the weapon damage).");
 	
         } else if (status == 3) {
-            cm.sendNextPrev("I've also given you some SP and AP; this should get you started. You have now become a powerful, powerful thief, indeed. Remember, though, that the real world will be awaiting your arrival with even tougher obstavles to overcome. Once you feel like you cannot train yourself to reach a higher place, then, and only then, come see me. I'll be here waiting.");
+            cm.sendNextPrev("I've also given you some SP and AP; this should get you started. You have now become a powerful, powerful thief, indeed. Remember, though, that the real world will be awaiting your arrival with even tougher obstacles to overcome. Once you feel like you cannot train yourself to reach a higher place, then, and only then, come see me. I'll be here waiting.");
         }
     }else if (actionx["Physical"]){
         if (status == 0)

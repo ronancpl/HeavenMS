@@ -287,7 +287,7 @@ public class Equip extends Item {
     }
     
     private int randomizeStatUpgrade(int top) {
-        int limit = Math.min(top, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_GAIN);
+        int limit = Math.min(top, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_UP);
         
         int poolCount = (limit * (limit + 1) / 2) + limit;
         int rnd = Randomizer.rand(0, poolCount);

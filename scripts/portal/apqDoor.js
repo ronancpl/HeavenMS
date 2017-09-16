@@ -20,19 +20,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- *6702001.js - Door of APQ
- *@author Jvlaple
+ * @Author Ronan
  */
-
-function act() {
-	var eim = rm.getPlayer().getEventInstance();
-	var party = eim.getPlayers();
-	var numOpen = Integer.parseInt(eim.getProperty("openedDoors"));
-	var mf = eim.getMapFactory();
-	var map = mf.getMap(670010600);
-	eim.setProperty("openedDoors", numOpen + 1);
-	for (var i = 0; i < party.size(); i++) {
-		party.get(i).changeMap(map, map.getPortal((numOpen + 1) * 2));
-	}
+function enter(pi) {
+        var name = pi.getPortal().getName().substring(2, 4);
+        var gate = pi.getPlayer().getMap().getReactorByName("gate" + name);
+        if(gate != null && gate.getState() == 4) {
+            pi.warp(670010600, "gt" + name + "PIB");
+            return true;
+        } else {
+            pi.message("The gate is not opened yet.");
+            return false;
+        }
 }
-	

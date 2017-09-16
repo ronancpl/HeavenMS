@@ -19,7 +19,10 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* 1061009 - Door of Dimension
+/*
+        @Author Ronan
+
+        1061009 - Door of Dimension
 	Enter 3rd job event
 */
 

@@ -560,13 +560,15 @@ public class MapleItemInformationProvider {
     }
     
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
+        boolean assertGM = (isGM && ServerConstants.USE_PERFECT_GM_SCROLL);
+        
         if (equip instanceof Equip) {
             Equip nEquip = (Equip) equip;
             
             Map<String, Integer> stats = this.getEquipStats(scrollId);
             Map<String, Integer> eqstats = this.getEquipStats(equip.getItemId());
             
-            if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || isGM) {
+            if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || assertGM) {
                 double prop = (double)stats.get("success");
                 if (vegaItemId == 5610000) {
                     prop = 30.0;
@@ -574,7 +576,7 @@ public class MapleItemInformationProvider {
                     prop = 90.0;
                 }
                 
-                if(isGM || rollSuccessChance(prop)) {
+                if(assertGM || rollSuccessChance(prop)) {
                     short flag = nEquip.getFlag();
                     switch (scrollId) {
                         case 2040727:
@@ -900,7 +902,7 @@ public class MapleItemInformationProvider {
                             break;
                     }
                     if (!ItemConstants.isCleanSlate(scrollId)) {
-                        if (ServerConstants.USE_PERFECT_SCROLLING == true && !isGM && !usingWhiteScroll) {
+                        if (ServerConstants.USE_PERFECT_SCROLLING == true && !assertGM && !usingWhiteScroll) {
                             nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                         }
                         nEquip.setLevel((byte) (nEquip.getLevel() + 1));
@@ -908,13 +910,13 @@ public class MapleItemInformationProvider {
                 }
                 
                 if (ServerConstants.USE_PERFECT_SCROLLING == false && !ItemConstants.isCleanSlate(scrollId)) {
-                    if (!isGM && !usingWhiteScroll) {
+                    if (!assertGM && !usingWhiteScroll) {
                         nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                     }
                     //nEquip.setLevel((byte) (nEquip.getLevel() + 1));
                 }
             } else {
-                if (!usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !isGM) {
+                if (!usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM) {
                     nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                 }
                 if (Randomizer.nextInt(101) < stats.get("cursed")) {

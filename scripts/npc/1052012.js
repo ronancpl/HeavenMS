@@ -52,6 +52,7 @@ function action(mode, type, selection) {
                         if(cm.getMeso() < 5000) {
                                 cm.sendOk("Oh, you don't have the money, right? Sorry, I can't let you in.");
                         } else {
+                                cm.gainMeso(-5000);
                                 cm.warp(193000000);
                         }
                     

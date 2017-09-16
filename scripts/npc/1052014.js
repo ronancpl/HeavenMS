@@ -50,6 +50,10 @@ var itemQty_lv1 = [1, 1, 1, 1, 1, 30, 30, 30, 30, 30, 40, 40, 40, 80, 80, 20, 1,
 var levels = ["Tier 1", "Tier 2", "Tier 3", "Tier 4", "Tier 5", "Tier 6"];
 
 var tickets = [0, 0, 0, 0, 0, 0];
+var coinId = 4001158;
+var coins = 0;
+
+var hasCoin = false;
 var currentTier;
 var curItemQty;
 var curItemSel;
@@ -76,12 +80,13 @@ function action(mode, type, selection) {
                 advance = true;
                     
                 if(status == 0) {
-                        cm.sendNext("This is the vending machine of the Internet Cafe. Place your erasers earned throughout the quests to redeem a prize. You can place #bany amount of erasers#k, however take note that bigger shots improves the reward possibilities!");
+                        hasCoin = cm.haveItem(coinId);
+                        cm.sendNext("This is the vending machine of the Internet Cafe. Place your erasers or #t" + coinId + "# earned throughout the quests to redeem a prize. You can place #bany amount of erasers#k, however take note that bigger shots improves the reward possibilities!");
                 } else if(status == 1) {
                         var sendStr;
                         currentTier = getRewardTier();
                         
-                        if(currentTier >= 0) sendStr = "With the erasers you have currently placed, you can retrieve a #r" + levels[currentTier] + "#k prize. Place erasers:";
+                        if(currentTier >= 0) sendStr = "With the items you have currently placed, you can retrieve a #r" + levels[currentTier] + "#k prize. Place erasers:";
                         else sendStr = "You have placed no erasers yet. Place erasers:";
                         
                         var listStr = "";
@@ -90,11 +95,16 @@ function action(mode, type, selection) {
                             if(tickets[i] > 0) listStr += " - " + tickets[i] + " erasers";
                             listStr += "#l\r\n";
                         }
+                        if(hasCoin) {
+                            listStr += "#b#L" + tickets.length + "##t" + coinId + "##k";
+                            if(coins > 0) listStr += " - " + coins + " feathers";
+                            listStr += "#l\r\n";
+                        }
                         
-                        cm.sendSimple(sendStr + "\r\n\r\n" + listStr + "#r#L6#Retrieve a prize!#l#k\r\n");
+                        cm.sendSimple(sendStr + "\r\n\r\n" + listStr + "#r#L" + getRewardIndex(hasCoin) + "#Retrieve a prize!#l#k\r\n");
                         
                 } else if(status == 2) {
-                        if(selection == 6) {
+                        if(selection == getRewardIndex(hasCoin)) {
                                 if(currentTier < 0) {
                                         cm.sendPrev("You have set no erasers. Insert at least one to claim a prize.");
                                         advance = false;
@@ -103,7 +113,10 @@ function action(mode, type, selection) {
                                         cm.dispose();
                                 }
                         } else {
-                                var tickSel = 4001009 + selection;
+                                var tickSel;
+                                if(selection < tickets.length) tickSel = 4001009 + selection;
+                                else tickSel = coinId;
+                                
                                 curItemQty = cm.getItemQuantity(tickSel);
                                 curItemSel = selection;
                             
@@ -125,7 +138,8 @@ function action(mode, type, selection) {
                                         cm.sendPrev("You cannot insert the given amount of erasers (#r" + curItemQty + "#k available). Click '#rBack#k' to return to the main interface.");
                                         advance = false;
                                 } else {
-                                        tickets[curItemSel] = placedQty;
+                                        if(curItemSel < tickets.length) tickets[curItemSel] = placedQty;
+                                        else coins = placedQty;
                                     
                                         cm.sendPrev("Operation succeeded. Click '#rBack#k' to return to the main interface.");
                                         advance = false;
@@ -140,6 +154,10 @@ function action(mode, type, selection) {
                         cm.dispose();
                 }
         }
+}
+
+function getRewardIndex(hasCoin) {
+    return (!hasCoin) ? tickets.length : tickets.length + 1;
 }
 
 function getRewardTier() {
@@ -162,6 +180,7 @@ function getPoints() {
         
         points += (6 + ((tickets[i] - 1) * getTicketMultiplier(i)));    //6 from uniques + rest from each ticket difficulty
     }
+    points += Math.ceil(0.46 * coins);  // 100 coins for a LV6 tier item.
     
     return points;
 }
@@ -202,6 +221,8 @@ function givePrize() {
                 for(var i = 0; i < tickets.length; i++) {
                         cm.gainItem(4001009 + i, -1 * tickets[i]);
                 }
+                cm.gainItem(coinId, -1 * coins);
+                
                 cm.gainItem(lvTarget[rnd], lvQty[rnd]);
         }
 }
