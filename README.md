@@ -1,6 +1,7 @@
-MapleSolaxiaV2
+# MapleSolaxiaV2
+---
 
-Freelance developer: Ronan C. P. Lana
+## Freelancer developer: Ronan C. P. Lana
 
 Credits are to be given too to Nexon(Duh!), the original MapleSolaxia staff and other colaborators, as just some changes/patches on the game were applied by myself, in which some of them diverged from the original v83 patch contents.
 
@@ -12,25 +13,27 @@ In this project, many gameplay-wise issues generated from either the original WZ
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, to aim to get the best of the MapleStory of that era.
 
----- Download items ----
+---
+### Download items 
 
 Server files: https://github.com/ronancpl/MapleSolaxiaV2
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
----- Preparing the ambient ----
+---
+### Preparing the ambient 
 
 The following link teaches on how to install a MapleStory v83 private server, however IT DIFFERS on what is used here: http://forum.ragezone.com/f428/maplestory-private-server-v83-741739/
 
 Use that link ONLY AS AN ORIENTATION on where here things start to become ambiguous.
 
 Firstly, install all the general tools required to run the server:
-	- WampServer2.0i.exe -> recipient of the server.
-	- hamachi.msi -> used for establishing a tunnelling route for the server/client communication.
-	- mysql-workbench-gpl-5.2.39-win32 -> MySQL server component, will store the server's DB.
+* WampServer2.0i.exe -> recipient of the server.
+* hamachi.msi -> used for establishing a tunnelling route for the server/client communication.
+* mysql-workbench-gpl-5.2.39-win32 -> MySQL server component, will store the server's DB.
 
 Now install the Java 7 Development Kit:
-	- jdk-7u79-windows-x64.exe
-	- netbeans-8.0.2-javase-windows.exe -> It's a NetBeans project, use other IDE at your own risk.
+* jdk-7u79-windows-x64.exe
+* netbeans-8.0.2-javase-windows.exe -> It's a NetBeans project, use other IDE at your own risk.
 
 Overwrite whenever prompted with the JAR files under "jce_policy-7/UnlimitedJCEPolicy" in these Java folders:
 C:\Program Files\Java\jre7\lib
@@ -54,7 +57,8 @@ For Hamachi:
 Try opening it. It's that simple.
 Hamachi is optional, though. You don't have to install Hamachi if you want to make the server just for use on your own machine. However, if you want to let other players access your server, consider alternatively using port-forwarding methods.
 
----- Installing the SERVER ----
+---
+### Installing the SERVER 
 
 Set the "MapleSolaxia" folder on a place of your preference. It is recommended for use "C:\Nexon\MapleSolaxia".
 
@@ -62,11 +66,11 @@ Setting up the SQL: open MySQL Query Browser, and define these parameters at sta
 Server Host: localhost		Port: 3306		Username: root
 
 Now it must be done CAREFULLY:
-	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_database.sql, and execute it.
-	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_drops.sql, and execute it.
+1. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_database.sql, and execute it.
+2. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_drops.sql, and execute it.
 
 Now it is OPTIONAL, you don't need to run it if you don't want, as it will simply change some NPC shops to set some new goods, not present in the original MapleStory, to sell:
-	- File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
+3. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
 
 At the end of the execution of these SQLs, you should have installed a database schema named "maplesolaxia". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually a entry on the table "accounts" at that database with a login and a password.
 
@@ -78,45 +82,47 @@ Inside the project, you may encounter some code errors. These happens because yo
 
 Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functioning, and then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
----- Installing the CLIENT ----
+---
+### Installing the CLIENT 
 
 The client's set-up is quite straightforward:
-	- From "ManagerMsv83.exe", install MapleStory on your folder of preference (e.g. "C:\Nexon\MapleStory") and follow their instructions.
-	- Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
-	- Extract into the client folder the "localhost.exe" from Localhostv83.
-	- Overwrite the original WZ files with the ones provided from "client_wz" folder on the Google Drive.
+1. From "ManagerMsv83.exe", install MapleStory on your folder of preference (e.g. "C:\Nexon\MapleStory") and follow their instructions.
+2. Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
+3. Extract into the client folder the "localhost.exe" from Localhostv83.
+4. Overwrite the original WZ files with the ones provided from "client_wz" folder on the Google Drive.
 
 If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Text String" "127.0.0.1", and applying the changes wherever it fits.
 
 To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under the 3 addresses. Save the changes and exit the editor.
 
 Open the "localhost.exe" client. If by any means the program did not open, and checking que server log your ping has been listened and you are using Windows 8 or 10, it probably might be some compatibility issue. Extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the MapleStory client folder ("C:\Nexon\MapleStory"). Your "localhost.exe" property settings must follow these:
-	- Run in compatibility mode: Windows 7;
-	- Unchecked reduced color mode;
-	- 640 x 480 resolution;
-	- Unchecked disable display on high DPI settings;
-	- Run as an administrator;
-	- Opening "lolwut.exe", use Fraysa's method.
+* Run in compatibility mode: Windows 7;
+* Unchecked reduced color mode;
+* 640 x 480 resolution;
+* Unchecked disable display on high DPI settings;
+* Run as an administrator;
+* Opening "lolwut.exe", use Fraysa's method.
 
 Important: should the client being refused to connect to the game server, it may be because firewall issues. Head to the end of this file to proceed to enabling this connection with the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
 
----- Important note about CLIENT EDITING ----
+---
+### Important note about CLIENT EDITING 
 
 DO NOT USE the server's XMLs for reimporting into the client's WZ, it WILL generate some kind of bugs afterwards.
-	- Use instead the HaRepacker 4.2.4, encryption "GMS (old)".
-	- Open the desired WZ for editing and, USING THE UI, make the desired changes.
-	- Save the changed WZ, overwriting the original content at the client folder.
-	- Finally, RE-EXPORT ("Private Server..." exporting option) the changed XMLs into the server's WZ.XML files, overwriting the old contents.
+* Use instead the HaRepacker 4.2.4, encryption "GMS (old)".
+* Open the desired WZ for editing and, USING THE UI, make the desired changes.
+* Save the changed WZ, overwriting the original content at the client folder.
+* Finally, RE-EXPORT ("Private Server..." exporting option) the changed XMLs into the server's WZ.XML files, overwriting the old contents.
 
 These steps are IMPORTANT to maintain synchronization between the server and client modules.
 
 As an example of client WZ editing, consider the MobBookUpdate project I developed, for updating all reported drop data of the mobs in the game based on the current drop data on the database:
-	- Open the MobBookUpdate project on NetBeans, located at "C:\Nexon\MapleSolaxia\MobBookUpdate", and build it.
-	- At the subfolder "lib", copy the file "MonsterBook.img.xml". This is from the original WZ v83.
-	- Paste it on the "dist" subfolder.
-	- Inside "dist", open the command prompt by alt+right clicking there.
-	- Execute "java -jar MobBookUpdate.jar". It will generate a "MonsterBook_updated.img.xml" file.
-	- At last, overwrite the "MonsterBook.img.xml" on "C:\Nexon\MapleSolaxia\wz\String.wz" with this file, renaming it back to "MonsterBook.img.xml".
+* Open the MobBookUpdate project on NetBeans, located at "C:\Nexon\MapleSolaxia\MobBookUpdate", and build it.
+* At the subfolder "lib", copy the file "MonsterBook.img.xml". This is from the original WZ v83.
+* Paste it on the "dist" subfolder.
+* Inside "dist", open the command prompt by alt+right clicking there.
+* Execute "java -jar MobBookUpdate.jar". It will generate a "MonsterBook_updated.img.xml" file.
+* At last, overwrite the "MonsterBook.img.xml" on "C:\Nexon\MapleSolaxia\wz\String.wz" with this file, renaming it back to "MonsterBook.img.xml".
 
 At this point, the server-side Monster Book has been updated with the current state of the database's drop data. Then, open HaRepacker 4.2.2 and load "String.wz" from "C:\Nexon\MapleStory". Drop the "MonsterBook.img" node by removing it from the hierarchy tree, then (CONTRARY TO WHAT SHOULD BE DONE NORMALLY!) import the server's "MonsterBook.img.xml".
 
@@ -124,7 +130,8 @@ Take note that this is absolutely dangerous if done unwary. Once the MonsterBook
 
 Save the changes and overwrite the older WZ on the MapleStory client folder.
 
----- Portforwarding the SERVER ----
+---
+### Portforwarding the SERVER
 
 To use portforward, you will need to have permission to change things on the LAN router. Access yor router using the Internet browser. URLs vary accordingly with the manufacturer. To discover it, open the command prompt and type "ipconfig" and search for the "default gateway" field. The IP shown there is the URL needed to access the router. Also, look for the IP given to your machine (aka "IPv4 address" field), which will be the server one. 
 
