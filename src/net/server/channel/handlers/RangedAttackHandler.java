@@ -30,7 +30,6 @@ import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
-import client.MapleCharacter.CancelCooldownAction;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
@@ -208,7 +207,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                             return;
                         } else {
                             c.announce(MaplePacketCreator.skillCooldown(attack.skill, effect_.getCooldown()));
-                            player.addCooldown(attack.skill, System.currentTimeMillis(), effect_.getCooldown() * 1000, TimerManager.getInstance().schedule(new CancelCooldownAction(player, attack.skill), effect_.getCooldown() * 1000));
+                            player.addCooldown(attack.skill, System.currentTimeMillis(), effect_.getCooldown() * 1000);
                         }
                     }
                 }

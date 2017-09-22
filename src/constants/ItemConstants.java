@@ -36,8 +36,6 @@ public final class ItemConstants {
     public final static int KARMA = 0x10;
     public final static int PET_COME = 0x80;
     public final static int ACCOUNT_SHARING = 0x100;
-    public final static float ITEM_ARMOR_EXP = 1 / 350000;
-    public static final float ITEM_WEAPON_EXP = 1 / 700000;
 
     public final static boolean EXPIRING_ITEMS = true;
 

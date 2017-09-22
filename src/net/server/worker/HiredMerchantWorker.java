@@ -20,31 +20,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.server;
+package net.server.worker;
 
 import net.server.world.World;
-import client.MapleCharacter;
-import constants.ServerConstants;
 
 /**
  * @author Ronan
  */
-public class CharacterAutosaverWorker implements Runnable {
-    private World wserv;
+public class HiredMerchantWorker extends BaseWorker implements Runnable {
     
     @Override
     public void run() {
-        if(!ServerConstants.USE_AUTOSAVE) return;
-        
-        PlayerStorage ps = wserv.getPlayerStorage();
-        for(MapleCharacter chr: ps.getAllCharacters()) {
-            if(chr != null && chr.isLoggedin()) {
-                chr.saveToDB(false);
-            }
-        }
+        wserv.runHiredMerchantSchedule();
     }
     
-    public CharacterAutosaverWorker(World world) {
-        wserv = world;
+    public HiredMerchantWorker(World world) {
+        super(world);
     }
 }

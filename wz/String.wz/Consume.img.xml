@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <imgdir name="Consume.img">
-  <imgdir name="2000000">
-    <string name="name" value="Red Potion"/>
-    <string name="desc" value="A potion made out of red herbs.\nRecovers 50 HP."/>
+  <imgdir name="2023000">
+    <string name="name" value="Sharenian Grounds : Fortitude"/>
+    <string name="desc" value="From the ancient remains, an unknown blessing grants you fortitude. Increases Weapon Attack &amp; Weapon Defense."/>
   </imgdir>
-  <imgdir name="2000001">
-    <string name="name" value="Orange Potion"/>
-    <string name="desc" value="A concentrated potion made out of red herbs.\nRecovers 150 HP."/>
+  <imgdir name="2023001">
+    <string name="name" value="Sharenian Grounds : Intellect"/>
+    <string name="desc" value="From the ancient remains, an unknown blessing grants you intellect. Increases Magic Attack &amp; Magic Defense."/>
   </imgdir>
-  <imgdir name="2000002">
-    <string name="name" value="White Potion"/>
-    <string name="desc" value="A highly-concentrated potion made out of red herbs.\nRecovers 300 HP."/>
+  <imgdir name="2023002">
+    <string name="name" value="Sharenian Grounds : Endurance"/>
+    <string name="desc" value="From the ancient remains, an unknown blessing grants you endurance. Increases Weapon Defense &amp; Magic Defense."/>
   </imgdir>
-  <imgdir name="2000003">
-    <string name="name" value="Blue Potion"/>
-    <string name="desc" value="A potion made out of blue herbs.\nRecovers 100 MP."/>
+  <imgdir name="2023003">
+    <string name="name" value="Sharenian Grounds : Swiftness"/>
+    <string name="desc" value="From the ancient remains, an unknown blessing grants you swiftness. Increases Accuracy &amp; Avoidability."/>
   </imgdir>
   <imgdir name="2000004">
     <string name="name" value="Elixir"/>
@@ -9187,5 +9187,21 @@
   <imgdir name="2030020">
     <string name="name" value="Return to New Leaf City Scroll"/>
     <string name="desc" value="Use this scroll to venture back to New Leaf City whenever you want!"/>
+  </imgdir>
+  <imgdir name="2000000">
+    <string name="name" value="Red Potion"/>
+    <string name="desc" value="A potion made out of red herbs.\nRecovers 50 HP."/>
+  </imgdir>
+  <imgdir name="2000001">
+    <string name="name" value="Orange Potion"/>
+    <string name="desc" value="A concentrated potion made out of red herbs.\nRecovers 150 HP."/>
+  </imgdir>
+  <imgdir name="2000002">
+    <string name="name" value="White Potion"/>
+    <string name="desc" value="A highly-concentrated potion made out of red herbs.\nRecovers 300 HP."/>
+  </imgdir>
+  <imgdir name="2000003">
+    <string name="name" value="Blue Potion"/>
+    <string name="desc" value="A potion made out of blue herbs.\nRecovers 100 MP."/>
   </imgdir>
 </imgdir>

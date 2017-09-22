@@ -20,22 +20,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.server;
+package net.server.worker;
 
-import net.server.world.World;
+import java.sql.SQLException;
+import net.server.Server;
+import tools.FilePrinter;
 
 /**
  * @author Ronan
+ * @info   Thread responsible for maintaining coupons EXP & DROP effects active
  */
-public class MountTirednessWorker implements Runnable {
-    private World wserv;
-    
+public class CouponWorker implements Runnable {
     @Override
     public void run() {
-        wserv.runMountSchedule();
-    }
-    
-    public MountTirednessWorker(World world) {
-        wserv = world;
+        try {
+            Server.getInstance().updateActiveCoupons();
+            Server.getInstance().commitActiveCoupons();
+        } catch(SQLException sqle) {
+            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unexpected SQL error: " + sqle.getMessage() + "\n\n");
+        }
     }
 }

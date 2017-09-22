@@ -32,6 +32,7 @@ import constants.ItemConstants;
 import java.util.Arrays;
 
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleMiniGame;
@@ -172,6 +173,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     } else {
                         HiredMerchant merchant = new HiredMerchant(chr, itemId, desc);
                         chr.setHiredMerchant(merchant);
+                        c.getWorldServer().registerHiredMerchant(merchant);
                         chr.getClient().getChannelServer().addHiredMerchant(chr.getId(), merchant);
                         chr.announce(MaplePacketCreator.getHiredMerchant(chr, merchant, true));
                     }

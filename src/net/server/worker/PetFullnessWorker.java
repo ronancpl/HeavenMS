@@ -20,23 +20,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.server;
+package net.server.worker;
 
-import java.sql.SQLException;
-import tools.FilePrinter;
+import net.server.world.World;
 
 /**
  * @author Ronan
- * @info   Thread responsible for maintaining coupons EXP & DROP effects active
  */
-public class CouponWorker implements Runnable {
+public class PetFullnessWorker extends BaseWorker implements Runnable {
+    
     @Override
     public void run() {
-        try {
-            Server.getInstance().updateActiveCoupons();
-            Server.getInstance().commitActiveCoupons();
-        } catch(SQLException sqle) {
-            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unexpected SQL error: " + sqle.getMessage() + "\n\n");
-        }
+        wserv.runPetSchedule();
+    }
+    
+    public PetFullnessWorker(World world) {
+        super(world);
     }
 }

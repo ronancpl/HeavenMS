@@ -48,7 +48,7 @@ public enum MapleBuffStat {
     AURA(0x40000L),
     CONFUSE(0x80000L),
     
-    // ---- COUPON feature (was unused anyway) ----
+    // ------ COUPON feature ------
     
     COUPON_EXP1(0x100000L),
     COUPON_EXP2(0x200000L),

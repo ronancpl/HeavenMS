@@ -83,7 +83,6 @@ import client.MapleCharacter.SkillEntry;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamilyEntry;
-import client.MapleJob;
 import client.MapleKeyBinding;
 import client.MapleMount;
 import client.MapleQuestStatus;

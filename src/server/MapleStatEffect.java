@@ -565,8 +565,8 @@ public class MapleStatEffect {
                 case Crusader.ARMOR_CRASH:
                 case DragonKnight.POWER_CRASH:
                 case WhiteKnight.MAGIC_CRASH:
-                	monsterStatus.put(MonsterStatus.SEAL_SKILL,  Integer.valueOf(1));
-                	break;
+                    monsterStatus.put(MonsterStatus.SEAL_SKILL,  Integer.valueOf(1));
+                    break;
                 case Rogue.DISORDER:
                     monsterStatus.put(MonsterStatus.WATK, Integer.valueOf(ret.x));
                     monsterStatus.put(MonsterStatus.WDEF, Integer.valueOf(ret.y));
@@ -842,7 +842,6 @@ public class MapleStatEffect {
             } else {
                 MapleInventoryManipulator.removeById(applyto.getClient(), MapleInventoryType.USE, projectile, 200, false, true);
             }
-
         }
         SummonMovementType summonMovementType = getSummonMovementType();
         if (overTime || isCygnusFA() || summonMovementType != null) {
@@ -983,9 +982,12 @@ public class MapleStatEffect {
     public void silentApplyBuff(MapleCharacter chr, long starttime) {
         int localDuration = duration;
         localDuration = alchemistModifyVal(chr, localDuration, false);
-        CancelEffectAction cancelAction = new CancelEffectAction(chr, this, starttime);
-        ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + localDuration) - System.currentTimeMillis()));
-        chr.registerEffect(this, starttime, schedule);
+        //CancelEffectAction cancelAction = new CancelEffectAction(chr, this, starttime);
+        //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + localDuration) - System.currentTimeMillis()));
+        
+        if(starttime + localDuration <= System.currentTimeMillis()) return;
+        
+        chr.registerEffect(this, starttime, (starttime + localDuration), true);
         SummonMovementType summonMovementType = getSummonMovementType();
         if (summonMovementType != null) {
             final MapleSummon tosummon = new MapleSummon(chr, sourceid, chr.getPosition(), summonMovementType);
@@ -1006,7 +1008,18 @@ public class MapleStatEffect {
         final long starttime = System.currentTimeMillis();
 //	final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
 //	final ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + 99999) - System.currentTimeMillis()));
-        applyto.registerEffect(this, starttime, null);
+        applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
+    }
+    
+    public void updateBuffEffect(MapleCharacter target, List<Pair<MapleBuffStat, Integer>> activeStats, long starttime) {
+        int localDuration = duration;
+        localDuration = alchemistModifyVal(target, localDuration, false);
+        
+        long leftDuration = (starttime + localDuration) - System.currentTimeMillis();
+        if(leftDuration > 0) {
+            byte[] buff = MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int)leftDuration, activeStats);
+            target.getClient().announce(buff);
+        }
     }
 
     private void applyBuffEffect(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary) {
@@ -1107,11 +1120,7 @@ public class MapleStatEffect {
                 List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.MORPH, Integer.valueOf(getMorph(applyto))));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), stat);
             }
-            long starttime = System.currentTimeMillis();
-            CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
-            ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
-            applyto.registerEffect(this, starttime, schedule);
-
+            
             if (buff != null) {
             	if (!hasNoIcon()) { //Thanks flav for such a simple release! :)
             		applyto.getClient().announce(buff);
@@ -1120,6 +1129,12 @@ public class MapleStatEffect {
                     System.out.println("<Error> NO buff icon for id " + sourceid);
                 }
             }
+            
+            long starttime = System.currentTimeMillis();
+            //CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
+            //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
+            applyto.registerEffect(this, starttime, starttime + localDuration, false);
+
             if (mbuff != null) {
                 applyto.getMap().broadcastMessage(applyto, mbuff, false);
             }
@@ -1511,11 +1526,16 @@ public class MapleStatEffect {
     public int getSourceId() {
         return sourceid;
     }
+    
+    public int getBuffSourceId() {
+        return skill ? sourceid : -sourceid;
+    }
 
     public boolean makeChanceResult() {
         return prop == 1.0 || Math.random() < prop;
     }
 
+    /*
     private static class CancelEffectAction implements Runnable {
 
         private MapleStatEffect effect;
@@ -1536,6 +1556,7 @@ public class MapleStatEffect {
             }
         }
     }
+    */
 
     public short getHp() {
         return hp;

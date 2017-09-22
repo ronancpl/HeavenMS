@@ -59,6 +59,9 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
         }
         
         Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(chr.getId(), chr.getAllBuffs());
+        chr.cancelAllBuffs(true);
+        chr.cancelBuffExpireTask();
+        chr.cancelSkillCooldownTask();
         chr.cancelExpirationTask();
         chr.saveToDB();
         chr.getMap().removePlayer(c.getPlayer());

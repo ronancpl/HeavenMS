@@ -20,22 +20,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package net.server;
+package net.server.worker;
 
 import net.server.world.World;
 
 /**
  * @author Ronan
  */
-public class PetFullnessWorker implements Runnable {
-    private World wserv;
+public class BaseWorker implements Runnable {
+    protected World wserv;
     
     @Override
-    public void run() {
-        wserv.runPetSchedule();
-    }
+    public void run() {}
     
-    public PetFullnessWorker(World world) {
+    public BaseWorker(World world) {
         wserv = world;
     }
 }

@@ -166,19 +166,23 @@ function setup(level, lobbyid) {
         return eim;
 }
 
-/*
 function isTeamAllJobs(eim) {
         var eventJobs = eim.getEventPlayersJobs();
         var rangeJobs = parseInt('111110', 2);
         
         return ((eventJobs & rangeJobs) == rangeJobs);
 }
-*/
 
 function afterSetup(eim) {
         var leader = em.getChannelServer().getPlayerStorage().getCharacterById(eim.getLeaderId());
-        if(leader != null)
+        if(leader != null) {
                 eim.setProperty("guild", "" + leader.getGuildId());
+        }
+        
+        if(isTeamAllJobs(eim)) {
+                var rnd = Math.floor(Math.random() * 4);
+                eim.applyEventPlayersItemBuff(2023000 + rnd);
+        }
 }
 
 function respawnStages(eim) {}
@@ -209,7 +213,12 @@ function scheduledTimeout(eim) {
         }
 }
 
-function playerUnregistered(eim, player) {}
+function playerUnregistered(eim, player) {
+        player.cancelEffect(2023000);
+        player.cancelEffect(2023001);
+        player.cancelEffect(2023002);
+        player.cancelEffect(2023003);
+}
 
 function playerExit(eim, player) {
         eim.unregisterPlayer(player);

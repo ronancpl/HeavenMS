@@ -92,7 +92,7 @@ function writeSolaxiaCommandsLv4() {    //SuperGM
         addCommand("pap", "");
         addCommand("pianus", "");
         addCommand("cake", "");
-        addCommand("playernpc", "");
+        //addCommand("playernpc", "");
 }
 
 function writeSolaxiaCommandsLv3() {    //GM

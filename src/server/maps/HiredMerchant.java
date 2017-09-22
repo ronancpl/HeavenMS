@@ -35,12 +35,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 import net.server.Server;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePlayerShopItem;
-import server.TimerManager;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -61,7 +59,6 @@ public class HiredMerchant extends AbstractMapleMapObject {
     private List<Pair<String, Byte>> messages = new LinkedList<>();
     private List<SoldItem> sold = new LinkedList<>();
     private boolean open;
-    public ScheduledFuture<?> schedule = null;
     private MapleMap map;
 
     public HiredMerchant(final MapleCharacter owner, int itemId, String desc) {
@@ -74,14 +71,6 @@ public class HiredMerchant extends AbstractMapleMapObject {
         this.ownerName = owner.getName();
         this.description = desc;
         this.map = owner.getMap();
-        this.schedule = TimerManager.getInstance().schedule(new Runnable() {
-
-            @Override
-            public void run() {
-                HiredMerchant.this.forceClose();
-				Server.getInstance().getChannel(world, channel).removeHiredMerchant(ownerId);
-            }
-        }, 1000 * 60 * 60 * 24);
     }
 
     public void broadcastToVisitors(final byte[] packet) {
@@ -194,9 +183,8 @@ public class HiredMerchant extends AbstractMapleMapObject {
     }
 
     public void forceClose() {
-        if (schedule != null) {
-            schedule.cancel(false);
-        }
+        Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
+        
         try {
             saveItems(true);
             items.clear();
@@ -226,7 +214,6 @@ public class HiredMerchant extends AbstractMapleMapObject {
         }
 
         map = null;
-        schedule = null;
     }
 
 	public void closeShop(MapleClient c, boolean timeout) {
@@ -268,7 +255,8 @@ public class HiredMerchant extends AbstractMapleMapObject {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            schedule.cancel(false);
+            
+            Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
     }
 
     public String getOwner() {

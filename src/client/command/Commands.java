@@ -1252,8 +1252,11 @@ public class Commands {
 				}
 			}
                         
-                        if(player.getJob().isA(MapleJob.ARAN1)) {
+                        if(player.getJob().isA(MapleJob.ARAN1) || player.getJob().isA(MapleJob.LEGEND)) {
                                 skill = SkillFactory.getSkill(5001005);
+                                player.changeSkillLevel(skill, (byte) -1, -1, -1);
+                        } else {
+                                skill = SkillFactory.getSkill(21001001);
                                 player.changeSkillLevel(skill, (byte) -1, -1, -1);
                         }
                         
@@ -1664,7 +1667,7 @@ public class Commands {
                 
                 case "givems":
                         if (sub.length < 3){
-				player.yellowMessage("Syntax: !givems <playername> <gainmx>");
+				player.yellowMessage("Syntax: !givems <playername> <gainms>");
 				break;
 			}
                         
@@ -2051,7 +2054,7 @@ public class Commands {
                         try {
                                 if (sub.length == 2) {
                                         int itemId = Integer.parseInt(sub[1]);
-                                        if(!(itemId >= 30000 && itemId < 32000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                        if(!(itemId >= 30000 && itemId < 35000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                                                 player.yellowMessage("Hair id '" + sub[1] + "' does not exist.");
                                                 break;
                                         }
@@ -2061,7 +2064,7 @@ public class Commands {
                                         player.equipChanged();
                                 } else {
                                         int itemId = Integer.parseInt(sub[2]);
-                                        if(!(itemId >= 30000 && itemId < 32000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                                        if(!(itemId >= 30000 && itemId < 35000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                                                 player.yellowMessage("Hair id '" + sub[2] + "' does not exist.");
                                                 break;
                                         }
@@ -2278,6 +2281,7 @@ public class Commands {
                         player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
                         break;
                             
+                    /*
                     case "playernpc":
                         if (sub.length < 3){
                             player.yellowMessage("Syntax: !playernpc <playername> <npcid>");
@@ -2285,6 +2289,7 @@ public class Commands {
                         }
                         player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
 			break;
+                    */
                         
                     default:
                         return false;

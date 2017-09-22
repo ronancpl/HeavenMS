@@ -132,7 +132,7 @@ public class MapleShop {
                     int cardreduce = value - cost;
                     int diff = cardreduce + c.getPlayer().getMeso();
                     if (MapleInventoryManipulator.checkSpace(c, itemId, quantity, "")) {
-                        if (itemId >= 5000000 && itemId <= 5000100) {
+                        if (ItemConstants.isPet(itemId)) {
                             int petid = MaplePet.createPet(itemId);
                             MapleInventoryManipulator.addById(c, itemId, quantity, null, petid, -1);
                         } else {

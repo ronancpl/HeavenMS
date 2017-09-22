@@ -18580,4 +18580,64 @@
       <int name="time" value="40000"/>
     </imgdir>
   </imgdir>
+  <imgdir name="02023001">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+    </imgdir>
+    <imgdir name="spec">
+      <int name="mdd" value="40"/>
+      <int name="mad" value="35"/>
+      <int name="time" value="3600000"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02023002">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+    </imgdir>
+    <imgdir name="spec">
+      <int name="pdd" value="55"/>
+      <int name="mdd" value="55"/>
+      <int name="time" value="3600000"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02023003">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+    </imgdir>
+    <imgdir name="spec">
+      <int name="eva" value="35"/>
+      <int name="time" value="3600000"/>
+      <int name="acc" value="35"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02023000">
+    <imgdir name="info">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+      <canvas name="iconRaw" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+      </canvas>
+    </imgdir>
+    <imgdir name="spec">
+      <int name="pad" value="45"/>
+      <int name="pdd" value="30"/>
+      <int name="time" value="3600000"/>
+    </imgdir>
+  </imgdir>
 </imgdir>

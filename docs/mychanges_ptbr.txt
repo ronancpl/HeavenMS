@@ -535,3 +535,13 @@ Explorer mount quest como evento, com timeout e expulsa o player se o hog morre.
 14 - 15 Setembro 2017,
 Adicionado AmoriaPQ.
 Consertado um problema em Inventory Sort que lançava exceção caso tivesse que ordenar vetores vazios.
+
+16 Setembro 2017,
+Refatorado sistema de schedules para hired merchants. Agora o server passa a instanciar as chamadas às funções que fecham as hired merchants, ao invés de instanciar uma task para cada.
+
+18 - 21 Setembro 2017,
+Refatorado sistema de schedules para skill cooldowns e buff expiretimes.
+Completamente reestruturado sistema de buffs. Nova flag permite permanência de buffs mais fortes mesmo que novos buffs surjam.
+
+22 Setembro 2017,
+Adicionado buffs para GPQ.

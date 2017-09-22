@@ -487,11 +487,11 @@ public class Equip extends Item {
         // from level 1 to 2 is killing about 100~200 mobs of the same level range, on a 1x EXP rate scenario.
         
         if(reqLevel >= 78) {
-            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * (10413.648 * Math.exp(reqLevel * 0.03275)), 15);
+            return Math.max(ServerConstants.EQUIP_EXP_RATE * (10413.648 * Math.exp(reqLevel * 0.03275)), 15);
         } else if(reqLevel >= 38) {
-            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * ( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);
+            return Math.max(ServerConstants.EQUIP_EXP_RATE * ( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);
         } else {
-            return Math.max(ServerConstants.EQUIP_EXPERIENCE_MOD * (  248.219 * Math.exp(reqLevel * 0.11093)), 15);
+            return Math.max(ServerConstants.EQUIP_EXP_RATE * (  248.219 * Math.exp(reqLevel * 0.11093)), 15);
         }
     }
     

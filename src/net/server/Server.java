@@ -21,6 +21,8 @@
  */
 package net.server;
 
+import net.server.worker.CouponWorker;
+import net.server.worker.RankingWorker;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;

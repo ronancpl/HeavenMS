@@ -110,6 +110,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Boolean> consumeOnPickupCache = new HashMap<>();
     protected Map<Integer, Boolean> isQuestItemCache = new HashMap<>();
     protected Map<Integer, String> equipmentSlotCache = new HashMap<>();
+    protected Map<Integer, Boolean> noCancelMouseCache = new HashMap<>();
 
     private MapleItemInformationProvider() {
         loadCardIdData();
@@ -246,7 +247,7 @@ public class MapleItemInformationProvider {
         } else if (itemId >= 1080000 && itemId < 1090000) {
             theData = eqpStringData;
             cat = "Eqp/Glove";
-        } else if (itemId >= 30000 && itemId < 32000) {
+        } else if (itemId >= 30000 && itemId < 35000) {
             theData = eqpStringData;
             cat = "Eqp/Hair";
         } else if (itemId >= 1050000 && itemId < 1060000) {
@@ -278,7 +279,7 @@ public class MapleItemInformationProvider {
             cat = "Etc";
         } else if (itemId >= 3000000 && itemId < 4000000) {
             theData = insStringData;
-        } else if (itemId >= 5000000 && itemId < 5010000) {
+        } else if (ItemConstants.isPet(itemId)) {
             theData = petStringData;
         } else {
             return null;
@@ -291,11 +292,19 @@ public class MapleItemInformationProvider {
     }
 
     public boolean noCancelMouse(int itemId) {
+        if (noCancelMouseCache.containsKey(itemId)) {
+            return noCancelMouseCache.get(itemId);
+        }
+        
         MapleData item = getItemData(itemId);
         if (item == null) {
+            noCancelMouseCache.put(itemId, false);
             return false;
         }
-        return MapleDataTool.getIntConvert("info/noCancelMouse", item, 0) == 1;
+        
+        boolean blockMouse = MapleDataTool.getIntConvert("info/noCancelMouse", item, 0) == 1;
+        noCancelMouseCache.put(itemId, blockMouse);
+        return blockMouse;
     }
 
     private MapleData getItemData(int itemId) {

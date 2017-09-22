@@ -32,7 +32,6 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
-import client.MapleCharacter.CancelCooldownAction;
 import client.autoban.AutobanFactory;
 import client.MapleClient;
 import client.MapleStat;
@@ -84,8 +83,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 return;
             } else if (skillid != Corsair.BATTLE_SHIP) {
                 c.announce(MaplePacketCreator.skillCooldown(skillid, effect.getCooldown()));
-                ScheduledFuture<?> timer = TimerManager.getInstance().schedule(new CancelCooldownAction(c.getPlayer(), skillid), effect.getCooldown() * 1000);
-                chr.addCooldown(skillid, System.currentTimeMillis(), effect.getCooldown() * 1000, timer);
+                chr.addCooldown(skillid, System.currentTimeMillis(), effect.getCooldown() * 1000);
             }
         }
         if (skillid == Hero.MONSTER_MAGNET || skillid == Paladin.MONSTER_MAGNET || skillid == DarkKnight.MONSTER_MAGNET) { // Monster Magnet
