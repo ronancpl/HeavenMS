@@ -1063,6 +1063,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (getEventInstance() != null) getEventInstance().changedMap(this, map);
     }
     
+    private void eventAfterChangedMap(int map) {
+        if (getEventInstance() != null) getEventInstance().afterChangedMap(this, map);
+    }
+    
     public boolean canRecoverLastBanish() {
         return System.currentTimeMillis() - this.banishTime < 5 * 60 * 1000;
     }
@@ -1159,6 +1163,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         canWarpCounter--;
         if(canWarpCounter == 0) canWarpMap = true;
+        
+        eventAfterChangedMap(this.getMapId());
     }
 
     public void changeMap(final MapleMap target, final Point pos) {
@@ -1171,6 +1177,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         canWarpCounter--;
         if(canWarpCounter == 0) canWarpMap = true;
+        
+        eventAfterChangedMap(this.getMapId());
     }
     
     private boolean buffMapProtection() {
@@ -2966,9 +2974,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         try {
             Map<MapleBuffStat, MapleBuffStatValueHolder> stats = new LinkedHashMap<>();
             Map<MapleBuffStat, MapleBuffStatValueHolder> buffList = buffEffects.remove(effect.getBuffSourceId());
-            for (Entry<MapleBuffStat, MapleBuffStatValueHolder> stateffect : buffList.entrySet()) {
-                stats.put(stateffect.getKey(), stateffect.getValue());
-                buffEffectsCount.put(stateffect.getKey(), (byte)(buffEffectsCount.get(stateffect.getKey()) - 1));
+            
+            if(buffList != null) {
+                for (Entry<MapleBuffStat, MapleBuffStatValueHolder> stateffect : buffList.entrySet()) {
+                    stats.put(stateffect.getKey(), stateffect.getValue());
+                    buffEffectsCount.put(stateffect.getKey(), (byte)(buffEffectsCount.get(stateffect.getKey()) - 1));
+                }
             }
             
             return stats;

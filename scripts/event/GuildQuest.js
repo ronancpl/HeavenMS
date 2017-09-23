@@ -60,6 +60,8 @@ function setEventRequirements() {
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
         
+        reqStr += "\r\n    All members of the same guild";
+        
         reqStr += "\r\n    Time limit: ";
         reqStr += eventTime + " minutes";
         
@@ -178,11 +180,6 @@ function afterSetup(eim) {
         if(leader != null) {
                 eim.setProperty("guild", "" + leader.getGuildId());
         }
-        
-        if(isTeamAllJobs(eim)) {
-                var rnd = Math.floor(Math.random() * 4);
-                eim.applyEventPlayersItemBuff(2023000 + rnd);
-        }
 }
 
 function respawnStages(eim) {}
@@ -190,9 +187,6 @@ function respawnStages(eim) {}
 function playerEntry(eim, player) {
         var map = eim.getMapInstance(entryMap);
         player.changeMap(map, map.getPortal(0));
-        
-        var texttt = "So, here is the brief. You guys should be warned that, once out on the fortress outskirts, anyone that would not be equipping the #b#t1032033##k will die instantly due to the deteriorated state of the air around there. That being said, once your team move out to the next stage, make sure to #bhit the glowing rocks#k in that region and #bequip the dropped item#k before advancing stages. That will protect you thoroughly from the air sickness. Good luck!";
-        player.getClient().getSession().write(Packages.tools.MaplePacketCreator.getNPCTalk(9040000, /*(byte)*/ 0, texttt, "00 00", /*(byte)*/ 0));
 }
 
 function scheduledTimeout(eim) {
@@ -206,6 +200,11 @@ function scheduledTimeout(eim) {
                                 end(eim);
                         } else {
                                 eim.startEventTimer(eventTime * 60000);
+                                
+                                //if(isTeamAllJobs(eim)) {
+                                        var rnd = Math.floor(Math.random() * 4);
+                                        eim.applyEventPlayersItemBuff(2023000 + rnd);
+                                //}
                         }
                 } else {
                         end(eim);
@@ -233,6 +232,13 @@ function changedMap(eim, player, mapid) {
                 }
                 else
                         eim.unregisterPlayer(player);
+        }
+}
+
+function afterChangedMap(eim, player, mapid) {
+        if (mapid == 990000100) {
+                var texttt = "So, here is the brief. You guys should be warned that, once out on the fortress outskirts, anyone that would not be equipping the #b#t1032033##k will die instantly due to the deteriorated state of the air around there. That being said, once your team moves out to the next stage, make sure to #bhit the glowing rocks#k in that region and #bequip the dropped item#k before advancing stages. That will protect you thoroughly from the air sickness. Good luck!";
+                player.getClient().getSession().write(Packages.tools.MaplePacketCreator.getNPCTalk(9040000, /*(byte)*/ 0, texttt, "00 00", /*(byte)*/ 0));
         }
 }
 

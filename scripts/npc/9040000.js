@@ -53,7 +53,7 @@ function action(mode, type, selection) {
                         sel = selection;
                         if (selection == 0) {
                                 if(!cm.isGuildLeader()) {
-                                        cm.sendOk("Your guild master/jr.master must talk to me to register this guild quest.");
+                                        cm.sendOk("Your guild master/jr.master must talk to me to register the guild for the guild quest.");
                                         cm.dispose();
                                 } else {
                                         if(em.isQueueFull()) {
@@ -98,7 +98,7 @@ function action(mode, type, selection) {
                         if (sel == 0) {
                                 var entry = em.addGuildToQueue(cm.getPlayer().getGuildId(), cm.getPlayer().getId());
                                 if(entry > 0) {
-                                        cm.sendOk("Your guild has been registered successfully. A message will pop on your chat keeping your guild aware about the registration status.\r\n\r\nNow, #rimportant#k: as the leader of this instance, #ryou must already be present on this channel#k the right moment your guild is called for the strategy time. #bThe missubmission of this action will void#k your guild registration as a whole, and the next guild will be called immediately. Must be noted also, that if you become absent from the end of the strategy time to any point on the duration of the instance, it will render the instance interrupted, and your guild will be moved out instantly, moving again the queue.");
+                                        cm.sendOk("Your guild has been registered successfully. A message will pop on your chat keeping your guild aware about the registration status.\r\n\r\nNow, #rimportant#k: as the leader of this instance, #ryou must already be present on this channel#k the right moment your guild is called for the strategy time. #bThe missubmission of this action will void#k your guild registration as a whole, and the next guild will be called immediately. Must be noted also that if you, leader of this instance, become absent from the end of the strategy time to any point on the duration of the instance, it will render the mission interrupted, and your guild will be moved out instantly, moving again the queue.");
                                 } else if(entry == 0) {
                                         cm.sendOk("The queue on this channel is already full. Please be patient and try again after a while, or try on another channel.");
                                 } else {
