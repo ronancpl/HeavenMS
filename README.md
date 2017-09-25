@@ -21,6 +21,11 @@ Server files: https://github.com/ronancpl/MapleSolaxiaV2
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
 ---
+### Donation
+
+If you liked what you have seen on the project, donate a little something as a helping hand for my contributions towards Maple development. Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
+
+---
 ### Preparing the ambient 
 
 The following link teaches on how to install a MapleStory v83 private server, however IT DIFFERS on what is used here: http://forum.ragezone.com/f428/maplestory-private-server-v83-741739/

@@ -901,4 +901,21 @@ public class AbstractPlayerInteraction {
         public long getJailTimeLeft() {
                 return getPlayer().getJailExpirationTimeLeft();
         }
+        
+        public List<MaplePet> getDriedPets() {
+                List<MaplePet> list = new LinkedList<>();
+            
+                long curTime = System.currentTimeMillis();
+                for(Item it : getPlayer().getInventory(MapleInventoryType.CASH).list()) {
+                        if(ItemConstants.isPet(it.getItemId()) && it.getExpiration() < curTime) {
+                                MaplePet pet = it.getPet();
+                                if (pet != null) {
+                                        list.add(pet);
+                                }
+                        }
+                }
+                
+                return list;
+        }
+        
 }

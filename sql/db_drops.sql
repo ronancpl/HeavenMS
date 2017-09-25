@@ -19820,6 +19820,15 @@ USE `maplesolaxia`;
 (9420501, 1492005, 1, 1, 0, 2000),
 (8820001, 2388043, 1, 1, 0, 24000);
 
+  # zhelms, pink bean customs
+  DELETE FROM temp_data WHERE itemid=1002357;
+  INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(8800002, 1002357, 1, 1, 0, 300000),
+(8800002, 1002390, 1, 1, 0, 80000),
+(8800002, 1002430, 1, 1, 0, 40000),
+(8820001, 1002971, 1, 1, 0, 80000),
+(8820001, 1052202, 1, 1, 0, 80000);
+
   # delete item drops from bosses in inactive form
   DELETE FROM temp_data WHERE dropperid=4220001;
   DELETE FROM temp_data WHERE dropperid=5220001;

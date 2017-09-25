@@ -25,7 +25,7 @@
 */
 
 var isPq = true;
-var minPlayers = 1, maxPlayers = 30;
+var minPlayers = 6, maxPlayers = 30;
 var minLevel = 1, maxLevel = 255;
 var entryMap = 990000000;
 var exitMap = 990001100;
@@ -201,10 +201,10 @@ function scheduledTimeout(eim) {
                         } else {
                                 eim.startEventTimer(eventTime * 60000);
                                 
-                                //if(isTeamAllJobs(eim)) {
+                                if(isTeamAllJobs(eim)) {
                                         var rnd = Math.floor(Math.random() * 4);
                                         eim.applyEventPlayersItemBuff(2023000 + rnd);
-                                //}
+                                }
                         }
                 } else {
                         end(eim);

@@ -104,7 +104,7 @@ function action(mode, type, selection) {
 			}
 		} else if (status == 2) {
 			if (selection == 0) {
-				MapleInventoryManipulator.removeFromSlot(cm.getC(), MapleInventoryType.CASH, 1, 1, true);
+				MapleInventoryManipulator.removeFromSlot(cm.getClient(), MapleInventoryType.CASH, 1, 1, true);
 				cm.sendOk("Your cash first slot is removed.");
 			} else if (selection == 1) {
 				if (cm.haveItem(5000029, 2)) {

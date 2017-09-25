@@ -92,7 +92,7 @@ function end(mode, type, selection) {
 					name = MapleItemInformationProvider.getInstance().getName(after);
 			} */
 			
-                        //qm.unequipPet(qm.getC());
+                        //qm.unequipPet(qm.getClient());
 			qm.gainItem(5380000, -1);
                         qm.gainMeso(-10000);
                         qm.evolvePet(i, after);

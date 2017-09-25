@@ -41,7 +41,6 @@ public final class CancelBuffHandler extends AbstractMaplePacketHandler implemen
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int sourceid = slea.readInt();
-        if(sourceid < 0) sourceid = -sourceid;  //oh my...
         
         switch (sourceid) {
             case FPArchMage.BIG_BANG:

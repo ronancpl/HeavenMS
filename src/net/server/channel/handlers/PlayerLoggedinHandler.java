@@ -25,6 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import net.AbstractMaplePacketHandler;
@@ -39,9 +40,11 @@ import net.server.world.PartyOperation;
 import net.server.world.World;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
+import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.BuddylistEntry;
 import client.CharacterNameAndId;
+import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleFamily;
@@ -50,6 +53,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ServerConstants;
+import java.util.Collections;
+import java.util.Comparator;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -107,7 +112,8 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         
         List<PlayerBuffValueHolder> buffs = server.getPlayerBuffStorage().getBuffsFromStorage(cid);
         if (buffs != null) {
-            player.silentGiveBuffs(buffs);
+            List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = getLocalStartTimes(buffs);
+            player.silentGiveBuffs(timedBuffs);
         }
         Connection con = null;
         PreparedStatement ps = null;
@@ -285,5 +291,23 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.updateCouponRates();
         
         player.receivePartyMemberHP();
+    }
+    
+    private List<Pair<Long, PlayerBuffValueHolder>> getLocalStartTimes(List<PlayerBuffValueHolder> lpbvl) {
+        List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = new ArrayList<>();
+        long curtime = System.currentTimeMillis();
+        
+        for(PlayerBuffValueHolder pb : lpbvl) {
+            timedBuffs.add(new Pair<>(curtime - pb.usedTime, pb));
+        }
+        
+        Collections.sort(timedBuffs, new Comparator<Pair<Long, PlayerBuffValueHolder>>() {
+            @Override
+            public int compare(Pair<Long, PlayerBuffValueHolder> p1, Pair<Long, PlayerBuffValueHolder> p2) {
+                return p1.getLeft().compareTo(p2.getLeft());
+            }
+        });
+        
+        return timedBuffs;
     }
 }

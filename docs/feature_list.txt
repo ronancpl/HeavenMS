@@ -32,7 +32,7 @@ Quests:
 * Quests can now reward properly items when matching a reward item with the player's job.
 * Loads of quests have been patched.
 * Quest rewards according to jobs works properly.
-* Rewarding system now checks for stacking opportunities on the inventory before checking for new slots.
+* Enchanced rewarding system: checks for stacking opportunities on the inventory before checking for new slots.
 
 Player Social Network:
 * Guild and Alliance system fully functional.
@@ -60,6 +60,7 @@ Server potentials:
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Every skill/mastery book is now droppable by mobs.
 * Inventory auto-gather and auto-sorting feature.
+* Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.

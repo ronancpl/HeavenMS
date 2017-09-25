@@ -978,16 +978,14 @@ public class MapleStatEffect {
         Rectangle bounds = new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
         return bounds;
     }
-
-    public void silentApplyBuff(MapleCharacter chr, long starttime) {
+    
+    public void silentApplyBuff(MapleCharacter chr, long localStartTime) {
         int localDuration = duration;
         localDuration = alchemistModifyVal(chr, localDuration, false);
         //CancelEffectAction cancelAction = new CancelEffectAction(chr, this, starttime);
         //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + localDuration) - System.currentTimeMillis()));
         
-        if(starttime + localDuration <= System.currentTimeMillis()) return;
-        
-        chr.registerEffect(this, starttime, (starttime + localDuration), true);
+        chr.registerEffect(this, localStartTime, localStartTime + localDuration, true);
         SummonMovementType summonMovementType = getSummonMovementType();
         if (summonMovementType != null) {
             final MapleSummon tosummon = new MapleSummon(chr, sourceid, chr.getPosition(), summonMovementType);

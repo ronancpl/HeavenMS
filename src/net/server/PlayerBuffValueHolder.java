@@ -28,11 +28,11 @@ import server.MapleStatEffect;
  * @author Danny
  */
 public class PlayerBuffValueHolder {
-    public long startTime;
+    public int usedTime;
     public MapleStatEffect effect;
 
-    public PlayerBuffValueHolder(long startTime, MapleStatEffect effect) {
-        this.startTime = startTime;
+    public PlayerBuffValueHolder(int usedTime, MapleStatEffect effect) {
+        this.usedTime = usedTime;
         this.effect = effect;
     }
 }
