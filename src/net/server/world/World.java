@@ -86,7 +86,6 @@ public class World {
     private long mountUpdate;
     
     private Map<HiredMerchant, Byte> activeMerchants = new LinkedHashMap<>();
-    private ScheduledFuture<?> MerchantsSchedule;
     private long merchantUpdate;
     
     private ScheduledFuture<?> charactersSchedule;

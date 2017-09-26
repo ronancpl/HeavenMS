@@ -72,10 +72,10 @@ public class FredrickHandler extends AbstractMaplePacketHandler {
                             chr.getHiredMerchant().clearItems();
                         
                         for (int i = 0; i < items.size(); i++) {
-                        	Item item = items.get(i).getLeft();
+                            Item item = items.get(i).getLeft();
                             MapleInventoryManipulator.addFromDrop(c, item, false);
                             String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-        					FilePrinter.printError(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	        				
+                            FilePrinter.printError(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
                         }
                         c.announce(MaplePacketCreator.fredrickMessage((byte) 0x1E));
                         

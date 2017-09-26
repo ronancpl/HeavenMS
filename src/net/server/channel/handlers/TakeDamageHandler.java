@@ -117,8 +117,14 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     return;
                 }
             } catch(ClassCastException e) {
-                e.printStackTrace();
-                FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Attacker is not a mob-type, rather is a " + map.getMapObject(oid).getClass().getName() + " entity.");
+                //this happens due to mob on last map damaging player just before changing maps
+                
+                if(ServerConstants.USE_DEBUG) {
+                    e.printStackTrace();
+                    FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Attacker is not a mob-type, rather is a " + map.getMapObject(oid).getClass().getName() + " entity.");
+                }
+                
+                return;
             }
             
             direction = slea.readByte();

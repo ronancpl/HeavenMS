@@ -550,3 +550,7 @@ Consertado GPQ não iniciando devido a problemas com o script de evento.
 23 Setembro 2017,
 Adicionado Water of Life.
 Consertado bug com sistema novo de buffs ao entrar no cash shop e em outros cenários onde não se detectava o melhor buff corretamente.
+
+25 Setembro 2017,
+Adicionado proteção de acesso concorrente a ações de Hired Merchant.
+Corrigido alguns problemas com Hired Merchant não retornando a quantidade correta de itens.

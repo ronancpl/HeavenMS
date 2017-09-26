@@ -28,6 +28,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 
 import java.util.Arrays;
 
@@ -234,7 +235,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     } else if (!merchant.isOpen()) {
                         chr.dropMessage(1, "This shop is in maintenance, please come by later.");
                         return;
-                    } else if (merchant.getFreeSlot() == -1) {
+                    } else if (merchant.getFreeSlotThreadsafe() == -1) {
                         chr.dropMessage(1, "This shop has reached it's maximum capacity, please come by later.");
                         return;
                     } else {
@@ -259,10 +260,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     game.chat(c, slea.readMapleAsciiString());
                 }
             } else if (merchant != null) {
-                String message = chr.getName() + " : " + slea.readMapleAsciiString();
-                byte slot = (byte) (merchant.getVisitorSlot(c.getPlayer()) + 1);
-                merchant.getMessages().add(new Pair<>(message, slot));
-                merchant.broadcastToVisitors(MaplePacketCreator.hiredMerchantChat(message, slot));
+                merchant.sendMessage(c.getPlayer(), slea.readMapleAsciiString());
             }
         } else if (mode == Action.EXIT.getCode()) {
             if (chr.getTrade() != null) {
@@ -408,7 +406,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         } else if (mode == Action.CONFIRM.getCode()) {
             MapleTrade.completeTrade(c.getPlayer());
         } else if (mode == Action.ADD_ITEM.getCode() || mode == Action.PUT_ITEM.getCode()) {
-        	MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
+            MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
             short slot = slea.readShort();
             short bundles = slea.readShort();
             if (chr.getInventory(type).getItem(slot) == null || chr.getItemQuantity(chr.getInventory(type).getItem(slot).getItemId(), false) < bundles || chr.getInventory(type).getItem(slot).getFlag() == ItemConstants.UNTRADEABLE) {
@@ -424,6 +422,9 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             Item ivItem = chr.getInventory(type).getItem(slot);
             Item sellItem = ivItem.copy();
             if (chr.getItemQuantity(ivItem.getItemId(), false) < perBundle * bundles) {
+                return;
+            } else if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(ivItem.getItemId())) {
+                c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Shop."));
                 return;
             }
             sellItem.setQuantity(perBundle);
@@ -521,7 +522,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 shop.broadcast(MaplePacketCreator.getPlayerShopItemUpdate(shop));
             } else if (merchant != null) {
                 merchant.buy(c, item, quantity);
-                merchant.broadcastToVisitors(MaplePacketCreator.updateHiredMerchant(merchant, c.getPlayer()));
+                merchant.broadcastToVisitorsThreadsafe(MaplePacketCreator.updateHiredMerchant(merchant, c.getPlayer()));
             }
         } else if (mode == Action.TAKE_ITEM_BACK.getCode()) {
             HiredMerchant merchant = chr.getHiredMerchant();
@@ -555,7 +556,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 chr.setHasMerchant(false);
             }
             if (merchant != null && merchant.isOwner(c.getPlayer())) {
-                merchant.getMessages().clear();
+                merchant.clearMessages();
                 merchant.setOpen(true);
             }
             chr.setHiredMerchant(null);

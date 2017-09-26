@@ -4959,7 +4959,7 @@ public class MaplePacketCreator {
                                 mplew.writeInt(item.getBundles());
                                 mplew.writeInt(item.getPrice());
                                 mplew.writeInt(hm.getOwnerId());
-                                mplew.write(hm.getFreeSlot() == -1 ? 1 : 0);
+                                mplew.write(hm.getFreeSlotThreadsafe() == -1 ? 1 : 0);
                                 MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(hm.getOwnerId());
                                 if ((chr != null) && (c.getChannel() == hm.getChannel())) {
                                         mplew.write(1);
@@ -5004,7 +5004,7 @@ public class MaplePacketCreator {
                 mplew.write(PlayerInteractionHandler.Action.ROOM.getCode());
                 mplew.write(0x05);
                 mplew.write(0x04);
-                mplew.writeShort(hm.getVisitorSlot(chr) + 1);
+                mplew.writeShort(hm.getVisitorSlotThreadsafe(chr) + 1);
                 mplew.writeInt(hm.getItemId());
                 mplew.writeMapleAsciiString("Hired Merchant");
                 for (int i = 0; i < 3; i++) {
@@ -5016,10 +5016,12 @@ public class MaplePacketCreator {
                 }
                 mplew.write(-1);
                 if (hm.isOwner(chr)) {
-                        mplew.writeShort(hm.getMessages().size());
-                        for (int i = 0; i < hm.getMessages().size(); i++) {
-                                mplew.writeMapleAsciiString(hm.getMessages().get(i).getLeft());
-                                mplew.write(hm.getMessages().get(i).getRight());
+                        List<Pair<String, Byte>> msgList = hm.getMessages();
+                    
+                        mplew.writeShort(msgList.size());
+                        for (int i = 0; i < msgList.size(); i++) {
+                                mplew.writeMapleAsciiString(msgList.get(i).getLeft());
+                                mplew.write(msgList.get(i).getRight());
                         }
                 } else {
                         mplew.writeShort(0);
