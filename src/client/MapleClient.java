@@ -68,8 +68,6 @@ import scripting.npc.NPCConversationManager;
 import scripting.npc.NPCScriptManager;
 import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
-import server.MapleMiniGame;
-import server.MaplePlayerShop;
 import server.life.MapleMonster;
 import server.MapleTrade;
 import server.TimerManager;
@@ -1298,7 +1296,7 @@ public class MapleClient {
 			MapleTrade.cancelTrade(getPlayer());
 		}
 
-		HiredMerchant merchant = player.getHiredMerchant();
+		MapleHiredMerchant merchant = player.getHiredMerchant();
 		if (merchant != null) {
 			if (merchant.isOwner(getPlayer())) {
 				merchant.setOpen(true);

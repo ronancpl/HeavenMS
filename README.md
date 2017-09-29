@@ -23,7 +23,8 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 ---
 ### Donation
 
-If you liked what you have seen on the project, donate a little something as a helping hand for my contributions towards Maple development. Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
+If you liked what you have seen on the project, donate a little something as a helping hand for my contributions towards Maple development.
+Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
 
 ---
 ### Preparing the ambient 

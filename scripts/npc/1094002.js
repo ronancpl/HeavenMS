@@ -19,14 +19,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-    Author: XxOsirisxX （BubblesDev 0.75)
+    Author: Kevin (DietStory v1.02)
     NPC: Bush - Abel Glasses Quest
 */
 
 var rolled = 0;
 
 function start(mode, type, selection){
-    //cm.sendGetText("Do you want to obtain a glasses?");
     if(!cm.isQuestStarted(2186)) {
         cm.sendOk("Just a pile of boxes, nothing special...");
         cm.dispose();
@@ -46,6 +45,5 @@ function action(mode, type, selection) {
     }
     else cm.sendOk("You #balready have#k the glasses that was here!");
     
-    //cm.saveSquadMembers(cm.getText());
     cm.dispose();
 }

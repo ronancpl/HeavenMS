@@ -62,7 +62,7 @@ import server.events.gm.MapleSnowball;
 import server.life.MapleMonster;
 import server.life.MapleNPC;
 import server.life.MobSkill;
-import server.maps.HiredMerchant;
+import server.maps.MapleHiredMerchant;
 import server.maps.MapleDoor;
 import server.maps.MapleDoorObject;
 import server.maps.MapleDragon;
@@ -106,6 +106,7 @@ import constants.ServerConstants;
 import constants.skills.Buccaneer;
 import constants.skills.Corsair;
 import constants.skills.ThunderBreaker;
+import server.maps.AbstractMapleMapObject;
 
 /**
  *
@@ -686,7 +687,7 @@ public class MaplePacketCreator {
                 
                 mplew.writeBool(c.getGMLevel() > 0);
                 
-                mplew.write(0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                mplew.write((c.getGMLevel() > 0 && Server.getInstance().canFly(c.getAccID())) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
                 mplew.write(0); // Country Code.
                 
                 mplew.writeMapleAsciiString(c.getAccountName());
@@ -1856,11 +1857,13 @@ public class MaplePacketCreator {
                         mplew.writeInt(chr.getMount().getExp());
                         mplew.writeInt(chr.getMount().getTiredness());
                 }
-                if (chr.getPlayerShop() != null && chr.getPlayerShop().isOwner(chr)) {
-                        if (chr.getPlayerShop().hasFreeSlot()) {
-                                addAnnounceBox(mplew, chr.getPlayerShop(), chr.getPlayerShop().getVisitors().length);
+                
+                MaplePlayerShop mps = chr.getPlayerShop();
+                if (mps != null && mps.isOwner(chr)) {
+                        if (mps.hasFreeSlot()) {
+                                addAnnounceBox(mplew, mps, mps.getVisitors().length);
                         } else {
-                                addAnnounceBox(mplew, chr.getPlayerShop(), 1);
+                                addAnnounceBox(mplew, mps, 1);
                         }
                 } else if (chr.getMiniGame() != null && chr.getMiniGame().isOwner(chr)) {
                         if (chr.getMiniGame().hasFreeSlot()) {
@@ -2728,8 +2731,8 @@ public class MaplePacketCreator {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(4);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.EXIT.getCode());
-                if (slot > 0) {
-                        mplew.write(slot);
+                if (slot != 0) {
+                        mplew.writeShort(slot);
                 }
                 return mplew.getPacket();
         }
@@ -2794,7 +2797,7 @@ public class MaplePacketCreator {
          * @param owner
          * @return
          */
-        public static byte[] getPlayerShop(MapleClient c, MaplePlayerShop shop, boolean owner) {
+        public static byte[] getPlayerShop(MaplePlayerShop shop, boolean owner) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -2804,9 +2807,16 @@ public class MaplePacketCreator {
                 mplew.write(0);
                 addCharLook(mplew, shop.getOwner(), false);
                 mplew.writeMapleAsciiString(shop.getOwner().getName());
-                mplew.write(1);
-                addCharLook(mplew, shop.getOwner(), false);
-                mplew.writeMapleAsciiString(shop.getOwner().getName());
+                
+                MapleCharacter visitors[] = shop.getVisitors();
+                for(int i = 0; i < 3; i++) {
+                    if(visitors[i] != null) {
+                        mplew.write(i + 1);
+                        addCharLook(mplew, visitors[i], false);
+                        mplew.writeMapleAsciiString(visitors[i].getName());
+                    }
+                }
+                
                 mplew.write(0xFF);
                 mplew.writeMapleAsciiString(shop.getDescription());
                 List<MaplePlayerShopItem> items = shop.getItems();
@@ -4943,38 +4953,84 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] owlOfMinerva(MapleClient c, int itemid, List<HiredMerchant> hms, List<MaplePlayerShopItem> items) { //Thanks moongra, you save me some time :)
+        // 0: Success
+        // 1: The room is already closed.
+        // 2: You can't enter the room due to full capacity.
+        // 3: Other requests are being fulfilled this minute.
+        // 4: You can't do it while you're dead.
+        // 7: You are not allowed to trade other items at this point.
+        // 17: You may not enter this store.
+        // 18: The owner of the store is currently undergoing store maintenance. Please try again in a bit.
+        // 23: This can only be used inside the Free Market.
+        // default: This character is unable to do it.	
+        public static byte[] getOwlMessage(int msg) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
+
+                mplew.writeShort(SendOpcode.SHOP_LINK_RESULT.getValue());
+                mplew.write(msg); // depending on the byte sent, a different message is sent.
+
+                return mplew.getPacket();
+        }
+        
+        public static byte[] owlOfMinerva(MapleClient c, int itemid, List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable) {
+                byte itemType = MapleItemInformationProvider.getInstance().getInventoryType(itemid).getType();
+                
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SHOP_SCANNER_RESULT.getValue()); // header.
                 mplew.write(6);
                 mplew.writeInt(0);
                 mplew.writeInt(itemid);
-                mplew.writeInt(hms.size());
-                for (HiredMerchant hm : hms) {
-                        for (MaplePlayerShopItem item : items) {
-                                mplew.writeMapleAsciiString(hm.getOwner());
-                                mplew.writeInt(hm.getMapId());
-                                mplew.writeMapleAsciiString(hm.getDescription());
-                                mplew.writeInt(item.getItem().getQuantity());
-                                mplew.writeInt(item.getBundles());
-                                mplew.writeInt(item.getPrice());
-                                mplew.writeInt(hm.getOwnerId());
-                                mplew.write(hm.getFreeSlotThreadsafe() == -1 ? 1 : 0);
-                                MapleCharacter chr = c.getChannelServer().getPlayerStorage().getCharacterById(hm.getOwnerId());
-                                if ((chr != null) && (c.getChannel() == hm.getChannel())) {
-                                        mplew.write(1);
-                                } else {
-                                        mplew.write(2);
-                                }
-
-                                if (item.getItem().getItemId() / 1000000 == 1) {
-                                        addItemInfo(mplew, item.getItem(), true);
-                                }
+                mplew.writeInt(hmsAvailable.size());
+                for (Pair<MaplePlayerShopItem, AbstractMapleMapObject> hme : hmsAvailable) {
+                        MaplePlayerShopItem item = hme.getLeft();
+                        AbstractMapleMapObject mo = hme.getRight();
+                        
+                        if(mo instanceof MaplePlayerShop) {
+                            MaplePlayerShop ps = (MaplePlayerShop) mo;
+                            MapleCharacter owner = ps.getOwner();
+                            
+                            mplew.writeMapleAsciiString(owner.getName());
+                            mplew.writeInt(owner.getMapId());
+                            mplew.writeMapleAsciiString(ps.getDescription());
+                            mplew.writeInt(item.getBundles());
+                            mplew.writeInt(item.getItem().getQuantity());
+                            mplew.writeInt(item.getPrice());
+                            mplew.writeInt(owner.getId());
+                            mplew.write(owner.getClient().getChannel() - 1);
+                        } else {
+                            MapleHiredMerchant hm = (MapleHiredMerchant) mo;
+                        
+                            mplew.writeMapleAsciiString(hm.getOwner());
+                            mplew.writeInt(hm.getMapId());
+                            mplew.writeMapleAsciiString(hm.getDescription());
+                            mplew.writeInt(item.getBundles());
+                            mplew.writeInt(item.getItem().getQuantity());
+                            mplew.writeInt(item.getPrice());
+                            mplew.writeInt(hm.getOwnerId());
+                            mplew.write(hm.getChannel() - 1);
+                        }
+                        
+                        mplew.write(itemType);
+                        if (itemType == MapleInventoryType.EQUIP.getType()) {
+                                addItemInfo(mplew, item.getItem(), true);
                         }
                 }
                 return mplew.getPacket();
         }
 
+        public static byte[] getOwlOpen() {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+
+                mplew.writeShort(SendOpcode.SHOP_SCANNER_RESULT.getValue());
+                mplew.write(7);
+                mplew.write(GameConstants.OWL_DATA.length);
+                for (int i : GameConstants.OWL_DATA) {
+                        mplew.writeInt(i);
+                }
+
+                return mplew.getPacket();
+        }
+        
         public static byte[] retrieveFirstMessage() {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.ENTRUSTED_SHOP_CHECK_RESULT.getValue()); // header.
@@ -4998,7 +5054,7 @@ public class MaplePacketCreator {
          * 0x12 = FKING POPUP LOL
          */
 
-        public static byte[] getHiredMerchant(MapleCharacter chr, HiredMerchant hm, boolean firstTime) {//Thanks Dustin
+        public static byte[] getHiredMerchant(MapleCharacter chr, MapleHiredMerchant hm, boolean firstTime) {//Thanks Dustin
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.ROOM.getCode());
@@ -5007,11 +5063,13 @@ public class MaplePacketCreator {
                 mplew.writeShort(hm.getVisitorSlotThreadsafe(chr) + 1);
                 mplew.writeInt(hm.getItemId());
                 mplew.writeMapleAsciiString("Hired Merchant");
+                
+                MapleCharacter visitors[] = hm.getVisitors();
                 for (int i = 0; i < 3; i++) {
-                        if (hm.getVisitors()[i] != null) {
+                        if (visitors[i] != null) {
                                 mplew.write(i + 1);
-                                addCharLook(mplew, hm.getVisitors()[i], false);
-                                mplew.writeMapleAsciiString(hm.getVisitors()[i].getName());
+                                addCharLook(mplew, visitors[i], false);
+                                mplew.writeMapleAsciiString(visitors[i].getName());
                         }
                 }
                 mplew.write(-1);
@@ -5057,7 +5115,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] updateHiredMerchant(HiredMerchant hm, MapleCharacter chr) {
+        public static byte[] updateHiredMerchant(MapleHiredMerchant hm, MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.UPDATE_MERCHANT.getCode());
@@ -5100,6 +5158,15 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] hiredMerchantMaintenanceMessage() {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
+                mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
+                mplew.write(PlayerInteractionHandler.Action.ROOM.getCode());
+                mplew.write(0x00);
+                mplew.write(0x12);
+                return mplew.getPacket();
+        }
+        
         public static byte[] leaveHiredMerchant(int slot, int status2) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
@@ -5119,7 +5186,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] spawnHiredMerchant(HiredMerchant hm) {
+        public static byte[] spawnHiredMerchant(MapleHiredMerchant hm) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_HIRED_MERCHANT.getValue());
                 mplew.writeInt(hm.getOwnerId());

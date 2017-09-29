@@ -26,7 +26,7 @@ import client.MapleCharacter;
 import java.sql.SQLException;
 import java.util.Arrays;
 import client.MapleClient;
-import constants.ServerConstants;
+import constants.GameConstants;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
@@ -39,7 +39,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class HiredMerchantRequest extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if (chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.HIRED_MERCHANT)).isEmpty() && ((ServerConstants.USE_MERCHANT_ANYWHERE && chr.getMapId() != 910000000) || (chr.getMapId() > 910000000 && chr.getMapId() < 910000023))) {
+        if (chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.HIRED_MERCHANT)).isEmpty() && (GameConstants.isFreeMarketRoom(chr.getMapId()))) {
             if (!chr.hasMerchant()) {
                 try {
                     if (ItemFactory.MERCHANT.loadItems(chr.getId(), false).isEmpty() && chr.getMerchantMeso() == 0) {

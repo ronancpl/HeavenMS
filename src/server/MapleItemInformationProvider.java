@@ -916,20 +916,13 @@ public class MapleItemInformationProvider {
                         }
                         nEquip.setLevel((byte) (nEquip.getLevel() + 1));
                     }
-                }
-                
-                if (ServerConstants.USE_PERFECT_SCROLLING == false && !ItemConstants.isCleanSlate(scrollId)) {
-                    if (!assertGM && !usingWhiteScroll) {
+                }  else {
+                    if (ServerConstants.USE_PERFECT_SCROLLING == false && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM) {
                         nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                     }
-                    //nEquip.setLevel((byte) (nEquip.getLevel() + 1));
-                }
-            } else {
-                if (!usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM) {
-                    nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
-                }
-                if (Randomizer.nextInt(101) < stats.get("cursed")) {
-                    return null;
+                    if (Randomizer.nextInt(101) < stats.get("cursed")) {
+                        return null;
+                    }
                 }
             }
         }

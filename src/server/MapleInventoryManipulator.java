@@ -267,6 +267,7 @@ public class MapleInventoryManipulator {
     public static int checkSpaceProgressively(MapleClient c, int itemid, int quantity, String owner, int usedSlots) {
         // return value --> bit0: if has space for this one;
         //                  value after: new slots filled;
+        // assumption: equipments always have slotMax == 1.
         
         int returnValue;
         
@@ -302,9 +303,11 @@ public class MapleInventoryManipulator {
             
             returnValue = ((numSlotsNeeded + usedSlots) << 1);
             returnValue += (numSlotsNeeded == 0 || !c.getPlayer().getInventory(type).isFullAfterSomeItems(numSlotsNeeded - 1, usedSlots)) ? 1 : 0;
+            //System.out.print(" needed " + numSlotsNeeded + " used " + usedSlots + " rval " + returnValue);
         } else {
-            returnValue = ((1 + usedSlots) << 1);
+            returnValue = ((quantity + usedSlots) << 1);
             returnValue += (!c.getPlayer().getInventory(type).isFullAfterSomeItems(0, usedSlots)) ? 1 : 0;
+            //System.out.print(" eqpneeded " + 1 + " used " + usedSlots + " rval " + returnValue);
         }
         
         return returnValue;

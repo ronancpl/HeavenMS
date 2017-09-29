@@ -25,9 +25,7 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import net.server.channel.Channel;
-import net.server.Server;
-import server.maps.HiredMerchant;
+import server.maps.MapleHiredMerchant;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -38,30 +36,27 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public class RemoteStoreHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        HiredMerchant hm = getMerchant(c);
+        MapleHiredMerchant hm = getMerchant(c);
         if (chr.hasMerchant() && hm != null) {
             if (hm.getChannel() == chr.getClient().getChannel()) {
                 hm.setOpen(false);
-                hm.removeAllVisitors("");
+                hm.removeAllVisitors();
                 chr.setHiredMerchant(hm);
+                
                 chr.announce(MaplePacketCreator.getHiredMerchant(chr, hm, false));
             } else {
                 c.announce(MaplePacketCreator.remoteChannelChange((byte) (hm.getChannel() - 1)));
             }
             return;
         } else {
-           chr.dropMessage(1, "You don't have a Merchant open");
+           chr.dropMessage(1, "You don't have a Merchant open.");
         }
         c.announce(MaplePacketCreator.enableActions());
     }
 
-    public HiredMerchant getMerchant(MapleClient c) {
+    private MapleHiredMerchant getMerchant(MapleClient c) {
         if (c.getPlayer().hasMerchant()) {
-            for (Channel cserv : Server.getInstance().getChannelsFromWorld(c.getWorld())) {
-                if (cserv.getHiredMerchants().get(c.getPlayer().getId()) != null) {
-                    return cserv.getHiredMerchants().get(c.getPlayer().getId());
-                }
-            }
+            return c.getWorldServer().getHiredMerchant(c.getPlayer().getId());
         }
         return null;
     }

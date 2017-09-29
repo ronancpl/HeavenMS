@@ -2,11 +2,17 @@ package constants;
 
 import client.MapleJob;
 import constants.skills.Aran;
+import server.maps.MapleMap;
+import server.maps.FieldLimit;
 
 /*
  * @author kevintjuh93
+ * @author Ronan
  */
 public class GameConstants {
+    //public static final int[] OWL_DATA = {2000014, 2000015, 2000016};
+    public static final int[] OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
+    
     // Ronan's rates upgrade system
     private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
     private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105};
@@ -135,6 +141,23 @@ public class GameConstants {
 
     public static boolean isGMSkills(final int skill) {
     	return skill >= 9001000 && skill <= 9101008 || skill >= 8001000 && skill <= 8001001; 
+    }
+    
+    public static boolean isFreeMarketRoom(int mapid) {
+        return mapid > 910000000 && mapid < 910000023;
+    }
+    
+    public static boolean isMerchantLocked(MapleMap map) {
+        if(FieldLimit.CANNOTMIGRATE.check(map.getFieldLimit())) {   // maps that cannot access cash shop cannot access merchants too (except FM rooms).
+            return true;
+        }
+        
+        switch(map.getId()) {
+            case 910000000:
+                return true;
+        }
+        
+        return false;
     }
     
     public static boolean isBossRush(int mapid) {

@@ -45,9 +45,11 @@ import net.server.Server;
 import scripting.npc.NPCScriptManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import server.MaplePlayerShopItem;
 import server.MapleShop;
 import server.MapleShopFactory;
 import server.TimerManager;
+import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMap;
 import server.maps.MapleTVEffect;
 import tools.MaplePacketCreator;
@@ -436,6 +438,16 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             player.gainMeso(ii.getMeso(itemId), true, false, true);
             remove(c, itemId);
             c.announce(MaplePacketCreator.enableActions());
+        } else if (itemType == 523) {
+            int itemid = slea.readInt();
+            
+            player.setOwlSearch(itemid);
+            List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = c.getWorldServer().getAvailableItemBundles(itemid);
+            if(!hmsAvailable.isEmpty()) remove(c, itemId);
+            
+            c.announce(MaplePacketCreator.owlOfMinerva(c, itemid, hmsAvailable));
+            c.announce(MaplePacketCreator.enableActions());
+            
         } else if (itemType == 524) {
             for (byte i = 0; i < 3; i++) {
                 MaplePet pet = player.getPet(i);

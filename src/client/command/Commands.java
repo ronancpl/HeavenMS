@@ -1413,7 +1413,31 @@ public class Commands {
                 MapleCharacter player = c.getPlayer();
                 MapleCharacter victim;
             
-                switch(sub[0]) {    
+                switch(sub[0]) {
+                case "fly":
+                        if (sub.length < 2) {
+				player.yellowMessage("Syntax: !fly <on/off>");
+				break;
+			}
+                        
+                        Integer accid = c.getAccID();
+                        
+                        String sendStr = "";
+                        if(sub[1].equalsIgnoreCase("on")) {
+                                sendStr += "GM Fly feature enabled. With fly active, GM's cannot attack.";
+                                if(!srv.canFly(accid)) sendStr += " Re-login to take effect.";
+                            
+                                srv.changeFly(c.getAccID(), true);
+                        } else {
+                                player.dropMessage(6, "GM Fly feature disabled. GM's can now attack.");
+                                if(srv.canFly(accid)) sendStr += " Re-login to take effect.";
+                                
+                                srv.changeFly(c.getAccID(), false);
+                        }
+                        
+                        player.dropMessage(6, sendStr);
+                break;
+                    
 		case "spawn":
                         if (sub.length < 2) {
 				player.yellowMessage("Syntax: !spawn <mobid>");
@@ -1592,12 +1616,12 @@ public class Commands {
 			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, message_));
                     break;
                     
-		 case "ignored":
+		case "ignored":
 			for (String ign : MapleLogger.ignored){
 				player.yellowMessage(ign + " is being ignored.");
 			}
                     break;
-                     
+                    
 		case "pos":
 			float xpos = player.getPosition().x;
 			float ypos = player.getPosition().y;
@@ -2552,6 +2576,14 @@ public class Commands {
 			player.dropMessage(5, "Quest Cache for quest " + sub[1] + " cleared.");
 			break;
                             
+                case "fred":
+                        c.announce(MaplePacketCreator.fredrickMessage(Byte.valueOf(sub[1])));
+                        break;
+                    
+                case "owl":
+                        c.announce(MaplePacketCreator.getOwlMessage(Integer.valueOf(sub[1])));
+                        break;
+                    
                 default:
                         return false;
                 }

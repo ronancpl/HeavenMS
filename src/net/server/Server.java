@@ -71,6 +71,7 @@ import java.util.Calendar;
 import server.quest.MapleQuest;
 
 public class Server implements Runnable {
+    private static final Set<Integer> activeFly = new HashSet<>();
     private static final Map<Integer, Integer> couponRates = new LinkedHashMap<>();
     private static final List<Integer> activeCoupons = new LinkedList<>();
     
@@ -697,6 +698,18 @@ public class Server implements Runnable {
         	}
         }
         return false;
+    }
+    
+    public void changeFly(Integer accountid, boolean canFly) {
+        if(canFly) {
+            activeFly.add(accountid);
+        } else {
+            activeFly.remove(accountid);
+        }
+    }
+    
+    public boolean canFly(Integer accountid) {
+        return activeFly.contains(accountid);
     }
     
     public World getWorld(int id) {

@@ -76,7 +76,9 @@ public enum RecvOpcode {
     HIRED_MERCHANT_REQUEST(0x3F),
     FREDRICK_ACTION(0x40),
     DUEY_ACTION(0x41),
-    ADMIN_SHOP(0x44),//oh lol
+    OWL_ACTION(0x42),   //sends most searched info to client
+    OWL_WARP(0x43),     //handles player warp to store
+    ADMIN_SHOP(0x44),
     ITEM_SORT(0x45),
     ITEM_SORT2(0x46),
     ITEM_MOVE(0x47),
@@ -87,7 +89,7 @@ public enum RecvOpcode {
     USE_MOUNT_FOOD(0x4D),
     SCRIPTED_ITEM(0x4E),
     USE_CASH_ITEM(0x4F),
-
+    //USE_OWL_ITEM(0x50), ... no idea
     USE_CATCH_ITEM(0x51),
     USE_SKILL_BOOK(0x52),
     USE_TELEPORT_ROCK(0x54),

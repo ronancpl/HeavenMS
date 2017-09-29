@@ -147,7 +147,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.USE_ITEM, new UseItemHandler());
             registerHandler(RecvOpcode.USE_RETURN_SCROLL, new UseItemHandler());
             registerHandler(RecvOpcode.USE_UPGRADE_SCROLL, new ScrollHandler());
-            registerHandler(RecvOpcode.USE_SUMMON_BAG, new UseSummonBag());
+            registerHandler(RecvOpcode.USE_SUMMON_BAG, new UseSummonBagHandler());
             registerHandler(RecvOpcode.FACE_EXPRESSION, new FaceExpressionHandler());
             registerHandler(RecvOpcode.HEAL_OVER_TIME, new HealOvertimeHandler());
             registerHandler(RecvOpcode.ITEM_PICKUP, new ItemPickupHandler());
@@ -182,7 +182,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.BBS_OPERATION, new BBSOperationHandler());
             registerHandler(RecvOpcode.SKILL_EFFECT, new SkillEffectHandler());
             registerHandler(RecvOpcode.MESSENGER, new MessengerHandler());
-            registerHandler(RecvOpcode.NPC_ACTION, new NPCAnimation());
+            registerHandler(RecvOpcode.NPC_ACTION, new NPCAnimationHandler());
             registerHandler(RecvOpcode.CHECK_CASH, new TouchingCashShopHandler());
             registerHandler(RecvOpcode.CASHSHOP_OPERATION, new CashOperationHandler());
             registerHandler(RecvOpcode.COUPON_CODE, new CouponCodeHandler());
@@ -205,6 +205,8 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.SPOUSE_CHAT, new SpouseChatHandler());
             registerHandler(RecvOpcode.PET_AUTO_POT, new PetAutoPotHandler());
             registerHandler(RecvOpcode.PET_EXCLUDE_ITEMS, new PetExcludeItemsHandler());
+            registerHandler(RecvOpcode.OWL_ACTION, new UseOwlOfMinervaHandler());
+            registerHandler(RecvOpcode.OWL_WARP, new OwlWarpHandler());
             registerHandler(RecvOpcode.TOUCH_MONSTER_ATTACK, new TouchMonsterDamageHandler());
             registerHandler(RecvOpcode.TROCK_ADD_MAP, new TrockAddMapHandler());
             registerHandler(RecvOpcode.HIRED_MERCHANT_REQUEST, new HiredMerchantRequest());

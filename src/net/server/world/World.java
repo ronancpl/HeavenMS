@@ -34,6 +34,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
@@ -45,7 +46,8 @@ import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
 
 import server.TimerManager;
-import server.maps.HiredMerchant;
+import server.maps.MapleHiredMerchant;
+import server.MaplePlayerShop;
 import net.server.worker.CharacterAutosaverWorker;
 import net.server.worker.MountTirednessWorker;
 import net.server.worker.PetFullnessWorker;
@@ -56,8 +58,11 @@ import net.server.channel.CharacterIdChannelPair;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.guild.MapleGuildSummary;
+import server.MaplePlayerShopItem;
+import server.maps.AbstractMapleMapObject;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
+import tools.Pair;
 
 /**
  *
@@ -85,8 +90,10 @@ public class World {
     private ScheduledFuture<?> mountsSchedule;
     private long mountUpdate;
     
-    private Map<HiredMerchant, Byte> activeMerchants = new LinkedHashMap<>();
+    private Map<Integer, Pair<MapleHiredMerchant, Byte>> activeMerchants = new LinkedHashMap<>();
     private long merchantUpdate;
+    
+    private Map<Integer, MaplePlayerShop> activePlayerShops = new LinkedHashMap<>();
     
     private ScheduledFuture<?> charactersSchedule;
     
@@ -778,45 +785,94 @@ public class World {
         }
     }
     
-    public void registerHiredMerchant(HiredMerchant hm) {
+    public void registerPlayerShop(MaplePlayerShop ps) {
+        synchronized(activePlayerShops) {
+            activePlayerShops.put(ps.getOwner().getId(), ps);
+        }
+    }
+    
+    public void unregisterPlayerShop(MaplePlayerShop ps) {
+        synchronized(activePlayerShops) {
+            activePlayerShops.remove(ps.getOwner().getId());
+        }
+    }
+    
+    public List<MaplePlayerShop> getActivePlayerShops() {
+        List<MaplePlayerShop> psList = new ArrayList<>();
+        synchronized(activePlayerShops) {
+            for(MaplePlayerShop mps : activePlayerShops.values()) {
+                psList.add(mps);
+            }
+            
+            return psList;
+        }
+    }
+    
+    public MaplePlayerShop getPlayerShop(int ownerid) {
+        synchronized(activePlayerShops) {
+            return activePlayerShops.get(ownerid);
+        }
+    }
+    
+    public void registerHiredMerchant(MapleHiredMerchant hm) {
         synchronized(activeMerchants) {
             byte initProc;
             if(System.currentTimeMillis() - merchantUpdate > 5 * 60 * 1000) initProc = 1;
             else initProc = 0;
             
-            activeMerchants.put(hm, initProc);
+            activeMerchants.put(hm.getOwnerId(), new Pair<>(hm, initProc));
         }
     }
     
-    public void unregisterHiredMerchant(HiredMerchant hm) {
+    public void unregisterHiredMerchant(MapleHiredMerchant hm) {
         synchronized(activeMerchants) {
-            activeMerchants.remove(hm);
+            activeMerchants.remove(hm.getOwnerId());
         }
     }
     
     public void runHiredMerchantSchedule() {
-        Map<HiredMerchant, Byte> deployedMerchants;
+        Map<Integer, Pair<MapleHiredMerchant, Byte>> deployedMerchants;
         synchronized(activeMerchants) {
             merchantUpdate = System.currentTimeMillis();
-            deployedMerchants = Collections.unmodifiableMap(activeMerchants);
-        }
+            deployedMerchants = new LinkedHashMap<>(activeMerchants);
         
-        for(Map.Entry<HiredMerchant, Byte> dm: deployedMerchants.entrySet()) {
-            byte timeOn = dm.getValue();
-            
-            if(timeOn <= 144) {   // 1440 minutes == 24hrs
-                synchronized(activeMerchants) {
-                    activeMerchants.put(dm.getKey(), (byte)(timeOn + 1));
-                }
-            } else {
-                HiredMerchant hm = dm.getKey();
-                hm.forceClose();
-                this.getChannel(hm.getChannel()).removeHiredMerchant(hm.getOwnerId());
+            for(Map.Entry<Integer, Pair<MapleHiredMerchant, Byte>> dm: deployedMerchants.entrySet()) {
+                byte timeOn = dm.getValue().getRight();
+                MapleHiredMerchant hm = dm.getValue().getLeft();
                 
-                synchronized(activeMerchants) {
+                if(timeOn <= 144) {   // 1440 minutes == 24hrs
+                    activeMerchants.put(hm.getOwnerId(), new Pair<>(dm.getValue().getLeft(), (byte)(timeOn + 1)));
+                } else {
+                    hm.forceClose();
+                    this.getChannel(hm.getChannel()).removeHiredMerchant(hm.getOwnerId());
+
                     activeMerchants.remove(dm.getKey());
                 }
             }
+        }
+    }
+    
+    public List<MapleHiredMerchant> getActiveMerchants() {
+        List<MapleHiredMerchant> hmList = new ArrayList<>();
+        synchronized(activeMerchants) {
+            for(Pair<MapleHiredMerchant, Byte> hmp : activeMerchants.values()) {
+                MapleHiredMerchant hm = hmp.getLeft();
+                if(hm.isOpen()) {
+                    hmList.add(hm);
+                }
+            }
+            
+            return hmList;
+        }
+    }
+    
+    public MapleHiredMerchant getHiredMerchant(int ownerid) {
+        synchronized(activeMerchants) {
+            if(activeMerchants.containsKey(ownerid)) {
+                return activeMerchants.get(ownerid).getLeft();
+            }
+            
+            return null;
         }
     }
 
@@ -832,6 +888,36 @@ public class World {
         }
     }
 
+    public List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> getAvailableItemBundles(int itemid) {
+            List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = new ArrayList<>();
+
+            for (MapleHiredMerchant hm : getActiveMerchants()) {
+                    List<MaplePlayerShopItem> itemBundles = hm.sendAvailableBundles(itemid);
+                    
+                    for(MaplePlayerShopItem mpsi : itemBundles) {
+                            hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) hm));
+                    }
+            }
+            
+            for (MaplePlayerShop ps : getActivePlayerShops()) {
+                    List<MaplePlayerShopItem> itemBundles = ps.sendAvailableBundles(itemid);
+                    
+                    for(MaplePlayerShopItem mpsi : itemBundles) {
+                            hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) ps));
+                    }
+            }
+
+            Collections.sort(hmsAvailable, new Comparator<Pair<MaplePlayerShopItem, AbstractMapleMapObject>>() {
+                    @Override
+                    public int compare(Pair<MaplePlayerShopItem, AbstractMapleMapObject> p1, Pair<MaplePlayerShopItem, AbstractMapleMapObject> p2) {
+                            return p1.getLeft().getPrice() - p2.getLeft().getPrice();
+                    }
+            });
+
+            hmsAvailable.subList(0, Math.min(hmsAvailable.size(), 200));    //truncates the list to have up to 200 elements
+            return hmsAvailable;
+    }
+    
     public final void shutdown() {
         for (Channel ch : getChannels()) {
             ch.shutdown();

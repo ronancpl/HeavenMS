@@ -57,7 +57,7 @@ import server.TimerManager;
 import server.events.gm.MapleEvent;
 import server.expeditions.MapleExpedition;
 import server.expeditions.MapleExpeditionType;
-import server.maps.HiredMerchant;
+import server.maps.MapleHiredMerchant;
 import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import tools.MaplePacketCreator;
@@ -73,7 +73,7 @@ public final class Channel {
     private String ip, serverMessage;
     private MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
-    private Map<Integer, HiredMerchant> hiredMerchants = new HashMap<>();
+    private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
     private ReentrantReadWriteLock merchant_lock = new ReentrantReadWriteLock(true);
     private ReadLock merchRlock = merchant_lock.readLock();
@@ -152,7 +152,7 @@ public final class Channel {
     public void closeAllMerchants() {
         merchWlock.lock();
         try {
-            final Iterator<HiredMerchant> hmit = hiredMerchants.values().iterator();
+            final Iterator<MapleHiredMerchant> hmit = hiredMerchants.values().iterator();
             while (hmit.hasNext()) {
                 hmit.next().forceClose();
                 hmit.remove();
@@ -246,7 +246,7 @@ public final class Channel {
         }
     }
 
-    public Map<Integer, HiredMerchant> getHiredMerchants() {
+    public Map<Integer, MapleHiredMerchant> getHiredMerchants() {
         merchRlock.lock();
         try {
             return Collections.unmodifiableMap(hiredMerchants);
@@ -255,7 +255,7 @@ public final class Channel {
         }
     }
 
-    public void addHiredMerchant(int chrid, HiredMerchant hm) {
+    public void addHiredMerchant(int chrid, MapleHiredMerchant hm) {
         merchWlock.lock();
         try {
             hiredMerchants.put(chrid, hm);

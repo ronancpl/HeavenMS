@@ -128,6 +128,16 @@ public class MapleInventory implements Iterable<Item> {
         return qty;
     }
     
+    public int countCleanById(int itemId) {
+        int qty = 0;
+        for (Item item : list()) {
+            if (item.getItemId() == itemId && item.getOwner().equals("")) {
+                qty += item.getQuantity();
+            }
+        }
+        return qty;
+    }
+    
     public int freeSlotCountById(int itemId, int required) {
         List<Item> itemList = listById(itemId);
         int openSlot = 0;
@@ -297,6 +307,7 @@ public class MapleInventory implements Iterable<Item> {
     public boolean isFull(int margin) {
         lock.lock();
         try {
+            //System.out.print("(" + inventory.size() + " " + margin + " <> " + slotLimit + ")");
             return inventory.size() + margin >= slotLimit;
         } finally {
             lock.unlock();
@@ -306,6 +317,7 @@ public class MapleInventory implements Iterable<Item> {
     public boolean isFullAfterSomeItems(int margin, int used) {
         lock.lock();
         try {
+            //System.out.print("(" + inventory.size() + " " + margin + " <> " + slotLimit + " -" + used + ")");
             return inventory.size() + margin >= slotLimit - used;
         } finally {
             lock.unlock();
@@ -445,8 +457,12 @@ public class MapleInventory implements Iterable<Item> {
                 int usedSlots = typesSlotsUsed.get(itemType);
                 
                 Long itemId = it.getKey() >> 32L;
+                
+                //System.out.print("inserting " + itemId.intValue() + " with type " + itemType + " qty " + it.getValue() + " owner '" + rcvOwners.get(it.getKey()) + "' current usedSlots:");
+                //for(Integer i : typesSlotsUsed) System.out.print(" " + i);
                 int result = MapleInventoryManipulator.checkSpaceProgressively(c, itemId.intValue(), it.getValue(), rcvOwners.get(it.getKey()), usedSlots);
                 boolean hasSpace = ((result % 2) != 0);
+                //System.out.print(" -> hasSpace: " + hasSpace + " RESULT : " + result + "\n");
                 
                 if(!hasSpace) return false;
                 typesSlotsUsed.set(itemType, (result >> 1));

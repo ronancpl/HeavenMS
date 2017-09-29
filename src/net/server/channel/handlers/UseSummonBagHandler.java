@@ -36,7 +36,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  *
  * @author AngelSL
  */
-public final class UseSummonBag extends AbstractMaplePacketHandler {
+public final class UseSummonBagHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
