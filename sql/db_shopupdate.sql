@@ -225,12 +225,12 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 (1337, 2210032, 1, 84);
 
 # Thanks to DietStory dev team
-INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
+INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
  (1200001, 3010001, 1000, 0, 1),
  (1200001, 1092003, 2000, 0, 2),
  (1200001, 1072063, 10000, 0, 3),
  (1200001, 1072062, 10000, 0, 4),
- (1200001, 1072017, 10000, 0, 5).
+ (1200001, 1072017, 10000, 0, 5),
  (1200001, 1072049, 5000, 0, 6),
  (1200001, 1072048, 5000, 0, 7),
  (1200001, 1072008, 5000, 0, 8),
