@@ -46,7 +46,7 @@ function start() {
         }
     }
     else {
-        cm.sendSimple("Only few adventurers, from a selected public, are eligible to protect the Watch Hog.");
+        cm.sendOk("Only few adventurers, from a selected public, are eligible to protect the Watch Hog.");
     }
     
     cm.dispose();

@@ -25248,6 +25248,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1052120"/>
+      <string name="endscript" value="q2293e"/>
     </imgdir>
   </imgdir>
   <imgdir name="2300">
@@ -25960,13 +25961,6 @@
     <imgdir name="1">
       <int name="npc" value="1300002"/>
       <string name="endscript" value="q2332e"/>
-      <int name="infoNumber" value="2332"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="1"/>
-          <int name="cond" value="1"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="1300002"/>

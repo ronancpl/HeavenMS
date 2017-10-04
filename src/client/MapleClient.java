@@ -88,7 +88,7 @@ public class MapleClient {
 	public static final String CLIENT_KEY = "CLIENT";
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
-	private IoSession session;
+	private final IoSession session;
 	private MapleCharacter player;
 	private int channel = 1;
 	private int accId = 1;
@@ -123,15 +123,15 @@ public class MapleClient {
 		this.session = session;
 	}
 
-	public synchronized MapleAESOFB getReceiveCrypto() {
+	public MapleAESOFB getReceiveCrypto() {
 		return receive;
 	}
 
-	public synchronized MapleAESOFB getSendCrypto() {
+	public MapleAESOFB getSendCrypto() {
 		return send;
 	}
 
-	public synchronized IoSession getSession() {
+	public IoSession getSession() {
 		return session;
 	}
         
@@ -459,7 +459,7 @@ public class MapleClient {
 	public boolean checkPin(String other) {
 		pinattempt++;
 		if (pinattempt > 5) {
-			getSession().close(true);
+			session.close(false);
 		}
 		if (pin.equals(other)) {
 			pinattempt = 0;
@@ -493,7 +493,7 @@ public class MapleClient {
             
 		picattempt++;
 		if (picattempt > 5) {
-			getSession().close(true);
+			session.close(false);
 		}
 		if (pic.equals(other)) {
 			picattempt = 0;
@@ -505,7 +505,7 @@ public class MapleClient {
 	public int login(String login, String pwd) {
 		loginattempt++;
 		if (loginattempt > 4) {
-			getSession().close(true);
+			session.close(false);
 		}
 		int loginok = 5;
 		Connection con = null;
@@ -934,12 +934,12 @@ public class MapleClient {
 		if (!serverTransition && isLoggedIn()) {
 			updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);
 			session.removeAttribute(MapleClient.CLIENT_KEY); // prevents double dcing during login
-			session.close();
+			session.close(false);
 		}
 		engines.clear();
 	}
 
-	private void clear() {
+	private void clear() {  //usable when defining client = null shortly after
 		this.accountName = null;
 		this.macs = null;
 		this.hwid = null;
@@ -1013,8 +1013,8 @@ public class MapleClient {
 			public void run() {
 				try {
 					if (lastPong < then) {
-						if (getSession() != null && getSession().isConnected()) {
-							getSession().close(true);
+						if (session != null && session.isConnected()) {
+							session.close(false);
 						}
 					}
 				} catch (NullPointerException e) {
@@ -1307,6 +1307,7 @@ public class MapleClient {
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
 		player.cancelAllBuffs(true);
                 player.cancelBuffExpireTask();
+                player.cancelDiseaseExpireTask();
                 player.cancelSkillCooldownTask();
 		//Cancelling magicdoor? Nope
 		//Cancelling mounts? Noty

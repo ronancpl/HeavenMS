@@ -30,6 +30,8 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
+import scripting.event.EventInstanceManager;
+import server.maps.MapleMap;
 
 public final class PartyOperationHandler extends AbstractMaplePacketHandler {
 
@@ -50,6 +52,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                         party = world.createParty(partyplayer);
                         player.setParty(party);
                         player.setMPC(partyplayer);
+                        player.getMap().addPartyMember(player);
                         player.silentPartyUpdate();
                         c.announce(MaplePacketCreator.partyCreated(partyplayer));
                 } else {
@@ -59,17 +62,22 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             }
             case 2: {
                 if (party != null && partyplayer != null) {
-                        if (partyplayer.equals(party.getLeader())) {
-                            world.updateParty(party.getId(), PartyOperation.DISBAND, partyplayer);
-                            if (player.getEventInstance() != null) {
-                                player.getEventInstance().disbandParty();
-                            }
-                        } else {
-                            world.updateParty(party.getId(), PartyOperation.LEAVE, partyplayer);
-                            if (player.getEventInstance() != null) {
-                                player.getEventInstance().leftParty(player);
-                            }
+                    if (partyplayer.getId() == party.getLeaderId()) {
+                        c.getWorldServer().removeMapPartyMembers(party.getId());
+
+                        world.updateParty(party.getId(), PartyOperation.DISBAND, partyplayer);
+                        if (player.getEventInstance() != null) {
+                            player.getEventInstance().disbandParty();
                         }
+                    } else {
+                        player.getMap().removePartyMember(player);
+
+                        world.updateParty(party.getId(), PartyOperation.LEAVE, partyplayer);
+                        if (player.getEventInstance() != null) {
+                            player.getEventInstance().leftParty(player);
+                        }
+                    }
+                        
                     player.setParty(null);
                 }
                 break;
@@ -81,6 +89,8 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                         if (party != null) {
                             if (party.getMembers().size() < 6) {
                                 partyplayer = new MaplePartyCharacter(player);
+                                player.getMap().addPartyMember(player);
+                                
                                 world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
                                 player.receivePartyMemberHP();
                                 player.updatePartyMemberHP();
@@ -109,6 +119,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             party = world.createParty(partyplayer);
                             player.setParty(party);
                             player.setMPC(partyplayer);
+                            player.getMap().addPartyMember(player);
                             c.announce(MaplePacketCreator.partyCreated(partyplayer));
                         }
                         if (party.getMembers().size() < 6) {
@@ -129,12 +140,20 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                 if (partyplayer.equals(party.getLeader())) {
                     MaplePartyCharacter expelled = party.getMemberById(cid);
                     if (expelled != null) {
-                        world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
-                        if (player.getEventInstance() != null) {
-                            if (expelled.isOnline()) {
-                                player.getEventInstance().disbandParty();
+                        MapleCharacter emc = expelled.getPlayer();
+                        if(emc != null) {
+                            MapleMap map = emc.getMap();
+                            if(map != null) map.removePartyMember(emc);
+                            
+                            EventInstanceManager eim = emc.getEventInstance();
+                            if(eim != null) {
+                                eim.leftParty(emc);
                             }
+                            
+                            emc.setParty(null);
                         }
+                        
+                        world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                     }
                 }
                 break;

@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Iterator;
@@ -93,6 +94,7 @@ public class MapleMap {
     private AtomicInteger spawnedMonstersOnMap = new AtomicInteger(0);
     private AtomicInteger droppedItemCount = new AtomicInteger(0);
     private Collection<MapleCharacter> characters = new LinkedHashSet<>();
+    private Map<Integer, Set<Integer>> mapParty = new LinkedHashMap<>();
     private Map<Integer, MaplePortal> portals = new HashMap<>();
     private Map<Integer, Integer> backgroundTypes = new HashMap<>();
     private Map<String, Integer> environment = new LinkedHashMap<>();
@@ -133,6 +135,7 @@ public class MapleMap {
     private short mobInterval = 5000;
     private boolean allowSummons = true; // All maps should have this true at the beginning
     private int lastDoorOwner = -1;
+    
     // HPQ
     private int riceCakes = 0;
     private int bunnyDamage = 0;
@@ -1781,10 +1784,84 @@ public class MapleMap {
         }, time);
     }
     
+    public MapleCharacter getAnyCharacterFromParty(int partyid) {
+        chrRLock.lock();
+        try {
+            Set<Integer> list = mapParty.get(partyid);
+            if(list == null) return null;
+            
+            for(Integer cid : list) {
+                for (MapleCharacter c : this.characters) {
+                    if (c.getId() == cid) {
+                        return c;
+                    }
+                }
+            }
+            
+            return null;
+        } finally {
+            chrRLock.unlock();
+        }
+    }
+    
+    private void addPartyMemberInternal(MapleCharacter chr) {
+        int partyid = chr.getPartyId();
+        if(partyid == -1) return;
+        
+        Set<Integer> partyEntry = mapParty.get(partyid);
+        if(partyEntry == null) {
+            partyEntry = new LinkedHashSet<>();
+            partyEntry.add(chr.getId());
+            
+            mapParty.put(partyid, partyEntry);
+        } else {
+            partyEntry.add(chr.getId());
+        }
+    }
+    
+    private void removePartyMemberInternal(MapleCharacter chr) {
+        int partyid = chr.getPartyId();
+        if(partyid == -1) return;
+        
+        Set<Integer> partyEntry = mapParty.get(partyid);
+        if(partyEntry != null) {
+            if(partyEntry.size() > 1) partyEntry.remove(chr.getId());
+            else mapParty.remove(partyid);
+        }
+    }
+    
+    public void addPartyMember(MapleCharacter chr) {
+        chrWLock.lock();
+        try {
+            addPartyMemberInternal(chr);
+        } finally {
+            chrWLock.unlock();
+        }
+    }
+            
+    public void removePartyMember(MapleCharacter chr) {
+        chrWLock.lock();
+        try {
+            removePartyMemberInternal(chr);
+        } finally {
+            chrWLock.unlock();
+        }
+    }
+    
+    public void removeParty(int partyid) {
+        chrWLock.lock();
+        try {
+            mapParty.remove(partyid);
+        } finally {
+            chrWLock.unlock();
+        }
+    }
+    
     public void addPlayer(final MapleCharacter chr) {
         chrWLock.lock();
         try {
             characters.add(chr);
+            addPartyMemberInternal(chr);
         } finally {
             chrWLock.unlock();
         }
@@ -2047,6 +2124,7 @@ public class MapleMap {
     public void removePlayer(MapleCharacter chr) {
         chrWLock.lock();
         try {
+            removePartyMemberInternal(chr);
             characters.remove(chr);
         } finally {
             chrWLock.unlock();

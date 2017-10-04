@@ -21079,7 +21079,8 @@ INSERT INTO `shops` (`shopid`, `npcid`) VALUES
  -- missing shops
 INSERT INTO `shops` (`shopid`, `npcid`) VALUES
 ( 57, 2002001 ),
-(1052116, 1052116);
+(1052116, 1052116),
+(1301000, 1301000);
 
 INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 ( 57, 3990000, 500, 1 ), 

@@ -45,8 +45,10 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
 
+import scripting.event.EventInstanceManager;
 import server.TimerManager;
 import server.maps.MapleHiredMerchant;
+import server.maps.MapleMap;
 import server.MaplePlayerShop;
 import net.server.worker.CharacterAutosaverWorker;
 import net.server.worker.MountTirednessWorker;
@@ -357,16 +359,22 @@ public class World {
     public MapleParty createParty(MaplePartyCharacter chrfor) {
         int partyid = runningPartyId.getAndIncrement();
         MapleParty party = new MapleParty(partyid, chrfor);
-        parties.put(party.getId(), party);
+        synchronized(parties) {
+            parties.put(party.getId(), party);
+        }
         return party;
     }
 
     public MapleParty getParty(int partyid) {
-        return parties.get(partyid);
+        synchronized(parties) {
+            return parties.get(partyid);
+        }
     }
 
     public MapleParty disbandParty(int partyid) {
-        return parties.remove(partyid);
+        synchronized(parties) {
+            return parties.remove(partyid);
+        }
     }
 
     public void updateParty(MapleParty party, PartyOperation operation, MaplePartyCharacter target) {
@@ -419,8 +427,10 @@ public class World {
                 break;
             case CHANGE_LEADER:
                 MapleCharacter mc = party.getLeader().getPlayer();
-                if(mc.getEventInstance() != null && mc.getEventInstance().isEventLeader(mc)) {
-                    mc.getEventInstance().changedLeader(target.getPlayer());
+                EventInstanceManager eim = mc.getEventInstance();
+                
+                if(eim != null && eim.isEventLeader(mc)) {
+                    eim.changedLeader(target.getPlayer());
                 }
                 party.setLeader(target);
                 break;
@@ -430,6 +440,21 @@ public class World {
         updateParty(party, operation, target);
     }
 
+    public void removeMapPartyMembers(int partyid) {
+        MapleParty party = getParty(partyid);
+        if(party == null) return;
+        
+        for(MaplePartyCharacter mpc : party.getMembers()) {
+            MapleCharacter mc = mpc.getPlayer();
+            if(mc != null) {
+                MapleMap map = mc.getMap();
+                if(map != null) {
+                    map.removeParty(partyid);
+                }
+            }
+        }
+    }
+    
     public int find(String name) {
         int channel = -1;
         MapleCharacter chr = getPlayerStorage().getCharacterByName(name);

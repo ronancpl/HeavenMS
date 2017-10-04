@@ -2623,7 +2623,8 @@ public class MaplePacketCreator {
                 mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
                 mplew.writeInt(cid);
                 writeLongMaskD(mplew, statups);
-                for (int i = 0; i < statups.size(); i++) {
+                for (Pair<MapleDisease, Integer> statup : statups) {
+                        mplew.writeShort(statup.getRight().shortValue());
                         mplew.writeShort(skill.getSkillId());
                         mplew.writeShort(skill.getSkillLevel());
                 }

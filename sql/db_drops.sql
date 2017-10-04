@@ -19779,7 +19779,8 @@ USE `maplesolaxia`;
 (2130100, 4001367, 1, 1, 28257, 10000),
 (1110100, 4001369, 1, 1, 28259, 10000),
 (1210101, 4001370, 1, 1, 28260, 10000),
-(1110101, 4001371, 1, 1, 28261, 10000);
+(1110101, 4001371, 1, 1, 28261, 10000),
+(3300003, 4001317, 1, 1, 2326, 20000);
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
   # delete item drops from other mobs named Freezer
@@ -19928,6 +19929,9 @@ USE `maplesolaxia`;
 
   # remove belts dropping from mobs
   DELETE FROM drop_data WHERE itemid>=1132000 AND itemid<=1132004;
+
+  # remove Liar Tree Sap (unusable)
+  DELETE FROM drop_data WHERE itemid=2049101;
 
   # remove items being dropped from mobs in HPQ
   DELETE FROM drop_data WHERE dropperid >= 9300061 AND dropperid <= 9300064;
@@ -20548,6 +20552,12 @@ USE `maplesolaxia`;
 (9400532, 4031597, 1, 1, 0, 999999),
 (9400533, 4031597, 1, 1, 0, 999999),
 (9400534, 4031597, 1, 1, 0, 999999);
+
+ -- Thanks to DietStory dev team
+ -- There are two Jr. Boogies mob ids for some unknown reason. 3230301 had no drops, but 3230300 had all the correct drops.
+ -- Just copying the drops from the one with the correct drop data.
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 3230301, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 3230300;
 
   # update quest reactor items
   UPDATE reactordrops SET questid=2086 WHERE itemid=4031165;

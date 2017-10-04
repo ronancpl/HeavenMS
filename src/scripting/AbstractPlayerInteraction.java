@@ -449,10 +449,14 @@ public class AbstractPlayerInteraction {
                                 if(item != null) {
                                     Equip it = (Equip)item;
                                     if(isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) it.setUpgradeSlots(3);
-                                }
                                 
-                                if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true)
-                                    item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 0, c.getPlayer().isGM());
+                                    if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true) {
+                                        Equip eqp = (Equip)item;
+                                        eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
+
+                                        item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 0, c.getPlayer().isGM());
+                                    }
+                                }
 			} else {
 				item = new Item(id, (short) 0, quantity, petId);
 			}

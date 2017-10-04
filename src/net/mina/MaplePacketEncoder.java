@@ -62,6 +62,5 @@ public class MaplePacketEncoder implements ProtocolEncoder {
     }
 
     @Override
-    public void dispose(IoSession session) throws Exception {
-    }
+    public void dispose(IoSession session) throws Exception {}
 }

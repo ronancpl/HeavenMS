@@ -1424,12 +1424,12 @@ public class Commands {
                         
                         String sendStr = "";
                         if(sub[1].equalsIgnoreCase("on")) {
-                                sendStr += "GM Fly feature enabled. With fly active, GM's cannot attack.";
+                                sendStr += "Enabled Fly feature (F1). With fly active, you cannot attack.";
                                 if(!srv.canFly(accid)) sendStr += " Re-login to take effect.";
                             
                                 srv.changeFly(c.getAccID(), true);
                         } else {
-                                player.dropMessage(6, "GM Fly feature disabled. GM's can now attack.");
+                                sendStr += "Disabled Fly feature. You can now attack.";
                                 if(srv.canFly(accid)) sendStr += " Re-login to take effect.";
                                 
                                 srv.changeFly(c.getAccID(), false);

@@ -559,3 +559,10 @@ Corrigido um bug no sistema de checagem de slots.
 
 28 Setembro 2017,
 Adidionado wish tickets à AmoriaPQ.
+
+02 - 03 Outubro 2017,
+Adicionado proteção de acesso concorrente em MapleParty.
+Corrigido bug em sistema de distribuição de EXP para party.
+Corrigido bug de overflow em distribuição de EXP.
+Corrigido bug com scrolls não usando slots quando resultam em sucesso.
+Refatorado sistema de schedules para disease expiretimes.

@@ -263,6 +263,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.changeSkillLevel(SkillFactory.getSkill(10000000 * player.getJobType() + 12), (byte) (player.getLinkedLevel() / 10), 20, -1);
         player.checkBerserk(player.isHidden());
         player.buffExpireTask();
+        player.diseaseExpireTask();
         player.skillCooldownTask();
         player.expirationTask();
         if (GameConstants.hasSPTable(player.getJob()) && player.getJob().getId() != 2001) {
