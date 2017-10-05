@@ -222,6 +222,38 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		}
 	}
         
+        public void startQuest(short id, int npcId) {
+                try {
+                        MapleQuest.getInstance(id).forceStart(getPlayer(), npcId);
+                } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                }
+        }
+        
+        public void startQuest(int id, int npcId) {
+                try {
+                        MapleQuest.getInstance(id).forceStart(getPlayer(), npcId);
+                } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                }
+        }
+        
+        public void completeQuest(short id, int npcId) {
+                try {
+                        MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
+                } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                }
+        }
+        
+        public void completeQuest(int id, int npcId) {
+                try {
+                        MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
+                } catch (NullPointerException ex) {
+                        ex.printStackTrace();
+                }
+        }
+        
 	public int getMeso() {
 		return getPlayer().getMeso();
 	}

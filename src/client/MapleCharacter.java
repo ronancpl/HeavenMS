@@ -297,6 +297,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private short extraRecInterval;
     private int targetHpBarHash = 0;
     private long targetHpBarTime = 0;
+    private long nextUnderlevelTime = 0;
     private int banishMap = -1;
     private int banishSp = -1;
     private long banishTime = 0;
@@ -7071,6 +7072,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void timeoutFromDojo() {
         if(map.isDojoMap()) {
             client.getPlayer().changeMap(client.getChannelServer().getMapFactory().getMap(925020002));
+        }
+    }
+    
+    public void showUnderleveledInfo(MapleMonster mob) {
+        chrLock.lock();
+        try {
+            long curTime = System.currentTimeMillis();
+            if(nextUnderlevelTime < curTime) {
+                nextUnderlevelTime = curTime + (60 * 1000);   // show underlevel info again after 1 minute
+                
+                showHint("You have gained #rno experience#k from defeating #e#b" + mob.getName() + "#k#n (lv. #b" + mob.getLevel() + "#k)! Take note you must have around the same level as the mob to start earning EXP from it.");
+            }
+        } finally {
+            chrLock.unlock();
         }
     }
     

@@ -566,3 +566,6 @@ Corrigido bug em sistema de distribuição de EXP para party.
 Corrigido bug de overflow em distribuição de EXP.
 Corrigido bug com scrolls não usando slots quando resultam em sucesso.
 Refatorado sistema de schedules para disease expiretimes.
+
+05 Outubro 2017,
+Alterado level mínimo para receber exp de um mob de base level - 5 para - 20 (cliente destaca infos do mob em vermelho se o jogador está abaixo desta faixa).

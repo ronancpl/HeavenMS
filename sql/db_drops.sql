@@ -19780,7 +19780,16 @@ USE `maplesolaxia`;
 (1110100, 4001369, 1, 1, 28259, 10000),
 (1210101, 4001370, 1, 1, 28260, 10000),
 (1110101, 4001371, 1, 1, 28261, 10000),
-(3300003, 4001317, 1, 1, 2326, 20000);
+(3300003, 4001317, 1, 1, 2326, 20000),
+(1210102, 4001364, 1, 1, 28192, 10000),
+(1120100, 4001365, 1, 1, 28192, 10000),
+(1210103, 4032137, 1, 1, 20711, 40000),
+(1210103, 4032139, 1, 1, 20713, 40000),
+(1210101, 4001357, 1, 1, 28244, 70000),
+(1120100, 4001361, 1, 1, 28250, 70000),
+(2230110, 4032146, 1, 1, 20722, 40000),
+(2230111, 4032147, 1, 1, 20723, 40000);
+
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
   # delete item drops from other mobs named Freezer
@@ -19910,9 +19919,9 @@ USE `maplesolaxia`;
   UPDATE drop_data SET questid=6191 WHERE itemid=4001107;
   UPDATE drop_data SET questid=28344 WHERE itemid=4032475;
 
-  UPDATE drop_data SET questid=7777 WHERE itemid=4001358;	#id 7777 for ALL "quest items" with no v83 quest.
-  UPDATE drop_data SET questid=7777 WHERE itemid=4001359;
-  UPDATE drop_data SET questid=7777 WHERE itemid=4001342;
+  UPDATE drop_data SET questid=28248 WHERE itemid=4001358;
+  UPDATE drop_data SET questid=28248 WHERE itemid=4001359;
+  UPDATE drop_data SET questid=7777 WHERE itemid=4001342;	#id 7777 for ALL "quest items" with no v83 quest.
   UPDATE drop_data SET questid=7777 WHERE itemid=4031906;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET chance=40000 WHERE itemid=4031991;
@@ -21091,7 +21100,8 @@ USE `maplesolaxia`;
     (9102001, 2020000, 2, -1),
     (9102001, 2020001, 2, -1),
     (9102001, 2020002, 2, -1),
-    (2002018, 4161014, 1, 3099);
+    (2002018, 4161014, 1, 3099),
+    (1012000, 4032143, 6, 20717);
 
   # adding wish tickets on APQ boxes
   INSERT INTO `reactordrops` (`reactorid`, `itemid`, `chance`, `questid`) VALUES
