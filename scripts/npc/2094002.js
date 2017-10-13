@@ -73,6 +73,7 @@ function action(mode, type, selection) {
                         cm.gainItem(4001122,-20);
                         cm.getMap().killAllMonsters();
                         eim.setProperty("stage2", "3");
+                        eim.showClearEffect(cm.getMapId());
                     } else {
                         cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Veteran Medals.");
                         if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300116, level, true);
@@ -113,7 +114,7 @@ function action(mode, type, selection) {
                 break;
             case 925100202:
             case 925100302:
-                cm.sendNext("These are the Captains and Krus which devote their whole life to Lord Pirate. Kill them as you see fit.");
+                cm.sendNext("These are the Captains and Krus that devote their lives to the Lord Pirate. Kill them as you see fit.");
                 cm.dispose();
                 break;
             case 925100400:

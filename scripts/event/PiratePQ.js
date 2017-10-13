@@ -4,6 +4,8 @@
 */
 
 var isPq = true;
+var isGrindMode = true;     // stages done after breaking all boxes on maps
+
 var minPlayers = 3, maxPlayers = 6;
 var minLevel = 55, maxLevel = 100;
 var entryMap = 925100000;
@@ -14,7 +16,7 @@ var clearMap = 925100600;
 var minMapId = 925100000;
 var maxMapId = 925100500;
 
-var eventTime = 20;     // 20 minutes
+var eventTime = 4;     // 4 minutes
 
 var lobbyRange = [0, 0];
 
@@ -83,7 +85,11 @@ function setup(level, lobbyid) {
 	eim.setProperty("stage4", "0");
 	eim.setProperty("stage5", "0");
         
+        eim.setProperty("curStage", "1");
+        eim.setProperty("grindMode", isGrindMode ? "1" : "0");
+        
         eim.setProperty("openedChests", "0");
+        eim.setProperty("openedBoxes", "0");
         eim.getInstanceMap(925100000).resetPQ(level);
         eim.getInstanceMap(925100000).shuffleReactors();
         
@@ -190,6 +196,37 @@ function playerExit(eim, player) {
         player.changeMap(exitMap, 0);
 }
 
+function changedMapInside(eim, mapid) {
+        var stage = eim.getIntProperty("curStage");
+    
+        if(stage == 1) {
+                if(mapid == 925100100) {
+                        eim.restartEventTimer(6 * 60 * 1000);
+                        eim.setIntProperty("curStage", 2);
+                }
+        } else if(stage == 2) {
+                if(mapid == 925100200) {
+                        eim.restartEventTimer(6 * 60 * 1000);
+                        eim.setIntProperty("curStage", 3);
+                }
+        } else if(stage == 3) {
+                if(mapid == 925100300) {
+                        eim.restartEventTimer(6 * 60 * 1000);
+                        eim.setIntProperty("curStage", 4);
+                }
+        } else if(stage == 4) {
+                if(mapid == 925100400) {
+                        eim.restartEventTimer(6 * 60 * 1000);
+                        eim.setIntProperty("curStage", 5);
+                }
+        } else if(stage == 5) {
+                if(mapid == 925100500) {
+                        eim.restartEventTimer(8 * 60 * 1000);
+                        eim.setIntProperty("curStage", 6);
+                }
+        }
+}
+
 function changedMap(eim, player, mapid) {
         if (mapid < minMapId || mapid > maxMapId) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
@@ -198,6 +235,8 @@ function changedMap(eim, player, mapid) {
                 }
                 else
                         eim.unregisterPlayer(player);
+        } else {
+                changedMapInside(eim, mapid);
         }
 }
 
@@ -254,6 +293,10 @@ function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
         
+        var chests = parseInt(eim.getProperty("openedChests"));
+        var expGain = (chests == 0 ? 28000 : (chests == 1 ? 35000 : 42000));
+        eim.giveEventPlayersExp(expGain);
+        
         eim.warpEventTeam(925100600);
 }
 
@@ -262,10 +305,29 @@ function isLordPirate(mob) {
         return (mobid == 9300105) || (mobid == 9300106) || (mobid == 9300107) || (mobid == 9300119);
 }
 
+function passedGrindMode(map, eim) {
+        if(eim.getIntProperty("grindMode") == 0) return true;
+        return eim.activatedAllReactorsOnMap(map, 2511000, 2517999);
+}
+
 function monsterKilled(mob, eim) {
+        var map = mob.getMap();
+    
         if(isLordPirate(mob)) {  // lord pirate defeated, spawn the little fella!
-            mob.getMap().broadcastStringMessage(5, "As Lord Pirate dies, Wu Yang is released!");
+            map.broadcastStringMessage(5, "As Lord Pirate dies, Wu Yang is released!");
             eim.spawnNpc(2094001, new java.awt.Point(777, 140), mob.getMap());
+        }
+        
+        if(map.countMonsters() == 0) {
+                var stage = ((map.getId() % 1000) / 100) + 1;
+        
+                if((stage == 1 || stage == 3 || stage == 4) && passedGrindMode(map, eim)) {
+                        eim.showClearEffect(map.getId());
+                } else if(stage == 5) {
+                        if(map.getReactorByName("sMob1").getState() >= 1 && map.getReactorByName("sMob2").getState() >= 1 && map.getReactorByName("sMob3").getState() >= 1 && map.getReactorByName("sMob4").getState() >= 1) {
+                                eim.showClearEffect(map.getId());
+                        }
+                }
         }
 }
 

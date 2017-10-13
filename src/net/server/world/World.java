@@ -400,8 +400,8 @@ public class World {
                     chr.setParty(null);
                     chr.setMPC(null);
                 }
-		default:
-			break;
+            default:
+                break;
         }
     }
 

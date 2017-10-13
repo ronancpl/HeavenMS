@@ -147,6 +147,7 @@ import constants.skills.Spearman;
 import constants.skills.SuperGM;
 import constants.skills.Swordsman;
 import constants.skills.ThunderBreaker;
+import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
 
@@ -1902,7 +1903,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }, healInterval, healInterval);
     }
 
-    public void disableDoor() {
+    public void disableDoorSpawn() {
         canDoor = false;
         TimerManager.getInstance().schedule(new Runnable() {
             @Override
@@ -4803,6 +4804,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         recalcLocalStats();
         setMPC(new MaplePartyCharacter(this));
         silentPartyUpdate();
+        
+        if(level == 10 && party != null) {
+            if(this.isPartyLeader()) party.assignNewLeader(client);
+            PartyOperationHandler.leaveParty(party, mpc, client);
+            
+            client.announceHint("You have reached #blevel 10#k, therefore you must leave your #rstarter party#k.");
+        }
+        
         if (this.guildid > 0) {
             getGuild().broadcast(MaplePacketCreator.levelUpMessage(2, level, name), this.getId());
         }

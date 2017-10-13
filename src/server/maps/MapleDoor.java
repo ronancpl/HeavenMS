@@ -22,6 +22,7 @@
 package server.maps;
 
 import java.awt.Point;
+import java.util.List;
 import tools.Pair;
 
 import server.MaplePortal;
@@ -49,7 +50,7 @@ public class MapleDoor {
         
         if(target.canDeployDoor(targetPosition)) {
             if(ServerConstants.USE_ENFORCE_MDOOR_POSITION) {
-                 posStatus = target.getDoorPositionStatus(targetPosition);
+                posStatus = target.getDoorPositionStatus(targetPosition);
             }
             
             if(posStatus == null) {
@@ -74,11 +75,13 @@ public class MapleDoor {
     }
     
     private MaplePortal getDoorPortal(int slot) {
+        List<MaplePortal> avail = town.getAvailableDoorPortals();
+        
         try {
-            return town.getAvailableDoorPortals().get(slot);
+            return avail.get(slot);
         } catch (IndexOutOfBoundsException e) {
             try {
-                return town.getAvailableDoorPortals().get(0);
+                return avail.get(0);
             } catch (IndexOutOfBoundsException ex) {
                 return null;
             }

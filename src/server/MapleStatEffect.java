@@ -23,13 +23,11 @@ package server;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 
 import net.server.world.MaplePartyCharacter;
 import provider.MapleData;
@@ -896,7 +894,7 @@ public class MapleStatEffect {
                 door.getTarget().spawnDoor(door.getAreaDoor());
                 door.getTown().spawnDoor(door.getTownDoor());
                 
-                applyto.disableDoor();
+                applyto.disableDoorSpawn();
             } else {
                 MapleInventoryManipulator.addFromDrop(applyto.getClient(), new Item(4006000, (short) 0, (short) 1), false);
                 

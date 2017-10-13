@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.Collection;
 
 import server.maps.MapleDoor;
-import server.MapleStatEffect;
 import client.MapleCharacter;
 import client.MapleJob;
 import java.util.Collections;

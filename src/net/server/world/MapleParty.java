@@ -21,6 +21,7 @@
 */
 package net.server.world;
 
+import client.MapleClient;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -193,6 +194,24 @@ public class MapleParty {
         }
 
         return slot;
+    }
+    
+    public void assignNewLeader(MapleClient c) {
+        World world = c.getWorldServer();
+        MaplePartyCharacter newLeadr = null;
+        
+        lock.lock();
+        try {
+            for(MaplePartyCharacter mpc : members) {
+                if(mpc.getId() != leaderId && (newLeadr == null || newLeadr.getLevel() < mpc.getLevel())) {
+                    newLeadr = mpc;
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+
+        if(newLeadr != null) world.updateParty(this.getId(), PartyOperation.CHANGE_LEADER, newLeadr);
     }
     
     @Override

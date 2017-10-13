@@ -43,6 +43,7 @@ public class ServerConstants {
     public static final boolean USE_ITEM_SORT = true;
     public static final boolean USE_ITEM_SORT_BY_NAME = false;      //Item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
+    public static final boolean USE_PARTY_FOR_STARTERS = true;      //Players level 10 or below can create/invite other players on the given level range.
     public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
     public static final boolean USE_AUTOSAVE = true;                //Enables server autosaving feature (saves characters to DB each 1 hour).
     public static final boolean USE_SERVER_AUTOASSIGNER = true;     //Server-builtin autoassigner, uses algorithm based on distributing AP accordingly with required secondary stat on equipments.
@@ -53,7 +54,7 @@ public class ServerConstants {
     public static final boolean USE_ERASE_UNTRADEABLE_DROP = true;  //Forces flagged untradeable items to disappear when dropped.
     public static final boolean USE_ERASE_PET_ON_EXPIRATION = false;//Forces pets to be removed from inventory when expire time comes, rather than converting it to a doll.
     public static final boolean USE_BUFF_MOST_SIGNIFICANT = true;   //When applying buffs, the player will stick with the highest stat boost among the listed, rather than overwriting stats.
-    public static final boolean USE_UNDERLEVELED_EXP_BLOCK = true; //Players 20 levels below the killed mob will gain no experience from defeating it.
+    public static final boolean USE_UNDERLEVELED_EXP_BLOCK = true;  //Players 20 levels below the killed mob will gain no experience from defeating it.
     
     //Server Rates And Experience
     public static final int EXP_RATE = 10;

@@ -569,3 +569,15 @@ Refatorado sistema de schedules para disease expiretimes.
 
 05 Outubro 2017,
 Alterado level mínimo para receber exp de um mob de base level - 5 para - 20 (cliente destaca infos do mob em vermelho se o jogador está abaixo desta faixa).
+
+07 Outubro 2017,
+Consertado players podendo criar party sendo level menor que 10.
+Players abaixo do level 10 agora podem convidar outros menores que 10 para party, se o servidor permitir.
+
+09 Outubro 2017,
+Adicionado proteção de acesso concorrente em invocação de scripts na EventInstanceManager.
+Alterado tempo-limite em mapas da PiratePQ para seguir o determinado para cada mapa.
+
+12 Outubro 2017,
+Corrigido alguns bugs com a PPQ.
+Se houve sucesso usando white scroll, slot ainda é usado.

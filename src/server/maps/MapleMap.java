@@ -1338,6 +1338,27 @@ public class MapleMap {
             objectRLock.unlock();
         }
     }
+    
+    public List<MapleReactor> getReactorsByIdRange(final int first, final int last) {
+        List<MapleReactor> list = new LinkedList<>();
+        
+        objectRLock.lock();
+        try {
+            for (MapleMapObject obj : mapobjects.values()) {
+                if (obj.getType() == MapleMapObjectType.REACTOR) {
+                    MapleReactor mr = (MapleReactor) obj;
+                    
+                    if (mr.getId() >= first && mr.getId() <= last) {
+                        list.add(mr);
+                    }
+                }
+            }
+            
+            return list;
+        } finally {
+            objectRLock.unlock();
+        }
+    }
 
     public MapleReactor getReactorByName(String name) {
         objectRLock.lock();
@@ -1607,7 +1628,7 @@ public class MapleMap {
         try {
             List<MaplePortal> availablePortals = new ArrayList<>();
             
-            for (MaplePortal port : getPortals()) {
+            for (MaplePortal port : portals.values()) {
                 if (port.getType() == MaplePortal.DOOR_PORTAL) {
                     availablePortals.add(port);
                 }
@@ -2117,9 +2138,11 @@ public class MapleMap {
         return null;
     }
 
+    /*
     public Collection<MaplePortal> getPortals() {
         return Collections.unmodifiableCollection(portals.values());
     }
+    */
 
     public void removePlayer(MapleCharacter chr) {
         chrWLock.lock();

@@ -54,7 +54,7 @@ Overwrite whenever prompted with the JAR files under "jce_policy-7/UnlimitedJCEP
 Now that the tools have been installed, test if they are working.
 
 For WampServer:
-Once your done installing it, run it and you will see the Wamp icon on the bottom right corner.
+Once you're done installing it, run it and you will see the Wamp icon on the bottom right corner.
 Left click it and click 'Put Online'.
 In case of ORANGE ICON, change port 80 at "httpd.conf" to another, as it clashes with a Windows default port.
 Then Left click it again and click 'Start All Services'.
@@ -73,11 +73,12 @@ Setting up the SQL: open MySQL Query Browser, and define these parameters at sta
 Server Host: localhost		Port: 3306		Username: root
 
 Now it must be done CAREFULLY:
-1. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_database.sql, and execute it.
-2. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_drops.sql, and execute it.
+1. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxia\sql" -> db_database.sql, and execute it.
+2. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxia\sql" -> db_drops.sql, and execute it.
 
 Now it is OPTIONAL, you don't need to run it if you don't want, as it will simply change some NPC shops to set some new goods, not present in the original MapleStory, to sell:
-3. File -> Open Script... -> Browse for "C:\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
+
+3. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
 
 At the end of the execution of these SQLs, you should have installed a database schema named "maplesolaxia". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually a entry on the table "accounts" at that database with a login and a password.
 
