@@ -30,7 +30,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  *
  * @author Matze
- * @author Ronan
  */
 public final class DoorHandler extends AbstractMaplePacketHandler {
     @Override

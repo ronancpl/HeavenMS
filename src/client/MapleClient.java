@@ -787,6 +787,7 @@ public class MapleClient {
 
 	private void removePlayer() {
 		try {
+                        player.setAwayFromWorld(true);
 			player.cancelAllBuffs(true);
 			player.cancelAllDebuffs();
                         
@@ -1290,7 +1291,12 @@ public class MapleClient {
 		if (!player.isAlive() || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
 			announce(MaplePacketCreator.enableActions());
 			return;
-		}
+		} else if(MapleMiniDungeonInfo.isDungeonMap(player.getMapId())) {
+                        announce(MaplePacketCreator.serverNotice(5, "Changing channels or entering Cash Shop or MTS are disabled when inside a Mini-Dungeon."));
+                        announce(MaplePacketCreator.enableActions());
+			return;
+                }
+                
 		String[] socket = Server.getInstance().getIP(getWorld(), channel).split(":");
 		if (player.getTrade() != null) {
 			MapleTrade.cancelTrade(getPlayer());
@@ -1305,10 +1311,12 @@ public class MapleClient {
 			}
 		}
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
+                player.setAwayFromWorld(true);
 		player.cancelAllBuffs(true);
                 player.cancelBuffExpireTask();
                 player.cancelDiseaseExpireTask();
                 player.cancelSkillCooldownTask();
+                player.stopChairTask();
 		//Cancelling magicdoor? Nope
 		//Cancelling mounts? Noty
 		if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {

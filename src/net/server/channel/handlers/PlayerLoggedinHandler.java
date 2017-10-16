@@ -172,6 +172,8 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.getMap().addPlayer(player);
         World world = server.getWorld(c.getWorld());
         world.getPlayerStorage().addPlayer(player);
+        
+        player.setAwayFromWorld(false);
             
         int buddyIds[] = player.getBuddylist().getBuddyIds();
         world.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds);

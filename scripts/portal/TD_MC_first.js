@@ -1,5 +1,6 @@
 function enter(pi) {
-	if (pi.isQuestStarted(2301) || pi.isQuestCompleted(2301) 
+	if (pi.isQuestStarted(2300) || pi.isQuestCompleted(2300)
+                        || pi.isQuestStarted(2301) || pi.isQuestCompleted(2301) 
 			|| pi.isQuestStarted(2302) || pi.isQuestCompleted(2302) 
 			|| pi.isQuestStarted(2303) || pi.isQuestCompleted(2303)
 			|| pi.isQuestStarted(2304) || pi.isQuestCompleted(2304) 
@@ -13,6 +14,6 @@ function enter(pi) {
 		pi.warp(106020000, 0);
 		return true;
 	}
-	pi.playerMessage(5, "A strange force is blocking you from enetering");
+	pi.playerMessage(5, "A strange force is blocking you from entering.");
 	return false;
 }

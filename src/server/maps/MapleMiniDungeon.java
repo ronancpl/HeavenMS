@@ -1,86 +1,102 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package server.maps;
 
-/*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+import server.TimerManager;
+import client.MapleCharacter;
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import tools.MaplePacketCreator;
 
 /**
  *
- * @author SharpAceX(Alan)
+ * @author Ronan
  */
-
-public enum MapleMiniDungeon {
-
-	//http://bbb.hidden-street.net/search_finder/mini%20dungeon
-
-	CAVE_OF_MUSHROOMS(105050100, 105050101, 30),
-	GOLEM_CASTLE_RUINS(105040304, 105040320, 34),
-	HILL_OF_SANDSTORMS(260020600, 260020630, 30),
-	HENESYS_PIG_FARM(100020000, 100020100, 30),
-	DRAKES_BLUE_CAVE(105090311, 105090320, 30),
-	DRUMMER_BUNNYS_LAIR(221023400, 221023401, 30),
-	THE_ROUND_TABLE_OF_KENTARUS(240020500, 240020512, 30),
-	THE_RESTORING_MEMORY(240040511, 240040800, 19),
-	NEWT_SECURED_ZONE(240040520, 240040900, 19),
-	PILLAGE_OF_TREASURE_ISLAND(251010402, 251010410, 30),
-	LONGEST_RIDE_ON_BYEBYE_STATION(551030000, 551030001, 19);
-
-	private int baseId;
-	private int dungeonId;
-	private int dungeons;
-
-	private MapleMiniDungeon(int baseId, int dungeonId, int dungeons) {
-		this.baseId = baseId;
-		this.dungeonId = dungeonId;
-		this.dungeons = dungeons;
-	}
-
-	public int getBase() {
-		return baseId;
-	}
-
-	public int getDungeonId() {
-		return dungeonId;
-	}
-
-	public int getDungeons() {
-		return dungeons;
-	}
-
-	public static boolean isDungeonMap(int map){
-		for (MapleMiniDungeon dungeon : MapleMiniDungeon.values()){
-			if (map >= dungeon.getDungeonId() && map <= dungeon.getDungeonId() + dungeon.getDungeons()){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static MapleMiniDungeon getDungeon(int map){
-		for (MapleMiniDungeon dungeon : MapleMiniDungeon.values()){
-			if (map >= dungeon.getDungeonId() && map <= dungeon.getDungeonId() + dungeon.getDungeons()){
-				return dungeon;
-			}
-		}
-		return null;
-	}
+public class MapleMiniDungeon {
+    List<MapleCharacter> players = new ArrayList<>();
+    ScheduledFuture<?> timeoutTask = null;
+    Lock lock = new ReentrantLock();
+    
+    int baseMap;
+    long expireTime;
+    
+    public MapleMiniDungeon(int base, int durationMin) {
+        baseMap = base;
+        expireTime = durationMin * 60 * 1000;
+        
+        timeoutTask = TimerManager.getInstance().schedule(new Runnable() {
+            @Override
+            public void run() {
+                lock.lock();
+                try {
+                    List<MapleCharacter> lchr = new ArrayList<>(players);
+                    
+                    for(MapleCharacter chr : lchr) {
+                        chr.changeMap(baseMap);
+                    }
+                    
+                    dispose();
+                } finally {
+                    lock.unlock();
+                }
+            }
+        }, expireTime);
+        
+        expireTime += System.currentTimeMillis();
+    }
+    
+    public boolean registerPlayer(MapleCharacter chr) {
+        int time = (int)((expireTime - System.currentTimeMillis()) / 1000);
+        if(time > 0) chr.getClient().announce(MaplePacketCreator.getClock(time));
+        
+        lock.lock();
+        try {
+            if(timeoutTask == null) return false;
+            
+            players.add(chr);
+        } finally {
+            lock.unlock();
+        }
+        
+        return true;
+    }
+    
+    public boolean unregisterPlayer(MapleCharacter chr) {
+        chr.getClient().announce(MaplePacketCreator.removeClock());
+        
+        lock.lock();
+        try {
+            players.remove(chr);
+            
+            if(players.isEmpty()) {
+                dispose();
+                return false;
+            }
+            
+            return true;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void dispose() {
+        lock.lock();
+        try {
+            players.clear();
+            
+            if(timeoutTask != null) {
+                timeoutTask.cancel(false);
+                timeoutTask = null;
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
 }

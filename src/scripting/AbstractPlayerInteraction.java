@@ -46,6 +46,7 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
+import server.maps.MapleMiniDungeon;
 import server.partyquest.PartyQuest;
 import server.partyquest.Pyramid;
 import server.quest.MapleQuest;
@@ -922,4 +923,7 @@ public class AbstractPlayerInteraction {
                 return list;
         }
         
+        public boolean startDungeonInstance(int dungeonid) {
+                return c.getChannelServer().addMiniDungeon(dungeonid);
+        }
 }

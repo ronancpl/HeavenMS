@@ -202,14 +202,6 @@ public class MapleStatEffect {
         ret.speed = (short) MapleDataTool.getInt("speed", source, 0);
         ret.jump = (short) MapleDataTool.getInt("jump", source, 0);
         
-        if((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && ServerConstants.USE_ULTRA_NIMBLE_FEET == true) {
-            ret.jump = (short)(ret.speed * 4);
-            ret.speed *= 15;
-        }
-        
-        ret.berserk = MapleDataTool.getInt("berserk", source, 0);
-        ret.booster = MapleDataTool.getInt("booster", source, 0);
-        
         ret.mapProtection = mapProtection(sourceid);
         addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_PROTECTION, Integer.valueOf(ret.mapProtection));
                     
@@ -222,11 +214,16 @@ public class MapleStatEffect {
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.AVOID, Integer.valueOf(ret.avoid));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.SPEED, Integer.valueOf(ret.speed));
             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.JUMP, Integer.valueOf(ret.jump));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.PYRAMID_PQ, Integer.valueOf(ret.berserk));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
             
             if(!skill) {
-                if(isDojoBuff(sourceid) || sourceid == 2022337) {
+                if(isPyramidBuff(sourceid)) {
+                    ret.berserk = MapleDataTool.getInt("berserk", source, 0);
+                    ret.booster = MapleDataTool.getInt("booster", source, 0);
+                    
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BERSERK, Integer.valueOf(ret.berserk));
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
+                    
+                } else if(isDojoBuff(sourceid) || sourceid == 2022337) {
                     ret.mhpR = (byte) MapleDataTool.getInt("mhpR", source, 0);
                     ret.mhpRRate = (short) (MapleDataTool.getInt("mhpRRate", source, 0) * 100);
                     ret.mmpR = (byte) MapleDataTool.getInt("mmpR", source, 0);
@@ -267,6 +264,11 @@ public class MapleStatEffect {
                             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP3, 1);
                             break;
                     }
+                }
+            } else {
+                if((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && ServerConstants.USE_ULTRA_NIMBLE_FEET == true) {
+                    ret.jump = (short)(ret.speed * 4);
+                    ret.speed *= 15;
                 }
             }
         }
@@ -1328,11 +1330,15 @@ public class MapleStatEffect {
         return sourceid >= 2022359 && sourceid <= 2022421;
     }
     
+    public static boolean isPyramidBuff(int sourceid) {
+        return sourceid >= 2022585 && sourceid <= 2022617;
+    }
+    
     public static boolean isRateCoupon(int sourceid) {
         int itemType = sourceid / 1000;
         return itemType == 5211 || itemType == 5360;
     }
-
+    
     private boolean isDs() {
         return skill && (sourceid == Rogue.DARK_SIGHT || sourceid == WindArcher.WIND_WALK || sourceid == NightWalker.DARK_SIGHT);
     }

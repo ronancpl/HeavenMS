@@ -132,7 +132,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.NPC_TALK_MORE, new NPCMoreTalkHandler());
             registerHandler(RecvOpcode.QUEST_ACTION, new QuestActionHandler());
             registerHandler(RecvOpcode.NPC_SHOP, new NPCShopHandler());
-            registerHandler(RecvOpcode.ITEM_SORT, new ItemSortHandler());
+            registerHandler(RecvOpcode.ITEM_SORT, new InventoryMergeHandler());
             registerHandler(RecvOpcode.ITEM_MOVE, new ItemMoveHandler());
             registerHandler(RecvOpcode.MESO_DROP, new MesoDropHandler());
             registerHandler(RecvOpcode.PLAYER_LOGGEDIN, new PlayerLoggedinHandler());
@@ -237,7 +237,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.MOB_DAMAGE_MOB_FRIENDLY, new MobDamageMobFriendlyHandler());
             registerHandler(RecvOpcode.PARTY_SEARCH_REGISTER, new PartySearchRegisterHandler());
             registerHandler(RecvOpcode.PARTY_SEARCH_START, new PartySearchStartHandler());
-            registerHandler(RecvOpcode.ITEM_SORT2, new ItemIdSortHandler());
+            registerHandler(RecvOpcode.ITEM_SORT2, new InventorySortHandler());
             registerHandler(RecvOpcode.LEFT_KNOCKBACK, new LeftKnockbackHandler());
             registerHandler(RecvOpcode.SNOWBALL, new SnowballHandler());
             registerHandler(RecvOpcode.COCONUT, new CoconutHandler());

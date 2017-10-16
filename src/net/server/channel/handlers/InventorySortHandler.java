@@ -183,7 +183,7 @@ class PairedQuicksort {
     }
 }
 
-public final class ItemIdSortHandler extends AbstractMaplePacketHandler {
+public final class InventorySortHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();

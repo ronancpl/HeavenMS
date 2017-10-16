@@ -52,3 +52,11 @@ function action(mode, type, selection) {
                 }
         }
 }
+
+function generateSelectionMenu(array) {     // nice tool for generating a string for the sendSimple functionality
+        var menu = "";
+        for (var i = 0; i < array.length; i++) {
+                menu += "#L" + i + "#" + array[i] + "l\r\n";
+        }
+        return menu;
+}

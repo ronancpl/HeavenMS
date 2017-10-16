@@ -49,6 +49,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
 
 import net.server.PlayerBuffValueHolder;
@@ -196,7 +197,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int married;
     private long lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
-    private boolean hidden, canDoor = true, Berserk, hasMerchant, whiteChat = false;
+    private boolean hidden, canDoor = true, berserk, hasMerchant, whiteChat = false;
     private int linkedLevel = 0;
     private String linkedName = null;
     private boolean finishedDojoTutorial;
@@ -204,6 +205,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private String chalktext;
     private String dataString;
     private String search = null;
+    private AtomicBoolean awayFromWorld = new AtomicBoolean(true);  // player is online, but on cash shop or mts
     private AtomicInteger exp = new AtomicInteger();
     private AtomicInteger gachaexp = new AtomicInteger();
     private AtomicInteger meso = new AtomicInteger();
@@ -253,7 +255,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
     private ScheduledFuture<?> hpDecreaseTask;
-    private ScheduledFuture<?> beholderHealingSchedule, beholderBuffSchedule, BerserkSchedule;
+    private ScheduledFuture<?> beholderHealingSchedule, beholderBuffSchedule, berserkSchedule;
     private ScheduledFuture<?> skillCooldownTask = null;
     private ScheduledFuture<?> buffExpireTask = null;
     private ScheduledFuture<?> itemExpireTask = null;
@@ -409,6 +411,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
 
         return ret;
+    }
+    
+    public boolean getAwayFromWorld() {
+        return awayFromWorld.get();
+    }
+    
+    public void setAwayFromWorld(boolean away) {
+        awayFromWorld.set(away);
     }
     
     public long getPetLootCd() {
@@ -1238,6 +1248,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
         
+        this.stopChairTask();
         this.clearBanishPlayerData();
         this.closePlayerInteractions();
         this.resetPlayerAggro();
@@ -1325,21 +1336,23 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void checkBerserk(final boolean isHidden) {
-        if (BerserkSchedule != null) {
-            BerserkSchedule.cancel(false);
+        if (berserkSchedule != null) {
+            berserkSchedule.cancel(false);
         }
         final MapleCharacter chr = this;
         if (job.equals(MapleJob.DARKKNIGHT)) {
             Skill BerserkX = SkillFactory.getSkill(DarkKnight.BERSERK);
             final int skilllevel = getSkillLevel(BerserkX);
             if (skilllevel > 0) {
-                Berserk = chr.getHp() * 100 / chr.getMaxHp() < BerserkX.getEffect(skilllevel).getX();
-                BerserkSchedule = TimerManager.getInstance().register(new Runnable() {
+                berserk = chr.getHp() * 100 / chr.getMaxHp() < BerserkX.getEffect(skilllevel).getX();
+                berserkSchedule = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
-                        client.announce(MaplePacketCreator.showOwnBerserk(skilllevel, Berserk));
-                        if(!isHidden) getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showBerserk(getId(), skilllevel, Berserk), false);
-                        else getMap().broadcastGMMessage(MapleCharacter.this, MaplePacketCreator.showBerserk(getId(), skilllevel, Berserk), false);
+                        if(awayFromWorld.get()) return;
+                        
+                        client.announce(MaplePacketCreator.showOwnBerserk(skilllevel, berserk));
+                        if(!isHidden) getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showBerserk(getId(), skilllevel, berserk), false);
+                        else getMap().broadcastGMMessage(MapleCharacter.this, MaplePacketCreator.showBerserk(getId(), skilllevel, berserk), false);
                     }
                 }, 5000, 3000);
             }
@@ -2747,8 +2760,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void cancelAllBuffs(boolean disconnect) {
-        if (disconnect) {
+    public void cancelAllBuffs(boolean softcancel) {
+        if (softcancel) {
             effLock.lock();
             chrLock.lock();
             try {
@@ -2762,33 +2775,23 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 effLock.unlock();
             }
         } else {
-            List<MapleBuffStatValueHolder> mbsvhList;
-            
+            Map<MapleStatEffect, Long> mseBuffs = new LinkedHashMap<>();
+
             effLock.lock();
             chrLock.lock();
             try {
-                List<Pair<Integer, MapleBuffStat>> mbls = new LinkedList<>();
-                
                 for(Entry<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> bpl : buffEffects.entrySet()) {
                     for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbse : bpl.getValue().entrySet()) {
-                        if(effects.get(mbse.getKey()) != mbse.getValue()) {
-                            mbls.add(new Pair<>(bpl.getKey(), mbse.getKey()));
-                        }
+                        mseBuffs.put(mbse.getValue().effect, mbse.getValue().startTime);
                     }
                 }
-                
-                for(Pair<Integer, MapleBuffStat> pmbs : mbls) {
-                    removeEffectFromItemEffectHolder(pmbs.getLeft(), pmbs.getRight());
-                }
-                
-                mbsvhList = new ArrayList<>(effects.values());
             } finally {
                 chrLock.unlock();
                 effLock.unlock();
             }
-            
-            for (MapleBuffStatValueHolder mbsvh : mbsvhList) {
-                cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+
+            for (Entry<MapleStatEffect, Long> mse : mseBuffs.entrySet()) {
+                cancelEffect(mse.getKey(), false, mse.getValue());
             }
         }
     }
@@ -3182,6 +3185,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 beholderHealingSchedule = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
+                        if(awayFromWorld.get()) return;
+                        
                         addHP(healEffect.getHp());
                         client.announce(MaplePacketCreator.showOwnBuffEffect(beholder, 2));
                         getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.summonSkill(getId(), beholder, 5), true);
@@ -3196,6 +3201,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 beholderBuffSchedule = TimerManager.getInstance().register(new Runnable() {
                     @Override
                     public void run() {
+                        if(awayFromWorld.get()) return;
+                        
                         buffEffect.applyTo(MapleCharacter.this);
                         client.announce(MaplePacketCreator.showOwnBuffEffect(beholder, 2));
                         getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.summonSkill(getId(), beholder, (int) (Math.random() * 3) + 6), true);
@@ -5713,6 +5720,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         dragonBloodSchedule = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
+                if(awayFromWorld.get()) return;
+                
                 addHP(-bloodEffect.getX());
                 client.announce(MaplePacketCreator.showOwnBuffEffect(bloodEffect.getSourceId(), 5));
                 getMap().broadcastMessage(MapleCharacter.this, MaplePacketCreator.showBuffeffect(getId(), bloodEffect.getSourceId(), 5), false);
@@ -7771,8 +7780,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (beholderBuffSchedule != null) {
             beholderBuffSchedule.cancel(false);
         }
-        if (BerserkSchedule != null) {
-            BerserkSchedule.cancel(false);
+        if (berserkSchedule != null) {
+            berserkSchedule.cancel(false);
         }
         if (recoveryTask != null) {
             recoveryTask.cancel(false);
@@ -7785,6 +7794,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         cancelDiseaseExpireTask();
         cancelSkillCooldownTask();
         cancelExpirationTask();
+        stopChairTask();
         
         for (ScheduledFuture<?> sf : timers) {
             sf.cancel(false);

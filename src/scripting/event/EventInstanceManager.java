@@ -282,6 +282,7 @@ public class EventInstanceManager {
                 }
                 
                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
+                        @Override
                         public void run() {
                                 try {
                                         dismissEventTimer();

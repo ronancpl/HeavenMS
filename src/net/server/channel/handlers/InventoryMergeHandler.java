@@ -33,7 +33,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import server.MapleItemInformationProvider;
 
-public final class ItemSortHandler extends AbstractMaplePacketHandler {
+public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -67,7 +67,7 @@ public final class ItemSortHandler extends AbstractMaplePacketHandler {
                 MapleInventoryManipulator.move(c, inventoryType, src, dst);
             }
         }
-                
+        
         //------------------------------------------------------------
                 
         inventory = c.getPlayer().getInventory(inventoryType);

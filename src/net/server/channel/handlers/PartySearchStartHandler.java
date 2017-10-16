@@ -33,6 +33,9 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
 import constants.ServerConstants;
+import net.server.world.MaplePartyCharacter;
+import net.server.world.PartyOperation;
+import net.server.world.World;
 
 /**
  *
@@ -40,40 +43,41 @@ import constants.ServerConstants;
  * @author BubblesDev
  */
 public class PartySearchStartHandler extends AbstractMaplePacketHandler {
+        @Override
 	public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		if(!ServerConstants.USE_PARTY_SEARCH){
 			return;
 		}
+                
 		int min = slea.readInt();
 		int max = slea.readInt();
 		slea.readInt(); // members
 		int jobs = slea.readInt();
+                
+                MapleParty party = c.getPlayer().getParty();
+                if(party == null) return;
+                
 		MapleCharacter chr = c.getPlayer();
 		MapleMap map = chr.getMap();
+                World world = c.getWorldServer();
+                
 		Collection<MapleMapObject> mapobjs = map.getPlayers();
+                
 		for (MapleMapObject mapobj : mapobjs) {
-			if (chr.getParty().getMembers().size() > 5) {
+			if (party.getMembers().size() > 5) {
 				break;
 			}
 			if (mapobj instanceof MapleCharacter) {
 				MapleCharacter tchar = (MapleCharacter) mapobj;
 				int charlvl = tchar.getLevel();
 				if (charlvl >= min && charlvl <= max && isValidJob(tchar.getJob(), jobs)) {
-					if (c.getPlayer().getParty() == null) {
-						//WorldChannelInterface wci = c.getChannelServer().getWorldInterface();
-						MapleParty party = c.getPlayer().getParty();
-						//int partyid = party.getId();
-						//party = null;//.getParty(partyid);
-						if (party != null) {
-							if (party.getMembers().size() < 6) {
-								//MaplePartyCharacter partyplayer = tchar.getMPC();
-								//wci.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
-								c.getPlayer().receivePartyMemberHP();
-								c.getPlayer().updatePartyMemberHP();
-							} else {
-								c.announce(MaplePacketCreator.partyStatusMessage(17));
-							}
-						}
+					if (tchar.getParty() == null) {
+                                                MaplePartyCharacter partyplayer = new MaplePartyCharacter(tchar);
+                                                tchar.getMap().addPartyMember(tchar);
+
+                                                world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
+                                                tchar.receivePartyMemberHP();
+                                                tchar.updatePartyMemberHP();
 					}
 				}
 			}

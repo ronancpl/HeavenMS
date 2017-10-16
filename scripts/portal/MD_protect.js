@@ -27,28 +27,28 @@ var dungeons = 19;
 
 function enter(pi) {
     if (pi.getMapId() == baseid) {
-		if (pi.getParty() != null) {
-		    if (pi.isLeader()) {
-			for (var i = 0; i < dungeons; i++) {
-			    if (pi.getPlayerCount(dungeonid + i) == 0) {
-			    	pi.warpParty(dungeonid + i);
-				return true;
-			    }
-			}
-		    } else {
-		    	pi.playerMessage(5, "Only solo or party leaders are supposed to enter the Mini-Dungeon.");
-		    	return false;
-		    }
-		} else {
-		    for (var i = 0; i < dungeons; i++) {
-				if (pi.getPlayerCount(dungeonid + i) == 0) {
-				    pi.warp(dungeonid + i);
-				    return true;
-				}
-		    }
-		}
-		pi.playerMessage(5, "All of the Mini-Dungeons are in use right now, please try again later.");
-		return false;
+        if (pi.getParty() != null) {
+            if (pi.isLeader()) {
+                for (var i = 0; i < dungeons; i++) {
+                    if(pi.startDungeonInstance(dungeonid + i)) {
+                        pi.warpParty(dungeonid + i);
+                        return true;
+                    }
+                }
+            } else {
+                pi.playerMessage(5, "Only solo or party leaders are supposed to enter the Mini-Dungeon.");
+                return false;
+            }
+        } else {
+            for (var i = 0; i < dungeons; i++) {
+                if(pi.startDungeonInstance(dungeonid + i)) {
+                    pi.warp(dungeonid + i);
+                    return true;
+                }
+            }
+        }
+        pi.playerMessage(5, "All of the Mini-Dungeons are in use right now, please try again later.");
+        return false;
     } else {
     	pi.playPortalSound();
     	pi.warp(baseid, "MD00");

@@ -36,6 +36,7 @@ import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import server.MTSItemInfo;
+import server.maps.MapleMiniDungeonInfo;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -47,6 +48,13 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
     	}
+        
+        if(MapleMiniDungeonInfo.isDungeonMap(c.getPlayer().getMapId())) {
+            c.announce(MaplePacketCreator.serverNotice(5, "Changing channels or entering Cash Shop or MTS are disabled when inside a Mini-Dungeon."));
+            c.announce(MaplePacketCreator.enableActions());
+            return;
+        }
+        
         MapleCharacter chr = c.getPlayer();
         if (!chr.isAlive()) {
             c.announce(MaplePacketCreator.enableActions());
@@ -59,11 +67,14 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
         }
         
         Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(chr.getId(), chr.getAllBuffs());
+        chr.setAwayFromWorld(true);
         chr.cancelAllBuffs(true);
         chr.cancelBuffExpireTask();
         chr.cancelDiseaseExpireTask();
         chr.cancelSkillCooldownTask();
         chr.cancelExpirationTask();
+        chr.stopChairTask();
+        
         chr.saveToDB();
         chr.getMap().removePlayer(c.getPlayer());
         try {

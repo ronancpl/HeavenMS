@@ -581,3 +581,8 @@ Alterado tempo-limite em mapas da PiratePQ para seguir o determinado para cada m
 12 Outubro 2017,
 Corrigido alguns bugs com a PPQ.
 Se houve sucesso usando white scroll, slot ainda é usado.
+
+15 Outubro 2017,
+Corrigido Mini-dungeons não liberando os jogadores corretamente. Se player entra em outra sessão de MD antes de dar o timeout da primeira, o timeout leva efeito mesmo fora da sessão.
+Corrigido um bug/exploit que permitia stackar map chair recovery.
+Corrigido um bug no inventário de CASH mesclando itens de mesmo id.

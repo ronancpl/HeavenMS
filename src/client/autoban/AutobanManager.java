@@ -93,8 +93,8 @@ public class AutobanManager {
      *  <code>type</code>:<br>
      * 0: HealOverTime<br>
      * 1: Pet Food<br>
-     * 2: ItemSort<br>
-     * 3: ItemIdSort<br>
+     * 2: ItemMerge<br>
+     * 3: ItemSort<br>
      * 4: SpecialMove<br>
      * 5: UseCatchItem<br>
      * 6: Item Drop<br>

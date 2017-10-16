@@ -1979,19 +1979,11 @@ public class MapleMap {
             if (chr.getEventInstance() != null) {
                 chr.getEventInstance().movePlayer(chr);
             }
-        } else if (MapleMiniDungeon.isDungeonMap(mapid)) {
-            final MapleMiniDungeon dungeon = MapleMiniDungeon.getDungeon(mapid);
-            chr.getClient().announce(MaplePacketCreator.getClock(30 * 60));
-            TimerManager.getInstance().schedule(new Runnable() {
-
-                @Override
-                public void run() {
-                    if (MapleMiniDungeon.isDungeonMap(chr.getMapId())) {
-                        chr.changeMap(dungeon.getBase());
-                    }
-                }
-            }, 30 * 60 * 1000);
+        } else if (MapleMiniDungeonInfo.isDungeonMap(mapid)) {
+            MapleMiniDungeon mmd = chr.getClient().getChannelServer().getMiniDungeon(mapid);
+            if(mmd != null) mmd.registerPlayer(chr);
         }
+        
         MaplePet[] pets = chr.getPets();
         for (int i = 0; i < pets.length; i++) {
             if (pets[i] != null) {
@@ -2152,6 +2144,16 @@ public class MapleMap {
         } finally {
             chrWLock.unlock();
         }
+        
+        if (MapleMiniDungeonInfo.isDungeonMap(mapid)) {
+            MapleMiniDungeon mmd = chr.getClient().getChannelServer().getMiniDungeon(mapid);
+            if(mmd != null) {
+                if(!mmd.unregisterPlayer(chr)) {
+                    chr.getClient().getChannelServer().removeMiniDungeon(mapid);
+                }
+            }
+        }
+        
         removeMapObject(chr.getObjectId());
         if (!chr.isHidden()) {
             broadcastMessage(MaplePacketCreator.removePlayerFromMap(chr.getId()));
