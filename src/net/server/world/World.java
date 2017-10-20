@@ -40,7 +40,10 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
@@ -69,6 +72,7 @@ import tools.Pair;
 /**
  *
  * @author kevintjuh93
+ * @author Ronan (thread-oriented world schedules)
  */
 public class World {
 
@@ -83,6 +87,9 @@ public class World {
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     private Set<Integer> queuedGuilds = new HashSet<>();
+    
+    private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
+    private Lock owlLock = new ReentrantLock();
     
     private Map<Integer, Byte> activePets = new LinkedHashMap<>();
     private ScheduledFuture<?> petsSchedule;
@@ -718,6 +725,39 @@ public class World {
     
     private static Integer getPetKey(MapleCharacter chr, byte petSlot) {    // assuming max 3 pets
         return (chr.getId() << 2) + petSlot;
+    }
+    
+    public void addOwlItemSearch(Integer itemid) {
+        owlLock.lock();
+        try {
+            Integer cur = owlSearched.get(itemid);
+            if(cur != null) {
+                owlSearched.put(itemid, cur + 1);
+            } else {
+                owlSearched.put(itemid, 1);
+            }
+        } finally {
+            owlLock.unlock();
+        }
+    }
+    
+    public List<Pair<Integer, Integer>> getOwlSearchedItems() {
+        if(ServerConstants.USE_ENFORCE_OWL_SUGGESTIONS) {
+            return new ArrayList<>(0);
+        }
+        
+        owlLock.lock();
+        try {
+            List<Pair<Integer, Integer>> searchCounts = new ArrayList<>(owlSearched.size());
+            
+            for(Entry<Integer, Integer> e : owlSearched.entrySet()) {
+                searchCounts.add(new Pair<>(e.getKey(), e.getValue()));
+            }
+            
+            return searchCounts;
+        } finally {
+            owlLock.unlock();
+        }
     }
     
     public void registerPetHunger(MapleCharacter chr, byte petSlot) {

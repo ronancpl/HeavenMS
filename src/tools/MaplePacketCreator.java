@@ -5019,13 +5019,13 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] getOwlOpen() {
+        public static byte[] getOwlOpen(List<Integer> owlLeaderboards) {
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
                 mplew.writeShort(SendOpcode.SHOP_SCANNER_RESULT.getValue());
                 mplew.write(7);
-                mplew.write(GameConstants.OWL_DATA.length);
-                for (int i : GameConstants.OWL_DATA) {
+                mplew.write(owlLeaderboards.size());
+                for (Integer i : owlLeaderboards) {
                         mplew.writeInt(i);
                 }
 

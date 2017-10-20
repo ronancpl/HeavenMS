@@ -642,9 +642,9 @@ public class AbstractPlayerInteraction {
 
 
 	public void givePartyExp(String PQ, boolean instance) {
-		//1 player = 0% bonus (100)
-		//2 players = 0% bonus (100)
-		//3 players = +0% bonus (100)
+		//1 player  =  +0% bonus (100)
+		//2 players =  +0% bonus (100)
+		//3 players =  +0% bonus (100)
 		//4 players = +10% bonus (110)
 		//5 players = +20% bonus (120)
 		//6 players = +30% bonus (130)
@@ -671,8 +671,8 @@ public class AbstractPlayerInteraction {
 			int base = PartyQuest.getExp(PQ, player.getLevel());
 			int exp = base * bonus / 100;
 			player.gainExp(exp, true, true);
-			if(ServerConstants.PQ_BONUS_EXP_MOD > 0 && System.currentTimeMillis() <= ServerConstants.EVENT_END_TIMESTAMP) {
-				player.gainExp((int) (exp * ServerConstants.PQ_BONUS_EXP_MOD), true, true);
+			if(ServerConstants.PQ_BONUS_EXP_RATE > 0 && System.currentTimeMillis() <= ServerConstants.EVENT_END_TIMESTAMP) {
+				player.gainExp((int) (exp * ServerConstants.PQ_BONUS_EXP_RATE), true, true);
 			}
 		}
 	}

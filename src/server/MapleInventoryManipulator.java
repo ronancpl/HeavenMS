@@ -355,18 +355,15 @@ public class MapleInventoryManipulator {
 
     public static void move(MapleClient c, MapleInventoryType type, short src, short dst) {
         if (src < 0 || dst < 0) {
-            System.out.println("src " + src + " dst " + dst);
             return;
         }
         if(dst > c.getPlayer().getInventory(type).getSlotLimit()) {
-            System.out.println("slim " + c.getPlayer().getInventory(type).getSlotLimit() + " dst " + dst);
             return;
         }
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         Item source = c.getPlayer().getInventory(type).getItem(src);
         Item initialTarget = c.getPlayer().getInventory(type).getItem(dst);
         if (source == null) {
-            System.out.println("null");
             return;
         }
         short olddstQ = -1;

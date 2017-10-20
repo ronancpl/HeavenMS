@@ -500,7 +500,7 @@ public final class Channel {
             if(dungeons.containsKey(dungeonid)) return false;
             
             MapleMiniDungeonInfo mmdi = MapleMiniDungeonInfo.getDungeon(dungeonid);
-            MapleMiniDungeon mmd = new MapleMiniDungeon(mmdi.getBase(), 30);    // all minidungeons timeouts on 30 mins
+            MapleMiniDungeon mmd = new MapleMiniDungeon(mmdi.getBase(), 30);    // all minidungeons timeout on 30 mins
             
             dungeons.put(dungeonid, mmd);
             return true;

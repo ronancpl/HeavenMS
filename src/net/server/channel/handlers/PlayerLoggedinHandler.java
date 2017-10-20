@@ -44,7 +44,6 @@ import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.BuddylistEntry;
 import client.CharacterNameAndId;
-import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleFamily;

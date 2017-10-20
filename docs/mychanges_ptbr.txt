@@ -586,3 +586,8 @@ Se houve sucesso usando white scroll, slot ainda é usado.
 Corrigido Mini-dungeons não liberando os jogadores corretamente. Se player entra em outra sessão de MD antes de dar o timeout da primeira, o timeout leva efeito mesmo fora da sessão.
 Corrigido um bug/exploit que permitia stackar map chair recovery.
 Corrigido um bug no inventário de CASH mesclando itens de mesmo id.
+Adicionado contador de buscas por itens realizados pelos jogadores ao usar Owl. Sugestão de mais pesquisados na Owl implementado.
+
+17 Outubro 2017,
+Consertado Roaring Tiger Messenger aparecendo fora da tela ao final da animação.
+Consertado bugs envolvendo ganho de EXP em party, para casos onde o level do mob alvo é bem maior que o do atacante/leecher.

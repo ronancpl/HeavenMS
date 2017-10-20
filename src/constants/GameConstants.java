@@ -10,7 +10,6 @@ import server.maps.FieldLimit;
  * @author Ronan
  */
 public class GameConstants {
-    //public static final int[] OWL_DATA = {2000014, 2000015, 2000016};
     public static final int[] OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
     
     // Ronan's rates upgrade system

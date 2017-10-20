@@ -25,11 +25,46 @@ import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.MaplePacketCreator;
+import tools.Pair;
+
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.PriorityQueue;
+
+import constants.GameConstants;
 
 public final class UseOwlOfMinervaHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.announce(MaplePacketCreator.getOwlOpen());
+        List<Pair<Integer, Integer>> owlSearched = c.getWorldServer().getOwlSearchedItems();
+        List<Integer> owlLeaderboards;
+        
+        if(owlSearched.size() < 5) {
+            owlLeaderboards = new LinkedList<>();
+            for(int i : GameConstants.OWL_DATA) {
+                owlLeaderboards.add(i);
+            }
+        } else {
+            Comparator<Pair<Integer, Integer>> comparator = new Comparator<Pair<Integer, Integer>>() {  // descending order
+                @Override
+                public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) {
+                    return p2.getRight().compareTo(p1.getRight());
+                }
+            };
+            
+            PriorityQueue<Pair<Integer, Integer>> queue = new PriorityQueue<>(10, comparator);
+            for(Pair<Integer, Integer> p : owlSearched) {
+                queue.add(p);
+            }
+            
+            owlLeaderboards = new LinkedList<>();
+            for(int i = 0; i < Math.min(owlSearched.size(), 10); i++) {
+                owlLeaderboards.add(queue.remove().getLeft());
+            }
+        }
+        
+        c.announce(MaplePacketCreator.getOwlOpen(owlLeaderboards));
     }
 }

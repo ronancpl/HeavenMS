@@ -258,7 +258,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return takenDamage.containsKey(chr.getId());
     }
 
-    private void distributeExperienceToParty(int pid, int exp, int killer, Map<Integer, Integer> expDist, Set<MapleCharacter> underleveled) {
+    private void distributeExperienceToParty(int pid, int exp, int killer, Set<MapleCharacter> underleveled) {
         List<MapleCharacter> members = new LinkedList<>();
         MapleCharacter pchar = getMap().getAnyCharacterFromParty(pid);
         if(pchar != null) {
@@ -290,7 +290,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         for (MapleCharacter mc : members) {
             int id = mc.getId();
             int level = mc.getLevel();
-            if (expDist.containsKey(id) || level >= leechMinLevel) {
+            if (level >= leechMinLevel) {
                 boolean isKiller = killer == id;
                 boolean mostDamage = mostDamageCid == id;
                 int xp = (int) ((0.80f * exp * level) / partyLevel);
@@ -344,7 +344,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         for (Entry<Integer, Integer> party : partyExp.entrySet()) {
-            distributeExperienceToParty(party.getKey(), party.getValue(), killerId, expDist, underleveled);
+            distributeExperienceToParty(party.getKey(), party.getValue(), killerId, underleveled);
         }
         
         for(MapleCharacter mc : underleveled) {
@@ -358,16 +358,17 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 getMap().getEventInstance().monsterKilled(attacker, this);
             }
         }
-        final int partyModifier = numExpSharers > 1 ? (110 + (5 * (numExpSharers - 2))) : 0;
-
+        
+        //PARTY BONUS: 2p -> +2% , 3p -> +4% , 4p -> +6% , 5p -> +8% , 6p -> +10%
+        final float partyModifier = numExpSharers <= 1 ? 0.0f : 0.02f * (numExpSharers - 1);
+        
         int partyExp = 0;
-
         if (attacker.getHp() > 0) {
             int personalExp = exp * attacker.getExpRate();
 
             if (exp > 0) {
-                if (partyModifier > 0) {
-                    partyExp = (int) (personalExp * ServerConstants.PARTY_EXPERIENCE_MOD * partyModifier / 1000f);
+                if (partyModifier > 0.0f) {
+                    partyExp = (int) (personalExp * partyModifier * ServerConstants.PARTY_BONUS_EXP_RATE);
                 }
                 Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
                 boolean GMHolySymbol = attacker.getBuffSource(MapleBuffStat.HOLY_SYMBOL) == SuperGM.HOLY_SYMBOL;

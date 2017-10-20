@@ -5293,6 +5293,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 if (party != null) {
                     ret.mpc = party.getMemberById(ret.id);
                     if (ret.mpc != null) {
+                        ret.mpc = new MaplePartyCharacter(ret);
                         ret.party = party;
                     }
                 }
