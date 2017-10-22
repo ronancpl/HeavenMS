@@ -1836,7 +1836,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void stopChairTask() {
+    private void stopChairTask() {
         chrLock.lock();
         try {
             if (chairRecoveryTask != null) {
@@ -1848,8 +1848,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void startChairTask() {
-        if(!ServerConstants.USE_CHAIR_EXTRAHEAL || chair.get() == 0) return;
+    private void startChairTask() {
+        if(chair.get() == 0) return;
         
         final int healInterval = 5000;
         final byte healHP = (byte) Math.max(ServerConstants.CHAIR_EXTRA_HEAL_HP, 1);
@@ -3344,6 +3344,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void unregisterChairBuff() {
+        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return;
+        
         int skillId = getJobMapChair(job);
         int skillLv = getSkillLevel(skillId);
         if(skillLv > 0) {
@@ -3353,6 +3355,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void registerChairBuff() {
+        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return;
+        
         int skillId = getJobMapChair(job);
         int skillLv = getSkillLevel(skillId);
         if(skillLv > 0) {
@@ -7827,11 +7831,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             extraRecoveryTask.cancel(false);
         }
         
+        unregisterChairBuff();
         cancelBuffExpireTask();
         cancelDiseaseExpireTask();
         cancelSkillCooldownTask();
         cancelExpirationTask();
-        stopChairTask();
         
         for (ScheduledFuture<?> sf : timers) {
             sf.cancel(false);

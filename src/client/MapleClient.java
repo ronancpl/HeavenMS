@@ -1310,6 +1310,7 @@ public class MapleClient {
 				merchant.removeVisitor(getPlayer());
 			}
 		}
+                player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 player.setAwayFromWorld(true);
 		player.cancelAllBuffs(true);

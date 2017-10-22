@@ -596,3 +596,4 @@ Consertado bugs envolvendo ganho de EXP em party, para casos onde o level do mob
 Bonus de Map chair rearranjado como uma skill, buffando jogador no momento que a codição de ativação é atingida.
 Hired Merchant agora verifica devidamente se jogador possui slot antes de liberar a compra de um item.
 Pequeno conserto de acesso concorrente com o Storage.
+Corrigido Map chair não removendo task corretamente caso jogador mude de mapa inesperadamente.

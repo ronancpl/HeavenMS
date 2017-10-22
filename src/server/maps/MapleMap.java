@@ -2137,6 +2137,8 @@ public class MapleMap {
     */
 
     public void removePlayer(MapleCharacter chr) {
+        chr.unregisterChairBuff();
+        
         chrWLock.lock();
         try {
             removePartyMemberInternal(chr);

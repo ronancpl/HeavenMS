@@ -57,6 +57,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
 
             mc.closePlayerInteractions();
 
+            mc.unregisterChairBuff();
             Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
             mc.setAwayFromWorld(true);
             mc.cancelAllBuffs(true);
@@ -64,7 +65,6 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             mc.cancelDiseaseExpireTask();
             mc.cancelSkillCooldownTask();
             mc.cancelExpirationTask();
-            mc.stopChairTask();
 
             c.announce(MaplePacketCreator.openCashShop(c, false));
             c.announce(MaplePacketCreator.showCashInventory(c));
