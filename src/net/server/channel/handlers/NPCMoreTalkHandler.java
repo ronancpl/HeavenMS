@@ -32,6 +32,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Matze
  */
 public final class NPCMoreTalkHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {        
         byte lastMsg = slea.readByte(); // 00 (last msg type I think)
         byte action = slea.readByte(); // 00 = end chat, 01 == follow

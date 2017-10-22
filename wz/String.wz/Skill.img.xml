@@ -11606,29 +11606,10 @@
     <string name="desc" value="Damage will increase for certain period of time."/>
     <string name="h1" value="Damage increased by 100% for 30 sec."/>
   </imgdir>
-  <imgdir name="10000012">
-    <string name="name" value="Blessing of the Fairy"/>
-    <string name="desc" value="[Master Level : 20]\nSkill Point will increase by 1 when the related character reaches above Lv.10."/>
-    <string name="h1" value="WA +1, MA +2, Accuracy and Avoidability +1"/>
-    <string name="h2" value="WA +2, MA +4, Accuracy and Avoidability +2"/>
-    <string name="h3" value="WA +3, MA +6, Accuracy and Avoidability +3"/>
-    <string name="h4" value="WA +4, MA +8, Accuracy and Avoidability +4"/>
-    <string name="h5" value="WA +5, MA +10, Accuracy and Avoidability +5"/>
-    <string name="h6" value="WA +6, MA +12, Accuracy and Avoidability +6"/>
-    <string name="h7" value="WA +7, MA +14, Accuracy and Avoidability +7"/>
-    <string name="h8" value="WA +8, MA +16, Accuracy and Avoidability +8"/>
-    <string name="h9" value="WA +9, MA +18, Accuracy and Avoidability +9"/>
-    <string name="h10" value="WA +10, MA +20, Accuracy and Avoidability +10"/>
-    <string name="h11" value="WA +11, MA +22, Accuracy and Avoidability +11"/>
-    <string name="h12" value="WA +12, MA +24, Accuracy and Avoidability +12"/>
-    <string name="h13" value="WA +13, MA +26, Accuracy and Avoidability +13"/>
-    <string name="h14" value="WA +14, MA +28, Accuracy and Avoidability +14"/>
-    <string name="h15" value="WA +15, MA +30, Accuracy and Avoidability +15"/>
-    <string name="h16" value="WA +16, MA +32, Accuracy and Avoidability +16"/>
-    <string name="h17" value="WA +17, MA +34, Accuracy and Avoidability +17"/>
-    <string name="h18" value="WA +18, MA +36, Accuracy and Avoidability +18"/>
-    <string name="h19" value="WA +19, MA +38, Accuracy and Avoidability +19"/>
-    <string name="h20" value="WA +20, MA +40, Accuracy and Avoidability +20"/>
+  <imgdir name="20000100">
+    <string name="name" value="Chair Mastery"/>
+    <string name="desc" value="[Master Level : 1]\nBonus recovery gain from using map chairs throughout the world."/>
+    <string name="h1" value="Passively recover extra amounts of HP and MP by resting on map chairs."/>
   </imgdir>
   <imgdir name="1100">
     <string name="bookName" value="The Basics of a Dawn Warrior"/>
@@ -12708,5 +12689,39 @@
     <string name="name" value="Barlog Mount"/>
     <string name="desc" value="[Master Level : 1]\nAllows you to move around while being mounted on a Barlog."/>
     <string name="h1" value="Consumes 10 MP, Weapon and Magic Defense +10, Speed 120, Jump 120"/>
+  </imgdir>
+  <imgdir name="10000012">
+    <string name="name" value="Blessing of the Fairy"/>
+    <string name="desc" value="[Master Level : 20]\nSkill Point will increase by 1 when the related character reaches above Lv.10."/>
+    <string name="h1" value="WA +1, MA +2, Accuracy and Avoidability +1"/>
+    <string name="h2" value="WA +2, MA +4, Accuracy and Avoidability +2"/>
+    <string name="h3" value="WA +3, MA +6, Accuracy and Avoidability +3"/>
+    <string name="h4" value="WA +4, MA +8, Accuracy and Avoidability +4"/>
+    <string name="h5" value="WA +5, MA +10, Accuracy and Avoidability +5"/>
+    <string name="h6" value="WA +6, MA +12, Accuracy and Avoidability +6"/>
+    <string name="h7" value="WA +7, MA +14, Accuracy and Avoidability +7"/>
+    <string name="h8" value="WA +8, MA +16, Accuracy and Avoidability +8"/>
+    <string name="h9" value="WA +9, MA +18, Accuracy and Avoidability +9"/>
+    <string name="h10" value="WA +10, MA +20, Accuracy and Avoidability +10"/>
+    <string name="h11" value="WA +11, MA +22, Accuracy and Avoidability +11"/>
+    <string name="h12" value="WA +12, MA +24, Accuracy and Avoidability +12"/>
+    <string name="h13" value="WA +13, MA +26, Accuracy and Avoidability +13"/>
+    <string name="h14" value="WA +14, MA +28, Accuracy and Avoidability +14"/>
+    <string name="h15" value="WA +15, MA +30, Accuracy and Avoidability +15"/>
+    <string name="h16" value="WA +16, MA +32, Accuracy and Avoidability +16"/>
+    <string name="h17" value="WA +17, MA +34, Accuracy and Avoidability +17"/>
+    <string name="h18" value="WA +18, MA +36, Accuracy and Avoidability +18"/>
+    <string name="h19" value="WA +19, MA +38, Accuracy and Avoidability +19"/>
+    <string name="h20" value="WA +20, MA +40, Accuracy and Avoidability +20"/>
+  </imgdir>
+  <imgdir name="0000100">
+    <string name="name" value="Chair Mastery"/>
+    <string name="desc" value="[Master Level : 1]\nBonus recovery gain from using map chairs throughout the world."/>
+    <string name="h1" value="Passively recover extra amounts of HP and MP by resting on map chairs."/>
+  </imgdir>
+  <imgdir name="10000100">
+    <string name="name" value="Chair Mastery"/>
+    <string name="desc" value="[Master Level : 1]\nBonus recovery gain from using map chairs throughout the world."/>
+    <string name="h1" value="Passively recover extra amounts of HP and MP by resting on map chairs."/>
   </imgdir>
 </imgdir>

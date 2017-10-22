@@ -74,9 +74,7 @@ import constants.skills.WhiteKnight;
 import constants.skills.WindArcher;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import provider.MapleData;
@@ -189,6 +187,7 @@ public class SkillFactory {
                 case Beginner.NIMBLE_FEET:
                 case Beginner.MONSTER_RIDER:
                 case Beginner.ECHO_OF_HERO:
+                case Beginner.MAP_CHAIR:
                 case Swordsman.IRON_BODY:
                 case Fighter.AXE_BOOSTER:
                 case Fighter.POWER_GUARD:
@@ -303,6 +302,7 @@ public class SkillFactory {
                 case Noblesse.MONSTER_RIDER:
                 case Noblesse.NIMBLE_FEET:
                 case Noblesse.RECOVERY:
+                case Noblesse.MAP_CHAIR:
                 case DawnWarrior.COMBO:
                 case DawnWarrior.FINAL_ATTACK:
                 case DawnWarrior.IRON_BODY:
@@ -346,6 +346,7 @@ public class SkillFactory {
                 case Legend.ECHO_OF_HERO:
                 case Legend.RECOVERY:
                 case Legend.MONSTER_RIDER:
+                case Legend.MAP_CHAIR:
                 case Aran.MAPLE_WARRIOR:
                 case Aran.HEROS_WILL:
                 case Aran.POLEARM_BOOSTER:

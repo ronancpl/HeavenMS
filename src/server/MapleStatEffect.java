@@ -266,7 +266,9 @@ public class MapleStatEffect {
                     }
                 }
             } else {
-                if((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && ServerConstants.USE_ULTRA_NIMBLE_FEET == true) {
+                if(isMapChair(sourceid)) {
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_CHAIR, 1);
+                } else if((sourceid == Beginner.NIMBLE_FEET || sourceid == Noblesse.NIMBLE_FEET || sourceid == Evan.NIMBLE_FEET || sourceid == Legend.AGILE_BODY) && ServerConstants.USE_ULTRA_NIMBLE_FEET == true) {
                     ret.jump = (short)(ret.speed * 4);
                     ret.speed *= 15;
                 }
@@ -756,8 +758,7 @@ public class MapleStatEffect {
             applyto.dispelDebuff(MapleDisease.SEDUCE);
             applyto.dispelDebuff(MapleDisease.ZOMBIFY);
             applyto.dispelDebuffs();
-        }
-        if (isComboReset()) {
+        } else if (isComboReset()) {
             applyto.setCombo((short) 0);
         }
         /*if (applyfrom.getMp() < getMpCon()) {
@@ -1321,6 +1322,15 @@ public class MapleStatEffect {
     public boolean isRecovery() {
         return sourceid == Beginner.RECOVERY || sourceid == Noblesse.RECOVERY || sourceid == Legend.RECOVERY || sourceid == Evan.RECOVERY;
     }
+    
+    public boolean isMapChair() {
+        return sourceid == Beginner.MAP_CHAIR || sourceid == Noblesse.MAP_CHAIR || sourceid == Legend.MAP_CHAIR;
+    }
+    
+    public static boolean isMapChair(int sourceid) {
+        return sourceid == Beginner.MAP_CHAIR || sourceid == Noblesse.MAP_CHAIR || sourceid == Legend.MAP_CHAIR;
+    }
+    
     
     public boolean isDojoBuff() {
         return sourceid >= 2022359 && sourceid <= 2022421;

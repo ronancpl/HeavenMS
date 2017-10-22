@@ -1316,7 +1316,6 @@ public class MapleClient {
                 player.cancelBuffExpireTask();
                 player.cancelDiseaseExpireTask();
                 player.cancelSkillCooldownTask();
-                player.stopChairTask();
 		//Cancelling magicdoor? Nope
 		//Cancelling mounts? Noty
 		if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {

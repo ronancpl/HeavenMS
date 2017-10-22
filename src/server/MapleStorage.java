@@ -3,19 +3,16 @@
  Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
  Matthias Butz <matze@odinms.de>
  Jan Christian Meyer <vimes@odinms.de>
-
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU Affero General Public License as
  published by the Free Software Foundation version 3 as published by
  the Free Software Foundation. You may not use, modify or distribute
  this program under any other version of the GNU Affero General Public
  License.
-
  This program is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Affero General Public License for more details.
-
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -164,12 +161,13 @@ public class MapleStorage {
         lock.lock();
         try {
             ret = items.remove(slot);
+            
+            MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(ret.getItemId());
+            typeItems.put(type, new ArrayList<>(filterItems(type)));
         } finally {
             lock.unlock();
         }
         
-        MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(ret.getItemId());
-        typeItems.put(type, new ArrayList<>(filterItems(type)));
         return ret;
     }
 
@@ -177,12 +175,12 @@ public class MapleStorage {
         lock.lock();
         try {
             items.add(item);
+            
+            MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId());
+            typeItems.put(type, new ArrayList<>(filterItems(type)));
         } finally {
             lock.unlock();
         }
-        
-        MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId());
-        typeItems.put(type, new ArrayList<>(filterItems(type)));
     }
 
     public List<Item> getItems() {
@@ -208,15 +206,20 @@ public class MapleStorage {
     }
 
     public byte getSlot(MapleInventoryType type, byte slot) {
-        byte ret = 0;
-        List<Item> storageItems = getItems();
-        for (Item item : storageItems) {
-            if (item == typeItems.get(type).get(slot)) {
-                return ret;
+        lock.lock();
+        try {
+            byte ret = 0;
+            List<Item> storageItems = getItems();
+            for (Item item : storageItems) {
+                if (item == typeItems.get(type).get(slot)) {
+                    return ret;
+                }
+                ret++;
             }
-            ret++;
+            return -1;
+        } finally {
+            lock.unlock();
         }
-        return -1;
     }
 
     public void sendStorage(MapleClient c, int npcId) {
@@ -235,23 +238,33 @@ public class MapleStorage {
                     return 1;
                 }
             });
+            
+            List<Item> storageItems = getItems();
+            for (MapleInventoryType type : MapleInventoryType.values()) {
+                typeItems.put(type, new ArrayList<>(storageItems));
+            }
+            c.announce(MaplePacketCreator.getStorage(npcId, slots, storageItems, meso));
         } finally {
             lock.unlock();
         }
-        
-        List<Item> storageItems = getItems();
-        for (MapleInventoryType type : MapleInventoryType.values()) {
-            typeItems.put(type, new ArrayList<>(storageItems));
-        }
-        c.announce(MaplePacketCreator.getStorage(npcId, slots, storageItems, meso));
     }
 
     public void sendStored(MapleClient c, MapleInventoryType type) {
-        c.announce(MaplePacketCreator.storeStorage(slots, type, typeItems.get(type)));
+        lock.lock();
+        try {
+            c.announce(MaplePacketCreator.storeStorage(slots, type, typeItems.get(type)));
+        } finally {
+            lock.unlock();
+        }
     }
 
     public void sendTakenOut(MapleClient c, MapleInventoryType type) {
-        c.announce(MaplePacketCreator.takeOutStorage(slots, type, typeItems.get(type)));
+        lock.lock();
+        try {
+            c.announce(MaplePacketCreator.takeOutStorage(slots, type, typeItems.get(type)));
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int getMeso() {
@@ -279,6 +292,11 @@ public class MapleStorage {
     }
 
     public void close() {
-        typeItems.clear();
+        lock.lock();
+        try {
+            typeItems.clear();
+        } finally {
+            lock.unlock();
+        }
     }
 }

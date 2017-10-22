@@ -15,8 +15,7 @@ function start(mode, type, selection){
 	else
 		status++;
 
-
-	else if(status == 0){
+	if(status == 0){
 		qm.sendAcceptDecline("How's the leveling up so far? By this time, you might be able to participate in the Party Quest at #m103000000#. Leveling up is important, yes, but we need you now to take on a mission as a Cygnus Knight. We just received a new information that may help us.");
 	}
 	else if(status == 1){

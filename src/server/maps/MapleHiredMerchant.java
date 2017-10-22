@@ -167,7 +167,8 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             }
             int price = (int)Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
             if (c.getPlayer().getMeso() >= price) {
-                if (MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
+                if (MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())) {
+                    MapleInventoryManipulator.addFromDrop(c, newItem, false);
                     c.getPlayer().gainMeso(-price, false);
                     
                     synchronized (sold) {
@@ -196,7 +197,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                         }
                     }
                 } else {
-                    c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
+                    c.getPlayer().dropMessage(1, "Your inventory is full. Please clear a slot before buying this item.");
                 }
             } else {
                 c.getPlayer().dropMessage(1, "You do not have enough mesos.");

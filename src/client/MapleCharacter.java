@@ -121,6 +121,7 @@ import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
+import constants.skills.Beginner;
 import constants.skills.Bishop;
 import constants.skills.BlazeWizard;
 import constants.skills.Bowmaster;
@@ -135,10 +136,12 @@ import constants.skills.GM;
 import constants.skills.Hermit;
 import constants.skills.Hero;
 import constants.skills.ILArchMage;
+import constants.skills.Legend;
 import constants.skills.Magician;
 import constants.skills.Marauder;
 import constants.skills.Marksman;
 import constants.skills.NightLord;
+import constants.skills.Noblesse;
 import constants.skills.Paladin;
 import constants.skills.Priest;
 import constants.skills.Ranger;
@@ -1248,7 +1251,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
         
-        this.stopChairTask();
+        this.unregisterChairBuff();
         this.clearBanishPlayerData();
         this.closePlayerInteractions();
         this.resetPlayerAggro();
@@ -2994,6 +2997,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     prtLock.unlock();
                 }
             }
+        } else if (effect.isMapChair()) {
+            stopChairTask();
         }
         
         List<Pair<MapleBuffStat, MapleBuffStatValueHolder>> toCancel = deregisterBuffStats(buffstats);
@@ -3263,6 +3268,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 stopExtraTask();
                 startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder
             }
+        } else if (effect.isMapChair()) {
+            startChairTask();
         }
         
         effLock.lock();
@@ -3324,7 +3331,36 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         recalcLocalStats();
     }
-
+    
+    private static int getJobMapChair(MapleJob job) {
+        switch(job.getId() / 1000) {
+            case 0:
+                return Beginner.MAP_CHAIR;
+            case 1:
+                return Noblesse.MAP_CHAIR;
+            default:
+                return Legend.MAP_CHAIR;
+        }
+    }
+    
+    public void unregisterChairBuff() {
+        int skillId = getJobMapChair(job);
+        int skillLv = getSkillLevel(skillId);
+        if(skillLv > 0) {
+            MapleStatEffect mapChairSkill = SkillFactory.getSkill(skillId).getEffect(skillLv);
+            cancelEffect(mapChairSkill, false, -1);
+        }
+    }
+    
+    public void registerChairBuff() {
+        int skillId = getJobMapChair(job);
+        int skillLv = getSkillLevel(skillId);
+        if(skillLv > 0) {
+            MapleStatEffect mapChairSkill = SkillFactory.getSkill(skillId).getEffect(skillLv);
+            mapChairSkill.applyTo(this);
+        }
+    }
+    
     public int getChair() {
         return chair.get();
     }

@@ -4,7 +4,7 @@ public class Evan {
 	// EVAN1
 	public static final int BLESSING_OF_THE_FAIRY = 20010012;
 	public static final int THREE_SNAILS = 20011000;
-    public static final int RECOVERY = 20011001;
+        public static final int RECOVERY = 20011001;
 	public static final int NIMBLE_FEET = 20011002;
 	public static final int LEGENDARY_SPIRIT = 20011003;
 	public static final int MONSTER_RIDER = 20011004;

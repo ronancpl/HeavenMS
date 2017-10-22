@@ -1425,7 +1425,7 @@
         <int name="z" value="-8"/>
       </imgdir>
     </imgdir>
-    <imgdir name="10000012">
+    <imgdir name="10000100">
       <canvas name="icon" width="32" height="32">
         <vector name="origin" x="0" y="32"/>
         <int name="z" value="0"/>
@@ -1441,126 +1441,11 @@
       <imgdir name="level">
         <imgdir name="1">
           <string name="hs" value="h1"/>
-          <int name="x" value="1"/>
-          <int name="y" value="2"/>
-          <int name="z" value="1"/>
-        </imgdir>
-        <imgdir name="2">
-          <string name="hs" value="h2"/>
-          <int name="x" value="2"/>
-          <int name="y" value="4"/>
-          <int name="z" value="2"/>
-        </imgdir>
-        <imgdir name="3">
-          <string name="hs" value="h3"/>
-          <int name="x" value="3"/>
-          <int name="y" value="6"/>
-          <int name="z" value="3"/>
-        </imgdir>
-        <imgdir name="4">
-          <string name="hs" value="h4"/>
-          <int name="x" value="4"/>
-          <int name="y" value="8"/>
-          <int name="z" value="4"/>
-        </imgdir>
-        <imgdir name="5">
-          <string name="hs" value="h5"/>
-          <int name="x" value="5"/>
-          <int name="y" value="10"/>
-          <int name="z" value="5"/>
-        </imgdir>
-        <imgdir name="6">
-          <string name="hs" value="h6"/>
-          <int name="x" value="6"/>
-          <int name="y" value="12"/>
-          <int name="z" value="6"/>
-        </imgdir>
-        <imgdir name="7">
-          <string name="hs" value="h7"/>
-          <int name="x" value="7"/>
-          <int name="y" value="14"/>
-          <int name="z" value="7"/>
-        </imgdir>
-        <imgdir name="8">
-          <string name="hs" value="h8"/>
-          <int name="x" value="8"/>
-          <int name="y" value="16"/>
-          <int name="z" value="8"/>
-        </imgdir>
-        <imgdir name="9">
-          <string name="hs" value="h9"/>
-          <int name="x" value="9"/>
-          <int name="y" value="18"/>
-          <int name="z" value="9"/>
-        </imgdir>
-        <imgdir name="10">
-          <string name="hs" value="h10"/>
-          <int name="x" value="10"/>
-          <int name="y" value="20"/>
-          <int name="z" value="10"/>
-        </imgdir>
-        <imgdir name="11">
-          <string name="hs" value="h11"/>
-          <int name="x" value="11"/>
-          <int name="y" value="22"/>
-          <int name="z" value="11"/>
-        </imgdir>
-        <imgdir name="12">
-          <string name="hs" value="h12"/>
-          <int name="x" value="12"/>
-          <int name="y" value="24"/>
-          <int name="z" value="12"/>
-        </imgdir>
-        <imgdir name="13">
-          <string name="hs" value="h13"/>
-          <int name="x" value="13"/>
-          <int name="y" value="26"/>
-          <int name="z" value="13"/>
-        </imgdir>
-        <imgdir name="14">
-          <string name="hs" value="h14"/>
-          <int name="x" value="14"/>
-          <int name="y" value="28"/>
-          <int name="z" value="14"/>
-        </imgdir>
-        <imgdir name="15">
-          <string name="hs" value="h15"/>
-          <int name="x" value="15"/>
-          <int name="y" value="30"/>
-          <int name="z" value="15"/>
-        </imgdir>
-        <imgdir name="16">
-          <string name="hs" value="h16"/>
-          <int name="x" value="16"/>
-          <int name="y" value="32"/>
-          <int name="z" value="16"/>
-        </imgdir>
-        <imgdir name="17">
-          <string name="hs" value="h17"/>
-          <int name="x" value="17"/>
-          <int name="y" value="34"/>
-          <int name="z" value="17"/>
-        </imgdir>
-        <imgdir name="18">
-          <string name="hs" value="h18"/>
-          <int name="x" value="18"/>
-          <int name="y" value="36"/>
-          <int name="z" value="18"/>
-        </imgdir>
-        <imgdir name="19">
-          <string name="hs" value="h19"/>
-          <int name="x" value="19"/>
-          <int name="y" value="38"/>
-          <int name="z" value="19"/>
-        </imgdir>
-        <imgdir name="20">
-          <string name="hs" value="h20"/>
-          <int name="x" value="20"/>
-          <int name="y" value="40"/>
-          <int name="z" value="20"/>
+          <int name="time" value="2100000"/>
         </imgdir>
       </imgdir>
       <int name="disable" value="1"/>
+      <int name="invisible" value="1"/>
     </imgdir>
     <imgdir name="10000018">
       <canvas name="icon" width="32" height="32">
@@ -2891,6 +2776,143 @@
       </imgdir>
       <int name="invisible" value="1"/>
       <int name="timeLimited" value="1"/>
+      <int name="disable" value="1"/>
+    </imgdir>
+    <imgdir name="10000012">
+      <canvas name="icon" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+        <int name="z" value="0"/>
+      </canvas>
+      <canvas name="iconMouseOver" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+        <int name="z" value="0"/>
+      </canvas>
+      <canvas name="iconDisabled" width="32" height="32">
+        <vector name="origin" x="0" y="32"/>
+        <int name="z" value="0"/>
+      </canvas>
+      <imgdir name="level">
+        <imgdir name="1">
+          <string name="hs" value="h1"/>
+          <int name="x" value="1"/>
+          <int name="y" value="2"/>
+          <int name="z" value="1"/>
+        </imgdir>
+        <imgdir name="2">
+          <string name="hs" value="h2"/>
+          <int name="x" value="2"/>
+          <int name="y" value="4"/>
+          <int name="z" value="2"/>
+        </imgdir>
+        <imgdir name="3">
+          <string name="hs" value="h3"/>
+          <int name="x" value="3"/>
+          <int name="y" value="6"/>
+          <int name="z" value="3"/>
+        </imgdir>
+        <imgdir name="4">
+          <string name="hs" value="h4"/>
+          <int name="x" value="4"/>
+          <int name="y" value="8"/>
+          <int name="z" value="4"/>
+        </imgdir>
+        <imgdir name="5">
+          <string name="hs" value="h5"/>
+          <int name="x" value="5"/>
+          <int name="y" value="10"/>
+          <int name="z" value="5"/>
+        </imgdir>
+        <imgdir name="6">
+          <string name="hs" value="h6"/>
+          <int name="x" value="6"/>
+          <int name="y" value="12"/>
+          <int name="z" value="6"/>
+        </imgdir>
+        <imgdir name="7">
+          <string name="hs" value="h7"/>
+          <int name="x" value="7"/>
+          <int name="y" value="14"/>
+          <int name="z" value="7"/>
+        </imgdir>
+        <imgdir name="8">
+          <string name="hs" value="h8"/>
+          <int name="x" value="8"/>
+          <int name="y" value="16"/>
+          <int name="z" value="8"/>
+        </imgdir>
+        <imgdir name="9">
+          <string name="hs" value="h9"/>
+          <int name="x" value="9"/>
+          <int name="y" value="18"/>
+          <int name="z" value="9"/>
+        </imgdir>
+        <imgdir name="10">
+          <string name="hs" value="h10"/>
+          <int name="x" value="10"/>
+          <int name="y" value="20"/>
+          <int name="z" value="10"/>
+        </imgdir>
+        <imgdir name="11">
+          <string name="hs" value="h11"/>
+          <int name="x" value="11"/>
+          <int name="y" value="22"/>
+          <int name="z" value="11"/>
+        </imgdir>
+        <imgdir name="12">
+          <string name="hs" value="h12"/>
+          <int name="x" value="12"/>
+          <int name="y" value="24"/>
+          <int name="z" value="12"/>
+        </imgdir>
+        <imgdir name="13">
+          <string name="hs" value="h13"/>
+          <int name="x" value="13"/>
+          <int name="y" value="26"/>
+          <int name="z" value="13"/>
+        </imgdir>
+        <imgdir name="14">
+          <string name="hs" value="h14"/>
+          <int name="x" value="14"/>
+          <int name="y" value="28"/>
+          <int name="z" value="14"/>
+        </imgdir>
+        <imgdir name="15">
+          <string name="hs" value="h15"/>
+          <int name="x" value="15"/>
+          <int name="y" value="30"/>
+          <int name="z" value="15"/>
+        </imgdir>
+        <imgdir name="16">
+          <string name="hs" value="h16"/>
+          <int name="x" value="16"/>
+          <int name="y" value="32"/>
+          <int name="z" value="16"/>
+        </imgdir>
+        <imgdir name="17">
+          <string name="hs" value="h17"/>
+          <int name="x" value="17"/>
+          <int name="y" value="34"/>
+          <int name="z" value="17"/>
+        </imgdir>
+        <imgdir name="18">
+          <string name="hs" value="h18"/>
+          <int name="x" value="18"/>
+          <int name="y" value="36"/>
+          <int name="z" value="18"/>
+        </imgdir>
+        <imgdir name="19">
+          <string name="hs" value="h19"/>
+          <int name="x" value="19"/>
+          <int name="y" value="38"/>
+          <int name="z" value="19"/>
+        </imgdir>
+        <imgdir name="20">
+          <string name="hs" value="h20"/>
+          <int name="x" value="20"/>
+          <int name="y" value="40"/>
+          <int name="z" value="20"/>
+        </imgdir>
+      </imgdir>
       <int name="disable" value="1"/>
     </imgdir>
   </imgdir>
