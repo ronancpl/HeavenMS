@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -262,6 +263,23 @@ public class MapleStorage {
         lock.lock();
         try {
             c.announce(MaplePacketCreator.takeOutStorage(slots, type, typeItems.get(type)));
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void arrangeItems(MapleClient c) {
+        lock.lock();
+        try {
+            MapleStorageInventory msi = new MapleStorageInventory(c, items);
+            msi.mergeItems();
+            items = msi.sortItems();
+            
+            for (MapleInventoryType type : MapleInventoryType.values()) {
+                typeItems.put(type, new ArrayList<>(items));
+            }
+
+            c.announce(MaplePacketCreator.arrangeStorage(slots, items));
         } finally {
             lock.unlock();
         }

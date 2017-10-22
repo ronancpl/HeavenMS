@@ -353,6 +353,10 @@ public class MapleInventoryManipulator {
         }
     }
 
+    private static boolean isSameOwner(Item source, Item target) {
+        return source.getOwner().equals(target.getOwner());
+    }
+    
     public static void move(MapleClient c, MapleInventoryType type, short src, short dst) {
         if (src < 0 || dst < 0) {
             return;
@@ -374,7 +378,7 @@ public class MapleInventoryManipulator {
         short slotMax = ii.getSlotMax(c, source.getItemId());
         c.getPlayer().getInventory(type).move(src, dst, slotMax);
         final List<ModifyInventory> mods = new ArrayList<>();
-        if (!(type.equals(MapleInventoryType.EQUIP) || type.equals(MapleInventoryType.CASH)) && initialTarget != null && initialTarget.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId())) {
+        if (!(type.equals(MapleInventoryType.EQUIP) || type.equals(MapleInventoryType.CASH)) && initialTarget != null && initialTarget.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId()) && isSameOwner(source, initialTarget)) {
             if ((olddstQ + oldsrcQ) > slotMax) {
                 mods.add(new ModifyInventory(1, source));
                 mods.add(new ModifyInventory(1, initialTarget));

@@ -28,6 +28,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -49,7 +50,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 		final MapleStorage storage = chr.getStorage();
 
 		if (chr.getLevel() < 15){
-			chr.message("You may only use this storage once you have reached level 15.");
+			chr.message("You may only use the storage once you have reached level 15.");
 			return;
 		}
 		if (mode == 4) { // take out
@@ -127,6 +128,9 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	
 				}
 			}
+                } else if (mode == 6) { // arrange items
+                        if(ServerConstants.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);
+                        c.announce(MaplePacketCreator.enableActions());
 		} else if (mode == 7) { // meso
 			int meso = slea.readInt();
 			int storageMesos = storage.getMeso();

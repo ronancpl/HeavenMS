@@ -208,6 +208,9 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             Item item = mi.findByCashId(cashId);
             if (item == null) {
                 return;
+            } else if(c.getPlayer().getPetIndex(item.getPetId()) > -1) {
+                chr.getClient().announce(MaplePacketCreator.serverNotice(1, "You cannot put the pet you currently equip into the Cash Shop inventory."));
+                return;
             }
             cs.addToInventory(item);
             mi.removeSlot(item.getPosition());

@@ -3770,9 +3770,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public int getCleanItemQuantity(int itemid, boolean checkEquipped) {
-        int possesed = inventory[ii.getInventoryType(itemid).ordinal()].countCleanById(itemid);
+        int possesed = inventory[ii.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
         if (checkEquipped) {
-            possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countCleanById(itemid);
+            possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countNotOwnedById(itemid);
         }
         return possesed;
     }
@@ -4224,7 +4224,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             petLock.unlock();
         }
     }
-
+    
     public byte getPetIndex(MaplePet pet) {
         petLock.lock();
         try {

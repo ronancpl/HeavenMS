@@ -3177,7 +3177,23 @@ public class MaplePacketCreator {
                 }
                 return mplew.getPacket();
         }
+        
+        public static byte[] arrangeStorage(byte slots, Collection<Item> items) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
 
+                mplew.writeShort(SendOpcode.STORAGE.getValue());
+                mplew.write(0xF);
+                mplew.write(slots);
+                mplew.write(124);
+                for(byte i = 0; i < 10; i++) mplew.write(0);
+                mplew.write(items.size());
+                for (Item item : items) {
+                        addItemInfo(mplew, item, true);
+                }
+                mplew.write(0);
+                return mplew.getPacket();
+        }
+        
         /**
          *
          * @param oid

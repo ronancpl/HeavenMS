@@ -592,8 +592,14 @@ Adicionado contador de buscas por itens realizados pelos jogadores ao usar Owl. 
 Consertado Roaring Tiger Messenger aparecendo fora da tela ao final da animação.
 Consertado bugs envolvendo ganho de EXP em party, para casos onde o level do mob alvo é bem maior que o do atacante/leecher.
 
-21 - 22 Outubro 2017,
+20 - 21 Outubro 2017,
 Bonus de Map chair rearranjado como uma skill, buffando jogador no momento que a codição de ativação é atingida.
 Hired Merchant agora verifica devidamente se jogador possui slot antes de liberar a compra de um item.
 Pequeno conserto de acesso concorrente com o Storage.
 Corrigido Map chair não removendo task corretamente caso jogador mude de mapa inesperadamente.
+
+22 Outubro 2017,
+Corrigido itens com ownership diferente sendo agrupados num mesmo slot, perdendo a referencia de dono.
+Implementado feature "Arrange Items" do MapleStorage. Ele faz os devidos agrupamentos de itens e organiza os itens do storage.
+Corrigido storage mesclando itens que deveriam ser únicos (que não poderiam haver mais de um num mesmo slot, ou no inventário do jogador).
+Corrigido bug onde colocar um pet equipado no Cash Inventory e voltar ao jogo causaria crash no jogador.

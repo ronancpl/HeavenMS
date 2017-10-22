@@ -104,8 +104,9 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public Item findByName(String name) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         for (Item item : list()) {
-            String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
+            String itemName = ii.getName(item.getItemId());
             if(itemName == null) {
                 FilePrinter.printError(FilePrinter.EXCEPTION, "[CRITICAL] Item "  + item.getItemId() + " has no name.");
                 continue;
@@ -128,7 +129,7 @@ public class MapleInventory implements Iterable<Item> {
         return qty;
     }
     
-    public int countCleanById(int itemId) {
+    public int countNotOwnedById(int itemId) {
         int qty = 0;
         for (Item item : list()) {
             if (item.getItemId() == itemId && item.getOwner().equals("")) {
@@ -199,6 +200,10 @@ public class MapleInventory implements Iterable<Item> {
         addSlot(item.getPosition(), item);
     }
 
+    private static boolean isSameOwner(Item source, Item target) {
+        return source.getOwner().equals(target.getOwner());
+    }
+    
     public void move(short sSlot, short dSlot, short slotMax) {
         lock.lock();
         try {
@@ -211,7 +216,7 @@ public class MapleInventory implements Iterable<Item> {
                 source.setPosition(dSlot);
                 inventory.put(dSlot, source);
                 inventory.remove(sSlot);
-            } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId())) {
+            } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId()) && isSameOwner(source, target)) {
                 if (type.getType() == MapleInventoryType.EQUIP.getType() || type.getType() == MapleInventoryType.CASH.getType()) {
                     swap(target, source);
                 } else if (source.getQuantity() + target.getQuantity() > slotMax) {
