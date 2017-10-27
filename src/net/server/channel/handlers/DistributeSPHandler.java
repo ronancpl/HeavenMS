@@ -39,18 +39,19 @@ public final class DistributeSPHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.readInt();
         int skillid = slea.readInt();
-		if (skillid == Aran.HIDDEN_FULL_DOUBLE || skillid == Aran.HIDDEN_FULL_TRIPLE || skillid == Aran.HIDDEN_OVER_DOUBLE || skillid == Aran.HIDDEN_OVER_TRIPLE) {
-			c.getSession().write(MaplePacketCreator.enableActions());
-			return;
-		}
+        if (skillid == Aran.HIDDEN_FULL_DOUBLE || skillid == Aran.HIDDEN_FULL_TRIPLE || skillid == Aran.HIDDEN_OVER_DOUBLE || skillid == Aran.HIDDEN_OVER_TRIPLE) {
+            c.getSession().write(MaplePacketCreator.enableActions());
+            return;
+        }
+        
         MapleCharacter player = c.getPlayer();
         int remainingSp = player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000));
         boolean isBeginnerSkill = false;
         if ((!GameConstants.isPQSkillMap(player.getMapId()) && GameConstants.isPqSkill(skillid)) || (!player.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, player.getJob().getId()) && !player.isGM())) {
-        	AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
-        	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
-    		c.disconnect(true, false);
-                return;
+            AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
+            FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
+            c.disconnect(true, false);
+            return;
         }
         if (skillid % 10000000 > 999 && skillid % 10000000 < 1003) {
             int total = 0;
@@ -63,7 +64,7 @@ public final class DistributeSPHandler extends AbstractMaplePacketHandler {
         Skill skill = SkillFactory.getSkill(skillid);
         int curLevel = player.getSkillLevel(skill);
         if ((remainingSp > 0 && curLevel + 1 <= (skill.isFourthJob() ? player.getMasterLevel(skill) : skill.getMaxLevel()))) {
-        	if (!isBeginnerSkill) {
+            if (!isBeginnerSkill) {
                 player.setRemainingSp(player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000)) - 1, GameConstants.getSkillBook(skillid/10000));
             }       	
             player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000)));

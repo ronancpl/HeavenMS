@@ -582,19 +582,20 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             ret.speed = lea.readByte();
             lea.skip(4);
         }
-        int calcDmgMax = 0;
-		
-		// Find the base damage to base futher calculations on.
-		// Several skills have their own formula in this section.
+        
+        // Find the base damage to base futher calculations on.
+        // Several skills have their own formula in this section.
+        int calcDmgMax = 0;	
+        
         if(magic && ret.skill != 0) {
             calcDmgMax = (chr.getTotalMagic() * chr.getTotalMagic() / 1000 + chr.getTotalMagic()) / 30 + chr.getTotalInt() / 200;
         } else if(ret.skill == 4001344 || ret.skill == NightWalker.LUCKY_SEVEN || ret.skill == NightLord.TRIPLE_THROW) {
             calcDmgMax = (chr.getTotalLuk() * 5) * chr.getTotalWatk() / 100;
         } else if(ret.skill == DragonKnight.DRAGON_ROAR) {
             calcDmgMax = (chr.getTotalStr() * 4 + chr.getTotalDex()) * chr.getTotalWatk() / 100;
-		} else if(ret.skill == NightLord.VENOMOUS_STAR || ret.skill == Shadower.VENOMOUS_STAB) {
-			calcDmgMax = (int) (18.5 * (chr.getTotalStr() + chr.getTotalLuk()) + chr.getTotalDex() * 2) / 100 * chr.calculateMaxBaseDamage(chr.getTotalWatk());
-		} else {
+        } else if(ret.skill == NightLord.VENOMOUS_STAR || ret.skill == Shadower.VENOMOUS_STAB) {
+            calcDmgMax = (int) (18.5 * (chr.getTotalStr() + chr.getTotalLuk()) + chr.getTotalDex() * 2) / 100 * chr.calculateMaxBaseDamage(chr.getTotalWatk());
+        } else {
             calcDmgMax = chr.calculateMaxBaseDamage(chr.getTotalWatk());
         }
 
@@ -739,74 +740,74 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             }
             
             if(ret.skill != 0) {
-                Skill skill = SkillFactory.getSkill(ret.skill);
-                if(skill.getElement() != Element.NEUTRAL && chr.getBuffedValue(MapleBuffStat.ELEMENTAL_RESET) == null) {
-                    // The skill has an element effect, so we need to factor that in.
-                    if(monster != null) {
-                        ElementalEffectiveness eff = monster.getEffectiveness(skill.getElement());
-                        if(eff == ElementalEffectiveness.WEAK) {
+                    Skill skill = SkillFactory.getSkill(ret.skill);
+                    if(skill.getElement() != Element.NEUTRAL && chr.getBuffedValue(MapleBuffStat.ELEMENTAL_RESET) == null) {
+                        // The skill has an element effect, so we need to factor that in.
+                        if(monster != null) {
+                            ElementalEffectiveness eff = monster.getElementalEffectiveness(skill.getElement());
+                            if(eff == ElementalEffectiveness.WEAK) {
+                                calcDmgMax *= 1.5;
+                            } else if(eff == ElementalEffectiveness.STRONG) {
+                                //calcDmgMax *= 0.5;
+                            }
+                        } else {
+                            // Since we already know the skill has an elemental attribute, but we dont know if the monster is weak or not, lets
+                            // take the safe approach and just assume they are weak.
                             calcDmgMax *= 1.5;
-                        } else if(eff == ElementalEffectiveness.STRONG) {
-                            //calcDmgMax *= 0.5;
                         }
-                    } else {
-                        // Since we already know the skill has an elemental attribute, but we dont know if the monster is weak or not, lets
-                        // take the safe approach and just assume they are weak.
-                        calcDmgMax *= 1.5;
                     }
-                }
-				if(ret.skill == FPWizard.POISON_BREATH || ret.skill == FPMage.POISON_MIST || ret.skill == FPArchMage.FIRE_DEMON || ret.skill == ILArchMage.ICE_DEMON) {
-					if(monster != null) {
-						// Turns out poison is completely server side, so I don't know why I added this. >.<
-						//calcDmgMax = monster.getHp() / (70 - chr.getSkillLevel(skill));
-					}
-				} else if(ret.skill == Hermit.SHADOW_WEB) {
-					if(monster != null) {
-						calcDmgMax = monster.getHp() / (50 - chr.getSkillLevel(skill));
-					}
-				}
+                    if(ret.skill == FPWizard.POISON_BREATH || ret.skill == FPMage.POISON_MIST || ret.skill == FPArchMage.FIRE_DEMON || ret.skill == ILArchMage.ICE_DEMON) {
+                            if(monster != null) {
+                                    // Turns out poison is completely server side, so I don't know why I added this. >.<
+                                    //calcDmgMax = monster.getHp() / (70 - chr.getSkillLevel(skill));
+                            }
+                    } else if(ret.skill == Hermit.SHADOW_WEB) {
+                            if(monster != null) {
+                                    calcDmgMax = monster.getHp() / (50 - chr.getSkillLevel(skill));
+                            }
+                    }
             }
             
             for (int j = 0; j < ret.numDamage; j++) {
-                int damage = lea.readInt();
-                int hitDmgMax = calcDmgMax;
-                if(ret.skill == Buccaneer.BARRAGE) {
-                    if(j > 3)
-                        hitDmgMax *= Math.pow(2, (j - 3));
-                }
-				if(shadowPartner) {
-					// For shadow partner, the second half of the hits only do 50% damage. So calc that
-					// in for the crit effects.
-					if(j >= ret.numDamage / 2) {
-						hitDmgMax *= 0.5;
-					}
-				}
-				
-				if(ret.skill == Marksman.SNIPE) {
-					damage = 195000 + Randomizer.nextInt(5000);
-					hitDmgMax = 200000;
-				}
-				
-                                int maxWithCrit = hitDmgMax;
-				if(canCrit) // They can crit, so up the max.
-					maxWithCrit *= 2;
-				
-				// Warn if the damage is over 1.5x what we calculated above.
-                                if(damage > maxWithCrit * 1.5) {
-                                    AutobanFactory.DAMAGE_HACK.alert(chr, "DMG: " + damage + " MaxDMG: " + maxWithCrit + " SID: " + ret.skill + " MobID: " + (monster != null ? monster.getId() : "null") + " Map: " + chr.getMap().getMapName() + " (" + chr.getMapId() + ")");
-                                }
-				
-				// Add a ab point if its over 5x what we calculated.
-				if(damage > maxWithCrit  * 5) {
-					AutobanFactory.DAMAGE_HACK.addPoint(chr.getAutobanManager(), "DMG: " + damage + " MaxDMG: " + maxWithCrit + " SID: " + ret.skill + " MobID: " + (monster != null ? monster.getId() : "null") + " Map: " + chr.getMap().getMapName() + " (" + chr.getMapId() + ")");
-				}
-				
-				if (ret.skill == Marksman.SNIPE || (canCrit && damage > hitDmgMax)) {
-					// If the skill is a crit, inverse the damage to make it show up on clients.
-                    damage = -Integer.MAX_VALUE + damage - 1;
-                }
-                
-                allDamageNumbers.add(damage);
+                    int damage = lea.readInt();
+                    int hitDmgMax = calcDmgMax;
+                    if(ret.skill == Buccaneer.BARRAGE) {
+                        if(j > 3)
+                            hitDmgMax *= Math.pow(2, (j - 3));
+                    }
+                    if(shadowPartner) {
+                            // For shadow partner, the second half of the hits only do 50% damage. So calc that
+                            // in for the crit effects.
+                            if(j >= ret.numDamage / 2) {
+                                    hitDmgMax *= 0.5;
+                            }
+                    }
+
+                    if(ret.skill == Marksman.SNIPE) {
+                            damage = 195000 + Randomizer.nextInt(5000);
+                            hitDmgMax = 200000;
+                    }
+
+                    int maxWithCrit = hitDmgMax;
+                    if(canCrit) // They can crit, so up the max.
+                            maxWithCrit *= 2;
+
+                    // Warn if the damage is over 1.5x what we calculated above.
+                    if(damage > maxWithCrit * 1.5) {
+                        AutobanFactory.DAMAGE_HACK.alert(chr, "DMG: " + damage + " MaxDMG: " + maxWithCrit + " SID: " + ret.skill + " MobID: " + (monster != null ? monster.getId() : "null") + " Map: " + chr.getMap().getMapName() + " (" + chr.getMapId() + ")");
+                    }
+
+                    // Add a ab point if its over 5x what we calculated.
+                    if(damage > maxWithCrit  * 5) {
+                            AutobanFactory.DAMAGE_HACK.addPoint(chr.getAutobanManager(), "DMG: " + damage + " MaxDMG: " + maxWithCrit + " SID: " + ret.skill + " MobID: " + (monster != null ? monster.getId() : "null") + " Map: " + chr.getMap().getMapName() + " (" + chr.getMapId() + ")");
+                    }
+
+                    if (ret.skill == Marksman.SNIPE || (canCrit && damage > hitDmgMax)) {
+                            // If the skill is a crit, inverse the damage to make it show up on clients.
+                            damage = -Integer.MAX_VALUE + damage - 1;
+                    }
+
+                    allDamageNumbers.add(damage);
             }
             if (ret.skill != Corsair.RAPID_FIRE || ret.skill != Aran.HIDDEN_FULL_DOUBLE || ret.skill != Aran.HIDDEN_FULL_TRIPLE || ret.skill != Aran.HIDDEN_OVER_DOUBLE || ret.skill != Aran.HIDDEN_OVER_TRIPLE) {
             	lea.skip(4);

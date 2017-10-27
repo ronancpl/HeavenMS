@@ -515,9 +515,9 @@ public class MapleMap {
         byte d = 1;
         Point pos = new Point(0, mob.getPosition().y);
 
-        Map<MonsterStatus, MonsterStatusEffect> stati = mob.getStati();
-        if (stati.containsKey(MonsterStatus.SHOWDOWN)) {
-            chRate *= (stati.get(MonsterStatus.SHOWDOWN).getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
+        MonsterStatusEffect stati = mob.getStati(MonsterStatus.SHOWDOWN);
+        if (stati != null) {
+            chRate *= (stati.getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
         }
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();

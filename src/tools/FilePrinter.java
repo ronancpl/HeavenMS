@@ -19,6 +19,7 @@ public class FilePrinter {
             ERROR38 = "error38.txt",
             PACKET_LOG = "log.txt",
             EXCEPTION = "exceptions.txt",
+            SQL_EXCEPTION = "sqlexceptions.txt",
             PACKET_HANDLER = "PacketHandler/",
             PORTAL = "portals/",
             NPC = "npcs/",
