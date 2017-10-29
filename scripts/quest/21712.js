@@ -1,6 +1,11 @@
 var status = -1;
 
 function start(mode, type, selection) {
+    if(mode == -1 || mode == 0 && type > 0) {
+        qm.dispose();
+        return;
+    }
+        
     if (mode == 1) {
 	status++;
     } else {
@@ -19,7 +24,7 @@ function start(mode, type, selection) {
 	qm.forceStartQuest();
 	qm.sendNext("I wonder what triggered this in the first place. There is no way this puppet was naturally created, which means someone planned this. I should keep an eye on the #o1210102#s.", 9);
     } else if (status == 3) {
-	qm.sendPrev("#b(You were able to find out what caused the changes in the #o1210102#s. You should report to #p1002104# and deliver the information you''ve gathered.)#k", 2);
+	qm.sendPrev("#b(You were able to find out what caused the changes in the #o1210102#s. You should report to #p1002104# and deliver the information you've gathered.)#k", 2);
 	qm.dispose();
     }
 }

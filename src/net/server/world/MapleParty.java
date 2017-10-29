@@ -43,7 +43,7 @@ public class MapleParty {
     private Map<Integer, Integer> histMembers = new HashMap<>();
     private int nextEntry = 0;
     
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new ReentrantLock(true);
     
     public MapleParty(int id, MaplePartyCharacter chrfor) {
         this.leaderId = chrfor.getId();

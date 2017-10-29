@@ -6,6 +6,11 @@
 var status = -1;
 
 function start(mode, type, selection) {
+    if(mode == -1 || mode == 0 && type > 0) {
+        qm.dispose();
+        return;
+    }
+    
     if (mode == 1) {
     	status++;
     } else {
@@ -14,7 +19,7 @@ function start(mode, type, selection) {
 	    qm.dispose();
 	    return;
 	}
-		status--;
+        status--;
     }
     if (status == 0) {
     	qm.sendNext("I've been waiting for you, #h0#. My name is #p1102006# and I'm the third brother you are going to meet. So, you've learned about using Regular Attacks, correct? Well, next you'll be learning about your #bSkills#k, which you will find very helpful in Maple World.");
@@ -30,17 +35,22 @@ function start(mode, type, selection) {
 }
 
 function end(mode, type, selection) {
+    if(mode == -1 || mode == 0 && type > 0) {
+        qm.dispose();
+        return;
+    }
+    
     if (mode == 1) {
     	status++;
     } else {
     	status--;
     }
     if (status == 0) {
-    	qm.sendNext("You've successfully defeated the #o100121#s and brought me a #t4000483#. That's very impressive! #bYou earn 3 Skill Points every time you level up, after you officially become a knight, that is. Keep following the arrow to the left, and you''ll meet #b#p1102007##k, who will guide you through the next step.\r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0# \r\n#fUI/UIWindow.img/QuestIcon/8/0# 40 exp");
+    	qm.sendNext("You've successfully defeated the #o100121#s and brought me a #t4000483#. That's very impressive! #bYou earn 3 Skill Points every time you level up, after you officially become a knight, that is. Keep following the arrow to the left, and you'll meet #b#p1102007##k, who will guide you through the next step.\r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0# \r\n#fUI/UIWindow.img/QuestIcon/8/0# 40 exp");
     } else if (status == 1) {
-		qm.gainItem(4000483, -1);
-		qm.forceCompleteQuest();
-		qm.gainExp(40);
-		qm.dispose();
+        qm.gainItem(4000483, -1);
+        qm.forceCompleteQuest();
+        qm.gainExp(40);
+        qm.dispose();
     }
 }

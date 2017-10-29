@@ -191,6 +191,7 @@ public class MapleStatEffect {
             ret.duration *= 1000; // items have their times stored in ms, of course
             ret.overTime = overTime;
         }
+        
         ArrayList<Pair<MapleBuffStat, Integer>> statups = new ArrayList<>();
         ret.watk = (short) MapleDataTool.getInt("pad", source, 0);
         ret.wdef = (short) MapleDataTool.getInt("pdd", source, 0);
@@ -206,15 +207,6 @@ public class MapleStatEffect {
         addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_PROTECTION, Integer.valueOf(ret.mapProtection));
                     
         if (ret.overTime && ret.getSummonMovementType() == null) {
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WATK, Integer.valueOf(ret.watk));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WDEF, Integer.valueOf(ret.wdef));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MATK, Integer.valueOf(ret.matk));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MDEF, Integer.valueOf(ret.mdef));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ACC, Integer.valueOf(ret.acc));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.AVOID, Integer.valueOf(ret.avoid));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.SPEED, Integer.valueOf(ret.speed));
-            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.JUMP, Integer.valueOf(ret.jump));
-            
             if(!skill) {
                 if(isPyramidBuff(sourceid)) {
                     ret.berserk = MapleDataTool.getInt("berserk", source, 0);
@@ -273,7 +265,17 @@ public class MapleStatEffect {
                     ret.speed *= 15;
                 }
             }
+            
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WATK, Integer.valueOf(ret.watk));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.WDEF, Integer.valueOf(ret.wdef));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MATK, Integer.valueOf(ret.matk));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MDEF, Integer.valueOf(ret.mdef));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ACC, Integer.valueOf(ret.acc));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.AVOID, Integer.valueOf(ret.avoid));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.SPEED, Integer.valueOf(ret.speed));
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.JUMP, Integer.valueOf(ret.jump));
         }
+        
         MapleData ltd = source.getChildByPath("lt");
         if (ltd != null) {
             ret.lt = (Point) ltd.getData();
@@ -730,6 +732,7 @@ public class MapleStatEffect {
             applyto.toggleHide(false);
             return true;
         }
+        
         int hpchange = calcHPChange(applyfrom, primary);
         int mpchange = calcMPChange(applyfrom, primary);
         

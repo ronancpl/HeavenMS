@@ -22,7 +22,7 @@ import tools.MaplePacketCreator;
 public class MapleMiniDungeon {
     List<MapleCharacter> players = new ArrayList<>();
     ScheduledFuture<?> timeoutTask = null;
-    Lock lock = new ReentrantLock();
+    Lock lock = new ReentrantLock(true);
     
     int baseMap;
     long expireTime;

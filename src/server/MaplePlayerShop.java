@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import net.SendOpcode;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMapObjectType;
@@ -53,6 +55,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private List<String> bannedList = new ArrayList<>();
     private List<Pair<MapleCharacter, String>> chatLog = new LinkedList<>();
     private Map<Integer, Byte> chatSlot = new LinkedHashMap<>();
+    private Lock visitorLock = new ReentrantLock(true);
 
     public MaplePlayerShop(MapleCharacter owner, String description) {
         this.setPosition(owner.getPosition());
@@ -322,8 +325,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     public void sendShop(MapleClient c) {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             c.announce(MaplePacketCreator.getPlayerShop(this, isOwner(c.getPlayer())));
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -332,11 +338,14 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     public MapleCharacter[] getVisitors() {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             MapleCharacter[] copy = new MapleCharacter[3];
             for(int i = 0; i < visitors.length; i++) copy[i] = visitors[i];
                     
             return copy;
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -370,13 +379,16 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
         
         MapleCharacter target = null;
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null && visitors[i].getName().equals(name)) {
                     target = visitors[i];
                     break;
                 }
             }
+        } finally {
+            visitorLock.unlock();
         }
         
         if(target != null) {
@@ -400,15 +412,17 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             return false;
         }
         
-        if (this.hasFreeSlot() && !this.isVisitor(chr)) {
-            this.addVisitor(chr);
-            chr.setPlayerShop(this);
-            this.sendShop(chr.getClient());
+        synchronized (visitors) {
+            if (this.hasFreeSlot() && !this.isVisitor(chr)) {
+                this.addVisitor(chr);
+                chr.setPlayerShop(this);
+                this.sendShop(chr.getClient());
 
-            return true;
+                return true;
+            }
+
+            return false;
         }
-        
-        return false;
     }
     
     public List<MaplePlayerShopItem> sendAvailableBundles(int itemid) {

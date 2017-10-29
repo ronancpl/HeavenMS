@@ -10,7 +10,7 @@ function start(mode, type, selection) {
 		status++;
 	}
 	if (status == 0) {
-        qm.sendNext("There isn't much record left of the heores that fought against the Black Mage. Even in the Book of Prophecy, the only information available is that there were five of them. There is nothing about who they were or what they looked like. Is there anything you remember? Anything at all?", 8);
+        qm.sendNext("There isn't much record left of the heroes that fought against the Black Mage. Even in the Book of Prophecy, the only information available is that there were five of them. There is nothing about who they were or what they looked like. Is there anything you remember? Anything at all?", 8);
     } else if (status == 1) {
 		qm.sendNextPrev("I don't remember a thing...", 2);
 	} else if (status == 2) {

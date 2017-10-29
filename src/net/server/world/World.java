@@ -79,30 +79,37 @@ public class World {
     private int id, flag, exprate, droprate, mesorate, bossdroprate;
     private String eventmsg;
     private List<Channel> channels = new ArrayList<>();
-    private Map<Integer, MapleParty> parties = new HashMap<>();
-    private AtomicInteger runningPartyId = new AtomicInteger();
     private Map<Integer, MapleMessenger> messengers = new HashMap<>();
     private AtomicInteger runningMessengerId = new AtomicInteger();
     private Map<Integer, MapleFamily> families = new LinkedHashMap<>();
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
+    
     private Set<Integer> queuedGuilds = new HashSet<>();
+    
+    private Map<Integer, MapleParty> parties = new HashMap<>();
+    private AtomicInteger runningPartyId = new AtomicInteger();
+    private Lock partyLock = new ReentrantLock(true);
     
     private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
     private Lock owlLock = new ReentrantLock();
     
+    private Lock activePetsLock = new ReentrantLock(true);
     private Map<Integer, Byte> activePets = new LinkedHashMap<>();
     private ScheduledFuture<?> petsSchedule;
     private long petUpdate;
     
+    private Lock activeMountsLock = new ReentrantLock(true);
     private Map<Integer, Byte> activeMounts = new LinkedHashMap<>();
     private ScheduledFuture<?> mountsSchedule;
     private long mountUpdate;
     
+    private Lock activePlayerShopsLock = new ReentrantLock(true);
+    private Map<Integer, MaplePlayerShop> activePlayerShops = new LinkedHashMap<>();
+    
+    private Lock activeMerchantsLock = new ReentrantLock(true);
     private Map<Integer, Pair<MapleHiredMerchant, Byte>> activeMerchants = new LinkedHashMap<>();
     private long merchantUpdate;
-    
-    private Map<Integer, MaplePlayerShop> activePlayerShops = new LinkedHashMap<>();
     
     private ScheduledFuture<?> charactersSchedule;
     
@@ -366,21 +373,32 @@ public class World {
     public MapleParty createParty(MaplePartyCharacter chrfor) {
         int partyid = runningPartyId.getAndIncrement();
         MapleParty party = new MapleParty(partyid, chrfor);
-        synchronized(parties) {
+        
+        partyLock.lock();
+        try {
             parties.put(party.getId(), party);
+        } finally {
+            partyLock.unlock();
         }
+        
         return party;
     }
 
     public MapleParty getParty(int partyid) {
-        synchronized(parties) {
+        partyLock.lock();
+        try {
             return parties.get(partyid);
+        } finally {
+            partyLock.unlock();
         }
     }
 
     public MapleParty disbandParty(int partyid) {
-        synchronized(parties) {
+        partyLock.lock();
+        try {
             return parties.remove(partyid);
+        } finally {
+            partyLock.unlock();
         }
     }
 
@@ -766,27 +784,39 @@ public class World {
         }
         
         Integer key = getPetKey(chr, petSlot);
-        synchronized(activePets) {
+        
+        activePetsLock.lock();
+        try {
             byte initProc;
             if(System.currentTimeMillis() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
             else initProc = ServerConstants.PET_EXHAUST_COUNT - 1;
             
             activePets.put(key, initProc);
+        } finally {
+            activePetsLock.unlock();
         }
     }
     
     public void unregisterPetHunger(MapleCharacter chr, byte petSlot) {
         Integer key = getPetKey(chr, petSlot);
-        synchronized(activePets) {
+        
+        activePetsLock.lock();
+        try {
             activePets.remove(key);
+        } finally {
+            activePetsLock.unlock();
         }
     }
     
     public void runPetSchedule() {
         Map<Integer, Byte> deployedPets;
-        synchronized(activePets) {
+        
+        activePetsLock.lock();
+        try {
             petUpdate = System.currentTimeMillis();
             deployedPets = Collections.unmodifiableMap(activePets);
+        } finally {
+            activePetsLock.unlock();
         }
         
         for(Map.Entry<Integer, Byte> dp: deployedPets.entrySet()) {
@@ -799,8 +829,11 @@ public class World {
                 dpVal = 0;
             }
             
-            synchronized(activePets) {
+            activePetsLock.lock();
+            try {
                 activePets.put(dp.getKey(), dpVal);
+            } finally {
+                activePetsLock.unlock();
             }
         }
     }
@@ -811,27 +844,37 @@ public class World {
         }
         
         Integer key = chr.getId();
-        synchronized(activeMounts) {
+        activeMountsLock.lock();
+        try {
             byte initProc;
             if(System.currentTimeMillis() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
             else initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 1;
             
             activeMounts.put(key, initProc);
+        } finally {
+            activeMountsLock.unlock();
         }
     }
     
     public void unregisterMountHunger(MapleCharacter chr) {
         Integer key = chr.getId();
-        synchronized(activeMounts) {
+        
+        activeMountsLock.lock();
+        try {
             activeMounts.remove(key);
+        } finally {
+            activeMountsLock.unlock();
         }
     }
     
     public void runMountSchedule() {
         Map<Integer, Byte> deployedMounts;
-        synchronized(activeMounts) {
+        activeMountsLock.lock();
+        try {
             mountUpdate = System.currentTimeMillis();
             deployedMounts = Collections.unmodifiableMap(activeMounts);
+        } finally {
+            activeMountsLock.unlock();
         }
         
         for(Map.Entry<Integer, Byte> dp: deployedMounts.entrySet()) {
@@ -844,60 +887,82 @@ public class World {
                 dpVal = 0;
             }
             
-            synchronized(activeMounts) {
+            activeMountsLock.lock();
+            try {
                 activeMounts.put(dp.getKey(), dpVal);
+            } finally {
+                activeMountsLock.unlock();
             }
         }
     }
     
     public void registerPlayerShop(MaplePlayerShop ps) {
-        synchronized(activePlayerShops) {
+        activePlayerShopsLock.lock();
+        try {
             activePlayerShops.put(ps.getOwner().getId(), ps);
+        } finally {
+            activePlayerShopsLock.unlock();
         }
     }
     
     public void unregisterPlayerShop(MaplePlayerShop ps) {
-        synchronized(activePlayerShops) {
+        activePlayerShopsLock.lock();
+        try {
             activePlayerShops.remove(ps.getOwner().getId());
+        } finally {
+            activePlayerShopsLock.unlock();
         }
     }
     
     public List<MaplePlayerShop> getActivePlayerShops() {
         List<MaplePlayerShop> psList = new ArrayList<>();
-        synchronized(activePlayerShops) {
+        activePlayerShopsLock.lock();
+        try {
             for(MaplePlayerShop mps : activePlayerShops.values()) {
                 psList.add(mps);
             }
             
             return psList;
+        } finally {
+            activePlayerShopsLock.unlock();
         }
     }
     
     public MaplePlayerShop getPlayerShop(int ownerid) {
-        synchronized(activePlayerShops) {
+        activePlayerShopsLock.lock();
+        try {
             return activePlayerShops.get(ownerid);
+        } finally {
+            activePlayerShopsLock.unlock();
         }
     }
     
     public void registerHiredMerchant(MapleHiredMerchant hm) {
-        synchronized(activeMerchants) {
+        activeMerchantsLock.lock();
+        try {
             byte initProc;
             if(System.currentTimeMillis() - merchantUpdate > 5 * 60 * 1000) initProc = 1;
             else initProc = 0;
             
             activeMerchants.put(hm.getOwnerId(), new Pair<>(hm, initProc));
+        } finally {
+            activeMerchantsLock.unlock();
         }
     }
     
     public void unregisterHiredMerchant(MapleHiredMerchant hm) {
-        synchronized(activeMerchants) {
+        activeMerchantsLock.lock();
+        try {
             activeMerchants.remove(hm.getOwnerId());
+        } finally {
+            activeMerchantsLock.unlock();
         }
     }
     
     public void runHiredMerchantSchedule() {
         Map<Integer, Pair<MapleHiredMerchant, Byte>> deployedMerchants;
-        synchronized(activeMerchants) {
+        activeMerchantsLock.lock();
+        try {
             merchantUpdate = System.currentTimeMillis();
             deployedMerchants = new LinkedHashMap<>(activeMerchants);
         
@@ -914,12 +979,15 @@ public class World {
                     activeMerchants.remove(dm.getKey());
                 }
             }
+        } finally {
+            activeMerchantsLock.unlock();
         }
     }
     
     public List<MapleHiredMerchant> getActiveMerchants() {
         List<MapleHiredMerchant> hmList = new ArrayList<>();
-        synchronized(activeMerchants) {
+        activeMerchantsLock.lock();
+        try {
             for(Pair<MapleHiredMerchant, Byte> hmp : activeMerchants.values()) {
                 MapleHiredMerchant hm = hmp.getLeft();
                 if(hm.isOpen()) {
@@ -928,16 +996,21 @@ public class World {
             }
             
             return hmList;
+        } finally {
+            activeMerchantsLock.unlock();
         }
     }
     
     public MapleHiredMerchant getHiredMerchant(int ownerid) {
-        synchronized(activeMerchants) {
+        activeMerchantsLock.lock();
+        try {
             if(activeMerchants.containsKey(ownerid)) {
                 return activeMerchants.get(ownerid).getLeft();
             }
             
             return null;
+        } finally {
+            activeMerchantsLock.unlock();
         }
     }
 

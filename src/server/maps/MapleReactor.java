@@ -59,7 +59,7 @@ public class MapleReactor extends AbstractMapleMapObject {
         this.evstate = (byte)0;
         this.stats = stats;
         this.rid = rid;
-        alive = true;
+        this.alive = true;
     }
     
     public void setShouldCollect(boolean collect) {

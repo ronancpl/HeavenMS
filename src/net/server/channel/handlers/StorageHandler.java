@@ -51,6 +51,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 
 		if (chr.getLevel() < 15){
 			chr.message("You may only use the storage once you have reached level 15.");
+                        c.announce(MaplePacketCreator.enableActions());
 			return;
 		}
 		if (mode == 4) { // take out
@@ -103,6 +104,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 				return;
 			}
 			if (quantity < 1 || chr.getItemQuantity(itemId, false) < quantity) {
+                                c.announce(MaplePacketCreator.enableActions());
 				return;
 			}
 			if (storage.isFull()) {
@@ -139,11 +141,13 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 				if (meso < 0 && (storageMesos - meso) < 0) {
 					meso = -2147483648 + storageMesos;
 					if (meso < playerMesos) {
+                                                c.announce(MaplePacketCreator.enableActions());
 						return;
 					}
 				} else if (meso > 0 && (playerMesos + meso) < 0) {
 					meso = 2147483647 - playerMesos;
 					if (meso > storageMesos) {
+                                                c.announce(MaplePacketCreator.enableActions());
 						return;
 					}
 				}
@@ -151,6 +155,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 				chr.gainMeso(meso, false, true, false);
 				FilePrinter.print(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos\r\n");
 			} else {
+                                c.announce(MaplePacketCreator.enableActions());
 				return;
 			}
 			storage.sendMeso(c);

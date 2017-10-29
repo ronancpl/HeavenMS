@@ -41,7 +41,8 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		MapleCharacter chr = c.getPlayer();
 
-		if (chr.isBanned()) {
+		if (chr.isChangingMaps() || chr.isBanned()) {
+                        c.announce(MaplePacketCreator.enableActions());
 			return;
 		}
 		if (chr.getTrade() != null) {

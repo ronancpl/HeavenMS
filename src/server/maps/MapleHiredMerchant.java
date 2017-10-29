@@ -36,6 +36,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import net.server.Server;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -50,7 +52,6 @@ import tools.Pair;
  * @author Ronan (concurrency protection)
  */
 public class MapleHiredMerchant extends AbstractMapleMapObject {
-
     private int ownerId, itemId, mesos = 0;
     private int channel, world;
     private long start;
@@ -62,6 +63,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     private List<SoldItem> sold = new LinkedList<>();
     private AtomicBoolean open = new AtomicBoolean();
     private MapleMap map;
+    private Lock visitorLock = new ReentrantLock(true);
 
     public MapleHiredMerchant(final MapleCharacter owner, int itemId, String desc) {
         this.setPosition(owner.getPosition());
@@ -76,8 +78,11 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     public void broadcastToVisitorsThreadsafe(final byte[] packet) {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             broadcastToVisitors(packet);
+        } finally {
+            visitorLock.unlock();
         }
     }
     
@@ -90,7 +95,8 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     public boolean addVisitor(MapleCharacter visitor) {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             int i = this.getFreeSlot();
             if (i > -1) {
                 visitors[i] = visitor;
@@ -100,25 +106,33 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             }
             
             return false;
+        } finally {
+            visitorLock.unlock();
         }
     }
 
     public void removeVisitor(MapleCharacter visitor) {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             int slot = getVisitorSlot(visitor);
-            if (slot < 0){ //Not found
-                    return;
+            if (slot < 0) { //Not found
+                return;
             }
             if (visitors[slot] != null && visitors[slot].getId() == visitor.getId()) {
                 visitors[slot] = null;
                 broadcastToVisitors(MaplePacketCreator.hiredMerchantVisitorLeave(slot + 1));
             }
+        } finally {
+            visitorLock.unlock();
         }
     }
 
     public int getVisitorSlotThreadsafe(MapleCharacter visitor) {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             return getVisitorSlot(visitor);
+        } finally {
+            visitorLock.unlock();
         }
     }
     
@@ -132,7 +146,8 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     public void removeAllVisitors() {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null) {
                     visitors[i].setHiredMerchant(null);
@@ -143,6 +158,8 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                     visitors[i] = null;
                 }
             }
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -314,11 +331,14 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     public MapleCharacter[] getVisitors() {
-        synchronized(visitors) {
+        visitorLock.lock();
+        try {
             MapleCharacter[] copy = new MapleCharacter[3];
             for(int i = 0; i < visitors.length; i++) copy[i] = visitors[i];
                     
             return copy;
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -359,12 +379,6 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             this.saveItems(false);
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-    }
-    
-    public int getFreeSlotThreadsafe() {
-        synchronized(visitors) {
-            return getFreeSlot();
         }
     }
     

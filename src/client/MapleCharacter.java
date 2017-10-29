@@ -208,6 +208,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private String chalktext;
     private String dataString;
     private String search = null;
+    private AtomicBoolean mapTransitioning = new AtomicBoolean(true);  // player client is currently trying to change maps or log in the game map
     private AtomicBoolean awayFromWorld = new AtomicBoolean(true);  // player is online, but on cash shop or mts
     private AtomicInteger exp = new AtomicInteger();
     private AtomicInteger gachaexp = new AtomicInteger();
@@ -268,9 +269,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
     private List<ScheduledFuture<?>> timers = new ArrayList<>();
-    private Lock chrLock = new ReentrantLock();
-    private Lock effLock = new ReentrantLock();
-    private Lock petLock = new ReentrantLock();
+    private Lock chrLock = new ReentrantLock(true);
+    private Lock effLock = new ReentrantLock(true);
+    private Lock petLock = new ReentrantLock(true);
     private Lock prtLock = new ReentrantLock();
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
@@ -1251,6 +1252,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
         
+        this.mapTransitioning.set(true);
+        
         this.unregisterChairBuff();
         this.clearBanishPlayerData();
         this.closePlayerInteractions();
@@ -1288,18 +1291,26 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             int temp = newWarpMap;
             newWarpMap = -1;
             changeMap(temp);
+        } else {
+            // if this event map has a gate already opened, render it
+            EventInstanceManager eim = getEventInstance();
+            if(eim != null) {
+                eim.recoverOpenedGate(this, map.getId());
+            }
+
+            // if this map has obstacle components moving, make it do so for this client
+            for(Entry<String, Integer> e: map.getEnvironment().entrySet()) {
+                announce(MaplePacketCreator.environmentMove(e.getKey(), e.getValue()));
+            }
         }
-        
-        // if this event map has a gate already opened, render it
-        EventInstanceManager eim = getEventInstance();
-        if(eim != null) {
-            eim.recoverOpenedGate(this, map.getId());
-        }
-        
-        // if this map has obstacle components moving, make it do so for this client
-        for(Entry<String, Integer> e: map.getEnvironment().entrySet()) {
-            announce(MaplePacketCreator.environmentMove(e.getKey(), e.getValue()));
-        }
+    }
+    
+    public boolean isChangingMaps() {
+        return this.mapTransitioning.get();
+    }
+    
+    public void setMapTransitionComplete() {
+        this.mapTransitioning.set(false);
     }
 
     public void changePage(int page) {
@@ -3322,7 +3333,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             addItemEffectHolder(sourceid, expirationtime, appliedStatups);
             
             for (Entry<MapleBuffStat, MapleBuffStatValueHolder> statup : toDeploy.entrySet()) {
-                if(statup.getValue().value != 0) effects.put(statup.getKey(), statup.getValue());
+                effects.put(statup.getKey(), statup.getValue());
             }
         } finally {
             chrLock.unlock();

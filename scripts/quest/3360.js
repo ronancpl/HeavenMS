@@ -29,6 +29,11 @@ function start(mode, type, selection) {
     if (mode == -1) {
 	qm.dispose();
     } else {
+        if(mode == 0 && type > 0) {
+            qm.dispose();
+            return;
+        }
+
 	if (mode == 1) {
 	    status++;
 	} else {
@@ -43,7 +48,7 @@ function start(mode, type, selection) {
 	    qm.sendAcceptDecline("All right, now, this key is very long and complex. I need you to memorize it very well. I won't say again, so you'd better write it down somewhere. Are you ready?");
 	} else if (status == 2) {
 	    var pass = generateString();
-	    qm.sendOk("The key code is #b"+pass+"#k. Got that? Put the key into the door of the secret passage, and you will be able to walk around the passage freely.");
+	    qm.sendOk("The key code is #b" + pass + "#k. Got that? Put the key into the door of the secret passage, and you will be able to walk around the passage freely.");
 	    qm.forceStartQuest(pass);
 	    qm.dispose();
 	}

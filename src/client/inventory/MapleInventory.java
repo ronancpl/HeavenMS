@@ -50,7 +50,7 @@ public class MapleInventory implements Iterable<Item> {
     private byte slotLimit;
     private MapleInventoryType type;
     private boolean checked = false;
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new ReentrantLock(true);
     
     public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
         this.owner = mc;

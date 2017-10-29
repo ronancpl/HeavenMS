@@ -615,3 +615,12 @@ Corrigido bug com inicialização de NPC scripts podendo desconectar o jogador se 
 
 26 Outubro 2017,
 Adicionado feature de randomização dos stats ganhos de HP e MP. Stat ganho de MP leva na contabilização INT do jogador.
+
+27 - 28 Outubro 2017,
+Alterado fairness de alguns locks do server para atender em fila requisições de acesso ao código atômico.
+Corrigido jogadores "pulando mapas" se estiverem jogando com Internet lenta e tentarem usar portais múltiplas vezes.
+Corrigido storage não liberando devidamente o jogador em casos onde o mesmo não possa executar uma transação por falta de nível 15.
+Corrigido sistema de buffs não computando buffs com valor zero não sendo apropriadamente ativados no jogador.
+
+29 Outubro 2017,
+Adicionado drop data para diversas versões de Fairy, Yetis e Pepes.

@@ -229,11 +229,10 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     } else if (!merchant.isOpen()) {
                         c.announce(MaplePacketCreator.hiredMerchantMaintenanceMessage());
                         return;
-                    } else if (merchant.getFreeSlotThreadsafe() == -1) {
+                    } else if (!merchant.addVisitor(c.getPlayer())) {
                         chr.dropMessage(1, "This shop has reached it's maximum capacity, please come by later.");
                         return;
                     } else {
-                        merchant.addVisitor(c.getPlayer());
                         c.announce(MaplePacketCreator.getHiredMerchant(c.getPlayer(), merchant, false));
                     }
                     chr.setHiredMerchant(merchant);

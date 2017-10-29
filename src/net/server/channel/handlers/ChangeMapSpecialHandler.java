@@ -31,20 +31,21 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class ChangeMapSpecialHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readByte();
-        String startwp = slea.readMapleAsciiString();
-        slea.readShort();
-        MaplePortal portal = c.getPlayer().getMap().getPortal(startwp);
-        if (portal == null || c.getPlayer().portalDelay() > System.currentTimeMillis() || c.getPlayer().getBlockedPortals().contains(portal.getScriptName())) {
-            c.announce(MaplePacketCreator.enableActions());
-            return;
-        }
-		if (c.getPlayer().isBanned()) {
-			return;
-		}
-		if (c.getPlayer().getTrade() != null) {
-			MapleTrade.cancelTrade(c.getPlayer());
-		}
-        portal.enterPortal(c);   
+            slea.readByte();
+            String startwp = slea.readMapleAsciiString();
+            slea.readShort();
+            MaplePortal portal = c.getPlayer().getMap().getPortal(startwp);
+            if (portal == null || c.getPlayer().portalDelay() > System.currentTimeMillis() || c.getPlayer().getBlockedPortals().contains(portal.getScriptName())) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+            }
+            if (c.getPlayer().isChangingMaps() || c.getPlayer().isBanned()) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+            }
+            if (c.getPlayer().getTrade() != null) {
+                    MapleTrade.cancelTrade(c.getPlayer());
+            }
+            portal.enterPortal(c);   
     }
 }

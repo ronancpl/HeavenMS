@@ -214,15 +214,6 @@ public class EventManager {
         return Integer.parseInt(props.getProperty(key));
     }
     
-    private boolean getLockLobby(int lobbyId) {
-        lobbyLock.lock();
-        try {
-            return openedLobbys.get(lobbyId);
-        } finally {
-            lobbyLock.unlock();
-        }
-    }
-    
     private void setLockLobby(int lobbyId, boolean lock) {
         lobbyLock.lock();
         try {
@@ -239,11 +230,11 @@ public class EventManager {
                 openedLobbys.set(lobbyId, true);
                 return true;
             }
+            
+            return false;
         } finally {
             lobbyLock.unlock();
         }
-        
-        return false;
     }
     
     private void freeLobbyInstance(String lobbyName) {
@@ -292,8 +283,7 @@ public class EventManager {
                 if(lobbyId == -1) return false;
             }
             else {
-                if(getLockLobby(lobbyId)) return false;
-                startLobbyInstance(lobbyId);
+                if(!startLobbyInstance(lobbyId)) return false;
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
@@ -331,8 +321,7 @@ public class EventManager {
                 if(lobbyId == -1) return false;
             }
             else {
-                if(getLockLobby(lobbyId)) return false;
-                startLobbyInstance(lobbyId);
+                if(!startLobbyInstance(lobbyId)) return false;
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
@@ -368,8 +357,7 @@ public class EventManager {
                 if(lobbyId == -1) return false;
             }
             else {
-                if(getLockLobby(lobbyId)) return false;
-                startLobbyInstance(lobbyId);
+                if(!startLobbyInstance(lobbyId)) return false;
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
@@ -406,8 +394,7 @@ public class EventManager {
                 if(lobbyId == -1) return false;
             }
             else {
-                if(getLockLobby(lobbyId)) return false;
-                startLobbyInstance(lobbyId);
+                if(!startLobbyInstance(lobbyId)) return false;
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
@@ -448,8 +435,7 @@ public class EventManager {
                 if(lobbyId == -1) return false;
             }
             else {
-                if(getLockLobby(lobbyId)) return false;
-                startLobbyInstance(lobbyId);
+                if(!startLobbyInstance(lobbyId)) return false;
             }
             
             if(eim == null) {

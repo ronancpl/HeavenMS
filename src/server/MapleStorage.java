@@ -27,7 +27,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -51,7 +50,7 @@ public class MapleStorage {
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
     private List<Item> items;
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new ReentrantLock(true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;
@@ -224,6 +223,14 @@ public class MapleStorage {
     }
 
     public void sendStorage(MapleClient c, int npcId) {
+        /*
+        if (c.getPlayer().getLevel() < 15){
+            c.getPlayer().message("You may only use the storage once you have reached level 15.");
+            c.announce(MaplePacketCreator.enableActions());
+            return;
+        }
+        */
+        
         final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         lock.lock();

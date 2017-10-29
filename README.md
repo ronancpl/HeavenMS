@@ -36,7 +36,7 @@ Use that link ONLY AS AN ORIENTATION on where here things start to become ambigu
 Firstly, install all the general tools required to run the server:
 * WampServer2.0i.exe -> recipient of the server.
 * hamachi.msi -> used for establishing a tunnelling route for the server/client communication.
-* mysql-workbench-gpl-5.2.39-win32 -> MySQL server component, will store the server's DB.
+* mysql-query-browser-1.1.20-win.msi -> MySQL server component, will store the server's DB.
 
 Now install the Java 7 Development Kit:
 * jdk-7u79-windows-x64.exe

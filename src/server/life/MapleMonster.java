@@ -85,7 +85,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
     private ReentrantLock externalLock = new ReentrantLock();
-    private ReentrantLock monsterLock = new ReentrantLock();
+    private ReentrantLock monsterLock = new ReentrantLock(true);
     private ReentrantLock statiLock = new ReentrantLock();
 
     public MapleMonster(int id, MapleMonsterStats stats) {

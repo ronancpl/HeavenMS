@@ -44,15 +44,14 @@ public class MaplePacketEncoder implements ProtocolEncoder {
             final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
             MapleCustomEncryption.encryptData(unencrypted);
 
-            final Lock mutex = client.getLock();
-            mutex.lock();
+            client.lockClient();
             try {
                 send_crypto.crypt(unencrypted);
                 System.arraycopy(header, 0, ret, 0, 4);
                 System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
                 out.write(IoBuffer.wrap(ret));
             } finally {
-                mutex.unlock();
+                client.unlockClient();
             }
 //            System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
 //            out.write(ByteBuffer.wrap(ret));

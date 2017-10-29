@@ -87,13 +87,16 @@ public class EventInstanceManager {
 	private long timeStarted = 0;
 	private long eventTime = 0;
 	private MapleExpedition expedition = null;
-        private List<Integer> mapIds = new LinkedList<Integer>();
-        private List<Boolean> isInstanced = new LinkedList<Boolean>();
-        private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
-        private final Lock pL = new ReentrantLock();
+        private List<Integer> mapIds = new LinkedList<>();
+        private List<Boolean> isInstanced = new LinkedList<>();
+        
+        private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
+        private final ReadLock rL = lock.readLock();
+        private final WriteLock wL = lock.writeLock();
+        
+        private final Lock pL = new ReentrantLock(true);
         private final Lock sL = new ReentrantLock();
-        private final ReadLock rL = mutex.readLock();
-        private final WriteLock wL = mutex.writeLock();
+        
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
         private boolean eventCleared = false;

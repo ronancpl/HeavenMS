@@ -111,7 +111,7 @@ public class MapleClient {
 	private int picattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
-	private final Lock mutex = new ReentrantLock(true);
+	private final Lock lock = new ReentrantLock(true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;
@@ -1150,8 +1150,12 @@ public class MapleClient {
 		}
 	}
 
-	public final Lock getLock() {
-		return mutex;
+	public void lockClient() {
+                lock.lock();
+	}
+        
+        public void unlockClient() {
+                lock.unlock();
 	}
 
 	private static class CharNameAndId {

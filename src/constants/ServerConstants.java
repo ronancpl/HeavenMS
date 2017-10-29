@@ -71,7 +71,7 @@ public class ServerConstants {
     
     public static final int PARTY_EXPERIENCE_MOD = 1;               //Change for event stuff.
     
-    //Miscellaneous COnfiguration
+    //Miscellaneous Configuration
     public static final byte MIN_UNDERLEVEL_FOR_EXP_GAIN = 5;            //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_UNDERLEVELED_EXP_BLOCK" is enabled.
     public static final byte MAX_MONITORED_BUFFSTATS = 5;           //Limits accounting for "dormant" buff effects, that should take place when stronger stat buffs expires.
     public static final int MAX_AP = 32767;                             //Max AP allotted on the auto-assigner.

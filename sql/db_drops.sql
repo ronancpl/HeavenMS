@@ -19228,6 +19228,7 @@ USE `maplesolaxia`;
   #insert things that should be present by now, but aren't yet.
 
   INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(3000001, 0, 80, 120, 0, 400000),
 (2386010, 8143000, 1, 1, 0, 10000),
 (3230100, 4001004, 1, 1, 0, 5000),
 (3000002, 4000068, 1, 1, 0, 40000),
@@ -20561,6 +20562,138 @@ USE `maplesolaxia`;
 (9400532, 4031597, 1, 1, 0, 999999),
 (9400533, 4031597, 1, 1, 0, 999999),
 (9400534, 4031597, 1, 1, 0, 999999);
+
+  INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(9300341, 0, 12, 18, 0, 400000),
+(9300341, 1002019, 1, 1, 0, 1500),
+(9300341, 1060002, 1, 1, 0, 700),
+(9300341, 1072008, 1, 1, 0, 700),
+(9300341, 1072023, 1, 1, 0, 800),
+(9300341, 1082019, 1, 1, 0, 1000),
+(9300341, 1322007, 1, 1, 0, 700),
+(9300341, 1412001, 1, 1, 0, 700),
+(9300341, 1412002, 1, 1, 0, 700),
+(9300341, 1412012, 1, 1, 0, 700),
+(9300341, 1432000, 1, 1, 0, 700),
+(9300341, 1432001, 1, 1, 0, 500),
+(9300341, 1442029, 1, 1, 0, 700),
+(9300341, 1482000, 1, 1, 0, 500),
+(9300341, 2000000, 1, 1, 0, 20000),
+(9300341, 2010009, 1, 1, 0, 20000),
+(9300341, 2040505, 1, 1, 0, 750),
+(9300341, 2040600, 1, 1, 0, 750),
+(9300341, 2040602, 1, 1, 0, 300),
+(9300341, 2041018, 1, 1, 0, 300),
+(9300341, 2041043, 1, 1, 0, 750),
+(9300341, 2060000, 1, 1, 0, 30000),
+(9300341, 2061000, 1, 1, 0, 30000),
+(9300341, 2380005, 1, 1, 0, 8000),
+(9300341, 4000004, 1, 1, 0, 600000),
+(9300341, 4000010, 1, 1, 0, 600000),
+(9300341, 4010005, 1, 1, 0, 9000),
+(9300341, 4020005, 1, 1, 0, 9000),
+(9300341, 4030000, 1, 1, 0, 10000),
+(9300341, 4031273, 1, 1, 2104, 500000),
+(9300342, 4000012, 1, 1, 0, 600000),
+(9300342, 2000000, 1, 1, 0, 20000),
+(9300342, 2043102, 1, 1, 0, 300),
+(9300342, 2000003, 1, 1, 0, 20000),
+(9300342, 4020003, 1, 1, 0, 9000),
+(9300342, 1322000, 1, 1, 0, 700),
+(9300342, 2060000, 1, 1, 0, 30000),
+(9300342, 1041044, 1, 1, 0, 800),
+(9300342, 1061037, 1, 1, 0, 800),
+(9300342, 4010004, 1, 1, 0, 9000),
+(9300342, 1092008, 1, 1, 0, 700),
+(9300342, 1041017, 1, 1, 0, 800),
+(9300342, 1061012, 1, 1, 0, 800),
+(9300342, 1462002, 1, 1, 0, 500),
+(9300342, 2061000, 1, 1, 0, 30000),
+(9300342, 1041063, 1, 1, 0, 800),
+(9300342, 1061059, 1, 1, 0, 800),
+(9300342, 1452003, 1, 1, 0, 500),
+(9300342, 2048000, 1, 1, 0, 300),
+(9300342, 1002033, 1, 1, 0, 1500),
+(9300342, 1302007, 1, 1, 0, 700),
+(9300342, 4020002, 1, 1, 0, 9000),
+(9300342, 1032001, 1, 1, 0, 1000),
+(9300342, 1002010, 1, 1, 0, 1500),
+(9300342, 2000001, 1, 1, 0, 20000),
+(9300342, 1002143, 1, 1, 0, 1500),
+(9300342, 1432005, 1, 1, 0, 500),
+(9300342, 1412012, 1, 1, 0, 700),
+(9300342, 1072285, 1, 1, 0, 800),
+(9300342, 1482001, 1, 1, 0, 500),
+(9300342, 2380011, 1, 1, 0, 8000),
+(9300342, 0, 28, 42, 0, 400000),
+(9300342, 4031146, 1, 1, 2065, 1000000),
+(9300342, 2040902, 1, 1, 0, 750),
+(9300342, 2041020, 1, 1, 0, 750),
+(9300342, 2048001, 1, 1, 0, 750),
+(9300342, 2048003, 1, 1, 0, 750),
+(9300342, 2044701, 1, 1, 0, 750),
+(9300342, 4010005, 1, 1, 0, 7000),
+(9300342, 1302020, 1, 1, 0, 700),
+(9300342, 1302030, 1, 1, 0, 700),
+(9300342, 1442013, 1, 1, 0, 700),
+(9300342, 1412002, 1, 1, 0, 700),
+(9300342, 1382012, 1, 1, 0, 700),
+(9300342, 1041018, 1, 1, 0, 700),
+(9300342, 1452022, 1, 1, 0, 700),
+(9300342, 1060031, 1, 1, 0, 700),
+(9300342, 4001369, 1, 1, 28259, 10000),
+(9300343, 0, 14, 21, 0, 400000),
+(9300343, 1002008, 1, 1, 0, 1500),
+(9300343, 1002610, 1, 1, 0, 1500),
+(9300343, 1040034, 1, 1, 0, 800),
+(9300343, 1041012, 1, 1, 0, 700),
+(9300343, 1041014, 1, 1, 0, 800),
+(9300343, 1061028, 1, 1, 0, 800),
+(9300343, 1062002, 1, 1, 0, 800),
+(9300343, 1402018, 1, 1, 0, 700),
+(9300343, 1422000, 1, 1, 0, 700),
+(9300343, 1472000, 1, 1, 0, 500),
+(9300343, 2000000, 1, 1, 0, 20000),
+(9300343, 2010009, 1, 1, 0, 20000),
+(9300343, 2040702, 1, 1, 0, 300),
+(9300343, 2041021, 1, 1, 0, 300),
+(9300343, 2060000, 1, 1, 0, 30000),
+(9300343, 2061000, 1, 1, 0, 30000),
+(9300343, 2380006, 1, 1, 0, 8000),
+(9300343, 4000017, 1, 1, 0, 40000),
+(9300343, 4000021, 1, 1, 0, 50000),
+(9300343, 4010006, 1, 1, 0, 9000),
+(9300343, 4020006, 1, 1, 0, 9000),
+(9300343, 4030011, 1, 1, 0, 10000),
+(9300343, 4030012, 1, 1, 0, 10000),
+(9300343, 4031846, 1, 1, 2173, 50000),
+(9300343, 4032130, 1, 1, 20707, 10000),
+(9300343, 4032340, 1, 1, 21710, 200000);
+
+ -- Copying drops from some mobs to other versions of them
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 6300001, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 6300000;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 6300002, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 6300000;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 6400001, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 6400000;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 6130102, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 6130103;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 6230201, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 6230200;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 3000002, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 3000001;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 3000003, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 3000001;
+
+ INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+ SELECT 3000004, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 3000001;
 
  -- Thanks to DietStory dev team
  -- There are two Jr. Boogies mob ids for some unknown reason. 3230301 had no drops, but 3230300 had all the correct drops.

@@ -2724,7 +2724,6 @@ public class MapleMap {
                     if (reactor.getShouldCollect() == true && mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
                         mapitem.lockItem();
                         try {
-                            TimerManager tMan = TimerManager.getInstance();
                             if (mapitem.isPickedUp()) {
                                 return;
                             }
@@ -2735,6 +2734,7 @@ public class MapleMap {
                             reactor.hitReactor(c);
 
                             if (reactor.getDelay() > 0) {
+                                TimerManager tMan = TimerManager.getInstance();
                                 tMan.schedule(new Runnable() {
                                     @Override
                                     public void run() {

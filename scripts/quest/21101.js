@@ -37,12 +37,12 @@ function start(mode, type, selection) {
         qm.sendYesNo("#b(Are you certain that you were the hero that wielded the #p1201001#? Yes, you're sure. You better grab the #p1201001# really tightly. Surely it will react to you.)#k");
     } else if (status == 1) {
         if (qm.getPlayer().getJob().getId() == 2000) {
-			if(!qm.canHold(1142129)) {
-				cm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
-				qm.dispose();
-				return;
-			}
-			qm.gainItem(1142129, true);
+            if(!qm.canHold(1142129)) {
+                    cm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
+                    qm.dispose();
+                    return;
+            }
+            qm.gainItem(1142129, true);
             qm.completeQuest();
             qm.changeJobById(2100);
             qm.getPlayer().setStr(35);
@@ -51,8 +51,10 @@ function start(mode, type, selection) {
             qm.getPlayer().setRemainingSp((qm.getPlayer().getLevel() - 10) * 3 + 1);
             qm.getPlayer().setMaxHp(qm.getPlayer().getMaxHp() + 275);
             qm.getPlayer().setMaxMp(qm.getPlayer().getMaxMp() + 15);
-            qm.teachSkill(21000000, 0, 10, -1);
-            qm.teachSkill(21001003, 0, 20, -1);
+            
+            //qm.teachSkill(21000000, 0, 10, -1);   //learned later...
+            //qm.teachSkill(21001003, 0, 20, -1);   //learned later...
+
             //qm.getPlayer().changeSkillLevel(SkillFactory.getSkill(20009000), 0, -1);
             //qm.getPlayer().changeSkillLevel(SkillFactory.getSkill(20009000), 1, 0);
             //qm.showInfo("You have acquired the Pig's Weakness skill.");

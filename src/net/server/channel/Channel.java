@@ -90,11 +90,11 @@ public final class Channel {
     private Map<Integer, Integer> dojoParty = new HashMap<>();
     private Map<Integer, MapleMiniDungeon> dungeons = new HashMap<>();
     
-    private ReentrantReadWriteLock merchant_lock = new ReentrantReadWriteLock(true);
-    private ReadLock merchRlock = merchant_lock.readLock();
-    private WriteLock merchWlock = merchant_lock.writeLock();
+    private ReentrantReadWriteLock merchantLock = new ReentrantReadWriteLock(true);
+    private ReadLock merchRlock = merchantLock.readLock();
+    private WriteLock merchWlock = merchantLock.writeLock();
     
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new ReentrantLock(true);
     
     public Channel(final int world, final int channel) {
         this.world = world;

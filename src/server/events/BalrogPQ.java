@@ -14,7 +14,7 @@ import server.TimerManager;
 public class BalrogPQ {
     public static final int[] EasyBalrogParts = {8830002, 8830003, 8830000};
     public static final int[] HardBalrogParts = {8830000, 8830001, 8830002};
-    public static List<MapleCharacter> candidates = new ArrayList<MapleCharacter>();
+    public static List<MapleCharacter> candidates = new ArrayList<>();
     public static boolean hasStarted = false;
     public static String partyLeader = "undefined";
     public static boolean balrogSpawned = false;
@@ -28,8 +28,10 @@ public class BalrogPQ {
     }
 
     public static void warpAllCandidates(){
-        for(MapleCharacter c : candidates){
-            c.changeMap(105100300);
+        synchronized(candidates){
+            for(MapleCharacter c : candidates){
+                c.changeMap(105100300);
+            }
         }
     }
 
@@ -48,7 +50,7 @@ public class BalrogPQ {
         TimerManager tMan = TimerManager.getInstance();
         tMan.schedule(new Runnable(){
             @Override
-        public void run(){
+            public void run(){
                 for(MapleCharacter chrs : fmap.getCharacters()){
                     chrs.changeMap(105100100);
                     chrs.message("You did not defeat the balrog in time..");
@@ -57,9 +59,9 @@ public class BalrogPQ {
             }
         } , 60 * 60 * 1000);
 
-                tMan.schedule(new Runnable(){
+        tMan.schedule(new Runnable(){
             @Override
-        public void run(){
+            public void run(){
                 if(fmap.getCharacters().size() <= 3){
                     if(fmap.getCharacters().size() > 0){
                         for(MapleCharacter chrs : fmap.getCharacters()){
@@ -92,7 +94,9 @@ public class BalrogPQ {
         hasStarted = false;
         balrogSpawned = false;
         partyLeader = "undefined";
-        candidates.clear();
+        synchronized(candidates){
+            candidates.clear();
+        }
         timeStamp = 0;
     }
     public static void spawnBalrog(int mode, MapleCharacter chr){
