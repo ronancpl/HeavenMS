@@ -1,0 +1,5 @@
+Add this under disconnect() (right after event instance calls onPlayerDisconnect, preferably):
+PHP Code:
+if (chr.getMCPQField() != null) {
+	chr.getMCPQField().onPlayerDisconnected(player);
+}

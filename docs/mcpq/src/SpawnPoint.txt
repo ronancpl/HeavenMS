@@ -1,0 +1,35 @@
+Add field:
+PHP Code:
+private int team = -1;  
+Add constructor:
+PHP Code:
+public SpawnPoint(MapleMonster monster, Point pos, int mobTime, int team) {    super();
+    this.monster = monster;
+    this.pos = new Point(pos);
+    this.mobTime = mobTime;
+    this.immobile = !monster.isMobile();
+    this.nextPossibleSpawn = System.currentTimeMillis();
+    this.team = team;
+}  
+Add monster death listener under spawnMonster():
+PHP Code:
+if (team > -1) {    final int cp = mob.getCP();
+    mob.addListener(new MonsterListener() {
+
+        @Override
+        public void monsterKilled(MapleMonster monster, MapleCharacter highestDamageChar) {
+            if (highestDamageChar == null) {
+                return;
+            }
+
+            if (highestDamageChar.getMCPQParty() == null) {
+                MCTracker.log("Attempted to give CP to character without assigned MCPQ Party.");
+                return;
+            }
+
+            highestDamageChar.getMCPQField().monsterKilled(highestDamageChar, cp);
+
+        }
+    });
+    mob.setTeam(team);
+}

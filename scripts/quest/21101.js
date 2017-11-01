@@ -38,22 +38,19 @@ function start(mode, type, selection) {
     } else if (status == 1) {
         if (qm.getPlayer().getJob().getId() == 2000) {
             if(!qm.canHold(1142129)) {
-                    cm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
+                    cm.sendOk("Wow, your #bequip#k inventory is full. You need to make at least 1 empty slot to complete this quest.");
                     qm.dispose();
                     return;
             }
             qm.gainItem(1142129, true);
-            qm.completeQuest();
+            
             qm.changeJobById(2100);
-            qm.getPlayer().setStr(35);
-            qm.getPlayer().setDex(4);
-            qm.getPlayer().setRemainingAp((qm.getPlayer().getLevel() - 1) * 5 - 22);
-            qm.getPlayer().setRemainingSp((qm.getPlayer().getLevel() - 10) * 3 + 1);
-            qm.getPlayer().setMaxHp(qm.getPlayer().getMaxHp() + 275);
-            qm.getPlayer().setMaxMp(qm.getPlayer().getMaxMp() + 15);
+            qm.resetStats();
             
             //qm.teachSkill(21000000, 0, 10, -1);   //learned later...
             //qm.teachSkill(21001003, 0, 20, -1);   //learned later...
+            
+            qm.completeQuest();
 
             //qm.getPlayer().changeSkillLevel(SkillFactory.getSkill(20009000), 0, -1);
             //qm.getPlayer().changeSkillLevel(SkillFactory.getSkill(20009000), 1, 0);

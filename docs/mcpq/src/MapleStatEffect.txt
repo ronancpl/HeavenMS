@@ -1,0 +1,27 @@
+Add fields:
+PHP Code:
+private boolean consumeOnPickup, party;
+private int cp, nuffSkill;
+
+Add to stat parsing (loadFromData()):
+PHP Code:
+
+ret.cp = MapleDataTool.getInt("cp", source, 0);ret.party = MapleDataTool.getInt("party", source, 0) > 0;
+ret.consumeOnPickup = MapleDataTool.getInt("consumeOnPickup", source, 0) > 0;
+ret.nuffSkill = MapleDataTool.getInt("nuffSkill", source, -1);  
+Add methods:
+PHP Code:
+public int getCP() {    return cp;
+}
+
+public boolean isParty() {
+    return party;
+}
+
+public boolean isConsumeOnPickup() {
+    return consumeOnPickup;
+}
+
+public int getNuffSkill() {
+    return nuffSkill;
+}  

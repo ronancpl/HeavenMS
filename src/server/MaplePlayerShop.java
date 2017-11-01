@@ -80,8 +80,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
     
     public boolean hasFreeSlot() {
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             return visitors[0] == null || visitors[1] == null || visitors[2] == null;
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -90,7 +93,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     private void addVisitor(MapleCharacter visitor) {
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] == null) {
                     visitors[i] = visitor;
@@ -101,6 +105,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                     break;
                 }
             }
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -109,13 +115,19 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             owner.getMap().removeMapObject(this);
             owner.setPlayerShop(null);
         }
-        for (int i = 0; i < 3; i++) {
-            if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
-                visitors[i] = null;
-                visitor.setSlot(-1);
-                this.broadcast(MaplePacketCreator.getPlayerShopRemoveVisitor(i + 1));
-                return;
+        
+        visitorLock.lock();
+        try {
+            for (int i = 0; i < 3; i++) {
+                if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
+                    visitors[i] = null;
+                    visitor.setSlot(-1);
+                    this.broadcast(MaplePacketCreator.getPlayerShopRemoveVisitor(i + 1));
+                    return;
+                }
             }
+        } finally {
+            visitorLock.unlock();
         }
     }
     
@@ -124,7 +136,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             owner.getMap().removeMapObject(this);
             owner.setPlayerShop(null);
         } else {
-            synchronized (visitors) {
+            visitorLock.lock();
+            try {
                 for (int i = 0; i < 3; i++) {
                     if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
                         visitor.setSlot(-1);    //absolutely cant remove player slot for late players without dc'ing them... heh
@@ -143,6 +156,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                         return;
                     }
                 }
+            } finally {
+                visitorLock.unlock();
             }
             
             if(this.getOwner().getPlayerShop() != null) visitor.getMap().broadcastMessage(MaplePacketCreator.addCharBox(this.getOwner(), 4));
@@ -150,8 +165,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     public boolean isVisitor(MapleCharacter visitor) {
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             return visitors[0] == visitor || visitors[1] == visitor || visitors[2] == visitor;
+        } finally {
+            visitorLock.unlock();
         }
     }
 
@@ -187,7 +205,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                 synchronized (c.getPlayer()) {
                     if (c.getPlayer().getMeso() >= (long) pItem.getPrice() * quantity) {
                         if (MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
-                            c.getPlayer().gainMeso(-pItem.getPrice() * quantity, true);
+                            c.getPlayer().gainMeso(-pItem.getPrice() * quantity, false);
                             owner.gainMeso(pItem.getPrice() * quantity, true);
                             pItem.setBundles((short) (pItem.getBundles() - quantity));
                             if (pItem.getBundles() < 1) {
@@ -209,17 +227,21 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     public void broadcastToVisitors(final byte[] packet) {
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null) {
                     visitors[i].getClient().announce(packet);
                 }
             }
+        } finally {
+            visitorLock.unlock();
         }
     }
     
     public void broadcastRestoreToVisitors() {
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null) {
                     visitors[i].getClient().announce(MaplePacketCreator.getPlayerShopRemoveVisitor(i + 1));
@@ -233,12 +255,16 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             }
             
             recoverChatLog();
+        } finally {
+            visitorLock.unlock();
         }
     }
 
     public void removeVisitors() {
         List<MapleCharacter> visitorList = new ArrayList<>(3);
-        synchronized (visitors) {
+        
+        visitorLock.lock();
+        try {
             try {
                 for (int i = 0; i < 3; i++) {
                     if (visitors[i] != null) {
@@ -249,6 +275,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } finally {
+            visitorLock.unlock();
         }
         
         for(MapleCharacter mc : visitorList) forceRemoveVisitor(mc);
@@ -412,7 +440,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             return false;
         }
         
-        synchronized (visitors) {
+        visitorLock.lock();
+        try {
             if (this.hasFreeSlot() && !this.isVisitor(chr)) {
                 this.addVisitor(chr);
                 chr.setPlayerShop(this);
@@ -422,6 +451,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             }
 
             return false;
+        } finally {
+            visitorLock.unlock();
         }
     }
     

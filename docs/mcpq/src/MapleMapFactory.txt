@@ -1,0 +1,22 @@
+Add to getMap() method, under where it parses PQ areas:
+PHP Code:
+MapleData mcData = mapData.getChildByPath("monsterCarnival");if (mcData != null) {
+    MCWZData mcpqInfo = new MCWZData(mcData);
+    map.setMCPQData(mcpqInfo);
+    map.setRespawning(false);
+}  
+Add to getMap() method, under where it parses mobTime:
+PHP Code:
+int team = MapleDataTool.getInt("team", life, -1);  
+Change addMonsterSpawn() method call to the following, using the new SpawnPoint construction we defined in MapleMap:
+PHP Code:
+map.addMonsterSpawn(monster, mobTime, team);  
+Add the method:
+PHP Code:
+public MapleMap instanceMap(int mapid, boolean respawns, boolean npcs) {    return instanceMap(mapid, respawns, npcs, true);
+}  
+and 
+
+PHP Code:
+public MapleMap instanceMap(int mapid, boolean respawns, boolean npcs, boolean reactors)  
+, where the code is the same as getMap but does not try to load from cache and does not store into cache.

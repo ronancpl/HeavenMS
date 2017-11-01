@@ -118,7 +118,7 @@ Inclusão de printStackTraces nos blocos catches do sistema.
 
 01 - 02 Abril 2017,
 Correção de bug que impedia carregamento do mapa Singapore: Spooky World.
-Adição dos cards de mob restantes no drop_data do BD.
+Adição dos cards de mob restantes no drop_data do DB.
 
 03 Abril 2017,
 Inclusão de scripts para interceptar condições de corrida em eventos de viagem.
@@ -624,3 +624,11 @@ Corrigido sistema de buffs não computando buffs com valor zero não sendo apropri
 
 29 Outubro 2017,
 Adicionado drop data para diversas versões de Fairy, Yetis e Pepes.
+Adicionado proteção contra acesso concorrente em MapleGuild e MapleAlliance.
+
+30 Outubro 2017,
+Adicionado drop data de mesos para o restante dos mobs que dropam 4 ou mais itens.
+
+31 Outubro 2017,
+Corrigido bug ao mudar classe de Aran desconectando o jogador.
+Corrigido drop data de flechas agora dropando bundles ao invés de uma quantidade unitária.

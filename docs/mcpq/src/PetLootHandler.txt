@@ -1,0 +1,20 @@
+else if (c.getPlayer().getMCPQField() != null) {   // CPQ Handling
+                    boolean consumed = c.getPlayer().getMCPQField().onItemPickup(c.getPlayer(), mapitem);
+                    if (consumed) {
+                        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 2, c.getPlayer().getId()),
+                                mapitem.getPosition());
+                        c.getPlayer().getCheatTracker().pickupComplete();
+                        c.getPlayer().getMap().removeMapObject(ob);
+                    } else {
+                        if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), true)) {
+                            c.getPlayer().getMap().broadcastMessage(
+                                    MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 2, c.getPlayer().getId()),
+                                    mapitem.getPosition());
+                            c.getPlayer().getCheatTracker().pickupComplete();
+                            c.getPlayer().getMap().removeMapObject(ob);
+                        } else {
+                            c.getPlayer().getCheatTracker().pickupComplete();
+                            return;
+                        }
+                    }
+                }

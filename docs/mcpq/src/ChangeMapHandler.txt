@@ -1,0 +1,5 @@
+Under the respawn map change code (!c.getPlayer().isAlive()), add before executeStandardPath is done:
+PHP Code:
+if (player.getMCPQField() != null) {    player.getMCPQField().onPlayerRespawn(player);
+    return;
+}

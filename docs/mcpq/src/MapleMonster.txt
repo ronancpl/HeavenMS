@@ -1,0 +1,31 @@
+Add fields:
+PHP Code:
+private int team = -1; 
+
+Add methods:
+PHP Code:
+public int getCP() {    return stats.getCp();
+}
+
+public int getTeam() {
+    return team;
+}
+
+public void setTeam(int team) {
+    this.team = team;
+}
+
+public void dispel() {
+    if (!isAlive()) return;
+
+    for (MonsterStatus i : MonsterStatus.values()) {
+        if (monsterBuffs.contains(i)) {
+            removeMonsterBuff(i);
+            MaplePacket packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), Collections.singletonMap(i, Integer.valueOf(1)));
+            map.broadcastMessage(packet, getPosition());
+            if (getController() != null && !getController().isMapObjectVisible(MapleMonster.this)) {
+                getController().getClient().getSession().write(packet);
+            }
+        }
+    }
+}  

@@ -45,6 +45,18 @@ Cash & Items:
 * New scroll: antibanish. For use only in cases where bosses send a player back to town.
 * Inventory system properly checks for item slot free space and ownership.
 * Storage with "Arrange Items" feature functional.
+* Vega's spell.
+* Owl of Minerva.
+* Pet item ignore.
+
+Monsters & Maps:
+* Every monsterbook card is now droppable by overworld mobs.
+* Added meso drop data for basically every missing overworld mob.
+* Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
+* Every skill/mastery book is now droppable by mobs.
+* Added Boss HP Bar for dozens of bosses (needs provided custom wz).
+* If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
+* Boats, elevator and other travelling mechanics fully working.
 
 PQ potentials:
 * Lobby system - Multiple PQ instances on same channel.
@@ -52,36 +64,28 @@ PQ potentials:
 * Guild queue system - Guilds can register themselves on a queue for the GPQ.
 * EIM Pool system - After the first instance setup, next event instances are loaded beforehand and set on a pooling queue, optimizing future loadouts.
 
-Server potentials:
-* Multi-worlds 100%.
+Player potentials:
 * Adventurer Mount quests 100%.
 * All Equipment levels up.
 * Player level rates.
 * Gain fame by quests.
-* Every monsterbook card is now droppable by overworld mobs.
-* Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
-* Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
-* Every skill/mastery book is now droppable by mobs.
+
+Server potentials:
+* Multi-worlds 100%.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
-* Added Boss HP Bar for dozens of bosses (needs provided custom wz).
-* If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
+* Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).
 * Delete Character 100% (requires ENABLE_PIC activated).
-* Boats, elevator and other travelling mechanics fully working.
-* Enabled Hired Merchant being able to be used anywhere but FM Entrance and other few places.
-* Vega's spell.
-* Owl of Minerva.
-* Pet item ignore.
 * Autosaver (periodically saves on DB current state of every player in-game).
-* Fixed and randomized versions of HP/MP growth rate, regarding player job. Placeholder for HP/MP washing feature.
+* Both fixed and randomized versions of HP/MP growth rate abailable, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 
 Admin/GM commands:
 * Server commands layered by GM levels.
-* New commands.
 * Spawn Zakum/Horntail/Pinkbean 100%.
+* New commands.
 
 Project:
 * Organized project code.

@@ -1,0 +1,6 @@
+Under hitReactor(), add before standard handling:
+PHP Code:
+if (c.getPlayer().getMCPQField() != null) {
+	c.getPlayer().getMCPQField().onGuardianHit(c.getPlayer(), this);
+    return;
+}

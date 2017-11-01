@@ -1008,45 +1008,62 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             this.remainingAp += 5;
         }
         int job_ = job.getId() % 1000; // lame temp "fix"
-        if (job_ == 100) {
+        if (job_ == 100) {                      // 1st warrior
             maxhp += Randomizer.rand(200, 250);
-        } else if (job_ == 200) {
+        } else if (job_ == 200) {               // 1st mage
             maxmp += Randomizer.rand(100, 150);
-        } else if (job_ % 100 == 0) {
+        } else if (job_ % 100 == 0) {           // 1st others
             maxhp += Randomizer.rand(100, 150);
             maxhp += Randomizer.rand(25, 50);
-        } else if (job_ > 0 && job_ < 200) {
+        } else if (job_ > 0 && job_ < 200) {    // 2nd~4th warrior
             maxhp += Randomizer.rand(300, 350);
-        } else if (job_ < 300) {
+        } else if (job_ < 300) {                // 2nd~4th mage
             maxmp += Randomizer.rand(450, 500);
-        } //handle KoC here (undone)
-        else if (job_ > 0 && job_ != 1000) {
+        } else if (job_ > 0) {                  // 2nd~4th others
             maxhp += Randomizer.rand(300, 350);
             maxmp += Randomizer.rand(150, 200);
         }
+        
+        /*
+        //aran perks?
+        int newJobId = newJob.getId();
+        if(newJobId == 2100) {          // become aran1
+            maxhp += 275;
+            maxmp += 15;
+        } else if(newJobId == 2110) {   // become aran2
+            maxmp += 275;
+        } else if(newJobId == 2111) {   // become aran3
+            maxhp += 275;
+            maxmp += 275;
+        }
+        */
+        
         if (maxhp >= 30000) {
             maxhp = 30000;
         }
         if (maxmp >= 30000) {
             maxmp = 30000;
         }
+        
         if (!isGM()) {
             for (byte i = 1; i < 5; i++) {
                 gainSlots(i, 4, true);
             }
         }
+        
         List<Pair<MapleStat, Integer>> statup = new ArrayList<>(5);
         statup.add(new Pair<>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
         statup.add(new Pair<>(MapleStat.MAXMP, Integer.valueOf(maxmp)));
         statup.add(new Pair<>(MapleStat.AVAILABLEAP, remainingAp));
         statup.add(new Pair<>(MapleStat.AVAILABLESP, remainingSp[GameConstants.getSkillBook(job.getId())]));
         statup.add(new Pair<>(MapleStat.JOB, Integer.valueOf(job.getId())));
+        client.announce(MaplePacketCreator.updatePlayerStats(statup, this));
+        
         if (dragon != null) {
             getMap().broadcastMessage(MaplePacketCreator.removeDragon(dragon.getObjectId()));
             dragon = null;
         }
         recalcLocalStats();
-        client.announce(MaplePacketCreator.updatePlayerStats(statup, this));
         silentPartyUpdate();
         if (this.guildid > 0) {
             getGuild().broadcast(MaplePacketCreator.jobMessage(0, job.getId(), name), this.getId());
@@ -1062,7 +1079,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if (getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
                 cancelBuffStats(MapleBuffStat.MONSTER_RIDING);
             }
-        	createDragon();
+            createDragon();
         }
     }
 
@@ -3162,21 +3179,26 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private boolean isSingletonStatup(MapleBuffStat mbs) {
-        switch(mbs) {
-            case RECOVERY:
-            case HPREC:
-            case MPREC:
-            case SUMMON:
-            case PUPPET:
-            case DRAGONBLOOD:
-            case MONSTER_RIDING:
-            case MORPH:
-            case HYPERBODYHP:
-            case HYPERBODYMP:
-                return true;
+        switch(mbs) {           //HPREC and MPREC are supposed to be singleton
+            case COUPON_EXP1:
+            case COUPON_EXP2:
+            case COUPON_EXP3:
+            case COUPON_EXP4:
+            case COUPON_DRP1:
+            case COUPON_DRP2:
+            case COUPON_DRP3:
+            case WATK:
+            case WDEF:
+            case MATK:
+            case MDEF:
+            case ACC:
+            case AVOID:
+            case SPEED:
+            case JUMP:
+                return false;
                 
             default:
-                return false;
+                return true;
         }
     }
     
@@ -6003,7 +6025,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         switch (job.getId()) {
             case 100:
             case 1100:
-            case 2100://?
+            case 2100:
                 tstr = 35;
                 tap = ((getLevel() - 10) * levelap) + 14;
                 tsp += ((getLevel() - 10) * 3);

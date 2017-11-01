@@ -1133,19 +1133,19 @@ public class Commands {
 			short quantity = 1;
                         if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
 			
+                        if (ItemConstants.isPet(itemId)) {
+                                player.message("You cannot create a pet with this command.");
+                                break;
+                        }
+                        
 			if (sub[0].equals("item")) {
-				int petid = -1;
-				if (ItemConstants.isPet(itemId)) {
-					petid = MaplePet.createPet(itemId);
-				}
-                                
-                                byte flag = 0;
+				byte flag = 0;
                                 if(player.gmLevel() < 3) {
                                     flag |= ItemConstants.ACCOUNT_SHARING;
                                     flag |= ItemConstants.UNTRADEABLE;
                                 }
                                 
-                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, flag, -1);
+                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), -1, flag, -1);
 			} else {
 				Item toDrop;
 				if (MapleItemInformationProvider.getInstance().getInventoryType(itemId) == MapleInventoryType.EQUIP) {
@@ -2127,20 +2127,17 @@ public class Commands {
                                 break;
                         }
                         
-                        int itemid = 0;
-                        short multiply = 0;
-
-                        itemid = Integer.parseInt(sub[1]);
-                        multiply = Short.parseShort(sub[2]);
+                        int itemid = Integer.parseInt(sub[1]);
+                        short multiply = Short.parseShort(sub[2]);
 
                         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                        Item it = ii.getEquipById(itemid);
-                        it.setOwner(player.getName());
                         MapleInventoryType type = ii.getInventoryType(itemid);
                         if (type.equals(MapleInventoryType.EQUIP)) {
+                                Item it = ii.getEquipById(itemid);
+                                it.setOwner(player.getName());
+                                
                                 hardsetItemStats((Equip) it, multiply);
                                 MapleInventoryManipulator.addFromDrop(c, it);
-
                         } else {
                                 player.dropMessage("Make sure it's an equippable item.");
                         }

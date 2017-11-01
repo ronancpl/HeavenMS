@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
@@ -47,7 +50,10 @@ public class MapleGuild {
     private enum BCOp {
         NONE, DISBAND, EMBLEMCHANGE
     }
+    
     private final List<MapleGuildCharacter> members;
+    private final Lock membersLock = new ReentrantLock(true);
+    
     private String rankTitles[] = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
     private String name, notice;
     private int id, gp, logo, logoColor, leader, capacity, logoBG, logoBGColor, signature, allianceId;
@@ -122,7 +128,9 @@ public class MapleGuild {
                 l.clear();
             }
         }
-        synchronized (members) {
+        
+        membersLock.lock();
+        try {
             for (MapleGuildCharacter mgc : members) {
                 if (!mgc.isOnline()) {
                     continue;
@@ -131,7 +139,10 @@ public class MapleGuild {
                 if (ch != null) ch.add(mgc.getId());
                 //Unable to connect to Channel... error was here
             }
+        } finally {
+            membersLock.unlock();
         }
+        
         bDirty = false;
     }
 
@@ -169,7 +180,13 @@ public class MapleGuild {
                 ps.setInt(1, this.id);
                 ps.execute();
                 ps.close();
-                this.broadcast(MaplePacketCreator.guildDisband(this.id));
+                
+                membersLock.lock();
+                try {
+                    this.broadcast(MaplePacketCreator.guildDisband(this.id));
+                } finally {
+                    membersLock.unlock();
+                }
             }
             
             con.close();
@@ -238,7 +255,12 @@ public class MapleGuild {
     }
 
     public java.util.Collection<MapleGuildCharacter> getMembers() {
-        return java.util.Collections.unmodifiableCollection(members);
+        membersLock.lock();
+        try {
+            return java.util.Collections.unmodifiableCollection(members);
+        } finally {
+            membersLock.unlock();
+        }
     }
 
     public int getCapacity() {
@@ -282,13 +304,18 @@ public class MapleGuild {
     }
 
     public void guildMessage(final byte[] serverNotice) {
-        for (MapleGuildCharacter mgc : members) {
-            for (Channel cs : Server.getInstance().getChannelsFromWorld(world)) {
-                if (cs.getPlayerStorage().getCharacterById(mgc.getId()) != null) {
-                    cs.getPlayerStorage().getCharacterById(mgc.getId()).getClient().announce(serverNotice);
-                    break;
+        membersLock.lock();
+        try {
+            for (MapleGuildCharacter mgc : members) {
+                for (Channel cs : Server.getInstance().getChannelsFromWorld(world)) {
+                    if (cs.getPlayerStorage().getCharacterById(mgc.getId()) != null) {
+                        cs.getPlayerStorage().getCharacterById(mgc.getId()).getClient().announce(serverNotice);
+                        break;
+                    }
                 }
             }
+        } finally {
+            membersLock.unlock();
         }
     }
     
@@ -297,9 +324,15 @@ public class MapleGuild {
     }
     
     public void dropMessage(int type, String message) {
-        for (MapleGuildCharacter mgc : members) {
-            if(mgc.getCharacter() != null)
-                mgc.getCharacter().dropMessage(type, message);
+        membersLock.lock();
+        try {
+            for (MapleGuildCharacter mgc : members) {
+                if(mgc.getCharacter() != null) {
+                    mgc.getCharacter().dropMessage(type, message);
+                }
+            }
+        } finally {
+            membersLock.unlock();
         }
     }
     
@@ -308,25 +341,35 @@ public class MapleGuild {
     }
 
     public final void setOnline(int cid, boolean online, int channel) {
-        boolean bBroadcast = true;
-        for (MapleGuildCharacter mgc : members) {
-            if (mgc.getId() == cid) {
-                if (mgc.isOnline() && online) {
-                    bBroadcast = false;
+        membersLock.lock();
+        try {
+            boolean bBroadcast = true;
+            for (MapleGuildCharacter mgc : members) {
+                if (mgc.getId() == cid) {
+                    if (mgc.isOnline() && online) {
+                        bBroadcast = false;
+                    }
+                    mgc.setOnline(online);
+                    mgc.setChannel(channel);
+                    break;
                 }
-                mgc.setOnline(online);
-                mgc.setChannel(channel);
-                break;
             }
+            if (bBroadcast) {
+                this.broadcast(MaplePacketCreator.guildMemberOnline(id, cid, online), cid);
+            }
+            bDirty = true;
+        } finally {
+            membersLock.unlock();
         }
-        if (bBroadcast) {
-            this.broadcast(MaplePacketCreator.guildMemberOnline(id, cid, online), cid);
-        }
-        bDirty = true;
     }
 
     public void guildChat(String name, int cid, String message) {
-    	this.broadcast(MaplePacketCreator.multiChat(name, message, 2), cid);
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.multiChat(name, message, 2), cid);
+        } finally {
+            membersLock.unlock();
+        }
     }
 
     public String getRankTitle(int rank) {
@@ -377,7 +420,8 @@ public class MapleGuild {
     }
 
     public int addGuildMember(MapleGuildCharacter mgc, MapleCharacter chr) {
-        synchronized (members) {
+        membersLock.lock();
+        try {
             if (members.size() >= capacity) {
                 return 0;
             }
@@ -389,21 +433,28 @@ public class MapleGuild {
                     break;
                 }
             }
+            
+            this.broadcast(MaplePacketCreator.newGuildMember(mgc));
+            return 1;
+        } finally {
+            membersLock.unlock();
         }
-        this.broadcast(MaplePacketCreator.newGuildMember(mgc));
-        return 1;
     }
 
     public void leaveGuild(MapleGuildCharacter mgc) {
-        this.broadcast(MaplePacketCreator.memberLeft(mgc, false));
-        synchronized (members) {
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.memberLeft(mgc, false));
             members.remove(mgc);
             bDirty = true;
+        } finally {
+            membersLock.unlock();
         }
     }
 
     public void expelMember(MapleGuildCharacter initiator, String name, int cid) {
-        synchronized (members) {
+        membersLock.lock();
+        try {
             java.util.Iterator<MapleGuildCharacter> itr = members.iterator();
             MapleGuildCharacter mgc;
             while (itr.hasNext()) {
@@ -441,15 +492,22 @@ public class MapleGuild {
                 }
             }
             System.out.println("Unable to find member with name " + name + " and id " + cid);
+        } finally {
+            membersLock.unlock();
         }
     }
 
     public void changeRank(int cid, int newRank) {
-        for (MapleGuildCharacter mgc : members) {
-            if (cid == mgc.getId()) {
-                changeRank(mgc, newRank);
-                return;
+        membersLock.lock();
+        try {
+            for (MapleGuildCharacter mgc : members) {
+                if (cid == mgc.getId()) {
+                    changeRank(mgc, newRank);
+                    return;
+                }
             }
+        } finally {
+            membersLock.unlock();
         }
     }
     
@@ -467,24 +525,39 @@ public class MapleGuild {
             return;
         }
         
-        this.broadcast(MaplePacketCreator.changeRank(mgc));
-        return;
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.changeRank(mgc));
+        } finally {
+            membersLock.unlock();
+        }
     }
     
     public void setGuildNotice(String notice) {
         this.notice = notice;
         writeToDB(false);
-        this.broadcast(MaplePacketCreator.guildNotice(this.id, notice));
+        
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.guildNotice(this.id, notice));
+        } finally {
+            membersLock.unlock();
+        }
     }
 
     public void memberLevelJobUpdate(MapleGuildCharacter mgc) {
-        for (MapleGuildCharacter member : members) {
-            if (mgc.equals(member)) {
-                member.setJobId(mgc.getJobId());
-                member.setLevel(mgc.getLevel());
-                this.broadcast(MaplePacketCreator.guildMemberLevelJobUpdate(mgc));
-                break;
+        membersLock.lock();
+        try {
+            for (MapleGuildCharacter member : members) {
+                if (mgc.equals(member)) {
+                    member.setJobId(mgc.getJobId());
+                    member.setLevel(mgc.getLevel());
+                    this.broadcast(MaplePacketCreator.guildMemberLevelJobUpdate(mgc));
+                    break;
+                }
             }
+        } finally {
+            membersLock.unlock();
         }
     }
 
@@ -507,7 +580,14 @@ public class MapleGuild {
 
     public void changeRankTitle(String[] ranks) {
         System.arraycopy(ranks, 0, rankTitles, 0, 5);
-        this.broadcast(MaplePacketCreator.rankTitleChange(this.id, ranks));
+        
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.rankTitleChange(this.id, ranks));
+        } finally {
+            membersLock.unlock();
+        }
+        
         this.writeToDB(false);
     }
 
@@ -519,8 +599,13 @@ public class MapleGuild {
             else MapleAlliance.disbandAlliance(allianceId);
         }
         
-        this.writeToDB(true);
-        this.broadcast(null, -1, BCOp.DISBAND);
+        membersLock.lock();
+        try {
+            this.writeToDB(true);
+            this.broadcast(null, -1, BCOp.DISBAND);
+        } finally {
+            membersLock.unlock();
+        }
     }
 
     public void setGuildEmblem(short bg, byte bgcolor, short logo, byte logocolor) {
@@ -529,16 +614,27 @@ public class MapleGuild {
         this.logo = logo;
         this.logoColor = logocolor;
         this.writeToDB(false);
-        this.broadcast(null, -1, BCOp.EMBLEMCHANGE);
+        
+        membersLock.lock();
+        try {
+            this.broadcast(null, -1, BCOp.EMBLEMCHANGE);
+        } finally {
+            membersLock.unlock();
+        }
     }
 
     public MapleGuildCharacter getMGC(int cid) {
-        for (MapleGuildCharacter mgc : members) {
-            if (mgc.getId() == cid) {
-                return mgc;
+        membersLock.lock();
+        try {
+            for (MapleGuildCharacter mgc : members) {
+                if (mgc.getId() == cid) {
+                    return mgc;
+                }
             }
+            return null;
+        } finally {
+            membersLock.unlock();
         }
-        return null;
     }
 
     public boolean increaseCapacity() {
@@ -547,7 +643,14 @@ public class MapleGuild {
         }
         capacity += 5;
         this.writeToDB(false);
-        this.broadcast(MaplePacketCreator.guildCapacityChange(this.id, this.capacity));
+        
+        membersLock.lock();
+        try {
+            this.broadcast(MaplePacketCreator.guildCapacityChange(this.id, this.capacity));
+        } finally {
+            membersLock.unlock();
+        }
+        
         return true;
     }
 
@@ -614,10 +717,15 @@ public class MapleGuild {
     
     public void resetAllianceGuildPlayersRank() {
         try {
-            for(MapleGuildCharacter mgc: members) {
-                if(mgc.isOnline()) {
-                    mgc.setAllianceRank(5);
+            membersLock.lock();
+            try {
+                for(MapleGuildCharacter mgc: members) {
+                    if(mgc.isOnline()) {
+                        mgc.setAllianceRank(5);
+                    }
                 }
+            } finally {
+                membersLock.unlock();
             }
             
             Connection con = DatabaseConnection.getConnection();
@@ -633,7 +741,7 @@ public class MapleGuild {
         }
     }
 
-    public int getIncreaseGuildCost(int size) {
+    public static int getIncreaseGuildCost(int size) {
         return 500000 * (size - 6) / 6;
     }
 }

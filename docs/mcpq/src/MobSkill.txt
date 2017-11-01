@@ -1,0 +1,23 @@
+Add to applyEffect():
+
+PHP Code:
+case 150:    monStat = MonsterStatus.WEAPON_ATTACK_UP;
+    break;
+case 151:
+    monStat = MonsterStatus.WEAPON_DEFENSE_UP;
+    break;
+case 152:
+    monStat = MonsterStatus.MAGIC_ATTACK_UP;
+    break;
+case 153:
+    monStat = MonsterStatus.MAGIC_DEFENSE_UP;
+    break;
+case 154:
+    monStat = MonsterStatus.ACC;
+    break;
+case 155:
+    monStat = MonsterStatus.AVOID;
+    break;
+case 156:
+    monStat = MonsterStatus.SPEED;
+    break;  

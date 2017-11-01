@@ -1,0 +1,73 @@
+client/MapleCharacter.java
+Add fields:
+PHP Code:
+private MCField.MCTeam MCPQTeam;private MCParty MCPQParty;
+private MCField MCPQField;
+private int availableCP = 0;
+private int totalCP = 0;  
+under playerDead() method:
+PHP Code:
+if (player.getMap().isTown()) {    XPdummy *= 0.01;
+} else if (MonsterCarnival.isBattlefieldMap(player.getMapId())) {
+    XPdummy = 0;
+}  
+under the giveDebuff() method, add a field that force adds the disease if some variable cpq is set, regardless of buffs.
+method signature:
+PHP Code:
+public void giveDebuff(MapleDisease disease, MobSkill skill, boolean cpq)  
+Add these methods:
+PHP Code:
+public int getTeam() {    if (this.MCPQTeam == null) {
+        return -1;
+    }
+    return this.MCPQTeam.code;
+}
+
+public MCField.MCTeam getMCPQTeam() {
+    return MCPQTeam;
+}
+
+public void setMCPQTeam(MCField.MCTeam MCPQTeam) {
+    this.MCPQTeam = MCPQTeam;
+}
+
+public MCParty getMCPQParty() {
+    return MCPQParty;
+}
+
+public void setMCPQParty(MCParty MCPQParty) {
+    this.MCPQParty = MCPQParty;
+}
+
+public MCField getMCPQField() {
+    return MCPQField;
+}
+
+public void setMCPQField(MCField MCPQField) {
+    this.MCPQField = MCPQField;
+}
+
+public int getAvailableCP() {
+    return availableCP;
+}
+
+public void setAvailableCP(int availableCP) {
+    this.availableCP = availableCP;
+}
+
+public int getTotalCP() {
+    return totalCP;
+}
+
+public void setTotalCP(int totalCP) {
+    this.totalCP = totalCP;
+}
+
+public void gainCP(int cp) {
+    this.availableCP += cp;
+    this.totalCP += cp;
+}
+
+public void loseCP(int cp) {
+    this.availableCP -= cp;
+}  

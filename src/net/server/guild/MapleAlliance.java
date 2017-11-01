@@ -331,18 +331,21 @@ public class MapleAlliance {
     public boolean addGuild(int gid) {
         synchronized (guilds) {
             if(guilds.size() == capacity || getGuildIndex(gid) > -1) return false;
+            
             guilds.add(gid);
+            return true;
         }
-        return true;
     }
 
     private int getGuildIndex(int gid) {
-        for (int i = 0; i < guilds.size(); i++) {
-            if (guilds.get(i) == gid) {
-                return i;
+        synchronized (guilds) {
+            for (int i = 0; i < guilds.size(); i++) {
+                if (guilds.get(i) == gid) {
+                    return i;
+                }
             }
+            return -1;
         }
-        return -1;
     }
     
     public void setRankTitle(String[] ranks) {
@@ -354,13 +357,15 @@ public class MapleAlliance {
     }
     
     public List<Integer> getGuilds() {
-        List<Integer> guilds_ = new LinkedList<>();
-        for (int guild : guilds) {
-            if (guild != -1) {
-                guilds_.add(guild);
+        synchronized(guilds) {
+            List<Integer> guilds_ = new LinkedList<>();
+            for (int guild : guilds) {
+                if (guild != -1) {
+                    guilds_.add(guild);
+                }
             }
+            return guilds_;
         }
-        return guilds_;
     }
     
     public String getAllianceNotice() {
@@ -396,14 +401,16 @@ public class MapleAlliance {
     }
     
     public MapleGuildCharacter getLeader() {
-        for(Integer gId: guilds) {
-            MapleGuild guild = Server.getInstance().getGuild(gId);
-            MapleGuildCharacter mgc = guild.getMGC(guild.getLeaderId());
-            
-            if(mgc.getAllianceRank() == 1) return mgc;
+        synchronized(guilds) {
+            for(Integer gId: guilds) {
+                MapleGuild guild = Server.getInstance().getGuild(gId);
+                MapleGuildCharacter mgc = guild.getMGC(guild.getLeaderId());
+
+                if(mgc.getAllianceRank() == 1) return mgc;
+            }
+
+            return null;
         }
-        
-        return null;
     }
     
     public void dropMessage(String message) {
@@ -411,9 +418,11 @@ public class MapleAlliance {
     }
     
     public void dropMessage(int type, String message) {
-        for(Integer gId: guilds) {
-            MapleGuild guild = Server.getInstance().getGuild(gId);
-            guild.dropMessage(type, message);
+        synchronized(guilds) {
+            for(Integer gId: guilds) {
+                MapleGuild guild = Server.getInstance().getGuild(gId);
+                guild.dropMessage(type, message);
+            }
         }
     }
     

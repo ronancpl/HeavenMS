@@ -1,0 +1,80 @@
+Add fields:
+PHP Code:
+private boolean respawning = true;
+private MCWZData mcpqData;  
+Add methods:
+PHP Code:
+public final List<MapleMonster> getAllMonsters() {    return getAllMapObjects(MapleMapObjectType.MONSTER);
+}
+
+public void addMonsterSpawn(MapleMonster monster, int mobTime, int team) {
+    Point newpos = calcPointBelow(monster.getPosition());
+    newpos.y -= 1;
+    SpawnPoint sp = new SpawnPoint(monster, newpos, mobTime, team);
+    monsterSpawn.add(sp);
+    if (!respawning) return;
+
+    if (sp.shouldSpawn() || mobTime == -1) {
+        sp.spawnMonster(this);
+    }
+}
+
+public void setReactorState(MapleReactor reactor, byte state) {
+    synchronized (this.mapobjects) {
+        reactor.setState(state);
+        broadcastMessage(MaplePacketCreator.triggerReactor(reactor, state));
+    }
+}
+
+public <E extends MapleMapObject> List<E> getAllMapObjects(MapleMapObjectType type) {
+    List<E> ret = new ArrayList<>();
+    synchronized (mapobjects) {
+        for (MapleMapObject l : mapobjects.values()) {
+            if (l.getType() == type) {
+                ret.add((E) l);
+            }
+        }
+    }
+    return ret;
+}
+
+public void clearDrops() {
+    List<MapleMapItem> items = getAllMapObjects(MapleMapObjectType.ITEM);
+    for (MapleMapItem itemmo : items) {
+        removeMapObject(itemmo);
+        broadcastMessage(MaplePacketCreator.removeItemFromMap(itemmo.getObjectId(), 0, 0));
+    }
+}
+
+public Collection<SpawnPoint> getSpawnPoints() {
+    return monsterSpawn;
+}
+
+public void respawn() {
+    for (SpawnPoint sp : this.monsterSpawn) {
+        if (sp.shouldSpawn()) {
+            sp.spawnMonster(this);
+        }
+    }
+}
+
+public void beginSpawning() {
+    this.respawning = true;
+    this.respawn();
+}
+
+public boolean isRespawning() {
+    return respawning;
+}
+
+public void setRespawning(boolean respawning) {
+    this.respawning = respawning;
+}
+
+public MCWZData getMCPQData() {
+    return this.mcpqData;
+}
+
+public void setMCPQData(MCWZData data) {
+    this.mcpqData = data;
+}  

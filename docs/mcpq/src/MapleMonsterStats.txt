@@ -1,0 +1,13 @@
+Add field:
+PHP Code:
+private int cp;
+
+Add methods:
+PHP Code:
+public int getCp() {
+	return cp;
+}
+
+public void setCp(int cp) {
+    this.cp = cp;
+}  
