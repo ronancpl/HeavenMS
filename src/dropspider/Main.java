@@ -23,9 +23,6 @@ import java.util.Scanner;
  */
 public class Main {
 
-    /**
-     * @param args the command line arguments
-     */
     private static ArrayList<DropEntry> drop_entries = new ArrayList<>();
     private static HashMap<String, Errors> problems = new HashMap<>();
 //    private static final String TEST_STRING = " <a href=\"/items/leftover/ligator-skin\" alt=\"/tip.php?nid=2138\">Ligator Skin</a>, <a href=\"/items/leftover/the-magic-rock\" alt=\"/tip.php?nid=3954\">The Magic Rock</a>, <a href=\"/items/quest/witch-grass-leaves\" alt=\"/tip.php?nid=6129\">Witch Grass Leaves</a>    </td> ";

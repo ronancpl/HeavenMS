@@ -358,9 +358,26 @@ public class MapleItemInformationProvider {
         return list;
     }
 
+    private static short getExtraSlotMaxFromPlayer(MapleClient c, int itemId) {
+        short ret = 0;
+        
+        if (ItemConstants.isThrowingStar(itemId)) {
+            if(c.getPlayer().getJob().isA(MapleJob.NIGHTWALKER1)) {
+                ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(NightWalker.CLAW_MASTERY)) * 10;
+            } else {
+                ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(Assassin.CLAW_MASTERY)) * 10;
+            }
+        } else if (ItemConstants.isBullet(itemId)) {
+            ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(Gunslinger.GUN_MASTERY)) * 10;
+        }
+        
+        return ret;
+    }
+    
     public short getSlotMax(MapleClient c, int itemId) {
-        if (slotMaxCache.containsKey(itemId)) {
-            return slotMaxCache.get(itemId);
+        Short slotMax = slotMaxCache.get(itemId);
+        if (slotMax != null) {
+            return (short)(slotMax + getExtraSlotMaxFromPlayer(c, itemId));
         }
         short ret = 0;
         MapleData item = getItemData(itemId);
@@ -374,21 +391,11 @@ public class MapleItemInformationProvider {
                 }
             } else {
                 ret = (short) MapleDataTool.getInt(smEntry);
-                if (ItemConstants.isThrowingStar(itemId)) {
-                    if(c.getPlayer().getJob().isA(MapleJob.NIGHTWALKER1)) {
-                        ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(NightWalker.CLAW_MASTERY)) * 10;
-                    } else {
-                        ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(Assassin.CLAW_MASTERY)) * 10;
-                    }
-                } else {
-                    ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(Gunslinger.GUN_MASTERY)) * 10;
-                }
             }
         }
-        if (!ItemConstants.isRechargable(itemId)) {
-            slotMaxCache.put(itemId, ret);
-        }
-        return ret;
+        
+        slotMaxCache.put(itemId, ret);
+        return (short)(ret + getExtraSlotMaxFromPlayer(c, itemId));
     }
 
     public int getMeso(int itemId) {
@@ -1238,7 +1245,7 @@ public class MapleItemInformationProvider {
             return rewardCache.get(itemId);
         }
         int totalprob = 0;
-        List<RewardItem> rewards = new ArrayList<RewardItem>();
+        List<RewardItem> rewards = new ArrayList<>();
         for (MapleData child : getItemData(itemId).getChildByPath("reward").getChildren()) {
             RewardItem reward = new RewardItem();
             reward.itemid = MapleDataTool.getInt("item", child, 0);
@@ -1252,7 +1259,7 @@ public class MapleItemInformationProvider {
 
             rewards.add(reward);
         }
-        Pair<Integer, List<RewardItem>> hmm = new Pair<Integer, List<RewardItem>>(totalprob, rewards);
+        Pair<Integer, List<RewardItem>> hmm = new Pair<>(totalprob, rewards);
         rewardCache.put(itemId, hmm);
         return hmm;
     }
@@ -1441,7 +1448,7 @@ public class MapleItemInformationProvider {
     
     public ArrayList<Pair<Integer, String>> getItemDataByName(String name)
     {
-        ArrayList<Pair<Integer, String>> ret = new ArrayList<Pair<Integer, String>>();
+        ArrayList<Pair<Integer, String>> ret = new ArrayList<>();
          for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
                     if (itemPair.getRight().toLowerCase().contains(name.toLowerCase())) {
                             ret.add(itemPair);

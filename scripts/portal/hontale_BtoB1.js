@@ -32,7 +32,7 @@ function enter(pi) {
             pi.getPlayer().dropMessage(6, "You cannot pass to the next map holding the 1st Crystal Key in your inventory.");
             return false;
         }
-        pi.warp(240050101);
+        pi.warp(240050101, 0);
         return true;
     }
 }

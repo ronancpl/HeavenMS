@@ -59,7 +59,7 @@ function action(mode, type, selection) {
 		if (cm.getEvent() != null) {
 		    cm.getEvent().addLimit();
 		}
-                cm.warp(109050001);
+                cm.warp(109050001, 0);
                 cm.dispose();
                 }
 }

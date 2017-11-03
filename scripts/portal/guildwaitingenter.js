@@ -32,7 +32,7 @@ function enter(pi) {
         var timeLeft = Math.ceil((entryTime - timeNow) / 1000);
     
         if(timeLeft <= 0) {
-            pi.warp(990000100);
+            pi.warp(990000100, 0);
             return true;
         }
         else { //cannot proceed while allies can still enter

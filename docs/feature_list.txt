@@ -57,6 +57,7 @@ Monsters & Maps:
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boats, elevator and other travelling mechanics fully working.
+* PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 
 PQ potentials:
 * Lobby system - Multiple PQ instances on same channel.

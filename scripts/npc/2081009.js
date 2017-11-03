@@ -47,7 +47,7 @@ function action(mode, type, selection) {
     }
     
     else if(status == 1) {
-	cm.warp(924000001);
+	cm.warp(924000001, 0);
 	cm.sendOk("Have your shield equipped until the end of the quest, or else you will need to start all over again!");
         
         cm.resetQuestProgress(6180,9300096);

@@ -206,6 +206,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		}
 	}
 
+        public boolean forceStartQuest(int id) {
+                return MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
+        }
+
+        public boolean forceCompleteQuest(int id) {
+                return MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
+        }
+        
 	public void startQuest(int id) {
 		try {
 			MapleQuest.getInstance(id).forceStart(getPlayer(), npc);

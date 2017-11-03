@@ -54,7 +54,7 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode < 1) {
-        cm.sendOk("Goodbye then");
+        cm.sendOk("Goodbye then.");
         cm.dispose();
     } else {
         status++;

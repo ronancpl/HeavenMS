@@ -287,7 +287,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
             
         int partyLevel = 0;
-        int leechMinLevel = (ServerConstants.USE_UNDERLEVELED_EXP_BLOCK) ? getLevel() - ServerConstants.MIN_UNDERLEVEL_FOR_EXP_GAIN : 0;    //NO EXP WILL BE GIVEN for those who are underleveled!
+        int leechMinLevel = (ServerConstants.USE_UNDERLEVELED_EXP_BLOCK) ? getLevel() - ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN : 0;    //NO EXP WILL BE GIVEN for those who are underleveled!
 
         int leechCount = 0;
         for (MapleCharacter mc : members) {
@@ -347,7 +347,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     long pXP = (long)xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
                     partyExp.put(pID, (int)Math.min(pXP, Integer.MAX_VALUE));
                 } else {
-                    if(!ServerConstants.USE_UNDERLEVELED_EXP_BLOCK || mc.getLevel() >= getLevel() - ServerConstants.MIN_UNDERLEVEL_FOR_EXP_GAIN) {
+                    if(!ServerConstants.USE_UNDERLEVELED_EXP_BLOCK || mc.getLevel() >= getLevel() - ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN) {
                         //NO EXP WILL BE GIVEN for those who are underleveled!
                         giveExpToCharacter(mc, xp, isKiller, 1);
                     } else {

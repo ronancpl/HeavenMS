@@ -23,7 +23,7 @@
 function start(){
     if(cm.isQuestStarted(6301)) {
         if (cm.haveItem(4000175))
-            cm.warp(923000000)
+            cm.warp(923000000, 0);
         else
             cm.sendOk("In order to open the crack of dimension you will have to posess one piece of Miniature Pianus. Those could be gained by defeating a Pianus.");
     } else

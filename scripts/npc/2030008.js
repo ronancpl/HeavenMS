@@ -120,7 +120,7 @@ function action(mode, type, selection) {
             }
         }
         else if (status == 2) {
-            cm.warp(280020000);
+            cm.warp(280020000, 0);
             cm.dispose();
         }
     }

@@ -58,7 +58,7 @@ function action(m,t,s) {
 			} else if (status == 2)
 				cm.sendNext("Thank you so much. Please rescue Gaga! Grandpa from the moon will help you.");
 			else if (status == 3) {
-				cm.warp(922240200); 
+				cm.warp(922240200, 0); 
 				cm.dispose();
 			}
 		} else if (cm.getPlayer().getMapId() == 922240200) {
@@ -94,7 +94,7 @@ function action(m,t,s) {
 				cm.dispose();
 			}
 		} else if ((cm.getPlayer().getMapId() >= 922240000 && cm.getPlayer().getMapId() <= 922240019) || (cm.getPlayer().getMapId() >= 922240100 && cm.getPlayer().getMapId() <= 922240119)) {
-			cm.warp(922240200);
+			cm.warp(922240200, 0);
 			cm.dispose();
 		}
 	} else if (m < 1) {

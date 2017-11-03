@@ -25,7 +25,7 @@ function action(mode, type, selection) {
 		cm.sendDirectionInfo("Effect/Direction4.img/effect/cannonshooter/flying1/0", 7000, 0, 0, -1, -1);
 		cm.sendDirectionInfo(1, 800);
 	} else if (status == 2) {
-		cm.warp(912060300);
+		cm.warp(912060300, 0);
 	} else if (status == 3) {
 		cm.sendDirectionInfo("Effect/Direction4.img/effect/cannonshooter/balloon/1", 9000, 0, 0, 0, -1);
 		cm.sendDirectionInfo(1, 1500);

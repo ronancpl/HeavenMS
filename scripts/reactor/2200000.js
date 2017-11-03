@@ -22,7 +22,7 @@
 
 /* @Author Lerk
  * 
- * 2200000.js: Fake Dollhouse: Returns player to Eos Tower 100th Floor [221023200]
+ * 2200000.js: Fake Dollhouse: Returns player to Eos Tower 74th Floor [221023200]
 */
 
 function act(){

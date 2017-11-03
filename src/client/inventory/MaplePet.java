@@ -60,7 +60,6 @@ public class MaplePet extends Item {
 
     public static MaplePet loadFromDb(int itemid, short position, int petid) {
         try {
-            System.out.println("fetching " + petid);
             MaplePet ret = new MaplePet(itemid, position, petid);
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT name, level, closeness, fullness, summoned FROM pets WHERE petid = ?"); // Get pet details..

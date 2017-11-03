@@ -18,7 +18,7 @@ function start(mode, type, selection) {
 			qm.sendNext("Hey, take it easy! Sometimes you just gotta wait.");
 		} else {
 			qm.sendNext("Looks like we're all set! I think this is going to be a great voyage. Let's get underway.");
-			qm.warp(3000000);
+			qm.warp(3000000, 0);
 			qm.forceCompleteQuest();
 		}
 		qm.dispose();

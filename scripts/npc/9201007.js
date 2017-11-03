@@ -79,7 +79,7 @@ function action(mode, type, selection) {
     } else if (status == 1) {
         switch(selection) {
             case 0:
-                cm.warp(680000300);
+                cm.warp(680000300, 0);
                 cm.sendOk("Enjoy! Cherish your Photos Forever!");
                 cm.dispose();
                 break;

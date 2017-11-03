@@ -31,7 +31,7 @@ function start() {
             cm.sendOk("There is someone currently in this map, come back later.");
         else {
             cm.resetMapObjects(921100300);
-            cm.warp(921100300);
+            cm.warp(921100300, 0);
         }
             
         cm.dispose();

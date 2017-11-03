@@ -55,10 +55,10 @@ function action(mode, type, selection) {
         }else if(status == 1 && type == 1){
             cm.sendNext("It seems like you want to start your journey without taking the training program. Then, I will let you move on to the training ground. Be careful~");
         }else if(status == 1){
-            cm.warp(1);
+            cm.warp(1, 0);
             dispose();
         }else{
-            cm.warp(40000);
+            cm.warp(40000, 0);
             dispose();
         }
     }else

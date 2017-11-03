@@ -21,6 +21,6 @@
 */
 function enter(pi) {
     pi.useItem(2210016);
-    pi.warp(200090510);
+    pi.warp(200090510, 0);
     return true;
 }  

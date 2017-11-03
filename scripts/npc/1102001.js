@@ -40,7 +40,7 @@ function action(mode, type, selection) {
         if (status == 0 && mode == 1) {
 			cm.sendYesNo("Would you like to exit the drill hall?");
 		} else if(status == 1) {
-			cm.warp(130020000);
+			cm.warp(130020000, 0);
 			cm.dispose();
 		} else {
 			cm.dispose();

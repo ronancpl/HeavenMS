@@ -56,10 +56,6 @@ public class QuestActionManager extends NPCConversationManager {
         return forceStartQuest(quest);
     }
 
-    public boolean forceStartQuest(int id) {
-        return MapleQuest.getInstance(id).forceStart(getPlayer(), getNpc());
-    }
-
     public boolean forceCompleteQuest() {
         return forceCompleteQuest(quest);
     }
@@ -72,9 +68,5 @@ public class QuestActionManager extends NPCConversationManager {
     // For compatibility with some older scripts...
     public void completeQuest() {
         forceCompleteQuest();
-    }
-
-    public boolean forceCompleteQuest(int id) {
-        return MapleQuest.getInstance(id).forceComplete(getPlayer(), getNpc());
     }
 }

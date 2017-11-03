@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import server.MapleStatEffect;
-import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -53,11 +52,12 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         MapleCharacter player = c.getPlayer();
         player.setPetLootCd(System.currentTimeMillis());
         
-		/*long timeElapsed = System.currentTimeMillis() - player.getAutobanManager().getLastSpam(8);
-		if(timeElapsed < 300) {
-			AutobanFactory.FAST_ATTACK.alert(player, "Time: " + timeElapsed);
-		}
-		player.getAutobanManager().spam(8);*/
+        /*long timeElapsed = System.currentTimeMillis() - player.getAutobanManager().getLastSpam(8);
+        if(timeElapsed < 300) {
+                AutobanFactory.FAST_ATTACK.alert(player, "Time: " + timeElapsed);
+        }
+        player.getAutobanManager().spam(8);*/
+        
         AttackInfo attack = parseDamage(slea, player, false, false);
         if (player.getBuffEffect(MapleBuffStat.MORPH) != null) {
             if(player.getBuffEffect(MapleBuffStat.MORPH).isMorphWithoutAttack()) {

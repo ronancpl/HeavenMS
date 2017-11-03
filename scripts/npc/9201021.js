@@ -27,7 +27,7 @@ function start() {
 
 function action(mode, type, selection) {  
     if (mode < 1) {
-        cm.sendOk("Goodbye then");
+        cm.sendOk("Goodbye then.");
         cm.dispose();
         return;
     }
@@ -37,14 +37,14 @@ function action(mode, type, selection) {
         status--;
     if (status == 1) {
         if (selection < 1)
-            cm.warp(680000400);
+            cm.warp(680000400, 0);
         else if (selection < 2) {
             if (cm.haveItem(4031217,7))
                 cm.gainItem(4031217, -7);
             else
                 cm.sendOk("It seems like you don't have 7 Keys. Kill the cakes and candles in the Untamed Heart Hunting Ground to get keys. ");
         } else if (selection > 1) {
-            cm.warp(680000500);
+            cm.warp(680000500, 0);
             cm.sendOk("Goodbye. I hope you enjoyed the wedding!");
         }
         cm.dispose();

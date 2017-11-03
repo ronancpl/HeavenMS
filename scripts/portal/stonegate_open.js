@@ -24,7 +24,7 @@
 */
 function enter(pi) {
     if (pi.getPlayer().getMap().getReactorByName("stonegate").getState() == 1) {
-        pi.warp(990000430);
+        pi.warp(990000430, 0);
         return true;
     } else {
         pi.getPlayer().dropMessage(5, "The door is still blocked.");

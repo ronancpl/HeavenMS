@@ -6563,6 +6563,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             } catch (SQLException se) {
                 FilePrinter.printError(FilePrinter.SAVE_CHAR, se, "Error trying to rollback " + name);
             }
+        } catch (Exception e) {
+            FilePrinter.printError(FilePrinter.SAVE_CHAR, e, "Error saving " + name + " Level: " + level + " Job: " + job.getId());
         } finally {
             try {
                 con.setAutoCommit(true);

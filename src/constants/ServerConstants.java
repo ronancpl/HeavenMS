@@ -57,7 +57,7 @@ public class ServerConstants {
     public static final boolean USE_ERASE_UNTRADEABLE_DROP = true;  //Forces flagged untradeable items to disappear when dropped.
     public static final boolean USE_ERASE_PET_ON_EXPIRATION = false;//Forces pets to be removed from inventory when expire time comes, rather than converting it to a doll.
     public static final boolean USE_BUFF_MOST_SIGNIFICANT = true;   //When applying buffs, the player will stick with the highest stat boost among the listed, rather than overwriting stats.
-    public static final boolean USE_UNDERLEVELED_EXP_BLOCK = true;  //Players 20 levels below the killed mob will gain no experience from defeating it.
+    public static final boolean USE_UNDERLEVELED_EXP_BLOCK = true;  //Players N levels below the killed mob will gain no experience from defeating it.
     
     //Server Rates And Experience
     public static final int EXP_RATE = 10;
@@ -72,7 +72,7 @@ public class ServerConstants {
     public static final int PARTY_EXPERIENCE_MOD = 1;               //Change for event stuff.
     
     //Miscellaneous Configuration
-    public static final byte MIN_UNDERLEVEL_FOR_EXP_GAIN = 5;            //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_UNDERLEVELED_EXP_BLOCK" is enabled.
+    public static final byte MIN_UNDERLEVEL_TO_EXP_GAIN = 5;        //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_UNDERLEVELED_EXP_BLOCK" is enabled.
     public static final byte MAX_MONITORED_BUFFSTATS = 5;           //Limits accounting for "dormant" buff effects, that should take place when stronger stat buffs expires.
     public static final int MAX_AP = 32767;                             //Max AP allotted on the auto-assigner.
     public static final int MAX_EVENT_LEVELS = 8;                       //Event has different levels of rewarding system.

@@ -144,7 +144,7 @@ public class Pyramid extends PartyQuest {
 
     public void warp(int mapid) {
         for (MapleCharacter chr : getParticipants()) {
-            chr.changeMap(mapid);
+            chr.changeMap(mapid, 0);
         }
         if (stage > -1) {
             gaugeSchedule.cancel(false);

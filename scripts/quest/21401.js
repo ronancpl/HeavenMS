@@ -26,7 +26,7 @@ function start(mode, type, selection) {
 		
 		var map = qm.getClient().getChannelServer().getMapFactory().getMap(914020000);
 		spawnMob(-365, 86, 9001014, map);
-		qm.warp(914020000);
+		qm.warp(914020000, 0);
 		qm.dispose();
 	}
 }

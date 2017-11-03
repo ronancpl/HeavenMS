@@ -39848,35 +39848,95 @@
           <int name="id" value="4000126"/>
           <int name="count" value="-10"/>
         </imgdir>
-        <imgdir name="8">
-          <int name="id" value="1102041"/>
-          <int name="count" value="1"/>
-          <int name="job" value="1180673"/>
+      </imgdir>
+      <imgdir name="skill">
+        <imgdir name="0">
+          <int name="id" value="100"/>
+          <int name="skillLevel" value="1"/>
+          <int name="masterLevel" value="1"/>
+          <imgdir name="job">
+            <int name="0" value="0"/>
+            <int name="1" value="100"/>
+            <int name="2" value="110"/>
+            <int name="3" value="120"/>
+            <int name="4" value="130"/>
+            <int name="5" value="111"/>
+            <int name="6" value="121"/>
+            <int name="7" value="131"/>
+            <int name="8" value="112"/>
+            <int name="9" value="122"/>
+            <int name="10" value="132"/>
+            <int name="11" value="200"/>
+            <int name="12" value="210"/>
+            <int name="13" value="220"/>
+            <int name="14" value="230"/>
+            <int name="15" value="211"/>
+            <int name="16" value="221"/>
+            <int name="17" value="231"/>
+            <int name="18" value="212"/>
+            <int name="19" value="222"/>
+            <int name="20" value="232"/>
+            <int name="21" value="300"/>
+            <int name="22" value="310"/>
+            <int name="23" value="320"/>
+            <int name="24" value="311"/>
+            <int name="25" value="321"/>
+            <int name="26" value="312"/>
+            <int name="27" value="322"/>
+            <int name="28" value="400"/>
+            <int name="29" value="410"/>
+            <int name="30" value="420"/>
+            <int name="31" value="411"/>
+            <int name="32" value="421"/>
+            <int name="33" value="412"/>
+            <int name="34" value="422"/>
+            <int name="35" value="500"/>
+            <int name="36" value="510"/>
+            <int name="37" value="520"/>
+            <int name="38" value="511"/>
+            <int name="39" value="521"/>
+            <int name="40" value="512"/>
+            <int name="41" value="522"/>
+          </imgdir>
         </imgdir>
-        <imgdir name="9">
-          <int name="id" value="1102041"/>
-          <int name="count" value="1"/>
-          <int name="job" value="2099202"/>
+        <imgdir name="1">
+          <int name="id" value="10000100"/>
+          <int name="skillLevel" value="1"/>
+          <int name="masterLevel" value="1"/>
+          <imgdir name="job">
+            <int name="0" value="1000"/>
+            <int name="1" value="1100"/>
+            <int name="2" value="1110"/>
+            <int name="3" value="1111"/>
+            <int name="4" value="1112"/>
+            <int name="5" value="1200"/>
+            <int name="6" value="1210"/>
+            <int name="7" value="1211"/>
+            <int name="8" value="1212"/>
+            <int name="9" value="1300"/>
+            <int name="10" value="1310"/>
+            <int name="11" value="1311"/>
+            <int name="12" value="1312"/>
+            <int name="13" value="1400"/>
+            <int name="14" value="1410"/>
+            <int name="15" value="1411"/>
+            <int name="16" value="1412"/>
+            <int name="17" value="1500"/>
+            <int name="18" value="1510"/>
+            <int name="19" value="1511"/>
+            <int name="20" value="1512"/>
+          </imgdir>
         </imgdir>
-        <imgdir name="10">
-          <int name="id" value="1102042"/>
-          <int name="count" value="1"/>
-          <int name="job" value="4198404"/>
-        </imgdir>
-        <imgdir name="11">
-          <int name="id" value="1102041"/>
-          <int name="count" value="1"/>
-          <int name="job" value="8200"/>
-        </imgdir>
-        <imgdir name="12">
-          <int name="id" value="1102041"/>
-          <int name="count" value="1"/>
-          <int name="job" value="16400"/>
-        </imgdir>
-        <imgdir name="13">
-          <int name="id" value="1102041"/>
-          <int name="count" value="1"/>
-          <int name="job" value="32800"/>
+        <imgdir name="2">
+          <int name="id" value="20000100"/>
+          <int name="skillLevel" value="1"/>
+          <int name="masterLevel" value="1"/>
+          <imgdir name="job">
+            <int name="0" value="2100"/>
+            <int name="1" value="2110"/>
+            <int name="2" value="2111"/>
+            <int name="3" value="2112"/>
+          </imgdir>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -39884,9 +39944,9 @@
   <imgdir name="8254">
     <imgdir name="1">
       <imgdir name="item">
-        <imgdir name="0">
-          <int name="id" value="4031017"/>
-          <int name="count" value="-1"/>
+        <imgdir name="7">
+          <int name="id" value="1002508"/>
+          <int name="count" value="1"/>
         </imgdir>
         <imgdir name="1">
           <int name="id" value="4011007"/>
@@ -39909,8 +39969,12 @@
           <int name="count" value="-30"/>
         </imgdir>
         <imgdir name="6">
-          <int name="id" value="2049100"/>
-          <int name="count" value="5"/>
+          <int name="id" value="1082252"/>
+          <int name="count" value="1"/>
+        </imgdir>
+        <imgdir name="0">
+          <int name="id" value="4031017"/>
+          <int name="count" value="-1"/>
         </imgdir>
       </imgdir>
     </imgdir>

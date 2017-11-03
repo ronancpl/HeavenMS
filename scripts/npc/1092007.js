@@ -44,7 +44,7 @@ function action(mode, type, selection){
             }
         }
         else if (status == 1){
-            cm.warp(100000006);
+            cm.warp(100000006, 0);
             cm.dispose();
         }
     }

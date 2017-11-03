@@ -18,9 +18,9 @@ function action(mode, type, selection) {
             status--;
         if (status == 0) 
 			cm.sendYesNo("Would you like to skip the tutorials and head straight to Lith Harbor?");
-	else if (status == 1){
-			cm.warp(104000000);
-			cm.dispose();
-		}
-	}
+	else if (status == 1) {
+                cm.warp(104000000, 0);
+                cm.dispose();
+        }
+    }
 }

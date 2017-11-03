@@ -69,7 +69,7 @@ function action(mode, type, selection) {
 			cm.sendNextPrev("I've said too much. It's okay if you don't really understand everything I just told you. You'll get it eventually. For now, #byou should head to town#k. I'll stay by your side and help you until you get there.", 8);
 		} else if (status == 7) {
 			cm.spawnGuide();
-			cm.warp(140090100);
+			cm.warp(140090100, 0);
 			cm.dispose();
 		}	
 	        }	

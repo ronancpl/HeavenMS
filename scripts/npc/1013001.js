@@ -18,7 +18,7 @@ function action(mode, type, selection) {
 	} else if (status == 1) {
 	    cm.sendNextPrev("Go and fulfill your duties as the Dragon Master...", 1);
 	} else if (status == 2) {
-	    cm.warp(900090101);
+	    cm.warp(900090101, 0);
 	    cm.dispose();
 	}
 }

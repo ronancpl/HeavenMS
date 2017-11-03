@@ -27,5 +27,5 @@
 
 function act(){
     rm.playerMessage(5, "An unknown force has returned you to the starting point.");
-    rm.warp(280010000);
+    rm.warp(280010000, 0);
 }

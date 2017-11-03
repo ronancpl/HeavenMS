@@ -14,7 +14,7 @@ function start(mode, type, selection) {
 	if (mode != 1) {
 	    if(type == 1 && mode == 0)
 		    status -= 2;
-		else{
+		else {
 			//if(status == 0){
 				qm.sendOk("Really? It's an urgent matter, so if you have some time, please see me.");
 				qm.dispose();
@@ -23,8 +23,8 @@ function start(mode, type, selection) {
 				//qm.sendNext("Okay. In that case, I'll just give you the routes to the Kingdom of Mushroom. #bNear the west entrance of Henesys,#k you'll find an #bempty house#k. Enter the house, and turn left to enter#b<Themed Dungeon : Mushroom Castle>#k. That's the entrance to the Kingdom of Mushroom. There's not much time!");
 				//qm.forceStartQuest();
 				//return;
-			}
-		}
+                }
+        }
 	//}
 	if(status == 0) 
 		qm.sendAcceptDecline("Now that you have made the job advancement, you look like you're ready for this. I have something I'd like to ask you for help. Are you willing to listen?");
@@ -47,7 +47,7 @@ function end(mode, type, selection) {
 	    if(type == 1 && mode == 0)
 		    status -= 2;
 		else{
-		    qm.dispose();
+                        qm.dispose();
 			return;
 		}
 	}

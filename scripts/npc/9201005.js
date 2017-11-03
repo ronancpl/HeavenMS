@@ -90,11 +90,11 @@ function action(mode, type, selection) {
 				break;
 			case 3:
 				if (cm.haveItem(4000313)) {
-					cm.warp(680000210);
+					cm.warp(680000210, 0);
 					cm.sendOk("Enjoy the wedding. Don't drop your Gold Maple Leaf or you won't be able to finish the whole wedding.");
 					cm.dispose();
 				} else {
-					cm.sendOk("You do not have a Gold Maple Leaf");
+					cm.sendOk("You do not have a Gold Maple Leaf.");
 					cm.dispose();
 				}
 				break;

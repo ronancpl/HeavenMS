@@ -21,6 +21,7 @@
 */
 package net.server.channel.handlers;
 
+import client.MapleBuffStat;
 import client.MapleClient;
 import client.SkillFactory;
 import constants.skills.Bishop;
@@ -31,6 +32,7 @@ import constants.skills.FPArchMage;
 import constants.skills.ILArchMage;
 import constants.skills.Marksman;
 import constants.skills.WindArcher;
+import constants.skills.NightWalker;
 import net.AbstractMaplePacketHandler;
 import net.MaplePacketHandler;
 import tools.MaplePacketCreator;
@@ -43,6 +45,11 @@ public final class CancelBuffHandler extends AbstractMaplePacketHandler implemen
         int sourceid = slea.readInt();
         
         switch (sourceid) {
+            case NightWalker.DARK_SIGHT:    // wind walk as a dark sight...
+                c.getPlayer().cancelEffect(SkillFactory.getSkill(NightWalker.DARK_SIGHT).getEffect(1), false, -1);
+                c.getPlayer().cancelEffect(SkillFactory.getSkill(WindArcher.WIND_WALK).getEffect(1), false, -1);
+                break;
+            
             case FPArchMage.BIG_BANG:
             case ILArchMage.BIG_BANG:
             case Bishop.BIG_BANG:
@@ -54,6 +61,7 @@ public final class CancelBuffHandler extends AbstractMaplePacketHandler implemen
             case Evan.ICE_BREATH:
                 c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.skillCancel(c.getPlayer(), sourceid), false);
                 break;
+                
             default:
                 c.getPlayer().cancelEffect(SkillFactory.getSkill(sourceid).getEffect(1), false, -1);
                 break;

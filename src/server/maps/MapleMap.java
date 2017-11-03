@@ -1916,7 +1916,7 @@ public class MapleMap {
                 @Override
                 public void run() {
                     if (chr.getMapId() == 200090060) {
-                        chr.changeMap(140020300);
+                        chr.changeMap(140020300, 0);
                     }
                 }
             }, 60 * 1000);
@@ -1938,7 +1938,7 @@ public class MapleMap {
                 @Override
                 public void run() {
                     if (chr.getMapId() == 200090030) {
-                        chr.changeMap(130000210);
+                        chr.changeMap(130000210, 0);
                     }
                 }
             }, 60 * 1000);
@@ -1949,7 +1949,7 @@ public class MapleMap {
                 @Override
                 public void run() {
                     if (chr.getMapId() == 200090031) {
-                        chr.changeMap(101000400);
+                        chr.changeMap(101000400, 0);
                     }
                 }
             }, 60 * 1000);
@@ -1960,7 +1960,7 @@ public class MapleMap {
                 @Override
                 public void run() {
                     if (chr.getMapId() == 200090021) {
-                        chr.changeMap(200000161);
+                        chr.changeMap(200000161, 0);
                     }
                 }
             }, 60 * 1000);
@@ -1971,7 +1971,7 @@ public class MapleMap {
                 @Override
                 public void run() {
                     if (chr.getMapId() == 200090020) {
-                        chr.changeMap(130000210);
+                        chr.changeMap(130000210, 0);
                     }
                 }
             }, 60 * 1000);

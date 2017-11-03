@@ -1,8 +1,21 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+	This file is part of the MapleSolaxiaV2 Maple Story Server
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation version 3 as published by
+    the Free Software Foundation. You may not use, modify or distribute
+    this program under any other version of the GNU Affero General Public
+    License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package maplearrowfetcher;
 
 import life.MapleLifeFactory;
@@ -37,18 +50,14 @@ import tools.Pair;
  */
 
 public class MapleArrowFetcher {
-
-    /**
-     * @param args the command line arguments
-     */
     
     private static PrintWriter printWriter;
     private static String newFile = "lib/arrow_drop_data.sql";
     
-    private static int[] arrowWeight = new int[6];
-    
     private static int minArrowId = 2060000;
     private static int maxArrowId = 2061004;
+    
+    private static float correctionFactor = 2.2f;
     
     private static Map<Integer, MapleMonsterStats> mobStats;
     private static Map<Integer, Pair<Integer, Integer>> mobRange = new HashMap<>();
@@ -57,7 +66,7 @@ public class MapleArrowFetcher {
         int minRange, maxRange;
         
         // MIN range
-        minRange = (int)(1.895883884 * Math.exp(0.02673101054) * level * (boss ? 1.4 : 1.0));
+        minRange = (int)Math.ceil(((2.870503597 * level) - 1.870503597) * (boss ? 1.4 : 1.0) / correctionFactor);
         
         // MAX range
         maxRange = 3 * minRange;

@@ -58,7 +58,7 @@ function start(mode, type, selection) {
             qm.sendNextPrev("#b(You might be starting to remember something...)#k", 3);
         }
     } else if (status == 2) {
-        //qm.warp(914090100);
+        //qm.warp(914090100, 0);
         qm.dispose();
     }
 }

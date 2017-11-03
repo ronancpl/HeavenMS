@@ -35,7 +35,7 @@ function action(mode, type, selection){
             cm.sendOk("The Order of the Altair is a group of elite mercenaries that oversee the world's economy and battle operations. It was founded 40 years ago right after Black Mage was defeated in hopes of forseeing the next possible attack.");
             cm.dispose();
         } else if(status == 3){
-            cm.warp(105100300);
+            cm.warp(105100300, 0);
             cm.dispose();
         }
         } else {
@@ -44,7 +44,7 @@ function action(mode, type, selection){
             status++;
             } else if(status == 2){
                 if(cm.getPlayer().getLevel() > 60 && cm.getPlayer().getClient().getChannel() == BalrogPQ.channel){
-                cm.warp(105100300);
+                cm.warp(105100300, 0);
                 cm.dispose();
                 } else {
                     cm.sendOk("You may not battle the balrog when you are below Lv60! \r\n\r\n Or maybe you are not on the right channel.. Try CH" + BalrogPQ.channel + ".");

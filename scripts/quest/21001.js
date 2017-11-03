@@ -42,7 +42,7 @@ function start(mode, type, selection) {
 		} else if (status == 1) {
 			qm.gainItem(4001271, 1);
 			qm.forceStartQuest();
-			qm.warp(914000300);
+			qm.warp(914000300, 0);
 			qm.dispose();
 		}	
 }
@@ -79,7 +79,7 @@ function end(mode, type, selection) {
                 qm.removeEquipFromSlot(-11);
                 qm.forceCompleteQuest();
 
-                qm.warp(914090010); // Initialize Aran Tutorial Scenes
+                qm.warp(914090010, 0); // Initialize Aran Tutorial Scenes
                 qm.dispose();
         }
 }

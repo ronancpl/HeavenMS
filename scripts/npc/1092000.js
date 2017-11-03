@@ -46,7 +46,7 @@ function action(mode, type, selection){
 		else if (status == 2){
 			if (cm.canHold(4031847)){
 				cm.gainItem(4031847, 1);
-				cm.warp(912000100);
+				cm.warp(912000100, 0);
 			}
 			else{
 				cm.sendOk("I can't give you the empty bottle because your inventory is full. Please make some room in your Etc window.");
