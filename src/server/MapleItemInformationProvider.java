@@ -1129,7 +1129,6 @@ public class MapleItemInformationProvider {
             return isQuestItemCache.get(itemId);
         }
         MapleData data = getItemData(itemId);
-        System.out.println(data);
         boolean questItem = MapleDataTool.getIntConvert("info/quest", data, 0) == 1;
         isQuestItemCache.put(itemId, questItem);
         return questItem;

@@ -602,6 +602,8 @@ public class MapleMap {
     private void startItemMonitor() {
         chrWLock.lock();
         try {
+            if(itemMonitor != null) return;
+            
             itemMonitor = TimerManager.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
@@ -1093,14 +1095,13 @@ public class MapleMap {
 
     public void destroyReactor(int oid) {
         final MapleReactor reactor = getReactorByOid(oid);
-        TimerManager tMan = TimerManager.getInstance();
         broadcastMessage(MaplePacketCreator.destroyReactor(reactor));
         reactor.cancelReactorTimeout();
         reactor.setAlive(false);
         removeMapObject(reactor);
         
         if (reactor.getDelay() > 0) {
-            tMan.schedule(new Runnable() {
+            TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     respawnReactor(reactor);
@@ -1879,9 +1880,12 @@ public class MapleMap {
     }
     
     public void addPlayer(final MapleCharacter chr) {
+        int chrSize;
         chrWLock.lock();
         try {
             characters.add(chr);
+            chrSize = characters.size();
+                    
             addPartyMemberInternal(chr);
         } finally {
             chrWLock.unlock();
@@ -1889,7 +1893,7 @@ public class MapleMap {
         chr.setMapId(mapid);
             
         itemMonitorTimeout = 1;
-        if (getCharacters().size() <= 1) {
+        if (chrSize == 1) {
             if(!hasItemMonitor()) startItemMonitor();
             
             if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {

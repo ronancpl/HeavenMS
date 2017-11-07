@@ -131,7 +131,12 @@ public class EventInstanceManager {
         }
 
 	public EventManager getEm() {
-		return em;
+                sL.lock();
+                try {
+                        return em;
+                } finally {
+                        sL.unlock();
+                }
 	}
         
         public int getEventPlayersJobs() {
@@ -623,7 +628,10 @@ public class EventInstanceManager {
             }
         }
 
-	public void dispose() {
+	public synchronized void dispose() {
+                if(disposed) return;
+                
+                disposed = true;
                 try {
                         sL.lock();
                         try {
@@ -652,8 +660,14 @@ public class EventInstanceManager {
                 killCount.clear();
                 
                 disposeExpedition();
-                if(!eventCleared) em.disposeInstance(name);
-                em = null;
+                
+                sL.lock();
+                try {
+                        if(!eventCleared) em.disposeInstance(name);
+                        em = null;
+                } finally {
+                        sL.unlock();
+                }
 	}
 
 	public MapleMapFactory getMapFactory() {
@@ -664,12 +678,11 @@ public class EventInstanceManager {
 		TimerManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
-                                if(em == null) return;
-                                
 				try {
                                         sL.lock();
                                         try {
-                                                em.getIv().invokeFunction(methodName, EventInstanceManager.this);
+                                               if(em == null) return;
+                                               em.getIv().invokeFunction(methodName, EventInstanceManager.this);
                                         } finally {
                                                 sL.unlock();
                                         }
@@ -685,10 +698,18 @@ public class EventInstanceManager {
 	}
 
 	public void saveWinner(MapleCharacter chr) {
+                String emName;
+                sL.lock();
+                try {
+                       emName = em.getName();
+                } finally {
+                        sL.unlock();
+                }
+            
 		try {
                         Connection con = DatabaseConnection.getConnection();
 			try (PreparedStatement ps = con.prepareStatement("INSERT INTO eventstats (event, instance, characterid, channel) VALUES (?, ?, ?, ?)")) {
-				ps.setString(1, em.getName());
+				ps.setString(1, emName);
 				ps.setString(2, getName());
 				ps.setInt(3, chr.getId());
 				ps.setInt(4, chr.getClient().getChannel());
@@ -706,9 +727,14 @@ public class EventInstanceManager {
                 map.setEventInstance(this);
 
 		if (!mapFactory.isMapLoaded(mapId)) {
-			if (em.getProperty("shuffleReactors") != null && em.getProperty("shuffleReactors").equals("true")) {
-				map.shuffleReactors();
-			}
+                        sL.lock();
+                        try {
+                                if (em.getProperty("shuffleReactors") != null && em.getProperty("shuffleReactors").equals("true")) {
+                                        map.shuffleReactors();
+                                }
+                        } finally {
+                                sL.unlock();
+                        }
 		}
 		return map;
 	}
@@ -1035,8 +1061,14 @@ public class EventInstanceManager {
         
         private void disposeExpedition() {
                 if (expedition != null) {
-                        expedition.dispose(eventCleared);    
-                        em.getChannelServer().getExpeditions().remove(expedition);
+                        expedition.dispose(eventCleared);
+                        
+                        sL.lock();
+                        try {
+                                em.getChannelServer().getExpeditions().remove(expedition);
+                        } finally {
+                                sL.unlock();
+                        }
                         
                         expedition = null;
                 }
@@ -1044,7 +1076,14 @@ public class EventInstanceManager {
         
         public final void setEventCleared() {
                 eventCleared = true;
-                em.disposeInstance(name);
+                
+                sL.lock();
+                try {
+                        em.disposeInstance(name);
+                } finally {
+                        sL.unlock();
+                }
+                
                 disposeExpedition();
         }
         

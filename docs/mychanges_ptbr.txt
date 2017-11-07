@@ -642,3 +642,12 @@ Corrigido buff Wind Walk não cancelando quando atacando.
 03 Novembro 2017,
 Modificado custom questline: recompensa deixa de ser PAC com chaos scrolls p/ map chair skill com itens de Maple.
 Adicionado quest de Horus' Eye.
+Consertado Wind Walk agora atuando corretamente, não uma outra versão de Dark Sight.
+
+04 Novembro 2017,
+Corrigido WK Charge skills não sobrescrevendo uma à outra ao ativar as skills.
+Implementado nova ferramenta: MapleQuestItemFetcher. Ela vasculha a DB e os XMLs em busca de informações perdidas quanto aos itens de quest.
+
+05 Novembro 2017,
+Adicionado sistema de level cap para jobs correntes.
+Revisto acesso concorrente sobre o componente EM da classe EIM.

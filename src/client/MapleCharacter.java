@@ -2984,10 +2984,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private List<Pair<MapleBuffStat, MapleBuffStatValueHolder>> cancelEffectInternal(MapleStatEffect effect, boolean overwrite, long startTime, Set<MapleBuffStat> removedStats) {
-        Map<MapleBuffStat, MapleBuffStatValueHolder> buffstats;
+        Map<MapleBuffStat, MapleBuffStatValueHolder> buffstats = null;
+        MapleBuffStat ombs;
         if (!overwrite) {   // is removing the source effect, meaning every effect from this srcid is being purged
             buffstats = extractCurrentBuffStats(effect);
-        } else {            // is dropping ALL current statups that uses same stats as the given effect
+        } else if ((ombs = getSingletonStatupFromEffect(effect)) != null) {   // removing all effects of a buff having non-shareable buff stat.
+            MapleBuffStatValueHolder mbsvh = effects.get(ombs);
+            if(mbsvh != null) {
+                buffstats = extractCurrentBuffStats(mbsvh.effect);
+            }
+        }
+        
+        if (buffstats == null) {            // all else, is dropping ALL current statups that uses same stats as the given effect
             buffstats = extractLeastRelevantStatEffectsIfFull(effect);
         }
         
@@ -3178,7 +3186,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return extractedStatBuffs;
     }
     
-    private boolean isSingletonStatup(MapleBuffStat mbs) {
+    private static MapleBuffStat getSingletonStatupFromEffect(MapleStatEffect mse) {
+        for(Pair<MapleBuffStat, Integer> mbs : mse.getStatups()) {
+            if(isSingletonStatup(mbs.getLeft())) {
+                return mbs.getLeft();
+            }
+        }
+        
+        return null;
+    }
+    
+    private static boolean isSingletonStatup(MapleBuffStat mbs) {
         switch(mbs) {           //HPREC and MPREC are supposed to be singleton
             case COUPON_EXP1:
             case COUPON_EXP2:
@@ -3890,8 +3908,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return maxhp;
     }
 
-    public int getMaxLevel() {
+    public int getMaxClassLevel() {
         return isCygnus() ? 120 : 200;
+    }
+    
+    public int getMaxLevel() {
+        if(!ServerConstants.USE_ENFORCE_JOB_LEVEL_RANGE || isGmJob()) {
+            return getMaxClassLevel();
+        }
+        
+        return GameConstants.getJobMaxLevel(job);
     }
 
     public int getMaxMp() {
@@ -4691,12 +4717,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void increaseGuildCapacity() { //hopefully nothing is null
-        if (getMeso() < getGuild().getIncreaseGuildCost(getGuild().getCapacity())) {
+        if (getMeso() < MapleGuild.getIncreaseGuildCost(getGuild().getCapacity())) {
             dropMessage(1, "You don't have enough mesos.");
             return;
         }
         Server.getInstance().increaseGuildCapacity(guildid);
-        gainMeso(-getGuild().getIncreaseGuildCost(getGuild().getCapacity()), true, false, false);
+        gainMeso(-MapleGuild.getIncreaseGuildCost(getGuild().getCapacity()), true, false, false);
     }
 
     public boolean isActiveBuffedValue(int skillid) {
@@ -4741,13 +4767,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public boolean isCygnus() {
         return getJobType() == 1;
     }
+    
+    public boolean isGmJob() {
+        int jn = job.getJobNiche();
+        return jn >= 8 && jn <= 9;
+    }
 
     public boolean isAran() {
-        return getJob().getId() >= 2000 && getJob().getId() <= 2112;
+        return job.getId() >= 2000 && job.getId() <= 2112;
     }
 
     public boolean isBeginnerJob() {
-        return (getJob().getId() == 0 || getJob().getId() == 1000 || getJob().getId() == 2000);
+        return (job.getId() == 0 || job.getId() == 1000 || job.getId() == 2000);
     }
 
     public boolean isGM() {
@@ -4852,9 +4883,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
         }
         level++;
-        if (level >= getMaxLevel()) {
+        if (level >= getMaxClassLevel()) {
             exp.set(0);
-            level = getMaxLevel(); //To prevent levels past 200
+            level = getMaxClassLevel(); //To prevent levels past the maximum
         }
         
         maxhp = Math.min(30000, maxhp);

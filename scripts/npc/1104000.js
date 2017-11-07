@@ -15,8 +15,6 @@ function action(mode, type, selection){
 	else
 		status++;
 
-
-
 	if(status == 0){
 		cm.sendNext("What the... you don't belong here!");
 	}

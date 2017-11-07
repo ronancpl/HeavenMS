@@ -5,7 +5,16 @@
 
 var status = -1;
 
+function start() {
+    action(1, 0, 0);
+}
+
 function action(mode, type, selection) {
+    if(mode == -1 || mode == 0 && type > 0) {
+        cm.dispose();
+        return;
+    }
+    
     if (mode == 1) {
     	status++;
     } else {
@@ -16,8 +25,8 @@ function action(mode, type, selection) {
     } else if (status == 1) {
     	cm.sendNextPrev("#b(The Black Wings? Huh? Who are they? And how is all this related to the Black Mage? Hm, maybe you should report this info to Tru.)#k", 3);
     } else if (status == 2) {
-		cm.startQuest(21760);
-		cm.warp(105040200, 3);//104000004 
-		cm.dispose();
+        cm.startQuest(21760);
+        cm.warp(105040200, 3);//104000004 
+        cm.dispose();
     }
 }

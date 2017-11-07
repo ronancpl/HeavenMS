@@ -27,7 +27,6 @@ importPackage(Packages.tools);
 var entryMap = 922000010;
 var exitMap = 221024400;
 var eventTime = 10; //10 minutes
-var eim;
 
 function init() {
     em.setProperty("noEntry","false");

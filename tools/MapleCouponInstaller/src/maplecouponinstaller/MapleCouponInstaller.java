@@ -28,9 +28,9 @@ import java.sql.SQLException;
  *
  * @author RonanLana
  * 
- * This application gathers information about the Cash Shop EXP & DROP coupons, such
- * as applied rates, active times of day and days of week and dumps them in a SQL
- * table, in which will be used by the server.
+ * This application gathers information about the Cash Shop's EXP & DROP coupons,
+ * such as applied rates, active times of day and days of week and dumps them in
+ * a SQL table, in which will be used by the server.
  * 
  */
 public class MapleCouponInstaller {

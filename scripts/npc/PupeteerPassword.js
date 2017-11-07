@@ -22,11 +22,10 @@ function action(mode, type, selection){
 	}
 	else if(status == 1){
 		if(cm.getText() == "Francis is a genius Puppeteer!"){
-			
-			if(cm.isQuestCompleted(20730) || !cm.isQuestStarted(20730) || (cm.isQuestStarted(20730) && cm.getQuestProgress(20730, 9300285) > 0))
-				cm.warp(910510000, 1);
-			else if(cm.isQuestStarted(20730))
+			if(cm.isQuestStarted(20730) && cm.getQuestProgress(20730, 9300285) == 0)
 				cm.warp(910510001, 1);
+			else
+                                cm.playerMessage(5, "Although you said the right answer, some mysterious forces is blocking the way in.");
 
 			cm.dispose();
 		}

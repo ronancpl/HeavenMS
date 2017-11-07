@@ -79,9 +79,9 @@ function action(mode, type, selection) {
                             cm.sendNext("Haha! Who are you trying to impress with a heart like that?\r\nGo back home where you belong!");
                         } else {
                            if(cm.getClient().getChannelServer().getMapFactory().getMap(925020010).getCharacters().size() > 0) {
-								cm.sendOk("Someone is already in Dojo");
-								cm.dispose();
-								return;
+                                cm.sendOk("Someone is already in Dojo.");
+                                cm.dispose();
+                                return;
                             }
                             cm.warp(925020010, 0);
                             cm.getPlayer().setFinishedDojoTutorial();

@@ -40,9 +40,10 @@ import tools.Pair;
 /**
  *
  * @author RonanLana
+ * 
  * This application traces arrow drop data on the underlying DB (that must be
- * defined on the DatabaseConnection file of this project) and generates a SQL
- * file that proposes updated arrow quantitty on drop entries for the drop_data table.
+ * defined on the DatabaseConnection file of this project) and generates a SQL file
+ * that proposes updated arrow quantitty on drop entries for the drop_data table.
  * 
  * The arrow quantity range is calculated accordingly with the target mob stats, such
  * as level and if it's a boss or not.

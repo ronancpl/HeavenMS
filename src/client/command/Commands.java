@@ -1174,7 +1174,7 @@ public class Commands {
 			}
                     
                         player.loseExp(player.getExp(), false, false);
-                        player.setLevel(Math.min(Integer.parseInt(sub[1]), player.getMaxLevel()) - 1);
+                        player.setLevel(Math.min(Integer.parseInt(sub[1]), player.getMaxClassLevel()) - 1);
                         
                         player.resetPlayerRates();
                         if(ServerConstants.USE_ADD_RATES_BY_LEVEL == true) player.setPlayerRates();
@@ -1189,7 +1189,7 @@ public class Commands {
 				break;
 			}
                     
-			while (player.getLevel() < Math.min(255, Integer.parseInt(sub[1]))) {
+			while (player.getLevel() < Math.min(player.getMaxClassLevel(), Integer.parseInt(sub[1]))) {
 				player.levelUp(false);
 			}
                     break;

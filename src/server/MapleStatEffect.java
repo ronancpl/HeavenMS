@@ -455,9 +455,10 @@ public class MapleStatEffect {
                 case Marksman.SHARP_EYES:
                     statups.add(new Pair<>(MapleBuffStat.SHARP_EYES, Integer.valueOf(ret.x << 8 | ret.y)));
                     break;
-                // THIEF
-                case Rogue.DARK_SIGHT:
                 case WindArcher.WIND_WALK:
+                    statups.add(new Pair<>(MapleBuffStat.WIND_WALK, Integer.valueOf(x)));
+                    break;
+                case Rogue.DARK_SIGHT:
                 case NightWalker.DARK_SIGHT:
                     statups.add(new Pair<>(MapleBuffStat.DARKSIGHT, Integer.valueOf(x)));
                     break;
@@ -1099,6 +1100,9 @@ public class MapleStatEffect {
             } else if (isDs()) {
                 List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<>(MapleBuffStat.DARKSIGHT, 0));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), dsstat);
+            } else if (isWw()) {
+                List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<>(MapleBuffStat.WIND_WALK, 0));
+                mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), dsstat);
             } else if (isCombo()) {
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), statups);
             } else if (isMonsterRiding()) {
@@ -1353,7 +1357,11 @@ public class MapleStatEffect {
     }
     
     private boolean isDs() {
-        return skill && (sourceid == Rogue.DARK_SIGHT || sourceid == WindArcher.WIND_WALK || sourceid == NightWalker.DARK_SIGHT);
+        return skill && (sourceid == Rogue.DARK_SIGHT || sourceid == NightWalker.DARK_SIGHT);
+    }
+    
+    private boolean isWw() {
+        return skill && (sourceid == WindArcher.WIND_WALK);
     }
 
     private boolean isCombo() {

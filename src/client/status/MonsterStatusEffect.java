@@ -63,7 +63,7 @@ public class MonsterStatusEffect {
 	if (cancelTask != null) {
 	    cancelTask.cancel(false);
 	}
-		cancelTask = null;
+        cancelTask = null;
     }
 
     public ScheduledFuture<?> getCancelTask() {

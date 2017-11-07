@@ -62,7 +62,29 @@ public class GameConstants {
         330000, 340000, 350000, 360000, 370000, 380000, 390000, 400000, 410000, 420000, 430000, 440000, 450000, 460000, 470000, 480000, 490000, 500000, 510000, 520000,
         530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000, 690000, 710000, 730000, 750000, 770000, 790000, 810000, 830000, 850000, 870000, 890000, 910000};
     
-
+    public static int getJobMaxLevel(MapleJob job) {
+        if(job.getId() % 1000 == 0) {   // beginner
+            return 10;
+            
+        } else if(job.getId() % 100 == 0) {   // 1st job
+            return 30;
+            
+        } else {
+            int jobBranch = job.getId() % 10;
+            
+            switch(jobBranch) {
+                case 0:
+                    return 70;   // 2nd job
+                    
+                case 1:
+                    return 120;   // 3rd job
+                    
+                default:
+                    return (job.getId() / 1000 == 1) ? 120 : 200;   // 4th job: cygnus is 120, rest is 200
+            }
+        }
+    }
+    
     public static int getHiddenSkill(final int skill) {
         switch (skill) {
             case Aran.HIDDEN_FULL_DOUBLE:
@@ -81,7 +103,6 @@ public class GameConstants {
         }
         return 0;
     }
-    
     
     public static boolean isAranSkills(final int skill) {
     	return Aran.FULL_SWING == skill || Aran.OVER_SWING == skill || Aran.COMBO_TEMPEST == skill || Aran.COMBO_FENRIR == skill || Aran.COMBO_DRAIN == skill 

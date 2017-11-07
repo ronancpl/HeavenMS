@@ -110,7 +110,7 @@ public enum MapleBuffStat {
     // needs Soul Stone
     //end incorrect buffstats
     
-    //WIND_WALK(0x400000000L, true),
+    WIND_WALK(0x400000000L, true),
     ARAN_COMBO(0x1000000000L, true),
     COMBO_DRAIN(0x2000000000L, true),
     COMBO_BARRIER(0x4000000000L, true),
