@@ -32,7 +32,7 @@ import java.nio.charset.Charset;
  * @since Revision 323
  */
 public class GenericLittleEndianWriter implements LittleEndianWriter {
-    private static Charset ASCII = Charset.forName("US-ASCII");
+    private static Charset ASCII = Charset.forName("GBK");
     private ByteOutputStream bos;
 
     /**
@@ -129,7 +129,8 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
      */
     @Override
     public void writeMapleAsciiString(String s) {
-        writeShort((short) s.length());
+        // Edited for Chinese compatibility
+        writeShort((short) s.getBytes().length);
         writeAsciiString(s);
     }
 

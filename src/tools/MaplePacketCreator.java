@@ -6331,7 +6331,8 @@ public class MaplePacketCreator {
                         for (DueyPackages dp : packages) {
                                 mplew.writeInt(dp.getPackageId());
                                 mplew.writeAsciiString(dp.getSender());
-                                for (int i = dp.getSender().length(); i < 13; i++) {
+                                // Edited for Chinese compatibility
+                                for (int i = dp.getSender().getBytes().length; i < 13; i++) {
                                         mplew.write(0);
                                 }
                                 mplew.writeInt(dp.getMesos());
