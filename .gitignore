@@ -2,11 +2,12 @@
 .idea/
 
 # build files
-build/**
-tools/MapleArrowFetcher/build/**
-tools/MapleCouponInstaller/build/**
-tools/MapleIdRetriever/build/**
-tools/MapleMesoFetcher/build/**
-tools/MapleQuestItemFetcher/build/**
-tools/MobBookIndexer/build/**
-tools/MobBookUpdate/build/**
+*build.xml
+/build/**
+/tools/MapleArrowFetcher/build/**
+/tools/MapleCouponInstaller/build/**
+/tools/MapleIdRetriever/build/**
+/tools/MapleMesoFetcher/build/**
+/tools/MapleQuestItemFetcher/build/**
+/tools/MobBookIndexer/build/**
+/tools/MobBookUpdate/build/**
