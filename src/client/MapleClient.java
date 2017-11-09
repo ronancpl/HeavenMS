@@ -41,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -70,7 +69,6 @@ import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
 import server.life.MapleMonster;
 import server.MapleTrade;
-import server.TimerManager;
 import server.maps.*;
 import server.quest.MapleQuest;
 import tools.LogHelper;
@@ -101,7 +99,6 @@ public class MapleClient {
 	private int gmlevel;
 	private Set<String> macs = new HashSet<>();
 	private Map<String, ScriptEngine> engines = new HashMap<>();
-	private ScheduledFuture<?> idleTask = null;
 	private byte characterSlots = 3;
 	private byte loginattempt = 0;
 	private String pin = null;
@@ -941,15 +938,13 @@ public class MapleClient {
 	}
 
 	private void clear() {  //usable when defining client = null shortly after
+                Server.getInstance().unregisterLoginState(this);
+            
 		this.accountName = null;
 		this.macs = null;
 		this.hwid = null;
 		this.birthday = null;
 		//this.engines = null;
-		if (this.idleTask != null) {
-			this.idleTask.cancel(true);
-			this.idleTask = null;
-		}
 		this.player = null;
 		this.receive = null;
 		this.send = null;
@@ -1005,25 +1000,17 @@ public class MapleClient {
 		lastPong = System.currentTimeMillis();
 	}
 
-	public void sendPing() {
-		final long then = System.currentTimeMillis();
-		announce(MaplePacketCreator.getPing());
-		TimerManager.getInstance().schedule(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					if (lastPong < then) {
-						if (session != null && session.isConnected()) {
-							session.close(false);
-						}
-					}
-				} catch (NullPointerException e) {
-                                    e.printStackTrace();
-				}
-			}
-		}, 15000);
-	}
+        public void testPing(long timeThen) {
+                try {
+                        if (lastPong < timeThen) {
+                                if (session != null && session.isConnected()) {
+                                        session.close(false);
+                                }
+                        }
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+        }
 	
 	public String getHWID() {
 		return hwid;
@@ -1051,14 +1038,6 @@ public class MapleClient {
 
 	public void removeScriptEngine(String name) {
                 engines.remove(name);
-	}
-
-	public ScheduledFuture<?> getIdleTask() {
-		return idleTask;
-	}
-
-	public void setIdleTask(ScheduledFuture<?> idleTask) {
-		this.idleTask = idleTask;
 	}
 
 	public NPCConversationManager getCM() {
@@ -1321,6 +1300,7 @@ public class MapleClient {
                 player.cancelBuffExpireTask();
                 player.cancelDiseaseExpireTask();
                 player.cancelSkillCooldownTask();
+                player.cancelQuestExpirationTask();
 		//Cancelling magicdoor? Nope
 		//Cancelling mounts? Noty
 		if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {

@@ -24,6 +24,7 @@ package net.server.handlers.login;
 import java.util.Calendar;
 
 import net.MaplePacketHandler;
+import net.server.Server;
 import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -73,12 +74,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
     
     private static void login(MapleClient c){
         c.announce(MaplePacketCreator.getAuthSuccess(c));//why the fk did I do c.getAccountName()?
-        final MapleClient client = c;
-        c.setIdleTask(TimerManager.getInstance().schedule(new Runnable() {
-            @Override
-            public void run() {
-                client.disconnect(false, false);
-            }
-        }, 600000));
+        
+        Server.getInstance().registerLoginState(c);
     }
 }

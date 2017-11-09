@@ -37,6 +37,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
@@ -63,6 +64,7 @@ import server.TimerManager;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.Pair;
+import client.MapleClient;
 import client.MapleCharacter;
 import client.SkillFactory;
 import constants.ItemConstants;
@@ -82,7 +84,8 @@ public class Server implements Runnable {
     private static Server instance = null;
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
     private final Map<Integer, MapleGuild> guilds = new LinkedHashMap<>();
-    private final Lock shutdownLock = new ReentrantLock();
+    private final Map<MapleClient, Long> inLoginState = new LinkedHashMap<>();
+    private final Lock srvLock = new ReentrantLock();
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new LinkedHashMap<>();
     private boolean online = false;
@@ -279,6 +282,7 @@ public class Server implements Runnable {
         TimerManager tMan = TimerManager.getInstance();
         tMan.start();
         tMan.register(tMan.purge(), ServerConstants.PURGING_INTERVAL);//Purging ftw...
+        disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
         tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
@@ -720,11 +724,64 @@ public class Server implements Runnable {
         return worlds;
     }
 
+    public void registerLoginState(MapleClient c) {
+        srvLock.lock();
+        try {
+            inLoginState.put(c, System.currentTimeMillis() + 600000);
+        } finally {
+            srvLock.unlock();
+        }
+    }
+    
+    public void unregisterLoginState(MapleClient c) {
+        srvLock.lock();
+        try {
+            inLoginState.remove(c);
+        } finally {
+            srvLock.unlock();
+        }
+    }
+    
+    private void disconnectIdlesOnLoginState() {
+        srvLock.lock();
+        try {
+            List<MapleClient> toDisconnect = new LinkedList<>();
+            long timeNow = System.currentTimeMillis();
+            
+            for(Entry<MapleClient, Long> mc : inLoginState.entrySet()) {
+                if(timeNow > mc.getValue()) {
+                    toDisconnect.add(mc.getKey());
+                }
+            }
+            
+            for(MapleClient c : toDisconnect) {
+                if(c.isLoggedIn()) {
+                    c.disconnect(false, false);
+                } else {
+                    c.getSession().close(true);
+                }
+                
+                inLoginState.remove(c);
+            }
+        } finally {
+            srvLock.unlock();
+        }
+    }
+    
+    private void disconnectIdlesOnLoginTask() {
+        TimerManager.getInstance().register(new Runnable() {
+            @Override
+            public void run() {
+                disconnectIdlesOnLoginState();
+            }
+        }, 300000);
+    }
+    
     public final Runnable shutdown(final boolean restart) {//no player should be online when trying to shutdown!
         return new Runnable() {
             @Override
             public void run() {
-                shutdownLock.lock();
+                srvLock.lock();
                 
                 try {
                     System.out.println((restart ? "Restarting" : "Shutting down") + " the server!\r\n");
@@ -788,7 +845,7 @@ public class Server implements Runnable {
                         getInstance().run();//DID I DO EVERYTHING?! D:
                     }
                 } finally {
-                    shutdownLock.unlock();
+                    srvLock.unlock();
                 }
             }
         };

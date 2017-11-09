@@ -132,7 +132,7 @@ public enum SendOpcode {
     NOTIFY_LEVELUP(0x69),
     NOTIFY_MARRIAGE(0x6A),
     NOTIFY_JOB_CHANGE(0x6B),
-    //SET_BUY_EQUIP_EXT(0x6C),//lol?
+    //SET_BUY_EQUIP_EXT(0x6C),  //probably extra pendant slot for other versions?
     MAPLE_TV_USE_RES(0x6D), //It's not blank, It's a popup nibs
     AVATAR_MEGAPHONE_RESULT(0x6E),//bot useless..
     SET_AVATAR_MEGAPHONE(0x6F),
@@ -145,7 +145,7 @@ public enum SendOpcode {
     NEW_YEAR_CARD_RES(0x76),
     RANDOM_MORPH_RES(0x77),
     CANCEL_NAME_CHANGE_BY_OTHER(0x78),
-    SET_BUY_EQUIP_EXT(0x79),
+    SET_EXTRA_PENDANT_SLOT(0x79),
     SCRIPT_PROGRESS_MESSAGE(0x7A),
     DATA_CRC_CHECK_FAILED(0x7B),
     MACRO_SYS_DATA_INIT(0x7C),

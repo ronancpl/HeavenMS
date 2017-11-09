@@ -297,7 +297,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
         if (mc.getGuildId() <= 0) {
             return;
         }
-        Connection con = null;
+        Connection con;
         try {
             con = DatabaseConnection.getConnection();
             PreparedStatement ps2;

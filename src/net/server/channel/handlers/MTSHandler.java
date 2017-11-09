@@ -343,15 +343,15 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 }
             } else if (op == 9) { //add to cart
                 int id = slea.readInt(); //id of the item
-                Connection con = null;
+                Connection con;
                 try {
                     con = DatabaseConnection.getConnection();
-                    try (PreparedStatement ps1 = con.prepareStatement("SELECT * FROM mts_items WHERE id = ? AND seller <> ?")) {
-                        ps1.setInt(1, id);//Previene que agregues al cart tus propios items
+                    try (PreparedStatement ps1 = con.prepareStatement("SELECT id FROM mts_items WHERE id = ? AND seller <> ?")) {
+                        ps1.setInt(1, id);  //Dummy query, prevents adding to cart self owned items
                         ps1.setInt(2, c.getPlayer().getId());
                         try (ResultSet rs1 = ps1.executeQuery()) {
                             if (rs1.next()) {
-                                PreparedStatement ps = con.prepareStatement("SELECT * FROM mts_cart WHERE cid = ? AND itemid = ?");
+                                PreparedStatement ps = con.prepareStatement("SELECT cid FROM mts_cart WHERE cid = ? AND itemid = ?");
                                 ps.setInt(1, c.getPlayer().getId());
                                 ps.setInt(2, id);
                                 try (ResultSet rs = ps.executeQuery()) {

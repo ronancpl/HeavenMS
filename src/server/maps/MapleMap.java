@@ -98,6 +98,7 @@ public class MapleMap {
     private Map<Integer, MaplePortal> portals = new HashMap<>();
     private Map<Integer, Integer> backgroundTypes = new HashMap<>();
     private Map<String, Integer> environment = new LinkedHashMap<>();
+    private Map<MapleMapItem, Long> droppedItems = new LinkedHashMap<>();
     private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
@@ -130,6 +131,7 @@ public class MapleMap {
     private int mobCapacity = -1;
     private ScheduledFuture<?> mapMonitor = null;
     private ScheduledFuture<?> itemMonitor = null;
+    private ScheduledFuture<?> expireItemsTask = null;
     private short itemMonitorTimeout;
     private Pair<Integer, String> timeMob = null;
     private short mobInterval = 5000;
@@ -368,7 +370,6 @@ public class MapleMap {
     
     private void spawnRangedMapObject(MapleMapObject mapobject, DelayedPacketCreation packetbakery, SpawnCondition condition) {
         chrRLock.lock();
-        
         try {
             int curOID = getUsableOID();
             mapobject.setObjectId(curOID);
@@ -585,6 +586,9 @@ public class MapleMap {
         try {
             itemMonitor.cancel(false);
             itemMonitor = null;
+            
+            expireItemsTask.cancel(false);
+            expireItemsTask = null;
         } finally {
             chrWLock.unlock();
         }
@@ -621,6 +625,13 @@ public class MapleMap {
                     if(!registeredDrops.isEmpty()) cleanItemMonitor();
                 }
             }, ServerConstants.ITEM_MONITOR_TIME, ServerConstants.ITEM_MONITOR_TIME);
+            
+            expireItemsTask = TimerManager.getInstance().register(new Runnable() {
+                @Override
+                public void run() {
+                    makeDisappearExpiredItemDrops();
+                }
+            }, ServerConstants.ITEM_EXPIRE_CHECK, ServerConstants.ITEM_EXPIRE_CHECK);
                     
             itemMonitorTimeout = 1;
         } finally {
@@ -637,7 +648,7 @@ public class MapleMap {
         }
     }
     
-    private void registerItemDrop(MapleMapItem mdrop) {
+    private void instantiateItemDrop(MapleMapItem mdrop) {
         if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
             MapleMapObject mapobj;
             
@@ -654,16 +665,40 @@ public class MapleMap {
             makeDisappearItemFromMap(mapobj);
         }
         
-        if(!everlast) TimerManager.getInstance().schedule(new ExpireMapItemJob(mdrop), ServerConstants.ITEM_EXPIRE_TIME);
-        
         objectWLock.lock();
         try {
+            if(!everlast) registerItemDrop(mdrop);
             registeredDrops.add(new WeakReference<>((MapleMapObject) mdrop));
         } finally {
             objectWLock.unlock();
         }
         
         droppedItemCount.incrementAndGet();
+    }
+    
+    private void registerItemDrop(MapleMapItem mdrop) {
+        droppedItems.put(mdrop, System.currentTimeMillis() + ServerConstants.ITEM_EXPIRE_TIME);
+    }
+    
+    private void makeDisappearExpiredItemDrops() {
+        objectWLock.lock();
+        try {
+            List<MapleMapItem> toDisappear = new LinkedList<>();
+            long timeNow = System.currentTimeMillis();
+            
+            for(Entry<MapleMapItem, Long> it : droppedItems.entrySet()) {
+                if(it.getValue() < timeNow) {
+                    toDisappear.add(it.getKey());
+                }
+            }
+            
+            for(MapleMapItem mmi : toDisappear) {
+                makeDisappearItemFromMap(mmi);
+                droppedItems.remove(mmi);
+            }
+        } finally {
+            objectWLock.unlock();
+        }
     }
     
     public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) {
@@ -686,7 +721,7 @@ public class MapleMap {
             }
         }, null);
 
-        registerItemDrop(mdrop);
+        instantiateItemDrop(mdrop);
         activateItemReactors(mdrop, chr.getClient());
     }
 
@@ -702,7 +737,7 @@ public class MapleMap {
             }
         }, null);
 
-        registerItemDrop(mdrop);
+        instantiateItemDrop(mdrop);
     }
 
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
@@ -1719,7 +1754,7 @@ public class MapleMap {
         }, null);
         broadcastMessage(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 0));
 
-        registerItemDrop(mdrop);
+        instantiateItemDrop(mdrop);
         activateItemReactors(mdrop, owner.getClient());
     }
     
@@ -2691,20 +2726,6 @@ public class MapleMap {
             } finally {
                 mapitem.unlockItem();
             }
-        }
-    }
-
-    private class ExpireMapItemJob implements Runnable {
-
-        private MapleMapItem mapitem;
-
-        public ExpireMapItemJob(MapleMapItem mapitem) {
-            this.mapitem = mapitem;
-        }
-
-        @Override
-        public void run() {
-            makeDisappearItemFromMap(mapitem);
         }
     }
 

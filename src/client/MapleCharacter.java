@@ -257,6 +257,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
     private EnumMap<MapleDisease, MapleDiseaseValueHolder> diseases = new EnumMap<>(MapleDisease.class);
     private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
+    private Map<MapleQuest, Long> questExpirations = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
     private ScheduledFuture<?> hpDecreaseTask;
     private ScheduledFuture<?> beholderHealingSchedule, beholderBuffSchedule, berserkSchedule;
@@ -264,14 +265,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> buffExpireTask = null;
     private ScheduledFuture<?> itemExpireTask = null;
     private ScheduledFuture<?> diseaseExpireTask = null;
+    private ScheduledFuture<?> questExpireTask = null;
     private ScheduledFuture<?> recoveryTask = null;
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    private List<ScheduledFuture<?>> timers = new ArrayList<>();
     private Lock chrLock = new ReentrantLock(true);
     private Lock effLock = new ReentrantLock(true);
-    private Lock petLock = new ReentrantLock(true);
+    private Lock petLock = new ReentrantLock(true); // for quest tasks as well
     private Lock prtLock = new ReentrantLock();
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
@@ -2088,13 +2089,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             addHP(-getMap().getHPDec());
             lastHpDec = System.currentTimeMillis();
         }
-        
-        hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
+    }
+    
+    private void startHpDecreaseTask(long lastHpTask) {
+        hpDecreaseTask = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
                 doHurtHp();
             }
-        }, 10000);
+        }, 10000, 10000 - lastHpTask);
     }
     
     public void resetHpDecreaseTask() {
@@ -2103,16 +2106,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         long lastHpTask = System.currentTimeMillis() - lastHpDec;
-        if(lastHpTask >= 10000) {
-            doHurtHp();
-        } else {
-            hpDecreaseTask = TimerManager.getInstance().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    doHurtHp();
-                }
-            }, 10000 - lastHpTask);
-        }
+        startHpDecreaseTask((lastHpTask > 10000) ? 10000 : lastHpTask);
     }
     
     public void dropMessage(String message) {
@@ -2125,10 +2119,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public String emblemCost() {
         return nf.format(MapleGuild.CHANGE_EMBLEM_COST);
-    }
-
-    public List<ScheduledFuture<?>> getTimers() {
-        return timers;
     }
 
     private void enforceMaxHpMp() {
@@ -7221,7 +7211,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void showNote() {
         try {
             Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM notes WHERE `to`=? AND `deleted` = 0", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM notes WHERE `to` = ? AND `deleted` = 0", ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
                 ps.setString(1, this.getName());
                 try (ResultSet rs = ps.executeQuery()) {
                     rs.last();
@@ -7466,15 +7456,83 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         updateQuest(newStatus);
     }
     
-    public void questTimeLimit(final MapleQuest quest, int seconds) {
-        ScheduledFuture<?> sf = TimerManager.getInstance().schedule(new Runnable() {
-            @Override
-            public void run() {
-                expireQuest(quest);
+    public void cancelQuestExpirationTask() {
+        petLock.lock();
+        try {
+            if (questExpireTask != null) {
+                questExpireTask.cancel(false);
+                questExpireTask = null;
             }
-        }, seconds * 1000);
+        } finally {
+            petLock.unlock();
+        }
+    }
+    
+    public void questExpirationTask() {
+        petLock.lock();
+        try {
+            if(!questExpirations.isEmpty()) {
+                if(questExpireTask == null) {
+                    questExpireTask = TimerManager.getInstance().register(new Runnable() {
+                        @Override
+                        public void run() {
+                            runQuestExpireTask();
+                        }
+                    }, 10 * 1000);
+                }
+            }
+        } finally {
+            petLock.unlock();
+        }
+    }
+    
+    private void runQuestExpireTask() {
+        petLock.lock();
+        try {
+            long timeNow = System.currentTimeMillis();
+            List<MapleQuest> expireList = new LinkedList<>();
+            
+            for(Entry<MapleQuest, Long> qe : questExpirations.entrySet()) {
+                if(qe.getValue() <= timeNow) expireList.add(qe.getKey());
+            }
+            
+            if(!expireList.isEmpty()) {
+                for(MapleQuest quest : expireList) {
+                    expireQuest(quest);
+                    questExpirations.remove(quest);
+                }
+                
+                if(questExpirations.isEmpty()) {
+                    questExpireTask.cancel(false);
+                    questExpireTask = null;
+                }
+            }
+        } finally {
+            petLock.unlock();
+        }
+    }
+    
+    private void registerQuestExpire(MapleQuest quest, long time) {
+        petLock.lock();
+        try {
+            if(questExpireTask == null) {
+                questExpireTask = TimerManager.getInstance().register(new Runnable() {
+                    @Override
+                    public void run() {
+                        runQuestExpireTask();
+                    }
+                }, 10 * 1000);
+            }
+            
+            questExpirations.put(quest, System.currentTimeMillis() + time);
+        } finally {
+            petLock.unlock();
+        }
+    }
+    
+    public void questTimeLimit(final MapleQuest quest, int seconds) {
+        registerQuestExpire(quest, seconds * 1000);
         announce(MaplePacketCreator.addQuestTimeLimit(quest.getId(), seconds * 1000));
-        timers.add(sf);
     }
     
     public void questTimeLimit2(final MapleQuest quest, long expires) {
@@ -7483,14 +7541,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if(timeLeft <= 0) {
             expireQuest(quest);
         } else {
-            ScheduledFuture<?> sf = TimerManager.getInstance().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    expireQuest(quest);
-                }
-            }, timeLeft);
-
-            timers.add(sf);
+            registerQuestExpire(quest, timeLeft);
         }
     }
 
@@ -7903,10 +7954,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         cancelSkillCooldownTask();
         cancelExpirationTask();
         
-        for (ScheduledFuture<?> sf : timers) {
-            sf.cancel(false);
+        petLock.lock();
+        try {
+            if (questExpireTask != null) {
+                questExpireTask.cancel(false);
+                questExpireTask = null;
+                
+                questExpirations.clear();
+                questExpirations = null;
+            }
+        } finally {
+            petLock.unlock();
         }
-        timers.clear();
+        
         if (maplemount != null) {
             maplemount.empty();
             maplemount = null;
@@ -7921,7 +7981,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             family = null;
             client = null;
             map = null;
-            timers = null;
         }
     }
 

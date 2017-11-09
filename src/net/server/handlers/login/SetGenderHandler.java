@@ -24,7 +24,7 @@ package net.server.handlers.login;
 
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import server.TimerManager;
+import net.server.Server;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -40,12 +40,8 @@ public class SetGenderHandler extends AbstractMaplePacketHandler {
             c.setGender(slea.readByte());
             c.announce(MaplePacketCreator.getAuthSuccess(c));
             final MapleClient client = c;
-            c.setIdleTask(TimerManager.getInstance().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    client.getSession().close(true);
-                }
-            }, 600000));
+            
+            Server.getInstance().registerLoginState(c);
         }
     }
 

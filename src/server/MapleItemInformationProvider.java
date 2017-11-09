@@ -1508,7 +1508,7 @@ public class MapleItemInformationProvider {
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM drop_data WHERE itemid = ? LIMIT 50");
+            PreparedStatement ps = con.prepareStatement("SELECT dropperid FROM drop_data WHERE itemid = ? LIMIT 50");
             ps.setInt(1, itemId);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {

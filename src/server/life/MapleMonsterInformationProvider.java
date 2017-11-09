@@ -111,7 +111,7 @@ public class MapleMonsterInformationProvider {
                 Connection con = null;
 		try {
                         con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT * FROM drop_data WHERE dropperid = ?");
+			ps = con.prepareStatement("SELECT itemid, chance, minimum_quantity, maximum_quantity, questid FROM drop_data WHERE dropperid = ?");
 			ps.setInt(1, monsterId);
 			rs = ps.executeQuery();
 

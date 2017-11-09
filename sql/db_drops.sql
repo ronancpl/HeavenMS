@@ -19885,7 +19885,7 @@ USE `maplesolaxia`;
     PRIMARY KEY (`id`),
     UNIQUE KEY (`dropperid`, `itemid`),
     KEY `mobid` (`dropperid`)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 	#pass (sorted) data from one table to another
   INSERT INTO drop_data (dropperid, itemid, minimum_quantity, maximum_quantity, questid, chance)
@@ -21223,7 +21223,7 @@ USE `maplesolaxia`;
     `mobid` int(11) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`) USING BTREE,
     UNIQUE KEY `id` (`id`)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
   INSERT INTO `monstercarddata` (`cardid`, `mobid`) (SELECT itemid, min(dropperid) FROM drop_data where itemid>=2380000 and itemid<2390000 group by itemid);
 

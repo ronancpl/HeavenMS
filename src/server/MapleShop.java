@@ -236,7 +236,7 @@ public class MapleShop {
                 con.close();
                 return null;
             }
-            ps = con.prepareStatement("SELECT * FROM shopitems WHERE shopid = ? ORDER BY position DESC");
+            ps = con.prepareStatement("SELECT itemid, price, pitch FROM shopitems WHERE shopid = ? ORDER BY position DESC");
             ps.setInt(1, shopId);
             rs = ps.executeQuery();
             List<Integer> recharges = new ArrayList<>(rechargeableItems);

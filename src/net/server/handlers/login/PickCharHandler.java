@@ -49,9 +49,7 @@ public final class PickCharHandler extends AbstractMaplePacketHandler {
             e.printStackTrace();
             c.setChannel(1);
         }
-        if (c.getIdleTask() != null) {
-            c.getIdleTask().cancel(true);
-        }
+        Server.getInstance().unregisterLoginState(c);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
         String[] socket = Server.getInstance().getIP(c.getWorld(), c.getChannel()).split(":");
         try {

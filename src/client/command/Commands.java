@@ -349,6 +349,10 @@ public class Commands {
 			break;
                     
 		case "staff":
+                        player.yellowMessage("MapleSolaxiaV2 Staff");
+                        player.yellowMessage("Ronan - Developer");
+                        player.yellowMessage("Vcoc - Freelance Developer");
+                        player.yellowMessage("");
 			player.yellowMessage("MapleSolaxia Staff");
 			player.yellowMessage("Aria - Administrator");
 			player.yellowMessage("Twdtwd - Administrator");
@@ -358,9 +362,6 @@ public class Commands {
 			player.yellowMessage("SourMjolk - Game Master");
 			player.yellowMessage("Kanade - Game Master");
 			player.yellowMessage("Kitsune - Game Master");
-                        player.yellowMessage("MapleSolaxiaV2 Staff");
-                        player.yellowMessage("Ronan - Freelance Developer");
-                        player.yellowMessage("Vcoc - Freelance Developer");
 			break;
                     
 		case "lastrestart":
@@ -451,7 +452,7 @@ public class Commands {
 					output += "#b" + data.getRight() + "#k is dropped by:\r\n";
 					try {
                                                 Connection con = DatabaseConnection.getConnection();
-						PreparedStatement ps = con.prepareStatement("SELECT * FROM drop_data WHERE itemid = ? LIMIT 50");
+						PreparedStatement ps = con.prepareStatement("SELECT dropperid FROM drop_data WHERE itemid = ? LIMIT 50");
 						ps.setInt(1, data.getLeft());
 						ResultSet rs = ps.executeQuery();
 						while(rs.next()) {
@@ -1513,11 +1514,13 @@ public class Commands {
                     
                 case "reloadmap":
 			MapleMap oldMap = c.getPlayer().getMap();
-			MapleMap newMap = c.getChannelServer().getMapFactory().getMap(player.getMapId());
+			MapleMap newMap = c.getChannelServer().getMapFactory().resetMap(player.getMapId());
+                        int callerid = c.getPlayer().getId();
+                        
 			for (MapleCharacter ch : oldMap.getCharacters()) {
 				ch.changeMap(newMap);
+                                if(ch.getId() != callerid) ch.dropMessage("You have been relocated due to map reloading. Sorry for the inconvenience.");
 			}
-			oldMap = null;
 			newMap.respawn();
                     break;
 

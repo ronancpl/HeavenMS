@@ -651,3 +651,12 @@ Implementado nova ferramenta: MapleQuestItemFetcher. Ela vasculha a DB e os XMLs
 05 Novembro 2017,
 Adicionado sistema de level cap para jobs correntes.
 Revisto acesso concorrente sobre o componente EM da classe EIM.
+
+07 Novembro 2017,
+Refatorado esquema de schedules por toda a source, diminuindo drasticamente as chamadas ao TimerManager.
+Refatorado algumas chamadas à DB, busca somente aquilo que é necessário.
+
+08 - 09 Novembro 2017,
+Adicionado packet para extra slot pendant.
+Corrigido possível bug em MapleMapFactory.
+Modificado todas as DB tables agora utilizando InnoDB (ganhos do MyISAM em contraste se tornou ínfimo, para casos críticos).

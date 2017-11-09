@@ -42,6 +42,15 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
 import constants.ServerConstants;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ScheduledFuture;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import server.TimerManager;
+
 public class MapleServerHandler extends IoHandlerAdapter {
 
     private PacketProcessor processor;
@@ -49,16 +58,26 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private static AtomicLong sessionId = new AtomicLong(7777);
     
+    private Lock idleLock = new ReentrantLock(true);
+    private Lock tempLock = new ReentrantLock(true);
+    private Map<MapleClient, Long> idleSessions = new HashMap<>(100);
+    private Map<MapleClient, Long> tempIdleSessions = new HashMap<>();
+    private ScheduledFuture<?> idleManager = null;
+    
     public MapleServerHandler() {
         this.processor = PacketProcessor.getProcessor(-1, -1);
+        
+        idleManagerTask();
     }
 
     public MapleServerHandler(int world, int channel) {
         this.processor = PacketProcessor.getProcessor(world, channel);
         this.world = world;
         this.channel = channel;
+        
+        idleManagerTask();
     }
-
+    
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
     	System.out.println("disconnect by exception");
@@ -155,8 +174,70 @@ public class MapleServerHandler extends IoHandlerAdapter {
     public void sessionIdle(final IoSession session, final IdleStatus status) throws Exception {
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (client != null) {
-            client.sendPing();
+            registerIdleSession(client);
         }
         super.sessionIdle(session, status);
+    }
+    
+    private void registerIdleSession(MapleClient c) {
+        if(idleLock.tryLock()) {
+            idleSessions.put(c, System.currentTimeMillis());
+            c.announce(MaplePacketCreator.getPing());
+            
+            idleLock.unlock();
+        } else {
+            tempLock.lock();
+            try {
+                tempIdleSessions.put(c, System.currentTimeMillis());
+                c.announce(MaplePacketCreator.getPing());
+            } finally {
+                tempLock.unlock();
+            }
+        }
+    }
+    
+    private void manageIdleSessions() {
+        long timeNow = System.currentTimeMillis();
+        long timeThen = timeNow - 15000;
+        
+        idleLock.lock();
+        try {
+            for(Entry<MapleClient, Long> mc : idleSessions.entrySet()) {
+                if(timeNow - mc.getValue() >= 15000) {
+                    mc.getKey().testPing(timeThen);
+                }
+            }
+            
+            idleSessions.clear();
+            
+            if(!tempIdleSessions.isEmpty()) {
+                tempLock.lock();
+                try {
+                    for(Entry<MapleClient, Long> mc : tempIdleSessions.entrySet()) {
+                        idleSessions.put(mc.getKey(), mc.getValue());
+                    }
+                    
+                    tempIdleSessions.clear();
+                } finally {
+                    tempLock.unlock();
+                }
+            }
+        } finally {
+            idleLock.unlock();
+        }
+    }
+    
+    private void idleManagerTask() {
+        this.idleManager = TimerManager.getInstance().register(new Runnable() {
+            @Override
+            public void run() {
+                manageIdleSessions();
+            }
+        }, 10000);
+    }
+    
+    private void cancelIdleManagerTask() {
+        this.idleManager.cancel(false);
+        this.idleManager = null;
     }
 }

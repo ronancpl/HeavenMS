@@ -69,7 +69,8 @@ Hamachi is optional, though. You don't have to install Hamachi if you want to ma
 
 Set the "MapleSolaxia" folder on a place of your preference. It is recommended for use "C:\Nexon\MapleSolaxia".
 
-Setting up the SQL: open MySQL Query Browser, and define these parameters at startup and click OK:
+Setting up the SQL: open MySQL Query Browser, define these parameters at startup and click OK.
+
 Server Host: localhost		Port: 3306		Username: root
 
 Now it must be done CAREFULLY:
@@ -80,7 +81,7 @@ Now it is OPTIONAL, you don't need to run it if you don't want, as it will simpl
 
 3. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxia\sql" -> db_shopupdate.sql, and execute it.
 
-At the end of the execution of these SQLs, you should have installed a database schema named "maplesolaxia". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually a entry on the table "accounts" at that database with a login and a password.
+At the end of the execution of these SQLs, you should have installed a database schema named "maplesolaxia". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually an entry on the table "accounts" at that database with a login and a password.
 
 Configure the IP you want to use for your MapleStory server in "configuration.ini" file, or set it as "localhost" if you want to run it only on your machine. Alternatively, you can use the IP given by Hamachi to use on a Hamachi network, or you can use a non-Hamachi method of port-forwarding. Neither will be approached here.
 

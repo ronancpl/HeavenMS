@@ -29,9 +29,7 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
             return;
         }
         if (c.checkPic(pic)) {
-            if (c.getIdleTask() != null) {
-                c.getIdleTask().cancel(true);
-            }
+            Server.getInstance().unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 
             String[] socket = Server.getInstance().getIP(c.getWorld(), c.getChannel()).split(":");

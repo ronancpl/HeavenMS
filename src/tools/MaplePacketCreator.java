@@ -313,6 +313,13 @@ public class MaplePacketCreator {
                         }
                 }
         }
+        
+        public static byte[] setExtraPendantSlot(boolean toggleExtraSlot) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SET_EXTRA_PENDANT_SLOT.getValue());
+                mplew.writeBool(toggleExtraSlot);
+                return mplew.getPacket();
+        }
 
         private static void addCharEntry(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr, boolean viewall) {
                 addCharStats(mplew, chr);

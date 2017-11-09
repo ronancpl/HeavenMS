@@ -1,6 +1,6 @@
 ========== MapleSolaxiaV2 ==========
 Credits:
-Ronan - Freelance Developer
+Ronan - Developer
 Vcoc - Freelance Developer
 
 ---------------------------
@@ -81,17 +81,27 @@ Server potentials:
 * Custom jail system (needs provided custom wz).
 * Delete Character 100% (requires ENABLE_PIC activated).
 * Autosaver (periodically saves on DB current state of every player in-game).
-* Both fixed and randomized versions of HP/MP growth rate abailable, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
+* Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 
 Admin/GM commands:
 * Server commands layered by GM levels.
 * Spawn Zakum/Horntail/Pinkbean 100%.
 * New commands.
 
+External tools:
+* MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
+* MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
+* MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
+* MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
+* MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
+* MobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
+* MobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
+
 Project:
 * Organized project code.
 * Highly configurable server (see all server flags at ServerConstants).
 * Fixed/added some missing packets for MoveEnvironment, summons and others.
 * Reviewed many Java object aspects that needed concurrency protection.
+* Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
 
 ---------------------------

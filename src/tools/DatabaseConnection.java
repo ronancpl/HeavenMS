@@ -26,16 +26,16 @@ public class DatabaseConnection {
         }
         
         int denies = 0;
-        while(true) {   // There is no way it can pass with a null out of here
+        while(true) {   // There is no way it can pass with a null out of here?
             try {
                 return DriverManager.getConnection(ServerConstants.DB_URL, ServerConstants.DB_USER, ServerConstants.DB_PASS);
             } catch (SQLException sqle) {
                 denies++;
                 
                 if(denies == 3) {
-                    // Give up, return null :3
-                    FilePrinter.printError(FilePrinter.SQL_EXCEPTION, "SQL Driver refused to give a connection after " + denies + " tries.");
-                    return null;
+                    // Give up, throw exception. Nothing good will come from this.
+                    FilePrinter.printError(FilePrinter.SQL_EXCEPTION, "SQL Driver refused to give a connection after " + denies + " tries. Problem: " + sqle.getMessage());
+                    throw sqle;
                 }
             }
         }

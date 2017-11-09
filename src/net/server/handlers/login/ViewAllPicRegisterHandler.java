@@ -28,9 +28,7 @@ public final class ViewAllPicRegisterHandler extends AbstractMaplePacketHandler 
         slea.readMapleAsciiString();
         String pic = slea.readMapleAsciiString();
         c.setPic(pic);
-        if (c.getIdleTask() != null) {
-            c.getIdleTask().cancel(true);
-        }
+        Server.getInstance().unregisterLoginState(c);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
         String[] socket = Server.getInstance().getIP(c.getWorld(), channel).split(":");
         try {

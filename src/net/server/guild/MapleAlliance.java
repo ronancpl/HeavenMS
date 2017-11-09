@@ -208,7 +208,7 @@ public class MapleAlliance {
             ps.close();
             rs.close();
             
-            ps = con.prepareStatement("SELECT * FROM allianceguilds WHERE allianceid = ?");
+            ps = con.prepareStatement("SELECT guildid FROM allianceguilds WHERE allianceid = ?");
             ps.setInt(1, id);
             rs = ps.executeQuery();
             
