@@ -18,17 +18,17 @@ Feature list:
 ---------------------------
 
 PQs:
-* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ 100%.
-* CWKPQ as Expedition-based event 100%.
-* Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean 100%.
+* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ.
+* CWKPQ as Expedition-based event.
+* Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean.
 * GuildPQ 100% + Guild queue with multi-lobby systems available.
-* Brand-new PQs: BossRushPQ, CafePQ 100%.
-* Mu Lung Dojo 100%.
+* Brand-new PQs: BossRushPQ, CafePQ.
+* Mu Lung Dojo.
 * BalrogPQ semi-functional.
 * Capt. Latanica remade as an event (parties can now fight the boss).
 
 Quests:
-* Doll house quest 100%.
+* Doll house quest functional.
 * Quests can now reward properly items when matching a reward item with the player's job.
 * Loads of quests have been patched.
 * Quest rewards according to jobs works properly.
@@ -39,7 +39,7 @@ Player Social Network:
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 
 Cash & Items:
-* EXP/DROP/Cosmetic Coupons 100%.
+* EXP/DROP/Cosmetic Coupons.
 * EXP/DROP coupons now appears as a buff effect when on active time.
 * Great deal of cash items functional.
 * New scroll: antibanish. For use only in cases where bosses send a player back to town.
@@ -66,26 +66,26 @@ PQ potentials:
 * EIM Pool system - After the first instance setup, next event instances are loaded beforehand and set on a pooling queue, optimizing future loadouts.
 
 Player potentials:
-* Adventurer Mount quests 100%.
+* Adventurer Mount quests functional.
 * All Equipment levels up.
 * Player level rates.
 * Gain fame by quests.
 
 Server potentials:
-* Multi-worlds 100%.
+* Multi-worlds.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).
-* Delete Character 100% (requires ENABLE_PIC activated).
+* Delete Character (requires ENABLE_PIC activated).
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 
 Admin/GM commands:
 * Server commands layered by GM levels.
-* Spawn Zakum/Horntail/Pinkbean 100%.
+* Spawn Zakum/Horntail/Pinkbean.
 * New commands.
 
 External tools:

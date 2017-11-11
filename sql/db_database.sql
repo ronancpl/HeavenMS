@@ -45,7 +45,9 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `hwid` varchar(12) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `ranking1` (`id`,`banned`,`gm`)
+  KEY `ranking1` (`id`,`banned`,`gm`),
+  INDEX (id, name),
+  INDEX (id, nxCredit, maplePoint, nxPrepaid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `alliance` (
@@ -59,15 +61,16 @@ CREATE TABLE IF NOT EXISTS `alliance` (
   `rank3` varchar(11) NOT NULL DEFAULT '',
   `rank4` varchar(11) NOT NULL DEFAULT '',
   `rank5` varchar(11) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  PRIMARY KEY (`id`),
+  INDEX (name)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `allianceguilds` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `allianceid` int(10) NOT NULL DEFAULT '-1',
   `guildid` int(10) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `area_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -184,7 +187,9 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `accountid` (`accountid`),
   KEY `party` (`party`),
   KEY `ranking1` (`level`,`exp`),
-  KEY `ranking2` (`gm`,`job`)
+  KEY `ranking2` (`gm`,`job`),
+  INDEX (id, accountid, world),
+  INDEX (id, accountid, name)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 PACK_KEYS=0 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `cooldowns` (
@@ -206,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `temp_data` (
   `chance` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dropperid`, `itemid`),
   KEY `mobid` (`dropperid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 INSERT IGNORE INTO `temp_data` (`id`, `dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
 (1, 9400121, 4000138, 1, 1, 0, 600000),
@@ -12787,7 +12792,7 @@ CREATE TABLE IF NOT EXISTS `drop_data_global` (
   `comments` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `mobid` (`continent`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`, `comments`) VALUES
 (1, 0, 0, 4031865, 1, 1, 0, 35000, 'NX Card 100 PTS'),
@@ -12860,7 +12865,8 @@ CREATE TABLE IF NOT EXISTS `family_character` (
   `name` varchar(255) NOT NULL,
   `juniorsadded` int(11) NOT NULL,
   `totalreputation` int(11) NOT NULL,
-  PRIMARY KEY (`cid`)
+  PRIMARY KEY (`cid`),
+  INDEX (cid, familyid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `gifts` (
@@ -12891,7 +12897,8 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   `notice` varchar(101) DEFAULT NULL,
   `signature` int(11) NOT NULL DEFAULT '0',
   `allianceId` int(11) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`guildid`)
+  PRIMARY KEY (`guildid`),
+  INDEX (guildid, name)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `hiredmerchant` (
@@ -13045,7 +13052,7 @@ CREATE TABLE IF NOT EXISTS `makercreatedata` (
   `quantity` smallint(6) NOT NULL,
   `tuc` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`,`itemid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `makercreatedata` (`id`, `itemid`, `req_level`, `req_maker_level`, `req_meso`, `req_item`, `req_equip`, `catalyst`, `quantity`, `tuc`) VALUES
 (0, 2040727, 50, 1, 50000, 0, 1122013, 0, 1, 0),
@@ -13884,7 +13891,7 @@ CREATE TABLE IF NOT EXISTS `makerrecipedata` (
   `req_item` int(11) NOT NULL,
   `count` smallint(6) NOT NULL,
   PRIMARY KEY (`itemid`,`req_item`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `makerrecipedata` (`itemid`, `req_item`, `count`) VALUES
 (1002022, 4007001, 5),
@@ -15808,7 +15815,7 @@ CREATE TABLE IF NOT EXISTS `makerrewarddata` (
   `quantity` smallint(6) NOT NULL,
   `prob` tinyint(3) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`itemid`,`rewardid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 INSERT INTO `makerrewarddata` (`itemid`, `rewardid`, `quantity`, `prob`) VALUES
 (4250000, 4250000, 1, 14),
@@ -15937,7 +15944,7 @@ CREATE TABLE IF NOT EXISTS `monstercarddata` (
   `mobid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=309 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=309 ;
 
 INSERT INTO `monstercarddata` (`id`, `cardid`, `mobid`) VALUES
 (1, 2380000, 100100),
@@ -16323,7 +16330,7 @@ CREATE TABLE IF NOT EXISTS `nxcoupons` (
   `starthour` int(11) NOT NULL DEFAULT '0',
   `endhour` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 INSERT INTO `nxcoupons` (`id`, `couponid`, `rate`, `activeday`, `starthour`, `endhour`) VALUES
 (1,5211000,2,254,18,20),
@@ -16456,7 +16463,7 @@ CREATE TABLE IF NOT EXISTS `reactordrops` (
   `questid` int(5) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`reactordropid`),
   KEY `reactorid` (`reactorid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=841 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=841 ;
 
 INSERT INTO `reactordrops` (`reactordropid`, `reactorid`, `itemid`, `chance`, `questid`) VALUES
 (1, 2001, 4031161, 1, 1008),
@@ -17339,7 +17346,7 @@ CREATE TABLE IF NOT EXISTS `shopitems` (
   `pitch` int(11) NOT NULL DEFAULT '0',
   `position` int(11) NOT NULL COMMENT 'sort is an arbitrary field designed to give leeway when modifying shops. The lowest number is 104 and it increments by 4 for each item to allow decent space for swapping/inserting/removing items.',
   PRIMARY KEY (`shopitemid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20047 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20047 ;
 
 INSERT INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
 (1, 11000, 1332005, 500, 0, 104),
@@ -20967,7 +20974,7 @@ CREATE TABLE IF NOT EXISTS `shops` (
   `shopid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `npcid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`shopid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10000000 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10000000 ;
 
 INSERT INTO `shops` (`shopid`, `npcid`) VALUES
 (11000, 11000),
