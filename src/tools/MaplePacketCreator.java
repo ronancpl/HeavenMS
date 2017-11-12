@@ -7069,7 +7069,7 @@ public class MaplePacketCreator {
 
         public static byte[] CPQDied(MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.MONSTER_CARNIVAL_SUMMON.getValue());
+                mplew.writeShort(SendOpcode.MONSTER_CARNIVAL_DIED.getValue());
                 mplew.write(chr.getTeam()); //Team
                 mplew.writeMapleAsciiString(chr.getName()); //Name of the player that died
                 mplew.write(chr.getAndRemoveCP()); //Lost CP
