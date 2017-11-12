@@ -70,7 +70,7 @@ public class MapleArrowFetcher {
         minRange = (int)Math.ceil(((2.870503597 * level) - 1.870503597) * (boss ? 1.4 : 1.0) / correctionFactor);
         
         // MAX range
-        maxRange = 3 * minRange;
+        maxRange = (int)(1.25 * minRange);
         
         return new Pair<>(minRange, maxRange);
     }

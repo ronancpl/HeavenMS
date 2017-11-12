@@ -656,7 +656,10 @@ Revisto acesso concorrente sobre o componente EM da classe EIM.
 Refatorado esquema de schedules por toda a source, diminuindo drasticamente as chamadas ao TimerManager.
 Refatorado algumas chamadas à DB, busca somente aquilo que é necessário.
 
-08 - 10 Novembro 2017,
+08 - 09 Novembro 2017,
 Adicionado packet para extra slot pendant.
 Corrigido possível bug em MapleMapFactory.
-Otimizado tabelas do SQL agora utilizando índices, promovendo queries mais rápidas, e uso do MyISAM somente em casos onde sabe-se que as tabelas são "somente leitura".
+Modificado todas as DB tables agora utilizando InnoDB (ganhos do MyISAM em contraste se tornou ínfimo, para casos críticos).
+
+11 Novembro 2017,
+Adicionado proteção contra acesso concorrente em scripts de portais, eliminando possíveis inconsistencias por script.

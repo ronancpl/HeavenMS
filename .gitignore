@@ -1,6 +1,7 @@
 /logs/**
 .idea/
 
+<<<<<<< Updated upstream
 # build files
 *build.xml
 /build/**
@@ -11,3 +12,22 @@
 /tools/MapleQuestItemFetcher/build/**
 /tools/MobBookIndexer/build/**
 /tools/MobBookUpdate/build/**
+=======
+# Netbeans project files
+nbproject/**
+tools/MapleCouponInstaller/nbproject/**
+tools/MapleIdRetriever/nbproject/**
+tools/MobBookIndexer/nbproject/**
+tools/MobBookUpdate/nbproject/**
+
+# build files
+build/**
+tools/MapleArrowFetcher/build/**
+tools/MapleCouponInstaller/build/**
+tools/MapleIdRetriever/build/**
+tools/MapleMesoFetcher/build/**
+tools/MapleQuestItemFetcher/build/**
+tools/MobBookIndexer/build/**
+tools/MobBookUpdate/build/**
+>>>>>>> Stashed changes
+/dist/

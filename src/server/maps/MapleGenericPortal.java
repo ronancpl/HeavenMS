@@ -26,6 +26,8 @@ import java.awt.Point;
 import scripting.portal.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MapleGenericPortal implements MaplePortal {
 
@@ -38,7 +40,8 @@ public class MapleGenericPortal implements MaplePortal {
     private int id;
     private String scriptName;
     private boolean portalState;
-
+    private Lock scriptLock = null;
+    
     public MapleGenericPortal(int type) {
         this.type = type;
     }
@@ -111,13 +114,30 @@ public class MapleGenericPortal implements MaplePortal {
     @Override
     public void setScriptName(String scriptName) {
         this.scriptName = scriptName;
+        
+        if(scriptName != null) {
+            if(scriptLock == null) {
+                scriptLock = new ReentrantLock(false);
+            }
+        } else {
+            scriptLock = null;
+        }
     }
 
     @Override
     public void enterPortal(MapleClient c) {
         boolean changed = false;
         if (getScriptName() != null) {
-            changed = PortalScriptManager.getInstance().executePortalScript(this, c);
+            try {
+                scriptLock.lock();
+                try {
+                    changed = PortalScriptManager.getInstance().executePortalScript(this, c);
+                } finally {
+                    scriptLock.unlock();
+                }
+            } catch(NullPointerException npe) {
+                npe.printStackTrace();
+            }
         } else if (getTargetMapId() != 999999999) {
             MapleMap to = c.getPlayer().getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : c.getPlayer().getEventInstance().getMapInstance(getTargetMapId());
             MaplePortal pto = to.getPortal(getTarget());

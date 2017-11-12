@@ -59,7 +59,7 @@ function end(mode, type, selection) {
     else if (status == 4)
         qm.sendNextPrev("#b(Hm? Who's voice was that? It sounds like an angry boy...)", 2);
     else if (status == 5)
-        qm.sendNextPrev("Ugh, my only master had to end up trapped in ice for hundreds of years, abandoning me completeley, and is now completely ignoring me.");
+        qm.sendNextPrev("Ugh, my only master had to end up trapped in ice for hundreds of years, abandoning me completely, and is now completely ignoring me.");
     else if (status == 6)
         qm.sendNextPrev("Who...are you?", 2);
     else if (status == 7)

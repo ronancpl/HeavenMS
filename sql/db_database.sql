@@ -211,7 +211,7 @@ CREATE TABLE IF NOT EXISTS `temp_data` (
   `chance` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dropperid`, `itemid`),
   KEY `mobid` (`dropperid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 INSERT IGNORE INTO `temp_data` (`id`, `dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
 (1, 9400121, 4000138, 1, 1, 0, 600000),
@@ -15944,7 +15944,7 @@ CREATE TABLE IF NOT EXISTS `monstercarddata` (
   `mobid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=309 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=309 ;
 
 INSERT INTO `monstercarddata` (`id`, `cardid`, `mobid`) VALUES
 (1, 2380000, 100100),
@@ -16463,7 +16463,7 @@ CREATE TABLE IF NOT EXISTS `reactordrops` (
   `questid` int(5) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`reactordropid`),
   KEY `reactorid` (`reactorid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=841 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 PACK_KEYS=1 AUTO_INCREMENT=841 ;
 
 INSERT INTO `reactordrops` (`reactordropid`, `reactorid`, `itemid`, `chance`, `questid`) VALUES
 (1, 2001, 4031161, 1, 1008),
@@ -17346,7 +17346,7 @@ CREATE TABLE IF NOT EXISTS `shopitems` (
   `pitch` int(11) NOT NULL DEFAULT '0',
   `position` int(11) NOT NULL COMMENT 'sort is an arbitrary field designed to give leeway when modifying shops. The lowest number is 104 and it increments by 4 for each item to allow decent space for swapping/inserting/removing items.',
   PRIMARY KEY (`shopitemid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20047 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20047 ;
 
 INSERT INTO `shopitems` (`shopitemid`, `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
 (1, 11000, 1332005, 500, 0, 104),
@@ -20974,7 +20974,7 @@ CREATE TABLE IF NOT EXISTS `shops` (
   `shopid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `npcid` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`shopid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10000000 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10000000 ;
 
 INSERT INTO `shops` (`shopid`, `npcid`) VALUES
 (11000, 11000),

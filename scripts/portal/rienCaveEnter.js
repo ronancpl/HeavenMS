@@ -4,8 +4,8 @@ function enter(pi) {
     	pi.warp(140030000, 1);
     	return true;
     } else {
-		pi.playerMessage(5, "Something seems to be blocking this portal!");
-	    return false;
+        pi.playerMessage(5, "Something seems to be blocking this portal!");
+        return false;
     }
 
 }

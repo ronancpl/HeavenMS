@@ -16,7 +16,7 @@ function enter(pi) {
 		pi.message("The mirror is blank due to all the players currently recalling their memories. Please wait and try again.");
 		return false;
 	} else if(pi.isQuestStarted(21302)) { // Third Job
-		if(pi.getPlayerCount(108010701) > 0 && pi.getPlayerCount(108010702) > 0) {
+		if(pi.getPlayerCount(108010701) > 0 || pi.getPlayerCount(108010702) > 0) {
 			pi.message("The mirror is blank due to all the players currently recalling their memories. Please wait and try again.");
 			return false;
 		} else {
@@ -29,6 +29,7 @@ function enter(pi) {
 			return true;
 		}
 	} else {
+                pi.message("You have already passed your test, there is no need to access the mirror again.");
 		return false;
 	}
 }

@@ -20,7 +20,7 @@ function start(mode, type, selection) {
     } else if (status == 1) {
     	qm.sendNextPrev("#b(You tell her that you were able to remember the Combo Ability skill.)#k", 2);
     } else if (status == 2) {
-    	qm.sendAcceptDecline("That's great! Honestly, though, I think it has less to do with the method of #p1202006#'s training and more to do with your body remembering its old abilities. #bI'm sure your body will remember more skills as you continue to train#k!  \r\n\r\n#fUI/UIWindow.img/QuestIcon/8/0# 500 exp");
+    	qm.sendNextPrev("That's great! Honestly, though, I think it has less to do with the method of #p1202006#'s training and more to do with your body remembering its old abilities. #bI'm sure your body will remember more skills as you continue to train#k!  \r\n\r\n#fUI/UIWindow.img/QuestIcon/8/0# 500 exp");
     } else if (status == 3) {
         qm.forceCompleteQuest();
         qm.gainExp(500);

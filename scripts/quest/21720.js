@@ -34,7 +34,7 @@ function end(mode, type, selection) {
     } else if (status == 6) {
     	qm.sendYesNo("Scared? Pfft. Who cares if the Black Mage appears. You'll be here to protect us. If anything, this makes me want to prepare you for the big battle. Ah, that reminds me, I found a #bskill#k. Would you like to see it?");
     } else if (status == 7) {
-	if (qm.getQuestStatus(21720) == 0) {
+	if (qm.getQuestStatus(21720) == 1) {
 	    qm.forceCompleteQuest();
 	    qm.teachSkill(21001003, qm.getPlayer().getSkillLevel(21001003), 20, -1);
 	    qm.gainExp(3900 * qm.getPlayer().getExpRate());

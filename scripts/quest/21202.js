@@ -59,7 +59,7 @@ function end(mode, type, selection) {
         if(qm.haveItem(4032311, 30))
             qm.sendNext("Oh, have you brought me the #t4032311#? You're stronger than I thought! But more importantly, I am impressed with the amount of courage you displayed when you agreed to take this dangerous weapon without any hesitation. You deserve it. The #p1201001# is yours.");
         else{
-            qm.sendNext("Go for the #t4032311#.");
+            qm.sendNext("Go for the 30 #t4032311#.");
             qm.dispose();
         }
     }else if (status == 1)
@@ -68,7 +68,8 @@ function end(mode, type, selection) {
         qm.sendYesNo("Here, this is #p1201002#, the Polearm you've asked for. Please take good care of it.");
     else if (status == 3){
         //qm.showVideo("Polearm");
-		qm.completeQuest();
+        qm.completeQuest();
+        qm.forceCompleteQuest(21201);
         qm.removeAll(4032311);
         qm.dispose();
     }
