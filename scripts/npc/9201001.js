@@ -29,7 +29,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hello#b #h ##k, you currently have #b#c4001126# maple leaves.#k \r\nWhat would you like to do?\r\n#k#L1# Trade 1 leaf for 5,000 NX#l\r\n\#L2# Trade 1 leaf for 1 random chair #l\r\n\#L3# Trade 1 leaf for 3 random Maple Weapons #l\r\n\#L4# Trade 1 leaf for 3 Swiss Cheese and Onyx Apples#l\r\n#L5#Trade 1 leaf for a 10 day Hired Merchant#l");
+            cm.sendSimple("Hello#b #h ##k, you currently have #b#c4001126# maple leaves.#k \r\n你想做什么?\r\n#k#L1# Trade 1 leaf for 5,000 NX#l\r\n\#L2# Trade 1 leaf for 1 random chair #l\r\n\#L3# Trade 1 leaf for 3 random Maple Weapons #l\r\n\#L4# Trade 1 leaf for 3 Swiss Cheese and Onyx Apples#l\r\n#L5#Trade 1 leaf for a 10 day Hired Merchant#l");
         } else if (status == 1) {
             if (selection == 1) {
                 if(cm.haveItem(leaf, 1)) {

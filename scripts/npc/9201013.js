@@ -26,14 +26,14 @@ by Angel (get31720 ragezone)
 var wui = 0;
 
 function start() {
-    cm.sendSimple ("Welcome to the Cathedral. What would you like to do? \r\n#L0##bI need invitations for my guests#k #l\r\n#L1##bI'd like to prepare a wedding#k #l\r\n#L2##bCan you explain how I should prepare a wedding?#k #l\r\n#L3##bI am either the groom or bride and I'd like to go in#k #l\r\n#L4##bI am a guest and I'd like to go in#k #l");
+    cm.sendSimple ("欢迎来到大教堂. 你想做什么? \r\n#L0##b我需要客人的请帖#k #l\r\n#L1##b我想要筹办婚礼#k #l\r\n#L2##b你能为我解释如何筹办婚礼吗?#k #l\r\n#L3##b我是新郎/新娘, 我想进去#k #l\r\n#L4##b我是客人, 我想进去#k #l");
 }
 
 function action(mode, type, selection) {
     cm.dispose();
     if (selection == 0) {
         if (cm.haveItem(4214002)) { 
-            cm.sendNext("Alright here are you invitations make sure your guest have them or they can't come in!"); 
+            cm.sendNext("好的, 这是你的请帖, 请交给客人否则他们无法进入这里!"); 
             cm.gainItem(4031395,10); 
      
         } else { 

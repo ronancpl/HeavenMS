@@ -44,7 +44,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hey, there~! I'm J.J.! I'm in charge of the cosmetic lenses here at NLC Shop! If you have a #b#t5152036##k, I can get you the best cosmetic lenses you have ever had! Now, what would you like to do?\r\n#L1#I would like to buy a #b#t5152036##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
+            cm.sendSimple("Hey, there~! I'm J.J.! I'm in charge of the cosmetic lenses here at NLC Shop! If you have a #b#t5152036##k, I can get you the best cosmetic lenses you have ever had! Now, 你想做什么?\r\n#L1#I would like to buy a #b#t5152036##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
         } else if (status == 1) {
             if (selection == 1) {
                 if(cm.getMeso() >= price) {

@@ -26,7 +26,7 @@
 
 var status;
 var ticketId = 5220000;
-var mapName = ["Henesys", "Ellinia", "Perion", "Kerning City", "Sleepywood", "Mushroom Shrine", "Showa Spa (M)", "Showa Spa (F)", "New Leaf City", "Nautilus"];
+var mapName = ["射手村", "魔法密林", "勇士部落", "废弃都市", "林中之城", "蘑菇神社", "昭和村澡堂 (M)", "昭和村澡堂 (F)", "新叶城", "诺特勒斯"];
 var curMapName = "";
 
 function start() {
@@ -46,26 +46,26 @@ function action(mode, type, selection) {
             status--;
         if (status == 0 && mode == 1) {
 			if (cm.haveItem(ticketId)) {
-				cm.sendYesNo("You may use the " + curMapName + " Gachapon. Would you like to use your Gachapon ticket?");
+				cm.sendYesNo("您将使用 " + curMapName + " 扭蛋机. 你想使用扭蛋券吗?");
 			} else {
-				cm.sendSimple("Welcome to the " + curMapName + " Gachapon. How may I help you?\r\n\r\n#L0#What is Gachapon?#l\r\n#L1#Where can you buy Gachapon tickets?#l");
+				cm.sendSimple("欢迎来到 " + curMapName + " 扭蛋机. 我有什么可以帮到您的吗?\r\n\r\n#L0#什么是扭蛋机?#l\r\n#L1#我在哪里可以买到扭蛋券?#l");
 			}
 		} else if(status == 1 && cm.haveItem(ticketId)) {
 			if(cm.canHold(1302000) && cm.canHold(2000000) && cm.canHold(3010001) && cm.canHold(4000000)) { // One free slot in every inventory.
 				cm.gainItem(ticketId, -1);
 				cm.doGachapon();
 			} else {
-				cm.sendOk("Please have at least one slot in your #rEQUIP, USE, SET-UP, #kand #rETC#k inventories free.");
+				cm.sendOk("请确认在 #r装备, 消耗, 设置, #k和 #r其他#k 栏中至少有一个空格.");
 			}
 			cm.dispose();
 		} else if(status == 1) {
 			if (selection == 0) {
-                cm.sendNext("Play Gachapon to earn rare scrolls, equipment, chairs, mastery books, and other cool items! All you need is a #bGachapon Ticket#k to be the winner of a random mix of items.");
+                cm.sendNext("通过扭蛋获取稀有卷轴, 装备, 椅子, 技能书, 以及其他绝赞物品! 你需要做的仅仅是使用一张 #b扭蛋券#k 来成为抽选随机物品的欧皇.");
             } else {
-                cm.sendNext("Gachapon Tickets are available in the #rCash Shop#k and can be purchased using NX or Maple Points. Click on the red SHOP at the lower right hand corner of the screen to visit the #rCash Shop#k where you can purchase tickets.");
+                cm.sendNext("扭蛋券可以在 #r现金商城#k 中通过点券或抵用券购买. 点击右下角中红色商店按钮即可进入 #r现金商城#k.");
             }
 		} else if(status == 2) {
-			cm.sendNextPrev("You'll find a variety of items from the " + curMapName + " Gachapon, but you'll most likely find items and scrolls related to " + curMapName + ".");
+			cm.sendNextPrev("你会通过 " + curMapName + " 扭蛋机发掘各种物品, 但是大多数物品和卷轴都会与 " + curMapName + "有关.");
 		} else {
 			cm.dispose();
 		}

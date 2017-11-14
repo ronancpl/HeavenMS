@@ -38,7 +38,7 @@ var expedName = "Twilight of the Gods";
 var expedBoss = "Pink Bean";
 var expedMap = "Twilight of Gods";
 
-var list = "What would you like to do?#b\r\n\r\n#L1#View current Expedition members#l\r\n#L2#Start the fight!#l\r\n#L3#Stop the expedition.#l";
+var list = "你想做什么?#b\r\n\r\n#L1#View current Expedition members#l\r\n#L2#Start the fight!#l\r\n#L3#Stop the expedition.#l";
 
 function start() {
     action(1, 0, 0);

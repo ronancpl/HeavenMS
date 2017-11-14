@@ -25,7 +25,7 @@ var status = 0;
 var sel;
 
 function start() {
-    cm.sendSimple("What would you like to do?\r\n#b#L0#Create/Change your Guild Emblem#l#k");
+    cm.sendSimple("你想做什么?\r\n#b#L0#Create/Change your Guild Emblem#l#k");
 }
 
 function action(mode, type, selection) {

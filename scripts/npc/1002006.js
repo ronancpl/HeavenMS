@@ -20,6 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function start() {
-    cm.sendNext("Hi, I'm #b#p1002006##k. Nice to meet you.")
+    cm.sendNext("你好，我是 #b#p1002006##k。 很高兴见到你。")
     cm.dispose();
 }

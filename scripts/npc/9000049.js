@@ -49,7 +49,7 @@ function action(mode, type, selection) {
 				if(stage == 1) event = "EASY";
 				if(stage == 2) event = "MEDIUM";
 				if(stage == 3) event = "HARD";
-				cm.sendSimple("Hello GM.\r\nThe event is currently: #r" + event + "#k\r\nWhat would you like to do?\r\n#b#L0#Enter the event#l\r\n#L1#Close the event#l\r\n#L2#Set the event to EASY#l\r\n#L3#Set the event to MEDIUM#l\r\n#L4#Set the event to HARD#l");
+				cm.sendSimple("Hello GM.\r\nThe event is currently: #r" + event + "#k\r\n你想做什么?\r\n#b#L0#Enter the event#l\r\n#L1#Close the event#l\r\n#L2#Set the event to EASY#l\r\n#L3#Set the event to MEDIUM#l\r\n#L4#Set the event to HARD#l");
 			} else {
 				var stage = cm.getClient().getChannelServer().getStoredVar(9000049);
 				if(stage == 0) {

@@ -27,7 +27,7 @@
 var status = 0;
 
 function start() {
-    cm.sendYesNo("Take this ship and you'll head off to a bigger continent. For #e150 mesos#n, I'll take you to #bVictoria Island#k. The thing is, once you leave this place, you can't ever come back. What do you think? Do you want to go to Victoria Island?");
+    cm.sendYesNo("如果你想离开这里，你需要付给我 #e150 金币#n  我会带你去 #b金银岛#k. 但关键的是，你一旦离开，你就无法再回来这里。你是不是想要去金银岛？");
 }
 
 function action(mode, type, selection) {
@@ -37,28 +37,28 @@ function action(mode, type, selection) {
             status -= 2;
         else if(type == 1 || (mode == -1 && type != 1)){
             if(mode == 0)
-                cm.sendOk("Hmm... I guess you still have things to do here?");
+                cm.sendOk("嗯... 我猜你还有什么别的事情要在这里做吧？");
             cm.dispose();
             return;
         }
     }
     if (status == 1) {
         if (cm.haveItem(4031801))
-            cm.sendNext("Okay, now give me 150 mesos... Hey, what's that? Is that the recommendation letter from Lucas, the chief of Amherst? Hey, you should have told me you had this. I, Shanks, recognize greatness when I see one, and since you have been recommended by Lucas, I see that you have a great, great potential as an adventurer. No way would I charge you for this trip!");
+            cm.sendNext("好, 现在给我 150 金币... 嗯, 那是什么？ 是彩虹村村长路卡斯的推荐信？ 嘿, 你应该告诉我. 伟大的冒险家。我，香克斯，能看出你的作为冒险者的强大潜力。 我怎么能够收你的旅费！");
         else
-            cm.sendNext("Bored of this place? Here... Give me #e150 mesos#n first...");
+            cm.sendNext("对这里感到厌倦了吗？那么... 先给我 #e150 金币#n 吧...");
     } else if (status == 2) {
         if (cm.haveItem(4031801))
-            cm.sendNextPrev("Since you have the recommendation letter, I won't charge you for this. Alright, buckle up, because we're going to head to Victoria Island right now, and it might get a bit turbulent!!");
+            cm.sendNextPrev("既然你有推荐信，我也不会向你收任何费用的。好了。我们现在就向金银岛出发。船可能会有点震荡，坐好了...");
         else
         if (cm.getLevel() > 6) {
             if (cm.getMeso() < 150) {
-                cm.sendOk("What? You're telling me you wanted to go without any money? You're one weirdo...");
+                cm.sendOk("什么？你想去金银岛但你没有钱？你是一个怪人...");
                 cm.dispose();
             } else
-                cm.sendNext("Awesome! #e150#n mesos accepted! Alright, off to Victoria Island!");
+                cm.sendNext("很好! #e150#n 金币! 那么，我们现在就向金银岛出发吧!");
         } else {
-            cm.sendOk("Let's see... I don't think you are strong enough. You'll have to be at least Level 7 to go to Victoria Island.");
+            cm.sendOk("来让我看看，我不认为你有足够的资格去明珠港。你等级至少应该在7级或者7级以上。");
             cm.dispose();
         }
     } else if (status == 3) {

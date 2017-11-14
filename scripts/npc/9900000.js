@@ -40,7 +40,7 @@ var facenew = Array();
 var colors = Array();
 
 function start() {
-    cm.sendSimple("Hey there, I can change your look. What would you like to change?\r\n#L0#Skin#l\r\n#L1#Hair#l\r\n#L5#Female Hair#l\r\n#L2#Hair Color#l\r\n#L3#Eye#l\r\n#L6#Female Eyes#l\r\n#L4#Eye Color#l\r\n#L7#Set GM job#l");
+    cm.sendSimple("嘿那边的人, 我可以改变你的外观. 你想改变什么?\r\n#L0#肤色#l\r\n#L1#发型#l\r\n#L5#女士发型#l\r\n#L2#发色#l\r\n#L3#眼睛#l\r\n#L6#女士眼睛#l\r\n#L4#瞳色#l\r\n#L7#设置GM职业 Set GM job#l");
 }
 
 function action(mode, type, selection) {
@@ -52,23 +52,23 @@ function action(mode, type, selection) {
     if (status == 1) {
         beauty = selection + 1;
         if (selection == 0)
-            cm.sendStyle("Pick one?", skin);
+            cm.sendStyle("挑一个?", skin);
         else if (selection == 1 || selection == 5) {
             for each(var i in selection == 1 ? hair : fhair)
                 hairnew.push(i);
-            cm.sendStyle("Pick one?", hairnew);
+            cm.sendStyle("挑一个?", hairnew);
         } else if (selection == 2) {
             for(var k = 0; k < 8; k++)
                 haircolor.push(cm.getPlayer().getHair() + k);
-            cm.sendStyle("Pick one?", haircolor);
+            cm.sendStyle("挑一个?", haircolor);
         } else if (selection == 3 || selection == 6) {
             for each(var j in selection == 3 ? face : fface)
                 facenew.push(j);
-            cm.sendStyle("Pick one?", facenew);
+            cm.sendStyle("挑一个?", facenew);
         } else if (selection == 4) {
             for(var i = 0; i < 9; i++)
                 colors.push(cm.getPlayer().getFace() + (i*100));
-            cm.sendStyle("Pick one?", colors);
+            cm.sendStyle("挑一个?", colors);
         } else if (selection == 7) {
             cm.changeJobById(910);
             cm.dispose();

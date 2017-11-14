@@ -21190,7 +21190,8 @@ USE `maplesolaxia`;
     (9102001, 2020001, 2, -1),
     (9102001, 2020002, 2, -1),
     (2002018, 4161014, 1, 3099),
-    (1012000, 4032143, 6, 20717);
+    (1012000, 4032143, 6, 20717),
+    (1202000, 4001366, 1, 28194);
 
   # adding wish tickets on APQ boxes
   INSERT INTO `reactordrops` (`reactorid`, `itemid`, `chance`, `questid`) VALUES

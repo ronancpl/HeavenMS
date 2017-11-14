@@ -130,7 +130,7 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
     @Override
     public void writeMapleAsciiString(String s) {
         // Edited for Chinese compatibility
-        writeShort((short) s.getBytes().length);
+        writeShort((short) s.getBytes(ASCII).length);
         writeAsciiString(s);
     }
 

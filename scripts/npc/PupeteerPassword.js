@@ -18,19 +18,20 @@ function action(mode, type, selection){
 
 
 	if(status == 0){
-		cm.sendGetText("A suspicious voice pierces through the silence. #bPassword#k!");
+		cm.sendGetText("可疑的声音刺透寂静. #b密码#k!");
 	}
 	else if(status == 1){
-		if(cm.getText() == "Francis is a genius Puppeteer!"){
+		var text = cm.getText();
+		if(text == "Francis is a genius Puppeteer!" || text == "弗朗西斯是天才人偶师" || text == "弗朗西斯是天才人偶师!" || text == "弗朗西斯是天才人偶师！"){
 			if(cm.isQuestStarted(20730) && cm.getQuestProgress(20730, 9300285) == 0)
 				cm.warp(910510001, 1);
 			else
-                                cm.playerMessage(5, "Although you said the right answer, some mysterious forces is blocking the way in.");
+                                cm.playerMessage(5, "尽管你答对了密码, 某种神秘的力量阻挡了你的去路.");
 
 			cm.dispose();
 		}
 		else{
-			cm.sendOk("#rWrong!");
+			cm.sendOk("#r密码错误!");
 		}
 	}
 	else if(status == 2){

@@ -139,7 +139,23 @@ public class MaplePacketCreator {
                 mplew.write(amount); 
                 return mplew.getPacket(); 
         }  
-
+        
+        // Get length of Chinese string
+        public static int getlength(String str) {
+            int i, length = 0;
+            byte[] bytes = str.getBytes();
+            for (i = 0; i < bytes.length; i++) {
+                if (bytes[i] < 0) {
+                    length += 2;
+                    i ++;
+                }
+                else {
+                    length ++;
+                }
+            }
+            return length;
+        }
+        
         private static void addCharStats(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
                 mplew.writeInt(chr.getId()); // character id
                 mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getName(), '\0', 13));
@@ -6332,7 +6348,7 @@ public class MaplePacketCreator {
                                 mplew.writeInt(dp.getPackageId());
                                 mplew.writeAsciiString(dp.getSender());
                                 // Edited for Chinese compatibility
-                                for (int i = dp.getSender().getBytes().length; i < 13; i++) {
+                                for (int i = getlength(dp.getSender()); i < 13; i++) {
                                         mplew.write(0);
                                 }
                                 mplew.writeInt(dp.getMesos());

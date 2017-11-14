@@ -11,7 +11,7 @@
  this program under any other version of the GNU Affero General Public
  License.
 
- This program is distributed in the hope that it will be useful,
+ This program is distribu ted in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Affero General Public License for more details.
@@ -344,24 +344,24 @@ public class Commands {
                     
 		case "time":
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-			dateFormat.setTimeZone(TimeZone.getTimeZone("-GMT3"));
-			player.yellowMessage("Solaxia Server Time: " + dateFormat.format(new Date()));
+			dateFormat.setTimeZone(TimeZone.getTimeZone("+GMT8"));
+			player.yellowMessage("MapleStory Server Time: " + dateFormat.format(new Date()));
 			break;
                     
 		case "staff":
-			player.yellowMessage("MapleSolaxia Staff");
-			player.yellowMessage("Aria - Administrator");
-			player.yellowMessage("Twdtwd - Administrator");
-			player.yellowMessage("Exorcist - Developer");
-			player.yellowMessage("SharpAceX - Developer");
-			player.yellowMessage("Zygon - Freelance Developer");
-			player.yellowMessage("SourMjolk - Game Master");
-			player.yellowMessage("Kanade - Game Master");
-			player.yellowMessage("Kitsune - Game Master");
-                        player.yellowMessage("MapleSolaxiaV2 Staff");
-                        player.yellowMessage("Ronan - Freelance Developer");
-                        player.yellowMessage("Vcoc - Freelance Developer");
-			break;
+			player.yellowMessage("MapleStory Staff");
+			//player.yellowMessage("Aria - Administrator");
+			//player.yellowMessage("Twdtwd - Administrator");
+			//player.yellowMessage("Exorcist - Developer");
+			//player.yellowMessage("SharpAceX - Developer");
+			//player.yellowMessage("Zygon - Freelance Developer");
+			//player.yellowMessage("SourMjolk - Game Master");
+			//player.yellowMessage("Kanade - Game Master");
+			//player.yellowMessage("Kitsune - Game Master");
+                        //player.yellowMessage("MapleSolaxiaV2 Staff");
+                        //player.yellowMessage("Ronan - Freelance Developer");
+                        //player.yellowMessage("Vcoc - Freelance Developer");
+			//break;
                     
 		case "lastrestart":
 		case "uptime":
@@ -1023,10 +1023,15 @@ public class Commands {
                     break;
                     
                 case "warpto":
-                        if (sub.length < 3){
-				player.yellowMessage("Syntax: !warpto <playername> <mapid>");
-				break;
-			}
+                        //if (sub.length < 3){
+			//	player.yellowMessage("Syntax: !warpto <playername> <mapid>");
+			//	break;
+			//}
+                        
+                        if (sub.length < 2) {
+                            player.yellowMessage("Syntax: !warpto <playername>");
+                            break;
+                        }
                     
 			victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
 			if (victim == null) {//If victim isn't on current channel or isnt a character try and find him by loop all channels on current world.
