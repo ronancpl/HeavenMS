@@ -20613,6 +20613,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="10000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21603">
@@ -20853,6 +20854,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="40000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="2161">
@@ -20908,10 +20910,10 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2020007"/>
-      <int name="infoNumber" value="21619"/>
-      <imgdir name="infoex">
+      <imgdir name="item">
         <imgdir name="0">
-          <string name="value" value="0"/>
+          <int name="id" value="4001193"/>
+          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -21003,10 +21005,10 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1202008"/>
-      <int name="infoNumber" value="21620"/>
-      <imgdir name="infoex">
+      <imgdir name="item">
         <imgdir name="0">
-          <string name="value" value="0"/>
+          <int name="id" value="4001193"/>
+          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -21072,6 +21074,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="80000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21616">
@@ -21126,9 +21129,11 @@
       <imgdir name="item">
         <imgdir name="0">
           <int name="id" value="4032334"/>
+          <int name="count" value="1"/>
         </imgdir>
         <imgdir name="1">
           <int name="id" value="4032335"/>
+          <int name="count" value="1"/>
         </imgdir>
       </imgdir>
       <imgdir name="job">
@@ -22299,11 +22304,11 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1002104"/>
-      <int name="infoNumber" value="21762"/>
       <string name="endscript" value="q21733e"/>
-      <imgdir name="infoex">
+      <imgdir name="mob">
         <imgdir name="0">
-          <string name="value" value="2"/>
+          <int name="count" value="1"/>
+          <int name="id" value="9300345"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -22550,16 +22555,14 @@
     <imgdir name="1">
       <int name="npc" value="2090004"/>
       <string name="endscript" value="q21742e"/>
-      <int name="infoNumber" value="21763"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="800"/>
-        </imgdir>
-      </imgdir>
       <imgdir name="item">
         <imgdir name="0">
           <int name="id" value="4220151"/>
           <int name="count" value="1"/>
+        </imgdir>
+        <imgdir name="1">
+          <int name="id" value="4032342"/>
+          <int name="count" value="8"/>
         </imgdir>
       </imgdir>
     </imgdir>
@@ -22602,6 +22605,7 @@
           <int name="count" value="100"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="500000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21744">

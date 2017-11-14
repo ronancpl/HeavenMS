@@ -57,14 +57,14 @@ function end(mode, type, selection) {
     status++;
     if (mode != 1) {
         if(type == 1 && mode == 0) {
-			qm.sendNext("What? You don't want the potion?");
-		    qm.dispose();
-			return;
-        }else{
+            qm.sendNext("What? You don't want the potion?");
+            qm.dispose();
+            return;
+        } else {
             qm.dispose();
             return;
         }  
-	}
+    }
     if (status == 0)
 	qm.sendOk("Hm... Your expression tells me that the exercise didn't jog any memories. But don't you worry. They'll come back, eventually. Here, drink this potion and power up!\r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0#\r\n#v2000022# 10 #t2000022#\r\n#v2000023# 10 #t2000023#\r\n\r\n#fUI/UIWindow.img/QuestIcon/8/0# 57 exp");
     else if (status == 1) {   

@@ -387,7 +387,7 @@ public class MapleMap {
     }
 
     private int getUsableOID() {
-        if (runningOid.incrementAndGet() > 2000000000) {
+        if (runningOid.incrementAndGet() >= 20000000) {
             runningOid.set(1000);
         }
         objectRLock.lock();
@@ -865,6 +865,8 @@ public class MapleMap {
                 if (!monster.isAlive()) {
                     return false;
                 }
+                
+                /* pyramid not implemented
                 Pair<Integer, Integer> cool = monster.getStats().getCool();
                 if (cool != null) {
                     Pyramid pq = (Pyramid) chr.getPartyQuest();
@@ -885,6 +887,8 @@ public class MapleMap {
                         killed = true;
                     }
                 }
+                */
+                
                 if (damage > 0) {
                     monster.damage(chr, damage);
                     if (!monster.isAlive()) {  // monster just died
@@ -1070,9 +1074,7 @@ public class MapleMap {
     }
 
     public void softKillAllMonsters() {
-        for (SpawnPoint spawnPoint : monsterSpawn) {
-            spawnPoint.setDenySpawn(true);
-        }
+        closeMapSpawnPoints();
         
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
@@ -1086,9 +1088,7 @@ public class MapleMap {
     }
 
     public void killAllMonstersNotFriendly() {
-        for (SpawnPoint spawnPoint : monsterSpawn) {
-            spawnPoint.setDenySpawn(true);
-        }
+        closeMapSpawnPoints();
         
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
@@ -1101,9 +1101,7 @@ public class MapleMap {
     }
 
     public void killAllMonsters() {
-        for (SpawnPoint spawnPoint : monsterSpawn) {
-            spawnPoint.setDenySpawn(true);
-        }
+        closeMapSpawnPoints();
         
         for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
             MapleMonster monster = (MapleMonster) monstermo;
@@ -2831,6 +2829,12 @@ public class MapleMap {
                     }
                 }
             }
+        }
+    }
+    
+    public void closeMapSpawnPoints() {
+        for (SpawnPoint spawnPoint : monsterSpawn) {
+            spawnPoint.setDenySpawn(true);
         }
     }
     

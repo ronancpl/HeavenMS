@@ -6,6 +6,11 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    cm.sendOk("Up ahead is the #rMirror Cave#k. Only the chosen ones have permission to access that place.");
+    if(cm.getPlayer().getItemQuantity(1902016, true) > 0) {
+        cm.warp(140010210, 0);
+    } else {
+        cm.sendOk("What is it? If you you're here to waste my time, get lost!");
+    }
+    
     cm.dispose();
 }

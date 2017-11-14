@@ -56,15 +56,11 @@ function end(mode, type, selection) {
 			}
 			
 			qm.gainItem(1142130, true);
-                        
 			qm.changeJobById(2110);
-			qm.teachSkill(21100000, 0, 20, -1);
-			qm.teachSkill(21100002, 0, 30, -1);
-			qm.teachSkill(21100004, 0, 20, -1);
-			qm.teachSkill(21100005, 0, 20, -1);
                         
 			qm.completeQuest();
 		}
+                
 		qm.sendNext("Your level isn't what it used to be back in your glory days, so I can't restore all of your old abilities. But the few I can restore should help you level up faster. Now hurry up and train so you can return to the old you.");    
 		qm.dispose();
 	}

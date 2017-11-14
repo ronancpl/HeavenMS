@@ -112,7 +112,7 @@ public class MakerItemFactory {
         }
 
         protected void addReqItem(int itemId, int amount) {
-            reqItems.add(new Pair<Integer, Integer>(itemId, amount));
+            reqItems.add(new Pair<>(itemId, amount));
         }
     }
 }

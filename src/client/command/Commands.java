@@ -273,7 +273,7 @@ public class Commands {
 	static {
 		gotomaps.put("gmmap", 180000000);
 		gotomaps.put("southperry", 60000);
-		gotomaps.put("amherst", 1010000);
+		gotomaps.put("amherst", 1000000);
 		gotomaps.put("henesys", 100000000);
 		gotomaps.put("ellinia", 101000000);
 		gotomaps.put("perion", 102000000);
@@ -281,6 +281,8 @@ public class Commands {
 		gotomaps.put("lith", 104000000);
 		gotomaps.put("sleepywood", 105040300);
 		gotomaps.put("florina", 110000000);
+                gotomaps.put("ereve", 130000000);
+                gotomaps.put("rien", 140000000);
 		gotomaps.put("orbis", 200000000);
 		gotomaps.put("happy", 209000000);
 		gotomaps.put("elnath", 211000000);
@@ -1795,9 +1797,8 @@ public class Commands {
 			for (MapleMapObject monstermo : monsters) {
 				monster = (MapleMonster) monstermo;
 				if (!monster.getStats().isFriendly()) {
-					map.killMonster(monster, player, true);
-					//monster.giveExpToCharacter(player, monster.getExp() * c.getPlayer().getExpRate(), true, 1);
-				}
+                                        map.damageMonster(player, monster, Integer.MAX_VALUE);
+                                }
 			}
 			player.dropMessage("Killed " + monsters.size() + " monsters.");
                     break;

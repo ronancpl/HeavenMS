@@ -663,3 +663,10 @@ Modificado todas as DB tables agora utilizando InnoDB (ganhos do MyISAM em contr
 
 11 Novembro 2017,
 Adicionado proteção contra acesso concorrente em scripts de portais, eliminando possíveis inconsistencias por script.
+Implementado as skills de 2o job de Aran nas questlines.
+Corrigido GM shop sendo liberado pra jogadores em Amherst.
+
+13 - 14 Novembro 2017,
+Modificado ID de jogador agora começando em 20,000,000, evitando assim clash de id de jogador (que tb representa seu OID) com OIDs de objetos do mapa.
+Nova ferramenta: MapleSkillMakerFetcher. A ferramenta lê info pertinente às descrições de itens feitos pelo Maker e as compila numa tabela, pra ser usada na DB.
+Corrigida questline de mounts e skills de Aran.

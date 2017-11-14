@@ -75,7 +75,7 @@ public class MapleTrade {
         return fee;
     }
 
-    private void lock() {
+    private void lockTrade() {
         locked.set(true);
         partner.getChr().getClient().announce(MaplePacketCreator.getTradeConfirmation());
     }
@@ -201,7 +201,7 @@ public class MapleTrade {
     }
 
     public static void completeTrade(MapleCharacter c) {
-        c.getTrade().lock();
+        c.getTrade().lockTrade();
         MapleTrade local = c.getTrade();
         MapleTrade partner = local.getPartner();
         if (partner.isLocked()) {

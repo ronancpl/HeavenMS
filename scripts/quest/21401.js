@@ -57,12 +57,6 @@ function end(mode, type, selection) {
 			qm.gainItem(1142132, true);
 			qm.changeJobById(2112);
 			
-			
-			qm.teachSkill(21121000, 0, 10, -1);
-			qm.teachSkill(21120001, 0, 10, -1);
-			qm.teachSkill(21121003, 0, 10, -1);
-			qm.teachSkill(21120002, 0, 10, -1);
-			
 			qm.completeQuest();
 		}
 		qm.sendNext("Your skills have been restored. Those skills have been dormant for so long that you'll have to re-train yourself, but you'll be as good as new once you complete your training.");

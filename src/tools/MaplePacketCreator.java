@@ -5886,6 +5886,14 @@ public class MaplePacketCreator {
                 mplew.write(effect);
                 return mplew.getPacket();
         }
+        
+        public static byte[] showMakerEffect() {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
+                mplew.write(16);
+                mplew.writeInt(0);
+                return mplew.getPacket();
+        }
 
         public static byte[] showForeignEffect(int effect) {
                 return showForeignEffect(-1, effect);

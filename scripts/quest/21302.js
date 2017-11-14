@@ -44,9 +44,7 @@ function end(mode, type, selection) {
 			}
 			
 			qm.gainItem(1142131, true);
-                        
 			qm.changeJobById(2111);
-			qm.teachSkill(21110002, 0, 20, -1);
                         
 			qm.completeQuest();
 		}

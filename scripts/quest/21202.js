@@ -69,7 +69,6 @@ function end(mode, type, selection) {
     else if (status == 3){
         //qm.showVideo("Polearm");
         qm.completeQuest();
-        qm.forceCompleteQuest(21201);
         qm.removeAll(4032311);
         qm.dispose();
     }

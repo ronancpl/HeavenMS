@@ -3,12 +3,6 @@
 
 USE `maplesolaxia`;
 
-UPDATE shopitems SET itemid=1812005, price=1000 WHERE shopitemid=18;
-UPDATE shopitems SET itemid=1812004, price=1000 WHERE shopitemid=19;
-UPDATE shopitems SET itemid=2120000, price=100 WHERE shopitemid=20;
-UPDATE shopitems SET itemid=1812000, price=1000 WHERE shopitemid=21;
-UPDATE shopitems SET itemid=1812001, price=1000 WHERE shopitemid=22;
-
 # Scroll shop at Spindle, chair shop at Kino Konoko
 INSERT INTO `shops` (`shopid`,`npcid`) VALUES
 (9110002,9110002),

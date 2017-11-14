@@ -24,6 +24,8 @@ function action(mode, type, selection){
 		if(cm.getText() == "Francis is a genius Puppeteer!"){
 			if(cm.isQuestStarted(20730) && cm.getQuestProgress(20730, 9300285) == 0)
 				cm.warp(910510001, 1);
+                        else if(cm.isQuestStarted(21731) && cm.getQuestProgress(21731, 9300346) == 0)
+				cm.warp(910510001, 1);
 			else
                                 cm.playerMessage(5, "Although you said the right answer, some mysterious forces is blocking the way in.");
 
