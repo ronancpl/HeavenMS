@@ -51,6 +51,7 @@ import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMap;
+import server.maps.MapleMapObject;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
@@ -78,9 +79,17 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
 	    oid = slea.readInt();
             
             try {
-                attacker = (MapleMonster) map.getMapObject(oid);
-                List<loseItem> loseItems;
+                MapleMapObject mmo = map.getMapObject(oid);
+                if(mmo instanceof MapleMonster) {
+                    attacker = (MapleMonster) mmo;
+                    if(attacker.getId() != monsteridfrom) {
+                        attacker = null;
+                    }
+                }
+                
                 if (attacker != null) {
+                    List<loseItem> loseItems;
+                    
                     if (attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
                         return;
                     }
@@ -119,10 +128,8 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             } catch(ClassCastException e) {
                 //this happens due to mob on last map damaging player just before changing maps
                 
-                if(ServerConstants.USE_DEBUG) {
-                    e.printStackTrace();
-                    FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Attacker is not a mob-type, rather is a " + map.getMapObject(oid).getClass().getName() + " entity.");
-                }
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Attacker is not a mob-type, rather is a " + map.getMapObject(oid).getClass().getName() + " entity.");
                 
                 return;
             }

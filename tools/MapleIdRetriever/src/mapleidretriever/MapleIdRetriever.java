@@ -41,9 +41,11 @@ import java.util.ArrayList;
  * Set whether you are first installing the handbook on the SQL Server (TRUE) or just fetching whatever is on your "fetch.txt"
  * file (FALSE) on the INSTALL_SQLTABLE property and build the project. With all done, run the Java executable.
  * 
+ * Expected installing time: 30 minutes
+ * 
  */
 public class MapleIdRetriever {
-    private final static boolean INSTALL_SQLTABLE = true;
+    private final static boolean INSTALL_SQLTABLE = false;
     
     static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
     static String driver = "com.mysql.jdbc.Driver";
@@ -83,7 +85,12 @@ public class MapleIdRetriever {
         
         if(tokens.length > 1) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO `handbook` (`id`, `name`) VALUES (?, ?)");
-            ps.setInt(1, Integer.parseInt(tokens[0]));
+            try {
+                ps.setInt(1, Integer.parseInt(tokens[0]));
+            } catch (NumberFormatException npe) {   // odd...
+                String num = tokens[0].substring(1);
+                ps.setInt(1, Integer.parseInt(num));
+            }
             ps.setString(2, tokens[1]);
             ps.execute();
         }

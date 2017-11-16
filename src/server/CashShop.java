@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 
 import provider.MapleData;
 import provider.MapleDataProvider;
@@ -46,6 +46,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.ItemConstants;
 import java.util.Collections;
+import tools.locks.MonitoredEnums;
 
 /*
  * @author Flav
@@ -241,7 +242,7 @@ public class CashShop {
     private List<Item> inventory = new ArrayList<>();
     private List<Integer> wishList = new ArrayList<>();
     private int notes = 0;
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.CASHSHOP);
 
     public CashShop(int accountId, int characterId, int jobType) throws SQLException {
         this.accountId = accountId;

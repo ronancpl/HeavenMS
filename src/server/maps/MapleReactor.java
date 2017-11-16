@@ -29,12 +29,13 @@ import java.util.List;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 
 import scripting.reactor.ReactorScriptManager;
 import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -53,7 +54,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean shouldCollect;
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
-    private Lock reactorLock = new ReentrantLock(true);
+    private Lock reactorLock = new MonitoredReentrantLock(MonitoredEnums.REACTOR, true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
         this.evstate = (byte)0;

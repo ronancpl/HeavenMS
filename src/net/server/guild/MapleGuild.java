@@ -36,12 +36,13 @@ import java.util.Map;
 import java.util.Set;
 
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 
 import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
+import tools.locks.MonitoredEnums;
 
 public class MapleGuild {
     public final static int CREATE_GUILD_COST = 1500000;
@@ -52,7 +53,7 @@ public class MapleGuild {
     }
     
     private final List<MapleGuildCharacter> members;
-    private final Lock membersLock = new ReentrantLock(true);
+    private final Lock membersLock = new MonitoredReentrantLock(MonitoredEnums.GUILD, true);
     
     private String rankTitles[] = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
     private String name, notice;

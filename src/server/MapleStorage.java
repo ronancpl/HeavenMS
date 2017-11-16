@@ -34,10 +34,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -50,7 +51,7 @@ public class MapleStorage {
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
     private List<Item> items;
-    private Lock lock = new ReentrantLock(true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.STORAGE, true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;

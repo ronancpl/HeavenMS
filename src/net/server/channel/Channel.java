@@ -33,7 +33,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
+import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -67,6 +68,7 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import constants.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
+import tools.locks.MonitoredEnums;
 
 public final class Channel {
 
@@ -90,11 +92,11 @@ public final class Channel {
     private Map<Integer, Integer> dojoParty = new HashMap<>();
     private Map<Integer, MapleMiniDungeon> dungeons = new HashMap<>();
     
-    private ReentrantReadWriteLock merchantLock = new ReentrantReadWriteLock(true);
+    private ReentrantReadWriteLock merchantLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MERCHANT, true);
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
     
-    private Lock lock = new ReentrantLock(true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.CHANNEL, true);
     
     public Channel(final int world, final int channel) {
         this.world = world;

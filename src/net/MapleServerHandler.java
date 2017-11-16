@@ -43,13 +43,14 @@ import client.MapleClient;
 import constants.ServerConstants;
 
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.ScheduledFuture;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import server.TimerManager;
+import tools.locks.MonitoredEnums;
 
 public class MapleServerHandler extends IoHandlerAdapter {
 
@@ -58,8 +59,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private static AtomicLong sessionId = new AtomicLong(7777);
     
-    private Lock idleLock = new ReentrantLock(true);
-    private Lock tempLock = new ReentrantLock(true);
+    private Lock idleLock = new MonitoredReentrantLock(MonitoredEnums.SHANDLER_IDLE, true);
+    private Lock tempLock = new MonitoredReentrantLock(MonitoredEnums.SHANDLER_TEMP, true);
     private Map<MapleClient, Long> idleSessions = new HashMap<>(100);
     private Map<MapleClient, Long> tempIdleSessions = new HashMap<>();
     private ScheduledFuture<?> idleManager = null;

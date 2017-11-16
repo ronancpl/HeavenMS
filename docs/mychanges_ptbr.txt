@@ -670,3 +670,8 @@ Corrigido GM shop sendo liberado pra jogadores em Amherst.
 Modificado ID de jogador agora começando em 20,000,000, evitando assim clash de id de jogador (que tb representa seu OID) com OIDs de objetos do mapa.
 Nova ferramenta: MapleSkillMakerFetcher. A ferramenta lê info pertinente às descrições de itens feitos pelo Maker e as compila numa tabela, pra ser usada na DB.
 Corrigida questline de mounts e skills de Aran.
+
+15 Novembro 2017,
+Implementado sistema de auditoria de deadlocks: ThreadTracker.
+Corrigido bug onde jogadores recebem dano de mobs de mapas anteriores (que acarretavam em problemas com OID e natureza dos objetos).
+Corrigido alguns problemas com exceção sendo lançada ao tentar desligar o server.

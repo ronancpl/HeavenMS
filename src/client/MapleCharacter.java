@@ -45,7 +45,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Comparator;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -154,6 +154,7 @@ import constants.skills.ThunderBreaker;
 import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
+import tools.locks.MonitoredEnums;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static NumberFormat nf = new DecimalFormat("#,###,###,###");
@@ -270,10 +271,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    private Lock chrLock = new ReentrantLock(true);
-    private Lock effLock = new ReentrantLock(true);
-    private Lock petLock = new ReentrantLock(true); // for quest tasks as well
-    private Lock prtLock = new ReentrantLock();
+    private Lock chrLock = new MonitoredReentrantLock(MonitoredEnums.CHR, true);
+    private Lock effLock = new MonitoredReentrantLock(MonitoredEnums.EFF, true);
+    private Lock petLock = new MonitoredReentrantLock(MonitoredEnums.PET, true); // for quest tasks as well
+    private Lock prtLock = new MonitoredReentrantLock(MonitoredEnums.PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
     private List<MapleRing> crushRings = new ArrayList<>();

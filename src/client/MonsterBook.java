@@ -31,16 +31,17 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
+import tools.locks.MonitoredEnums;
 
 public final class MonsterBook {
     private int specialCard = 0;
     private int normalCard = 0;
     private int bookLevel = 1;
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
-    private Lock lock = new ReentrantLock();
+    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.BOOK);
 
     private Set<Entry<Integer, Integer>> getCardSet() {
         lock.lock();

@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 
 import javax.script.ScriptEngine;
 
@@ -77,6 +77,7 @@ import tools.FilePrinter;
 import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
+import tools.locks.MonitoredEnums;
 
 public class MapleClient {
 
@@ -108,7 +109,7 @@ public class MapleClient {
 	private int picattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
-	private final Lock lock = new ReentrantLock(true);
+	private final Lock lock = new MonitoredReentrantLock(MonitoredEnums.CLIENT, true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;
@@ -832,7 +833,7 @@ public class MapleClient {
                             
                                 removePlayer();
                                 player.saveCooldowns();
-                                player.saveToDB();
+                                player.saveToDB(true);
                             
 				player = null;
 				return;

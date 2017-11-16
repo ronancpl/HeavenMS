@@ -35,7 +35,8 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
+import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -69,6 +70,7 @@ import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -90,12 +92,12 @@ public class EventInstanceManager {
         private List<Integer> mapIds = new LinkedList<>();
         private List<Boolean> isInstanced = new LinkedList<>();
         
-        private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock(true);
+        private final ReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredEnums.EIM, true);
         private final ReadLock rL = lock.readLock();
         private final WriteLock wL = lock.writeLock();
         
-        private final Lock pL = new ReentrantLock(true);
-        private final Lock sL = new ReentrantLock();
+        private final Lock pL = new MonitoredReentrantLock(MonitoredEnums.EIM_PARTY, true);
+        private final Lock sL = new MonitoredReentrantLock(MonitoredEnums.EIM_SCRIPT, true);
         
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;

@@ -52,6 +52,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -78,13 +79,14 @@ import server.life.MonsterGlobalDropEntry;
 import server.life.SpawnPoint;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
-import server.partyquest.Pyramid;
+//import server.partyquest.Pyramid;
 import scripting.event.EventInstanceManager;
 import server.life.MonsterListener;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import tools.locks.MonitoredEnums;
 
 public class MapleMap {
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
@@ -161,11 +163,11 @@ public class MapleMap {
         if (this.monsterRate == 0) {
             this.monsterRate = 1;
         }
-        final ReentrantReadWriteLock chrLock = new ReentrantReadWriteLock(true);
+        final ReentrantReadWriteLock chrLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_CHRS, true);
         chrRLock = chrLock.readLock();
         chrWLock = chrLock.writeLock();
 
-        final ReentrantReadWriteLock objectLock = new ReentrantReadWriteLock(true);
+        final ReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_OBJS, true);
         objectRLock = objectLock.readLock();
         objectWLock = objectLock.writeLock();
     }

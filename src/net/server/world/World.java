@@ -43,7 +43,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
@@ -68,6 +68,7 @@ import server.maps.AbstractMapleMapObject;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -89,25 +90,25 @@ public class World {
     
     private Map<Integer, MapleParty> parties = new HashMap<>();
     private AtomicInteger runningPartyId = new AtomicInteger();
-    private Lock partyLock = new ReentrantLock(true);
+    private Lock partyLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_PARTY, true);
     
     private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
-    private Lock owlLock = new ReentrantLock();
+    private Lock owlLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_OWL);
     
-    private Lock activePetsLock = new ReentrantLock(true);
+    private Lock activePetsLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_PETS, true);
     private Map<Integer, Byte> activePets = new LinkedHashMap<>();
     private ScheduledFuture<?> petsSchedule;
     private long petUpdate;
     
-    private Lock activeMountsLock = new ReentrantLock(true);
+    private Lock activeMountsLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_MOUNTS, true);
     private Map<Integer, Byte> activeMounts = new LinkedHashMap<>();
     private ScheduledFuture<?> mountsSchedule;
     private long mountUpdate;
     
-    private Lock activePlayerShopsLock = new ReentrantLock(true);
+    private Lock activePlayerShopsLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_PSHOPS, true);
     private Map<Integer, MaplePlayerShop> activePlayerShops = new LinkedHashMap<>();
     
-    private Lock activeMerchantsLock = new ReentrantLock(true);
+    private Lock activeMerchantsLock = new MonitoredReentrantLock(MonitoredEnums.WORLD_MERCHS, true);
     private Map<Integer, Pair<MapleHiredMerchant, Byte>> activeMerchants = new LinkedHashMap<>();
     private long merchantUpdate;
     

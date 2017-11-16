@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Collection;
+import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -46,6 +47,7 @@ import server.life.MapleMonster;
 import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
+import tools.locks.MonitoredEnums;
 
 public class MapleMapFactory {
 
@@ -64,7 +66,7 @@ public class MapleMapFactory {
         this.channel = channel;
         this.event = eim;
         
-        ReentrantReadWriteLock rrwl = new ReentrantReadWriteLock();
+        ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_FACTORY);
         this.mapsRLock = rrwl.readLock();
         this.mapsWLock = rrwl.writeLock();
     }

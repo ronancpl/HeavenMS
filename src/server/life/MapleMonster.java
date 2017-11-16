@@ -51,7 +51,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
+import tools.locks.MonitoredReentrantLock;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import server.TimerManager;
@@ -62,6 +63,7 @@ import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import tools.locks.MonitoredEnums;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
     private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
@@ -84,9 +86,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int team;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
-    private ReentrantLock externalLock = new ReentrantLock();
-    private ReentrantLock monsterLock = new ReentrantLock(true);
-    private ReentrantLock statiLock = new ReentrantLock();
+    private Lock externalLock = new MonitoredReentrantLock(MonitoredEnums.MOB_EXT);
+    private Lock monsterLock = new MonitoredReentrantLock(MonitoredEnums.MOB, true);
+    private Lock statiLock = new MonitoredReentrantLock(MonitoredEnums.MOB_STATI);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);

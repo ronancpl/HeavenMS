@@ -27,9 +27,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.Lock;
+import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.Pair;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -45,7 +47,7 @@ public enum ItemFactory {
     MERCHANT(6, false);
     private final int value;
     private final boolean account;
-    private static final ReentrantLock lock = new ReentrantLock(true);
+    private static final Lock lock = new MonitoredReentrantLock(MonitoredEnums.ITEM, true);
 
     private ItemFactory(int value, boolean account) {
         this.value = value;

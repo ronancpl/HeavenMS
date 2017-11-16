@@ -33,15 +33,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.ScheduledFuture;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -70,11 +71,13 @@ import client.SkillFactory;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.Calendar;
+import net.server.audit.ThreadTracker;
 import server.quest.MapleQuest;
+import tools.locks.MonitoredEnums;
 
 public class Server implements Runnable {
     private static final Set<Integer> activeFly = new HashSet<>();
-    private static final Map<Integer, Integer> couponRates = new LinkedHashMap<>();
+    private static final Map<Integer, Integer> couponRates = new HashMap<>(30);
     private static final List<Integer> activeCoupons = new LinkedList<>();
     
     private IoAcceptor acceptor;
@@ -83,11 +86,12 @@ public class Server implements Runnable {
     private final Properties subnetInfo = new Properties();
     private static Server instance = null;
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
-    private final Map<Integer, MapleGuild> guilds = new LinkedHashMap<>();
-    private final Map<MapleClient, Long> inLoginState = new LinkedHashMap<>();
-    private final Lock srvLock = new ReentrantLock();
+    private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
+    private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
+    private final Lock srvLock = new MonitoredReentrantLock(MonitoredEnums.SERVER);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
-    private final Map<Integer, MapleAlliance> alliances = new LinkedHashMap<>();
+    private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
+    
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
     
@@ -301,7 +305,9 @@ public class Server implements Runnable {
 	timeToTake = System.currentTimeMillis();
 	MapleQuest.loadAllQuest();
 	System.out.println("Quest loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
-		
+	
+        if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
+        
         try {
             Integer worldCount = Math.min(ServerConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
             
@@ -317,7 +323,7 @@ public class Server implements Runnable {
 
                 worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
                 worlds.add(world);
-                channels.add(new LinkedHashMap<Integer, String>());
+                channels.add(new HashMap<Integer, String>());
                 for (int j = 0; j < Integer.parseInt(p.getProperty("channels" + i)); j++) {
                     int channelid = j + 1;
                     Channel channel = new Channel(i, channelid);
@@ -807,6 +813,8 @@ public class Server implements Runnable {
                             }
                         }
                     }*/
+                    
+                    if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
 
                     TimerManager.getInstance().purge();
                     TimerManager.getInstance().stop();

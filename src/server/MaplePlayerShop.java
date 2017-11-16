@@ -32,13 +32,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import tools.locks.MonitoredReentrantLock;
 import net.SendOpcode;
 import server.maps.AbstractMapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
+import tools.locks.MonitoredEnums;
 
 /**
  *
@@ -55,7 +56,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private List<String> bannedList = new ArrayList<>();
     private List<Pair<MapleCharacter, String>> chatLog = new LinkedList<>();
     private Map<Integer, Byte> chatSlot = new LinkedHashMap<>();
-    private Lock visitorLock = new ReentrantLock(true);
+    private Lock visitorLock = new MonitoredReentrantLock(MonitoredEnums.VISITOR_PSHOP, true);
 
     public MaplePlayerShop(MapleCharacter owner, String description) {
         this.setPosition(owner.getPosition());

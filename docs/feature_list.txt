@@ -103,5 +103,6 @@ Project:
 * Fixed/added some missing packets for MoveEnvironment, summons and others.
 * Reviewed many Java object aspects that needed concurrency protection.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
+* ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
 
 ---------------------------

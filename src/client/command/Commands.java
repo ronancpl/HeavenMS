@@ -346,7 +346,7 @@ public class Commands {
                     
 		case "time":
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-			dateFormat.setTimeZone(TimeZone.getTimeZone("-GMT3"));
+			dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
 			player.yellowMessage("Solaxia Server Time: " + dateFormat.format(new Date()));
 			break;
                     
@@ -741,7 +741,7 @@ public class Commands {
 			player.yellowMessage("Players on this map:");
 			for (MapleMapObject mmo : player.getMap().getPlayers()) {
 				MapleCharacter chr = (MapleCharacter) mmo;
-				player.dropMessage(5, ">> " + chr.getName());
+				player.dropMessage(5, ">> " + chr.getName() + " - " + chr.getId() + " - Oid: " + chr.getObjectId());
 			}
 			player.yellowMessage("NPCs on this map:");
 			for (MapleMapObject npcs : player.getMap().getMapObjects()) {
@@ -755,7 +755,7 @@ public class Commands {
 				if (mobs instanceof MapleMonster) {
 					MapleMonster mob = (MapleMonster) mobs;
 					if(mob.isAlive()){
-						player.dropMessage(5, ">> " + mob.getName() + " - " + mob.getId());
+						player.dropMessage(5, ">> " + mob.getName() + " - " + mob.getId() + " - Oid: " + mob.getObjectId());
 					}
 				}
 			}
