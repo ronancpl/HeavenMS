@@ -77,7 +77,7 @@ import tools.FilePrinter;
 import tools.HexTool;
 import tools.MapleAESOFB;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleClient {
 
@@ -109,7 +109,7 @@ public class MapleClient {
 	private int picattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
-	private final Lock lock = new MonitoredReentrantLock(MonitoredEnums.CLIENT, true);
+	private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;

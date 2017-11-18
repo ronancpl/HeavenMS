@@ -73,7 +73,7 @@ import constants.ServerConstants;
 import java.util.Calendar;
 import net.server.audit.ThreadTracker;
 import server.quest.MapleQuest;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class Server implements Runnable {
     private static final Set<Integer> activeFly = new HashSet<>();
@@ -88,7 +88,7 @@ public class Server implements Runnable {
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
     private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
     private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
-    private final Lock srvLock = new MonitoredReentrantLock(MonitoredEnums.SERVER);
+    private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
     

@@ -31,7 +31,7 @@ import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.Pair;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -47,7 +47,7 @@ public enum ItemFactory {
     MERCHANT(6, false);
     private final int value;
     private final boolean account;
-    private static final Lock lock = new MonitoredReentrantLock(MonitoredEnums.ITEM, true);
+    private static final Lock lock = new MonitoredReentrantLock(MonitoredLockType.ITEM, true);
 
     private ItemFactory(int value, boolean account) {
         this.value = value;

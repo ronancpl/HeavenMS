@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Comparator;
 import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleParty {
     private int id;
@@ -44,7 +44,7 @@ public class MapleParty {
     private Map<Integer, Integer> histMembers = new HashMap<>();
     private int nextEntry = 0;
     
-    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.PARTY, true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.PARTY, true);
     
     public MapleParty(int id, MaplePartyCharacter chrfor) {
         this.leaderId = chrfor.getId();

@@ -70,7 +70,7 @@ import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -90,14 +90,13 @@ public class EventInstanceManager {
 	private long eventTime = 0;
 	private MapleExpedition expedition = null;
         private List<Integer> mapIds = new LinkedList<>();
-        private List<Boolean> isInstanced = new LinkedList<>();
         
-        private final ReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredEnums.EIM, true);
+        private final ReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredLockType.EIM, true);
         private final ReadLock rL = lock.readLock();
         private final WriteLock wL = lock.writeLock();
         
-        private final Lock pL = new MonitoredReentrantLock(MonitoredEnums.EIM_PARTY, true);
-        private final Lock sL = new MonitoredReentrantLock(MonitoredEnums.EIM_SCRIPT, true);
+        private final Lock pL = new MonitoredReentrantLock(MonitoredLockType.EIM_PARTY, true);
+        private final Lock sL = new MonitoredReentrantLock(MonitoredLockType.EIM_SCRIPT, true);
         
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
@@ -252,7 +251,7 @@ public class EventInstanceManager {
 		}
 	}  
         
-        public void exitPlayer(MapleCharacter chr) {
+        public void exitPlayer(MapleCharacter chr) {    //unused
 		if (chr == null || !chr.isLoggedin()){
 			return;
 		}
@@ -317,6 +316,7 @@ public class EventInstanceManager {
                                 eventTime += time;
 
                                 event_schedule = TimerManager.getInstance().schedule(new Runnable() {
+                                        @Override
                                         public void run() {
                                                 try {
                                                         dismissEventTimer();
@@ -503,30 +503,27 @@ public class EventInstanceManager {
 	}
 	
 	public void monsterKilled(MapleMonster mob) {
-		mobs.remove(mob);
+		sL.lock();
                 try {
-                        sL.lock();
+                        mobs.remove(mob);
+                        
                         try {
                                 em.getIv().invokeFunction("monsterKilled", mob, this);
-                        } finally {
-                                sL.unlock();
+                        } catch (ScriptException | NoSuchMethodException ex) {
+                                ex.printStackTrace();
                         }
-                } catch (ScriptException | NoSuchMethodException ex) {
-                        ex.printStackTrace();
-                }
-		if (mobs.isEmpty()) {
-			try {
-                                sL.lock();
+                        
+                        if (mobs.isEmpty()) {
                                 try {
                                         em.getIv().invokeFunction("allMonstersDead", this);
-                                } finally {
-                                        sL.unlock();
+                                } catch (ScriptException | NoSuchMethodException ex) {
+                                        ex.printStackTrace();
                                 }
-			} catch (ScriptException | NoSuchMethodException ex) {
-				ex.printStackTrace();
-			}
-		}
-	}
+                        }
+                } finally {
+                        sL.unlock();
+                }
+        }
         
         public void friendlyKilled(MapleMonster mob) {
 		try {
@@ -850,7 +847,6 @@ public class EventInstanceManager {
                         return getMapFactory().getMap(mapid);
                 }
                 mapIds.add(mapid);
-                isInstanced.add(false);
                 return getMapFactory().getMap(mapid);
         }
         

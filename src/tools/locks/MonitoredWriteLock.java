@@ -40,7 +40,7 @@ import tools.FilePrinter;
 public class MonitoredWriteLock extends ReentrantReadWriteLock.WriteLock {
     private ScheduledFuture<?> timeoutSchedule = null;
     private StackTraceElement[] deadlockedState = null;
-    private final MonitoredEnums id;
+    private final MonitoredLockType id;
     private final int hashcode;
     private final Lock state = new ReentrantLock(true);
     private final AtomicInteger reentrantCount = new AtomicInteger(0);
@@ -53,7 +53,6 @@ public class MonitoredWriteLock extends ReentrantReadWriteLock.WriteLock {
     
     @Override
     public void lock() {
-        super.lock();
         if(ServerConstants.USE_THREAD_TRACKER) {
             if(deadlockedState != null) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -66,6 +65,8 @@ public class MonitoredWriteLock extends ReentrantReadWriteLock.WriteLock {
 
             registerLocking();
         }
+        
+        super.lock();
     }
     
     @Override
@@ -73,6 +74,7 @@ public class MonitoredWriteLock extends ReentrantReadWriteLock.WriteLock {
         if(ServerConstants.USE_THREAD_TRACKER) {
             unregisterLocking();
         }
+        
         super.unlock();
     }
     

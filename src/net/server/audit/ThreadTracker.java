@@ -35,7 +35,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import server.TimerManager;
 import tools.FilePrinter;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 import constants.ServerConstants;
 
 /**
@@ -48,28 +48,28 @@ public class ThreadTracker {
     private static ThreadTracker instance = null;
     private final Lock ttLock = new ReentrantLock(true);
     
-    private final Map<Long, List<MonitoredEnums>> threadTracker = new HashMap<>();
+    private final Map<Long, List<MonitoredLockType>> threadTracker = new HashMap<>();
     private final Map<Long, Integer> threadUpdate = new HashMap<>();
     private final Map<Long, Thread> threads = new HashMap<>();
     
     private final Map<Long, AtomicInteger> lockCount = new HashMap<>();
-    private final Map<Long, MonitoredEnums> lockIds = new HashMap<>();
+    private final Map<Long, MonitoredLockType> lockIds = new HashMap<>();
     private final Map<Long, Long> lockThreads = new HashMap<>();
     private final Map<Long, Byte> lockUpdate = new HashMap<>();
     
-    private final Map<MonitoredEnums, Map<Long, Integer>> locks = new HashMap<>();
+    private final Map<MonitoredLockType, Map<Long, Integer>> locks = new HashMap<>();
     ScheduledFuture<?> threadTrackerSchedule;
     
     private String printThreadTrackerState(String dateFormat) {
         
-        Map<MonitoredEnums, List<Integer>> lockValues = new HashMap<>();
+        Map<MonitoredLockType, List<Integer>> lockValues = new HashMap<>();
         Set<Long> executingThreads = new HashSet<>();
         
         for(Map.Entry<Long, AtomicInteger> lock : lockCount.entrySet()) {
             if(lock.getValue().get() != 0) {
                 executingThreads.add(lockThreads.get(lock.getKey()));
                 
-                MonitoredEnums lockId = lockIds.get(lock.getKey());
+                MonitoredLockType lockId = lockIds.get(lock.getKey());
                 List<Integer> list = lockValues.get(lockId);
                 
                 if(list == null) {
@@ -84,7 +84,7 @@ public class ThreadTracker {
         
         String s = "----------------------------\r\n" + dateFormat + "\r\n    ";
         s += "Lock-thread usage count:";
-        for(Map.Entry<MonitoredEnums, List<Integer>> lock : lockValues.entrySet()) {
+        for(Map.Entry<MonitoredLockType, List<Integer>> lock : lockValues.entrySet()) {
             s += ("\r\n  " + lock.getKey().name() + ": ");
             
             for(Integer i : lock.getValue()) {
@@ -95,7 +95,7 @@ public class ThreadTracker {
         
         for(Long tid : executingThreads) {
             s += "\r\n";
-            for(MonitoredEnums lockid : threadTracker.get(tid)) {
+            for(MonitoredLockType lockid : threadTracker.get(tid)) {
                 s += (lockid.name() + " ");
             }
             s += "|";
@@ -106,9 +106,9 @@ public class ThreadTracker {
         return s;
     }
     
-    private static String printThreadLog(List<MonitoredEnums> stillLockedPath, String dateFormat) {
+    private static String printThreadLog(List<MonitoredLockType> stillLockedPath, String dateFormat) {
         String s = "----------------------------\r\n" + dateFormat + "\r\n    ";
-        for(MonitoredEnums lock : stillLockedPath) {
+        for(MonitoredLockType lock : stillLockedPath) {
             s += (lock.name() + " ");
         }
         s += "\r\n\r\n";
@@ -125,7 +125,7 @@ public class ThreadTracker {
         return s;
     }
     
-    public void accessThreadTracker(boolean update, boolean lock, MonitoredEnums lockId, long lockOid) {
+    public void accessThreadTracker(boolean update, boolean lock, MonitoredLockType lockId, long lockOid) {
         ttLock.lock();
         try {
             if(update) {
@@ -135,7 +135,7 @@ public class ThreadTracker {
                     for(Long l : threadUpdate.keySet()) {
                         int next = threadUpdate.get(l) + 1;
                         if(next == 4) {
-                            List<MonitoredEnums> tt = threadTracker.get(l);
+                            List<MonitoredLockType> tt = threadTracker.get(l);
 
                             if(tt.isEmpty()) {
                                 toRemove.add(l);
@@ -167,10 +167,10 @@ public class ThreadTracker {
                     for(Entry<Long, Byte> it : lockUpdate.entrySet()) {
                         byte val = (byte)(it.getValue() + 1);
 
-                        if(val < 60) {  // free the structure after 60 silent updates
+                        if(val < 60) {
                             lockUpdate.put(it.getKey(), val);
                         } else {
-                            toRemove.add(it.getKey());
+                            toRemove.add(it.getKey());  // free the structure after 60 silent updates
                         }
                     }
 
@@ -201,12 +201,14 @@ public class ThreadTracker {
                     }
                     c.incrementAndGet();
 
-                    List<MonitoredEnums> list = threadTracker.get(tid);
+                    List<MonitoredLockType> list = threadTracker.get(tid);
                     if(list == null) {
-                        list = new ArrayList<>(20);
+                        list = new ArrayList<>(5);
                         threadTracker.put(tid, list);
                         threadUpdate.put(tid, 0);
                         threads.put(tid, Thread.currentThread());
+                    } else if(list.isEmpty()) {
+                        threadUpdate.put(tid, 0);
                     }
                     list.add(lockId);
 
@@ -228,7 +230,7 @@ public class ThreadTracker {
                     c.decrementAndGet();
                     lockUpdate.put(lockOid, (byte) 0);
 
-                    List<MonitoredEnums> list = threadTracker.get(tid);
+                    List<MonitoredLockType> list = threadTracker.get(tid);
                     for(int i = list.size() - 1; i >= 0; i--) {
                         if(lockId.getValue() == list.get(i).getValue()) {
                             list.remove(i);
@@ -245,11 +247,11 @@ public class ThreadTracker {
         }
     }
     
-    private String printLockStatus(MonitoredEnums lockId) {
+    private String printLockStatus(MonitoredLockType lockId) {
         String s = "";
         
         for(Long threadid : locks.get(lockId).keySet()) {
-            for(MonitoredEnums lockid : threadTracker.get(threadid)) {
+            for(MonitoredLockType lockid : threadTracker.get(threadid)) {
                 s += ("  " + lockid.name());
             }
             
@@ -263,7 +265,7 @@ public class ThreadTracker {
         threadTrackerSchedule = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                accessThreadTracker(true, false, MonitoredEnums.UNDEFINED, -1);
+                accessThreadTracker(true, false, MonitoredLockType.UNDEFINED, -1);
             }
         }, 10000, 10000);
     }

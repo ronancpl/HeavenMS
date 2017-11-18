@@ -38,7 +38,7 @@ import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -51,7 +51,7 @@ public class MapleStorage {
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
     private List<Item> items;
-    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.STORAGE, true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.STORAGE, true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;

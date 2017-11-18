@@ -675,3 +675,9 @@ Corrigida questline de mounts e skills de Aran.
 Implementado sistema de auditoria de deadlocks: ThreadTracker.
 Corrigido bug onde jogadores recebem dano de mobs de mapas anteriores (que acarretavam em problemas com OID e natureza dos objetos).
 Corrigido alguns problemas com exceção sendo lançada ao tentar desligar o server.
+
+16 - 17 Novembro 2017,
+Rearranjado ID de jogador agora começando de 1 mais uma vez. Espera-se que não haja mais de 1bil de jogadores registrados.
+Corrigido timer de quest não saindo do cliente quando dado o termino bem-sucedido da quest.
+Corrigido MapleArrowFetcher atribuindo valores iguais para min e max ranges. Max deve sempre ser maior que min.
+Corrigido bug no ThreadTracker não mostrando os últimos locks capturados pelas threads corretamente.

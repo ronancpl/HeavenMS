@@ -27,7 +27,7 @@ import java.awt.Point;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleMapItem extends AbstractMapleMapObject {
 
@@ -37,7 +37,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected byte type;
     protected boolean pickedUp = false, playerDrop;
     protected long dropTime;
-    private Lock itemLock = new MonitoredReentrantLock(MonitoredEnums.MAP_ITEM);
+    private Lock itemLock = new MonitoredReentrantLock(MonitoredLockType.MAP_ITEM);
 
     public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
 	setPosition(position);

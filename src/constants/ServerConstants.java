@@ -4,13 +4,15 @@ import java.io.FileInputStream;
 import java.util.Properties;
 
 public class ServerConstants {
+    //Thread Tracker Configuration
+    public static final boolean USE_THREAD_TRACKER = true;      //[SEVERE] This deadlock auditing thing will bloat the memory as fast as the time frame one takes to lose track of a raindrop on a tempesting day. Only for debugging purposes.
+    
     //Database Configuration
     public static String DB_URL = "";
     public static String DB_USER = "";
     public static String DB_PASS = "";
     public static final boolean DB_EXPERIMENTAL_POOL = true;    //[EXPERIMENTAL] Installs a connection pool to hub DB connections. Set false to default.
-    public static final boolean USE_THREAD_TRACKER = true;      //[WARNING] This deadlock auditing thing will bloat the memory as fast as the time frame one takes to lose track of a raindrop on a tempesting day. Only for debug purposes.
-	
+    
     //World And Version
     public static short VERSION = 83;
     public static String TIMEZONE = "-GMT3";

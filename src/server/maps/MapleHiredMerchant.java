@@ -45,7 +45,7 @@ import server.MaplePlayerShopItem;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -64,7 +64,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     private List<SoldItem> sold = new LinkedList<>();
     private AtomicBoolean open = new AtomicBoolean();
     private MapleMap map;
-    private Lock visitorLock = new MonitoredReentrantLock(MonitoredEnums.VISITOR_MERCH, true);
+    private Lock visitorLock = new MonitoredReentrantLock(MonitoredLockType.VISITOR_MERCH, true);
 
     public MapleHiredMerchant(final MapleCharacter owner, int itemId, String desc) {
         this.setPosition(owner.getPosition());

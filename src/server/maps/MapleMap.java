@@ -86,7 +86,7 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleMap {
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
@@ -106,7 +106,7 @@ public class MapleMap {
     private MapleFootholdTree footholds = null;
     private Rectangle mapArea = new Rectangle();
     private int mapid;
-    private AtomicInteger runningOid = new AtomicInteger(100);
+    private AtomicInteger runningOid = new AtomicInteger(1000000001);
     private int returnMapId;
     private int channel, world;
     private byte monsterRate;
@@ -163,11 +163,11 @@ public class MapleMap {
         if (this.monsterRate == 0) {
             this.monsterRate = 1;
         }
-        final ReentrantReadWriteLock chrLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_CHRS, true);
+        final ReentrantReadWriteLock chrLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_CHRS, true);
         chrRLock = chrLock.readLock();
         chrWLock = chrLock.writeLock();
 
-        final ReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_OBJS, true);
+        final ReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_OBJS, true);
         objectRLock = objectLock.readLock();
         objectWLock = objectLock.writeLock();
     }
@@ -389,19 +389,20 @@ public class MapleMap {
     }
 
     private int getUsableOID() {
-        if (runningOid.incrementAndGet() >= 20000000) {
-            runningOid.set(1000);
-        }
         objectRLock.lock();
         try {
-            if (mapobjects.containsKey(runningOid.get())) {
-                while (mapobjects.containsKey(runningOid.incrementAndGet()));
-            }
+            Integer curOid;
+            
+            do {
+                if ((curOid = runningOid.incrementAndGet()) < 0) {
+                    runningOid.set(curOid = 1000000001);
+                }
+            } while (mapobjects.containsKey(curOid));
+            
+            return curOid;
         } finally {
             objectRLock.unlock();
         }
-
-        return runningOid.get();
     }
 
     public void removeMapObject(int num) {

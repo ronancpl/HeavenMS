@@ -53,7 +53,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 import tools.locks.MonitoredReentrantLock;
 
 /**
@@ -75,8 +75,8 @@ public class EventManager {
     private Integer readyId = 0;
     private Properties props = new Properties();
     private String name;
-    private Lock lobbyLock = new MonitoredReentrantLock(MonitoredEnums.EM_LOBBY);
-    private Lock queueLock = new MonitoredReentrantLock(MonitoredEnums.EM_QUEUE);
+    private Lock lobbyLock = new MonitoredReentrantLock(MonitoredLockType.EM_LOBBY);
+    private Lock queueLock = new MonitoredReentrantLock(MonitoredLockType.EM_QUEUE);
 
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     

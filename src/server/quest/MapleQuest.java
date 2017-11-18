@@ -257,11 +257,16 @@ public class MapleQuest {
 
     public void complete(MapleCharacter c, int npc, Integer selection) {
         if (autoPreComplete || canComplete(c, npc)) {
-           for (MapleQuestAction a : completeActs.values()) {
-                  if (!a.check(c, selection)) {
-                         return;
-                  }
+            for (MapleQuestAction a : completeActs.values()) {
+                if (!a.check(c, selection)) {
+                    return;
+                }
             }
+
+            if (timeLimit > 0) {
+                c.announce(MaplePacketCreator.removeQuestTimeLimit(id));
+            }
+            
             forceComplete(c, npc);
             for (MapleQuestAction a : completeActs.values()) {
                 a.run(c, selection);

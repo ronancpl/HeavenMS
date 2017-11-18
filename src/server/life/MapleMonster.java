@@ -63,7 +63,7 @@ import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
     private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
@@ -86,9 +86,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int team;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
-    private Lock externalLock = new MonitoredReentrantLock(MonitoredEnums.MOB_EXT);
-    private Lock monsterLock = new MonitoredReentrantLock(MonitoredEnums.MOB, true);
-    private Lock statiLock = new MonitoredReentrantLock(MonitoredEnums.MOB_STATI);
+    private Lock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
+    private Lock monsterLock = new MonitoredReentrantLock(MonitoredLockType.MOB, true);
+    private Lock statiLock = new MonitoredReentrantLock(MonitoredLockType.MOB_STATI);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);

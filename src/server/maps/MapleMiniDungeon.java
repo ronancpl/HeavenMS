@@ -27,7 +27,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -36,7 +36,7 @@ import tools.locks.MonitoredEnums;
 public class MapleMiniDungeon {
     List<MapleCharacter> players = new ArrayList<>();
     ScheduledFuture<?> timeoutTask = null;
-    Lock lock = new MonitoredReentrantLock(MonitoredEnums.MINIDUNGEON, true);
+    Lock lock = new MonitoredReentrantLock(MonitoredLockType.MINIDUNGEON, true);
     
     int baseMap;
     long expireTime;

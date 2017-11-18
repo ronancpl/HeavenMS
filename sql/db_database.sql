@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   KEY `ranking2` (`gm`,`job`),
   INDEX (id, accountid, world),
   INDEX (id, accountid, name)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 PACK_KEYS=0 AUTO_INCREMENT=20000000 ; # map oid issues, start from 20mil
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 PACK_KEYS=0 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `cooldowns` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

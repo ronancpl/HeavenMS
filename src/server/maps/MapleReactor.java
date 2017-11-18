@@ -35,7 +35,7 @@ import scripting.reactor.ReactorScriptManager;
 import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -54,7 +54,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean shouldCollect;
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
-    private Lock reactorLock = new MonitoredReentrantLock(MonitoredEnums.REACTOR, true);
+    private Lock reactorLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
         this.evstate = (byte)0;

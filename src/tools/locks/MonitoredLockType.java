@@ -23,7 +23,7 @@ package tools.locks;
  * @author RonanLana
  */
 
-public enum MonitoredEnums {
+public enum MonitoredLockType {
     UNDEFINED(-1),
     CHR(0),
     EFF(1),
@@ -33,8 +33,8 @@ public enum MonitoredEnums {
     BOOK(5),
     ITEM(6),
     INVENTORY(7),
-    SHANDLER_IDLE(8),
-    SHANDLER_TEMP(9),
+    SRVHANDLER_IDLE(8),
+    SRVHANDLER_TEMP(9),
     BUFF_STORAGE(10),
     PLAYER_STORAGE(11),
     SERVER(12),
@@ -71,7 +71,7 @@ public enum MonitoredEnums {
     
     private final int i;
     
-    private MonitoredEnums(int val) {
+    private MonitoredLockType(int val) {
         this.i = val;
     }
 

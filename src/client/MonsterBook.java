@@ -34,14 +34,14 @@ import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public final class MonsterBook {
     private int specialCard = 0;
     private int normalCard = 0;
     private int bookLevel = 1;
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
-    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.BOOK);
+    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.BOOK);
 
     private Set<Entry<Integer, Integer>> getCardSet() {
         lock.lock();

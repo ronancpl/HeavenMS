@@ -2,28 +2,39 @@
 .idea/
 
 # build files
-*build.xml
-/build/**
-/tools/MapleArrowFetcher/build/**
-/tools/MapleCouponInstaller/build/**
-/tools/MapleIdRetriever/build/**
-/tools/MapleMesoFetcher/build/**
-/tools/MapleQuestItemFetcher/build/**
-/tools/MobBookIndexer/build/**
-/tools/MobBookUpdate/build/**
+
+/build/
 /dist/
-/tools/MobBookUpdate - Copia/build/
-/tools/MobBookUpdate - Copia/dist/
-/tools/MobBookUpdate - Copia/nbproject/private/
-/tools/ItemMakerUpdate/build/
-/tools/ItemMakerUpdate/dist/
-/tools/ItemMakerUpdate/nbproject/private/
-/tools/MapleMakerUpdate/build/
-/tools/MapleMakerUpdate/dist/
-/tools/MapleMakerUpdate/nbproject/private/
-/tools/MapleMakerFetcher/build/
-/tools/MapleMakerFetcher/dist/
-/tools/MapleMakerFetcher/nbproject/private/
-/tools/MapleSkillMakerFetcher/nbproject/private/
+/nbproject/private/
+
+/tools/MapleArrowFetcher/build/
+/tools/MapleArrowFetcher/dist/
+/tools/MapleArrowFetcher/nbproject/private/
+
+/tools/MapleCouponInstaller/build/
+/tools/MapleCouponInstaller/dist/
+/tools/MapleCouponInstaller/nbproject/private/
+
+/tools/MapleIdRetriever/build/
+/tools/MapleIdRetriever/dist/
+/tools/MapleIdRetriever/nbproject/private/
+
+/tools/MapleMesoFetcher/build/
+/tools/MapleMesoFetcher/dist/
+/tools/MapleMesoFetcher/nbproject/private/
+
+/tools/MapleQuestItemFetcher/build/
+/tools/MapleQuestItemFetcher/dist/
+/tools/MapleQuestItemFetcher/nbproject/private/
+
 /tools/MapleSkillMakerFetcher/build/
 /tools/MapleSkillMakerFetcher/dist/
+/tools/MapleSkillMakerFetcher/nbproject/private/
+
+/tools/MobBookIndexer/build/
+/tools/MobBookIndexer/dist/
+/tools/MobBookIndexer/nbproject/private/
+
+/tools/MobBookUpdate/build/
+/tools/MobBookUpdate/dist/
+/tools/MobBookUpdate/nbproject/private/

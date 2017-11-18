@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 import tools.locks.MonitoredReentrantLock;
 
 /**
@@ -34,7 +34,7 @@ import tools.locks.MonitoredReentrantLock;
  */
 public class PlayerBuffStorage {
     private int id = (int) (Math.random() * 100);
-    private final Lock lock = new MonitoredReentrantLock(MonitoredEnums.BUFF_STORAGE, true);    
+    private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.BUFF_STORAGE, true);    
     private Map<Integer, List<PlayerBuffValueHolder>> buffs = new HashMap<>();
 
     public void addBuffsToStorage(int chrid, List<PlayerBuffValueHolder> toStore) {

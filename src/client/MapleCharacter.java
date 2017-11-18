@@ -154,7 +154,7 @@ import constants.skills.ThunderBreaker;
 import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static NumberFormat nf = new DecimalFormat("#,###,###,###");
@@ -271,10 +271,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    private Lock chrLock = new MonitoredReentrantLock(MonitoredEnums.CHR, true);
-    private Lock effLock = new MonitoredReentrantLock(MonitoredEnums.EFF, true);
-    private Lock petLock = new MonitoredReentrantLock(MonitoredEnums.PET, true); // for quest tasks as well
-    private Lock prtLock = new MonitoredReentrantLock(MonitoredEnums.PRT);
+    private Lock chrLock = new MonitoredReentrantLock(MonitoredLockType.CHR, true);
+    private Lock effLock = new MonitoredReentrantLock(MonitoredLockType.EFF, true);
+    private Lock petLock = new MonitoredReentrantLock(MonitoredLockType.PET, true); // for quest tasks as well
+    private Lock prtLock = new MonitoredReentrantLock(MonitoredLockType.PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
     private List<MapleRing> crushRings = new ArrayList<>();

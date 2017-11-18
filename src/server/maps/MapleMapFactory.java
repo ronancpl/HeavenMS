@@ -47,7 +47,7 @@ import server.life.MapleMonster;
 import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class MapleMapFactory {
 
@@ -66,7 +66,7 @@ public class MapleMapFactory {
         this.channel = channel;
         this.event = eim;
         
-        ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredEnums.MAP_FACTORY);
+        ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_FACTORY);
         this.mapsRLock = rrwl.readLock();
         this.mapsWLock = rrwl.writeLock();
     }

@@ -27,7 +27,7 @@ import scripting.portal.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 import tools.locks.MonitoredReentrantLock;
 
 public class MapleGenericPortal implements MaplePortal {
@@ -118,7 +118,7 @@ public class MapleGenericPortal implements MaplePortal {
         
         if(scriptName != null) {
             if(scriptLock == null) {
-                scriptLock = new MonitoredReentrantLock(MonitoredEnums.PORTAL, false);
+                scriptLock = new MonitoredReentrantLock(MonitoredLockType.PORTAL, true);
             }
         } else {
             scriptLock = null;

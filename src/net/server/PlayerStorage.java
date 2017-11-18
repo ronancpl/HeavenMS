@@ -30,10 +30,10 @@ import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public class PlayerStorage {
-    private final ReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredEnums.PLAYER_STORAGE, true);
+    private final ReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.PLAYER_STORAGE, true);
     private final ReadLock rlock = locks.readLock();
     private final WriteLock wlock = locks.writeLock();
     private final Map<Integer, MapleCharacter> storage = new LinkedHashMap<>();

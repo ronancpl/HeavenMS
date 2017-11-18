@@ -39,18 +39,18 @@ import tools.FilePrinter;
 public class MonitoredReentrantLock extends ReentrantLock {
     private ScheduledFuture<?> timeoutSchedule = null;
     private StackTraceElement[] deadlockedState = null;
-    private final MonitoredEnums id;
+    private final MonitoredLockType id;
     private final int hashcode;
     private final Lock state = new ReentrantLock(true);
     private final AtomicInteger reentrantCount = new AtomicInteger(0);
    
-    public MonitoredReentrantLock(MonitoredEnums id) {
+    public MonitoredReentrantLock(MonitoredLockType id) {
         super();
         this.id = id;
         hashcode = this.hashCode();
     }
             
-    public MonitoredReentrantLock(MonitoredEnums id, boolean fair) {
+    public MonitoredReentrantLock(MonitoredLockType id, boolean fair) {
         super(fair);
         this.id = id;
         hashcode = this.hashCode();
@@ -58,7 +58,6 @@ public class MonitoredReentrantLock extends ReentrantLock {
     
     @Override
     public void lock() {
-        super.lock();
         if(ServerConstants.USE_THREAD_TRACKER) {
             if(deadlockedState != null) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -71,6 +70,8 @@ public class MonitoredReentrantLock extends ReentrantLock {
 
             registerLocking();
         }
+        
+        super.lock();
     }
     
     @Override
@@ -78,6 +79,7 @@ public class MonitoredReentrantLock extends ReentrantLock {
         if(ServerConstants.USE_THREAD_TRACKER) {
             unregisterLocking();
         }
+        
         super.unlock();
     }
     

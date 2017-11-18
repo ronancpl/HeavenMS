@@ -35,7 +35,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -46,7 +46,7 @@ public class MobSkillFactory {
     private static Map<String, MobSkill> mobSkills = new HashMap<String, MobSkill>();
     private final static MapleDataProvider dataSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
     private static MapleData skillRoot = dataSource.getData("MobSkill.img");
-    private final static ReentrantReadWriteLock dataLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MOBSKILL_FACTORY);
+    private final static ReentrantReadWriteLock dataLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MOBSKILL_FACTORY);
     private final static ReadLock rL = dataLock.readLock();
     private final static WriteLock wL = dataLock.writeLock();
 

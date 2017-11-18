@@ -39,7 +39,7 @@ import constants.ItemConstants;
 import server.MapleItemInformationProvider;
 import server.MapleInventoryManipulator;
 import tools.FilePrinter;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -51,7 +51,7 @@ public class MapleInventory implements Iterable<Item> {
     private byte slotLimit;
     private MapleInventoryType type;
     private boolean checked = false;
-    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.INVENTORY, true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.INVENTORY, true);
     
     public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
         this.owner = mc;

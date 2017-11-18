@@ -39,7 +39,7 @@ import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 /**
  *
@@ -56,7 +56,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private List<String> bannedList = new ArrayList<>();
     private List<Pair<MapleCharacter, String>> chatLog = new LinkedList<>();
     private Map<Integer, Byte> chatSlot = new LinkedHashMap<>();
-    private Lock visitorLock = new MonitoredReentrantLock(MonitoredEnums.VISITOR_PSHOP, true);
+    private Lock visitorLock = new MonitoredReentrantLock(MonitoredLockType.VISITOR_PSHOP, true);
 
     public MaplePlayerShop(MapleCharacter owner, String description) {
         this.setPosition(owner.getPosition());

@@ -25,14 +25,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author RonanLana
  */
 public class MonitoredReentrantReadWriteLock extends ReentrantReadWriteLock {
-    public final MonitoredEnums id;
+    public final MonitoredLockType id;
     
-    public MonitoredReentrantReadWriteLock(MonitoredEnums id) {
+    public MonitoredReentrantReadWriteLock(MonitoredLockType id) {
         super();
         this.id = id;
     }
             
-    public MonitoredReentrantReadWriteLock(MonitoredEnums id, boolean fair) {
+    public MonitoredReentrantReadWriteLock(MonitoredLockType id, boolean fair) {
         super(fair);
         this.id = id;
     }

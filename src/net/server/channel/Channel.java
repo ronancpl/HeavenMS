@@ -68,7 +68,7 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import constants.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
-import tools.locks.MonitoredEnums;
+import tools.locks.MonitoredLockType;
 
 public final class Channel {
 
@@ -92,11 +92,11 @@ public final class Channel {
     private Map<Integer, Integer> dojoParty = new HashMap<>();
     private Map<Integer, MapleMiniDungeon> dungeons = new HashMap<>();
     
-    private ReentrantReadWriteLock merchantLock = new MonitoredReentrantReadWriteLock(MonitoredEnums.MERCHANT, true);
+    private ReentrantReadWriteLock merchantLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MERCHANT, true);
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
     
-    private Lock lock = new MonitoredReentrantLock(MonitoredEnums.CHANNEL, true);
+    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
     
     public Channel(final int world, final int channel) {
         this.world = world;
