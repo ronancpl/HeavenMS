@@ -52,7 +52,9 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
+import tools.locks.MonitoredReentrantLock;
 import tools.locks.MonitoredReentrantReadWriteLock;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -90,6 +92,8 @@ import tools.locks.MonitoredLockType;
 
 public class MapleMap {
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
+    private static final Map<Integer, Pair<Integer, Integer>> dropBoundsCache = new HashMap<>(100);
+    
     private Map<Integer, MapleMapObject> mapobjects = new LinkedHashMap<>();
     private Collection<SpawnPoint> monsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private Collection<SpawnPoint> allMonsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
@@ -104,6 +108,7 @@ public class MapleMap {
     private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
+    private Pair<Integer, Integer> xLimits;  // caches the min and max x's with available footholds
     private Rectangle mapArea = new Rectangle();
     private int mapid;
     private AtomicInteger runningOid = new AtomicInteger(1000000001);
@@ -148,12 +153,16 @@ public class MapleMap {
     private MapleSnowball snowball0 = null;
     private MapleSnowball snowball1 = null;
     private MapleCoconut coconut;
+    
     //locks
     private final ReadLock chrRLock;
     private final WriteLock chrWLock;
     private final ReadLock objectRLock;
     private final WriteLock objectWLock;
 
+    // due to the nature of loadMapFromWz (synchronized), sole function that calls 'generateMapDropRangeCache', this lock remains optional.
+    private static final Lock bndLock = new MonitoredReentrantLock(MonitoredLockType.MAP_BOUNDS, true);
+    
     public MapleMap(int mapid, int world, int channel, int returnMapId, float monsterRate) {
         this.mapid = mapid;
         this.channel = channel;
@@ -437,17 +446,63 @@ public class MapleMap {
         return new Point(initial.x, dropY);
     }
 
+    public void generateMapDropRangeCache() {
+        bndLock.lock();
+        try {
+            Integer mapId = Integer.valueOf(mapid);
+            Pair<Integer, Integer> bounds = dropBoundsCache.get(mapId);
+            
+            if(bounds != null) {
+                xLimits = bounds;
+            } else {
+                Point lp = new Point(mapArea.x, mapArea.y), rp = new Point(mapArea.x + mapArea.width, mapArea.y), fallback = new Point(mapArea.x + (mapArea.width / 2), mapArea.y);
+
+                lp = bsearchDropPos(lp, fallback);
+                rp = bsearchDropPos(rp, fallback);
+
+                xLimits = new Pair<>(lp.x, rp.x);
+                dropBoundsCache.put(mapId, xLimits);
+            }
+        } finally {
+            bndLock.unlock();
+        }
+    }
+    
+    public Point bsearchDropPos(Point initial, Point fallback) {
+        Point res, dropPos = null;
+                
+        int awayx = fallback.x;
+        int homex = initial.x;
+                
+        int y = initial.y - 85;
+        
+        do {
+            int distx = awayx - homex;
+            int dx = distx / 2;
+            
+            int searchx = homex + dx;
+            if((res = calcPointBelow(new Point(searchx, y))) != null) {
+                awayx = searchx;
+                dropPos = res;
+            } else {
+                homex = searchx;
+            }
+        } while(Math.abs(homex - awayx) > 5);
+        
+        return (dropPos != null) ? dropPos : fallback;
+    }
+    
     public Point calcDropPos(Point initial, Point fallback) {
+        if(initial.x < xLimits.left) initial.x = xLimits.left;
+        else if(initial.x > xLimits.right) initial.x = xLimits.right;
+        
         Point ret = calcPointBelow(new Point(initial.x, initial.y - 85));
         if (ret == null) {
+            ret = bsearchDropPos(initial, fallback);
+        }
+        
+        if(!mapArea.contains(ret)) { // found drop pos outside the map :O
             return fallback;
-        } else if(!mapArea.contains(ret)) {
-            if(initial.y > mapArea.y + mapArea.height) return fallback; // found drop pos underneath the map :O
-            
-            int borderX = (initial.x < mapArea.x) ? mapArea.x : mapArea.x + mapArea.width;
-            ret = calcPointBelow(new Point(borderX, initial.y - 85));
-            
-            if(ret == null) return fallback;
         }
         
         return ret;

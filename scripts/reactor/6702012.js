@@ -19,10 +19,16 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*2612004.js - MagatiaPQ Box
- *@author Ronan
+/**
+ *AmoriaPQ Bonus Reactor
+ *6702012.js
  */
- 
+
 function act() {
-	rm.sprayItems();
+	rand = Math.floor(Math.random() * 4);
+	if (rand < 1) rand = 1;
+	//We'll make it drop a lot of crap :D
+	for (var i = 0; i<rand; i++) {
+		rm.sprayItems(true, 1, 30, 60, 15);
+	}
 }

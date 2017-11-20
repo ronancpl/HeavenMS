@@ -25,5 +25,5 @@
  */
  
 function act() {
-        rm.dropItems(true, 1, 30, 60, 15);
+        rm.sprayItems(true, 1, 30, 60, 15);
 }

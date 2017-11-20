@@ -681,3 +681,8 @@ Rearranjado ID de jogador agora começando de 1 mais uma vez. Espera-se que não h
 Corrigido timer de quest não saindo do cliente quando dado o termino bem-sucedido da quest.
 Corrigido MapleArrowFetcher atribuindo valores iguais para min e max ranges. Max deve sempre ser maior que min.
 Corrigido bug no ThreadTracker não mostrando os últimos locks capturados pelas threads corretamente.
+
+18 - 20 Novembro 2017,
+Implementado items sendo dropados de reatores intervaladamente, GMS-like.
+Adicionado informação ao jogador que tentar completar uma quest com item necessário equipado.
+Nova ferramenta: MapleMapInfoRetriever. Detecção básica de mapas com sem nó de info em sua estrutura WZ.

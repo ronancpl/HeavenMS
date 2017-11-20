@@ -275,7 +275,9 @@ public class MapleMapFactory {
             e.printStackTrace();
             // swallow cause I'm cool
         }
+        
         map.setBackgroundTypes(backTypes);
+        map.generateMapDropRangeCache();
 
         mapsWLock.lock();
         try {

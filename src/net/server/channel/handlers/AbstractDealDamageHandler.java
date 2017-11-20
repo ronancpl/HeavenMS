@@ -133,7 +133,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 return null;
             }
             if (display > 80) { //Hmm
-                if (!theSkill.getAction()) {
+                if (!mySkill.getAction()) {
                     AutobanFactory.FAST_ATTACK.autoban(chr, "WZ Edit; adding action to a skill: " + display);
                     return null;
                 }

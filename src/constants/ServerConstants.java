@@ -24,7 +24,7 @@ public class ServerConstants {
     public static final long RESPAWN_INTERVAL = 10 * 1000;	//10 seconds, 10000.
     public static final long PURGING_INTERVAL = 5 * 60 * 1000;
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
-    public static final long COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
+    public static final long  COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     
     public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character needs this feature ENABLED.
     public static final boolean ENABLE_PIN = false;             //Pick true/false to enable or disable Pin.

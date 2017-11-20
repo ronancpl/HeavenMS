@@ -49,7 +49,7 @@ Cash & Items:
 * Owl of Minerva.
 * Pet item ignore.
 
-Monsters & Maps:
+Monsters, Maps & Reactors:
 * Every monsterbook card is now droppable by overworld mobs.
 * Added meso drop data for basically every missing overworld mob.
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
@@ -58,6 +58,7 @@ Monsters & Maps:
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boats, elevator and other travelling mechanics fully working.
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
+* Some reactors (PQ bonus boxes) now sprays items on the map, instead of dropping everything at once.
 
 PQ potentials:
 * Lobby system - Multiple PQ instances on same channel.
@@ -92,6 +93,7 @@ External tools:
 * MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
+* MapleMapInfoRetriever - Basic tool for detecting missing info nodes on the map field structures (maps failing to have an info node on the WZ is an critical issue).
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
 * MobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.

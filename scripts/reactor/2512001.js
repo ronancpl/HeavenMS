@@ -29,5 +29,5 @@ function act() {
 	var now = eim.getIntProperty("openedChests");
 	var nextNum = now + 1;
 	eim.setIntProperty("openedChests", nextNum);
-	rm.dropItems(true, 1, 50, 100, 15);
+	rm.sprayItems(true, 1, 50, 100, 15);
 }

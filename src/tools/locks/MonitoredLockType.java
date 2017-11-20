@@ -66,8 +66,9 @@ public enum MonitoredLockType {
     MAP_OBJS(37),
     MAP_FACTORY(38),
     MAP_ITEM(39),
-    MINIDUNGEON(40),
-    REACTOR(41);
+    MAP_BOUNDS(41),
+    MINIDUNGEON(41),
+    REACTOR(42);
     
     private final int i;
     
