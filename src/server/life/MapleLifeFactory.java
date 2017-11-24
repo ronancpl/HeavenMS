@@ -157,6 +157,27 @@ public class MapleLifeFactory {
             return null;
         }
     }
+    
+    public static int getMonsterLevel(int mid) {
+        try {
+            MapleMonsterStats stats = monsterStats.get(Integer.valueOf(mid));
+            if (stats == null) {
+                MapleData monsterData = data.getData(StringUtil.getLeftPaddedStr(Integer.toString(mid) + ".img", '0', 11));
+                if (monsterData == null) {
+                    return -1;
+                }
+                MapleData monsterInfoData = monsterData.getChildByPath("info");
+                return MapleDataTool.getIntConvert("level", monsterInfoData);
+            } else {
+                return stats.getLevel();
+            }
+        } catch(NullPointerException npe) {
+            System.out.println("[SEVERE] MOB " + mid + " failed to load. Issue: " + npe.getMessage() + "\n\n");
+            npe.printStackTrace();
+        }
+        
+        return -1;
+    }
 
     private static void decodeElementalString(MapleMonsterStats stats, String elemAttr) {
         for (int i = 0; i < elemAttr.length(); i += 2) {

@@ -3,6 +3,10 @@ var map = 910060000;
 var num = 5;
 var maxp = 5;
 
+function start() {
+    action(1, 0, 0);
+}
+
 function action(mode, type, selection) {
     if (mode == 1) {
 	status++;
@@ -14,10 +18,17 @@ function action(mode, type, selection) {
 	status--;
     }
     if (status == 0) {
-	if (cm.isQuestStarted(22515) || cm.isQuestStarted(22516) || cm.isQuestStarted(22517) || cm.isQuestStarted(22518)) {
+        if(cm.getLevel() >= 20) {
+                cm.sendOk("This training ground is available only for those under level 20.");
+                cm.dispose();
+                return;
+        }
+        
+	if (cm.isQuestActive(22515) || cm.isQuestActive(22516) || cm.isQuestActive(22517) || cm.isQuestActive(22518)) {
 		cm.sendYesNo("Would you like to go in the special Spore Training Center?");
 		status = 1;
 	}
+        
 	var selStr = "Would you like to go into the Training Center?";
 	for (var i = 0; i < num; i++) {
 		selStr += "\r\n#b#L" + i + "#Training Center " + i + " (" + cm.getPlayerCount(map + i) + "/" + maxp + ")#l#k";

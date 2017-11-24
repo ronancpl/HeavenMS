@@ -46,7 +46,6 @@ public class MapleMakerItemEntry {
         this.id = id;
         this.itemid = itemid;
         this.reqLevel = reqLevel;
-        //System.out.println("id " + id + "rq" + reqLevel);
         this.reqMakerLevel = reqMakerLevel;
         this.reqItem = reqItem;
         this.reqMeso = reqMeso;

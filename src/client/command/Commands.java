@@ -1665,17 +1665,27 @@ public class Commands {
                     break;
                     
 		case "givenx":
-                        if (sub.length < 3){
-				player.yellowMessage("Syntax: !givenx <playername> <gainnx>");
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !givenx [<playername>] <gainnx>");
 				break;
 			}
+                        
+                        String recv;
+                        int value;
+                        if(sub.length > 2) {
+                            recv = sub[1];
+                            value = Integer.parseInt(sub[2]);
+                        } else {
+                            recv = c.getPlayer().getName();
+                            value = Integer.parseInt(sub[1]);
+                        }
 			
-                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        victim = cserv.getPlayerStorage().getCharacterByName(recv);
                         if(victim != null) {
-                                victim.getCashShop().gainCash(1, Integer.parseInt(sub[2]));
+                                victim.getCashShop().gainCash(1, value);
                                 player.message("NX given.");
                         } else {
-                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                                player.message("Player '" + recv + "' could not be found on this channel.");
                         }
                     break;
       
@@ -1695,17 +1705,27 @@ public class Commands {
                     break;
                 
                 case "givems":
-                        if (sub.length < 3){
-				player.yellowMessage("Syntax: !givems <playername> <gainms>");
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !givems [<playername>] <gainmeso>");
 				break;
 			}
                         
-                        victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
+                        String recv_;
+                        int value_;
+                        if(sub.length > 2) {
+                            recv_ = sub[1];
+                            value_ = Integer.parseInt(sub[2]);
+                        } else {
+                            recv_ = c.getPlayer().getName();
+                            value_ = Integer.parseInt(sub[1]);
+                        }
+                        
+                        victim = cserv.getPlayerStorage().getCharacterByName(recv_);
                         if(victim != null) {
-                                victim.gainMeso(Integer.parseInt(sub[2]), true);
+                                victim.gainMeso(value_, true);
                                 player.message("MESO given.");
                         } else {
-                                player.message("Player '" + sub[1] + "' could not be found on this channel.");
+                                player.message("Player '" + recv_ + "' could not be found on this channel.");
                         }
                     break;
                     

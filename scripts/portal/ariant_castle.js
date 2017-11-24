@@ -32,7 +32,7 @@
 function enter(pi) {
 	if (pi.getPlayer().haveItem(4031582) == true) {
 		pi.playPortalSound();
-		pi.warp(260000301, 0);
+		pi.warp(260000301, 5);
 		return true;
 	} else {
 		pi.playerMessage(5, "You can enter only if you have a Entry Pass to the Palace.");

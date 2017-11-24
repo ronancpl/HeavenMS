@@ -89,6 +89,10 @@ public final class ItemConstants {
         return itemId / 1000 == 5000;
     }
     
+    public static boolean isAccessory(int itemId) {
+        return itemId >= 1110000 && itemId < 1140000;
+    }
+    
     public static boolean isTownScroll(int itemId) {
         return itemId >= 2030000 && itemId < 2030021;
     }
@@ -134,5 +138,17 @@ public final class ItemConstants {
 	    return MapleInventoryType.UNDEFINED;
 	}
 	return MapleInventoryType.getByType(type);
+    }
+    
+    public static boolean isMakerReagent(int itemId) {
+        return itemId / 10000 == 425;
+    }
+    
+    public static boolean isOverall(int itemId) {
+        return itemId / 10000 == 105;
+    }
+
+    public static boolean isWeapon(int itemId) {
+        return itemId >= 1302000 && itemId < 1492024;
     }
 }

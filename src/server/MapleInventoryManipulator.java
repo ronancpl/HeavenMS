@@ -410,7 +410,7 @@ public class MapleInventoryManipulator {
         }
         if (dst == -6) { // unequip the overall
             Item top = c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((short) -5);
-            if (top != null && isOverall(top.getItemId())) {
+            if (top != null && ItemConstants.isOverall(top.getItemId())) {
                 if (c.getPlayer().getInventory(MapleInventoryType.EQUIP).isFull()) {
                     c.announce(MaplePacketCreator.getInventoryFull());
                     c.announce(MaplePacketCreator.getShowInventoryFull());
@@ -420,7 +420,7 @@ public class MapleInventoryManipulator {
             }
         } else if (dst == -5) {
             final Item bottom = c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).getItem((short) -6);
-            if (bottom != null && isOverall(source.getItemId())) {
+            if (bottom != null && ItemConstants.isOverall(source.getItemId())) {
                 if (c.getPlayer().getInventory(MapleInventoryType.EQUIP).isFull()) {
                     c.announce(MaplePacketCreator.getInventoryFull());
                     c.announce(MaplePacketCreator.getShowInventoryFull());
@@ -477,7 +477,7 @@ public class MapleInventoryManipulator {
             target.setPosition(src);
             c.getPlayer().getInventory(MapleInventoryType.EQUIP).addFromDB(target);
         }
-        if (c.getPlayer().getBuffedValue(MapleBuffStat.BOOSTER) != null && isWeapon(source.getItemId())) {
+        if (c.getPlayer().getBuffedValue(MapleBuffStat.BOOSTER) != null && ItemConstants.isWeapon(source.getItemId())) {
             c.getPlayer().cancelBuffStats(MapleBuffStat.BOOSTER);
         }
         
@@ -589,13 +589,5 @@ public class MapleInventoryManipulator {
 
     private static boolean isDroppedItemRestricted(Item it) {
         return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && ((it.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE);
-    }
-    
-    private static boolean isOverall(int itemId) {
-        return itemId / 10000 == 105;
-    }
-
-    private static boolean isWeapon(int itemId) {
-        return itemId >= 1302000 && itemId < 1492024;
     }
 }

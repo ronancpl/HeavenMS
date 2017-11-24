@@ -27,6 +27,10 @@ PQs:
 * BalrogPQ semi-functional.
 * Capt. Latanica remade as an event (parties can now fight the boss).
 
+Skills:
+* Maker skill features properly developed.
+* Server is using heurisitics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
+
 Quests:
 * Doll house quest functional.
 * Quests can now reward properly items when matching a reward item with the player's job.

@@ -5887,14 +5887,23 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        public static byte[] showMakerEffect() {
+        public static byte[] showMakerEffect(boolean makerSucceeded) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
                 mplew.write(16);
-                mplew.writeInt(0);
+                mplew.writeInt(makerSucceeded ? 0 : 1);
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] showForeignMakerEffect(int cid, boolean makerSucceeded) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SHOW_FOREIGN_EFFECT.getValue());
+                mplew.writeInt(cid);
+                mplew.write(16);
+                mplew.writeInt(makerSucceeded ? 0 : 1);
+                return mplew.getPacket();
+        }
+        
         public static byte[] showForeignEffect(int effect) {
                 return showForeignEffect(-1, effect);
         }

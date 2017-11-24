@@ -342,14 +342,9 @@ public class AbstractPlayerInteraction {
         
         public Item evolvePet(byte slot, int afterId) {
             MaplePet evolved = null;
-            MaplePet target = null;
-            Item tmp;
+            MaplePet target;
             
-            long period = 90;    //refreshes expiration date: 90 days
-            period *= 24;
-            period *= 60;
-            period *= 60;
-            period *= 1000;
+            long period = 90 * 24 * 60 * 60 * 1000;    //refreshes expiration date: 90 days
             
             target = getPlayer().getPet(slot);
             if(target == null) {
@@ -357,7 +352,7 @@ public class AbstractPlayerInteraction {
                 return(null);
             }
             
-            tmp = gainItem(afterId, (short)1, false, true, period, target);
+            Item tmp = gainItem(afterId, (short) 1, false, true, period, target);
             getPlayer().unequipPet(target, true, false);
             
             /*
@@ -410,18 +405,13 @@ public class AbstractPlayerInteraction {
             return gainItem(id, quantity, randomStats, showMessage, expires, null);
         }
         
-        private boolean isAccessory(int id) {
-            int val = id / 10000;
-            return(val >= 111 && val <= 113);
-        }
-        
-	public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from) {
+        public Item gainItem(int id, short quantity, boolean randomStats, boolean showMessage, long expires, MaplePet from) {
 		Item item = null;
-                MaplePet evolved = null;
+                MaplePet evolved;
                 int petId = -1;
 		
 		if (quantity >= 0) {
-                        if (id >= 5000000 && id <= 5000100) {
+                        if (ItemConstants.isPet(id)) {
                                 petId = MaplePet.createPet(id);
 
                                 if(from != null) {
@@ -451,12 +441,13 @@ public class AbstractPlayerInteraction {
                                 
                                 if(item != null) {
                                     Equip it = (Equip)item;
-                                    if(isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) it.setUpgradeSlots(3);
+                                    if(ItemConstants.isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) it.setUpgradeSlots(3);
                                 
                                     if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true) {
                                         Equip eqp = (Equip)item;
-                                        eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
-
+                                        if(!(c.getPlayer().isGM() && ServerConstants.USE_PERFECT_GM_SCROLL)) {
+                                            eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
+                                        }
                                         item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 0, c.getPlayer().isGM());
                                     }
                                 }

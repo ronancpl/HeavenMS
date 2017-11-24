@@ -686,3 +686,10 @@ Corrigido bug no ThreadTracker não mostrando os últimos locks capturados pelas t
 Implementado items sendo dropados de reatores intervaladamente, GMS-like.
 Adicionado informação ao jogador que tentar completar uma quest com item necessário equipado.
 Nova ferramenta: MapleMapInfoRetriever. Detecção básica de mapas com sem nó de info em sua estrutura WZ.
+Adicionado scripts para Power B. Fore npc.
+
+21 - 23 Novembro 2017,
+Implementado Maker skill (métodos de packets pelo menos já existiam).
+Corrigido bug em MapleSkillMakerFetcher, atualizado DB com as tabelas normalizadas.
+Nova ferramenta: MapleSkillMakerReagentIndexer. Agrupa no banco de dados informação pertinente aos reagentes do Maker, para serem usados pelo server.
+Quests nivelando/utilizando o Maker funcionam corretamente agora.

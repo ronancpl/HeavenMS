@@ -56514,33 +56514,12 @@
           <int name="state" value="2"/>
         </imgdir>
       </imgdir>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="111"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="6030">
     <imgdir name="0">
       <int name="npc" value="2110004"/>
       <int name="lvmin" value="45"/>
-      <int name="interval" value="0"/>
-      <int name="infoNumber" value="6029"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="000"/>
-        </imgdir>
-        <imgdir name="1">
-          <string name="value" value="010"/>
-        </imgdir>
-        <imgdir name="2">
-          <string name="value" value="011"/>
-        </imgdir>
-        <imgdir name="3">
-          <string name="value" value="001"/>
-        </imgdir>
-      </imgdir>
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="6029"/>
@@ -56628,32 +56607,18 @@
     <imgdir name="1">
       <int name="npc" value="2111000"/>
       <string name="endscript" value="q6030e"/>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="6031">
     <imgdir name="1">
       <int name="npc" value="2012017"/>
       <string name="endscript" value="q6031e"/>
+      <int name="endmeso" value="10000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2110004"/>
       <int name="lvmin" value="45"/>
-      <int name="interval" value="0"/>
-      <int name="infoNumber" value="6029"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="000"/>
-        </imgdir>
-        <imgdir name="1">
-          <string name="value" value="100"/>
-        </imgdir>
-        <imgdir name="2">
-          <string name="value" value="101"/>
-        </imgdir>
-        <imgdir name="3">
-          <string name="value" value="001"/>
-        </imgdir>
-      </imgdir>
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="6029"/>
@@ -56743,22 +56708,6 @@
     <imgdir name="0">
       <int name="npc" value="2110004"/>
       <int name="lvmin" value="45"/>
-      <int name="interval" value="0"/>
-      <int name="infoNumber" value="6029"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="000"/>
-        </imgdir>
-        <imgdir name="1">
-          <string name="value" value="100"/>
-        </imgdir>
-        <imgdir name="2">
-          <string name="value" value="110"/>
-        </imgdir>
-        <imgdir name="3">
-          <string name="value" value="010"/>
-        </imgdir>
-      </imgdir>
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="6029"/>
@@ -56846,6 +56795,7 @@
     <imgdir name="1">
       <int name="npc" value="2110004"/>
       <string name="endscript" value="q6032e"/>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="6033">
