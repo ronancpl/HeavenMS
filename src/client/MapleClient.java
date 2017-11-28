@@ -532,12 +532,10 @@ public class MapleClient {
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
-				} else if (pwd.equals(passhash) || BCrypt.checkpw(pwd, passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
-					if (tos == 0) {
-						loginok = 23;
-					} else {
-						loginok = 0;
-					}
+				} else if (pwd.charAt(0) == '$' && pwd.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
+					loginok = (tos == 0)? 23:0;
+				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
+					loginok = (tos == 0)? -23:-10; // migrate to bcrypt
 				} else {
 					loggedIn = false;
 					loginok = 4;
@@ -561,7 +559,7 @@ public class MapleClient {
 					con.close();
 				}
 			} catch (SQLException e) {
-                            e.printStackTrace();
+                e.printStackTrace();
 			}
 		}
 		if (loginok == 0) {

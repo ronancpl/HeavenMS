@@ -29,7 +29,6 @@ import java.util.Calendar;
 import constants.ServerConstants;
 import net.MaplePacketHandler;
 import net.server.Server;
-import server.TimerManager;
 import tools.BCrypt;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
@@ -42,46 +41,51 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
     public boolean validateState(MapleClient c) {
         return !c.isLoggedIn();
     }
-    
+
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	
+
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
+        String bcryptedpass = BCrypt.hashpw(pwd, BCrypt.gensalt(12));
         c.setAccountName(login);
-        
+
         int loginok = c.login(login, pwd);
 
-        if (ServerConstants.AUTOMATIC_REGISTER && loginok == 5) {
-            Connection con = null;
-            PreparedStatement ps = null;
+        Connection con = null;
+        PreparedStatement ps = null;
 
+        if (ServerConstants.AUTOMATIC_REGISTER && loginok == 5) {
             try {
                 con = DatabaseConnection.getConnection();
                 ps = con.prepareStatement("INSERT INTO accounts (name, password) VALUES (?, ?);");
                 ps.setString(1, login);
-                ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
+                ps.setString(2, bcryptedpass);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                try {
-                    if (con != null) {
-                        con.close();
-                    }
-
-                    if (ps != null) {
-                        ps.close();
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                disposeSql(con, ps);
+                loginok = c.login(login, pwd);
             }
-
-            loginok = c.login(login, pwd);
         }
-        
+
+        if (ServerConstants.BCRYPT_MIGRATION && (loginok <= -10)) { // -10 means migration to bcrypt, -23 means TOS wasn't accepted
+            try {
+                con = DatabaseConnection.getConnection();
+                ps = con.prepareStatement("UPDATE accounts SET password = ? WHERE name = ?;");
+                ps.setString(1, bcryptedpass);
+                ps.setString(2, login);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                disposeSql(con, ps);
+                loginok = (loginok == -10)? 0:23;
+            }
+        }
+
         if (c.hasBannedIP() || c.hasBannedMac()) {
             c.announce(MaplePacketCreator.getLoginFailed(3));
             return;
@@ -106,10 +110,24 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
             c.announce(MaplePacketCreator.getLoginFailed(7));
         }
     }
-    
+
     private static void login(MapleClient c){
         c.announce(MaplePacketCreator.getAuthSuccess(c));//why the fk did I do c.getAccountName()?
-        
+
         Server.getInstance().registerLoginState(c);
+    }
+
+    private static void disposeSql(Connection con, PreparedStatement ps) {
+        try {
+            if (con != null) {
+                con.close();
+            }
+
+            if (ps != null) {
+                ps.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
