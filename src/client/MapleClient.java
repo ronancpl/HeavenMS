@@ -511,9 +511,7 @@ public class MapleClient {
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				if (rs.getByte("banned") == 1) {
-					return 3;
-				}
+                boolean banned = (rs.getByte("banned") == 1);
 				accId = rs.getInt("id");
 				gmlevel = rs.getInt("gm");
 				pin = rs.getString("pin");
@@ -522,11 +520,15 @@ public class MapleClient {
 				characterSlots = rs.getByte("characterslots");
 				String passhash = rs.getString("password");
 				String salt = rs.getString("salt");
+                byte tos = rs.getByte("tos");
 
-				//we do not unban
-				byte tos = rs.getByte("tos");
 				ps.close();
 				rs.close();
+
+				if (banned) {
+                    return 3;
+                }
+
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
