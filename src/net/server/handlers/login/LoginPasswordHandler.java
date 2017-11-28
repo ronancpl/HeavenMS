@@ -21,11 +21,17 @@
  */
 package net.server.handlers.login;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Calendar;
 
+import constants.ServerConstants;
 import net.MaplePacketHandler;
 import net.server.Server;
 import server.TimerManager;
+import tools.BCrypt;
+import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
@@ -46,6 +52,35 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         c.setAccountName(login);
         
         int loginok = c.login(login, pwd);
+
+        if (ServerConstants.AUTOMATIC_REGISTER && loginok == 5) {
+            Connection con = null;
+            PreparedStatement ps = null;
+
+            try {
+                con = DatabaseConnection.getConnection();
+                ps = con.prepareStatement("INSERT INTO accounts (name, password) VALUES (?, ?);");
+                ps.setString(1, login);
+                ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+
+                    if (ps != null) {
+                        ps.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            loginok = c.login(login, pwd);
+        }
         
         if (c.hasBannedIP() || c.hasBannedMac()) {
             c.announce(MaplePacketCreator.getLoginFailed(3));
