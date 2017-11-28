@@ -82,7 +82,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 e.printStackTrace();
             } finally {
                 disposeSql(con, ps);
-                loginok = (loginok == -10)? 0:23;
+                loginok = (loginok == -10) ? 0 : 23;
             }
         }
 

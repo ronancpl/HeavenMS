@@ -511,7 +511,7 @@ public class MapleClient {
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-                boolean banned = (rs.getByte("banned") == 1);
+				boolean banned = (rs.getByte("banned") == 1);
 				accId = rs.getInt("id");
 				gmlevel = rs.getInt("gm");
 				pin = rs.getString("pin");
@@ -520,22 +520,22 @@ public class MapleClient {
 				characterSlots = rs.getByte("characterslots");
 				String passhash = rs.getString("password");
 				String salt = rs.getString("salt");
-                byte tos = rs.getByte("tos");
+				byte tos = rs.getByte("tos");
 
 				ps.close();
 				rs.close();
 
 				if (banned) {
-                    return 3;
-                }
+					return 3;
+				}
 
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
 				} else if (pwd.charAt(0) == '$' && pwd.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
-					loginok = (tos == 0)? 23:0;
+					loginok = (tos == 0) ? 23 : 0;
 				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
-					loginok = (tos == 0)? -23:-10; // migrate to bcrypt
+					loginok = (tos == 0) ? -23 : -10; // migrate to bcrypt
 				} else {
 					loggedIn = false;
 					loginok = 4;
@@ -555,11 +555,11 @@ public class MapleClient {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-                                if (con != null && !con.isClosed()) {
+				if (con != null && !con.isClosed()) {
 					con.close();
 				}
 			} catch (SQLException e) {
-                e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 		if (loginok == 0) {
