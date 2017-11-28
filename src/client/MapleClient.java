@@ -530,7 +530,7 @@ public class MapleClient {
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
-				} else if (pwd.equals(passhash) || BCrypt.checkpw(passhash, pwd) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
+				} else if (pwd.equals(passhash) || BCrypt.checkpw(pwd, passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
 					if (tos == 0) {
 						loginok = 23;
 					} else {
