@@ -42,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
+
+import tools.*;
 import tools.locks.MonitoredReentrantLock;
 
 import javax.script.ScriptEngine;
@@ -71,12 +73,6 @@ import server.life.MapleMonster;
 import server.MapleTrade;
 import server.maps.*;
 import server.quest.MapleQuest;
-import tools.LogHelper;
-import tools.DatabaseConnection;
-import tools.FilePrinter;
-import tools.HexTool;
-import tools.MapleAESOFB;
-import tools.MaplePacketCreator;
 import tools.locks.MonitoredLockType;
 
 public class MapleClient {
@@ -510,7 +506,7 @@ public class MapleClient {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-                        con = DatabaseConnection.getConnection();
+			con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, gm, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
@@ -526,6 +522,7 @@ public class MapleClient {
 				characterSlots = rs.getByte("characterslots");
 				String passhash = rs.getString("password");
 				String salt = rs.getString("salt");
+
 				//we do not unban
 				byte tos = rs.getByte("tos");
 				ps.close();
@@ -533,7 +530,7 @@ public class MapleClient {
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
-				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
+				} else if (pwd.equals(passhash) || BCrypt.checkpw(passhash, pwd) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
 					if (tos == 0) {
 						loginok = 23;
 					} else {

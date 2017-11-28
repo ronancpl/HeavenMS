@@ -365,7 +365,7 @@ public class Server implements Runnable {
     }
 
     public static void main(String args[]) {
-	System.setProperty("wzpath", "wz");
+	    System.setProperty("wzpath", "wz");
         Server.getInstance().run();
     }
 
