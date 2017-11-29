@@ -63,14 +63,14 @@ CREATE TABLE IF NOT EXISTS `alliance` (
   `rank5` varchar(11) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   INDEX (name)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `allianceguilds` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `allianceid` int(10) NOT NULL DEFAULT '-1',
   `guildid` int(10) NOT NULL DEFAULT '-1',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `area_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -12792,7 +12792,7 @@ CREATE TABLE IF NOT EXISTS `drop_data_global` (
   `comments` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `mobid` (`continent`) USING BTREE
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
 INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`, `comments`) VALUES
 (1, 0, 0, 4031865, 1, 1, 0, 35000, 'NX Card 100 PTS'),
@@ -13052,14 +13052,14 @@ CREATE TABLE IF NOT EXISTS `makercreatedata` (
   `quantity` smallint(6) NOT NULL,
   `tuc` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`,`itemid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `makerrecipedata` (
   `itemid` int(11) NOT NULL,
   `req_item` int(11) NOT NULL,
   `count` smallint(6) NOT NULL,
   PRIMARY KEY (`itemid`,`req_item`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `makerrewarddata` (
   `itemid` int(11) NOT NULL,
@@ -13067,7 +13067,7 @@ CREATE TABLE IF NOT EXISTS `makerrewarddata` (
   `quantity` smallint(6) NOT NULL,
   `prob` tinyint(3) unsigned NOT NULL DEFAULT '100',
   PRIMARY KEY (`itemid`,`rewardid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 # updated with the MapleSkillMakerFetcher feature
 INSERT IGNORE INTO `makercreatedata` (`id`, `itemid`, `req_level`, `req_maker_level`, `req_meso`, `req_item`, `req_equip`, `catalyst`, `quantity`, `tuc`) VALUES
@@ -15935,7 +15935,7 @@ CREATE TABLE IF NOT EXISTS `makerreagentdata` (
   `stat` varchar(20) NOT NULL,
   `value` smallint(6) NOT NULL,
   PRIMARY KEY (`itemid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT IGNORE INTO `makerreagentdata` (`itemid`, `stat`, `value`) VALUES
   (4250000, "incPAD", 1),
@@ -16397,7 +16397,7 @@ CREATE TABLE IF NOT EXISTS `nxcoupons` (
   `starthour` int(11) NOT NULL DEFAULT '0',
   `endhour` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
 
 INSERT INTO `nxcoupons` (`id`, `couponid`, `rate`, `activeday`, `starthour`, `endhour`) VALUES
 (1,5211000,2,254,18,20),

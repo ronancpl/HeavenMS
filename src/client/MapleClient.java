@@ -42,6 +42,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
+
+import tools.*;
 import tools.locks.MonitoredReentrantLock;
 
 import javax.script.ScriptEngine;
@@ -71,12 +73,6 @@ import server.life.MapleMonster;
 import server.MapleTrade;
 import server.maps.*;
 import server.quest.MapleQuest;
-import tools.LogHelper;
-import tools.DatabaseConnection;
-import tools.FilePrinter;
-import tools.HexTool;
-import tools.MapleAESOFB;
-import tools.MaplePacketCreator;
 import tools.locks.MonitoredLockType;
 
 public class MapleClient {
@@ -510,14 +506,12 @@ public class MapleClient {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		try {
-                        con = DatabaseConnection.getConnection();
+			con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, gm, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				if (rs.getByte("banned") == 1) {
-					return 3;
-				}
+				boolean banned = (rs.getByte("banned") == 1);
 				accId = rs.getInt("id");
 				gmlevel = rs.getInt("gm");
 				pin = rs.getString("pin");
@@ -526,19 +520,22 @@ public class MapleClient {
 				characterSlots = rs.getByte("characterslots");
 				String passhash = rs.getString("password");
 				String salt = rs.getString("salt");
-				//we do not unban
 				byte tos = rs.getByte("tos");
+
 				ps.close();
 				rs.close();
+
+				if (banned) {
+					return 3;
+				}
+
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
+				} else if (pwd.charAt(0) == '$' && pwd.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
+					loginok = (tos == 0) ? 23 : 0;
 				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
-					if (tos == 0) {
-						loginok = 23;
-					} else {
-						loginok = 0;
-					}
+					loginok = (tos == 0) ? -23 : -10; // migrate to bcrypt
 				} else {
 					loggedIn = false;
 					loginok = 4;
@@ -558,11 +555,11 @@ public class MapleClient {
 				if (rs != null && !rs.isClosed()) {
 					rs.close();
 				}
-                                if (con != null && !con.isClosed()) {
+				if (con != null && !con.isClosed()) {
 					con.close();
 				}
 			} catch (SQLException e) {
-                            e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
 		if (loginok == 0) {
