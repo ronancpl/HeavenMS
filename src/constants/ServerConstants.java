@@ -11,7 +11,7 @@ public class ServerConstants {
     public static String DB_URL = "";
     public static String DB_USER = "";
     public static String DB_PASS = "";
-    public static final boolean DB_EXPERIMENTAL_POOL = true;    //[EXPERIMENTAL] Installs a connection pool to hub DB connections. Set false to default.
+    public static final boolean DB_CONNECTION_POOL = true;      //Installs a connection pool to hub DB connections. Set false to default.
     
     //World And Version
     public static short VERSION = 83;
@@ -28,16 +28,19 @@ public class ServerConstants {
     
     public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character needs this feature ENABLED.
     public static final boolean ENABLE_PIN = false;             //Pick true/false to enable or disable Pin.
-		
+    
+    public static final boolean AUTOMATIC_REGISTER = true;      //Automatically register players when they login with a nonexistent username.
+    public static final boolean BCRYPT_MIGRATION = true;        //Performs a migration from old SHA-1 and SHA-512 password to bcrypt
+    
     //Ip Configuration
     public static String HOST;
-	
+
     //Other Configuration
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
-	
+    
     //Server Flags
-    public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the MapleSolaxiaV2's custom keybindings when creating characters.
+    public static final boolean USE_CUSTOM_KEYSET = false;          //Enables auto-setup of the MapleSolaxiaV2's custom keybindings when creating characters.
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events on a map, rather than those of only view range.
     public static final boolean USE_DEBUG = false;                  //Will enable some text prints on the client, oriented for debugging purposes.
@@ -68,11 +71,11 @@ public class ServerConstants {
     public static final boolean USE_MAKER_FEE_HEURISTICS = true;    //Apply compiled values for stimulants and reagents into the Maker fee calculations (max error revolves around 50k mesos). Set false to use basic constant values instead (results are never higher than requested by the client-side).
     
     //Server Rates And Experience
-    public static final int EXP_RATE = 10;
-    public static final int MESO_RATE = 10;
-    public static final int DROP_RATE = 10;
-    public static final int BOSS_DROP_RATE = 20;
-    public static final double EQUIP_EXP_RATE = 10.0;               //Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
+    public static final int EXP_RATE = 1;
+    public static final int MESO_RATE = 1;
+    public static final int DROP_RATE = 1;
+    public static final int BOSS_DROP_RATE = 1;
+    public static final double EQUIP_EXP_RATE = 1.0;               //Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
     
     public static final double PARTY_BONUS_EXP_RATE = 1.0;          //Rate for the party exp reward.
     public static final double PQ_BONUS_EXP_RATE = 0.5;             //Rate for the PQ exp reward.
@@ -96,32 +99,32 @@ public class ServerConstants {
     
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
-    public static final boolean USE_PERFECT_GM_SCROLL = true;   //Scrolls from GMs never uses up slots nor fails.
-    public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
-    public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
-    public static final boolean USE_ENHANCED_CRAFTING = true;   //Apply chaos scroll on every equip crafted.
+    public static final boolean USE_PERFECT_GM_SCROLL = false;  //Scrolls from GMs never uses up slots nor fails.
+    public static final boolean USE_PERFECT_SCROLLING = false;  //Scrolls doesn't use slots upon failure.
+    public static final boolean USE_ENHANCED_CHSCROLL = false;  //Equips even more powerful with chaos upgrade.
+    public static final boolean USE_ENHANCED_CRAFTING = false;  //Apply chaos scroll on every equip crafted.
     public static final int SCROLL_CHANCE_RATE = 0;             //Number of rolls for success on a scroll, set 0 for default.
     public static final int CHSCROLL_STAT_RANGE = 6;            //Stat upgrade range (-N, N) on chaos scrolls.
     
     //Beginner Skills Configuration
-    public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Haste-like speed & jump upgrade.
-    public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
-    public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
+    public static final boolean USE_ULTRA_NIMBLE_FEET = false;  //Haste-like speed & jump upgrade.
+    public static final boolean USE_ULTRA_RECOVERY = false;     //Massive recovery amounts overtime.
+    public static final boolean USE_ULTRA_THREE_SNAILS = false; //Massive damage on shell toss.
     
     //Character Configuration
-    public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
-    public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
-    public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
-    public static final boolean USE_PERFECT_PITCH = true;	//For lvl 30 or above, each lvlup grants player 1 perfect pitch.
-    public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
+    public static final boolean USE_ADD_SLOTS_BY_LEVEL = false; //Slots are added each 20 levels.
+    public static final boolean USE_ADD_RATES_BY_LEVEL = false; //Rates are added each 20 levels.
+    public static final boolean USE_STACK_COUPON_RATES = false; //Multiple coupons effects builds up together.
+    public static final boolean USE_PERFECT_PITCH = false;	//For lvl 30 or above, each lvlup grants player 1 perfect pitch.
+    public static final int FAME_GAIN_BY_QUEST = 0;             //Fame gain each N quest completes, set 0 to disable.
     
     //Equipment Configuration
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
-    public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stat upgrades at equip level up.
+    public static final boolean USE_EQUIPMNT_LVLUP_POWER = false;//Enable more powerful stat upgrades at equip level up.
     public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes prevents mobs from banishing wearer.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_UP = 10000; //Max stat upgrade an equipment can have on a levelup.
     public static final int MAX_EQUIPMNT_STAT = 32767;          //Max stat on an equipment by leveling up.
-    public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
+    public static final int USE_EQUIPMNT_LVLUP = 1;             //All equips lvlup at max level of N, set 1 to disable.
     
     //Map-Chair Configuration
     public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to further recover player's HP and MP (player must have the Chair Mastery skill).

@@ -67,7 +67,7 @@ public class DatabaseConnection {
         
         ds = null;
         
-        if(ServerConstants.DB_EXPERIMENTAL_POOL) {
+        if(ServerConstants.DB_CONNECTION_POOL) {
             // Connection Pool on database ftw!
             
             HikariConfig config = new HikariConfig();
