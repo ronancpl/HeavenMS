@@ -8,9 +8,9 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-DROP DATABASE IF EXISTS `maplesolaxia`;
-CREATE DATABASE `maplesolaxia` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `maplesolaxia`;
+DROP DATABASE IF EXISTS `heavenms`;
+CREATE DATABASE `heavenms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `heavenms`;
 
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

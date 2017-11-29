@@ -274,7 +274,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return takenDamage.containsKey(chr.getId());
     }
 
-    private void distributeExperienceToParty(int pid, int exp, int killer, Set<MapleCharacter> underleveled) {
+    private void distributeExperienceToParty(int pid, int exp, int killer, Set<MapleCharacter> underleveled, int minThresholdLevel) {
         List<MapleCharacter> members = new LinkedList<>();
         MapleCharacter pchar = getMap().getAnyCharacterFromParty(pid);
         if(pchar != null) {
@@ -289,11 +289,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
             
         int partyLevel = 0;
-        int leechMinLevel = (ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) ? getLevel() - ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN : 0;    //NO EXP WILL BE GIVEN for those who are underleveled!
-
         int leechCount = 0;
         for (MapleCharacter mc : members) {
-            if (mc.getLevel() >= leechMinLevel) {
+            if (mc.getLevel() >= minThresholdLevel) {    //NO EXP WILL BE GIVEN for those who are underleveled!
                 partyLevel += mc.getLevel();
                 leechCount++;
             } else {
@@ -306,7 +304,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         for (MapleCharacter mc : members) {
             int id = mc.getId();
             int level = mc.getLevel();
-            if (level >= leechMinLevel) {
+            if (level >= minThresholdLevel) {
                 boolean isKiller = killer == id;
                 boolean mostDamage = mostDamageCid == id;
                 int xp = (int) ((0.80f * exp * level) / partyLevel);
@@ -318,10 +316,20 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
+    private int calcThresholdLevel(boolean isPqMob) {
+        if(isPqMob || !ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) {
+            return 0;
+        } else {
+            return getLevel() - (!isBoss() ? ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN : 2 * ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN);
+        }
+    }
+    
     public void distributeExperience(int killerId) {
         if (isAlive()) {
             return;
         }
+        
+        int minThresholdLevel = calcThresholdLevel(this.getMap().getEventInstance() != null);
         int exp = getExp();
         long totalHealth = maxHpPlusHeal.get();
         Map<Integer, Integer> expDist = new HashMap<>();
@@ -349,7 +357,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     long pXP = (long)xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
                     partyExp.put(pID, (int)Math.min(pXP, Integer.MAX_VALUE));
                 } else {
-                    if(!ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE || mc.getLevel() >= getLevel() - ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN) {
+                    if(mc.getLevel() >= minThresholdLevel) {
                         //NO EXP WILL BE GIVEN for those who are underleveled!
                         giveExpToCharacter(mc, xp, isKiller, 1);
                     } else {
@@ -360,7 +368,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         for (Entry<Integer, Integer> party : partyExp.entrySet()) {
-            distributeExperienceToParty(party.getKey(), party.getValue(), killerId, underleveled);
+            distributeExperienceToParty(party.getKey(), party.getValue(), killerId, underleveled, minThresholdLevel);
         }
         
         for(MapleCharacter mc : underleveled) {
@@ -479,12 +487,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return looter != null ? looter : killer;
     }
     
-    public void dispatchMonsterKilled() {
+    public void dispatchMonsterKilled(boolean hasKiller) {
         if (getMap().getEventInstance() != null) {
             if (!this.getStats().isFriendly()) {
-                getMap().getEventInstance().monsterKilled(this);
+                getMap().getEventInstance().monsterKilled(this, hasKiller);
             } else {
-                getMap().getEventInstance().friendlyKilled(this);
+                getMap().getEventInstance().friendlyKilled(this, hasKiller);
             }
         }
         

@@ -46,7 +46,7 @@ import net.server.Server;
 import scripting.npc.NPCScriptManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.MaplePlayerShopItem;
+import server.maps.MaplePlayerShopItem;
 import server.MapleShop;
 import server.MapleShopFactory;
 import server.TimerManager;

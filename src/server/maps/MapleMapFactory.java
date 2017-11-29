@@ -340,9 +340,8 @@ public class MapleMapFactory {
         int y = MapleDataTool.getInt(reactor.getChildByPath("y"));
         myReactor.setPosition(new Point(x, y));
         myReactor.setDelay(MapleDataTool.getInt(reactor.getChildByPath("reactorTime")) * 1000);
-        myReactor.setState((byte) 0);
         myReactor.setName(MapleDataTool.getString(reactor.getChildByPath("name"), ""));
-        myReactor.resetReactorActions();
+        myReactor.resetReactorActions(0);
         return myReactor;
     }
 

@@ -74,6 +74,8 @@ function setup(level, lobbyid) {
         var eim = em.newInstance("Ellin" + lobbyid);
         eim.setProperty("level", level);
         
+        eim.setProperty("statusStg4", 0);
+        
         eim.getInstanceMap(930000000).resetPQ(level);
 	eim.getInstanceMap(930000100).resetPQ(level);
 	eim.getInstanceMap(930000200).resetPQ(level);
@@ -179,11 +181,27 @@ function end(eim) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
-        
-        eim.warpEventTeam(930000800);
 }
 
-function monsterKilled(mob, eim) {}
+function isPoisonGolem(mob) {
+        var mobid = mob.getId();
+        return (mobid == 9300182);
+}
+
+function monsterKilled(mob, eim, hasKiller) {
+        var map = mob.getMap();
+    
+        if(isPoisonGolem(mob)) {
+                eim.showClearEffect(map.getId());
+                eim.clearPQ();
+        } else if(map.countMonsters() == 0) {
+                var stage = ((map.getId() % 1000) / 100);
+        
+                if(stage == 1 || (stage == 4 && !hasKiller)) {
+                        eim.showClearEffect(map.getId());
+                }
+        }
+}
 
 function allMonstersDead(eim) {}
 

@@ -104,6 +104,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
     
     public void dropItems(boolean delayed, int posX, int posY, boolean meso, int mesoChance, final int minMeso, final int maxMeso, int minItems) {
+        if(c.getPlayer() == null) return;
+        
         List<ReactorDropEntry> chances = getDropChances();
         List<ReactorDropEntry> items = new LinkedList<>();
         int numItems = 0;

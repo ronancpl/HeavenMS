@@ -3,7 +3,7 @@
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
     <int name="level" value="77"/>
-    <int name="maxHP" value="15000"/>
+    <int name="maxHP" value="114000"/>
     <int name="maxMP" value="150"/>
     <int name="speed" value="-20"/>
     <int name="PADamage" value="250"/>
@@ -33,6 +33,9 @@
         <int name="effectAfter" value="0"/>
       </imgdir>
     </imgdir>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="stand">
     <canvas name="0" width="197" height="183">

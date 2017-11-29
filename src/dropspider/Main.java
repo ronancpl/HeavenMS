@@ -33,6 +33,18 @@ public class Main {
     private static String[] additionalPagesBB = {"101-120,", "121-140", "141-160", "161-180", "181-200"};
 
     public static void main(String[] args) {
+        System.setProperty("wzpath", "wz");
+        
+        //DataTool.setHardcodedMobNames();
+        //parsePage("http://bbb.hidden-street.net/monster/nibelung-3");
+        
+        crawlProgram();
+        
+        dumpQuery();
+        dumpErrors();
+    }
+    
+    private static void crawlProgram() {
         //parseMonsterSection(TEST_STRING);
         for (String s : pages) {
             crawlPage("http://bbb.hidden-street.net/monster/" + s);
@@ -47,8 +59,6 @@ public class Main {
                 crawlPage("http://bbb.hidden-street.net/monster/" + s);
             }
         }
-        dumpQuery();
-        dumpErrors();
     }
 
     private static void crawlPage(String url) { //recursive method
@@ -73,6 +83,40 @@ public class Main {
                 crawlPage(next_url);
             } else {
                 System.out.println("Finished crawling section.");
+            }
+        } catch (MalformedURLException mue) {
+            mue.printStackTrace();
+            System.out.println("Error parsing URL: " + url);
+            return;
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            System.out.println("Error reading from URL: " + ioe.getLocalizedMessage());
+            return;
+        }
+    }
+    
+    private static void parsePage(String url) { //unit method
+        try {
+            URL page = new URL(url);
+            InputStream is = page.openStream();
+            Scanner s = new Scanner(is);
+            String temp_data = "";
+            while (s.hasNext()) {
+                temp_data += s.nextLine() + "\n";
+            }
+            s.close();
+            is.close();
+            while (temp_data.contains("class=\"monster\">")) {
+                String monster_section = getStringBetween(temp_data, "class=\"monster\">", "</table>");
+                parseMonsterSection(monster_section);
+                temp_data = trimUntil(temp_data, "</table>");
+            }
+            if (temp_data.contains("Go to next page")) {
+                String next_url_segment = getStringBetween(temp_data, "<li class=\"pager-next\"><a href=\"", "\" title=\"Go to next page");
+                String next_url = BASE_URL + next_url_segment;
+                //crawlPage(next_url);
+            } else {
+                System.out.println("Finished parsing section.");
             }
         } catch (MalformedURLException mue) {
             mue.printStackTrace();
@@ -130,7 +174,7 @@ public class Main {
             
             
             monster_name = monster_name.replaceAll("Horntail\\'s Head B", "Horntail");
-            // Process scrolls, neoxon doesn't have the % on most of the scrolls. So we need to remove it
+            // Process scrolls, nexon doesn't have the % on most of the scrolls. So we need to remove it
             // Unfortunately they do for some, so we have to handle that too.
             boolean scroll = false;
             int scrollType = 0;
@@ -167,6 +211,8 @@ public class Main {
 
             //drop entry
             ArrayList<Integer> monster_ids = DataTool.monsterIdsFromName(monster_name);
+            //DataTool.addMonsterIdsFromHardcodedName(monster_ids, monster_name);
+            
             ArrayList<Integer> item_ids = DataTool.itemIdsFromName(item_name);
             
             if(scroll && item_ids.isEmpty()) {
@@ -208,7 +254,7 @@ public class Main {
 
                     problems.get(monster_name).wrong.add(item_name);
                 }
-//                System.out.println("Monster ids size: " + monster_ids.size() + ", Item IDs size: " + item_ids.size());
+                //System.out.println("Monster ids size: " + monster_ids.size() + ", Item IDs size: " + item_ids.size());
             }
 
         }

@@ -1,7 +1,7 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix}    This file is part of the MapleSolaxiaV2 Maple Story Server
+${licensePrefix}This file is part of the HeavenMS (MapleSolaxiaV2) Maple Story Server
 ${licensePrefix?replace(" +$", "", "r")}
 ${licensePrefix}Copyright (C) ${date?date?string("yyyy")} ${project.organization!user}
 ${licensePrefix?replace(" +$", "", "r")}

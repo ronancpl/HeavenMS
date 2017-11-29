@@ -41,7 +41,6 @@ import tools.locks.MonitoredReentrantLock;
 import net.server.Server;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.MaplePlayerShopItem;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;

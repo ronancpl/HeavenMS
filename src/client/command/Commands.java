@@ -310,7 +310,13 @@ public class Commands {
 		gotomaps.put("skelegon", 240040511);
 		gotomaps.put("hpq", 100000200);
 		gotomaps.put("ht", 240050400);
-		gotomaps.put("fm", 910000000);
+                gotomaps.put("ariant", 260000000);
+		gotomaps.put("magatia", 261000000);
+                gotomaps.put("singapore", 540000000);
+                gotomaps.put("keep", 610020006);
+                gotomaps.put("temple", 270000100);
+                gotomaps.put("neo", 240070000);
+                gotomaps.put("fm", 910000000);
 	}
         
         private static void hardsetItemStats(Equip equip, short stat) {
@@ -351,7 +357,7 @@ public class Commands {
 			break;
                     
 		case "staff":
-                        player.yellowMessage("MapleSolaxiaV2 Staff");
+                        player.yellowMessage("HeavenMS (MapleSolaxiaV2) Staff");
                         player.yellowMessage("Ronan - Developer");
                         player.yellowMessage("Vcoc - Freelance Developer");
                         player.yellowMessage("");
@@ -2599,10 +2605,6 @@ public class Commands {
                             
                 case "fred":
                         c.announce(MaplePacketCreator.fredrickMessage(Byte.valueOf(sub[1])));
-                        break;
-                    
-                case "owl":
-                        c.announce(MaplePacketCreator.getOwlMessage(Integer.valueOf(sub[1])));
                         break;
                     
                 default:

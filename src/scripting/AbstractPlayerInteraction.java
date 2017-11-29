@@ -119,7 +119,8 @@ public class AbstractPlayerInteraction {
         }
         
         public void warpParty(int id, int portalId) {
-                warpParty(id, portalId, getMapId(), getMapId());
+                int mapid = getMapId();
+                warpParty(id, portalId, mapid, mapid);
         }
         
         public void warpParty(int id, int fromMinId, int fromMaxId) {

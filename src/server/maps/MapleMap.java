@@ -262,9 +262,7 @@ public class MapleMap {
                         MapleReactor mr = (MapleReactor) o;
                         mr.lockReactor();
                         try {
-                            mr.setState((byte) 1);
-                            mr.resetReactorActions();
-                            
+                            mr.resetReactorActions(1);
                             broadcastMessage(MaplePacketCreator.triggerReactor((MapleReactor) o, 1));
                         } finally {
                             mr.unlockReactor();
@@ -768,7 +766,7 @@ public class MapleMap {
     }
     
     private void spawnDrop(final Item idrop, final Point dropPos, final MapleMapObject dropper, final MapleCharacter chr, final byte droptype, final short questid) {
-        final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, dropper, chr, droptype, false, questid);
+        final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, dropper, chr, chr.getClient(), droptype, false, questid);
         mdrop.setDropTime(System.currentTimeMillis());
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
@@ -785,7 +783,7 @@ public class MapleMap {
 
     public final void spawnMesoDrop(final int meso, final Point position, final MapleMapObject dropper, final MapleCharacter owner, final boolean playerDrop, final byte droptype) {
         final Point droppos = calcDropPos(position, position);
-        final MapleMapItem mdrop = new MapleMapItem(meso, droppos, dropper, owner, droptype, playerDrop);
+        final MapleMapItem mdrop = new MapleMapItem(meso, droppos, dropper, owner, owner.getClient(), droptype, playerDrop);
         mdrop.setDropTime(System.currentTimeMillis());
 
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
@@ -800,7 +798,7 @@ public class MapleMap {
 
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
         final Point droppos = calcDropPos(pos, pos);
-        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, (byte) 1, false);
+        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
         broadcastMessage(MaplePacketCreator.dropItemFromMapObject(drop, dropper.getPosition(), droppos, (byte) 3), drop.getPosition());
     }
 
@@ -1024,7 +1022,7 @@ public class MapleMap {
             spawnedMonstersOnMap.decrementAndGet();
             monster.setHp(0);
             removeMapObject(monster);
-            monster.dispatchMonsterKilled();
+            monster.dispatchMonsterKilled(false);
             broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
             return;
         }
@@ -1104,7 +1102,7 @@ public class MapleMap {
             }
         }
         
-        monster.dispatchMonsterKilled();
+        monster.dispatchMonsterKilled(true);
         broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
     }
 
@@ -1202,25 +1200,28 @@ public class MapleMap {
     }
 
     public void resetReactors() {
+        List<MapleReactor> list = new ArrayList<>();
+        
         objectRLock.lock();
         try {
             for (MapleMapObject o : mapobjects.values()) {
                 if (o.getType() == MapleMapObjectType.REACTOR) {
                     final MapleReactor r = ((MapleReactor) o);
-                    
-                    r.lockReactor();
-                    try {
-                        r.setState((byte) 0);
-                        r.resetReactorActions();
-                        
-                        broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
-                    } finally {
-                        r.unlockReactor();
-                    }
+                    list.add(r);
                 }
             }
         } finally {
             objectRLock.unlock();
+        }
+        
+        for (MapleReactor r : list) {
+            r.lockReactor();
+            try {
+                r.resetReactorActions(0);
+                broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
+            } finally {
+                r.unlockReactor();
+            }
         }
     }
 
@@ -1680,8 +1681,7 @@ public class MapleMap {
     private void respawnReactor(final MapleReactor reactor) {
         reactor.lockReactor();
         try {
-            reactor.setState((byte) 0);
-            reactor.resetReactorActions();
+            reactor.resetReactorActions(0);
             reactor.setAlive(true);
         } finally {
             reactor.unlockReactor();
@@ -1799,7 +1799,7 @@ public class MapleMap {
 
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
         final Point droppos = calcDropPos(pos, pos);
-        final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, dropType, playerDrop);
+        final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), dropType, playerDrop);
         mdrop.setDropTime(System.currentTimeMillis());
 
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
@@ -1868,6 +1868,39 @@ public class MapleMap {
                     if (react.getArea().contains(drop.getPosition())) {
                         TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
                         break;
+                    }
+                }
+            }
+        }
+    }
+    
+    public void searchItemReactors(final MapleReactor react) {
+        if (react.getReactorType() == 100) {
+            Pair<Integer, Integer> reactProp = react.getReactItem(react.getEventState());
+            int reactItem = reactProp.getLeft(), reactQty = reactProp.getRight();
+            Rectangle reactArea = react.getArea();
+            
+            List<MapleMapItem> list = new ArrayList<>();
+            objectRLock.lock();
+            try {
+                for(MapleMapItem mmi : droppedItems.keySet()) {
+                    if(!mmi.isPickedUp()) {
+                        list.add(mmi);
+                    }
+                }
+            } finally {
+                objectRLock.unlock();
+            }
+            
+            for(final MapleMapItem drop : list) {
+                final Item item = drop.getItem();
+            
+                if (reactItem == item.getItemId() && reactQty == item.getQuantity()) {
+                    if (reactArea.contains(drop.getPosition())) {
+                        MapleClient owner = drop.getOwnerClient();
+                        if(owner != null) {
+                            TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, owner), 5000);
+                        }
                     }
                 }
             }
@@ -2808,6 +2841,7 @@ public class MapleMap {
                             if (mapitem.isPickedUp()) {
                                 return;
                             }
+                            mapitem.setPickedUp(true);
 
                             reactor.setShouldCollect(false);
                             MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
@@ -2821,9 +2855,7 @@ public class MapleMap {
                                     public void run() {
                                         reactor.lockReactor();
                                         try {
-                                            reactor.setState((byte) 0);
-                                            reactor.resetReactorActions();
-
+                                            reactor.resetReactorActions(0);
                                             broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
                                         } finally {
                                             reactor.unlockReactor();

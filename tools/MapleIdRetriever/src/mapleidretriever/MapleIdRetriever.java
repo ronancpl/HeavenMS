@@ -1,5 +1,6 @@
 /*
-	This file is part of the MapleSolaxiaV2 Maple Story Server
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -47,7 +48,7 @@ import java.util.ArrayList;
 public class MapleIdRetriever {
     private final static boolean INSTALL_SQLTABLE = false;
     
-    static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
+    static String host = "jdbc:mysql://localhost:3306/heavenms";
     static String driver = "com.mysql.jdbc.Driver";
     static String username = "root";
     static String password = "";

@@ -162,18 +162,19 @@ public class MapleReactor extends AbstractMapleMapObject {
         return MaplePacketCreator.spawnReactor(this);
     }
 
-    public void resetReactorActions() {
+    public void resetReactorActions(int newState) {
+        setState((byte) newState);
         cancelReactorTimeout();
         setShouldCollect(true);
         refreshReactorTimeout();
+        
+        if(map != null) map.searchItemReactors(this);
     }
     
     public void forceHitReactor(final byte newState) {
         this.lockReactor();
         try {
-            setState((byte) newState);
-            this.resetReactorActions();
-            
+            this.resetReactorActions(newState);
             map.broadcastMessage(MaplePacketCreator.triggerReactor(this, (short) 0));
         } finally {
             this.unlockReactor();
@@ -184,9 +185,7 @@ public class MapleReactor extends AbstractMapleMapObject {
         if(!this.reactorLock.tryLock()) return;
         
         try {
-            setState((byte) newState);
-            this.resetReactorActions();
-            
+            this.resetReactorActions(newState);
             map.broadcastMessage(MaplePacketCreator.triggerReactor(this, (short) 0));
         } finally {
             this.unlockReactor();

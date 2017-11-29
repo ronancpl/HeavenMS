@@ -1,5 +1,6 @@
 /*
-	This file is part of the MapleSolaxiaV2 Maple Story Server
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -55,8 +56,8 @@ import tools.Pair;
  * and update the questid from items that are labeled as "Quest Item" on the DB.
  * 
  * To test a server instance with this feature, MapleQuestItemFetcher must be set
- * just like it is displayed on the MapleSolaxiaV2 source: 2 folders ahead of the
- * root of the main source.
+ * just like it is displayed on the HeavenMS (MapleSolaxiaV2) source: 2 folders ahead
+ * of the root of the main source.
  * 
  * Running it should generate a report file under "lib" folder with the search results.
  * 
@@ -65,7 +66,7 @@ import tools.Pair;
 public class MapleQuestItemFetcher {
     static MapleItemInformationProvider ii;
     
-    static String host = "jdbc:mysql://localhost:3306/maplesolaxia";
+    static String host = "jdbc:mysql://localhost:3306/heavenms";
     static String driver = "com.mysql.jdbc.Driver";
     static String username = "root";
     static String password = "";

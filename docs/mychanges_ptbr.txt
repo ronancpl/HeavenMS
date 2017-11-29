@@ -693,3 +693,10 @@ Implementado Maker skill (métodos de packets pelo menos já existiam).
 Corrigido bug em MapleSkillMakerFetcher, atualizado DB com as tabelas normalizadas.
 Nova ferramenta: MapleSkillMakerReagentIndexer. Agrupa no banco de dados informação pertinente aos reagentes do Maker, para serem usados pelo server.
 Quests nivelando/utilizando o Maker funcionam corretamente agora.
+
+25 - 26 Novembro 2017,
+Implementado região de Neo City. Progressão do jogo e sistema de quests fluem normalmente agora.
+Corrigido um bug onde mobs de PQ não atribuem experiência aos jogadores por serem "baixo nível".
+Corrigido um bug de deadlock com respawn de reatores.
+Reatores que consomem drops agora checam por possíveis drops ao se registrar no mapa (seja por respawn ou primeiro spawn).
+Aprimorado mecânicas da EllinPQ.

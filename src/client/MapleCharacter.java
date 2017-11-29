@@ -8,11 +8,11 @@
  it under the terms of the GNU Affero General Public License as
  published by the Free Software Foundation version 3 as published by
  the Free Software Foundation. You may not use, modify or distribute
- this program unader any cother version of the GNU Affero General Public
+ this program under any otheer version of the GNU Affero General Public
  License.
 
  This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
+ but WITHOUT ANY WARRANTY; witout even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU Affero General Public License for more details.
 
@@ -69,9 +69,9 @@ import scripting.event.EventInstanceManager;
 import server.CashShop;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
-import server.MapleMiniGame;
-import server.MaplePlayerShop;
-import server.MaplePlayerShopItem;
+import server.maps.MapleMiniGame;
+import server.maps.MaplePlayerShop;
+import server.maps.MaplePlayerShopItem;
 import server.MaplePortal;
 import server.MapleShop;
 import server.MapleStatEffect;
@@ -251,7 +251,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private EnumMap<MapleBuffStat, MapleBuffStatValueHolder> effects = new EnumMap<>(MapleBuffStat.class);
     private Map<MapleBuffStat, Byte> buffEffectsCount = new LinkedHashMap<>();
     private Map<MapleDisease, Long> diseaseExpires = new LinkedHashMap<>();
-    private Map<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> buffEffects = new LinkedHashMap<>();
+    private Map<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> buffEffects = new LinkedHashMap<>(); // non-overriding buffs thanks to Ronan
     private Map<Integer, Long> buffExpires = new LinkedHashMap<>();
     private Map<Integer, MapleKeyBinding> keymap = new LinkedHashMap<>();
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
@@ -419,7 +419,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return ret;
     }
     
-    public boolean getAwayFromWorld() {
+    public boolean isAwayFromWorld() {
         return awayFromWorld.get();
     }
     

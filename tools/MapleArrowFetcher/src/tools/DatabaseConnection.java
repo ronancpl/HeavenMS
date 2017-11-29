@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * @author The Real Spookster (some modifications to this beautiful code)
  */
 public class DatabaseConnection {
-    private static String DB_URL = "jdbc:mysql://localhost:3306/maplesolaxia";
+    private static String DB_URL = "jdbc:mysql://localhost:3306/heavenms";
     private static String DB_USER = "root";
     private static String DB_PASS = "";
     

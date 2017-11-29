@@ -1,7 +1,7 @@
 ﻿#THIS SQL IS OPTIONAL, TO BE USED AFTER 'db_drops.sql'
 #THIS REQUIRES PROVIDED WZ FILES
 
-USE `maplesolaxia`;
+USE `heavenms`;
 
 # Scroll shop at Spindle, chair shop at Kino Konoko
 INSERT INTO `shops` (`shopid`,`npcid`) VALUES

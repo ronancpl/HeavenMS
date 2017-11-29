@@ -502,20 +502,20 @@ public class EventInstanceManager {
                 leaderId = ldr.getId();
 	}
 	
-	public void monsterKilled(MapleMonster mob) {
+	public void monsterKilled(MapleMonster mob, boolean hasKiller) {
 		sL.lock();
                 try {
                         mobs.remove(mob);
                         
                         try {
-                                em.getIv().invokeFunction("monsterKilled", mob, this);
+                                em.getIv().invokeFunction("monsterKilled", mob, this, hasKiller);
                         } catch (ScriptException | NoSuchMethodException ex) {
                                 ex.printStackTrace();
                         }
                         
                         if (mobs.isEmpty()) {
                                 try {
-                                        em.getIv().invokeFunction("allMonstersDead", this);
+                                        em.getIv().invokeFunction("allMonstersDead", this, hasKiller);
                                 } catch (ScriptException | NoSuchMethodException ex) {
                                         ex.printStackTrace();
                                 }
@@ -525,11 +525,11 @@ public class EventInstanceManager {
                 }
         }
         
-        public void friendlyKilled(MapleMonster mob) {
+        public void friendlyKilled(MapleMonster mob, boolean hasKiller) {
 		try {
                         sL.lock();
                         try {
-                                em.getIv().invokeFunction("friendlyKilled", mob, this);
+                                em.getIv().invokeFunction("friendlyKilled", mob, this, hasKiller);
                         } finally {
                                 sL.unlock();
                         }
@@ -1213,7 +1213,8 @@ public class EventInstanceManager {
         }
         
         public final void showClearEffect(boolean hasGate) {
-                showClearEffect(hasGate, getLeader().getMapId());
+                MapleCharacter leader = getLeader();
+                if(leader != null) showClearEffect(hasGate, leader.getMapId());
         }
         
         public final void showClearEffect(int mapId) {

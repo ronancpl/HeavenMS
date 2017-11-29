@@ -94,7 +94,7 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
                 return;
             }
         } else {
-            if(toCreate < 2000000) {   // only equips uses stimulant and reagents
+            if(ItemConstants.isEquipment(toCreate)) {   // only equips uses stimulant and reagents
                 if(slea.readByte() != 0) {  // stimulant
                     stimulantid = getMakerStimulant(toCreate);
                     if(!c.getAbstractPlayerInteraction().haveItem(stimulantid)) {

@@ -30,7 +30,7 @@ import tools.MaplePacketCreator;
 import tools.locks.MonitoredLockType;
 
 public class MapleMapItem extends AbstractMapleMapObject {
-
+    protected MapleClient ownerClient;
     protected Item item;
     protected MapleMapObject dropper;
     protected int character_ownerid, meso, questid = -1;
@@ -39,33 +39,36 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected long dropTime;
     private Lock itemLock = new MonitoredReentrantLock(MonitoredLockType.MAP_ITEM);
 
-    public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
+    public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, MapleClient ownerClient, byte type, boolean playerDrop) {
 	setPosition(position);
 	this.item = item;
 	this.dropper = dropper;
 	this.character_ownerid = owner.getId();
+        this.ownerClient = owner.getClient();
 	this.meso = 0;
 	this.type = type;
 	this.playerDrop = playerDrop;
     }
 
-    public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop, int questid) {
+    public MapleMapItem(Item item, Point position, MapleMapObject dropper, MapleCharacter owner, MapleClient ownerClient, byte type, boolean playerDrop, int questid) {
 	setPosition(position);
 	this.item = item;
 	this.dropper = dropper;
 	this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
-	this.meso = 0;
+	this.ownerClient = owner.getClient();
+        this.meso = 0;
 	this.type = type;
 	this.playerDrop = playerDrop;
 	this.questid = questid;
     }
 
-    public MapleMapItem(int meso, Point position, MapleMapObject dropper, MapleCharacter owner, byte type, boolean playerDrop) {
+    public MapleMapItem(int meso, Point position, MapleMapObject dropper, MapleCharacter owner, MapleClient ownerClient, byte type, boolean playerDrop) {
 	setPosition(position);
 	this.item = null;
 	this.dropper = dropper;
 	this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
-	this.meso = meso;
+	this.ownerClient = owner.getClient();
+        this.meso = meso;
 	this.type = type;
 	this.playerDrop = playerDrop;
     }
@@ -89,6 +92,10 @@ public class MapleMapItem extends AbstractMapleMapObject {
 
     public final int getOwner() {
 	return character_ownerid;
+    }
+    
+    public final MapleClient getOwnerClient() {
+	return (ownerClient.isLoggedIn() && !ownerClient.getPlayer().isAwayFromWorld()) ? ownerClient : null;
     }
 
     public final int getMeso() {

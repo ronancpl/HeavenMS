@@ -1,5 +1,6 @@
 /*
-	This file is part of the MapleSolaxiaV2 Maple Story Server
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -51,7 +52,7 @@ function action(mode, type, selection) {
 function generateSelectionMenu(array) {     // nice tool for generating a string for the sendSimple functionality
         var menu = "";
         for (var i = 0; i < array.length; i++) {
-                menu += "#L" + i + "#" + array[i] + "l\r\n";
+                menu += "#L" + i + "#" + array[i] + "#l\r\n";
         }
         return menu;
 }

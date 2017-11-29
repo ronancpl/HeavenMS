@@ -1,4 +1,4 @@
-========== MapleSolaxiaV2 ==========
+========== HeavenMS (MapleSolaxiaV2) ==========
 Credits:
 Ronan - Developer
 Vcoc - Freelance Developer
@@ -63,6 +63,7 @@ Monsters, Maps & Reactors:
 * Boats, elevator and other travelling mechanics fully working.
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 * Some reactors (PQ bonus boxes) now sprays items on the map, instead of dropping everything at once.
+* Updated Crimsonwood, World Tour and Neo City, enabling quest completion and game progression in these areas.
 
 PQ potentials:
 * Lobby system - Multiple PQ instances on same channel.
@@ -87,6 +88,8 @@ Server potentials:
 * Delete Character (requires ENABLE_PIC activated).
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
+* Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.
+* Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
 
 Admin/GM commands:
 * Server commands layered by GM levels.
@@ -99,9 +102,11 @@ External tools:
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleMapInfoRetriever - Basic tool for detecting missing info nodes on the map field structures (maps failing to have an info node on the WZ is an critical issue).
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
+* MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
+* MapleMobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
-* MobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
-* MobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
+* MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.
+* MapleSkillMakerReagentIndexer - Generates a new maker table describing all stat-improvements from the Maker reagents (those empowering crystals and jewels).
 
 Project:
 * Organized project code.
