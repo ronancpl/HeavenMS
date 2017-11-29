@@ -532,7 +532,7 @@ public class MapleClient {
 				if (getLoginState() > LOGIN_NOTLOGGEDIN) { // already loggedin
 					loggedIn = false;
 					loginok = 7;
-				} else if (pwd.charAt(0) == '$' && pwd.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
+				} else if (passhash.charAt(0) == '$' && passhash.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
 					loginok = (tos == 0) ? 23 : 0;
 				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
 					loginok = (tos == 0) ? -23 : -10; // migrate to bcrypt

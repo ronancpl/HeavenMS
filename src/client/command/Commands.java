@@ -355,21 +355,10 @@ public class Commands {
 			dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
 			player.yellowMessage("Solaxia Server Time: " + dateFormat.format(new Date()));
 			break;
-                    
+                
+                case "credits":
 		case "staff":
-                        player.yellowMessage("HeavenMS (MapleSolaxiaV2) Staff");
-                        player.yellowMessage("Ronan - Developer");
-                        player.yellowMessage("Vcoc - Freelance Developer");
-                        player.yellowMessage("");
-			player.yellowMessage("MapleSolaxia Staff");
-			player.yellowMessage("Aria - Administrator");
-			player.yellowMessage("Twdtwd - Administrator");
-			player.yellowMessage("Exorcist - Developer");
-			player.yellowMessage("SharpAceX - Developer");
-			player.yellowMessage("Zygon - Freelance Developer");
-			player.yellowMessage("SourMjolk - Game Master");
-			player.yellowMessage("Kanade - Game Master");
-			player.yellowMessage("Kitsune - Game Master");
+                        c.getAbstractPlayerInteraction().openNpc(2010007, "credits");
 			break;
                     
 		case "lastrestart":

@@ -198,7 +198,7 @@ function writeSolaxiaCommandsLv0() {    //Common
 
         addCommand("commands", "");
         addCommand("time", "");
-        addCommand("staff", "");
+        addCommand("credits", "");
         addCommand("uptime", "");
         addCommand("gacha", "");
         addCommand("whatdropsfrom", "");

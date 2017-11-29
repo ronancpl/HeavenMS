@@ -48,7 +48,6 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
 
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
-        String bcryptedpass = BCrypt.hashpw(pwd, BCrypt.gensalt(12));
         c.setAccountName(login);
 
         int loginok = c.login(login, pwd);
@@ -61,7 +60,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 con = DatabaseConnection.getConnection();
                 ps = con.prepareStatement("INSERT INTO accounts (name, password) VALUES (?, ?);");
                 ps.setString(1, login);
-                ps.setString(2, bcryptedpass);
+                ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -75,7 +74,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
             try {
                 con = DatabaseConnection.getConnection();
                 ps = con.prepareStatement("UPDATE accounts SET password = ? WHERE name = ?;");
-                ps.setString(1, bcryptedpass);
+                ps.setString(1, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
                 ps.setString(2, login);
                 ps.executeUpdate();
             } catch (SQLException e) {
