@@ -1,6 +1,8 @@
-========== HeavenMS (MapleSolaxiaV2) ==========
+#**HeavenMS _(MapleSolaxiaV2)_**
 Credits:
+
 Ronan - Developer
+
 Vcoc - Freelance Developer
 
 ---------------------------
@@ -18,6 +20,7 @@ Feature list:
 ---------------------------
 
 PQs:
+
 * HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ.
 * CWKPQ as Expedition-based event.
 * Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean.
@@ -28,10 +31,13 @@ PQs:
 * Capt. Latanica remade as an event (parties can now fight the boss).
 
 Skills:
+
 * Maker skill features properly developed.
 * Server is using heurisitics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
+* New skill: Chair Mastery (max lv 1) - Players having this passive skill can gain a significant boost of HP/MP recovery when sitting on a field/map chair.
 
 Quests:
+
 * Doll house quest functional.
 * Quests can now reward properly items when matching a reward item with the player's job.
 * Loads of quests have been patched.
@@ -39,10 +45,12 @@ Quests:
 * Enchanced rewarding system: checks for stacking opportunities on the inventory before checking for new slots.
 
 Player Social Network:
+
 * Guild and Alliance system fully functional.
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 
 Cash & Items:
+
 * EXP/DROP/Cosmetic Coupons.
 * EXP/DROP coupons now appears as a buff effect when on active time.
 * Great deal of cash items functional.
@@ -54,6 +62,7 @@ Cash & Items:
 * Pet item ignore.
 
 Monsters, Maps & Reactors:
+
 * Every monsterbook card is now droppable by overworld mobs.
 * Added meso drop data for basically every missing overworld mob.
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
@@ -66,18 +75,21 @@ Monsters, Maps & Reactors:
 * Updated Crimsonwood, World Tour and Neo City, enabling quest completion and game progression in these areas.
 
 PQ potentials:
+
 * Lobby system - Multiple PQ instances on same channel.
 * Expedition system - Multiples parties can attempt on a same instance (lobbies and expeds are mutually-exclusive).
 * Guild queue system - Guilds can register themselves on a queue for the GPQ.
 * EIM Pool system - After the first instance setup, next event instances are loaded beforehand and set on a pooling queue, optimizing future loadouts.
 
 Player potentials:
+
 * Adventurer Mount quests functional.
 * All Equipment levels up.
 * Player level rates.
 * Gain fame by quests.
 
 Server potentials:
+
 * Multi-worlds.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
@@ -92,11 +104,13 @@ Server potentials:
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
 
 Admin/GM commands:
+
 * Server commands layered by GM levels.
 * Spawn Zakum/Horntail/Pinkbean.
 * New commands.
 
 External tools:
+
 * MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
@@ -109,6 +123,7 @@ External tools:
 * MapleSkillMakerReagentIndexer - Generates a new maker table describing all stat-improvements from the Maker reagents (those empowering crystals and jewels).
 
 Project:
+
 * Organized project code.
 * Highly configurable server (see all server flags at ServerConstants).
 * Fixed/added some missing packets for MoveEnvironment, summons and others.

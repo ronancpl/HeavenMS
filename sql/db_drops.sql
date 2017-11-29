@@ -1,4 +1,4 @@
-﻿#THIS SQL MUST BE USED AFTER 'db_database.sql'
+#THIS SQL MUST BE USED AFTER 'db_database.sql'
 #NEXT SQL 'db_shopupdate.sql' IS OPTIONAL
 
 USE `heavenms`;
@@ -20040,7 +20040,7 @@ USE `heavenms`;
     UNIQUE KEY (`dropperid`, `itemid`),
     KEY `mobid` (`dropperid`),
     INDEX (dropperid, itemid)
-  ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
   #pass (sorted) data from one table to another
   INSERT INTO drop_data (dropperid, itemid, minimum_quantity, maximum_quantity, questid, chance)

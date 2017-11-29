@@ -16,7 +16,7 @@ The main objective of this project is to try as best as possible to recreate wha
 ---
 ### Download items 
 
-Server files: https://github.com/ronancpl/MapleSolaxiaV2
+Server files: https://github.com/ronancpl/HeavenMS
 
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
@@ -39,8 +39,8 @@ Use that link ONLY AS AN ORIENTATION on where here things start to become ambigu
 
 Firstly, install all the general tools required to run the server:
 
-* WampServer3.1.0_x64.exe -> recipient of the MySQL server.
-* HeidiSQL_9.4.0.5125_Setup.exe -> MySQL client component, visually shows the DB data and hubs queries.
+* WampServer2.0i.exe -> recipient of the MySQL server.
+* mysql-query-browser.msi -> MySQL client component, visually shows the DB data and hubs queries.
 * hamachi.msi -> used for establishing a tunnelling route for the server/client communication.
 
 
@@ -79,7 +79,7 @@ Hamachi is optional, though. You don't have to install Hamachi if you want to ma
 
 Set the "MapleSolaxiaV2" folder on a place of your preference. It is recommended for use "C:\Nexon\MapleSolaxiaV2".
 
-Setting up the SQL: open HeidiSQL, then first-time create a new session, with these parameters at startup and click OK.
+Setting up the SQL: open MySQL Query Browser, then first-time create a new session, with these parameters at startup and click OK.
 
 Server Host: localhost		Port: 3306		Username: root
 
