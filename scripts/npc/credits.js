@@ -44,8 +44,9 @@ function writeServerStaff_MapleSolaxia() {
 }
 
 function writeServerStaff_MoopleDEV() {
+        addPerson("conan513", "Administrator");
         addPerson("kevintjuh93", "Developer");
-        setHistory(2010, 2010);
+        setHistory(2010, 2012);
 }
 
 function writeServerStaff_MetroMS() {
