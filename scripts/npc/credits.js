@@ -11,7 +11,7 @@ var name_tree = [];
 var role_tree = [];
 var name_cursor, role_cursor;
 
-var servers = ["HeavenMS", "MapleSolaxia", "MoopleDEV", "MetroMS", "BubblesDEV", "ThePackII", "OdinMS"];
+var servers = ["HeavenMS", "MapleSolaxia", "MoopleDEV", "MetroMS", "BubblesDEV", "ThePackII", "OdinMS", "Contributors"];
 var servers_history = [];
 
 function addPerson(name, role) {
@@ -54,7 +54,8 @@ function writeServerStaff_MetroMS() {
 }
 
 function writeServerStaff_BubblesDEV() {
-        addPerson("Deagan", "Developer");
+        addPerson("Deagan", "Administrator");
+        addPerson("XxOsirisxX", "Developer");
         setHistory(2009, 2009);
 }
 
@@ -64,8 +65,25 @@ function writeServerStaff_ThePackII() {
 }
 
 function writeServerStaff_OdinMS() {
-        addPerson("Serpendiem", "Developer");
+        addPerson("Serpendiem", "Administrator");
+        addPerson("Frz", "Developer");
+        addPerson("Patrick", "Developer");
+        addPerson("Matze", "Developer");
+        addPerson("Vimes", "Developer");
         setHistory(2007, 2008);
+}
+
+function writeServerStaff_Contributors() {
+        addPerson("Jvlaple", "Contributor");
+        addPerson("Stereo", "Contributor");
+        addPerson("Lerk", "Contributor");
+        addPerson("Leifde", "Contributor");
+        addPerson("ThreeStep", "Contributor");
+        addPerson("RMZero213", "Contributor");
+        addPerson("aaroncsn", "Contributor");
+        addPerson("xQuasar", "Contributor");
+        addPerson("Xterminator", "Contributor");
+        addPerson("XoticStory", "Contributor");
 }
 
 function writeAllServerStaffs() {
@@ -105,10 +123,10 @@ function action(mode, type, selection) {
                         for(var i = 0; i < servers.length; i++) {
                             var hist = servers_history[i];
                             
-                            if(hist.length > 0) {
+                            if(hist && hist.length > 0) {
                                 sendStr += "#L" + i + "##b" + servers[i] + "#k  --  " + ((hist[0] != hist[1]) ? hist[0] + " ~ " + hist[1] : hist[0]) + "#l\r\n";
                             } else {
-                                sendStr += "#L" + i + "#" + servers[i] + "#l\r\n";
+                                sendStr += "#L" + i + "##b" + servers[i] + "#k#l\r\n";
                             }
                         }
 

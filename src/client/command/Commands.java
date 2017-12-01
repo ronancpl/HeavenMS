@@ -340,7 +340,7 @@ public class Commands {
             equip.setFlag(flag);
         }
         
-        public static boolean executeSolaxiaCommandLv0(Channel cserv, Server srv, MapleClient c, String[] sub) { //Player
+        public static boolean executeHeavenMsCommandLv0(Channel cserv, Server srv, MapleClient c, String[] sub) { //Player
                 MapleCharacter player = c.getPlayer();
             
                 switch(sub[0]) {
@@ -676,7 +676,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommandLv1(Channel cserv, Server srv, MapleClient c, String[] sub) { //Donator
+        public static boolean executeHeavenMsCommandLv1(Channel cserv, Server srv, MapleClient c, String[] sub) { //Donator
                 MapleCharacter player = c.getPlayer();
             
                 switch(sub[0]) {                
@@ -763,7 +763,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommandLv2(Channel cserv, Server srv, MapleClient c, String[] sub) { //JrGM
+        public static boolean executeHeavenMsCommandLv2(Channel cserv, Server srv, MapleClient c, String[] sub) { //JrGM
                 MapleCharacter player = c.getPlayer();
                 MapleCharacter victim;
                 Skill skill;
@@ -1219,7 +1219,7 @@ public class Commands {
                     
                 case "maxstat":
 			final String[] s = {"setstat", String.valueOf(Short.MAX_VALUE)};
-			executeSolaxiaCommandLv2(cserv, srv, c, s);
+			executeHeavenMsCommandLv2(cserv, srv, c, s);
                         player.loseExp(player.getExp(), false, false);
 			player.setLevel(255);
                         
@@ -1407,7 +1407,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommandLv3(Channel cserv, Server srv, MapleClient c, String[] sub) { //GM
+        public static boolean executeHeavenMsCommandLv3(Channel cserv, Server srv, MapleClient c, String[] sub) { //GM
                 MapleCharacter player = c.getPlayer();
                 MapleCharacter victim;
             
@@ -2132,7 +2132,7 @@ public class Commands {
         }
         
         
-        public static boolean executeSolaxiaCommandLv4(Channel cserv, Server srv, MapleClient c, String[] sub) { //SuperGM
+        public static boolean executeHeavenMsCommandLv4(Channel cserv, Server srv, MapleClient c, String[] sub) { //SuperGM
                 MapleCharacter player = c.getPlayer();
         
                 switch(sub[0]) {
@@ -2338,7 +2338,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommandLv5(Channel cserv, Server srv, MapleClient c, String[] sub) { //Developer
+        public static boolean executeHeavenMsCommandLv5(Channel cserv, Server srv, MapleClient c, String[] sub) { //Developer
                 MapleCharacter player = c.getPlayer();
                 MapleMonster monster;
         
@@ -2443,7 +2443,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommandLv6(Channel cserv, Server srv, MapleClient c, String[] sub) { //Admin
+        public static boolean executeHeavenMsCommandLv6(Channel cserv, Server srv, MapleClient c, String[] sub) { //Admin
                 MapleCharacter player = c.getPlayer();
                 MapleCharacter victim;
         
@@ -2603,7 +2603,7 @@ public class Commands {
                 return true;
         }
         
-        public static boolean executeSolaxiaCommand(Channel cserv, Server srv, MapleClient c, String[] sub, int gmLevel) {
+        public static boolean executeHeavenMsCommand(Channel cserv, Server srv, MapleClient c, String[] sub, int gmLevel) {
                 if(gmLevel == -1) {
                         c.getPlayer().yellowMessage("Command '" + sub[0] + "' is not available. See @commands for a list of available commands.");
                         return false;
@@ -2612,34 +2612,34 @@ public class Commands {
                 boolean executedCommand;
                 switch(gmLevel) {
                 case 0: //Player
-                        executedCommand = executeSolaxiaCommandLv0(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv0(cserv, srv, c, sub);
                         break;
 
                 case 1: //Donator
-                        executedCommand = executeSolaxiaCommandLv1(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv1(cserv, srv, c, sub);
                         break;
 
                 case 2: //JrGM
-                        executedCommand = executeSolaxiaCommandLv2(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv2(cserv, srv, c, sub);
                         break;
 
                 case 3: //GM
-                        executedCommand = executeSolaxiaCommandLv3(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv3(cserv, srv, c, sub);
                         break;
 
                 case 4: //SuperGM
-                        executedCommand = executeSolaxiaCommandLv4(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv4(cserv, srv, c, sub);
                         break;
 
                 case 5: //Developer
-                        executedCommand = executeSolaxiaCommandLv5(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv5(cserv, srv, c, sub);
                         break;
 
                 default:    //Admin
-                        executedCommand = executeSolaxiaCommandLv6(cserv, srv, c, sub);
+                        executedCommand = executeHeavenMsCommandLv6(cserv, srv, c, sub);
                 }
             
-                if(!executedCommand) return executeSolaxiaCommand(cserv, srv, c, sub, gmLevel - 1);
+                if(!executedCommand) return executeHeavenMsCommand(cserv, srv, c, sub, gmLevel - 1);
                 else return true;
         }
         
@@ -2647,7 +2647,7 @@ public class Commands {
 		Channel cserv = c.getChannelServer();
 		Server srv = Server.getInstance();
                 
-                return executeSolaxiaCommand(cserv, srv, c, sub, c.getPlayer().gmLevel());
+                return executeHeavenMsCommand(cserv, srv, c, sub, c.getPlayer().gmLevel());
         }
         
         private static String joinStringFrom(String arr[], int start) {
