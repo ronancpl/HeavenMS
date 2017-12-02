@@ -88,7 +88,7 @@ function action(mode, type, selection) {
                     cm.gainItem(1302077, 1);
                     cm.resetStats();
                 }
-                cm.sendNext("From here on out, you are going to the (Incomplete)");
+                cm.sendNext("From here on out, you are going to the Warrior path. This is not an easy job, but if you have discipline and confidence in your own body and skills, you will overcome any difficulties in your path. Go, young Warrior!");
             } else {
                 cm.sendNext("Make some room in your inventory and talk back to me.");
                 cm.dispose();
@@ -96,7 +96,9 @@ function action(mode, type, selection) {
         } else if (status == 2) 
             cm.sendNextPrev("You've gotten much stronger now. Plus every single one of your inventories have added slots. A whole row, to be exact. Go see for it yourself. I just gave you a little bit of #bSP#k. When you open up the #bSkill#k menu on the lower left corner of the screen, there are skills you can learn by using SP's. One warning, though: You can't raise it all together all at once. There are also skills you can acquire only after having learned a couple of skills first.");
         else if (status == 3)
-            cm.sendNextPrev("One more warning. Once you have chosed you (Incomplete)");
+            cm.sendNextPrev("Now a reminder. Once you have chosen, you cannot change up your mind and try to pick another path. Go now, and live as a proud Warrior.");
+        else
+            cm.dispose();
     } else if(actionx["2ndJob"]){
         if (status == 0){
             if (cm.haveItem(4031012))
@@ -117,7 +119,14 @@ function action(mode, type, selection) {
                 }
             }else{
                 if (selection < 3){
-                    cm.sendNext("Make up your mind and then talk to me.");  //there goes the explanation of the 3 WARRIOR PATHS.
+                    if(selection == 0) {    //fighter
+                        cm.sendNext("Warriors that master #rSwords or Axes#k.\r\n\r\n#rFighters#k get #bRage#k, which boosts your party's weapon attack by 10. During 2nd job this is strongly appreciated, as it is free (except for -10 wep def, which is not going to impact the damage you take much at all), takes no Use slots and increases each party member's damage (except Mages) by several hundreds. The other classes can give themselves a weapon attack boost as well, but need items to do so. #rFighters#k also get #bPower Guard#k, reducing touch damage by 40% and deals it back to the monster. This is the main reason why #rFighters#k are considered soloers is because this reduces pot costs immensely.");
+                    } else if(selection == 1) {    //page
+                        cm.sendNext("Warriors that master #rSwords or Maces/Blunt weapons#k.\r\n\r\n#rPages#k get #bThreaten#k, a skill that lowers the enemies' weapon defense and weapon attack by 20; this is mostly used to lower damage dealt to you. Pages also get #bPower Guard#k, reducing touch damage by 40% and deals it back to the monster. This is one of the main reason why #bPages/WKs#k are considered soloers, that's because this reduces pot costs immensely. Of course, constant KB and #bIce Charge#k helps also to the soloing factor.");
+                    } else {    //spearman
+                        cm.sendNext("Warriors that master #rSpears or Polearms#k.\r\n\r\n#rSpearmen#k get #bHyper Body#k, which boosts your max HP/MP and that of your party by 60% when maxed. This skill is particularly useful for helping partied Thieves, Archers, and Mages to survive more hits from enemies and/or PQ bosses. They also get #bIron Will#k which gives +20 wep def and +20 mag def for 300 sec. It is basically a nerfed Bless with 100 seconds more duration but gives no accuracy or avoidability bonus. Even with this skill maxed, it isn't even close to being in the same league as Power Guard and is why Spearmen/Dark Knights are not considered a soloing class.");
+                    }
+                    
                     status -= 2;
                 } else
                     cm.sendSimple("Now... have you made up your mind? Please choose the job you'd like to select for your 2nd job advancement. #b\r\n#L0#Fighter\r\n#L1#Page\r\n#L2#Spearman");
@@ -144,7 +153,7 @@ function action(mode, type, selection) {
         else if (status == 5)
             cm.sendNextPrev("I have also given you a little bit of #bSP#k. Open the #bSkill Menu#k located at the bottomleft corner. you'll be able to boost up the newer acquired 2nd level skills. A word of warning, though. You can't boost them up all at once. Some of the skills are only available after you have learned other skills. Make sure yo remember that.");
         else if (status == 6)
-            cm.sendNextPrev((job == 110 ? "Fighter" : job == 120 ? "Page" : "Spearman") + " need to be strong. But remember that you can't abuse that power and use it on a weaking. Please use your enormous power the right way, because... for you to use that the right way, that is much harden than just getting stronger. Please find me after you have advanced much further. I'll be waiting for you.");
+            cm.sendNextPrev((job == 110 ? "Fighter" : job == 120 ? "Page" : "Spearman") + " need to be strong. But remember that you can't abuse that power and use it on a weakling. Please use your enormous power the right way, because... for you to use that the right way, that is much harden than just getting stronger. Please find me after you have advanced much further. I'll be waiting for you.");
     } else if (actionx["3thJobI"]){
         if (status == 0){
             if (cm.getPlayer().gotPartyQuestItem("JB3")){

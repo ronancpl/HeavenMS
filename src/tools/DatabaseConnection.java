@@ -76,9 +76,11 @@ public class DatabaseConnection {
             config.setUsername(ServerConstants.DB_USER);
             config.setPassword(ServerConstants.DB_PASS);
             
-            int poolSize = getNumberOfAccounts() * 10;     // make sure pool size is comfortable for the worst case scenario
-            if(poolSize < 100) poolSize = 100;
-            else if(poolSize > 10000) poolSize = 10000;
+            // Make sure pool size is comfortable for the worst case scenario.
+            // Under 100 accounts? Make it 10. Over 10000 accounts? Make it 30.            
+            int poolSize = (int) Math.ceil(9.889642518 * Math.exp(0.0001109709382 * getNumberOfAccounts()));
+            if(poolSize < 10) poolSize = 10;
+            else if(poolSize > 30) poolSize = 30;
             
             config.setConnectionTimeout(30 * 1000);
             config.setMaximumPoolSize(poolSize);
