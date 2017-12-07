@@ -3103,14 +3103,11 @@
       <int name="only" value="1"/>
     </imgdir>
     <imgdir name="spec">
-      <int name="time" value="0"/>
-      <int name="pad" value="0"/>
-    </imgdir>
-    <imgdir name="specEx">
-      <imgdir name="0">
-        <int name="mobSkill" value="125"/>
-        <int name="level" value="7"/>
-      </imgdir>
+      <int name="time" value="300000"/>
+      <int name="mhpRRate" value="5"/>
+      <int name="mhpR" value="-15"/>
+      <int name="mmpR" value="-15"/>
+      <int name="mmpRRate" value="5"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022199">

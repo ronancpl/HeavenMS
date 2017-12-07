@@ -281,6 +281,7 @@ public class Commands {
 		gotomaps.put("lith", 104000000);
 		gotomaps.put("sleepywood", 105040300);
 		gotomaps.put("florina", 110000000);
+                gotomaps.put("nautilus", 120000000);
                 gotomaps.put("ereve", 130000000);
                 gotomaps.put("rien", 140000000);
 		gotomaps.put("orbis", 200000000);
@@ -314,6 +315,7 @@ public class Commands {
 		gotomaps.put("magatia", 261000000);
                 gotomaps.put("singapore", 540000000);
                 gotomaps.put("keep", 610020006);
+                gotomaps.put("amoria", 680000000);
                 gotomaps.put("temple", 270000100);
                 gotomaps.put("neo", 240070000);
                 gotomaps.put("fm", 910000000);

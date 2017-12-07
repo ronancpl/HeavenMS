@@ -1,4 +1,35 @@
-//some quest where you must use hidden portals
+/*
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation version 3 as published by
+    the Free Software Foundation. You may not use, modify or distribute
+    this program under any other version of the GNU Affero General Public
+    License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+importPackage(Packages.client);
+
+function isTigunMorphed(ch) {
+        return ch.getBuffSource(MapleBuffStat.MORPH) == 2210005;
+}
+
 function enter(pi) {
-    return false;
+    if(isTigunMorphed(pi.getPlayer())) {
+        return false;
+    } else {
+        pi.warp(260000300, 7);
+        pi.message("You, intruder! You don't have permission to roam the palace! Get out!!");
+        return true;
+    }
 }

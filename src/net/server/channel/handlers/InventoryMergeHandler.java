@@ -85,7 +85,7 @@ public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 if (itemSlot > 0) {
-                    MapleInventoryManipulator.move(c, inventoryType,  itemSlot, freeSlot);
+                    MapleInventoryManipulator.move(c, inventoryType, itemSlot, freeSlot);
                 } else {
                     sorted = true;
                 }

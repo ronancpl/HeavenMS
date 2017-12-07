@@ -19,10 +19,10 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*2612004.js - MagatiaPQ Box
+/*2612004.js - Zenumist crystal
  *@author Ronan
  */
  
-function act() {
+function hit() {
 	rm.sprayItems();
 }

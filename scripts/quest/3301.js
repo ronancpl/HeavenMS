@@ -32,7 +32,7 @@ function start(mode, type, selection) {
 }
 
 function end(mode, type, selection) {
-    if (mode == -1) {
+    if (mode == -1 || (mode == 0 && type > 0)) {
 	qm.dispose();
     } else {
 	oreArray = getOreArray();

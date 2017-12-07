@@ -41,7 +41,7 @@ function start(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            qm.sendNext("The jevel you brought back from the Master of Disguise is Shinsoo's Teardrop. It is the crystalization of Shinsoo's powers. If the Black Mage gets his hands on this, then this spells doom for all of us.");
+            qm.sendNext("The jewel you brought back from the Master of Disguise is Shinsoo's Teardrop. It is the crystalization of Shinsoo's powers. If the Black Mage gets his hands on this, then this spells doom for all of us.");
         } else if (status == 1) {
             qm.sendYesNo("As a token of her appreciation for your work on this, the Empress has decided to present you with a new title. Would you like to receive that title?");
         } else if (status == 2) {

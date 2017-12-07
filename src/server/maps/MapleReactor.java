@@ -270,6 +270,9 @@ public class MapleReactor extends AbstractMapleMapObject {
 
                                 setShouldCollect(true);     // refresh collectability on item drop-based reactors
                                 refreshReactorTimeout();
+                                if(stats.getType(state) == 100) {
+                                    map.searchItemReactors(this);
+                                }
                             }
                             break;
                         }
@@ -281,6 +284,9 @@ public class MapleReactor extends AbstractMapleMapObject {
 
                     setShouldCollect(true);
                     refreshReactorTimeout();
+                    if(stats.getType(state) == 100) {
+                        map.searchItemReactors(this);
+                    }
                 }
             } finally {
                 this.unlockReactor();

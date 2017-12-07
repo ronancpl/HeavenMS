@@ -77,7 +77,7 @@ Hamachi is optional, though. You don't have to install Hamachi if you want to ma
 ---
 ### Installing the SERVER 
 
-Set the "MapleSolaxiaV2" folder on a place of your preference. It is recommended for use "C:\Nexon\MapleSolaxiaV2".
+Set the "HeavenMS" folder on a place of your preference. It is recommended for use "C:\Nexon\HeavenMS".
 
 Setting up the SQL: open MySQL Query Browser, then first-time create a new session, with these parameters at startup and click OK.
 
@@ -85,19 +85,19 @@ Server Host: localhost		Port: 3306		Username: root
 
 Now it must be done CAREFULLY:
 
-1. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxiaV2\sql" -> db_database.sql, and execute it.
+1. File -> Open Script... -> Browse for "C:\Nexon\HeavenMS\sql" -> db_database.sql, and execute it.
 
-2. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxiaV2\sql" -> db_drops.sql, and execute it.
+2. File -> Open Script... -> Browse for "C:\Nexon\HeavenMS\sql" -> db_drops.sql, and execute it.
 
 Now it is OPTIONAL, you don't need to run it if you don't want, as it will simply change some NPC shops to set some new goods, not present in the original MapleStory, to sell:
 
-3. File -> Open Script... -> Browse for "C:\Nexon\MapleSolaxiaV2\sql" -> db_shopupdate.sql, and execute it.
+3. File -> Open Script... -> Browse for "C:\Nexon\HeavenMS\sql" -> db_shopupdate.sql, and execute it.
 
 At the end of the execution of these SQLs, you should have installed a database schema named "heavenms". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually an entry on the table "accounts" at that database with a login and a password.
 
 Configure the IP you want to use for your MapleStory server in "configuration.ini" file, or set it as "localhost" if you want to run it only on your machine. Alternatively, you can use the IP given by Hamachi to use on a Hamachi network, or you can use a non-Hamachi method of port-forwarding. Neither will be approached here.
 
-Now open NetBeans, and choose to Open a project... Select then the "MapleSolaxiaV2" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
+Now open NetBeans, and choose to Open a project... Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
 
 Inside the project, you may encounter some code errors. These happens because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems". Locate the "cores" folder inside the root directory of this project and manually configure the missing files with the files that are there.
 
@@ -149,7 +149,7 @@ As an example of client WZ editing, consider the MapleMobBookUpdate subproject I
 * Paste it on the "dist" subfolder.
 * Inside "dist", open the command prompt by alt+right clicking there.
 * Execute "java -jar MobBookUpdate.jar". It will generate a "MonsterBook_updated.img.xml" file.
-* At last, overwrite the "MonsterBook.img.xml" on "C:\Nexon\MapleSolaxiaV2\wz\String.wz" with this file, renaming it back to "MonsterBook.img.xml".
+* At last, overwrite the "MonsterBook.img.xml" on "C:\Nexon\HeavenMS\wz\String.wz" with this file, renaming it back to "MonsterBook.img.xml".
 
 At this point, just the server-side Monster Book has been updated with the current state of the database's drop data.
 

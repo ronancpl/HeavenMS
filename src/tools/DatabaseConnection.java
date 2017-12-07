@@ -77,8 +77,8 @@ public class DatabaseConnection {
             config.setPassword(ServerConstants.DB_PASS);
             
             // Make sure pool size is comfortable for the worst case scenario.
-            // Under 100 accounts? Make it 10. Over 10000 accounts? Make it 30.            
-            int poolSize = (int) Math.ceil(9.889642518 * Math.exp(0.0001109709382 * getNumberOfAccounts()));
+            // Under 100 accounts? Make it 10. Over 10000 accounts? Make it 30.
+            int poolSize = (int)Math.ceil(0.00202020202 * getNumberOfAccounts() + 9.797979798);
             if(poolSize < 10) poolSize = 10;
             else if(poolSize > 30) poolSize = 30;
             

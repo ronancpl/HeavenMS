@@ -28,20 +28,10 @@
 */
 
 function end(mode, type, selection) {
-        var itemid;
-        if(qm.getQuestStatus(3302) == 2) {
-            itemid = 4001159;
-        } else if(qm.getQuestStatus(3304) == 2) {
-            itemid = 4001160;
-        } else {
-            qm.sendNext("You must join one of the Magatia's factions before claiming a prize.");
-            qm.dispose();
-            return;
-        }
-    
-        if(qm.haveItem(itemid, 25) && qm.getPlayer().getItemQuantity(1122010, true) == 0) {
+        if(qm.haveItem(4001159, 25) && qm.haveItem(4001160, 25) && qm.getPlayer().getItemQuantity(1122010, true) == 0) {
             if(qm.canHold(1122010)) {
-                qm.gainItem(itemid, -25);
+                qm.gainItem(4001159, -25);
+                qm.gainItem(4001160, -25);
                 qm.gainItem(1122010, 1);
                 
                 qm.sendOk("Thank you for retrieving the marbles. Accept this pendant as a token of my appreciation.");
@@ -50,9 +40,10 @@ function end(mode, type, selection) {
                 qm.dispose();
                 return;
             }
-        } else if(qm.haveItem(itemid, 10)) {
+        } else if(qm.haveItem(4001159, 10) && qm.haveItem(4001160, 10)) {
             if(qm.canHold(2041212)) {
-                qm.gainItem(itemid, -10);
+                qm.gainItem(4001159, -10);
+                qm.gainItem(4001160, -10);
                 qm.gainItem(2041212, 1);
                 
                 qm.sendOk("Thank you for retrieving the marbles. This rock, that I am giving to you, can be used to improve the stats on the #b#t1122010##k. Take it as a token of my appreciation and use it wisely.");
@@ -62,7 +53,7 @@ function end(mode, type, selection) {
                 return;
             }
         } else {
-            qm.sendNext("I need at least #b10 #t" + itemid + "##k to reward you appropriately. If you happen to come with #b25 of these#k instead, I can reward you with a valuable gear. Fare well.");
+            qm.sendNext("I need at least #b10 of both #t4001159# and #t4001160##k to reward you appropriately. If you happen to come with #b25 of these#k instead, I can reward you with a valuable gear. Fare well.");
             qm.dispose();
             return;
         }

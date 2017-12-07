@@ -73,7 +73,7 @@ Monsters, Maps & Reactors:
 * Boats, elevator and other travelling mechanics fully working.
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 * Some reactors (PQ bonus boxes) now sprays items on the map, instead of dropping everything at once.
-* Updated Crimsonwood, World Tour and Neo City, enabling quest completion and game progression in these areas.
+* Updated Crimsonwood, World Tour, Nihal Desert and Neo City, enabling quest completion and game progression in these areas.
 
 PQ potentials:
 
@@ -120,6 +120,7 @@ External tools:
 * MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
 * MapleMobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
+* MapleQuestMesoFetcher - Searches the quest WZ files and reports in all relevant data regarding missing/erroneous quest fee checks.
 * MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.
 * MapleSkillMakerReagentIndexer - Generates a new maker table describing all stat-improvements from the Maker reagents (those empowering crystals and jewels).
 

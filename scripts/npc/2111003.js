@@ -25,12 +25,18 @@
 -- By ---------------------------------------------------------------------------------------------
 	Maple4U
 -- Version Info -----------------------------------------------------------------------------------
+    1.2 - With quest feature by Ronan
     1.1 - Shortened 3x by Moogra
 	1.0 - First Version by Maple4U
 ---------------------------------------------------------------------------------------------------
 */
 
 function start() {
-    cm.sendOk("Emotion that I feel is real? Or just illusion coming from mechanical error?");
-    cm.dispose();
+    if(cm.isQuestStarted(3335) && !cm.haveItem(4031695, 1)) {
+        cm.warp(926120300);
+        cm.dispose();
+    } else {
+        cm.sendOk("Emotion that I feel is real? Or just illusion coming from mechanical error?");
+        cm.dispose();
+    }
 }

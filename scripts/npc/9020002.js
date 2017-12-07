@@ -48,7 +48,7 @@ function action(mode, type, selection){
         if (status == 0) {
             cm.sendNext("To return back to the city, follow this way.");
         } else {
-            cm.getPlayer().warp(103000000, cm.getClient().getChannelServer().getMapFactory().getMap(103000000).getRandomPlayerSpawnpoint());
+            cm.warp(103000000);
             cm.dispose();
         }
     } else {

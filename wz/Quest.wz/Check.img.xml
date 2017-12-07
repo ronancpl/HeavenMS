@@ -14690,6 +14690,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="10000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20505">
@@ -15021,6 +15022,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="25000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20512">
@@ -15091,6 +15093,7 @@
           <int name="id" value="1902006"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="15000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="2052">
@@ -15620,6 +15623,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="50000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="20533">
@@ -15686,6 +15690,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1102002"/>
+      <int name="endmeso" value="100000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="2054">
@@ -20708,6 +20713,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1202007"/>
+      <int name="endmeso" value="20000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21606">
@@ -20742,6 +20748,7 @@
           <int name="count" value="50"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="10000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21607">
@@ -20954,6 +20961,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="80000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21612">
@@ -21146,6 +21154,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2060005"/>
+      <int name="endmeso" value="100000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="21618">
@@ -23817,6 +23826,7 @@
     <imgdir name="1">
       <int name="npc" value="1052108"/>
       <string name="endscript" value="q2215e"/>
+      <int name="endmeso" value="2000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="1052002"/>
@@ -37565,6 +37575,7 @@
           <int name="count" value="80"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3047">
@@ -37623,6 +37634,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="20000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3049">
@@ -38112,6 +38124,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2012018"/>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3070">
@@ -38301,6 +38314,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2012010"/>
+      <int name="endmeso" value="300000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3080">
@@ -38957,6 +38971,7 @@
           <int name="id" value="4031310"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3096">
@@ -40787,6 +40802,7 @@
           <int name="count" value="10"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="10000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2111000"/>
@@ -40828,6 +40844,7 @@
           <int name="count" value="10"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="10000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2111001"/>
@@ -40969,11 +40986,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2111000"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="5"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3311e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3312">
@@ -41663,11 +41676,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2020005"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="4"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3345e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3346">
@@ -41985,11 +41994,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2111006"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="1"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3360e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3361">
@@ -42091,12 +42096,6 @@
     <imgdir name="0">
       <int name="npc" value="2112014"/>
       <int name="lvmin" value="70"/>
-      <int name="infoNumber" value="7072"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="1"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3366">
@@ -42175,12 +42174,6 @@
     <imgdir name="0">
       <int name="npc" value="2112004"/>
       <int name="lvmin" value="70"/>
-      <int name="infoNumber" value="7072"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="1"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3370">
@@ -42321,6 +42314,7 @@
   <imgdir name="3377">
     <imgdir name="1">
       <int name="npc" value="2111007"/>
+      <int name="endmeso" value="20000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2111007"/>
@@ -45240,6 +45234,7 @@
           <int name="count" value="5"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2071005"/>
@@ -45262,6 +45257,7 @@
           <int name="count" value="4"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2071003"/>
@@ -45284,6 +45280,7 @@
           <int name="count" value="3"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2071004"/>
@@ -45461,6 +45458,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2071007"/>
+      <int name="endmeso" value="5000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3624">
@@ -47814,6 +47812,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2101004"/>
+      <int name="endmeso" value="2000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3902">
@@ -48321,11 +48320,7 @@
           <int name="id" value="4031579"/>
         </imgdir>
       </imgdir>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="3333"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3926e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3927">
@@ -48391,11 +48386,7 @@
           <int name="id" value="4031580"/>
         </imgdir>
       </imgdir>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="3333"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q3929e"/>
     </imgdir>
   </imgdir>
   <imgdir name="3930">
@@ -48411,6 +48402,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2101011"/>
+      <int name="endmeso" value="10000"/>
     </imgdir>
   </imgdir>
   <imgdir name="3931">
@@ -54431,6 +54423,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="50"/>
     </imgdir>
   </imgdir>
   <imgdir name="5010">
@@ -54454,6 +54447,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="50"/>
     </imgdir>
   </imgdir>
   <imgdir name="5011">
@@ -54477,6 +54471,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="50"/>
     </imgdir>
   </imgdir>
   <imgdir name="5012">
@@ -54500,6 +54495,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="50"/>
     </imgdir>
   </imgdir>
   <imgdir name="5069">
@@ -54552,6 +54548,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="6002">
@@ -62343,6 +62340,7 @@
   <imgdir name="8078">
     <imgdir name="1">
       <int name="npc" value="1061005"/>
+      <int name="endmeso" value="1000000"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="1061005"/>
@@ -62365,8 +62363,8 @@
       <int name="lvmin" value="50"/>
     </imgdir>
     <imgdir name="1">
-      <int name="money" value="5000000"/>
       <int name="npc" value="9120005"/>
+      <int name="endmeso" value="5000000"/>
     </imgdir>
   </imgdir>
   <imgdir name="8080">
@@ -62826,6 +62824,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="2500"/>
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="2041017"/>
@@ -67761,6 +67760,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000"/>
     </imgdir>
   </imgdir>
   <imgdir name="9311">
@@ -67800,6 +67800,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="2500"/>
     </imgdir>
   </imgdir>
   <imgdir name="9320">
@@ -68048,6 +68049,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="1000"/>
     </imgdir>
   </imgdir>
   <imgdir name="9341">
@@ -68080,6 +68082,7 @@
           <int name="count" value="1"/>
         </imgdir>
       </imgdir>
+      <int name="endmeso" value="2500"/>
     </imgdir>
   </imgdir>
   <imgdir name="9350">

@@ -62,6 +62,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             CashItem cItem = CashItemFactory.getItem(snCS);
             if (cItem == null || !cItem.isOnSale() || cs.getCash(useNX) < cItem.getPrice()) {
                 FilePrinter.printError(FilePrinter.ITEM, "Denied to sell cash item with SN " + cItem.getSN());
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             if (action == 0x03) { // Item
@@ -83,16 +84,20 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             Map<String, String> recipient = MapleCharacter.getCharacterFromDatabase(slea.readMapleAsciiString());
             String message = slea.readMapleAsciiString();
             if (!canBuy(cItem, cs.getCash(4)) || message.length() < 1 || message.length() > 73) {
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             if (!checkBirthday(c, birthday)) {
                 c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xC4));
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             } else if (recipient == null) {
                 c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xA9));
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             } else if (recipient.get("accountid").equals(String.valueOf(c.getAccID()))) {
                 c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xA8));
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             cs.gift(Integer.parseInt(recipient.get("id")), chr.getName(), message, cItem.getSN());
@@ -123,6 +128,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             if (mode == 0) {
                 byte type = slea.readByte();
                 if (cs.getCash(cash) < 4000) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 if (chr.gainSlots(type, 4, false)) {
@@ -134,6 +140,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 CashItem cItem = CashItemFactory.getItem(slea.readInt());
                 int type = (cItem.getItemId() - 9110000) / 1000;
                 if (!canBuy(cItem, cs.getCash(cash))) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 if (chr.gainSlots(type, 8, false)) {
@@ -148,6 +155,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             byte mode = slea.readByte();
             if (mode == 0) {
                 if (cs.getCash(cash) < 4000) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 if (chr.getStorage().gainSlots(4)) {
@@ -159,6 +167,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 CashItem cItem = CashItemFactory.getItem(slea.readInt());
 
                 if (!canBuy(cItem, cs.getCash(cash))) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 if (chr.getStorage().gainSlots(8)) {
@@ -172,8 +181,10 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 int cash = slea.readInt();
                 CashItem cItem = CashItemFactory.getItem(slea.readInt());
 
-                if (!canBuy(cItem, cs.getCash(cash)))
+                if (!canBuy(cItem, cs.getCash(cash))) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
+                }
 
                 if (c.gainCharacterSlot()) {
                     c.announce(MaplePacketCreator.showBoughtCharacterSlot(c.getCharacterSlots()));
@@ -183,6 +194,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
         } else if (action == 0x0D) { // Take from Cash Inventory
             Item item = cs.findByCashId(slea.readInt());
             if (item == null) {
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             if (chr.getInventory(MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())).addItem(item) != -1) {
@@ -207,9 +219,11 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             MapleInventory mi = chr.getInventory(MapleInventoryType.getByType(slea.readByte()));
             Item item = mi.findByCashId(cashId);
             if (item == null) {
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             } else if(c.getPlayer().getPetIndex(item.getPetId()) > -1) {
                 chr.getClient().announce(MaplePacketCreator.serverNotice(1, "You cannot put the pet you currently equip into the Cash Shop inventory."));
+                c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             cs.addToInventory(item);
@@ -230,6 +244,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 	
                   /*  if (partner.getGender() == chr.getGender()) {
                         chr.dropMessage("You and your partner are the same gender, please buy a friendship ring.");
+                        c.announce(MaplePacketCreator.enableActions());
                         return;
                     }*/ //Gotta let them faggots marry too, hence why this is commented out <3 
                 	

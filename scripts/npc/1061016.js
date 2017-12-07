@@ -22,7 +22,7 @@ function action(mode, type, selection) {
 	} else if (status == 2) {
 		if (!cm.canHold(itemids[selection], 1)) {
 			cm.sendOk("Please make room");
-		} else if (cm.itemQuantity(4001261) < 1) {
+		} else if (cm.getItemQuantity(4001261) < 1) {
 			cm.sendOk("You don't have enough leathers.");
 		} else {
 			cm.gainItem(4001261, -1);

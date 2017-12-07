@@ -1214,6 +1214,10 @@ public class MapleMap {
             objectRLock.unlock();
         }
         
+        resetReactors(list);
+    }
+    
+    public final void resetReactors(List<MapleReactor> list) {
         for (MapleReactor r : list) {
             r.lockReactor();
             try {
@@ -1524,7 +1528,7 @@ public class MapleMap {
     }
 
     public Point getGroundBelow(Point pos) {
-        Point spos = new Point(pos.x, pos.y - 3); // Using -3 fixes issues with spawning pets causing a lot of issues.
+        Point spos = new Point(pos.x, pos.y - 7); // Using -7 fixes spawning pets causing a lot of issues.
         spos = calcPointBelow(spos);
         spos.y--;//shouldn't be null!
         return spos;

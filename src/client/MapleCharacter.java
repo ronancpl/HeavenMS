@@ -3292,24 +3292,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             } finally {
                 chrLock.unlock();
             }
-        } else if (effect.isDojoBuff() || effect.getSourceId() == 2022337) {
-            boolean isRecoveryBuff = false;
+        } else if (effect.getHpRRate() > 0 || effect.getMpRRate() > 0) {
             if(effect.getHpRRate() > 0) {
                 extraHpRec = effect.getHpR();
                 extraRecInterval = effect.getHpRRate();
-                isRecoveryBuff = true;
             }
             
             if(effect.getMpRRate() > 0) {
                 extraMpRec = effect.getMpR();
                 extraRecInterval = effect.getMpRRate();
-                isRecoveryBuff = true;
             }
             
-            if(isRecoveryBuff) {
-                stopExtraTask();
-                startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder
-            }
+            stopExtraTask();
+            startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder
         } else if (effect.isMapChair()) {
             startChairTask();
         }

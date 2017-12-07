@@ -29,7 +29,17 @@ importPackage(Packages.server.life);
 function enter(pi) {
 	if(pi.isQuestStarted(20301) || pi.isQuestStarted(20302) || pi.isQuestStarted(20303) || pi.isQuestStarted(20304) || pi.isQuestStarted(20305)) {
 		var map = pi.getClient().getChannelServer().getMapFactory().getMap(108010610);
-		spawnMob(3345, -452, 9001009, map);
+                if(map.countPlayers() > 0) {
+                        pi.message("Someone else is already challenging the Master of Disguise.");
+                        return false;
+                }
+                
+                if(pi.haveItem(4032101, 1)) {
+                        pi.message("You have already challenged the Master of Disguise, report your success to Neinheart.");
+                        return false;
+                }
+                
+                spawnMob(3345, -452, 9001009, map);
 		pi.warp(108010610, "out00");
 	} else {
 		pi.warp(130010020, "out00");

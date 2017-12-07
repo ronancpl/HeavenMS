@@ -215,7 +215,7 @@ public class MapleStatEffect {
                     addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BERSERK, Integer.valueOf(ret.berserk));
                     addBuffStatPairToListIfNotZero(statups, MapleBuffStat.BOOSTER, Integer.valueOf(ret.booster));
                     
-                } else if(isDojoBuff(sourceid) || sourceid == 2022337) {
+                } else if(isDojoBuff(sourceid) || isHpMpRecovery(sourceid)) {
                     ret.mhpR = (byte) MapleDataTool.getInt("mhpR", source, 0);
                     ret.mhpRRate = (short) (MapleDataTool.getInt("mhpRRate", source, 0) * 100);
                     ret.mmpR = (byte) MapleDataTool.getInt("mmpR", source, 0);
@@ -1345,6 +1345,10 @@ public class MapleStatEffect {
     
     public static boolean isDojoBuff(int sourceid) {
         return sourceid >= 2022359 && sourceid <= 2022421;
+    }
+    
+    public static boolean isHpMpRecovery(int sourceid) {
+        return sourceid == 2022198 || sourceid == 2022337;
     }
     
     public static boolean isPyramidBuff(int sourceid) {

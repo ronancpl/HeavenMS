@@ -43,13 +43,14 @@ function start(mode, type, selection) {
 	}
 
 	if (status == 0) {
-	    qm.sendNext("Oh! Finally you have come! I'm glad you are here in time. I have the master key for you to open the secert passage! Hahahaha! Isn't it amazing? Say it amazing!");
+	    qm.sendNext("Oh! Finally you have come! I'm glad you are here in time. I have the master key for you to open the secret passage! Hahahaha! Isn't it amazing? Say it amazing!");
 	} else if (status == 1) {
 	    qm.sendAcceptDecline("All right, now, this key is very long and complex. I need you to memorize it very well. I won't say again, so you'd better write it down somewhere. Are you ready?");
 	} else if (status == 2) {
 	    var pass = generateString();
 	    qm.sendOk("The key code is #b" + pass + "#k. Got that? Put the key into the door of the secret passage, and you will be able to walk around the passage freely.");
-	    qm.forceStartQuest(pass);
+	    qm.forceStartQuest();
+            qm.setStringQuestProgress(3360, 0, pass);
 	    qm.dispose();
 	}
     }
@@ -64,7 +65,13 @@ function end(mode, type, selection) {
 	else
 	    status--;
 	if (status == 0) {
-	    qm.dispose();
+            if(qm.getQuestProgress(3360, 1) == 0) {
+                qm.sendNext("What's up? You haven't opened the Secret Passage yet?");
+            } else {
+                qm.forceCompleteQuest();
+            }
+            
+            qm.dispose();
 	}
     }
 }

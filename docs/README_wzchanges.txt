@@ -23,7 +23,7 @@ P.S.:
 
 Yeah, these explanations are pretty simplistic, I know. If one really wants to
 compare the original v83 WZ with the ones I provided, I recommend do the following:
-	- Open HaRepacker and, for each MapleSolaxiaV2's WZ file, extract all the XMLs
+	- Open HaRepacker and, for each HeavenMS's WZ file, extract all the XMLs
 for "Private Server".
 	- Now, install MapleStory from "ManagerMsv83.exe" on an other folder and do the
 same procediment said above.
