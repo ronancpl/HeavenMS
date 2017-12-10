@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -24,7 +22,24 @@
 	Description: 		Takes you to Entrance to Drill Hall
 */
 
+var jobtype = 4;
+
 function enter(pi) {
-	pi.warp(130020000, "east00");
+	if(pi.isQuestStarted(20301) || pi.isQuestStarted(20302) || pi.isQuestStarted(20303) || pi.isQuestStarted(20304) || pi.isQuestStarted(20305)) {
+		var map = pi.getClient().getChannelServer().getMapFactory().getMap(108010600 + (10 * jobtype));
+                if(map.countPlayers() > 0) {
+                        pi.message("Someone else is already searching the area.");
+                        return false;
+                }
+                
+                if(pi.haveItem(4032101 + jobtype, 1)) {
+                        pi.message("You have already challenged the Master of Disguise, report your success to Neinheart.");
+                        return false;
+                }
+                
+		pi.warp(108010600 + (10 * jobtype), "east00");
+	} else {
+		pi.warp(130020000, "east00");
+	}
 	return true;
 }

@@ -352,6 +352,16 @@ public class Commands {
                         c.getAbstractPlayerInteraction().openNpc(9201143, "commands");
                         break;
                     
+                case "droplimit":
+                        int dropCount = c.getPlayer().getMap().getDroppedItemCount();
+                        if(((float) dropCount) / ServerConstants.ITEM_LIMIT_ON_MAP < 0.75f) {
+                            c.getPlayer().showHint("Current drop count: #b" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n");
+                        } else {
+                            c.getPlayer().showHint("Current drop count: #r" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n");
+                        }
+                        
+                        break;
+                    
 		case "time":
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));

@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -24,9 +22,22 @@
 	Description: 		Takes you to Timu's Forest
 */
 
+var jobtype = 2;
+
 function enter(pi) {
 	if(pi.isQuestStarted(20301) || pi.isQuestStarted(20302) || pi.isQuestStarted(20303) || pi.isQuestStarted(20304) || pi.isQuestStarted(20305)) {
-		pi.warp(108010620, "out00");
+		var map = pi.getClient().getChannelServer().getMapFactory().getMap(108010600 + (10 * jobtype));
+                if(map.countPlayers() > 0) {
+                        pi.message("Someone else is already searching the area.");
+                        return false;
+                }
+                
+                if(pi.haveItem(4032101 + jobtype, 1)) {
+                        pi.message("You have already challenged the Master of Disguise, report your success to Neinheart.");
+                        return false;
+                }
+                
+		pi.warp(108010600 + (10 * jobtype), "out00");
 	} else {
 		pi.warp(130010110, "out00");
 	}

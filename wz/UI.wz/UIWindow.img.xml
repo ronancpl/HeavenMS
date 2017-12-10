@@ -19066,32 +19066,32 @@
     </imgdir>
   </imgdir>
   <imgdir name="SkillUp">
-    <canvas name="backgrd" width="215" height="201">
-      <vector name="origin" x="0" y="0"/>
-      <int name="z" value="0"/>
-    </canvas>
     <imgdir name="btOK">
       <imgdir name="normal">
-        <canvas name="0" width="37" height="20">
+        <canvas name="0" width="1" height="1">
           <vector name="origin" x="0" y="0"/>
         </canvas>
       </imgdir>
       <imgdir name="pressed">
-        <canvas name="0" width="37" height="20">
+        <canvas name="0" width="1" height="1">
           <vector name="origin" x="0" y="0"/>
         </canvas>
       </imgdir>
       <imgdir name="disabled">
-        <canvas name="0" width="37" height="20">
+        <canvas name="0" width="1" height="1">
           <vector name="origin" x="0" y="0"/>
         </canvas>
       </imgdir>
       <imgdir name="mouseOver">
-        <canvas name="0" width="37" height="20">
+        <canvas name="0" width="1" height="1">
           <vector name="origin" x="0" y="0"/>
         </canvas>
       </imgdir>
     </imgdir>
+    <canvas name="backgrd" width="1" height="1">
+      <vector name="origin" x="0" y="0"/>
+      <int name="z" value="0"/>
+    </canvas>
   </imgdir>
   <imgdir name="VegaSpell">
     <canvas name="backgrnd10" width="178" height="235">

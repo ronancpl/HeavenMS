@@ -197,6 +197,7 @@ function writeSolaxiaCommandsLv0() {    //Common
         desc_cursor = desc_lv0;
 
         addCommand("commands", "");
+        addCommand("droplimit", "");
         addCommand("time", "");
         addCommand("credits", "");
         addCommand("uptime", "");

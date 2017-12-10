@@ -704,6 +704,10 @@ public class MapleMap {
         }
     }
     
+    public int getDroppedItemCount() {
+        return droppedItemCount.get();
+    }
+    
     private void instantiateItemDrop(MapleMapItem mdrop) {
         if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
             MapleMapObject mapobj;

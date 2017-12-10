@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -24,33 +22,24 @@
 	Description: 		Takes you to Tiv's Forest
 */
 
-importPackage(Packages.server.life);
+var jobtype = 1;
 
 function enter(pi) {
 	if(pi.isQuestStarted(20301) || pi.isQuestStarted(20302) || pi.isQuestStarted(20303) || pi.isQuestStarted(20304) || pi.isQuestStarted(20305)) {
-		var map = pi.getClient().getChannelServer().getMapFactory().getMap(108010610);
+		var map = pi.getClient().getChannelServer().getMapFactory().getMap(108010600 + (10 * jobtype));
                 if(map.countPlayers() > 0) {
-                        pi.message("Someone else is already challenging the Master of Disguise.");
+                        pi.message("Someone else is already searching the area.");
                         return false;
                 }
                 
-                if(pi.haveItem(4032101, 1)) {
+                if(pi.haveItem(4032101 + jobtype, 1)) {
                         pi.message("You have already challenged the Master of Disguise, report your success to Neinheart.");
                         return false;
                 }
                 
-                spawnMob(3345, -452, 9001009, map);
-		pi.warp(108010610, "out00");
+		pi.warp(108010600 + (10 * jobtype), "out00");
 	} else {
 		pi.warp(130010020, "out00");
 	}
 	return true;
-}
-
-function spawnMob(x, y, id, map) {
-	if(map.getMonsterById(id) != null)
-		return;
-		
-	var mob = MapleLifeFactory.getMonster(id);
-	map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(x, y));
 }
