@@ -1,5 +1,5 @@
 /*
- * Cygnus 1st Job advancement - Wind Breaker
+ * Cygnus 1st Job advancement - Wind Archer
  */
 importPackage(Packages.client);
 
@@ -17,9 +17,9 @@ function end(mode, type, selection) {
     	status++;
     }
     if (status == 0) {
-    	qm.sendYesNo("Have you made your decision? The decision will be final, so think carefully before deciding what to do. Are you sure you want to become a Wind Breaker?");
+    	qm.sendYesNo("Have you made your decision? The decision will be final, so think carefully before deciding what to do. Are you sure you want to become a Wind Archer?");
     } else if (status == 1) {
-    	qm.sendNext("I have just molded your body to make it perfect for a Wind Breaker. If you wish to become more powerful, use Stat Window (S) to raise the appropriate stats. If you aren't sure what to raise, just click on #bAuto#k.");
+    	qm.sendNext("I have just molded your body to make it perfect for a Wind Archer. If you wish to become more powerful, use Stat Window (S) to raise the appropriate stats. If you aren't sure what to raise, just click on #bAuto#k.");
 	if (qm.getPlayer().getJob().getId() != 1300) {
 	    qm.gainItem(2060000, 2000);
 	    qm.gainItem(1452051, 1);
@@ -33,7 +33,7 @@ function end(mode, type, selection) {
     } else if (status == 3) {
     	qm.sendNextPrev("I have also given you a hint of #bSP#k, so open the #bSkill Menu#k to acquire new skills. Of course, you can't raise them at all once, and there are some skills out there where you won't be able to acquire them unless you master the basic skills first.");
     } else if (status == 4) {
-    	qm.sendNextPrev("Unlike your time as a Nobless, once you become the Wind Breaker, you will lost a portion of your EXP when you run out of HP, okay?");
+    	qm.sendNextPrev("Unlike your time as a Nobless, once you become the Wind Archer, you will lost a portion of your EXP when you run out of HP, okay?");
     } else if (status == 5) {
     	qm.sendNextPrev("Now... I want you to go out there and show the world how the Knights of Cygnus operate.");
     	qm.dispose();

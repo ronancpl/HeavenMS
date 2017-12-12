@@ -44,6 +44,7 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class SkillEffectHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int skillId = slea.readInt();
         int level = slea.readByte();
@@ -57,7 +58,7 @@ public final class SkillEffectHandler extends AbstractMaplePacketHandler {
             case Bishop.BIG_BANG:
             case Bowmaster.HURRICANE:
             case Marksman.PIERCING_ARROW:
-			case ChiefBandit.CHAKRA:
+            case ChiefBandit.CHAKRA:
             case Brawler.CORKSCREW_BLOW:
             case Gunslinger.GRENADE:
             case Corsair.RAPID_FIRE:

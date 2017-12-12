@@ -764,9 +764,9 @@ public class MapleMap {
     public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) {
         broadcastMessage(pickupPacket, mdrop.getPosition());
         
+        droppedItemCount.decrementAndGet();
         this.removeMapObject(mdrop);
         mdrop.setPickedUp(true);
-        droppedItemCount.decrementAndGet();
     }
     
     private void spawnDrop(final Item idrop, final Point dropPos, final MapleMapObject dropper, final MapleCharacter chr, final byte droptype, final short questid) {
@@ -2853,7 +2853,10 @@ public class MapleMap {
 
                             reactor.setShouldCollect(false);
                             MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());
+                            
+                            droppedItemCount.decrementAndGet();
                             MapleMap.this.removeMapObject(mapitem);
+                            
                             reactor.hitReactor(c);
 
                             if (reactor.getDelay() > 0) {
@@ -3164,6 +3167,7 @@ public class MapleMap {
     public void clearDrops(MapleCharacter player) {
         List<MapleMapObject> items = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
         for (MapleMapObject i : items) {
+            droppedItemCount.decrementAndGet();
             player.getMap().removeMapObject(i);
             player.getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(i.getObjectId(), 0, player.getId()));
         }
@@ -3171,6 +3175,7 @@ public class MapleMap {
 
     public void clearDrops() {
         for (MapleMapObject i : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM))) {
+            droppedItemCount.decrementAndGet();
             removeMapObject(i);
             this.broadcastMessage(MaplePacketCreator.removeItemFromMap(i.getObjectId(), 0, 0));
         }

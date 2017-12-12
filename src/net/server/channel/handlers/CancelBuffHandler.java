@@ -21,7 +21,6 @@
 */
 package net.server.channel.handlers;
 
-import client.MapleBuffStat;
 import client.MapleClient;
 import client.SkillFactory;
 import constants.skills.Bishop;
@@ -32,7 +31,6 @@ import constants.skills.FPArchMage;
 import constants.skills.ILArchMage;
 import constants.skills.Marksman;
 import constants.skills.WindArcher;
-import constants.skills.NightWalker;
 import net.AbstractMaplePacketHandler;
 import net.MaplePacketHandler;
 import tools.MaplePacketCreator;
