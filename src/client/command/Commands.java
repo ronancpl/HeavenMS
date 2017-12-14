@@ -551,8 +551,8 @@ public class Commands {
 				break;
 			}
 			String message = joinStringFrom(sub, 1);
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.sendYellowTip("[GM MESSAGE]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(1, message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[GM MESSAGE]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(1, message));
 			FilePrinter.printError("gm.txt", MapleCharacter.makeMapleReadable(player.getName()) + ": " + message + "\r\n");
 			player.dropMessage(5, "Your message '" + message + "' was sent to GMs.");
 			player.dropMessage(5, tips[Randomizer.nextInt(tips.length)]);
@@ -565,8 +565,8 @@ public class Commands {
 				break;
 			}
 			message = joinStringFrom(sub, 1);
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.sendYellowTip("[BUG]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(1, message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[BUG]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(1, message));
 			FilePrinter.printError("bug.txt", MapleCharacter.makeMapleReadable(player.getName()) + ": " + message + "\r\n");
 			player.dropMessage(5, "Your bug '" + message + "' was submitted successfully to our developers. Thank you!");
 			break;
@@ -881,7 +881,7 @@ public class Commands {
                                 
                                 if(victim != null) {
                                         victim.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300166), victim.getPosition());
-                                        Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
+                                        Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, player.getName() + " used !bomb on " + victim.getName()));
                                 } else {
                                         player.message("Player '" + sub[1] + "' could not be found on this world.");
                                 }
@@ -1598,7 +1598,7 @@ public class Commands {
 			}
 			player.yellowMessage(victim.getName() + " is " + (!monitored ? "now being monitored." : "no longer being monitored."));
 			String message = player.getName() + (!monitored ? " has started monitoring " : " has stopped monitoring ") + victim.getName() + ".";
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, message));
                     break;
                     
 		case "monitors":
@@ -1625,7 +1625,7 @@ public class Commands {
 			}
 			player.yellowMessage(victim.getName() + " is " + (!monitored_ ? "now being ignored." : "no longer being ignored."));
 			String message_ = player.getName() + (!monitored_ ? " has started ignoring " : " has stopped ignoring ") + victim.getName() + ".";
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, message_));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, message_));
                     break;
                     
 		case "ignored":
@@ -1754,7 +1754,7 @@ public class Commands {
                     break;
                     
 		case "expeds":
-			for (Channel ch : Server.getInstance().getChannelsFromWorld(0)) {
+			for (Channel ch : Server.getInstance().getChannelsFromWorld(c.getWorld())) {
 				if (ch.getExpeditions().size() == 0) {
 					player.yellowMessage("No Expeditions in Channel " + ch.getId());
 					continue;
@@ -1789,7 +1789,7 @@ public class Commands {
                         victim = cserv.getPlayerStorage().getCharacterByName(sub[1]);
                         if(victim != null) {
                                 victim.setHpMp(0);
-                                Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
+                                Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, player.getName() + " used !kill on " + victim.getName()));
                         } else {
                                 player.message("Player '" + sub[1] + "' could not be found on this channel.");
                         }
@@ -1831,11 +1831,11 @@ public class Commands {
                     break;
            
 		case "notice":
-			Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[Notice] " + joinStringFrom(sub, 1)));
+			Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, "[Notice] " + joinStringFrom(sub, 1)));
                     break;
                     
 		case "rip":
-			Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[RIP]: " + joinStringFrom(sub, 1)));
+			Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, "[RIP]: " + joinStringFrom(sub, 1)));
                     break;
                     
 		case "openportal":
@@ -1964,10 +1964,10 @@ public class Commands {
 						rip.getClient().disconnect(false, false);
 					}
 				}, 5000); //5 Seconds
-				Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[RIP]: " + ign + " has been banned."));
+				Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, "[RIP]: " + ign + " has been banned."));
 			} else if (MapleCharacter.ban(ign, reason, false)) {
 				c.announce(MaplePacketCreator.getGMEffect(4, (byte) 0));
-				Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, "[RIP]: " + ign + " has been banned."));
+				Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, "[RIP]: " + ign + " has been banned."));
 			} else {
 				c.announce(MaplePacketCreator.getGMEffect(6, (byte) 1));
 			}
@@ -2513,7 +2513,7 @@ public class Commands {
 				}
 			}
 			String message = player.getName() + " used !saveall.";
-			Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(5, message));
+			Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, message));
 			player.message("All players saved successfully.");
 			break;
                     

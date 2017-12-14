@@ -708,21 +708,22 @@ public class MapleMap {
         return droppedItemCount.get();
     }
     
-    private void instantiateItemDrop(MapleMapItem mdrop) {
+    private synchronized void instantiateItemDrop(MapleMapItem mdrop) {
         if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
             MapleMapObject mapobj;
             
-            objectWLock.lock();
-            try {
-                mapobj = registeredDrops.remove(0).get();
-                while(mapobj == null) {
+            do {
+                objectWLock.lock();
+                try {
                     mapobj = registeredDrops.remove(0).get();
+                    while(mapobj == null) {
+                        if(registeredDrops.isEmpty()) break;
+                        mapobj = registeredDrops.remove(0).get();
+                    }
+                } finally {
+                    objectWLock.unlock();
                 }
-            } finally {
-                objectWLock.unlock();
-            }
-
-            makeDisappearItemFromMap(mapobj);
+            } while (!makeDisappearItemFromMap(mapobj));
         }
         
         objectWLock.lock();
@@ -2806,24 +2807,30 @@ public class MapleMap {
         return null;
     }
     
-    public void makeDisappearItemFromMap(MapleMapObject mapobj) {
+    public boolean makeDisappearItemFromMap(MapleMapObject mapobj) {
         if(mapobj instanceof MapleMapItem) {
-            makeDisappearItemFromMap((MapleMapItem) mapobj);
+            return makeDisappearItemFromMap((MapleMapItem) mapobj);
+        } else {
+            return mapobj == null;  // no drop to make disappear...
         }
     }
     
-    public void makeDisappearItemFromMap(MapleMapItem mapitem) {
+    public boolean makeDisappearItemFromMap(MapleMapItem mapitem) {
         if (mapitem != null && mapitem == getMapObject(mapitem.getObjectId())) {
             mapitem.lockItem();
             try {
                 if (mapitem.isPickedUp()) {
-                    return;
+                    return true;
                 }
+                
                 MapleMap.this.pickItemDrop(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem);
+                return true;
             } finally {
                 mapitem.unlockItem();
             }
         }
+        
+        return false;
     }
 
     private class ActivateItemReactor implements Runnable {

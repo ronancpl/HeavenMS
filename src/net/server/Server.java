@@ -688,20 +688,20 @@ public class Server implements Runnable {
         worlda.reloadGuildSummary();
     }
 
-    public void broadcastMessage(final byte[] packet) {
-        for (Channel ch : getChannelsFromWorld(0)) {
+    public void broadcastMessage(int world, final byte[] packet) {
+        for (Channel ch : getChannelsFromWorld(world)) {
             ch.broadcastPacket(packet);
         }
     }
 
-    public void broadcastGMMessage(final byte[] packet) {
-        for (Channel ch : getChannelsFromWorld(0)) {
+    public void broadcastGMMessage(int world, final byte[] packet) {
+        for (Channel ch : getChannelsFromWorld(world)) {
             ch.broadcastGMPacket(packet);
         }
     }
     
-    public boolean isGmOnline() {
-        for (Channel ch : getChannelsFromWorld(0)) {
+    public boolean isGmOnline(int world) {
+        for (Channel ch : getChannelsFromWorld(world)) {
         	for (MapleCharacter player : ch.getPlayerStorage().getAllCharacters()) {
         		if (player.isGM()){
         			return true;

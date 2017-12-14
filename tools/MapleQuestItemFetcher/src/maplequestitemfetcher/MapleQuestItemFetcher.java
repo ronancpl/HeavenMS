@@ -61,7 +61,7 @@ import tools.Pair;
  * 
  * Running it should generate a report file under "lib" folder with the search results.
  * 
- * Estimated parse time: 1.5 minute
+ * Estimated parse time: 1 minute
  */
 public class MapleQuestItemFetcher {
     static MapleItemInformationProvider ii;
@@ -91,6 +91,7 @@ public class MapleQuestItemFetcher {
     static Map<Integer, Set<Integer>> zeroedStartQuestItems = new HashMap<>();
     static Map<Integer, Set<Integer>> zeroedCompleteQuestItems = new HashMap<>();
     static Map<Integer, int[]> mixedQuestidItems = new HashMap<>();
+    static Set<Integer> limitedQuestids = new HashSet<>();
     
     static byte status = 0;
     static int questId = -1;
@@ -103,11 +104,13 @@ public class MapleQuestItemFetcher {
         int i, j;
         char[] dest;
         String d;
-
+        
         i = token.lastIndexOf("name");
         i = token.indexOf("\"", i) + 1; //lower bound of the string
         j = token.indexOf("\"", i);     //upper bound
 
+        if(j < i) return "0";           //node value containing 'name' in it's scope, cheap fix since we don't deal with strings anyway
+        
         dest = new char[initialStringLength];
         token.getChars(i, j, dest, 0);
 
@@ -245,8 +248,15 @@ public class MapleQuestItemFetcher {
             }
 
             status += 1;
-        }
+        } else {
+            if(status == 3) {
+                d = getName(token);
 
+                if(d.equals("end")) {
+                    limitedQuestids.add(questId);
+                }
+            }
+        }
     }
 
     private static void calculateQuestItemDiff() {
@@ -414,6 +424,10 @@ public class MapleQuestItemFetcher {
         return list;
     }
     
+    private static String getExpiredStringLabel(int questid) {
+        return (!limitedQuestids.contains(questid) ? "" : " EXPIRED");
+    }
+    
     private static void ReportQuestItemData() {
         // This will reference one line at a time
         String line = null;
@@ -460,7 +474,7 @@ public class MapleQuestItemFetcher {
                 printWriter.println("INCORRECT QUESTIDS ON DB");
                 for(Entry<Integer, int[]> emqi : getSortedMapEntries1(mixedQuestidItems)) {
                     int[] mqi = emqi.getValue();
-                    printWriter.println(mqi[0] + " : " + mqi[1] + " -> " + mqi[2]);
+                    printWriter.println(mqi[0] + " : " + mqi[1] + " -> " + mqi[2] + getExpiredStringLabel(mqi[2]));
                 }
                 printWriter.println("\n\n\n\n\n");
             }
@@ -473,7 +487,7 @@ public class MapleQuestItemFetcher {
                 
                 printWriter.println("ITEMS WITH NO QUEST DROP DATA ON DB");
                 for(Entry<Integer, Integer> iwq : getSortedMapEntries0(mapIwq)) {
-                    printWriter.println(iwq.getKey() + " - " + iwq.getValue());
+                    printWriter.println(iwq.getKey() + " - " + iwq.getValue() + getExpiredStringLabel(iwq.getValue()));
                 }
                 printWriter.println("\n\n\n\n\n");
             }
@@ -482,7 +496,7 @@ public class MapleQuestItemFetcher {
                 if(!zeroedStartQuestItems.isEmpty()) {
                     printWriter.println("START QUEST ITEMS WITH ZERO QUANTITY");
                     for(Pair<Integer, List<Integer>> iwq : getSortedMapEntries2(zeroedStartQuestItems)) {
-                        printWriter.println(iwq.getLeft() + ":");
+                        printWriter.println(iwq.getLeft() + getExpiredStringLabel(iwq.getLeft()) + ":");
                         for(Integer i : iwq.getRight()) {
                             printWriter.println("  " + i);
                         }
@@ -494,7 +508,7 @@ public class MapleQuestItemFetcher {
                 if(!zeroedCompleteQuestItems.isEmpty()) {
                     printWriter.println("COMPLETE QUEST ITEMS WITH ZERO QUANTITY");
                     for(Pair<Integer, List<Integer>> iwq : getSortedMapEntries2(zeroedCompleteQuestItems)) {
-                        printWriter.println(iwq.getLeft() + ":");
+                        printWriter.println(iwq.getLeft() + getExpiredStringLabel(iwq.getLeft()) + ":");
                         for(Integer i : iwq.getRight()) {
                             printWriter.println("  " + i);
                         }

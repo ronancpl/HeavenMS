@@ -277,7 +277,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     }
                     break;
                 case 2: // Super megaphone
-                    Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + slea.readMapleAsciiString(), (slea.readByte() != 0)));
+                    Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + slea.readMapleAsciiString(), (slea.readByte() != 0)));
                     break;
                 case 5: // Maple TV
                     int tvType = itemId % 10;
@@ -309,7 +309,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     }
                     slea.readInt();
                     if (megassenger) {
-                        Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + builder.toString(), ear));
+                        Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + builder.toString(), ear));
                     }
                     if (!MapleTVEffect.isActive()) {
                         new MapleTVEffect(player, victim, messages, tvType);
@@ -334,7 +334,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                             return;
                         }
                     }
-                    Server.getInstance().broadcastMessage(MaplePacketCreator.itemMegaphone(msg, whisper, c.getChannel(), item));
+                    Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.itemMegaphone(msg, whisper, c.getChannel(), item));
                     break;
                 case 7: //triple megaphone
                     int lines = slea.readByte();
@@ -347,7 +347,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         msg2[i] = medal + c.getPlayer().getName() + " : " + slea.readMapleAsciiString();
                     }
                     whisper = slea.readByte() == 1;
-                    Server.getInstance().broadcastMessage(MaplePacketCreator.getMultiMegaphone(msg2, c.getChannel(), whisper));
+                    Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.getMultiMegaphone(msg2, c.getChannel(), whisper));
                     break;
             }
             remove(c, itemId);
@@ -475,11 +475,13 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             for (int i = 0; i < 4; i++) {
                 lines.add(slea.readMapleAsciiString());
             }
-            Server.getInstance().broadcastMessage(MaplePacketCreator.getAvatarMega(c.getPlayer(), medal, c.getChannel(), itemId, lines, (slea.readByte() != 0)));
+            
+            final int world = c.getWorld();
+            Server.getInstance().broadcastMessage(world, MaplePacketCreator.getAvatarMega(c.getPlayer(), medal, c.getChannel(), itemId, lines, (slea.readByte() != 0)));
             TimerManager.getInstance().schedule(new Runnable() {
             	@Override
             	public void run() {
-            		Server.getInstance().broadcastMessage(MaplePacketCreator.byeAvatarMega());
+            		Server.getInstance().broadcastMessage(world, MaplePacketCreator.byeAvatarMega());
             	}
             }, 1000 * 10);
             remove(c, itemId);

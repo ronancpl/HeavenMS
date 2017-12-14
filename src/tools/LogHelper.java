@@ -36,7 +36,7 @@ public class LogHelper {
 	}
 
 	public static void logExpedition(MapleExpedition expedition) {
-		Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(6, expedition.getType().toString() + " Expedition with leader " + expedition.getLeader().getName() + " finished after " + getTimeString(expedition.getStartTime())));
+		Server.getInstance().broadcastGMMessage(expedition.getLeader().getWorld(), MaplePacketCreator.serverNotice(6, expedition.getType().toString() + " Expedition with leader " + expedition.getLeader().getName() + " finished after " + getTimeString(expedition.getStartTime())));
 
 		String log = expedition.getType().toString() + " EXPEDITION\r\n";
 		log += getTimeString(expedition.getStartTime()) + "\r\n";

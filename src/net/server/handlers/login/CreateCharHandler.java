@@ -131,6 +131,6 @@ public final class CreateCharHandler extends AbstractMaplePacketHandler {
 			return;
 		}
 		c.announce(MaplePacketCreator.addNewCharEntry(newchar));
-		Server.getInstance().broadcastGMMessage(MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
+		Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
 	}
 }

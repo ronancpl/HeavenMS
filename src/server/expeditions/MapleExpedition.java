@@ -133,7 +133,7 @@ public class MapleExpedition {
 		broadcastExped(MaplePacketCreator.removeClock());
 		broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
-		Server.getInstance().broadcastGMMessage(MaplePacketCreator.serverNotice(6, "[Expedition] " + type.toString() + " Expedition started with leader: " + leader.getName()));
+		Server.getInstance().broadcastGMMessage(leader.getWorld(), MaplePacketCreator.serverNotice(6, "[Expedition] " + type.toString() + " Expedition started with leader: " + leader.getName()));
 	}
 
 	public String addMember(MapleCharacter player) {

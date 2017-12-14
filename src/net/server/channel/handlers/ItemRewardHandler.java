@@ -67,7 +67,7 @@ public final class ItemRewardHandler extends AbstractMaplePacketHandler {
                     String msg = reward.worldmsg;
                     msg.replaceAll("/name", c.getPlayer().getName());
                     msg.replaceAll("/item", ii.getName(reward.itemid));
-                    Server.getInstance().broadcastMessage(MaplePacketCreator.serverNotice(6, msg));
+                    Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, msg));
                 }
                 break;
             }

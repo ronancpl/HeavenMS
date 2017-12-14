@@ -91,7 +91,7 @@ public enum AutobanFactory {
 		if (chr != null && MapleLogger.ignored.contains(chr.getName())){
 			return;
 		}
-		Server.getInstance().broadcastGMMessage(MaplePacketCreator.sendYellowTip((chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason));
+		Server.getInstance().broadcastGMMessage((chr != null ? chr.getWorld() : 0), MaplePacketCreator.sendYellowTip((chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason));
             }
 	}
 	
