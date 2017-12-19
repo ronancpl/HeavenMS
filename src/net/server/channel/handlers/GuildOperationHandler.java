@@ -48,7 +48,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
 
     private void respawnPlayer(MapleCharacter mc) {
         mc.getMap().broadcastMessage(mc, MaplePacketCreator.removePlayerFromMap(mc.getId()), false);
-        mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapobject(mc), false);
+        mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapObject(mc), false);
     }
 
     private class Invited {

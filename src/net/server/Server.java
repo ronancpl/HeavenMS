@@ -68,6 +68,7 @@ import tools.Pair;
 import client.MapleClient;
 import client.MapleCharacter;
 import client.SkillFactory;
+import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.Calendar;
@@ -91,6 +92,7 @@ public class Server implements Runnable {
     private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
+    private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();
     
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
@@ -108,6 +110,18 @@ public class Server implements Runnable {
 
     public List<Pair<Integer, String>> worldRecommendedList() {
         return worldRecommendedList;
+    }
+    
+    public void setNewYearCard(NewYearCardRecord nyc) {
+        newyears.put(nyc.getId(), nyc);
+    }
+    
+    public NewYearCardRecord getNewYearCard(int cardid) {
+        return newyears.get(cardid);
+    }
+    
+    public NewYearCardRecord removeNewYearCard(int cardid) {
+        return newyears.remove(cardid);
     }
 
     /*
@@ -306,6 +320,8 @@ public class Server implements Runnable {
 	MapleQuest.loadAllQuest();
 	System.out.println("Quest loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
 	
+        NewYearCardRecord.startPendingNewYearCardRequests();
+        
         if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
         
         try {

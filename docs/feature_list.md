@@ -49,6 +49,7 @@ Player Social Network:
 
 * Guild and Alliance system fully functional.
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
+* Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
 
 Cash & Items:
 
@@ -61,6 +62,7 @@ Cash & Items:
 * Vega's spell.
 * Owl of Minerva.
 * Pet item ignore.
+* New Year's card (New Year effect sometimes d/c's a player).
 
 Monsters, Maps & Reactors:
 

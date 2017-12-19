@@ -182,11 +182,13 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
-            int price = (int)Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
+            
+            int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
             if (c.getPlayer().getMeso() >= price) {
                 if (MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner())) {
                     MapleInventoryManipulator.addFromDrop(c, newItem, false);
                     c.getPlayer().gainMeso(-price, false);
+                    announceItemSold(newItem, price);   // idea thanks to vcoc
                     
                     synchronized (sold) {
                         sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price));
@@ -224,6 +226,16 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+    
+    private void announceItemSold(Item item, int mesos) {
+        String qtyStr = (item.getQuantity() > 1) ? " (qty. " + item.getQuantity() + ")" : "";
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
+        MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
+        if(player != null && player.isLoggedin() && !player.isAwayFromWorld()) {
+            player.dropMessage(6, "[HIRED MERCHANT] Item '" + ii.getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
         }
     }
 
@@ -508,7 +520,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         }
         return true;
     }
-
+    
     public int getChannel() {
         return channel;
     }

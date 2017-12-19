@@ -753,7 +753,7 @@ public class MapleStatEffect {
                 applyto.setStance(0);
                 
                 applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
-                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapobject(applyto), false);
+                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapObject(applyto), false);
             }
         }
         if (isDispel() && makeChanceResult()) {
@@ -919,7 +919,7 @@ public class MapleStatEffect {
             applyto.removeAllCooldownsExcept(Buccaneer.TIME_LEAP, true);
         } else if(isHyperBody() && !primary) {
             applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
-            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapobject(applyto), false);
+            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapObject(applyto), false);
         }
         
         return true;

@@ -33,6 +33,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import net.SendOpcode;
 import net.server.PlayerCoolDownValueHolder;
@@ -98,6 +99,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
+import client.newyear.NewYearCardRecord;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
@@ -217,30 +219,18 @@ public class MaplePacketCreator {
                 addRingInfo(mplew, chr);
                 addTeleportInfo(mplew, chr);
                 addMonsterBookInfo(mplew, chr);
-                addNewYearInfo(mplew, chr);//have fun!
+                addNewYearInfo(mplew, chr);
                 addAreaInfo(mplew, chr);//assuming it stayed here xd
                 mplew.writeShort(0);
         }
 
         private static void addNewYearInfo(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
-                mplew.writeShort(0);
-                /*  
-                 *(_DWORD *)this = CInPacket::Decode4(a2);
-                 *((_DWORD *)v2 + 1) = CInPacket::Decode4(a2);
-                 CInPacket::DecodeStr(&v7);
-                 v9 = 0;
-                 (*(void (__stdcall **)(char *, int))((char *)&loc_B1410B + 1))((char *)v2 + 8, v7);
-                 *(_DWORD *)((char *)v2 + 21) = (unsigned __int8)CInPacket::Decode1(a2);
-                 CInPacket::DecodeBuffer((char *)v2 + 25, 8);
-                 *(_DWORD *)((char *)v2 + 33) = CInPacket::Decode4(a2);
-                 CInPacket::DecodeStr(&v6);
-                 LOBYTE(v8) = 1;
-                 (*(void (__stdcall **)(char *, int))((char *)&loc_B1410B + 1))((char *)v2 + 37, v6);
-                 *(_DWORD *)((char *)v2 + 50) = (unsigned __int8)CInPacket::Decode1(a2);
-                 *(_DWORD *)((char *)v2 + 54) = (unsigned __int8)CInPacket::Decode1(a2);
-                 CInPacket::DecodeBuffer((char *)v2 + 58, 8);
-                 CInPacket::DecodeStr(&v9);
-                 */
+                Set<NewYearCardRecord> received = chr.getReceivedNewYearRecords();
+            
+                mplew.writeShort(received.size());
+                for(NewYearCardRecord nyc : received) {
+                        encodeNewYearCard(nyc, mplew);
+                }
         }
 
         private static void addTeleportInfo(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
@@ -1742,7 +1732,7 @@ public class MaplePacketCreator {
          * @param chr The character to spawn to other clients.
          * @return The spawn player packet.
          */
-        public static byte[] spawnPlayerMapobject(MapleCharacter chr) {
+        public static byte[] spawnPlayerMapObject(MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_PLAYER.getValue());
                 mplew.writeInt(chr.getId());
@@ -1834,7 +1824,7 @@ public class MaplePacketCreator {
                 
                 mplew.writeShort(chr.getJob().getId());
                 
-                /* replace "mplew.writeShort(chr.getJob().getId())" with this snippet for 3rd party FJ animation on all classes
+                /* replace "mplew.writeShort(chr.getJob().getId())" with this snippet for 3rd person FJ animation on all classes
                 if (chr.getJob().isA(MapleJob.HERMIT) || chr.getJob().isA(MapleJob.DAWNWARRIOR2) || chr.getJob().isA(MapleJob.NIGHTWALKER2)) {
 			mplew.writeShort(chr.getJob().getId());
                 } else {
@@ -1887,14 +1877,106 @@ public class MaplePacketCreator {
                 } else {
                         mplew.write(0);
                 }
-                addRingLook(mplew, chr, true);
-                addRingLook(mplew, chr, false);
+                addRingLook(mplew, chr, true);  // crush
+                addRingLook(mplew, chr, false); // friendship
                 addMarriageRingLook(mplew, chr);
-                mplew.skip(3);
+                encodeNewYearCardInfo(mplew, chr);  // new year seems to crash sometimes...
+                mplew.skip(2);
                 mplew.write(chr.getTeam());//only needed in specific fields
                 return mplew.getPacket();
         }
 
+        private static void encodeNewYearCardInfo(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+                Set<NewYearCardRecord> newyears = chr.getReceivedNewYearRecords();
+                if(!newyears.isEmpty()) {
+                        mplew.write(1); 
+
+                        mplew.writeInt(newyears.size());
+                        for(NewYearCardRecord nyc : newyears) {
+                                mplew.writeInt(nyc.getId());
+                        }
+                } else {
+                        mplew.write(0); 
+                }
+        }
+        
+        public static byte[] onNewYearCardRes(MapleCharacter user, int cardId, int mode, int msg) {
+                NewYearCardRecord newyear = user.getNewYearRecord(cardId);
+                return onNewYearCardRes(user, newyear, mode, msg);
+        }
+        
+        public static byte[] onNewYearCardRes(MapleCharacter user, NewYearCardRecord newyear, int mode, int msg) { 
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.NEW_YEAR_CARD_RES.getValue()); 
+                mplew.write(mode); 
+                switch (mode) { 
+                        case 4: // Successfully sent a New Year Card\r\n to %s. 
+                        case 6: // Successfully received a New Year Card. 
+                                encodeNewYearCard(newyear, mplew);
+                                break;
+                            
+                        case 8: // Successfully deleted a New Year Card. 
+                                mplew.writeInt(newyear.getId());
+                                break;
+                            
+                        case 5: // Nexon's stupid and makes 4 modes do the same operation.. 
+                        case 7: 
+                        case 9: 
+                        case 0xB: 
+                                // 0x10: You have no free slot to store card.\r\ntry later on please. 
+                                // 0x11: You have no card to send. 
+                                // 0x12: Wrong inventory information ! 
+                                // 0x13: Cannot find such character ! 
+                                // 0x14: Incoherent Data ! 
+                                // 0x15: An error occured during DB operation. 
+                                // 0x16: An unknown error occured ! 
+                                // 0xF: You cannot send a card to yourself ! 
+                                mplew.write(msg);
+                                break; 
+                            
+                        case 0xA:   // GetUnreceivedList_Done
+                                int nSN = 1; 
+                                mplew.writeInt(nSN); 
+                                if ((nSN - 1) <= 98 && nSN > 0) {//lol nexon are you kidding 
+                                        for (int i = 0; i < nSN; i++) { 
+                                                mplew.writeInt(newyear.getId()); 
+                                                mplew.writeInt(newyear.getSenderId()); 
+                                                mplew.writeMapleAsciiString(newyear.getSenderName()); 
+                                        } 
+                                } 
+                                break;
+                            
+                        case 0xC:   // NotiArrived
+                                mplew.writeInt(newyear.getId());
+                                mplew.writeMapleAsciiString(newyear.getSenderName());
+                                break;
+                            
+                        case 0xD:   // BroadCast_AddCardInfo
+                                mplew.writeInt(newyear.getId()); 
+                                mplew.writeInt(user.getId()); 
+                                break; 
+                            
+                        case 0xE:   // BroadCast_RemoveCardInfo
+                                mplew.writeInt(newyear.getId());
+                                break; 
+                } 
+                return mplew.getPacket(); 
+        } 
+        
+        private static void encodeNewYearCard(NewYearCardRecord newyear, MaplePacketLittleEndianWriter mplew) { 
+                mplew.writeInt(newyear.getId());
+                mplew.writeInt(newyear.getSenderId()); 
+                mplew.writeMapleAsciiString(newyear.getSenderName()); 
+                mplew.writeBool(newyear.isSenderCardDiscarded()); 
+                mplew.writeLong(newyear.getDateSent()); 
+                mplew.writeInt(newyear.getReceiverId()); 
+                mplew.writeMapleAsciiString(newyear.getReceiverName()); 
+                mplew.writeBool(newyear.isReceiverCardDiscarded()); 
+                mplew.writeBool(newyear.isReceiverCardReceived()); 
+                mplew.writeLong(newyear.getDateReceived()); 
+                mplew.writeMapleAsciiString(newyear.getMessage()); 
+        } 
+        
         private static void addRingLook(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr, boolean crush) {
                 List<MapleRing> rings;
                 if (crush) {
@@ -1922,15 +2004,17 @@ public class MaplePacketCreator {
         }
 
         private static void addMarriageRingLook(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
-                if (chr.getMarriageRing() != null && !chr.getMarriageRing().equipped()) {
+                MapleRing ring = chr.getMarriageRing();
+            
+                if (ring != null && !ring.equipped()) {
                         mplew.write(0);
                         return;
                 }
-                mplew.writeBool(chr.getMarriageRing() != null);
-                if (chr.getMarriageRing() != null) {
+                mplew.writeBool(ring != null);
+                if (ring != null) {
                         mplew.writeInt(chr.getId());
-                        mplew.writeInt(chr.getMarriageRing().getPartnerChrId());
-                        mplew.writeInt(chr.getMarriageRing().getRingId());
+                        mplew.writeInt(ring.getPartnerChrId());
+                        mplew.writeInt(ring.getRingId());
                 }
         }
 

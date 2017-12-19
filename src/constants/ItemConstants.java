@@ -89,6 +89,14 @@ public final class ItemConstants {
         return itemId / 1000 == 5000;
     }
     
+    public static boolean isNewYearCardEtc(int itemId) { 
+        return itemId / 10000 == 430;
+    } 
+     
+    public static boolean isNewYearCardUse(int itemId) { 
+        return itemId / 10000 == 216;
+    }
+    
     public static boolean isAccessory(int itemId) {
         return itemId >= 1110000 && itemId < 1140000;
     }

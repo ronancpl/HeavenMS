@@ -146,6 +146,7 @@ public enum RecvOpcode {
     ENTER_MTS(0x9C),
     USE_SOLOMON_ITEM(0x9D),
     USE_GACHA_EXP(0x9E),
+    NEW_YEAR_CARD_REQUEST(0x9F),
     CLICK_GUIDE(0xA2),
     ARAN_COMBO_COUNTER(0xA3),
     MOVE_PET(0xA7),

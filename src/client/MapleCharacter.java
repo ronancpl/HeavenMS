@@ -116,6 +116,7 @@ import client.inventory.MaplePet;
 import client.inventory.MapleWeaponType;
 import client.inventory.ModifyInventory;
 import client.inventory.PetDataFactory;
+import client.newyear.NewYearCardRecord;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
@@ -238,6 +239,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private MonsterBook monsterbook;
     private MapleRing marriageRing;
     private CashShop cashshop;
+    private Set<NewYearCardRecord> newyears = new LinkedHashSet<>();
     private SavedLocation savedLocations[];
     private SkillMacro[] skillMacros = new SkillMacro[5];
     private List<Integer> lastmonthfameids;
@@ -830,7 +832,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 announce(MaplePacketCreator.getGMEffect(0x10, (byte) 0));
                 List<MapleBuffStat> dsstat = Collections.singletonList(MapleBuffStat.DARKSIGHT);
                 getMap().broadcastGMMessage(this, MaplePacketCreator.cancelForeignBuff(id, dsstat), false);
-                getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapobject(this), false);
+                getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
                 
                 for(MapleSummon ms: this.getSummonsValues()) {
                     getMap().broadcastNONGMMessage(this, MaplePacketCreator.spawnSummon(ms, false), false);
@@ -843,7 +845,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 if (!login) {
                     getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(getId()), false);
                 }
-                getMap().broadcastGMMessage(this, MaplePacketCreator.spawnPlayerMapobject(this), false);
+                getMap().broadcastGMMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
                 List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
                 getMap().broadcastGMMessage(this, MaplePacketCreator.giveForeignBuff(id, dsstat), false);
                 for (MapleMonster mon : this.getControlledMonsters()) {
@@ -1074,7 +1076,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         guildUpdate();
         
         getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(this.getId()), false);
-        getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapobject(this), false);
+        getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
         getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 8), false);
         
         if (GameConstants.hasSPTable(newJob) && newJob.getId() != 2001) {
@@ -5338,6 +5340,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
             }
             
+            NewYearCardRecord.loadPlayerNewYearCards(ret);
+            
             PreparedStatement ps2, ps3;
             ResultSet rs2, rs3;
             
@@ -7571,7 +7575,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     @Override
     public void sendSpawnData(MapleClient client) {
         if (!this.isHidden() || client.getPlayer().gmLevel() > 1) {
-            client.announce(MaplePacketCreator.spawnPlayerMapobject(this));
+            client.announce(MaplePacketCreator.spawnPlayerMapObject(this));
         }
 
         if (this.isHidden()) {
@@ -7599,6 +7603,40 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public CashShop getCashShop() {
         return cashshop;
+    }
+    
+    public Set<NewYearCardRecord> getNewYearRecords() {
+        return newyears;
+    }
+    
+    public Set<NewYearCardRecord> getReceivedNewYearRecords() {
+        Set<NewYearCardRecord> received = new LinkedHashSet<>();
+        
+        for(NewYearCardRecord nyc : newyears) {
+            if(nyc.isReceiverCardReceived()) {
+                received.add(nyc);
+            }
+        }
+        
+        return received;
+    }
+    
+    public NewYearCardRecord getNewYearRecord(int cardid) {
+        for(NewYearCardRecord nyc : newyears) {
+            if(nyc.getId() == cardid) {
+                return nyc;
+            }
+        }
+        
+        return null;
+    }
+    
+    public void addNewYearRecord(NewYearCardRecord newyear) {
+        newyears.add(newyear);
+    }
+    
+    public void removeNewYearRecord(NewYearCardRecord newyear) {
+        newyears.remove(newyear);
     }
 
     public void portalDelay(long delay) {

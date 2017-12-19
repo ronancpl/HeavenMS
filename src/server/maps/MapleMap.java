@@ -2131,13 +2131,13 @@ public class MapleMap {
             }
         }
         if (chr.isHidden()) {
-            broadcastGMMessage(chr, MaplePacketCreator.spawnPlayerMapobject(chr), false);
+            broadcastGMMessage(chr, MaplePacketCreator.spawnPlayerMapObject(chr), false);
             chr.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
 
             List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
             broadcastGMMessage(chr, MaplePacketCreator.giveForeignBuff(chr.getId(), dsstat), false);
         } else {
-            broadcastMessage(chr, MaplePacketCreator.spawnPlayerMapobject(chr), false);
+            broadcastMessage(chr, MaplePacketCreator.spawnPlayerMapObject(chr), false);
         }
 
         sendObjectPlacement(chr.getClient());

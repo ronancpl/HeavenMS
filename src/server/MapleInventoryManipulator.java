@@ -28,6 +28,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
+import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
@@ -544,7 +545,7 @@ public class MapleInventoryManipulator {
                 c.getPlayer().setChalkboard(null);
             }
         }
-        if (source == null || (!ItemConstants.isRechargable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
+        if ((!ItemConstants.isRechargable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
         Point dropPos = new Point(c.getPlayer().getPosition());
@@ -553,6 +554,17 @@ public class MapleInventoryManipulator {
             target.setQuantity(quantity);
             source.setQuantity((short) (source.getQuantity() - quantity));
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(1, source))));
+            
+            if(ItemConstants.isNewYearCardEtc(itemId)) {
+                if(itemId == 4300000) {
+                    NewYearCardRecord.removeAllNewYearCard(true, c.getPlayer());
+                    c.getAbstractPlayerInteraction().removeAll(4300000);
+                } else {
+                    NewYearCardRecord.removeAllNewYearCard(false, c.getPlayer());
+                    c.getAbstractPlayerInteraction().removeAll(4301000);
+                }
+            }
+            
             boolean weddingRing = source.getItemId() == 1112803 || source.getItemId() == 1112806 || source.getItemId() == 1112807 || source.getItemId() == 1112809;
             if (weddingRing) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
@@ -572,7 +584,16 @@ public class MapleInventoryManipulator {
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(3, source))));
             if (src < 0) {
                 c.getPlayer().equipChanged();
+            } else if(ItemConstants.isNewYearCardEtc(itemId)) {
+                if(itemId == 4300000) {
+                    NewYearCardRecord.removeAllNewYearCard(true, c.getPlayer());
+                    c.getAbstractPlayerInteraction().removeAll(4300000);
+                } else {
+                    NewYearCardRecord.removeAllNewYearCard(false, c.getPlayer());
+                    c.getAbstractPlayerInteraction().removeAll(4301000);
+                }
             }
+            
             if (c.getPlayer().getMap().getEverlast()) {
                 if (ii.isDropRestricted(itemId) || ii.isCash(itemId) || isDroppedItemRestricted(source)) {
                     c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), source, dropPos);

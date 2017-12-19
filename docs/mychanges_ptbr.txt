@@ -724,3 +724,8 @@ Adicionado comando "droplimit", cuja funcionalidade é informar ao jogador a quan
 Resolvido bug onde contador do drops do mapa não atualizaria seu valor em casos onde reatores consomem itens ou ao se aplicar comandos como "cleardrops".
 Corrigido server enviando packets com BroadcastMessage somente para o world 0, ao invés de ser para o world alvo.
 MapleQuestItemFetcher agora mostra quests já expiradas no relatório.
+
+17 - 19 Dezembro 2017,
+Implementado New Years card.
+Adicionado informação, destinado ao dono da loja, de compra de itens dos Player Shops e dos Hired Merchants.
+Resolvido um problema com overflow em Player Shops.
