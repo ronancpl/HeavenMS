@@ -152,7 +152,7 @@ public class GameConstants {
     }
     
     public static boolean isPqSkill(final int skill) {
-    	return skill >= 20001013 && skill <= 20000018 || skill  % 10000000 == 1020 || skill == 10000013 || skill  % 10000000 >= 1009 && skill % 10000000 <= 1011;  
+    	return (skill >= 20000014 && skill <= 20000018) || skill == 10000013 || skill == 20001013 || (skill % 10000000 >= 1009 && skill % 10000000 <= 1011) || skill % 10000000 == 1020;
     }
     
     public static boolean bannedBindSkills(final int skill) {
@@ -185,14 +185,14 @@ public class GameConstants {
     }
     
     public static boolean isDojo(int mapid) {
-        return mapid >= 925020100 && mapid <= 925023814;
+        return mapid >= 925020000 && mapid < 925040000;
     }
     
     public static boolean isPyramid(int mapid) {
     	return mapid >= 926010010 & mapid <= 930010000;
     }
     
-    public static boolean isPQSkillMap(int mapid) {
+    public static boolean isPqSkillMap(int mapid) {
     	return isDojo(mapid) || isPyramid(mapid);
     }
     

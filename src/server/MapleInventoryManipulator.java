@@ -22,6 +22,7 @@
 package server;
 
 import client.MapleBuffStat;
+import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -65,7 +66,7 @@ public class MapleInventoryManipulator {
 
     public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        MapleInventoryType type = ii.getInventoryType(itemId);
+        MapleInventoryType type = ItemConstants.getInventoryType(itemId);
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemId);
             List<Item> existing = c.getPlayer().getInventory(type).listById(itemId);
@@ -155,8 +156,8 @@ public class MapleInventoryManipulator {
 
     public static boolean addFromDrop(MapleClient c, Item item, boolean show, int petId) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        MapleInventoryType type = ii.getInventoryType(item.getItemId());
-        if (ii.isPickupRestricted(item.getItemId()) && c.getPlayer().getItemQuantity(item.getItemId(), true) > 0) {
+        MapleInventoryType type = item.getInventoryType();
+        if (ii.isPickupRestricted(item.getItemId()) && c.getPlayer().haveItemWithId(item.getItemId(), true)) {
             c.announce(MaplePacketCreator.getInventoryFull());
             c.announce(MaplePacketCreator.showItemUnavailable());
             return false;
@@ -230,9 +231,18 @@ public class MapleInventoryManipulator {
         return true;
     }
     
+    private static boolean haveItemWithId(MapleInventory inv, int itemid) {
+        return inv.findById(itemid) != null;
+    }
+    
     public static boolean checkSpace(MapleClient c, int itemid, int quantity, String owner) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        MapleInventoryType type = ii.getInventoryType(itemid);
+        MapleInventoryType type = ItemConstants.getInventoryType(itemid);
+        
+        if(ii.isPickupRestricted(itemid) && haveItemWithId(c.getPlayer().getInventory(type), itemid)) {
+            return false;
+        }
+        
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
             List<Item> existing = c.getPlayer().getInventory(type).listById(itemid);
@@ -273,7 +283,12 @@ public class MapleInventoryManipulator {
         int returnValue;
         
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        MapleInventoryType type = ii.getInventoryType(itemid);
+        MapleInventoryType type = ItemConstants.getInventoryType(itemid);
+        
+        if(ii.isPickupRestricted(itemid) && haveItemWithId(c.getPlayer().getInventory(type), itemid)) {
+            return 0;
+        }
+        
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
             if (!ItemConstants.isRechargable(itemid)) {

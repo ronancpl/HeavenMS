@@ -345,7 +345,7 @@ public class Commands {
         public static boolean executeHeavenMsCommandLv0(Channel cserv, Server srv, MapleClient c, String[] sub) { //Player
                 MapleCharacter player = c.getPlayer();
             
-                switch(sub[0]) {
+                switch(sub[0]) {    
                 case "help":
 		case "commands":
                 case "playercommands":
@@ -1158,7 +1158,7 @@ public class Commands {
                                 MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), -1, flag, -1);
 			} else {
 				Item toDrop;
-				if (MapleItemInformationProvider.getInstance().getInventoryType(itemId) == MapleInventoryType.EQUIP) {
+				if (ItemConstants.getInventoryType(itemId) == MapleInventoryType.EQUIP) {
 					toDrop = MapleItemInformationProvider.getInstance().getEquipById(itemId);
 				} else {
 					toDrop = new Item(itemId, (short) 0, quantity);
@@ -1813,6 +1813,10 @@ public class Commands {
 			}
                     break;
                 
+                case "energy":
+                        System.out.println(c.getPlayer().getDojoEnergy());
+                        break;
+                    
                 case "maxenergy":
                         c.getPlayer().setDojoEnergy(10000);
                         c.announce(MaplePacketCreator.getEnergy("energy", 10000));
@@ -2162,7 +2166,7 @@ public class Commands {
                         short multiply = Short.parseShort(sub[2]);
 
                         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                        MapleInventoryType type = ii.getInventoryType(itemid);
+                        MapleInventoryType type = ItemConstants.getInventoryType(itemid);
                         if (type.equals(MapleInventoryType.EQUIP)) {
                                 Item it = ii.getEquipById(itemid);
                                 it.setOwner(player.getName());

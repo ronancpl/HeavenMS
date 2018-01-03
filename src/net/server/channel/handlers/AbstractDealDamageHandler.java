@@ -121,14 +121,10 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             if (mySkill == null) {
                 mySkill = SkillFactory.getSkill(GameConstants.getHiddenSkill(skill));
             }
+            
             int skillLevel = chr.getSkillLevel(mySkill);
-            if (mySkill.getId() % 10000000 == 1020) {
-                if (chr.getPartyQuest() instanceof Pyramid) {
-                    if (((Pyramid) chr.getPartyQuest()).useSkill()) {
-                        skillLevel = 1;
-                    }
-                }
-            }
+            if(skillLevel == 0 && GameConstants.isPqSkillMap(chr.getMapId()) && GameConstants.isPqSkill(mySkill.getId())) skillLevel = 1;
+            
             if (skillLevel == 0) {
                 return null;
             }
@@ -515,9 +511,12 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         ret.skill = lea.readInt();
         ret.ranged = ranged;
         ret.magic = magic;
+        
         if (ret.skill > 0) {
             ret.skilllevel = chr.getSkillLevel(ret.skill);
+            if(ret.skilllevel == 0 && GameConstants.isPqSkillMap(chr.getMapId()) && GameConstants.isPqSkill(ret.skill)) ret.skilllevel = 1;
         }
+        
         if (ret.skill == Evan.ICE_BREATH || ret.skill == Evan.FIRE_BREATH || ret.skill == FPArchMage.BIG_BANG || ret.skill == ILArchMage.BIG_BANG || ret.skill == Bishop.BIG_BANG || ret.skill == Gunslinger.GRENADE || ret.skill == Brawler.CORKSCREW_BLOW || ret.skill == ThunderBreaker.CORKSCREW_BLOW || ret.skill == NightWalker.POISON_BOMB) {
             ret.charge = lea.readInt();
         } else {
@@ -685,19 +684,21 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
 
         boolean canCrit = false;
         if(chr.getJob().isA((MapleJob.BOWMAN)) || chr.getJob().isA(MapleJob.THIEF) || chr.getJob().isA(MapleJob.NIGHTWALKER1) || chr.getJob().isA(MapleJob.WINDARCHER1) || chr.getJob() == MapleJob.ARAN3 || chr.getJob() == MapleJob.ARAN4 || chr.getJob() == MapleJob.MARAUDER || chr.getJob() == MapleJob.BUCCANEER) {
-			canCrit = true;
-        } 
-		if(chr.getBuffEffect(MapleBuffStat.SHARP_EYES) != null) {
-			// Any class that has sharp eyes can crit. Also, since it stacks with normal crit go ahead
-			// and calc it in.
             canCrit = true;
-			calcDmgMax *= 1.4;
         }
         
-		boolean shadowPartner = false;
-		if(chr.getBuffEffect(MapleBuffStat.SHADOWPARTNER) != null)
-			shadowPartner = true;
-		
+        if(chr.getBuffEffect(MapleBuffStat.SHARP_EYES) != null) {
+            // Any class that has sharp eyes can crit. Also, since it stacks with normal crit go ahead
+            // and calc it in.
+
+            canCrit = true;
+            calcDmgMax *= 1.4;
+        }
+        
+        boolean shadowPartner = false;
+        if(chr.getBuffEffect(MapleBuffStat.SHADOWPARTNER) != null) {
+            shadowPartner = true;
+        }	
 		
         if(ret.skill != 0) {
             int fixed = ret.getAttackEffect(chr, SkillFactory.getSkill(ret.skill)).getFixDamage();

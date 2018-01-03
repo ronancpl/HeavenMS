@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -130,6 +131,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         dropPos.x -= (12 * numItems);
         
         if(!delayed) {
+            MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            
             for (ReactorDropEntry d : items) {
                 if (d.itemId == 0) {
                     int range = maxMeso - minMeso;
@@ -138,8 +141,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                     reactor.getMap().spawnMesoDrop(mesoDrop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), reactor, client.getPlayer(), false, (byte) 2);
                 } else {
                     Item drop;
-                    MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                    if (ii.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
+                    
+                    if (ItemConstants.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
                         drop = new Item(d.itemId, (short) 0, (short) 1);
                     } else {
                         drop = ii.randomizeStats((Equip) ii.getEquipById(d.itemId));
@@ -171,10 +174,11 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                         r.getMap().spawnMesoDrop(mesoDrop, r.getMap().calcDropPos(dropPos, r.getPosition()), r, chr, false, (byte) 2);
                     } else {
                         Item drop;
-                        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                        if (ii.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
+                        
+                        if (ItemConstants.getInventoryType(d.itemId) != MapleInventoryType.EQUIP) {
                             drop = new Item(d.itemId, (short) 0, (short) 1);
                         } else {
+                            MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                             drop = ii.randomizeStats((Equip) ii.getEquipById(d.itemId));
                         }
 

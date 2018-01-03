@@ -384,7 +384,7 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
     private static boolean hasItems(MapleClient c, MakerItemCreateEntry recipe) {
         for (Pair<Integer, Integer> p : recipe.getReqItems()) {
             int itemId = p.getLeft();
-            if (c.getPlayer().getInventory(ii.getInventoryType(itemId)).countById(itemId) < p.getRight()) {
+            if (c.getPlayer().getInventory(ItemConstants.getInventoryType(itemId)).countById(itemId) < p.getRight()) {
                 return false;
             }
         }

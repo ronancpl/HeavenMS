@@ -23,8 +23,8 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.autoban.AutobanFactory;
+import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
-import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -50,7 +50,7 @@ public final class NPCShopHandler extends AbstractMaplePacketHandler {
             short slot = slea.readShort();
             int itemId = slea.readInt();
             short quantity = slea.readShort();
-            c.getPlayer().getShop().sell(c, MapleItemInformationProvider.getInstance().getInventoryType(itemId), slot, quantity);
+            c.getPlayer().getShop().sell(c, ItemConstants.getInventoryType(itemId), slot, quantity);
         } else if (bmode == 2) { // recharge ;)
             byte slot = (byte) slea.readShort();
             c.getPlayer().getShop().recharge(c, slot);

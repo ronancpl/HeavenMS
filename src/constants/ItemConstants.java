@@ -22,6 +22,8 @@
 package constants;
 
 import client.inventory.MapleInventoryType;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -29,6 +31,8 @@ import client.inventory.MapleInventoryType;
  * @author Ronan
  */
 public final class ItemConstants {
+    protected static Map<Integer, MapleInventoryType> inventoryTypeCache = new HashMap<>();
+    
     public final static int LOCK = 0x01;
     public final static int SPIKES = 0x02;
     public final static int COLD = 0x04;
@@ -141,11 +145,19 @@ public final class ItemConstants {
     }
 
     public static MapleInventoryType getInventoryType(final int itemId) {
+        if (inventoryTypeCache.containsKey(itemId)) {
+            return inventoryTypeCache.get(itemId);
+        }
+        
+        MapleInventoryType ret = MapleInventoryType.UNDEFINED;
+        
 	final byte type = (byte) (itemId / 1000000);
-	if (type < 1 || type > 5) {
-	    return MapleInventoryType.UNDEFINED;
+	if (type >= 1 && type <= 5) {
+	    ret = MapleInventoryType.getByType(type);
 	}
-	return MapleInventoryType.getByType(type);
+        
+        inventoryTypeCache.put(itemId, ret);
+        return ret;
     }
     
     public static boolean isMakerReagent(int itemId) {

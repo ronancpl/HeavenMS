@@ -28,7 +28,7 @@
 */
 
 function end(mode, type, selection) {
-        if(qm.haveItem(4001159, 25) && qm.haveItem(4001160, 25) && qm.getPlayer().getItemQuantity(1122010, true) == 0) {
+        if(qm.haveItem(4001159, 25) && qm.haveItem(4001160, 25) && !qm.haveItemWithId(1122010, true)) {
             if(qm.canHold(1122010)) {
                 qm.gainItem(4001159, -25);
                 qm.gainItem(4001160, -25);

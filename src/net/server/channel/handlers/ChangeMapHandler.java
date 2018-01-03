@@ -80,7 +80,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 					}
 					if (executeStandardPath) {
 						MapleMap to = chr.getMap();
-						if (wheel && chr.getItemQuantity(5510000, false) > 0) {
+						if (wheel && chr.haveItemWithId(5510000, false)) {
 							MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
 							chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));
 						} else {

@@ -138,7 +138,7 @@ public class MapleStorage {
 
             List<Item> list = getItems();
             for (Item item : list) {
-                itemsWithType.add(new Pair<>(item, MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())));
+                itemsWithType.add(new Pair<>(item, item.getInventoryType()));
             }
 
             ItemFactory.STORAGE.saveItems(itemsWithType, id, con);
@@ -163,7 +163,7 @@ public class MapleStorage {
         try {
             ret = items.remove(slot);
             
-            MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(ret.getItemId());
+            MapleInventoryType type = ret.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
         } finally {
             lock.unlock();
@@ -177,7 +177,7 @@ public class MapleStorage {
         try {
             items.add(item);
             
-            MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId());
+            MapleInventoryType type = item.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
         } finally {
             lock.unlock();
@@ -196,10 +196,9 @@ public class MapleStorage {
     private List<Item> filterItems(MapleInventoryType type) {
         List<Item> storageItems = getItems();
         List<Item> ret = new LinkedList<>();
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         for (Item item : storageItems) {
-            if (ii.getInventoryType(item.getItemId()) == type) {
+            if (item.getInventoryType() == type) {
                 ret.add(item);
             }
         }
@@ -232,16 +231,14 @@ public class MapleStorage {
         }
         */
         
-        final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        
         lock.lock();
         try {
             Collections.sort(items, new Comparator<Item>() {
                 @Override
                 public int compare(Item o1, Item o2) {
-                    if (ii.getInventoryType(o1.getItemId()).getType() < ii.getInventoryType(o2.getItemId()).getType()) {
+                    if (o1.getInventoryType().getType() < o2.getInventoryType().getType()) {
                         return -1;
-                    } else if (ii.getInventoryType(o1.getItemId()) == ii.getInventoryType(o2.getItemId())) {
+                    } else if (o1.getInventoryType() == o2.getInventoryType()) {
                         return 0;
                     }
                     return 1;

@@ -154,7 +154,7 @@ function action(mode, type, selection) {
                 if (status == 0) {
                     var selStr = "You have #b" + cm.getPlayer().getDojoPoints() + "#k training points. Master prefers those with great talent. If you obtain more points than the average, you can receive a belt depending on your score.\r\n";
                     for (var i = 0; i < belts.length; i++) {
-                        if (cm.getPlayer().getItemQuantity(belts[i], true) > 0) {
+                        if (cm.haveItemWithId(belts[i], true)) {
                             selStr += "\r\n     #i" + belts[i] + "# #t" + belts[i] + "#(Obtain)";
                         } else
                             selStr += "\r\n#L" + i + "##i" + belts[i] + "# #t" + belts[i] + "#l";

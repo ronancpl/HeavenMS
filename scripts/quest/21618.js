@@ -64,7 +64,7 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            if(qm.getPlayer().getItemQuantity(1902017, false) == 0) {
+            if(!qm.haveItemWithId(1902017, false)) {
                 qm.sendNext("You will have to unequip the wolf first before going for the evolution.");
                 qm.dispose();
                 return;

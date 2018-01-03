@@ -497,10 +497,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return null;
     }
 
-    public int addDojoPointsByMap() {
+    public int addDojoPointsByMap(int mapid) {
         int pts = 0;
         if (dojoPoints < 17000) {
-            pts = 1 + ((getMap().getId() - 1) / 100 % 100) / 6;
+            pts = 1 + ((mapid - 1) / 100 % 100) / 6;
             if (!getDojoParty()) {
                 pts++;
             }
@@ -1589,7 +1589,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public int countItem(int itemid) {
-        return inventory[ii.getInventoryType(itemid).ordinal()].countById(itemid);
+        return inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
     }
     
     public boolean canHold(int itemid) {
@@ -1604,7 +1604,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 return true;
         }
 
-        return getInventory(ii.getInventoryType(itemid)).getNextFreeSlot() > -1;
+        return getInventory(ItemConstants.getInventoryType(itemid)).getNextFreeSlot() > -1;
     }
 
     public void decreaseBattleshipHp(int decrease) {
@@ -3800,8 +3800,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return itemEffect;
     }
 
+    public boolean haveItemWithId(int itemid, boolean checkEquipped) {
+        return (inventory[ItemConstants.getInventoryType(itemid).ordinal()].findById(itemid) != null) ||
+        (checkEquipped && inventory[MapleInventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
+    }
+    
     public int getItemQuantity(int itemid, boolean checkEquipped) {
-        int possesed = inventory[ii.getInventoryType(itemid).ordinal()].countById(itemid);
+        int possesed = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
         if (checkEquipped) {
             possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countById(itemid);
         }
@@ -3809,7 +3814,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public int getCleanItemQuantity(int itemid, boolean checkEquipped) {
-        int possesed = inventory[ii.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
+        int possesed = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
         if (checkEquipped) {
             possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countNotOwnedById(itemid);
         }
@@ -4697,7 +4702,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public boolean hasEmptySlot(int itemId) {
-        return getInventory(ii.getInventoryType(itemId)).getNextFreeSlot() > -1;
+        return getInventory(ItemConstants.getInventoryType(itemId)).getNextFreeSlot() > -1;
     }
     
     public boolean hasEmptySlot(byte invType) {
@@ -5767,7 +5772,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         if (possesed > 0) {
             message("You have used a safety charm, so your EXP points have not been decreased.");
-            MapleInventoryManipulator.removeById(client, ii.getInventoryType(charmID[i]), charmID[i], 1, true, false);
+            MapleInventoryManipulator.removeById(client, ItemConstants.getInventoryType(charmID[i]), charmID[i], 1, true, false);
         } else if (mapid > 925020000 && mapid < 925030000) {
             this.dojoStage = 0;
         } else if (mapid > 980000100 && mapid < 980000700) {

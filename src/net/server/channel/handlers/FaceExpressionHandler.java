@@ -22,17 +22,18 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
+import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
-import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class FaceExpressionHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int emote = slea.readInt();
         if (emote > 7) {
             int emoteid = 5159992 + emote;
-            if (c.getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(emoteid)).findById(emoteid) == null) {
+            if (c.getPlayer().getInventory(ItemConstants.getInventoryType(emoteid)).findById(emoteid) == null) {
                 return;
             }
         }

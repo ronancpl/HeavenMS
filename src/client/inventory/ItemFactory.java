@@ -133,7 +133,7 @@ public enum ItemFactory {
                     items.add(new Pair<>(item, mit));
                 }
             }
-
+            
             rs.close();
             ps.close();
             con.close();

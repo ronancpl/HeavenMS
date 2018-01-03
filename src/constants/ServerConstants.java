@@ -59,6 +59,7 @@ public class ServerConstants {
     public static final boolean USE_AUTOSAVE = true;                //Enables server autosaving feature (saves characters to DB each 1 hour).
     public static final boolean USE_SERVER_AUTOASSIGNER = true;     //Server-builtin autoassigner, uses algorithm based on distributing AP accordingly with required secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
+    public static final boolean USE_ENFORCE_HPMP_SWAP = false;      //Forces players to reuse stats (via AP Resetting) located on HP/MP pool only inside the HP/MP stats.
     public static final boolean USE_ENFORCE_MOB_LEVEL_RANGE = true; //Players N levels below the killed mob will gain no experience from defeating it.
     public static final boolean USE_ENFORCE_JOB_LEVEL_RANGE = false;//Caps the player level on the minimum required to advance their current jobs.
     public static final boolean USE_ENFORCE_OWL_SUGGESTIONS = false;//Forces the Owl of Minerva to always display the defined item array on GameConstants.OWL_DATA instead of those featured by the players.
@@ -131,7 +132,8 @@ public class ServerConstants {
     public static final byte CHAIR_EXTRA_HEAL_HP = 70;          //Each chair extra heal proc increasing HP.
     public static final byte CHAIR_EXTRA_HEAL_MP = 42;          //Each chair extra heal proc increasing MP.
     
-    //Pet Auto-Pot Recovery Rates
+    //Pet Auto-Pot Configuration
+    public static final boolean USE_EQUIPS_ON_AUTOPOT = true;   //Player MaxHP and MaxMP check values on autopot handler will be updated by the HP/MP bonuses on equipped items.
     public static final double PET_AUTOHP_RATIO = 0.99;         //Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;
     

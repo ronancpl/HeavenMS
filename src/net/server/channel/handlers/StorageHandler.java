@@ -45,7 +45,6 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		MapleCharacter chr = c.getPlayer();
-		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 		byte mode = slea.readByte();
 		final MapleStorage storage = chr.getStorage();
 
@@ -66,7 +65,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			slot = storage.getSlot(MapleInventoryType.getByType(type), slot);
 			Item item = storage.getItem(slot);
 			if (item != null) {
-				if (MapleItemInformationProvider.getInstance().isPickupRestricted(item.getItemId()) && chr.getItemQuantity(item.getItemId(), true) > 0) {
+				if (MapleItemInformationProvider.getInstance().isPickupRestricted(item.getItemId()) && chr.haveItemWithId(item.getItemId(), true)) {
 					c.announce(MaplePacketCreator.getStorageError((byte) 0x0C));    
 					return;
 				}
@@ -86,7 +85,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 						item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
 					}
 					MapleInventoryManipulator.addFromDrop(c, item, false);
-					storage.sendTakenOut(c, ii.getInventoryType(item.getItemId()));
+					storage.sendTakenOut(c, item.getInventoryType());
 				} else {
 					c.announce(MaplePacketCreator.getStorageError((byte) 0x0A));
 				}
@@ -95,7 +94,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			short slot = slea.readShort();
 			int itemId = slea.readInt();
 			short quantity = slea.readShort();
-			MapleInventoryType slotType = ii.getInventoryType(itemId);
+			MapleInventoryType slotType = ItemConstants.getInventoryType(itemId);
 			MapleInventory Inv = chr.getInventory(slotType);
 			if (slot < 1 || slot > Inv.getSlotLimit()) { //player inv starts at one
 				AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
@@ -115,7 +114,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			if (chr.getMeso() < meso) {
 				c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
 			} else {
-				MapleInventoryType type = ii.getInventoryType(itemId);
+				MapleInventoryType type = ItemConstants.getInventoryType(itemId);
 				Item item = chr.getInventory(type).getItem(slot).copy();
 				if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargable(itemId))) {
 					if (ItemConstants.isRechargable(itemId)) {
@@ -125,7 +124,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 					MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
 					item.setQuantity(quantity);
 					storage.store(item);
-					storage.sendStored(c, ii.getInventoryType(itemId));
+					storage.sendStored(c, ItemConstants.getInventoryType(itemId));
 					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
 					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	
 				}

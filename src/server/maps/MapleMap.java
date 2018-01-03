@@ -560,27 +560,28 @@ public class MapleMap {
         return new Pair(getRoundedCoordinate(angle), Integer.valueOf((int)distn));
     }
 
-    private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob) {
-        if (mob.dropsDisabled() || !dropsOn) {
-            return;
+    private static void sortDropEntries(List<MonsterDropEntry> from, List<MonsterDropEntry> item, List<MonsterDropEntry> quest) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
+        for(MonsterDropEntry mde : from) {
+            if(mde.itemId == 0 || !ii.isQuestItem(mde.itemId)) {
+                item.add(mde);
+            } else {
+                quest.add(mde);
+            }
         }
-        final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
-        final int mobpos = mob.getPosition().x;
-        int chRate = chr.getDropRate();
-        Item idrop;
-        byte d = 1;
-        Point pos = new Point(0, mob.getPosition().y);
-
-        MonsterStatusEffect stati = mob.getStati(MonsterStatus.SHOWDOWN);
-        if (stati != null) {
-            chRate *= (stati.getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
+    }
+    
+    private byte dropItemsFromMonsterOnMap(List<MonsterDropEntry> dropEntry, Point pos, byte d, int chRate, byte droptype, int mobpos, MapleCharacter chr, MapleMonster mob) {
+        if(dropEntry.isEmpty()) {
+            return d;
         }
-
-        final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
-        final List<MonsterDropEntry> dropEntry = new ArrayList<>(mi.retrieveDrop(mob.getId()));
-
+        
         Collections.shuffle(dropEntry);
+        
+        Item idrop;
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
         for (final MonsterDropEntry de : dropEntry) {
             if (Randomizer.nextInt(999999) < de.chance * chRate) {
                 if (droptype == 3) {
@@ -611,8 +612,16 @@ public class MapleMap {
                 d++;
             }
         }
-        final List<MonsterGlobalDropEntry> globalEntry = mi.getGlobalDrop();
-        // Global Drops
+        
+        return d;
+    }
+    
+    private byte dropGlobalItemsFromMonsterOnMap(List<MonsterGlobalDropEntry> globalEntry, Point pos, byte d, byte droptype, int mobpos, MapleCharacter chr, MapleMonster mob) {
+        Collections.shuffle(globalEntry);
+        
+        Item idrop;
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
         for (final MonsterGlobalDropEntry de : globalEntry) {
             if (Randomizer.nextInt(999999) < de.chance) {
                 if (droptype == 3) {
@@ -631,6 +640,40 @@ public class MapleMap {
                 }
             }
         }
+        
+        return d;
+    }
+    
+    private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob) {
+        if (mob.dropsDisabled() || !dropsOn) {
+            return;
+        }
+        final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
+        final int mobpos = mob.getPosition().x;
+        int chRate = chr.getDropRate();
+        byte d = 1;
+        Point pos = new Point(0, mob.getPosition().y);
+
+        MonsterStatusEffect stati = mob.getStati(MonsterStatus.SHOWDOWN);
+        if (stati != null) {
+            chRate *= (stati.getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
+        }
+
+        final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
+        
+        final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
+        final List<MonsterDropEntry> questEntry = new ArrayList<>();
+        sortDropEntries(mi.retrieveDrop(mob.getId()), dropEntry, questEntry);
+        
+        // Normal Drops
+        d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+        
+        // Global Drops
+        final List<MonsterGlobalDropEntry> globalEntry = mi.getGlobalDrop();
+        d = dropGlobalItemsFromMonsterOnMap(globalEntry, pos, d, droptype, mobpos, chr, mob);
+        
+        // Quest Drops
+        dropItemsFromMonsterOnMap(questEntry, pos, d, chRate, droptype, mobpos, chr, mob);
     }
     
     public void dropFromReactor(final MapleCharacter chr, final MapleReactor reactor, Item drop, Point dropPos, short questid) {
@@ -1852,7 +1895,7 @@ public class MapleMap {
                 final Item drop;
                 int randomedId = list.get(i);
 
-                if (ii.getInventoryType(randomedId) != MapleInventoryType.EQUIP) {
+                if (ItemConstants.getInventoryType(randomedId) != MapleInventoryType.EQUIP) {
                     drop = new Item(randomedId, (short) 0, (short) (rnd.nextInt(copies) + minCopies));
                 } else {
                     drop = ii.randomizeStats((Equip) ii.getEquipById(randomedId));
@@ -2567,7 +2610,7 @@ public class MapleMap {
     }
     
     public void setMapPointBoundings(int px, int py, int h, int w) {
-        mapArea.setBounds(px + 7, py, w - 14, h);
+        mapArea.setBounds(px + 45, py, w - 90, h);
     }
     
     public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {

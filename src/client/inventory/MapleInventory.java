@@ -367,7 +367,7 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public static boolean checkSpot(MapleCharacter chr, Item item) {
-    	if (chr.getInventory(MapleInventoryType.getByType(item.getType())).isFull()) return false;
+    	if (chr.getInventory(item.getInventoryType()).isFull()) return false;
     	return true;
     }
     
@@ -437,7 +437,7 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed) {
-        // assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0.
+        //assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0 and item list to be checked is a legal one.
         
         Map<Long, Short> rcvItems = new LinkedHashMap<>();
         Map<Long, Byte> rcvTypes = new LinkedHashMap<>();
@@ -493,7 +493,7 @@ public class MapleInventory implements Iterable<Item> {
         boolean isRing = false;
         Equip equip = null;
 	for (Item item : list()) {
-            if (item.getType() == MapleInventoryType.EQUIP.getType()) {
+            if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                 equip = (Equip) item;
                 isRing = equip.getRingId() > -1;
             }

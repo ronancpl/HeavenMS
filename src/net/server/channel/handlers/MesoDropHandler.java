@@ -31,7 +31,8 @@ import client.MapleClient;
  *
  * @author Matze
  */
-public final class MesoDropHandler extends AbstractMaplePacketHandler {//FIX
+public final class MesoDropHandler extends AbstractMaplePacketHandler {
+        @Override
         public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
                 MapleCharacter player = c.getPlayer();
                 if (!player.isAlive()) {

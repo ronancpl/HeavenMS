@@ -6,7 +6,7 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if(cm.getPlayer().getItemQuantity(1902016, true) > 0) {
+    if(cm.haveItemWithId(1902016, true)) {
         cm.warp(140010210, 0);
     } else {
         cm.sendOk("What is it? If you you're here to waste my time, get lost!");

@@ -361,7 +361,8 @@ public class MaplePacketCreator {
                 boolean isRing = false;
                 Equip equip = null;
                 short pos = item.getPosition();
-                if (item.getType() == 1) {
+                byte itemType = item.getItemType();
+                if (itemType == 1) {
                         equip = (Equip) item;
                         isRing = equip.getRingId() > -1;
                 }
@@ -375,7 +376,7 @@ public class MaplePacketCreator {
                                 mplew.write(pos);
                         }
                 }
-                mplew.write(item.getType());
+                mplew.write(itemType);
                 mplew.writeInt(item.getItemId());
                 mplew.writeBool(isCash);
                 if (isCash) {
@@ -5081,7 +5082,7 @@ public class MaplePacketCreator {
         }
         
         public static byte[] owlOfMinerva(MapleClient c, int itemid, List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable) {
-                byte itemType = MapleItemInformationProvider.getInstance().getInventoryType(itemid).getType();
+                byte itemType = ItemConstants.getInventoryType(itemid).getType();
                 
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SHOP_SCANNER_RESULT.getValue()); // header.
@@ -6425,6 +6426,15 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] sendDueyNotification(boolean quickDelivery) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PARCEL.getValue());
+                mplew.write(0x1B);
+                mplew.writeBool(quickDelivery);  // 0 : package received, 1 : quick delivery package
+                
+                return mplew.getPacket();
+        }
+        
         public static byte[] sendDueyMSG(byte operation) {
                 return sendDuey(operation, null);
         }
@@ -6865,7 +6875,7 @@ public class MaplePacketCreator {
                 boolean isGift = giftMessage != null;
                 boolean isRing = false;
                 Equip equip = null;
-                if (item.getType() == 1) {
+                if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                         equip = (Equip) item;
                         isRing = equip.getRingId() > -1;
                 }

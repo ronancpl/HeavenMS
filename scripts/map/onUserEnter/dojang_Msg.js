@@ -31,6 +31,8 @@ function start(ms) {
         if(ms.getPlayer().getMap().findClosestPlayerSpawnpoint(ms.getPlayer().getPosition()).getId() == 0) {
             ms.getPlayer().startMapEffect(messages[(Math.random() * messages.length) | 0], 5120024);
         }
+        
+        ms.resetDojoEnergy();
     } else {
         ms.getPlayer().resetEnteredScript(); //in case the person dcs in here we set it at dojang_tuto portal
         ms.getPlayer().startMapEffect("Ha! Let's see what you got! I won't let you leave unless you defeat me first!", 5120024);

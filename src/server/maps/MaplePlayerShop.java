@@ -24,6 +24,7 @@ package server.maps;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Item;
+import client.inventory.MapleInventoryType;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -187,6 +188,10 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
     }
 
+    private static boolean canBuy(MapleClient c, Item newItem) {
+        return MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false);
+    }
+    
     /**
      * no warnings for now o.o
      * @param c
@@ -201,14 +206,14 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                 newItem.setQuantity(newItem.getQuantity());
                 if (quantity < 1 || pItem.getBundles() < 1 || newItem.getQuantity() > pItem.getBundles() || !pItem.isExist()) {
                     return;
-                } else if (newItem.getType() == 1 && newItem.getQuantity() > 1) {
+                } else if (newItem.getInventoryType().equals(MapleInventoryType.EQUIP) && newItem.getQuantity() > 1) {
                     return;
                 }
                 synchronized (c.getPlayer()) {
                     int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
                     
                     if (c.getPlayer().getMeso() >= price) {
-                        if (MapleInventoryManipulator.addFromDrop(c, newItem, false)) {
+                        if (canBuy(c, newItem)) {
                             c.getPlayer().gainMeso(-price, false);
                             
                             announceItemSold(newItem, price);   // idea thanks to vcoc
@@ -235,9 +240,8 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     
     private void announceItemSold(Item item, int mesos) {
         String qtyStr = (item.getQuantity() > 1) ? " (qty. " + item.getQuantity() + ")" : "";
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
-        owner.dropMessage(6, "[PLAYER SHOP] Item '" + ii.getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
+        owner.dropMessage(6, "[PLAYER SHOP] Item '" + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
     }
 
     public void broadcastToVisitors(final byte[] packet) {

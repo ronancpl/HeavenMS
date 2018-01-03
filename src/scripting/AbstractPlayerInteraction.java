@@ -46,7 +46,6 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import server.maps.MapleMiniDungeon;
 import server.partyquest.PartyQuest;
 import server.partyquest.Pyramid;
 import server.quest.MapleQuest;
@@ -202,6 +201,14 @@ public class AbstractPlayerInteraction {
                 return getPlayer().getItemQuantity(itemid, false);
         }
 
+        public boolean haveItemWithId(int itemid) {
+                return haveItemWithId(itemid, false);
+        }
+        
+        public boolean haveItemWithId(int itemid, boolean checkEquipped) {
+                return getPlayer().haveItemWithId(itemid, checkEquipped);
+        }
+        
 	public boolean canHold(int itemid) {
                 return canHold(itemid, 1);
         }
@@ -227,7 +234,7 @@ public class AbstractPlayerInteraction {
             List<Pair<Item, MapleInventoryType>> addedItems = new LinkedList<>();
             for(int i = 0; i < size; i++) {
                 Item it = new Item(itemids.get(i), (short) 0, quantity.get(i).shortValue());
-                addedItems.add(new Pair<>(it, MapleItemInformationProvider.getInstance().getInventoryType(itemids.get(i))));
+                addedItems.add(new Pair<>(it, ItemConstants.getInventoryType(itemids.get(i))));
             }
             
             return MapleInventory.checkSpots(c.getPlayer(), addedItems);
@@ -447,7 +454,7 @@ public class AbstractPlayerInteraction {
                     
 			MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 
-			if (ii.getInventoryType(id).equals(MapleInventoryType.EQUIP)) {
+			if (ItemConstants.getInventoryType(id).equals(MapleInventoryType.EQUIP)) {
 				item = ii.getEquipById(id);
                                 
                                 if(item != null) {
@@ -459,7 +466,7 @@ public class AbstractPlayerInteraction {
                                         if(!(c.getPlayer().isGM() && ServerConstants.USE_PERFECT_GM_SCROLL)) {
                                             eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
                                         }
-                                        item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 0, c.getPlayer().isGM());
+                                        item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 2049100, c.getPlayer().isGM());
                                     }
                                 }
 			} else {
@@ -472,10 +479,10 @@ public class AbstractPlayerInteraction {
                         item.setPetId(petId);
 
 			if (!MapleInventoryManipulator.checkSpace(c, id, quantity, "")) {
-				c.getPlayer().dropMessage(1, "Your inventory is full. Please remove an item from your " + ii.getInventoryType(id).name() + " inventory.");
+				c.getPlayer().dropMessage(1, "Your inventory is full. Please remove an item from your " + ItemConstants.getInventoryType(id).name() + " inventory.");
 				return null;
 			}
-			if (ii.getInventoryType(id).equals(MapleInventoryType.EQUIP) && !ItemConstants.isRechargable(item.getItemId())) {
+			if (ItemConstants.getInventoryType(id) == MapleInventoryType.EQUIP) {
 				if (randomStats) {
 					item = ii.randomizeStats((Equip) item);
 					MapleInventoryManipulator.addFromDrop(c, ii.randomizeStats((Equip) item), false, petId);
@@ -486,7 +493,7 @@ public class AbstractPlayerInteraction {
 				MapleInventoryManipulator.addFromDrop(c, item, false, petId);
 			}
 		} else {
-			MapleInventoryManipulator.removeById(c, MapleItemInformationProvider.getInstance().getInventoryType(id), id, -quantity, true, false);
+			MapleInventoryManipulator.removeById(c, ItemConstants.getInventoryType(id), id, -quantity, true, false);
 		}
 		if (showMessage) {
 			c.announce(MaplePacketCreator.getShowItemGain(id, quantity, true));
@@ -604,7 +611,7 @@ public class AbstractPlayerInteraction {
 			if (quantity >= 0) {
 				MapleInventoryManipulator.addById(cl, id, quantity);
 			} else {
-				MapleInventoryManipulator.removeById(cl, MapleItemInformationProvider.getInstance().getInventoryType(id), id, -quantity, true, false);
+				MapleInventoryManipulator.removeById(cl, ItemConstants.getInventoryType(id), id, -quantity, true, false);
 			}
 			cl.announce(MaplePacketCreator.getShowItemGain(id, quantity, true));
 		}
@@ -683,11 +690,11 @@ public class AbstractPlayerInteraction {
 
 	public void removeFromParty(int id, List<MapleCharacter> party) {
 		for (MapleCharacter chr : party) {
-			MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(id);
+			MapleInventoryType type = ItemConstants.getInventoryType(id);
 			MapleInventory iv = chr.getInventory(type);
 			int possesed = iv.countById(id);
 			if (possesed > 0) {
-				MapleInventoryManipulator.removeById(c, MapleItemInformationProvider.getInstance().getInventoryType(id), id, possesed, true, false);
+				MapleInventoryManipulator.removeById(c, ItemConstants.getInventoryType(id), id, possesed, true, false);
 				chr.announce(MaplePacketCreator.getShowItemGain(id, (short) -possesed, true));
 			}
 		}
@@ -698,10 +705,10 @@ public class AbstractPlayerInteraction {
 	}
 
 	public void removeAll(int id, MapleClient cl) {
-		MapleInventoryType invType = MapleItemInformationProvider.getInstance().getInventoryType(id);
+		MapleInventoryType invType = ItemConstants.getInventoryType(id);
 		int possessed = cl.getPlayer().getInventory(invType).countById(id);
 		if (possessed > 0) {
-			MapleInventoryManipulator.removeById(cl, MapleItemInformationProvider.getInstance().getInventoryType(id), id, possessed, true, false);
+			MapleInventoryManipulator.removeById(cl, ItemConstants.getInventoryType(id), id, possessed, true, false);
 			cl.announce(MaplePacketCreator.getShowItemGain(id, (short) -possessed, true));
 		}
 		

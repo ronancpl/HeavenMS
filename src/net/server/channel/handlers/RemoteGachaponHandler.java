@@ -23,9 +23,9 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.autoban.AutobanFactory;
+import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import scripting.npc.NPCScriptManager;
-import server.MapleItemInformationProvider;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -33,6 +33,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Generic
  */
 public final class RemoteGachaponHandler extends AbstractMaplePacketHandler {
+        @Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		int ticket = slea.readInt();
 		int gacha = slea.readInt();
@@ -44,7 +45,7 @@ public final class RemoteGachaponHandler extends AbstractMaplePacketHandler {
 			AutobanFactory.GENERAL.alert(c.getPlayer(), " Tried to use RemoteGachaponHandler with mode: " + gacha);
 			c.disconnect(false, false);
 			return;
-		} else if (c.getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(ticket)).countById(ticket) < 1) {
+		} else if (c.getPlayer().getInventory(ItemConstants.getInventoryType(ticket)).countById(ticket) < 1) {
 			AutobanFactory.GENERAL.alert(c.getPlayer(), " Tried to use RemoteGachaponHandler without a ticket.");
 			c.disconnect(false, false);
 			return;

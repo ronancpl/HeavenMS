@@ -44,6 +44,7 @@ import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 
 public final class MTSHandler extends AbstractMaplePacketHandler {
 
@@ -98,7 +99,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 if (quantity < 0 || price < 110 || c.getPlayer().getItemQuantity(itemid, false) < quantity) {
                     return;
                 }
-                MapleInventoryType type = MapleItemInformationProvider.getInstance().getInventoryType(itemid);
+                MapleInventoryType type = ItemConstants.getInventoryType(itemid);
                 Item i = c.getPlayer().getInventory(type).getItem(slot).copy();
                 if (i != null && c.getPlayer().getMeso() >= 5000) {
                     Connection con = null;
@@ -155,7 +156,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         } else {
                             date += day + "";
                         }
-                        if (i.getType() == 2) {
+                        if (!i.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                             Item item = (Item) i;
                             ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, seller, price, owner, sellername, sell_ends) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             ps.setInt(1, 1);
@@ -294,7 +295,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         if (rs.getInt("type") != 1) {
                             Item ii = new Item(rs.getInt("itemid"), (short) 0, (short) rs.getInt("quantity"));
                             ii.setOwner(rs.getString("owner"));
-                            ii.setPosition(c.getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(rs.getInt("itemid"))).getNextFreeSlot());
+                            ii.setPosition(c.getPlayer().getInventory(ItemConstants.getInventoryType(rs.getInt("itemid"))).getNextFreeSlot());
                             i = ii.copy();
                         } else {
                             Equip equip = new Equip(rs.getInt("itemid"), (byte) rs.getInt("position"), -1);
@@ -319,7 +320,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             equip.setLevel((byte) rs.getInt("level"));
                             equip.setVicious((byte) rs.getInt("vicious"));
                             equip.setFlag((byte) rs.getInt("flag"));
-                            equip.setPosition(c.getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(rs.getInt("itemid"))).getNextFreeSlot());
+                            equip.setPosition(c.getPlayer().getInventory(ItemConstants.getInventoryType(rs.getInt("itemid"))).getNextFreeSlot());
                             i = equip.copy();
                         }
                         try (PreparedStatement pse = con.prepareStatement("DELETE FROM mts_items WHERE id = ? AND seller = ? AND transfer = 1")) {

@@ -89,7 +89,6 @@ public class CashShop {
         }
 
         public Item toItem() {
-            MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
             Item item;
 
             int petid = -1;
@@ -97,8 +96,8 @@ public class CashShop {
             if (ItemConstants.isPet(itemId))
                 petid = MaplePet.createPet(itemId);
 
-            if (ii.getInventoryType(itemId).equals(MapleInventoryType.EQUIP)) {
-                item = ii.getEquipById(itemId);
+            if (ItemConstants.getInventoryType(itemId).equals(MapleInventoryType.EQUIP)) {
+                item = MapleItemInformationProvider.getInstance().getEquipById(itemId);
             } else {
                 item = new Item(itemId, (byte) 0, count, petid);
             }
@@ -353,7 +352,7 @@ public class CashShop {
         boolean isRing = false;
         Equip equip = null;
         for (Item item : getInventory()) {
-            if (item.getType() == 1) {
+            if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                 equip = (Equip) item;
                 isRing = equip.getRingId() > -1;
             }
@@ -440,7 +439,7 @@ public class CashShop {
                 Item item = cItem.toItem();
                 Equip equip = null;
                 item.setGiftFrom(rs.getString("from"));
-                if (item.getType() == MapleInventoryType.EQUIP.getType()) {
+                if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                     equip = (Equip) item;
                     equip.setRingId(rs.getInt("ringid"));
                     gifts.add(new Pair<Item, String>(equip, rs.getString("message")));
@@ -491,7 +490,7 @@ public class CashShop {
 
         List<Item> inv = getInventory();
         for (Item item : inv) {
-            itemsWithType.add(new Pair<>(item, MapleItemInformationProvider.getInstance().getInventoryType(item.getItemId())));
+            itemsWithType.add(new Pair<>(item, item.getInventoryType()));
         }
 
         factory.saveItems(itemsWithType, accountId, con);

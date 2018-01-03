@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,7 +35,6 @@ import java.util.List;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.MapleInventoryManipulator;
-import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestActionType;
 import tools.MaplePacketCreator;
@@ -92,7 +92,6 @@ public class ItemAction extends MapleQuestAction {
                 List<Pair<Integer, Integer>> takeItem = new LinkedList<>();
                 List<Pair<Integer, Integer>> giveItem = new LinkedList<>();
             
-		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 int props = 0, rndProps = 0, accProps = 0;
 		for(ItemData item : items) {
 			if(item.getProp() != null && item.getProp() != -1 && canGetItem(item, chr)) {
@@ -133,7 +132,7 @@ public class ItemAction extends MapleQuestAction {
                 // must take all needed items before giving others
                 
                 for(Pair<Integer, Integer> iEntry: takeItem) {
-                        MapleInventoryType type = ii.getInventoryType(iEntry.getLeft());
+                        MapleInventoryType type = ItemConstants.getInventoryType(iEntry.getLeft());
                         int quantity = iEntry.getRight() * -1; // Invert
                         if(type.equals(MapleInventoryType.EQUIP)) {
                                 if(chr.getInventory(type).countById(iEntry.getLeft()) < quantity) {
@@ -157,8 +156,6 @@ public class ItemAction extends MapleQuestAction {
 	
 	@Override
 	public boolean check(MapleCharacter chr, Integer extSelection) {
-		MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                
 		List<Pair<Item, MapleInventoryType>> gainList = new LinkedList<>();
                 List<Pair<Item, MapleInventoryType>> selectList = new LinkedList<>();
                 List<Pair<Item, MapleInventoryType>> randomList = new LinkedList<>();
@@ -171,7 +168,7 @@ public class ItemAction extends MapleQuestAction {
 				continue;
 			}
                         
-			MapleInventoryType type = ii.getInventoryType(item.getId());
+			MapleInventoryType type = ItemConstants.getInventoryType(item.getId());
 			if(item.getProp() != null) {
                                 Item toItem = new Item(item.getId(), (short) 0, (short) item.getCount());
                             

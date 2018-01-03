@@ -31,7 +31,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -147,7 +146,7 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
     private static int getValidNewYearCardStatus(int itemid, MapleCharacter player, short slot) {
         if(!ItemConstants.isNewYearCardUse(itemid)) return 0x14;
         
-        Item it = player.getInventory(MapleItemInformationProvider.getInstance().getInventoryType(itemid)).getItem(slot);        
+        Item it = player.getInventory(ItemConstants.getInventoryType(itemid)).getItem(slot);        
         return (it != null && it.getItemId() == itemid) ? 0 : 0x12;
     } 
 }

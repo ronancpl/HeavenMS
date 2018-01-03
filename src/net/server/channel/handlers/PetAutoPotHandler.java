@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -22,6 +20,8 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
+import client.MapleCharacter;
+import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import net.AbstractMaplePacketHandler;
@@ -32,6 +32,10 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import constants.ServerConstants;
 
+/**
+ *
+ * @author Ronan
+ */
 public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -39,12 +43,28 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
+        
+        MapleCharacter chr = c.getPlayer();
+        short maxHp = 0, maxMp = 0;
+        
+        if(ServerConstants.USE_EQUIPS_ON_AUTOPOT) {
+            for(Item i : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
+                Equip e = (Equip) i;
+
+                maxHp += e.getHp();
+                maxMp += e.getMp();
+            }
+        }
+                
+        maxHp = (short) Math.min(chr.getMaxHp() + maxHp, 30000);
+        maxMp = (short) Math.min(chr.getMaxMp() + maxMp, 30000);
+        
         slea.readByte();
         slea.readLong();
         slea.readInt();
         short slot = slea.readShort();
         int itemId = slea.readInt();
-        Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
+        Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         
         if(toUse != null) {
             MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
@@ -56,11 +76,15 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
+                
                 MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
-                //stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
-                stat.applyTo(c.getPlayer());
+                stat.applyTo(chr);
 
-            } while(((stat.getHp() > 0 && c.getPlayer().getHp() < ServerConstants.PET_AUTOHP_RATIO * c.getPlayer().getMaxHp()) || (stat.getMp() > 0 && c.getPlayer().getMp() < ServerConstants.PET_AUTOMP_RATIO * c.getPlayer().getMaxMp())) && toUse.getQuantity() > 0);
+                //System.out.println();
+                //System.out.println("hp: " + stat.getHp() + " player hp " + c.getPlayer().getHp() + " maxhp " + maxHp);
+                //System.out.println("mp: " + stat.getMp() + " player mp " + c.getPlayer().getMp() + " maxmp " + maxMp);
+                //System.out.println("redo? " + (((stat.getHp() > 0 && c.getPlayer().getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (stat.getMp() > 0 && c.getPlayer().getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp)) && toUse.getQuantity() > 0));
+            } while(((stat.getHp() > 0 && chr.getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (stat.getMp() > 0 && chr.getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp)) && toUse.getQuantity() > 0);
         }
     }
 }

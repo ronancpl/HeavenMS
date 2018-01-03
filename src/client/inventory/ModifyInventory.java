@@ -1,7 +1,5 @@
 package client.inventory;
 
-import constants.ItemConstants;
-
 /**
  *
  * @author kevin
@@ -28,7 +26,7 @@ public class ModifyInventory {
     }
 
     public final int getInventoryType() {
-        return ItemConstants.getInventoryType(item.getItemId()).getType();
+        return item.getInventoryType().type;
     }
 
     public final short getPosition() {

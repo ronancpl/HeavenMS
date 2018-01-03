@@ -114,48 +114,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = getLocalStartTimes(buffs);
             player.silentGiveBuffs(timedBuffs);
         }
-        Connection con = null;
-        PreparedStatement ps = null;
-        PreparedStatement pss = null;
-        ResultSet rs = null;
-        try {
-            con = DatabaseConnection.getConnection();
-            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE RecieverId = ? and Checked = 1");
-            ps.setInt(1, player.getId());
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                try {
-                    Connection con2 = DatabaseConnection.getConnection();
-                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
-                    pss.setInt(1, player.getId());
-                    pss.executeUpdate();
-                    pss.close();
-                    con2.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                c.announce(MaplePacketCreator.sendDueyMSG((byte) 0x1B));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (pss != null) {
-                    pss.close();
-                }
-                if (ps != null) {
-                    ps.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        
         c.announce(MaplePacketCreator.getCharInfo(player));
         if (!player.isHidden()) {
             player.toggleHide(true);
@@ -286,6 +245,8 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             
         }
         
+        showDueyNotification(c, player);
+        
         if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();
         
         player.resetPlayerRates();
@@ -296,7 +257,53 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.receivePartyMemberHP();
     }
     
-    private List<Pair<Long, PlayerBuffValueHolder>> getLocalStartTimes(List<PlayerBuffValueHolder> lpbvl) {
+    private static void showDueyNotification(MapleClient c, MapleCharacter player) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        PreparedStatement pss = null;
+        ResultSet rs = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE RecieverId = ? and Checked = 1");
+            ps.setInt(1, player.getId());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                try {
+                    Connection con2 = DatabaseConnection.getConnection();
+                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
+                    pss.setInt(1, player.getId());
+                    pss.executeUpdate();
+                    pss.close();
+                    con2.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                c.announce(MaplePacketCreator.sendDueyNotification(false));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pss != null) {
+                    pss.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    private static List<Pair<Long, PlayerBuffValueHolder>> getLocalStartTimes(List<PlayerBuffValueHolder> lpbvl) {
         List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = new ArrayList<>();
         long curtime = System.currentTimeMillis();
         

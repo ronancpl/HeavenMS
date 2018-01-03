@@ -47,7 +47,7 @@ public final class DistributeSPHandler extends AbstractMaplePacketHandler {
         MapleCharacter player = c.getPlayer();
         int remainingSp = player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000));
         boolean isBeginnerSkill = false;
-        if ((!GameConstants.isPQSkillMap(player.getMapId()) && GameConstants.isPqSkill(skillid)) || (!player.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, player.getJob().getId()) && !player.isGM())) {
+        if ((!GameConstants.isPqSkillMap(player.getMapId()) && GameConstants.isPqSkill(skillid)) || (!player.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, player.getJob().getId()) && !player.isGM())) {
             AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
             FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
             c.disconnect(true, false);

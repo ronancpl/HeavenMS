@@ -31,6 +31,7 @@ import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
+import constants.ItemConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Corsair;
@@ -42,7 +43,6 @@ import java.util.List;
 
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
-import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;
@@ -104,7 +104,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                                 byte d = 1;
                                 Point pos = new Point(0, player.getPosition().y);
                                 for (loseItem loseItem : loseItems) {
-                                    type = MapleItemInformationProvider.getInstance().getInventoryType(loseItem.getId());
+                                    type = ItemConstants.getInventoryType(loseItem.getId());
                                     for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
                                         if (Randomizer.nextInt(101) >= loseItem.getChance()) {
                                             if (player.haveItem(loseItem.getId())) {

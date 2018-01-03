@@ -120,10 +120,10 @@ public class Equip extends Item {
     }
 
     @Override
-    public byte getType() {
+    public byte getItemType() {
         return 1;
     }
-
+    
     public byte getUpgradeSlots() {
         return upgradeSlots;
     }

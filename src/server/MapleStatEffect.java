@@ -743,7 +743,7 @@ public class MapleStatEffect {
                     applyto.getClient().announce(MaplePacketCreator.enableActions());
                     return false;
                 }
-                MapleInventoryManipulator.removeById(applyto.getClient(), MapleItemInformationProvider.getInstance().getInventoryType(itemCon), itemCon, itemConNo, false, true);
+                MapleInventoryManipulator.removeById(applyto.getClient(), ItemConstants.getInventoryType(itemCon), itemCon, itemConNo, false, true);
             }
         }
         List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);

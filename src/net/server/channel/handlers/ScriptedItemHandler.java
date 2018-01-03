@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleClient;
 import client.inventory.Item;
+import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import scripting.item.ItemScriptManager;
 import server.MapleItemInformationProvider;
@@ -44,7 +45,7 @@ public final class ScriptedItemHandler extends AbstractMaplePacketHandler {
         scriptedItem info = ii.getScriptedItemInfo(itemId);
         if (info == null) return;
         ItemScriptManager ism = ItemScriptManager.getInstance();
-        Item item = c.getPlayer().getInventory(ii.getInventoryType(itemId)).getItem(itemSlot);
+        Item item = c.getPlayer().getInventory(ItemConstants.getInventoryType(itemId)).getItem(itemSlot);
         if (item == null || item.getItemId() != itemId || item.getQuantity() < 1 || !ism.scriptExists(info.getScript())) {
             return;
         }

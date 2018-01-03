@@ -32,6 +32,7 @@ import server.quest.MapleQuestRequirementType;
 import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 
 /**
  *
@@ -64,7 +65,7 @@ public class ItemRequirement extends MapleQuestRequirement {
 			int countNeeded = items.get(itemId);
 			int count = 0;
 			
-			MapleInventoryType iType = ii.getInventoryType(itemId);
+			MapleInventoryType iType = ItemConstants.getInventoryType(itemId);
 			
 			if (iType.equals(MapleInventoryType.UNDEFINED)) {
 				return false;

@@ -5,7 +5,7 @@
 package dropspider;
 
 import client.inventory.MapleInventoryType;
-import server.MapleItemInformationProvider;
+import constants.ItemConstants;
 
 /**
  *
@@ -29,7 +29,7 @@ public class DropEntry {
     }
 
     private int calculateChance(int item_id) {
-        MapleInventoryType mit = MapleItemInformationProvider.getInstance().getInventoryType(item_id);
+        MapleInventoryType mit = ItemConstants.getInventoryType(item_id);
         boolean boss = DataTool.isBoss(monster_id);
         int number = (item_id / 1000) % 1000;
         switch (mit) {

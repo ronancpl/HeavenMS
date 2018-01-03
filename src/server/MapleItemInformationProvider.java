@@ -138,12 +138,7 @@ public class MapleItemInformationProvider {
         return instance;
     }
 
-    public MapleInventoryType getInventoryType(int itemId) {
-        final byte type = (byte) (itemId / 1000000);
-        if (type < 1 || type > 5) {
-            return MapleInventoryType.UNDEFINED;
-        }
-        return MapleInventoryType.getByType(type);
+//    public MapleInventoryType getInventoryType(int itemId) {
 //        if (inventoryTypeCache.containsKey(itemId)) {
 //            return inventoryTypeCache.get(itemId);
 //        }
@@ -176,7 +171,7 @@ public class MapleItemInformationProvider {
 //        ret = MapleInventoryType.UNDEFINED;
 //        inventoryTypeCache.put(itemId, ret);
 //        return ret;
-    }
+//    }
 
     public List<Pair<Integer, String>> getAllItems() {
         if (!itemNameCache.isEmpty()) {
@@ -879,6 +874,8 @@ public class MapleItemInformationProvider {
                     prop = 30.0;
                 } else if (vegaItemId == 5610001) {
                     prop = 90.0;
+                } else if (vegaItemId == 2049100) {
+                    prop = 100.0;
                 }
                 
                 if(assertGM || rollSuccessChance(prop)) {

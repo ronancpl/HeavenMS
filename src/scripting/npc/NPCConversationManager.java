@@ -55,6 +55,7 @@ import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MaplePet;
+import constants.ItemConstants;
 
 /**
  *
@@ -301,7 +302,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public int itemQuantity(int itemid) {
-		return getPlayer().getInventory(MapleItemInformationProvider.getInstance().getInventoryType(itemid)).countById(itemid);
+		return getPlayer().getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid);
 	}
 
 	public void displayGuildRanks() {

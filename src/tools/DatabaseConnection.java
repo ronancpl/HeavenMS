@@ -22,7 +22,9 @@ public class DatabaseConnection {
         if(ds != null) {
             try {
                 return ds.getConnection();
-            } catch (SQLException sqle) {}
+            } catch (SQLException sqle) {
+                sqle.printStackTrace();
+            }
         }
         
         int denies = 0;

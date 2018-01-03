@@ -144,6 +144,9 @@ public class MapleMapFactory {
                 bounds[3] = MapleDataTool.getInt(minimapData.getChildByPath("width"));
 
                 map.setMapPointBoundings(bounds[0], bounds[1], bounds[2], bounds[3]);
+            } else {
+                int dist = (1 << 18);
+                map.setMapPointBoundings(-dist / 2, -dist / 2, dist, dist);
             }
         } else {
             bounds[2] = MapleDataTool.getInt(infoData.getChildByPath("VRLeft"));

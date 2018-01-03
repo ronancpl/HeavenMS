@@ -822,7 +822,7 @@ public class World {
         
         for(Map.Entry<Integer, Byte> dp: deployedPets.entrySet()) {
             MapleCharacter chr = this.getPlayerStorage().getCharacterById(dp.getKey() / 4);
-            if(chr == null || !chr.isLoggedin()) continue;
+            if(chr == null || !chr.isLoggedin() || chr.isAwayFromWorld()) continue;
             
             Byte dpVal = (byte)(dp.getValue() + 1);
             if(dpVal == ServerConstants.PET_EXHAUST_COUNT) {
@@ -880,7 +880,7 @@ public class World {
         
         for(Map.Entry<Integer, Byte> dp: deployedMounts.entrySet()) {
             MapleCharacter chr = this.getPlayerStorage().getCharacterById(dp.getKey());
-            if(chr == null || !chr.isLoggedin()) continue;
+            if(chr == null || !chr.isLoggedin() || chr.isAwayFromWorld()) continue;
             
             Byte dpVal = (byte)(dp.getValue() + 1);
             if(dpVal == ServerConstants.MOUNT_EXHAUST_COUNT) {

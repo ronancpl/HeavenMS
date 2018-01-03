@@ -729,3 +729,26 @@ MapleQuestItemFetcher agora mostra quests já expiradas no relatório.
 Implementado New Years card.
 Adicionado informação, destinado ao dono da loja, de compra de itens dos Player Shops e dos Hired Merchants.
 Resolvido um problema com overflow em Player Shops.
+
+20 - 22 Dezembro 2017,
+Resolvido problema com itens ainda saindo das bordas de alguns mapas em certos casos.
+Corrigido Enhanced Crafting com a Agent E rodando probabilidade do Chaos Scroll ao fazer o item.
+Resolvido um problema com certos mapas não possuindo minimapa fazendo drops cairem sempre na posição x = 0.
+Corrigido pets reduzindo fullness enquanto no Cash Shop ou no MTS.
+Corrigido bug em skills de PQ/Dojo para players que tem skill level = 0. Espera-se que todos possam "ativá-las".
+Modificado mapa de fora do dojo agora resetando dojo energy, evitando assim possível exploit com skills do dojo.
+Corrigido exploit em dojos permitindo que jogadores acessem mapas de estágios avançados se não progrediram juntos nos estágios anteriores.
+Pontos agora estão sendo corretamente atribuídos aos jogadores que estão sendo automaticamente levados para o próximo rest point (quando um jogador passa pelo último portal de cada etapa).
+Corrigido jogador comprando itens one-of-a-kind dos Hired Merchants quando não se pode obtê-los.
+
+23 - 24 Dezembro 2017,
+Corrigido checagem de itens no inventário não verificando apropriadamente itens one-of-a-kind.
+Adicionado e corrigido vários aspectos do Duey. Descoberto opcodes e respostas de ações de jogadores.
+Corrigido autopot agora contabilizando bonus de HP e MP dos equipamentos nos stats a serem checados.
+Adicionado Ereve na lista de plataformas de Orbis.
+
+27 Dezembro 2017,
+Corrigido AP reset modificando stats de forma errônea.
+
+03 Janeiro 2018,
+Corrigido item megafone permitindo o display de equipamentos não-comercializáveis, mesmo marcados como Untradeable.
