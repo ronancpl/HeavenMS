@@ -11,8 +11,7 @@ function enter(pi) {
     if (map > 0) {
 	if (pi.getPlayerCount(map) == 0) {
 	    var mapp = pi.getMap(map);
-	    mapp.resetFully();
-	    mapp.respawn(true);
+	    mapp.resetPQ();
             
             pi.playPortalSound();
 	    pi.warp(map, 0);

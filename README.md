@@ -111,7 +111,9 @@ The client's set-up is quite straightforward:
 1. From "ManagerMsv83.exe", install MapleStory on your folder of preference (e.g. "C:\Nexon\MapleStory") and follow their instructions.
 2. Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
 3. Extract into the client folder the "localhost.exe" from the provided link.
-4. Overwrite the original WZ files with the ones provided from "client_wz" folder on the Google Drive.
+4. Overwrite the original WZ files with the ones provided from either one of those folders on the Google Drive:
+	- "rev???_wz" (last published RELEASE, source update of same number).
+	- "current_wz" (latest source update).
 
 If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Text String" "127.0.0.1", and applying the changes wherever it fits.
 

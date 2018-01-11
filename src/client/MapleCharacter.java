@@ -3858,12 +3858,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public int getFh() {
-		Point pos = this.getPosition();
-		pos.y -= 6;
-        if (getMap().getFootholds().findBelow(pos) == null) {
+        Point pos = this.getPosition();
+        pos.y -= 6;
+        
+        if (map.getFootholds().findBelow(pos) == null) {
             return 0;
         } else {
-            return getMap().getFootholds().findBelow(pos).getY1();
+            return map.getFootholds().findBelow(pos).getY1();
         }
     }
 

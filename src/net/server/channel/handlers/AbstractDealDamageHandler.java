@@ -240,16 +240,16 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if(attack.skill == Aran.COMBO_SMASH || attack.skill == Aran.BODY_PRESSURE)
                         distanceToDetect += 40000;
                     
-                    if(attack.skill == Bishop.GENESIS || attack.skill == ILArchMage.BLIZZARD || attack.skill == FPArchMage.METEOR_SHOWER)
+                    else if(attack.skill == Bishop.GENESIS || attack.skill == ILArchMage.BLIZZARD || attack.skill == FPArchMage.METEOR_SHOWER)
                         distanceToDetect += 275000;
                     
-                    if(attack.skill == Hero.BRANDISH || attack.skill == DragonKnight.SPEAR_CRUSHER || attack.skill == DragonKnight.POLE_ARM_CRUSHER);
+                    else if(attack.skill == Hero.BRANDISH || attack.skill == DragonKnight.SPEAR_CRUSHER || attack.skill == DragonKnight.POLE_ARM_CRUSHER)
                         distanceToDetect += 40000;
                     
-                    if(attack.skill == DragonKnight.DRAGON_ROAR || attack.skill == SuperGM.SUPER_DRAGON_ROAR)
+                    else if(attack.skill == DragonKnight.DRAGON_ROAR || attack.skill == SuperGM.SUPER_DRAGON_ROAR)
                         distanceToDetect += 250000;
                     
-                    if(attack.skill == Shadower.BOOMERANG_STEP)
+                    else if(attack.skill == Shadower.BOOMERANG_STEP)
                         distanceToDetect += 60000;
                     
                     if(distance > distanceToDetect) {
