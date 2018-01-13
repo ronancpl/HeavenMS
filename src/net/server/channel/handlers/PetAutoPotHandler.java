@@ -1,6 +1,9 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+	This file is part of the OdinMS Maple Story Server
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
+    Copyleft (L) 2017 RonanLana (HeavenMS)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -8,12 +11,10 @@
     the Free Software Foundation. You may not use, modify or distribute
     this program under any other version of the GNU Affero General Public
     License.
-
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -34,7 +35,7 @@ import constants.ServerConstants;
 
 /**
  *
- * @author Ronan
+ * @author Ronan (multi-pot consumption feature)
  */
 public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     @Override
@@ -69,14 +70,12 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         if(toUse != null) {
             MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
             
-            if (toUse.getQuantity() <= 0) return;
+            if (toUse.getQuantity() <= 0 || toUse.getItemId() != itemId) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
             
             do {
-                if (toUse.getItemId() != itemId) {
-                    c.announce(MaplePacketCreator.enableActions());
-                    return;
-                }
-                
                 MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                 stat.applyTo(chr);
 

@@ -253,12 +253,12 @@ public class MapleStorageInventory {
         if(dst > this.getSlotLimit()) {
             return;
         }
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
         Item source = this.getItem(src);
         if (source == null) {
             return;
         }
-        short slotMax = ii.getSlotMax(c, source.getItemId());
+        short slotMax = MapleItemInformationProvider.getInstance().getSlotMax(c, source.getItemId());
         this.move(src, dst, slotMax);
     }
 

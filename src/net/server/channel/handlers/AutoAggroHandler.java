@@ -37,21 +37,19 @@ public final class AutoAggroHandler extends AbstractMaplePacketHandler {
         MapleMap map = c.getPlayer().getMap();
         int oid = slea.readInt();
         
-        try {
-            MapleMonster monster = map.getMonsterByOid(oid);
-            if (monster != null && monster.getController() != null) {
-                if (!monster.isControllerHasAggro()) {
-                    if (map.getCharacterById(monster.getController().getId()) == null) {
-                        monster.switchController(c.getPlayer(), true);
-                    } else {
-                        monster.switchController(monster.getController(), true);
-                    }
-                } else if (map.getCharacterById(monster.getController().getId()) == null) {
+        MapleMonster monster = map.getMonsterByOid(oid);
+        if (monster != null && monster.getController() != null) {
+            if (!monster.isControllerHasAggro()) {
+                if (map.getCharacterById(monster.getController().getId()) == null) {
                     monster.switchController(c.getPlayer(), true);
+                } else {
+                    monster.switchController(monster.getController(), true);
                 }
-            } else if (monster != null && monster.getController() == null) {
+            } else if (map.getCharacterById(monster.getController().getId()) == null) {
                 monster.switchController(c.getPlayer(), true);
             }
-        } catch(NullPointerException npe) {}
+        } else if (monster != null && monster.getController() == null) {
+            monster.switchController(c.getPlayer(), true);
+        }
     }
 }

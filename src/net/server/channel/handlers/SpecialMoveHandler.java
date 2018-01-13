@@ -22,11 +22,9 @@
 package net.server.channel.handlers;
 
 import java.awt.Point;
-import java.util.concurrent.ScheduledFuture;
 
 import net.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
-import server.TimerManager;
 import server.life.MapleMonster;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
@@ -54,25 +52,27 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
     	MapleCharacter chr = c.getPlayer();
         chr.getAutobanManager().setTimestamp(4, slea.readInt(), 3);
         int skillid = slea.readInt();
+        
         /*
-        if ((!GameConstants.isPQSkillMap(c.getPlayer().getMapId()) && GameConstants.isPqSkill(skillid)) || (!c.getPlayer().isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, c.getPlayer().getJob().getId()) && !c.getPlayer().isGM())) {
-        	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit skills.");
-        	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
+        if ((!GameConstants.isPqSkillMap(chr.getMapId()) && GameConstants.isPqSkill(skillid)) || (!chr.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, chr.getJob().getId()) && !chr.isGM())) {
+        	AutobanFactory.PACKET_EDIT.alert(chr, chr.getName() + " tried to packet edit skills.");
+        	FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
     		c.disconnect(true, false);
             return;
         }
-                */
+        */
+        
         Point pos = null;
         int __skillLevel = slea.readByte();
         Skill skill = SkillFactory.getSkill(skillid);
         int skillLevel = chr.getSkillLevel(skill);
         if (skillid % 10000000 == 1010 || skillid % 10000000 == 1011) {
-            if (c.getPlayer().getDojoEnergy() < 10000) { // PE hacking or maybe just lagging
+            if (chr.getDojoEnergy() < 10000) { // PE hacking or maybe just lagging
                 return;
             }
             skillLevel = 1;
-            c.getPlayer().setDojoEnergy(0);
-            c.announce(MaplePacketCreator.getEnergy("energy", c.getPlayer().getDojoEnergy()));
+            chr.setDojoEnergy(0);
+            c.announce(MaplePacketCreator.getEnergy("energy", chr.getDojoEnergy()));
             c.announce(MaplePacketCreator.serverNotice(5, "As you used the secret skill, your energy bar has been reset."));
         }
         if (skillLevel == 0 || skillLevel != __skillLevel) return;
@@ -93,16 +93,16 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             for (int i = 0; i < num; i++) {
                 mobId = slea.readInt();
                 success = slea.readByte();
-                chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showMagnet(mobId, success), false);
+                chr.getMap().broadcastMessage(chr, MaplePacketCreator.showMagnet(mobId, success), false);
                 MapleMonster monster = chr.getMap().getMonsterByOid(mobId);
                 if (monster != null) {
                 	if (!monster.isBoss()) {
-                		monster.switchController(c.getPlayer(), monster.isControllerHasAggro());
+                		monster.switchController(chr, monster.isControllerHasAggro());
                 	}
                 }
             }
             byte direction = slea.readByte();
-            chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid), direction), false);
+            chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid), direction), false);
             c.announce(MaplePacketCreator.enableActions());
             return;
         } else if (skillid == Brawler.MP_RECOVERY) {// MP Recovery
@@ -116,7 +116,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             chr.updateSingleStat(MapleStat.MP, chr.getMp());
         } else if (skillid == Priest.DISPEL || skillid == SuperGM.HEAL_PLUS_DISPEL) {
             slea.skip((skillid == Priest.DISPEL) ? 10 : 11);
-            chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid)), false);
+            chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid)), false);
         } else if (skillid % 10000000 == 1004) {
             slea.readShort();
         }
@@ -126,11 +126,11 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         }
         if (chr.isAlive()) {
             if (skill.getId() != Priest.MYSTIC_DOOR) {
-                skill.getEffect(skillLevel).applyTo(c.getPlayer(), pos);
+                skill.getEffect(skillLevel).applyTo(chr, pos);
             } else if(chr.canDoor()) {
                 //update door lists
                 chr.cancelMagicDoor();
-                skill.getEffect(skillLevel).applyTo(c.getPlayer(), pos);
+                skill.getEffect(skillLevel).applyTo(chr, pos);
             } else {
                 chr.message("Please wait 5 seconds before casting Mystic Door again.");
                 c.announce(MaplePacketCreator.enableActions());
