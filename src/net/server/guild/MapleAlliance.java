@@ -130,7 +130,6 @@ public class MapleAlliance {
 
                 Server.getInstance().addAlliance(id, alliance);
                 
-                System.out.println("\n\n\n\n----");
                 Server.getInstance().allianceMessage(id, MaplePacketCreator.updateAllianceInfo(alliance, guildMasters.get(0).getClient()), -1, -1);
             } catch (Exception e) {
                 e.printStackTrace();

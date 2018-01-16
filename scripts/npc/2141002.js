@@ -43,7 +43,7 @@ function action(mode, type, selection) {
                     cm.warp(270050000);
                 }
                 else {
-                    cm.sendOk("You cannot receive an event prize without having an empty room in your EQUIP, USE, SET-UP or ETC inventory.");
+                    cm.sendOk("You cannot receive an event prize without having an empty room in your EQUIP, USE, SET-UP and ETC inventory.");
                 }
                 
                 cm.dispose();

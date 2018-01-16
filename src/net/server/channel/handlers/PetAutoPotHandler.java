@@ -29,15 +29,27 @@ import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
+import tools.Pair;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import constants.ServerConstants;
+import java.util.List;
 
 /**
  *
  * @author Ronan (multi-pot consumption feature)
  */
 public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
+    short slot;
+    int itemId;
+    Item toUse;
+    List<Item> toUseList;
+    
+    boolean hasHpGain;
+    boolean hasMpGain;
+    short maxHp;
+    short maxMp;
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if (!c.getPlayer().isAlive()) {
@@ -45,45 +57,103 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        MapleCharacter chr = c.getPlayer();
-        short maxHp = 0, maxMp = 0;
-        
-        if(ServerConstants.USE_EQUIPS_ON_AUTOPOT) {
-            for(Item i : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
-                Equip e = (Equip) i;
-
-                maxHp += e.getHp();
-                maxMp += e.getMp();
-            }
-        }
-                
-        maxHp = (short) Math.min(chr.getMaxHp() + maxHp, 30000);
-        maxMp = (short) Math.min(chr.getMaxMp() + maxMp, 30000);
-        
         slea.readByte();
         slea.readLong();
         slea.readInt();
-        short slot = slea.readShort();
-        int itemId = slea.readInt();
-        Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
+        slot = slea.readShort();
+        itemId = slea.readInt();
+        
+        MapleCharacter chr = c.getPlayer();
+        toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         
         if(toUse != null) {
-            MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
-            
-            if (toUse.getQuantity() <= 0 || toUse.getItemId() != itemId) {
+            if (toUse.getItemId() != itemId) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
             
-            do {
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
-                stat.applyTo(chr);
+            toUseList = null;
+            
+            // from now on, toUse becomes the "cursor" for the current pot being used
+            if(toUse.getQuantity() <= 0) {
+                if(!cursorOnNextAvailablePot(chr)) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+            }
+            
+            MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
+            hasHpGain = stat.getHp() > 0 || stat.getHpRate() > 0.0;
+            hasMpGain = stat.getMp() > 0 || stat.getMpRate() > 0.0;
+            
+            // contabilize the HP and MP gains from equipments on one's effective MaxHP/MaxMP
+            Pair<Short, Short> maxHpMp = calcEffectivePool(chr);
+            maxHp = maxHpMp.left;
+            maxMp = maxHpMp.right;
+            
+            while(true) {
+                do {
+                    MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+                    stat.applyTo(chr);
 
-                //System.out.println();
-                //System.out.println("hp: " + stat.getHp() + " player hp " + c.getPlayer().getHp() + " maxhp " + maxHp);
-                //System.out.println("mp: " + stat.getMp() + " player mp " + c.getPlayer().getMp() + " maxmp " + maxMp);
-                //System.out.println("redo? " + (((stat.getHp() > 0 && c.getPlayer().getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (stat.getMp() > 0 && c.getPlayer().getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp)) && toUse.getQuantity() > 0));
-            } while(((stat.getHp() > 0 && chr.getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (stat.getMp() > 0 && chr.getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp)) && toUse.getQuantity() > 0);
+                    //System.out.println();
+                    //System.out.println("hp: " + hasHpGain + " player hp " + chr.getHp() + " maxhp " + maxHp);
+                    //System.out.println("mp: " + hasMpGain + " player mp " + chr.getMp() + " maxmp " + maxMp);
+                    //System.out.println("redo? " + (shouldReusePot(chr) && toUse.getQuantity() > 0));
+                } while(shouldReusePot(chr) && toUse.getQuantity() > 0);
+
+                if(toUse.getQuantity() == 0 && shouldReusePot(chr)) {
+                    // depleted out the current slot, fetch for more
+
+                    if(!cursorOnNextAvailablePot(chr)) {
+                        break;    // no more pots available
+                    }
+                } else {
+                    break;    // gracefully finished it's job, quit the loop
+                }
+            }
         }
     }
+    
+    private boolean cursorOnNextAvailablePot(MapleCharacter chr) {
+        if(toUseList == null) {
+            toUseList = chr.getInventory(MapleInventoryType.USE).linkedListById(itemId);
+        }
+
+        toUse = null;
+        while(!toUseList.isEmpty()) {
+            Item it = toUseList.remove(0);
+
+            if(it.getQuantity() > 0) {
+                toUse = it;
+                slot = it.getPosition();
+
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    private Pair<Short, Short> calcEffectivePool(MapleCharacter chr) {
+        short hp = 0, mp = 0;
+        
+        if(ServerConstants.USE_EQUIPS_ON_AUTOPOT) {
+            for(Item i : chr.getInventory(MapleInventoryType.EQUIPPED).list()) {
+                Equip e = (Equip) i;
+
+                hp += e.getHp();
+                mp += e.getMp();
+            }
+        }
+
+        hp = (short) Math.min(chr.getMaxHp() + hp, 30000);
+        mp = (short) Math.min(chr.getMaxMp() + mp, 30000);
+        
+        return new Pair<>(hp, mp);
+    }
+    
+    private boolean shouldReusePot(MapleCharacter chr) {
+        return (hasHpGain && chr.getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (hasMpGain && chr.getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp);
+    } 
 }

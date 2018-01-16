@@ -24,8 +24,10 @@ package client.inventory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Map;
@@ -178,9 +180,36 @@ public class MapleInventory implements Iterable<Item> {
                 ret.add(item);
             }
         }
+        
         if (ret.size() > 1) {
-            Collections.sort(ret);
+            Collections.sort(ret, new Comparator<Item>() {
+                @Override
+                public int compare(Item i1, Item i2) {
+                    return i1.getPosition() - i2.getPosition();
+                }
+            });
         }
+        
+        return ret;
+    }
+    
+    public List<Item> linkedListById(int itemId) {
+        List<Item> ret = new LinkedList<>();
+        for (Item item : list()) {
+            if (item.getItemId() == itemId) {
+                ret.add(item);
+            }
+        }
+        
+        if (ret.size() > 1) {
+            Collections.sort(ret, new Comparator<Item>() {
+                @Override
+                public int compare(Item i1, Item i2) {
+                    return i1.getPosition() - i2.getPosition();
+                }
+            });
+        }
+        
         return ret;
     }
 

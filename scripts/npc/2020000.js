@@ -182,7 +182,7 @@ function action(mode, type, selection) {
             qty = 1;
         }
         else
-            qty = selection;
+            qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
 		
         if (selectedType == 5){ //arrow refine
             var itemSet = new Array(2060000,2061000,2060001,2061001,2060002,2061002);

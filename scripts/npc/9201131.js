@@ -1,5 +1,5 @@
-var map = 677000000;
-var quest = 28198;
+var map = 677000002;
+var quest = 28238;
 var status = -1;
 
 function start(mode, type, selection) {
@@ -21,6 +21,10 @@ function action(mode, type, selection) {
             cm.dispose();
         }
     } else {
+        if(cm.haveItem(4032481, 1)) cm.gainItem(4032481, -1);
+	if(cm.haveItem(4032482, 1)) cm.gainItem(4032482, -1);
+        if(cm.haveItem(4032483, 1)) cm.gainItem(4032483, -1);
+	
 	cm.warp(map, 0);
 	cm.dispose();
     }

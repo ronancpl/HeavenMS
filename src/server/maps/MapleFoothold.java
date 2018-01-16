@@ -69,6 +69,7 @@ public class MapleFoothold implements Comparable<MapleFoothold> {
         return (slope * x) + intercept;
     }
 
+    @Override
     public int compareTo(MapleFoothold o) {
         MapleFoothold other = o;
         if (p2.y < other.getY1()) {

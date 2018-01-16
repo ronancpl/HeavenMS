@@ -1,3 +1,5 @@
+var map = 677000008;
+var quest = 28219;
 var status = -1;
 
 function start(mode, type, selection) {
@@ -12,16 +14,17 @@ function action(mode, type, selection) {
 	return;
     }
     if (status == 0) {
-		if (cm.isQuestStarted(28219)) {
-			cm.sendYesNo("Would you like to move to Valefor's Strolling Place?");
-		} else {
-			cm.sendOk("The entrance is blocked by a strange force.");
-			cm.dispose();
-		}
+        if (cm.isQuestStarted(quest)) {
+            cm.sendYesNo("Would you like to move to #b#m" + map + "##k?");
+        } else {
+            cm.sendOk("The entrance is blocked by a strange force.");
+            cm.dispose();
+        }
     } else {
 	if(cm.haveItem(4032485, 1)) cm.gainItem(4032485, -1);
 	if(cm.haveItem(4001355, 1)) cm.gainItem(4001355, -1);
-	cm.warp(677000008,0);
+        
+	cm.warp(map, 0);
 	cm.dispose();
     }
 }

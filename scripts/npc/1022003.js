@@ -136,7 +136,7 @@ function action(mode, type, selection) {
             qty = 1;
         }
         else
-            qty = selection;
+            qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
 
         if (selectedType == 2){ //helmet refine
             var itemSet = new Array(1002042,1002041,1002002,1002044,1002003,1002040,1002007,1002052,1002011,1002058,1002009,1002056,1002087,1002088,1002050,1002049,1002047,1002048,1002099,1002098,1002085,1002028,1002022,1002101);

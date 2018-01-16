@@ -1,9 +1,9 @@
 importPackage(Packages.server.life);
 
 function start(ms) {
-        var pos = new java.awt.Point(251, -841);
-	var mobId = 9400613;
-        var mobName = "Valefor";
+        var pos = new java.awt.Point(467, 0);
+	var mobId = 9400610;
+        var mobName = "Amdusias";
         
 	var player = ms.getPlayer();
 	var map = player.getMap();

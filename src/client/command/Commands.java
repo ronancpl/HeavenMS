@@ -345,7 +345,7 @@ public class Commands {
         public static boolean executeHeavenMsCommandLv0(Channel cserv, Server srv, MapleClient c, String[] sub) { //Player
                 MapleCharacter player = c.getPlayer();
             
-                switch(sub[0]) {    
+                switch(sub[0]) {
                 case "help":
 		case "commands":
                 case "playercommands":

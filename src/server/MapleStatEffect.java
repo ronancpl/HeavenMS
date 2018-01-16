@@ -1593,6 +1593,14 @@ public class MapleStatEffect {
         return mp;
     }
     
+    public double getHpRate() {
+        return hpR;
+    }
+
+    public double getMpRate() {
+        return mpR;
+    }
+    
     public byte getHpR() {
         return mhpR;
     }

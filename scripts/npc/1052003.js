@@ -129,7 +129,7 @@ function action(mode, type, selection) {
                 qty = 1;
             }
             else
-                qty = selection;
+                qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
 
             last_use = false;
 

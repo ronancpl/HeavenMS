@@ -6343,7 +6343,17 @@ public class MaplePacketCreator {
                 mplew.writeInt(alliance);
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] sendAllianceInvitation(int allianceid, MapleCharacter chr) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.ALLIANCE_OPERATION.getValue());
+                mplew.write(0x03);
+                mplew.writeInt(allianceid);
+                mplew.writeMapleAsciiString(chr.getName());
+                mplew.writeShort(0);
+                return mplew.getPacket();
+        }
+        
         public static byte[] sendMesoLimit() {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.TRADE_MONEY_LIMIT.getValue()); //Players under level 15 can only trade 1m per day
