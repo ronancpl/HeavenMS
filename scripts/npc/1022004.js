@@ -116,7 +116,7 @@ function action(mode, type, selection) {
             qty = 1;
         }
         else
-            qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
+            qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
 
         if (selectedType == 0){ //glove refine
             var itemSet = new Array(1082003,1082000,1082004,1082001,1082007,1082008,1082023,1082009,1082059);

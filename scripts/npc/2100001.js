@@ -120,7 +120,7 @@ function action(mode, type, selection) {
                 qty = 1;
             }
             else
-                qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
+                qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
 
             var prompt = "You want me to make ";
             if (qty == 1)

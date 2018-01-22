@@ -66,7 +66,7 @@ function action(mode, type, selection) {
 			qty = 1;
 		}
 		else
-			qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
+			qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
 
 		if (selectedType == 0){ //Making a Knuckler
 			var itemSet = new Array(1482001, 1482002, 1482003, 1482004, 1482005, 1482006, 1482007);

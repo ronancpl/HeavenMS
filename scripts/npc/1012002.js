@@ -106,7 +106,7 @@ function action(mode, type, selection) {
         if (selectedType != 4)
             selectedItem = selection;
         else
-            qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
+            qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
         if (selectedType == 0) { //bow refine
             var matSet = [[4003001,4000000],[4011001,4003000],[4003001,4000016],[4011001,4021006,4003000],[4011001,4011006,4021003,4021006,4003000],[4011004,4021000,4021004,4003000],[4021008,4011001,4011006,4003000,4000014]];
             var matQtySet = [[5,30],[1,3],[30,50],[2,2,8],[5,5,3,3,30],[7,6,3,35],[1,10,3,40,50]];

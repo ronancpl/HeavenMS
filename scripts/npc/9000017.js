@@ -58,7 +58,7 @@ function action(mode, type, selection) {
     }
         
     else if (status == 3) {
-        qty = (selection > 0) ? selection : (-selection <= 0 ? 1 : -selection);
+        qty = (selection > 0) ? selection : (selection < 0 ? -selection : 1);
         last_use = false;
                 
         var prompt = "You want us to make ";
