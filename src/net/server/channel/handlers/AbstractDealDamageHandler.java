@@ -452,7 +452,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                     totDamageToOneMonster *= player.getLevel();
                                 }
                                 else {
-                                    player.dropMessage(5, "You ran out of shells to use to activate the hidden power of Three Snails.");
+                                    player.dropMessage(5, "You ran out of shells to activate the hidden power of Three Snails.");
                                 }
                             }
                         }

@@ -587,7 +587,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         recalcLocalStats();
     }
 
-    public int addHP(MapleClient c) {
+    public static int addHP(MapleClient c) {
         MapleCharacter player = c.getPlayer();
         MapleJob jobtype = player.getJob();
         int MaxHP = player.getMaxHp();
@@ -618,7 +618,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return MaxHP;
     }
 
-    public int addMP(MapleClient c) {
+    public static int addMP(MapleClient c) {
         MapleCharacter player = c.getPlayer();
         int MaxMP = player.getMaxMp();
         if (player.getHpMpApUsed() > 9999 || player.getMaxMp() >= 30000) {
