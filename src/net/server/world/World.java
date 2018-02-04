@@ -77,7 +77,7 @@ import tools.locks.MonitoredLockType;
  */
 public class World {
 
-    private int id, flag, exprate, droprate, mesorate, bossdroprate;
+    private int id, flag, exprate, droprate, mesorate, questrate;
     private String eventmsg;
     private List<Channel> channels = new ArrayList<>();
     private Map<Integer, MapleMessenger> messengers = new HashMap<>();
@@ -114,14 +114,14 @@ public class World {
     
     private ScheduledFuture<?> charactersSchedule;
     
-    public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int bossdroprate) {
+    public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate) {
         this.id = world;
         this.flag = flag;
         this.eventmsg = eventmsg;
         this.exprate = exprate;
         this.droprate = droprate;
         this.mesorate = mesorate;
-        this.bossdroprate = bossdroprate;
+        this.questrate = questrate;
         runningPartyId.set(1);
         runningMessengerId.set(1);
         
@@ -215,12 +215,12 @@ public class World {
         }
     }
 
-    public int getBossDropRate() {
-        return bossdroprate;
+    public int getQuestRate() {
+        return questrate;
     }
     
-    public void setBossDropRate(int bossdrop) {
-        this.bossdroprate = bossdrop;
+    public void setQuestRate(int quest) {
+        this.questrate = quest;
     }
 
     public PlayerStorage getPlayerStorage() {

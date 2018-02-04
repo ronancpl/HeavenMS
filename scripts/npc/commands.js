@@ -83,7 +83,7 @@ function writeSolaxiaCommandsLv4() {    //SuperGM
         addCommand("exprate", "");
         addCommand("mesorate", "");
         addCommand("droprate", "");
-        addCommand("bossdroprate", "");
+        addCommand("questrate", "");
         addCommand("itemvac", "");
         addCommand("forcevac", "");
         addCommand("zakum", "");

@@ -518,8 +518,10 @@ public class Commands {
                         if(player.getCouponDropRate() != 1) showMsg += "Coupon DROP Rate: #k" + player.getCouponDropRate() + "x#k" + "\r\n";
                         showMsg += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
                     
-                        showMsg += "\r\n" + "#eBOSSDROP RATE#n" + "\r\n";
-                        showMsg += "Server BOSSDROP Rate: #e#b" + c.getWorldServer().getBossDropRate() + "x#k#n" + "\r\n";
+                        if(ServerConstants.USE_QUEST_RATE) {
+                            showMsg += "\r\n" + "#eQUEST RATE#n" + "\r\n";
+                            showMsg += "Server QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
+                        }
                         
                         player.showHint(showMsg);
                     break;
@@ -529,7 +531,7 @@ public class Commands {
                         showMsg_ += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + "\r\n";
                         showMsg_ += "MESO Rate: #e#b" + player.getMesoRate() + "x#k#n" + "\r\n";
                         showMsg_ += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
-                        showMsg_ += "BOSSDROP Rate: #e#b" + c.getWorldServer().getBossDropRate() + "x#k#n" + "\r\n";
+                        if(ServerConstants.USE_QUEST_RATE) showMsg_ += "QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
                         
                         player.showHint(showMsg_);
                     break;
@@ -2252,15 +2254,15 @@ public class Commands {
                             c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Drop Rate has been changed to " + droprate + "x."));
                         break;
                     
-                    case "bossdroprate":
+                    case "questrate":
                             if (sub.length < 2){
-                                player.yellowMessage("Syntax: !bossdroprate <newrate>");
+                                player.yellowMessage("Syntax: !questrate <newrate>");
                                 break;
                             }
                             
-                            int bossdroprate = Math.max(Integer.parseInt(sub[1]), 1);
-                            c.getWorldServer().setBossDropRate(bossdroprate);
-                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Boss Drop Rate has been changed to " + bossdroprate + "x."));
+                            int questrate = Math.max(Integer.parseInt(sub[1]), 1);
+                            c.getWorldServer().setQuestRate(questrate);
+                            c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Quest Rate has been changed to " + questrate + "x."));
                         break;
                     
                     case "itemvac":

@@ -914,7 +914,7 @@ public class MapleClient {
 					worlda.removePlayer(player);
                                         
                                         player.saveCooldowns();
-                                        player.saveToDB();
+                                        player.saveToDB(true);
 					if (player != null) {//no idea, occur :(
 						player.empty(false);
 					}

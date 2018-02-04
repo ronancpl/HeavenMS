@@ -22,6 +22,7 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
+import constants.ServerConstants;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.quest.MapleQuest;
@@ -48,6 +49,14 @@ public class MesoAction extends MapleQuestAction {
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
-		chr.gainMeso(mesos < 0 ? mesos : mesos * chr.getMesoRate(), true, false, true);
+                if(mesos < 0) {
+                        chr.gainMeso(mesos, true, false, true);
+                } else {
+                        if(!ServerConstants.USE_QUEST_RATE) {
+                                chr.gainMeso(mesos * chr.getMesoRate(), true, false, true);
+                        } else {
+                                chr.gainMeso(mesos * ServerConstants.MESO_RATE * ServerConstants.QUEST_RATE, true, false, true);
+                        }
+                }
 	}
 } 

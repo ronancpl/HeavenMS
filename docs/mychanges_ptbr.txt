@@ -1,4 +1,4 @@
-NEW NPC SCRIPTS:
+ÔªøNEW NPC SCRIPTS:
 	Coco -> 9000017
 	Agent E -> 9000036
 
@@ -29,8 +29,8 @@ Corrigi um bug no elevador.
 Consertei o script restante do Grendel.
 
 25 --- 27 Julho 2015,
-Criei uma variaÁ„o do auto-assign, que leva em conta caracteristicas nos stats dos equips.
-Consertei upar atÈ 2 niveis por expGain().
+Criei uma varia√ß√£o do auto-assign, que leva em conta caracteristicas nos stats dos equips.
+Consertei upar at√© 2 niveis por expGain().
 
 OBS.:	Dar um jeito de automatizar o script para colocar scrolls OP a venda
 	NPC Coco (9000017) sera o novo vendedor de scrolls
@@ -75,7 +75,7 @@ Correcao de bug que nao contabilizava queda de hp qdo um char loga em um mapa.
 Correcao de bug que nao retirava corretamente recursos de projeteis.
 
 6 Novembro 2015,
-MovimentaÁ„o no ranking agora È contabilizado corretamente.
+Movimenta√ß√£o no ranking agora √© contabilizado corretamente.
 
 11 Dezembro 2015,
 Correcao de bug que nao permitia ao tentar aceitar quest remotamente (lightbulb).
@@ -95,7 +95,7 @@ Correcao de bug, onde clientes podiam congelar apos acessar o Cash Shop.
 Correcao de bug.
 
 18 Julho 2016,
-Bazaar NPC (Donation Box): venda automatica de um item designado e todos os itens que estiverem imediatamente apÛs.
+Bazaar NPC (Donation Box): venda automatica de um item designado e todos os itens que estiverem imediatamente ap√≥s.
 Spindle: NPC scroll seller.
 
 26 Julho 2016,
@@ -104,197 +104,197 @@ Correcao de bug.
 01 Agosto 2016,
 Correcao de scripts (Agent E, Donation Box), correcao de bug.
 
-19 MarÁo 2017,
-Mimi: nova quest, envolvendo manipulaÁıes em ambos cliente e servidor. Tirado o aspecto global.
-N„o È possÌvel alterar QuestInfo.img.xml do lado do cliente...
+19 Mar√ßo 2017,
+Mimi: nova quest, envolvendo manipula√ß√µes em ambos cliente e servidor. Tirado o aspecto global.
+N√£o √© poss√≠vel alterar QuestInfo.img.xml do lado do cliente...
 
-26 - 27 MarÁo 2017,
-ElaboraÁ„o do IMG XML Parser, atuando complementarmente com o HaRepacker v4.2.2.
-CorreÁ„o de scripts de NPCs e quests.
+26 - 27 Mar√ßo 2017,
+Elabora√ß√£o do IMG XML Parser, atuando complementarmente com o HaRepacker v4.2.2.
+Corre√ß√£o de scripts de NPCs e quests.
 
-28 - 31 MarÁo 2017,
+28 - 31 Mar√ßo 2017,
 Revamp dos WZs e XMLs referentes ao cliente MapleStory e ao servidor MapleSolaxia.
-Inclus„o de printStackTraces nos blocos catches do sistema.
+Inclus√£o de printStackTraces nos blocos catches do sistema.
 
 01 - 02 Abril 2017,
-CorreÁ„o de bug que impedia carregamento do mapa Singapore: Spooky World.
-AdiÁ„o dos cards de mob restantes no drop_data do DB.
+Corre√ß√£o de bug que impedia carregamento do mapa Singapore: Spooky World.
+Adi√ß√£o dos cards de mob restantes no drop_data do DB.
 
 03 Abril 2017,
-Inclus„o de scripts para interceptar condiÁıes de corrida em eventos de viagem.
-CorreÁ„o no script do Mr. Do.
-Sparta lv100 n„o surge mais em mob de nÌvel baixo.
-Diversas alteraÁıes corretivas em itens das tabelas drop_data e reactordrops no BD.
+Inclus√£o de scripts para interceptar condi√ß√µes de corrida em eventos de viagem.
+Corre√ß√£o no script do Mr. Do.
+Sparta lv100 n√£o surge mais em mob de n√≠vel baixo.
+Diversas altera√ß√µes corretivas em itens das tabelas drop_data e reactordrops no BD.
 
 04 Abril 2017,
-CorreÁ„o na API sobre progresso das quests.
+Corre√ß√£o na API sobre progresso das quests.
 
 06 Abril 2017,
-Tentativa de correÁ„o em casos de falta de respawn em certas areas do jogo.
-OtimizaÁ„o de funÁıes que lidam com popular ou despopular areas.
+Tentativa de corre√ß√£o em casos de falta de respawn em certas areas do jogo.
+Otimiza√ß√£o de fun√ß√µes que lidam com popular ou despopular areas.
 
 07 Abril 2017,
-CorreÁ„o nos mÈtodos que completam quests, que n„o atribuÌam corretamente itens que dependem de jobs.
-Agora È possÌvel variar atributos de mobs a serem spawnados (classes ChangeableStats, OverrideStats).
-Removido ataques letais (1HP/1MP) de bosses em Dojo, que tornava impossÌvel a completude do mesmo.
-AdiÁ„o de novos scripts de evento no jogo.
+Corre√ß√£o nos m√©todos que completam quests, que n√£o atribu√≠am corretamente itens que dependem de jobs.
+Agora √© poss√≠vel variar atributos de mobs a serem spawnados (classes ChangeableStats, OverrideStats).
+Removido ataques letais (1HP/1MP) de bosses em Dojo, que tornava imposs√≠vel a completude do mesmo.
+Adi√ß√£o de novos scripts de evento no jogo.
 
 08 - 09 Abril 2017,
-AdiÁ„o de efeito: Zombify.
-AdiÁ„o da expediÁ„o BPQ.
-Aprimoramento de mÈtodos que usam acesso concorrente no projeto.
-Diversas pequenas alteraÁıes nos WZs do cliente/servidor.
+Adi√ß√£o de efeito: Zombify.
+Adi√ß√£o da expedi√ß√£o BPQ.
+Aprimoramento de m√©todos que usam acesso concorrente no projeto.
+Diversas pequenas altera√ß√µes nos WZs do cliente/servidor.
 
 10 Abril 2017,
-Navio de Crimson Balrogs agora s„o renderizados na tela, mesmo depois de mudar de mapas.
-AdiÁ„o de client alternativo: MapleStory sem Damage Cap.
-AdiÁ„o de expediÁıes PiratePQ e EllinPQ.
+Navio de Crimson Balrogs agora s√£o renderizados na tela, mesmo depois de mudar de mapas.
+Adi√ß√£o de client alternativo: MapleStory sem Damage Cap.
+Adi√ß√£o de expedi√ß√µes PiratePQ e EllinPQ.
 
 11 - 12 Abril 2017,
-ImplementaÁ„o do PiratePQ.
+Implementa√ß√£o do PiratePQ.
 
 17 Abril 2017,
-CorreÁ„o de bugs envolvendo reactors no PiratePQ, e potencialmente em outros pontos tambÈm.
+Corre√ß√£o de bugs envolvendo reactors no PiratePQ, e potencialmente em outros pontos tamb√©m.
 
 18 Abril 2017,
-AdiÁ„o de area boss: giant centipede.
-CorreÁ„o do evento Hak: viajantes n„o estavam sendo devidamente liberados no fim do evento.
-AdiÁ„o de documentaÁ„o para portforwarding do sistema.
+Adi√ß√£o de area boss: giant centipede.
+Corre√ß√£o do evento Hak: viajantes n√£o estavam sendo devidamente liberados no fim do evento.
+Adi√ß√£o de documenta√ß√£o para portforwarding do sistema.
 
 21 Abril 2017,
-ImplementaÁ„o do EllinPQ.
-CorreÁ„o em mÛdulos da classe ActivateItemReactor.
-AtualizaÁ„o em diversos drops nos SQLs.
+Implementa√ß√£o do EllinPQ.
+Corre√ß√£o em m√≥dulos da classe ActivateItemReactor.
+Atualiza√ß√£o em diversos drops nos SQLs.
 
 22 Abril 2017,
-V·rias correÁıes envolvendo concorrÍncias em propriedades do MapleCharacter.
-AdiÁ„o de constante USE_EQUIPMNT_LVLUP: d· pra nivelar qualquer equip atÈ o nÌvel desejado.
-Algumas correÁıes em quests no cliente e no servidor.
-CorreÁ„o de bug que gerava client stuck para Outlaw, quando chamava 2 summons e mudava de mapa.
+V√°rias corre√ß√µes envolvendo concorr√™ncias em propriedades do MapleCharacter.
+Adi√ß√£o de constante USE_EQUIPMNT_LVLUP: d√° pra nivelar qualquer equip at√© o n√≠vel desejado.
+Algumas corre√ß√µes em quests no cliente e no servidor.
+Corre√ß√£o de bug que gerava client stuck para Outlaw, quando chamava 2 summons e mudava de mapa.
 
 23 - 25 Abril 2017,
-IntroduÁ„o de mÈtodos que auxiliam na normalizaÁ„o dos scripts para PQs.
+Introdu√ß√£o de m√©todos que auxiliam na normaliza√ß√£o dos scripts para PQs.
 Nova PQ: Boss Rush PQ.
-CorreÁ„o de situaÁıes nas PQs Ellin e Pirate.
+Corre√ß√£o de situa√ß√µes nas PQs Ellin e Pirate.
 
 26 Abril 2017,
-AdiÁ„o de Happyville, via Rooney.
-CorreÁ„o: mapas com "everlast" fazendo os itens dropados sumirem.
-CorreÁ„o: itens dropados na ·rea dos NPCs Snowman n„o podem ser pegos por outros jogadores.
-CorreÁ„o: bug no par de comandos unban/ban n„o permitindo IP de cliente voltar a reconectar ao jogo.
+Adi√ß√£o de Happyville, via Rooney.
+Corre√ß√£o: mapas com "everlast" fazendo os itens dropados sumirem.
+Corre√ß√£o: itens dropados na √°rea dos NPCs Snowman n√£o podem ser pegos por outros jogadores.
+Corre√ß√£o: bug no par de comandos unban/ban n√£o permitindo IP de cliente voltar a reconectar ao jogo.
 
 29 Abril 2017,
-Novos mÈtodos para uso especializado em eventos caracteristicos de PQ.
-AprimoraÁ„o da Boss Rush PQ: novo sistema de recompensas.
+Novos m√©todos para uso especializado em eventos caracteristicos de PQ.
+Aprimora√ß√£o da Boss Rush PQ: novo sistema de recompensas.
 
 01 Maio 2017,
-CorreÁ„o de bugs menores na BRPQ.
-RefatoraÁ„o de cÛdigo pertinente aos Cash USEs para Pet.
-AnimaÁ„o para Pets ao consumirem pet food.
+Corre√ß√£o de bugs menores na BRPQ.
+Refatora√ß√£o de c√≥digo pertinente aos Cash USEs para Pet.
+Anima√ß√£o para Pets ao consumirem pet food.
 
 02 Maio 2017,
-ReestruturaÁ„o e refatoraÁ„o de cÛdigo para PQs (funÁıes especÌficas para uso em PQs).
-ReimplementaÁ„o da Kerning PQ.
+Reestrutura√ß√£o e refatora√ß√£o de c√≥digo para PQs (fun√ß√µes espec√≠ficas para uso em PQs).
+Reimplementa√ß√£o da Kerning PQ.
 
 03 Maio 2017,
-Para quests que podem ser repetidas, adiÁ„o de mensagem mencionando o tempo restante para recomeÁ·-la.
+Para quests que podem ser repetidas, adi√ß√£o de mensagem mencionando o tempo restante para recome√ß√°-la.
 
 04 - 05 Maio 2017,
-CorreÁ„o de bug no sistema de keybinding em casos onde certas mecanicas de jogo e itens n„o eram salvos devido a ids conflituosos com certas skills.
-FinalizaÁ„o da reimplementaÁ„o da Kerning PQ, com adiÁ„o de novos mecanismos esperados em eventos/PQs.
-AdiÁ„o de barra de HP para bosses King Slime, Alishar e Snack Bar.
+Corre√ß√£o de bug no sistema de keybinding em casos onde certas mecanicas de jogo e itens n√£o eram salvos devido a ids conflituosos com certas skills.
+Finaliza√ß√£o da reimplementa√ß√£o da Kerning PQ, com adi√ß√£o de novos mecanismos esperados em eventos/PQs.
+Adi√ß√£o de barra de HP para bosses King Slime, Alishar e Snack Bar.
 
 08 Maio 2017,
-AdiÁ„o de funcionalidade para PQs/eventos: ao sair de evento, remove-se todos os itens listados como exclusivo para evento.
-Diversas correÁıes em mec‚nicas das PQs/eventos.
-Sistema de lobbys para PQs agora. … possÌvel instanciar mais de uma PQ em um mesmo channel.
+Adi√ß√£o de funcionalidade para PQs/eventos: ao sair de evento, remove-se todos os itens listados como exclusivo para evento.
+Diversas corre√ß√µes em mec√¢nicas das PQs/eventos.
+Sistema de lobbys para PQs agora. √â poss√≠vel instanciar mais de uma PQ em um mesmo channel.
 
 12 - 13 Maio 2017,
 Nova ferramenta: monta uma tabela SQL que armazena id-nome de todos os itens descritos nos arquivos handbook e realiza buscas por nomes, retornando seus ids.
-ImplementaÁ„o da LPQ.
+Implementa√ß√£o da LPQ.
 
 14 Maio 2017,
 Sistema de Lobbys na BRPQ: aloca lobbys disponiveis para times de acordo com o level medio dos jogadores.
 Sword Earrings: +30HP -> +1 W.att / Shield Earrings: +1ACC -> +1 M.att
 
 15 Maio 2017,
-ImplementaÁ„o da LMPQ.
+Implementa√ß√£o da LMPQ.
 
 16 Maio 2017,
-ImplementaÁ„o da HPQ.
+Implementa√ß√£o da HPQ.
 
 17 Maio 2017,
-CorreÁ„o de bug com o item "Pet Name Tag", que n„o retirava o item apÛs ser usado.
-CorreÁ„o em bug de uma quest (id 3927) de Ariant que envolve uma "parede".
+Corre√ß√£o de bug com o item "Pet Name Tag", que n√£o retirava o item ap√≥s ser usado.
+Corre√ß√£o em bug de uma quest (id 3927) de Ariant que envolve uma "parede".
 
 18 - 19 Maio 2017,
-ImplementaÁ„o das mec‚nicas do Horntail (spawn e kill).
-CorreÁ„o de bugs em casos onde valores de EXP ganhos excedem o limite m·ximo de um inteiro de 32bits.
+Implementa√ß√£o das mec√¢nicas do Horntail (spawn e kill).
+Corre√ß√£o de bugs em casos onde valores de EXP ganhos excedem o limite m√°ximo de um inteiro de 32bits.
 
 20 Maio 2017,
-AdiÁ„o: mec‚nica de cadeia para GMs.
+Adi√ß√£o: mec√¢nica de cadeia para GMs.
 Em conjunto com vcoc, adicionaram-se comandos: !clearslot, !hide/unhide, !jail, !itemvac e !healmap.
-CorreÁ„o de bug em tabela SQL que continha informaÁ„o imcompleta para com alguns registros de cards e respectivos mobs.
+Corre√ß√£o de bug em tabela SQL que continha informa√ß√£o imcompleta para com alguns registros de cards e respectivos mobs.
 
 21 Maio 2017,
-RefatoraÁ„o de cÛdigo referente ao mÈtodos de coleta de item pelos jogadores.
-Retiradas inconsistÍncias entre infos de mobbook e "cart„o-de-visitas" do jogador.
+Refatora√ß√£o de c√≥digo referente ao m√©todos de coleta de item pelos jogadores.
+Retiradas inconsist√™ncias entre infos de mobbook e "cart√£o-de-visitas" do jogador.
 Foi retirado o gargalo no sistema sempre que jogador incorpora um novo card ao mobbook.
 Consertado bug em potencial ao tentar completar quest que requer item equipado.
-AdiÁ„o de scrolls: Scroll for cold protection, Scroll for spike for shoes.
+Adi√ß√£o de scrolls: Scroll for cold protection, Scroll for spike for shoes.
 Consertado quest-evento Dollhouse.
 
 23 - 24 Maio 2017,
-Revamp na DB referente ‡s Alliances.
-SoluÁ„o parcial ao problema das Guild Alliances. Pode-se criar uma, sair, expulsar e trocar ranks de jogadores.
+Revamp na DB referente √†s Alliances.
+Solu√ß√£o parcial ao problema das Guild Alliances. Pode-se criar uma, sair, expulsar e trocar ranks de jogadores.
 
 25 Maio 2017,
-SoluÁ„o final ao problema das Guild Alliances. Todas as funcionalidades implementadas.
+Solu√ß√£o final ao problema das Guild Alliances. Todas as funcionalidades implementadas.
 Registros de objetos MapleGuildCharacter agora esta sincronizado entre MapleCharacter's e MapleGuild's.
 
 26 Maio 2017,
-CorreÁ„o e proteÁ„o a acessos concorrentes em mec‚nicas de comercializaÁ„o entre jogadores.
-Quests com limite de tempo agora expiram. Tempo restante tambÈm È mostrado na aba da quest.
+Corre√ß√£o e prote√ß√£o a acessos concorrentes em mec√¢nicas de comercializa√ß√£o entre jogadores.
+Quests com limite de tempo agora expiram. Tempo restante tamb√©m √© mostrado na aba da quest.
 Estrutura de dados que lida com status de quests do jogador agora foi protegido para acesso concorrente.
-Montarias, tanto como pets, n„o ficam com "fome" com o tempo caso os flags PETS_NEVER_HUNGRY estejam setados.
+Montarias, tanto como pets, n√£o ficam com "fome" com o tempo caso os flags PETS_NEVER_HUNGRY estejam setados.
 
 27 - 28 Maio 2017,
-Reajuste de diretÛrio dos scripts de NPCs, agora podendo ser acessados por todos os mundos.
+Reajuste de diret√≥rio dos scripts de NPCs, agora podendo ser acessados por todos os mundos.
 Consertado casos onde jogador tenta acessar o Cash Shop, enquanto abertas janelas/abas interativas, ocasionando crash no jogo.
-Resolvido alguns problemas com Player Shops, n„o retornado todos os itens ao jogador ao sair da loja.
-RefatoraÁ„o de cÛdigo referente ‡s diversas naturezas de fechamento das janelas interativas (minigames, messenger, npc/player shops, etc), agora utilizando um mesmo cÛdigo.
-AdiÁ„o de restriÁ„o de acesso ao Cash Shop pelos jogadores presentes nas salas da Free Market (evitando assim fechamento de lojas de jogadores que tentem acessar o CS).
+Resolvido alguns problemas com Player Shops, n√£o retornado todos os itens ao jogador ao sair da loja.
+Refatora√ß√£o de c√≥digo referente √†s diversas naturezas de fechamento das janelas interativas (minigames, messenger, npc/player shops, etc), agora utilizando um mesmo c√≥digo.
+Adi√ß√£o de restri√ß√£o de acesso ao Cash Shop pelos jogadores presentes nas salas da Free Market (evitando assim fechamento de lojas de jogadores que tentem acessar o CS).
 
 29 - 30 Maio 2017,
-ImplementaÁ„o da estrutura referente aos cupons de UP EXP & drop.
-MapleCouponInstaller: ferramenta desenvolvida para coleta de informaÁıes referentes ao rate e faixa de tempo que os cupons se ativam.
+Implementa√ß√£o da estrutura referente aos cupons de UP EXP & drop.
+MapleCouponInstaller: ferramenta desenvolvida para coleta de informa√ß√µes referentes ao rate e faixa de tempo que os cupons se ativam.
 
 31 Maio 2017,
 Compilada uma nova tabela de EXP para equips no jogo.
-Adicionado novo sistema de EXP e nivelamento para todos os equipamentos, para alÈm daqueles de tipo Reverse e Timeless.
+Adicionado novo sistema de EXP e nivelamento para todos os equipamentos, para al√©m daqueles de tipo Reverse e Timeless.
 
 01 Junho 2017,
-Consertadas mec‚nicas principais para deletar character, possivelmente eliminando quaisquer resÌduos do mesmo da DB. Requer que ENABLE_PIC esteja ativado para funcionar.
+Consertadas mec√¢nicas principais para deletar character, possivelmente eliminando quaisquer res√≠duos do mesmo da DB. Requer que ENABLE_PIC esteja ativado para funcionar.
 
 02 Junho 2017,
 Otimizado e corrigido problemas de queda de desempenho ao atribuir lvups a itens com stats muito elevados, que ocasionavam crashs no servidor.
-Adicionado funcionalidade USE_ULTRA_THREE_SNAILS. Valor mostrado n„o È condizente com o dano contabilizado (motivo: client edit).
+Adicionado funcionalidade USE_ULTRA_THREE_SNAILS. Valor mostrado n√£o √© condizente com o dano contabilizado (motivo: client edit).
 
 03 Junho 2017,
 Sistema de PIN agora completamente funcional.
 Corrigido sistema de ranking para agora mostrar player rankings de acordo com o mundo que ele se encontra.
 Adicionado barra de HP para o boss da BalrogPQ.
-Equips apenas cosmÈticos (sem stats e/ou possibilidade de melhorar) n„o mais ganham EXP e, consequentemente, nivelam.
+Equips apenas cosm√©ticos (sem stats e/ou possibilidade de melhorar) n√£o mais ganham EXP e, consequentemente, nivelam.
 
 04 Junho 2017,
-Otimizados o mÈtodo de ganho de stats de equips ao nivelar.
+Otimizados o m√©todo de ganho de stats de equips ao nivelar.
 Diversos ajustes finos nos comandos existentes.
 Adicionados novos comandos: proitem, seteqstats, buffme, buffmap.
-V·rios ajustes finos em alguns comandos.
+V√°rios ajustes finos em alguns comandos.
 
 05 Junho 2017,
 Novo NPC Skillbook announcer: Abdula.
-Consertada a funÁ„o que retorna se uma skill pertence ou n„o ‡ ·rvore de habilidades do jogador.
+Consertada a fun√ß√£o que retorna se uma skill pertence ou n√£o √† √°rvore de habilidades do jogador.
 
 06 Junho 2017,
 Corrigido command empowerme.
@@ -302,87 +302,87 @@ Corrigidos exploits relacionados a algumas das skills do empowerme.
 Corrigido possivel loop infinito no sistema de EXP.
 
 07 - 10 Junho 2017,
-ImplementaÁ„o da OPQ.
+Implementa√ß√£o da OPQ.
 
 11 Junho 2017,
-CorreÁ„o de alguns bugs vindos com o commit da OPQ.
-Incrementada a documentaÁ„o referente aos mÈtodos usados nos scripts de eventos.
+Corre√ß√£o de alguns bugs vindos com o commit da OPQ.
+Incrementada a documenta√ß√£o referente aos m√©todos usados nos scripts de eventos.
 
 12 Junho 2017,
-CorreÁ„o de falha em criaÁ„o de guilds, n„o atribuindo corretamente o tÌtulo de mestre da guild ao criador.
+Corre√ß√£o de falha em cria√ß√£o de guilds, n√£o atribuindo corretamente o t√≠tulo de mestre da guild ao criador.
 
 13 Junho 2017,
-MudanÁa nas mec‚nicas de busca por portais ao transportar cada jogador: quando n„o for definido, escolhe-se um spawn point aleatoriamente.
-ImplementaÁ„o de fila de espera para Guilds na GPQ (funciona em harmonia com o sistema de lobbys).
+Mudan√ßa nas mec√¢nicas de busca por portais ao transportar cada jogador: quando n√£o for definido, escolhe-se um spawn point aleatoriamente.
+Implementa√ß√£o de fila de espera para Guilds na GPQ (funciona em harmonia com o sistema de lobbys).
 
 14 Junho 2017,
-CorreÁ„o de bug envolvendo abuso de conversa com NPC logo apÛs o sinal de dispose, ocasionando frequentemente crashes no cliente.
+Corre√ß√£o de bug envolvendo abuso de conversa com NPC logo ap√≥s o sinal de dispose, ocasionando frequentemente crashes no cliente.
 
 15 - 17 Junho 2017,
-CorreÁ„o de bug na funÁ„o de atribuiÁ„o de EXP, que n„o permitia receber valores negativos de EXP.
-ImplementaÁ„o da GPQ.
+Corre√ß√£o de bug na fun√ß√£o de atribui√ß√£o de EXP, que n√£o permitia receber valores negativos de EXP.
+Implementa√ß√£o da GPQ.
 
 18 Junho 2017,
-CorreÁ„o de problema de concorrÍncia referente ‡s alteraÁıes nos rates do server.
-Consertado bugs referentes ao comando "level", n„o reatribuindo rates apropriadamente.
+Corre√ß√£o de problema de concorr√™ncia referente √†s altera√ß√µes nos rates do server.
+Consertado bugs referentes ao comando "level", n√£o reatribuindo rates apropriadamente.
 
 19 Junho 2017,
-Consertado cupons n„o aparecendo apropriadamente na regi„o de buffs.
-Consertado alguns problemas de concorrÍncia com cupons.
-Consertado alguns problemas de concorrÍncia com character buffs.
+Consertado cupons n√£o aparecendo apropriadamente na regi√£o de buffs.
+Consertado alguns problemas de concorr√™ncia com cupons.
+Consertado alguns problemas de concorr√™ncia com character buffs.
 
 20 Junho 2017,
-Definido um suporte para o esquema de expediÁıes, tal como pode ser visto na CWKPQ.
+Definido um suporte para o esquema de expedi√ß√µes, tal como pode ser visto na CWKPQ.
 
 21 Junho 2017,
-Corrigido v·rios aspectos de guilds e alliances, que operavam irregularmente no cliente.
+Corrigido v√°rios aspectos de guilds e alliances, que operavam irregularmente no cliente.
 Corrigido "player logged in" aparecendo sempre que jogador troca de canal.
-MGC do jogador agora est· sincronizado com o MGC da guild, n„o o contr·rio.
+MGC do jogador agora est√° sincronizado com o MGC da guild, n√£o o contr√°rio.
 
 23 - 26 Junho 2017,
-Diversas reimplementaÁıes de mec‚nicas da CWKPQ, ainda trabalho em progresso.
+Diversas reimplementa√ß√µes de mec√¢nicas da CWKPQ, ainda trabalho em progresso.
 
 27 Junho 2017,
-ReestruturaÁ„o parcial do esquema de footholds do stage 4 da CWKPQ.
+Reestrutura√ß√£o parcial do esquema de footholds do stage 4 da CWKPQ.
 
 28 - 29 Junho 2017,
 Acabamento final da CWKPQ.
-Corrigido bug no esquema de recuperaÁ„o de diretÛrios dos mapas, referenciados em String.wz.
+Corrigido bug no esquema de recupera√ß√£o de diret√≥rios dos mapas, referenciados em String.wz.
 
 30 Junho 2017,
-Corrigido bug em mec‚nica de hpDec que permitia aos jogadores postergarem o efeito de decrÈscimo de HP.
-Elaborada funcionalidade que permite salvar o "tempo atÈ expirar" para quests com janela de tempo muito alta (as que usam "timeLimit2").
+Corrigido bug em mec√¢nica de hpDec que permitia aos jogadores postergarem o efeito de decr√©scimo de HP.
+Elaborada funcionalidade que permite salvar o "tempo at√© expirar" para quests com janela de tempo muito alta (as que usam "timeLimit2").
 
 03 Julho 2017,
-Corrigido cliente n„o mostrando dano tomado pelo player se ele est· com GM escondido para os outros GMs.
-Corrigido cliente n„o mostrando dano dado pelo summon para outros players.
+Corrigido cliente n√£o mostrando dano tomado pelo player se ele est√° com GM escondido para os outros GMs.
+Corrigido cliente n√£o mostrando dano dado pelo summon para outros players.
 
 07 - 09 Julho 2017,
 Corrigido parcialmente Mystic Doors.
 
 10 - 11 Julho 2017,
-Abertas novas quests para a regi„o de Masteria (Phantom Woods / Crimsonwood mountain).
-Codificados novos NPCs para a regi„o de Masteria.
+Abertas novas quests para a regi√£o de Masteria (Phantom Woods / Crimsonwood mountain).
+Codificados novos NPCs para a regi√£o de Masteria.
 Adicionado drop data para mobs na Pendergast Mansion.
-Corrigido Mystic Doors podendo ser lanÁadas em declives, potencialmente mal-colocando players em mapas-alvo.
+Corrigido Mystic Doors podendo ser lan√ßadas em declives, potencialmente mal-colocando players em mapas-alvo.
 Corrigido mount equipado por player de nivel baixo potencialmente crashando o client.
 
 12 - 14 Julho 2017,
-Corrigido quests onde player pode escolher recompensa n„o recompensando corretamente.
+Corrigido quests onde player pode escolher recompensa n√£o recompensando corretamente.
 Corrigido mapas em CBD/Singapore fazendo jogador "cair" do mapa.
 Adicionado no sql lojas de NPCs de Malaysia.
 Adicionado minidungeon "ByeBye station" (Malaysia).
-Codificada expediÁ„o Scarlion/Targa.
-Corrigido exploit com mini-dungeons (toda party, independente de localizaÁ„o atual, movida para dentro da MD).
+Codificada expedi√ß√£o Scarlion/Targa.
+Corrigido exploit com mini-dungeons (toda party, independente de localiza√ß√£o atual, movida para dentro da MD).
 
 15 Julho 2017,
 Adicionado area boss Snack Bar.
 Corrigido bugs com "buffmap" desconectando players em certos casos.
 
 16 - 17 Julho 2017,
-Adicionados HTPQ e expediÁ„o Horntail.
+Adicionados HTPQ e expedi√ß√£o Horntail.
 Corrigido bugs com levelup de equipamentos provocando Integer overflow (stats negativos) nos clientes.
-Corrigido ataque de Octopus (summon) n„o revelando direÁ„o a clientes de terceiros.
+Corrigido ataque de Octopus (summon) n√£o revelando dire√ß√£o a clientes de terceiros.
 Corrigido caso onde player usando chair morre sem desequipar a chair, levando clientes a mostrar chairs ao lado do player.
 Nova feature: cura extra de chairs de mapa.
 
@@ -390,59 +390,59 @@ Nova feature: cura extra de chairs de mapa.
 Corrigido varias falhas de concorrencia na classe dos players.
 Corrigido reator das portas do dojo as vezes lancando nulls.
 Adicionado sistema de lobbys pro Dojo (multiplas partys podendo acessar salas do Dojo concorrentemente, com limite).
-Adicionado proteÁ„o de acesso concorrente a certas propriedades dos players.
+Adicionado prote√ß√£o de acesso concorrente a certas propriedades dos players.
 
 21 Julho 2017,
 Corrigido scripts dojang_Eff (agora aplicando para todos) e dojang_1st (agora somente para o primeiro player entrando no mapa).
 Dojo agora funcional, com sistema de lobbys aplicado.
-Bosses no dojo agora dropam buffs e mobs poÁıes.
+Bosses no dojo agora dropam buffs e mobs po√ß√µes.
 
 22 - 23 Julho 2017,
-Corrigido v·rios aspectos errÙneos referente ao funcionamento das Mystic Doors.
+Corrigido v√°rios aspectos err√¥neos referente ao funcionamento das Mystic Doors.
 Comando adicionado: recharge.
 Adicionado/modificado alguns scripts de portais relacionados a mapas de skills de 4th job.
 
 24 Julho 2017,
-Adicionada mec‚nica permitindo quests entregarem itens mesmo que n„o haja slots vazios para garantir tal aÁ„o.
+Adicionada mec√¢nica permitindo quests entregarem itens mesmo que n√£o haja slots vazios para garantir tal a√ß√£o.
 
 25 Julho 2017,
-Adicionadas barras de HP para bosses da regi„o de Zipangu/Showa.
-Adicionada expediÁ„o para bosses de Showa.
+Adicionadas barras de HP para bosses da regi√£o de Zipangu/Showa.
+Adicionada expedi√ß√£o para bosses de Showa.
 Adicionados chairs a venda por NPCs ao longo de Maple World.
 
 26 - 27 Julho 2017,
-HP Bar de bosses agora aparecem de forma inteligente, de acordo com quem o jogador est· alvejando.
-Adicionadas expediÁıes para Zakum e Pinkbean.
+HP Bar de bosses agora aparecem de forma inteligente, de acordo com quem o jogador est√° alvejando.
+Adicionadas expedi√ß√µes para Zakum e Pinkbean.
 
 31 Julho 2017,
 Otimizado carregamento de skills ao iniciar o server.
-Workaround em bosses tais como Riche e Ice Witch, anteriormente inderrot·veis.
+Workaround em bosses tais como Riche e Ice Witch, anteriormente inderrot√°veis.
 
 01 Agosto 2017,
-Adicionado drop data para tais bosses anteriormente inderrot·veis.
+Adicionado drop data para tais bosses anteriormente inderrot√°veis.
 
 02 Agosto 2017,
-Consertado bug em alguns eventos, relacionado ‡ funÁ„o isEventLeader.
-Consertado quests n„o dando item certo apropriadamente, no caso de escolhas.
+Consertado bug em alguns eventos, relacionado √† fun√ß√£o isEventLeader.
+Consertado quests n√£o dando item certo apropriadamente, no caso de escolhas.
 
 03 Agosto 2017,
 Quests agora retiram itens antes de entregar recompensas.
-ApÛs a primeira inicializaÁ„o, PQs inicializar„o mais r·pido, uma vez que h· um sistema preparador de EIMs ativo.
+Ap√≥s a primeira inicializa√ß√£o, PQs inicializar√£o mais r√°pido, uma vez que h√° um sistema preparador de EIMs ativo.
 
 04 - 05 Agosto 2017,
 Novo scroll: antibanish. Retorna ao local de onde foi banido pela ultima vez.
-Resolvido alguns problemas de concorrÍncia com MapleMapFactory.
+Resolvido alguns problemas de concorr√™ncia com MapleMapFactory.
 Removidos drops inexistentes da DB.
 Resolvido problema com GMs de level alto recebendo bloqueio MWLB.
 
 07 - 10 Agosto 2017,
 Adicionada Magatia PQ.
-Resolvido bug no Dojo impedindo mesma party de tentar entrar de novo se saiu sem acab·-la.
+Resolvido bug no Dojo impedindo mesma party de tentar entrar de novo se saiu sem acab√°-la.
 Resolvido bugs nos scripts de 2nd job.
 
 14 Agosto 2017,
 Resolvidos alguns bugs em alguns NPCs e mapa de Mu Lung.
-Resolvido algumas inconsistÍncias entre MapleCharacter <-> MaplePartyCharacter, ocasionando infos erroneas em Guilds.
+Resolvido algumas inconsist√™ncias entre MapleCharacter <-> MaplePartyCharacter, ocasionando infos erroneas em Guilds.
 
 15 Agosto 2017,
 Rebalanceado ganho de equip exp.
@@ -450,203 +450,203 @@ Atualizado amostra na tela de lvup stats de equips para os jogadores.
 Reactors agora dropam itens de quest somente se o player possui a mesma ativada.
 
 16 Agosto 2017,
-Consertado corrente de quests da Temple of Time. Agora Pink Bean È alcanc·vel.
+Consertado corrente de quests da Temple of Time. Agora Pink Bean √© alcanc√°vel.
 Adicionadas algumas chairs ao SQL.
 
 17 Agosto 2017,
 Consertado Orbis Tower<B2> ainda aplicando DOT ao player, mesmo com bolha ativada.
 Adicionado Boss HPBar em Rombot.
 Consertado problema de keybinding para USEs com id batendo com id de skills fora da arvore de habilidades do jogador.
-Consertado bug em scripts de alguns forjadores de itens que n„o verificava corretamente a quantidade de itens a tirar do jogador antes de fazer o item.
+Consertado bug em scripts de alguns forjadores de itens que n√£o verificava corretamente a quantidade de itens a tirar do jogador antes de fazer o item.
 Adidionado loots para mobs de Kerning Square.
 Consertado comandos de hair e face.
 
 18 Agosto 2017,
-Consertado skill Dispel n„o aparecendo efeito aos outros jogadores.
+Consertado skill Dispel n√£o aparecendo efeito aos outros jogadores.
 Atualizados alguns scripts de viagens transferindo jogadores a pontos aleatorios nas chegadas.
 Atualizado relatorio de drop data no monster book.
 
 20 - 22 Agosto 2017,
-Refatoradas algumas referÍncias de identificaÁ„o de itens, quando constantes, para ser realizados pelo classe est·tica ItemConstants ao invÈs da classe MapleItemInformationProvider.
+Refatoradas algumas refer√™ncias de identifica√ß√£o de itens, quando constantes, para ser realizados pelo classe est√°tica ItemConstants ao inv√©s da classe MapleItemInformationProvider.
 Adicionados door portals em Kerning City Square.
-Refatorado acesso ao DB. Conexıes agora podem ser lanÁadas em paralelo, com um limite m·ximo de conexıes. Excedente espera atÈ que um fique livre.
+Refatorado acesso ao DB. Conex√µes agora podem ser lan√ßadas em paralelo, com um limite m√°ximo de conex√µes. Excedente espera at√© que um fique livre.
 Adicionado MESO como quest RequirementType. Quests agora podem checar por meso de um jogador.
 Mais drop data e HPBar em bosses.
 
 23 Agosto 2017,
 Consertado problema com overflow ao scrollar equips resultando em equips com stats negativos.
-Consertado pets n„o expirando corretamente (possivelmente crashando o cliente se no meio do jogo).
+Consertado pets n√£o expirando corretamente (possivelmente crashando o cliente se no meio do jogo).
 
 24 - 25 Agosto 2017,
-Acesso ‡ DB usando HikariCP (melhor ganho em desempenho e cÛdigo mais enxuto).
+Acesso √† DB usando HikariCP (melhor ganho em desempenho e c√≥digo mais enxuto).
 Resolvido bugs com hatch egg e evolvePet.
 Adicionado energy bar e skills funcionais no Dojo.
 Consertado cash pet food retirando stats de mount em Character Info.
 
 26 Agosto 2017,
 Consertado bug no sistema de exp de pets.
-Refatorado sistema de trades, agora verificando por slots disponÌveis similarmente ao sistema usado pelas rewards de quests.
+Refatorado sistema de trades, agora verificando por slots dispon√≠veis similarmente ao sistema usado pelas rewards de quests.
 
 27 Agosto 2017,
-Hero's Will retira a maioria dos diseases. Tonico retira slow alÈm de weakness.
+Hero's Will retira a maioria dos diseases. Tonico retira slow al√©m de weakness.
 Consertado comando itemvac coletando quest itens e itens de outros jogadores.
-Novo comando: cake. Chama cake boss com valor customiz·vel de HP.
+Novo comando: cake. Chama cake boss com valor customiz√°vel de HP.
 
 28 Agosto 2017,
 Parties agora podem sair do Dojo sem precisar esperar o timeout expirar.
 Ao entrar no Dojo, jogadores tem energy points resetados pra zero.
-Adicionado informaÁ„o de NX ganho ao coletar cupons.
+Adicionado informa√ß√£o de NX ganho ao coletar cupons.
 Pets em outros slots agora equipam devidamente.
 
 31 Agosto 2017,
-Refatorado autoassigner para focar nos stats prim·rios a partir da avaliaÁ„o do valor base do stat secund·rio com o 1∫ e 2∫ equips mais forte, ao invÈs de somente o 1∫.
+Refatorado autoassigner para focar nos stats prim√°rios a partir da avalia√ß√£o do valor base do stat secund√°rio com o 1¬∫ e 2¬∫ equips mais forte, ao inv√©s de somente o 1¬∫.
 Corrigido bug de acesso concorrente no sistema de rate cupons.
 
 01 Setembro 2017,
-Comando rates e equiplv agora usam visual ao invÈs de escrever no chat.
-Corrigido NPC crafters crashando o cliente no caso onde o player n„o tem slot disponÌvel para o novo item.
+Comando rates e equiplv agora usam visual ao inv√©s de escrever no chat.
+Corrigido NPC crafters crashando o cliente no caso onde o player n√£o tem slot dispon√≠vel para o novo item.
 
 02 Setembro 2017,
-Refatorado sistema de schedules para mounts e pets. Agora o server passa a instanciar as chamadas ‡s funÁıes que definem "cansaÁo" nos animais, ao invÈs de instanciar uma task para cada.
+Refatorado sistema de schedules para mounts e pets. Agora o server passa a instanciar as chamadas √†s fun√ß√µes que definem "cansa√ßo" nos animais, ao inv√©s de instanciar uma task para cada.
 
 04 Setembro 2017,
-Adicionado sistema de exclus„o de itens (pet feature) no server.
+Adicionado sistema de exclus√£o de itens (pet feature) no server.
 Party recebe update de HP de jogadores ao ressucitarem na city.
-Flash Jump's levam o update necess·rio ao trocar de job. 3a pessoa agora pode ver a animaÁ„o do FJ.
+Flash Jump's levam o update necess√°rio ao trocar de job. 3a pessoa agora pode ver a anima√ß√£o do FJ.
 
 05 Setembro 2017,
 Corrigido mais alguns aspectos do autoassigner.
-Corrigido itens saindo para fora do mapa. Nova posiÁ„o do drop leva em conta as bordas da camera do jogador.
+Corrigido itens saindo para fora do mapa. Nova posi√ß√£o do drop leva em conta as bordas da camera do jogador.
 
 07 Setembro 2017,
 Adicionado Vega's Spell.
-3rd job event agora possui tempo-limite e verifica se h· jogadores j· enfrentando o desafio.
+3rd job event agora possui tempo-limite e verifica se h√° jogadores j√° enfrentando o desafio.
 
 10 Setembro 2017,
 Protegido contra acesso concorrente classes MonsterBook e MapleInventory.
 Nova feature: autosaver.
 
 11 Setembro 2017,
-Consertado pet ignore n„o recuperando dados dos pets em alguns casos.
+Consertado pet ignore n√£o recuperando dados dos pets em alguns casos.
 
 12 Setembro 2017,
 Explorer mount quest como evento, com timeout e expulsa o player se o hog morre.
 
 14 - 15 Setembro 2017,
 Adicionado AmoriaPQ.
-Consertado um problema em Inventory Sort que lanÁava exceÁ„o caso tivesse que ordenar vetores vazios.
+Consertado um problema em Inventory Sort que lan√ßava exce√ß√£o caso tivesse que ordenar vetores vazios.
 
 16 Setembro 2017,
-Refatorado sistema de schedules para hired merchants. Agora o server passa a instanciar as chamadas ‡s funÁıes que fecham as hired merchants, ao invÈs de instanciar uma task para cada.
+Refatorado sistema de schedules para hired merchants. Agora o server passa a instanciar as chamadas √†s fun√ß√µes que fecham as hired merchants, ao inv√©s de instanciar uma task para cada.
 
 18 - 21 Setembro 2017,
 Refatorado sistema de schedules para skill cooldowns e buff expiretimes.
-Completamente reestruturado sistema de buffs. Nova flag permite permanÍncia de buffs mais fortes mesmo que novos buffs surjam.
+Completamente reestruturado sistema de buffs. Nova flag permite perman√™ncia de buffs mais fortes mesmo que novos buffs surjam.
 
 22 Setembro 2017,
 Adicionado buffs para GPQ.
-Consertado GPQ n„o iniciando devido a problemas com o script de evento.
+Consertado GPQ n√£o iniciando devido a problemas com o script de evento.
 
 23 Setembro 2017,
 Adicionado Water of Life.
-Consertado bug com sistema novo de buffs ao entrar no cash shop e em outros cen·rios onde n„o se detectava o melhor buff corretamente.
+Consertado bug com sistema novo de buffs ao entrar no cash shop e em outros cen√°rios onde n√£o se detectava o melhor buff corretamente.
 
 25 - 27 Setembro 2017,
-Adicionado proteÁ„o de acesso concorrente a aÁıes de Hired Merchant e Player Shop.
-Corrigido alguns problemas com Hired Merchant n„o retornando a quantidade correta de itens.
+Adicionado prote√ß√£o de acesso concorrente a a√ß√µes de Hired Merchant e Player Shop.
+Corrigido alguns problemas com Hired Merchant n√£o retornando a quantidade correta de itens.
 Adicionado Owl of Minerva.
 Corrigido um bug no sistema de checagem de slots.
 
 28 Setembro 2017,
-Adidionado wish tickets ‡ AmoriaPQ.
+Adidionado wish tickets √† AmoriaPQ.
 
 02 - 03 Outubro 2017,
-Adicionado proteÁ„o de acesso concorrente em MapleParty.
-Corrigido bug em sistema de distribuiÁ„o de EXP para party.
-Corrigido bug de overflow em distribuiÁ„o de EXP.
-Corrigido bug com scrolls n„o usando slots quando resultam em sucesso.
+Adicionado prote√ß√£o de acesso concorrente em MapleParty.
+Corrigido bug em sistema de distribui√ß√£o de EXP para party.
+Corrigido bug de overflow em distribui√ß√£o de EXP.
+Corrigido bug com scrolls n√£o usando slots quando resultam em sucesso.
 Refatorado sistema de schedules para disease expiretimes.
 
 05 Outubro 2017,
-Alterado level mÌnimo para receber exp de um mob de base level - 5 para - 20 (cliente destaca infos do mob em vermelho se o jogador est· abaixo desta faixa).
+Alterado level m√≠nimo para receber exp de um mob de base level - 5 para - 20 (cliente destaca infos do mob em vermelho se o jogador est√° abaixo desta faixa).
 
 07 Outubro 2017,
 Consertado players podendo criar party sendo level menor que 10.
 Players abaixo do level 10 agora podem convidar outros menores que 10 para party, se o servidor permitir.
 
 09 Outubro 2017,
-Adicionado proteÁ„o de acesso concorrente em invocaÁ„o de scripts na EventInstanceManager.
+Adicionado prote√ß√£o de acesso concorrente em invoca√ß√£o de scripts na EventInstanceManager.
 Alterado tempo-limite em mapas da PiratePQ para seguir o determinado para cada mapa.
 
 12 Outubro 2017,
 Corrigido alguns bugs com a PPQ.
-Se houve sucesso usando white scroll, slot ainda È usado.
+Se houve sucesso usando white scroll, slot ainda √© usado.
 
 15 Outubro 2017,
-Corrigido Mini-dungeons n„o liberando os jogadores corretamente. Se player entra em outra sess„o de MD antes de dar o timeout da primeira, o timeout leva efeito mesmo fora da sess„o.
+Corrigido Mini-dungeons n√£o liberando os jogadores corretamente. Se player entra em outra sess√£o de MD antes de dar o timeout da primeira, o timeout leva efeito mesmo fora da sess√£o.
 Corrigido um bug/exploit que permitia stackar map chair recovery.
-Corrigido um bug no invent·rio de CASH mesclando itens de mesmo id.
-Adicionado contador de buscas por itens realizados pelos jogadores ao usar Owl. Sugest„o de mais pesquisados na Owl implementado.
+Corrigido um bug no invent√°rio de CASH mesclando itens de mesmo id.
+Adicionado contador de buscas por itens realizados pelos jogadores ao usar Owl. Sugest√£o de mais pesquisados na Owl implementado.
 
 17 Outubro 2017,
-Consertado Roaring Tiger Messenger aparecendo fora da tela ao final da animaÁ„o.
-Consertado bugs envolvendo ganho de EXP em party, para casos onde o level do mob alvo È bem maior que o do atacante/leecher.
+Consertado Roaring Tiger Messenger aparecendo fora da tela ao final da anima√ß√£o.
+Consertado bugs envolvendo ganho de EXP em party, para casos onde o level do mob alvo √© bem maior que o do atacante/leecher.
 
 20 - 21 Outubro 2017,
-Bonus de Map chair rearranjado como uma skill, buffando jogador no momento que a codiÁ„o de ativaÁ„o È atingida.
+Bonus de Map chair rearranjado como uma skill, buffando jogador no momento que a codi√ß√£o de ativa√ß√£o √© atingida.
 Hired Merchant agora verifica devidamente se jogador possui slot antes de liberar a compra de um item.
 Pequeno conserto de acesso concorrente com o Storage.
-Corrigido Map chair n„o removendo task corretamente caso jogador mude de mapa inesperadamente.
+Corrigido Map chair n√£o removendo task corretamente caso jogador mude de mapa inesperadamente.
 
 22 Outubro 2017,
 Corrigido itens com ownership diferente sendo agrupados num mesmo slot, perdendo a referencia de dono.
 Implementado feature "Arrange Items" do MapleStorage. Ele faz os devidos agrupamentos de itens e organiza os itens do storage.
-Corrigido storage mesclando itens que deveriam ser ˙nicos (que n„o poderiam haver mais de um num mesmo slot, ou no invent·rio do jogador).
+Corrigido storage mesclando itens que deveriam ser √∫nicos (que n√£o poderiam haver mais de um num mesmo slot, ou no invent√°rio do jogador).
 Corrigido bug onde colocar um pet equipado no Cash Inventory e voltar ao jogo causaria crash no jogador.
 
 23 - 24 Outubro 2017,
-Adicionado proteÁ„o contra acesso concorrente em mÛdulos de MapleMonster.
+Adicionado prote√ß√£o contra acesso concorrente em m√≥dulos de MapleMonster.
 Corrigido bug com Venom fazendo aparecer "dano 1" no DOT.
-Corrigido sistema de EXP agora contabilizando devidamente HP curado pelo mob na distribuiÁ„o do EXP.
+Corrigido sistema de EXP agora contabilizando devidamente HP curado pelo mob na distribui√ß√£o do EXP.
 
 25 Outubro 2017,
-Corrigido alguns problemas com as configs de inicializaÁ„o do HikariCP.
-Corrigido bug com inicializaÁ„o de NPC scripts podendo desconectar o jogador se instaciado m˙ltiplas vezes.
+Corrigido alguns problemas com as configs de inicializa√ß√£o do HikariCP.
+Corrigido bug com inicializa√ß√£o de NPC scripts podendo desconectar o jogador se instaciado m√∫ltiplas vezes.
 
 26 Outubro 2017,
-Adicionado feature de randomizaÁ„o dos stats ganhos de HP e MP. Stat ganho de MP leva na contabilizaÁ„o INT do jogador.
+Adicionado feature de randomiza√ß√£o dos stats ganhos de HP e MP. Stat ganho de MP leva na contabiliza√ß√£o INT do jogador.
 
 27 - 28 Outubro 2017,
-Alterado fairness de alguns locks do server para atender em fila requisiÁıes de acesso ao cÛdigo atÙmico.
-Corrigido jogadores "pulando mapas" se estiverem jogando com Internet lenta e tentarem usar portais m˙ltiplas vezes.
-Corrigido storage n„o liberando devidamente o jogador em casos onde o mesmo n„o possa executar uma transaÁ„o por falta de nÌvel 15.
-Corrigido sistema de buffs n„o computando buffs com valor zero n„o sendo apropriadamente ativados no jogador.
+Alterado fairness de alguns locks do server para atender em fila requisi√ß√µes de acesso ao c√≥digo at√¥mico.
+Corrigido jogadores "pulando mapas" se estiverem jogando com Internet lenta e tentarem usar portais m√∫ltiplas vezes.
+Corrigido storage n√£o liberando devidamente o jogador em casos onde o mesmo n√£o possa executar uma transa√ß√£o por falta de n√≠vel 15.
+Corrigido sistema de buffs n√£o computando buffs com valor zero n√£o sendo apropriadamente ativados no jogador.
 
 29 Outubro 2017,
-Adicionado drop data para diversas versıes de Fairy, Yetis e Pepes.
-Adicionado proteÁ„o contra acesso concorrente em MapleGuild e MapleAlliance.
+Adicionado drop data para diversas vers√µes de Fairy, Yetis e Pepes.
+Adicionado prote√ß√£o contra acesso concorrente em MapleGuild e MapleAlliance.
 
 30 Outubro 2017,
 Adicionado drop data de mesos para o restante dos mobs que dropam 4 ou mais itens.
 
 31 Outubro 2017,
 Corrigido bug ao mudar classe de Aran desconectando o jogador.
-Corrigido drop data de flechas agora dropando bundles ao invÈs de uma quantidade unit·ria.
+Corrigido drop data de flechas agora dropando bundles ao inv√©s de uma quantidade unit√°ria.
 
 01 - 02 Novembro 2017,
-Modificado licenÁas do projeto.
+Modificado licen√ßas do projeto.
 Corrigido um bug no sistema que calcula slotMax dos itens.
-Corrigido npcs/portais/reatores e outros mecanismos enviando jogadores para spawnpoints aleatÛrios onde n„o deveria.
-Corrigido buff Wind Walk n„o cancelando quando atacando.
+Corrigido npcs/portais/reatores e outros mecanismos enviando jogadores para spawnpoints aleat√≥rios onde n√£o deveria.
+Corrigido buff Wind Walk n√£o cancelando quando atacando.
 
 03 Novembro 2017,
 Modificado custom questline: recompensa deixa de ser PAC com chaos scrolls p/ map chair skill com itens de Maple.
 Adicionado quest de Horus' Eye.
-Consertado Wind Walk agora atuando corretamente, n„o uma outra vers„o de Dark Sight.
+Consertado Wind Walk agora atuando corretamente, n√£o uma outra vers√£o de Dark Sight.
 
 04 Novembro 2017,
-Corrigido WK Charge skills n„o sobrescrevendo uma ‡ outra ao ativar as skills.
-Implementado nova ferramenta: MapleQuestItemFetcher. Ela vasculha a DB e os XMLs em busca de informaÁıes perdidas quanto aos itens de quest.
+Corrigido WK Charge skills n√£o sobrescrevendo uma √† outra ao ativar as skills.
+Implementado nova ferramenta: MapleQuestItemFetcher. Ela vasculha a DB e os XMLs em busca de informa√ß√µes perdidas quanto aos itens de quest.
 
 05 Novembro 2017,
 Adicionado sistema de level cap para jobs correntes.
@@ -654,116 +654,124 @@ Revisto acesso concorrente sobre o componente EM da classe EIM.
 
 07 Novembro 2017,
 Refatorado esquema de schedules por toda a source, diminuindo drasticamente as chamadas ao TimerManager.
-Refatorado algumas chamadas ‡ DB, busca somente aquilo que È necess·rio.
+Refatorado algumas chamadas √† DB, busca somente aquilo que √© necess√°rio.
 
 08 - 09 Novembro 2017,
 Adicionado packet para extra slot pendant.
-Corrigido possÌvel bug em MapleMapFactory.
-Modificado todas as DB tables agora utilizando InnoDB (ganhos do MyISAM em contraste se tornou Ìnfimo, para casos crÌticos).
+Corrigido poss√≠vel bug em MapleMapFactory.
+Modificado todas as DB tables agora utilizando InnoDB (ganhos do MyISAM em contraste se tornou √≠nfimo, para casos cr√≠ticos).
 
 11 Novembro 2017,
-Adicionado proteÁ„o contra acesso concorrente em scripts de portais, eliminando possÌveis inconsistencias por script.
+Adicionado prote√ß√£o contra acesso concorrente em scripts de portais, eliminando poss√≠veis inconsistencias por script.
 Implementado as skills de 2o job de Aran nas questlines.
 Corrigido GM shop sendo liberado pra jogadores em Amherst.
 
 13 - 14 Novembro 2017,
-Modificado ID de jogador agora comeÁando em 20,000,000, evitando assim clash de id de jogador (que tb representa seu OID) com OIDs de objetos do mapa.
-Nova ferramenta: MapleSkillMakerFetcher. A ferramenta lÍ info pertinente ‡s descriÁıes de itens feitos pelo Maker e as compila numa tabela, pra ser usada na DB.
+Modificado ID de jogador agora come√ßando em 20,000,000, evitando assim clash de id de jogador (que tb representa seu OID) com OIDs de objetos do mapa.
+Nova ferramenta: MapleSkillMakerFetcher. A ferramenta l√™ info pertinente √†s descri√ß√µes de itens feitos pelo Maker e as compila numa tabela, pra ser usada na DB.
 Corrigida questline de mounts e skills de Aran.
 
 15 Novembro 2017,
 Implementado sistema de auditoria de deadlocks: ThreadTracker.
 Corrigido bug onde jogadores recebem dano de mobs de mapas anteriores (que acarretavam em problemas com OID e natureza dos objetos).
-Corrigido alguns problemas com exceÁ„o sendo lanÁada ao tentar desligar o server.
+Corrigido alguns problemas com exce√ß√£o sendo lan√ßada ao tentar desligar o server.
 
 16 - 17 Novembro 2017,
-Rearranjado ID de jogador agora comeÁando de 1 mais uma vez. Espera-se que n„o haja mais de 1bil de jogadores registrados.
-Corrigido timer de quest n„o saindo do cliente quando dado o termino bem-sucedido da quest.
+Rearranjado ID de jogador agora come√ßando de 1 mais uma vez. Espera-se que n√£o haja mais de 1bil de jogadores registrados.
+Corrigido timer de quest n√£o saindo do cliente quando dado o termino bem-sucedido da quest.
 Corrigido MapleArrowFetcher atribuindo valores iguais para min e max ranges. Max deve sempre ser maior que min.
-Corrigido bug no ThreadTracker n„o mostrando os ˙ltimos locks capturados pelas threads corretamente.
+Corrigido bug no ThreadTracker n√£o mostrando os √∫ltimos locks capturados pelas threads corretamente.
 
 18 - 20 Novembro 2017,
 Implementado items sendo dropados de reatores intervaladamente, GMS-like.
-Adicionado informaÁ„o ao jogador que tentar completar uma quest com item necess·rio equipado.
-Nova ferramenta: MapleMapInfoRetriever. DetecÁ„o b·sica de mapas com sem nÛ de info em sua estrutura WZ.
+Adicionado informa√ß√£o ao jogador que tentar completar uma quest com item necess√°rio equipado.
+Nova ferramenta: MapleMapInfoRetriever. Detec√ß√£o b√°sica de mapas com sem n√≥ de info em sua estrutura WZ.
 Adicionado scripts para Power B. Fore npc.
 
 21 - 23 Novembro 2017,
-Implementado Maker skill (mÈtodos de packets pelo menos j· existiam).
+Implementado Maker skill (m√©todos de packets pelo menos j√° existiam).
 Corrigido bug em MapleSkillMakerFetcher, atualizado DB com as tabelas normalizadas.
-Nova ferramenta: MapleSkillMakerReagentIndexer. Agrupa no banco de dados informaÁ„o pertinente aos reagentes do Maker, para serem usados pelo server.
+Nova ferramenta: MapleSkillMakerReagentIndexer. Agrupa no banco de dados informa√ß√£o pertinente aos reagentes do Maker, para serem usados pelo server.
 Quests nivelando/utilizando o Maker funcionam corretamente agora.
 
 25 - 26 Novembro 2017,
-Implementado regi„o de Neo City. Progress„o do jogo e sistema de quests fluem normalmente agora.
-Corrigido um bug onde mobs de PQ n„o atribuem experiÍncia aos jogadores por serem "baixo nÌvel".
+Implementado regi√£o de Neo City. Progress√£o do jogo e sistema de quests fluem normalmente agora.
+Corrigido um bug onde mobs de PQ n√£o atribuem experi√™ncia aos jogadores por serem "baixo n√≠vel".
 Corrigido um bug de deadlock com respawn de reatores.
-Reatores que consomem drops agora checam por possÌveis drops ao se registrar no mapa (seja por respawn ou primeiro spawn).
-Aprimorado mec‚nicas da EllinPQ.
+Reatores que consomem drops agora checam por poss√≠veis drops ao se registrar no mapa (seja por respawn ou primeiro spawn).
+Aprimorado mec√¢nicas da EllinPQ.
 
 28 Novembro 2017,
-Diversas refatoraÁıes de classes no projeto.
+Diversas refatora√ß√µes de classes no projeto.
 Novo release: HeavenMS.
 
 02 Dezembro 2017,
-Adicionado informaÁ„o de classes nos NPCs para os 2o jobs de Explorer.
+Adicionado informa√ß√£o de classes nos NPCs para os 2o jobs de Explorer.
 
 04 Dezembro 2017,
-Adicionado quests para a regi„o de Nihal Desert.
-Nova ferramenta: MapleQuestMesoFetcher. Busca nos WZs por checagens perdidas em quests onde se precisa pagar uma certa quantia para complet·-las.
+Adicionado quests para a regi√£o de Nihal Desert.
+Nova ferramenta: MapleQuestMesoFetcher. Busca nos WZs por checagens perdidas em quests onde se precisa pagar uma certa quantia para complet√°-las.
 
 07 Dezembro 2017,
-Reatores que buscam itens no ch„o agora buscam por itens ao mudar de estado.
+Reatores que buscam itens no ch√£o agora buscam por itens ao mudar de estado.
 Corrigido 3o job de Cygnus.
 
 08 - 09 Dezembro 2017,
-Removido UI que aponta erroneamente "Stat Upgrade" nos nÌveis 15, 20, 25 e 30.
-Adicionado comando "droplimit", cuja funcionalidade È informar ao jogador a quantidade de drops no mapa em contraste com o limite permitido.
+Removido UI que aponta erroneamente "Stat Upgrade" nos n√≠veis 15, 20, 25 e 30.
+Adicionado comando "droplimit", cuja funcionalidade √© informar ao jogador a quantidade de drops no mapa em contraste com o limite permitido.
 
 11 - 12 Dezembro 2017,
-Resolvido bug onde contador do drops do mapa n„o atualizaria seu valor em casos onde reatores consomem itens ou ao se aplicar comandos como "cleardrops".
-Corrigido server enviando packets com BroadcastMessage somente para o world 0, ao invÈs de ser para o world alvo.
-MapleQuestItemFetcher agora mostra quests j· expiradas no relatÛrio.
+Resolvido bug onde contador do drops do mapa n√£o atualizaria seu valor em casos onde reatores consomem itens ou ao se aplicar comandos como "cleardrops".
+Corrigido server enviando packets com BroadcastMessage somente para o world 0, ao inv√©s de ser para o world alvo.
+MapleQuestItemFetcher agora mostra quests j√° expiradas no relat√≥rio.
 
 17 - 19 Dezembro 2017,
 Implementado New Years card.
-Adicionado informaÁ„o, destinado ao dono da loja, de compra de itens dos Player Shops e dos Hired Merchants.
+Adicionado informa√ß√£o, destinado ao dono da loja, de compra de itens dos Player Shops e dos Hired Merchants.
 Resolvido um problema com overflow em Player Shops.
 
 20 - 22 Dezembro 2017,
 Resolvido problema com itens ainda saindo das bordas de alguns mapas em certos casos.
 Corrigido Enhanced Crafting com a Agent E rodando probabilidade do Chaos Scroll ao fazer o item.
-Resolvido um problema com certos mapas n„o possuindo minimapa fazendo drops cairem sempre na posiÁ„o x = 0.
+Resolvido um problema com certos mapas n√£o possuindo minimapa fazendo drops cairem sempre na posi√ß√£o x = 0.
 Corrigido pets reduzindo fullness enquanto no Cash Shop ou no MTS.
-Corrigido bug em skills de PQ/Dojo para players que tem skill level = 0. Espera-se que todos possam "ativ·-las".
-Modificado mapa de fora do dojo agora resetando dojo energy, evitando assim possÌvel exploit com skills do dojo.
-Corrigido exploit em dojos permitindo que jogadores acessem mapas de est·gios avanÁados se n„o progrediram juntos nos est·gios anteriores.
-Pontos agora est„o sendo corretamente atribuÌdos aos jogadores que est„o sendo automaticamente levados para o prÛximo rest point (quando um jogador passa pelo ˙ltimo portal de cada etapa).
-Corrigido jogador comprando itens one-of-a-kind dos Hired Merchants quando n„o se pode obtÍ-los.
+Corrigido bug em skills de PQ/Dojo para players que tem skill level = 0. Espera-se que todos possam "ativ√°-las".
+Modificado mapa de fora do dojo agora resetando dojo energy, evitando assim poss√≠vel exploit com skills do dojo.
+Corrigido exploit em dojos permitindo que jogadores acessem mapas de est√°gios avan√ßados se n√£o progrediram juntos nos est√°gios anteriores.
+Pontos agora est√£o sendo corretamente atribu√≠dos aos jogadores que est√£o sendo automaticamente levados para o pr√≥ximo rest point (quando um jogador passa pelo √∫ltimo portal de cada etapa).
+Corrigido jogador comprando itens one-of-a-kind dos Hired Merchants quando n√£o se pode obt√™-los.
 
 23 - 24 Dezembro 2017,
-Corrigido checagem de itens no invent·rio n„o verificando apropriadamente itens one-of-a-kind.
-Adicionado e corrigido v·rios aspectos do Duey. Descoberto opcodes e respostas de aÁıes de jogadores.
+Corrigido checagem de itens no invent√°rio n√£o verificando apropriadamente itens one-of-a-kind.
+Adicionado e corrigido v√°rios aspectos do Duey. Descoberto opcodes e respostas de a√ß√µes de jogadores.
 Corrigido autopot agora contabilizando bonus de HP e MP dos equipamentos nos stats a serem checados.
 Adicionado Ereve na lista de plataformas de Orbis.
 
 27 Dezembro 2017,
-Corrigido AP reset modificando stats de forma errÙnea.
+Corrigido AP reset modificando stats de forma err√¥nea.
 
 03 Janeiro 2018,
-Corrigido item megafone permitindo o display de equipamentos n„o-comercializ·veis, mesmo marcados como Untradeable.
+Corrigido item megafone permitindo o display de equipamentos n√£o-comercializ√°veis, mesmo marcados como Untradeable.
 
 10 - 13 Janeiro 2018,
-Incrementado portal de MK Castle agora permitindo uso dos 2 itens possÌveis.
-Resolvido alguns logs de erros disparados por mapas nulos no cÛdigo-fonte.
+Incrementado portal de MK Castle agora permitindo uso dos 2 itens poss√≠veis.
+Resolvido alguns logs de erros disparados por mapas nulos no c√≥digo-fonte.
 Resolvido pequenos problemas de volatidade (nulos) nas referencias ao jogador em alguns handlers.
 Corrigido alguns problemas com copyright em alguns arquivos.
-Corrigido exploit com refinadores de minerais permitindo n˙meros iguais ou menores que zero como entrada.
+Corrigido exploit com refinadores de minerais permitindo n√∫meros iguais ou menores que zero como entrada.
 
 14 - 15 Janeiro 2018,
 Melhorado pet autopot, agora utilizando os outros slots do mesmo item caso o slot alvo tenha sido completamente usado.
 Pet autopot agora considera o reuso de pots que fornecem ganho de porcentagem de HP ou MP.
-DiminuÌdas levemente as chances de dropar os itens Moon Rock e Star Rock.
-FunÁ„o de listagem de itens no invent·rio agora ordena os itens de acordo com posiÁ„o dos mesmos.
+Diminu√≠das levemente as chances de dropar os itens Moon Rock e Star Rock.
+Fun√ß√£o de listagem de itens no invent√°rio agora ordena os itens de acordo com posi√ß√£o dos mesmos.
 Incrementado diversos aspectos das questlines das doorways em Victoria Island.
-Melhorado mec‚nica de convite para Alliances agora utilizando o bal„o apropriado, similar aos utilizados para Party e Guild.
+Melhorado mec√¢nica de convite para Alliances agora utilizando o bal√£o apropriado, similar aos utilizados para Party e Guild.
+
+02 - 03 Fevereiro 2018,
+Corrigido bug no servidor que situacionalmente eliminava completamente os dados salvos de mounts.
+Corrigido itemid inv√°lidos nos drops da DB.
+Adicionado quest rate (multiplicador de ganhos ao completar quests).
+Pequeno ajuste na √°rea de alcan√ße dos drops no mapa. Espera-se que os drops agora n√£o caiam fora do mapa em grande quantidade.
+Nova ferramenta: MapleInvalidItemIdFetcher. Busca no DB por todos os itemids inv√°lidos e os lista em um arquivo.
+Atualizado lista de drops no monster book.

@@ -60,8 +60,8 @@ public class CreateINI {
             sb.append("mesorate").append(b).append("=").append(
                     Integer.parseInt(con.readLine("   Meso rate: "))).append("\r\n");
 
-            sb.append("bossdroprate").append(b).append("=").append(
-                    Integer.parseInt(con.readLine("   Boss drop rate: "))).append("\r\n");
+            sb.append("questrate").append(b).append("=").append(
+                    Integer.parseInt(con.readLine("   Quest rate: "))).append("\r\n");
 
             System.out.println(nextline);
             sb.append("\r\n");

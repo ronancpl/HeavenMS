@@ -32,7 +32,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 
 public class MoveDragonHandler extends AbstractMovementPacketHandler {
-
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final MapleCharacter chr = c.getPlayer();

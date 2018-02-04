@@ -335,7 +335,7 @@ public class Server implements Runnable {
                         ServerConstants.EXP_RATE,
                         ServerConstants.DROP_RATE,
                         ServerConstants.MESO_RATE,
-                        ServerConstants.BOSS_DROP_RATE);
+                        ServerConstants.QUEST_RATE);
 
                 worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
                 worlds.add(world);
