@@ -84,6 +84,10 @@ function changedMap(eim, chr, mapid) {
 
 function monsterKilled(mob, eim) {}
 
+function monsterValue(eim, mobId) {
+        return 1;
+}
+
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}

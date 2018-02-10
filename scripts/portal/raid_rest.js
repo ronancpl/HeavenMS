@@ -32,7 +32,7 @@ function enter(pi) {
                 return false;
         }
         
-        if(!pi.getPlayer().getEventInstance().giveEventReward(pi.getPlayer(), evLevel)) {
+        if(pi.getPlayer().getEventInstance().giveEventReward(pi.getPlayer(), evLevel)) {
                 pi.warp(970030000);
                 return true;
         }

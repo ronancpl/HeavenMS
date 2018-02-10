@@ -74,6 +74,8 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
         chr.cancelDiseaseExpireTask();
         chr.cancelSkillCooldownTask();
         chr.cancelExpirationTask();
+        
+        chr.forfeitExpirableQuests();
         chr.cancelQuestExpirationTask();
         
         chr.saveToDB();

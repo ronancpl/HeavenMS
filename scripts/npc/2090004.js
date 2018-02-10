@@ -76,7 +76,7 @@ function action(mode, type, selection) {
                         selStr = "What kind of medicine are you interested in making?#b";
 			
                         for (var i = 0; i < itemSet.length; i++){
-                                selStr += "\r\n#L" + i + "# #i" + itemSet[i] + "# #t" + itemSet[i] + "##l";
+                                selStr += "\r\n#L" + i + "# #v" + itemSet[i] + "# #t" + itemSet[i] + "##l";
                         }
                         selStr += "#k";
 		} 
@@ -98,11 +98,10 @@ function action(mode, type, selection) {
                         status++;
                     
 			selStr = "So you wish to donate some medicine ingredients? This is great news! Donations will be accepted in the unit of #b100#k. The donator will receive a marble that enables one to make a scroll. Which of these would you like to donate? #b";
-			itemSet = new Array("Acorn","Thimble","Needle Pouch","Necki Flower","Necki Swimming Cap","Broken Piece of Pot","Ginseng-Boiled Water","Straw Doll","Wooden Doll","Bellflower Root","100-Year-Old Bellflower",
-					"Old Paper","Yellow Belt","Broken Deer Horn","Red Belt","Peach Seed","Mr. Alli's Leather","Cat Doll","Mark of the Pirate","Captain Hat#k");
+			itemSet = new Array(4000276,4000277,4000278,4000279,4000280,4000291,4000292,4000286,4000287,4000293,4000294,4000298,4000284,4000288,4000285,4000282,4000295,4000289,4000296,4000297);
                                         
                         for (var i = 0; i < itemSet.length; i++){
-                                selStr += "\r\n#L" + i + "# " + itemSet[i] + "#l";
+                                selStr += "\r\n#L" + i + "# #v" + itemSet[i] + "# #t" + itemSet[i] + "##l";
                         }
 		}
 		
@@ -165,7 +164,7 @@ function action(mode, type, selection) {
 		else if(selectedType == 2){
                         selectedItem = selection;
                     
-			itemSet = new Array(4000276,4000277,4000278,4000279,4000280,4000291,4000292,4000286,4000287,4000293,4000294,4000298,4000284,4000288,4000285,4000282,4000295,4000289,4000296,4031435);
+			itemSet = new Array(4000276,4000277,4000278,4000279,4000280,4000291,4000292,4000286,4000287,4000293,4000294,4000298,4000284,4000288,4000285,4000282,4000295,4000289,4000296,4000297);
                         rewdSet = new Array(7,7,new Array(7,8),10,11,8,new Array(7,8),new Array(7,9),new Array(7,8),9,10,new Array(10,11),11,new Array(11,12),13,13,14,15,new Array(15,16),17);
                         
 			item = itemSet[selectedItem];

@@ -775,3 +775,10 @@ Adicionado quest rate (multiplicador de ganhos ao completar quests).
 Pequeno ajuste na área de alcançe dos drops no mapa. Espera-se que os drops agora não caiam fora do mapa em grande quantidade.
 Nova ferramenta: MapleInvalidItemIdFetcher. Busca no DB por todos os itemids inválidos e os lista em um arquivo.
 Atualizado lista de drops no monster book.
+
+06 - 09 Fevereiro 2018,
+Resolvido possibilidade de bug com inconsistência de dados ao tentar salvar na DB um jogador offline.
+Aplicado diversas pequenas correções em alguns drops de quests e métodos de eventos.
+Quests expiráveis agora são devidamente canceladas ao entrar no MTS ou cash shop.
+Corrigido problemas com itens que garantem proteção contra queda de HP em certos mapas (el nath, aqua road) garantindo proteção em mapas onde não deveriam garantir.
+Adicionado novos scrolls à venda no Spindle.

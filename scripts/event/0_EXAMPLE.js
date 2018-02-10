@@ -86,7 +86,14 @@ function timeOut(eim) {
     eim.dispose();
 }
 
-function monsterKilled(mob, eim) {}
+function monsterKilled(mob, eim) {
+    // Happens when an opposing mob dies
+}
+
+function monsterValue(eim, mobid) {
+    // Invoked when a monster that's registered has been killed
+    // return x amount for this player - "Saved Points"
+}
 
 function friendlyKilled(mob, eim) {
     // Happens when a friendly mob dies
@@ -110,11 +117,6 @@ function playerDisconnected(eim, player) {
     // return 0 - Deregister player normally + Dispose instance if there are zero player left
     // return x that is > 0 - Deregister player normally + Dispose instance if there x player or below
     // return x that is < 0 - Deregister player normally + Dispose instance if there x player or below, if it's leader = boot all
-}
-
-function monsterValue(eim, mobid) {
-    // Invoked when a monster that's registered has been killed
-    // return x amount for this player - "Saved Points"
 }
 
 function end(eim) {

@@ -65,8 +65,10 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             mc.cancelDiseaseExpireTask();
             mc.cancelSkillCooldownTask();
             mc.cancelExpirationTask();
+            
+            mc.forfeitExpirableQuests();
             mc.cancelQuestExpirationTask();
-
+            
             c.announce(MaplePacketCreator.openCashShop(c, false));
             c.announce(MaplePacketCreator.showCashInventory(c));
             c.announce(MaplePacketCreator.showGifts(mc.getCashShop().loadGifts()));

@@ -49,7 +49,7 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 		final MapleStorage storage = chr.getStorage();
 
 		if (chr.getLevel() < 15){
-			chr.message("You may only use the storage once you have reached level 15.");
+			chr.dropMessage(1, "You may only use the storage once you have reached level 15.");
                         c.announce(MaplePacketCreator.enableActions());
 			return;
 		}

@@ -174,7 +174,7 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == 0) {
+    if (mode <= 0) {
 	cm.sendOk("Hmmm...it shouldn't be a bad deal for you. Come see me at the right time and you may get a much better item to be offered. Anyway, let me know when you have a change of heart.");
 	cm.dispose();
 	return;

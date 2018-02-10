@@ -223,13 +223,11 @@ public class MapleStorage {
     }
 
     public void sendStorage(MapleClient c, int npcId) {
-        /*
         if (c.getPlayer().getLevel() < 15){
-            c.getPlayer().message("You may only use the storage once you have reached level 15.");
+            c.getPlayer().dropMessage(1, "You may only use the storage once you have reached level 15.");
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-        */
         
         lock.lock();
         try {

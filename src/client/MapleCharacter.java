@@ -1246,16 +1246,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private boolean buffMapProtection() {
         effLock.lock();
         chrLock.lock();
+        
+        int thisMapid = mapid;
+        int returnMapid = client.getChannelServer().getMapFactory().getMap(thisMapid).getReturnMapId();
+        
         try {
-            MapleMap thisMap = client.getChannelServer().getMapFactory().getMap(mapid);
-            
             for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbs : effects.entrySet()) {
                 if(mbs.getKey() == MapleBuffStat.MAP_PROTECTION) {
                     byte value = (byte)mbs.getValue().value;
                     
-                    if(value == 1 && (thisMap.getReturnMapId() == 211000000 || thisMap.getReturnMapId() == 193000000)) return true;       //protection from cold
-                    else if(value == 2 && (thisMap.getReturnMapId() == 211000000 || thisMap.getReturnMapId() == 230000000)) return true;  //breathing underwater
-                    else return false;
+                    if(value == 1 && ((returnMapid == 211000000 && thisMapid != 200082300) || returnMapid == 193000000)) {
+                        return true;        //protection from cold
+                    } else if(value == 2 && (returnMapid == 230000000 || thisMapid == 200082300)) {
+                        return true;        //breathing underwater
+                    } else {
+                        return false;
+                    }
                 }
             }    
         } finally {
@@ -1264,7 +1270,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         for(Item it: this.getInventory(MapleInventoryType.EQUIPPED).list()) {
-            if((it.getFlag() & ItemConstants.COLD) == ItemConstants.COLD && map.getReturnMapId() == 211000000) return true;       //protection from cold
+            if((it.getFlag() & ItemConstants.COLD) == ItemConstants.COLD && ((returnMapid == 211000000 && thisMapid != 200082300) || returnMapid == 193000000)) {
+                return true;        //protection from cold
+            }
         }
         
         return false;
@@ -6285,6 +6293,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public synchronized void saveToDB(boolean notAutosave) {
+        if(!loggedIn) return;
+        
         Calendar c = Calendar.getInstance();
         
         if(notAutosave) FilePrinter.print(FilePrinter.SAVING_CHARACTER, "Attempting to save " + name + " at " + c.getTime().toString());
@@ -7469,6 +7479,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 questExpireTask.cancel(false);
                 questExpireTask = null;
             }
+        } finally {
+            petLock.unlock();
+        }
+    }
+    
+    public void forfeitExpirableQuests() {
+        petLock.lock();
+        try {
+            for(MapleQuest quest : questExpirations.keySet()) {
+                quest.forfeit(this);
+            }
+            
+            questExpirations.clear();
         } finally {
             petLock.unlock();
         }

@@ -143,6 +143,7 @@
       <int name="44" value="4020002" />
       <int name="45" value="4020003" />
       <int name="46" value="4031146" />
+      <int name="47" value="4032379" />
     </imgdir>
     <string name="episode" value=" Lv. :  15\nForm : Plant\nSpecial Trait : Resistant to Poison Attribute Attacks.\n\nA Green Mushroom monster with a dull looking cap. Is a transformed version of the small poisonous mushrooms and is therefore immune to poison. These mushrooms are often spotted around construction sites or nearby dungeon entrances. These mushrooms are most likely poisonous so beware not to eat them no matter how hungry you are!" />
   </imgdir>
@@ -194,6 +195,8 @@
       <int name="26" value="4020000" />
       <int name="27" value="4030009" />
       <int name="28" value="4031773" />
+      <int name="29" value="4032374" />
+      <int name="30" value="4032376" />
     </imgdir>
     <string name="episode" value=" Lv. :  10\nForm : Plant\nSpecial Trait : Vulnerable to Fire Attribute Attacks.\n\nA slightly darker version of Stump, the tree stump monster. These monsters are often spotted around mountain highlands. While they are very similar to the Stump in their dried-up appearance, but these Dark Stumps have some moisture left in their bodies, still growing leaves somewhere inside their body. The Dark Stump has a lot stronger attacks and defenses as compared to Stump, so be careful not to confuse the two, especially if you're a beginner!" />
   </imgdir>
@@ -230,6 +233,7 @@
       <int name="21" value="4020002" />
       <int name="22" value="4030010" />
       <int name="23" value="4030012" />
+      <int name="24" value="4032378" />
     </imgdir>
     <string name="episode" value="Lv. :  12\nForm : Mammal\nSpecial Trait : Vulnerable to Electricity Attribute Attacks.\n\nHardly an octopus, this mutated octopus-like monster is a strange-looking creature that barely escaped the research lab of some outer space planet after being relentlessly tested on. There's apparently some people who like to cook friend meatballs with these octopus' legs. Often found around swamps and construction sites, Octopuses have been reportedly spotted more frequently around high altitude areas which seems to support the whole alien theory of their origins.   " />
   </imgdir>
@@ -400,6 +404,7 @@
       <int name="23" value="4031846" />
       <int name="24" value="4032130" />
       <int name="25" value="4032340" />
+      <int name="26" value="4032379" />
     </imgdir>
     <string name="episode" value="Lv. :  7\nForm : Mammal\n\nA very speedy monster that attacks with its massive body. You'll need to do everything you can to get away from this guy, or else it'll come attacking you with massive strength. It is possible to catch one of these Pigs, though, and the Pig's head is apparently quite a delicacy in Maple World." />
   </imgdir>
@@ -443,6 +448,7 @@
       <int name="24" value="4010002" />
       <int name="25" value="4020001" />
       <int name="26" value="4030012" />
+      <int name="27" value="4032377" />
     </imgdir>
     <string name="episode" value=" Lv. :  10\nForm : Mammal\n\nThere's always a sense of order, even in the world of Pigs. The most powerful of them wear a bright red ribbon which symbolizes their overpowering strength over others, and are treated as royalty. You don't believe it? Just go and try to hunt one of these Ribbon Pigs. You'll see that Ribbon Pigs are much more powerful than ordinary Pigs." />
   </imgdir>
@@ -585,6 +591,8 @@
       <int name="20" value="4020003" />
       <int name="21" value="4030009" />
       <int name="22" value="4031773" />
+      <int name="23" value="4032374" />
+      <int name="24" value="4032378" />
     </imgdir>
     <string name="episode" value="Lv. :  4\nForm : Plant\nSpecial Trait : Vulnerable to Fire Attribute Attacks.\n\nA monster that resembles a tree stump that is most often found in grassy areas and the highlands. Its short legs that used to be the tree's roots move very slowly and the tree stump can only make weak attacks, but it is also surprisingly strong which makes beginners have to spend a long time to defeat this monster.\nThe eye on this Stump often scares people, but the single eye will apparently shed a tear from time to time. This rare occasion serves as the origination of the people of Perion referring to valuables as the Tear of Stump. " />
   </imgdir>
@@ -989,6 +997,8 @@
       <int name="26" value="4020005" />
       <int name="27" value="4030000" />
       <int name="28" value="4031273" />
+      <int name="29" value="4032376" />
+      <int name="30" value="4032377" />
     </imgdir>
     <string name="episode" value=" Lv. :  6\nForm : Spirit\nSpecial Trait : Vulnerable to Electricity Attribute Attacks.\n\nA monster made of a gelatinous substance that uses its own viscosity to jump around everywhere. The cuteness of its look makes the Slime a beloved monster amongst adventurers, which is why you'll often come across all sorts of Slime paraphernalia such as hats and earrings that are being sold. When you hunt the Slime, you'll end up with small pockets of liquid which have a very pleasant apple scent. The scented liquid can be used in cooking as well! Sometimes, it will give the pompom on its head to the adventurers. " />
   </imgdir>
@@ -1171,12 +1181,13 @@
       <int name="21" value="2381008" />
       <int name="22" value="4000018" />
       <int name="23" value="4000215" />
-      <int name="24" value="4001367" />
-      <int name="25" value="4006001" />
-      <int name="26" value="4010001" />
-      <int name="27" value="4020007" />
-      <int name="28" value="4031153" />
-      <int name="29" value="4031773" />
+      <int name="24" value="4001344" />
+      <int name="25" value="4001367" />
+      <int name="26" value="4006001" />
+      <int name="27" value="4010001" />
+      <int name="28" value="4020007" />
+      <int name="29" value="4031153" />
+      <int name="30" value="4031773" />
     </imgdir>
     <string name="episode" value=" Lv. :  22\nForm : Plant\nSpecial Trait : Vulnerable to Fire Attribute Attacks.\n\nA monster with an incredible legend behind it. This Dark Axe Stump is apparently the deeply agitated form of the Axe Stump who'd had an unresolved past life as a tree stump with an axe left in it by some lumberjack. The Dark Axe Stump, just like all the other members of the Stump family of monsters, is extremely strong and is capable of extreme attacks, so all beginners should be very very careful." />
   </imgdir>
@@ -10619,6 +10630,7 @@
       <int name="49" value="4004004" />
       <int name="50" value="4010005" />
       <int name="51" value="4020008" />
+      <int name="52" value="4031789" />
     </imgdir>
     <string name="episode" value=" Lv. :  77\nForm : Mammal\n\nA wicked monster that lives in the Goblin Forest. It was a cat before it secretly mastered the magic that Mu Lung's trainees were studying in order to become virtuous masters. It considers Mu Lung's swordsmith, who instructs mental training, as its arch-nemesis. It dazzles the humans with its eloquence while riding a giant cloud, but remember that this Priest Cat is but a goblin inside." />
   </imgdir>
