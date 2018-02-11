@@ -14,6 +14,6 @@ function enter(pi) {
         pi.gainItem(4001198, 1);
     }
     
-    pi.warp(300030100,0);
+    pi.playPortalSound(); pi.warp(300030100,0);
     return true;
 }

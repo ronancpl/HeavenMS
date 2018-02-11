@@ -5,7 +5,7 @@ function enter(pi) {
 	    pi.warp(922240200, 0);
 	    pi.getPlayer().cancelEffect(2360002);
 	} else
-	    pi.warp(pi.getPlayer().getMapId(), 0);
+	    pi.playPortalSound(); pi.warp(pi.getPlayer().getMapId(), 0);
 
 	return true;
 }

@@ -3,6 +3,6 @@ function enter(pi) {
         if (map == -1)
                 map = 100000000;
     
-	pi.warp(map,0);
+	pi.playPortalSound(); pi.warp(map,0);
         return true;
 }

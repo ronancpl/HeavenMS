@@ -60,7 +60,7 @@ function enter(pi) {
                     pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
                 }
             } else {
-                pi.warp(925020003, 0);
+                pi.playPortalSound(); pi.warp(925020003, 0);
                 pi.getPlayer().gainExp(2000 * pi.getPlayer().getDojoPoints(), true, true, true);
             }
             return true;

@@ -19,7 +19,7 @@
 */
 function enter(pi) {
         if(pi.isQuestStarted(3366)) {
-                pi.warp(926130101, 0);
+                pi.playPortalSound(); pi.warp(926130101, 0);
                 return true;
         } else {
                 pi.message("You don't have permission to access this room.");

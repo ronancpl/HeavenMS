@@ -33,7 +33,7 @@ function enter(pi) {
         pi.removeAll(4032100);
         
         var rand = Math.floor(Math.random() * maps.length);
-        pi.warp(maps[rand], 0);
+        pi.playPortalSound(); pi.warp(maps[rand], 0);
         return true;
     } else {
         return false;

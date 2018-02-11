@@ -33,7 +33,7 @@ function enter(pi) {
         }
         
         if(pi.getPlayer().getEventInstance().giveEventReward(pi.getPlayer(), evLevel)) {
-                pi.warp(970030000);
+                pi.playPortalSound(); pi.warp(970030000);
                 return true;
         }
         else {

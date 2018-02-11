@@ -22,7 +22,7 @@ function enter(pi) {
 		}
 	} else if(pi.getPlayer().getMapId() == 130030004){
 		if(pi.isQuestCompleted(20013)){
-			pi.warp(130030005, 0);
+			pi.playPortalSound(); pi.warp(130030005, 0);
                         return true;
 		} else {
 			pi.message("Please complete the required quest before proceeding.");

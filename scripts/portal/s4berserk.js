@@ -27,7 +27,7 @@ function enter(pi) {
     if(pi.isQuestStarted(6153)) {
         if(pi.getWarpMap(910500200).countPlayers() == 0) {
             pi.resetMapObjects(910500200);
-            pi.warp(910500200, 0);
+            pi.playPortalSound(); pi.warp(910500200, 0);
             
             return true;
         } else {

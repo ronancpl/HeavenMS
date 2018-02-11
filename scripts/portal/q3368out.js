@@ -18,6 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-        pi.warp(926130100, "in02");
+        pi.playPortalSound(); pi.warp(926130100, "in02");
         return true;
 }

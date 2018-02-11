@@ -17,7 +17,7 @@
                 pi.gainItem(2430015, -1 * pi.getPlayer().getItemQuantity(2430015, false));
                 pi.message("You have used the Thorn Remover to clean the way.");
                 
-                pi.warp(106020400, 2);
+                pi.playPortalSound(); pi.warp(106020400, 2);
                 return true;
         }
 

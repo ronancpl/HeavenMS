@@ -27,7 +27,7 @@ function enter(pi) {
     if(pi.haveItem(4001108)) {
         if(pi.getWarpMap(923000100).countPlayers() == 0) {
             pi.resetMapObjects(923000100);
-            pi.warp(923000100, 0);
+            pi.playPortalSound(); pi.warp(923000100, 0);
             
             return true;
         } else {

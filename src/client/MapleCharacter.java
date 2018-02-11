@@ -2308,7 +2308,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                                 item.setExpiration(-1);
                                 forceUpdateItem(item);   //TEST :3
                             } else if (expiration != -1 && expiration < currenttime) {
-                                if(!ItemConstants.isPet(item.getItemId()) || ServerConstants.USE_ERASE_PET_ON_EXPIRATION) {
+                                if(!ItemConstants.isPet(item.getItemId()) || ItemConstants.isExpirablePet(item.getItemId())) {
                                     client.announce(MaplePacketCreator.itemExpired(item.getItemId()));
                                     toberemove.add(item);
                                     if(ItemConstants.isRateCoupon(item.getItemId())) {
@@ -2321,7 +2321,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             }
                         }
                         for (Item item : toberemove) {
-                            if(item.getPetId() > -1) unequipPet(getPet(getPetIndex(item.getPetId())), true);
+                            if(item.getPetId() > -1) {
+                                int petIdx = getPetIndex(item.getPetId());
+                                if(petIdx > -1) unequipPet(getPet(petIdx), true);
+                            }
                             MapleInventoryManipulator.removeFromSlot(client, inv.getType(), item.getPosition(), item.getQuantity(), true);
                         }
                         toberemove.clear();

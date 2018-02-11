@@ -44,10 +44,10 @@ function enter(pi) {
         if(secondPt) nextPortal = 1;
         else nextPortal = pi.getPortal().getId() + 3;
             
-        pi.warp(pi.getMapId(), nextPortal);
+        pi.playPortalSound(); pi.warp(pi.getMapId(), nextPortal);
     } else {    //fail
-        pi.warp(pi.getMapId(), 2);
+        pi.playPortalSound(); pi.warp(pi.getMapId(), 2);
     }
     
-    return false;
+    return true;
 }

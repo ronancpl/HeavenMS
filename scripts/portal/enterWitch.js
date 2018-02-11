@@ -6,7 +6,7 @@ function enter(pi) {
 	pi.warp(924010100,0);
         return true;
     } else if (pi.getQuestStatus(20404) == 2) {
-	pi.warp(924010000,0);
+	pi.playPortalSound(); pi.warp(924010000,0);
         return true;
     } else {
 	pi.playerMessage(5, "I shouldn't go here.. it's creepy!");

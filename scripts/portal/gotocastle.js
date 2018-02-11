@@ -7,6 +7,6 @@ function enter(pi) {
 	    pi.removeAll(2430015);
 	    pi.playerMessage(5, "Quest complete.");
 	}
-	pi.warp(106020501,0);
+	pi.playPortalSound(); pi.warp(106020501,0);
 	return true;
 }

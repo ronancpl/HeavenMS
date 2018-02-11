@@ -35,7 +35,7 @@ function enter(pi) {
             return false;
         }
     } else {
-        pi.warp(220070400, 3);
+        pi.playPortalSound(); pi.warp(220070400, 3);
         return true;
     }
 }

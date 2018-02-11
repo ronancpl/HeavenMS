@@ -4,6 +4,6 @@ function enter(pi) {
 		return false;
 	}
 	pi.gainItem(4001261,1);
-	pi.warp(105100100,0);
-	return(true);
+	pi.playPortalSound(); pi.warp(105100100,0);
+	return true;
 }

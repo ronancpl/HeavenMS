@@ -23,7 +23,7 @@ function enter(pi) {
                     pi.gainItem(4031797, pi.getQuestProgress(3367, 31) - pi.getItemQuantity(4031797));
                 }
                 
-                pi.warp(926130102, 0);
+                pi.playPortalSound(); pi.warp(926130102, 0);
                 return true;
         } else {
                 pi.message("You don't have permission to access this room.");

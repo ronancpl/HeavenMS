@@ -1,8 +1,8 @@
 function enter(pi) {
     if (java.lang.Math.random() < 0.1) {
-	pi.warp(930000300,"16st");
+	pi.playPortalSound(); pi.warp(930000300,"16st");
     } else {
-	pi.warp(930000300, "07st");
+	pi.playPortalSound(); pi.warp(930000300, "07st");
     }
     
     return true;

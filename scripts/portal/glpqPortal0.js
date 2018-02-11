@@ -4,7 +4,7 @@ function enter(pi) {
         return false;
         
     } else {
-        pi.warp(610030200, 0);
+        pi.playPortalSound(); pi.warp(610030200, 0);
         return true;
     }
 }

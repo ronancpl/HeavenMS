@@ -24,6 +24,6 @@
     @Author Ronan
 */
 function enter(pi) {
-    pi.warp(670010800);
+    pi.playPortalSound(); pi.warp(670010800);
     return true;
 }

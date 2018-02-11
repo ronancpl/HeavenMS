@@ -45,10 +45,10 @@ function enter(pi) {
     
 
     if (pCol == parseInt(comb.substring(pRow, pRow + 1), 10)) {    //climb
-        pi.warp(pi.getMapId(), (pRow % 4 != 0) ? pi.getPortal().getId() + 4 : (pRow / 4));
+        pi.playPortalSound(); pi.warp(pi.getMapId(), (pRow % 4 != 0) ? pi.getPortal().getId() + 4 : (pRow / 4));
     } else {    //fail
-        pi.warp(pi.getMapId(), 5);
+        pi.playPortalSound(); pi.warp(pi.getMapId(), 5);
     }
     
-    return false;
+    return true;
 }

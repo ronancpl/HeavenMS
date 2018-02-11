@@ -8,7 +8,7 @@ function enter(pi) {
         eim.setIntProperty("glpq1", 1);
         
         pi.getEventInstance().dropMessage(5, "A strange force starts being emitted from the portal apparatus, showing a hidden path once blocked now open.");
-        pi.warp(610030100, 0);
+        pi.playPortalSound(); pi.warp(610030100, 0);
         
         pi.getEventInstance().showClearEffect();
         eim.giveEventPlayersStageReward(1);

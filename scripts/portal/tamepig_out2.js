@@ -31,6 +31,6 @@ function enter(pi) {
     if(pCount > 5) pi.gainItem(4031507, -1 * (pCount - 5));
     if(rCount > 5) pi.gainItem(4031508, -1 * (rCount - 5));
     
-    pi.warp(230000003, "out00");
+    pi.playPortalSound(); pi.warp(230000003, "out00");
     return true;
 }

@@ -25,7 +25,7 @@
 
 function enter(pi) {
     if (pi.getPlayer().getMap().getReactorByName("secretgate3").getState() == 1) {
-        pi.warp(990000641,1);
+        pi.playPortalSound(); pi.warp(990000641,1);
         return true;
     } else {
         pi.getPlayer().dropMessage(5, "This door is closed.");

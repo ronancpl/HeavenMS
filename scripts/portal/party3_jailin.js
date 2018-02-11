@@ -41,6 +41,6 @@ function enter(pi) {
             pi.getEventInstance().setProperty("jail" + jailn, "0");
         }
         
-        pi.warp(pi.getMapId() + 2,0);
+        pi.playPortalSound(); pi.warp(pi.getMapId() + 2,0);
         return true;
 }

@@ -39,7 +39,7 @@ function enter(pi) {
                 
 		pi.warp(108010600 + (10 * jobtype), "east00");
 	} else {
-		pi.warp(130020000, "east00");
+		pi.playPortalSound(); pi.warp(130020000, "east00");
 	}
 	return true;
 }

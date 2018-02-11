@@ -10,7 +10,7 @@ function enter(pi) {
         }
     } else {
         if (pi.getPlayer().getGender() == 0) {
-            pi.warp(map.getId(), "male01");
+            pi.playPortalSound(); pi.warp(map.getId(), "male01");
             return true;
         } else {
             pi.message("This portal leads to the boys' area, try the portal at the other side.");

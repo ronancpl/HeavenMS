@@ -26,6 +26,6 @@ function enter(pi) {
 		pi.message("You must complete the quest before proceeding to the next map..");
 		return false;
 	}
-	pi.warp(140090500, 1);
+	pi.playPortalSound(); pi.warp(140090500, 1);
 	return true;
 }

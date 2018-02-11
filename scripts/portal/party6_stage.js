@@ -18,7 +18,7 @@ function enter(pi) {
 				pi.playerMessage(5, "The spine blocks the way.");
                                 return false;
 			} else {
-				pi.warp(930000300,0); //assuming they cant get past reactor without it being gone
+				pi.playPortalSound(); pi.warp(930000300,0); //assuming they cant get past reactor without it being gone
                                 return true;
 			}
 			break;

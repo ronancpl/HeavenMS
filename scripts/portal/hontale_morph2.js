@@ -24,6 +24,6 @@ Leave the Cave of Life - Entrance Map and go back to the Peak of the Big Nest (2
 */
 
 function enter(pi) {
-	pi.warp(240040600, 4);
+	pi.playPortalSound(); pi.warp(240040600, 4);
 	return true;
 }

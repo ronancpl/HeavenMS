@@ -1,7 +1,7 @@
 function enter(pi) {
     var eim = pi.getEventInstance();
     if (eim != null) {
-        pi.warp(610030300, 0);
+        pi.playPortalSound(); pi.warp(610030300, 0);
         
 	if (eim.getIntProperty("glpq3") < 5 || eim.getIntProperty("glpq3_p") < 5) {
             if(eim.getIntProperty("glpq3_p") == 5) {

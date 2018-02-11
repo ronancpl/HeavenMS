@@ -22,7 +22,7 @@
  */
 
 function doorCross(pi) {
-        pi.warp(261030000, "sp_" + ((pi.getMapId() == 261010000) ? "jenu" : "alca"));
+        pi.playPortalSound(); pi.warp(261030000, "sp_" + ((pi.getMapId() == 261010000) ? "jenu" : "alca"));
         return true;
 }
 

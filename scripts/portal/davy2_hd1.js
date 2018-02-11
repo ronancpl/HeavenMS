@@ -8,6 +8,6 @@ function enter(pi) {
         eim.setProperty("stage2b", "1");
     }
     
-    pi.warp(925100202,0);
-    return(true);
+    pi.playPortalSound(); pi.warp(925100202,0);
+    return true;
 }

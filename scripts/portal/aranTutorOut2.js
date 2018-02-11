@@ -6,6 +6,6 @@ function enter(pi) {
 	pi.teachSkill(20000014, 1, 0, -1);
 	pi.teachSkill(20000015, 1, 0, -1);
 	//actually nexon does enableActions here :P
-	pi.warp(914000210, 1);
+	pi.playPortalSound(); pi.warp(914000210, 1);
 	return true;
 }

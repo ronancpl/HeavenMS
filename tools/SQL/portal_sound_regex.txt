@@ -1,0 +1,7 @@
+Search & replace tool used to provoke the portal sound ingame for most of the missing scripted warpings.
+
+Use these on:
+
+ Search field: (?!((?s).*)pi.playPortalSound\(\);((?s).*)pi.warp\()function((?s).*)pi.warp\(
+
+Replace field: function$3pi.playPortalSound(); pi.warp(

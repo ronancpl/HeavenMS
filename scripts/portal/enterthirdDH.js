@@ -7,7 +7,7 @@ function enter(pi) {
         if (pi.getPlayerCount(913010200) == 0) {
             var map = pi.getMap(913010200);
             map.killAllMonsters();  
-            pi.warp(913010200, 0);
+            pi.playPortalSound(); pi.warp(913010200, 0);
             pi.spawnMonster(9300289, 0, 0);
             return true;
         } else {

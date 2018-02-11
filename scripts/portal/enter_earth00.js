@@ -4,6 +4,6 @@ function enter(pi) {
         return false;
     }
     
-    pi.warp(221000300,"earth00");
+    pi.playPortalSound(); pi.warp(221000300,"earth00");
     return true;
 }

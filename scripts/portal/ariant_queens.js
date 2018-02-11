@@ -28,7 +28,7 @@ function enter(pi) {
     if(isTigunMorphed(pi.getPlayer())) {
         return false;
     } else {
-        pi.warp(260000300, 7);
+        pi.playPortalSound(); pi.warp(260000300, 7);
         pi.message("You, intruder! You don't have permission to roam the palace! Get out!!");
         return true;
     }

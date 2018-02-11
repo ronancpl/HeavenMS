@@ -22,7 +22,7 @@
 
 function enter(pi) {
     if (pi.hasItem(3992039)) {
-        pi.warp(610020000, "CM1_D");
+        pi.playPortalSound(); pi.warp(610020000, "CM1_D");
         return false;
     }
     return true;

@@ -93,6 +93,10 @@ public final class ItemConstants {
         return itemId / 1000 == 5000;
     }
     
+    public static boolean isExpirablePet(int itemId) {
+        return ServerConstants.USE_ERASE_PET_ON_EXPIRATION || itemId == 5000054;
+    }
+    
     public static boolean isNewYearCardEtc(int itemId) { 
         return itemId / 10000 == 430;
     } 

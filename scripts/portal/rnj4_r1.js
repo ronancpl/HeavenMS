@@ -7,10 +7,10 @@ function enter(pi) {
         area |= (1 << reg);
         eim.setIntProperty("statusStg5", area);
         
-	pi.warp(926100301 + reg, 0); //next
-        return(true);
+	pi.playPortalSound(); pi.warp(926100301 + reg, 0); //next
+        return true;
     } else {
 	pi.playerMessage(5, "This room is already being explored.");
-        return(false);
+        return false;
     }
 }

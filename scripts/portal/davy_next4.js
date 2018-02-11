@@ -19,10 +19,10 @@ function enter(pi) {
             eim.setProperty("spawnedBoss", "true");
         }
         
-        pi.warp(925100500, 0);
-        return(true);
+        pi.playPortalSound(); pi.warp(925100500, 0);
+        return true;
     } else {
 	pi.playerMessage(5, "The portal is not opened yet.");
-        return(false);
+        return false;
     }
 }

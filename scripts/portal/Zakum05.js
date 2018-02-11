@@ -34,6 +34,6 @@ function enter(pi) {
         return false;
     }
     
-    pi.warp(211042400,"west00");
+    pi.playPortalSound(); pi.warp(211042400,"west00");
     return true;
 }

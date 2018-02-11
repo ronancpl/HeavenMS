@@ -20,6 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-     pi.warp(pi.getPlayer().getSavedLocation("EVENT"));
+     pi.playPortalSound(); pi.warp(pi.getPlayer().getSavedLocation("EVENT"));
     return true;
 }

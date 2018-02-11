@@ -29,6 +29,6 @@ Save location to return.
 
 function enter(pi) {
         pi.getEventInstance().gridInsert(pi.getPlayer(), 1);
-	pi.warp(990000700, "st00");
+	pi.playPortalSound(); pi.warp(990000700, "st00");
 	return true;
 }

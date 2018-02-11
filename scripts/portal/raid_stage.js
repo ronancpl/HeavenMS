@@ -31,7 +31,7 @@ function enter(pi) {
         if(pi.getMapId() % 500 >= 100) nextStage = pi.getMapId() + 100;
         else nextStage = 970030001 + (Math.floor((pi.getMapId() - 970030100) / 500));
         
-        pi.warp(nextStage);
+        pi.playPortalSound(); pi.warp(nextStage);
         return true;
     }
     else {

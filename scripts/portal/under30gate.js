@@ -28,7 +28,7 @@ Save location to return.
 
 function enter(pi) {
     if (pi.getPlayer().getLevel() <= 30) {
-        pi.warp(990000640, 1);
+        pi.playPortalSound(); pi.warp(990000640, 1);
         return true;
     } else {
         pi.getPlayer().dropMessage(5, "You cannot proceed past this point.");

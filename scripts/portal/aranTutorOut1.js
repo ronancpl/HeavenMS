@@ -10,7 +10,7 @@ function enter(pi) {
 	pi.teachSkill(20000017, 1, 0, -1);
 	pi.teachSkill(20000018, 1, 0, -1);
 	//actually nexon does enableActions here :P
-	pi.warp(914000200, 1);
+	pi.playPortalSound(); pi.warp(914000200, 1);
 	return true;
 	} else {
 	pi.message("You can only exit after you accept the quest from Athena Pierce, who is to your right.");

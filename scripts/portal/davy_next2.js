@@ -5,10 +5,10 @@ function passedGrindMode(map, eim) {
 
 function enter(pi) {
     if (pi.getMap().getMonsters().size() == 0 && passedGrindMode(pi.getMap(), pi.getEventInstance())) {
-	pi.warp(925100300,0); //next
-        return(true);
+	pi.playPortalSound(); pi.warp(925100300,0); //next
+        return true;
     } else {
 	pi.playerMessage(5, "The portal is not opened yet.");
-        return(false);
+        return false;
     }
 }

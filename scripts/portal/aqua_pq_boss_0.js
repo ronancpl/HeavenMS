@@ -20,6 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-	pi.warp(230040420, 0);
+	pi.playPortalSound(); pi.warp(230040420, 0);
 	return true;
 }

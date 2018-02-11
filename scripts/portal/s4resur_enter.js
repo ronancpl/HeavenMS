@@ -25,7 +25,7 @@
  */
 function enter(pi) {
     if(pi.isQuestStarted(6134)) {
-        pi.warp(922020000, 0);
+        pi.playPortalSound(); pi.warp(922020000, 0);
         return true;
     }
     

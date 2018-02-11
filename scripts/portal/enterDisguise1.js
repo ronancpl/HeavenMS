@@ -39,7 +39,7 @@ function enter(pi) {
                 
 		pi.warp(108010600 + (10 * jobtype), "out00");
 	} else {
-		pi.warp(130010010, "out00");
+		pi.playPortalSound(); pi.warp(130010010, "out00");
 	}
 	return true;
 }
