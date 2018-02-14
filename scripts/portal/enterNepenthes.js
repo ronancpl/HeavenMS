@@ -9,7 +9,7 @@ function enter(pi) {
             
             mapobj2.spawnMonsterOnGroundBelow(Packages.server.life.MapleLifeFactory.getMonster(9300348), new Packages.java.awt.Point(591, -34));
             
-            pi.warp(920030000,2);
+            pi.playPortalSound(); pi.warp(920030000,2);
             return true;
         } else {
             pi.message("Someone is already challenging the area.");

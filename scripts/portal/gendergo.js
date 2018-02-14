@@ -2,7 +2,7 @@ function enter(pi) {
     var map = pi.getPlayer().getMap();
     if(pi.getPortal().getName() == "female00") {
         if (pi.getPlayer().getGender() == 1) {
-            pi.warp(map.getId(), "female01");
+            pi.playPortalSound(); pi.warp(map.getId(), "female01");
             return true;
         } else {
             pi.message("This portal leads to the girls' area, try the portal at the other side.");

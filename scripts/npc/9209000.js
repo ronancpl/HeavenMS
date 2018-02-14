@@ -1,7 +1,7 @@
 /**
  * @author: Ronan
  * @npc: Abdula
- * @map: Multiple cities on Maplestory
+ * @map: Multiple towns on Maplestory
  * @func: Job Skill / Mastery Book Drop Announcer
 */
 
@@ -19,7 +19,7 @@ function action(mode, type, selection) {
     if (mode == -1) {
         cm.dispose();
     } else {
-        if (mode == 0 && status == 0) {
+        if (mode == 0 && type > 0) {
             cm.dispose();
             return;
         }

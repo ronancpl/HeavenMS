@@ -33,6 +33,7 @@ function enter(pi) {
             if (pi.isLeader()) {
                 for (var i = 0; i < dungeons; i++) {
                     if(pi.startDungeonInstance(dungeonid + i)) {
+                        pi.playPortalSound();
                         pi.warpParty(dungeonid + i);
                         return true;
                     }
@@ -44,6 +45,7 @@ function enter(pi) {
         } else {
             for (var i = 0; i < dungeons; i++) {
                 if(pi.startDungeonInstance(dungeonid + i)) {
+                    pi.playPortalSound();
                     pi.warp(dungeonid + i);
                     return true;
                 }

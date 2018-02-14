@@ -38,22 +38,19 @@ var totalcost;
 var item = new Array(2050003,2050004,4006000,4006001);
 var cost = new Array(300,400,5000,5000);
 var msg = new Array("that cures the state of being sealed and cursed","that cures all",", possessing magical power, that is used for high-quality skills",", possessing the power of summoning that is used for high-quality skills");
+var status;
 
 function start() {
-    if (cm.isQuestCompleted(3035)) {
-        var selStr;
-        for (var i = 0; i < item.length; i++){
-            selStr += "\r\n#L" + i + "# #b#t" + item[i] + "# (Price: "+cost[i]+" mesos)#k#l";
-        }
-        cm.sendSimple("Thanks to you #b#t4031056##k is safely sealed. Of course, also as a result, I used up about half of the power I have accumulated over the last 800 years or so...but now I can die in peace. Oh, by the way... are you looking for rare items by any chance? As a sign of appreciation for your hard work, I'll sell some items I have to you, and ONLY you. Pick out the one you want!"+selStr);
-    }
-    else {
-        cm.sendNext("If you decide to help me out, then in return, I'll make the item available for sale.");
-        cm.dispose();
-    }
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
+    if (!cm.isQuestCompleted(3035)) {
+        cm.sendNext("If you decide to help me out, then in return, I'll make the item available for sale.");
+        cm.dispose();
+        return;
+    }
     if(mode == 0 && status == 2) {
         cm.sendNext("I see. Understand that I have many different items here. Take a look around. I'm only selling these items to you, so I won't be ripping you off in any way shape or form.");
         cm.dispose();
@@ -63,8 +60,16 @@ function action(mode, type, selection) {
         cm.dispose();
         return;
     }
+    
     status++;
-    if (status == 1) {
+    if (status == 0) {
+        var selStr = "";
+        for (var i = 0; i < item.length; i++){
+            selStr += "\r\n#L" + i + "# #b#t" + item[i] + "# (Price: "+cost[i]+" mesos)#k#l";
+        }
+        cm.sendSimple("Thanks to you #b#t4031056##k is safely sealed. Of course, also as a result, I used up about half of the power I have accumulated over the last 800 years or so...but now I can die in peace. Oh, by the way... are you looking for rare items by any chance? As a sign of appreciation for your hard work, I'll sell some items I have to you, and ONLY you. Pick out the one you want!"+selStr);
+    }
+    else if (status == 1) {
         selected = selection;
         cm.sendGetNumber("Is #b#t"+item[selected]+"##k really the item that you need? It's the item "+msg[selected]+". It may not be the easiest item to acquire, but I'll give you a good deal on it. It'll cost you #b"+cost[selected]+" mesos#k per item. How many would you like to purchase?", 0, 1, 100);
     }

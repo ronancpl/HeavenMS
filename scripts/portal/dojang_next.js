@@ -53,11 +53,11 @@ function enter(pi) {
                         }
                     } else {
                         pi.getPlayer().message("You received " + pi.getPlayer().addDojoPointsByMap(pi.getMapId()) + " training points. Your total training points score is now " + pi.getPlayer().getDojoPoints() + ".");
-                        pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+                        pi.playPortalSound(); pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
                     }
                 } else {
                     pi.getPlayer().message("You received " + pi.getPlayer().addDojoPointsByMap(pi.getMapId()) + " training points. Your total training points score is now " + pi.getPlayer().getDojoPoints() + ".");
-                    pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
+                    pi.playPortalSound(); pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
                 }
             } else {
                 pi.playPortalSound(); pi.warp(925020003, 0);

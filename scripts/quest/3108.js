@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,12 +17,28 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-function enter(pi) {
-    try {
-        var toMap = pi.getPlayer().getSavedLocation("FREE_MARKET");
-        pi.playPortalSound(); pi.warp(toMap, pi.getMarketPortalId(toMap));
-    } catch(err) {
-        pi.playPortalSound(); pi.warp(100000000, 0);
+
+var status = -1;
+
+function start(mode, type, selection) {
+    if (mode == -1) {
+        qm.dispose();
+    } else {
+        if(mode == 0 && type > 0) {
+            qm.dispose();
+            return;
+        }
+        
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            qm.sendNext("(As you peek into the shattered statue, you might have found a clue about what happened. Better talk with #rScadur#k about this.)");
+            qm.forceCompleteQuest();
+            
+            qm.dispose();
+        }
     }
-    return true;
 }

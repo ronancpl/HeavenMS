@@ -37084,6 +37084,12 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1022000"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4031053"/>
+          <int name="count" value="1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3022">
@@ -37120,6 +37126,12 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1032001"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4031054"/>
+          <int name="count" value="1"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3024">
@@ -37156,6 +37168,12 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1012100"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4031054"/>
+          <int name="count" value="2"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3026">
@@ -37192,6 +37210,12 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1052001"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4031054"/>
+          <int name="count" value="3"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3028">
@@ -37228,6 +37252,12 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2020005"/>
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="id" value="4031054"/>
+          <int name="count" value="4"/>
+        </imgdir>
+      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="3030">
@@ -76642,7 +76672,7 @@
         </imgdir>
         <imgdir name="4">
           <int name="count" value="30"/>
-          <int name="id" value="4031871"/>
+          <int name="id" value="4001372"/>
         </imgdir>
         <imgdir name="5">
           <int name="id" value="4032475"/>

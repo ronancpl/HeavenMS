@@ -27,7 +27,7 @@ function enter(pi) {
     if(pi.isQuestStarted(6134)) {
         if(pi.canHold(4031448)) {
             pi.gainItem(4031448, 1);
-            pi.warp(220070400, 3);
+            pi.playPortalSound(); pi.warp(220070400, 3);
         
             return true;
         } else {
