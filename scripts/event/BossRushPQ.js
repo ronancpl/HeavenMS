@@ -129,6 +129,12 @@ function playerExit(eim, player) {
         player.changeMap(exitMap, 0);
 }
 
+function playerLeft(eim, player) {
+        if(!eim.isEventCleared()) {
+                playerExit(eim, player);
+        }
+}
+
 function changedMap(eim, player, mapid) {
         if (mapid < minMapId || mapid > maxMapId) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
@@ -167,14 +173,17 @@ function playerDisconnected(eim, player) {
 }
 
 function leftParty(eim, player) {
-        if (eim.isEventTeamLackingNow(false, minPlayers, player))
+        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
                 end(eim);
+        }
         else
-                playerExit(eim, player);
+                playerLeft(eim, player);
 }
 
 function disbandParty(eim) {
-        end(eim);
+        if (!eim.isEventCleared()) {
+                end(eim);
+        }
 }
 
 function monsterValue(eim, mobId) {

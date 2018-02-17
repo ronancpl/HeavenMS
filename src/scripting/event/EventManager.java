@@ -298,7 +298,7 @@ public class EventManager {
             exped.start();
             eim.registerExpedition(exped);
             
-            iv.invokeFunction("afterSetup", eim);
+            eim.startEvent();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -334,7 +334,8 @@ public class EventManager {
             eim.setLeader(leader);
             
             if(chr != null) eim.registerPlayer(chr);
-            iv.invokeFunction("afterSetup", eim);
+            
+            eim.startEvent();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -371,7 +372,8 @@ public class EventManager {
             
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
-            iv.invokeFunction("afterSetup", eim);
+            
+            eim.startEvent();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -408,7 +410,8 @@ public class EventManager {
             
             eim.registerParty(party, map);
             party.setEligibleMembers(null);
-            iv.invokeFunction("afterSetup", eim);
+            
+            eim.startEvent();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -448,7 +451,8 @@ public class EventManager {
             
             iv.invokeFunction("setup", eim);
             eim.setProperty("leader", ldr);
-            iv.invokeFunction("afterSetup", eim);
+            
+            eim.startEvent();
         } catch (ScriptException | NoSuchMethodException ex) {
             Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
         }

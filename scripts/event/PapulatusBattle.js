@@ -1,20 +1,20 @@
 /**
  * @author: Ronan
- * @event: Amoria PQ
+ * @event: Vs Papulatus
 */
 
 var isPq = true;
-var minPlayers = 6, maxPlayers = 6;
-var minLevel = 40, maxLevel = 255;
-var entryMap = 670010200;
-var exitMap = 670011000;
-var recruitMap = 670010100;
-var clearMap = 670010800;
+var minPlayers = 1, maxPlayers = 6;
+var minLevel = 1, maxLevel = 255;
+var entryMap = 220080001;
+var exitMap = 220080000;
+var recruitMap = 220080000;
+var clearMap = 220080000;
 
-var minMapId = 670010200;
-var maxMapId = 670010800;
+var minMapId = 220080001;
+var maxMapId = 220080001;
 
-var eventTime = 75;     // 75 minutes
+var eventTime = 45;     // 45 minutes
 
 var lobbyRange = [0, 0];
 
@@ -37,8 +37,6 @@ function setEventRequirements() {
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
         
-        reqStr += "\r\n    At least 1 of both genders";
-        
         reqStr += "\r\n    Time limit: ";
         reqStr += eventTime + " minutes";
         
@@ -46,7 +44,7 @@ function setEventRequirements() {
 }
 
 function setEventExclusives(eim) {
-        var itemSet = [4031594, 4031595, 4031596, 4031597];
+        var itemSet = [];
         eim.setExclusiveItems(itemSet);
 }
 
@@ -58,14 +56,13 @@ function setEventRewards(eim) {
         itemQty = [];
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
-        expStages = [2000, 4000, 6000, 8000, 9000, 11000];    //bonus exp given on CLEAR stage signal
+        expStages = [];    //bonus exp given on CLEAR stage signal
         eim.setEventClearStageExp(expStages);
 }
 
 function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
         var eligible = [];
         var hasLeader = false;
-        var mask = 0;
         
         if(party.size() > 0) {
                 var partyList = party.toArray();
@@ -76,74 +73,29 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
                         if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
                                 if(ch.isLeader()) hasLeader = true;
                                 eligible.push(ch);
-                                
-                                mask |= (1 << ch.getPlayer().getGender());
                         }
                 }
         }
         
-        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers && mask == 3)) eligible = [];
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
         return eligible;
 }
 
 function setup(level, lobbyid) {
-        var eim = em.newInstance("Amoria" + lobbyid);
+        var eim = em.newInstance("Papulatus" + lobbyid);
         eim.setProperty("level", level);
+        eim.setProperty("boss", "0");
         
-        eim.setProperty("marriedGroup", 0);
-        eim.setProperty("missCount", 0);
-        eim.setProperty("statusStg1", -1);
-        eim.setProperty("statusStg2", -1);
-        eim.setProperty("statusStg3", -1);
-        eim.setProperty("statusStg4", -1);
-        eim.setProperty("statusStg5", -1);
-        eim.setProperty("statusStg6", -1);
-        eim.setProperty("statusStgBonus", 0);
-        
-        eim.getInstanceMap(670010200).resetPQ(level);
-        eim.getInstanceMap(670010300).resetPQ(level);
-        eim.getInstanceMap(670010301).resetPQ(level);
-        eim.getInstanceMap(670010302).resetPQ(level);
-        eim.getInstanceMap(670010400).resetPQ(level);
-        eim.getInstanceMap(670010500).resetPQ(level);
-        eim.getInstanceMap(670010600).resetPQ(level);
-        eim.getInstanceMap(670010700).resetPQ(level);
-        eim.getInstanceMap(670010750).resetPQ(level);
-        eim.getInstanceMap(670010800).resetPQ(level);
-        
-        eim.getInstanceMap(670010200).toggleDrops();
-        eim.getInstanceMap(670010300).toggleDrops();
-        eim.getInstanceMap(670010301).toggleDrops();
-        eim.getInstanceMap(670010302).toggleDrops();
-        
-        eim.getInstanceMap(670010200).instanceMapForceRespawn();
-        eim.getInstanceMap(670010500).instanceMapForceRespawn();
-        
-        eim.getInstanceMap(670010750).shuffleReactors();
-        eim.getInstanceMap(670010800).shuffleReactors();
-        
-        var mapObj = eim.getInstanceMap(670010700);
-        var mobObj = Packages.server.life.MapleLifeFactory.getMonster(9400536);
-        mapObj.spawnMonsterOnGroundBelow(mobObj, new Packages.java.awt.Point(942, 478));
+        eim.getInstanceMap(220080001).resetPQ(level);
         
         respawnStages(eim);
-        
         eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
-        
         return eim;
 }
 
-function isTeamAllCouple(eim) {   // all players married each other, not implemented
-        return false;
-}
-
-function afterSetup(eim) {
-        if(isTeamAllCouple(eim)) {
-                eim.setIntProperty("marriedGroup", 1);
-        }
-}
+function afterSetup(eim) {}
 
 function respawnStages(eim) {}
 
@@ -153,12 +105,7 @@ function playerEntry(eim, player) {
 }
 
 function scheduledTimeout(eim) {
-        if(eim.getIntProperty("statusStg6") == 1) {
-                eim.warpEventTeam(exitMap);
-        }
-        else {
-                end(eim);
-        }
+        end(eim);
 }
 
 function playerUnregistered(eim, player) {}
@@ -232,6 +179,7 @@ function monsterValue(eim, mobId) {
 
 function end(eim) {
         var party = eim.getPlayers();
+        
         for (var i = 0; i < party.size(); i++) {
                 playerExit(eim, party.get(i));
         }
@@ -247,10 +195,21 @@ function clearPQ(eim) {
         eim.setEventCleared();
 }
 
-function monsterKilled(mob, eim) {}
+function isPapulatus(mob) {
+        var mobid = mob.getId();
+        return mobid == 8500002;
+}
+
+function monsterKilled(mob, eim) {
+        if(isPapulatus(mob)) {
+                eim.showClearEffect();
+                eim.clearPQ();
+        }
+}
 
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
 function dispose(eim) {}
+

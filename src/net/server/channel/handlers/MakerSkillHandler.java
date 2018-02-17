@@ -406,7 +406,7 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
             if(!(c.getPlayer().isGM() && ServerConstants.USE_PERFECT_GM_SCROLL)) {
                 eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
             }
-            item = MapleItemInformationProvider.getInstance().scrollEquipWithId(eqp, 2049100, true, 0, c.getPlayer().isGM());
+            item = MapleItemInformationProvider.getInstance().scrollEquipWithId(eqp, 2049100, true, 2049100, c.getPlayer().isGM());
         }
         
         if(!reagentids.isEmpty()) {

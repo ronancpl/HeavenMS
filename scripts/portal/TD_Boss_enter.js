@@ -18,7 +18,7 @@ function enter(pi) {
                 var eli = em.getEligibleParty(pi.getParty());
                 if(eli.size() > 0) {
                         if(!em.startInstance(pi.getParty(), pi.getPlayer().getMap(), 1)) {
-                                pi.playerMessage(5, "The battle against the boss has already begun, so you may not enter this place.");
+                                pi.playerMessage(5, "The battle against the boss has already begun, so you may not enter this place yet.");
                                 return false;
                         }
                 }
@@ -27,6 +27,7 @@ function enter(pi) {
                         return false;
                 }
 
+                pi.playPortalSound();
                 return true;
         }
 }

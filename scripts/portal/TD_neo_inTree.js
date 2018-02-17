@@ -19,6 +19,7 @@ function enter(pi) {
                 pi.message("Someone is already challenging Nex. Wait for them to finish before you enter.");
                 return false;
             } else {
+                pi.playPortalSound();
                 return true;
             }
         }

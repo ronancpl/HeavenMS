@@ -62,6 +62,10 @@ function playerExit(eim, player) {
     // Do something with the player right before disbanding the event instance.
 }
 
+function playerLeft(eim, player) {
+    // Do something with the player right before leaving the party.
+}
+
 function changedMap(eim, player, mapid) {
     // What to do when player've changed map, based on the mapid.
 }

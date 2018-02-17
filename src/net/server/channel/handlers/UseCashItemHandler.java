@@ -564,13 +564,14 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 return;
             }
             
-            //should have a check here against PE hacks
-            
             Equip toScroll = (Equip) eitem;
             if (toScroll.getUpgradeSlots() < 1) {
                 c.getSession().write(MaplePacketCreator.getInventoryFull());
                 return;
             }
+            
+            //should have a check here against PE hacks
+            if(itemId / 1000000 != 5) itemId = 0;
             
             c.getPlayer().toggleBlockCashShop();
             

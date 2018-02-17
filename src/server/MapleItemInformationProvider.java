@@ -871,9 +871,9 @@ public class MapleItemInformationProvider {
             if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || assertGM) {
                 double prop = (double)stats.get("success");
                 if (vegaItemId == 5610000) {
-                    prop = 30.0;
+                    if(prop == 10.0) prop = 30.0;
                 } else if (vegaItemId == 5610001) {
-                    prop = 90.0;
+                    if(prop == 60.0) prop = 90.0;
                 } else if (vegaItemId == 2049100) {
                     prop = 100.0;
                 }
@@ -884,11 +884,11 @@ public class MapleItemInformationProvider {
                         case 2040727:
                             flag |= ItemConstants.SPIKES;
                             nEquip.setFlag((byte) flag);
-                            return equip;
+                            break;
                         case 2041058:
                             flag |= ItemConstants.COLD;
                             nEquip.setFlag((byte) flag);
-                            return equip;
+                            break;
                         case 2049000:
                         case 2049001:
                         case 2049002:

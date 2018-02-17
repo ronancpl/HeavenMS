@@ -101,6 +101,7 @@ public class EventInstanceManager {
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
         private boolean eventCleared = false;
+        private boolean eventStarted = false;
         
         // multi-leveled PQ rewards!
         private Map<Integer, List<Integer>> collectionSet = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
@@ -507,17 +508,19 @@ public class EventInstanceManager {
                 try {
                         mobs.remove(mob);
                         
-                        try {
-                                em.getIv().invokeFunction("monsterKilled", mob, this, hasKiller);
-                        } catch (ScriptException | NoSuchMethodException ex) {
-                                ex.printStackTrace();
-                        }
-                        
-                        if (mobs.isEmpty()) {
+                        if(eventStarted) {
                                 try {
-                                        em.getIv().invokeFunction("allMonstersDead", this, hasKiller);
+                                        em.getIv().invokeFunction("monsterKilled", mob, this, hasKiller);
                                 } catch (ScriptException | NoSuchMethodException ex) {
                                         ex.printStackTrace();
+                                }
+
+                                if (mobs.isEmpty()) {
+                                        try {
+                                                em.getIv().invokeFunction("allMonstersDead", this, hasKiller);
+                                        } catch (ScriptException | NoSuchMethodException ex) {
+                                                ex.printStackTrace();
+                                        }
                                 }
                         }
                 } finally {
@@ -1072,6 +1075,20 @@ public class EventInstanceManager {
                 }
         }
         
+        public final void startEvent() {
+                try {
+                        sL.lock();
+                        try {
+                                eventStarted = true;
+                                em.getIv().invokeFunction("afterSetup", this);
+                        } finally {
+                                sL.unlock();
+                        }
+                } catch (ScriptException | NoSuchMethodException ex) {
+                        ex.printStackTrace();
+                }
+        }
+        
         public final void setEventCleared() {
                 eventCleared = true;
                 
@@ -1097,20 +1114,20 @@ public class EventInstanceManager {
                 return false;
         }
         
-        public final boolean checkEventTeamLacking(boolean testLeader, int minPlayers) {
+        public final boolean checkEventTeamLacking(boolean leavingEventMap, int minPlayers) {
                 if(eventCleared && getPlayerCount() > 1) return false;
                 
-                if(!eventCleared && testLeader && !isEventTeamLeaderOn()) return true;
+                if(!eventCleared && leavingEventMap && !isEventTeamLeaderOn()) return true;
                 if(getPlayerCount() < minPlayers) return true;
                 
                 return false;
         }
         
-        public final boolean isEventTeamLackingNow(boolean testLeader, int minPlayers, MapleCharacter quitter) {
+        public final boolean isEventTeamLackingNow(boolean leavingEventMap, int minPlayers, MapleCharacter quitter) {
                 if(eventCleared) {
-                        if(getPlayerCount() <= 1) return true;
+                        if(leavingEventMap && getPlayerCount() <= 1) return true;
                 } else {
-                        if(testLeader && getLeaderId() == quitter.getId()) return true;
+                        if(leavingEventMap && getLeaderId() == quitter.getId()) return true;
                         if(getPlayerCount() <= minPlayers) return true;
                 }
                 

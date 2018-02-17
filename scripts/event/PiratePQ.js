@@ -196,6 +196,12 @@ function playerExit(eim, player) {
         player.changeMap(exitMap, 0);
 }
 
+function playerLeft(eim, player) {
+        if(!eim.isEventCleared()) {
+                playerExit(eim, player);
+        }
+}
+
 function changedMapInside(eim, mapid) {
         var stage = eim.getIntProperty("curStage");
     
@@ -260,21 +266,25 @@ function playerRevive(eim, player) { // player presses ok on the death pop up.
 
 
 function playerDisconnected(eim, player) {
-        if (eim.isEventTeamLackingNow(true, minPlayers, player))
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                 end(eim);
+        }
         else
                 playerExit(eim, player);
 }
 
 function leftParty(eim, player) {
-        if (eim.isEventTeamLackingNow(false, minPlayers, player))
+        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
                 end(eim);
+        }
         else
-                playerExit(eim, player);
+                playerLeft(eim, player);
 }
 
 function disbandParty(eim) {
-        end(eim);
+        if (!eim.isEventCleared()) {
+                end(eim);
+        }
 }
 
 function monsterValue(eim, mobId) {

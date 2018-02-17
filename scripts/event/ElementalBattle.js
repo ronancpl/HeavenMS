@@ -1,20 +1,20 @@
 /**
  * @author: Ronan
- * @event: Amoria PQ
+ * @event: Vs Elemental Thanatos
 */
 
 var isPq = true;
-var minPlayers = 6, maxPlayers = 6;
-var minLevel = 40, maxLevel = 255;
-var entryMap = 670010200;
-var exitMap = 670011000;
-var recruitMap = 670010100;
-var clearMap = 670010800;
+var minPlayers = 2, maxPlayers = 2;
+var minLevel = 100, maxLevel = 255;
+var entryMap = 922020100;
+var exitMap = 220050300;
+var recruitMap = 220050300;
+var clearMap = 220050300;
 
-var minMapId = 670010200;
-var maxMapId = 670010800;
+var minMapId = 922020100;
+var maxMapId = 922020100;
 
-var eventTime = 75;     // 75 minutes
+var eventTime = 20;     // 20 minutes
 
 var lobbyRange = [0, 0];
 
@@ -37,7 +37,7 @@ function setEventRequirements() {
         if(maxLevel - minLevel >= 1) reqStr += minLevel + " ~ " + maxLevel;
         else reqStr += minLevel;
         
-        reqStr += "\r\n    At least 1 of both genders";
+        reqStr += "\r\n    For #rmagicians only#k.";
         
         reqStr += "\r\n    Time limit: ";
         reqStr += eventTime + " minutes";
@@ -46,7 +46,7 @@ function setEventRequirements() {
 }
 
 function setEventExclusives(eim) {
-        var itemSet = [4031594, 4031595, 4031596, 4031597];
+        var itemSet = [];
         eim.setExclusiveItems(itemSet);
 }
 
@@ -58,14 +58,13 @@ function setEventRewards(eim) {
         itemQty = [];
         eim.setEventRewards(evLevel, itemSet, itemQty);
         
-        expStages = [2000, 4000, 6000, 8000, 9000, 11000];    //bonus exp given on CLEAR stage signal
+        expStages = [];    //bonus exp given on CLEAR stage signal
         eim.setEventClearStageExp(expStages);
 }
 
 function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
         var eligible = [];
         var hasLeader = false;
-        var mask = 0;
         
         if(party.size() > 0) {
                 var partyList = party.toArray();
@@ -73,77 +72,32 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
                 for(var i = 0; i < party.size(); i++) {
                         var ch = partyList[i];
 
-                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
-                                if(ch.isLeader()) hasLeader = true;
+                        if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel && ch.getJob().getJobNiche() == 2) {
+                                if(ch.isLeader()) hasLeader = true;     // magician niche only
                                 eligible.push(ch);
-                                
-                                mask |= (1 << ch.getPlayer().getGender());
                         }
                 }
         }
         
-        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers && mask == 3)) eligible = [];
+        if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers)) eligible = [];
         return eligible;
 }
 
 function setup(level, lobbyid) {
-        var eim = em.newInstance("Amoria" + lobbyid);
+        var eim = em.newInstance("Elemental" + lobbyid);
         eim.setProperty("level", level);
+        eim.setProperty("boss", "0");
         
-        eim.setProperty("marriedGroup", 0);
-        eim.setProperty("missCount", 0);
-        eim.setProperty("statusStg1", -1);
-        eim.setProperty("statusStg2", -1);
-        eim.setProperty("statusStg3", -1);
-        eim.setProperty("statusStg4", -1);
-        eim.setProperty("statusStg5", -1);
-        eim.setProperty("statusStg6", -1);
-        eim.setProperty("statusStgBonus", 0);
-        
-        eim.getInstanceMap(670010200).resetPQ(level);
-        eim.getInstanceMap(670010300).resetPQ(level);
-        eim.getInstanceMap(670010301).resetPQ(level);
-        eim.getInstanceMap(670010302).resetPQ(level);
-        eim.getInstanceMap(670010400).resetPQ(level);
-        eim.getInstanceMap(670010500).resetPQ(level);
-        eim.getInstanceMap(670010600).resetPQ(level);
-        eim.getInstanceMap(670010700).resetPQ(level);
-        eim.getInstanceMap(670010750).resetPQ(level);
-        eim.getInstanceMap(670010800).resetPQ(level);
-        
-        eim.getInstanceMap(670010200).toggleDrops();
-        eim.getInstanceMap(670010300).toggleDrops();
-        eim.getInstanceMap(670010301).toggleDrops();
-        eim.getInstanceMap(670010302).toggleDrops();
-        
-        eim.getInstanceMap(670010200).instanceMapForceRespawn();
-        eim.getInstanceMap(670010500).instanceMapForceRespawn();
-        
-        eim.getInstanceMap(670010750).shuffleReactors();
-        eim.getInstanceMap(670010800).shuffleReactors();
-        
-        var mapObj = eim.getInstanceMap(670010700);
-        var mobObj = Packages.server.life.MapleLifeFactory.getMonster(9400536);
-        mapObj.spawnMonsterOnGroundBelow(mobObj, new Packages.java.awt.Point(942, 478));
+        eim.getInstanceMap(922020100).resetPQ(level);
         
         respawnStages(eim);
-        
         eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
         setEventExclusives(eim);
-        
         return eim;
 }
 
-function isTeamAllCouple(eim) {   // all players married each other, not implemented
-        return false;
-}
-
-function afterSetup(eim) {
-        if(isTeamAllCouple(eim)) {
-                eim.setIntProperty("marriedGroup", 1);
-        }
-}
+function afterSetup(eim) {}
 
 function respawnStages(eim) {}
 
@@ -153,12 +107,7 @@ function playerEntry(eim, player) {
 }
 
 function scheduledTimeout(eim) {
-        if(eim.getIntProperty("statusStg6") == 1) {
-                eim.warpEventTeam(exitMap);
-        }
-        else {
-                end(eim);
-        }
+        end(eim);
 }
 
 function playerUnregistered(eim, player) {}
@@ -232,6 +181,7 @@ function monsterValue(eim, mobId) {
 
 function end(eim) {
         var party = eim.getPlayers();
+        
         for (var i = 0; i < party.size(); i++) {
                 playerExit(eim, party.get(i));
         }
@@ -247,10 +197,26 @@ function clearPQ(eim) {
         eim.setEventCleared();
 }
 
-function monsterKilled(mob, eim) {}
+function isElemental(mob) {
+        var mobid = mob.getId();
+        return mobid == 9300086 || mobid == 9300100;
+}
+
+function monsterKilled(mob, eim) {
+        if(isElemental(mob)) {
+                var killed = eim.getIntProperty("boss");
+                if(killed == 1) {
+                        eim.showClearEffect();
+                        eim.clearPQ();
+                } else {
+                        eim.setIntProperty("boss", killed + 1);
+                }
+        }
+}
 
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
 function dispose(eim) {}
+

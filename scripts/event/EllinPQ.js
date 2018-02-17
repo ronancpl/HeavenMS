@@ -39,6 +39,9 @@ function setEventRequirements() {
         
         reqStr += "\r\n    For #radventurers only#k.";
         
+        reqStr += "\r\n    Time limit: ";
+        reqStr += eventTime + " minutes";
+        
         em.setProperty("party", reqStr);
 }
 
@@ -136,6 +139,12 @@ function playerExit(eim, player) {
         player.changeMap(exitMap, 0);
 }
 
+function playerLeft(eim, player) {
+        if(!eim.isEventCleared()) {
+                playerExit(eim, player);
+        }
+}
+
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
@@ -156,14 +165,17 @@ function playerDisconnected(eim, player) {
 }
 
 function leftParty(eim, player) {
-        if (eim.isEventTeamLackingNow(false, minPlayers, player))
+        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
                 end(eim);
+        }
         else
-                playerExit(eim, player);
+                playerLeft(eim, player);
 }
 
 function disbandParty(eim) {
-        end(eim);
+        if (!eim.isEventCleared()) {
+                end(eim);
+        }
 }
 
 function monsterValue(eim, mobId) {

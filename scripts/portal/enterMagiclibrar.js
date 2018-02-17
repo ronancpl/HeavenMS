@@ -20,10 +20,10 @@
 */
 function enter(pi) {
     if(pi.isQuestStarted(20718)){
-        pi.playPortalSound();
         var cml = pi.getEventManager("Cygnus_Magic_Library");
         cml.setProperty("player", pi.getPlayer().getName());
         cml.startInstance(pi.getPlayer());
+        pi.playPortalSound();
     }
     else{
         pi.playPortalSound();

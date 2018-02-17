@@ -25,7 +25,9 @@ function enter(pi) {
             pi.giveCharacterExp(4400 * 1.5, pi.getPlayer());
             var pm = pi.getEventManager("MK_PrimeMinister");
             pm.setProperty("player", pi.getPlayer().getName());
+            
             pm.startInstance(pi.getPlayer());
+            pi.playPortalSound();
             return true;
         }
     }
@@ -37,7 +39,9 @@ function enter(pi) {
         else{
             var pm = pi.getEventManager("MK_PrimeMinister");
             pm.setProperty("player", pi.getPlayer().getName());
+            
             pm.startInstance(pi.getPlayer());
+            pi.playPortalSound();
             return true;
         }
     }
