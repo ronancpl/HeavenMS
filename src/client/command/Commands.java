@@ -1120,6 +1120,25 @@ public class Commands {
 				player.dropMessage("Unknown player.");
 			}
                     break;
+                    
+                case "reach":
+                        if (sub.length < 2){
+                                player.yellowMessage("Syntax: !reach <playername>");
+                                break;
+                        }
+                        
+                        victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
+                        if(victim != null && victim.isLoggedin()) {
+                                if (player.getClient().getChannel() != victim.getClient().getChannel()) {
+                                        player.dropMessage("Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
+                                } else {
+                                        MapleMap map = victim.getMap();
+                                        player.changeMap(map, map.findClosestPortal(victim.getPosition()));
+                                }
+                        } else {
+                                player.dropMessage("Unknown player.");
+                        }
+                    break;
                 
                 case "gmshop":
 			MapleShopFactory.getInstance().getShop(1337).sendShop(c);

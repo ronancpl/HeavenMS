@@ -583,7 +583,7 @@ public class MapleMap {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         for (final MonsterDropEntry de : dropEntry) {
-            if (Randomizer.nextInt(999999) < de.chance * chRate) {
+            if (Randomizer.nextInt(999999) < (long) de.chance * chRate) {
                 if (droptype == 3) {
                     pos.x = (int) (mobpos + (d % 2 == 0 ? (40 * (d + 1) / 2) : -(40 * (d / 2))));
                 } else {
@@ -644,7 +644,7 @@ public class MapleMap {
         return d;
     }
     
-    private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob) {
+    private void dropFromMonster(final MapleCharacter chr, final MapleMonster mob, final boolean useBaseRate) {
         if (mob.dropsDisabled() || !dropsOn) {
             return;
         }
@@ -658,6 +658,8 @@ public class MapleMap {
         if (stati != null) {
             chRate *= (stati.getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
         }
+        
+        if(useBaseRate) chRate = 1;
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
         
@@ -674,6 +676,24 @@ public class MapleMap {
         
         // Quest Drops
         dropItemsFromMonsterOnMap(questEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+    }
+    
+    public void dropItemsFromMonster(List<MonsterDropEntry> list, final MapleCharacter chr, final MapleMonster mob) {
+        if (mob.dropsDisabled() || !dropsOn) {
+            return;
+        }
+        
+        final byte droptype = (byte) (chr.getParty() != null ? 1 : 0);
+        final int mobpos = mob.getPosition().x;
+        int chRate = 1000000;   // guaranteed item drop
+        byte d = 1;
+        Point pos = new Point(0, mob.getPosition().y);
+        
+        dropItemsFromMonsterOnMap(list, pos, d, chRate, droptype, mobpos, chr, mob);
+    }
+    
+    public void dropFromFriendlyMonster(final MapleCharacter chr, final MapleMonster mob) {
+        dropFromMonster(chr, mob, true);
     }
     
     public void dropFromReactor(final MapleCharacter chr, final MapleReactor reactor, Item drop, Point dropPos, short questid) {
@@ -1139,7 +1159,7 @@ public class MapleMap {
             if (dropOwner == null) {
                 dropOwner = chr;
             }
-            dropFromMonster(dropOwner, monster);
+            dropFromMonster(dropOwner, monster, false);
         }
         
         if (monster.hasBossHPBar()) {
@@ -1551,16 +1571,21 @@ public class MapleMap {
         }
     }
 
-    private void monsterItemDrop(final MapleMonster m, final Item item, long delay) {
+    private void monsterItemDrop(final MapleMonster m, long delay) {
         final ScheduledFuture<?> monsterItemDrop = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                if (m.isAlive() && !MapleMap.this.getPlayers().isEmpty()) {
-                    if (item.getItemId() == 4001101) {
+                List<MapleMapObject> chrList = MapleMap.this.getPlayers();
+                
+                if (m.isAlive() && !chrList.isEmpty()) {
+                    MapleCharacter chr = (MapleCharacter) chrList.get(0);
+                    
+                    if (m.getId() == 9300061) {
                         MapleMap.this.riceCakes++;
                         MapleMap.this.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny made rice cake number " + (MapleMap.this.riceCakes)));
                     }
-                    spawnItemDrop(m, (MapleCharacter) getPlayers().get(0), item, m.getPosition(), false, false);
+                    
+                    dropFromFriendlyMonster(chr, m);
                 }
             }
         }, delay, delay);
@@ -1643,11 +1668,11 @@ public class MapleMap {
 
         if (monster.getDropPeriodTime() > 0) { //9300102 - Watchhog, 9300061 - Moon Bunny (HPQ), 9300093 - Tylus
             if (monster.getId() == 9300102) {
-                monsterItemDrop(monster, new Item(4031507, (short) 0, (short) 1), monster.getDropPeriodTime());
+                monsterItemDrop(monster, monster.getDropPeriodTime());
             } else if (monster.getId() == 9300061) {
-                monsterItemDrop(monster, new Item(4001101, (short) 0, (short) 1), monster.getDropPeriodTime() / 3);
+                monsterItemDrop(monster, monster.getDropPeriodTime() / 3);
             } else if (monster.getId() == 9300093) {
-                monsterItemDrop(monster, new Item(4031495, (short) 0, (short) 1), monster.getDropPeriodTime());
+                monsterItemDrop(monster, monster.getDropPeriodTime());
             } else {
                 FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId() + "\r\n");
             }
@@ -1947,7 +1972,7 @@ public class MapleMap {
             for(final MapleMapItem drop : list) {
                 final Item item = drop.getItem();
             
-                if (reactItem == item.getItemId() && reactQty == item.getQuantity()) {
+                if (item != null && reactItem == item.getItemId() && reactQty == item.getQuantity()) {
                     if (reactArea.contains(drop.getPosition())) {
                         MapleClient owner = drop.getOwnerClient();
                         if(owner != null) {

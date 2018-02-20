@@ -3,7 +3,6 @@ importPackage(Packages.server.events);
 var status = 0;
 var dispose = false;
 function start(){
-    status == 0;
     action(1, 0, 0);
 }
 

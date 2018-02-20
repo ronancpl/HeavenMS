@@ -166,6 +166,7 @@ function writeSolaxiaCommandsLv2() {    //JrGM
         addCommand("warp", "");
         addCommand("warpto", "");
         addCommand("warphere", "");
+        addCommand("reach", "");
         addCommand("gmshop", "");
         addCommand("heal", "");
         addCommand("item", "");

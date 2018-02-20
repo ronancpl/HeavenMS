@@ -23,13 +23,19 @@
  * @author Jvlaple
  */
 function enter(pi) {
+    var nextMap;
+    var eim;
+    var target;
+    var targetPortal;
+    var avail;
+    
     if (pi.getPlayer().getMapId() == 240050101) {
-        var nextMap = 240050102;
-        var eim = pi.getPlayer().getEventInstance()
-        var target = eim.getMapInstance(nextMap);
-        var targetPortal = target.getPortal("sp");
+        nextMap = 240050102;
+        eim = pi.getPlayer().getEventInstance();
+        target = eim.getMapInstance(nextMap);
+        targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("1stageclear");
+        avail = eim.getProperty("1stageclear");
         if (avail == null) {
             // do nothing; send message to player
             pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
@@ -40,12 +46,12 @@ function enter(pi) {
         }
     }
     else if (pi.getPlayer().getMapId() == 240050102) {
-        var nextMap = 240050103;
-        var eim = pi.getPlayer().getEventInstance()
-        var target = eim.getMapInstance(nextMap);
-        var targetPortal = target.getPortal("sp");
+        nextMap = 240050103;
+        eim = pi.getPlayer().getEventInstance();
+        target = eim.getMapInstance(nextMap);
+        targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("2stageclear");
+        avail = eim.getProperty("2stageclear");
         if (avail == null) {
             // do nothing; send message to player
             pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
@@ -56,12 +62,12 @@ function enter(pi) {
         }
     }
     else if (pi.getPlayer().getMapId() == 240050103) {
-        var nextMap = 240050104;
-        var eim = pi.getPlayer().getEventInstance()
-        var target = eim.getMapInstance(nextMap);
-        var targetPortal = target.getPortal("sp");
+        nextMap = 240050104;
+        eim = pi.getPlayer().getEventInstance();
+        target = eim.getMapInstance(nextMap);
+        targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("3stageclear");
+        avail = eim.getProperty("3stageclear");
         if (avail == null) {
             // do nothing; send message to player
             pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
@@ -72,12 +78,12 @@ function enter(pi) {
         }
     }
     else if (pi.getPlayer().getMapId() == 240050104) {
-        var nextMap = 240050105;
-        var eim = pi.getPlayer().getEventInstance()
-        var target = eim.getMapInstance(nextMap);
-        var targetPortal = target.getPortal("sp");
+        nextMap = 240050105;
+        eim = pi.getPlayer().getEventInstance();
+        target = eim.getMapInstance(nextMap);
+        targetPortal = target.getPortal("sp");
         // only let people through if the eim is ready
-        var avail = eim.getProperty("4stageclear");
+        avail = eim.getProperty("4stageclear");
         if (avail == null) {
             // do nothing; send message to player
             pi.getPlayer().dropMessage(6, "Horntail\'s Seal is Blocking this Door.");
@@ -88,15 +94,15 @@ function enter(pi) {
         }
     }
     else if (pi.getPlayer().getMapId() == 240050105) {
-        var nextMap = 240050100;
-        var eim = pi.getPlayer().getEventInstance()
-        var target = eim.getMapInstance(nextMap);
-        var targetPortal = target.getPortal("st00");
+        nextMap = 240050100;
+        eim = pi.getPlayer().getEventInstance();
+        target = eim.getMapInstance(nextMap);
+        targetPortal = target.getPortal("st00");
         
-        var avail = eim.getProperty("5stageclear");
+        avail = eim.getProperty("5stageclear");
         if (avail == null) {
             if (pi.haveItem(4001092) && pi.isEventLeader()) {
-                pi.getEventInstance().showClearEffect();
+                eim.showClearEffect();
                 pi.getPlayer().dropMessage(6, "The leader's key break the seal for a flash...");
                 pi.getPlayer().changeMap(target, targetPortal);
                 eim.setIntProperty("5stageclear", 1);

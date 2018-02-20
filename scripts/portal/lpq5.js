@@ -26,7 +26,7 @@ LudiPQ - 1 - 2 Portal
 
 function enter(pi) {
 	var nextMap = 922010700;
-	var eim = pi.getPlayer().getEventInstance()
+	var eim = pi.getPlayer().getEventInstance();
 	var target = eim.getMapInstance(nextMap);
 	var targetPortal = target.getPortal("st00");
 	// only let people through if the eim is ready

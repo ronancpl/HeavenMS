@@ -31,8 +31,9 @@ function action(mode, type, selection) {
         }
         status++;
         if (status == 0) {
+            var display = "";
             for (var i = 0; i < menu.length; i++) {
-                var display = "\r\n#L" + i + "##b Orbis (1000 mesos)#k";
+                display += "\r\n#L" + i + "##b Orbis (1000 mesos)#k";
             }
             cm.sendSimple("Hmm... The winds are favorable. Are you thinking of leaving ereve and going somwhere else? This ferry sails to Orbis on the Ossyria Continent, Have you taking care of everything you needed to in Ereve? If you happen to be headed toward #bOrbis#k i can take you there. What do you day? Are you going to go to Orbis?\r\n" + display);
 

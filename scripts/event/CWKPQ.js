@@ -222,7 +222,7 @@ function scheduledTimeout(eim) {
 function changedMap(eim, player, mapid) {
     if (mapid < minMapId || mapid > maxMapId) {
 	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
-            eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+            eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
             eim.unregisterPlayer(player);
             end(eim);
         }
@@ -279,7 +279,7 @@ function playerDead(eim, player) {}
 function playerRevive(eim, player) {
     if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
         eim.unregisterPlayer(player);
-        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
         end(eim);
     }
     else {
@@ -290,7 +290,7 @@ function playerRevive(eim, player) {
 
 function playerDisconnected(eim, player) {
     if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
-        eim.dropMessage(5, "[Expedition] Either the leader has quitted the event or there is no longer the minimum number of members required to continue this event.");
+        eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");
         eim.unregisterPlayer(player);
         end(eim);
     }

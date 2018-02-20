@@ -38,7 +38,7 @@ function action(mode, type, selection) {
         status++;
         
         if (status == 0) {
-            cm.sendNext("Congratulations on getting this far!  Well, I suppose I'd better give you your #bBreath of Fire#k.  You've certainly earned it!");
+            cm.sendNext("Congratulations on getting this far! Well, I suppose I'd better give you the #bBreath of Fire#k. You've certainly earned it!");
         } else if (status == 1) {
             if(!cm.canHold(4031062)) {
                 cm.sendOk("Try freeing a slot to receive the #b#t4031062##k.");

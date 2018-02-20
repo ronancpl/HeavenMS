@@ -37,8 +37,9 @@ function action(mode, type, selection) {
 		status++;
 		if (status == 0) {
                         if(!hasCoupon) {
+                                var display = "";
                                 for(var i=0; i < menu.length; i++) {
-					var display = "\r\n#L"+i+"##b Victoria Island (1000 mesos)#k";
+					display += "\r\n#L"+i+"##b Victoria Island (1000 mesos)#k";
 				}			
 				cm.sendSimple("Eh, Hello...again. Do you want to leave Ereve and go somewhere else? If so, you've come to the right place. I operate a ferry that goes from #bEreve#k to #bVictoria Island#k, I can take you to #bVictoria Island#k if you want... You'll have to pay a fee of #b1000#k Mesos.\r\n"+display);
                         } else {

@@ -32,8 +32,9 @@ function action(mode, type, selection) {
 		}
 		status++;
 		if (status == 0) {
+                        var display = "";
 			for(var i=0; i < menu.length; i++) {
-                                var display = "\r\n#L"+i+"##b Rien (800 mesos)#k";
+                                display += "\r\n#L"+i+"##b Rien (800 mesos)#k";
                         }
                         cm.sendSimple("Are you thinking about leaving Victoria Island and heading to our town? If you board this ship, I can take you from #bLith Harbor#k to #bRien#k and back. But you must pay a #bfee of 800#k Mesos. Would you like to go to Rien? It'll take about a minute to get there.\r\n"+display);
 			

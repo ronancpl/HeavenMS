@@ -32,10 +32,11 @@ function action(mode, type, selection) {
 		}
 		status++;
 		if (status == 0) {
-			for(var i=0; i < menu.length; i++) {
-					var display = "\r\n#L"+i+"##b Ereve (1000 mesos)#k";
-				}			
-				cm.sendSimple("Eh... So... Um... Are you trying to leave Victoria to go to a different region? You can take this boat to #bEreve#k. There, you will see bright sunlight shinning on the leaves and feel a gentle breeze on your skin. It's where Shinsoo and Empress Cygnus are. Would you like to go to Ereve? It will take about #b2 Minutes#k, and it will cost you #b1000#k mesos.\r\n"+display);
+			var display = "";
+                        for(var i=0; i < menu.length; i++) {
+                                display += "\r\n#L"+i+"##b Ereve (1000 mesos)#k";
+                        }			
+                        cm.sendSimple("Eh... So... Um... Are you trying to leave Victoria to go to a different region? You can take this boat to #bEreve#k. There, you will see bright sunlight shinning on the leaves and feel a gentle breeze on your skin. It's where Shinsoo and Empress Cygnus are. Would you like to go to Ereve? It will take about #b2 Minutes#k, and it will cost you #b1000#k mesos.\r\n"+display);
 			
 		} else if(status == 1) {
 		 if(cm.getMeso() < 1000) {

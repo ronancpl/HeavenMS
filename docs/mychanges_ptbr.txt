@@ -1,9 +1,10 @@
-﻿NEW NPC SCRIPTS:
+﻿CUSTOM NPC SCRIPTS:
 	Coco -> 9000017
 	Agent E -> 9000036
 
-NEW NPC SHOP:
+CUSTOM NPC SHOPS:
 	Spindle -> 9201082
+	T-1337 -> 9201101
 
 LOGS:
 
@@ -792,3 +793,16 @@ Adicionado diversos drops de skill/mastery books para mobs level 90+.
 Corrigido problema com PQs onde jogadores que saíam do grupo não eram transportados para fora do mapa do evento devidamente.
 Corrigido problema com PQs onde jogadores eram expulsos de eventos já completados ao tentar sair/debandar da party.
 Corrigido possível problema de exploit com Vega's scroll.
+
+17 - 19 Fevereiro 2018,
+Adicionado custom npc shop de consumíveis para o T-1337.
+Normalizado drop data do Pianus esquerdo, removido drops do Jr. Newtie que evolui pra Nest Golem.
+Melhorado qualidade das mensagens aos usuários das expedições.
+Melhorado sistema de drops dos monstros aliados (Moon Bunny, Watch Hog, etc), agora fornecendo devidas exclusividades aos itens de quests. Drops de mobs aliados agora seguem o mesmo padrão dos drops de mobs normais.
+Modificado autopot agora usando variáveis temporárias para calcular o consumo de pots, ao invés de usar o valor volátil de HP/MP do objeto do jogador.
+Resolvido bug com portais introduzido no patch anterior, que quebrou a sintaxe de código em alguns casos.
+Novo comando: reach. Transporta o usuário do comando a um ponto próximo ao jogador alvo.
+
+20 Fevereiro 2018,
+Corrigido skill Steal não agindo corretamente. Ratio de drops agora segue conformante ao determinado pelas chances de sair cada item (itens comuns cairão com mais frequência).
+Modificado skill Steal para não dropar mais itens de PQ nem de quest.

@@ -40,7 +40,7 @@ function cancelSchedule() {
 }
 
 function start() {
-    var mapObj = em.getChannelServer().getMapFactory().getMap(800020120);
+    var mapObj = em.getChannelServer().getMapFactory().getMap(800020120);   // original mapid was 251010101
     var mobObj = Packages.server.life.MapleLifeFactory.getMonster(6090002);
 	
 	if(mapObj.getMonsterById(6090002) != null) {

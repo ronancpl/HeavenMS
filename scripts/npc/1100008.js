@@ -32,8 +32,9 @@ function action(mode, type, selection) {
 		}
 		status++;
 		if (status == 0) {
+                        var display = "";
                         for(var i=0; i < menu.length; i++) {
-                                var display = "\r\n#L"+i+"##b Ereve (1000 mesos)#k";
+                                display += "\r\n#L"+i+"##b Ereve (1000 mesos)#k";
                         }			
                         cm.sendSimple("This ship will head towards #bEreve#k, an island where you'll find crimson leaves soaking up the sun, the gentle breeze that glides past the stream, and the Empress of Maple Cygnus. If you're interested in joining the Cygnus Knights, Then you should definitly pay a visit here. Are you interested in visiting Ereve?, The Trip will cost you #b1000#k Mesos\r\n"+display);
 

@@ -111,6 +111,7 @@ public class MapleItemInformationProvider {
     protected List<Pair<Integer, String>> itemNameCache = new ArrayList<>();
     protected Map<Integer, Boolean> consumeOnPickupCache = new HashMap<>();
     protected Map<Integer, Boolean> isQuestItemCache = new HashMap<>();
+    protected Map<Integer, Boolean> isPartyQuestItemCache = new HashMap<>();
     protected Map<Integer, String> equipmentSlotCache = new HashMap<>();
     protected Map<Integer, Boolean> noCancelMouseCache = new HashMap<>();
     protected Map<Integer, Integer> mobCrystalMakerCache = new HashMap<>();
@@ -129,6 +130,9 @@ public class MapleItemInformationProvider {
         etcStringData = stringData.getData("Etc.img");
         insStringData = stringData.getData("Ins.img");
         petStringData = stringData.getData("Pet.img");
+        
+        isQuestItemCache.put(0, false);
+        isPartyQuestItemCache.put(0, false);
     }
 
     public static MapleItemInformationProvider getInstance() {
@@ -1230,6 +1234,16 @@ public class MapleItemInformationProvider {
         boolean questItem = (data != null && MapleDataTool.getIntConvert("info/quest", data, 0) == 1);
         isQuestItemCache.put(itemId, questItem);
         return questItem;
+    }
+    
+    public boolean isPartyQuestItem(int itemId) {
+        if (isPartyQuestItemCache.containsKey(itemId)) {
+            return isPartyQuestItemCache.get(itemId);
+        }
+        MapleData data = getItemData(itemId);
+        boolean partyquestItem = (data != null && MapleDataTool.getIntConvert("info/pquest", data, 0) == 1);
+        isPartyQuestItemCache.put(itemId, partyquestItem);
+        return partyquestItem;
     }
 
     public int getQuestIdFromItem(int itemId) {

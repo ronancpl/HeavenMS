@@ -96,7 +96,8 @@ public class MapleExpedition {
 	private void beginRegistration() {
 		registering = true;
                 leader.announce(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
-		startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Expedition] " + leader.getName() + " has been declared the expedition captain. Please register for the expedition."));
+		startMap.broadcastMessage(leader, MaplePacketCreator.serverNotice(6, "[Expedition] " + leader.getName() + " has been declared the expedition captain. Please register for the expedition."), false);
+                leader.announce(MaplePacketCreator.serverNotice(6, "[Expedition] You have become the expedition captain. Gather enough people for your team then talk to the NPC to start."));
 		scheduleRegistrationEnd();
 	}
 

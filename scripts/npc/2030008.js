@@ -101,7 +101,7 @@ function action(mode, type, selection) {
             } else {
                 if(cm.haveItem(4031061) && cm.haveItem(4031062)) {
                     if(!cm.haveItem(4000082, 30)) {
-                        cm.sendOk("You have completed the trials, however there still the need of #b30 #t4000082##k to forge the #t4001017#.");
+                        cm.sendOk("You have completed the trials, however there's still the need of #b30 #t4000082##k to forge the #t4001017#.");
                     } else {
                         cm.completeQuest(100201);
                         cm.gainItem(4031061, -1);
@@ -109,7 +109,7 @@ function action(mode, type, selection) {
                         cm.gainItem(4000082, -30);
 
                         cm.gainItem(4001017, 1);
-                        cm.sendNext("You have completed the trials, from now on having my approval to challenge Zakum.");
+                        cm.sendNext("You #rhave completed the trials#k, from now on having my approval to challenge Zakum.");
                     }
                     
                     cm.dispose();

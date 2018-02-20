@@ -49,6 +49,10 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     boolean hasMpGain;
     short maxHp;
     short maxMp;
+    short incHp;
+    short incMp;
+    int curHp;
+    int curMp;
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -91,14 +95,27 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
             maxHp = maxHpMp.left;
             maxMp = maxHpMp.right;
             
+            incHp = stat.getHp();
+            if(incHp <= 0 && hasHpGain) incHp = (short)((maxHp * stat.getHpRate()) / 100.0);
+            
+            incMp = stat.getMp();
+            if(incMp <= 0 && hasMpGain) incMp = (short)((maxMp * stat.getMpRate()) / 100.0);
+            
+            curHp = chr.getHp();
+            curMp = chr.getMp();
+            
+            //System.out.println("\n-------------------\n");
             while(true) {
                 do {
                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
                     stat.applyTo(chr);
+                    
+                    curHp += incHp;
+                    curMp += incMp;
 
                     //System.out.println();
-                    //System.out.println("hp: " + hasHpGain + " player hp " + chr.getHp() + " maxhp " + maxHp);
-                    //System.out.println("mp: " + hasMpGain + " player mp " + chr.getMp() + " maxmp " + maxMp);
+                    //System.out.println("hp: " + hasHpGain + " player hp " + curHp + " maxhp " + maxHp);
+                    //System.out.println("mp: " + hasMpGain + " player mp " + curMp + " maxmp " + maxMp);
                     //System.out.println("redo? " + (shouldReusePot(chr) && toUse.getQuantity() > 0));
                 } while(shouldReusePot(chr) && toUse.getQuantity() > 0);
 
@@ -154,6 +171,6 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     }
     
     private boolean shouldReusePot(MapleCharacter chr) {
-        return (hasHpGain && chr.getHp() < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (hasMpGain && chr.getMp() < ServerConstants.PET_AUTOMP_RATIO * maxMp);
+        return (hasHpGain && curHp < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (hasMpGain && curMp < ServerConstants.PET_AUTOMP_RATIO * maxMp);
     } 
 }

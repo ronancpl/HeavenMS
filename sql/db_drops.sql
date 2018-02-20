@@ -20021,7 +20021,10 @@ USE `heavenms`;
 (1110100, 4032379, 1, 1, 2409, 40000),
 (1210100, 4032379, 1, 1, 2409, 40000),
 (2130100, 4001344, 1, 1, 0, 7000),
-(7220002, 4031789, 1, 1, 3844, 999999);
+(7220002, 4031789, 1, 1, 3844, 999999),
+(9300102, 4031507, 1, 1, 6002, 999999),
+(9300061, 4001101, 1, 1, 0, 999999),
+(9300093, 4031495, 1, 1, 6192, 999999);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
@@ -20115,7 +20118,7 @@ USE `heavenms`;
 (8190003, 2280013, 1, 1, 0, 1000),
 (9400121, 2280014, 1, 1, 0, 40000),
 (8200001, 2280015, 1, 1, 0, 1000),
-(8190001, 2280016, 1, 1, 0, 1000),
+(8190000, 2280016, 1, 1, 0, 1000),
 (8200011, 2290001, 1, 1, 0, 1000),
 (8150300, 2290003, 1, 1, 0, 1000),
 (8200000, 2290005, 1, 1, 0, 1000),
@@ -20153,7 +20156,7 @@ USE `heavenms`;
 (8190004, 2290071, 1, 1, 0, 1000),
 (8190004, 2290073, 1, 1, 0, 1000),
 (9400582, 2290074, 1, 1, 0, 1000),
-(8190001, 2290075, 1, 1, 0, 1000),
+(8190000, 2290075, 1, 1, 0, 1000),
 (9400582, 2290079, 1, 1, 0, 1000),
 (9400580, 2290083, 1, 1, 0, 1000),
 (8150302, 2290085, 1, 1, 0, 1000),
@@ -20164,7 +20167,7 @@ USE `heavenms`;
 (8200005, 2290095, 1, 1, 0, 1000),
 (8150302, 2290096, 1, 1, 0, 1000),
 (8200003, 2290101, 1, 1, 0, 1000),
-(8190001, 2290103, 1, 1, 0, 1000),
+(9400121, 2290103, 1, 1, 0, 40000),
 (8150301, 2290107, 1, 1, 0, 1000),
 (9420513, 2290108, 1, 1, 0, 40000),
 (8150300, 2290111, 1, 1, 0, 1000),
@@ -20232,6 +20235,14 @@ USE `heavenms`;
   # delete item drops from other mobs named Freezer
   DELETE FROM temp_data WHERE dropperid=9300090;
   DELETE FROM temp_data WHERE dropperid=9420501;
+
+  # normalize item drops for left-side Pianus
+  DELETE FROM temp_data WHERE dropperid=8520000;
+
+  INSERT INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
+  SELECT  8520000, temp_data.itemid, temp_data.minimum_quantity, temp_data.maximum_quantity, temp_data.questid, temp_data.chance
+  FROM    temp_data
+  WHERE   temp_data.dropperid = 8510000;
 
   # delete/normalize item drops from clones of Pink Bean
   DELETE FROM temp_data WHERE dropperid=8820000;
@@ -20395,6 +20406,9 @@ USE `heavenms`;
   DELETE FROM drop_data WHERE dropperid = 9300157;
   DELETE FROM drop_data WHERE dropperid = 9500100;
   DELETE FROM drop_data where dropperid >= 9300141 AND dropperid <= 9300154 AND (itemid < 4001130 OR itemid >= 4001136);
+
+  # remove drop data from mobs which respawns as other mobs
+  DELETE FROM drop_data WHERE dropperid = 8190001;
 
   # remove key of dimension dropping outside PQ
   DELETE FROM drop_data WHERE itemid=4001023 AND dropperid!=9300012;
@@ -21873,7 +21887,6 @@ USE `heavenms`;
 (8150300, 0, 666, 986, 0, 400000),
 (8150301, 0, 730, 1070, 0, 400000),
 (8150302, 0, 764, 1115, 0, 400000),
-(8190001, 0, 800, 1162, 0, 400000),
 (8220003, 0, 3381, 15830, 0, 400000),
 (8220005, 0, 4350, 19860, 0, 400000),
 (8220006, 0, 5466, 24400, 0, 400000),

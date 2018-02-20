@@ -248,8 +248,10 @@ public class MapleMapFactory {
             map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(omapid)), ""));
             map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(omapid)), ""));
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Not found mapid " + omapid);
+            if(omapid / 1000 != 1020) {     // explorer job introducion scenes
+                e.printStackTrace();
+                System.err.println("Not found mapid " + omapid);
+            }
 
             map.setMapName("");
             map.setStreetName("");

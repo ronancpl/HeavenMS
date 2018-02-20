@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,21 +17,31 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-    Zakum Entrance
-*/
+/* Chun Ji */
+
+var status;
  
-function enter(pi) {
-    if (!pi.isQuestStarted(100200)) {
-        pi.getPlayer().dropMessage(5,"You need approval from the masters to battle. You may not attempt the boss right now.");
-        return false;
-    }
+function start() {
+        status = -1;
+        action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+        if (mode == -1) {
+                cm.dispose();
+        } else {
+                if (mode == 0 && type > 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
     
-    if (!pi.isQuestCompleted(100201)) {
-        pi.getPlayer().dropMessage(5,"You haven't completed all the trials yet. You may not attempt the boss right now.");
-        return false;
-    }
-    
-    pi.playPortalSound(); pi.warp(211042400,"west00");
-    return true;
+                if(status == 0) {
+                        cm.sendOk("Just a kid... Don't talk to me...");
+                        cm.dispose();
+                }
+        }
 }

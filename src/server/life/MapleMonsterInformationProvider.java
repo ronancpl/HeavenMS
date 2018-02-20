@@ -34,6 +34,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
+import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.Pair;
 
@@ -43,6 +44,8 @@ public class MapleMonsterInformationProvider {
 	private static final MapleMonsterInformationProvider instance = new MapleMonsterInformationProvider();
 	private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();
 	private final List<MonsterGlobalDropEntry> globaldrops = new ArrayList<>();
+        
+        private final Map<Integer, List<Integer>> dropsChancePool = new HashMap<>();    // thanks to ronan
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
@@ -148,6 +151,31 @@ public class MapleMonsterInformationProvider {
 		drops.put(monsterId, ret);
 		return ret;
 	}
+        
+        public final List<Integer> retrieveDropPool(final int monsterId) {  // ignores Quest and Party Quest items
+		if (dropsChancePool.containsKey(monsterId)) {
+			return dropsChancePool.get(monsterId);
+		}
+                
+                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                
+                List<MonsterDropEntry> dropList = retrieveDrop(monsterId);
+		List<Integer> ret = new ArrayList<>();
+                
+                int accProp = 0;
+                for(MonsterDropEntry mde : dropList) {
+                        if(!ii.isQuestItem(mde.itemId) && !ii.isPartyQuestItem(mde.itemId)) {
+                                accProp += mde.chance;
+                        }
+
+                        ret.add(accProp);
+                }
+                
+		if(accProp == 0) ret.clear();    // don't accept mobs dropping no relevant items
+                
+                dropsChancePool.put(monsterId, ret);
+		return ret;
+	}
 
 	public static ArrayList<Pair<Integer, String>> getMobsIDsFromName(String search)
 	{
@@ -206,6 +234,7 @@ public class MapleMonsterInformationProvider {
 
 	public final void clearDrops() {
 		drops.clear();
+                dropsChancePool.clear();
 		globaldrops.clear();
 		retrieveGlobal();
 	}

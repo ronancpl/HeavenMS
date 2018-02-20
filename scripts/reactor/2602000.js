@@ -19,21 +19,10 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-    Zakum Entrance
-*/
+/*2612004.js - Queen's treasure room
+ *@author Ronan
+ */
  
-function enter(pi) {
-    if (!pi.isQuestStarted(100200)) {
-        pi.getPlayer().dropMessage(5,"You need approval from the masters to battle. You may not attempt the boss right now.");
-        return false;
-    }
-    
-    if (!pi.isQuestCompleted(100201)) {
-        pi.getPlayer().dropMessage(5,"You haven't completed all the trials yet. You may not attempt the boss right now.");
-        return false;
-    }
-    
-    pi.playPortalSound(); pi.warp(211042400,"west00");
-    return true;
+function act() {
+	rm.dropItems();
 }

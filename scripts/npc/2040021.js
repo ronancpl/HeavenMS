@@ -143,7 +143,7 @@ function action(mode, type, selection) {
             cost = costSet[selectedItem];
         }
         //Ludi fee is -10%, array not changed unlike 2040016 and 2040020
-        cost *= .9;
+        cost *= 0.9;
         var prompt = "You want me to make a #t" + item + "#? In that case, I'm going to need specific items from you in order to make it. Make sure you have room in your inventory, though!#b";
         if(stimulator)
             prompt += "\r\n#i"+stimID+"# 1 #t" + stimID + "#";

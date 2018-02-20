@@ -35,6 +35,7 @@ import client.MapleClient;
  */
 
 public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandler {
+        @Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		int attacker = slea.readInt();
 		slea.readInt();
@@ -66,12 +67,12 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                         }
                         
                         c.getPlayer().getMap().killFriendlies(monster);
+                } else {
+                        if (monster.getId() == 9300061) {
+                                MapleMap map = c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId());
+                                map.addBunnyHit();
+                        }
                 }
-                
-		if (monster.getId() == 9300061) {
-                        MapleMap map = c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId());
-			map.addBunnyHit();
-		}
 
 		c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.MobDamageMobFriendly(monster, damage), monster.getPosition());
 		c.announce(MaplePacketCreator.enableActions());

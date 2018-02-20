@@ -79,9 +79,9 @@ function action(mode, type, selection) {
                     else {
                         gotAllDocs = cm.haveItem(4001015, 30);
                         if (!gotAllDocs) { //documents
-                            cm.sendYesNo("So, you brought the fire ore with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. Make sure your whole party has room in their inventory before proceeding.");
+                            cm.sendYesNo("So, you brought the fire ore with you? In that case, I can give to you and to each member of your party a piece of it, that should be more than enough to make the core of Zakum. Make sure your whole party has room in their inventory before proceeding.");
                         } else {
-                            cm.sendYesNo("So, you brought the fire ore and the documents with you? In that case, I can give you and your party a piece of it that should be more than enough to make the core of Zakum. As well, since you brought the documents with you, I can also give you a special item which will #bbring you to the mine's entrance at any time#k. Make sure your whole party has room in their inventory before proceeding.");
+                            cm.sendYesNo("So, you brought the fire ore and the documents with you? In that case, I can give to you and to each member of your party a piece of it, that should be more than enough to make the core of Zakum. As well, since you #rbrought the documents#k with you, I can also provide you a special item which will #bbring you to the mine's entrance at any time#k. Make sure your whole party has room in their inventory before proceeding.");
                         }
                     }
                 } else if (selection == 2)

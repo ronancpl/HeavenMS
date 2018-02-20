@@ -32,8 +32,9 @@ function action(mode, type, selection) {
 		}
 		status++;
 		if (status == 0) {
+                        var display = "";
 			for(var i=0; i < menu.length; i++) {
-                                var display = "\r\n#L"+i+"##b Lith Harbor (800 mesos)#k";
+                                display += "\r\n#L"+i+"##b Lith Harbor (800 mesos)#k";
                         }			
                         cm.sendSimple("Are you trying to leave Rien? Board this ship and I'll take you from #bRien#k to #bLith Harbor#k and back. for a #bfee of 800#k Mesos. Would you like to head over to Lith Harbor now? It'll take about a minute to get there.\r\n"+display);
 			

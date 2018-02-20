@@ -295,21 +295,24 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     } else if (attack.skill == Bandit.STEAL) {                    	
                         Skill steal = SkillFactory.getSkill(Bandit.STEAL);
                         if (monster.getStolen().size() < 1) { // One steal per mob <3
-                            if (Math.random() < 0.3 && steal.getEffect(player.getSkillLevel(steal)).makeChanceResult()) { //Else it drops too many cool stuff :(
-                                List<MonsterDropEntry> toSteals = MapleMonsterInformationProvider.getInstance().retrieveDrop(monster.getId());
-                                Collections.shuffle(toSteals);
-                                int toSteal = toSteals.get(rand(0, (toSteals.size() - 1))).itemId;
-                                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                                Item item;
-                                if (ItemConstants.getInventoryType(toSteal).equals(MapleInventoryType.EQUIP)) {
-                                    item = ii.randomizeStats((Equip) ii.getEquipById(toSteal));
-                                } else {
-                                    item = new Item(toSteal, (byte) 0, (short) 1, -1);
+                            if (steal.getEffect(player.getSkillLevel(steal)).makeChanceResult()) {
+                                MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
+                                
+                                List<Integer> dropPool = mi.retrieveDropPool(monster.getId());
+                                if(!dropPool.isEmpty()) {
+                                    Integer rndPool = (int) Math.floor(Math.random() * dropPool.get(dropPool.size() - 1));
+                                    
+                                    int i = 0;
+                                    while(rndPool >= dropPool.get(i)) i++;
+                                    
+                                    List<MonsterDropEntry> toSteal = new ArrayList<>();
+                                    toSteal.add(mi.retrieveDrop(monster.getId()).get(i));
+                                    
+                                    player.getMap().dropItemsFromMonster(toSteal, player, monster);
+                                    monster.addStolen(toSteal.get(0).itemId);
                                 }
-                                player.getMap().spawnItemDrop(monster, player, item, monster.getPosition(), false, false);
-                                monster.addStolen(toSteal);
                             }
-                        }                        
+                        }
                     } else if (attack.skill == FPArchMage.FIRE_DEMON) {
                         monster.setTempEffectiveness(Element.ICE, ElementalEffectiveness.WEAK, SkillFactory.getSkill(FPArchMage.FIRE_DEMON).getEffect(player.getSkillLevel(SkillFactory.getSkill(FPArchMage.FIRE_DEMON))).getDuration() * 1000);
                     } else if (attack.skill == ILArchMage.ICE_DEMON) {
