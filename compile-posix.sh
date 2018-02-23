@@ -7,5 +7,5 @@ dist=dist
 cores=$(echo cores/*)
 cores=${cores// /:}
 
-mkdir -p $out
+mkdir -p $dist
 javac -d $dist -cp $cores $(find $src -name "*.java")
