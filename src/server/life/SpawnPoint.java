@@ -93,6 +93,9 @@ public class SpawnPoint {
             
             @Override
             public void monsterDamaged(MapleCharacter from, int trueDmg) {}
+            
+            @Override
+            public void monsterHealed(int trueHeal) {}
         });
         if (mobTime == 0) {
             nextPossibleSpawn = System.currentTimeMillis() + mobInterval;

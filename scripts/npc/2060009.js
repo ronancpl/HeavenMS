@@ -4,7 +4,7 @@ var payment = false;
 var atHerbTown = false;
 
 function start() {
-	if(cm.getPlayer().getMap().getId() == 251000100)atHerbTown = true;
+    if(cm.getPlayer().getMap().getId() == 251000100) atHerbTown = true;
 	
     if (cm.haveItem(4031242)){
 		if(atHerbTown)

@@ -86,7 +86,7 @@ function action(mode, type, selection) {
                 }
             }
 
-            cm.sendOk(sendStr);
+            cm.sendSimple(sendStr);
             cm.dispose();
         }
     }

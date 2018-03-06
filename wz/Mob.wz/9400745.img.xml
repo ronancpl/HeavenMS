@@ -2,20 +2,20 @@
 <imgdir name="9400745.img">
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
-    <int name="level" value="10"/>
-    <int name="maxHP" value="50000"/>
-    <int name="maxMP" value="500"/>
+    <int name="level" value="160"/>
+    <int name="maxHP" value="5000000"/>
+    <int name="maxMP" value="5000"/>
     <int name="speed" value="-20"/>
-    <int name="PADamage" value="90"/>
-    <int name="PDDamage" value="220"/>
-    <int name="MADamage" value="150"/>
+    <int name="PADamage" value="700"/>
+    <int name="PDDamage" value="880"/>
+    <int name="MADamage" value="550"/>
     <int name="MDDamage" value="220"/>
-    <int name="acc" value="75"/>
-    <int name="eva" value="15"/>
-    <int name="exp" value="1000"/>
+    <int name="acc" value="180"/>
+    <int name="eva" value="55"/>
+    <int name="exp" value="100000"/>
     <int name="undead" value="0"/>
-    <int name="pushed" value="1500"/>
-    <int name="hpRecovery" value="50"/>
+    <int name="pushed" value="15000"/>
+    <int name="hpRecovery" value="5000"/>
     <int name="mpRecovery" value="5"/>
     <string name="elemAttr" value="S1H3"/>
     <int name="boss" value="1"/>
@@ -187,7 +187,7 @@
         </canvas>
       </imgdir>
       <int name="type" value="1"/>
-      <int name="conMP" value="2"/>
+      <int name="conMP" value="40"/>
       <int name="effectAfter" value="700"/>
       <int name="attackAfter" value="1300"/>
       <int name="magic" value="1"/>
@@ -356,7 +356,7 @@
         </canvas>
       </imgdir>
       <int name="type" value="2"/>
-      <int name="conMP" value="2"/>
+      <int name="conMP" value="40"/>
       <int name="effectAfter" value="100"/>
       <int name="attackAfter" value="400"/>
       <int name="magic" value="1"/>
@@ -463,7 +463,7 @@
         </canvas>
       </imgdir>
       <int name="type" value="0"/>
-      <int name="conMP" value="2"/>
+      <int name="conMP" value="40"/>
       <int name="effectAfter" value="500"/>
       <int name="attackAfter" value="400"/>
       <int name="magic" value="1"/>

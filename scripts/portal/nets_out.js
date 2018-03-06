@@ -23,6 +23,10 @@ Author: kevintjuh93
 */ 
 
 function enter(pi) {
-    pi.playPortalSound(); pi.warp(pi.getPlayer().getSavedLocation("MIRROR"));
+    var mapid = pi.getPlayer().getSavedLocation("MIRROR");
+    
+    pi.playPortalSound();
+    if(mapid == 260020500) pi.warp(mapid, 3);
+    else pi.warp(mapid);
     return true;
 }

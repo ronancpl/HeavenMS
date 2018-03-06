@@ -660,6 +660,7 @@ public class EventInstanceManager {
                 
                 cancelSchedule();
                 killCount.clear();
+                mapIds.clear();
                 
                 disposeExpedition();
                 

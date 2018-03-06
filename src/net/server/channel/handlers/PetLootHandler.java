@@ -39,6 +39,7 @@ import constants.ServerConstants;
  * @author Ronan
  */
 public final class PetLootHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         if(System.currentTimeMillis() - chr.getPetLootCd() < ServerConstants.PET_LOOT_UPON_ATTACK) {

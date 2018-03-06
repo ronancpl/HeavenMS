@@ -1,41 +1,39 @@
-importPackage(Packages.server.events);
-
-var status = 0;
-var dispose = false;
-function start(){
-    action(1, 0, 0);
+var status;
+ 
+function start() {
+        status = -1;
+        action(1, 0, 0);
 }
 
-function action(mode, type, selection){
-    if(mode <= 0){
-        cm.dispose();
-        return;
-    } else if(status == 0){
-        if(cm.getPlayer().getMap().getMonsters().size() == 0){
-            cm.sendOk("Wow! You defeated the balrog.");
-            dispose = true;
-            cm.getPlayer().getClient().getChannelServer().broadcastPacket(Packages.tools.MaplePacketCreator.serverNotice(0, BalrogPQ.partyLeader + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + cm.getPlayer().getMap().getCharacters().size() + " players."));
-            status++;
-        } else if(cm.getPlayer().getMap().getCharacters().size() > 1){
-            cm.sendYesNo("Are you really going to leave this battle and leave your fellow travelers to die?");
-            dispose = false;
-            status++;
-        } else if(cm.getPlayer().getMap().getCharacters().size() <= 1){
-            cm.sendYesNo("If you're a coward, you will leave.");
-            dispose = true;
-            status++;
+function action(mode, type, selection) {
+        if (mode == -1) {
+                cm.dispose();
         } else {
-            cm.sendYesNo("So you are really going to leave?");
-            status++;
+                if (mode == 0 && type > 0) {
+                        cm.dispose();
+                        return;
+                }
+                if (mode == 1)
+                        status++;
+                else
+                        status--;
+    
+                if(status == 0){
+                        if(cm.getEventInstance().isEventCleared()) {
+                                cm.sendOk("Wow! You defeated the balrog.");
+                        } else if(cm.getPlayer().getMap().getCharacters().size() > 1) {
+                                cm.sendYesNo("Are you really going to leave this battle and leave your fellow travelers to die?");
+                        } else {
+                                cm.sendYesNo("If you're a coward, you will leave.");
+                        }
+                } else if(status == 1){
+                        if(cm.getEventInstance().isEventCleared()) {
+                                cm.warp(cm.getMapId() == 105100300 ? 105100301 : 105100401);
+                        } else {
+                                cm.warp(105100100);
+                        }
+
+                        cm.dispose();
+                }
         }
-    } else if(status == 1){
-        if(dispose){
-            cm.getPlayer().getMap().killAllMonsters();
-            BalrogPQ.partyLeader = "undefined";
-            BalrogPQ.balrogSpawned = false;
-            BalrogPQ.close();
-        }
-        cm.warp(105100100);
-        cm.dispose();
-    }
 }

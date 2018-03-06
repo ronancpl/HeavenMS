@@ -17,7 +17,7 @@ Inclui constante SCROLL_CHANCE_RATE: repete resultados na tentativa de scrolls.
 Inclui constantes ADD_SLOTS_BY_LEVEL + ADD_RATES_BY_LEVEL: muda rates do gameplay de um personagem com a evolucao dele.
 Alterei APs podendo aumentar ate 32767.
 Corrigi alguns XMLs dos mapas de Omega Sector, tinham ordem dos portais invertidas.
-AUTOBAN eh uma constante setavel do server agora.
+AUTOBAN eh uma constante setável do server agora.
 
 17 Julho 2015,
 Adaptei todos os scripts de 2nd job adv. Nao testado ainda!
@@ -806,3 +806,19 @@ Novo comando: reach. Transporta o usuário do comando a um ponto próximo ao jog
 20 Fevereiro 2018,
 Corrigido skill Steal não agindo corretamente. Ratio de drops agora segue conformante ao determinado pelas chances de sair cada item (itens comuns cairão com mais frequência).
 Modificado skill Steal para não dropar mais itens de PQ nem de quest.
+
+22 - 24 Fevereiro 2018,
+Modificado atributo "time" dos buffs de rate cupons para ser não-expirável a curto prazo.
+Melhorado drops de itens de reatores agora centralizando e não deixando "espaços vazios" (ocupados por itens de quest não-visíveis pelo jogador).
+Corrigido portal mal-posicionado em Herb Town.
+Adicionado drop data para Giant Cake.
+Implementado expedição Balrog.
+
+01 - 05 Março 2018,
+Implementado missão da skill Assassinate.
+Resolvido bug com jogador em party tendo que esperar um tempo antes de pegar loot.
+Resolvido problemas com loots não diferenciando partyids de playerids, além de permitir exploits para ações de pickup dos jogadores e autoloot de pets.
+Resolvido caso de deadlock no MapleMap (uso de broadcastMessage, que usa chrLock, após adquirido objectLock).
+Refatorado dano/cura em mobs, agora encapsulando atomicamente as mudanças de HP. Resolvido também problemas de acesso concorrente quanto a isso.
+Resolvido problemas com HT e danos de status poison, bagunçando as contabilizações de HP de vez em quando.
+Nova PQ: TreasurePQ, level 140+, acessível via portal em NLC.

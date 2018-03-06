@@ -1844,8 +1844,9 @@ public class Commands {
                         break;
                     
 		case "killall":
-			List<MapleMapObject> monsters = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
 			MapleMap map = player.getMap();
+                        List<MapleMapObject> monsters = map.getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
+                        
 			for (MapleMapObject monstermo : monsters) {
 				monster = (MapleMonster) monstermo;
 				if (!monster.getStats().isFriendly()) {
@@ -2287,12 +2288,7 @@ public class Commands {
                     case "itemvac":
                             List<MapleMapObject> list = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
                             for (MapleMapObject item : list) {
-                                MapleMapItem mapItem = (MapleMapItem) item;
-                                int ownerId = mapItem.getOwner();
-                                
-                                if(ownerId <= 0 || player.getId() == ownerId || player.isPartyMember(ownerId) || System.currentTimeMillis() - mapItem.getDropTime() >= 15 * 1000) {
-                                    player.pickupItem(item);
-                                }
+                                player.pickupItem(item);
                             }
                         break;
                             
@@ -2352,7 +2348,7 @@ public class Commands {
                             if(newHp < 0) newHp = Integer.MAX_VALUE;
                             
                             monster.getStats().setHp(newHp);
-                            monster.setHp(newHp);
+                            monster.setStartingHp(newHp);
                         }
                         
                         player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());

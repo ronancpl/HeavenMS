@@ -42,7 +42,7 @@ function action(mode, type, selection) {
         if(selection == 0) {
             cm.sendSimple("You don't seem to be from out town. How can I help you?#L0##bI would like some #t4031346#.#k#l");
         } else {
-            cm.sendNext("Under developing...");
+            cm.sendNext("Under development...");
             cm.dispose();
         }
     } else if(status == 2) {

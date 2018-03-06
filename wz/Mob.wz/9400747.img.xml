@@ -2,19 +2,19 @@
 <imgdir name="9400747.img">
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
-    <int name="level" value="10"/>
-    <int name="maxHP" value="45000"/>
-    <int name="maxMP" value="190"/>
+    <int name="level" value="170"/>
+    <int name="maxHP" value="4500000"/>
+    <int name="maxMP" value="1900"/>
     <int name="speed" value="-20"/>
-    <int name="PADamage" value="80"/>
-    <int name="PDDamage" value="100"/>
-    <int name="MADamage" value="80"/>
-    <int name="MDDamage" value="100"/>
-    <int name="acc" value="70"/>
-    <int name="eva" value="15"/>
-    <int name="exp" value="250"/>
+    <int name="PADamage" value="700"/>
+    <int name="PDDamage" value="750"/>
+    <int name="MADamage" value="650"/>
+    <int name="MDDamage" value="500"/>
+    <int name="acc" value="210"/>
+    <int name="eva" value="70"/>
+    <int name="exp" value="25000"/>
     <int name="undead" value="0"/>
-    <int name="pushed" value="1000"/>
+    <int name="pushed" value="10000"/>
     <string name="elemAttr" value="F2I3"/>
     <int name="boss" value="1"/>
     <float name="fs" value="10.0"/>
@@ -141,7 +141,7 @@
         </canvas>
       </imgdir>
       <int name="type" value="2"/>
-      <int name="conMP" value="3"/>
+      <int name="conMP" value="50"/>
       <int name="attackAfter" value="665"/>
       <int name="bulletSpeed" value="200"/>
       <string name="elemAttr" value="F"/>

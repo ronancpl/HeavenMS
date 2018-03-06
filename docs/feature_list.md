@@ -22,13 +22,12 @@ Feature list:
 
 PQs:
 
-* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ.
+* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ.
 * CWKPQ as Expedition-based event.
-* Expeditions: Scarga/Horntail/Showa/Zakum/Pinkbean.
+* Expeditions: Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.
 * GuildPQ 100% + Guild queue with multi-lobby systems available.
 * Brand-new PQs: BossRushPQ, CafePQ.
 * Mu Lung Dojo.
-* BalrogPQ semi-functional.
 * Capt. Latanica remade as an event (parties can now fight the boss).
 
 Skills:
@@ -76,6 +75,7 @@ Monsters, Maps & Reactors:
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 * Some reactors (PQ bonus boxes) now sprays items on the map, instead of dropping everything at once.
 * Updated Crimsonwood, World Tour, Nihal Desert and Neo City, enabling quest completion and game progression in these areas.
+* Giant Cake (anniversary-themed boss) drops Maple equipments, Maple scrolls, summoning bags and many more interesting items.
 
 PQ potentials:
 

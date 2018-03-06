@@ -379,13 +379,21 @@ public class MapleMapFactory {
         } else if (mapid >= 677000000 && mapid < 677100000) {
             builder.append("Episode1GL");
         } else if (mapid >= 670000000 && mapid < 682000000) {
-            builder.append("weddingGL");
+            if((mapid >= 674030000 && mapid < 674040000) || (mapid >= 680100000 && mapid < 680200000)) {
+                builder.append("etc");
+            } else {
+                builder.append("weddingGL");
+            }
         } else if (mapid >= 682000000 && mapid < 683000000) {
             builder.append("HalloweenGL");
         } else if (mapid >= 683000000 && mapid < 684000000) {
             builder.append("event");
         } else if (mapid >= 800000000 && mapid < 900000000) {
-            builder.append("jp");
+            if((mapid >= 889100000 && mapid < 889200000)) {
+                builder.append("etc");
+            } else {
+                builder.append("jp");
+            }
         } else {
             builder.append("etc");
         }

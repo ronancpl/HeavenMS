@@ -1711,10 +1711,10 @@ public class MaplePacketCreator {
                 mplew.writeInt(drop.getObjectId());
                 mplew.writeBool(drop.getMeso() > 0); // 1 mesos, 0 item, 2 and above all item meso bag,
                 mplew.writeInt(drop.getItemId()); // drop object ID
-                mplew.writeInt(drop.getOwner()); // owner charid/paryid :)
+                mplew.writeInt(drop.getOwnerId()); // owner charid/partyid :)
                 mplew.write(drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
-                mplew.writeInt(drop.getDropType() == 0 ? drop.getOwner() : 0); //test
+                mplew.writeInt(drop.getDropType() == 0 ? drop.getOwnerId() : 0); //test
 
                 if (mod != 2) {
                         mplew.writePos(dropfrom);
@@ -6668,12 +6668,14 @@ public class MaplePacketCreator {
                 mplew.writeInt(mob.getObjectId());
                 mplew.write(1); // direction ?
                 mplew.writeInt(damage);
-                int remainingHp = mob.getHp() - damage;
-                if (remainingHp <= 1) {
-                        remainingHp = 0;
-                        mob.getMap().removeMapObject(mob);
+                
+                mob.applyAndGetHpDamage(damage, false);
+                int remainingHp = mob.getHp();
+                if(remainingHp <= 0) {
+                    remainingHp = 0;
+                    mob.getMap().removeMapObject(mob);
                 }
-                mob.setHp(remainingHp);
+                
                 mplew.writeInt(remainingHp);
                 mplew.writeInt(mob.getMaxHp());
                 return mplew.getPacket();

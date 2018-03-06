@@ -2,20 +2,9 @@
 <imgdir name="9400748.img">
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
-    <int name="level" value="10"/>
-    <int name="maxHP" value="400000"/>
-    <int name="maxMP" value="100"/>
     <int name="speed" value="-10"/>
-    <int name="PADamage" value="150"/>
-    <int name="PDDamage" value="500"/>
-    <int name="MADamage" value="20"/>
-    <int name="MDDamage" value="450"/>
-    <int name="acc" value="1000"/>
-    <int name="eva" value="10"/>
-    <int name="exp" value="1000"/>
     <int name="undead" value="0"/>
-    <int name="pushed" value="3000"/>
-    <int name="hpRecovery" value="2000"/>
+    <int name="hpRecovery" value="20000"/>
     <int name="boss" value="1"/>
     <float name="fs" value="20.0"/>
     <int name="summonType" value="2"/>
@@ -27,6 +16,20 @@
         <int name="effectAfter" value="900"/>
       </imgdir>
     </imgdir>
+    <int name="acc" value="270"/>
+    <int name="eva" value="50"/>
+    <int name="exp" value="60000"/>
+    <int name="level" value="180"/>
+    <int name="MADamage" value="780"/>
+    <int name="maxHP" value="17000000"/>
+    <int name="maxMP" value="2000"/>
+    <int name="MDDamage" value="1100"/>
+    <int name="PADamage" value="650"/>
+    <int name="PDDamage" value="1000"/>
+    <int name="pushed" value="42000"/>
+    <int name="HPgaugeHide" value="1"/>
+    <int name="hpTagBgcolor" value="5"/>
+    <int name="hpTagColor" value="1"/>
   </imgdir>
   <imgdir name="move">
     <canvas name="0" width="287" height="259">
@@ -250,7 +253,7 @@
       <int name="effectAfter" value="0"/>
       <int name="attackAfter" value="1380"/>
       <int name="jumpAttack" value="1"/>
-      <int name="PADamage" value="180"/>
+      <int name="PADamage" value="720"/>
       <int name="knockback" value="1"/>
       <int name="tremble" value="1"/>
     </imgdir>
@@ -407,7 +410,7 @@
       <int name="type" value="0"/>
       <int name="effectAfter" value="0"/>
       <int name="attackAfter" value="2250"/>
-      <int name="PADamage" value="200"/>
+      <int name="PADamage" value="640"/>
       <int name="tremble" value="1"/>
     </imgdir>
     <canvas name="0" width="287" height="255">

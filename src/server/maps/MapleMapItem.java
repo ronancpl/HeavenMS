@@ -33,7 +33,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     protected MapleClient ownerClient;
     protected Item item;
     protected MapleMapObject dropper;
-    protected int character_ownerid, meso, questid = -1;
+    protected int character_ownerid, party_ownerid, meso, questid = -1;
     protected byte type;
     protected boolean pickedUp = false, playerDrop;
     protected long dropTime;
@@ -43,7 +43,8 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	setPosition(position);
 	this.item = item;
 	this.dropper = dropper;
-	this.character_ownerid = owner.getId();
+        this.character_ownerid = owner.getId();
+        this.party_ownerid = owner.getPartyId();
         this.ownerClient = owner.getClient();
 	this.meso = 0;
 	this.type = type;
@@ -54,7 +55,8 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	setPosition(position);
 	this.item = item;
 	this.dropper = dropper;
-	this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
+        this.character_ownerid = owner.getId();
+        this.party_ownerid = owner.getPartyId();
 	this.ownerClient = owner.getClient();
         this.meso = 0;
 	this.type = type;
@@ -66,8 +68,9 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	setPosition(position);
 	this.item = null;
 	this.dropper = dropper;
-	this.character_ownerid = owner.getParty() == null ? owner.getId() : owner.getPartyId();
-	this.ownerClient = owner.getClient();
+	this.character_ownerid = owner.getId();
+        this.party_ownerid = owner.getPartyId();
+        this.ownerClient = owner.getClient();
         this.meso = meso;
 	this.type = type;
 	this.playerDrop = playerDrop;
@@ -90,8 +93,30 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	return dropper;
     }
 
-    public final int getOwner() {
+    public final int getOwnerId() {
 	return character_ownerid;
+    }
+    
+    public final boolean canBePickedBy(MapleCharacter chr) {
+        if (character_ownerid <= 0) return true;
+        
+        if (party_ownerid == -1) {
+            if (chr.getId() == character_ownerid) {
+                return true;
+            } else if (chr.isPartyMember(character_ownerid)) {
+                party_ownerid = chr.getPartyId();
+                return true;
+            }
+        } else {
+            if (chr.getPartyId() == party_ownerid) {
+                return true;
+            } else if (chr.getId() == character_ownerid) {
+                party_ownerid = chr.getPartyId();
+                return true;
+            }
+        }
+        
+        return System.currentTimeMillis() - dropTime >= 15 * 1000;
     }
     
     public final MapleClient getOwnerClient() {

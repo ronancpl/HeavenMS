@@ -21,6 +21,7 @@
 */
 var status = 0;
 var goToMansion = false;
+var fee = 15000;
 
 function start() {
     status = -1;
@@ -37,7 +38,7 @@ function action(mode, type, selection) {
         status++;
         if (cm.getPlayer().getMapId() == 682000000) {
             if (status == 0)
-                cm.sendSimple("Where to, boss? \r\n#L0#New Leaf City#l\r\n#L1#Haunted Mansion#l");
+                cm.sendSimple("Where to, boss? \r\n#b#L0#New Leaf City (" + fee + " mesos)#l\r\n#L1#Haunted Mansion#l#k");
             else if (status == 1) {
                 if (selection == 0)
                     cm.sendYesNo("You want to go to New Leaf City?");
@@ -46,14 +47,28 @@ function action(mode, type, selection) {
                     cm.sendYesNo("You're sure you want to enter the Mansion?");
                 }
             } else if (status == 2) {
-                cm.warp(goToMansion ? 682000100 : 600000000, 0);
+                if(goToMansion) {
+                    cm.warp(682000100, 0);
+                } else if(cm.getMeso() >= fee) {
+                    cm.gainMeso(-fee);
+                    cm.warp(600000000);
+                } else {
+                    cm.sendOk("Hey, what are you trying to pull on? You don't have enough meso to pay the fee.");
+                }
+                
                 cm.dispose();
             }
         } else {
             if (status == 0) {
-                cm.sendYesNo("Would you like to go to the Haunted Mansion?");
+                cm.sendYesNo("Would you like to go to the #bHaunted Mansion#k? The fee is " + fee + " mesos.");
             } else if (status == 1) {
-                cm.warp(682000000, 0);
+                if(cm.getMeso() >= fee) {
+                    cm.gainMeso(-fee);
+                    cm.warp(682000000, 0);
+                } else {
+                    cm.sendOk("Hey, what are you trying to pull on? You don't have enough meso to pay the fee.");
+                }
+                
                 cm.dispose();
             }
         }

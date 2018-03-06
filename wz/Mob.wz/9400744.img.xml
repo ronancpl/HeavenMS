@@ -2,20 +2,20 @@
 <imgdir name="9400744.img">
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
-    <int name="level" value="10"/>
-    <int name="maxHP" value="100000"/>
-    <int name="maxMP" value="500"/>
+    <int name="level" value="168"/>
+    <int name="maxHP" value="10000000"/>
+    <int name="maxMP" value="5000"/>
     <int name="flySpeed" value="10"/>
-    <int name="PADamage" value="100"/>
-    <int name="PDDamage" value="400"/>
-    <int name="MADamage" value="200"/>
-    <int name="MDDamage" value="400"/>
-    <int name="acc" value="90"/>
+    <int name="PADamage" value="750"/>
+    <int name="PDDamage" value="600"/>
+    <int name="MADamage" value="700"/>
+    <int name="MDDamage" value="800"/>
+    <int name="acc" value="190"/>
     <int name="eva" value="20"/>
-    <int name="exp" value="2500"/>
+    <int name="exp" value="250000"/>
     <int name="undead" value="0"/>
-    <int name="pushed" value="2000"/>
-    <int name="hpRecovery" value="100"/>
+    <int name="pushed" value="20000"/>
+    <int name="hpRecovery" value="10000"/>
     <int name="mpRecovery" value="5"/>
     <string name="elemAttr" value="S1H3"/>
     <int name="boss" value="1"/>
@@ -163,7 +163,7 @@
         </canvas>
       </imgdir>
       <int name="type" value="2"/>
-      <int name="conMP" value="2"/>
+      <int name="conMP" value="40"/>
       <int name="attackAfter" value="400"/>
       <int name="magic" value="1"/>
     </imgdir>
@@ -345,7 +345,7 @@
         <uol name="8" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <int name="conMP" value="2"/>
+      <int name="conMP" value="40"/>
       <int name="effectAfter" value="0"/>
       <int name="attackAfter" value="720"/>
       <int name="magic" value="1"/>

@@ -132,8 +132,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public int getHp() {
         return hp.get();
     }
-
-    public void setHp(int hp) {
+    
+    public void addHp(int hp) {
+        this.hp.addAndGet(hp);
+    }
+    
+    public void setStartingHp(int hp) {
         this.hp.set(hp);
     }
 
@@ -208,28 +212,37 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return stats.getTagBgColor();
     }
 
-    /**
-     *
-     * @param from the player that dealt the damage
-     * @param damage
-     */
-    public synchronized void damage(MapleCharacter from, int damage) { // may be pointless synchronization
-        if (!isAlive()) {
-            return;
-        }
+    public void setHpZero() {     // force HP = 0
+        applyAndGetHpDamage(Integer.MAX_VALUE, false);
+    }
+    
+    public synchronized Integer applyAndGetHpDamage(int delta, boolean stayAlive) {
         int curHp = hp.get();
-        int trueDamage = Math.min(curHp, damage); // since magic happens otherwise B^)
-        
-        if(ServerConstants.USE_DEBUG == true) from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
-        dispatchMonsterDamaged(from, trueDamage);
-
-        hp.set(curHp - trueDamage);
-        if (!takenDamage.containsKey(from.getId())) {
-            takenDamage.put(from.getId(), new AtomicInteger(trueDamage));
-        } else {
-            takenDamage.get(from.getId()).addAndGet(trueDamage);
+        if (curHp <= 0) {       // this monster is already dead
+            return null;
         }
-
+        
+        if(delta >= 0) {
+            if(stayAlive) curHp--;
+            int trueDamage = Math.min(curHp, delta);
+            
+            hp.addAndGet(-trueDamage);
+            return trueDamage;
+        } else {
+            int trueHeal = -delta;
+            int hp2Heal = curHp + trueHeal;
+            int maxHp = getMaxHp();
+            
+            if (hp2Heal > maxHp) {
+                trueHeal -= (hp2Heal - maxHp);
+            }
+            
+            hp.addAndGet(trueHeal);
+            return trueHeal;
+        }
+    }
+    
+    public void broadcastMobHpBar(MapleCharacter from) {
         if (hasBossHPBar()) {
             from.setPlayerAggro(this.hashCode());
             from.getMap().broadcastBossHpMessage(this, this.hashCode(), makeBossHPBarPacket(), getPosition());
@@ -248,26 +261,45 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
     }
+    
+    /**
+     *
+     * @param from the player that dealt the damage
+     * @param damage
+     */
+    public synchronized void damage(MapleCharacter from, int damage, boolean stayAlive) {
+        Integer trueDamage = applyAndGetHpDamage(damage, stayAlive);
+        if (trueDamage == null) {
+            return;
+        }
+        
+        if(ServerConstants.USE_DEBUG) from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
+        dispatchMonsterDamaged(from, trueDamage);
+
+        if (!takenDamage.containsKey(from.getId())) {
+            takenDamage.put(from.getId(), new AtomicInteger(trueDamage));
+        } else {
+            takenDamage.get(from.getId()).addAndGet(trueDamage);
+        }
+
+        broadcastMobHpBar(from);
+    }
 
     public void heal(int hp, int mp) {
-        int hpHealed = hp;
-        int hp2Heal = getHp() + hp;
-        int mp2Heal = getMp() + mp;
+        Integer hpHealed = applyAndGetHpDamage(-hp, false);
+        if(hpHealed == null) return;
         
-        int maxHp = getMaxHp();
+        int mp2Heal = getMp() + mp;
         int maxMp = getMaxMp();
-        if (hp2Heal >= maxHp) {
-            hpHealed = hp2Heal - maxHp;
-            hp2Heal = maxHp;
-        }
         if (mp2Heal >= maxMp) {
             mp2Heal = maxMp;
         }
-        setHp(hp2Heal);
         setMp(mp2Heal);
-        getMap().broadcastMessage(MaplePacketCreator.healMonster(getObjectId(), hp));
+        
+        if(hp > 0) getMap().broadcastMessage(MaplePacketCreator.healMonster(getObjectId(), hp));
         
         maxHpPlusHeal.addAndGet(hpHealed);
+        dispatchMonsterHealed(hpHealed);
     }
 
     public boolean isAttackedBy(MapleCharacter chr) {
@@ -471,7 +503,25 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                             reviveMap.spawnMonster(mob);
 
                             if(mob.getId() >= 8810010 && mob.getId() <= 8810017 && reviveMap.isHorntailDefeated()) {
-                                for(int i = 8810018; i >= 8810010; i--)
+                                boolean htKilled = false;
+                                MapleMonster ht = reviveMap.getMonsterById(8810018);
+                                
+                                if(ht != null) {
+                                    ht.lockMonster();
+                                    try {
+                                        htKilled = ht.isAlive();
+                                        ht.setHpZero();
+                                    } finally {
+                                        ht.unlockMonster();
+                                    }
+                                    
+                                    if(htKilled) {
+                                        reviveMap.killMonster(ht, killer, true);
+                                        ht.broadcastMobHpBar(killer);
+                                    }
+                                }
+                                
+                                for(int i = 8810017; i >= 8810010; i--)
                                     reviveMap.killMonster(reviveMap.getMonsterById(i), killer, true);
                             }
                         }
@@ -504,6 +554,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private void dispatchMonsterDamaged(MapleCharacter from, int trueDmg) {
         for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
             listener.monsterDamaged(from, trueDmg);
+        }
+    }
+    
+    private void dispatchMonsterHealed(int trueHeal) {
+        for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
+            listener.monsterHealed(trueHeal);
         }
     }
 
@@ -837,10 +893,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             final Skill skill = SkillFactory.getSkill(status.getSkill().getId());
             final byte level = from.getSkillLevel(skill);
             final int damage = (int) ((from.getStr() + from.getLuk()) * (1.5 + (level * 0.05)) * skill.getEffect(level).getDamage());
-            /*if (getHp() - damage <= 1)  { make hp 1 betch
-             damage = getHp() - (getHp() - 1);
-             }*/
-
+            
             status.setValue(MonsterStatus.NINJA_AMBUSH, Integer.valueOf(damage));
             animationTime = broadcastStatusEffect(status);
             status.setDamageSchedule(timerManager.register(new DamageTask(damage, from, status, cancelTask, 2), 1000, 1000));
@@ -1092,20 +1145,19 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         @Override
         public void run() {
             int curHp = hp.get();
-            if(curHp <= 0) return;
+            if(curHp <= 1) return;
             
             int damage = dealDamage;
             if (damage >= curHp) {
                 damage = curHp - 1;
                 if (type == 1 || type == 2) {
-                    map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
                     cancelTask.run();
                     status.getCancelTask().cancel(false);
                 }
             }
-            if (curHp > 1 && damage > 0) {
-                damage(chr, damage);
-                if (type == 1) {
+            if (damage > 0) {
+                damage(chr, damage, true);
+                if (type == 1 || type == 2) {
                     map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
                 }
             }

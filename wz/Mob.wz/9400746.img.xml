@@ -2,19 +2,19 @@
 <imgdir name="9400746.img">
   <imgdir name="info">
     <int name="bodyAttack" value="1"/>
-    <int name="level" value="10"/>
-    <int name="maxHP" value="20000"/>
-    <int name="maxMP" value="100"/>
+    <int name="level" value="170"/>
+    <int name="maxHP" value="2000000"/>
+    <int name="maxMP" value="1000"/>
     <int name="speed" value="-60"/>
-    <int name="PADamage" value="85"/>
-    <int name="PDDamage" value="200"/>
+    <int name="PADamage" value="650"/>
+    <int name="PDDamage" value="800"/>
     <int name="MADamage" value="0"/>
-    <int name="MDDamage" value="250"/>
-    <int name="acc" value="140"/>
-    <int name="eva" value="23"/>
-    <int name="exp" value="300"/>
+    <int name="MDDamage" value="750"/>
+    <int name="acc" value="200"/>
+    <int name="eva" value="56"/>
+    <int name="exp" value="30000"/>
     <int name="undead" value="0"/>
-    <int name="pushed" value="2500"/>
+    <int name="pushed" value="25000"/>
     <string name="elemAttr" value="I2F2L2S2"/>
     <int name="boss" value="1"/>
     <float name="fs" value="10.0"/>
@@ -146,7 +146,7 @@
       </imgdir>
       <int name="type" value="1"/>
       <int name="attackAfter" value="720"/>
-      <int name="PADamage" value="135"/>
+      <int name="PADamage" value="560"/>
     </imgdir>
     <canvas name="0" width="123" height="107">
       <vector name="origin" x="61" y="107"/>

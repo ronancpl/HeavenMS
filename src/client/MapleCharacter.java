@@ -1476,7 +1476,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 		
         if (ob instanceof MapleMapItem) {
             MapleMapItem mapitem = (MapleMapItem) ob;
-            if(System.currentTimeMillis() - mapitem.getDropTime() < 900) {
+            if(System.currentTimeMillis() - mapitem.getDropTime() < 900 || !mapitem.canBePickedBy(this)) {
                 client.announce(MaplePacketCreator.enableActions());
                 return;
             }
@@ -5629,8 +5629,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         i = i.replace("rn", "Rn");
         i = i.replace("vv", "Vv");
         i = i.replace("VV", "Vv");
+        
         return i;
-
     }
 
     private static class MapleBuffStatValueHolder {
@@ -7452,11 +7452,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             announce(MaplePacketCreator.updateQuestInfo((short) quest.getQuest().getId(), quest.getNpc()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
-            quest_fame += 1;
-            if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
-                fameGainByQuest();
+            short questid = quest.getQuest().getId();
+            if(questid != 3637) {
+                quest_fame += 1;
+                if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
+                    fameGainByQuest();
+            }
             
-            announce(MaplePacketCreator.completeQuest((short) quest.getQuest().getId(), quest.getCompletionTime()));
+            announce(MaplePacketCreator.completeQuest(questid, quest.getCompletionTime()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.NOT_STARTED)) {
             announce(MaplePacketCreator.updateQuest(quest, false));
             if (quest.getQuest().getInfoNumber() > 0) {

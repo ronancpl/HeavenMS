@@ -41,7 +41,7 @@ function action(mode, type, selection) {
     if (mode == -1){
         cm.dispose();
         return;
-    }else if(mode == 0) {
+    } else if (mode == 0) {
         cm.sendOk("This town also has a lot to offer. Find us if and when you feel the need to go to the Ant Tunnel Park.");
     	cm.dispose();
     	return;
