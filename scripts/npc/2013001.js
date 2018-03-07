@@ -60,14 +60,14 @@ function action(mode, type, selection) {
 
         switch(cm.getPlayer().getMapId()) {
             case 920010000:
+                print(eim.getIntProperty("statusStg0"));
                 if(eim.getIntProperty("statusStg0") != 1) {
                     eim.warpEventTeamToMapSpawnPoint(920010000, 2);
                     eim.giveEventPlayersExp(3500);
                     clearStage(0, eim);
 
                     cm.sendNext("Please save Minerva, She've been trapped in the seal by Papa Pixie, the terror of our tower! He misplaced all of our Minerva Statue's parts and we have to get it all back! Oh pardon me, I am the tower's Chamberlain, Eak. I am Minerva's royal servant.");
-                }
-                else {
+                } else {
                     cm.warp(920010000, 2);
                 }
                 cm.dispose();

@@ -214,6 +214,8 @@ function isMV(mob) {
 function monsterKilled(mob, eim) {
         if(isMV(mob)) {
                 eim.showClearEffect();
+                eim.giveEventPlayersStageReward(2);
+                
                 eim.clearPQ();
         }
 }

@@ -46,23 +46,23 @@ function action(mode, type, selection) {
                         }
                         
                         var eim = cm.getEventInstance();
-                        if(cm.haveItem(4032118, 15)) {
-                                cm.gainItem(4032118, -15);
-                                
-                                eim.setIntProperty("statusStg1", 1);
-                                eim.showClearEffect();
-                                
-                                cm.sendNext("You got the letters, great! Now, you can proceed to the room MV is through this tunnel. Be prepared!");
-                                cm.dispose();
+                        if(eim.getIntProperty("statusStg1") == 1) {
+                                cm.sendNext("Go through this tunnel for the boss battle.");
                         } else {
-                                if(eim.getIntProperty("statusStg1") == 1) {
-                                        cm.sendNext("Go through this tunnel for the boss battle.");
+                                if(cm.haveItem(4032118, 15)) {
+                                        cm.gainItem(4032118, -15);
+
+                                        eim.setIntProperty("statusStg1", 1);
+                                        eim.showClearEffect();
+                                        eim.giveEventPlayersStageReward(1);
+
+                                        cm.sendNext("You got the letters, great! Now, you can proceed to the room MV is through this tunnel. Be prepared!");
                                 } else {
                                         cm.sendNext("Please hand me #r15 secret letters#k.");
                                 }
-                                
-                                cm.dispose();
                         }
+                        
+                        cm.dispose();
                 }
         }
 }

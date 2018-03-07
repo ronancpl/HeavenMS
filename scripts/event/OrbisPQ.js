@@ -85,6 +85,7 @@ function setup(level, lobbyid) {
         var eim = em.newInstance("Orbis" + lobbyid);
         eim.setProperty("level", level);
         
+        eim.setProperty("statusStg0", -1);
         eim.setProperty("statusStg1", -1);
         eim.setProperty("statusStg2", -1);
         eim.setProperty("statusStg3", -1);

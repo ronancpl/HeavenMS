@@ -123,7 +123,13 @@ function action(mode, type, selection) {
                                         }
 
                                         if (playersOnCombo == 5 || cm.getPlayer().gmLevel() > 1) {
-                                            var combo = eim.getProperty("stage" + stage + "combo").split(',');
+                                            var comboStr = eim.getProperty("stage" + stage + "combo");
+                                            if(comboStr == null) {
+                                                comboStr = generateCombo();
+                                                eim.setProperty("stage" + stage + "combo", comboStr);
+                                            }
+                                            
+                                            var combo = comboStr.split(',');
                                             var correctCombo = true;
                                             for (i = 0; i < objset.length && correctCombo; i++)
                                                 if (parseInt(combo[i]) != objset[i]) {
