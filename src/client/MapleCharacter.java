@@ -2308,23 +2308,29 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                                 item.setExpiration(-1);
                                 forceUpdateItem(item);   //TEST :3
                             } else if (expiration != -1 && expiration < currenttime) {
-                                if(!ItemConstants.isPet(item.getItemId()) || ItemConstants.isExpirablePet(item.getItemId())) {
+                                if(!ItemConstants.isPet(item.getItemId())) {
                                     client.announce(MaplePacketCreator.itemExpired(item.getItemId()));
                                     toberemove.add(item);
                                     if(ItemConstants.isRateCoupon(item.getItemId())) {
                                         deletedCoupon = true;
                                     }
                                 } else {
-                                    item.setExpiration(-1);
-                                    forceUpdateItem(item);
+                                    if(item.getPetId() > -1) {
+                                        int petIdx = getPetIndex(item.getPetId());
+                                        if(petIdx > -1) unequipPet(getPet(petIdx), true);
+                                    }
+                                    
+                                    if(ItemConstants.isExpirablePet(item.getItemId())) {
+                                        client.announce(MaplePacketCreator.itemExpired(item.getItemId()));
+                                        toberemove.add(item);
+                                    } else {
+                                        item.setExpiration(-1);
+                                        forceUpdateItem(item);
+                                    }
                                 }
                             }
                         }
                         for (Item item : toberemove) {
-                            if(item.getPetId() > -1) {
-                                int petIdx = getPetIndex(item.getPetId());
-                                if(petIdx > -1) unequipPet(getPet(petIdx), true);
-                            }
                             MapleInventoryManipulator.removeFromSlot(client, inv.getType(), item.getPosition(), item.getQuantity(), true);
                         }
                         toberemove.clear();
@@ -4880,7 +4886,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (improvingMaxMPLevel > 0 && (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.CRUSADER) || job.isA(MapleJob.BLAZEWIZARD1))) {
             maxmp += improvingMaxMP.getEffect(improvingMaxMPLevel).getX();
         }
-        maxmp += localint_ / 10;
+        
+        if (ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
+                maxmp += localint_ / 20;
+            } else {
+                maxmp += localint_ / 10;
+            }
+        }
+        
         if (takeexp) {
             exp.addAndGet(-ExpTable.getExpNeededForLevel(level));
             if (exp.get() < 0) {

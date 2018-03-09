@@ -822,3 +822,7 @@ Resolvido caso de deadlock no MapleMap (uso de broadcastMessage, que usa chrLock
 Refatorado dano/cura em mobs, agora encapsulando atomicamente as mudanças de HP. Resolvido também problemas de acesso concorrente quanto a isso.
 Resolvido problemas com HT e danos de status poison, bagunçando as contabilizações de HP de vez em quando.
 Nova PQ: TreasurePQ, level 140+, acessível via portal em NLC.
+
+08 Março 2018,
+Corrigido levelup contabilizando o stat INT nos ganhos de MP mesmo quando a flag USE_RANDOMIZE_HPMP_GAIN está desativada.
+Aprimorado comando de item/drop agora permitindo gerar pets.

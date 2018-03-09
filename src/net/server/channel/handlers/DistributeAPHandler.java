@@ -104,7 +104,7 @@ public final class DistributeAPHandler extends AbstractMaplePacketHandler {
         return MaxHP + calcHpChange(player, job, usedAPReset);
     }
     
-    public static int calcHpChange(MapleCharacter player, MapleJob job, boolean usedAPReset) {
+    private static int calcHpChange(MapleCharacter player, MapleJob job, boolean usedAPReset) {
         int MaxHP = 0;
         
         if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1)) {
@@ -207,7 +207,7 @@ public final class DistributeAPHandler extends AbstractMaplePacketHandler {
         return MaxMP + calcMpChange(player, job, usedAPReset);
     }
     
-    public static int calcMpChange(MapleCharacter player, MapleJob job, boolean usedAPReset) {
+    private static int calcMpChange(MapleCharacter player, MapleJob job, boolean usedAPReset) {
         int MaxMP = 0;
         
         if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1) || job.isA(MapleJob.ARAN1)) {

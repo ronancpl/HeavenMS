@@ -474,7 +474,7 @@ public class Commands {
 						ps.close();
                                                 con.close();
 					} catch (Exception e) {
-						player.dropMessage("There was a problem retreiving the required data. Please try again.");
+						player.dropMessage(6, "There was a problem retrieving the required data. Please try again.");
 						e.printStackTrace();
 						break;
 					}
@@ -602,7 +602,7 @@ public class Commands {
 
 							player.changeMap(event.getMapId());
 						} else {
-							player.dropMessage("The limit of players for the event has already been reached.");
+							player.dropMessage(5, "The limit of players for the event has already been reached.");
 						}
 					} else {
 						player.dropMessage(5, "You are already in the event.");
@@ -1060,7 +1060,7 @@ public class Commands {
 						//victim.getEventInstance().registerPlayer(player);
 						player.changeMap(victim.getEventInstance().getMapInstance(victim.getMapId()), victim.getMap().findClosestPortal(victim.getPosition()));
 					} else {
-						player.dropMessage("Please change to channel " + victim.getClient().getChannel());
+						player.dropMessage(6, "Please change to channel " + victim.getClient().getChannel());
 					}
 				} else {//If victim isn't in an event instance, just warp them.
 					player.changeMap(victim.getMapId(), victim.getMap().findClosestPortal(victim.getPosition()));
@@ -1070,7 +1070,7 @@ public class Commands {
 					player.getClient().changeChannel(victim.getClient().getChannel());
 				}
 			} else {
-				player.dropMessage("Unknown player.");
+				player.dropMessage(6, "Unknown player.");
 			}
                     break;
                     
@@ -1117,7 +1117,7 @@ public class Commands {
 					victim.getClient().changeChannel(player.getClient().getChannel());
 				}
 			} else {
-				player.dropMessage("Unknown player.");
+				player.dropMessage(6, "Unknown player.");
 			}
                     break;
                     
@@ -1130,13 +1130,13 @@ public class Commands {
                         victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
                         if(victim != null && victim.isLoggedin()) {
                                 if (player.getClient().getChannel() != victim.getClient().getChannel()) {
-                                        player.dropMessage("Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
+                                        player.dropMessage(5, "Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
                                 } else {
                                         MapleMap map = victim.getMap();
                                         player.changeMap(map, map.findClosestPortal(victim.getPosition()));
                                 }
                         } else {
-                                player.dropMessage("Unknown player.");
+                                player.dropMessage(6, "Unknown player.");
                         }
                     break;
                 
@@ -1156,31 +1156,65 @@ public class Commands {
 			}
                         
 			int itemId = Integer.parseInt(sub[1]);
-                        if(MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                        
+                        if(ii.getName(itemId) == null) {
                                 player.yellowMessage("Item id '" + sub[1] + "' does not exist.");
                                 break;
                         }
                         
-			short quantity = 1;
+                        short quantity = 1;
                         if(sub.length >= 3) quantity = Short.parseShort(sub[2]);
 			
-                        if (ItemConstants.isPet(itemId)) {
-                                player.message("You cannot create a pet with this command.");
+                        if (ServerConstants.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
+                                player.yellowMessage("You cannot create a cash item with this command.");
                                 break;
+                        }
+                        
+                        if (ItemConstants.isPet(itemId)) {
+                                if (sub.length >= 3){   // thanks to istreety & TacoBell
+                                        quantity = 1;
+                                        long days = Math.max(1, Integer.parseInt(sub[2]));
+                                        long expiration = System.currentTimeMillis() + (days * 24 * 60 * 60 * 1000);
+                                        int petid = MaplePet.createPet(itemId);
+                                        
+                                        if(sub[0].equals("item")) {
+                                                MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), petid, expiration);
+                                        } else {
+                                                Item toDrop = new Item(itemId, (short) 0, quantity, petid);
+                                                toDrop.setExpiration(expiration);
+                                                
+                                                toDrop.setOwner("");
+                                                if(player.gmLevel() < 3) {
+                                                        byte b = toDrop.getFlag();
+                                                        b |= ItemConstants.ACCOUNT_SHARING;
+                                                        b |= ItemConstants.UNTRADEABLE;
+
+                                                        toDrop.setFlag(b);
+                                                }
+
+                                                c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), toDrop, c.getPlayer().getPosition(), true, true);
+                                        }
+                                        
+                                        break;
+                                } else {
+                                        player.yellowMessage("Pet Syntax: !item <itemid> <expiration>");
+                                        break;        
+                                }
                         }
                         
 			if (sub[0].equals("item")) {
 				byte flag = 0;
                                 if(player.gmLevel() < 3) {
-                                    flag |= ItemConstants.ACCOUNT_SHARING;
-                                    flag |= ItemConstants.UNTRADEABLE;
+                                        flag |= ItemConstants.ACCOUNT_SHARING;
+                                        flag |= ItemConstants.UNTRADEABLE;
                                 }
                                 
                                 MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), -1, flag, -1);
 			} else {
 				Item toDrop;
 				if (ItemConstants.getInventoryType(itemId) == MapleInventoryType.EQUIP) {
-					toDrop = MapleItemInformationProvider.getInstance().getEquipById(itemId);
+					toDrop = ii.getEquipById(itemId);
 				} else {
 					toDrop = new Item(itemId, (short) 0, quantity);
 				}
@@ -1659,8 +1693,8 @@ public class Commands {
 			float xpos = player.getPosition().x;
 			float ypos = player.getPosition().y;
 			float fh = player.getMap().getFootholds().findBelow(player.getPosition()).getId();
-			player.dropMessage("Position: (" + xpos + ", " + ypos + ")");
-			player.dropMessage("Foothold ID: " + fh);
+			player.dropMessage(6, "Position: (" + xpos + ", " + ypos + ")");
+			player.dropMessage(6, "Foothold ID: " + fh);
                     break;
         
                 case "togglecoupon":
@@ -1853,7 +1887,7 @@ public class Commands {
                                         map.damageMonster(player, monster, Integer.MAX_VALUE);
                                 }
 			}
-			player.dropMessage("Killed " + monsters.size() + " monsters.");
+			player.dropMessage(5, "Killed " + monsters.size() + " monsters.");
                     break;
            
 		case "notice":
@@ -2196,7 +2230,7 @@ public class Commands {
                                 hardsetItemStats((Equip) it, multiply);
                                 MapleInventoryManipulator.addFromDrop(c, it);
                         } else {
-                                player.dropMessage("Make sure it's an equippable item.");
+                                player.dropMessage(6, "Make sure it's an equippable item.");
                         }
                         break;
                     

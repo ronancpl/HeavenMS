@@ -60,7 +60,6 @@ function action(mode, type, selection) {
 
         switch(cm.getPlayer().getMapId()) {
             case 920010000:
-                print(eim.getIntProperty("statusStg0"));
                 if(eim.getIntProperty("statusStg0") != 1) {
                     eim.warpEventTeamToMapSpawnPoint(920010000, 2);
                     eim.giveEventPlayersExp(3500);

@@ -84,6 +84,9 @@ public class ServerConstants {
     
     public static final int PARTY_EXPERIENCE_MOD = 1;               //Change for event stuff.
     
+    //Commands Configuration
+    public static final boolean BLOCK_GENERATE_CASH_ITEM = false;   //Prevents creation of cash items with the item/drop command.
+    
     //Miscellaneous Configuration
     public static final byte MIN_UNDERLEVEL_TO_EXP_GAIN = 5;        //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_ENFORCE_MOB_LEVEL_RANGE" is enabled. For bosses, this attribute is doubled.
     public static final byte MAX_MONITORED_BUFFSTATS = 5;           //Limits accounting for "dormant" buff effects, that should take place when stronger stat buffs expires.

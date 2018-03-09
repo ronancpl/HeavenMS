@@ -70,7 +70,7 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemId);
             List<Item> existing = c.getPlayer().getInventory(type).listById(itemId);
-            if (!ItemConstants.isRechargable(itemId)) {
+            if (!ItemConstants.isRechargable(itemId) && petid == -1) {
                 if (existing.size() > 0) { // first update all existing slots to slotMax
                     Iterator<Item> i = existing.iterator();
                     while (quantity > 0) {
@@ -151,7 +151,7 @@ public class MapleInventoryManipulator {
     }
     
     public static boolean addFromDrop(MapleClient c, Item item, boolean show) {
-        return addFromDrop(c, item, show, -1);
+        return addFromDrop(c, item, show, item.getPetId());
     }
 
     public static boolean addFromDrop(MapleClient c, Item item, boolean show, int petId) {
@@ -166,7 +166,7 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, item.getItemId());
             List<Item> existing = c.getPlayer().getInventory(type).listById(item.getItemId());
-            if (!ItemConstants.isRechargable(item.getItemId())) {
+            if (!ItemConstants.isRechargable(item.getItemId()) && petId == -1) {
                 if (existing.size() > 0) { // first update all existing slots to slotMax
                     Iterator<Item> i = existing.iterator();
                     while (quantity > 0) {
@@ -202,6 +202,8 @@ public class MapleInventoryManipulator {
                 }
             } else {
                 Item nItem = new Item(item.getItemId(), (short) 0, quantity, petId);
+                nItem.setExpiration(item.getExpiration());
+                
                 short newSlot = c.getPlayer().getInventory(type).addItem(nItem);
                 if (newSlot == -1) {
                     c.announce(MaplePacketCreator.getInventoryFull());

@@ -25,9 +25,18 @@ Recommended localhost: https://hostr.co/r5QDmhlxpp8M
 * MapleSilver's starting on window-mode, with some string fixes. This is a variation of Fraysa's https://hostr.co/gJbLZITRVHmv
 
 ---
+### Support us
+
+Feel free to __root for us__ on our endeavour at our Discord channel, or even actively **help us improve** the server by issuing pull requests with informative details about what's changing.
+
+Also, if you liked this project, please don't forget to __star__ the repo ;) .
+
+Discord: https://discord.gg/Q7wKxHX
+
 ### Donation
 
-If you liked what you have seen on the project, donate a little something as a helping hand for my contributions towards Maple development.
+If you REALLY liked what you have seen on the project, please feel free to donate a little something as a helping hand for my contributions towards Maple development. Also remember to **support Nexon**!
+
 Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
 
 ---
