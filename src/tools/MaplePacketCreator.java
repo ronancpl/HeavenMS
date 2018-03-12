@@ -2081,7 +2081,23 @@ public class MaplePacketCreator {
                 serializeMovementList(mplew, moves);
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] moveMonster(int oid, boolean skillPossible, int skill, int skillId, int skillLevel, int pOption, Point startPos, List<LifeMovementFragment> moves) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.MOVE_MONSTER.getValue());
+                mplew.writeInt(oid);
+                mplew.write(0);
+                mplew.writeBool(skillPossible);
+                mplew.write(skill);
+                mplew.write(skillId);
+                mplew.write(skillLevel);
+                mplew.writeShort(pOption);
+                mplew.writePos(startPos);
+                serializeMovementList(mplew, moves);
+                return mplew.getPacket();
+        }
+        
+        /*
         public static byte[] moveMonster(int useskill, int skill, int skill_1, int skill_2, int skill_3, int skill_4, int oid, Point startPos, List<LifeMovementFragment> moves) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.MOVE_MONSTER.getValue());
@@ -2097,6 +2113,7 @@ public class MaplePacketCreator {
                 serializeMovementList(mplew, moves);
                 return mplew.getPacket();
         }
+        */
         
         public static byte[] summonAttack(int cid, int summonOid, byte direction, List<SummonAttackEntry> allDamage) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();

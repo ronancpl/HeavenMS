@@ -1,8 +1,8 @@
 /*
-	This file is part of the OdinMS Maple Story Server
+    This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+               Matthias Butz <matze@odinms.de>
+               Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -27,9 +27,10 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import server.life.MapleMonster;
+import server.life.MobAttackInfo;
+import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
-import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.movement.LifeMovementFragment;
@@ -38,77 +39,107 @@ import tools.Pair;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
+/**
+ * @author Danny (Leifde)
+ * @author ExtremeDevilz
+ */
 public final class MoveLifeHandler extends AbstractMovementPacketHandler {
-    @Override
-    public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        MapleMap map = c.getPlayer().getMap();
-        List<MapleCharacter> banishPlayers = new ArrayList<>();
-        
-        int objectid = slea.readInt();
-        short moveid = slea.readShort();
+	@Override
+	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+		int objectid = slea.readInt();
+		short moveid = slea.readShort();
+		MapleMapObject mmo = c.getPlayer().getMap().getMapObject(objectid);
+		if (mmo == null || mmo.getType() != MapleMapObjectType.MONSTER) {
+			return;
+		}
+		MapleMonster monster = (MapleMonster) mmo;
+		List<LifeMovementFragment> res = null;
+                List<MapleCharacter> banishPlayers = new ArrayList<>();
+		byte pNibbles = slea.readByte();
+		byte rawActivity = slea.readByte();
+		byte useSkillId = slea.readByte();
+		byte useSkillLevel = slea.readByte();
+		short pOption = slea.readShort();
+                slea.skip(8);
 
-        MapleMapObject mmo = map.getMapObject(objectid);
-        if (mmo == null || mmo.getType() != MapleMapObjectType.MONSTER) {
-            return;
-        }
-        MapleMonster monster = (MapleMonster) mmo;
-        List<LifeMovementFragment> res;
-        byte skillByte = slea.readByte();
-        byte skill = slea.readByte();
-        int skill_1 = slea.readByte() & 0xFF;
-        byte skill_2 = slea.readByte();
-        byte skill_3 = slea.readByte();
-        byte skill_4 = slea.readByte();
-        slea.read(8);
-        MobSkill toUse = null;
-        if (skillByte == 1 && monster.getNoSkills() > 0) {
-            int random = Randomizer.nextInt(monster.getNoSkills());
-            Pair<Integer, Integer> skillToUse = monster.getSkills().get(random);
-            toUse = MobSkillFactory.getMobSkill(skillToUse.getLeft(), skillToUse.getRight());
-            int percHpLeft = (monster.getHp() / monster.getMaxHp()) * 100;
-            if (toUse.getHP() < percHpLeft || !monster.canUseSkill(toUse)) {
-                toUse = null;
-            }
-        }
-        if ((skill_1 >= 100 && skill_1 <= 200) && monster.hasSkill(skill_1, skill_2)) {
-            MobSkill skillData = MobSkillFactory.getMobSkill(skill_1, skill_2);
-            if (skillData != null && monster.canUseSkill(skillData)) {
-                skillData.applyEffect(c.getPlayer(), monster, true, banishPlayers);
-            }
-        }
-        slea.readByte();
-        slea.readInt(); // whatever
-        short start_x = slea.readShort(); // hmm.. startpos?
-        short start_y = slea.readShort(); // hmm...
-        Point startPos = new Point(start_x, start_y);
-        res = parseMovement(slea);
-        if (monster.getController() != c.getPlayer()) {
-            if (monster.isAttackedBy(c.getPlayer())) {// aggro and controller change
-                monster.switchController(c.getPlayer(), true);
-            } else {
-                return;
-            }
-        } else if (skill == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
-            monster.setControllerHasAggro(false);
-            monster.setControllerKnowsAboutAggro(false);
-        }
-        boolean aggro = monster.isControllerHasAggro();
-        if (toUse != null) {
-                c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro, toUse.getSkillId(), toUse.getSkillLevel()));
-        } else {
-            c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro));
-        }
-        if (aggro) {
-            monster.setControllerKnowsAboutAggro(true);
-        }
-        if (res != null) {
-            map.broadcastMessage(c.getPlayer(), MaplePacketCreator.moveMonster(skillByte, skill, skill_1, skill_2, skill_3, skill_4, objectid, startPos, res), monster.getPosition());
-            updatePosition(res, monster, -1);
-            map.moveMonster(monster, monster.getPosition());
-        }
+		if (rawActivity >= 0) {
+			rawActivity = (byte) (rawActivity & 0xFF >> 1);
+		}
 
-        for (MapleCharacter chr : banishPlayers) {
-            chr.changeMapBanish(monster.getBanish().getMap(), monster.getBanish().getPortal(), monster.getBanish().getMsg());
-        }
-    }
+		boolean isAttack = inRangeInclusive(rawActivity, 12, 20);
+		boolean isSkill = inRangeInclusive(rawActivity, 21, 25);
+
+		byte attackId = (byte) (isAttack ? rawActivity - 12 : -1);
+		boolean nextMovementCouldBeSkill = (pNibbles & 0x0F) != 0;
+		boolean pUnk = (pNibbles & 0xF0) != 0;
+
+		int nextCastSkill = useSkillId;
+		int nextCastSkillLevel = useSkillLevel;
+		
+		MobSkill toUse = null;
+		
+		int percHpLeft = (int) ((monster.getHp() / monster.getMaxHp()) * 100);
+
+		if (nextMovementCouldBeSkill && monster.getNoSkills() > 0) {
+			int Random = Randomizer.nextInt(monster.getNoSkills());
+			Pair<Integer, Integer> skillToUse = monster.getSkills().get(Random);
+			nextCastSkill = skillToUse.getLeft();
+			nextCastSkillLevel = skillToUse.getRight();
+			toUse = MobSkillFactory.getMobSkill(nextCastSkill, nextCastSkillLevel);
+
+			if (isSkill || isAttack) {
+				if (nextCastSkill != toUse.getSkillId() || nextCastSkillLevel != toUse.getSkillLevel()) {
+					//toUse.resetAnticipatedSkill();
+					return;
+				} else if (toUse.getHP() < percHpLeft) {
+					toUse = null;
+				} else if (monster.canUseSkill(toUse)) {
+					toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+					//System.out.println("Applied: " + nextCastSkill + " Level: " + nextCastSkillLevel);
+				}
+			} else {
+				MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
+				//System.out.println("Attacked");
+			}
+		}
+
+		slea.readByte();
+		slea.readInt(); // whatever
+		short start_x = slea.readShort(); // hmm.. startpos?
+		short start_y = slea.readShort(); // hmm...
+		Point startPos = new Point(start_x, start_y);
+		res = parseMovement(slea);
+		if (monster.getController() != c.getPlayer()) {
+			if (monster.isAttackedBy(c.getPlayer())) {
+				monster.switchController(c.getPlayer(), true);
+			} else {
+				return;
+			}
+		} else if (rawActivity == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
+			monster.setControllerHasAggro(false);
+			monster.setControllerKnowsAboutAggro(false);
+		}
+		boolean aggro = monster.isControllerHasAggro();
+		if (toUse != null) {
+			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro, toUse.getSkillId(), toUse.getSkillLevel()));
+		} else {
+			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro));
+		}
+		if (aggro) {
+			monster.setControllerKnowsAboutAggro(true);
+		}
+		if (res != null) {
+			c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());
+			updatePosition(res, monster, -1);
+			c.getPlayer().getMap().moveMonster(monster, monster.getPosition());
+		}
+                
+                for (MapleCharacter chr : banishPlayers) {
+                       chr.changeMapBanish(monster.getBanish().getMap(), monster.getBanish().getPortal(), monster.getBanish().getMsg());
+                }
+	}
+
+	public static boolean inRangeInclusive(Byte pVal, Integer pMin, Integer pMax) {
+		return !(pVal < pMin) || (pVal > pMax);
+	}
 }
