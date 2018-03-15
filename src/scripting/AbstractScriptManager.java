@@ -64,7 +64,7 @@ public abstract class AbstractScriptManager {
                 c.setScriptEngine(path, engine);
             }
             try (FileReader fr = new FileReader(scriptFile)) {
-            	if (ServerConstants.JAVA_8){
+            	if (ServerConstants.ABOVE_JAVA_7){
             		engine.eval("load('nashorn:mozilla_compat.js');");
             	}
                 engine.eval(fr);

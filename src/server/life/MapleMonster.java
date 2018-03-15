@@ -84,6 +84,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private Map<Pair<Integer, Integer>, Integer> skillsUsed = new HashMap<>();
     private List<Integer> stolenItems = new ArrayList<>();
     private int team;
+    private int parentMobId;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
     private Lock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
@@ -215,6 +216,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public void setHpZero() {     // force HP = 0
         applyAndGetHpDamage(Integer.MAX_VALUE, false);
     }
+    
+    public int getParentMobId() {
+		return parentMobId;
+	}
+
+	public void setParentMobId(int parentMobId) {
+		this.parentMobId = parentMobId;
+	}
     
     public synchronized Integer applyAndGetHpDamage(int delta, boolean stayAlive) {
         int curHp = hp.get();
@@ -494,15 +503,20 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 TimerManager.getInstance().schedule(new Runnable() {
                     @Override
                     public void run() {
-                        for (Integer mid : toSpawn) {
-                            final MapleMonster mob = MapleLifeFactory.getMonster(mid);
-                            mob.setPosition(getPosition());
-                            if (dropsDisabled()) {
-                                mob.disableDrops();
-                            }
-                            reviveMap.spawnMonster(mob);
+                    	// Spawns these on death
+            			for (Integer mid : toSpawn) {
+            				final MapleMonster newMob = MapleLifeFactory.getMonster(mid);
+            				newMob.setPosition(getPosition());
+            				newMob.setFh(getFh());
+            				newMob.setParentMobId(getObjectId());
+            				
+            				if (dropsDisabled()) {
+            					newMob.disableDrops();
+            				}
+            				
+                            reviveMap.spawnMonster(newMob);
 
-                            if(mob.getId() >= 8810010 && mob.getId() <= 8810017 && reviveMap.isHorntailDefeated()) {
+                            if(newMob.getId() >= 8810010 && newMob.getId() <= 8810017 && reviveMap.isHorntailDefeated()) {
                                 boolean htKilled = false;
                                 MapleMonster ht = reviveMap.getMonsterById(8810018);
                                 
