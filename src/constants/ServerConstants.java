@@ -36,7 +36,7 @@ public class ServerConstants {
     public static String HOST;
 
     //Other Configuration
-    public static boolean JAVA_8;
+    public static boolean ABOVE_JAVA_7;
     public static boolean SHUTDOWNHOOK;
     
     //Server Flags
@@ -176,7 +176,7 @@ public class ServerConstants {
             ServerConstants.DB_PASS = p.getProperty("DB_PASS");
 
             //java8 And Shutdownhook
-            ServerConstants.JAVA_8 = p.getProperty("JAVA8").equalsIgnoreCase("TRUE");
+            ServerConstants.ABOVE_JAVA_7 = p.getProperty("ABOVE_JAVA_7").equalsIgnoreCase("TRUE");
             ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
