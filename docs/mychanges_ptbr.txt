@@ -826,3 +826,7 @@ Nova PQ: TreasurePQ, level 140+, acessível via portal em NLC.
 08 Março 2018,
 Corrigido levelup contabilizando o stat INT nos ganhos de MP mesmo quando a flag USE_RANDOMIZE_HPMP_GAIN está desativada.
 Aprimorado comando de item/drop agora permitindo gerar pets.
+
+14 Março 2018,
+Modificado spawn do Horntail, utilizando efeitos de mob ao invés de schedules. Cortesia de Arnah e Zenns.
+Modificado "hint" banners para usar menor espaço visual.

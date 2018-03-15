@@ -84,6 +84,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private Map<Pair<Integer, Integer>, Integer> skillsUsed = new HashMap<>();
     private List<Integer> stolenItems = new ArrayList<>();
     private int team;
+    private int parentMobOid = 0;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
     private Lock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
@@ -127,6 +128,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public void setMap(MapleMap map) {
         this.map = map;
+    }
+    
+    public int getParentMobOid() {
+        return parentMobOid;
+    }
+
+    public void setParentMobOid(int parentMobId) {
+        this.parentMobOid = parentMobId;
     }
 
     public int getHp() {
@@ -497,6 +506,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                         for (Integer mid : toSpawn) {
                             final MapleMonster mob = MapleLifeFactory.getMonster(mid);
                             mob.setPosition(getPosition());
+                            mob.setFh(getFh());
+                            mob.setParentMobOid(getObjectId());
+                            
                             if (dropsDisabled()) {
                                 mob.disableDrops();
                             }

@@ -3534,50 +3534,48 @@ public class MapleMap {
     }
     
     public void spawnHorntailOnGroundBelow(final Point targetPoint) {   // ayy lmao
-        spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8810026), targetPoint);
-        TimerManager.getInstance().schedule(new Runnable() {
+        MapleMonster htIntro = MapleLifeFactory.getMonster(8810026);
+        spawnMonsterOnGroundBelow(htIntro, targetPoint);
+        
+        final MapleMonster ht = MapleLifeFactory.getMonster(8810018);
+        ht.setParentMobOid(htIntro.getObjectId());
+        ht.addListener(new MonsterListener() {
             @Override
-            public void run() {
-                final MapleMonster ht = MapleLifeFactory.getMonster(8810018);
-                ht.addListener(new MonsterListener() {
-                    @Override
-                    public void monsterKilled(int aniTime) {}
+            public void monsterKilled(int aniTime) {}
 
-                    @Override
-                    public void monsterDamaged(MapleCharacter from, int trueDmg) {
-                        ht.addHp(trueDmg);
-                    }
-
-                    @Override
-                    public void monsterHealed(int trueHeal) {
-                        ht.addHp(-trueHeal);
-                    }
-                });
-                spawnMonsterOnGroundBelow(ht, targetPoint);
-                
-                for (int x = 8810002; x <= 8810009; x++) {
-                    MapleMonster m = MapleLifeFactory.getMonster(x);
-                    
-                    m.addListener(new MonsterListener() {
-                        @Override
-                        public void monsterKilled(int aniTime) {}
-
-                        @Override
-                        public void monsterDamaged(MapleCharacter from, int trueDmg) {
-                            ht.applyAndGetHpDamage(trueDmg, true);
-                            ht.broadcastMobHpBar(from);
-                        }
-
-                        @Override
-                        public void monsterHealed(int trueHeal) {
-                            ht.addHp(trueHeal);
-                        }
-                    });
-                    
-                    spawnMonsterOnGroundBelow(m, targetPoint);
-                }
+            @Override
+            public void monsterDamaged(MapleCharacter from, int trueDmg) {
+                ht.addHp(trueDmg);
             }
 
-        }, 5 * 1000);
+            @Override
+            public void monsterHealed(int trueHeal) {
+                ht.addHp(-trueHeal);
+            }
+        });
+        spawnMonsterOnGroundBelow(ht, targetPoint);
+
+        for (int x = 8810002; x <= 8810009; x++) {
+            MapleMonster m = MapleLifeFactory.getMonster(x);
+            m.setParentMobOid(htIntro.getObjectId());
+
+            m.addListener(new MonsterListener() {
+                @Override
+                public void monsterKilled(int aniTime) {}
+
+                @Override
+                public void monsterDamaged(MapleCharacter from, int trueDmg) {
+                    ht.applyAndGetHpDamage(trueDmg, true);
+                    ht.broadcastMobHpBar(from);
+                }
+
+                @Override
+                public void monsterHealed(int trueHeal) {
+                    ht.addHp(trueHeal);
+                }
+            });
+
+            spawnMonsterOnGroundBelow(m, targetPoint);
+        }
     }
 }

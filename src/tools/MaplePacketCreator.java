@@ -1428,18 +1428,41 @@ public class MaplePacketCreator {
                 mplew.write(life.getStance());
                 mplew.writeShort(0); //Origin FH //life.getStartFh()
                 mplew.writeShort(life.getFh());
-
-                if (effect > 0) {
-                        mplew.write(effect);
-                        mplew.write(0);
-                        mplew.writeShort(0);
-                        if (effect == 15) {
-                                mplew.write(0);
+                
+                
+                /**
+        		 * -4: Fake
+        		 * -3: Appear after linked mob is dead
+        		 * -2: Fade in
+        		 * 1: Smoke
+        		 * 3: King Slime spawn
+        		 * 4: Summoning rock thing, used for 3rd job?
+        		 * 6: Magical shit
+        		 * 7: Smoke shit
+        		 * 8: 'The Boss'
+        		 * 9/10: Grim phantom shit?
+        		 * 11/12: Nothing?
+        		 * 13: Frankenstein
+        		 * 14: Angry ^
+        		 * 15: Orb animation thing, ??
+        		 * 16: ??
+        		 * 19: Mushroom kingdom boss thing
+        		 */
+                
+                if (life.getParentMobOid() != 0) {
+                        MapleMonster parentMob = life.getMap().getMonsterByOid(life.getParentMobOid());
+                        if(parentMob != null && parentMob.isAlive()) {
+                                mplew.write(effect != 0 ? effect : -3);
+                                mplew.writeInt(life.getParentMobOid());
+                        } else {
+                                mplew.write(newSpawn ? -2 : -1);
                         }
+                } else {
+                	mplew.write(newSpawn ? -2 : -1);
                 }
-                mplew.write(newSpawn ? -2 : -1);
+                
                 mplew.write(life.getTeam());
-                mplew.writeInt(0);
+                mplew.writeInt(0); // getItemEffect
                 return mplew.getPacket();
         }
 

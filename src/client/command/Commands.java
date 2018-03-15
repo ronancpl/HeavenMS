@@ -355,9 +355,9 @@ public class Commands {
                 case "droplimit":
                         int dropCount = c.getPlayer().getMap().getDroppedItemCount();
                         if(((float) dropCount) / ServerConstants.ITEM_LIMIT_ON_MAP < 0.75f) {
-                            c.getPlayer().showHint("Current drop count: #b" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n");
+                            c.getPlayer().showHint("Current drop count: #b" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n", 300);
                         } else {
-                            c.getPlayer().showHint("Current drop count: #r" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n");
+                            c.getPlayer().showHint("Current drop count: #r" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n", 300);
                         }
                         
                         break;
@@ -523,7 +523,7 @@ public class Commands {
                             showMsg += "Server QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
                         }
                         
-                        player.showHint(showMsg);
+                        player.showHint(showMsg, 300);
                     break;
                      
                 case "rates":
@@ -533,7 +533,7 @@ public class Commands {
                         showMsg_ += "DROP Rate: #e#b" + player.getDropRate() + "x#k#n" + "\r\n";
                         if(ServerConstants.USE_QUEST_RATE) showMsg_ += "QUEST Rate: #e#b" + c.getWorldServer().getQuestRate() + "x#k#n" + "\r\n";
                         
-                        player.showHint(showMsg_);
+                        player.showHint(showMsg_, 300);
                     break;
                     
 		case "online":
@@ -1970,8 +1970,9 @@ public class Commands {
 					player.dropMessage(6, s.substring(0, s.length() - 2));
 				}
 			}
-			player.dropMessage(6, "There are a total of " + total + " players online.");
-                        player.showHint("Players online: #e#r" + total + "#k#n.");
+			
+                        //player.dropMessage(6, "There are a total of " + total + " players online.");
+                        player.showHint("Players online: #e#r" + total + "#k#n.", 300);
                     break;
        
 		case "warpsnowball":

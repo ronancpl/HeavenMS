@@ -1258,8 +1258,8 @@ public class MapleClient {
 		session.write(packet);
 	}
 
-        public void announceHint(String msg) {
-                announce(MaplePacketCreator.sendHint(msg, 500, 10));
+        public void announceHint(String msg, int length) {
+                announce(MaplePacketCreator.sendHint(msg, length, 10));
                 announce(MaplePacketCreator.enableActions());
         }
 

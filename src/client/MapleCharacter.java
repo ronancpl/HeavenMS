@@ -1496,7 +1496,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             int nxGain = mapitem.getItemId() == 4031865 ? 100 : 250;
                             this.getCashShop().gainCash(1, nxGain);
                             
-                            showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)");
+                            showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)", 300);
                             
                             this.getMap().pickItemDrop(pickupPacket, mapitem);
                         } else if (MapleInventoryManipulator.addFromDrop(client, mapitem.getItem(), true)) {
@@ -1573,7 +1573,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         int nxGain = mapitem.getItemId() == 4031865 ? 100 : 250;
                         this.getCashShop().gainCash(1, nxGain);
                         
-                        showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)");
+                        showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)", 300);
                     } else if (useItem(client, mapitem.getItem().getItemId())) {
                         if (mapitem.getItem().getItemId() / 10000 == 238) {
                             this.getMonsterBook().addCard(client, mapitem.getItem().getItemId());
@@ -4939,7 +4939,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if(this.isPartyLeader()) party.assignNewLeader(client);
             PartyOperationHandler.leaveParty(party, mpc, client);
             
-            client.announceHint("You have reached #blevel 10#k, therefore you must leave your #rstarter party#k.");
+            showHint("You have reached #blevel 10#k, therefore you must leave your #rstarter party#k.");
         }
         
         if (this.guildid > 0) {
@@ -7238,7 +7238,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void showHint(String msg) {
-        client.announceHint(msg);
+        showHint(msg, 500);
+    }
+    
+    public void showHint(String msg, int length) {
+        client.announceHint(msg, length);
     }
     
     public void showNote() {
@@ -7993,7 +7997,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         if(!showMsg.isEmpty()) {
-            this.showHint("#ePLAYER EQUIPMENTS:#n\r\n\r\n" + showMsg);
+            this.showHint("#ePLAYER EQUIPMENTS:#n\r\n\r\n" + showMsg, 400);
         }
     }
 
