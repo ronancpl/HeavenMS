@@ -5,7 +5,7 @@ function enter(pi) {
             
 	    pi.forceCompleteQuest(2324);
 	    pi.removeAll(2430015);
-	    pi.playerMessage(5, "Quest complete.");
+	    pi.playerMessage(5, "You have used the Thorn Remover to clear the path.");
 	}
 	pi.playPortalSound(); pi.warp(106020501,0);
 	return true;

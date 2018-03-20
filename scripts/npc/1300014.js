@@ -1,0 +1,3 @@
+function start() {
+    cm.dispose();
+}

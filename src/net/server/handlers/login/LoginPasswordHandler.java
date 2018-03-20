@@ -48,7 +48,6 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
 
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
-        String bcryptedpass = BCrypt.hashpw(pwd, BCrypt.gensalt(12));
         c.setAccountName(login);
 
         int loginok = c.login(login, pwd);

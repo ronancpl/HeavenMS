@@ -1,4 +1,8 @@
+importPackage(Packages.tools);
+importPackage(Packages.server.life);
+
 var minPlayers = 1;
+var eventTime = 10;
 var entryMap = 106021402;
 var exitMap = 106021600;
 
@@ -8,10 +12,11 @@ var maxMapId = 106021601;
 function init(){}
 
 function setup(difficulty, lobbyId){
-	var eim = em.newInstance("MK_PrimeMinister_" +lobbyId);
+	var eim = em.newInstance("MK_PrimeMinister2_" +lobbyId);
 	eim.getInstanceMap(106021601).resetFully();
 	eim.getInstanceMap(106021601).allowSummonState(false);
 	respawn(eim);
+        
 	return eim;
 }
 
@@ -27,6 +32,12 @@ function respawn(eim){
 function playerEntry(eim, player){
 	var weddinghall = eim.getMapInstance(106021601);
 	player.changeMap(weddinghall, weddinghall.getPortal(1));
+        
+        var pm = MapleLifeFactory.getMonster(3300008);
+        weddinghall.spawnMonsterOnGroundBelow(pm, new Packages.java.awt.Point(472, 27));
+        
+        player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+        eim.startEventTimer(eventTime * 60000);
 }
 
 function scheduledTimeout(eim){

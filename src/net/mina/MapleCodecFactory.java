@@ -35,14 +35,6 @@ public class MapleCodecFactory implements ProtocolCodecFactory {
         decoder = new MaplePacketDecoder();
     }
 
-    public ProtocolEncoder getEncoder() throws Exception {
-        return encoder;
-    }
-
-    public ProtocolDecoder getDecoder() throws Exception {
-        return decoder;
-    }
-
     @Override
     public ProtocolEncoder getEncoder(IoSession session) throws Exception {
         return encoder;

@@ -830,3 +830,8 @@ Aprimorado comando de item/drop agora permitindo gerar pets.
 14 Março 2018,
 Modificado spawn do Horntail, utilizando efeitos de mob ao invés de schedules. Cortesia de Arnah e Zenns.
 Modificado "hint" banners para usar menor espaço visual.
+
+16 - 17 Março 2018,
+Resolvido problema com HP threshold em MoveLifeHandler.
+Aprimorado quests e eventos de bosses da região de Mushroom Castle, agora sendo repetíveis.
+Corrigido tempo de duração do Body Pressure sendo resetado sempre que acerta um mob.

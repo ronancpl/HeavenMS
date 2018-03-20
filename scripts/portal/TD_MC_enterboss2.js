@@ -1,4 +1,9 @@
 function enter(pi) {
+    if(pi.isQuestCompleted(2331)) {
+        pi.openNpc(1300013);
+        return false;
+    }
+    
     if(pi.isQuestCompleted(2333) && pi.isQuestStarted(2331) && !pi.hasItem(4001318)){
         pi.getPlayer().message("Lost the Royal Seal, eh? Worry not! Kevin's code here to save your hide.");
         if(pi.canHold(4001318)){
@@ -32,7 +37,7 @@ function enter(pi) {
         }
     }
     else if(pi.isQuestStarted(2333) || (pi.isQuestCompleted(2332) && !pi.isQuestStarted(2333))){
-        if(pi.getPlayer.getParty() != null){
+        if(pi.getPlayer().getParty() != null){
             pi.getPlayer().showHint("The next part of the quest is solo only! Must leave party.");
             return false;
         }
