@@ -2,7 +2,6 @@
 	NPC: Blocked Entrance (portal?)
 	MAP: Mushroom Castle - East Castle Tower (106021400)
 */
-importPackage(Packages.tools);
 
 var status;
 
