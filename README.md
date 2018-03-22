@@ -86,9 +86,9 @@ Hamachi is optional, though. You don't have to install Hamachi if you want to ma
 ---
 ### Installing the SERVER 
 
-Set the "HeavenMS" folder on a place of your preference. It is recommended for use "C:\Nexon\HeavenMS".
+Set the "HeavenMS" folder on a place of your preference. It is recommended to use "C:\Nexon\HeavenMS".
 
-Setting up the SQL: open MySQL Query Browser, then first-time create a new session, with these parameters at startup and click OK.
+Setting up the SQL: open MySQL Query Browser, then create a new session with the parameters below, then click OK.
 
 Server Host: localhost		Port: 3306		Username: root
 
@@ -102,18 +102,26 @@ Now it is OPTIONAL, you don't need to run it if you don't want, as it will simpl
 
 3. File -> Open Script... -> Browse for "C:\Nexon\HeavenMS\sql" -> db_shopupdate.sql, and execute it.
 
-At the end of the execution of these SQLs, you should have installed a database schema named "heavenms". REGISTER YOUR FIRST ACCOUNT to be used in-game by creating manually an entry on the table "accounts" at that database with a login and a password.
+At the end of the execution of these SQLs, you should have installed a database schema named "heavenms". REGISTER YOUR FIRST ACCOUNT to be used in-game by **creating manually** an entry on the table "accounts" at that database with a login and a password.
 
 Configure the IP you want to use for your MapleStory server in "configuration.ini" file, or set it as "localhost" if you want to run it only on your machine. Alternatively, you can use the IP given by Hamachi to use on a Hamachi network, or you can use a non-Hamachi method of port-forwarding. Neither will be approached here.
 
-Now open NetBeans, and choose to Open a project... Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
+Now open NetBeans, and click "Open a project..." . Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
 
-Inside the project, you may encounter some code errors. These happens because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems". Locate the "cores" folder inside the root directory of this project and manually configure the missing files with the files that are there.
+#### Inside the project, you may encounter some code errors.
 
-Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functioning, and then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
+These errors pops-up because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
+
+Locate the "cores" folder inside the root directory of this project and manually configure the missing files with the files that are there.
+
+Also, a new Java7 platform must be defined to run the server. Click "Manage Platforms...", then "Add platform", browse through until you locate the Java7 folder in the file system, it should be at "C:\Program Files\Java". Then, name this new platform "JDK 1.7".
+
+Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functional, then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
 ---
 ### Installing the CLIENT 
+
+#### Setting up client-side ambient
 
 The client's set-up is quite straightforward:
 
@@ -124,9 +132,13 @@ The client's set-up is quite straightforward:
 	- "rev???_wz" (last published RELEASE, source update of same number).
 	- "current_wz" (latest source update).
 
+#### Editing localhost IP target
+
 If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Text String" "127.0.0.1", and applying the changes wherever it fits.
 
 To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under the 3 addresses. Save the changes and exit the editor.
+
+#### Testing the localhost
 
 Open the "localhost.exe" client. If by any means the program did not open, and checking the server log your ping has been listened by the server and you are using Windows 8 or 10, it probably might be some compatibility issue.
 
@@ -139,21 +151,27 @@ In that case, extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the M
 * Run as an administrator;
 * Opening "lolwut.exe", use Fraysa's method.
 
-Important: should the client be refused a connection to the game server, it may be because of a firewall issues. Head to the end of this file to proceed in allowing this connection through the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
+Important: should the client be refused a connection to the game server, it may be because of firewall issues. Head to the end of this file to proceed in allowing this connection through the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
 
 ---
-### Important note about CLIENT EDITING 
+### Some notes about WZ/WZ.XML EDITING 
 
-DO NOT USE the server's XMLs for reimporting into the client's WZ, it WILL generate some kind of bugs afterwards.
+NOTE: Be extremely wary when using server-side's XMLs data being reimporting into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
 
-* Use instead the HaRepacker 4.2.4, encryption "GMS (old)".
-* Open the desired WZ for editing and, USING THE UI, make the desired changes.
-* Save the changed WZ, overwriting the original content at the client folder.
-* Finally, RE-EXPORT ("Private Server..." exporting option) the changed XMLs into the server's WZ.XML files, overwriting the old contents.
+#### Editing the v83 WZ's:
 
-These steps are IMPORTANT to maintain synchronization between the server and client modules.
+* Use the HaRepacker 4.2.4 editor, encryption "GMS (old)".
+* Open the desired WZ for editing and use the node hierarchy to make the desired changes (copy/pasting nodes may be unreliable in rare scenarios).
+* Save the changed WZ, **overwriting the original content** at the client folder.
+* Finally, **RE-EXPORT (using the "Private Server..." exporting option) the changed XMLs into the server's WZ.XML files**, overwriting the old contents.
 
-As an example of client WZ editing, consider the MapleMobBookUpdate subproject I developed, for updating all reported drop data of the mobs in the game based on the current drop data on the database:
+**These steps are IMPORTANT, to maintain synchronization** between the server and client modules.
+
+#### The MobBookUpdate example
+
+As an example of client WZ editing, consider the MapleMobBookUpdate tool project I developed, it updates all reported drop data on the Monster Book with what is currently being hold on the database:
+
+To make it happen:
 
 * Open the MobBookUpdate project on NetBeans, located at "tools\MapleMobBookUpdate", and build it.
 * At the subfolder "lib", copy the file "MonsterBook.img.xml". This is from the original WZ v83.
@@ -162,17 +180,15 @@ As an example of client WZ editing, consider the MapleMobBookUpdate subproject I
 * Execute "java -jar MobBookUpdate.jar". It will generate a "MonsterBook_updated.img.xml" file.
 * At last, overwrite the "MonsterBook.img.xml" on "C:\Nexon\HeavenMS\wz\String.wz" with this file, renaming it back to "MonsterBook.img.xml".
 
-At this point, just the server-side Monster Book has been updated with the current state of the database's drop data.
+At this point, **just the server-side** Monster Book has been updated with the current state of the database's drop data.
 
-To update the client as well, open HaRepacker 4.2.2 and load "String.wz" from "C:\Nexon\MapleStory". Drop the "MonsterBook.img" node by removing it from the hierarchy tree, then (CONTRARY TO WHAT SHOULD BE DONE NORMALLY!) import the server's "MonsterBook.img.xml".
+To **update the client as well**, open HaRepacker 4.2.2 and load "String.wz" from "C:\Nexon\MapleStory". Drop the "MonsterBook.img" node by removing it from the hierarchy tree, then import the server's "MonsterBook.img.xml".
+
+**Note:** On this case, a server-to-client data transfer has been instanced. This kind of action **could cause** problems on the client-side if done unwary, however the nodes being updated on client-side and server-side provides no conflicts whatsoever, so this is fine. Remember, server-to-client data reimport may be problematic, whereas client-to-server data reimport is fine.
 
 The client's WZ now has the proper item drops described by the DB updated into the MobBook drop list.
 
-Take note that this kind of core change is absolutely dangerous if done unwary. Once the MonsterBook.img does not hold client specific data in it's node contents, importing the XML causes no harm at all.
-
-However, try not to remove/reimport nodes from WZ files, as it may cause data losses. Use the HaRepacker's UI instead to make the changes.
-
-Save the changes and overwrite the older WZ on the MapleStory client folder.
+**Save the changes and overwrite the older WZ** on the MapleStory client folder.
 
 ---
 ### Portforwarding the SERVER
