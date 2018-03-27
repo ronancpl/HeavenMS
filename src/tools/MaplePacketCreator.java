@@ -1394,6 +1394,18 @@ public class MaplePacketCreator {
                 return spawnMonsterInternal(life, true, false, false, 0, true);
         }
 
+        private static void encodeParentlessMobSpawnEffect(MaplePacketLittleEndianWriter mplew, boolean newSpawn, int effect) {
+                if (effect > 0) {
+                        mplew.write(effect);
+                        mplew.write(0);
+                        mplew.writeShort(0);
+                        if (effect == 15) {
+                                mplew.write(0);
+                        }
+                }
+                mplew.write(newSpawn ? -2 : -1);
+        }
+        
         /**
          * Internal function to handler monster spawning and controlling.
          *
@@ -1455,10 +1467,10 @@ public class MaplePacketCreator {
                                 mplew.write(effect != 0 ? effect : -3);
                                 mplew.writeInt(life.getParentMobOid());
                         } else {
-                                mplew.write(newSpawn ? -2 : -1);
+                                encodeParentlessMobSpawnEffect(mplew, newSpawn, effect);
                         }
                 } else {
-                	mplew.write(newSpawn ? -2 : -1);
+                	encodeParentlessMobSpawnEffect(mplew, newSpawn, effect);
                 }
                 
                 mplew.write(life.getTeam());

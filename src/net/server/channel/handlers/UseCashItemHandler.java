@@ -489,13 +489,13 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             player.getMap().broadcastMessage(MaplePacketCreator.useChalkboard(player, false));
             player.getClient().announce(MaplePacketCreator.enableActions());
         } else if (itemType == 539) {
-            List<String> lines = new LinkedList<>();
+            List<String> strLines = new LinkedList<>();
             for (int i = 0; i < 4; i++) {
-                lines.add(slea.readMapleAsciiString());
+                strLines.add(slea.readMapleAsciiString());
             }
             
             final int world = c.getWorld();
-            Server.getInstance().broadcastMessage(world, MaplePacketCreator.getAvatarMega(c.getPlayer(), medal, c.getChannel(), itemId, lines, (slea.readByte() != 0)));
+            Server.getInstance().broadcastMessage(world, MaplePacketCreator.getAvatarMega(c.getPlayer(), medal, c.getChannel(), itemId, strLines, (slea.readByte() != 0)));
             TimerManager.getInstance().schedule(new Runnable() {
             	@Override
             	public void run() {

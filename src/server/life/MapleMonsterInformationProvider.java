@@ -20,6 +20,8 @@
  */
 package server.life;
 
+import constants.ItemConstants;
+import constants.ServerConstants;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,9 +29,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -37,15 +41,18 @@ import provider.MapleDataTool;
 import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.Pair;
+import tools.Randomizer;
 
 public class MapleMonsterInformationProvider {
 	// Author : LightPepsi
 
 	private static final MapleMonsterInformationProvider instance = new MapleMonsterInformationProvider();
-	private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();
+        private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();        
 	private final List<MonsterGlobalDropEntry> globaldrops = new ArrayList<>();
         
         private final Map<Integer, List<Integer>> dropsChancePool = new HashMap<>();    // thanks to ronan
+        private final Set<Integer> hasNoMultiEquipDrops = new HashSet<>();
+        private final Map<Integer, List<MonsterDropEntry>> extraMultiEquipDrops = new HashMap<>();
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
@@ -103,6 +110,46 @@ public class MapleMonsterInformationProvider {
 		}
 	}
 
+        public List<MonsterDropEntry> retrieveEffectiveDrop(final int monsterId) {
+                // this reads the drop entries searching for multi-equip, properly processing them
+            
+                List<MonsterDropEntry> list = retrieveDrop(monsterId);
+                if (hasNoMultiEquipDrops.contains(monsterId) || !ServerConstants.USE_MULTIPLE_SAME_EQUIP_DROP) {
+			return list;
+		}
+                
+                List<MonsterDropEntry> multiDrops = extraMultiEquipDrops.get(monsterId), extra = new LinkedList<>();
+                if(multiDrops == null) {
+                        multiDrops = new LinkedList<>();
+                        
+                        for(MonsterDropEntry mde : list) {
+                                if(ItemConstants.isEquipment(mde.itemId) && mde.Maximum > 1) {
+                                        multiDrops.add(mde);
+                                    
+                                        int rnd = Randomizer.rand(mde.Minimum, mde.Maximum);
+                                        for(int i = 0; i < rnd - 1; i++) {
+                                                extra.add(mde);   // this passes copies of the equips' MDE with min/max quantity > 1, but idc it'll be unused anyways
+                                        }
+                                }
+                        }
+                        
+                        if(!multiDrops.isEmpty()) extraMultiEquipDrops.put(monsterId, multiDrops);
+                        else hasNoMultiEquipDrops.add(monsterId);
+                } else {
+                        for(MonsterDropEntry mde : multiDrops) {
+                                int rnd = Randomizer.rand(mde.Minimum, mde.Maximum);
+                                for(int i = 0; i < rnd - 1; i++) {
+                                        extra.add(mde);
+                                }
+                        }
+                }
+                
+                List<MonsterDropEntry> ret = new LinkedList<>(list);
+                ret.addAll(extra);
+                
+                return ret;
+        }
+        
 	public final List<MonsterDropEntry> retrieveDrop(final int monsterId) {
 		if (drops.containsKey(monsterId)) {
 			return drops.get(monsterId);
@@ -234,6 +281,8 @@ public class MapleMonsterInformationProvider {
 
 	public final void clearDrops() {
 		drops.clear();
+                hasNoMultiEquipDrops.clear();
+                extraMultiEquipDrops.clear();
                 dropsChancePool.clear();
 		globaldrops.clear();
 		retrieveGlobal();

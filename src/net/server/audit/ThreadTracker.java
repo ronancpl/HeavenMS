@@ -66,11 +66,11 @@ public class ThreadTracker {
         Map<MonitoredLockType, List<Integer>> lockValues = new HashMap<>();
         Set<Long> executingThreads = new HashSet<>();
         
-        for(Map.Entry<Long, AtomicInteger> lock : lockCount.entrySet()) {
-            if(lock.getValue().get() != 0) {
-                executingThreads.add(lockThreads.get(lock.getKey()));
+        for(Map.Entry<Long, AtomicInteger> lc : lockCount.entrySet()) {
+            if(lc.getValue().get() != 0) {
+                executingThreads.add(lockThreads.get(lc.getKey()));
                 
-                MonitoredLockType lockId = lockIds.get(lock.getKey());
+                MonitoredLockType lockId = lockIds.get(lc.getKey());
                 List<Integer> list = lockValues.get(lockId);
                 
                 if(list == null) {
@@ -78,7 +78,7 @@ public class ThreadTracker {
                     lockValues.put(lockId, list);
                 }
                 
-                list.add(lock.getValue().get());
+                list.add(lc.getValue().get());
             }
         }
         

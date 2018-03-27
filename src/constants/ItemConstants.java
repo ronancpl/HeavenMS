@@ -177,6 +177,6 @@ public final class ItemConstants {
     }
     
     public static boolean isEquipment(int itemId) {
-        return itemId < 2000000;
+        return itemId < 2000000 && itemId != 0;
     }
 }

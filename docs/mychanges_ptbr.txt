@@ -835,3 +835,8 @@ Modificado "hint" banners para usar menor espaço visual.
 Resolvido problema com HP threshold em MoveLifeHandler.
 Aprimorado quests e eventos de bosses da região de Mushroom Castle, agora sendo repetíveis.
 Corrigido tempo de duração do Body Pressure sendo resetado sempre que acerta um mob.
+
+26 - 27 Março 2018,
+Corrigido animação de spawn dos bosses do dojo que foi quebrada recentemente.
+Corrigido autoassigner para piratas somente preenchendo requisitos de gunslinger.
+Mobs agora podem dropar mais de um equip de mesmo tipo, sistema utiliza quantidades min/max na tabela de drops.

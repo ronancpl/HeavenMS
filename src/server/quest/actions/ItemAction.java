@@ -131,26 +131,26 @@ public class ItemAction extends MapleQuestAction {
                 
                 // must take all needed items before giving others
                 
-                for(Pair<Integer, Integer> iEntry: takeItem) {
-                        MapleInventoryType type = ItemConstants.getInventoryType(iEntry.getLeft());
-                        int quantity = iEntry.getRight() * -1; // Invert
+                for(Pair<Integer, Integer> iPair: takeItem) {
+                        MapleInventoryType type = ItemConstants.getInventoryType(iPair.getLeft());
+                        int quantity = iPair.getRight() * -1; // Invert
                         if(type.equals(MapleInventoryType.EQUIP)) {
-                                if(chr.getInventory(type).countById(iEntry.getLeft()) < quantity) {
+                                if(chr.getInventory(type).countById(iPair.getLeft()) < quantity) {
                                         // Not enough in the equip inventoty, so check Equipped...
-                                        if(chr.getInventory(MapleInventoryType.EQUIPPED).countById(iEntry.getLeft()) > quantity) {
+                                        if(chr.getInventory(MapleInventoryType.EQUIPPED).countById(iPair.getLeft()) > quantity) {
                                                 // Found it equipped, so change the type to equipped.
                                                 type = MapleInventoryType.EQUIPPED;
                                         }
                                 }
                         }
 
-                        MapleInventoryManipulator.removeById(chr.getClient(), type, iEntry.getLeft(), quantity, true, false);
-                        chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getLeft(), (short) iEntry.getRight().shortValue(), true));
+                        MapleInventoryManipulator.removeById(chr.getClient(), type, iPair.getLeft(), quantity, true, false);
+                        chr.announce(MaplePacketCreator.getShowItemGain(iPair.getLeft(), (short) iPair.getRight().shortValue(), true));
                 }
                 
-                for(Pair<Integer, Integer> iEntry: giveItem) {
-                        MapleInventoryManipulator.addById(chr.getClient(), iEntry.getLeft(), (short) iEntry.getRight().shortValue());
-                        chr.announce(MaplePacketCreator.getShowItemGain(iEntry.getLeft(), (short) iEntry.getRight().shortValue(), true));
+                for(Pair<Integer, Integer> iPair: giveItem) {
+                        MapleInventoryManipulator.addById(chr.getClient(), iPair.getLeft(), (short) iPair.getRight().shortValue());
+                        chr.announce(MaplePacketCreator.getShowItemGain(iPair.getLeft(), (short) iPair.getRight().shortValue(), true));
                 }
 	}
 	

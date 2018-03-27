@@ -194,7 +194,7 @@ public class MapleTrade {
     private boolean fitsInInventory() {
         List<Pair<Item, MapleInventoryType>> tradeItems = new LinkedList<>();
         for (Item item : exchangeItems) {
-            tradeItems.add(new Pair(item, item.getInventoryType()));
+            tradeItems.add(new Pair<>(item, item.getInventoryType()));
         }
         
         return MapleInventory.checkSpotsAndOwnership(chr, tradeItems);

@@ -340,7 +340,7 @@ public class Equip extends Item {
             List<Pair<String, Integer>> elementalStats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
             
             for(Pair<String, Integer> p: elementalStats) {
-                if(p.getRight() > 0) stats.add(new Pair(StatUpgrade.valueOf(p.getLeft()), p.getRight()));
+                if(p.getRight() > 0) stats.add(new Pair<>(StatUpgrade.valueOf(p.getLeft()), p.getRight()));
             }
         }
         

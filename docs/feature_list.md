@@ -69,6 +69,7 @@ Monsters, Maps & Reactors:
 * Added meso drop data for basically every missing overworld mob.
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
 * Every skill/mastery book is now droppable by mobs.
+* Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boats, elevator and other travelling mechanics fully working.

@@ -136,8 +136,8 @@ public class MapleGuild {
                 if (!mgc.isOnline()) {
                     continue;
                 }
-                List<Integer> ch = notifications.get(mgc.getChannel());
-                if (ch != null) ch.add(mgc.getId());
+                List<Integer> chl = notifications.get(mgc.getChannel());
+                if (chl != null) chl.add(mgc.getId());
                 //Unable to connect to Channel... error was here
             }
         } finally {

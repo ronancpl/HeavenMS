@@ -338,8 +338,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         petLootCd = System.currentTimeMillis();
     }
     
-    public MapleJob getJobStyle() {
-        int jobtype = this.getJob().getId() / 100;
+    private static MapleJob getJobStyleInternal(int jobid, byte opt) {
+        int jobtype = jobid / 100;
         
         if(jobtype == MapleJob.WARRIOR.getId() / 100 || jobtype == MapleJob.DAWNWARRIOR1.getId() / 100 || jobtype == MapleJob.ARAN1.getId() / 100) {
             return(MapleJob.WARRIOR);
@@ -350,7 +350,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         else if(jobtype == MapleJob.BOWMAN.getId() / 100 || jobtype == MapleJob.WINDARCHER1.getId() / 100) {
-            if(this.getJob().getId() / 10 == MapleJob.CROSSBOWMAN.getId() / 10) return(MapleJob.CROSSBOWMAN);
+            if(jobid / 10 == MapleJob.CROSSBOWMAN.getId() / 10) return(MapleJob.CROSSBOWMAN);
             else return(MapleJob.BOWMAN);
         }
         
@@ -359,11 +359,19 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         else if(jobtype == MapleJob.PIRATE.getId() / 100 || jobtype == MapleJob.THUNDERBREAKER1.getId() / 100) {
-            if(this.getStr() > this.getDex()) return(MapleJob.BRAWLER);
+            if(opt == (byte) 0x80) return(MapleJob.BRAWLER);
             else return(MapleJob.GUNSLINGER);
         }
         
         return(MapleJob.BEGINNER);
+    }
+    
+    public MapleJob getJobStyle(byte opt) {
+        return getJobStyleInternal(this.getJob().getId(), opt);
+    }
+    
+    public MapleJob getJobStyle() {
+        return getJobStyle((byte) ((this.getStr() > this.getDex()) ? 0x80 : 0x40));
     }
 
     public static MapleCharacter getDefault(MapleClient c) {
@@ -846,8 +854,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(getId()), false);
                 }
                 getMap().broadcastGMMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
-                List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
-                getMap().broadcastGMMessage(this, MaplePacketCreator.giveForeignBuff(id, dsstat), false);
+                List<Pair<MapleBuffStat, Integer>> ldsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
+                getMap().broadcastGMMessage(this, MaplePacketCreator.giveForeignBuff(id, ldsstat), false);
                 for (MapleMonster mon : this.getControlledMonsters()) {
                     mon.setController(null);
                     mon.setControllerHasAggro(false);
@@ -1678,7 +1686,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         nextPendingRequest(client);
     }
     
-    public static boolean deleteCharFromDB(MapleCharacter player) {
+    public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
             int cid = player.getId(), accId = -1, world = 0;
             
             Connection con = null;
@@ -1694,6 +1702,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                                             world = rs.getInt("world");
                                     }
                             }
+                    }
+                    
+                    if(senderAccId != accId) {
+                            return false;
                     }
                     
                     try (PreparedStatement ps = con.prepareStatement("SELECT buddyid FROM buddies WHERE characterid = ?")) {
@@ -2180,9 +2192,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     try {
                         long curTime = System.currentTimeMillis();
                         
-                        for(Entry<MapleDisease, Long> d : diseaseExpires.entrySet()) {
-                            if(d.getValue() < curTime) {
-                                toExpire.add(d.getKey());
+                        for(Entry<MapleDisease, Long> de : diseaseExpires.entrySet()) {
+                            if(de.getValue() < curTime) {
+                                toExpire.add(de.getKey());
                             }
                         }
                     } finally {
@@ -2972,8 +2984,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             
             Map<Integer, Pair<MapleStatEffect, Long>> bestEffects = new LinkedHashMap<>();
-            for(Entry<MapleBuffStat, Pair<Integer, Integer>> lmse: maxStatups.entrySet()) {
-                Integer srcid = lmse.getValue().getLeft();
+            for(Entry<MapleBuffStat, Pair<Integer, Integer>> lmsee: maxStatups.entrySet()) {
+                Integer srcid = lmsee.getValue().getLeft();
                 if(!bestEffects.containsKey(srcid)) {
                     bestEffects.put(srcid, retrievedEffects.get(srcid));
                 }
@@ -3156,16 +3168,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             Map<MapleBuffStat, MapleBuffStatValueHolder> minStatBuffs = new LinkedHashMap<>();
             
             for(Entry<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> mbsvhi : buffEffects.entrySet()) {
-                for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbsvh : mbsvhi.getValue().entrySet()) {
-                    MapleBuffStat mbs = mbsvh.getKey();
-                    Byte it = stats.get(mbs);
+                for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbsvhe : mbsvhi.getValue().entrySet()) {
+                    MapleBuffStat mbs = mbsvhe.getKey();
+                    Byte b = stats.get(mbs);
                     
-                    if(it != null) {
-                        stats.put(mbs, (byte) (it + 1));
-                        if(mbsvh.getValue().value < minStatBuffs.get(mbs).value) minStatBuffs.put(mbs, mbsvh.getValue());
+                    if(b != null) {
+                        stats.put(mbs, (byte) (b + 1));
+                        if(mbsvhe.getValue().value < minStatBuffs.get(mbs).value) minStatBuffs.put(mbs, mbsvhe.getValue());
                     } else {
                         stats.put(mbs, (byte) 1);
-                        minStatBuffs.put(mbs, mbsvh.getValue());
+                        minStatBuffs.put(mbs, mbsvhe.getValue());
                     }
                 }
             }

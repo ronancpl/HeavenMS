@@ -1447,13 +1447,25 @@ public class Commands {
                     
                 case "job":
 			if (sub.length == 2) {
-				player.changeJob(MapleJob.getById(Integer.parseInt(sub[1])));
+                                int jobid = Integer.parseInt(sub[1]);
+                                if(jobid < 0 || jobid >= 2200) {
+                                        player.message("Jobid " + jobid + " is not available.");
+                                        break;
+                                }
+                            
+				player.changeJob(MapleJob.getById(jobid));
 				player.equipChanged();
 			} else if (sub.length == 3) {
 				victim = c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]);
                                 
                                 if(victim != null) {
-                                        victim.changeJob(MapleJob.getById(Integer.parseInt(sub[2])));
+                                        int jobid = Integer.parseInt(sub[2]);
+                                        if(jobid < 0 || jobid >= 2200) {
+                                                player.message("Jobid " + jobid + " is not available.");
+                                                break;
+                                        }
+                                    
+                                        victim.changeJob(MapleJob.getById(jobid));
                                         player.equipChanged();
                                 } else {
                                         player.message("Player '" + sub[1] + "' could not be found on this channel.");
@@ -1581,9 +1593,9 @@ public class Commands {
 			MapleMap newMap = c.getChannelServer().getMapFactory().resetMap(player.getMapId());
                         int callerid = c.getPlayer().getId();
                         
-			for (MapleCharacter ch : oldMap.getCharacters()) {
-				ch.changeMap(newMap);
-                                if(ch.getId() != callerid) ch.dropMessage("You have been relocated due to map reloading. Sorry for the inconvenience.");
+			for (MapleCharacter chr : oldMap.getCharacters()) {
+				chr.changeMap(newMap);
+                                if(chr.getId() != callerid) chr.dropMessage("You have been relocated due to map reloading. Sorry for the inconvenience.");
 			}
 			newMap.respawn();
                     break;

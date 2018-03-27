@@ -407,10 +407,10 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         } else if (mode == Action.CONFIRM.getCode()) {
             MapleTrade.completeTrade(c.getPlayer());
         } else if (mode == Action.ADD_ITEM.getCode() || mode == Action.PUT_ITEM.getCode()) {
-            MapleInventoryType type = MapleInventoryType.getByType(slea.readByte());
+            MapleInventoryType ivType = MapleInventoryType.getByType(slea.readByte());
             short slot = slea.readShort();
             short bundles = slea.readShort();
-            if (chr.getInventory(type).getItem(slot) == null || chr.getItemQuantity(chr.getInventory(type).getItem(slot).getItemId(), false) < bundles || chr.getInventory(type).getItem(slot).getFlag() == ItemConstants.UNTRADEABLE) {
+            if (chr.getInventory(ivType).getItem(slot) == null || chr.getItemQuantity(chr.getInventory(ivType).getItem(slot).getItemId(), false) < bundles || chr.getInventory(ivType).getItem(slot).getFlag() == ItemConstants.UNTRADEABLE) {
                 return;
             }
             short perBundle = slea.readShort();
@@ -420,7 +420,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " might of possibly packet edited Hired Merchants\nperBundle: " + perBundle + "\nperBundle * bundles (This multiplied cannot be greater than 2000): " + perBundle * bundles + "\nbundles: " + bundles + "\nprice: " + price);
                 return;
             }
-            Item ivItem = chr.getInventory(type).getItem(slot);
+            Item ivItem = chr.getInventory(ivType).getItem(slot);
             Item sellItem = ivItem.copy();
             if (chr.getItemQuantity(ivItem.getItemId(), false) < perBundle * bundles) {
                 return;
@@ -429,22 +429,22 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 return;
             }
             sellItem.setQuantity(perBundle);
-            MaplePlayerShopItem item = new MaplePlayerShopItem(sellItem, bundles, price);
+            MaplePlayerShopItem shopItem = new MaplePlayerShopItem(sellItem, bundles, price);
             MaplePlayerShop shop = chr.getPlayerShop();
             MapleHiredMerchant merchant = chr.getHiredMerchant();
             if (shop != null && shop.isOwner(c.getPlayer())) {
                 if (ivItem != null && ivItem.getQuantity() >= bundles * perBundle) {
-                    shop.addItem(item);
+                    shop.addItem(shopItem);
                     c.announce(MaplePacketCreator.getPlayerShopItemUpdate(shop));
                 }
             } else if (merchant != null && merchant.isOwner(c.getPlayer())) {
-                merchant.addItem(item);
+                merchant.addItem(shopItem);
                 c.announce(MaplePacketCreator.updateHiredMerchant(merchant, c.getPlayer()));
             }
             if (ItemConstants.isRechargable(ivItem.getItemId())) {
-                MapleInventoryManipulator.removeFromSlot(c, type, slot, ivItem.getQuantity(), true);
+                MapleInventoryManipulator.removeFromSlot(c, ivType, slot, ivItem.getQuantity(), true);
             } else {
-                MapleInventoryManipulator.removeFromSlot(c, type, slot, (short) (bundles * perBundle), true);
+                MapleInventoryManipulator.removeFromSlot(c, ivType, slot, (short) (bundles * perBundle), true);
             }
         } else if (mode == Action.REMOVE_ITEM.getCode()) {
             MaplePlayerShop shop = chr.getPlayerShop();
@@ -456,10 +456,10 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 	c.disconnect(true, false);
                 	return;
                 }
-                MaplePlayerShopItem item = shop.getItems().get(slot);
-                Item ivItem = item.getItem().copy();
+                MaplePlayerShopItem shopItem = shop.getItems().get(slot);
+                Item ivItem = shopItem.getItem().copy();
                 shop.removeItem(slot);
-                ivItem.setQuantity(item.getBundles());
+                ivItem.setQuantity(shopItem.getBundles());
                 MapleInventoryManipulator.addFromDrop(c, ivItem, false);
                 c.announce(MaplePacketCreator.getPlayerShopItemUpdate(shop));
             }
@@ -505,35 +505,35 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.updateHiredMerchant(merchant, chr));
 
         } else if (mode == Action.BUY.getCode() || mode == Action.MERCHANT_BUY.getCode()) {
-            int item = slea.readByte();
+            int itemid = slea.readByte();
             short quantity = slea.readShort();
             if (quantity < 1) {
             	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with a hired merchant and or player shop.");
-            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to buy item " + item + " with quantity " + quantity + "\r\n");
+            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to buy item " + itemid + " with quantity " + quantity + "\r\n");
             	c.disconnect(true, false);
             	return;
             }
             MaplePlayerShop shop = chr.getPlayerShop();
             MapleHiredMerchant merchant = chr.getHiredMerchant();
             if (shop != null && shop.isVisitor(c.getPlayer())) {
-                shop.buy(c, item, quantity);
+                shop.buy(c, itemid, quantity);
                 shop.broadcast(MaplePacketCreator.getPlayerShopItemUpdate(shop));
             } else if (merchant != null && !merchant.isOwner(chr)) {
-                merchant.buy(c, item, quantity);
+                merchant.buy(c, itemid, quantity);
                 merchant.broadcastToVisitorsThreadsafe(MaplePacketCreator.updateHiredMerchant(merchant, c.getPlayer()));
             }
         } else if (mode == Action.TAKE_ITEM_BACK.getCode()) {
             MapleHiredMerchant merchant = chr.getHiredMerchant();
             if (merchant != null && merchant.isOwner(c.getPlayer())) {
                 int slot = slea.readShort();
-                MaplePlayerShopItem item = merchant.getItems().get(slot);
-                if (!MapleInventory.checkSpot(chr, item.getItem())) {
+                MaplePlayerShopItem shopItem = merchant.getItems().get(slot);
+                if (!MapleInventory.checkSpot(chr, shopItem.getItem())) {
                 	c.announce(MaplePacketCreator.enableActions());
                 	return;
                 }
-                if (item.getBundles() > 0) {
-                    Item iitem = item.getItem();
-                    iitem.setQuantity((short) (item.getItem().getQuantity() * item.getBundles()));                    
+                if (shopItem.getBundles() > 0) {
+                    Item iitem = shopItem.getItem();
+                    iitem.setQuantity((short) (shopItem.getItem().getQuantity() * shopItem.getBundles()));                    
                     MapleInventoryManipulator.addFromDrop(c, iitem, true);
                 }
                 merchant.removeFromSlot(slot);

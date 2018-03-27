@@ -71,12 +71,14 @@ public class MapleMist extends AbstractMapleMapObject {
         this.isRecoveryMist = false;
         this.isPoisonMist = false;
         switch (source.getSourceId()) {
-        	case Evan.RECOVERY_AURA:
-        		isRecoveryMist = true;
-        		break;
+            case Evan.RECOVERY_AURA:
+                isRecoveryMist = true;
+                break;
+                
             case Shadower.SMOKE_SCREEN: // Smoke Screen
                 isPoisonMist = false;
                 break;
+                
             case FPMage.POISON_MIST: // FP mist
             case BlazeWizard.FLAME_GEAR: // Flame Gear
             case NightWalker.POISON_BOMB: // Poison Bomb

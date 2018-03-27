@@ -559,7 +559,7 @@ public class MapleMap {
         }
         
         distn = Math.sqrt(distn);
-        return new Pair(getRoundedCoordinate(angle), Integer.valueOf((int)distn));
+        return new Pair<>(getRoundedCoordinate(angle), Integer.valueOf((int)distn));
     }
 
     private static void sortDropEntries(List<MonsterDropEntry> from, List<MonsterDropEntry> item, List<MonsterDropEntry> quest) {
@@ -667,7 +667,7 @@ public class MapleMap {
         
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> questEntry = new ArrayList<>();
-        sortDropEntries(mi.retrieveDrop(mob.getId()), dropEntry, questEntry);
+        sortDropEntries(mi.retrieveEffectiveDrop(mob.getId()), dropEntry, questEntry);
         
         // Normal Drops
         d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
@@ -1347,9 +1347,9 @@ public class MapleMap {
         
         objectRLock.lock();
         try {
-            for (Object obj : list) {
-                if(obj instanceof MapleMapObject) {
-                    MapleMapObject mmo = (MapleMapObject) obj;
+            for (Object ob : list) {
+                if(ob instanceof MapleMapObject) {
+                    MapleMapObject mmo = (MapleMapObject) ob;
                     
                     if(mapobjects.containsValue(mmo) && mmo.getType() == MapleMapObjectType.REACTOR) {
                         listObjects.add(mmo);

@@ -99,8 +99,8 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                 if (quantity < 0 || price < 110 || c.getPlayer().getItemQuantity(itemid, false) < quantity) {
                     return;
                 }
-                MapleInventoryType type = ItemConstants.getInventoryType(itemid);
-                Item i = c.getPlayer().getInventory(type).getItem(slot).copy();
+                MapleInventoryType invType = ItemConstants.getInventoryType(itemid);
+                Item i = c.getPlayer().getInventory(invType).getItem(slot).copy();
                 if (i != null && c.getPlayer().getMeso() >= 5000) {
                     Connection con = null;
                     try {
@@ -160,7 +160,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             Item item = (Item) i;
                             ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, seller, price, owner, sellername, sell_ends) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             ps.setInt(1, 1);
-                            ps.setInt(2, (int) type.getType());
+                            ps.setInt(2, (int) invType.getType());
                             ps.setInt(3, item.getItemId());
                             ps.setInt(4, quantity);
                             ps.setInt(5, c.getPlayer().getId());
@@ -172,7 +172,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                             Equip equip = (Equip) i;
                             ps = con.prepareStatement("INSERT INTO mts_items (tab, type, itemid, quantity, seller, price, upgradeslots, level, str, dex, `int`, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, locked, owner, sellername, sell_ends, vicious, flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             ps.setInt(1, 1);
-                            ps.setInt(2, (int) type.getType());
+                            ps.setInt(2, (int) invType.getType());
                             ps.setInt(3, equip.getItemId());
                             ps.setInt(4, quantity);
                             ps.setInt(5, c.getPlayer().getId());
@@ -203,7 +203,7 @@ public final class MTSHandler extends AbstractMaplePacketHandler {
                         }
                         ps.executeUpdate();
                         ps.close();
-                        MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
+                        MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
                         
                         con.close();
                     } catch (SQLException e) {

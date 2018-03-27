@@ -869,12 +869,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         } else if (venom) {
             if (from.getJob() == MapleJob.NIGHTLORD || from.getJob() == MapleJob.SHADOWER || from.getJob().isA(MapleJob.NIGHTWALKER3)) {
                 int poisonLevel, matk, jobid = from.getJob().getId();
-                int skill = (jobid == 412 ? NightLord.VENOMOUS_STAR : (jobid == 422 ? Shadower.VENOMOUS_STAB : NightWalker.VENOM));
-                poisonLevel = from.getSkillLevel(SkillFactory.getSkill(skill));
+                int skillid = (jobid == 412 ? NightLord.VENOMOUS_STAR : (jobid == 422 ? Shadower.VENOMOUS_STAB : NightWalker.VENOM));
+                poisonLevel = from.getSkillLevel(SkillFactory.getSkill(skillid));
                 if (poisonLevel <= 0) {
                     return false;
                 }
-                matk = SkillFactory.getSkill(skill).getEffect(poisonLevel).getMatk();
+                matk = SkillFactory.getSkill(skillid).getEffect(poisonLevel).getMatk();
                 int luk = from.getLuk();
                 int maxDmg = (int) Math.ceil(Math.min(Short.MAX_VALUE, 0.2 * luk * matk));
                 int minDmg = (int) Math.ceil(Math.min(Short.MAX_VALUE, 0.1 * luk * matk));

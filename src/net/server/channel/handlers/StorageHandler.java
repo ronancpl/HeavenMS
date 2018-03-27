@@ -114,14 +114,14 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			if (chr.getMeso() < meso) {
 				c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
 			} else {
-				MapleInventoryType type = ItemConstants.getInventoryType(itemId);
-				Item item = chr.getInventory(type).getItem(slot).copy();
+				MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
+				Item item = chr.getInventory(invType).getItem(slot).copy();
 				if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargable(itemId))) {
 					if (ItemConstants.isRechargable(itemId)) {
 						quantity = item.getQuantity();
 					}
 					chr.gainMeso(meso, false, true, false);
-					MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false);
+					MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
 					item.setQuantity(quantity);
 					storage.store(item);
 					storage.sendStored(c, ItemConstants.getInventoryType(itemId));

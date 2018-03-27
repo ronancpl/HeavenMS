@@ -106,11 +106,11 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
                 for(int i = 0; i < reagents; i++) {  // crystals
                     int reagentid = slea.readInt();
                     if(ItemConstants.isMakerReagent(reagentid)) {
-                        Short r = reagentids.get(reagentid);
-                        if(r == null) {
+                        Short rs = reagentids.get(reagentid);
+                        if(rs == null) {
                             reagentids.put(reagentid, (short) 1);
                         } else {
-                            reagentids.put(reagentid, (short) (r + 1));
+                            reagentids.put(reagentid, (short) (rs + 1));
                         }
                     }
                 }
@@ -126,11 +126,11 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
 
                 // remove those not present on player inventory
                 if(!toUpdate.isEmpty()) {
-                    for(Pair<Integer, Short> r : toUpdate) {
-                        if(r.getRight() > 0) {
-                            reagentids.put(r.getLeft(), r.getRight());
+                    for(Pair<Integer, Short> rp : toUpdate) {
+                        if(rp.getRight() > 0) {
+                            reagentids.put(rp.getLeft(), rp.getRight());
                         } else {
-                            reagentids.remove(r.getLeft());
+                            reagentids.remove(rp.getLeft());
                         }
                     }
                 }
@@ -453,12 +453,12 @@ public final class MakerSkillHandler extends AbstractMaplePacketHandler {
             
             ii.improveEquipStats(eqp, stats);
             
-            for(Short s : randStat) {
-                ii.scrollOptionEquipWithChaos(eqp, s, false);
+            for(Short sh : randStat) {
+                ii.scrollOptionEquipWithChaos(eqp, sh, false);
             }
             
-            for(Short s : randOption) {
-                ii.scrollOptionEquipWithChaos(eqp, s, true);
+            for(Short sh : randOption) {
+                ii.scrollOptionEquipWithChaos(eqp, sh, true);
             }
         }
         

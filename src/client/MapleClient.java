@@ -965,38 +965,9 @@ public class MapleClient {
 		return Server.getInstance().getChannel(world, channel);
 	}
 
-        private boolean hasCharacter(int cid) throws SQLException {
-                Connection con = null;
-                PreparedStatement ps = null;
-                ResultSet rs = null;
-                
+        public boolean deleteCharacter(int cid, int senderAccId) {
                 try {
-                        con = DatabaseConnection.getConnection();
-                        ps = con.prepareStatement("SELECT id FROM characters WHERE accountid = ?");
-                        ps.setInt(1, getAccID());
-                        
-                        rs = ps.executeQuery();
-                        while (rs.next()) {
-                                if (rs.getInt("id") == cid) {
-                                        return true;
-                                }
-                        }
-                } finally {
-                        if(rs != null && !rs.isClosed()) rs.close();
-                        if(ps != null && !ps.isClosed()) ps.close();
-                        if(con != null && !con.isClosed()) con.close();
-                }
-                
-                return false;
-        }
-        
-	public boolean deleteCharacter(int cid) {
-                try {
-                        if(!hasCharacter(cid)) {
-                                return false;
-                        }
-                    
-                        return MapleCharacter.deleteCharFromDB(MapleCharacter.loadCharFromDB(cid, this, false));
+                        return MapleCharacter.deleteCharFromDB(MapleCharacter.loadCharFromDB(cid, this, false), senderAccId);
                 } catch(SQLException ex) {
                         ex.printStackTrace();
                         return false;

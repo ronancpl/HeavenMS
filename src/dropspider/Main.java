@@ -289,8 +289,8 @@ public class Main {
             BufferedWriter bw = new BufferedWriter(new FileWriter(f));
             PrintWriter pw = new PrintWriter(bw);
 
-            for (Errors e : problems.values()) {
-                pw.write(e.createErrorLog());
+            for (Errors err : problems.values()) {
+                pw.write(err.createErrorLog());
             }
 
             pw.flush();

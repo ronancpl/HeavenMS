@@ -272,9 +272,9 @@ public class MapleMapFactory {
         try {
             for (MapleData layer : mapData.getChildByPath("back")) { // yolo
                 int layerNum = Integer.parseInt(layer.getName());
-                int type = MapleDataTool.getInt(layer.getChildByPath("type"), 0);
+                int btype = MapleDataTool.getInt(layer.getChildByPath("type"), 0);
 
-                backTypes.put(layerNum, type);
+                backTypes.put(layerNum, btype);
             }
         } catch (Exception e) {
             e.printStackTrace();

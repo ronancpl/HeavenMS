@@ -58,6 +58,8 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
         statGain[0] = 0; statGain[1] = 0; statGain[2] = 0; statGain[3] = 0;
         
         slea.skip(8);
+        byte opt = slea.readByte();     // useful for pirate autoassigning
+        
         if (chr.getRemainingAp() < 1) return;
         
         if(ServerConstants.USE_SERVER_AUTOASSIGNER) {
@@ -106,7 +108,7 @@ public class AutoAssignHandler extends AbstractMaplePacketHandler {
             //c.getPlayer().message("SDL: s" + eqpStr + " d" + eqpDex + " l" + eqpLuk + " BASE STATS --> STR: " + chr.getStr() + " DEX: " + chr.getDex() + " INT: " + chr.getInt() + " LUK: " + chr.getLuk());
             //c.getPlayer().message("SUM EQUIP STATS -> STR: " + str + " DEX: " + dex + " LUK: " + luk + " INT: " + int_);
             
-            MapleJob stance = c.getPlayer().getJobStyle();
+            MapleJob stance = c.getPlayer().getJobStyle(opt);
             int prStat = 0, scStat = 0, trStat = 0, temp, tempAp = chr.getRemainingAp(), CAP;
             
             MapleStat primary, secondary, tertiary = MapleStat.LUK;

@@ -233,10 +233,10 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
            // if (checkBirthday(c, birthday)) { //We're using a default birthday, so why restrict rings to only people who know of it? 
                 int toCharge = slea.readInt();
                 int SN = slea.readInt();
-                String recipient = slea.readMapleAsciiString();
+                String recipientName = slea.readMapleAsciiString();
                 String text = slea.readMapleAsciiString();
-                CashItem ring = CashItemFactory.getItem(SN);
-                MapleCharacter partner = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
+                CashItem itemRing = CashItemFactory.getItem(SN);
+                MapleCharacter partner = c.getChannelServer().getPlayerStorage().getCharacterByName(recipientName);
                 if (partner == null) {
                     chr.getClient().announce(MaplePacketCreator.serverNotice(1, "The partner you specified cannot be found.\r\nPlease make sure your partner is online and in the same channel."));
                 } else {
@@ -247,14 +247,14 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         return;
                     }*/ //Gotta let them faggots marry too, hence why this is commented out <3 
                 	
-                    if(ring.toItem() instanceof Equip) {
-                        Equip item = (Equip) ring.toItem();
-                        int ringid = MapleRing.createRing(ring.getItemId(), chr, partner);
-                        item.setRingId(ringid);
-                        cs.addToInventory(item);
-                        c.announce(MaplePacketCreator.showBoughtCashItem(item, c.getAccID()));
-                        cs.gift(partner.getId(), chr.getName(), text, item.getSN(), (ringid + 1));
-                        cs.gainCash(toCharge, -ring.getPrice());
+                    if(itemRing.toItem() instanceof Equip) {
+                        Equip eqp = (Equip) itemRing.toItem();
+                        int ringid = MapleRing.createRing(itemRing.getItemId(), chr, partner);
+                        eqp.setRingId(ringid);
+                        cs.addToInventory(eqp);
+                        c.announce(MaplePacketCreator.showBoughtCashItem(eqp, c.getAccID()));
+                        cs.gift(partner.getId(), chr.getName(), text, eqp.getSN(), (ringid + 1));
+                        cs.gainCash(toCharge, -itemRing.getPrice());
                         chr.addCrushRing(MapleRing.loadFromDb(ringid));
                         try {
                             chr.sendNote(partner.getName(), text, (byte) 1);
@@ -286,7 +286,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 int payment = slea.readByte();
                 slea.skip(3); //0s
                 int snID = slea.readInt();
-                CashItem ring = CashItemFactory.getItem(snID);
+                CashItem itemRing = CashItemFactory.getItem(snID);
                 String sentTo = slea.readMapleAsciiString();
                 int available = slea.readShort() - 1;
                 String text = slea.readAsciiString(available);
@@ -296,14 +296,14 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     chr.dropMessage("The partner you specified cannot be found.\r\nPlease make sure your partner is online and in the same channel.");
                 } else {
                     // Need to check to make sure its actually an equip and the right SN...
-                    if(ring.toItem() instanceof Equip) {
-                        Equip item = (Equip) ring.toItem();
-                        int ringid = MapleRing.createRing(ring.getItemId(), chr, partner);
-                        item.setRingId(ringid);
-                        cs.addToInventory(item);
-                        c.announce(MaplePacketCreator.showBoughtCashItem(item, c.getAccID()));
-                        cs.gift(partner.getId(), chr.getName(), text, item.getSN(), (ringid + 1));
-                        cs.gainCash(payment, -ring.getPrice());
+                    if(itemRing.toItem() instanceof Equip) {
+                        Equip eqp = (Equip) itemRing.toItem();
+                        int ringid = MapleRing.createRing(itemRing.getItemId(), chr, partner);
+                        eqp.setRingId(ringid);
+                        cs.addToInventory(eqp);
+                        c.announce(MaplePacketCreator.showBoughtCashItem(eqp, c.getAccID()));
+                        cs.gift(partner.getId(), chr.getName(), text, eqp.getSN(), (ringid + 1));
+                        cs.gainCash(payment, -itemRing.getPrice());
                         chr.addFriendshipRing(MapleRing.loadFromDb(ringid));
                         try {
                             chr.sendNote(partner.getName(), text, (byte) 1);
