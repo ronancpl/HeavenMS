@@ -18,17 +18,19 @@ function action(mode, type, selection) {
         else
             status--;
 		
-		if(status == 0){
-			cm.sendYesNo("Would you like to leave?");
-		}else if(status == 1){
-			if(cm.getMapId() == 108010101)cm.getPlayer().changeMap(105040305);
-			if(cm.getMapId() == 108010201)cm.getPlayer().changeMap(100040106);
-			if(cm.getMapId() == 108010301)cm.getPlayer().changeMap(105070001);
-			if(cm.getMapId() == 108010401)cm.getPlayer().changeMap(107000402);
-			if(cm.getMapId() == 108010501)cm.getPlayer().changeMap(105040305);
-			var em = cm.getEventManager("3rdjob");
-			em.getInstance(cm.getPlayer().getName()).unregisterPlayer(cm.getPlayer());
-			cm.dispose();
-		}
+        if(status == 0){
+                cm.sendYesNo("Would you like to leave?");
+        }else if(status == 1){
+                var mapid = cm.getMapId();
+                if(mapid == 108010101) cm.getPlayer().changeMap(105040305);
+                else if(mapid == 108010201) cm.getPlayer().changeMap(100040106);
+                else if(mapid == 108010301) cm.getPlayer().changeMap(105070001);
+                else if(mapid == 108010401) cm.getPlayer().changeMap(107000402);
+                else if(mapid == 108010501) cm.getPlayer().changeMap(105070200);
+
+                var em = cm.getEventManager("3rdjob");
+                em.getInstance(cm.getPlayer().getName()).unregisterPlayer(cm.getPlayer());
+                cm.dispose();
+        }
     }
 }

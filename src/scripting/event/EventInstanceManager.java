@@ -271,10 +271,8 @@ public class EventInstanceManager {
 	}
         
         public void dropMessage(int type, String message) {
-                if(!eventCleared) {
-                        for (MapleCharacter chr : getPlayers()) {
-                                chr.dropMessage(type, message);
-                        }
+                for (MapleCharacter chr : getPlayers()) {
+                        chr.dropMessage(type, message);
                 }
         }
 

@@ -43,6 +43,7 @@ Quests:
 * Loads of quests have been patched.
 * Quest rewards according to jobs works properly.
 * Enchanced rewarding system: checks for stacking opportunities on the inventory before checking for new slots.
+* Complete overhaul on the 3rd job quiz (explorers), with all 40-question pool now made available.
 
 Player Social Network:
 
@@ -116,6 +117,7 @@ Admin/GM commands:
 External tools:
 
 * MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
+* MapleBossHpBarFetcher - Searches the quest WZ files and reports in all relevant data regarding mobs that has a boss HP bar whilst not having a proper "boss" label.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
@@ -123,6 +125,7 @@ External tools:
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
 * MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
 * MapleMobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
+* MapleQuestItemCountFetcher - Searches the quest WZ files and reports in all relevant data regarding missing "count" labels on item acts at "complete quest".
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
 * MapleQuestMesoFetcher - Searches the quest WZ files and reports in all relevant data regarding missing/erroneous quest fee checks.
 * MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.

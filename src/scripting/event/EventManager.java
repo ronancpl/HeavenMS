@@ -114,11 +114,11 @@ public class EventManager {
         try {
             return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
         } catch (ScriptException | NoSuchMethodException ex) { // they didn't define a lobby range
-            List<Integer> defaultList = new ArrayList<>();
-            defaultList.add(0);
-            defaultList.add(maxLobbys);
+            List<Integer> defaultRange = new ArrayList<>();
+            defaultRange.add(0);
+            defaultRange.add(maxLobbys);
             
-            return defaultList;
+            return defaultRange;
         }
     }
 
@@ -502,13 +502,13 @@ public class EventManager {
     private static String ordinal(int i) {
         String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
         switch (i % 100) {
-        case 11:
-        case 12:
-        case 13:
-            return i + "th";
-        default:
-            return i + sufixes[i % 10];
-
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+                
+            default:
+                return i + sufixes[i % 10];
         }
     }
     

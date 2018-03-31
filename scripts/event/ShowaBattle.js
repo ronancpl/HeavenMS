@@ -12,7 +12,7 @@ var recruitMap = 801040004;
 var clearMap = 801040101;
 
 var minMapId = 801040100;
-var maxMapId = 801040100;
+var maxMapId = 801040101;
 
 var eventTime = 60;     // 60 minutes for boss stg
 
@@ -68,6 +68,7 @@ function afterSetup(eim) {}
 function setup(channel) {
     var eim = em.newInstance("Showa" + channel);
     eim.setProperty("canJoin", 1);
+    eim.setProperty("playerDied", 0);
 
     var level = 1;
     eim.getInstanceMap(801040100).resetPQ(level);
@@ -112,7 +113,9 @@ function changedMap(eim, player, mapid) {
 
 function changedLeader(eim, leader) {}
 
-function playerDead(eim, player) {}
+function playerDead(eim, player) {
+    eim.setIntProperty("playerDied", 1);
+}
 
 function playerRevive(eim, player) {
     if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
@@ -170,6 +173,12 @@ function clearPQ(eim) {
     
     eim.stopEventTimer();
     eim.setEventCleared();
+    
+    if(eim.getIntProperty("playerDied") == 0) {
+        var mob = eim.getMonster(9400114);
+        eim.getMapInstance(801040101).spawnMonsterOnGroundBelow(mob, new java.awt.Point(500, -50));
+        eim.dropMessage(5, "Konpei: The Boss has been defeated with no casualties, well done! We found a suspicious machine inside, we're moving it out.");
+    }
 }
 
 function isTheBoss(mob) {

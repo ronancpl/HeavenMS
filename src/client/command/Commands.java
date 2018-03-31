@@ -923,6 +923,7 @@ public class Commands {
                     
                 case "cleardrops":
 			player.getMap().clearDrops(player);
+                        player.dropMessage(5, "Cleared dropped items");
                     break;
                     
                 case "clearslot":

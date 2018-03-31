@@ -3364,13 +3364,31 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        public static byte[] customShowBossHP(byte call, int oid, int currHP, int maxHP, byte tagColor, byte tagBgColor) {
+        private static Pair<Integer, Integer> normalizedCustomMaxHP(long currHP, long maxHP) {
+                int sendHP, sendMaxHP;
+            
+                if(maxHP <= Integer.MAX_VALUE) {
+                    sendHP = (int) currHP;
+                    sendMaxHP = (int) maxHP;
+                } else {
+                    float f = ((float) currHP) / maxHP;
+                    
+                    sendHP = (int) (Integer.MAX_VALUE * f);
+                    sendMaxHP = Integer.MAX_VALUE;
+                }
+                
+                return new Pair<>(sendHP, sendMaxHP);
+        }
+        
+        public static byte[] customShowBossHP(byte call, int oid, long currHP, long maxHP, byte tagColor, byte tagBgColor) {
+                Pair<Integer, Integer> customHP = normalizedCustomMaxHP(currHP, maxHP);
+            
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.FIELD_EFFECT.getValue());
                 mplew.write(call);
                 mplew.writeInt(oid);
-                mplew.writeInt(currHP);
-                mplew.writeInt(maxHP);
+                mplew.writeInt(customHP.left);
+                mplew.writeInt(customHP.right);
                 mplew.write(tagColor);
                 mplew.write(tagBgColor);
                 return mplew.getPacket();

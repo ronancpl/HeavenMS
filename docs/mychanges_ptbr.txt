@@ -840,3 +840,12 @@ Corrigido tempo de duração do Body Pressure sendo resetado sempre que acerta u
 Corrigido animação de spawn dos bosses do dojo que foi quebrada recentemente.
 Corrigido autoassigner para piratas somente preenchendo requisitos de gunslinger.
 Mobs agora podem dropar mais de um equip de mesmo tipo, sistema utiliza quantidades min/max na tabela de drops.
+Nova ferramenta: MapleQuestItemCountFetcher. Localiza no Quest.wz possíveis locais onde um item deveria estar sendo tirado ao completar determinada quest, mas não o é (caso comum onde campo "count" não existe).
+
+28 - 29 Março 2018,
+Adicionado itens de pirata nas lojas de NPC em Singapore.
+Adicionado drop data para Flaming Racoon e Big Cloud Fox.
+Adicionado ganho de EXP em várias quests da região de Zipangu.
+Adicionado sistema de bonus para expedição de Showa, atingível se nenhum jogador morrer no evento.
+Nova ferramenta: MapleBossHpBarFetcher. Localiza no Mob.wz ids de mobs que possuem um boss hp bar mas não são labelados como "boss".
+Incrementado quiz de 3rd job, agora utilizando um pool de 40 perguntas com escolha arbitrária.
