@@ -177,6 +177,10 @@ public class AbstractPlayerInteraction {
 		return getPlayer().getEventInstance();
 	}
         
+        public MapleInventory getInventory(int type) {
+                return getPlayer().getInventory(MapleInventoryType.getByType((byte) type));
+        }
+        
         public MapleInventory getInventory(MapleInventoryType type) {
                 return getPlayer().getInventory(type);
         }

@@ -252,11 +252,11 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private void addMesoToDB(int mesos, String sName, int recipientID) {
+    private static void addMesoToDB(int mesos, String sName, int recipientID) {
         addItemToDB(null, 1, mesos, sName, recipientID);
     }
 
-    private void addItemToDB(Item item, int quantity, int mesos, String sName, int recipientID) {
+    public static void addItemToDB(Item item, int quantity, int mesos, String sName, int recipientID) {
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();
@@ -344,7 +344,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private String getCurrentDate() {
+    private static String getCurrentDate() {
         String date = "";
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DATE) - 1; // instant duey ?
@@ -373,7 +373,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
         return fee;
     }
 
-    private void removeItemFromDB(int packageid) {
+    private static void removeItemFromDB(int packageid) {
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();

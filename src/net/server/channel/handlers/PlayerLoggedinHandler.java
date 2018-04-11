@@ -46,6 +46,7 @@ import client.BuddylistEntry;
 import client.CharacterNameAndId;
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleDisease;
 import client.MapleFamily;
 import client.SkillFactory;
 import client.inventory.MapleInventoryType;
@@ -54,6 +55,7 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Map;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -113,6 +115,11 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         if (buffs != null) {
             List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = getLocalStartTimes(buffs);
             player.silentGiveBuffs(timedBuffs);
+        }
+        
+        Map<MapleDisease, Long> diseases = server.getPlayerBuffStorage().getDiseasesFromStorage(cid);
+        if (diseases != null) {
+            player.silentApplyDiseases(diseases);
         }
         
         c.announce(MaplePacketCreator.getCharInfo(player));

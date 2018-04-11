@@ -849,3 +849,8 @@ Adicionado ganho de EXP em várias quests da região de Zipangu.
 Adicionado sistema de bonus para expedição de Showa, atingível se nenhum jogador morrer no evento.
 Nova ferramenta: MapleBossHpBarFetcher. Localiza no Mob.wz ids de mobs que possuem um boss hp bar mas não são labelados como "boss".
 Incrementado quiz de 3rd job, agora utilizando um pool de 40 perguntas com escolha arbitrária.
+
+05 - 10 Março 2018,
+Corrigido diseases não sendo removidas corretamente no cliente quando tentando trocar de canal/entrar Cash Shop, permitindo-as ficar no jogador infinitamente.
+Corrigido Holy Symbol atuando de forma inesperada no cenário com somente um jogador.
+Corrigido Summon Sack lv. 9 lançando mob com id inexistente.

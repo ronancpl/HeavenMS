@@ -52,8 +52,8 @@ public enum MapleDisease {
         return i;
     }
 
-	public boolean isFirst() {
-		return first;
-	}
+    public boolean isFirst() {
+            return first;
+    }
 	
 }

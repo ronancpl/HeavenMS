@@ -2019,6 +2019,40 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
+    public Map<MapleDisease, Long> getAllDiseases() {
+        chrLock.lock();
+        try {
+            long curtime = System.currentTimeMillis();
+            Map<MapleDisease, Long> ret = new LinkedHashMap<>();
+            
+            for(Entry<MapleDisease, Long> de : diseaseExpires.entrySet()) {
+                MapleDiseaseValueHolder mdvh = diseases.get(de.getKey());
+                
+                ret.put(de.getKey(), mdvh.length - (curtime - mdvh.startTime));
+            }
+            
+            return ret;
+        } finally {
+            chrLock.unlock();
+        }
+    }
+    
+    public void silentApplyDiseases(Map<MapleDisease, Long> diseaseMap) {
+        chrLock.lock();
+        try {
+            long curTime = System.currentTimeMillis();
+            
+            for(Entry<MapleDisease, Long> di : diseaseMap.entrySet()) {
+                long expTime = curTime + di.getValue();
+                
+                diseaseExpires.put(di.getKey(), expTime);
+                diseases.put(di.getKey(), new MapleDiseaseValueHolder(curTime, expTime));
+            }
+        } finally {
+            chrLock.unlock();
+        }
+    }
+    
     public void giveDebuff(final MapleDisease disease, MobSkill skill) {
         if (!hasDisease(disease) && getDiseasesSize() < 2) {
             if (!(disease == MapleDisease.SEDUCE || disease == MapleDisease.STUN)) {
@@ -2071,6 +2105,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         chrLock.lock();
         try {
             diseases.clear();
+            diseaseExpires.clear();
         } finally {
             chrLock.unlock();
         }
@@ -3834,6 +3869,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         (checkEquipped && inventory[MapleInventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
     }
     
+    public boolean haveItemEquipped(int itemid) {
+        return (inventory[MapleInventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
+    }
+    
     public int getItemQuantity(int itemid, boolean checkEquipped) {
         int possesed = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
         if (checkEquipped) {
@@ -4744,8 +4783,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             dropMessage(1, "You don't have enough mesos.");
             return;
         }
-        Server.getInstance().increaseGuildCapacity(guildid);
-        gainMeso(-MapleGuild.getIncreaseGuildCost(getGuild().getCapacity()), true, false, false);
+        
+        if(Server.getInstance().increaseGuildCapacity(guildid)) {
+            gainMeso(-MapleGuild.getIncreaseGuildCost(getGuild().getCapacity()), true, false, false);
+        } else {
+            dropMessage(1, "You guild already reached the maximum capacity of players.");
+        }
     }
 
     public boolean isActiveBuffedValue(int skillid) {
@@ -5367,7 +5410,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                     continue;
                 }
-                if (item.getRight().equals(MapleInventoryType.EQUIP) || item.getRight().equals(MapleInventoryType.EQUIPPED)) {
+                
+                MapleInventoryType mit = item.getRight();
+                if (mit.equals(MapleInventoryType.EQUIP) || mit.equals(MapleInventoryType.EQUIPPED)) {
                     Equip equip = (Equip) item.getLeft();
                     if (equip.getRingId() > -1) {
                         MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
@@ -5426,7 +5471,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }
                 ret.setPosition(portal.getPosition());
                 int partyid = rs.getInt("party");
-                MapleParty party = Server.getInstance().getWorld(ret.world).getParty(partyid);
+                World wserv = Server.getInstance().getWorld(ret.world);
+                MapleParty party = wserv.getParty(partyid);
                 if (party != null) {
                     ret.mpc = party.getMemberById(ret.id);
                     if (ret.mpc != null) {
@@ -5437,7 +5483,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 int messengerid = rs.getInt("messengerid");
                 int position = rs.getInt("messengerposition");
                 if (messengerid > 0 && position < 4 && position > -1) {
-                    MapleMessenger messenger = Server.getInstance().getWorld(ret.world).getMessenger(messengerid);
+                    MapleMessenger messenger = wserv.getMessenger(messengerid);
                     if (messenger != null) {
                         ret.messenger = messenger;
                         ret.messengerposition = position;
@@ -5501,7 +5547,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.close();
             ret.cashshop = new CashShop(ret.accountid, ret.id, ret.getJobType());
             ret.autoban = new AutobanManager(ret);
-            ret.marriageRing = null; //for now
             ps = con.prepareStatement("SELECT name, level FROM characters WHERE accountid = ? AND id != ? ORDER BY level DESC limit 1");
             ps.setInt(1, ret.accountid);
             ps.setInt(2, charid);
@@ -7161,10 +7206,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (quantity <= iQuant && iQuant > 0) {
             MapleInventoryManipulator.removeFromSlot(c, type, (byte) slot, quantity, false);
             double price;
-            if (ItemConstants.isRechargable(item.getItemId())) {
-            	price = ii.getWholePrice(item.getItemId()) / (double) ii.getSlotMax(c, item.getItemId());
+            int itemid = item.getItemId();
+            if (ItemConstants.isRechargable(itemid)) {
+            	price = ii.getWholePrice(itemid) / (double) ii.getSlotMax(c, itemid);
             } else {
-                price = ii.getPrice(item.getItemId());
+                price = ii.getPrice(itemid);
             }
             
             int recvMesos = (int) Math.max(Math.ceil(price * quantity), 0);

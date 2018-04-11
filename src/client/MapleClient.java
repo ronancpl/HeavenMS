@@ -746,6 +746,7 @@ public class MapleClient {
 			}
 			int state = rs.getInt("loggedin");
 			if (state == LOGIN_SERVER_TRANSITION) {
+                                // Arnah's note: lastlogin is a date-type, in case of login and game servers being of different timezones this becomes broken
 				if (rs.getTimestamp("lastlogin").getTime() + 30000 < System.currentTimeMillis()) {
 					state = LOGIN_NOTLOGGEDIN;
 					updateLoginState(LOGIN_NOTLOGGEDIN);
@@ -1293,8 +1294,10 @@ public class MapleClient {
 		}
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
+                server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
                 player.setAwayFromWorld(true);
 		player.cancelAllBuffs(true);
+                player.cancelAllDebuffs();
                 player.cancelBuffExpireTask();
                 player.cancelDiseaseExpireTask();
                 player.cancelSkillCooldownTask();

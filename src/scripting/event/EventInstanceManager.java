@@ -425,6 +425,16 @@ public class EventInstanceManager {
                         rL.unlock();
                 }
 	}
+        
+        public MapleCharacter getPlayerById(int id) {
+                rL.lock();
+                try {
+                        return chars.get(id);
+                }
+                finally {
+                        rL.unlock();
+                }
+	}
 
 	public List<MapleCharacter> getPlayers() {
                 rL.lock();
@@ -1326,6 +1336,15 @@ public class EventInstanceManager {
                 try {
                         Integer i = playerGrid.get(chr.getId());
                         return (i != null) ? i : -1;
+                } finally {
+                        rL.unlock();
+                }
+        }
+        
+        public final int gridSize() {
+                rL.lock();
+                try {
+                        return playerGrid.size();
                 } finally {
                         rL.unlock();
                 }

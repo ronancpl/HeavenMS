@@ -23,6 +23,8 @@ package net;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -41,6 +43,7 @@ import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
 import constants.ServerConstants;
+import java.util.Arrays;
 
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
@@ -53,7 +56,8 @@ import server.TimerManager;
 import tools.locks.MonitoredLockType;
 
 public class MapleServerHandler extends IoHandlerAdapter {
-
+    private final static Set<Short> ignoredDebugRecvPackets = new HashSet<>(Arrays.asList((short) 167, (short) 197, (short) 89, (short) 91, (short) 41));
+    
     private PacketProcessor processor;
     private int world = -1, channel = -1;
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
@@ -151,7 +155,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         short packetId = slea.readShort();
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         
-        if(ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET) System.out.println("Received packet id " + packetId);
+        if(ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET && !ignoredDebugRecvPackets.contains(packetId)) System.out.println("Received packet id " + packetId);
         final MaplePacketHandler packetHandler = processor.getHandler(packetId);
         if (packetHandler != null && packetHandler.validateState(client)) {
             try {

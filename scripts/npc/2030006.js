@@ -77,8 +77,8 @@ var questionTree = [
 var status;
 var question;
 
-var unusedQuestions;
-var unusedQuestionsCursor;
+var questionPool;
+var questionPoolCursor;
 
 function start() {
     status = -1;
@@ -105,8 +105,6 @@ function action(mode, type, selection) {
                         cm.sendNext("Have a free ETC slot available before accepting this trial.");
                         cm.dispose();
                     } else {
-                        instantiateUnusedQuestions();
-                        
                         cm.sendNext("Alright... I'll be testing out your wisdom here. Answer all the questions correctly, and you will pass the test BUT, if you even lie to me once, then you'll have to start over again ok, here we go.");
                     }
                 } else {
@@ -118,6 +116,7 @@ function action(mode, type, selection) {
             }
         } else if(status == 1) {
             cm.gainItem(4005004, -1);
+            instantiateQuestionPool();
             
             question = fetchNextQuestion();
             var questionHead = generateQuestionHeading();
@@ -172,25 +171,25 @@ function shuffleArray(array) {
     }
 }
 
-function instantiateUnusedQuestions() {
-    unusedQuestions = [];
+function instantiateQuestionPool() {
+    questionPool = [];
     
     for(var i = 0; i < questionTree.length; i++) {
-        unusedQuestions.push(i);
+        questionPool.push(i);
     }
     
-    shuffleArray(unusedQuestions);
-    unusedQuestionsCursor = 0;
+    shuffleArray(questionPool);
+    questionPoolCursor = 0;
 }
 
 function fetchNextQuestion() {
-    var next = unusedQuestions[unusedQuestionsCursor];
-    unusedQuestionsCursor++;
+    var next = questionPool[questionPoolCursor];
+    questionPoolCursor++;
     
     return next;
 }
 
-function generateSelectionMenu(array) {     // nice tool for generating a string for the sendSimple functionality
+function generateSelectionMenu(array) {
     var menu = "";
     for (var i = 0; i < array.length; i++) {
         menu += "#L" + i + "#" + array[i] + "#l\r\n";

@@ -30,6 +30,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Lerk
  */
 public final class ReactorHitHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	//System.out.println(slea); //To see if there are any differences with packets
         //CD 00 6B 00 00 00 01 00 00 00 03 00 00 00 20 03 F7 03 00 00
