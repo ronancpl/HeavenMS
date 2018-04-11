@@ -24,6 +24,7 @@ package net.server.channel;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +42,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
+import net.server.Server;
+import net.server.world.World;
 import net.server.PlayerStorage;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
@@ -65,6 +68,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import server.maps.MapleMiniDungeon;
 import tools.MaplePacketCreator;
+import tools.Pair;
 import client.MapleCharacter;
 import constants.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
@@ -92,15 +96,30 @@ public final class Channel {
     private Map<Integer, Integer> dojoParty = new HashMap<>();
     private Map<Integer, MapleMiniDungeon> dungeons = new HashMap<>();
     
+    private List<Integer> chapelReservationQueue = new LinkedList<>();
+    private List<Integer> cathedralReservationQueue = new LinkedList<>();
+    private ScheduledFuture<?> chapelReservationTask;
+    private ScheduledFuture<?> cathedralReservationTask;
+    
+    private Integer ongoingChapel = null;
+    private Boolean ongoingChapelType = null;
+    private Set<Integer> ongoingChapelGuests = null;
+    private Integer ongoingCathedral = null;
+    private Boolean ongoingCathedralType = null;
+    private Set<Integer> ongoingCathedralGuests = null;
+    private long ongoingStartTime;
+    
     private ReentrantReadWriteLock merchantLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MERCHANT, true);
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
     
     private Lock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
     
-    public Channel(final int world, final int channel) {
+    public Channel(final int world, final int channel, long startTime) {
         this.world = world;
         this.channel = channel;
+        
+        this.ongoingStartTime = startTime + 10000;  // rude approach to a world's last channel boot time, placeholder for the 1st wedding reservation ever
         this.mapFactory = new MapleMapFactory(null, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), world, channel);
         try {
             eventSM = new EventScriptManager(this, getEvents());
@@ -527,5 +546,298 @@ public final class Channel {
         } finally {
             lock.unlock();
         }
+    }
+    
+    public Pair<Boolean, Pair<Integer, Set<Integer>>> getNextWeddingReservation(boolean cathedral) {
+        Integer ret;
+        
+        lock.lock();
+        try {
+            List<Integer> weddingReservationQueue = (cathedral ? cathedralReservationQueue : chapelReservationQueue);
+            if(weddingReservationQueue.isEmpty()) return null;
+
+            ret = weddingReservationQueue.remove(0);
+            if(ret == null) return null;
+        } finally {
+            lock.unlock();
+        }
+        
+        World wserv = Server.getInstance().getWorld(world);
+        
+        Pair<Integer, Integer> coupleId = wserv.getMarriageQueuedCouple(ret);
+        Pair<Boolean, Set<Integer>> typeGuests = wserv.removeMarriageQueued(ret);
+        
+        Pair<String, String> couple = new Pair<>(MapleCharacter.getNameById(coupleId.getLeft()), MapleCharacter.getNameById(coupleId.getRight()));
+        wserv.dropMessage(6, "[WEDDING] " + couple.getLeft() + " and " + couple.getRight() + "'s wedding will start soon, and it will be held at the " + (cathedral ? "Cathedral" : "Chapel") + " in Amoria, on channel " + channel + ". Cheers for their love!!");
+        
+        return new Pair<>(typeGuests.getLeft(), new Pair<>(ret, typeGuests.getRight()));
+    }
+    
+    public boolean isWeddingReserved(Integer weddingId) {
+        World wserv = Server.getInstance().getWorld(world);
+        
+        lock.lock();
+        try {
+            return wserv.isMarriageQueued(weddingId) || weddingId.equals(ongoingCathedral) || weddingId.equals(ongoingChapel);
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public int getWeddingReservationStatus(Integer weddingId, boolean cathedral) {
+        if(weddingId == null) return -1;
+        
+        lock.lock();
+        try {
+            if(cathedral) {
+                if(weddingId.equals(ongoingCathedral)) return 0;
+            
+                for(int i  = 0; i < cathedralReservationQueue.size(); i++) {
+                    if(weddingId.equals(cathedralReservationQueue.get(i))) {
+                        return i + 1;
+                    }
+                }
+            } else {
+                if(weddingId.equals(ongoingChapel)) return 0;
+            
+                for(int i  = 0; i < chapelReservationQueue.size(); i++) {
+                    if(weddingId.equals(chapelReservationQueue.get(i))) {
+                        return i + 1;
+                    }
+                }
+            }
+            
+            return -1;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public int pushWeddingReservation(Integer weddingId, boolean cathedral, boolean premium, Integer groomId, Integer brideId) {
+        if(weddingId == null || isWeddingReserved(weddingId)) return -1;
+        
+        World wserv = Server.getInstance().getWorld(world);
+        wserv.putMarriageQueued(weddingId, cathedral, premium, groomId, brideId);
+        
+        lock.lock();
+        try {
+            List<Integer> weddingReservationQueue = (cathedral ? cathedralReservationQueue : chapelReservationQueue);
+        
+            int delay = ServerConstants.WEDDING_RESERVATION_DELAY - 1 - weddingReservationQueue.size();
+            for(int i = 0; i < delay; i++) {
+                weddingReservationQueue.add(null);  // push empty slots to fill the waiting time
+            }
+
+            weddingReservationQueue.add(weddingId);
+            return weddingReservationQueue.size();
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public boolean isOngoingWeddingGuest(boolean cathedral, int playerId) {
+        lock.lock();
+        try {
+            if(cathedral) {
+                return ongoingCathedralGuests != null && ongoingCathedralGuests.contains(playerId);
+            } else {
+                return ongoingChapelGuests != null && ongoingChapelGuests.contains(playerId);
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public Integer getOngoingWedding(boolean cathedral) {
+        lock.lock();
+        try {
+            return cathedral ? ongoingCathedral : ongoingChapel;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public Boolean getOngoingWeddingType(boolean cathedral) {
+        lock.lock();
+        try {
+            return cathedral ? ongoingCathedralType : ongoingChapelType;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void closeOngoingWedding(boolean cathedral) {
+        lock.lock();
+        try {
+            if(cathedral) {
+                ongoingCathedral = null;
+                ongoingCathedralType = null;
+                ongoingCathedralGuests = null;
+            } else {
+                ongoingChapel = null;
+                ongoingChapelType = null;
+                ongoingChapelGuests = null;
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void setOngoingWedding(final boolean cathedral, Boolean premium, Integer weddingId, Set<Integer> guests) {
+        lock.lock();
+        try {
+            if(cathedral) {
+                ongoingCathedral = weddingId;
+                ongoingCathedralType = premium;
+                ongoingCathedralGuests = guests;
+            } else {
+                ongoingChapel = weddingId;
+                ongoingChapelType = premium;
+                ongoingChapelGuests = guests;
+            }
+        } finally {
+            lock.unlock();
+        }
+        
+        ongoingStartTime = System.currentTimeMillis();
+        if(weddingId != null) {
+            ScheduledFuture<?> weddingTask = TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    closeOngoingWedding(cathedral);
+                }
+            }, ServerConstants.WEDDING_RESERVATION_TIMEOUT * 60 * 1000);
+            
+            if(cathedral) {
+                cathedralReservationTask = weddingTask;
+            } else {
+                chapelReservationTask = weddingTask;
+            }
+        }
+    }
+    
+    public synchronized boolean acceptOngoingWedding(final boolean cathedral) {     // couple succeeded to show up and started the ceremony
+        if(cathedral) {
+            if(cathedralReservationTask == null) return false;
+            
+            cathedralReservationTask.cancel(false);
+            cathedralReservationTask = null;
+        } else {
+            if(chapelReservationTask == null) return false;
+            
+            chapelReservationTask.cancel(false);
+            chapelReservationTask = null;
+        }
+        
+        return true;
+    }
+    
+    private static String getTimeLeft(long futureTime) {
+        StringBuilder str = new StringBuilder();
+        long leftTime = futureTime - System.currentTimeMillis();
+        
+        if(leftTime < 0) {
+            return null;
+        }
+        
+        byte mode = 0;
+        if(leftTime / (60*1000) > 0) {
+            mode++;     //counts minutes
+            
+            if(leftTime / (60*60*1000) > 0)
+                mode++;     //counts hours
+        }
+        
+        switch(mode) {
+            case 2:
+                int hours   = (int) ((leftTime / (1000*60*60)));
+                str.append(hours + " hours, ");
+                
+            case 1:
+                int minutes = (int) ((leftTime / (1000*60)) % 60);
+                str.append(minutes + " minutes, ");
+                
+            default:
+                int seconds = (int) (leftTime / 1000) % 60 ;
+                str.append(seconds + " seconds");
+        }
+        
+        return str.toString();
+    }
+    
+    public long getWeddingTicketExpireTime(int resSlot) {
+        return ongoingStartTime + getRelativeWeddingTicketExpireTime(resSlot);
+    }
+    
+    public static long getRelativeWeddingTicketExpireTime(int resSlot) {
+        return (resSlot * ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+    }
+    
+    public String getWeddingReservationTimeLeft(Integer weddingId) {
+        if(weddingId == null) return null;
+        
+        lock.lock();
+        try {
+            boolean cathedral = true;
+            
+            int resStatus;
+            resStatus = getWeddingReservationStatus(weddingId, true);
+            if(resStatus < 0) {
+                cathedral = false;
+                resStatus = getWeddingReservationStatus(weddingId, false);
+                
+                if(resStatus < 0) {
+                    return null;
+                }
+            }
+            
+            String venue = (cathedral ? "Cathedral" : "Chapel");
+            if(resStatus == 0) {
+                return venue + " - RIGHT NOW";
+            }
+            
+            return venue + " - " + getTimeLeft(ongoingStartTime + (resStatus * ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000)) + " from now";
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public Pair<Integer, Integer> getWeddingCoupleForGuest(int guestId, boolean cathedral) {
+        lock.lock();
+        try {
+            return (isOngoingWeddingGuest(cathedral, guestId)) ? Server.getInstance().getWorld(world).getRelationshipCouple(getOngoingWedding(cathedral)) : null;
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void dropMessage(int type, String message) {
+        for (MapleCharacter player : getPlayerStorage().getAllCharacters()) {
+            player.dropMessage(type, message);
+        }
+    }
+    
+    public void debugMarriageStatus() {
+        System.out.println(" ----- WORLD DATA -----");
+        Server.getInstance().getWorld(world).debugMarriageStatus();
+        
+        System.out.println(" ----- CH. " + channel + " -----");
+        System.out.println(" ----- CATHEDRAL -----");
+        System.out.println("Current Queue: " + cathedralReservationQueue);
+        System.out.println("Cancel Task: " + (cathedralReservationTask != null));
+        System.out.println("Ongoing wid: " + ongoingCathedral);
+        System.out.println();
+        System.out.println("Ongoing wid: " + ongoingCathedral + " isPremium: " + ongoingCathedralType);
+        System.out.println("Guest list: " + ongoingCathedralGuests);
+        System.out.println();
+        System.out.println(" ----- CHAPEL -----");
+        System.out.println("Current Queue: " + chapelReservationQueue);
+        System.out.println("Cancel Task: " + (chapelReservationTask != null));
+        System.out.println("Ongoing wid: " + ongoingChapel);
+        System.out.println();
+        System.out.println("Ongoing wid: " + ongoingChapel + " isPremium: " + ongoingChapelType);
+        System.out.println("Guest list: " + ongoingChapelGuests);
+        System.out.println();
+        System.out.println("Starttime: " + ongoingStartTime);
     }
 }

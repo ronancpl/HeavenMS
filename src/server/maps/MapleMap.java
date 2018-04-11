@@ -1047,35 +1047,19 @@ public class MapleMap {
     }
     
     public void broadcastBalrogVictory(String leaderName) {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
     }
     
     public void broadcastHorntailVictory() {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
     }
     
     public void broadcastZakumVictory() {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
     }
     
     public void broadcastPinkBeanVictory(int channel) {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
     }
 
     public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops) {

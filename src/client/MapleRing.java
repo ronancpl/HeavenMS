@@ -68,6 +68,40 @@ public class MapleRing implements Comparable<MapleRing> {
         }
     }
 
+    public static void removeRing(final MapleRing ring) {
+        try {
+            if (ring == null) {
+                return;
+            }
+            
+            Connection con = DatabaseConnection.getConnection();
+            
+            PreparedStatement ps = con.prepareStatement("DELETE FROM rings WHERE id=?");
+            ps.setInt(1, ring.getRingId());
+            ps.addBatch();
+            
+            ps.setInt(1, ring.getPartnerRingId());
+            ps.addBatch();
+            
+            ps.executeBatch();
+            ps.close();
+            
+            ps = con.prepareStatement("UPDATE inventoryequipment SET ringid=-1 WHERE ringid=?");
+            ps.setInt(1, ring.getRingId());
+            ps.addBatch();
+            
+            ps.setInt(1, ring.getPartnerRingId());
+            ps.addBatch();
+            
+            ps.executeBatch();
+            ps.close();
+            
+            con.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     public static int createRing(int itemid, final MapleCharacter partner1, final MapleCharacter partner2) {
         try {
             if (partner1 == null) {

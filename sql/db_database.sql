@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `vanquisherKills` int(11) unsigned NOT NULL DEFAULT '0',
   `summonValue` int(11) unsigned NOT NULL DEFAULT '0',
   `partnerId` int(11) NOT NULL DEFAULT '0',
+  `marriageItemId` int(11) NOT NULL DEFAULT '0',
   `reborns` int(5) NOT NULL DEFAULT '0',
   `PQPoints` int(11) NOT NULL DEFAULT '0',
   `dataString` varchar(64) NOT NULL DEFAULT '',

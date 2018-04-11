@@ -179,4 +179,12 @@ public final class ItemConstants {
     public static boolean isEquipment(int itemId) {
         return itemId < 2000000 && itemId != 0;
     }
+    
+    public static boolean isWeddingRing(int itemId) {
+        return itemId >= 1112803 && itemId <= 1112809;
+    }
+    
+    public static boolean isWeddingToken(int itemId) {
+        return itemId >= 4031357 && itemId <= 4031364;
+    }
 }

@@ -95,7 +95,7 @@ function action(mode, type, selection) {
         var hasGoldenLeaf = cm.haveItem(4000313);
         
         if (hasGoldenLeaf && hasEngage) {
-            cm.sendOk("You can't leave yet! You need to click High Priest John and get married before I can let you leave.");
+            cm.sendOk("You can't leave yet! You need to click Pelvis Bebop and get his word before I can let you leave.");
             cm.dispose();
         } else if (hasGoldenLeaf && hasRing) {
             var choice = Array("Go to the Afterparty", "What should I be doing");
@@ -123,7 +123,7 @@ function action(mode, type, selection) {
                 break;
                 
             case 1:
-                cm.sendOk("The Bride and Groom must receive the blessings of High Priest John to be wed. When you are ready you can click me to go to the Afterparty.");
+                cm.sendOk("The superstars must receive the word of Pelvis Bebop to be united. When you are ready you can click me to go to the Afterparty.");
                 cm.dispose();
                 break;
                 

@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,123 +17,202 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- *Moony - 9201000.js
- *@author Jvlaple
- *For HurricaneMS v.59
+/* Moony
+	Amoria (680000000)
+	Engagement ring NPC.
  */
-//var numberOfLoves = 0;
-//var ringSelection = -1;
- 
-function start() {
-    //    status = -1;
-    //    action(1, 0, 0);
-    //}
 
-    //function action(mode, type, selection) {
-    //    if (mode == -1) {
-    //        cm.dispose();
-    //    } else {
-    //        if (mode == 0) {
-    //            cm.dispose();
-    //            return;
-    //        }
-    //        if (mode == 1) {
-    //            status++;
-    //        } else {
-    //            status--;
-    //        }
-    //        if (status == 0) {
-    //            if (cm.getPlayer().getMarriageQuestLevel() == 0 && cm.getPlayer().getLevel() >= 10) {
-    //    cm.sendNext("Hey, I'm Moony, and I make engagement rings for marriage.");
-    //            } else if (cm.getPlayer().getMarriageQuestLevel() == 1) {
-    //                for (var i = 4031367; i < 4031373; i++)
-    //                    numberOfLoves += cm.getPlayer().countItem(i);
-    //                if (numberOfLoves >= 4) {
-    //                    cm.sendNext("Wow, you're back pretty early. Got the #bProof of Loves#k? Lets see...");
-    //                } else {
-    //                    cm.sendOk("Please come back when you got 4 different #bProof of Loves#k.");
-    //                    cm.dispose();
-    //                }
-    //            } else if (cm.getPlayer().getMarriageQuestLevel() == 2) {
-    //                cm.sendSimple("Hey, your'e back! Ready to choose your ring?\r\n#b#L0#Moonstone Ring#l\r\n#L1#Star Gem Ring#l\r\n#L2#Golden Heart Ring#l\r\n#L3#Silver Swan Ring#l#k");
-    //            } else {
-    cm.sendOk("I hate making rings...");
-    cm.dispose();
-//            }
-//        } else if (status == 1) {
-//            if (cm.getPlayer().getMarriageQuestLevel() == 0 && cm.getPlayer().getLevel() >= 10) {
-//                cm.sendYesNo("Hey, you look like you might want to be married! Want to make an engagement ring?");
-//            } else if (cm.getPlayer().getMarriageQuestLevel() == 1) {
-//                cm.sendNext("Great work getting the #bProof of Loves#k! Now we can make the #bEngagement Ring#k.");
-//            } else if (cm.getPlayer().getMarriageQuestLevel() == 2) {
-//                ringSelection = selection;
-//                if (ringSelection == 0) {
-//                    if (cm.haveItem(4011007, 1) && cm.haveItem(4021007, 1) && cm.getPlayer().getMeso() >= 3000000) {
-//                        cm.gainItem(4011007, -1);
-//                        cm.gainItem(4021007, -1);
-//                        cm.gainMeso(-3000000);
-//                        cm.gainItem(2240000, 1);
-//                        cm.sendOk("Here's the ring as promised! Have fun!");
-//                        cm.getPlayer().setMarriageQuestLevel(50);
-//                        cm.dispose();
-//                    } else {
-//                        cm.sendNext("You did not get all the right materials. To make an engagement ring, I need one of the following:\r\n\r\n#e#dMoonstone Ring:#k\r\n#v4011007#Moon Rock 1,#v4021007#Diamond 1, 3,000,000 Meso\r\n#dStar Gem Ring:#k\r\n#v4021009#Star Rock 1,#v4021007#Diamond 1, 2,000,000 Meso\r\n#dGolden Heart Ring:#k\r\n#v4011006#Gold Plate 1,#v4021007#Diamond 1, 1,000,000 Meso\r\n#dSilver Swan Ring:#k\r\n#v4011004#Silver Plate 1,#v4021007#Diamond 1, 500,000 Meso\r\n");
-//                        cm.dispose();
-//                    }
-//                } else if (ringSelection == 1) {
-//                    if (cm.haveItem(4021009, 1) && cm.haveItem(4021007, 1) && cm.getPlayer().getMeso() >= 2000000) {
-//                        cm.gainItem(4021009, -1);
-//                        cm.gainItem(4021007, -1);
-//                        cm.gainMeso(-2000000);
-//                        cm.gainItem(2240001, 1);
-//                        cm.sendOk("Here's the ring as promised! Have fun!");
-//                        cm.getPlayer().setMarriageQuestLevel(50);
-//                        cm.dispose();
-//                    } else {
-//                        cm.sendNext("You did not get all the right materials. To make an engagement ring, I need one of the following:\r\n\r\n#e#dMoonstone Ring:#k\r\n#v4011007#Moon Rock 1,#v4021007#Diamond 1, 3,000,000 Meso\r\n#dStar Gem Ring:#k\r\n#v4021009#Star Rock 1,#v4021007#Diamond 1, 2,000,000 Meso\r\n#dGolden Heart Ring:#k\r\n#v4011006#Gold Plate 1,#v4021007#Diamond 1, 1,000,000 Meso\r\n#dSilver Swan Ring:#k\r\n#v4011004#Silver Plate 1,#v4021007#Diamond 1, 500,000 Meso\r\n");
-//                        cm.dispose();
-//                    }
-//                } else if (ringSelection == 2) {
-//                    if (cm.haveItem(4011006, 1) && cm.haveItem(4021007, 1) && cm.getPlayer().getMeso() >= 1000000) {
-//                        cm.gainItem(4011006, -1);
-//                        cm.gainItem(4021007, -1);
-//                        cm.gainMeso(-1000000);
-//                        cm.gainItem(2240002, 1);
-//                        cm.sendOk("Here's the ring as promised! Have fun!");
-//                        cm.getPlayer().setMarriageQuestLevel(50);
-//                        cm.dispose();
-//                    } else {
-//                        cm.sendNext("You did not get all the right materials. To make an engagement ring, I need one of the following:\r\n\r\n#e#dMoonstone Ring:#k\r\n#v4011007#Moon Rock 1,#v4021007#Diamond 1, 3,000,000 Meso\r\n#dStar Gem Ring:#k\r\n#v4021009#Star Rock 1,#v4021007#Diamond 1, 2,000,000 Meso\r\n#dGolden Heart Ring:#k\r\n#v4011006#Gold Plate 1,#v4021007#Diamond 1, 1,000,000 Meso\r\n#dSilver Swan Ring:#k\r\n#v4011004#Silver Plate 1,#v4021007#Diamond 1, 500,000 Meso\r\n");
-//                        cm.dispose();
-//                    }
-//                } else if (ringSelection == 3) {
-//                    if (cm.haveItem(4011004, 1) && cm.haveItem(4021007, 1) && cm.getPlayer().getMeso() >= 500000) {
-//                        cm.gainItem(4011004, -1);
-//                        cm.gainItem(4021007, -1);
-//                        cm.gainMeso(-500000);
-//                        cm.gainItem(2240003, 1);
-//                        cm.sendOk("Here's the ring as promised! Have fun!");
-//                        cm.getPlayer().setMarriageQuestLevel(50);
-//                        cm.dispose();
-//                    } else {
-//                        cm.sendNext("You did not get all the right materials. To make an engagement ring, I need one of the following:\r\n\r\n#e#dMoonstone Ring:#k\r\n#v4011007#Moon Rock 1,#v4021007#Diamond 1, 3,000,000 Meso\r\n#dStar Gem Ring:#k\r\n#v4021009#Star Rock 1,#v4021007#Diamond 1, 2,000,000 Meso\r\n#dGolden Heart Ring:#k\r\n#v4011006#Gold Plate 1,#v4021007#Diamond 1, 1,000,000 Meso\r\n#dSilver Swan Ring:#k\r\n#v4011004#Silver Plate 1,#v4021007#Diamond 1, 500,000 Meso\r\n");
-//                        cm.dispose();
-//                    }
-//                }
-//            }
-//        } else if (status == 2) {
-//            if (cm.getPlayer().getMarriageQuestLevel() == 0 && cm.getPlayer().getLevel() >= 10) {
-//                cm.getPlayer().addMarriageQuestLevel();
-//                cm.sendOk("Okay, first bring me back any four colored #bProof of Loves#k. You can get them from talking to #bNana the Love Fairy#k in any town. Also, only one of you, either the Groom or Bride will do this quest.");
-//                cm.dispose();
-//            } else if (cm.getPlayer().getMarriageQuestLevel() == 1) {
-//                for (var j = 4031367; j < 4031373; j++)
-//                    cm.removeAll(j);
-//                cm.getPlayer().addMarriageQuestLevel();
-//                cm.sendNextPrev("You need the following raw materials to make an\r\n#bEngagement Ring#k.\r\n\r\n#e#dMoonstone Ring:#k\r\n#v4011007#Moon Rock 1,#v4021007#Diamond 1, 3,000,000 Meso\r\n#dStar Gem Ring:#k\r\n#v4021009#Star Rock 1,#v4021007#Diamond 1, 2,000,000 Meso\r\n#dGolden Heart Ring:#k\r\n#v4011006#Gold Plate 1,#v4021007#Diamond 1, 1,000,000 Meso\r\n#dSilver Swan Ring:#k\r\n#v4011004#Silver Plate 1,#v4021007#Diamond 1, 500,000 Meso\r\n");
-//    cm.dispose();
-//            }
-//        }
-//    }
+var status;
+var state;
+
+var item;
+var mats;
+var matQty;
+var cost;
+
+var options;
+
+function hasProofOfLoves(player) {
+    var count = 0;
+    
+    for(var i = 4031367; i <= 4031372; i++) {
+        if(player.haveItem(i)) {
+            count++;
+        }
+    }
+    
+    return count >= 4;
+}
+
+function hasEngagementBox(player) {
+    for(var i = 2240000; i <= 2240003; i++) {
+        if(player.haveItem(i)) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+function start() {
+    status = -1;
+    action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && type > 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+
+        if(status == 0) {
+            options = ["I want to make a ring.", "I want to discard the ring box I have."];
+            cm.sendSimple("I'm #p9201000#, the #bengagement ring maker#k. How can I help you?\r\n\r\n#b" + generateSelectionMenu(options));
+        } else if(status == 1) {
+            if(selection == 0) {
+                if(!cm.isQuestCompleted(100400)) {
+                    if(!cm.isQuestStarted(100400)) {
+                        state = 0;
+                        cm.sendAcceptDecline("So you want to make a engagement ring, huh? Very well, I can provide one for you if you pass my test. Certainly you must have already seen #rNanas, the fairies of Love#k, around the Maple world. From 4 of them, collect #b4 #t4031367#'s#k and bring them here. Only then I'll accept you as a proper ring holder. Are you up to it?");
+                    } else {
+                        if(!hasProofOfLoves(cm.getPlayer())) {
+                            cm.sendOk("Please bring here #b4 #t4031367#'s#k. That's a must for me to accept you as a proper holder for the wedding ring.");
+                        } else {
+                            cm.completeQuest(100400);
+                            cm.gainExp(20000 * cm.getPlayer().getExpRate());
+
+                            for(var i = 4031367; i <= 4031372; i++) {
+                                cm.removeAll(i);
+                            }
+
+                            cm.sendOk("You brought the #t4031367#'s, good. From now on you are eligible for holding the rings I make. Talk to me again to start forging the kind of ring you want.");
+                        }
+
+                        cm.dispose();
+                    }
+                } else {
+                    if(hasEngagementBox(cm.getPlayer())) {
+                        cm.sendOk("Sorry, you already have an engagement box. I cannot provide you more than one box per time.");
+                        cm.dispose();
+                        return;
+                    }
+                    if(cm.getPlayer().getGender() != 0) {
+                        cm.sendOk("Sorry, but the ring box is currently available only for males.");
+                        cm.dispose();
+                        return;
+                    }
+
+                    state = 1;
+                    options = ["Moonstone","Star Gem","Golden Heart", "Silver Swan"];
+                    var selStr = "So, what kind of engagement ring you want me to craft?\r\n\r\n#b" + generateSelectionMenu(options);
+                    cm.sendSimple(selStr);
+                }
+            } else {
+                if(hasEngagementBox(cm.getPlayer())) {
+                    for(var i = 2240000; i <= 2240003; i++) {
+                        cm.removeAll(i);
+                    }
+                    
+                    cm.sendOk("Your ring box has been discarded.");
+                } else {
+                    cm.sendOk("You have no ring box to discard.");
+                }
+                
+                cm.dispose();
+            }
+        } else if(status == 2) {
+            if(state == 0) {
+                cm.startQuest(100400);
+                cm.sendOk("Very well, then go after these #t4031367#'s. I will be waiting here.");
+                
+                cm.dispose();
+            } else {
+                var itemSet = new Array(2240000,2240001,2240002,2240003);
+                var matSet = new Array(new Array(4011007,4021007),new Array(4021009,4021007),new Array(4011006,4021007),new Array(4011004,4021007));
+                var matQtySet = new Array(new Array(1,1),new Array(1,1),new Array(1,1),new Array(1,1));
+                var costSet = new Array (30000,20000,10000,5000);
+
+                item = itemSet[selection];
+                mats = matSet[selection];
+                matQty = matQtySet[selection];
+                cost = costSet[selection];
+
+                var prompt = "Then I'm going to craft you a #b#t" + item + "##k, is that right?";
+                prompt += " In that case, I'm going to need specific items from you in order to make it. Make sure you have room in your inventory, though!#b";
+
+                if (mats instanceof Array){
+                    for(var i = 0; i < mats.length; i++){
+                        prompt += "\r\n#i"+mats[i]+"# " + matQty[i] + " #t" + mats[i] + "#";
+                    }
+                }
+                else {
+                    prompt += "\r\n#i"+mats+"# " + matQty + " #t" + mats + "#";
+                }
+
+                if (cost > 0)
+                    prompt += "\r\n#i4031138# " + cost + " meso";
+
+                cm.sendYesNo(prompt);
+            }
+        } else if(status == 3) {
+            var complete = true;
+            var recvItem = item, recvQty = 1, qty = 1;
+
+            if(!cm.canHold(recvItem, recvQty)) {
+                cm.sendOk("Check your inventory for a free slot first.");
+                cm.dispose();
+                return;
+            }
+            else if (cm.getMeso() < cost * qty)
+            {
+                cm.sendOk("I'm sorry but there's a fee for my services. Please bring me the right amount of mesos here before trying to forge a ring.");
+                cm.dispose();
+                return;
+            }
+            else
+            {
+                if (mats instanceof Array) {
+                    for(var i = 0; complete && i < mats.length; i++)
+                        if (!cm.haveItem(mats[i], matQty[i] * qty))
+                            complete = false;
+                }
+                else if (!cm.haveItem(mats, matQty * qty))
+                    complete = false;
+            }
+
+            if (!complete)
+                cm.sendOk("Hm, it seems you're lacking some ingredients for the engagement ring. Please provide them first, will you?");
+            else {
+                if (mats instanceof Array) {
+                    for (var i = 0; i < mats.length; i++){
+                        cm.gainItem(mats[i], -matQty[i] * qty);
+                    }
+                }
+                else
+                    cm.gainItem(mats, -matQty * qty);
+
+                if (cost > 0)
+                    cm.gainMeso(-cost * qty);
+
+                cm.gainItem(recvItem, recvQty);
+                cm.sendOk("All done, the engagement ring came out just right. I wish you a happy engagement.");
+            }
+            cm.dispose();
+        }
+    }
+}
+
+function generateSelectionMenu(array) {
+    var menu = "";
+    for (var i = 0; i < array.length; i++) {
+        menu += "#L" + i + "#" + array[i] + "#l\r\n";
+    }
+    return menu;
 }

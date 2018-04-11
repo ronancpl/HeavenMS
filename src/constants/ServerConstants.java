@@ -158,6 +158,11 @@ public class ServerConstants {
     public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
     public static final int DOJO_ENERGY_ATK = 100;              //Dojo energy gain when deal attack
     public static final int DOJO_ENERGY_DMG =  20;              //Dojo energy gain when recv attack
+    
+    //Wedding Configuration
+    public static final int WEDDING_RESERVATION_DELAY = 3;      //Minimum idle slots before processing a wedding reservation.
+    public static final int WEDDING_RESERVATION_TIMEOUT = 10;   //Limit time in minutes for the couple to show up before cancelling the wedding reservation.
+    public static final int WEDDING_RESERVATION_INTERVAL = 60;  //Time between wedding starts in minutes.
 	
     //Event End Timestamp
     public static final long EVENT_END_TIMESTAMP = 1428897600000L;

@@ -54,6 +54,7 @@ import constants.GameConstants;
 import constants.ServerConstants;
 import java.util.Collections;
 import java.util.Comparator;
+import tools.packets.Wedding;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -255,6 +256,16 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.updateCouponRates();
         
         player.receivePartyMemberHP();
+        
+        if(player.getPartnerId() > 0) {
+            int partnerId = player.getPartnerId();
+            final MapleCharacter partner = c.getWorldServer().getPlayerStorage().getCharacterById(partnerId);
+            
+            if(partner != null && !partner.isAwayFromWorld()) {
+                player.announce(Wedding.OnNotifyWeddingPartnerTransfer(partnerId, partner.getMapId()));
+                partner.announce(Wedding.OnNotifyWeddingPartnerTransfer(player.getId(), player.getMapId()));
+            }
+        }
     }
     
     private static void showDueyNotification(MapleClient c, MapleCharacter player) {

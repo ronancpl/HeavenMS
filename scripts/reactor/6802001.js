@@ -20,8 +20,5 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function act(){
-    for (var i = 0; i < 5; i++)
-        rm.spawnMonster(9400506);
-    for (var j = 0; j < 7; j++)
-        rm.spawnMonster(9400507);
+    rm.sprayItems(true, 1, 100, 400, 15);
 }

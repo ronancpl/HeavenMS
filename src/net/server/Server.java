@@ -340,9 +340,10 @@ public class Server implements Runnable {
                 worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
                 worlds.add(world);
                 channels.add(new HashMap<Integer, String>());
+                long bootTime = System.currentTimeMillis();
                 for (int j = 0; j < Integer.parseInt(p.getProperty("channels" + i)); j++) {
                     int channelid = j + 1;
-                    Channel channel = new Channel(i, channelid);
+                    Channel channel = new Channel(i, channelid, bootTime);
                     world.addChannel(channel);
                     channels.get(i).put(channelid, channel.getIP());
                 }

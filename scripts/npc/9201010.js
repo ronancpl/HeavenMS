@@ -29,17 +29,37 @@
 **/
 
 var status;
-
+ 
 function start() {
-    if (cm.haveItem(4000313)) {
-        cm.sendOk("You are a guest. Please continue with the wedding. I only warp out people who are here by accident.");
-        cm.dispose();
-    } else
-        cm.sendNext("I warp people out. If you are the newly wed don't click next or you will not be able to collect your prize at the end.");
+        status = -1;
+        action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-    if (mode > 1)
-        cm.warp(680000000);
-    cm.dispose();
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && type > 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+
+        if(status == 0) {
+            var eim = cm.getEventInstance();
+            if(eim == null) {
+                cm.warp(680000000,0);
+                cm.dispose();
+                return;
+            }
+
+            cm.sendYesNo("Are you sure you want to #rquit this wedding#k and return to #bAmoria#k? You will be #rskipping the bonus stages#k if you accept to quit.");
+        } else if(status == 1) {
+            cm.warp(680000000,0);
+            cm.dispose();
+        }
+    }
 }

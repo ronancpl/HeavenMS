@@ -783,6 +783,7 @@ public class MapleClient {
 	private void removePlayer() {
 		try {
                         player.setAwayFromWorld(true);
+                        player.notifyMapTransferToPartner(-1);
 			player.cancelAllBuffs(true);
 			player.cancelAllDebuffs();
                         
@@ -1294,6 +1295,7 @@ public class MapleClient {
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 player.setAwayFromWorld(true);
+                player.notifyMapTransferToPartner(-1);
 		player.cancelAllBuffs(true);
                 player.cancelBuffExpireTask();
                 player.cancelDiseaseExpireTask();

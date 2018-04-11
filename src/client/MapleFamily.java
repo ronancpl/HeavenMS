@@ -92,4 +92,8 @@ public class MapleFamily {
 	public Map<Integer, MapleFamilyEntry> getMembers() {
 		return members;
 	}
+        
+        public void broadcast(byte[] packet) {
+                // family currently not developed
+        }
 }

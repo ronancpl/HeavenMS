@@ -204,11 +204,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         Equip equip = (Equip) item;
                         if(equip.getRingId() >= 0) {
                                 MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
-                                if (ring.getItemId() > 1112012) {
-                                        chr.addFriendshipRing(ring);
-                                } else {
-                                        chr.addCrushRing(ring);
-                                }
+                                chr.addPlayerRing(ring);
                         }
                 }
             }
@@ -281,8 +277,8 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             }
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else if (action == 0x23) { //Friendship :3
-			slea.readInt(); //Birthday
-          // if (checkBirthday(c, birthday)) {
+                slea.readInt(); //Birthday
+                // if (checkBirthday(c, birthday)) {
                 int payment = slea.readByte();
                 slea.skip(3); //0s
                 int snID = slea.readInt();

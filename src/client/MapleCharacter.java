@@ -106,6 +106,7 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import tools.packets.Wedding;
 import client.autoban.AutobanManager;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -237,7 +238,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private MapleStorage storage = null;
     private MapleTrade trade = null;
     private MonsterBook monsterbook;
-    private MapleRing marriageRing;
     private CashShop cashshop;
     private Set<NewYearCardRecord> newyears = new LinkedHashSet<>();
     private SavedLocation savedLocations[];
@@ -279,8 +279,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Lock prtLock = new MonitoredReentrantLock(MonitoredLockType.PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
-    private List<MapleRing> crushRings = new ArrayList<>();
-    private List<MapleRing> friendshipRings = new ArrayList<>();
     private static String[] ariantroomleader = new String[3];
     private static int[] ariantroomslot = new int[3];
     private long portaldelay = 0, lastcombo = 0;
@@ -295,8 +293,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private List<Integer> viptrockmaps = new ArrayList<>();
     private Map<String, MapleEvents> events = new LinkedHashMap<>();
     private PartyQuest partyQuest = null;
-    private boolean loggedIn = false;
     private MapleDragon dragon = null;
+    private MapleRing marriageRing;
+    private int marriageItemid = -1;
+    private int partnerId = -1;
+    private List<MapleRing> crushRings = new ArrayList<>();
+    private List<MapleRing> friendshipRings = new ArrayList<>();
+    private boolean loggedIn = false;
     private boolean useCS;  //chaos scroll upon crafting item.
     private long npcCd;
     private long petLootCd;
@@ -498,11 +501,38 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 return ring;
             }
         }
-        if (getMarriageRing().getRingId() == id) {
-            return getMarriageRing();
+        
+        if(marriageRing != null) {
+            if (marriageRing.getRingId() == id) {
+                return marriageRing;
+            }
         }
 
         return null;
+    }
+    
+    public int getMarriageItemId() {
+        return marriageItemid;
+    }
+    
+    public void setMarriageItemId(int itemid) {
+        marriageItemid = itemid;
+    }
+    
+    public int getPartnerId() {
+        return partnerId;
+    }
+    
+    public void setPartnerId(int partnerid) {
+        partnerId = partnerid;
+    }
+    
+    public int getRelationshipId() {
+        return client.getWorldServer().getRelationshipId(id);
+    }
+    
+    public boolean isMarried() {
+        return marriageRing != null && partnerId > 0;
     }
 
     public int addDojoPointsByMap(int mapid) {
@@ -541,6 +571,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void addFriendshipRing(MapleRing r) {
         friendshipRings.add(r);
+    }
+    
+    public void addMarriageRing(MapleRing r) {
+        marriageRing = r;
     }
 
     public void addHP(int delta) {
@@ -1286,6 +1320,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return false;
     }
     
+    public void notifyMapTransferToPartner(int mapid) {
+        if(partnerId > 0) {
+            final MapleCharacter partner = client.getWorldServer().getPlayerStorage().getCharacterById(partnerId);
+            if(partner != null && !partner.isAwayFromWorld()) {
+                partner.announce(Wedding.OnNotifyWeddingPartnerTransfer(id, mapid));
+            }
+        }
+    }
+    
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
         
@@ -1320,6 +1363,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         else {
             FilePrinter.printError(FilePrinter.MAPLE_MAP, "Character " + this.getName() + " got stuck when moving to map " + map.getId() + ".");
         }
+        
+        notifyMapTransferToPartner(map.getId());
         
         //alas, new map has been specified when a warping was being processed...
         if(newWarpMap != -1) {
@@ -3913,7 +3958,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public MapleRing getMarriageRing() {
-        return marriageRing;
+        return partnerId > 0 ? marriageRing : null;
     }
 
     public int getMarried() {
@@ -5275,6 +5320,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }    
     }
 
+    public void addPlayerRing(MapleRing ring) {
+        int ringItemId = ring.getItemId();
+        if (ItemConstants.isWeddingRing(ringItemId)) {
+            this.addMarriageRing(ring);
+        } else if (ring.getItemId() > 1112012) {
+            this.addFriendshipRing(ring);
+        } else {
+            this.addCrushRing(ring);
+        }
+    }
+    
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
         try {
             MapleCharacter ret = new MapleCharacter();
@@ -5374,13 +5430,21 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         if (item.getRight().equals(MapleInventoryType.EQUIPPED)) {
                             ring.equip();
                         }
-                        if (ring.getItemId() > 1112012) {
-                            ret.addFriendshipRing(ring);
-                        } else {
-                            ret.addCrushRing(ring);
-                        }
+                        
+                        ret.addPlayerRing(ring);
                     }
                 }
+            }
+            
+            World wserv = Server.getInstance().getWorld(ret.world);
+            
+            ret.partnerId = rs.getInt("partnerId");
+            ret.marriageItemid = rs.getInt("marriageItemId");
+            if(ret.marriageItemid > 0 && ret.partnerId <= 0) {
+                ret.marriageItemid = -1;
+            } else if(ret.partnerId > 0 && wserv.getRelationshipId(ret.id) <= 0) {
+                ret.marriageItemid = -1;
+                ret.partnerId = -1;
             }
             
             NewYearCardRecord.loadPlayerNewYearCards(ret);
@@ -6335,7 +6399,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             if (gmLevel < 1 && level > 199) {
                 ps.setInt(1, isCygnus() ? 120 : 200);
             } else {
@@ -6437,7 +6501,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.setString(48, dataString);
             ps.setInt(49, quest_fame);
             ps.setLong(50, jailExpiration);
-            ps.setInt(51, id);
+            ps.setInt(51, partnerId);
+            ps.setInt(52, marriageItemid);
+            ps.setInt(53, id);
 
             int updateRows = ps.executeUpdate();
             if (updateRows < 1) {
@@ -7147,9 +7213,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (item == null){ //Basic check
             return(0);
         }
-        if (ItemConstants.isRechargable(item.getItemId())) {
+        
+        int itemid = item.getItemId();
+        if (ItemConstants.isRechargable(itemid)) {
             quantity = item.getQuantity();
+        } else if (ItemConstants.isWeddingToken(itemid) || ItemConstants.isWeddingRing(itemid)) {
+            return(0);
         }
+        
         if (quantity < 0) {
             return(0);
         }
@@ -8010,6 +8081,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         if(!showMsg.isEmpty()) {
             this.showHint("#ePLAYER EQUIPMENTS:#n\r\n\r\n" + showMsg, 400);
+        }
+    }
+    
+    public void broadcastMarriageMessage() {
+        MapleGuild guild = this.getGuild();
+        if(guild != null) {
+            guild.broadcast(MaplePacketCreator.marriageMessage(0, name));
+        }
+        
+        MapleFamily family = this.getFamily();
+        if(family != null) {
+            family.broadcast(MaplePacketCreator.marriageMessage(1, name));
         }
     }
 

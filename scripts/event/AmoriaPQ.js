@@ -135,8 +135,19 @@ function setup(level, lobbyid) {
         return eim;
 }
 
-function isTeamAllCouple(eim) {   // all players married each other, not implemented
-        return false;
+function isTeamAllCouple(eim) {
+        var eventPlayers = eim.getPlayers();
+    
+        for (var iterator = eventPlayers.iterator(); iterator.hasNext();) {
+                var chr = iterator.next();
+                
+                var pid = chr.getPartnerId();
+                if(pid <= 0 || eim.getPlayerById(pid) == null) {
+                        return false;
+                }
+        }
+        
+        return true;
 }
 
 function afterSetup(eim) {

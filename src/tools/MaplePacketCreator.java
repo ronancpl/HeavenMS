@@ -189,7 +189,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(0);
         }
 
-        private static void addCharLook(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr, boolean mega) {
+        protected static void addCharLook(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr, boolean mega) {
                 mplew.write(chr.getGender());
                 mplew.write(chr.getSkinColor().getId()); // skin color
                 mplew.writeInt(chr.getFace()); // face
@@ -346,15 +346,15 @@ public class MaplePacketCreator {
                 }
         }
 
-        private static void addItemInfo(final MaplePacketLittleEndianWriter mplew, Item item) {
-                addItemInfo(mplew, item, false);
-        }
-
         private static void addExpirationTime(final MaplePacketLittleEndianWriter mplew, long time) {
                 mplew.writeLong(getTime(time));
         }
 
-        private static void addItemInfo(final MaplePacketLittleEndianWriter mplew, Item item, boolean zeroPosition) {
+        private static void addItemInfo(final MaplePacketLittleEndianWriter mplew, Item item) {
+                addItemInfo(mplew, item, false);
+        }
+        
+        protected static void addItemInfo(final MaplePacketLittleEndianWriter mplew, Item item, boolean zeroPosition) {
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 boolean isCash = ii.isCash(item.getItemId());
                 boolean isPet = item.getPetId() > -1;
@@ -4367,13 +4367,27 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] sendSpouseChat(MapleCharacter wife, String msg) {
+        /*
+        public static byte[] sendSpouseChat(MapleCharacter partner, String msg) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPOUSE_CHAT.getValue());
-                mplew.writeMapleAsciiString(wife.getName());
+                mplew.writeMapleAsciiString(partner.getName());
                 mplew.writeMapleAsciiString(msg);
                 return mplew.getPacket();
         }
+        */
+        
+        public static byte[] OnCoupleMessage(String fiance, String text, boolean spouse) {
+            MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            mplew.writeShort(SendOpcode.SPOUSE_CHAT.getValue());
+            mplew.write(spouse ? 5 : 4); // v2 = CInPacket::Decode1(a1) - 4;
+            if (spouse) { // if ( v2 ) {
+                mplew.writeMapleAsciiString(fiance);
+            }
+            mplew.write(spouse ? 5 : 1);
+            mplew.writeMapleAsciiString(text);
+            return mplew.getPacket();
+        }  
 
         public static byte[] addMessengerPlayer(String from, MapleCharacter chr, int position, int channel) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -6430,49 +6444,6 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] sendEngagementRequest(String name) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.MARRIAGE_REQUEST.getValue()); //<name> has requested engagement. Will you accept this proposal?
-                mplew.write(0);
-                mplew.writeMapleAsciiString(name); // name
-                mplew.writeInt(10); // playerid
-                return mplew.getPacket();
-        }
-
-        public static byte[] sendGroomWishlist() {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.MARRIAGE_REQUEST.getValue()); //<name> has requested engagement. Will you accept this proposal?
-                mplew.write(9);
-                return mplew.getPacket();
-        }
-
-        public static byte[] sendBrideWishList(List<Item> items) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.WEDDING_GIFT_RESULT.getValue());
-                mplew.write(0x0A);
-                mplew.writeLong(-1); // ?
-                mplew.writeInt(0); // ?
-                mplew.write(items.size());
-                for (Item item : items) {
-                        addItemInfo(mplew, item, true);
-                }
-                return mplew.getPacket();
-        }
-
-        public static byte[] addItemToWeddingRegistry(MapleCharacter chr, Item item) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.WEDDING_GIFT_RESULT.getValue());
-                mplew.write(0x0B);
-                mplew.writeInt(0);
-                for (int i = 0; i < 0; i++) // f4
-                {
-                        mplew.write(0);
-                }
-
-                addItemInfo(mplew, item, true);
-                return mplew.getPacket();
-        }
-
         public static byte[] sendFamilyJoinResponse(boolean accepted, String added) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.FAMILY_JOIN_REQUEST_RESULT.getValue());
@@ -6660,7 +6631,7 @@ public class MaplePacketCreator {
         public static byte[] marriageMessage(int type, String charname) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.NOTIFY_MARRIAGE.getValue());
-                mplew.write(type);
+                mplew.write(type);  // 0: guild, 1: family
                 mplew.writeMapleAsciiString("> " + charname); //To fix the stupid packet lol
 
                 return mplew.getPacket();
@@ -6780,17 +6751,26 @@ public class MaplePacketCreator {
                         mplew.writeInt(0);
                         mplew.writeInt(ring.getItemId());
                 }
-                mplew.writeShort(chr.getMarriageRing() != null ? 1 : 0);
-                int marriageId = 30000;
-                if (chr.getMarriageRing() != null) {
-                        mplew.writeInt(marriageId);
-                        mplew.writeInt(chr.getId());
-                        mplew.writeInt(chr.getMarriageRing().getPartnerChrId());
-                        mplew.writeShort(3);
-                        mplew.writeInt(chr.getMarriageRing().getRingId());
-                        mplew.writeInt(chr.getMarriageRing().getPartnerRingId());
-                        mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getGender() == 0 ? chr.getName() : chr.getMarriageRing().getPartnerName(), '\0', 13));
-                        mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getGender() == 0 ? chr.getMarriageRing().getPartnerName() : chr.getName(), '\0', 13));
+                
+                if(chr.getPartnerId() > 0) {
+                        MapleRing marriageRing = chr.getMarriageRing();
+                    
+                        mplew.writeShort(1);
+                        mplew.writeInt(chr.getRelationshipId());
+                        mplew.writeInt(chr.getGender() == 0 ? chr.getId() : chr.getPartnerId());
+                        mplew.writeInt(chr.getGender() == 0 ? chr.getPartnerId() : chr.getId());
+                        mplew.writeShort((marriageRing != null) ? 3 : 1);
+                        if (marriageRing != null) {
+                                mplew.writeInt(marriageRing.getItemId());
+                                mplew.writeInt(marriageRing.getItemId());
+                        } else {
+                                mplew.writeInt(1112803); // Engagement Ring's Outcome (doesn't matter for engagement)
+                                mplew.writeInt(1112803); // Engagement Ring's Outcome (doesn't matter for engagement)
+                        }
+                        mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getGender() == 0 ? chr.getName() : MapleCharacter.getNameById(chr.getPartnerId()), '\0', 13));
+                        mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getGender() == 0 ? MapleCharacter.getNameById(chr.getPartnerId()) : chr.getName(), '\0', 13));
+                } else {
+                        mplew.writeShort(0);
                 }
         }
 

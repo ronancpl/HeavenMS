@@ -2434,8 +2434,6 @@ public class Commands {
 			}
                     break;
                     
-		
-                    
                 case "debugpacket":
                         player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
                         break;
@@ -2518,6 +2516,10 @@ public class Commands {
 			TimerManager tMan = TimerManager.getInstance();
 			player.dropMessage(6, "Total Task: " + tMan.getTaskCount() + " Current Task: " + tMan.getQueuedTasks() + " Active Task: " + tMan.getActiveCount() + " Completed Task: " + tMan.getCompletedTaskCount());
 			break;
+                    
+                case "debugmarriage":
+                    c.getChannelServer().debugMarriageStatus();
+                    break;
                     
                 default:
                         return false;
@@ -2726,7 +2728,7 @@ public class Commands {
                 else return true;
         }
         
-        public static boolean executeSolaxiaPlayerCommand(MapleClient c, String[] sub, char heading) {
+        public static boolean executeHeavenMsPlayerCommand(MapleClient c, String[] sub, char heading) {
 		Channel cserv = c.getChannelServer();
 		Server srv = Server.getInstance();
                 

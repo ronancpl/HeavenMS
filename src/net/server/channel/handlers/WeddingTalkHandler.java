@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,31 +17,37 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package net.server.channel.handlers;
 
-import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
+import scripting.event.EventInstanceManager;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
+import tools.packets.Wedding;
 
-public final class SpouseChatHandler extends AbstractMaplePacketHandler {
+/**
+ *
+ * @author Ronan
+ */
+public final class WeddingTalkHandler extends AbstractMaplePacketHandler {
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readMapleAsciiString();//recipient
-        String msg = slea.readMapleAsciiString();
-        
-        int partnerId = c.getPlayer().getPartnerId();
-        if (partnerId > 0) { // yay marriage
-            MapleCharacter spouse = c.getWorldServer().getPlayerStorage().getCharacterById(partnerId);
-            if (spouse != null) {
-                spouse.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
-                c.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
+        byte action = slea.readByte();
+        if(action == 1) {
+            EventInstanceManager eim = c.getPlayer().getEventInstance();
+            
+            if(eim != null && !(c.getPlayer().getId() == eim.getIntProperty("groomId") || c.getPlayer().getId() == eim.getIntProperty("brideId"))) {
+                c.announce(Wedding.OnWeddingProgress(false, 0, 0, (byte) 2));
             } else {
-                c.getPlayer().dropMessage(5, "Your spouse is currently offline.");
+                c.announce(Wedding.OnWeddingProgress(true, 0, 0, (byte) 3));
             }
         } else {
-            c.getPlayer().dropMessage(5, "You don't have a spouse.");
+            c.announce(Wedding.OnWeddingProgress(true, 0, 0, (byte) 3));
         }
+        
+        c.announce(MaplePacketCreator.enableActions());
     }
 }

@@ -32,6 +32,7 @@ import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.ServerConstants;
+import net.server.channel.handlers.RingActionHandler;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -580,10 +581,7 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, c.getPlayer());
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            }
-            
-            boolean weddingRing = source.getItemId() == 1112803 || source.getItemId() == 1112806 || source.getItemId() == 1112807 || source.getItemId() == 1112809;
-            if (weddingRing) {
+            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
             } else if (c.getPlayer().getMap().getEverlast()) {
                 if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {

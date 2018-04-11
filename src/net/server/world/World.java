@@ -31,7 +31,9 @@ import constants.ServerConstants;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,6 +60,7 @@ import server.maps.AbstractMapleMapObject;
 import net.server.worker.CharacterAutosaverWorker;
 import net.server.worker.MountTirednessWorker;
 import net.server.worker.PetFullnessWorker;
+import net.server.worker.WeddingReservationWorker;
 import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -83,10 +86,14 @@ public class World {
     private Map<Integer, MapleMessenger> messengers = new HashMap<>();
     private AtomicInteger runningMessengerId = new AtomicInteger();
     private Map<Integer, MapleFamily> families = new LinkedHashMap<>();
+    private Map<Integer, Integer> relationships = new HashMap<>();
+    private Map<Integer, Pair<Integer, Integer>> relationshipCouples = new HashMap<>();
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     
     private Set<Integer> queuedGuilds = new HashSet<>();
+    private Map<Integer, Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>>> queuedMarriages = new HashMap<>();
+    private Map<Integer, Set<Integer>> marriageGuests = new HashMap<>();
     
     private Map<Integer, MapleParty> parties = new HashMap<>();
     private AtomicInteger runningPartyId = new AtomicInteger();
@@ -113,6 +120,7 @@ public class World {
     private long merchantUpdate;
     
     private ScheduledFuture<?> charactersSchedule;
+    private ScheduledFuture<?> marriagesSchedule;
     
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate) {
         this.id = world;
@@ -128,9 +136,11 @@ public class World {
         petUpdate = System.currentTimeMillis();
         mountUpdate = petUpdate;
         
-        petsSchedule = TimerManager.getInstance().register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
-        mountsSchedule = TimerManager.getInstance().register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
-        charactersSchedule = TimerManager.getInstance().register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
+        TimerManager tman = TimerManager.getInstance();
+        petsSchedule = tman.register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
+        mountsSchedule = tman.register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
+        charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
+        marriagesSchedule = tman.register(new WeddingReservationWorker(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
     }
 
     public List<Channel> getChannels() {
@@ -369,6 +379,96 @@ public class World {
     
     public void removeGuildQueued(int guildId) {
         queuedGuilds.remove(guildId);
+    }
+    
+    public boolean isMarriageQueued(int marriageId) {
+        return queuedMarriages.containsKey(marriageId);
+    }
+    
+    public Pair<Boolean, Boolean> getMarriageQueuedLocation(int marriageId) {
+        Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>> qm = queuedMarriages.get(marriageId);
+        return (qm != null) ? qm.getLeft() : null;
+    }
+    
+    public Pair<Integer, Integer> getMarriageQueuedCouple(int marriageId) {
+        Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>> qm = queuedMarriages.get(marriageId);
+        return (qm != null) ? qm.getRight() : null;
+    }
+    
+    public void putMarriageQueued(int marriageId, boolean cathedral, boolean premium, int groomId, int brideId) {
+        queuedMarriages.put(marriageId, new Pair<>(new Pair<>(cathedral, premium), new Pair<>(groomId, brideId)));
+        marriageGuests.put(marriageId, new HashSet());
+    }
+    
+    public Pair<Boolean, Set<Integer>> removeMarriageQueued(int marriageId) {
+        Boolean type = queuedMarriages.remove(marriageId).getLeft().getRight();
+        Set<Integer> guests = marriageGuests.remove(marriageId);
+        
+        return new Pair<>(type, guests);
+    }
+    
+    public synchronized boolean addMarriageGuest(int marriageId, int playerId) {
+        Set<Integer> guests = marriageGuests.get(marriageId);
+        if(guests != null) {
+            if(guests.contains(playerId)) return false;
+            
+            guests.add(playerId);
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public Pair<Integer, Integer> getWeddingCoupleForGuest(int guestId, Boolean cathedral) {
+        for(Channel ch : channels) {
+            Pair<Integer, Integer> p = ch.getWeddingCoupleForGuest(guestId, cathedral);
+            if(p != null) {
+                return p;
+            }
+        }
+        
+        List<Integer> possibleWeddings = new LinkedList<>();
+        for(Entry<Integer, Set<Integer>> mg : new HashSet<>(marriageGuests.entrySet())) {
+            if(mg.getValue().contains(guestId)) {
+                Pair<Boolean, Boolean> loc = getMarriageQueuedLocation(mg.getKey());
+                if(loc != null && cathedral.equals(loc.getLeft())) {
+                    possibleWeddings.add(mg.getKey());
+                }
+            }
+        }
+        
+        int pwSize = possibleWeddings.size();
+        if(pwSize == 0) {
+            return null;
+        } else if(pwSize > 1) {
+            int selectedPw = -1;
+            int selectedPos = Integer.MAX_VALUE;
+            
+            for(Integer pw : possibleWeddings) {
+                for(Channel ch : channels) {
+                    int pos = ch.getWeddingReservationStatus(pw, cathedral);
+                    if(pos != -1) {
+                        if(pos < selectedPos) {
+                            selectedPos = pos;
+                            selectedPw = pw;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if(selectedPw == -1) return null;
+            
+            possibleWeddings.clear();
+            possibleWeddings.add(selectedPw);
+        }
+        
+        return getMarriageQueuedCouple(possibleWeddings.get(0));
+    }
+    
+    public void debugMarriageStatus() {
+        System.out.println("Queued marriages: " + queuedMarriages);
+        System.out.println("Guest list: " + marriageGuests);
     }
     
     public MapleParty createParty(MaplePartyCharacter chrfor) {
@@ -1028,33 +1128,160 @@ public class World {
     }
 
     public List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> getAvailableItemBundles(int itemid) {
-            List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = new ArrayList<>();
+        List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = new ArrayList<>();
 
-            for (MapleHiredMerchant hm : getActiveMerchants()) {
-                    List<MaplePlayerShopItem> itemBundles = hm.sendAvailableBundles(itemid);
-                    
-                    for(MaplePlayerShopItem mpsi : itemBundles) {
-                            hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) hm));
-                    }
+        for (MapleHiredMerchant hm : getActiveMerchants()) {
+            List<MaplePlayerShopItem> itemBundles = hm.sendAvailableBundles(itemid);
+
+            for(MaplePlayerShopItem mpsi : itemBundles) {
+                hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) hm));
+            }
+        }
+
+        for (MaplePlayerShop ps : getActivePlayerShops()) {
+            List<MaplePlayerShopItem> itemBundles = ps.sendAvailableBundles(itemid);
+
+            for(MaplePlayerShopItem mpsi : itemBundles) {
+                hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) ps));
+            }
+        }
+
+        Collections.sort(hmsAvailable, new Comparator<Pair<MaplePlayerShopItem, AbstractMapleMapObject>>() {
+            @Override
+            public int compare(Pair<MaplePlayerShopItem, AbstractMapleMapObject> p1, Pair<MaplePlayerShopItem, AbstractMapleMapObject> p2) {
+                return p1.getLeft().getPrice() - p2.getLeft().getPrice();
+            }
+        });
+
+        hmsAvailable.subList(0, Math.min(hmsAvailable.size(), 200));    //truncates the list to have up to 200 elements
+        return hmsAvailable;
+    }
+    
+    private void pushRelationshipCouple(Pair<Integer, Pair<Integer, Integer>> couple) {
+        int mid = couple.getLeft(), hid = couple.getRight().getLeft(), wid = couple.getRight().getRight();
+        relationshipCouples.put(mid, couple.getRight());
+        relationships.put(hid, mid);
+        relationships.put(wid, mid);
+    }
+    
+    public Pair<Integer, Integer> getRelationshipCouple(int relationshipId) {
+        Pair<Integer, Integer> rc = relationshipCouples.get(relationshipId);
+        
+        if(rc == null) {
+            Pair<Integer, Pair<Integer, Integer>> couple = getRelationshipCoupleFromDb(relationshipId, true);
+            if(couple == null) return null;
+            
+            pushRelationshipCouple(couple);
+            rc = couple.getRight();
+        }
+        
+        return rc;
+    }
+    
+    public int getRelationshipId(int playerId) {
+        Integer ret = relationships.get(playerId);
+        
+        if(ret == null) {
+            Pair<Integer, Pair<Integer, Integer>> couple = getRelationshipCoupleFromDb(playerId, false);
+            if(couple == null) return -1;
+            
+            pushRelationshipCouple(couple);
+            ret = couple.getLeft();
+        }
+        
+        return ret;
+    }
+    
+    private static Pair<Integer, Pair<Integer, Integer>> getRelationshipCoupleFromDb(int id, boolean usingMarriageId) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            Integer mid = null, hid = null, wid = null;
+            
+            PreparedStatement ps;
+            if(usingMarriageId) {
+                ps = con.prepareStatement("SELECT * FROM marriages WHERE marriageid = ?");
+                ps.setInt(1, id);
+            } else {
+                ps = con.prepareStatement("SELECT * FROM marriages WHERE husbandid = ? OR wifeid = ?");
+                ps.setInt(1, id);
+                ps.setInt(2, id);
             }
             
-            for (MaplePlayerShop ps : getActivePlayerShops()) {
-                    List<MaplePlayerShopItem> itemBundles = ps.sendAvailableBundles(itemid);
-                    
-                    for(MaplePlayerShopItem mpsi : itemBundles) {
-                            hmsAvailable.add(new Pair<>(mpsi, (AbstractMapleMapObject) ps));
-                    }
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                mid = rs.getInt("marriageid");
+                hid = rs.getInt("husbandid");
+                wid = rs.getInt("wifeid");
             }
+            
+            rs.close();
+            ps.close();
+            con.close();
+            
+            return (mid == null) ? null : new Pair<>(mid, new Pair<>(hid, wid));
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return null;
+        }
+    }
+    
+    public int createRelationship(int groomId, int brideId) {
+        int ret = addRelationshipToDb(groomId, brideId);
+        
+        pushRelationshipCouple(new Pair<>(ret, new Pair<>(groomId, brideId)));
+        return ret;
+    }
+    
+    private static int addRelationshipToDb(int groomId, int brideId) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
 
-            Collections.sort(hmsAvailable, new Comparator<Pair<MaplePlayerShopItem, AbstractMapleMapObject>>() {
-                    @Override
-                    public int compare(Pair<MaplePlayerShopItem, AbstractMapleMapObject> p1, Pair<MaplePlayerShopItem, AbstractMapleMapObject> p2) {
-                            return p1.getLeft().getPrice() - p2.getLeft().getPrice();
-                    }
-            });
+            PreparedStatement ps = con.prepareStatement("INSERT INTO marriages (husbandid, wifeid) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, groomId);
+            ps.setInt(2, brideId);
+            ps.executeUpdate();
 
-            hmsAvailable.subList(0, Math.min(hmsAvailable.size(), 200));    //truncates the list to have up to 200 elements
-            return hmsAvailable;
+            ResultSet rs = ps.getGeneratedKeys();
+            rs.next();
+            int ret = rs.getInt(1);
+            
+            rs.close();
+            ps.close();
+            con.close();
+            return ret;
+        } catch (SQLException se) {
+            se.printStackTrace();
+            return -1;
+        }
+    }
+    
+    public void deleteRelationship(int playerId, int partnerId) {
+        int relationshipId = relationships.get(playerId);
+        deleteRelationshipFromDb(relationshipId);
+        
+        relationshipCouples.remove(relationshipId);
+        relationships.remove(playerId);
+        relationships.remove(partnerId);
+    }
+    
+    private static void deleteRelationshipFromDb(int playerId) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM marriages WHERE marriageid = ?");
+            ps.setInt(1, playerId);
+            ps.executeUpdate();
+            
+            ps.close();
+            con.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+    
+    public void dropMessage(int type, String message) {
+        for (MapleCharacter player : getPlayerStorage().getAllCharacters()) {
+            player.dropMessage(type, message);
+        }
     }
     
     public final void shutdown() {
