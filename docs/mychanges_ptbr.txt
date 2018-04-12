@@ -854,3 +854,9 @@ Incrementado quiz de 3rd job, agora utilizando um pool de 40 perguntas com escol
 Corrigido diseases não sendo removidas corretamente no cliente quando tentando trocar de canal/entrar Cash Shop, permitindo-as ficar no jogador infinitamente.
 Corrigido Holy Symbol atuando de forma inesperada no cenário com somente um jogador.
 Corrigido Summon Sack lv. 9 lançando mob com id inexistente.
+Corrigido NPC de guild tirando mesos do jogador sem efetuar a ação alguma caso o número máximo de jogadores tenha sido alcançado.
+
+11 - 12 Março 2018,
+Localhost melhorado: retirado caps de Matk, Mdef, Wdef, Acc e Avoid.
+Balanceado Ninja Ambush, agora dando uma quantidade de dano justificável.
+Implementado questline do Dyle.

@@ -651,6 +651,15 @@ public class Commands {
 			} 
 			break;
                     
+                case "mobhp":
+			for(MapleMonster monster : player.getMap().getMonsters()) {
+				if(monster != null && monster.getHp() > 0) {
+					player.yellowMessage(monster.getName() + " (" + monster.getId() + ") has " + monster.getHp() + " / " + monster.getMaxHp() + " HP.");
+					
+				}
+			} 
+			break;
+                    
 		case "ranks":
 			PreparedStatement ps = null;
 			ResultSet rs = null;
@@ -1327,6 +1336,30 @@ public class Commands {
                         }
                         
                         player.yellowMessage("Skills maxed out.");
+                    break;
+                    
+                case "resetskill":
+			for (MapleData skill_ : MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/" + "String.wz")).getData("Skill.img").getChildren()) {
+				try {
+					skill = SkillFactory.getSkill(Integer.parseInt(skill_.getName()));
+                                        player.changeSkillLevel(skill, (byte) 0, skill.getMaxLevel(), -1);
+				} catch (NumberFormatException nfe) {
+                                        nfe.printStackTrace();
+					break;
+				} catch (NullPointerException npe) {
+					continue;
+				}
+			}
+                        
+                        if(player.getJob().isA(MapleJob.ARAN1) || player.getJob().isA(MapleJob.LEGEND)) {
+                                skill = SkillFactory.getSkill(5001005);
+                                player.changeSkillLevel(skill, (byte) -1, -1, -1);
+                        } else {
+                                skill = SkillFactory.getSkill(21001001);
+                                player.changeSkillLevel(skill, (byte) -1, -1, -1);
+                        }
+                        
+                        player.yellowMessage("Skills reseted.");
                     break;
                     
                 case "mesos":
@@ -2394,8 +2427,8 @@ public class Commands {
                     case "cake":
                         MapleMonster monster = MapleLifeFactory.getMonster(9400606);
                         if(sub.length > 1) {
-                            int newHp = Integer.parseInt(sub[1]);
-                            if(newHp < 0) newHp = Integer.MAX_VALUE;
+                            double mobHp = Double.parseDouble(sub[1]);
+                            int newHp = (mobHp <= 0) ? Integer.MAX_VALUE : ((mobHp > Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) mobHp);
                             
                             monster.getStats().setHp(newHp);
                             monster.setStartingHp(newHp);

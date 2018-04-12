@@ -40,12 +40,18 @@ var facenew = Array();
 var colors = Array();
 
 function start() {
+    if(cm.getPlayer().gmLevel() < 2) {
+        cm.sendOk("Hey wassup?");
+        cm.dispose();
+        return;
+    }
+    
     cm.sendSimple("Hey there, I can change your look. What would you like to change?\r\n#L0#Skin#l\r\n#L1#Hair#l\r\n#L5#Female Hair#l\r\n#L2#Hair Color#l\r\n#L3#Eye#l\r\n#L6#Female Eyes#l\r\n#L4#Eye Color#l\r\n#L7#Set GM job#l");
 }
 
 function action(mode, type, selection) {
     status++;
-    if (mode != 1 || cm.getPlayer().gmLevel() < 1){
+    if (mode != 1 || cm.getPlayer().gmLevel() < 2){
         cm.dispose();
         return;
     }

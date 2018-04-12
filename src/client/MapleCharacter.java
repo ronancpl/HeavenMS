@@ -5547,6 +5547,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.close();
             ret.cashshop = new CashShop(ret.accountid, ret.id, ret.getJobType());
             ret.autoban = new AutobanManager(ret);
+            ret.marriageRing = null; //for now
             ps = con.prepareStatement("SELECT name, level FROM characters WHERE accountid = ? AND id != ? ORDER BY level DESC limit 1");
             ps.setInt(1, ret.accountid);
             ps.setInt(2, charid);

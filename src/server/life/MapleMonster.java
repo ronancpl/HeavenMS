@@ -899,7 +899,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         } else if (status.getSkill().getId() == 4121004 || status.getSkill().getId() == 4221004) { // Ninja Ambush
             final Skill skill = SkillFactory.getSkill(status.getSkill().getId());
             final byte level = from.getSkillLevel(skill);
-            final int damage = (int) ((from.getStr() + from.getLuk()) * (1.5 + (level * 0.05)) * skill.getEffect(level).getDamage());
+            final int damage = (int) ((from.getStr() + from.getLuk()) * ((3.7 * skill.getEffect(level).getDamage()) / 100));
             
             status.setValue(MonsterStatus.NINJA_AMBUSH, Integer.valueOf(damage));
             animationTime = broadcastStatusEffect(status);
@@ -1164,7 +1164,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
             if (damage > 0) {
                 damage(chr, damage, true);
-                if (type == 1 || type == 2) {
+                if (type == 1) {    // ninja ambush (type 2) is already displaying DOT
                     map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
                 }
             }

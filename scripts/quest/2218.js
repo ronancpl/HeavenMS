@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,19 +17,29 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
- * @Name         KIN
- * @Author:      Signalize
- * @NPC:         9900001
- * @Purpose:     Levels people up.
- */
-function start() {
-    if(cm.getPlayer().gmLevel() > 1) cm.sendYesNo("Do you want to level up?");
-    else cm.sendOk("Hey wassup?");
-}
 
-function action(i, am, pro) {
-    if (i > 0 && cm.getPlayer().gmLevel() > 1)
-        cm.getPlayer().levelUp(true);
-    cm.dispose();
+var status = -1;
+
+function start(mode, type, selection) {
+    if (mode == -1) {
+        qm.dispose();
+    } else {
+        if(mode == 0 && type > 0) {
+            qm.dispose();
+            return;
+        }
+        
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            qm.sendNext("Hey did you see how strange #rLakelis#k has been acting these days? We should see what's going on aabout her, her actions have been so weird lately...");
+            qm.gainExp(7000 * qm.getPlayer().getExpRate());
+            qm.forceCompleteQuest();
+            
+            qm.dispose();
+        }
+    }
 }

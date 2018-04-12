@@ -255,7 +255,8 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 (1337, 2043712, 1, 81),
 (1337, 2340000, 1, 82),
 (1337, 2040807, 1, 83),
-(1337, 2210032, 1, 84);
+(1337, 2210032, 1, 84),
+(1337, 2050004, 1, 85);
 
 # Thanks to DietStory dev team
 INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES

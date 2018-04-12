@@ -175,6 +175,7 @@ function writeSolaxiaCommandsLv2() {    //JrGM
         addCommand("setstat", "");
         addCommand("maxstat", "");
         addCommand("maxskill", "");
+        addCommand("resetskill", "");
         addCommand("mesos", "");
         addCommand("search", "");
         addCommand("jail", "");
@@ -216,6 +217,7 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("joinevent", "");
         addCommand("leaveevent", "");
         addCommand("bosshp", "");
+        addCommand("mobhp", "");
         addCommand("ranks", "");
 }
 
