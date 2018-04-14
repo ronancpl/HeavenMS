@@ -73,6 +73,10 @@ public class ServerConstants {
     public static final boolean USE_QUEST_RATE = false;             //Exp/Meso gained by quests uses fixed server exp/meso rate times quest rate as multiplier, instead of player rates.
     public static final boolean USE_MULTIPLE_SAME_EQUIP_DROP = true;//Enables multiple drops by mobs of the same equipment, number of possible drops based on the quantities provided at the drop data.
     
+    
+    //Announcement Configuration
+    public static final boolean USE_ANNOUNCE_CHANGEJOB = true;     //Automatic message sent to acquantainces when changing jobs.
+    
     //Server Rates And Experience
     public static final int EXP_RATE = 10;
     public static final int MESO_RATE = 10;
@@ -158,7 +162,7 @@ public class ServerConstants {
     public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
     public static final int DOJO_ENERGY_ATK = 100;              //Dojo energy gain when deal attack
     public static final int DOJO_ENERGY_DMG =  20;              //Dojo energy gain when recv attack
-	
+    
     //Event End Timestamp
     public static final long EVENT_END_TIMESTAMP = 1428897600000L;
 	

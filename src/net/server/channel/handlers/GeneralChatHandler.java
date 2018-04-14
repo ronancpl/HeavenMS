@@ -32,6 +32,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
+        private static boolean isCommandIssue(char heading, MapleCharacter chr) {
+                if(chr.gmLevel() > 1 && heading == '!') {
+                        return true;
+                } else {
+                        return heading == '@';
+                }
+        }
+    
 	@Override
         public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
                 String s = slea.readMapleAsciiString();
@@ -47,7 +55,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                         return;
                 }
                 char heading = s.charAt(0);
-                if (heading == '!' || heading == '@') {
+                if (isCommandIssue(heading, chr)) {
                         String[] sp = s.split(" ");
                         sp[0] = sp[0].toLowerCase().substring(1);
 

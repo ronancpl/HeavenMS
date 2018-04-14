@@ -20,9 +20,15 @@ Server files: https://github.com/ronancpl/HeavenMS
 
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
-Recommended localhost: https://hostr.co/r5QDmhlxpp8M
+Recommended localhost: https://hostr.co/fuzm4X9j7TWh
 
-* MapleSilver's starting on window-mode, with some string fixes. This is a variation of Fraysa's https://hostr.co/gJbLZITRVHmv
+* Current revision: 'n' problem fixed and removed caps for WATK, WDEF, MDEF, ACC, AVOID.
+
+  * 'n' problem fixed https://hostr.co/r5QDmhlxpp8M
+
+  * Fraysa's https://hostr.co/gJbLZITRVHmv
+
+  * MapleSilver's starting on window-mode
 
 ---
 ### Support us

@@ -118,6 +118,7 @@ External tools:
 
 * MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
 * MapleBossHpBarFetcher - Searches the quest WZ files and reports in all relevant data regarding mobs that has a boss HP bar whilst not having a proper "boss" label.
+* MapleCashDropFetcher - Searches the DB for any CASH drop data entry and lists them on a report file.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
@@ -139,5 +140,10 @@ Project:
 * Reviewed many Java object aspects that needed concurrency protection.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
 * ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
+
+Localhost:
+
+* Removed the 'n' problem within NPC dialog.
+* Removed caps for MATK, WDEF, MDEF, ACC and AVOID.
 
 ---------------------------

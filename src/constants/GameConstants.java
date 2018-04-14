@@ -62,26 +62,36 @@ public class GameConstants {
         330000, 340000, 350000, 360000, 370000, 380000, 390000, 400000, 410000, 420000, 430000, 440000, 450000, 460000, 470000, 480000, 490000, 500000, 510000, 520000,
         530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000, 690000, 710000, 730000, 750000, 770000, 790000, 810000, 830000, 850000, 870000, 890000, 910000};
     
-    public static int getJobMaxLevel(MapleJob job) {
-        if(job.getId() % 1000 == 0) {   // beginner
-            return 10;
-            
-        } else if(job.getId() % 100 == 0) {   // 1st job
-            return 30;
-            
+    public static int getJobBranch(MapleJob job) {
+        int jobid = job.getId();
+        
+        if(jobid % 1000 == 0) {
+            return 0;
+        } else if(jobid % 100 == 0) {
+            return 1;
         } else {
-            int jobBranch = job.getId() % 10;
-            
-            switch(jobBranch) {
-                case 0:
-                    return 70;   // 2nd job
-                    
-                case 1:
-                    return 120;   // 3rd job
-                    
-                default:
-                    return (job.getId() / 1000 == 1) ? 120 : 200;   // 4th job: cygnus is 120, rest is 200
-            }
+            return 2 + (jobid % 10);
+        }
+    }
+    
+    public static int getJobMaxLevel(MapleJob job) {
+        int jobBranch = getJobBranch(job);
+        
+        switch(jobBranch) {
+            case 0:
+                return 10;   // beginner
+                
+            case 1:
+                return 30;   // 1st job
+                
+            case 2:
+                return 70;   // 2nd job
+                
+            case 3:
+                return 120;   // 3rd job
+                
+            default:
+                return (job.getId() / 1000 == 1) ? 120 : 200;   // 4th job: cygnus is 120, rest is 200
         }
     }
     
@@ -224,5 +234,18 @@ public class GameConstants {
             return Integer.MAX_VALUE;
         }
         return mobHpVal[level];
+    }
+    
+    public static String ordinal(int i) {
+        String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        switch (i % 100) {
+            case 11:
+            case 12:
+            case 13:
+                return i + "th";
+                
+            default:
+                return i + sufixes[i % 10];
+        }
     }
 }

@@ -199,7 +199,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
-    private int married;
     private long lastfametime, lastUsedCashItem, lastHealed, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
     private boolean hidden, canDoor = true, berserk, hasMerchant, whiteChat = false;
@@ -1093,6 +1092,36 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             createDragon();
         }
+        
+        if(ServerConstants.USE_ANNOUNCE_CHANGEJOB) {
+            if(gmLevel > 1) {
+                broadcastAcquaintances(6, "[" + GameConstants.ordinal(GameConstants.getJobBranch(newJob)) + " Job] " + name + " has just become a " + newJob.name() + ".");
+            }
+        }
+    }
+    
+    public void broadcastAcquaintances(int type, String message) {
+        broadcastAcquaintances(MaplePacketCreator.serverNotice(type, message));
+    }
+    
+    public void broadcastAcquaintances(byte[] packet) {
+        buddylist.broadcast(packet, client.getWorldServer().getPlayerStorage());
+        
+        if(family != null) {
+            //family.broadcast(packet, id); not yet implemented
+        }
+        
+        MapleGuild guild = getGuild();
+        if(guild != null) {
+            guild.broadcast(packet, id);
+        }
+        
+        /*
+        if(partnerid > 0) {
+            partner.announce(packet); not yet implemented
+        }
+        */
+        announce(packet);
     }
 
     public void changeKeybinding(int key, MapleKeyBinding keybinding) {
@@ -3953,10 +3982,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public MapleRing getMarriageRing() {
         return marriageRing;
-    }
-
-    public int getMarried() {
-        return married;
     }
 
     public int getMasterLevel(Skill skill) {

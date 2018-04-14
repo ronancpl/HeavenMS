@@ -535,8 +535,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     }
                 }, getAnimationTime("die1"));
             }
-        }
-        else {  // is this even necessary?
+        } else {  // is this even necessary?
             System.out.println("[CRITICAL LOSS] toSpawn is null for " + this.getName());
         }
         

@@ -860,3 +860,10 @@ Corrigido NPC de guild tirando mesos do jogador sem efetuar a ação alguma caso
 Localhost melhorado: retirado caps de Matk, Mdef, Wdef, Acc e Avoid.
 Balanceado Ninja Ambush, agora dando uma quantidade de dano justificável.
 Implementado questline do Dyle.
+Corrigido possível exploit com sistema de quests, onde jogador podia começar e completar quaisquer quests livremente.
+Nova ferramenta: MapleCashDropFetcher. Aplicação busca por drop data de cash na DB e reporta.
+
+13 Merço 2018,
+Adicionado feature de anúncio de mudança de classe.
+Adicionado drops faltando da questline Puppeteer de Aran.
+Movimentação de GM rank para alguns comandos.

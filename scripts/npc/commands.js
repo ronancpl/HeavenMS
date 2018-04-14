@@ -152,6 +152,7 @@ function writeSolaxiaCommandsLv2() {    //JrGM
         comm_cursor = comm_lv2;
         desc_cursor = desc_lv2;
 
+        addCommand("whereami", "");
         addCommand("hide", "");
         addCommand("unhide", "");
         addCommand("sp", "");
@@ -188,10 +189,13 @@ function writeSolaxiaCommandsLv1() {    //Donator
         comm_cursor = comm_lv1;
         desc_cursor = desc_lv1;
 
+        addCommand("bosshp", "");
+        addCommand("mobhp", "");
+        addCommand("whatdropsfrom", "");
+        addCommand("whodrops", "");
         addCommand("buffme", "");
         addCommand("goto", "");
         addCommand("recharge", "");
-        addCommand("whereami", "");
 }
 
 function writeSolaxiaCommandsLv0() {    //Common
@@ -204,21 +208,21 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("credits", "");
         addCommand("uptime", "");
         addCommand("gacha", "");
-        addCommand("whatdropsfrom", "");
-        addCommand("whodrops", "");
         addCommand("dispose", "");
         addCommand("equiplv", "");
         addCommand("showrates", "");
         addCommand("rates", "");
         addCommand("online", "");
         addCommand("gm", "");
-        addCommand("bug", "");
+        addCommand("reportbug", "");
 	//addCommand("points", "");
         addCommand("joinevent", "");
         addCommand("leaveevent", "");
-        addCommand("bosshp", "");
-        addCommand("mobhp", "");
         addCommand("ranks", "");
+        addCommand("str", "");
+        addCommand("int", "");
+        addCommand("luk", "");
+        addCommand("dex", "");
 }
 
 function writeSolaxiaCommands() {

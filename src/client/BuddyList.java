@@ -26,10 +26,12 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import net.server.PlayerStorage;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 
@@ -50,15 +52,22 @@ public class BuddyList {
     }
 
     public boolean contains(int characterId) {
-        return buddies.containsKey(Integer.valueOf(characterId));
+        synchronized(buddies) {
+            return buddies.containsKey(Integer.valueOf(characterId));
+        }
     }
 
     public boolean containsVisible(int characterId) {
-        BuddylistEntry ble = buddies.get(characterId);
+        BuddylistEntry ble;
+        synchronized(buddies) {
+            ble = buddies.get(characterId);
+        }
+        
         if (ble == null) {
             return false;
         }
         return ble.isVisible();
+        
     }
 
     public int getCapacity() {
@@ -70,42 +79,65 @@ public class BuddyList {
     }
 
     public BuddylistEntry get(int characterId) {
-        return buddies.get(Integer.valueOf(characterId));
+        synchronized(buddies) {
+            return buddies.get(Integer.valueOf(characterId));
+        }
     }
 
     public BuddylistEntry get(String characterName) {
         String lowerCaseName = characterName.toLowerCase();
-        for (BuddylistEntry ble : buddies.values()) {
+        for (BuddylistEntry ble : getBuddies()) {
             if (ble.getName().toLowerCase().equals(lowerCaseName)) {
                 return ble;
             }
         }
+        
         return null;
     }
 
     public void put(BuddylistEntry entry) {
-        buddies.put(Integer.valueOf(entry.getCharacterId()), entry);
+        synchronized(buddies) {
+            buddies.put(Integer.valueOf(entry.getCharacterId()), entry);
+        }
     }
 
     public void remove(int characterId) {
-        buddies.remove(Integer.valueOf(characterId));
+        synchronized(buddies) {
+            buddies.remove(Integer.valueOf(characterId));
+        }
     }
 
     public Collection<BuddylistEntry> getBuddies() {
-        return buddies.values();
+        synchronized(buddies) {
+            return Collections.unmodifiableCollection(buddies.values());
+        }
     }
 
     public boolean isFull() {
-        return buddies.size() >= capacity;
+        synchronized(buddies) {
+            return buddies.size() >= capacity;
+        }
     }
 
     public int[] getBuddyIds() {
-        int buddyIds[] = new int[buddies.size()];
-        int i = 0;
-        for (BuddylistEntry ble : buddies.values()) {
-            buddyIds[i++] = ble.getCharacterId();
+        synchronized(buddies) {
+            int buddyIds[] = new int[buddies.size()];
+            int i = 0;
+            for (BuddylistEntry ble : buddies.values()) {
+                buddyIds[i++] = ble.getCharacterId();
+            }
+            return buddyIds;
         }
-        return buddyIds;
+    }
+    
+    public void broadcast(byte[] packet, PlayerStorage pstorage) {
+        for(int bid : getBuddyIds()) {
+            MapleCharacter chr = pstorage.getCharacterById(bid);
+            
+            if(chr != null && chr.isLoggedin() && !chr.isAwayFromWorld()) {
+                chr.announce(packet);
+            }
+        }
     }
 
     public void loadFromDb(int characterId) {

@@ -61,7 +61,7 @@ public class QuestScriptManager extends AbstractScriptManager {
 				qms.put(c, qm);
 				Invocable iv = getInvocable("quest/" + questid + ".js", c);
 				if (iv == null) {
-					FilePrinter.printError(FilePrinter.QUEST_UNCODED, "Quest " + questid + " is uncoded.\r\n");
+					FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.\r\n");
 				}
 				if (iv == null || QuestScriptManager.getInstance() == null) {
 					qm.dispose();
@@ -112,6 +112,7 @@ public class QuestScriptManager extends AbstractScriptManager {
 				qms.put(c, qm);
 				Invocable iv = getInvocable("quest/" + questid + ".js", c);
 				if (iv == null) {
+                                        FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.\r\n");
 					qm.dispose();
 					return;
 				}

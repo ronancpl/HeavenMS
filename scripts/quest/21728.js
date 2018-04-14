@@ -17,15 +17,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan
-	NPC Name: 		Knocked Trash Can
-	Map(s): 		Hut in the Swamp
-	Description: 		Quest - The Run-down Huts in the Swamp
-	Quest ID: 		2214
-*/
-
-importPackage(java.util);
 
 var status = -1;
 
@@ -44,23 +35,13 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            var hourDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            if(!(hourDay >= 17 && hourDay < 20)) {
-                qm.sendNext("(Hmm, I'm searching the trash can but can't find the #t4031894# JM was talking about, maybe it's not time yet...)");
-                qm.dispose();
-                return;
+            if(qm.getQuestProgress(21728, 0) == 0) {
+                qm.sendNext("You haven't found the #rPuppeteer's cave#k yet, did you?");
+            } else {
+                qm.sendNext("Hm, so the entrance is blocked by a powerful force? I see, gimme a time to think now...");
+                qm.gainExp(200 * qm.getPlayer().getExpRate());
+                qm.forceCompleteQuest();
             }
-            
-            if(!qm.canHold(4031894, 1)) {
-                qm.sendNext("(Eh, I can't hold the #t4031894# right now, I need an ETC slot available.)");
-                qm.dispose();
-                return;
-            }
-            
-            qm.sendNext("(Ah, there is a crumbled note here... Hm, it contains details about some scheme that is about to happen, that must be what #r#p1052002##k was talking about.)");
-            qm.gainItem(4031894, 1);
-            qm.gainExp(20000 * qm.getPlayer().getExpRate());
-            qm.forceCompleteQuest();
             
             qm.dispose();
         }

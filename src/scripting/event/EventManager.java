@@ -34,6 +34,7 @@ import javax.script.Invocable;
 import javax.script.ScriptException;
 
 import constants.ServerConstants;
+import constants.GameConstants;
 import client.MapleCharacter;
 import net.server.Server;
 import net.server.world.World;
@@ -499,19 +500,6 @@ public class EventManager {
         return(MapleLifeFactory.getMonster(mid));
     }
     
-    private static String ordinal(int i) {
-        String[] sufixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
-        switch (i % 100) {
-            case 11:
-            case 12:
-            case 13:
-                return i + "th";
-                
-            default:
-                return i + sufixes[i % 10];
-        }
-    }
-    
     private void exportReadyGuild(Integer guildId) {
         MapleGuild mg = server.getGuild(guildId);
         String callout = "[Guild Quest] Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
@@ -524,7 +512,7 @@ public class EventManager {
     private void exportMovedQueueToGuild(Integer guildId, int place) {
         MapleGuild mg = server.getGuild(guildId);
         String callout = "[Guild Quest] Your guild has been registered to attend to the Sharenian Guild Quest at channel " + this.getChannelServer().getId() 
-                       + " and is currently on the " + ordinal(place) + " place on the waiting queue.";
+                       + " and is currently on the " + GameConstants.ordinal(place) + " place on the waiting queue.";
         
         mg.dropMessage(6, callout);
     }

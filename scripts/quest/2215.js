@@ -25,6 +25,8 @@
 	Quest ID: 		2215
 */
 
+importPackage(java.util);
+
 var status = -1;
 
 function end(mode, type, selection) {
@@ -42,6 +44,13 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
+            var hourDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            if(!(hourDay >= 17 && hourDay < 20)) {
+                qm.sendNext("(Hmm, I'm searching the trash can but can't find the #t4031894# JM was talking about, maybe it's not time yet...)");
+                qm.dispose();
+                return;
+            }
+            
             if(qm.getMeso() < 2000) {
                 qm.sendNext("(Oh, I don't have the combined fee amount yet.)");
                 qm.dispose();

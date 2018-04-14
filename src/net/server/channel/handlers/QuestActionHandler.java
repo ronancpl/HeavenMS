@@ -44,15 +44,21 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
             if (slea.available() >= 4) {
                 slea.readInt();
             }
-            quest.start(player, npc);
+            
+            if(quest.canStart(player, npc)) {
+                quest.start(player, npc);
+            }
         } else if (action == 2) { // Complete Quest
             int npc = slea.readInt();
             slea.readInt();
-            if (slea.available() >= 2) {
-                int selection = slea.readShort();
-                quest.complete(player, npc, selection);
-            } else {
-                quest.complete(player, npc);
+            
+            if(quest.canComplete(player, npc)) {
+                if (slea.available() >= 2) {
+                    int selection = slea.readShort();
+                    quest.complete(player, npc, selection);
+                } else {
+                    quest.complete(player, npc);
+                }
             }
         } else if (action == 3) {// forfeit quest
             quest.forfeit(player);

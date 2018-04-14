@@ -17,19 +17,10 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan
-	NPC Name: 		Knocked Trash Can
-	Map(s): 		Hut in the Swamp
-	Description: 		Quest - The Run-down Huts in the Swamp
-	Quest ID: 		2214
-*/
-
-importPackage(java.util);
 
 var status = -1;
 
-function end(mode, type, selection) {
+function start(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();
     } else {
@@ -44,23 +35,8 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            var hourDay = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            if(!(hourDay >= 17 && hourDay < 20)) {
-                qm.sendNext("(Hmm, I'm searching the trash can but can't find the #t4031894# JM was talking about, maybe it's not time yet...)");
-                qm.dispose();
-                return;
-            }
-            
-            if(!qm.canHold(4031894, 1)) {
-                qm.sendNext("(Eh, I can't hold the #t4031894# right now, I need an ETC slot available.)");
-                qm.dispose();
-                return;
-            }
-            
-            qm.sendNext("(Ah, there is a crumbled note here... Hm, it contains details about some scheme that is about to happen, that must be what #r#p1052002##k was talking about.)");
-            qm.gainItem(4031894, 1);
-            qm.gainExp(20000 * qm.getPlayer().getExpRate());
-            qm.forceCompleteQuest();
+            qm.sendNext("Okay, you should not return to #bTru#k for further details on your next steps. ... Oh wait!! I remembered something. See the #rMysterious Statue#k over there? That statue has it's origins unknwown, and there's something scribbled onto it that resembles something big, it probably is the password for the cave? #rGet the password there#k, it may help you on your journey.");
+            qm.forceStartQuest();
             
             qm.dispose();
         }
