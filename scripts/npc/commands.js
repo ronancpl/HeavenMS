@@ -8,6 +8,9 @@
 
 var status;
 
+var common_heading = "@";
+var staff_heading = "!";
+
 var comm_lv6 = [];
 var desc_lv6 = [];
 
@@ -220,9 +223,9 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("leaveevent", "");
         addCommand("ranks", "");
         addCommand("str", "");
+        addCommand("dex", "");
         addCommand("int", "");
         addCommand("luk", "");
-        addCommand("dex", "");
 }
 
 function writeSolaxiaCommands() {
@@ -262,7 +265,7 @@ function action(mode, type, selection) {
 
                         cm.sendSimple(sendStr);
                 } else if(status == 1) {
-                        var lvComm, lvDesc;
+                        var lvComm, lvDesc, lvHead = (cm.getPlayer().gmLevel() < 2) ? common_heading : staff_heading;
 
                         if(selection == 0) {
                                 lvComm = comm_lv0;
@@ -289,7 +292,7 @@ function action(mode, type, selection) {
 
                         var sendStr = "The following commands are available for #b" + levels[selection] + "#k:\r\n\r\n";
                         for(var i = 0; i < lvComm.length; i++) {
-                            sendStr += "  #L" + i + "# " + lvComm[i] + " - " + lvDesc[i];
+                            sendStr += "  #L" + i + "# " + lvHead + lvComm[i] + " - " + lvDesc[i];
                             sendStr += "#l\r\n";
                         }
 

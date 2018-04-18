@@ -594,9 +594,9 @@ public class Commands {
                     
                 // stat autoassigning command credited to HeliosMS dev team
                 case "str":
+                case "dex":
                 case "int":
                 case "luk":
-                case "dex":
                         int amount = (sub.length > 1) ? Integer.parseInt(sub[1]) : player.getRemainingAp();
                         boolean str = sub[0].equalsIgnoreCase("str");
                         boolean Int = sub[0].equalsIgnoreCase("int");
@@ -764,7 +764,7 @@ public class Commands {
                         
                 case "goto":
                         if (sub.length < 2){
-				player.yellowMessage("Syntax: !goto <map name>");
+				player.yellowMessage("Syntax: @goto <map name>");
 				break;
 			}
                     

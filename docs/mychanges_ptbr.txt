@@ -863,7 +863,9 @@ Implementado questline do Dyle.
 Corrigido possível exploit com sistema de quests, onde jogador podia começar e completar quaisquer quests livremente.
 Nova ferramenta: MapleCashDropFetcher. Aplicação busca por drop data de cash na DB e reporta.
 
-13 Merço 2018,
+13 - 14 Março 2018,
 Adicionado feature de anúncio de mudança de classe.
 Adicionado drops faltando da questline Puppeteer de Aran.
 Movimentação de GM rank para alguns comandos.
+Corrigido autoassigner inesperadamente desconectando jogadores, quando o autoassigner do cliente está sendo utilizado.
+Adicionado scripts para a questline de Full Swing de Aran.
