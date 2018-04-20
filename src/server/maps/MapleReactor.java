@@ -55,6 +55,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
     private Lock reactorLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
+    private Lock hitLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
         this.evstate = (byte)0;
@@ -138,6 +139,10 @@ public class MapleReactor extends AbstractMapleMapObject {
 
     public boolean isAlive() {
         return alive;
+    }
+    
+    public boolean isActive() {
+        return alive && stats.getType(state) != -1;
     }
 
     public void setAlive(boolean alive) {
@@ -227,69 +232,73 @@ public class MapleReactor extends AbstractMapleMapObject {
         hitReactor(false, 0, (short) 0, 0, c);
     }
     
-    public synchronized void hitReactor(boolean wHit, int charPos, short stance, int skillid, MapleClient c) {
+    public void hitReactor(boolean wHit, int charPos, short stance, int skillid, MapleClient c) {
         try {
-            if(!this.isAlive()) {
+            if(!this.isActive()) {
                 return;
             }
             
-            this.lockReactor();
-            try {
-                cancelReactorTimeout();
-                attackHit = wHit;
+            if(hitLock.tryLock()) {
+                this.lockReactor();
+                try {
+                    cancelReactorTimeout();
+                    attackHit = wHit;
 
-                if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid + " , STATE " + stats.getType(state) + " STATESIZE " + stats.getStateSize(state));
-                ReactorScriptManager.getInstance().onHit(c, this);
+                    if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Hitted REACTOR " + this.getId() + " with POS " + charPos + " , STANCE " + stance + " , SkillID " + skillid + " , STATE " + stats.getType(state) + " STATESIZE " + stats.getStateSize(state));
+                    ReactorScriptManager.getInstance().onHit(c, this);
 
-                int reactorType = stats.getType(state);
-                if (reactorType < 999 && reactorType != -1) {//type 2 = only hit from right (kerning swamp plants), 00 is air left 02 is ground left
-                    if (!(reactorType == 2 && (stance == 0 || stance == 2))) { //get next state
-                        for (byte b = 0; b < stats.getStateSize(state); b++) {//YAY?
-                            List<Integer> activeSkills = stats.getActiveSkills(state, b);
-                            if (activeSkills != null) {
-                                if (!activeSkills.contains(skillid)) continue;
-                            }
-                            state = stats.getNextState(state, b);
-                            if (stats.getNextState(state, b) == -1) {//end of reactor
-                                if (reactorType < 100) {//reactor broken
-                                    if (delay > 0) {
-                                        map.destroyReactor(getObjectId());
-                                    } else {//trigger as normal
+                    int reactorType = stats.getType(state);
+                    if (reactorType < 999 && reactorType != -1) {//type 2 = only hit from right (kerning swamp plants), 00 is air left 02 is ground left
+                        if (!(reactorType == 2 && (stance == 0 || stance == 2))) { //get next state
+                            for (byte b = 0; b < stats.getStateSize(state); b++) {//YAY?
+                                List<Integer> activeSkills = stats.getActiveSkills(state, b);
+                                if (activeSkills != null) {
+                                    if (!activeSkills.contains(skillid)) continue;
+                                }
+                                state = stats.getNextState(state, b);
+                                if (stats.getNextState(state, b) == -1) {//end of reactor
+                                    if (reactorType < 100) {//reactor broken
+                                        if (delay > 0) {
+                                            map.destroyReactor(getObjectId());
+                                        } else {//trigger as normal
+                                            map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
+                                        }
+                                    } else {//item-triggered on final step
                                         map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
                                     }
-                                } else {//item-triggered on final step
-                                    map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
-                                }
 
-                                ReactorScriptManager.getInstance().act(c, this);
-                            } else { //reactor not broken yet
-                                map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
-                                if (state == stats.getNextState(state, b)) {//current state = next state, looping reactor
                                     ReactorScriptManager.getInstance().act(c, this);
-                                }
+                                } else { //reactor not broken yet
+                                    map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
+                                    if (state == stats.getNextState(state, b)) {//current state = next state, looping reactor
+                                        ReactorScriptManager.getInstance().act(c, this);
+                                    }
 
-                                setShouldCollect(true);     // refresh collectability on item drop-based reactors
-                                refreshReactorTimeout();
-                                if(stats.getType(state) == 100) {
-                                    map.searchItemReactors(this);
+                                    setShouldCollect(true);     // refresh collectability on item drop-based reactors
+                                    refreshReactorTimeout();
+                                    if(stats.getType(state) == 100) {
+                                        map.searchItemReactors(this);
+                                    }
                                 }
+                                break;
                             }
-                            break;
+                        }
+                    } else {
+                        state++;
+                        map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
+                        ReactorScriptManager.getInstance().act(c, this);
+
+                        setShouldCollect(true);
+                        refreshReactorTimeout();
+                        if(stats.getType(state) == 100) {
+                            map.searchItemReactors(this);
                         }
                     }
-                } else {
-                    state++;
-                    map.broadcastMessage(MaplePacketCreator.triggerReactor(this, stance));
-                    ReactorScriptManager.getInstance().act(c, this);
-
-                    setShouldCollect(true);
-                    refreshReactorTimeout();
-                    if(stats.getType(state) == 100) {
-                        map.searchItemReactors(this);
-                    }
+                } finally {
+                    this.unlockReactor();
                 }
-            } finally {
-                this.unlockReactor();
+                
+                hitLock.unlock();
             }
         } catch(Exception e) {
             e.printStackTrace();

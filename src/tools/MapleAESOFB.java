@@ -33,6 +33,9 @@ public class MapleAESOFB {
     private byte iv[];
     private Cipher cipher;
     private short mapleVersion;
+    private final static SecretKeySpec skey = new SecretKeySpec(
+        new byte[]{0x13, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00, (byte) 0xB4, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00, 0x52, 0x00, 0x00, 0x00}, "AES");
+
     private static final byte[] funnyBytes = new byte[]{(byte) 0xEC, (byte) 0x3F, (byte) 0x77, (byte) 0xA4, (byte) 0x45, (byte) 0xD0, (byte) 0x71, (byte) 0xBF, (byte) 0xB7, (byte) 0x98, (byte) 0x20, (byte) 0xFC,
         (byte) 0x4B, (byte) 0xE9, (byte) 0xB3, (byte) 0xE1, (byte) 0x5C, (byte) 0x22, (byte) 0xF7, (byte) 0x0C, (byte) 0x44, (byte) 0x1B, (byte) 0x81, (byte) 0xBD, (byte) 0x63, (byte) 0x8D, (byte) 0xD4, (byte) 0xC3,
         (byte) 0xF2, (byte) 0x10, (byte) 0x19, (byte) 0xE0, (byte) 0xFB, (byte) 0xA1, (byte) 0x6E, (byte) 0x66, (byte) 0xEA, (byte) 0xAE, (byte) 0xD6, (byte) 0xCE, (byte) 0x06, (byte) 0x18, (byte) 0x4E, (byte) 0xEB,
@@ -51,19 +54,16 @@ public class MapleAESOFB {
         (byte) 0xD3, (byte) 0xAB, (byte) 0x91, (byte) 0xB9, (byte) 0x84, (byte) 0x7F, (byte) 0x61, (byte) 0x1E, (byte) 0xCF, (byte) 0xC5, (byte) 0xD1, (byte) 0x56, (byte) 0x3D, (byte) 0xCA, (byte) 0xF4, (byte) 0x05,
         (byte) 0xC6, (byte) 0xE5, (byte) 0x08, (byte) 0x49};
 
-    public MapleAESOFB(byte key[], byte iv[], short mapleVersion) {
-        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+    public MapleAESOFB(byte iv[], short mapleVersion) {
         try {
             cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, skey);
         } catch (NoSuchAlgorithmException e) {
             System.out.println("ERROR " + e);
         } catch (NoSuchPaddingException e) {
             System.out.println("ERROR " + e);
-        }
-        try {
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
+            System.out.println("Error initalizing the encryption cipher.  Make sure you're using the Unlimited Strength cryptography jar files.");
         }
         this.setIv(iv);
         this.mapleVersion = (short) (((mapleVersion >> 8) & 0xFF) | ((mapleVersion << 8) & 0xFF00));

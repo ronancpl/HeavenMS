@@ -41,7 +41,7 @@ public final class ReactorHitHandler extends AbstractMaplePacketHandler {
         slea.skip(4);
         int skillid = slea.readInt();
         MapleReactor reactor = c.getPlayer().getMap().getReactorByOid(oid);
-        if (reactor != null && reactor.isAlive()) {
+        if (reactor != null) {
             reactor.hitReactor(true, charPos, stance, skillid, c);
         }
     }

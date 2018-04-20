@@ -29,6 +29,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import com.mysql.jdbc.Statement;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -192,7 +193,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             if (c.getPlayer().getMeso() >= price) {
                 if (canBuy(c, newItem)) {
                     c.getPlayer().gainMeso(-price, false);
-                    announceItemSold(newItem, price);   // idea thanks to vcoc
+                    if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to vcoc
                     
                     synchronized (sold) {
                         sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price));

@@ -45,7 +45,7 @@ public class NPCScriptManager extends AbstractScriptManager {
     private Map<MapleClient, Invocable> scripts = new HashMap<>();
     private static NPCScriptManager instance = new NPCScriptManager();
 
-    public synchronized static NPCScriptManager getInstance() {
+    public static NPCScriptManager getInstance() {
         return instance;
     }
 
@@ -140,8 +140,9 @@ public class NPCScriptManager extends AbstractScriptManager {
     }
 
     public void dispose(MapleClient c) {
-        if (cms.get(c) != null) {
-            dispose(cms.get(c));
+        NPCConversationManager cm = cms.get(c);
+        if (cm != null) {
+            dispose(cm);
         }
     }
 

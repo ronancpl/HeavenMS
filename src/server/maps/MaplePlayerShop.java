@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ServerConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -35,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import net.SendOpcode;
-import net.server.Server;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
@@ -216,7 +216,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                         if (canBuy(c, newItem)) {
                             c.getPlayer().gainMeso(-price, false);
                             
-                            announceItemSold(newItem, price);   // idea thanks to vcoc
+                            if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to vcoc
                             owner.gainMeso(price, true);
                             
                             pItem.setBundles((short) (pItem.getBundles() - quantity));

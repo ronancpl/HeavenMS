@@ -17,9 +17,9 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
         String pic = slea.readMapleAsciiString();
         int charId = slea.readInt();
         String macs = slea.readMapleAsciiString();
-		String hwid = slea.readMapleAsciiString();
+        String hwid = slea.readMapleAsciiString();
         c.updateMacs(macs);
-		c.updateHWID(hwid);
+        c.updateHWID(hwid);
 
         if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);

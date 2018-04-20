@@ -102,7 +102,9 @@ function afterSetup(eim) {}
 function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
-        var map = eim.getMapInstance(entryMap);
+        var rand = Math.floor(Math.random() * 15);
+    
+        var map = eim.getMapInstance(entryMap + rand);
         player.changeMap(map, map.getPortal(0));
 }
 

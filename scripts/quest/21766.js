@@ -9,7 +9,7 @@ function start(mode, type, selection) {
 	} else if (status == 2) {
 		qm.sendNext("I have a feeling there is a secret behind that wooden box. Could you stealthily look into the wooden box next to #p20000#?");
 	} else if (status == 3) {
-		qm.sendNext("You know where #p20000# is, right? Hes to the right. Just keep going until you see where Vikin is, then head down past the hanging shark and octopus, and you''ll see John. The box should be right next to him.");
+		qm.sendNext("You know where #p20000# is, right? He's to the right. Just keep going until you see where Vikin is, then head down past the hanging shark and octopus, and you''ll see John. The box should be right next to him.");
 	} else {
                 qm.forceStartQuest();
 		qm.dispose();
