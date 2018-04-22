@@ -126,6 +126,7 @@ External tools:
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
 * MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
 * MapleMobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
+* MapleQuestlineFetcher - Searches the quest WZ files and reports in all questids that currently doesn't have script files.
 * MapleQuestItemCountFetcher - Searches the quest WZ files and reports in all relevant data regarding missing "count" labels on item acts at "complete quest".
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
 * MapleQuestMesoFetcher - Searches the quest WZ files and reports in all relevant data regarding missing/erroneous quest fee checks.
@@ -140,6 +141,12 @@ Project:
 * Reviewed many Java object aspects that needed concurrency protection.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
 * ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
+
+Exploits patched:
+
+* Player being given free access to any character of any account once they have authenticated their account on login phase.
+* Player being given permission to delete any character of any account once they have authenticated their account on login phase.
+* Player being able to start/complete any quest freely.
 
 Localhost:
 

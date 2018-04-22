@@ -6,7 +6,7 @@ import java.security.Permission;
 import java.security.PermissionCollection;
 import java.util.Map;
 
-public class AutoJCE{   // AutoJCE into server source thanks to Kradi-a
+public class AutoJCE{   // AutoJCE into server source thanks to Acernis dev team
 
 	/**
 	 * Credits: ntoskrnl of StackOverflow

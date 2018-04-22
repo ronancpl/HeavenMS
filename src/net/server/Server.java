@@ -42,7 +42,6 @@ import java.util.Properties;
 import java.util.Set;
 import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.ScheduledFuture;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -88,10 +87,13 @@ public class Server implements Runnable {
     private List<World> worlds = new ArrayList<>();
     private final Properties subnetInfo = new Properties();
     private static Server instance = null;
+    private final Map<Integer, Set<Integer>> accountChars = new HashMap<>();
+    private final Map<String, Integer> transitioningChars = new HashMap<>();
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
     private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
     private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
     private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
+    private final Lock lgnLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
     private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();
@@ -751,6 +753,106 @@ public class Server implements Runnable {
         return worlds;
     }
 
+    private static void loadCharacteridsFromDb(Integer accountid, Set<Integer> accChars) {
+        try {
+            try (Connection con = DatabaseConnection.getConnection()) {
+                try (PreparedStatement ps = con.prepareStatement("SELECT id FROM characters WHERE accountid = ?")) {
+                    ps.setInt(1, accountid);
+
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while(rs.next()) {
+                            accChars.add(rs.getInt("id"));
+                        }
+                    }
+                }
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+    
+    public boolean haveCharacterid(Integer accountid, Integer chrid) {
+        lgnLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            if(accChars == null) {
+                accChars = new HashSet<>(5);
+                loadCharacteridsFromDb(accountid, accChars);
+
+                accountChars.put(accountid, accChars);
+            }
+
+            return accChars.contains(chrid);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
+    public void createCharacterid(Integer accountid, Integer chrid) {
+        lgnLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            if(accChars == null) {
+                accChars = new HashSet<>(5);
+                accountChars.put(accountid, accChars);
+            }
+
+            accChars.add(chrid);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
+    public void deleteCharacterid(Integer accountid, Integer chrid) {
+        lgnLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            if(accChars != null) {
+                accChars.remove(chrid);
+            }
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
+    /*
+    public void deleteAccount(Integer accountid) { is this even a thing?
+        lgnLock.lock();
+        try {
+            accountChars.remove(accountid);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    */
+    
+    private static String getRemoteIp(InetSocketAddress isa) {
+        return isa.getAddress().getHostAddress();
+    }
+    
+    public void setCharacteridInTransition(InetSocketAddress isa, int charId) {
+        String remoteIp = getRemoteIp(isa);
+        
+        lgnLock.lock();
+        try {
+            transitioningChars.put(remoteIp, charId);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
+    public boolean validateCharacteridInTransition(InetSocketAddress isa, int charId) {
+        String remoteIp = getRemoteIp(isa);
+        
+        lgnLock.lock();
+        try {
+            Integer cid = transitioningChars.remove(remoteIp);
+            return cid != null && cid.equals(charId);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
     public void registerLoginState(MapleClient c) {
         srvLock.lock();
         try {

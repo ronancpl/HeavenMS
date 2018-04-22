@@ -64,16 +64,6 @@ Now install the Java 7 Development Kit:
 * jdk-7u79-windows-x64.exe
 * netbeans-8.0.2-javase-windows.exe -> It's a NetBeans project, use other IDE at your own risk.
 
-Overwrite whenever prompted with the JAR files under "jce_policy-7/UnlimitedJCEPolicy" in these Java folders:
-
-* C:\Program Files\Java\jre7\lib
-* C:\Program Files\Java\jre7\lib\ext
-* C:\Program Files\Java\jre7\lib\security
-* C:\Program Files\Java\jdk1.7.0_01\lib
-* C:\Program Files\Java\jdk1.7.0_01\jre\lib
-* C:\Program Files\Java\jdk1.7.0_01\jre\lib\ext
-* C:\Program Files\Java\jdk1.7.0_01\jre\lib\security
-
 Now that the tools have been installed, test if they are working.
 
 For WampServer:

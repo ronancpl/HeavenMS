@@ -53,6 +53,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ServerConstants;
+import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
@@ -71,6 +72,11 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(cid);
         boolean newcomer = false;
         if (player == null) {
+            if(!server.validateCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), cid)) {
+                c.disconnect(true, false);
+                return;
+            }
+            
             try {
                 player = MapleCharacter.loadCharFromDB(cid, c, true);
                 newcomer = true;

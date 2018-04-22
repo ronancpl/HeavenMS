@@ -63,7 +63,7 @@ public class MapleAESOFB {
         } catch (NoSuchPaddingException e) {
             System.out.println("ERROR " + e);
         } catch (InvalidKeyException e) {
-            System.out.println("Error initalizing the encryption cipher.  Make sure you're using the Unlimited Strength cryptography jar files.");
+            System.out.println("Error initializing the encryption cipher.  Make sure you're using the Unlimited Strength cryptography jar files.");
         }
         this.setIv(iv);
         this.mapleVersion = (short) (((mapleVersion >> 8) & 0xFF) | ((mapleVersion << 8) & 0xFF00));

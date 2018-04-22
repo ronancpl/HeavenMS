@@ -470,7 +470,7 @@ public class Equip extends Item {
             lvupStr += "+UPGSLOT ";
         }
         
-        showLevelupMessage(showStr, c); // thx to polaris devs !
+        showLevelupMessage(showStr, c); // thx to Polaris dev team !
         c.getPlayer().dropMessage(6, lvupStr);
         
         c.announce(MaplePacketCreator.showEquipmentLevelUp());

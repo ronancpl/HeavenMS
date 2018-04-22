@@ -1,6 +1,7 @@
 package net.server.handlers.login;
 
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 import net.AbstractMaplePacketHandler;
@@ -13,7 +14,6 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-
         String pic = slea.readMapleAsciiString();
         int charId = slea.readInt();
         String macs = slea.readMapleAsciiString();
@@ -25,11 +25,19 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
             c.getSession().close(true);
             return;
         }
+        
+        Server server = Server.getInstance();
+        if(!server.haveCharacterid(c.getAccID(), charId)) {
+            c.getSession().close(true);
+            return;
+        }
+        
         if (c.checkPic(pic)) {
-            Server.getInstance().unregisterLoginState(c);
+            server.unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+            server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
 
-            String[] socket = Server.getInstance().getIP(c.getWorld(), c.getChannel()).split(":");
+            String[] socket = server.getIP(c.getWorld(), c.getChannel()).split(":");
             try {
                 c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
             } catch (UnknownHostException | NumberFormatException e) {

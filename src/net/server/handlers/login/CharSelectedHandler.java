@@ -23,6 +23,7 @@ package net.server.handlers.login;
 
 import client.MapleClient;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
@@ -35,16 +36,26 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int charId = slea.readInt();
         String macs = slea.readMapleAsciiString();
+        String hwid = slea.readMapleAsciiString();
         c.updateMacs(macs);
-        if (c.hasBannedMac()) {
+        c.updateHWID(hwid);
+        
+        if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);
             return;
         }
 
-        Server.getInstance().unregisterLoginState(c);
-        c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+        Server server = Server.getInstance();
+        if(!server.haveCharacterid(c.getAccID(), charId)) {
+            c.getSession().close(true);
+            return;
+        }
         
-        String[] socket = Server.getInstance().getIP(c.getWorld(), c.getChannel()).split(":");
+        server.unregisterLoginState(c);
+        c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+        server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
+        
+        String[] socket = server.getIP(c.getWorld(), c.getChannel()).split(":");
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
         } catch (UnknownHostException | NumberFormatException e) {

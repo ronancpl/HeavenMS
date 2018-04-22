@@ -36,6 +36,7 @@ function end(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Oh, a letter for the #rempress#k? From the #bheroes#k?!");
+        } else {
             qm.gainExp(1000 * qm.getPlayer().getExpRate());
             qm.gainItem(4032330, -1);
             qm.forceCompleteQuest();

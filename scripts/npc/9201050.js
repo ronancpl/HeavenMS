@@ -47,7 +47,7 @@ function action(mode, type, selection) {
                     selStr += "\r\n#L" + i + "# " + info[i] + "#l";
                 cm.sendSimple(selStr);
             }
-            else if (!cm.getQuestStarted(4911)){
+            else if (!cm.isQuestStarted(4911)){
                 cm.sendNext("Good job! You've solved all of my questions about NLC. Enjoy of your trip!");
                 cm.dispose();
                 return;

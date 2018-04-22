@@ -112,17 +112,21 @@ public final class CreateCharHandler extends AbstractMaplePacketHandler {
 		}
 
 		MapleInventory equipped = newchar.getInventory(MapleInventoryType.EQUIPPED);
-
-		Item eq_top = MapleItemInformationProvider.getInstance().getEquipById(top);
+                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                
+		Item eq_top = ii.getEquipById(top);
 		eq_top.setPosition((byte) -5);
 		equipped.addFromDB(eq_top);
-		Item eq_bottom = MapleItemInformationProvider.getInstance().getEquipById(bottom);
+                
+		Item eq_bottom = ii.getEquipById(bottom);
 		eq_bottom.setPosition((byte) -6);
 		equipped.addFromDB(eq_bottom);
-		Item eq_shoes = MapleItemInformationProvider.getInstance().getEquipById(shoes);
+                
+		Item eq_shoes = ii.getEquipById(shoes);
 		eq_shoes.setPosition((byte) -7);
 		equipped.addFromDB(eq_shoes);
-		Item eq_weapon = MapleItemInformationProvider.getInstance().getEquipById(weapon);
+                
+		Item eq_weapon = ii.getEquipById(weapon);
 		eq_weapon.setPosition((byte) -11);
 		equipped.addFromDB(eq_weapon.copy());
 
@@ -131,6 +135,8 @@ public final class CreateCharHandler extends AbstractMaplePacketHandler {
 			return;
 		}
 		c.announce(MaplePacketCreator.addNewCharEntry(newchar));
-		Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
+                
+                Server.getInstance().createCharacterid(newchar.getAccountID(), newchar.getId());
+                Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
 	}
 }

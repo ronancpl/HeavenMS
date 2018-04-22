@@ -872,4 +872,8 @@ Adicionado scripts para a questline de Full Swing de Aran.
 
 19 Março 2018,
 Tentativa de correção em reactors desconectando jogadores que tentam ativá-los com ataque básico ao mesmo tempo.
-Adicionado feature de AutoJCE (créditos ao Kradi-a).
+Adicionado feature de AutoJCE (créditos aos Acernis devs).
+
+20 - 22 Março 2018,
+Resolvido exploit com login, onde qualquer um (via packet editing) podia logar livremente com personagem de outras contas.
+Nova ferramenta: MapleQuestlineFetcher. Busca nos XMLs e registra questids que ainda não possuem quest scripts.

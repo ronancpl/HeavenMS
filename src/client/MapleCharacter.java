@@ -1716,25 +1716,24 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
-            int cid = player.getId(), accId = -1, world = 0;
+            int cid = player.getId();
+            if(!Server.getInstance().haveCharacterid(senderAccId, cid)) {
+                    return false;
+            }
             
+            int accId = senderAccId, world = 0;
             Connection con = null;
             try {
                     con = DatabaseConnection.getConnection();
                     
-                    try (PreparedStatement ps = con.prepareStatement("SELECT accountid, world FROM characters WHERE id = ?")) {
+                    try (PreparedStatement ps = con.prepareStatement("SELECT world FROM characters WHERE id = ?")) {
                             ps.setInt(1, cid);
 
                             try (ResultSet rs = ps.executeQuery()) {
                                     if(rs.next()) {
-                                            accId = rs.getInt("accountid");
                                             world = rs.getInt("world");
                                     }
                             }
-                    }
-                    
-                    if(senderAccId != accId) {
-                            return false;
                     }
                     
                     try (PreparedStatement ps = con.prepareStatement("SELECT buddyid FROM buddies WHERE characterid = ?")) {
@@ -1896,6 +1895,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                     
                     con.close();
+                    Server.getInstance().deleteCharacterid(accId, cid);
                     return true;
             } catch (SQLException e) {
                     e.printStackTrace();
