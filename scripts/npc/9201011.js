@@ -192,29 +192,40 @@ function action(mode, type, selection) {
 
                         switch(state) {
                             case 0:
-                                eim.setIntProperty("weddingStage", 3);
-                                var cmPartner = partner.getClient().getAbstractPlayerInteraction();
+                                var pid = eim.getIntProperty("confirmedVows");
+                                if(pid != -1) {
+                                    if(pid == player.getId()) {
+                                        cm.sendOk("You have already confirmed your vows. All that is left is for your partner to confirm now.");
+                                    } else {
+                                        eim.setIntProperty("weddingStage", 3);
+                                        var cmPartner = partner.getClient().getAbstractPlayerInteraction();
 
-                                var playerItemId = detectPlayerItemid(player);
-                                var partnerItemId = (playerItemId % 2 == 1) ? playerItemId + 1 : playerItemId - 1;
+                                        var playerItemId = detectPlayerItemid(player);
+                                        var partnerItemId = (playerItemId % 2 == 1) ? playerItemId + 1 : playerItemId - 1;
 
-                                var marriageRingId = getRingId((playerItemId % 2 == 1) ? playerItemId : partnerItemId);
+                                        var marriageRingId = getRingId((playerItemId % 2 == 1) ? playerItemId : partnerItemId);
 
-                                cm.gainItem(playerItemId, -1);
-                                cmPartner.gainItem(partnerItemId, -1);
+                                        cm.gainItem(playerItemId, -1);
+                                        cmPartner.gainItem(partnerItemId, -1);
 
-                                RingActionHandler.giveMarriageRings(player, partner, marriageRingId);
-                                player.setMarriageItemId(marriageRingId);
-                                partner.setMarriageItemId(marriageRingId);
+                                        RingActionHandler.giveMarriageRings(player, partner, marriageRingId);
+                                        player.setMarriageItemId(marriageRingId);
+                                        partner.setMarriageItemId(marriageRingId);
 
-                                //var marriageId = eim.getIntProperty("weddingId");
-                                //player.announce(Wedding.OnMarriageResult(marriageId, player, true));
-                                //partner.announce(Wedding.OnMarriageResult(marriageId, player, true));
+                                        //var marriageId = eim.getIntProperty("weddingId");
+                                        //player.announce(Wedding.OnMarriageResult(marriageId, player, true));
+                                        //partner.announce(Wedding.OnMarriageResult(marriageId, player, true));
 
-                                giveCoupleBlessings(eim, player, partner);
+                                        giveCoupleBlessings(eim, player, partner);
 
-                                cm.getMap().dropMessage(6, "Wayne: I'll call it out right now, and it shall go on: you guys are the key of the other's lock, a lace of a pendant. That's it, snog yourselves!");
-                                eim.schedule("showMarriedMsg", 2 * 1000);
+                                        cm.getMap().dropMessage(6, "Wayne: I'll call it out right now, and it shall go on: you guys are the key of the other's lock, a lace of a pendant. That's it, snog yourselves!");
+                                        eim.schedule("showMarriedMsg", 2 * 1000);
+                                    }
+                                } else {
+                                    eim.setIntProperty("confirmedVows", player.getId());
+                                    mapobj.dropMessage(6, "Wedding Assistant: " + player.getName() + " has confirmed vows! Alright, one step away to make it official. Tighten your seatbelts!");
+                                }
+                                
                                 break;
 
                             case -1:

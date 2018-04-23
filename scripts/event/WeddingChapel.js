@@ -65,6 +65,7 @@ function setup(level, lobbyid) {
         eim.setProperty("canJoin", "1");
         eim.setProperty("groomId", "0");
         eim.setProperty("brideId", "0");
+        eim.setProperty("confirmedVows", "-1");
         
         eim.getInstanceMap(680000400).resetPQ(level);
         if(eventBoss) spawnCakeBoss(eim);
@@ -92,7 +93,7 @@ function playerEntry(eim, player) {
 
 function stopBlessings(eim) {
         var mapobj = eim.getMapInstance(entryMap + 10);
-        mapobj.dropMessage(6, "Wedding Assistant: Alright, now the couple is preparing to make it official. Tighten your seatbelts!");
+        mapobj.dropMessage(6, "Wedding Assistant: Alright people, our couple are preparing their vows to each other right now.");
         
         eim.setIntProperty("weddingStage", 2);
 }
