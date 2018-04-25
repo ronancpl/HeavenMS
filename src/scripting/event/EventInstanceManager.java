@@ -913,6 +913,21 @@ public class EventInstanceManager {
                 }
         }
         
+        public void dispatchUpdateQuestMobCount(int mobid, int mapid) {
+            Map<Integer, MapleCharacter> mapChars = getInstanceMap(mapid).getMapPlayers();
+            if(!mapChars.isEmpty()) {
+                List<MapleCharacter> eventMembers = getPlayers();
+                
+                for (MapleCharacter evChr : eventMembers) {
+                    MapleCharacter chr = mapChars.get(evChr.getId());
+
+                    if(chr != null && chr.isLoggedin() && !chr.isAwayFromWorld()) {
+                        chr.updateQuestMobCount(mobid);
+                    }
+                }
+            }
+        }
+        
         public MapleMonster getMonster(int mid) {
                 return(MapleLifeFactory.getMonster(mid));
         }

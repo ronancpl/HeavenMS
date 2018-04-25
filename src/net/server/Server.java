@@ -77,7 +77,7 @@ import server.quest.MapleQuest;
 import tools.locks.MonitoredLockType;
 import tools.AutoJCE;
 
-public class Server implements Runnable {
+public class Server {
     private static final Set<Integer> activeFly = new HashSet<>();
     private static final Map<Integer, Integer> couponRates = new HashMap<>(30);
     private static final List<Integer> activeCoupons = new LinkedList<>();
@@ -262,8 +262,7 @@ public class Server implements Runnable {
         }
     }
 
-    @Override
-    public void run() {
+    public void init() {
         Properties p = new Properties();
         try {
             p.load(new FileInputStream("world.ini"));
@@ -388,7 +387,7 @@ public class Server implements Runnable {
         System.setProperty("wzpath", "wz");
         Security.setProperty("crypto.policy", "unlimited");
         AutoJCE.removeCryptographyRestrictions();
-        Server.getInstance().run();
+        Server.getInstance().init();
     }
 
     public Properties getSubnetInfo() {
@@ -973,7 +972,7 @@ public class Server implements Runnable {
                         }
                         instance = null;
                         System.gc();
-                        getInstance().run();//DID I DO EVERYTHING?! D:
+                        getInstance().init();//DID I DO EVERYTHING?! D:
                     }
                 } finally {
                     srvLock.unlock();

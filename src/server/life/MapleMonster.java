@@ -35,7 +35,6 @@ import constants.skills.ILMage;
 import constants.skills.NightLord;
 import constants.skills.NightWalker;
 import constants.skills.Shadower;
-import constants.skills.SuperGM;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -384,7 +383,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         Collection<MapleCharacter> chrs = map.getCharacters();
-        Set<MapleCharacter> underleveled = new LinkedHashSet<>();
+        Set<MapleCharacter> underleveled = new HashSet<>();
         for (MapleCharacter mc : chrs) {
             if (expDist.containsKey(mc.getId())) {
                 boolean isKiller = (mc.getId() == killerId);
@@ -452,7 +451,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             
             attacker.gainExp(personalExp, partyExp, true, false, isKiller);
             attacker.increaseEquipExp(personalExp);
-            attacker.mobKilled(getId());
+            attacker.updateQuestMobCount(getId());
         }
     }
 
@@ -543,7 +542,29 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return looter != null ? looter : killer;
     }
     
+    private void dispatchUpdateQuestMobCount() {
+        Set<Integer> attackerChrids = takenDamage.keySet();
+        if(!attackerChrids.isEmpty()) {
+            Map<Integer, MapleCharacter> mapChars = map.getMapPlayers();
+            if(!mapChars.isEmpty()) {
+                int mobid = getId();
+                
+                for (Integer chrid : attackerChrids) {
+                    MapleCharacter chr = mapChars.get(chrid);
+
+                    if(chr != null && chr.isLoggedin() && !chr.isAwayFromWorld()) {
+                        chr.updateQuestMobCount(mobid);
+                    }
+                }
+            }
+        }
+    }
+    
     public void dispatchMonsterKilled(boolean hasKiller) {
+        if(!hasKiller) {
+            dispatchUpdateQuestMobCount();
+        }
+        
         if (getMap().getEventInstance() != null) {
             if (!this.getStats().isFriendly()) {
                 getMap().getEventInstance().monsterKilled(this, hasKiller);
@@ -569,8 +590,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    // should only really be used to determine drop owner
-    private int getHighestDamagerId() {
+    public int getHighestDamagerId() {
         int curId = 0;
         int curDmg = 0;
 

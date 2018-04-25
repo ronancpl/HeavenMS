@@ -17,17 +17,10 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan
-	NPC Name: 		Find the Crumpled Piece of Paper Again
-	Map(s): 		Hut in the Swamp
-	Description: 		Quest - The Run-down Huts in the Swamp
-	Quest ID: 		2215
-*/
 
 var status = -1;
 
-function end(mode, type, selection) {
+function start(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();
     } else {
@@ -42,30 +35,11 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            var hourDay = qm.getHourOfDay();
-            if(!(hourDay >= 17 && hourDay < 20)) {
-                qm.sendNext("(Hmm, I'm searching the trash can but can't find the #t4031894# JM was talking about, maybe it's not time yet...)");
-                qm.dispose();
-                return;
-            }
+            qm.sendNext("Thank you for defeating #rFaust#k. That will finally settle my spirit to rest.");
+        } else {
+            qm.gainFame(8);
             
-            if(qm.getMeso() < 2000) {
-                qm.sendNext("(Oh, I don't have the combined fee amount yet.)");
-                qm.dispose();
-                return;
-            }
-            
-            if(!qm.canHold(4031894, 1)) {
-                qm.sendNext("(Eh, I can't hold the #t4031894# right now, I need an ETC slot available.)");
-                qm.dispose();
-                return;
-            }
-            
-            qm.sendNext("(Alright, now I will deposit the fee there and get the paper... That's it, yea, that's done.)");
-            qm.gainItem(4031894, 1);
-            qm.gainMeso(-2000);
             qm.forceCompleteQuest();
-            
             qm.dispose();
         }
     }

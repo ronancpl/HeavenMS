@@ -264,6 +264,26 @@ public class World {
         return g;
     }
 
+    public boolean isWorldCapacityFull() {
+        return getWorldCapacityStatus() == 2;
+    }
+    
+    public int getWorldCapacityStatus() {
+        int worldCap = channels.size() * ServerConstants.CHANNEL_LOAD;
+        int num = players.getSize();
+        
+        int status;
+        if (num >= worldCap) {
+            status = 2;
+        } else if (num >= worldCap * .8) { // More than 80 percent o___o
+            status = 1;
+        } else {
+            status = 0;
+        }
+        
+        return status;
+    }
+    
     public MapleGuildSummary getGuildSummary(int gid, int wid) {
         if (gsStore.containsKey(gid)) {
             return gsStore.get(gid);

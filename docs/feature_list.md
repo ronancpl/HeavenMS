@@ -100,6 +100,7 @@ Server potentials:
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
+* Channel capacity bar functional and world servers with max capacity checks.
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).
 * Delete Character (requires ENABLE_PIC activated).

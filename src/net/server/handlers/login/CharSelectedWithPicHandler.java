@@ -33,6 +33,11 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
         }
         
         if (c.checkPic(pic)) {
+            if(c.getWorldServer().isWorldCapacityFull()) {
+                c.announce(MaplePacketCreator.getAfterLoginError(10));
+                return;
+            }
+            
             server.unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
             server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);

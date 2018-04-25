@@ -98,16 +98,22 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         boolean allowLogin = true;
         Channel cserv = c.getChannelServer();
 
+        /*  is this check really necessary?
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.LOGIN_NOTLOGGEDIN) {
-            for (String charName : c.loadCharacterNames(c.getWorld())) {
-                for (Channel ch : c.getWorldServer().getChannels()) {
-                    if (ch.isConnected(charName)) {
-                        allowLogin = false;
-                    }
+            List<String> charNames = c.loadCharacterNames(c.getWorld());
+            if(!newcomer) {
+                charNames.remove(player.getName());
+            }
+            
+            for (String charName : charNames) {
+                if(c.getWorldServer().getPlayerStorage().getCharacterByName(charName) != null) {
+                    allowLogin = false;
+                    break;
                 }
-                break;
             }
         }
+        */
+        
         if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
             c.setPlayer(null);
             c.announce(MaplePacketCreator.getAfterLoginError(7));

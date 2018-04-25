@@ -161,9 +161,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static NumberFormat nf = new DecimalFormat("#,###,###,###");
     private static MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
     private static final String LEVEL_200 = "[Congrats] %s has reached Level 200! Congratulate %s on such an amazing achievement!";
-    private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "help", "helper", "alert", "notice", "maplestory", "Solaxia", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
+    private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "help", "helper", "alert", "notice", "maplestory", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
         "nigger", "homo", "suck", "cum", "shit", "shitty", "condom", "security", "official", "rape", "nigga", "sex", "tit", "boner", "orgy", "clit", "asshole", "fatass", "bitch", "support", "gamemaster", "cock", "gaay", "gm",
-        "operate", "master", "sysop", "party", "GameMaster", "community", "message", "event", "test", "meso", "Scania", "renewal", "yata", "AsiaSoft", "henesys"};
+        "operate", "master", "sysop", "party", "GameMaster", "community", "message", "event", "test", "meso", "Scania", "yata", "AsiaSoft", "henesys"};
     
     private int world;
     private int accountid, id;
@@ -5766,17 +5766,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         announce(MaplePacketCreator.sendYellowTip(m));
     }
 
-    public void mobKilled(int id) {
+    public void updateQuestMobCount(int id) {
         // It seems nexon uses monsters that don't exist in the WZ (except string) to merge multiple mobs together for these 3 monsters.
         // We also want to run mobKilled for both since there are some quest that don't use the updated ID...
         if (id == 1110100 || id == 1110130) {
-            mobKilled(9101000);
+            updateQuestMobCount(9101000);
         } else if (id == 2230101 || id == 2230131) {
-            mobKilled(9101001);
+            updateQuestMobCount(9101001);
         } else if (id == 1140100 || id == 1140130) {
-            mobKilled(9101002);
+            updateQuestMobCount(9101002);
         }
-		int lastQuestProcessed = 0;
+        
+        int lastQuestProcessed = 0;
         try {
             synchronized (quests) {
                 for (MapleQuestStatus q : quests.values()) {

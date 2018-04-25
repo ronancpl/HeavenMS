@@ -877,3 +877,12 @@ Adicionado feature de AutoJCE (créditos aos Acernis devs).
 20 - 22 Março 2018,
 Resolvido exploit com login, onde qualquer um (via packet editing) podia logar livremente com personagem de outras contas.
 Nova ferramenta: MapleQuestlineFetcher. Busca nos XMLs e registra questids que ainda não possuem quest scripts.
+
+24 - 25 Março 2018,
+Corrigido sistema de levelup de equips desbalanceado para o cenário low-level, distribuindo uma quantidade de EXP extremamente baixa.
+Corrigido flag EQUIP_EXP_RATE atuando de forma errônea.
+Modificado sistema do chaos scroll, agora utilizando uma flag nova ao invés de reusar flag SCROLL_CHANCE_RATE.
+Otimizado PlayerStorage, agora utilizando um mapa próprio de nomes, ao invés de realizar busca exaustiva no mapa de inteiros.
+Corrigido alguns aspectos do BalrogPQ, tais como a cabeça sendo atingível antes das mãos serem derrotadas e contador de kills do boss não subindo ao derrotr o chefe.
+Corrigido barras da tela de seleção de canais na etapa de login não atuando corretamente.
+Adicionado checks de world server lotado de diversos pontos das etapas de login.

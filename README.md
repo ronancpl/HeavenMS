@@ -20,6 +20,8 @@ Server files: https://github.com/ronancpl/HeavenMS
 
 Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V4MYVJ0TWIxd05hYUk
 
+**Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
+
 Recommended localhost: https://hostr.co/fuzm4X9j7TWh
 
 * Current revision: 'n' problem fixed and removed caps for WATK, WDEF, MDEF, ACC, AVOID.

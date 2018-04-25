@@ -294,6 +294,7 @@ public class Commands {
 		gotomaps.put("herb", 251000000);
 		gotomaps.put("omega", 221000000);
 		gotomaps.put("korean", 222000000);
+                gotomaps.put("ellin", 300000000);
 		gotomaps.put("nlc", 600000000);
 		gotomaps.put("excavation", 990000000);
 		gotomaps.put("pianus", 230040420);

@@ -273,7 +273,7 @@ public class Equip extends Item {
         this.level = level;
     }
 
-    private int getStatModifier(boolean isAttribute) {
+    private static int getStatModifier(boolean isAttribute) {
         // each set of stat points grants a chance for a bonus stat point upgrade at equip level up.
         
         if(ServerConstants.USE_EQUIPMNT_LVLUP_POWER) {
@@ -286,7 +286,7 @@ public class Equip extends Item {
         }
     }
     
-    private int randomizeStatUpgrade(int top) {
+    private static int randomizeStatUpgrade(int top) {
         int limit = Math.min(top, ServerConstants.MAX_EQUIPMNT_LVLUP_STAT_UP);
         
         int poolCount = (limit * (limit + 1) / 2) + limit;
@@ -310,7 +310,7 @@ public class Equip extends Item {
         stats.add(new Pair<>(name, maxUpgrade));
     }
     
-    private void getUnitSlotUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name) {
+    private static void getUnitSlotUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name) {
         if(Math.random() < 0.1) {
             stats.add(new Pair<>(name, 1));  // 10% success on getting a slot upgrade.
         }
@@ -482,16 +482,18 @@ public class Equip extends Item {
         return (int) itemExp;
     }
     
-    private double normalizedMasteryExp(int reqLevel) {
+    private static double normalizedMasteryExp(int reqLevel) {
         // Conversion factor between mob exp and equip exp gain. Through many calculations, the expected for equipment levelup
         // from level 1 to 2 is killing about 100~200 mobs of the same level range, on a 1x EXP rate scenario.
         
         if(reqLevel >= 78) {
-            return Math.max(ServerConstants.EQUIP_EXP_RATE * (10413.648 * Math.exp(reqLevel * 0.03275)), 15);
+            return Math.max((10413.648 * Math.exp(reqLevel * 0.03275)), 15);
         } else if(reqLevel >= 38) {
-            return Math.max(ServerConstants.EQUIP_EXP_RATE * ( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);
+            return Math.max(( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);
+        } else if(reqLevel >= 18) {
+            return Math.max((  248.219 * Math.exp(reqLevel * 0.11093)), 15);
         } else {
-            return Math.max(ServerConstants.EQUIP_EXP_RATE * (  248.219 * Math.exp(reqLevel * 0.11093)), 15);
+            return Math.max(((1334.564 * Math.log(reqLevel)) - 1731.976), 15);
         }
     }
     
@@ -501,7 +503,7 @@ public class Equip extends Item {
         
         int reqLevel = ii.getEquipStats(this.getItemId()).get("reqLevel");
         
-        float masteryModifier = (float)ExpTable.getExpNeededForLevel(1) / (float)normalizedMasteryExp(reqLevel);
+        float masteryModifier = (float)(ServerConstants.EQUIP_EXP_RATE * ExpTable.getExpNeededForLevel(1)) / (float)normalizedMasteryExp(reqLevel);
         float elementModifier = (isElemental) ? 0.85f : 0.6f;
         
         float baseExpGain = gain * elementModifier * masteryModifier;
@@ -552,7 +554,7 @@ public class Equip extends Item {
         return "'" + eqpName + "' -> LV: #e#b" + itemLevel + "#k#n    " + eqpInfo + "\r\n";
     }
 
-    public final void showLevelupMessage(String msg, MapleClient c) {
+    private static void showLevelupMessage(String msg, MapleClient c) {
         c.getPlayer().showHint(msg, 300);
     }
     

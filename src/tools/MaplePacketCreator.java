@@ -773,7 +773,7 @@ public class MaplePacketCreator {
                 mplew.write(channelLoad.size());
                 for (Channel ch : channelLoad) {
                         mplew.writeMapleAsciiString(serverName + "-" + ch.getId());
-                        mplew.writeInt((ch.getConnectedClients() * 1200) / ServerConstants.CHANNEL_LOAD);
+                        mplew.writeInt(ch.getChannelCapacity());
                         mplew.write(1);
                         mplew.writeShort(ch.getId() - 1);
                 }
@@ -2582,7 +2582,7 @@ public class MaplePacketCreator {
         }
 
         /**
-         * It is important that statups is in the correct order (see decleration
+         * It is important that statups is in the correct order (see declaration
          * order in MapleBuffStat) since this method doesn't do automagical
          * reordering.
          *

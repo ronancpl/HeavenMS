@@ -37,11 +37,13 @@ public class PlayerStorage {
     private final ReadLock rlock = locks.readLock();
     private final WriteLock wlock = locks.writeLock();
     private final Map<Integer, MapleCharacter> storage = new LinkedHashMap<>();
+    private final Map<String, MapleCharacter> nameStorage = new LinkedHashMap<>();
 
     public void addPlayer(MapleCharacter chr) {
         wlock.lock();
         try {
             storage.put(chr.getId(), chr);
+            nameStorage.put(chr.getName().toLowerCase(), chr);
         } finally {
 	    wlock.unlock();
 	}
@@ -50,7 +52,10 @@ public class PlayerStorage {
     public MapleCharacter removePlayer(int chr) {
         wlock.lock();
         try {
-            return storage.remove(chr);
+            MapleCharacter mc = storage.remove(chr);
+            if(mc != null) nameStorage.remove(mc.getName().toLowerCase());
+            
+            return mc;
         } finally {
             wlock.unlock();
         }
@@ -59,11 +64,7 @@ public class PlayerStorage {
     public MapleCharacter getCharacterByName(String name) {
         rlock.lock();    
         try {
-            for (MapleCharacter chr : storage.values()) {
-                if (chr.getName().toLowerCase().equals(name.toLowerCase()))
-                    return chr;
-            }
-            return null;
+            return nameStorage.get(name.toLowerCase());
         } finally {
             rlock.unlock();
         }

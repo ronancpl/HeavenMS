@@ -194,9 +194,9 @@ public final class Channel {
     public void removePlayer(MapleCharacter chr) {
         players.removePlayer(chr.getId());
     }
-
-    public int getConnectedClients() {
-        return players.getAllCharacters().size();
+    
+    public int getChannelCapacity() {
+        return (int)(Math.ceil(((float) players.getAllCharacters().size() / ServerConstants.CHANNEL_LOAD) * 800));
     }
 
     public void broadcastPacket(final byte[] data) {

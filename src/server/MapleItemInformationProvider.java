@@ -651,7 +651,7 @@ public class MapleItemInformationProvider {
     }
     
     private void scrollEquipWithChaos(Equip nEquip, int range) {
-        if(ServerConstants.SCROLL_CHANCE_RATE > 0) {
+        if(ServerConstants.CHSCROLL_STAT_RATE > 0) {
             int temp;
             short curStr, curDex, curInt, curLuk, curWatk, curWdef, curMatk, curMdef, curAcc, curAvoid, curSpeed, curJump, curHp, curMp;
             
@@ -687,7 +687,7 @@ public class MapleItemInformationProvider {
                 curMp = Short.MIN_VALUE;
             }
             
-            for(int i = 0; i < ServerConstants.SCROLL_CHANCE_RATE; i++) {
+            for(int i = 0; i < ServerConstants.CHSCROLL_STAT_RATE; i++) {
                 if (nEquip.getStr() > 0) {
                     if(ServerConstants.USE_ENHANCED_CHSCROLL) temp = curStr + chscrollRandomizedStat(range);
                     else temp = nEquip.getStr() + chscrollRandomizedStat(range);
