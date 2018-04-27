@@ -486,7 +486,9 @@ public class Equip extends Item {
         // Conversion factor between mob exp and equip exp gain. Through many calculations, the expected for equipment levelup
         // from level 1 to 2 is killing about 100~200 mobs of the same level range, on a 1x EXP rate scenario.
         
-        if(reqLevel >= 78) {
+        if(reqLevel < 5) {
+            return 42;
+        } else if(reqLevel >= 78) {
             return Math.max((10413.648 * Math.exp(reqLevel * 0.03275)), 15);
         } else if(reqLevel >= 38) {
             return Math.max(( 4985.818 * Math.exp(reqLevel * 0.02007)), 15);

@@ -17,10 +17,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* QUEST Base
-	Quest Name
-	Extra info.
- */
 
 var status = -1;
 
@@ -39,8 +35,8 @@ function start(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
+            qm.sendNext("Ok, meet me at #b#m260020700##k for your information. To reach there, follow #reast#k from here until you reach #rMagatia#k, I will be there. Now go.");
+        } else {
             qm.forceStartQuest();
             qm.dispose();
         }
@@ -62,8 +58,14 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
+            if(qm.getMapId() == 260020000) {
+                qm.sendNext("Eh you're still here? To reach #b#m260020700##k, follow #reast#k from here until you reach #rMagatia#k, I will be there. Now go.");
+                qm.dispose();
+                return;
+            }
+            
+            qm.sendNext("Oh there you are. There're no Meerkat's nearby, so there probably is no eavesdropping around here. Very well, you must be fit to go to the #rMushroom Castle#k. Talk to me once you've got #blevel 30#k.");
+        } else {
             qm.forceCompleteQuest();
             qm.dispose();
         }

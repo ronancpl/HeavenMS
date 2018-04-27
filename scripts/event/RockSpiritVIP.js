@@ -35,7 +35,7 @@ function init() {
 }
 
 function setup() {
-    var eim = em.newInstance("VIPRockSpirit_" + em.getProperty("player"));
+    var eim = em.newInstance("RockSpiritVIP_" + em.getProperty("player"));
     respawn(eim);
     eim.startEventTimer(timer);    
 	return eim;

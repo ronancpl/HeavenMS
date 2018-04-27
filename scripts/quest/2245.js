@@ -17,10 +17,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* QUEST Base
-	Quest Name
-	Extra info.
- */
 
 var status = -1;
 
@@ -39,33 +35,24 @@ function start(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
-            qm.forceStartQuest();
-            qm.dispose();
-        }
-    }
-}
+            em = qm.getEventManager("BalrogQuest");
+            if (em == null) {
+                qm.sendOk("Sorry, but the BalrogQuest is closed.");
+                qm.dispose();
+                return;
+            }
+            
+            if (em.getProperty("noEntry") == "false") {
+                var eim = em.newInstance("BalrogQuest");
+                eim.registerPlayer(qm.getPlayer());
+                eim.startEvent();
 
-function end(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
-        
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
-            qm.forceCompleteQuest();
-            qm.dispose();
+                qm.dispose();
+            }
+            else {
+                qm.sendOk("There is currently someone in this map, come back later.");
+                qm.dispose();
+            }
         }
     }
 }

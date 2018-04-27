@@ -23,6 +23,7 @@ package server.quest;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import client.MapleCharacter;
 import client.MapleQuestStatus;
 import client.MapleQuestStatus.Status;
 import java.util.EnumMap;
+import java.util.Set;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -41,10 +43,21 @@ import tools.MaplePacketCreator;
 /**
  *
  * @author Matze
+ * @author Ronan (support for medal quests)
  */
 public class MapleQuest {
 
     private static Map<Integer, MapleQuest> quests = new HashMap<>();
+    private static Map<Short, Integer> medals = new HashMap<>();
+    
+    private static final Set<Short> exploitableQuests = new HashSet<>();
+    static {
+        exploitableQuests.add((short) 2338);
+        exploitableQuests.add((short) 3637);
+        exploitableQuests.add((short) 3714);
+        exploitableQuests.add((short) 21752);
+    }
+    
     protected short infoNumber, id;
     protected int timeLimit, timeLimit2;
     protected String infoex;
@@ -77,6 +90,9 @@ public class MapleQuest {
                 autoStart = MapleDataTool.getInt("autoStart", reqInfo, 0) == 1;
                 autoPreComplete = MapleDataTool.getInt("autoPreComplete", reqInfo, 0) == 1;
                 autoComplete = MapleDataTool.getInt("autoComplete", reqInfo, 0) == 1;
+                
+                int medalid = MapleDataTool.getInt("viewMedalItem", reqInfo, 0);
+                if(medalid != 0) medals.put(this.id, medalid);
             } else {
                 System.out.println("no data " + id);
             }
@@ -209,8 +225,13 @@ public class MapleQuest {
         return str.toString();
     }
 
+    public boolean canStartWithoutRequirements(MapleCharacter c) {
+        MapleQuestStatus mqs = c.getQuest(this);
+        return !(mqs.getStatus() != Status.NOT_STARTED && !(mqs.getStatus() == Status.COMPLETED && repeatable));
+    }
+    
     public boolean canStart(MapleCharacter c, int npcid) {
-        if (c.getQuest(this).getStatus() != Status.NOT_STARTED && !(c.getQuest(this).getStatus() == Status.COMPLETED && repeatable)) {
+        if (!canStartWithoutRequirements(c)) {
             return false;
         }
         for (MapleQuestRequirement r : startReqs.values()) {
@@ -229,7 +250,9 @@ public class MapleQuest {
             return false;
         }
         for (MapleQuestRequirement r : completeReqs.values()) {
-            if (r == null || !r.check(c, npcid)) {
+            if (r == null) {
+                return false;
+            } else if(!r.check(c, npcid)) {
                 if(r.getType() == MapleQuestRequirementType.MESO) { // TODO: find a way to tell the client about the new MESO requirement type.
                     c.dropMessage(5, "You don't have enough mesos to complete this quest.");
                 }
@@ -263,10 +286,6 @@ public class MapleQuest {
                 }
             }
 
-            if (timeLimit > 0) {
-                c.announce(MaplePacketCreator.removeQuestTimeLimit(id));
-            }
-            
             forceComplete(c, npc);
             for (MapleQuestAction a : completeActs.values()) {
                 a.run(c, selection);
@@ -308,6 +327,10 @@ public class MapleQuest {
     }
 
     public boolean forceComplete(MapleCharacter c, int npc) {
+        if (timeLimit > 0) {
+            c.announce(MaplePacketCreator.removeQuestTimeLimit(id));
+        }
+        
         MapleQuestStatus newStatus = new MapleQuestStatus(this, MapleQuestStatus.Status.COMPLETED, npc);
         newStatus.setForfeited(c.getQuest(this).getForfeited());
         newStatus.setCompletionTime(System.currentTimeMillis());
@@ -431,6 +454,12 @@ public class MapleQuest {
 			case PET:
 				ret = new PetRequirement(this, data);
 				break;
+                        case BUFF:
+				ret = new BuffRequirement(this, data);
+				break;
+                        case EXCEPT_BUFF:
+				ret = new BuffExceptRequirement(this, data);
+				break;
 			case SCRIPT:
 			case NORMAL_AUTO_START:
 			case START:
@@ -480,7 +509,16 @@ public class MapleQuest {
 		}
 		return ret;
 	}
+        
+        public static boolean isExploitableQuest(short questid) {
+                return exploitableQuests.contains(questid);
+        }
 	
+        public int getMedalRequirement() {
+                Integer medalid = medals.get(id);
+                return medalid != null ? medalid : -1;
+        }
+        
 	public static void loadAllQuest() {
 		questInfo = questData.getData("QuestInfo.img");
 		questReq = questData.getData("Check.img");

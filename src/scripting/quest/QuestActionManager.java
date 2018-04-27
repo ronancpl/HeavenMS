@@ -23,6 +23,7 @@ package scripting.quest;
 
 import client.MapleClient;
 import scripting.npc.NPCConversationManager;
+import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 
 /**
@@ -68,5 +69,10 @@ public class QuestActionManager extends NPCConversationManager {
     // For compatibility with some older scripts...
     public void completeQuest() {
         forceCompleteQuest();
+    }
+    
+    public String getMedalName() {  // usable only for medal quests (id 299XX)
+        MapleQuest q = MapleQuest.getInstance(quest);
+        return MapleItemInformationProvider.getInstance().getName(q.getMedalRequirement());
     }
 }

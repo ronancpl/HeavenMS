@@ -39,7 +39,11 @@ public class BuffAction extends MapleQuestAction {
 		super(MapleQuestActionType.BUFF, quest);
 		processData(data);
 	}
-	
+        
+        @Override
+	public boolean check(MapleCharacter chr, Integer extSelection) {
+		return true;
+	}
 	
 	@Override
 	public void processData(MapleData data) {

@@ -20,6 +20,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-	pi.playPortalSound(); pi.warp(240040611, "out00");
+        if(!pi.isQuestCompleted(3706)) {
+            pi.playPortalSound(); pi.warp(240040611, "out00");
+        } else {
+            pi.playPortalSound(); pi.warp(240040612, "out00");
+        }
+    
 	return true;
 }

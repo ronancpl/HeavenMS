@@ -1850,25 +1850,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             }
                     }
                     
-                    try (PreparedStatement ps = con.prepareStatement("SELECT queststatusid FROM queststatus WHERE characterid = ?")) {
-                            ps.setInt(1, cid);
-                            
-                            try (ResultSet rs = ps.executeQuery()) {
-                                    while (rs.next()) {
-                                            int queststatusid = rs.getInt("queststatusid");
-                                        
-                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM medalmaps WHERE queststatusid = ?")) {
-                                                    ps2.setInt(1, queststatusid);
-                                                    ps2.executeUpdate();
-                                            }
-                                            
-                                            try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM questprogress WHERE queststatusid = ?")) {
-                                                    ps2.setInt(1, queststatusid);
-                                                    ps2.executeUpdate();
-                                            }
-                                    }
-                            }
-                    }
+                    deleteQuestProgressWhereCharacterId(con, cid);
                     
                     try (PreparedStatement ps = con.prepareStatement("SELECT id FROM mts_cart WHERE cid = ?")) {
                             ps.setInt(1, cid);
@@ -1901,6 +1883,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     e.printStackTrace();
                     return false;
             }
+    }
+    
+    private static void deleteQuestProgressWhereCharacterId(Connection con, int cid) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement("SELECT queststatusid FROM queststatus WHERE characterid = ?")) {
+            ps.setInt(1, cid);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int queststatusid = rs.getInt("queststatusid");
+
+                    try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM medalmaps WHERE queststatusid = ?")) {
+                        ps2.setInt(1, queststatusid);
+                        ps2.executeUpdate();
+                    }
+
+                    try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM questprogress WHERE queststatusid = ?")) {
+                        ps2.setInt(1, queststatusid);
+                        ps2.executeUpdate();
+                    }
+                }
+            }
+        }
     }
 
     private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
@@ -2738,6 +2742,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ret.add(new Pair<>(mbs, mbsvh.value));
             }
             return ret;
+        } finally {
+            chrLock.unlock();
+            effLock.unlock();
+        }
+    }
+    
+    public boolean hasBuffFromSourceid(int sourceid) {
+        effLock.lock();
+        chrLock.lock();
+        try {
+            return buffEffects.containsKey(sourceid);
         } finally {
             chrLock.unlock();
             effLock.unlock();
@@ -5084,7 +5099,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         } else if (level == 25) {
             yellowMessage("You seem to be improving, but you are still not ready to move on to the next step.");
         } else if (level == 30) {
-            yellowMessage("You have finally reached level 30! Try job advancing, after that try the Mushroom Kingdom!");
+            yellowMessage("You have finally reached level 30! Try job advancing, after that try the Mushroom Castle!");
         } else if (level == 35) {
             yellowMessage("Hey did you hear about this mall that opened in Kerning? Try visiting the Kerning Mall.");
         } else if (level == 40) {
@@ -6644,7 +6659,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             ps.executeBatch();
             deleteWhereCharacterId(con, "DELETE FROM eventstats WHERE characterid = ?");
-            deleteWhereCharacterId(con, "DELETE FROM queststatus WHERE characterid = ?");
+            
+            deleteQuestProgressWhereCharacterId(con, id);
             ps = con.prepareStatement("INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`, `status`, `time`, `expires`, `forfeited`) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             PreparedStatement psf;
             try (PreparedStatement pse = con.prepareStatement("INSERT INTO questprogress VALUES (DEFAULT, ?, ?, ?)")) {
@@ -7556,7 +7572,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             announce(MaplePacketCreator.updateQuestInfo((short) quest.getQuest().getId(), quest.getNpc()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
             short questid = quest.getQuest().getId();
-            if(questid != 3637) {
+            if(!MapleQuest.isExploitableQuest(questid)) {
                 quest_fame += 1;
                 if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
                     fameGainByQuest();

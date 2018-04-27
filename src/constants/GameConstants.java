@@ -210,6 +210,10 @@ public class GameConstants {
         return skillId > 1111002 && skillId < 1111007 || skillId == 11111002 || skillId == 11111003;
     }
     
+    public static boolean isMedalQuest(short questid) {
+        return questid / 100 == 299;
+    }
+    
     public static boolean hasSPTable(MapleJob job) {
         switch (job) {
             case EVAN:

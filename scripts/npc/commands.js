@@ -102,6 +102,7 @@ function writeSolaxiaCommandsLv3() {    //GM
         comm_cursor = comm_lv3;
         desc_cursor = desc_lv3;
 
+        addCommand("debuff", "");
         addCommand("fly", "");
         addCommand("spawn", "");
         addCommand("mutemap", "");

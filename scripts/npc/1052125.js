@@ -57,13 +57,12 @@ function action(mode, type, selection) {
     			cm.sendOk("I did not hear anything from Blake that you are assisting him.");  
        		}
     	} else {
-    		if (cm.isQuestCompleted(2291)) {
-        		var rock = cm.getEventManager("VIPRockSpirit");
-        		rock.newInstance("VIPRockSpirit");
-        		rock.setProperty("player", cm.getPlayer().getName());
-        		rock.startInstance(cm.getPlayer());
-    			cm.dispose();
-    			return;
+    		if (cm.isQuestCompleted(2290)) {
+                        if(cm.getPlayer().getLevel() > 50) {
+                                cm.sendOk("The VIP area is available only for players #rlevel 50 or below#k.");
+                        } else {
+                                cm.sendOk("The VIP area is available via completing the #r'Admission to the VIP Zone'#k quest.");
+                        }
                 } else {
                         cm.sendOk("#rVIP#k? Yeah that is funny #rMr. VIP#k, now get lost before I call security."); 
                 }

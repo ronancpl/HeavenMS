@@ -17,10 +17,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* QUEST Base
-	Quest Name
-	Extra info.
- */
 
 var status = -1;
 
@@ -39,31 +35,17 @@ function start(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
+            if(!qm.haveItem(4001094, 1)) {
+                qm.sendNext("You don't have a #b#t4001094##k...");
+                qm.dispose();
+                return;
+            }
+            
+            qm.sendNext("You have brought a #b#t4001094##k, thank you for the effort!");
         } else if (status == 1) {
-            qm.forceStartQuest();
-            qm.dispose();
-        }
-    }
-}
-
-function end(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
-        
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
+            qm.gainItem(4001094, -1);
+            qm.gainExp(42000 * qm.getPlayer().getExpRate());
+            
             qm.forceCompleteQuest();
             qm.dispose();
         }

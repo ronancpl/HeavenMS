@@ -1,5 +1,3 @@
-importPackage(java.util);
-
 function enter(pi) {
     if(pi.isQuestStarted(2224) || pi.isQuestStarted(2226) || pi.isQuestCompleted(2227)) {
         var hourDay = pi.getHourOfDay();

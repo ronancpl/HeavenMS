@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,21 +17,28 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*	
-	Author : 		Ronan Lana
-	Description: 		Wildcard medals
-	Quest ID : 		-----
-*/
 
 var status = -1;
 
 function start(mode, type, selection) {
-	qm.forceCompleteQuest();
-	qm.dispose();
-}
-
-
-function end(mode, type, selection) {
-	qm.forceCompleteQuest();
-	qm.dispose();
+    if (mode == -1) {
+        qm.dispose();
+    } else {
+        if(mode == 0 && type > 0) {
+            qm.dispose();
+            return;
+        }
+        
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            qm.sendOk("You have regained your memories, talk to #b#p2140001##k to get the pass.");
+        } else if (status == 1) {
+            qm.forceCompleteQuest();
+            qm.dispose();
+        }
+    }
 }

@@ -17,35 +17,8 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* QUEST Base
-	Quest Name
-	Extra info.
- */
 
 var status = -1;
-
-function start(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
-        
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
-            qm.forceStartQuest();
-            qm.dispose();
-        }
-    }
-}
 
 function end(mode, type, selection) {
     if (mode == -1) {
@@ -62,8 +35,21 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
+            if(!qm.haveItem(4032521, 10)) {
+                qm.sendNext("Hey, you didn't get #b10 #t4032521##k yet, did you?");
+                qm.dispose();
+                return;
+            }
+            
+            qm.sendNext("You got the #b#i4032521##k with you, great. Let me show you the way.");
         } else if (status == 1) {
+            qm.gainItem(4032521, -10);
+            
+            var rock = qm.getEventManager("RockSpiritVIP");
+            rock.newInstance("RockSpiritVIP");
+            rock.setProperty("player", qm.getPlayer().getName());
+            rock.startInstance(qm.getPlayer());
+            
             qm.forceCompleteQuest();
             qm.dispose();
         }

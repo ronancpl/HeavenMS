@@ -1,5 +1,6 @@
 function enter(pi) {
-	if (pi.isQuestStarted(2300) || pi.isQuestCompleted(2300) ||
+	if (pi.isQuestCompleted(2260) ||
+                        pi.isQuestStarted(2300) || pi.isQuestCompleted(2300) ||
                         pi.isQuestStarted(2301) || pi.isQuestCompleted(2301) || 
 			pi.isQuestStarted(2302) || pi.isQuestCompleted(2302) || 
 			pi.isQuestStarted(2303) || pi.isQuestCompleted(2303) ||

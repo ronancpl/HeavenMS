@@ -17,10 +17,8 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* QUEST Base
-	Quest Name
-	Extra info.
- */
+
+importPackage(Packages.constants);
 
 var status = -1;
 
@@ -39,8 +37,8 @@ function start(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
+            qm.sendNext("Once you've got #b2nd job advancement#k, I'll tell you about the #bMushroom Castle#k.");
+        } else {
             qm.forceStartQuest();
             qm.dispose();
         }
@@ -62,8 +60,14 @@ function end(mode, type, selection) {
             status--;
         
         if (status == 0) {
-            qm.sendNext("Sample Text.");
-        } else if (status == 1) {
+            if(GameConstants.getJobBranch(qm.getPlayer().getJob()) == 1) {
+                qm.sendNext("Eh, didn't you get the #r2nd job advancement#k yet?");
+                qm.dispose();
+                return;
+            }
+            
+            qm.sendNext("Okay you seem ready to go to the #bMushroom Castle#k. In #rHenesys#k, climb at the tree fort at #bwest#k then enter a portal over there. On the other area, #rgo west#k. From there, a portal will be readily available to access the #bMushroom Castle#k area.");
+        } else {
             qm.forceCompleteQuest();
             qm.dispose();
         }

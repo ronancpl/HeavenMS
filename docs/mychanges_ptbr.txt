@@ -886,3 +886,12 @@ Otimizado PlayerStorage, agora utilizando um mapa próprio de nomes, ao invés d
 Corrigido alguns aspectos do BalrogPQ, tais como a cabeça sendo atingível antes das mãos serem derrotadas e contador de kills do boss não subindo ao derrotr o chefe.
 Corrigido barras da tela de seleção de canais na etapa de login não atuando corretamente.
 Adicionado checks de world server lotado de diversos pontos das etapas de login.
+
+26 Março 2018,
+Corrigido sistema de levelup ainda desbalanceado para o cenário EXTREMAMENTE low-level.
+Adicionado suporte para quests de Kerning Square e Mushroom Castle.
+Adicionado script para várias quests ainda não-scriptadas.
+Refatorado medal quests, agora adotando um sistema de script default para aquelas não-scriptadas.
+Adicionado comando "debuff", debuffando em área próximo ao character que ativou o comando.
+Corrigido vazamento de dados na DB referente às informações de quest status e medal maps dos jogadores.
+Adicionado checagem de proximidade aos NPCs para começar e terminar quests sem lightbulb.

@@ -1446,6 +1446,19 @@ public class MapleMap {
         }
     }
 
+    public MapleNPC getNPCById(int id) {
+        for (MapleMapObject obj : getMapObjects()) {
+            if (obj.getType() == MapleMapObjectType.NPC) {
+                MapleNPC npc = (MapleNPC) obj;
+                if (npc.getId() == id) {
+                    return npc;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
     public boolean containsNPC(int npcid) {
         if (npcid == 9000066) {
             return true;

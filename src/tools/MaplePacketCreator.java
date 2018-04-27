@@ -1458,7 +1458,7 @@ public class MaplePacketCreator {
         		 * 14: Angry ^
         		 * 15: Orb animation thing, ??
         		 * 16: ??
-        		 * 19: Mushroom kingdom boss thing
+        		 * 19: Mushroom castle boss thing
         		 */
                 
                 if (life.getParentMobOid() != 0) {

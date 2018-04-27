@@ -21,11 +21,13 @@
 */
 package net.server.channel.handlers;
 
+import java.awt.Point;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import scripting.quest.QuestScriptManager;
 import server.quest.MapleQuest;
+import server.life.MapleNPC;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -33,6 +35,31 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Matze
  */
 public final class QuestActionHandler extends AbstractMaplePacketHandler {
+    
+    // credits to gabriel.sin
+    private static boolean isNpcNearby(SeekableLittleEndianAccessor slea, MapleCharacter player, MapleQuest quest, int npcId) {
+        Point playerP = null;
+        
+        if(slea.available() >= 4) {
+            playerP = new Point(slea.readShort(), slea.readShort());
+        }
+        
+        if (playerP != null && !quest.isAutoStart() && !quest.isAutoComplete()) {
+            MapleNPC npc = player.getMap().getNPCById(npcId);
+            if(npc == null) {
+                return false;
+            }
+            
+            Point npcP = npc.getPosition();
+            if (Math.abs(npcP.getX() - playerP.getX()) > 1200 || Math.abs(npcP.getY() - playerP.getY()) > 800) {
+                player.dropMessage(5, "Approach the NPC to fulfill this quest operation.");
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         byte action = slea.readByte();
@@ -41,8 +68,8 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
         MapleQuest quest = MapleQuest.getInstance(questid);
         if (action == 1) { //Start Quest
             int npc = slea.readInt();
-            if (slea.available() >= 4) {
-                slea.readInt();
+            if(!isNpcNearby(slea, player, quest, npc)) {
+                return;
             }
             
             if(quest.canStart(player, npc)) {
@@ -50,7 +77,9 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
             }
         } else if (action == 2) { // Complete Quest
             int npc = slea.readInt();
-            slea.readInt();
+            if(!isNpcNearby(slea, player, quest, npc)) {
+                return;
+            }
             
             if(quest.canComplete(player, npc)) {
                 if (slea.available() >= 2) {
@@ -64,14 +93,18 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
             quest.forfeit(player);
         } else if (action == 4) { // scripted start quest
             int npc = slea.readInt();
-            slea.readInt();
+            if(!isNpcNearby(slea, player, quest, npc)) {
+                return;
+            }
+            
             if(quest.canStart(player, npc)) {
                 QuestScriptManager.getInstance().start(c, questid, npc);
             }
         } else if (action == 5) { // scripted end quests
-            //System.out.println(slea.toString());
             int npc = slea.readInt();
-            slea.readInt();
+            if(!isNpcNearby(slea, player, quest, npc)) {
+                return;
+            }
             
             if(quest.canComplete(player, npc)) {
                 QuestScriptManager.getInstance().end(c, questid, npc);

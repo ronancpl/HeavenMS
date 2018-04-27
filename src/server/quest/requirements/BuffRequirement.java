@@ -17,26 +17,34 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package server.quest.requirements;
 
-var status = -1;
+import client.MapleCharacter;
+import provider.MapleData;
+import provider.MapleDataTool;
+import server.quest.MapleQuest;
+import server.quest.MapleQuestRequirementType;
 
-function start(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
+/**
+ *
+ * @author Ronan
+ */
+public class BuffRequirement extends MapleQuestRequirement {
+        private int buffId = 1;
         
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            qm.forceStartQuest();
-            qm.dispose();
-        }
-    }
+	public BuffRequirement(MapleQuest quest, MapleData data) {
+		super(MapleQuestRequirementType.BUFF);
+		processData(data);
+	}
+	
+	@Override
+	public void processData(MapleData data) {
+                // item buffs are negative
+		buffId = -1 * Integer.valueOf(MapleDataTool.getString(data));
+	}
+	
+	@Override
+	public boolean check(MapleCharacter chr, Integer npcid) {
+                return chr.hasBuffFromSourceid(buffId);
+	}
 }

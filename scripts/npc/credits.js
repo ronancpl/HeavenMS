@@ -27,7 +27,7 @@ function writeServerStaff_HeavenMS() {
         addPerson("Ronan", "Developer");
         addPerson("Vcoc", "Freelance Developer");
         
-        setHistory(2015, 2017);
+        setHistory(2015, 2018);
 }
 
 function writeServerStaff_MapleSolaxia() {
