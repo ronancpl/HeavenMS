@@ -50,6 +50,7 @@ Player Social Network:
 * Guild and Alliance system fully functional.
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
+* Game minirooms such as match cards and omok now has semi-functional password system.
 
 Cash & Items:
 
@@ -131,6 +132,7 @@ External tools:
 * MapleQuestItemCountFetcher - Searches the quest WZ files and reports in all relevant data regarding missing "count" labels on item acts at "complete quest".
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
 * MapleQuestMesoFetcher - Searches the quest WZ files and reports in all relevant data regarding missing/erroneous quest fee checks.
+* MapleReactorDropFetcher - Searches the DB for reactors with drop data and reports in reactorids that are not yet coded.
 * MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.
 * MapleSkillMakerReagentIndexer - Generates a new maker table describing all stat-improvements from the Maker reagents (those empowering crystals and jewels).
 

@@ -35,6 +35,7 @@ import tools.MaplePacketCreator;
 public class MapleMiniGame extends AbstractMapleMapObject {
     private MapleCharacter owner;
     private MapleCharacter visitor;
+    private String password;
     private String GameType = null;
     private int[] piece = new int[250];
     private List<Integer> list4x3 = new ArrayList<>();
@@ -48,11 +49,20 @@ public class MapleMiniGame extends AbstractMapleMapObject {
     private int ownerpoints = 0;
     private int matchestowin = 0;
 
-    public MapleMiniGame(MapleCharacter owner, String description) {
+    public MapleMiniGame(MapleCharacter owner, String description, String password) {
         this.owner = owner;
         this.description = description;
+        this.password = password;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+    
+    public boolean checkPassword(String sentPw) {
+        return this.password.length() == 0 || sentPw.toLowerCase().contentEquals(this.password.toLowerCase());
+    }
+    
     public boolean hasFreeSlot() {
         return visitor == null;
     }

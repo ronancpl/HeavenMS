@@ -4,6 +4,7 @@ import client.MapleJob;
 import constants.skills.Aran;
 import server.maps.MapleMap;
 import server.maps.FieldLimit;
+import server.quest.MapleQuest;
 
 /*
  * @author kevintjuh93
@@ -211,7 +212,7 @@ public class GameConstants {
     }
     
     public static boolean isMedalQuest(short questid) {
-        return questid / 100 == 299;
+        return MapleQuest.getInstance(questid).getMedalRequirement() != -1;
     }
     
     public static boolean hasSPTable(MapleJob job) {

@@ -74,6 +74,7 @@ function writeSolaxiaCommandsLv5() {    //Developer
         addCommand("debugcoupons", "");
         addCommand("debugplayercoupons", "");
         addCommand("debugtimer", "");
+        addCommand("set", "");
 }
 
 function writeSolaxiaCommandsLv4() {    //SuperGM

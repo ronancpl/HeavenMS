@@ -331,7 +331,6 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     }
                     if (!MapleTVEffect.isActive()) {
                         new MapleTVEffect(player, victim, messages, tvType);
-                        remove(c, itemId);
                     } else {
                         player.dropMessage(1, "MapleTV is already in use.");
                         return;

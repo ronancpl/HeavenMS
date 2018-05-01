@@ -1886,24 +1886,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     private static void deleteQuestProgressWhereCharacterId(Connection con, int cid) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement("SELECT queststatusid FROM queststatus WHERE characterid = ?")) {
+        try (PreparedStatement ps = con.prepareStatement("DELETE FROM medalmaps WHERE characterid = ?")) {
             ps.setInt(1, cid);
+            ps.executeUpdate();
+        }
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    int queststatusid = rs.getInt("queststatusid");
-
-                    try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM medalmaps WHERE queststatusid = ?")) {
-                        ps2.setInt(1, queststatusid);
-                        ps2.executeUpdate();
-                    }
-
-                    try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM questprogress WHERE queststatusid = ?")) {
-                        ps2.setInt(1, queststatusid);
-                        ps2.executeUpdate();
-                    }
-                }
-            }
+        try (PreparedStatement ps = con.prepareStatement("DELETE FROM questprogress WHERE characterid = ?")) {
+            ps.setInt(1, cid);
+            ps.executeUpdate();
         }
     }
 
@@ -4309,7 +4299,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.setMiniGame(null);
         if (game.isOwner(this)) {
             this.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(this));
-            game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose());
+            game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose(3));
         } else {
             game.removeVisitor(this);
         }
@@ -6663,8 +6653,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             deleteQuestProgressWhereCharacterId(con, id);
             ps = con.prepareStatement("INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`, `status`, `time`, `expires`, `forfeited`) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             PreparedStatement psf;
-            try (PreparedStatement pse = con.prepareStatement("INSERT INTO questprogress VALUES (DEFAULT, ?, ?, ?)")) {
-                psf = con.prepareStatement("INSERT INTO medalmaps VALUES (DEFAULT, ?, ?)");
+            try (PreparedStatement pse = con.prepareStatement("INSERT INTO questprogress VALUES (DEFAULT, ?, ?, ?, ?)")) {
+                psf = con.prepareStatement("INSERT INTO medalmaps VALUES (DEFAULT, ?, ?, ?)");
                 ps.setInt(1, id);
                 
                 synchronized (quests) {
@@ -6678,14 +6668,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         try (ResultSet rs = ps.getGeneratedKeys()) {
                             rs.next();
                             for (int mob : q.getProgress().keySet()) {
-                                pse.setInt(1, rs.getInt(1));
-                                pse.setInt(2, mob);
-                                pse.setString(3, q.getProgress(mob));
+                                pse.setInt(1, id);
+                                pse.setInt(2, rs.getInt(1));
+                                pse.setInt(3, mob);
+                                pse.setString(4, q.getProgress(mob));
                                 pse.addBatch();
                             }
                             for (int i = 0; i < q.getMedalMaps().size(); i++) {
-                                psf.setInt(1, rs.getInt(1));
-                                psf.setInt(2, q.getMedalMaps().get(i));
+                                psf.setInt(1, id);
+                                psf.setInt(2, rs.getInt(1));
+                                psf.setInt(3, q.getMedalMaps().get(i));
                                 psf.addBatch();
                             }
                             pse.executeBatch();

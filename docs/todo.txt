@@ -7,10 +7,13 @@ Vcoc - Freelance Developer
 Known issues:
 - Everytime two people click on an npc at the same time, one of them dcs and the other needs to @dispose to talk to the npc.
 - If multiple people hit boxes/reactors at the same time, they both dc with invalid pointer error.
+- Passwords on minirooms are not encoded for players entering/logging into the map.
 ---------------------------
 
 ---------------------------
-ToDo / Missing features list:
+Missing features list:
+- Miniroom tooltips (such as number of players in store/host awaiting game) not showing up properly.
+- Disease POISON appears MISSES to other players.
 ---------------------------
 
 

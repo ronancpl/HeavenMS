@@ -1034,7 +1034,7 @@ public class World {
             activeMerchantsLock.unlock();
         }
     }
-
+    
     public void setServerMessage(String msg) {
         for (Channel ch : channels) {
             ch.setServerMessage(msg);

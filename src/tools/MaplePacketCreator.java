@@ -1898,15 +1898,19 @@ public class MaplePacketCreator {
                         } else {
                                 addAnnounceBox(mplew, mps, 1);
                         }
-                } else if (chr.getMiniGame() != null && chr.getMiniGame().isOwner(chr)) {
-                        if (chr.getMiniGame().hasFreeSlot()) {
-                                addAnnounceBox(mplew, chr.getMiniGame(), 1, 0, 1, 0);
-                        } else {
-                                addAnnounceBox(mplew, chr.getMiniGame(), 1, 0, 2, 1);
-                        }
                 } else {
-                        mplew.write(0);
+                        MapleMiniGame miniGame = chr.getMiniGame();
+                        if (miniGame != null && miniGame.isOwner(chr)) {
+                                if (miniGame.hasFreeSlot()) {
+                                        spawnAnnounceBox(mplew, miniGame, 1, 0, 1, 0);
+                                } else {
+                                        spawnAnnounceBox(mplew, miniGame, 1, 0, 2, 1);
+                                }
+                        } else {
+                                mplew.write(0);
+                        }
                 }
+                
                 if (chr.getChalkboard() != null) {
                         mplew.write(1);
                         mplew.writeMapleAsciiString(chr.getChalkboard());
@@ -2076,13 +2080,24 @@ public class MaplePacketCreator {
                 mplew.write(gametype);
                 mplew.writeInt(game.getObjectId()); // gameid/shopid
                 mplew.writeMapleAsciiString(game.getDescription()); // desc
+                mplew.writeMapleAsciiString(game.getPassword());
+                mplew.write(type);
+                mplew.write(ammount);
+                mplew.write(2);
+                mplew.write(joinable);
+        }
+        
+        private static void spawnAnnounceBox(final MaplePacketLittleEndianWriter mplew, MapleMiniGame game, int gametype, int type, int ammount, int joinable) {
+                mplew.write(gametype);
+                mplew.writeInt(game.getObjectId()); // gameid/shopid
+                mplew.writeMapleAsciiString(game.getDescription()); // desc
                 mplew.write(0);
                 mplew.write(type);
                 mplew.write(ammount);
                 mplew.write(2);
                 mplew.write(joinable);
         }
-
+        
         public static byte[] facialExpression(MapleCharacter from, int expression) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(10);
                 mplew.writeShort(SendOpcode.FACIAL_EXPRESSION.getValue());
@@ -2768,7 +2783,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(cid);
                 writeLongMaskD(mplew, statups);
                 for (Pair<MapleDisease, Integer> statup : statups) {
-                        mplew.writeShort(statup.getRight().shortValue());
+                        if(statup.getLeft() == MapleDisease.POISON) mplew.writeShort(statup.getRight().shortValue());
                         mplew.writeShort(skill.getSkillId());
                         mplew.writeShort(skill.getSkillLevel());
                 }
@@ -4823,15 +4838,27 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] getMiniGameFull() {
+        /**
+         * 1 = Room already closed  2 = Can't enter due full cappacity 3 = Other requests at this minute
+         * 4 = Can't do while dead 5 = Can't do while middle event 6 = This character unable to do it
+         * 7, 20 = Not allowed to trade anymore 9 = Can only trade on same map 10 = May not open store near portal
+         * 11, 14 = Can't start game here 12 = Can't open store at this channel 13 = Can't estabilish miniroom
+         * 15 = Stores only an the free market 16 = Lists the rooms at FM (?) 17 = You may not enter this store
+         * 18 = Owner undergoing store maintenance 19 = Unable to enter tournament room 21 = Not enough mesos to enter
+         * 22 = Incorrect password
+         *
+         * @param status
+         * @return
+         */
+        public static byte[] getMiniRoomError(int status) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.ROOM.getCode());
                 mplew.write(0);
-                mplew.write(2);
+                mplew.write(status);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] getMiniGameSkipVisitor(MapleMiniGame game) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(4);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
@@ -4918,12 +4945,12 @@ public class MaplePacketCreator {
                 return getMiniGameResult(game, 1, 0, 0, 1, 1, true);
         }
 
-        public static byte[] getMiniGameClose() {
+        public static byte[] getMiniGameClose(int type) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.EXIT.getCode());
                 mplew.write(1);
-                mplew.write(3);
+                mplew.write(type); /* 2 : CRASH 3 : The room has been closed 4 : You have left the room 5 : You have been expelled  */
                 return mplew.getPacket();
         }
 
@@ -5072,7 +5099,7 @@ public class MaplePacketCreator {
                 mplew.skip(3);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] addOmokBox(MapleCharacter c, int ammount, int type) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());

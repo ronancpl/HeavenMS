@@ -850,35 +850,35 @@ Adicionado sistema de bonus para expedição de Showa, atingível se nenhum joga
 Nova ferramenta: MapleBossHpBarFetcher. Localiza no Mob.wz ids de mobs que possuem um boss hp bar mas não são labelados como "boss".
 Incrementado quiz de 3rd job, agora utilizando um pool de 40 perguntas com escolha arbitrária.
 
-05 - 10 Março 2018,
+05 - 10 Abril 2018,
 Corrigido diseases não sendo removidas corretamente no cliente quando tentando trocar de canal/entrar Cash Shop, permitindo-as ficar no jogador infinitamente.
 Corrigido Holy Symbol atuando de forma inesperada no cenário com somente um jogador.
 Corrigido Summon Sack lv. 9 lançando mob com id inexistente.
 Corrigido NPC de guild tirando mesos do jogador sem efetuar a ação alguma caso o número máximo de jogadores tenha sido alcançado.
 
-11 - 12 Março 2018,
+11 - 12 Abril 2018,
 Localhost melhorado: retirado caps de Matk, Mdef, Wdef, Acc e Avoid.
 Balanceado Ninja Ambush, agora dando uma quantidade de dano justificável.
 Implementado questline do Dyle.
 Corrigido possível exploit com sistema de quests, onde jogador podia começar e completar quaisquer quests livremente.
 Nova ferramenta: MapleCashDropFetcher. Aplicação busca por drop data de cash na DB e reporta.
 
-13 - 14 Março 2018,
+13 - 14 Abril 2018,
 Adicionado feature de anúncio de mudança de classe.
 Adicionado drops faltando da questline Puppeteer de Aran.
 Movimentação de GM rank para alguns comandos.
 Corrigido autoassigner inesperadamente desconectando jogadores, quando o autoassigner do cliente está sendo utilizado.
 Adicionado scripts para a questline de Full Swing de Aran.
 
-19 Março 2018,
+19 Abril 2018,
 Tentativa de correção em reactors desconectando jogadores que tentam ativá-los com ataque básico ao mesmo tempo.
 Adicionado feature de AutoJCE (créditos aos Acernis devs).
 
-20 - 22 Março 2018,
+20 - 22 Abril 2018,
 Resolvido exploit com login, onde qualquer um (via packet editing) podia logar livremente com personagem de outras contas.
 Nova ferramenta: MapleQuestlineFetcher. Busca nos XMLs e registra questids que ainda não possuem quest scripts.
 
-24 - 25 Março 2018,
+24 - 25 Abril 2018,
 Corrigido sistema de levelup de equips desbalanceado para o cenário low-level, distribuindo uma quantidade de EXP extremamente baixa.
 Corrigido flag EQUIP_EXP_RATE atuando de forma errônea.
 Modificado sistema do chaos scroll, agora utilizando uma flag nova ao invés de reusar flag SCROLL_CHANCE_RATE.
@@ -887,7 +887,7 @@ Corrigido alguns aspectos do BalrogPQ, tais como a cabeça sendo atingível ante
 Corrigido barras da tela de seleção de canais na etapa de login não atuando corretamente.
 Adicionado checks de world server lotado de diversos pontos das etapas de login.
 
-26 Março 2018,
+26 Abril 2018,
 Corrigido sistema de levelup ainda desbalanceado para o cenário EXTREMAMENTE low-level.
 Adicionado suporte para quests de Kerning Square e Mushroom Castle.
 Adicionado script para várias quests ainda não-scriptadas.
@@ -895,3 +895,16 @@ Refatorado medal quests, agora adotando um sistema de script default para aquela
 Adicionado comando "debuff", debuffando em área próximo ao character que ativou o comando.
 Corrigido vazamento de dados na DB referente às informações de quest status e medal maps dos jogadores.
 Adicionado checagem de proximidade aos NPCs para começar e terminar quests sem lightbulb.
+
+27 Abril 2018,
+Edição de localhost: Removido popup de "excesso de AP" e bloqueios de "Admin/MWLB", créditos ao kevintjuh93.
+Edição de localhost: Removido popup de "You've gained a level!", créditos ao PrinceReborn.
+Adicionado script para vários reactors com drop data na DB mas ainda não-scriptados.
+Melhorado updates de quest status, agora utilizando uma nova coluna "characterid" para facilitar retirada de antigos elementos da tabela.
+Corrigido vários status de diseases não aparecendo para outros jogadores.
+Corrigido item de MapleTV sendo retirado 2x ao usar.
+
+29 Abril 2018,
+Implementado sistema de senhas para minirooms de match cards/omok.
+Adicionado/documentado mensagens de erro apropriados ao criar/visitar minirooms.
+Implementado expel em minirooms de jogos.

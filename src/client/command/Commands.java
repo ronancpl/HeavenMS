@@ -1636,7 +1636,7 @@ public class Commands {
 				break;
                         }
                     
-                        for (MapleMapObject mmo : player.getMap().getMapObjectsInRange(player.getPosition(), 1000.0, Arrays.asList(MapleMapObjectType.PLAYER))) {
+                        for (MapleMapObject mmo : player.getMap().getMapObjectsInRange(player.getPosition(), 777777.7, Arrays.asList(MapleMapObjectType.PLAYER))) {
                                 MapleCharacter chr = (MapleCharacter) mmo;
                                 
                                 if(chr.getId() != player.getId()) {
@@ -2671,6 +2671,14 @@ public class Commands {
 			TimerManager tMan = TimerManager.getInstance();
 			player.dropMessage(6, "Total Task: " + tMan.getTaskCount() + " Current Task: " + tMan.getQueuedTasks() + " Active Task: " + tMan.getActiveCount() + " Completed Task: " + tMan.getCompletedTaskCount());
 			break;
+                
+                case "set":
+                        for(int i = 0; i < sub.length - 1; i++) {
+                                ServerConstants.DEBUG_VALUES[i] = Integer.parseInt(sub[i + 1]);
+                        }
+                    
+                        
+                        break;
                     
                 default:
                         return false;
