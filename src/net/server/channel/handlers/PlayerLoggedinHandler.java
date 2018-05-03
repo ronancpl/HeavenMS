@@ -57,6 +57,7 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
+import server.life.MobSkill;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -129,7 +130,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.silentGiveBuffs(timedBuffs);
         }
         
-        Map<MapleDisease, Long> diseases = server.getPlayerBuffStorage().getDiseasesFromStorage(cid);
+        Map<MapleDisease, Pair<Long, MobSkill>> diseases = server.getPlayerBuffStorage().getDiseasesFromStorage(cid);
         if (diseases != null) {
             player.silentApplyDiseases(diseases);
         }

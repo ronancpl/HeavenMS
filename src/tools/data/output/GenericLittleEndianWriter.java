@@ -98,7 +98,7 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
         bos.writeByte((byte) (i & 0xFF));
         bos.writeByte((byte) ((i >>> 8) & 0xFF));
     }
-
+    
     /**
      * Writes an integer to the stream.
      *

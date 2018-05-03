@@ -106,7 +106,7 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
                         player.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(player, newyear, 0xD, 0));
 
                         MapleCharacter sender = c.getWorldServer().getPlayerStorage().getCharacterById(newyear.getSenderId());
-                        if(sender != null && sender.isLoggedin() && !sender.isAwayFromWorld()) {
+                        if(sender != null && sender.isLoggedinWorld()) {
                             sender.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(sender, newyear, 0xD, 0));
                             sender.dropMessage(6, "[NEW YEAR] Your addressee successfully received the New Year card.");
                         }

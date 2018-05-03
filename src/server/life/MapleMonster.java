@@ -552,7 +552,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 for (Integer chrid : attackerChrids) {
                     MapleCharacter chr = mapChars.get(chrid);
 
-                    if(chr != null && chr.isLoggedin() && !chr.isAwayFromWorld()) {
+                    if(chr != null && chr.isLoggedinWorld()) {
                         chr.updateQuestMobCount(mobid);
                     }
                 }

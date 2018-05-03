@@ -28,6 +28,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.List;
@@ -64,6 +65,12 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
+            
+            if(ItemConstants.isCashStore(cItem.getItemId()) && chr.getLevel() < 16) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
             if (action == 0x03) { // Item
                 Item item = cItem.toItem();
                 cs.addToInventory(item);               
@@ -176,20 +183,20 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 }
             }
         } else if (action == 0x08) { // Increase Character Slots
-                slea.skip(1); 
-                int cash = slea.readInt();
-                CashItem cItem = CashItemFactory.getItem(slea.readInt());
+            slea.skip(1); 
+            int cash = slea.readInt();
+            CashItem cItem = CashItemFactory.getItem(slea.readInt());
 
-                if (!canBuy(cItem, cs.getCash(cash))) {
-                    c.announce(MaplePacketCreator.enableActions());
-                    return;
-                }
+            if (!canBuy(cItem, cs.getCash(cash))) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
 
-                if (c.gainCharacterSlot()) {
-                    c.announce(MaplePacketCreator.showBoughtCharacterSlot(c.getCharacterSlots()));
-                    cs.gainCash(cash, -cItem.getPrice());
-                    c.announce(MaplePacketCreator.showCash(chr));
-                }
+            if (c.gainCharacterSlot()) {
+                c.announce(MaplePacketCreator.showBoughtCharacterSlot(c.getCharacterSlots()));
+                cs.gainCash(cash, -cItem.getPrice());
+                c.announce(MaplePacketCreator.showCash(chr));
+            }
         } else if (action == 0x0D) { // Take from Cash Inventory
             Item item = cs.findByCashId(slea.readInt());
             if (item == null) {
@@ -281,8 +288,8 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             }
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else if (action == 0x23) { //Friendship :3
-			slea.readInt(); //Birthday
-          // if (checkBirthday(c, birthday)) {
+            slea.readInt(); //Birthday
+            // if (checkBirthday(c, birthday)) {
                 int payment = slea.readByte();
                 slea.skip(3); //0s
                 int snID = slea.readInt();

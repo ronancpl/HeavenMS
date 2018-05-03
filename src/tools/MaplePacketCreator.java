@@ -2256,10 +2256,11 @@ public class MaplePacketCreator {
                 }
         }
 
+        // someone thought it was a good idea to handle floating point representation through packets ROFL
         private static int doubleToShortBits(double d) {
                 return (int) (Double.doubleToLongBits(d) >> 48);
         }
-
+        
         public static byte[] getNPCShop(MapleClient c, int sid, List<MapleShopItem> items) {
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
@@ -2278,7 +2279,7 @@ public class MaplePacketCreator {
                         } else {
                                 mplew.writeShort(0);
                                 mplew.writeInt(0);
-                                mplew.writeShort(doubleToShortBits(ii.getPrice(item.getItemId())));
+                                mplew.writeShort(doubleToShortBits(ii.getUnitPrice(item.getItemId())));
                                 mplew.writeShort(ii.getSlotMax(c, item.getItemId()));
                         }
                 }
@@ -2440,26 +2441,31 @@ public class MaplePacketCreator {
                 mplew.writeInt(cid);
                 mplew.write(skill);
                 mplew.writeInt(damage);
-                mplew.writeInt(monsteridfrom);
-                mplew.write(direction);
-                if (pgmr) {
-                        mplew.write(pgmr_1);
-                        mplew.write(is_pg ? 1 : 0);
-                        mplew.writeInt(oid);
-                        mplew.write(6);
-                        mplew.writeShort(pos_x);
-                        mplew.writeShort(pos_y);
-                        mplew.write(0);
+                if(skill != -4) {
+                        mplew.writeInt(monsteridfrom);
+                        mplew.write(direction);
+                        if (pgmr) {
+                                mplew.write(pgmr_1);
+                                mplew.write(is_pg ? 1 : 0);
+                                mplew.writeInt(oid);
+                                mplew.write(6);
+                                mplew.writeShort(pos_x);
+                                mplew.writeShort(pos_y);
+                                mplew.write(0);
+                        } else {
+                                mplew.writeShort(0);
+                        }
+                        mplew.writeInt(damage);
+                        if (fake > 0) {
+                                mplew.writeInt(fake);
+                        }
                 } else {
-                        mplew.writeShort(0);
+                        mplew.writeInt(damage);
                 }
-                mplew.writeInt(damage);
-                if (fake > 0) {
-                        mplew.writeInt(fake);
-                }
+                
                 return mplew.getPacket();
         }
-
+        
         public static byte[] charNameResponse(String charname, boolean nameUsed) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CHAR_NAME_RESPONSE.getValue());
@@ -2760,7 +2766,7 @@ public class MaplePacketCreator {
                 mplew.writeLong(firstmask);
                 mplew.writeLong(secondmask);
         }
-
+        
         public static byte[] giveDebuff(List<Pair<MapleDisease, Integer>> statups, MobSkill skill) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GIVE_BUFF.getValue());
@@ -2776,8 +2782,10 @@ public class MaplePacketCreator {
                 mplew.write(1);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] giveForeignDebuff(int cid, List<Pair<MapleDisease, Integer>> statups, MobSkill skill) {
+                // Poison damage visibility and missing diseases status visibility, extended through map transitions thanks to Ronan
+                
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
                 mplew.writeInt(cid);
@@ -2867,6 +2875,69 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        private static void writeLongMaskSlowD(final MaplePacketLittleEndianWriter mplew) {
+                mplew.writeInt(0);
+                mplew.writeInt(2048);
+                mplew.writeLong(0);
+        }
+        
+        public static byte[] giveForeignSlowDebuff(int cid, List<Pair<MapleDisease, Integer>> statups, MobSkill skill) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                writeLongMaskSlowD(mplew);
+                for (Pair<MapleDisease, Integer> statup : statups) {
+                        if(statup.getLeft() == MapleDisease.POISON) mplew.writeShort(statup.getRight().shortValue());
+                        mplew.writeShort(skill.getSkillId());
+                        mplew.writeShort(skill.getSkillLevel());
+                }
+                mplew.writeShort(0); // same as give_buff
+                mplew.writeShort(900);//Delay
+                return mplew.getPacket();
+        }
+        
+        public static byte[] cancelForeignSlowDebuff(int cid) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CANCEL_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                writeLongMaskSlowD(mplew);
+                return mplew.getPacket();
+        }
+        
+        private static void writeLongMaskChair(final MaplePacketLittleEndianWriter mplew) {
+                mplew.writeInt(0);
+                mplew.writeInt(262144);
+                mplew.writeLong(0);
+        }
+        
+        public static byte[] giveForeignChairSkillEffect(int cid) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                writeLongMaskChair(mplew);
+                
+                mplew.writeShort(0);
+                mplew.writeShort(0);
+                mplew.writeShort(100);
+                mplew.writeShort(1);
+                
+                mplew.writeShort(0);
+                mplew.writeShort(900);
+                
+                for(int i = 0; i < 7; i++) mplew.write(0);
+                
+                return mplew.getPacket();
+        }
+        
+        public static byte[] cancelForeignChairSkillEffect(int cid) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(19);
+                mplew.writeShort(SendOpcode.CANCEL_FOREIGN_BUFF.getValue());
+                mplew.writeInt(cid);
+                writeLongMaskChair(mplew);
+                
+                return mplew.getPacket();
+        }
+        
         public static byte[] getPlayerShopChat(MapleCharacter c, String chat, boolean owner) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
@@ -6114,7 +6185,7 @@ public class MaplePacketCreator {
                 mplew.write(amount);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] showWheelsLeft(int left) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());

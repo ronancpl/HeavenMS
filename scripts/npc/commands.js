@@ -114,6 +114,7 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("reloadportals", "");
         addCommand("reloadmap", "");
         addCommand("hpmp", "");
+        addCommand("maxhpmp", "");
         addCommand("music", "");
         addCommand("monitor", "");
         addCommand("monitors", "");

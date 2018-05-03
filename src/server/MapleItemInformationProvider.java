@@ -91,8 +91,8 @@ public class MapleItemInformationProvider {
     protected Map<Integer, MapleStatEffect> itemEffects = new HashMap<>();
     protected Map<Integer, Map<String, Integer>> equipStatsCache = new HashMap<>();
     protected Map<Integer, Equip> equipCache = new HashMap<>();
-    protected Map<Integer, Double> priceCache = new HashMap<>();
     protected Map<Integer, Integer> wholePriceCache = new HashMap<>();
+    protected Map<Integer, Double> unitPriceCache = new HashMap<>();
     protected Map<Integer, Integer> projectileWatkCache = new HashMap<>();
     protected Map<Integer, String> nameCache = new HashMap<>();
     protected Map<Integer, String> descCache = new HashMap<>();
@@ -421,54 +421,96 @@ public class MapleItemInformationProvider {
         return pEntry;
     }
 
+    private Pair<Integer, Double> getItemPriceData(int itemId) {
+        MapleData item = getItemData(itemId);
+        if (item == null) {
+            wholePriceCache.put(itemId, -1);
+            unitPriceCache.put(itemId, 0.0);
+            return new Pair<>(-1, 0.0);
+        }
+        
+        int pEntry = -1;
+        MapleData pData = item.getChildByPath("info/price");
+        if (pData != null) {
+            pEntry = MapleDataTool.getInt(pData);
+        }
+        
+        double fEntry = 0.0f;
+        pData = item.getChildByPath("info/unitPrice");
+        if (pData != null) {
+            try {
+                fEntry = MapleDataTool.getDouble(pData);
+            } catch (Exception e) {
+                fEntry = (double) MapleDataTool.getInt(pData);
+            }
+        }
+        
+        wholePriceCache.put(itemId, pEntry);
+        unitPriceCache.put(itemId, fEntry);
+        return new Pair<>(pEntry, fEntry);
+    }
+    
     public int getWholePrice(int itemId) {
         if (wholePriceCache.containsKey(itemId)) {
             return wholePriceCache.get(itemId);
         }
-        MapleData item = getItemData(itemId);
-        if (item == null) {
-            return -1;
+        
+        return getItemPriceData(itemId).getLeft();
+    }
+    
+    public double getUnitPrice(int itemId) {
+        if (unitPriceCache.containsKey(itemId)) {
+            return unitPriceCache.get(itemId);
         }
-        int pEntry;
-        MapleData pData = item.getChildByPath("info/price");
-        if (pData == null) {
-            return -1;
-        }
-        pEntry = MapleDataTool.getInt(pData);
-        wholePriceCache.put(itemId, pEntry);
-        return pEntry;
+        
+        return getItemPriceData(itemId).getRight();
     }
 
-    public double getPrice(int itemId) {
-        if (priceCache.containsKey(itemId)) {
-            return priceCache.get(itemId);
-        }
-        MapleData item = getItemData(itemId);
-        if (item == null) {
+    public int getPrice(int itemId, int quantity) {
+        int retPrice = getWholePrice(itemId);
+        if(retPrice == -1) {
             return -1;
         }
-        double pEntry;
-        MapleData pData = item.getChildByPath("info/unitPrice");
-        if (pData != null) {
-            try {
-                pEntry = MapleDataTool.getDouble(pData);
-            } catch (Exception e) {
-                pEntry = (double) MapleDataTool.getInt(pData);
-            }
+        
+        if(!ItemConstants.isRechargable(itemId)) {
+            retPrice *= quantity;
         } else {
-            pData = item.getChildByPath("info/price");
-            if (pData == null) {
-                return -1;
-            }
-            try {
-                pEntry = (double) MapleDataTool.getInt(pData);
-            } catch(Exception e) {
-                priceCache.put(itemId, 0.0);
-                return 0;
+            retPrice += Math.ceil(quantity * getUnitPrice(itemId));
+        }
+        
+        return retPrice;
+    }
+    
+    public static boolean canSell(Item item, short quantity) {
+        if (item == null) { //Basic check
+            return false;
+        }
+        
+        short iQuant = item.getQuantity();
+        if (iQuant == 0xFFFF) {
+            iQuant = 1;
+        } else if(iQuant < 0) {
+            return false;
+        }
+        
+        if (!ItemConstants.isRechargable(item.getItemId())) {
+            if (iQuant == 0 || quantity > iQuant) {
+                return false;
             }
         }
-        priceCache.put(itemId, pEntry);
-        return pEntry;
+        
+        return true;
+    }
+    
+    public static short getSellingQuantity(Item item, short quantity) {
+        if (ItemConstants.isRechargable(item.getItemId())) {
+            quantity = item.getQuantity();
+            if (quantity == 0xFFFF) {
+                quantity = 1;
+            }
+        }
+        
+        return quantity;
     }
     
     protected String getEquipmentSlot(int itemId) {

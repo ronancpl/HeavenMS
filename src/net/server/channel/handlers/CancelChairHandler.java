@@ -36,13 +36,17 @@ public final class CancelChairHandler extends AbstractMaplePacketHandler {
         
         if (id == -1) { // Cancel Chair
             mc.setChair(0);
-            mc.unregisterChairBuff();
+            if(mc.unregisterChairBuff()) {
+                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.cancelForeignChairSkillEffect(mc.getId()), false);
+            }
             
             c.announce(MaplePacketCreator.cancelChair(-1));
             c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showChair(c.getPlayer().getId(), 0), false);
         } else { // Use In-Map Chair
             mc.setChair(id);
-            mc.registerChairBuff();
+            if(mc.registerChairBuff()) {
+                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.giveForeignChairSkillEffect(mc.getId()), false);
+            }
             
             c.announce(MaplePacketCreator.cancelChair(id));
         }

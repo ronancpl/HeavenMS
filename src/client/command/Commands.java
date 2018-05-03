@@ -1764,7 +1764,7 @@ public class Commands {
                         } else if(sub.length == 2) {
                                 statUpdate = Integer.valueOf(sub[1]);
                         } else {
-				player.yellowMessage("Syntax: !sethpmp [<playername>] <value>");
+				player.yellowMessage("Syntax: !hpmp [<playername>] <value>");
                         }
                     
                         if(victim != null) {
@@ -1773,6 +1773,41 @@ public class Commands {
                                 victim.updateSingleStat(MapleStat.HP, statUpdate);
                                 victim.updateSingleStat(MapleStat.MP, statUpdate);
 
+                                victim.checkBerserk(victim.isHidden());
+                        } else {
+                                player.message("Player '" + sub[1] + "' could not be found on this world.");
+                        }
+                    break;
+                   
+                case "maxhpmp":
+                        victim = player;
+                        statUpdate = 1;
+                        
+                        if (sub.length >= 3) {
+                                victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
+                                statUpdate = Integer.valueOf(sub[2]);
+                        } else if(sub.length == 2) {
+                                statUpdate = Integer.valueOf(sub[1]);
+                        } else {
+				player.yellowMessage("Syntax: !maxhpmp [<playername>] <value>");
+                        }
+                    
+                        if(victim != null) {
+                                if(victim.getHp() > statUpdate) {
+                                        victim.setHp(statUpdate);
+                                        victim.updateSingleStat(MapleStat.HP, statUpdate);
+                                }
+                                
+                                if(victim.getMp() > statUpdate) {
+                                        victim.setMp(statUpdate);
+                                        victim.updateSingleStat(MapleStat.MP, statUpdate);
+                                }
+                            
+                                victim.setMaxHp(statUpdate);
+                                victim.setMaxMp(statUpdate);
+                                victim.updateSingleStat(MapleStat.MAXHP, statUpdate);
+                                victim.updateSingleStat(MapleStat.MAXMP, statUpdate);
+                                
                                 victim.checkBerserk(victim.isHidden());
                         } else {
                                 player.message("Player '" + sub[1] + "' could not be found on this world.");

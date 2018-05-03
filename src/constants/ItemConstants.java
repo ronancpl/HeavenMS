@@ -171,6 +171,11 @@ public final class ItemConstants {
     public static boolean isOverall(int itemId) {
         return itemId / 10000 == 105;
     }
+    
+    public static boolean isCashStore(int itemId) {
+        int itemType = itemId / 10000;
+        return itemType == 503 || itemType == 514;
+    }
 
     public static boolean isWeapon(int itemId) {
         return itemId >= 1302000 && itemId < 1492024;

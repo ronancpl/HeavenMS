@@ -2322,6 +2322,11 @@ public class MapleMap {
         }
         
         chr.receivePartyMemberHP();
+        announcePlayerDiseases(chr.getClient());
+    }
+    
+    private static void announcePlayerDiseases(final MapleClient c) {
+        Server.getInstance().registerAnnouncePlayerDiseases(c);
     }
 
     public MaplePortal getRandomPlayerSpawnpoint() {

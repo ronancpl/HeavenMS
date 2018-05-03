@@ -238,7 +238,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         String qtyStr = (item.getQuantity() > 1) ? " (qty. " + item.getQuantity() + ")" : "";
         
         MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
-        if(player != null && player.isLoggedin() && !player.isAwayFromWorld()) {
+        if(player != null && player.isLoggedinWorld()) {
             player.dropMessage(6, "[HIRED MERCHANT] Item '" + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
         }
     }

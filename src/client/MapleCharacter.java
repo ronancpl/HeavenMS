@@ -257,7 +257,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Map<Integer, MapleKeyBinding> keymap = new LinkedHashMap<>();
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
     private Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
-    private EnumMap<MapleDisease, MapleDiseaseValueHolder> diseases = new EnumMap<>(MapleDisease.class);
+    private EnumMap<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> diseases = new EnumMap<>(MapleDisease.class);
     private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
     private Map<MapleQuest, Long> questExpirations = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
@@ -426,6 +426,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
 
         return ret;
+    }
+    
+    public boolean isLoggedinWorld() {
+        return this.isLoggedin() && !this.isAwayFromWorld();
     }
     
     public boolean isAwayFromWorld() {
@@ -2042,16 +2046,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public Map<MapleDisease, Long> getAllDiseases() {
+    public Map<MapleDisease, Pair<Long, MobSkill>> getAllDiseases() {
         chrLock.lock();
         try {
             long curtime = System.currentTimeMillis();
-            Map<MapleDisease, Long> ret = new LinkedHashMap<>();
+            Map<MapleDisease, Pair<Long, MobSkill>> ret = new LinkedHashMap<>();
             
             for(Entry<MapleDisease, Long> de : diseaseExpires.entrySet()) {
-                MapleDiseaseValueHolder mdvh = diseases.get(de.getKey());
+                Pair<MapleDiseaseValueHolder, MobSkill> dee = diseases.get(de.getKey());
+                MapleDiseaseValueHolder mdvh = dee.getLeft();
                 
-                ret.put(de.getKey(), mdvh.length - (curtime - mdvh.startTime));
+                ret.put(de.getKey(), new Pair<>(mdvh.length - (curtime - mdvh.startTime), dee.getRight()));
             }
             
             return ret;
@@ -2060,16 +2065,36 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void silentApplyDiseases(Map<MapleDisease, Long> diseaseMap) {
+    public void silentApplyDiseases(Map<MapleDisease, Pair<Long, MobSkill>> diseaseMap) {
         chrLock.lock();
         try {
             long curTime = System.currentTimeMillis();
             
-            for(Entry<MapleDisease, Long> di : diseaseMap.entrySet()) {
-                long expTime = curTime + di.getValue();
+            for(Entry<MapleDisease, Pair<Long, MobSkill>> di : diseaseMap.entrySet()) {
+                long expTime = curTime + di.getValue().getLeft();
                 
                 diseaseExpires.put(di.getKey(), expTime);
-                diseases.put(di.getKey(), new MapleDiseaseValueHolder(curTime, expTime));
+                diseases.put(di.getKey(), new Pair<>(new MapleDiseaseValueHolder(curTime, expTime), di.getValue().getRight()));
+            }
+        } finally {
+            chrLock.unlock();
+        }
+    }
+    
+    public void announceDiseases(MapleClient c) {
+        chrLock.lock();
+        try {
+            // Poison damage visibility and diseases status visibility, extended through map transitions thanks to Ronan
+            
+            if(!this.isLoggedinWorld()) return;
+            
+            for(Entry<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> di : diseases.entrySet()) {
+                MapleDisease disease = di.getKey();
+                MobSkill skill = di.getValue().getRight();
+                final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
+                
+                if(disease != MapleDisease.SLOW) c.announce(MaplePacketCreator.giveForeignDebuff(id, debuff, skill));
+                else c.announce(MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill));
             }
         } finally {
             chrLock.unlock();
@@ -2088,14 +2113,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             try {
                 long curTime = System.currentTimeMillis();
                 diseaseExpires.put(disease, curTime + skill.getDuration());
-                diseases.put(disease, new MapleDiseaseValueHolder(curTime, skill.getDuration()));
+                diseases.put(disease, new Pair<>(new MapleDiseaseValueHolder(curTime, skill.getDuration()), skill));
             } finally {
                 chrLock.unlock();
             }
             
             final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
             client.announce(MaplePacketCreator.giveDebuff(debuff, skill));
-            map.broadcastMessage(this, MaplePacketCreator.giveForeignDebuff(id, debuff, skill), false);
+            
+            if(disease != MapleDisease.SLOW) map.broadcastMessage(this, MaplePacketCreator.giveForeignDebuff(id, debuff, skill), false);
+            else map.broadcastMessage(this, MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill), false);
         }
     }
 
@@ -2103,7 +2130,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (hasDisease(debuff)) {
             long mask = debuff.getValue();
             announce(MaplePacketCreator.cancelDebuff(mask));
-            map.broadcastMessage(this, MaplePacketCreator.cancelForeignDebuff(id, mask), false);
+            
+            if(debuff != MapleDisease.SLOW) map.broadcastMessage(this, MaplePacketCreator.cancelForeignDebuff(id, mask), false);
+            else map.broadcastMessage(this, MaplePacketCreator.cancelForeignSlowDebuff(id), false);
 
             chrLock.lock();
             try {
@@ -3022,10 +3051,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         cancelEffect(ii.getItemEffect(itemId), false, -1);
     }
 
-    public void cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime) {
+    public boolean cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime) {
         effLock.lock();
         try {
-            cancelEffect(effect, overwrite, startTime, true);
+            return cancelEffect(effect, overwrite, startTime, true);
         } finally {
             effLock.unlock();
         }
@@ -3068,10 +3097,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    private void cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime, boolean firstCancel) {
+    private boolean cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime, boolean firstCancel) {
         Set<MapleBuffStat> removedStats = new LinkedHashSet<>();
         dropBuffStats(cancelEffectInternal(effect, overwrite, startTime, removedStats));
         updateEffects(removedStats);
+        
+        return !removedStats.isEmpty();
     }
     
     private List<Pair<MapleBuffStat, MapleBuffStatValueHolder>> cancelEffectInternal(MapleStatEffect effect, boolean overwrite, long startTime, Set<MapleBuffStat> removedStats) {
@@ -3480,26 +3511,31 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    public void unregisterChairBuff() {
-        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return;
+    public boolean unregisterChairBuff() {
+        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return false;
         
         int skillId = getJobMapChair(job);
         int skillLv = getSkillLevel(skillId);
         if(skillLv > 0) {
             MapleStatEffect mapChairSkill = SkillFactory.getSkill(skillId).getEffect(skillLv);
-            cancelEffect(mapChairSkill, false, -1);
+            return cancelEffect(mapChairSkill, false, -1);
         }
+        
+        return false;
     }
     
-    public void registerChairBuff() {
-        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return;
+    public boolean registerChairBuff() {
+        if(!ServerConstants.USE_CHAIR_EXTRAHEAL) return false;
         
         int skillId = getJobMapChair(job);
         int skillLv = getSkillLevel(skillId);
         if(skillLv > 0) {
             MapleStatEffect mapChairSkill = SkillFactory.getSkill(skillId).getEffect(skillLv);
             mapChairSkill.applyTo(this);
+            return true;
         }
+        
+        return false;
     }
     
     public int getChair() {
@@ -4216,7 +4252,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         try {
             if(party != null) {
                 for(MaplePartyCharacter partyMembers: party.getMembers()) {
-                    if(partyMembers.getPlayer().getMap().hashCode() == thisMapHash) list.add(partyMembers.getPlayer());
+                    MapleCharacter chr = partyMembers.getPlayer();
+                    if(chr.getMap().hashCode() == thisMapHash && chr.isLoggedinWorld()) list.add(chr);
                 }
             }
         } finally {
@@ -7240,16 +7277,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         if (quantity <= iQuant && iQuant > 0) {
             MapleInventoryManipulator.removeFromSlot(c, type, (byte) slot, quantity, false);
-            double price;
             int itemid = item.getItemId();
-            if (ItemConstants.isRechargable(itemid)) {
-            	price = ii.getWholePrice(itemid) / (double) ii.getSlotMax(c, itemid);
-            } else {
-                price = ii.getPrice(itemid);
-            }
-            
-            int recvMesos = (int) Math.max(Math.ceil(price * quantity), 0);
-            if (price != -1 && recvMesos > 0) {
+            int recvMesos = ii.getPrice(itemid, quantity);
+            if (recvMesos > 0) {
                 gainMeso(recvMesos, false);
                 return(recvMesos);
             }
@@ -7722,6 +7752,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void sendSpawnData(MapleClient client) {
         if (!this.isHidden() || client.getPlayer().gmLevel() > 1) {
             client.announce(MaplePacketCreator.spawnPlayerMapObject(this));
+            
+            if(hasBuffFromSourceid(getJobMapChair(job))) {
+                client.announce(MaplePacketCreator.giveForeignChairSkillEffect(id));
+            }
         }
 
         if (this.isHidden()) {

@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
+import server.life.MobSkill;
+import tools.Pair;
 import tools.locks.MonitoredLockType;
 import tools.locks.MonitoredReentrantLock;
 
@@ -38,7 +40,7 @@ public class PlayerBuffStorage {
     private int id = (int) (Math.random() * 100);
     private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.BUFF_STORAGE, true);    
     private Map<Integer, List<PlayerBuffValueHolder>> buffs = new HashMap<>();
-    private Map<Integer, Map<MapleDisease, Long>> diseases = new HashMap<>();
+    private Map<Integer, Map<MapleDisease, Pair<Long, MobSkill>>> diseases = new HashMap<>();
 
     public void addBuffsToStorage(int chrid, List<PlayerBuffValueHolder> toStore) {
         lock.lock();
@@ -58,7 +60,7 @@ public class PlayerBuffStorage {
         }
     }
     
-    public void addDiseasesToStorage(int chrid, Map<MapleDisease, Long> toStore) {
+    public void addDiseasesToStorage(int chrid, Map<MapleDisease, Pair<Long, MobSkill>> toStore) {
         lock.lock();
         try {
             diseases.put(chrid, toStore);
@@ -67,7 +69,7 @@ public class PlayerBuffStorage {
         }
     }
 
-    public Map<MapleDisease, Long> getDiseasesFromStorage(int chrid) {
+    public Map<MapleDisease, Pair<Long, MobSkill>> getDiseasesFromStorage(int chrid) {
         lock.lock();
         try {
             return diseases.remove(chrid);

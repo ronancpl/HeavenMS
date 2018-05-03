@@ -272,7 +272,7 @@ public class NewYearCardRecord {
                 }
                 
                 MapleCharacter target = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(receiverId);
-                if(target != null && target.isLoggedin() && !target.isAwayFromWorld()) {
+                if(target != null && target.isLoggedinWorld()) {
                     target.announce(MaplePacketCreator.onNewYearCardRes(target, NewYearCardRecord.this, 0xC, 0));
                 }
             }
@@ -328,7 +328,7 @@ public class NewYearCardRecord {
                     chr.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(chr, nyc, 0xE, 0));
 
                     MapleCharacter other = chr.getClient().getWorldServer().getPlayerStorage().getCharacterById(nyc.getReceiverId());
-                    if(other != null && other.isLoggedin() && !other.isAwayFromWorld()) {
+                    if(other != null && other.isLoggedinWorld()) {
                         other.removeNewYearRecord(nyc);
                         other.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(other, nyc, 0xE, 0));
 
@@ -346,7 +346,7 @@ public class NewYearCardRecord {
                     chr.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(chr, nyc, 0xE, 0));
 
                     MapleCharacter other = chr.getClient().getWorldServer().getPlayerStorage().getCharacterById(nyc.getSenderId());
-                    if(other != null && other.isLoggedin() && !other.isAwayFromWorld()) {
+                    if(other != null && other.isLoggedinWorld()) {
                         other.removeNewYearRecord(nyc);
                         other.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(other, nyc, 0xE, 0));
 

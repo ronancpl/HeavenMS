@@ -21,6 +21,7 @@
  */
 package net.server;
 
+import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.RankingWorker;
 import java.io.FileInputStream;
@@ -94,9 +95,12 @@ public class Server {
     private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
     private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
     private final Lock lgnLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
+    private final Lock disLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
     private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();
+    private final List<MapleClient> processDiseaseAnnouncePlayers = new LinkedList<>();
+    private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
     
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
@@ -261,7 +265,39 @@ public class Server {
             }
         }
     }
-
+    
+    public void runAnnouncePlayerDiseasesSchedule() {
+        disLock.lock();
+        try {
+            while(!processDiseaseAnnouncePlayers.isEmpty()) {
+                MapleClient c = processDiseaseAnnouncePlayers.remove(0);
+                MapleCharacter player = c.getPlayer();
+                if(player != null && player.isLoggedinWorld()) {
+                    for(MapleCharacter chr : player.getMap().getCharacters()) {
+                        chr.announceDiseases(c);
+                    }
+                }
+            }
+            
+            // this is to force the system to wait for at least one complete tick before releasing disease info for the registered clients
+            while(!registeredDiseaseAnnouncePlayers.isEmpty()) {
+                MapleClient c = registeredDiseaseAnnouncePlayers.remove(0);
+                processDiseaseAnnouncePlayers.add(c);
+            }
+        } finally {
+            disLock.unlock();
+        }
+    }
+    
+    public void registerAnnouncePlayerDiseases(MapleClient c) {
+        disLock.lock();
+        try {
+            registeredDiseaseAnnouncePlayers.add(c);
+        } finally {
+            disLock.unlock();
+        }
+    }
+    
     public void init() {
         Properties p = new Properties();
         try {
@@ -306,6 +342,7 @@ public class Server {
         disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
+        tMan.register(new CharacterDiseaseWorker(), 777, 777);
         tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
         tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
         

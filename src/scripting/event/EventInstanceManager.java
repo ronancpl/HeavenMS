@@ -921,7 +921,7 @@ public class EventInstanceManager {
                 for (MapleCharacter evChr : eventMembers) {
                     MapleCharacter chr = mapChars.get(evChr.getId());
 
-                    if(chr != null && chr.isLoggedin() && !chr.isAwayFromWorld()) {
+                    if(chr != null && chr.isLoggedinWorld()) {
                         chr.updateQuestMobCount(mobid);
                     }
                 }

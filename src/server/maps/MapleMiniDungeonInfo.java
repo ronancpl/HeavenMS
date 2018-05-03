@@ -1,5 +1,3 @@
-package server.maps;
-
 /*
 	This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
@@ -21,7 +19,7 @@ package server.maps;
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+package server.maps;
 
 /**
  *
