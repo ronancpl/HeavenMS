@@ -43,8 +43,10 @@ import server.TimerManager;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.maps.MapMonitor;
+import server.maps.MapleMap;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
+import tools.MaplePacketCreator;
 
 /**
  * @author Lerk
@@ -253,10 +255,13 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
     
     public void hitMonsterWithReactor(int id, int hitsToKill) {  // until someone comes with a better solution, why not?
-        MapleMonster mm = reactor.getMap().getMonsterById(id);
+        MapleMap map = reactor.getMap();
+        MapleMonster mm = map.getMonsterById(id);
         if(mm != null) {
             int damage = (int)Math.ceil(mm.getMaxHp() / hitsToKill);
-            reactor.getMap().damageMonster(this.getPlayer(), mm, damage);
+            
+            map.damageMonster(this.getPlayer(), mm, damage);
+            map.broadcastMessage(MaplePacketCreator.damageMonster(mm.getObjectId(), damage));
         }
     }
 

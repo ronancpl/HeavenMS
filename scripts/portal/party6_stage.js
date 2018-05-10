@@ -1,12 +1,12 @@
 function enter(pi) {
 	switch(pi.getMapId()) {
 		case 930000000:
-			pi.warp(930000100,0);
+			pi.playPortalSound(); pi.warp(930000100,0);
                         return true;
 			break;
 		case 930000100:
 			if (pi.getMap().getMonsters().size() == 0) {
-				pi.warp(930000200,0);
+				pi.playPortalSound(); pi.warp(930000200,0);
                                 return true;
 			} else {
 				pi.playerMessage(5, "Eliminate all the monsters.");

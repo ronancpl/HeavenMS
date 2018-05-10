@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -70,12 +70,12 @@ function end(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Oh, you brought the ink. Now let me pour it, cautiously.... Almost there, almost. ... ..... Kyaaa! Th-the letter. It says: 'I'll be there to take your Seal Rock of Mu Lung.'");
-            
+        } else if (status == 1) {
             qm.gainItem(4032342, -8);
             qm.gainItem(4220151, -1);
             qm.gainExp(10000 * qm.getPlayer().getExpRate());
-            qm.forceCompleteQuest();
             
+            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

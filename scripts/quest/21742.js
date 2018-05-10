@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -53,16 +53,18 @@ function start(mode, type, selection) {
         } else if (status == 8) {
             qm.sendNextPrev("So then I thought, well what's the point of delivering it to Mu Gong? I must first restore the writing on Hanging Scroll. That's why I need you to do something for me. The guy down there writing on Hanging Scroll... is #bJin Jin#k, the greatest artist on all of Mu Lung. I'm sure he'd be able to restore the writing on Hanging Scroll.", 9);
         } else {
-            if(qm.canHold(4220151)) {
-                qm.gainItem(4220151, 1);
+            if(!qm.haveItem(4220151, 1)) {
+                if(!qm.canHold(4220151, 1)) {
+                    qm.sendOk("Please free a room on your ETC inventory.", 9);
+                    qm.dispose();
+                    return;
+                }
                 
-                qm.forceStartQuest();
-                qm.dispose();
-            } else {
-                qm.sendOk("Please free a room on your ETC inventory.", 9);
-                qm.dispose();
-                return;
+                qm.gainItem(4220151, 1);
             }
+            
+            qm.forceStartQuest();
+            qm.dispose();
         }
     }
 }
@@ -83,12 +85,12 @@ function end(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Oh, you brought the ink. Now let me pour it, cautiously.... Almost there, almost. ... ..... Kyaaa! Th-the letter. It says: 'I'll be there to take your Seal Rock of Mu Lung.'");
-            
+        } else if (status == 1) {
             qm.gainItem(4032342, -8);
             qm.gainItem(4220151, -1);
             qm.gainExp(10000 * qm.getPlayer().getExpRate());
-            qm.forceCompleteQuest();
             
+            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

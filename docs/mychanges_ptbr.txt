@@ -920,3 +920,22 @@ Status de diseases agora são visíveis para outros jogadores, mesmo trocando de
 Dano de poison agora é visível para outros jogadores.
 Corrigido preço contabilizado incorretamente para itens recarregáveis.
 Corrigido recarregáveis com quantidade zero não sendo vendidos pelo NPC shop.
+
+03 - 07 Maio 2018,
+Modificado unitPrice para aproximar o valor do WZ, de forma que possa ser representado num ponto flutuante sem perda de dados.
+Corrigido rechargeables com quantidade 0 colocados no player shop/hired merchant retornando ao dono ou ao comprador com quantidade 1.
+Resolvido vários problemas de acesso concorrente com itens no mapa.
+Corrigido anomalias com tempo de espera para pegar drops de outros jogadores, agora atuando de forma mais parecida com o GMS-like.
+Adicionado/corrigido direitos de copyleft em arquivos de PQs de minha própria autoria.
+Revisto acesso concorrente com módulos de playershop/hiredmerchant.
+Corrigido problemas com recuperação de itens quando usando bundles em playershop/hiredmerchant.
+Corrigido alguns exploits com playershop/hiredmerchant.
+Corrigido mensagem de falta de meso numa sessão de compra/venda com NPC travando novas transações naquela sessão.
+Corrigido tempo de espera para pegar drops de outros jogadores sempre que se muda de mapa.
+Adicionado efeito sonoro para alguns portais scriptados que ainda não o tinham implementado.
+Corrigido alguns exploits envolvendo acesso em rajada com NPC Fredrick e Duey.
+Corrigido Body Pressure não mostrando valor de dano para outros jogadores.
+Adicionado flag que permite town scrolls atuarem como se fossem "player banishes", permitindo ativação do antibanish scroll.
+
+09 Maio 2018,
+Corrigido autopot handler consumindo mais pots que o necessário para pots com ganhos percentuais.

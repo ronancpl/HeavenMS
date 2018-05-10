@@ -11,6 +11,7 @@ var name_tree = [];
 var role_tree = [];
 var name_cursor, role_cursor;
 
+// make sure the server names are lexicograffically EQUALS to the correspondent function.
 var servers = ["HeavenMS", "MapleSolaxia", "MoopleDEV", "MetroMS", "BubblesDEV", "ThePackII", "OdinMS", "Contributors"];
 var servers_history = [];
 
@@ -93,7 +94,7 @@ function writeAllServerStaffs() {
                 role_cursor = [];
 
                 var srvName = servers[i];
-                eval("writeServerStaff_" + srvName)();  // make sure the server names are lexicograffically EQUALS to the correspondent function.
+                eval("writeServerStaff_" + srvName)();
         
                 name_tree.push(name_cursor);
                 role_tree.push(role_cursor);

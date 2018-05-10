@@ -113,7 +113,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
 
         public int numAttacked, numDamage, numAttackedAndDamage, skill, skilllevel, stance, direction, rangedirection, charge, display;
         public Map<Integer, List<Integer>> allDamage;
-        public boolean isHH = false, isTempest = false, ranged, magic;
+        public boolean ranged, magic;
         public int speed = 4;
         public Point position = new Point();
         public MapleStatEffect getAttackEffect(MapleCharacter chr, Skill theSkill) {
@@ -205,17 +205,29 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             if (mapitem.getMeso() == 0) { //Maybe it is possible some how?
                                 return;
                             }
-                            synchronized (mapitem) {
+                            
+                            mapitem.lockItem();
+                            try {
                                 if (mapitem.isPickedUp()) {
                                     return;
                                 }
                                 TimerManager.getInstance().schedule(new Runnable() {
                                     @Override
                                     public void run() {
-                                        map.pickItemDrop(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem);
+                                        mapitem.lockItem();
+                                        try {
+                                            if (mapitem.isPickedUp()) {
+                                                return;
+                                            }
+                                            map.pickItemDrop(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 4, 0), mapitem);
+                                        } finally {
+                                            mapitem.unlockItem();
+                                        }
                                     }
                                 }, delay);
                                 delay += 100;
+                            } finally {
+                                mapitem.unlockItem();
                             }
                     } else if (mapobject != null && mapobject.getType() != MapleMapObjectType.MONSTER) {
                         return;
@@ -464,34 +476,45 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         if (attackEffect.makeChanceResult()) {
                             monster.applyStatus(player, new MonsterStatusEffect(attackEffect.getMonsterStati(), theSkill, null, false), attackEffect.isPoison(), attackEffect.getDuration());
                         }
-                    }                 
-                    if (attack.isHH && !monster.isBoss()) {
-                        map.damageMonster(player, monster, monster.getHp() - 1);
-                    } else if (attack.isHH) {
-                        int HHDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Paladin.HEAVENS_HAMMER).getEffect(player.getSkillLevel(SkillFactory.getSkill(Paladin.HEAVENS_HAMMER))).getDamage() / 100));
-                        map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (HHDmg / 5) + HHDmg * .8)));
-                    } else if(attack.isTempest && !monster.isBoss()) {
-                        map.damageMonster(player, monster, monster.getHp());
-                    } else if(attack.isTempest) {
-                        int TmpDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Aran.COMBO_TEMPEST).getEffect(player.getSkillLevel(SkillFactory.getSkill(Aran.COMBO_TEMPEST))).getDamage() / 100));
-                        map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (TmpDmg / 5) + TmpDmg * .8)));
+                    }
+                    if (attack.skill == Paladin.HEAVENS_HAMMER) {
+                        if(!monster.isBoss()) {
+                            map.damageMonster(player, monster, monster.getHp() - 1);
+                        } else {
+                            int HHDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Paladin.HEAVENS_HAMMER).getEffect(player.getSkillLevel(SkillFactory.getSkill(Paladin.HEAVENS_HAMMER))).getDamage() / 100));
+                            map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (HHDmg / 5) + HHDmg * .8)));
+                        }
+                    } else if (attack.skill == Aran.COMBO_TEMPEST) {
+                        if(!monster.isBoss()) {
+                            map.damageMonster(player, monster, monster.getHp());
+                        } else {
+                            int TmpDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Aran.COMBO_TEMPEST).getEffect(player.getSkillLevel(SkillFactory.getSkill(Aran.COMBO_TEMPEST))).getDamage() / 100));
+                            map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (TmpDmg / 5) + TmpDmg * .8)));
+                        }
                     } else {
+                        if(attack.skill == Aran.BODY_PRESSURE) {
+                            map.broadcastMessage(MaplePacketCreator.damageMonster(monster.getObjectId(), totDamageToOneMonster));
+                        }
+                        
                         map.damageMonster(player, monster, totDamageToOneMonster);
-						
-                    }                                                                     
+                    }
                     if (monster.isBuffed(MonsterStatus.WEAPON_REFLECT)) {
-                        for (int i = 0; i < monster.getSkills().size(); i++) {
-                            if (monster.getSkills().get(i).left == 145) {
-                                MobSkill toUse = MobSkillFactory.getMobSkill(monster.getSkills().get(i).left, monster.getSkills().get(i).right);
+                        List<Pair<Integer, Integer>> mobSkills = monster.getSkills();
+                        
+                        for (Pair<Integer, Integer> ms : mobSkills) {
+                            if (ms.left == 145) {
+                                MobSkill toUse = MobSkillFactory.getMobSkill(ms.left, ms.right);
                                 player.addHP(-toUse.getX());
                                 map.broadcastMessage(player, MaplePacketCreator.damagePlayer(0, monster.getId(), player.getId(), toUse.getX(), 0, 0, false, 0, true, monster.getObjectId(), 0, 0), true);
                             }
                         }
                     }                
                     if (monster.isBuffed(MonsterStatus.MAGIC_REFLECT)) {
-                        for (int i = 0; i < monster.getSkills().size(); i++) {
-                            if (monster.getSkills().get(i).left == 145) {
-                                MobSkill toUse = MobSkillFactory.getMobSkill(monster.getSkills().get(i).left, monster.getSkills().get(i).right);
+                        List<Pair<Integer, Integer>> mobSkills = monster.getSkills();
+                        
+                        for (Pair<Integer, Integer> ms : mobSkills) {
+                            if (ms.left == 145) {
+                                MobSkill toUse = MobSkillFactory.getMobSkill(ms.left, ms.right);
                                 player.addMP(-toUse.getY());
                             }
                         }
@@ -524,11 +547,6 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             ret.charge = lea.readInt();
         } else {
             ret.charge = 0;
-        }
-        if (ret.skill == Paladin.HEAVENS_HAMMER) {
-            ret.isHH = true;
-        } else if(ret.skill == Aran.COMBO_TEMPEST) {
-            ret.isTempest = true;
         }
         lea.skip(8);
         ret.display = lea.readByte();

@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -37,7 +37,7 @@ function enter(pi) {
                         return false;
                 }
                 
-		pi.warp(108010600 + (10 * jobtype), "out00");
+		pi.playPortalSound(); pi.warp(108010600 + (10 * jobtype), "out00");
 	} else {
 		pi.playPortalSound(); pi.warp(130010020, "out00");
 	}

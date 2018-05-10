@@ -116,8 +116,8 @@ public final class StorageHandler extends AbstractMaplePacketHandler {
 			} else {
 				MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
 				Item item = chr.getInventory(invType).getItem(slot).copy();
-				if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargable(itemId))) {
-					if (ItemConstants.isRechargable(itemId)) {
+				if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
+					if (ItemConstants.isRechargeable(itemId)) {
 						quantity = item.getQuantity();
 					}
 					chr.gainMeso(meso, false, true, false);

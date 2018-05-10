@@ -1,6 +1,6 @@
 ========== HeavenMS ==========
 Credits:
-Ronan - Freelance Developer
+Ronan - Head Developer
 Vcoc - Freelance Developer
 
 ---------------------------
@@ -8,18 +8,20 @@ Known issues:
 - Everytime two people click on an npc at the same time, one of them dcs and the other needs to @dispose to talk to the npc.
 - If multiple people hit boxes/reactors at the same time, they both dc with invalid pointer error.
 - Passwords on minirooms are not encoded for players entering/logging into the map.
+- Some criticals (e.g. from Aran skills) will not show up as crit for other players.
+- Deadlocks may start appearing if the server stays online long enough with many players logged in.
 ---------------------------
 
 ---------------------------
 Missing features list:
 - Miniroom tooltips (such as number of players in store/host awaiting game) not showing up properly.
-- Disease POISON appears MISSES to other players.
 ---------------------------
 
 
 ---------------------------
 ** Others **
 - Marriage
+- Family system
 ---------------------------
 
 
@@ -44,7 +46,7 @@ Missing features list:
 
 ---------------------------
 ** Skills **
-Check autoban system
+- Check autoban system
 ---------------------------
 
 

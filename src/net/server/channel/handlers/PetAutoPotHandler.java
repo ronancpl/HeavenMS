@@ -3,7 +3,8 @@
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
 		       Matthias Butz <matze@odinms.de>
 		       Jan Christian Meyer <vimes@odinms.de>
-    Copyleft (L) 2017 RonanLana (HeavenMS)
+
+    Copyleft (L) 2016 - 2018 RonanLana (HeavenMS)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -96,10 +97,10 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
             maxMp = maxHpMp.right;
             
             incHp = stat.getHp();
-            if(incHp <= 0 && hasHpGain) incHp = (short)((maxHp * stat.getHpRate()) / 100.0);
+            if(incHp <= 0 && hasHpGain) incHp = (short)(maxHp * stat.getHpRate());
             
             incMp = stat.getMp();
-            if(incMp <= 0 && hasMpGain) incMp = (short)((maxMp * stat.getMpRate()) / 100.0);
+            if(incMp <= 0 && hasMpGain) incMp = (short)(maxMp * stat.getMpRate());
             
             curHp = chr.getHp();
             curMp = chr.getMp();
@@ -114,12 +115,12 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
                     curMp += incMp;
 
                     //System.out.println();
-                    //System.out.println("hp: " + hasHpGain + " player hp " + curHp + " maxhp " + maxHp);
-                    //System.out.println("mp: " + hasMpGain + " player mp " + curMp + " maxmp " + maxMp);
-                    //System.out.println("redo? " + (shouldReusePot(chr) && toUse.getQuantity() > 0));
-                } while(shouldReusePot(chr) && toUse.getQuantity() > 0);
+                    //System.out.println("hp: " + hasHpGain + " hpgain " + incHp + " player hp " + curHp + " maxhp " + maxHp);
+                    //System.out.println("mp: " + hasMpGain + " mpgain " + incMp + " player mp " + curMp + " maxmp " + maxMp);
+                    //System.out.println("redo? " + (shouldReusePot() && toUse.getQuantity() > 0));
+                } while(shouldReusePot() && toUse.getQuantity() > 0);
 
-                if(toUse.getQuantity() == 0 && shouldReusePot(chr)) {
+                if(toUse.getQuantity() == 0 && shouldReusePot()) {
                     // depleted out the current slot, fetch for more
 
                     if(!cursorOnNextAvailablePot(chr)) {
@@ -170,7 +171,7 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         return new Pair<>(hp, mp);
     }
     
-    private boolean shouldReusePot(MapleCharacter chr) {
+    private boolean shouldReusePot() {
         return (hasHpGain && curHp < ServerConstants.PET_AUTOHP_RATIO * maxHp) || (hasMpGain && curMp < ServerConstants.PET_AUTOMP_RATIO * maxMp);
     } 
 }

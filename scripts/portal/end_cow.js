@@ -7,7 +7,7 @@
 function enter(pi){
 	if (pi.isQuestStarted(2180) && (pi.hasItem(4031847) || pi.hasItem(4031848) || pi.hasItem(4031849) || pi.hasItem(4031850))){
 		if (pi.hasItem(4031850)){
-			pi.warp(120000103);
+			pi.playPortalSound(); pi.warp(120000103);
 			return true;
 		}
 		else{

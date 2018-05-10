@@ -400,7 +400,7 @@ public class MaplePacketCreator {
                         mplew.writeMapleAsciiString(item.getOwner());
                         mplew.writeShort(item.getFlag()); // flag
 
-                        if (ItemConstants.isRechargable(item.getItemId())) {
+                        if (ItemConstants.isRechargeable(item.getItemId())) {
                                 mplew.writeInt(2);
                                 mplew.write(new byte[]{(byte) 0x54, 0, 0, (byte) 0x34});
                         }
@@ -1738,18 +1738,37 @@ public class MaplePacketCreator {
                 mplew.write(animation);
                 return mplew.getPacket();
         }
+        
+        public static byte[] updateMapItemObject(MapleMapItem drop, boolean giveOwnership) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
+                mplew.write(2);
+                mplew.writeInt(drop.getObjectId());
+                mplew.writeBool(drop.getMeso() > 0);
+                mplew.writeInt(drop.getItemId());
+                mplew.writeInt(giveOwnership ? 0 : -1);
+                mplew.write(drop.getDropType());
+                mplew.writePos(drop.getPosition());
+                mplew.writeInt(giveOwnership ? 0 : -1);
 
-        public static byte[] dropItemFromMapObject(MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
+                if (drop.getMeso() == 0) {
+                        addExpirationTime(mplew, drop.getItem().getExpiration());
+                }
+                mplew.write(drop.isPlayerDrop() ? 0 : 1);
+                return mplew.getPacket();
+        }
+
+        public static byte[] dropItemFromMapObject(boolean recvrInParty, MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
                 mplew.write(mod);
                 mplew.writeInt(drop.getObjectId());
                 mplew.writeBool(drop.getMeso() > 0); // 1 mesos, 0 item, 2 and above all item meso bag,
                 mplew.writeInt(drop.getItemId()); // drop object ID
-                mplew.writeInt(drop.getOwnerId()); // owner charid/partyid :)
+                mplew.writeInt(!drop.isFFADrop() ? (recvrInParty ? drop.getPartyOwnerId() : drop.getOwnerId()) : 0); // owner charid/partyid :)
                 mplew.write(drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
-                mplew.writeInt(drop.getDropType() == 0 ? drop.getOwnerId() : 0); //test
+                mplew.writeInt(!drop.isFFADrop() ? drop.getOwnerId() : 0); // owner charid
 
                 if (mod != 2) {
                         mplew.writePos(dropfrom);
@@ -1761,7 +1780,7 @@ public class MaplePacketCreator {
                 mplew.write(drop.isPlayerDrop() ? 0 : 1); //pet EQP pickup
                 return mplew.getPacket();
         }
-
+        
         /**
          * Gets a packet spawning a player as a mapobject to other clients.
          *
@@ -2273,7 +2292,7 @@ public class MaplePacketCreator {
                         mplew.writeInt(item.getPrice() == 0 ? item.getPitch() : 0); //Perfect Pitch
                         mplew.writeInt(0); //Can be used x minutes after purchase
                         mplew.writeInt(0); //Hmm
-                        if (!ItemConstants.isRechargable(item.getItemId())) {
+                        if (!ItemConstants.isRechargeable(item.getItemId())) {
                                 mplew.writeShort(1); // stacksize o.o
                                 mplew.writeShort(item.getBuyable());
                         } else {
@@ -2383,6 +2402,10 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] silentRemoveItemFromMap(int oid) {
+                return removeItemFromMap(oid, 1, 0);
+        }
+        
         /**
          * animation: 0 - expire<br/> 1 - without animation<br/> 2 - pickup<br/> 4 -
          * explode<br/> cid is ignored for 0 and 1
@@ -3020,7 +3043,18 @@ public class MaplePacketCreator {
                 }
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] getPlayerShopOwnerUpdate(MaplePlayerShop.SoldItem item, int position) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
+                mplew.write(PlayerInteractionHandler.Action.UPDATE_PLAYERSHOP.getCode());
+                mplew.write(position);
+                mplew.writeShort(item.getQuantity());
+                mplew.writeMapleAsciiString(item.getBuyer());
+                
+                return mplew.getPacket();
+        }
+        
         /**
          *
          * @param c
@@ -3035,7 +3069,20 @@ public class MaplePacketCreator {
                 mplew.write(4);
                 mplew.write(4);
                 mplew.write(owner ? 0 : 1);
-                mplew.write(0);
+                
+                if (owner) {
+                        List<MaplePlayerShop.SoldItem> sold = shop.getSold();
+                        mplew.write(sold.size());
+                        for (MaplePlayerShop.SoldItem s : sold) {
+                                mplew.writeInt(s.getItemId());
+                                mplew.writeShort(s.getQuantity());
+                                mplew.writeInt(s.getMesos());
+                                mplew.writeMapleAsciiString(s.getBuyer());
+                        }
+                } else {
+                        mplew.write(0);
+                }
+                
                 addCharLook(mplew, shop.getOwner(), false);
                 mplew.writeMapleAsciiString(shop.getOwner().getName());
                 
@@ -3051,7 +3098,7 @@ public class MaplePacketCreator {
                 mplew.write(0xFF);
                 mplew.writeMapleAsciiString(shop.getDescription());
                 List<MaplePlayerShopItem> items = shop.getItems();
-                mplew.write(0x10);
+                mplew.write(0x10);  //TODO SLOTS, which is 16 for most stores...slotMax
                 mplew.write(items.size());
                 for (MaplePlayerShopItem item : items) {
                         mplew.writeShort(item.getBundles());
@@ -3518,12 +3565,11 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] partyCreated(MaplePartyCharacter partychar) {
+        public static byte[] partyCreated(MaplePartyCharacter partychar, int partyId) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PARTY_OPERATION.getValue());
                 mplew.write(8);
-                mplew.writeShort(0x8b);
-                mplew.writeShort(1);
+                mplew.writeInt(partyId);
                 if (partychar.getDoors().size() > 0) {
                         boolean deployedPortal = false;
                     
@@ -3674,7 +3720,7 @@ public class MaplePacketCreator {
                 case EXPEL:
                 case LEAVE:
                         mplew.write(0x0C);
-                        mplew.writeInt(40546);
+                        mplew.writeInt(party.getId());
                         mplew.writeInt(target.getId());
                         if (op == PartyOperation.DISBAND) {
                                 mplew.write(0);
@@ -3692,7 +3738,7 @@ public class MaplePacketCreator {
                         break;
                 case JOIN:
                         mplew.write(0xF);
-                        mplew.writeInt(40546);
+                        mplew.writeInt(party.getId());
                         mplew.writeMapleAsciiString(target.getName());
                         addPartyStatus(forChannel, party, mplew, false);
                         break;
@@ -5365,19 +5411,19 @@ public class MaplePacketCreator {
                 if (hm.isOwner(chr)) {
                         mplew.writeInt(hm.getTimeLeft());
                         mplew.write(firstTime ? 1 : 0);
-                        //List<SoldItem> sold = hm.getSold();
-                        mplew.write(0);//sold.size()
-                        /*for (SoldItem s : sold) { fix this
-                     mplew.writeInt(s.getItemId());
-                     mplew.writeShort(s.getQuantity());
-                     mplew.writeInt(s.getMesos());
-                     mplew.writeMapleAsciiString(s.getBuyer());
-                     }*/
+                        List<MapleHiredMerchant.SoldItem> sold = hm.getSold();
+                        mplew.write(sold.size());
+                        for (MapleHiredMerchant.SoldItem s : sold) {
+                                mplew.writeInt(s.getItemId());
+                                mplew.writeShort(s.getQuantity());
+                                mplew.writeInt(s.getMesos());
+                                mplew.writeMapleAsciiString(s.getBuyer());
+                        }
                         mplew.writeInt(chr.getMerchantMeso());//:D?
                 }
                 mplew.writeMapleAsciiString(hm.getDescription());
                 mplew.write(0x10); //TODO SLOTS, which is 16 for most stores...slotMax
-                mplew.writeInt(chr.getMeso());
+                mplew.writeInt(hm.isOwner(chr) ? chr.getMerchantMeso() : chr.getMeso());
                 mplew.write(hm.getItems().size());
                 if (hm.getItems().isEmpty()) {
                         mplew.write(0);//Hmm??
@@ -5396,7 +5442,7 @@ public class MaplePacketCreator {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.UPDATE_MERCHANT.getCode());
-                mplew.writeInt(chr.getMeso());
+                mplew.writeInt(hm.isOwner(chr) ? chr.getMerchantMeso() : chr.getMeso());
                 mplew.write(hm.getItems().size());
                 for (MaplePlayerShopItem item : hm.getItems()) {
                         mplew.writeShort(item.getBundles());

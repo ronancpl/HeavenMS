@@ -31,20 +31,21 @@ function start(mode, type, selection) {
         return;
     }
     if (status == 0) {
-		qm.sendNext("Hmm.. What's a young person like you doing in this secluded place?");
-	} else if(status == 1) {
-		qm.sendNextPrev("I've come to get the best Polearm there is!", 2);
-	} else if(status == 2) {
-		qm.sendNextPrev("The best Polearm? You should be able to purchase it in some town or other place..");
-	} else if(status == 3) {
-		qm.sendNextPrev("I hear you are the best blacksmith in all of Maple World! I want nothing less than a weapon made by you!", 2);
-	} else if(status == 4) {
-		qm.sendAcceptDecline("I'm too old to make weapons now, but.. I do have a Polearm that I made way back when. It's still in excellent shape. But I can't give it to you because that Polearm is extremely sharp, so sharp it could hurt its master. Do you still want it?");
-	} else if(status == 5) {
-		qm.sendOk("Well, if you say so.. I can't object to that. I'll tell you what. I'll give you a quick test, and if you pass it, the Giant Polearm is yours. Head over to the #bTraining Center#k and take on the #rScarred Bears#k that are there. Your job is to bring back #b30 Sign of Acceptances#k.");
-		qm.startQuest();
-		qm.dispose();
-	}
+        qm.sendNext("Hmm.. What's a young person like you doing in this secluded place?");
+    } else if(status == 1) {
+        qm.sendNextPrev("I've come to get the best Polearm there is!", 2);
+    } else if(status == 2) {
+        qm.sendNextPrev("The best Polearm? You should be able to purchase it in some town or other place..");
+    } else if(status == 3) {
+        qm.sendNextPrev("I hear you are the best blacksmith in all of Maple World! I want nothing less than a weapon made by you!", 2);
+    } else if(status == 4) {
+        qm.sendAcceptDecline("I'm too old to make weapons now, but.. I do have a Polearm that I made way back when. It's still in excellent shape. But I can't give it to you because that Polearm is extremely sharp, so sharp it could hurt its master. Do you still want it?");
+    } else if(status == 5) {
+        qm.sendOk("Well, if you say so.. I can't object to that. I'll tell you what. I'll give you a quick test, and if you pass it, the Giant Polearm is yours. Head over to the #bTraining Center#k and take on the #rScarred Bears#k that are there. Your job is to bring back #b30 Sign of Acceptances#k.");
+    } else {
+        qm.startQuest();
+        qm.dispose();
+    }
 }
 
 function end(mode, type, selection) {

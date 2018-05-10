@@ -421,6 +421,41 @@ public class MapleItemInformationProvider {
         return pEntry;
     }
 
+    private static double getRoundedUnitPrice(double unitPrice, int max) {
+        double intPart = Math.floor(unitPrice);
+        double fractPart = unitPrice - intPart;
+        if(fractPart == 0.0) return intPart;
+        
+        double fractMask = 0.0;
+        double lastFract, curFract = 1.0;
+        int i = 1;
+        
+        do {
+            lastFract = curFract;
+            curFract /= 2;
+            
+            if(fractPart == curFract) {
+                break;
+            } else if(fractPart > curFract) {
+                fractMask += curFract;
+                fractPart -= curFract;
+            }
+            
+            i++;
+        } while(i <= max);
+        
+        if(i > max) {
+            lastFract = curFract;
+            curFract = 0.0;
+        }
+        
+        if(Math.abs(fractPart - curFract) < Math.abs(fractPart - lastFract)) {
+            return intPart + fractMask + curFract;
+        } else {
+            return intPart + fractMask + lastFract;
+        }
+    }
+    
     private Pair<Integer, Double> getItemPriceData(int itemId) {
         MapleData item = getItemData(itemId);
         if (item == null) {
@@ -439,7 +474,7 @@ public class MapleItemInformationProvider {
         pData = item.getChildByPath("info/unitPrice");
         if (pData != null) {
             try {
-                fEntry = MapleDataTool.getDouble(pData);
+                fEntry = getRoundedUnitPrice(MapleDataTool.getDouble(pData), 5);
             } catch (Exception e) {
                 fEntry = (double) MapleDataTool.getInt(pData);
             }
@@ -472,45 +507,13 @@ public class MapleItemInformationProvider {
             return -1;
         }
         
-        if(!ItemConstants.isRechargable(itemId)) {
+        if(!ItemConstants.isRechargeable(itemId)) {
             retPrice *= quantity;
         } else {
             retPrice += Math.ceil(quantity * getUnitPrice(itemId));
         }
         
         return retPrice;
-    }
-    
-    public static boolean canSell(Item item, short quantity) {
-        if (item == null) { //Basic check
-            return false;
-        }
-        
-        short iQuant = item.getQuantity();
-        if (iQuant == 0xFFFF) {
-            iQuant = 1;
-        } else if(iQuant < 0) {
-            return false;
-        }
-        
-        if (!ItemConstants.isRechargable(item.getItemId())) {
-            if (iQuant == 0 || quantity > iQuant) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    public static short getSellingQuantity(Item item, short quantity) {
-        if (ItemConstants.isRechargable(item.getItemId())) {
-            quantity = item.getQuantity();
-            if (quantity == 0xFFFF) {
-                quantity = 1;
-            }
-        }
-        
-        return quantity;
     }
     
     protected String getEquipmentSlot(int itemId) {

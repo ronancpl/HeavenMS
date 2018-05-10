@@ -23,23 +23,9 @@ package net.server.channel.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.inventory.Item;
-import client.inventory.ItemFactory;
-import client.inventory.MapleInventory;
-import client.inventory.MapleInventoryType;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
+import client.processor.FredrickProcessor;
 
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
-import server.MapleItemInformationProvider;
-import tools.DatabaseConnection;
-import tools.FilePrinter;
-import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -58,62 +44,11 @@ public class FredrickHandler extends AbstractMaplePacketHandler {
                 //c.announce(MaplePacketCreator.getFredrick((byte) 0x24));
                 break;
             case 0x1A:
-                List<Pair<Item, MapleInventoryType>> items;
-                try {
-                    items = ItemFactory.MERCHANT.loadItems(chr.getId(), false);
-                    if (!check(chr, items)) {
-                        c.announce(MaplePacketCreator.fredrickMessage((byte) 0x21));
-                        return;
-                    }
-                    chr.gainMeso(chr.getMerchantMeso(), false);
-                    chr.setMerchantMeso(0);
-                    if (deleteItems(chr)) {
-                        if(chr.getHiredMerchant() != null)
-                            chr.getHiredMerchant().clearItems();
-                        
-                        for (int i = 0; i < items.size(); i++) {
-                            Item item = items.get(i).getLeft();
-                            MapleInventoryManipulator.addFromDrop(c, item, false);
-                            String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                            FilePrinter.print(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
-                        }
-                        c.announce(MaplePacketCreator.fredrickMessage((byte) 0x1E));
-                        
-                    } else {
-                        chr.message("An unknown error has occured.");
-                    }
-                    break;
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
+                FredrickProcessor.fredrickRetrieveItems(c);
                 break;
             case 0x1C: //Exit
                 break;
             default:
         }
-    }
-
-    private static boolean check(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
-        if (chr.getMeso() + chr.getMerchantMeso() < 0) {
-            return false;
-        }
-        return MapleInventory.checkSpotsAndOwnership(chr, items);
-    }
-
-    private static boolean deleteItems(MapleCharacter chr) {
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("DELETE FROM `inventoryitems` WHERE `type` = ? AND `characterid` = ?")) {
-                ps.setInt(1, ItemFactory.MERCHANT.getValue());
-                ps.setInt(2, chr.getId());
-                ps.execute();
-            }
-            con.close();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-
     }
 }

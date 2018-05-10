@@ -21,11 +21,13 @@
 */
 package net.server.channel.handlers;
 
+import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -38,7 +40,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class UseItemHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (!c.getPlayer().isAlive()) {
+        MapleCharacter chr = c.getPlayer();
+        
+        if (!chr.isAlive()) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
@@ -46,47 +50,52 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
         slea.readInt();
         short slot = slea.readShort();
         int itemId = slea.readInt();
-        Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
+        Item toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
         if (toUse != null && toUse.getQuantity() > 0 && toUse.getItemId() == itemId) {
             if (itemId == 2022178 || itemId == 2050004) {
-                c.getPlayer().dispelDebuffs();
+                chr.dispelDebuffs();
                 remove(c, slot);
                 return;
-            }
-            else if (itemId == 2050001) {
-		c.getPlayer().dispelDebuff(MapleDisease.DARKNESS);
+            } else if (itemId == 2050001) {
+		chr.dispelDebuff(MapleDisease.DARKNESS);
                 remove(c, slot);
                 return;
 	    } else if (itemId == 2050002) {
-		c.getPlayer().dispelDebuff(MapleDisease.WEAKEN);
-                c.getPlayer().dispelDebuff(MapleDisease.SLOW);
+		chr.dispelDebuff(MapleDisease.WEAKEN);
+                chr.dispelDebuff(MapleDisease.SLOW);
                 remove(c, slot);
                 return;
             } else if (itemId == 2050003) {
-                c.getPlayer().dispelDebuff(MapleDisease.SEAL);
-		c.getPlayer().dispelDebuff(MapleDisease.CURSE);
+                chr.dispelDebuff(MapleDisease.SEAL);
+		chr.dispelDebuff(MapleDisease.CURSE);
                 remove(c, slot);
                 return;
-            }
-            else if (ItemConstants.isTownScroll(itemId)) {
-                if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
+            } else if (ItemConstants.isTownScroll(itemId)) {
+                int banMap = chr.getMapId();
+                int banSp = chr.getMap().findClosestPlayerSpawnpoint(chr.getPosition()).getId();
+                long banTime = System.currentTimeMillis();
+                
+                if (ii.getItemEffect(toUse.getItemId()).applyTo(chr)) {
+                    if(ServerConstants.USE_BANISHABLE_TOWN_SCROLL) {
+                        chr.setBanishPlayerData(banMap, banSp, banTime);
+                    }
+                    
                     remove(c, slot);
                 }
                 return;
-            }
-            else if (ItemConstants.isAntibanishScroll(itemId)) {
-                if (ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer())) {
+            } else if (ItemConstants.isAntibanishScroll(itemId)) {
+                if (ii.getItemEffect(toUse.getItemId()).applyTo(chr)) {
                     remove(c, slot);
                 } else {
-                    c.getPlayer().dropMessage(5, "You cannot recover from a banish state at the moment.");
+                    chr.dropMessage(5, "You cannot recover from a banish state at the moment.");
                 }
                 return;
             }
             
             remove(c, slot);
             
-            ii.getItemEffect(toUse.getItemId()).applyTo(c.getPlayer());
-            c.getPlayer().checkBerserk(c.getPlayer().isHidden());
+            ii.getItemEffect(toUse.getItemId()).applyTo(chr);
+            chr.checkBerserk(chr.isHidden());
         }
     }
 

@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -39,10 +39,10 @@ function start(mode, type, selection) {
         } else if(status == 1) {
             qm.sendNextPrev("Anyway, enough small talk. I realized that it might be more effective to search for information in places outside Victoria Island as well, so I've begun investigating in Ossyria. I began with #bOrbis#k and immediately hit the jackpot.");
         } else if(status == 2) {
-            qm.sendAcceptDecline("It seems like something strange is happening in Orbis in Ossyria. It's a bit different from when we were dealing with the puppeteer, but my instincts tell me it has to do with the Black Wings. Please head over to Orbis.");
+            qm.sendNextPrev("It seems like something strange is happening in Orbis in Ossyria. It's a bit different from when we were dealing with the puppeteer, but my instincts tell me it has to do with the Black Wings. Please head over to Orbis.");
+        } else if(status == 3) {
+            qm.sendAcceptDecline("#bLisa the Fairy#k in Orbis should know a thing or two. Go see Lisa first, she knows someone that knows the whereabouts of the sealing stone. That person #rwill require a password from you#k, when requested use the #bThere's something strange going on in Orbis....#k keyword to talk to her. Understood?");
         } else {
-            qm.sendNext("#bLisa the Fairy#k in Orbis should know a thing or two. Go see Lisa first, when requested use the #bThere's something strange going on in Orbis....#k keyword to talk to her.");
-
             qm.forceStartQuest();
             qm.dispose();
         }

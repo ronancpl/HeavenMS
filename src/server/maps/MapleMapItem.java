@@ -97,8 +97,24 @@ public class MapleMapItem extends AbstractMapleMapObject {
 	return character_ownerid;
     }
     
+    public final int getPartyOwnerId() {
+        return party_ownerid;
+    }
+    
+    public final void setPartyOwnerId(int partyid) {
+        party_ownerid = partyid;
+    }
+    
+    public final boolean isFFADrop() {
+        return type == 2 || type == 3 || hasExpiredOwnershipTime();
+    }
+    
+    public final boolean hasExpiredOwnershipTime() {
+        return System.currentTimeMillis() - dropTime >= 15 * 1000;
+    }
+    
     public final boolean canBePickedBy(MapleCharacter chr) {
-        if (character_ownerid <= 0) return true;
+        if (character_ownerid <= 0 || isFFADrop()) return true;
         
         if (party_ownerid == -1) {
             if (chr.getId() == character_ownerid) {
@@ -116,7 +132,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
             }
         }
         
-        return System.currentTimeMillis() - dropTime >= 15 * 1000;
+        return hasExpiredOwnershipTime();
     }
     
     public final MapleClient getOwnerClient() {
@@ -166,8 +182,15 @@ public class MapleMapItem extends AbstractMapleMapObject {
 
     @Override
     public void sendSpawnData(final MapleClient client) {
-	if (questid <= 0 || (client.getPlayer().getQuestStatus(questid) == 1 && client.getPlayer().needQuestItem(questid, item.getItemId()))) {
-	    client.announce(MaplePacketCreator.dropItemFromMapObject(this, null, getPosition(), (byte) 2));
+        MapleCharacter chr = client.getPlayer();
+        
+	if (questid <= 0 || (chr.getQuestStatus(questid) == 1 && chr.needQuestItem(questid, item.getItemId()))) {
+	    this.lockItem();
+            try {
+                client.announce(MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, this, null, getPosition(), (byte) 2));
+            } finally {
+                this.unlockItem();
+            }
 	}
     }
 

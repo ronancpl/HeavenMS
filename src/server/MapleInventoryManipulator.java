@@ -70,7 +70,7 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemId);
             List<Item> existing = c.getPlayer().getInventory(type).listById(itemId);
-            if (!ItemConstants.isRechargable(itemId) && petid == -1) {
+            if (!ItemConstants.isRechargeable(itemId) && petid == -1) {
                 if (existing.size() > 0) { // first update all existing slots to slotMax
                     Iterator<Item> i = existing.iterator();
                     while (quantity > 0) {
@@ -89,7 +89,7 @@ public class MapleInventoryManipulator {
                         }
                     }
                 }
-                while (quantity > 0 || ItemConstants.isRechargable(itemId)) {
+                while (quantity > 0 || ItemConstants.isRechargeable(itemId)) {
                     short newQ = (short) Math.min(quantity, slotMax);
                     if (newQ != 0) {
                         quantity -= newQ;
@@ -106,7 +106,7 @@ public class MapleInventoryManipulator {
                             nItem.setOwner(owner);
                         }
                         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
-                        if ((ItemConstants.isRechargable(itemId)) && quantity == 0) {
+                        if ((ItemConstants.isRechargeable(itemId)) && quantity == 0) {
                             break;
                         }
                     } else {
@@ -166,7 +166,7 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, item.getItemId());
             List<Item> existing = c.getPlayer().getInventory(type).listById(item.getItemId());
-            if (!ItemConstants.isRechargable(item.getItemId()) && petId == -1) {
+            if (!ItemConstants.isRechargeable(item.getItemId()) && petId == -1) {
                 if (existing.size() > 0) { // first update all existing slots to slotMax
                     Iterator<Item> i = existing.iterator();
                     while (quantity > 0) {
@@ -248,7 +248,7 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
             List<Item> existing = c.getPlayer().getInventory(type).listById(itemid);
-            if (!ItemConstants.isRechargable(itemid)) {
+            if (!ItemConstants.isRechargeable(itemid)) {
                 if (existing.size() > 0) // first update all existing slots to slotMax
                 {
                     for (Item eItem : existing) {
@@ -266,7 +266,7 @@ public class MapleInventoryManipulator {
             final int numSlotsNeeded;
             if (slotMax > 0) {
                 numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
-            } else if (ItemConstants.isRechargable(itemid)) {
+            } else if (ItemConstants.isRechargeable(itemid)) {
                 numSlotsNeeded = 1;
             } else {
                 numSlotsNeeded = 1;
@@ -293,7 +293,7 @@ public class MapleInventoryManipulator {
         
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
-            if (!ItemConstants.isRechargable(itemid)) {
+            if (!ItemConstants.isRechargeable(itemid)) {
                 List<Item> existing = c.getPlayer().getInventory(type).listById(itemid);
                 
                 if (existing.size() > 0) // first update all existing slots to slotMax
@@ -313,7 +313,7 @@ public class MapleInventoryManipulator {
             final int numSlotsNeeded;
             if (slotMax > 0) {
                 numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
-            } else if (ItemConstants.isRechargable(itemid)) {
+            } else if (ItemConstants.isRechargeable(itemid)) {
                 numSlotsNeeded = 1;
             } else {
                 numSlotsNeeded = 1;
@@ -337,7 +337,7 @@ public class MapleInventoryManipulator {
 
     public static void removeFromSlot(MapleClient c, MapleInventoryType type, short slot, short quantity, boolean fromDrop, boolean consume) {
         Item item = c.getPlayer().getInventory(type).getItem(slot);
-        boolean allowZero = consume && ItemConstants.isRechargable(item.getItemId());
+        boolean allowZero = consume && ItemConstants.isRechargeable(item.getItemId());
         c.getPlayer().getInventory(type).removeItem(slot, quantity, allowZero);
         if (item.getQuantity() == 0 && !allowZero) {
             c.announce(MaplePacketCreator.modifyInventory(fromDrop, Collections.singletonList(new ModifyInventory(3, item))));
@@ -396,7 +396,7 @@ public class MapleInventoryManipulator {
         short slotMax = ii.getSlotMax(c, source.getItemId());
         c.getPlayer().getInventory(type).move(src, dst, slotMax);
         final List<ModifyInventory> mods = new ArrayList<>();
-        if (!(type.equals(MapleInventoryType.EQUIP) || type.equals(MapleInventoryType.CASH)) && initialTarget != null && initialTarget.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId()) && isSameOwner(source, initialTarget)) {
+        if (!(type.equals(MapleInventoryType.EQUIP) || type.equals(MapleInventoryType.CASH)) && initialTarget != null && initialTarget.getItemId() == source.getItemId() && !ItemConstants.isRechargeable(source.getItemId()) && isSameOwner(source, initialTarget)) {
             if ((olddstQ + oldsrcQ) > slotMax) {
                 mods.add(new ModifyInventory(1, source));
                 mods.add(new ModifyInventory(1, initialTarget));
@@ -562,11 +562,11 @@ public class MapleInventoryManipulator {
                 c.getPlayer().setChalkboard(null);
             }
         }
-        if ((!ItemConstants.isRechargable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
+        if ((!ItemConstants.isRechargeable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
         Point dropPos = new Point(c.getPlayer().getPosition());
-        if (quantity < source.getQuantity() && !ItemConstants.isRechargable(itemId)) {
+        if (quantity < source.getQuantity() && !ItemConstants.isRechargeable(itemId)) {
             Item target = source.copy();
             target.setQuantity(quantity);
             source.setQuantity((short) (source.getQuantity() - quantity));

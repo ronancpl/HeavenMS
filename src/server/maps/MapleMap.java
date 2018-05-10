@@ -650,6 +650,7 @@ public class MapleMap {
         if (mob.dropsDisabled() || !dropsOn) {
             return;
         }
+        
         final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
         final int mobpos = mob.getPosition().x;
         int chRate = chr.getDropRate();
@@ -793,7 +794,7 @@ public class MapleMap {
         
         objectWLock.lock();
         try {
-            if(!everlast) registerItemDrop(mdrop);
+            registerItemDrop(mdrop);
             registeredDrops.add(new WeakReference<>((MapleMapObject) mdrop));
         } finally {
             objectWLock.unlock();
@@ -803,13 +804,23 @@ public class MapleMap {
     }
     
     private void registerItemDrop(MapleMapItem mdrop) {
-        droppedItems.put(mdrop, System.currentTimeMillis() + ServerConstants.ITEM_EXPIRE_TIME);
+        droppedItems.put(mdrop, !everlast ? System.currentTimeMillis() + ServerConstants.ITEM_EXPIRE_TIME : Long.MAX_VALUE);
+    }
+    
+    private void unregisterItemDrop(MapleMapItem mdrop) {
+        objectWLock.lock();
+        try {
+            droppedItems.remove(mdrop);
+        } finally {
+            objectWLock.unlock();
+        }
     }
     
     private void makeDisappearExpiredItemDrops() {
-        objectWLock.lock();
+        List<MapleMapItem> toDisappear = new LinkedList<>();
+        
+        objectRLock.lock();
         try {
-            List<MapleMapItem> toDisappear = new LinkedList<>();
             long timeNow = System.currentTimeMillis();
             
             for(Entry<MapleMapItem, Long> it : droppedItems.entrySet()) {
@@ -817,9 +828,17 @@ public class MapleMap {
                     toDisappear.add(it.getKey());
                 }
             }
-            
+        } finally {
+            objectRLock.unlock();
+        }
+        
+        for(MapleMapItem mmi : toDisappear) {
+            makeDisappearItemFromMap(mmi);
+        }
+        
+        objectWLock.lock();
+        try {
             for(MapleMapItem mmi : toDisappear) {
-                makeDisappearItemFromMap(mmi);
                 droppedItems.remove(mmi);
             }
         } finally {
@@ -827,12 +846,64 @@ public class MapleMap {
         }
     }
     
-    public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) {
+    private List<MapleMapItem> getDroppedItems() {
+        objectRLock.lock();
+        try {
+            return new LinkedList<>(droppedItems.keySet());
+        } finally {
+            objectRLock.unlock();
+        }
+    }
+    
+    public void pickItemDrop(byte[] pickupPacket, MapleMapItem mdrop) { // mdrop must be already locked and not-pickedup checked by now
         broadcastMessage(pickupPacket, mdrop.getPosition());
         
         droppedItemCount.decrementAndGet();
         this.removeMapObject(mdrop);
         mdrop.setPickedUp(true);
+        unregisterItemDrop(mdrop);
+    }
+    
+    private static boolean shouldShowQuestItem(MapleCharacter chr, int questid, int itemid) {
+        return questid <= 0 || (chr.getQuestStatus(questid) == 1 && chr.needQuestItem(questid, itemid));
+    }
+    
+    public void updatePlayerItemDrops(int partyid, int charid, List<MapleCharacter> partyMembers, MapleCharacter partyLeaver) {
+        for(MapleMapItem mdrop : getDroppedItems()) {
+            if(mdrop.getOwnerId() == charid) {
+                mdrop.lockItem();
+                try {
+                    if(mdrop.isPickedUp()) return;
+                    
+                    mdrop.setPartyOwnerId(partyid);
+                    
+                    byte[] removePacket = MaplePacketCreator.silentRemoveItemFromMap(mdrop.getObjectId());
+                    byte[] updatePacket = MaplePacketCreator.updateMapItemObject(mdrop, partyLeaver == null);
+                    
+                    for(MapleCharacter mc : partyMembers) {
+                        if(this.equals(mc.getMap())) {
+                            mc.announce(removePacket);
+                            
+                            if(shouldShowQuestItem(mc, mdrop.getQuest(), mdrop.getItemId())) {
+                                mc.announce(updatePacket);
+                            }
+                        }
+                    }
+                    
+                    if(partyLeaver != null) {
+                        if(this.equals(partyLeaver.getMap())) {
+                            partyLeaver.announce(removePacket);
+                            
+                            if(shouldShowQuestItem(partyLeaver, mdrop.getQuest(), mdrop.getItemId())) {
+                                partyLeaver.announce(MaplePacketCreator.updateMapItemObject(mdrop, true));
+                            }
+                        }
+                    }
+                } finally {
+                    mdrop.unlockItem();
+                }
+            }
+        }
     }
     
     private void spawnDrop(final Item idrop, final Point dropPos, final MapleMapObject dropper, final MapleCharacter chr, final byte droptype, final short questid) {
@@ -841,8 +912,15 @@ public class MapleMap {
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                if (questid <= 0 || (c.getPlayer().getQuestStatus(questid) == 1 && c.getPlayer().needQuestItem(questid, idrop.getItemId()))) {
-                    c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), dropPos, (byte) 1));
+                MapleCharacter chr = c.getPlayer();
+                
+                if (shouldShowQuestItem(chr, questid, idrop.getItemId())) {
+                    mdrop.lockItem();
+                    try {
+                        c.announce(MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, mdrop, dropper.getPosition(), dropPos, (byte) 1));
+                    } finally {
+                        mdrop.unlockItem();
+                    }
                 }
             }
         }, null);
@@ -859,7 +937,12 @@ public class MapleMap {
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 1));
+                mdrop.lockItem();
+                try {
+                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer().getParty() != null, mdrop, dropper.getPosition(), droppos, (byte) 1));
+                } finally {
+                    mdrop.unlockItem();
+                }
             }
         }, null);
 
@@ -868,8 +951,14 @@ public class MapleMap {
 
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
         final Point droppos = calcDropPos(pos, pos);
-        final MapleMapItem drop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
-        broadcastMessage(MaplePacketCreator.dropItemFromMapObject(drop, dropper.getPosition(), droppos, (byte) 3), drop.getPosition());
+        final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
+        
+        mdrop.lockItem();
+        try {
+            broadcastItemDropMessage(mdrop, dropper.getPosition(), droppos, (byte) 3, mdrop.getPosition());
+        } finally {
+            mdrop.unlockItem();
+        }
     }
 
     public MapleMonster getMonsterById(int id) {
@@ -1918,11 +2007,22 @@ public class MapleMap {
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                c.announce(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 1));
+                mdrop.lockItem();
+                try {
+                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer().getParty() != null, mdrop, dropper.getPosition(), droppos, (byte) 1));
+                } finally {
+                    mdrop.unlockItem();
+                }
             }
         }, null);
-        broadcastMessage(MaplePacketCreator.dropItemFromMapObject(mdrop, dropper.getPosition(), droppos, (byte) 0));
-
+        
+        mdrop.lockItem();
+        try {
+            broadcastItemDropMessage(mdrop, dropper.getPosition(), droppos, (byte) 0);
+        } finally {
+            mdrop.unlockItem();
+        }
+        
         instantiateItemDrop(mdrop);
         activateItemReactors(mdrop, owner.getClient());
     }
@@ -1997,8 +2097,13 @@ public class MapleMap {
             objectRLock.lock();
             try {
                 for(MapleMapItem mmi : droppedItems.keySet()) {
-                    if(!mmi.isPickedUp()) {
-                        list.add(mmi);
+                    mmi.lockItem();
+                    try {
+                        if(!mmi.isPickedUp()) {
+                            list.add(mmi);
+                        }
+                    } finally {
+                        mmi.unlockItem();
                     }
                 }
             } finally {
@@ -2435,18 +2540,6 @@ public class MapleMap {
         }
     }
     
-    public void dropMessage(int type, String message) {
-        broadcastStringMessage(type, message);
-    }
-    
-    public void broadcastStringMessage(int type, String message) {
-        broadcastMessage(MaplePacketCreator.serverNotice(type, message));
-    }
-
-    public void broadcastBossHpMessage(MapleMonster mm, int bossHash, final byte[] packet) {
-        broadcastBossHpMessage(mm, bossHash, null, packet, Double.POSITIVE_INFINITY, null);
-    }
-    
     public void broadcastMessage(final byte[] packet) {
         broadcastMessage(null, packet, Double.POSITIVE_INFINITY, null);
     }
@@ -2488,10 +2581,6 @@ public class MapleMap {
         broadcastMessage(null, packet, getRangedDistance(), rangedFrom);
     }
     
-    public void broadcastBossHpMessage(MapleMonster mm, int bossHash, final byte[] packet, Point rangedFrom) {
-        broadcastBossHpMessage(mm, bossHash, null, packet, getRangedDistance(), rangedFrom);
-    }
-
     /**
      * Always ranged from point. Does not repeat to source.
      *
@@ -2522,6 +2611,14 @@ public class MapleMap {
         }
     }
     
+    public void broadcastBossHpMessage(MapleMonster mm, int bossHash, final byte[] packet) {
+        broadcastBossHpMessage(mm, bossHash, null, packet, Double.POSITIVE_INFINITY, null);
+    }
+    
+    public void broadcastBossHpMessage(MapleMonster mm, int bossHash, final byte[] packet, Point rangedFrom) {
+        broadcastBossHpMessage(mm, bossHash, null, packet, getRangedDistance(), rangedFrom);
+    }
+    
     private void broadcastBossHpMessage(MapleMonster mm, int bossHash, MapleCharacter source, final byte[] packet, double rangeSq, Point rangedFrom) {
         chrRLock.lock();
         try {
@@ -2541,6 +2638,41 @@ public class MapleMap {
         }
     }
 
+    private void broadcastItemDropMessage(MapleMapItem mdrop, Point dropperPos, Point dropPos, byte mod, Point rangedFrom) {
+        broadcastItemDropMessage(mdrop, dropperPos, dropPos, mod, getRangedDistance(), rangedFrom);
+    }
+    
+    private void broadcastItemDropMessage(MapleMapItem mdrop, Point dropperPos, Point dropPos, byte mod) {
+        broadcastItemDropMessage(mdrop, dropperPos, dropPos, mod, Double.POSITIVE_INFINITY, null);
+    }
+    
+    private void broadcastItemDropMessage(MapleMapItem mdrop, Point dropperPos, Point dropPos, byte mod, double rangeSq, Point rangedFrom) {
+        chrRLock.lock();
+        try {
+            for (MapleCharacter chr : characters) {
+                final byte[] packet = MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, mdrop, dropperPos, dropPos, mod);
+                
+                if (rangeSq < Double.POSITIVE_INFINITY) {
+                    if (rangedFrom.distanceSq(chr.getPosition()) <= rangeSq) {
+                        chr.announce(packet);
+                    }
+                } else {
+                    chr.announce(packet);
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+    }
+    
+    public void dropMessage(int type, String message) {
+        broadcastStringMessage(type, message);
+    }
+    
+    public void broadcastStringMessage(int type, String message) {
+        broadcastMessage(MaplePacketCreator.serverNotice(type, message));
+    }
+    
     private boolean isNonRangedType(MapleMapObjectType type) {
         switch (type) {
             case NPC:
@@ -2982,6 +3114,7 @@ public class MapleMap {
                                 return;
                             }
                             mapitem.setPickedUp(true);
+                            unregisterItemDrop(mapitem);
 
                             reactor.setShouldCollect(false);
                             MapleMap.this.broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 0, 0), mapitem.getPosition());

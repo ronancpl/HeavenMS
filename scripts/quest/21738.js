@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -34,9 +34,9 @@ function start(mode, type, selection) {
         else
             status--;
         
-        if(status == 0) {
+        if (status == 0) {
             qm.sendGetText("Hm, what do you want?");
-        } else {
+        } else if (status == 1) {
             var text = qm.getText();
             
             if(text != "There's something strange going on in Orbis....") {
@@ -44,10 +44,10 @@ function start(mode, type, selection) {
                 qm.dispose();
             } else {
                 qm.sendNext("Oh, that's right. I can sense the power emanating from you, as well. So I shall entrust something to you.");
-                
-                qm.forceStartQuest();
-                qm.dispose();
             }
+        } else {
+            qm.forceStartQuest();
+            qm.dispose();
         }
     }
 }

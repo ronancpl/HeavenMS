@@ -21,6 +21,7 @@
  */
 package provider.wz;
 
+import constants.ServerConstants;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,12 +61,12 @@ public class XMLDomMapleData implements MapleData {
 			throw new RuntimeException(e);
 		}
 		this.imageDataDir = imageDataDir;
-                this.nf = NumberFormat.getInstance(Locale.FRANCE);
+                this.nf = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
 	}
 
 	private XMLDomMapleData(Node node) {
 		this.node = node;
-                this.nf = NumberFormat.getInstance(Locale.FRANCE);
+                this.nf = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
 	}
 
 	@Override

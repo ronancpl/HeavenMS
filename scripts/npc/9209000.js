@@ -31,6 +31,12 @@ function action(mode, type, selection) {
         if (status == 0) {
             var greeting = "Hello, I'm #p9209000#, the Skill & Mastery Book announcer! ";
             
+            if(cm.getPlayer().isCygnus()) {
+                cm.sendOk(greeting + "There are no skill or mastery books available for Cygnus Knights.");
+                cm.dispose();
+                return;
+            }
+            
             var jobrank = cm.getJob().getId() % 10;
             if(jobrank < 2) {
                 cm.sendOk(greeting + "Keep training yourself until you reach the #r4th job#k of your class. New opportunities for improvement will arrive when you reach that feat!");

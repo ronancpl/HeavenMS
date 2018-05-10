@@ -56,7 +56,7 @@ import server.TimerManager;
 import tools.locks.MonitoredLockType;
 
 public class MapleServerHandler extends IoHandlerAdapter {
-    private final static Set<Short> ignoredDebugRecvPackets = new HashSet<>(Arrays.asList((short) 167, (short) 197, (short) 89, (short) 91, (short) 41));
+    private final static Set<Short> ignoredDebugRecvPackets = new HashSet<>(Arrays.asList((short) 167, (short) 197, (short) 89, (short) 91, (short) 41, (short) 188, (short) 107));
     
     private PacketProcessor processor;
     private int world = -1, channel = -1;

@@ -1,8 +1,8 @@
-#**HeavenMS _(MapleSolaxiaV2)_**
+#**HeavenMS**
 
 Credits:
 
-Ronan - Developer
+Ronan - Head Developer
 
 Vcoc - Freelance Developer
 
@@ -51,6 +51,7 @@ Player Social Network:
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
 * Game minirooms such as match cards and omok now has semi-functional password system.
+* Item pickup cooldown on non-owned/non-partyowned items functional.
 
 Cash & Items:
 
@@ -158,5 +159,7 @@ Localhost:
 
 * Removed the 'n' problem within NPC dialog.
 * Removed caps for MATK, WDEF, MDEF, ACC and AVOID.
+* Removed "AP excess" popup and "Admin/MWLB" action block, original credits to kevintjuh93.
+* Removed "You've gained a level!" popup, original credits to PrinceReborn.
 
 ---------------------------

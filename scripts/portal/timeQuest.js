@@ -27,7 +27,7 @@ function enter(pi) {
 	pi.playPortalSound();
 	var map = (mapid - 270010000) / 100;
 	//pi.getPlayer().dropMessage(5, map + " " + pi.isQuestCompleted(3534));
-    if(map < 5 && pi.isQuestCompleted(3500 + map)) {
+        if(map < 5 && pi.isQuestCompleted(3500 + map)) {
 		pi.warp(mapid + 10, "out00");
 	} else if(map == 5 && pi.isQuestCompleted(3502 + map)) {
 		pi.warp(270020000, "out00");

@@ -24,7 +24,9 @@ package server.maps;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +55,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private MapleCharacter owner;
     private MapleCharacter[] visitors = new MapleCharacter[3];
     private List<MaplePlayerShopItem> items = new ArrayList<>();
+    private List<SoldItem> sold = new LinkedList<>();
     private String description;
     private int boughtnumber = 0;
     private List<String> bannedList = new ArrayList<>();
@@ -182,14 +185,35 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
     }
 
-    public void removeItem(int item) {
-        synchronized (items) {
-            items.remove(item);
-        }
+    private void removeFromSlot(int slot) {
+        items.remove(slot);
     }
 
     private static boolean canBuy(MapleClient c, Item newItem) {
         return MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false);
+    }
+    
+    public void takeItemBack(int slot, MapleCharacter chr) {
+        synchronized (items) {
+            MaplePlayerShopItem shopItem = items.get(slot);
+            if(shopItem.isExist()) {
+                if (shopItem.getBundles() > 0) {
+                    Item iitem = shopItem.getItem().copy();
+                    iitem.setQuantity((short) (shopItem.getItem().getQuantity() * shopItem.getBundles()));
+                    
+                    if (!MapleInventory.checkSpot(chr, iitem)) {
+                        chr.announce(MaplePacketCreator.serverNotice(1, "Have a slot available on your inventory to claim back the item."));
+                        chr.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    
+                    MapleInventoryManipulator.addFromDrop(chr.getClient(), iitem, true);
+                }
+                
+                removeFromSlot(slot);
+                chr.announce(MaplePacketCreator.getPlayerShopItemUpdate(this));
+            }
+        }
     }
     
     /**
@@ -203,13 +227,22 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             if (isVisitor(c.getPlayer())) {
                 MaplePlayerShopItem pItem = items.get(item);
                 Item newItem = pItem.getItem().copy();
-                newItem.setQuantity(newItem.getQuantity());
-                if (quantity < 1 || pItem.getBundles() < 1 || newItem.getQuantity() > pItem.getBundles() || !pItem.isExist()) {
+                
+                newItem.setQuantity((short) ((pItem.getItem().getQuantity() * quantity)));
+                if (quantity < 1 || !pItem.isExist() || pItem.getBundles() < quantity) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 } else if (newItem.getInventoryType().equals(MapleInventoryType.EQUIP) && newItem.getQuantity() > 1) {
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-                synchronized (c.getPlayer()) {
+                
+                if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
+                    newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
+                }
+                
+                visitorLock.lock();
+                try {
                     int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
                     
                     if (c.getPlayer().getMeso() >= price) {
@@ -218,6 +251,13 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                             
                             if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to vcoc
                             owner.gainMeso(price, true);
+                            
+                            SoldItem soldItem = new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price);
+                            owner.announce(MaplePacketCreator.getPlayerShopOwnerUpdate(soldItem, item));
+                            
+                            synchronized (sold) {
+                                sold.add(soldItem);
+                            }
                             
                             pItem.setBundles((short) (pItem.getBundles() - quantity));
                             if (pItem.getBundles() < 1) {
@@ -232,7 +272,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                         } else {
                             c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
                         }
+                    } else {
+                        c.getPlayer().dropMessage(1, "You don't have enough mesos to purchase this item.");
                     }
+                } finally {
+                    visitorLock.unlock();
                 }
             }
         }
@@ -489,6 +533,12 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
         return list;
     }
+    
+    public List<SoldItem> getSold() {
+        synchronized (sold) {
+            return Collections.unmodifiableList(sold);
+        }
+    }
 
     @Override
     public void sendDestroyData(MapleClient client) {
@@ -503,5 +553,35 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     @Override
     public MapleMapObjectType getType() {
         return MapleMapObjectType.SHOP;
+    }
+    
+    public class SoldItem {
+
+        int itemid, mesos;
+        short quantity;
+        String buyer;
+
+        public SoldItem(String buyer, int itemid, short quantity, int mesos) {
+            this.buyer = buyer;
+            this.itemid = itemid;
+            this.quantity = quantity;
+            this.mesos = mesos;
+        }
+
+        public String getBuyer() {
+            return buyer;
+        }
+
+        public int getItemId() {
+            return itemid;
+        }
+
+        public short getQuantity() {
+            return quantity;
+        }
+
+        public int getMesos() {
+            return mesos;
+        }
     }
 }

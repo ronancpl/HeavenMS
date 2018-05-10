@@ -1,4 +1,4 @@
-# HeavenMS (MapleSolaxiaV2)
+# HeavenMS
 ---
 
 ## Head developer: Ronan C. P. Lana
@@ -22,11 +22,17 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-Recommended localhost: https://hostr.co/fuzm4X9j7TWh
+Recommended localhost: https://hostr.co/MluJQNtzAnV9
 
-* Current revision: 'n' problem fixed and removed caps for WATK, WDEF, MDEF, ACC, AVOID.
+**Change log:**
 
-  * 'n' problem fixed https://hostr.co/r5QDmhlxpp8M
+  * Removed "AP excess" popup and limited actions on Admin/MWLB, credits to kevintjuh93.
+
+  * Removed "You've gained a level!" popup, credits to PrinceReborn.
+
+  * Removed caps for WATK, WDEF, MDEF, ACC, AVOID
+
+  * 'n' problem fixed
 
   * Fraysa's https://hostr.co/gJbLZITRVHmv
 
@@ -127,7 +133,7 @@ The client's set-up is quite straightforward:
 2. Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
 3. Extract into the client folder the "localhost.exe" from the provided link.
 4. Overwrite the original WZ files with the ones provided from either one of those folders on the Google Drive:
-	- "rev???_wz" (last published RELEASE, source update of same number).
+	- "rev???_wz" (last published RELEASE, referring to commit of same number).
 	- "current_wz" (latest source update).
 
 #### Editing localhost IP target

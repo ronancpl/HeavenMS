@@ -73,7 +73,7 @@ public final class ItemConstants {
         return isPotion(itemId) || isFood(itemId);
     }
 
-    public static boolean isRechargable(int itemId) {
+    public static boolean isRechargeable(int itemId) {
         return isThrowingStar(itemId) || isBullet(itemId);
     }
 
@@ -110,7 +110,7 @@ public final class ItemConstants {
     }
     
     public static boolean isTownScroll(int itemId) {
-        return itemId >= 2030000 && itemId < 2030021;
+        return itemId >= 2030000 && itemId < 2030100;
     }
     
     public static boolean isAntibanishScroll(int itemId) {
@@ -183,5 +183,9 @@ public final class ItemConstants {
     
     public static boolean isEquipment(int itemId) {
         return itemId < 2000000 && itemId != 0;
+    }
+    
+    public static boolean isMedal(int itemId) {
+        return itemId >= 1140000 && itemId < 1143000;
     }
 }

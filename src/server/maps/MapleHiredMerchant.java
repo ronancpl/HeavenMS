@@ -165,6 +165,37 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         }
     }
 
+    public void withdrawMesos(MapleCharacter chr) {
+        if (isOwner(chr)) {
+            synchronized (items) {
+                chr.withdrawMerchantMesos();
+            }
+        }
+    }
+    
+    public void takeItemBack(int slot, MapleCharacter chr) {
+        synchronized (items) {
+            MaplePlayerShopItem shopItem = items.get(slot);
+            if(shopItem.isExist()) {
+                if (shopItem.getBundles() > 0) {
+                    Item iitem = shopItem.getItem().copy();
+                    iitem.setQuantity((short) (shopItem.getItem().getQuantity() * shopItem.getBundles()));
+                    
+                    if (!MapleInventory.checkSpot(chr, iitem)) {
+                        chr.announce(MaplePacketCreator.serverNotice(1, "Have a slot available on your inventory to claim back the item."));
+                        chr.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                    
+                    MapleInventoryManipulator.addFromDrop(chr.getClient(), iitem, true);
+                }
+                
+                removeFromSlot(slot);
+                chr.announce(MaplePacketCreator.updateHiredMerchant(this, chr));
+            }
+        }
+    }
+    
     private static boolean canBuy(MapleClient c, Item newItem) {
         return MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false);
     }
@@ -172,21 +203,19 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     public void buy(MapleClient c, int item, short quantity) {
         synchronized (items) {
             MaplePlayerShopItem pItem = items.get(item);
-            
             Item newItem = pItem.getItem().copy();
+            
             newItem.setQuantity((short) ((pItem.getItem().getQuantity() * quantity)));
-            if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
-                newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
-            }
-            if (quantity < 1 || pItem.getBundles() < 1 || !pItem.isExist() || pItem.getBundles() < quantity) {
+            if (quantity < 1 || !pItem.isExist() || pItem.getBundles() < quantity) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             } else if (newItem.getInventoryType().equals(MapleInventoryType.EQUIP) && newItem.getQuantity() > 1) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
-            } else if (!pItem.isExist()) {
-                c.announce(MaplePacketCreator.enableActions());
-                return;
+            }
+            
+            if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
+                newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
             }
             
             int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
@@ -196,7 +225,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                     if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to vcoc
                     
                     synchronized (sold) {
-                        sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price));
+                        sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), newItem.getQuantity(), price));
                     }
                     
                     pItem.setBundles((short) (pItem.getBundles() - quantity));
@@ -224,7 +253,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                     c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
                 }
             } else {
-                c.getPlayer().dropMessage(1, "You do not have enough mesos.");
+                c.getPlayer().dropMessage(1, "You don't have enough mesos to purchase this item.");
             }
             try {
                 this.saveItems(false);
@@ -388,10 +417,24 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         }
     }
 
-    public void removeFromSlot(int slot) {
-        synchronized (items) {
-            items.remove(slot);
+    public void clearInexistentItems() {
+        synchronized(items) {
+            for (int i = items.size() - 1; i >= 0; i--) {
+                if (!items.get(i).isExist()) {
+                    items.remove(i);
+                }
+            }
+            
+            try {
+                this.saveItems(false);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
+    }
+    
+    private void removeFromSlot(int slot) {
+        items.remove(slot);
         
         try {
             this.saveItems(false);

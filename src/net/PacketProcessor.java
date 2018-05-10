@@ -165,7 +165,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.GIVE_FAME, new GiveFameHandler());
             registerHandler(RecvOpcode.PARTY_OPERATION, new PartyOperationHandler());
             registerHandler(RecvOpcode.DENY_PARTY_REQUEST, new DenyPartyRequestHandler());
-            registerHandler(RecvOpcode.PARTYCHAT, new PartyChatHandler());
+            registerHandler(RecvOpcode.MULTI_CHAT, new MultiChatHandler());
             registerHandler(RecvOpcode.USE_DOOR, new DoorHandler());
             registerHandler(RecvOpcode.ENTER_MTS, new EnterMTSHandler());
             registerHandler(RecvOpcode.ENTER_CASHSHOP, new EnterCashShopHandler());

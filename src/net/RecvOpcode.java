@@ -120,7 +120,7 @@ public enum RecvOpcode {
     USE_REMOTE(0x74),
     WATER_OF_LIFE(0x75),
     ADMIN_CHAT(0x76),
-    PARTYCHAT(0x77),
+    MULTI_CHAT(0x77),
     WHISPER(0x78),
     MESSENGER(0x7A),
     PLAYER_INTERACTION(0x7B),

@@ -31,12 +31,14 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class PartyChatHandler extends AbstractMaplePacketHandler {
+public final class MultiChatHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter player = c.getPlayer();
-		if(player.getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
-			return;
-		}
+        if(player.getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
+                return;
+        }
+        
         int type = slea.readByte(); // 0 for buddys, 1 for partys
         int numRecipients = slea.readByte();
         int recipients[] = new int[numRecipients];
@@ -63,6 +65,6 @@ public final class PartyChatHandler extends AbstractMaplePacketHandler {
                 Server.getInstance().allianceMessage(allianceId, MaplePacketCreator.multiChat(player.getName(), chattext, 3), player.getId(), -1);
             }
         }
-		player.getAutobanManager().spam(7);
+        player.getAutobanManager().spam(7);
     }
 }

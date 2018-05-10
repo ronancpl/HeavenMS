@@ -22,6 +22,10 @@
 var status = 0;
 
 function start() {
+    cm.sendOk("The Monster Carnival is currently unavailable.");
+    cm.dispose();
+    
+    /*
     if (cm.getPlayer().getParty() != null)
         cm.sendCPQMapLists();
     else {
@@ -49,5 +53,5 @@ function action(mode, type, selection) {
                 cm.dispose();
             }
         }
-    }
+    }*/
 }

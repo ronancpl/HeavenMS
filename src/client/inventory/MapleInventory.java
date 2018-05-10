@@ -146,7 +146,7 @@ public class MapleInventory implements Iterable<Item> {
         List<Item> itemList = listById(itemId);
         int openSlot = 0;
         
-        if(!ItemConstants.isRechargable(itemId)) {
+        if(!ItemConstants.isRechargeable(itemId)) {
             for (Item item : itemList) {
                 required -= item.getQuantity();
 
@@ -246,7 +246,7 @@ public class MapleInventory implements Iterable<Item> {
                 source.setPosition(dSlot);
                 inventory.put(dSlot, source);
                 inventory.remove(sSlot);
-            } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargable(source.getItemId()) && isSameOwner(source, target)) {
+            } else if (target.getItemId() == source.getItemId() && !ItemConstants.isRechargeable(source.getItemId()) && isSameOwner(source, target)) {
                 if (type.getType() == MapleInventoryType.EQUIP.getType() || type.getType() == MapleInventoryType.CASH.getType()) {
                     swap(target, source);
                 } else if (source.getQuantity() + target.getQuantity() > slotMax) {

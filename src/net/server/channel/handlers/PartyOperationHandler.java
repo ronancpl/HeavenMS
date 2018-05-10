@@ -31,6 +31,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
+import java.util.List;
 import scripting.event.EventInstanceManager;
 import server.maps.MapleMap;
 
@@ -81,34 +82,41 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     player.setMPC(partyplayer);
                     player.getMap().addPartyMember(player);
                     player.silentPartyUpdate();
-                    c.announce(MaplePacketCreator.partyCreated(partyplayer));
+                    c.announce(MaplePacketCreator.partyCreated(partyplayer, party.getId()));
+                    
+                    player.updateMapDropsUponPartyOperation(null);
                 } else {
                     c.announce(MaplePacketCreator.serverNotice(5, "You can't create a party as you are already in one."));
                 }
                 break;
             }
             case 2: { // leave/disband
+                List<MapleCharacter> partymembers = player.getPartyMembers();
+                
                 leaveParty(party, partyplayer, c);
+                player.updateMapDropsUponPartyOperation(partymembers);
                 break;
             }
             case 3: { // join
                 int partyid = slea.readInt();
-                if (c.getPlayer().getParty() == null) {
-                        party = world.getParty(partyid);
-                        if (party != null) {
-                            if (party.getMembers().size() < 6) {
-                                partyplayer = new MaplePartyCharacter(player);
-                                player.getMap().addPartyMember(player);
-                                
-                                world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
-                                player.receivePartyMemberHP();
-                                player.updatePartyMemberHP();
-                            } else {
-                                c.announce(MaplePacketCreator.partyStatusMessage(17));
-                            }
+                if (player.getParty() == null) {
+                    party = world.getParty(partyid);
+                    if (party != null) {
+                        if (party.getMembers().size() < 6) {
+                            partyplayer = new MaplePartyCharacter(player);
+                            player.getMap().addPartyMember(player);
+
+                            world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
+                            player.receivePartyMemberHP();
+                            player.updatePartyMemberHP();
+                            
+                            player.updateMapDropsUponPartyOperation(null);
                         } else {
-                            c.announce(MaplePacketCreator.serverNotice(5, "The person you have invited to the party is already in one."));
+                            c.announce(MaplePacketCreator.partyStatusMessage(17));
                         }
+                    } else {
+                        c.announce(MaplePacketCreator.serverNotice(5, "The person you have invited to the party is already in one."));
+                    }
                 } else {
                     c.announce(MaplePacketCreator.serverNotice(5, "You can't join the party as you are already in one."));
                 }
@@ -139,7 +147,9 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             player.setParty(party);
                             player.setMPC(partyplayer);
                             player.getMap().addPartyMember(player);
-                            c.announce(MaplePacketCreator.partyCreated(partyplayer));
+                            c.announce(MaplePacketCreator.partyCreated(partyplayer, party.getId()));
+                            
+                            player.updateMapDropsUponPartyOperation(null);
                         }
                         if (party.getMembers().size() < 6) {
                             invited.getClient().announce(MaplePacketCreator.partyInvite(player));
@@ -161,6 +171,8 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     if (expelled != null) {
                         MapleCharacter emc = expelled.getPlayer();
                         if(emc != null) {
+                            List<MapleCharacter> partyMembers = emc.getPartyMembers();
+                            
                             MapleMap map = emc.getMap();
                             if(map != null) map.removePartyMember(emc);
                             
@@ -170,9 +182,12 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             }
                             
                             emc.setParty(null);
+                            world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
+                            
+                            emc.updateMapDropsUponPartyOperation(partyMembers);
+                        } else {
+                            world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                         }
-                        
-                        world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                     }
                 }
                 break;

@@ -1,6 +1,6 @@
 /*
-    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
-    Copyleft (L) 2017 RonanLana
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -56,7 +56,7 @@ import tools.Pair;
  * and update the questid from items that are labeled as "Quest Item" on the DB.
  * 
  * To test a server instance with this feature, MapleQuestItemFetcher must be set
- * just like it is displayed on the HeavenMS (MapleSolaxiaV2) source: 2 folders ahead
+ * just like it is displayed on the HeavenMS source: 2 folders ahead
  * of the root of the main source.
  * 
  * Running it should generate a report file under "lib" folder with the search results.

@@ -106,6 +106,7 @@ public class MapleClient {
 	private byte gender = -1;
 	private boolean disconnecting = false;
 	private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
+        private static final Lock loginLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;
@@ -420,13 +421,17 @@ public class MapleClient {
 	}
 
 	public int finishLogin() {
-		synchronized (MapleClient.class) {
-			if (getLoginState() > LOGIN_NOTLOGGEDIN) { // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
-				loggedIn = false;
-				return 7;
-			}
-			updateLoginState(LOGIN_LOGGEDIN);
-		}
+                loginLock.lock();
+                try {
+                    if (getLoginState() > LOGIN_NOTLOGGEDIN) { // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
+                        loggedIn = false;
+                        return 7;
+                    }
+                    updateLoginState(LOGIN_LOGGEDIN);
+                } finally {
+                    loginLock.unlock();
+                }
+            
 		return 0;
 	}
 

@@ -24,6 +24,7 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -31,6 +32,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Jay Estrella
  */
 public final class MobDamageMobHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int from = slea.readInt();
         slea.readInt();
@@ -40,6 +42,7 @@ public final class MobDamageMobHandler extends AbstractMaplePacketHandler {
         MapleMap map = c.getPlayer().getMap();
         if (map.getMonsterByOid(from) != null && map.getMonsterByOid(to) != null) {
             map.damageMonster(c.getPlayer(), map.getMonsterByOid(to), dmg);
+            map.broadcastMessage(MaplePacketCreator.damageMonster(to, dmg));
         }
     }
 }

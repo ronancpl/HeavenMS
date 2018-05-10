@@ -148,6 +148,8 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.announce(MaplePacketCreator.sendAutoMpPot(player.getKeymap().get(92).getAction()));
         
         player.getMap().addPlayer(player);
+        player.visitMap(player.getMap());
+        
         World world = server.getWorld(c.getWorld());
         world.getPlayerStorage().addPlayer(player);
         
