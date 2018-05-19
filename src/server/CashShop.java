@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 
@@ -92,10 +93,10 @@ public class CashShop {
             Item item;
 
             int petid = -1;
-
-            if (ItemConstants.isPet(itemId))
+            if (ItemConstants.isPet(itemId)) {
                 petid = MaplePet.createPet(itemId);
-
+            }
+            
             if (ItemConstants.getInventoryType(itemId).equals(MapleInventoryType.EQUIP)) {
                 item = MapleItemInformationProvider.getInstance().getEquipById(itemId);
             } else {
@@ -119,10 +120,12 @@ public class CashShop {
                             item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * period));
                     }
             }
+            
             item.setSN(sn);
             return item;
         }
     }
+    
     public static class SpecialCashItem {
         private int sn, modifier;
         private byte info; //?
@@ -151,6 +154,7 @@ public class CashShop {
         private static final Map<Integer, CashItem> items = new HashMap<>();
         private static final Map<Integer, List<Integer>> packages = new HashMap<>();
         private static final List<SpecialCashItem> specialcashitems = new ArrayList<>();
+        private static final List<Integer> randomitemids = new ArrayList<>();
 
         static {
             MapleDataProvider etc = MapleDataProviderFactory.getDataProvider(new File("wz/Etc.wz"));
@@ -174,6 +178,13 @@ public class CashShop {
 
                 packages.put(Integer.parseInt(cashPackage.getName()), cPackage);
             }
+            
+            for(Entry<Integer, CashItem> e : items.entrySet()) {
+                if(e.getValue().isOnSale()) {
+                    randomitemids.add(e.getKey());
+                }
+            }
+            
             PreparedStatement ps = null;
             ResultSet rs = null;
             Connection con = null;
@@ -197,6 +208,13 @@ public class CashShop {
             }
         }
 
+        public static CashItem getRandomCashItem() {
+            if(randomitemids.isEmpty()) return null;
+            
+            int rnd = (int)(Math.random() * randomitemids.size());
+            return items.get(randomitemids.get(rnd));
+        }
+        
         public static CashItem getItem(int sn) {
             return items.get(sn);
         }
@@ -507,5 +525,49 @@ public class CashShop {
         }
 
         ps.close();
+    }
+    
+    private Item getCashShopItemByItemid(int itemid) {
+        lock.lock();
+        try {
+            for(Item it : inventory) {
+                if(it.getItemId() == itemid) {
+                    return it;
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+        
+        return null;
+    }
+    
+    public synchronized Item openCashShopSurprise() {
+        Item css = getCashShopItemByItemid(5222000);
+        
+        if(css != null) {
+            CashItem cItem = CashItemFactory.getRandomCashItem();
+            
+            if(cItem != null) {
+                if(css.getQuantity() > 1) {
+                    /* if(NOT ENOUGH SPACE) { looks like we're not dealing with cash inventory limit whatsoever, k then
+                        return null;
+                    } */
+                    
+                    css.setQuantity((short) (css.getQuantity() - 1));
+                } else {
+                    removeFromInventory(css);
+                }
+                
+                Item item = cItem.toItem();
+                addToInventory(item);
+
+                return item;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

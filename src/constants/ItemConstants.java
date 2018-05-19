@@ -22,6 +22,8 @@
 package constants;
 
 import client.inventory.MapleInventoryType;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +44,15 @@ public final class ItemConstants {
     public final static int ACCOUNT_SHARING = 0x100;
 
     public final static boolean EXPIRING_ITEMS = true;
+    public final static Set<Integer> permanentItemids = new HashSet<>();
 
+    static {
+        int[] pi = {5000060, 5000100, 5000101, 5000102};    // i ain't going to open one gigantic itemid cache just for 4 perma itemids, no way!
+        for(int i : pi) {
+            permanentItemids.add(i);
+        }
+    }
+    
     public static int getFlagByInt(int type) {
         if (type == 128) {
             return PET_COME;
@@ -95,6 +105,10 @@ public final class ItemConstants {
     
     public static boolean isExpirablePet(int itemId) {
         return ServerConstants.USE_ERASE_PET_ON_EXPIRATION || itemId == 5000054;
+    }
+    
+    public static boolean isPermanentItem(int itemId) {
+        return permanentItemids.contains(itemId);
     }
     
     public static boolean isNewYearCardEtc(int itemId) { 

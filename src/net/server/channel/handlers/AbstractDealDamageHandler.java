@@ -445,29 +445,37 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                 AutobanFactory.FIX_DAMAGE.autoban(player, String.valueOf(totDamageToOneMonster) + " damage");
                             }
                             
-                            if(ServerConstants.USE_ULTRA_THREE_SNAILS) {
-                                AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
-                                
-                                int shellId;
-                                switch(totDamageToOneMonster) {
-                                    case 10:
-                                        shellId = 4000019;
-                                        break;
-                                        
-                                    case 25:
-                                        shellId = 4000000;
-                                        break;
-                                        
-                                    default:
-                                        shellId = 4000016;
-                                }
-                                
-                                if(api.haveItem(shellId, 1)) {
-                                    api.gainItem(shellId, (short)-1, false);
-                                    totDamageToOneMonster *= player.getLevel();
-                                }
-                                else {
-                                    player.dropMessage(5, "You ran out of shells to activate the hidden power of Three Snails.");
+                            int threeSnailsId = player.getJobType() * 10000000 + 1000;
+                            if(attack.skill == threeSnailsId) {
+                                if(ServerConstants.USE_ULTRA_THREE_SNAILS) {
+                                    int skillLv = player.getSkillLevel(threeSnailsId);
+
+                                    if(skillLv > 0) {
+                                        AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
+
+                                        int shellId;
+                                        switch(skillLv) {
+                                            case 1:
+                                                shellId = 4000019;
+                                                break;
+
+                                            case 2:
+                                                shellId = 4000000;
+                                                break;
+
+                                            default:
+                                                shellId = 4000016;
+                                        }
+
+                                        if(api.haveItem(shellId, 1)) {
+                                            api.gainItem(shellId, (short) -1, false);
+                                            totDamageToOneMonster *= player.getLevel();
+                                        } else {
+                                            player.dropMessage(5, "You have ran out of shells to activate the hidden power of Three Snails.");
+                                        }
+                                    } else {
+                                        totDamageToOneMonster = 0;
+                                    }
                                 }
                             }
                         }

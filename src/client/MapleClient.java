@@ -112,7 +112,7 @@ public class MapleClient {
 	private long lastNpcClick;
 	private long sessionId;
 
-	public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
+        public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
 		this.send = send;
 		this.receive = receive;
 		this.session = session;
@@ -914,10 +914,9 @@ public class MapleClient {
 			} catch (final Exception e) {
 				FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, e);
 			} finally {
-				getChannelServer().removePlayer(player);
-                                
                                 if (!this.serverTransition) {
 					worlda.removePlayer(player);
+                                        //getChannelServer().removePlayer(player); already being done
                                         
                                         player.saveCooldowns();
                                         player.saveToDB(true);
@@ -925,10 +924,11 @@ public class MapleClient {
 						player.empty(false);
 					}
 					player.logOff();
-				}
-                                else {
-                                    player.saveCooldowns();
-                                    player.saveToDB();
+				} else {
+                                        getChannelServer().removePlayer(player);
+
+                                        player.saveCooldowns();
+                                        player.saveToDB();
                                 }
                                 player = null;
 			}

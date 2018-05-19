@@ -16477,24 +16477,37 @@ CREATE TABLE IF NOT EXISTS `playernpcs` (
   `hair` int(11) NOT NULL,
   `face` int(11) NOT NULL,
   `skin` int(11) NOT NULL,
+  `gender` int(11) NOT NULL DEFAULT '0',
   `x` int(11) NOT NULL,
   `cy` int(11) NOT NULL DEFAULT '0',
-  `map` int(11) NOT NULL,
-  `gender` int(11) NOT NULL DEFAULT '0',
+  `world` int(11) NOT NULL DEFAULT '0',
+  `map` int(11) NOT NULL DEFAULT '0',
   `dir` int(11) NOT NULL DEFAULT '0',
-  `ScriptId` int(10) unsigned NOT NULL DEFAULT '0',
-  `Foothold` int(11) NOT NULL DEFAULT '0',
+  `scriptid` int(10) unsigned NOT NULL DEFAULT '0',
+  `fh` int(11) NOT NULL DEFAULT '0',
   `rx0` int(11) NOT NULL DEFAULT '0',
   `rx1` int(11) NOT NULL DEFAULT '0',
+  `worldrank` int(11) NOT NULL DEFAULT '0',
+  `overallrank` int(11) NOT NULL DEFAULT '0',
+  `worldjobrank` int(11) NOT NULL DEFAULT '0',
+  `job` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=2147000000 ;
 
 CREATE TABLE IF NOT EXISTS `playernpcs_equip` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `NpcId` int(11) NOT NULL DEFAULT '0',
+  `npcid` int(11) NOT NULL DEFAULT '0',
   `equipid` int(11) NOT NULL,
   `type` int(11) NOT NULL DEFAULT '0',
   `equippos` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `playernpcs_field` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `world` int(11) NOT NULL,
+  `map` int(11) NOT NULL,
+  `step` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -17401,7 +17414,7 @@ CREATE TABLE IF NOT EXISTS `rings` (
 CREATE TABLE IF NOT EXISTS `savedlocations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `characterid` int(11) NOT NULL,
-  `locationtype` enum('FREE_MARKET','WORLDTOUR','FLORINA','INTRO','MIRROR','EVENT','BOSSPQ','HAPPYVILLE') NOT NULL,
+  `locationtype` enum('FREE_MARKET','WORLDTOUR','FLORINA','INTRO','SUNDAY_MARKET','MIRROR','EVENT','BOSSPQ','HAPPYVILLE','DEVELOPER') NOT NULL,
   `map` int(11) NOT NULL,
   `portal` int(11) NOT NULL,
   PRIMARY KEY (`id`)

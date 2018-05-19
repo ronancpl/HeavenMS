@@ -35,11 +35,11 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int charId = slea.readInt();
+        
         String macs = slea.readMapleAsciiString();
         String hwid = slea.readMapleAsciiString();
         c.updateMacs(macs);
         c.updateHWID(hwid);
-        
         if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);
             return;
@@ -51,6 +51,7 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
             return;
         }
         
+        c.setWorld(server.getCharacterWorld(charId));
         if(c.getWorldServer().isWorldCapacityFull()) {
             c.announce(MaplePacketCreator.getAfterLoginError(10));
             return;

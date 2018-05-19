@@ -939,3 +939,21 @@ Adicionado flag que permite town scrolls atuarem como se fossem "player banishes
 
 09 Maio 2018,
 Corrigido autopot handler consumindo mais pots que o necessário para pots com ganhos percentuais.
+
+10 - 11 Maio 2018,
+Adicionado suporte para Kite's.
+Revisto acesso concorrente com módulos de pet autopot.
+Tomado medida paliativa pra tentar resolver o problema com players retidos em certos channels do jogo (que leva ao mesmo não conseguir logar num channel).
+Implementado quest da harpa (questid 3314), além de implementado som na harpa podendo ser ouvido por todos os jogadores no mapa.
+Adicionado efeito sonoro para destacar ação de metro (sinaliza chegando/saindo similarmente ao usado pelos outros objetos de viagem).
+Adicionado suporte para player NPCs e hall da fama.
+
+14 - 19 Maio 2018,
+Resolvido bug com NPC prefeito de NLC, permitindo jogador repetir quiz o quanto quiser.
+Calibrado sistema de automatização de novas posições para player NPCs.
+Adicionado sistema de ranqueamento para player NPCs.
+Adicionado flag que define novo requerimento de mobs para questline do Temple of Time.
+Corrigido pets permanentes expirando com o tempo.
+Adicionado suporte para Cash Shop Surprise.
+Revisado sistema de handlers que gerencia login no server.
+Resolvido um problema com flag ultra three snails.

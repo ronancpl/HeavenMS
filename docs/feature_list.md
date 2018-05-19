@@ -25,23 +25,26 @@ PQs:
 * HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ.
 * CWKPQ as Expedition-based event.
 * Expeditions: Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.
-* GuildPQ 100% + Guild queue with multi-lobby systems available.
+* GuildPQ + Guild queue with multi-lobby systems available.
 * Brand-new PQs: BossRushPQ, CafePQ.
 * Mu Lung Dojo.
 * Capt. Latanica remade as an event (parties can now fight the boss).
 
 Skills:
 
+* Some skills behaving oddly have been patched, such as Venomous Star/Stab and Mystic Doors.
 * Maker skill features properly developed.
-* Server is using heurisitics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
+* Server is using heuristics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
 * New skill: Chair Mastery (max lv 1) - Players having this passive skill can gain a significant boost of HP/MP recovery when sitting on a field/map chair.
 
 Quests:
 
 * Doll house quest functional.
 * Quests can now reward properly items when matching a reward item with the player's job.
-* Loads of quests have been patched.
 * Quest rewards according to jobs works properly.
+* Reward selection and randomed reward works properly.
+* Loads of quests have been patched.
+* Lots of job questlines (rewarding skills) have been patched/implemented.
 * Enchanced rewarding system: checks for stacking opportunities on the inventory before checking for new slots.
 * Complete overhaul on the 3rd job quiz (explorers), with all 40-question pool now made available.
 
@@ -52,6 +55,8 @@ Player Social Network:
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
 * Game minirooms such as match cards and omok now has semi-functional password system.
 * Item pickup cooldown on non-owned/non-partyowned items functional.
+* Further improved the server's ranking system, to now display properly daily player ranking movement.
+* Automated support for Player NPCs and Hall of Fame.
 
 Cash & Items:
 
@@ -65,6 +70,8 @@ Cash & Items:
 * Owl of Minerva.
 * Pet item ignore.
 * New Year's card (New Year effect sometimes d/c's a player).
+* Kite.
+* Cash Shop Surprise.
 
 Monsters, Maps & Reactors:
 
@@ -76,6 +83,7 @@ Monsters, Maps & Reactors:
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
 * Boats, elevator and other travelling mechanics fully working.
+* Crimson Balrog boat approaching visual effect made functional.
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 * Some reactors (PQ bonus boxes) now sprays items on the map, instead of dropping everything at once.
 * Updated Crimsonwood, World Tour, Nihal Desert and Neo City, enabling quest completion and game progression in these areas.
@@ -102,6 +110,7 @@ Server potentials:
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
+* Pet item pickup now gives preference to player attacks rather than forcing attack disables when automatically picking up.
 * Channel capacity bar functional and world servers with max capacity checks.
 * Disease status are now visible for other players, even when changing maps.
 * Poison damage value are now visible for other players.
@@ -110,6 +119,7 @@ Server potentials:
 * Delete Character (requires ENABLE_PIC activated).
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
+* Reallocated mapobjectids utilization throughout the source, preventing issues such as "NPC disappearing mysteriously after some server time" from happening.
 * Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
 
@@ -131,9 +141,9 @@ External tools:
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
 * MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
 * MapleMobBookUpdate - Generates a wz.xml that is a copy of the original MonsterBook.wz.xml, except it updates the drop data info in the book with those currently on DB.
-* MapleQuestlineFetcher - Searches the quest WZ files and reports in all questids that currently doesn't have script files.
 * MapleQuestItemCountFetcher - Searches the quest WZ files and reports in all relevant data regarding missing "count" labels on item acts at "complete quest".
 * MapleQuestItemFetcher - Searches the SQL tables and project files and reports in all relevant data regarding missing/erroneous quest items.
+* MapleQuestlineFetcher - Searches the quest WZ files and reports in all questids that currently doesn't have script files.
 * MapleQuestMesoFetcher - Searches the quest WZ files and reports in all relevant data regarding missing/erroneous quest fee checks.
 * MapleReactorDropFetcher - Searches the DB for reactors with drop data and reports in reactorids that are not yet coded.
 * MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.
@@ -145,7 +155,9 @@ Project:
 * Highly updated drop data.
 * Highly configurable server (see all server flags at ServerConstants).
 * Fixed/added some missing packets for MoveEnvironment, summons and others.
+* Uncovered many Send/Recv opcodes throughout the source.
 * Reviewed many Java object aspects that needed concurrency protection.
+* Protected many flaws with login management system.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
 * ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
 
@@ -154,6 +166,7 @@ Exploits patched:
 * Player being given free access to any character of any account once they have authenticated their account on login phase.
 * Player being given permission to delete any character of any account once they have authenticated their account on login phase.
 * Player being able to start/complete any quest freely.
+* Several assynchronous-oriented explots patched, highlights on those involving Fredrick & Duey.
 
 Localhost:
 

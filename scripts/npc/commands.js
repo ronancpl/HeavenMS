@@ -41,7 +41,7 @@ function addCommand(comm, desc) {
         desc_cursor.push(desc);
 }
 
-function writeSolaxiaCommandsLv6() {    //Admin
+function writeHeavenMSCommandsLv6() {    //Admin
         comm_cursor = comm_lv6;
         desc_cursor = desc_lv6;
 
@@ -57,7 +57,7 @@ function writeSolaxiaCommandsLv6() {    //Admin
         addCommand("clearquest", "");
 }
 
-function writeSolaxiaCommandsLv5() {    //Developer
+function writeHeavenMSCommandsLv5() {    //Developer
         comm_cursor = comm_lv5;
         desc_cursor = desc_lv5;
 
@@ -77,7 +77,7 @@ function writeSolaxiaCommandsLv5() {    //Developer
         addCommand("set", "");
 }
 
-function writeSolaxiaCommandsLv4() {    //SuperGM
+function writeHeavenMSCommandsLv4() {    //SuperGM
         comm_cursor = comm_lv4;
         desc_cursor = desc_lv4;
 
@@ -99,7 +99,7 @@ function writeSolaxiaCommandsLv4() {    //SuperGM
         //addCommand("playernpc", "");
 }
 
-function writeSolaxiaCommandsLv3() {    //GM
+function writeHeavenMSCommandsLv3() {    //GM
         comm_cursor = comm_lv3;
         desc_cursor = desc_lv3;
 
@@ -154,7 +154,7 @@ function writeSolaxiaCommandsLv3() {    //GM
         addCommand("hair", "");
 }
 
-function writeSolaxiaCommandsLv2() {    //JrGM
+function writeHeavenMSCommandsLv2() {    //JrGM
         comm_cursor = comm_lv2;
         desc_cursor = desc_lv2;
 
@@ -191,7 +191,7 @@ function writeSolaxiaCommandsLv2() {    //JrGM
         addCommand("unbug", "");
 }
 
-function writeSolaxiaCommandsLv1() {    //Donator
+function writeHeavenMSCommandsLv1() {    //Donator
         comm_cursor = comm_lv1;
         desc_cursor = desc_lv1;
 
@@ -204,7 +204,7 @@ function writeSolaxiaCommandsLv1() {    //Donator
         addCommand("recharge", "");
 }
 
-function writeSolaxiaCommandsLv0() {    //Common
+function writeHeavenMSCommandsLv0() {    //Common
         comm_cursor = comm_lv0;
         desc_cursor = desc_lv0;
 
@@ -231,19 +231,19 @@ function writeSolaxiaCommandsLv0() {    //Common
         addCommand("luk", "");
 }
 
-function writeSolaxiaCommands() {
-        writeSolaxiaCommandsLv0();  //Common
-        writeSolaxiaCommandsLv1();  //Donator
-        writeSolaxiaCommandsLv2();  //JrGM
-        writeSolaxiaCommandsLv3();  //GM
-        writeSolaxiaCommandsLv4();  //Developer
-        writeSolaxiaCommandsLv5();  //SuperGM
-        writeSolaxiaCommandsLv6();  //Admin
+function writeHeavenMSCommands() {
+        writeHeavenMSCommandsLv0();  //Common
+        writeHeavenMSCommandsLv1();  //Donator
+        writeHeavenMSCommandsLv2();  //JrGM
+        writeHeavenMSCommandsLv3();  //GM
+        writeHeavenMSCommandsLv4();  //Developer
+        writeHeavenMSCommandsLv5();  //SuperGM
+        writeHeavenMSCommandsLv6();  //Admin
 }
 
 function start() {
         status = -1;
-        writeSolaxiaCommands();
+        writeHeavenMSCommands();
         action(1, 0, 0);
 }
 

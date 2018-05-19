@@ -7,8 +7,10 @@ var myRide;
 var returnMap;
 var exitMap;
 var map;
-var timeOnRide = 10; //Seconds
 var onRide;
+
+//Time Setting is in millisecond
+var rideTime = 10 * 1000;
 
 function init() {}
 
@@ -30,8 +32,10 @@ function playerEntry(eim, player) {
         returnMap = eim.getMapFactory().getMap(returnTo[myRide]);
         onRide = eim.getMapFactory().getMap(trainRide[myRide]);
         player.changeMap(onRide, onRide.getPortal(0));
-        player.getClient().getSession().write(MaplePacketCreator.getClock(timeOnRide));
-        eim.schedule("timeOut", timeOnRide * 1000);
+        
+        player.getClient().getSession().write(MaplePacketCreator.getClock(rideTime / 1000));
+        player.getClient().getSession().write(MaplePacketCreator.earnTitleMessage("The next stop is at Kerning " + (myRide == 0 ? "Square" : "Subway") + " Station. The exit is to your left."));
+        eim.schedule("timeOut", rideTime);
 }
 
 function timeOut(eim) {

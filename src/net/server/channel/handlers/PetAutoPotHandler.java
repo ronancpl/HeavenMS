@@ -25,6 +25,7 @@ import client.MapleClient;
 import client.MapleCharacter;
 import client.inventory.Equip;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
@@ -69,67 +70,74 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         itemId = slea.readInt();
         
         MapleCharacter chr = c.getPlayer();
-        toUse = chr.getInventory(MapleInventoryType.USE).getItem(slot);
+        MapleInventory useInv = chr.getInventory(MapleInventoryType.USE);
         
-        if(toUse != null) {
-            if (toUse.getItemId() != itemId) {
-                c.announce(MaplePacketCreator.enableActions());
-                return;
-            }
-            
-            toUseList = null;
-            
-            // from now on, toUse becomes the "cursor" for the current pot being used
-            if(toUse.getQuantity() <= 0) {
-                if(!cursorOnNextAvailablePot(chr)) {
+        useInv.lockInventory();
+        try {
+            toUse = useInv.getItem(slot);
+        
+            if(toUse != null) {
+                if (toUse.getItemId() != itemId) {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-            }
-            
-            MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
-            hasHpGain = stat.getHp() > 0 || stat.getHpRate() > 0.0;
-            hasMpGain = stat.getMp() > 0 || stat.getMpRate() > 0.0;
-            
-            // contabilize the HP and MP gains from equipments on one's effective MaxHP/MaxMP
-            Pair<Short, Short> maxHpMp = calcEffectivePool(chr);
-            maxHp = maxHpMp.left;
-            maxMp = maxHpMp.right;
-            
-            incHp = stat.getHp();
-            if(incHp <= 0 && hasHpGain) incHp = (short)(maxHp * stat.getHpRate());
-            
-            incMp = stat.getMp();
-            if(incMp <= 0 && hasMpGain) incMp = (short)(maxMp * stat.getMpRate());
-            
-            curHp = chr.getHp();
-            curMp = chr.getMp();
-            
-            //System.out.println("\n-------------------\n");
-            while(true) {
-                do {
-                    MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
-                    stat.applyTo(chr);
-                    
-                    curHp += incHp;
-                    curMp += incMp;
 
-                    //System.out.println();
-                    //System.out.println("hp: " + hasHpGain + " hpgain " + incHp + " player hp " + curHp + " maxhp " + maxHp);
-                    //System.out.println("mp: " + hasMpGain + " mpgain " + incMp + " player mp " + curMp + " maxmp " + maxMp);
-                    //System.out.println("redo? " + (shouldReusePot() && toUse.getQuantity() > 0));
-                } while(shouldReusePot() && toUse.getQuantity() > 0);
+                toUseList = null;
 
-                if(toUse.getQuantity() == 0 && shouldReusePot()) {
-                    // depleted out the current slot, fetch for more
-
+                // from now on, toUse becomes the "cursor" for the current pot being used
+                if(toUse.getQuantity() <= 0) {
                     if(!cursorOnNextAvailablePot(chr)) {
-                        break;    // no more pots available
+                        c.announce(MaplePacketCreator.enableActions());
+                        return;
                     }
-                } else {
-                    break;    // gracefully finished it's job, quit the loop
+                }
+
+                MapleStatEffect stat = MapleItemInformationProvider.getInstance().getItemEffect(toUse.getItemId());
+                hasHpGain = stat.getHp() > 0 || stat.getHpRate() > 0.0;
+                hasMpGain = stat.getMp() > 0 || stat.getMpRate() > 0.0;
+
+                // contabilize the HP and MP gains from equipments on one's effective MaxHP/MaxMP
+                Pair<Short, Short> maxHpMp = calcEffectivePool(chr);
+                maxHp = maxHpMp.left;
+                maxMp = maxHpMp.right;
+
+                incHp = stat.getHp();
+                if(incHp <= 0 && hasHpGain) incHp = (short)(maxHp * stat.getHpRate());
+
+                incMp = stat.getMp();
+                if(incMp <= 0 && hasMpGain) incMp = (short)(maxMp * stat.getMpRate());
+
+                curHp = chr.getHp();
+                curMp = chr.getMp();
+
+                //System.out.println("\n-------------------\n");
+                while(true) {
+                    do {
+                        MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+                        stat.applyTo(chr);
+
+                        curHp += incHp;
+                        curMp += incMp;
+
+                        //System.out.println();
+                        //System.out.println("hp: " + hasHpGain + " hpgain " + incHp + " player hp " + curHp + " maxhp " + maxHp);
+                        //System.out.println("mp: " + hasMpGain + " mpgain " + incMp + " player mp " + curMp + " maxmp " + maxMp);
+                        //System.out.println("redo? " + (shouldReusePot() && toUse.getQuantity() > 0));
+                    } while(shouldReusePot() && toUse.getQuantity() > 0);
+
+                    if(toUse.getQuantity() == 0 && shouldReusePot()) {
+                        // depleted out the current slot, fetch for more
+
+                        if(!cursorOnNextAvailablePot(chr)) {
+                            break;    // no more pots available
+                        }
+                    } else {
+                        break;    // gracefully finished it's job, quit the loop
+                    }
                 }
             }
+        } finally {
+            useInv.unlockInventory();
         }
     }
     

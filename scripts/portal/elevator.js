@@ -1,6 +1,6 @@
 function enter(pi) {
     try {
-        var elevator = pi.getEventManager("elevator");
+        var elevator = pi.getEventManager("Elevator");
         if (elevator == null) {
             pi.getPlayer().dropMessage(5, "The elevator is under maintenance.");
         } else if (elevator.getProperty(pi.getMapId() == 222020100 ? ("goingUp") : ("goingDown")).equals("false")) {

@@ -1,0 +1,8 @@
+(qm.send).*(^(if\s?\(status)).*(qm.dispose)
+
+
+(qm.send)(^((if(\s)?\(status)|^((.|\r\n|\n)*)))(qm.dispose)
+
+(qm.send)((.|\r\n|\n)*)((status))((.|\r\n|\n)*)(qm.dispose)
+
+(qm.send)(((.|\r\n|\n)(?!qm.send)(?!status)(?!qm.dispose))*)(Quest\()

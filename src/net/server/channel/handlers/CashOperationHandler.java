@@ -73,7 +73,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             
             if (action == 0x03) { // Item
                 Item item = cItem.toItem();
-                cs.addToInventory(item);               
+                cs.addToInventory(item);
                 c.announce(MaplePacketCreator.showBoughtCashItem(item, c.getAccID()));
             } else { // Package
                 List<Item> cashPackage = CashItemFactory.getPackage(cItem.getItemId());

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9903034.img">
+  <imgdir name="info">
+    <int name="imitate" value="1"/>
+    <int name="hideName" value="1"/>
+    <int name="dcLeft" value="-30"/>
+    <int name="dcRight" value="30"/>
+    <int name="dcTop" value="-60"/>
+    <int name="dcBottom" value="0"/>
+    <imgdir name="speak">
+      <string name="0" value="n0"/>
+      <string name="1" value="n1"/>
+    </imgdir>
+    <imgdir name="script">
+      <imgdir name="0">
+        <string name="script" value="rank_user"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0"/>
+    </canvas>
+    <int name="delay" value="7000"/>
+  </imgdir>
+  <imgdir name="say">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="0" y="0"/>
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="n0"/>
+      <string name="1" value="n1"/>
+    </imgdir>
+  </imgdir>
+</imgdir>

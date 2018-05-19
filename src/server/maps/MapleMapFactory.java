@@ -27,12 +27,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -44,6 +44,8 @@ import server.PortalFactory;
 import server.life.AbstractLoadedMapleLife;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
+import server.life.MaplePlayerNPC;
+import server.life.MaplePlayerNPCFactory;
 import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
@@ -198,22 +200,30 @@ public class MapleMapFactory {
                 map.addMapleArea(new Rectangle(x1, y1, (x2 - x1), (y2 - y1)));
             }
         }
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs WHERE map = ?")) {
-                ps.setInt(1, omapid);
-                try (ResultSet rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        map.addMapObject(new PlayerNPCs(rs));
+        if(event == null) {
+            try {
+                Connection con = DatabaseConnection.getConnection();
+                try (PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs WHERE map = ? AND world = ?")) {
+                    ps.setInt(1, omapid);
+                    ps.setInt(2, world);
+                    try (ResultSet rs = ps.executeQuery()) {
+                        while (rs.next()) {
+                            map.addPlayerNPCMapObject(new MaplePlayerNPC(rs));
+                        }
                     }
                 }
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            
+            List<MaplePlayerNPC> dnpcs = MaplePlayerNPCFactory.getDeveloperNpcsFromMapid(mapid);
+            if(dnpcs != null) {
+                for(MaplePlayerNPC dnpc : dnpcs) {
+                    map.addPlayerNPCMapObject(dnpc);
+                }
+            }
         }
-
         for (MapleData life : mapData.getChildByPath("life")) {
             String id = MapleDataTool.getString(life.getChildByPath("id"));
             String type = MapleDataTool.getString(life.getChildByPath("type"));
@@ -319,8 +329,6 @@ public class MapleMapFactory {
 
     private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {
         AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(Integer.parseInt(id), type);
-        if(life == null) System.out.println("lf null");
-        if(myLife == null) System.out.println("mlf null");
         myLife.setCy(MapleDataTool.getInt(life.getChildByPath("cy")));
         MapleData dF = life.getChildByPath("f");
         if (dF != null) {

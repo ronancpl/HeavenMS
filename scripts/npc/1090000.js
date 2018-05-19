@@ -29,33 +29,52 @@ status = -1;
 actionx = {"1stJob" : false, "2ndjob" : false, "2ndjobT" : false, "3thJobI" : false, "3thJobC" : false};
 job = 510;
 
+spawnPnpc = false;
+spawnPnpcFee = 7000000;
+jobType = 5;
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function start() {
-    if (cm.getJobId() == 0) {
-        actionx["1stJob"] = true;
-        if (cm.getLevel() >= 10)
-            cm.sendNext("Want to be a pirate? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 10#k. Let's see.");
-        else {
-            cm.sendOk("Train a bit more and I can show you the way of the #rPirate#k.");
+    if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()))) {
+        spawnPnpc = true;
+        
+        var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, didn't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
+        if(spawnPnpcFee > 0) {
+            sendStr += " I can do it for you, for the fee of #b " + numberWithCommas(spawnPnpcFee) + " mesos.#k";
+        }
+        
+        cm.sendYesNo(sendStr);
+    } else {
+        if (cm.getJobId() == 0) {
+            actionx["1stJob"] = true;
+            if (cm.getLevel() >= 10)
+                cm.sendNext("Want to be a pirate? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 10#k. Let's see.");
+            else {
+                cm.sendOk("Train a bit more and I can show you the way of the #rPirate#k.");
+                cm.dispose();
+            }
+        } else if (cm.getLevel() >= 30 && cm.getJobId() == 500) {
+            actionx["2ndJob"] = true;
+            if (cm.isQuestCompleted(2191) || cm.isQuestCompleted(2192))
+                cm.sendNext("I see you have done well. I will allow you to take the next step on your long road.");
+            else
+                cm.sendNext("The progress you have made is astonishing.");
+        } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 5 && !cm.getPlayer().gotPartyQuestItem("JBP"))){
+            actionx["3thJobI"] = true;
+            cm.sendNext("There you are. A few days ago, #b#p2020013##k of Ossyria talked to me about you. I see that you are interested in making the leap to the world of the third job advancement for pirates. To archieve that goal, I will have to test your strength in order to see whether you are worthy of the advancement. There is an opening in the middle of a cave on Victoria Island, where it'll lead you to a secret passage. Once inside, you'll face a clone of myself. Your task is to defeat him and bring #b#t4031059##k back with you.");
+        } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
+            cm.sendNext("Please, bring me the #b#t4031059##k.");
+            cm.dispose();
+        } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
+            actionx["3thJobC"] = true;
+            cm.sendNext("Nice work. You have defeated my clone and brought #b#t4031059##k back safely. You have now proven yourself worthy of the 3rd job advancement from the physical standpoint. Now you should give this necklace to #b#p2020013##k in Ossyria to take on the second part of the test. Good luck. You'll need it.");
+        } else {
+            cm.sendOk("You have chosen wisely.");
             cm.dispose();
         }
-    } else if (cm.getLevel() >= 30 && cm.getJobId() == 500) {
-        actionx["2ndJob"] = true;
-        if (cm.isQuestCompleted(2191) || cm.isQuestCompleted(2192))
-            cm.sendNext("I see you have done well. I will allow you to take the next step on your long road.");
-        else
-            cm.sendNext("The progress you have made is astonishing.");
-    } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 5 && !cm.getPlayer().gotPartyQuestItem("JBP"))){
-        actionx["3thJobI"] = true;
-        cm.sendNext("There you are. A few days ago, #b#p2020013##k of Ossyria talked to me about you. I see that you are interested in making the leap to the world of the third job advancement for pirates. To archieve that goal, I will have to test your strength in order to see whether you are worthy of the advancement. There is an opening in the middle of a cave on Victoria Island, where it'll lead you to a secret passage. Once inside, you'll face a clone of myself. Your task is to defeat him and bring #b#t4031059##k back with you.");
-    } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
-        cm.sendNext("Please, bring me the #b#t4031059##k.");
-        cm.dispose();
-    } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
-        actionx["3thJobC"] = true;
-        cm.sendNext("Nice work. You have defeated my clone and brought #b#t4031059##k back safely. You have now proven yourself worthy of the 3rd job advancement from the physical standpoint. Now you should give this necklace to #b#p2020013##k in Ossyria to take on the second part of the test. Good luck. You'll need it.");
-    } else {
-        cm.sendOk("You have chosen wisely.");
-        cm.dispose();
     }
 }
 
@@ -66,14 +85,37 @@ function action(mode, type, selection) {
     if (status == -1){
         start();
         return;
-    } else if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJobI"] && status == 1)){
-        if (mode == 0 && status == 2 && type == 1)
-            cm.sendOk("You know there is no other choice...");
-        if (!(mode == 0 && type != 1)){
+    } else {
+        if(spawnPnpc) {
+            if(mode > 0) {
+                if(cm.getMeso() < spawnPnpcFee) {
+                    cm.sendOk("Sorry, you don't have enough mesos to purchase your place on the Hall of Fame.");
+                    cm.dispose();
+                    return;
+                }
+                
+                if(Packages.server.life.MaplePlayerNPC.spawnPlayerNPC(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()), cm.getPlayer())) {
+                    cm.sendOk("There you go! Hope you will like it.");
+                    cm.gainMeso(-spawnPnpcFee);
+                } else {
+                    cm.sendOk("Sorry, the Hall of Fame is currently full...");
+                }
+            }
+            
             cm.dispose();
             return;
+        } else {
+            if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJobI"] && status == 1)){
+                if (mode == 0 && status == 2 && type == 1)
+                    cm.sendOk("You know there is no other choice...");
+                if (!(mode == 0 && type != 1)){
+                    cm.dispose();
+                    return;
+                }
+            }
         }
     }
+    
     if (actionx["1stJob"]){
         if (status == 0)
             cm.sendYesNo("Oh...! You look like someone that can definitely be a part of us... all you need is a little slang, and... yeah... so, what do you think? Wanna be the Pirate?");

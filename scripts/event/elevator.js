@@ -19,6 +19,11 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+//Time Setting is in millisecond
+var beginTime = 60 * 1000; //The time to begin the ride
+var  rideTime = 60 * 1000; //The time that require move to destination
+
 function init() {
     em.getChannelServer().getMapFactory().getMap(222020100).resetReactors();
     em.getChannelServer().getMapFactory().getMap(222020200).resetReactors();
@@ -32,21 +37,21 @@ function scheduleNew() {
     
     em.getChannelServer().getMapFactory().getMap(222020100).resetReactors();
     em.getChannelServer().getMapFactory().getMap(222020200).setReactorState();
-    em.schedule("goingUpNow", 50000);
+    em.schedule("goingUpNow", beginTime);
 }
 
 function goUp() {
-    em.schedule("goingUpNow", 50000); // might be 60
+    em.schedule("goingUpNow", beginTime);
 }
 
 function goDown() {
-    em.schedule("goingDownNow", 50000); // might be 60
+    em.schedule("goingDownNow", beginTime);
 }
 
 function goingUpNow() {
     em.getChannelServer().getMapFactory().getMap(222020110).warpEveryone(222020111);
     em.setProperty("goingUp", "true");
-    em.schedule("isUpNow", 55000);
+    em.schedule("isUpNow", rideTime);
     
     em.getChannelServer().getMapFactory().getMap(222020100).setReactorState();
 }
@@ -54,7 +59,7 @@ function goingUpNow() {
 function goingDownNow() {
     em.getChannelServer().getMapFactory().getMap(222020210).warpEveryone(222020211);
     em.setProperty("goingDown", "true");
-    em.schedule("isDownNow", 55000);
+    em.schedule("isDownNow", rideTime);
     
     em.getChannelServer().getMapFactory().getMap(222020200).setReactorState();
 }

@@ -1,13 +1,16 @@
-//Time Setting is in millisecond
-var closeTime = 24 * 1000; //[24 seconds] The time to close the gate
-var beginTime = 30 * 1000; //[30 seconds] The time to begin the ride
-var rideTime = 30 * 1000; //[30 seconds] The time that require move to destination
+importPackage(Packages.tools);
+
 var KC_Waiting;
 var Subway_to_KC;
 var KC_docked;
 var NLC_Waiting;
 var Subway_to_NLC;
 var NLC_docked;
+
+//Time Setting is in millisecond
+var closeTime =     50 * 1000; //The time to close the gate
+var beginTime = 1 * 60 * 1000; //The time to begin the ride
+var  rideTime = 4 * 60 * 1000; //The time that require move to destination
 
 function init() {
     KC_Waiting = em.getChannelServer().getMapFactory().getMap(600010004);
@@ -31,6 +34,9 @@ function stopEntry() {
 }
 
 function takeoff() {
+    KC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
+    NLC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
+    
     em.setProperty("docked","false");
     KC_Waiting.warpEveryone(Subway_to_NLC.getId());
     NLC_Waiting.warpEveryone(Subway_to_KC.getId());
@@ -41,6 +47,9 @@ function arrived() {
     Subway_to_KC.warpEveryone(KC_docked.getId(), 0);
     Subway_to_NLC.warpEveryone(NLC_docked.getId(), 0);
     scheduleNew();
+    
+    KC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
+    NLC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
 }
 
 function cancelSchedule() {

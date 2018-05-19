@@ -191,8 +191,8 @@ public final class Channel {
         return players;
     }
 
-    public void removePlayer(MapleCharacter chr) {
-        players.removePlayer(chr.getId());
+    public boolean removePlayer(MapleCharacter chr) {
+        return players.removePlayer(chr.getId()) != null;
     }
     
     public int getChannelCapacity() {

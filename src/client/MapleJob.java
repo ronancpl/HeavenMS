@@ -64,7 +64,7 @@ public enum MapleJob {
 
     final int jobid;
     final static int maxId = 22;    // maxId = (EVAN / 100);
-
+    
     private MapleJob(int id) {
         jobid = id;
     }

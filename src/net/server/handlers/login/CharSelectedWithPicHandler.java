@@ -16,11 +16,11 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String pic = slea.readMapleAsciiString();
         int charId = slea.readInt();
+        
         String macs = slea.readMapleAsciiString();
         String hwid = slea.readMapleAsciiString();
         c.updateMacs(macs);
         c.updateHWID(hwid);
-
         if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);
             return;
@@ -33,6 +33,7 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
         }
         
         if (c.checkPic(pic)) {
+            c.setWorld(server.getCharacterWorld(charId));
             if(c.getWorldServer().isWorldCapacityFull()) {
                 c.announce(MaplePacketCreator.getAfterLoginError(10));
                 return;

@@ -28,7 +28,7 @@ import net.AbstractMaplePacketHandler;
 import scripting.npc.NPCScriptManager;
 import server.life.MapleNPC;
 import server.maps.MapleMapObject;
-import server.maps.PlayerNPCs;
+import server.life.MaplePlayerNPC;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -78,8 +78,14 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
                     }
                 }
             }
-        } else if (obj instanceof PlayerNPCs) {
-            NPCScriptManager.getInstance().start(c, ((PlayerNPCs) obj).getId(), null);
+        } else if (obj instanceof MaplePlayerNPC) {
+            MaplePlayerNPC pnpc = (MaplePlayerNPC) obj;
+            
+            if(pnpc.getScriptId() < 9977777) {
+                NPCScriptManager.getInstance().start(c, pnpc.getScriptId(), "rank_user", null);
+            } else {
+                NPCScriptManager.getInstance().start(c, pnpc.getScriptId(), null);
+            }
         }
     }
 }

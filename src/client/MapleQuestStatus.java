@@ -142,7 +142,7 @@ public class MapleQuestStatus {
     }
 
     public void setProgress(int id, String pr) {
-        	progress.put(id, pr);
+        progress.put(id, pr);
     }
 
     public boolean madeProgress() {

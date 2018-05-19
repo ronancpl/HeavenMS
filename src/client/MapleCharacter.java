@@ -94,7 +94,7 @@ import server.maps.MapleMiniGame;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleSummon;
-import server.maps.PlayerNPCs;
+import server.life.MaplePlayerNPC;
 import server.maps.SavedLocation;
 import server.maps.SavedLocationType;
 import server.partyquest.MonsterCarnival;
@@ -313,7 +313,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int banishMap = -1;
     private int banishSp = -1;
     private long banishTime = 0;
-
+    
     private MapleCharacter() {
         useCS = false;
         
@@ -5111,6 +5111,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         maxmp = Math.min(30000, maxmp);
         if (level == 200) {
             exp.set(0);
+            if(ServerConstants.PLAYERNPC_AUTODEPLOY) MaplePlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), this);
         }
         recalcLocalStats();
         hp = localmaxhp;
@@ -5226,11 +5227,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         } else if (level == 80) {
             yellowMessage("You think you are powerful enough? Try facing horntail!");
         } else if (level == 85) {
-            yellowMessage("Did you know? The majority of people who hit level 85 in Solaxia don't live to be 85 years old?");
+            yellowMessage("Did you know? The majority of people who hit level 85 in HeavenMS don't live to be 85 years old?");
         } else if (level == 90) {
             yellowMessage("Hey do you like the amusement park? I heard Spooky World is the best theme park around. I heard they sell cute teddy-bears.");
         } else if (level == 95) {
-            yellowMessage("100% of people who hit level 95 in Solaxia don't live to be 95 years old.");
+            yellowMessage("100% of people who hit level 95 in HeavenMS don't live to be 95 years old.");
         } else if (level == 100) {
             yellowMessage("Mid-journey so far... You just reached level 100! Now THAT's such a feat, however to manage the 200 you will need even more passion and determination than ever! Good hunting!");
         } else if (level == 105) {
@@ -5921,65 +5922,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void mount(int id, int skillid) {
         maplemount = new MapleMount(this, id, skillid);
-    }
-
-    public void playerNPC(MapleCharacter v, int scriptId) {
-        int npcId;
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT id FROM playernpcs WHERE ScriptId = ?");
-            ps.setInt(1, scriptId);
-            ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                rs.close();
-                ps = con.prepareStatement("INSERT INTO playernpcs (name, hair, face, skin, x, cy, map, ScriptId, Foothold, rx0, rx1) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-                ps.setString(1, v.getName());
-                ps.setInt(2, v.getHair());
-                ps.setInt(3, v.getFace());
-                ps.setInt(4, v.getSkinColor().getId());
-                ps.setInt(5, getPosition().x);
-                ps.setInt(6, getPosition().y);
-                ps.setInt(7, getMapId());
-                ps.setInt(8, scriptId);
-                ps.setInt(9, getMap().getFootholds().findBelow(getPosition()).getId());
-                ps.setInt(10, getPosition().x + 50);
-                ps.setInt(11, getPosition().x - 50);
-                ps.executeUpdate();
-                rs = ps.getGeneratedKeys();
-                rs.next();
-                npcId = rs.getInt(1);
-                ps.close();
-                ps = con.prepareStatement("INSERT INTO playernpcs_equip (NpcId, equipid, equippos) VALUES (?, ?, ?)");
-                ps.setInt(1, npcId);
-                for (Item equip : getInventory(MapleInventoryType.EQUIPPED)) {
-                    int position = Math.abs(equip.getPosition());
-                    if ((position < 12 && position > 0) || (position > 100 && position < 112)) {
-                        ps.setInt(2, equip.getItemId());
-                        ps.setInt(3, equip.getPosition());
-                        ps.addBatch();
-                    }
-                }
-                ps.executeBatch();
-                ps.close();
-                rs.close();
-                ps = con.prepareStatement("SELECT * FROM playernpcs WHERE ScriptId = ?");
-                ps.setInt(1, scriptId);
-                rs = ps.executeQuery();
-                rs.next();
-                PlayerNPCs pn = new PlayerNPCs(rs);
-                for (Channel channel : Server.getInstance().getChannelsFromWorld(world)) {
-                    MapleMap m = channel.getMapFactory().getMap(getMapId());
-                    m.broadcastMessage(MaplePacketCreator.spawnPlayerNPC(pn));
-                    m.broadcastMessage(MaplePacketCreator.getPlayerNPC(pn));
-                    m.addMapObject(pn);
-                }
-            }
-            ps.close();
-            rs.close();
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     private void playerDead() {
@@ -6840,7 +6782,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void sendPolice(int greason, String reason, int duration) {
-        announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for %s.#k", "Solaxia", reason)));
+        announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for %s.#k", "HeavenMS", reason)));
         this.isbanned = true;
         TimerManager.getInstance().schedule(new Runnable() {
             @Override
@@ -7966,7 +7908,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void autoban(String reason) {
         this.ban(reason);
-        announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for HACK reason.#k", "Solaxia")));
+        announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for HACK reason.#k", "HeavenMS")));
         TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {

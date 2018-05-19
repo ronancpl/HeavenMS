@@ -68,6 +68,7 @@ import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 import server.life.MapleNPC;
+import server.life.MaplePlayerNPC;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.life.MonsterDropEntry;
@@ -350,6 +351,22 @@ public class Commands {
                 MapleCharacter player = c.getPlayer();
             
                 switch(sub[0]) {
+                    case "wow":
+                        MaplePlayerNPC.multicastSpawnPlayerNPC(player.getMapId(), player.getWorld());
+                        break;
+                        
+                    case "out":
+                        MaplePlayerNPC.removeAllPlayerNPC();
+                        break;
+                    
+                    case "er":
+                        MaplePlayerNPC.spawnPlayerNPC(player.getMapId(), player);
+                        break;
+                        
+                    case "re":
+                        MaplePlayerNPC.removePlayerNPC(player);
+                        break;
+                    
                 case "help":
 		case "commands":
                 case "playercommands":
@@ -369,7 +386,7 @@ public class Commands {
 		case "time":
 			DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
-			player.yellowMessage("Solaxia Server Time: " + dateFormat.format(new Date()));
+			player.yellowMessage("HeavenMS Server Time: " + dateFormat.format(new Date()));
 			break;
                 
                 case "credits":
@@ -2069,10 +2086,6 @@ public class Commands {
 			}
                     break;
                 
-                case "energy":
-                        System.out.println(c.getPlayer().getDojoEnergy());
-                        break;
-                    
                 case "maxenergy":
                         c.getPlayer().setDojoEnergy(10000);
                         c.announce(MaplePacketCreator.getEnergy("energy", 10000));
@@ -2599,16 +2612,15 @@ public class Commands {
                         
                         player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
                         break;
-                            
-                    /*
+                    
                     case "playernpc":
                         if (sub.length < 3){
-                            player.yellowMessage("Syntax: !playernpc <playername> <npcid>");
+                            player.yellowMessage("Syntax: !playernpc <playername>");
                             break;
                         }
-                        player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]), Integer.parseInt(sub[2]));
+                        
+                        MaplePlayerNPC.spawnPlayerNPC(player.getMapId(), player.getPosition(), c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]));
 			break;
-                    */
                         
                     default:
                         return false;
@@ -2930,7 +2942,7 @@ public class Commands {
                 else return true;
         }
         
-        public static boolean executeSolaxiaPlayerCommand(MapleClient c, String[] sub, char heading) {
+        public static boolean executeHeavenMSPlayerCommand(MapleClient c, String[] sub, char heading) {
 		Channel cserv = c.getChannelServer();
 		Server srv = Server.getInstance();
                 

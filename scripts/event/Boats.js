@@ -2,13 +2,6 @@ importPackage(Packages.client);
 importPackage(Packages.tools);
 importPackage(Packages.server.life);
 
-//Time Setting is in millisecond
-var closeTime = 50 * 1000; //The time to close the gate
-var beginTime = 60 * 1000; //The time to begin the ride
-var rideTime = 120 * 1000; //The time that require move to destination
-var invasionStartTime = 30 * 1000; //The time to balrog ship approach
-var invasionDelayTime = 15 * 1000; //The time to balrog ship approach
-var invasionDelay = 5 * 1000; //The time that spawn balrog
 var Orbis_btf;
 var Boat_to_Orbis;
 var Orbis_Boat_Cabin;
@@ -16,6 +9,14 @@ var Orbis_docked;
 var Ellinia_btf;
 var Ellinia_Boat_Cabin;
 var Ellinia_docked;
+
+//Time Setting is in millisecond
+var closeTime = 4 * 60 * 1000; //The time to close the gate
+var beginTime = 5 * 60 * 1000; //The time to begin the ride
+var rideTime = 10 * 60 * 1000; //The time that require move to destination
+var invasionStartTime = 3 * 60 * 1000; //The time to balrog ship approach
+var invasionDelayTime = 1 * 60 * 1000; //The time to balrog ship approach
+var invasionDelay = 5 * 1000; //The time that spawn balrog
 
 function init() {
     Orbis_btf = em.getChannelServer().getMapFactory().getMap(200000112);

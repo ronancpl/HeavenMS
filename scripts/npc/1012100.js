@@ -29,36 +29,55 @@ status = -1;
 actionx = {"1stJob" : false, "2ndjob" : false, "3thJobI" : false, "3thJobC" : false};
 job = 310;
 
+spawnPnpc = false;
+spawnPnpcFee = 7000000;
+jobType = 3;
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function start() {
-    if (cm.getJobId() == 0) {
-        actionx["1stJob"] = true;
-        if (cm.getLevel() >= 10)
-            cm.sendNext("So you decided to become a #rBowman#k?");
-        else {
-            cm.sendOk("Train a bit more and I can show you the way of the #rBowman#k.");
+    if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()))) {
+        spawnPnpc = true;
+        
+        var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, didn't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
+        if(spawnPnpcFee > 0) {
+            sendStr += " I can do it for you, for the fee of #b " + numberWithCommas(spawnPnpcFee) + " mesos.#k";
+        }
+        
+        cm.sendYesNo(sendStr);
+    } else {
+        if (cm.getJobId() == 0) {
+            actionx["1stJob"] = true;
+            if (cm.getLevel() >= 10)
+                cm.sendNext("So you decided to become a #rBowman#k?");
+            else {
+                cm.sendOk("Train a bit more and I can show you the way of the #rBowman#k.");
+                cm.dispose();
+            }
+        } else if (cm.getLevel() >= 30 && cm.getJobId() == 300) {
+            actionx["2ndJob"] = true;
+            if (cm.haveItem(4031012))
+                cm.sendNext("Haha...I knew you'd breeze through that test. I'll admit, you are a great bowman. I'll make you much stronger than you're right now. before that, however... you;ll need to choose one of two paths given to you. It'll be a difficult decision for you to make, but... if there's any question to ask, please do so.");
+            else if (cm.haveItem(4031011)){
+                cm.sendOk("Go and see the #b#p1072002##k.");
+                cm.dispose();
+            } else
+                cm.sendYesNo("Hmmm... you have grown a lot since I last saw you. I don't see the weakling I saw before, and instead, look much more like a bowman now. Well, what do you think? Don't you want to get even more powerful than that? Pass a simple test and I'll do just that for you. Do you want to do it?");
+        } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 3 && !cm.getPlayer().gotPartyQuestItem("JBP"))){
+            actionx["3thJobI"] = true;
+            cm.sendNext("There you are. A few days ago, #b#p2020010##k of Ossyria talked to me about you. I see that you are interested in making the leap to the amazing world of the third job advancement for archers. To achieve that goal, I will have to test your strength in order to see whether you are worthy of the advancement. There is an opening in the middle of a deep forest in Victoria Island, where it'll lead you to a secret passage. Once inside, you'll face a clone of myself. Your task is to defeat her and bring #b#t4031059##k back with you.");
+        } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
+            cm.sendNext("Please, bring me the #b#t4031059##k.");
+            cm.dispose();
+        } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
+            actionx["3thJobC"] = true;
+            cm.sendNext("Nice work. You have defeated my clone and brought #b#t4031059##k back safely. You have now proven yourself worthy of the 3rd job advancement from the physical standpoint. Now you should give this necklace to #b#p2020011##k in Ossyria to take on the second part of the test. Good luck. You'll need it.");
+        } else {
+            cm.sendOk("You have chosen wisely.");
             cm.dispose();
         }
-    } else if (cm.getLevel() >= 30 && cm.getJobId() == 300) {
-        actionx["2ndJob"] = true;
-        if (cm.haveItem(4031012))
-            cm.sendNext("Haha...I knew you'd breeze through that test. I'll admit, you are a great bowman. I'll make you much stronger than you're right now. before that, however... you;ll need to choose one of two paths given to you. It'll be a difficult decision for you to make, but... if there's any question to ask, please do so.");
-        else if (cm.haveItem(4031011)){
-            cm.sendOk("Go and see the #b#p1072002##k.");
-            cm.dispose();
-        } else
-            cm.sendYesNo("Hmmm... you have grown a lot since I last saw you. I don't see the weakling I saw before, and instead, look much more like a bowman now. Well, what do you think? Don't you want to get even more powerful than that? Pass a simple test and I'll do just that for you. Do you want to do it?");
-    } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 3 && !cm.getPlayer().gotPartyQuestItem("JBP"))){
-        actionx["3thJobI"] = true;
-        cm.sendNext("There you are. A few days ago, #b#p2020010##k of Ossyria talked to me about you. I see that you are interested in making the leap to the amazing world of the third job advancement for archers. To achieve that goal, I will have to test your strength in order to see whether you are worthy of the advancement. There is an opening in the middle of a deep forest in Victoria Island, where it'll lead you to a secret passage. Once inside, you'll face a clone of myself. Your task is to defeat her and bring #b#t4031059##k back with you.");
-    } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
-        cm.sendNext("Please, bring me the #b#t4031059##k.");
-        cm.dispose();
-    } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
-        actionx["3thJobC"] = true;
-        cm.sendNext("Nice work. You have defeated my clone and brought #b#t4031059##k back safely. You have now proven yourself worthy of the 3rd job advancement from the physical standpoint. Now you should give this necklace to #b#p2020011##k in Ossyria to take on the second part of the test. Good luck. You'll need it.");
-    } else {
-        cm.sendOk("You have chosen wisely.");
-        cm.dispose();
     }
 }
 
@@ -69,14 +88,37 @@ function action(mode, type, selection) {
     if (status == -1){
         start();
         return;
-    } else if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJobI"] && status == 1)){
-        if (mode == 0 && status == 2 && type == 1)
-            cm.sendOk("You know there is no other choice...");
-        if (!(mode == 0 && type != 1)){
+    } else {
+        if(spawnPnpc) {
+            if(mode > 0) {
+                if(cm.getMeso() < spawnPnpcFee) {
+                    cm.sendOk("Sorry, you don't have enough mesos to purchase your place on the Hall of Fame.");
+                    cm.dispose();
+                    return;
+                }
+                
+                if(Packages.server.life.MaplePlayerNPC.spawnPlayerNPC(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()), cm.getPlayer())) {
+                    cm.sendOk("There you go! Hope you will like it.");
+                    cm.gainMeso(-spawnPnpcFee);
+                } else {
+                    cm.sendOk("Sorry, the Hall of Fame is currently full...");
+                }
+            }
+            
             cm.dispose();
             return;
+        } else {
+            if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJobI"] && status == 1)){
+                if (mode == 0 && status == 2 && type == 1)
+                    cm.sendOk("You know there is no other choice...");
+                if (!(mode == 0 && type != 1)){
+                    cm.dispose();
+                    return;
+                }
+            }
         }
     }
+    
     if (actionx["1stJob"]){
         if (status == 0)
             cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
@@ -161,110 +203,3 @@ function action(mode, type, selection) {
         cm.dispose();
     }
 }
-
-/*
-function start() {
-    if (cm.getJobId() == 0) {
-        actionx["1stJob"] = true;
-        if (cm.getLevel() >= 10)
-            
-        else {
-            
-            cm.dispose();
-        }
-    } else {
-        if (cm.getLevel() >= 30 && cm.getJobId() == 300) {
-            actionx["2ndJob"] = true;
-            if (cm.haveItem(4031012))
-                
-            else if (cm.haveItem(4031010)){
-                cm.sendOk("Go and see the #b#p1072002##k.");
-                cm.dispose();
-            } else
-                
-        } else if (cm.isQuestStarted(100100)) {
-            if (cm.isQuestCompleted(100101))
-                cm.sendOk("Alright, now take this to #bRene#k.");
-            else {
-                
-                cm.startQuest(100101);
-            }
-            cm.dispose();
-        } else {
-            cm.sendOk("You have chosen wisely.");
-            cm.dispose();
-        }
-    }
-}
-
-function action(mode, type, selection) {
-    status++;
-    if (mode == 0 && type != 1)
-        status -= 2;
-    if (status == -1){
-        start();
-        return;
-    } else if (mode != 1 || status == 7 && type != 1 || (cm.haveItem(4031010) && status == 2)){
-        if (mode == 0 && status == 2)
-            cm.sendOk("Make up your mind and visit me again.");
-        if (!(mode == 0 && type != 1)){
-            cm.dispose();
-            return;
-        }
-    }
-    if (actionx["1stJob"]){
-        if (status == 0)
-            
-        else if (status == 1)
-            
-        else if (status == 2) {
-            
-                cm.sendOk("So be it! Now go, and go with pride.");
-            } else {
-                cm.sendNext("Make some room in your inventory and talk to me again.");
-                cm.dispose();
-            }
-        }
-    } else if(actionx["2ndJob"]){
-        if (status == 0){
-            if (cm.haveItem(4031012))
-                cm.sendSimple("Alright, when you have made your decision, click on [I'll choose my occupation] at the bottom.#b\r\n#L0#Please explain to me what being the Hunter is all about.\r\n#L1#Please explain to me what being the Crossbowman is all about.\r\n#L2#I'll choose my occupation!");
-            else {
-                cm.sendNext("Good decision. You look strong, but I need to see if you really are strong enough to pass the test, it's not a difficult test, so you'll do just fine. Here, take my letter first... make sure you don't lose it!");
-		if(!cm.isQuestStarted(100000)) cm.startQuest(100000);
-	    }
-        } else if (status == 1){
-            if (!cm.haveItem(4031012)){
-                if (cm.canHold(4031010)){
-                    if (!cm.haveItem(4031010))
-                        cm.gainItem(4031010, 1);
-                    cm.sendNextPrev("Please get this letter to #b#p1072002##k who's around #b#m106010000##k near Henesys. She is taking care of the job of an instructor in place of me. Give her the letter and she'll test you in place of me. Best of luck to you.");
-                } else {
-                    cm.sendNext("Please, make some space in your inventory.");
-                    cm.dispose();
-                }
-            } else {
-                if (selection < 2){
-                    cm.sendNext("Not done.");
-                    status -= 2;
-                } else
-                    cm.sendSimple("Now... have you made up your mind? Please choose the job you'd like to select for your 2nd job advancement. #b\r\n#L0#Hunter\r\n#L1#Crossbowman");
-            }
-        } else if (status == 2){
-            job += selection * 10;
-            cm.sendYesNo("So you want to make the second job advancement as the " + (job == 310 ? "#bHunter#k" : "#bCrossbowman#k") + "? You know you won't be able to choose a different job for the 2nd job advancement once you make your desicion here, right?");
-        } else if (status == 3){
-            if (cm.haveItem(4031012))
-                cm.gainItem(4031012, -1);
-	    cm.completeQuest(100002);
-            cm.sendNext("Alright, you're the " + (job == 310 ? "#bHunter#k" : "#bCrossbowman#k") + " from here on out. Hunters are the intelligent bunch with incredible vision, able to pierce the arrow through the heart of the monsters with ease... please train yourself each and everyday. I'll help you become even stronger than you already are.");
-            if (cm.getJobId() != job)
-                cm.changeJobById(job);
-        } else if (status == 4)
-            cm.sendNextPrev("I have just given you a book that gives you the list of skills you can acquire as a " + (job == 310 ? "hunter" : "crossbowman") + ". Also your etc inventory has expanded by adding another row to it. Your max HP and MP have increased, too. Go check and see for it yourself.");
-        else if (status == 5)
-            cm.sendNextPrev("I have also given you a little bit of #bSP#k. Open the #bSkill Menu#k located at the bottomleft corner. you'll be able to boost up the newer acquired 2nd level skills. A word of warning, though. You can't boost them up all at once. Some of the skills are only available after you have learned other skills. Make sure yo remember that.");
-        else if (status == 6)
-            cm.sendNextPrev((job == 310 ? "Hunter" : "Crossbowman") + " need to be strong. But remember that you can't abuse that power and use it on a weakling. Please use your enormous power the right way, because... for you to use that the right way, that is much harden than just getting stronger. Please find me after you have advanced much further. I'll be waiting for you.");
-    }
-}*/

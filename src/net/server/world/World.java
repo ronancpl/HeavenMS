@@ -58,6 +58,7 @@ import server.maps.AbstractMapleMapObject;
 import net.server.worker.CharacterAutosaverWorker;
 import net.server.worker.MountTirednessWorker;
 import net.server.worker.PetFullnessWorker;
+import net.server.worker.TimedMapObjectWorker;
 import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -80,6 +81,7 @@ public class World {
     private int id, flag, exprate, droprate, mesorate, questrate;
     private String eventmsg;
     private List<Channel> channels = new ArrayList<>();
+    private Map<Integer, Byte> pnpcStep = new HashMap<>();
     private Map<Integer, MapleMessenger> messengers = new HashMap<>();
     private AtomicInteger runningMessengerId = new AtomicInteger();
     private Map<Integer, MapleFamily> families = new LinkedHashMap<>();
@@ -112,6 +114,10 @@ public class World {
     private Map<Integer, Pair<MapleHiredMerchant, Byte>> activeMerchants = new LinkedHashMap<>();
     private long merchantUpdate;
     
+    private Map<Runnable, Long> registeredTimedMapObjects = new LinkedHashMap<>();
+    private ScheduledFuture<?> timedMapObjectsSchedule;
+    private Lock timedMapObjectLock = new MonitoredReentrantLock(MonitoredLockType.MAP_OBJS, true);
+    
     private ScheduledFuture<?> charactersSchedule;
     
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate) {
@@ -130,6 +136,7 @@ public class World {
         
         petsSchedule = TimerManager.getInstance().register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
         mountsSchedule = TimerManager.getInstance().register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
+        timedMapObjectsSchedule = TimerManager.getInstance().register(new TimedMapObjectWorker(this), 60 * 1000, 60 * 1000);
         charactersSchedule = TimerManager.getInstance().register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
     }
 
@@ -228,7 +235,18 @@ public class World {
     }
 
     public void removePlayer(MapleCharacter chr) {
-        channels.get(chr.getClient().getChannel() - 1).removePlayer(chr);
+        if(!channels.get(chr.getClient().getChannel() - 1).removePlayer(chr)) {
+            if(!chr.getClient().getChannelServer().removePlayer(chr)) {
+                // oy the player is not where it should be, find this mf
+                
+                for(Channel ch : channels) {
+                    if(ch.removePlayer(chr)) {
+                        break;
+                    }
+                }
+            }
+        }
+        
         players.removePlayer(chr.getId());
     }
     
@@ -1035,6 +1053,80 @@ public class World {
         }
     }
     
+    public void registerTimedMapObject(Runnable r, long duration) {
+        timedMapObjectLock.lock();
+        try {
+            long expirationTime = System.currentTimeMillis() + duration;
+            registeredTimedMapObjects.put(r, expirationTime);
+        } finally {
+            timedMapObjectLock.unlock();
+        }
+    }
+    
+    public void runTimedMapObjectSchedule() {
+        List<Runnable> toRemove = new LinkedList<>();
+        
+        timedMapObjectLock.lock();
+        try {
+            long timeNow = System.currentTimeMillis();
+            
+            for(Entry<Runnable, Long> rtmo : registeredTimedMapObjects.entrySet()) {
+                if(rtmo.getValue() <= timeNow) {
+                    toRemove.add(rtmo.getKey());
+                }
+            }
+            
+            for(Runnable r : toRemove) {
+                registeredTimedMapObjects.remove(r);
+            }
+        } finally {
+            timedMapObjectLock.unlock();
+        }
+        
+        for(Runnable r : toRemove) {
+            r.run();
+        }
+    }
+    
+    public void setPlayerNpcMapStep(int mapid, int step) {
+        setPlayerNpcMapStep(mapid, step, false);
+    }
+    
+    public void setPlayerNpcMapStep(int mapid, int step, boolean silent) {
+        if(!silent) {
+            try {
+                Connection con = DatabaseConnection.getConnection();
+
+                PreparedStatement ps;
+                if(pnpcStep.containsKey(mapid)) {
+                    ps = con.prepareStatement("UPDATE playernpcs_field SET step = ? WHERE world = ? AND map = ?");
+                } else {
+                    ps = con.prepareStatement("INSERT INTO playernpcs_field (step, world, map) VALUES (?, ?, ?)");
+                }
+
+                ps.setInt(1, step);
+                ps.setInt(2, id);
+                ps.setInt(3, mapid);
+                ps.executeUpdate();
+
+                ps.close();
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        pnpcStep.put(mapid, (byte) step);
+    }
+    
+    public int getPlayerNpcMapStep(int mapid) {
+        try {
+            return pnpcStep.get(mapid);
+        } catch (NullPointerException npe) {
+            return 0;
+        }
+    }
+    
     public void setServerMessage(String msg) {
         for (Channel ch : channels) {
             ch.setServerMessage(msg);
@@ -1090,6 +1182,11 @@ public class World {
         if(mountsSchedule != null) {
             mountsSchedule.cancel(false);
             mountsSchedule = null;
+        }
+        
+        if(timedMapObjectsSchedule != null) {
+            timedMapObjectsSchedule.cancel(false);
+            timedMapObjectsSchedule = null;
         }
         
         players.disconnectAll();

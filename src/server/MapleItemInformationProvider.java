@@ -118,7 +118,6 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Pair<String, Integer>> statUpgradeMakerCache = new HashMap<>();
     protected Map<Integer, MakerItemFactory.MakerItemCreateEntry> makerItemCache = new HashMap<>();
 
-
     private MapleItemInformationProvider() {
         loadCardIdData();
         itemData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Item.wz"));

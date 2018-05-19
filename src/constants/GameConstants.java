@@ -1,5 +1,7 @@
 package constants;
 
+import java.util.HashMap;
+import java.util.Map;
 import client.MapleJob;
 import constants.skills.Aran;
 import server.maps.MapleMap;
@@ -11,12 +13,25 @@ import server.quest.MapleQuest;
  * @author Ronan
  */
 public class GameConstants {
+    public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
+    
+    final static Map<Integer, String> jobNames = new HashMap<>();
     public static final int[] OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
     
     // Ronan's rates upgrade system
     private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
     private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105};
     private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610};    //fibonacci :3
+    
+    public static boolean availableDeveloperRoom = false;
+    
+    public static void setAvailableDeveloperRoom() {
+        availableDeveloperRoom = true;
+    }
+    
+    public static boolean canEnterDeveloperRoom() {
+        return availableDeveloperRoom;
+    }
     
     public static int getPlayerBonusDropRate(int slot) {
         return(DROP_RATE_GAIN[slot]);
@@ -62,6 +77,130 @@ public class GameConstants {
         185000, 190000, 195000, 200000, 205000, 210000, 215000, 220000, 225000, 230000, 235000, 240000, 250000, 260000, 270000, 280000, 290000, 300000, 310000, 320000,
         330000, 340000, 350000, 360000, 370000, 380000, 390000, 400000, 410000, 420000, 430000, 440000, 450000, 460000, 470000, 480000, 490000, 500000, 510000, 520000,
         530000, 550000, 570000, 590000, 610000, 630000, 650000, 670000, 690000, 710000, 730000, 750000, 770000, 790000, 810000, 830000, 850000, 870000, 890000, 910000};
+    
+    public static String getJobName(int jobid) {
+        String name = jobNames.get(jobid);
+        
+        if(name == null) {
+            MapleJob job = MapleJob.getById(jobid);
+            
+            if(job != null) {
+                name = job.name().toLowerCase();
+                name = name.replaceAll("[*0-9]", "");
+                name = name.substring(0, 1).toUpperCase() + name.substring(1);
+            } else {
+                name = "";
+            }
+        
+            jobNames.put(jobid, name);
+        }
+        
+        return name;
+    }
+    
+    public static boolean isHallOfFameMap(int mapid) {
+        switch(mapid) {
+            case 102000004:     // warrior
+            case 101000004:     // magician
+            case 100000204:     // bowman
+            case 103000008:     // thief
+            case 120000105:     // pirate
+            case 130000100:     // cygnus
+            case 130000101:     // other cygnus
+            case 130000110:     // cygnus 2nd floor
+            case 130000120:     // cygnus 3rd floor (beginners)
+            case 140010110:     // aran
+                return true;
+                
+            default:
+                return false;
+        }
+    }
+    
+    public static byte getHallOfFameBranch(MapleJob job, int mapid) {
+        if(!isHallOfFameMap(mapid)) {
+            return (byte) (26 + 4 * (mapid / 100000000));   // custom, 400 pnpcs available per continent
+        }
+        
+        if(job.isA(MapleJob.WARRIOR)) {
+            return 10;
+        } else if(job.isA(MapleJob.MAGICIAN)) {
+            return 11;
+        } else if(job.isA(MapleJob.BOWMAN)) {
+            return 12;
+        } else if(job.isA(MapleJob.THIEF)) {
+            return 13;
+        } else if(job.isA(MapleJob.PIRATE)) {
+            return 14;
+        } else if(job.isA(MapleJob.DAWNWARRIOR1)) {
+            return 15;
+        } else if(job.isA(MapleJob.BLAZEWIZARD1)) {
+            return 16;
+        } else if(job.isA(MapleJob.WINDARCHER1)) {
+            return 17;
+        } else if(job.isA(MapleJob.NIGHTWALKER1)) {
+            return 18;
+        } else if(job.isA(MapleJob.THUNDERBREAKER1)) {
+            return 19;
+        } else if(job.isA(MapleJob.ARAN1)) {
+            return 20;
+        } else if(job.isA(MapleJob.EVAN1)) {
+            return 21;
+        } else if(job.isA(MapleJob.BEGINNER)) {
+            return 22;
+        } else if(job.isA(MapleJob.NOBLESSE)) {
+            return 23;
+        } else if(job.isA(MapleJob.LEGEND)) {
+            return 24;
+        } else {
+            return 25;
+        }
+    }
+    
+    public static int getOverallJobRankByScriptId(int scriptId) {
+        int branch = (scriptId / 100) % 100;
+        
+        if(branch < 26) {
+            return (scriptId % 100) + 1;
+        } else {
+            return ((scriptId - 2600) % 400) + 1;
+        }
+    }
+    
+    public static boolean canPnpcBranchUseScriptId(byte branch, int scriptId) {
+        scriptId /= 100;
+        scriptId %= 100;
+        
+        if(branch < 26) {
+            return branch == scriptId;
+        } else {
+            return scriptId >= branch && scriptId < branch + 4;
+        }
+    }
+    
+    public static int getHallOfFameMapid(MapleJob job) {
+        int jobid = job.getId();
+        
+        if(isCygnus(jobid)) {
+            return 130000100;
+        } else if(isAran(jobid)) {
+            return 140010110;
+        } else {
+            if(job.isA(MapleJob.WARRIOR)) {
+                return 102000004;
+            } else if(job.isA(MapleJob.MAGICIAN)) {
+                return 101000004;
+            } else if(job.isA(MapleJob.BOWMAN)) {
+                return 100000204;
+            } else if(job.isA(MapleJob.THIEF)) {
+                return 103000008;
+            } else if(job.isA(MapleJob.PIRATE)) {
+                return 120000105;
+            } else {
+                return 130000110;   // beginner explorers are allotted with the Cygnus, available map lul
+            }
+        }
+    }
     
     public static int getJobBranch(MapleJob job) {
         int jobid = job.getId();
@@ -123,6 +262,10 @@ public class GameConstants {
     
     public static boolean isHiddenSkills(final int skill) {
     	return Aran.HIDDEN_FULL_DOUBLE == skill || Aran.HIDDEN_FULL_TRIPLE == skill || Aran.HIDDEN_OVER_DOUBLE == skill || Aran.HIDDEN_OVER_TRIPLE == skill;
+    }
+    
+    public static boolean isCygnus(final int job) {
+        return job / 1000 == 1;
     }
     
     public static boolean isAran(final int job) {

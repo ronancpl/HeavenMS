@@ -1,15 +1,16 @@
 importPackage(Packages.tools);
 
-//Time Setting is in millisecond
-var closeTime = 24 * 1000; //The time to close the gate
-var beginTime = 30 * 1000; //The time to begin the ride
-var rideTime = 15 * 1000; //The time that require move to destination
 var KC_bfd;
 var Plane_to_CBD;
 var CBD_docked;
 var CBD_bfd;
 var Plane_to_KC;
 var KC_docked;
+
+//Time Setting is in millisecond
+var closeTime = 4 * 60 * 1000; //The time to close the gate
+var beginTime = 5 * 60 * 1000; //The time to begin the ride
+var  rideTime = 1 * 60 * 1000; //The time that require move to destination
 
 function init() {
     KC_bfd = em.getChannelServer().getMapFactory().getMap(540010100);

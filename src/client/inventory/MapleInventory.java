@@ -550,4 +550,12 @@ public class MapleInventory implements Iterable<Item> {
             lock.unlock();
         }
     }
+    
+    public void lockInventory() {
+        lock.lock();
+    }
+    
+    public void unlockInventory() {
+        lock.unlock();
+    }
 }

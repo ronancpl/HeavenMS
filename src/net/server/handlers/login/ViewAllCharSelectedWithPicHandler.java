@@ -9,6 +9,7 @@ import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
+import java.net.InetSocketAddress;
 
 public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandler {
 
@@ -17,22 +18,36 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
 
         String pic = slea.readMapleAsciiString();
         int charId = slea.readInt();
-        int world = slea.readInt();//world
-        c.setWorld(world);
-        int channel = Randomizer.rand(0, Server.getInstance().getWorld(world).getChannels().size());
+        slea.readInt(); // please don't let the client choose which world they should login
+        
+        Server server = Server.getInstance();
+        if(!server.haveCharacterid(c.getAccID(), charId)) {
+            c.getSession().close(true);
+            return;
+        }
+        
+        c.setWorld(server.getCharacterWorld(charId));
+        int channel = Randomizer.rand(0, c.getWorldServer().getChannels().size());
         c.setChannel(channel);
+        
         String macs = slea.readMapleAsciiString();
         c.updateMacs(macs);
-
         if (c.hasBannedMac()) {
             c.getSession().close(true);
             return;
         }
+        
         if (c.checkPic(pic)) {
-            Server.getInstance().unregisterLoginState(c);
+            if(c.getWorldServer().isWorldCapacityFull()) {
+                c.announce(MaplePacketCreator.getAfterLoginError(10));
+                return;
+            }
+            
+            server.unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+            server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
 
-            String[] socket = Server.getInstance().getIP(c.getWorld(), c.getChannel()).split(":");
+            String[] socket = server.getIP(c.getWorld(), c.getChannel()).split(":");
             try {
                 c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
             } catch (UnknownHostException e) {

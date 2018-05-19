@@ -27,11 +27,13 @@ import net.server.worker.RankingWorker;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.security.Security;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.HashMap;
@@ -43,7 +45,6 @@ import java.util.Properties;
 import java.util.Set;
 import tools.locks.MonitoredReentrantLock;
 import java.util.concurrent.locks.Lock;
-
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
@@ -60,23 +61,23 @@ import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import server.CashShop.CashItemFactory;
-import server.TimerManager;
-import tools.DatabaseConnection;
-import tools.FilePrinter;
-import tools.Pair;
 import client.MapleClient;
 import client.MapleCharacter;
 import client.SkillFactory;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
+import constants.GameConstants;
 import constants.ServerConstants;
-import java.security.Security;
-import java.util.Calendar;
 import net.server.audit.ThreadTracker;
+import server.CashShop.CashItemFactory;
+import server.TimerManager;
+import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
-import tools.locks.MonitoredLockType;
 import tools.AutoJCE;
+import tools.DatabaseConnection;
+import tools.FilePrinter;
+import tools.Pair;
+import tools.locks.MonitoredLockType;
 
 public class Server {
     private static final Set<Integer> activeFly = new HashSet<>();
@@ -89,6 +90,7 @@ public class Server {
     private final Properties subnetInfo = new Properties();
     private static Server instance = null;
     private final Map<Integer, Set<Integer>> accountChars = new HashMap<>();
+    private final Map<Integer, Integer> worldChars = new HashMap<>();
     private final Map<String, Integer> transitioningChars = new HashMap<>();
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
     private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
@@ -132,6 +134,25 @@ public class Server {
         return newyears.remove(cardid);
     }
 
+    private void loadPlayerNpcMapStepFromDb() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs_field");
+                        
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int world = rs.getInt("world"), map = rs.getInt("map"), step = rs.getInt("step");
+                worlds.get(world).setPlayerNpcMapStep(map, step, true);
+            }
+            
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
     /*
     public void removeChannel(int worldid, int channel) {   //lol don't!
         channels.remove(channel);
@@ -365,7 +386,7 @@ public class Server {
         if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
         
         try {
-            Integer worldCount = Math.min(ServerConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
+            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
             
             for (int i = 0; i < worldCount; i++) {
                 System.out.println("Starting world " + i);
@@ -389,6 +410,9 @@ public class Server {
                 world.setServerMessage(p.getProperty("servermessage" + i));
                 System.out.println("Finished loading world " + i + "\r\n");
             }
+            
+            MaplePlayerNPCFactory.loadFactoryMetadata();
+            loadPlayerNpcMapStepFromDb();
         } catch (Exception e) {
             e.printStackTrace();//For those who get errors
             System.out.println("Error in moople.ini, start CreateINI.bat to re-make the file.");
@@ -579,7 +603,7 @@ public class Server {
             
             if(mc != null) {
                 mc.setMGC(g.getMGC(mc.getId()));
-                if(g.getMGC(mc.getId()) == null) System.out.println("null for " + mc.getName() + " when loading " + id);
+                if(g.getMGC(mc.getId()) == null) System.out.println("null for " + mc.getName() + " when loading guild " + id);
                 g.getMGC(mc.getId()).setCharacter(mc);
                 g.setOnline(mc.getId(), true, mc.getClient().getChannel());
             }
@@ -824,7 +848,7 @@ public class Server {
         }
     }
     
-    public void createCharacterid(Integer accountid, Integer chrid) {
+    public void createCharacterid(Integer accountid, Integer chrid, Integer world) {
         lgnLock.lock();
         try {
             Set<Integer> accChars = accountChars.get(accountid);
@@ -834,6 +858,7 @@ public class Server {
             }
 
             accChars.add(chrid);
+            worldChars.put(chrid, world);
         } finally {
             lgnLock.unlock();
         }
@@ -846,6 +871,48 @@ public class Server {
             if(accChars != null) {
                 accChars.remove(chrid);
             }
+            
+            worldChars.remove(chrid);
+        } finally {
+            lgnLock.unlock();
+        }
+    }
+    
+    private static int getCharacterWorldFromDB(int chrid) {
+        int world = -1;
+        
+        try {
+            Connection con = DatabaseConnection.getConnection();
+
+            try (PreparedStatement ps = con.prepareStatement("SELECT world FROM characters WHERE id = ?")) {
+                ps.setInt(1, chrid);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if(rs.next()) {
+                        world = rs.getInt("world");
+                    }
+                }
+            }
+
+            con.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return world;
+    }
+    
+    public int getCharacterWorld(Integer chrid) {
+        lgnLock.lock();
+        try {
+            Integer worldid = worldChars.get(chrid);
+            
+            if(worldid == null) {
+                worldid = getCharacterWorldFromDB(chrid);
+                worldChars.put(chrid, worldid);
+            }
+            
+            return worldid;
         } finally {
             lgnLock.unlock();
         }

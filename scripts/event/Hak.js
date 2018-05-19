@@ -7,8 +7,10 @@ var myRide;
 var returnMap;
 var exitMap;
 var map;
-var timeOnRide = 60; //Seconds
 var onRide;
+
+//Time Setting is in millisecond
+var rideTime = 60 * 1000;
 
 function init() {}
 
@@ -29,8 +31,9 @@ function playerEntry(eim, player) {
         returnMap = eim.getMapFactory().getMap(returnTo[myRide]);
         onRide = eim.getMapFactory().getMap(birdRide[myRide]);
         player.changeMap(onRide, onRide.getPortal(0));
-        player.getClient().getSession().write(MaplePacketCreator.getClock(timeOnRide));
-        eim.schedule("timeOut", timeOnRide * 1000);
+        
+        player.getClient().getSession().write(MaplePacketCreator.getClock(rideTime / 1000));
+        eim.schedule("timeOut", rideTime);
 }
 
 function timeOut(eim) {

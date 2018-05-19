@@ -30,36 +30,55 @@ status = -1;
 actionx = {"1stJob" : false, "2ndjob" : false, "3thJobI" : false, "3thJobC" : false};
 job = 110;
 
+spawnPnpc = false;
+spawnPnpcFee = 7000000;
+jobType = 1;
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function start() {
-    if (cm.getJobId() == 0) {
-        actionx["1stJob"] = true;
-        if (cm.getLevel() >= 10)
-            cm.sendNext("Do you want to become a Warrior? You need to meet some criteria in order to do so.#b You should be at least in level 10, with at least 35 in STR#k. Let's see...");
-        else {
-            cm.sendOk("Train a bit more and I can show you the way of the #rWarrior#k.");
+    if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()))) {
+        spawnPnpc = true;
+        
+        var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, didn't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
+        if(spawnPnpcFee > 0) {
+            sendStr += " I can do it for you, for the fee of #b " + numberWithCommas(spawnPnpcFee) + " mesos.#k";
+        }
+        
+        cm.sendYesNo(sendStr);
+    } else {
+        if (cm.getJobId() == 0) {
+            actionx["1stJob"] = true;
+            if (cm.getLevel() >= 10)
+                cm.sendNext("Do you want to become a Warrior? You need to meet some criteria in order to do so.#b You should be at least in level 10, with at least 35 in STR#k. Let's see...");
+            else {
+                cm.sendOk("Train a bit more and I can show you the way of the #rWarrior#k.");
+                cm.dispose();
+            }
+        } else if (cm.getLevel() >= 30 && cm.getJobId() == 100) {
+            actionx["2ndJob"] = true;
+            if (cm.haveItem(4031012))
+                cm.sendNext("Oh... you came back safe! I knew you'd breeze through. I'll admit, you are a strong, formidable Warrior! Alright, I'll make you an even stronger Warrior than you already are. But before that, you need to choose one of the three paths that you'll be given. It isn't going to be easy, so if you have and questions, feel free to ask.");
+            else if (cm.haveItem(4031008)){
+                cm.sendOk("Go and see the #b#p1072000##k.");
+                cm.dispose();
+            } else
+                cm.sendNext("The progress you have made is astonishing.");
+        } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && (cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 1 && !cm.getPlayer().gotPartyQuestItem("JBP")))) {
+            actionx["3thJobI"] = true;
+            cm.sendNext("I was waiting for you. Few days ago, I heard about you from #b#p2020008##k in Ossyria. Well... I'd like to test your strength. There is a secret passage near the ant tunnel. Nobody but you can go into that passage. If you go into the passage, you will meat my the other self. Beat him and bring #b#t4031059##k to me.");
+        } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
+            cm.sendNext("Please, bring me the #b#t4031059##k.");
+            cm.dispose();
+        } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
+            actionx["3thJobC"] = true;
+            cm.sendNext("Wow... You beat my the other self and brought #b#t4031059##k to me. Good! this surely proves your strength. In terms of strength, you are ready to advance to 3th job. As I promised, I will give #b#t4031057##k to you. Give this necklace to #b#p2020008##k in Ossyria and you will be able to take second test of 3rd job advancement. Good Luck~");
+        } else {
+            cm.sendOk("You have chosen wisely.");
             cm.dispose();
         }
-    } else if (cm.getLevel() >= 30 && cm.getJobId() == 100) {
-        actionx["2ndJob"] = true;
-        if (cm.haveItem(4031012))
-            cm.sendNext("Oh... you came back safe! I knew you'd breeze through. I'll admit, you are a strong, formidable Warrior! Alright, I'll make you an even stronger Warrior than you already are. But before that, you need to choose one of the three paths that you'll be given. It isn't going to be easy, so if you have and questions, feel free to ask.");
-        else if (cm.haveItem(4031008)){
-            cm.sendOk("Go and see the #b#p1072000##k.");
-            cm.dispose();
-        } else
-            cm.sendNext("The progress you have made is astonishing.");
-    } else if (actionx["3thJobI"] || (cm.getPlayer().gotPartyQuestItem("JB3") && cm.getLevel() >= 70 && (cm.getJobId() % 10 == 0 && parseInt(cm.getJobId() / 100) == 1 && !cm.getPlayer().gotPartyQuestItem("JBP")))) {
-        actionx["3thJobI"] = true;
-        cm.sendNext("I was waiting for you. Few days ago, I heard about you from #b#p2020008##k in Ossyria. Well... I'd like to test your strength. There is a secret passage near the ant tunnel. Nobody but you can go into that passage. If you go into the passage, you will meat my the other self. Beat him and bring #b#t4031059##k to me.");
-    } else if (cm.getPlayer().gotPartyQuestItem("JBP") && !cm.haveItem(4031059)){
-        cm.sendNext("Please, bring me the #b#t4031059##k.");
-        cm.dispose();
-    } else if (cm.haveItem(4031059) && cm.getPlayer().gotPartyQuestItem("JBP")){
-        actionx["3thJobC"] = true;
-        cm.sendNext("Wow... You beat my the other self and brought #b#t4031059##k to me. Good! this surely proves your strength. In terms of strength, you are ready to advance to 3th job. As I promised, I will give #b#t4031057##k to you. Give this necklace to #b#p2020008##k in Ossyria and you will be able to take second test of 3rd job advancement. Good Luck~");
-    } else {
-        cm.sendOk("You have chosen wisely.");
-        cm.dispose();
     }
 }
 
@@ -70,14 +89,37 @@ function action(mode, type, selection) {
     if (status == -1){
         start();
         return;
-    } else if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJob"] && status == 1)){
-        if (mode == 0 && status == 2 && type == 1)
-            cm.sendOk("Make up your mind and visit me again.");
-        if (!(mode == 0 && type != 1)){
+    } else {
+        if(spawnPnpc) {
+            if(mode > 0) {
+                if(cm.getMeso() < spawnPnpcFee) {
+                    cm.sendOk("Sorry, you don't have enough mesos to purchase your place on the Hall of Fame.");
+                    cm.dispose();
+                    return;
+                }
+                
+                if(Packages.server.life.MaplePlayerNPC.spawnPlayerNPC(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()), cm.getPlayer())) {
+                    cm.sendOk("There you go! Hope you will like it.");
+                    cm.gainMeso(-spawnPnpcFee);
+                } else {
+                    cm.sendOk("Sorry, the Hall of Fame is currently full...");
+                }
+            }
+            
             cm.dispose();
             return;
+        } else {
+            if (mode != 1 || status == 7 && type != 1 || (actionx["1stJob"] && status == 4) || (cm.haveItem(4031008) && status == 2) || (actionx["3thJob"] && status == 1)){
+                if (mode == 0 && status == 2 && type == 1)
+                    cm.sendOk("Make up your mind and visit me again.");
+                if (!(mode == 0 && type != 1)){
+                    cm.dispose();
+                    return;
+                }
+            }
         }
     }
+    
     if (actionx["1stJob"]){
         if (status == 0)
             cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");

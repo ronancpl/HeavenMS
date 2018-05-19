@@ -30,6 +30,7 @@ import java.util.Map;
 import client.MapleCharacter;
 import client.MapleQuestStatus;
 import client.MapleQuestStatus.Status;
+import constants.ServerConstants;
 import java.util.EnumMap;
 import java.util.Set;
 import provider.MapleData;
@@ -39,6 +40,7 @@ import provider.MapleDataTool;
 import server.quest.actions.*;
 import server.quest.requirements.*;
 import tools.MaplePacketCreator;
+import tools.StringUtil;
 
 /**
  *
@@ -323,6 +325,19 @@ public class MapleQuest {
         }
         
         c.updateQuest(newStatus);
+        
+        if(id / 100 == 35 && ServerConstants.TOT_MOB_QUEST_REQUIREMENT > 0) {
+            int setProg = 999 - Math.min(999, ServerConstants.TOT_MOB_QUEST_REQUIREMENT);
+            
+            for(Integer pid : newStatus.getProgress().keySet()) {
+                if(pid >= 8200000 && pid <= 8200012) {
+                    String pr = StringUtil.getLeftPaddedStr(Integer.toString(setProg), '0', 3);
+                    newStatus.setProgress(pid, pr);
+                    c.announce(MaplePacketCreator.updateQuest(newStatus, false));
+                }
+            }
+        }
+        
         return true;
     }
 

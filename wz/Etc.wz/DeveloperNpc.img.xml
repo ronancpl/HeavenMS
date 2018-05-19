@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="DeveloperNpc.img">
+  <imgdir name="9977777">
+    <string name="name" value="Ronan"/>
+    <int name="face" value="20104"/>
+    <int name="hair" value="30215"/>
+    <int name="skin" value="0"/>
+    <int name="gender" value="0"/>
+    <int name="dir" value="0"/>
+    <int name="map" value="777777777"/>
+    <int name="fh" value="4"/>
+    <int name="rx0" value="-143"/>
+    <int name="rx1" value="-243"/>
+    <int name="cy" value="117"/>
+    <int name="cx" value="-193"/>
+    <imgdir name="equips">
+      <imgdir name="1">
+        <int name="itemid" value="1402046"/>
+        <int name="pos" value="-11"/>
+      </imgdir>
+      <imgdir name="2">
+        <int name="itemid" value="1082140"/>
+        <int name="pos" value="-8"/>
+      </imgdir>
+      <imgdir name="4">
+        <int name="itemid" value="1072154"/>
+        <int name="pos" value="-7"/>
+      </imgdir>
+      <imgdir name="3">
+        <int name="itemid" value="1060091"/>
+        <int name="pos" value="-6"/>
+      </imgdir>
+      <imgdir name="5">
+        <int name="itemid" value="1040103"/>
+        <int name="pos" value="-5"/>
+      </imgdir>
+      <imgdir name="0">
+        <int name="itemid" value="1002067"/>
+        <int name="pos" value="-1"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

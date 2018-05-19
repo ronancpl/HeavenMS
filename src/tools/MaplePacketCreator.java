@@ -72,7 +72,7 @@ import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleReactor;
 import server.maps.MapleSummon;
-import server.maps.PlayerNPCs;
+import server.life.MaplePlayerNPC;
 import server.movement.LifeMovementFragment;
 import server.partyquest.MonsterCarnivalParty;
 import tools.data.output.LittleEndianWriter;
@@ -1074,7 +1074,7 @@ public class MaplePacketCreator {
                 mplew.writePos(pos);
                 return mplew.getPacket();
         }
-
+        
         /**
          * Gets a packet to remove a door.
          *
@@ -1133,6 +1133,32 @@ public class MaplePacketCreator {
                 mplew.writeInt(summon.getOwner().getId());
                 mplew.writeInt(summon.getObjectId());
                 mplew.write(animated ? 4 : 1); // ?
+                return mplew.getPacket();
+        }
+        
+        public static byte[] spawnKite(int oid, int itemid, String name, String msg, Point pos, int ft) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SPAWN_KITE.getValue());
+                mplew.writeInt(oid);
+                mplew.writeInt(itemid);
+                mplew.writeMapleAsciiString(msg);
+                mplew.writeMapleAsciiString(name);
+                mplew.writeShort(pos.x);
+                mplew.writeShort(ft);
+                return mplew.getPacket();
+        }
+
+	public static byte[] removeKite(int objectid, int animationType) {    // thanks to Arnah
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		mplew.writeShort(SendOpcode.REMOVE_KITE.getValue());
+		mplew.write(animationType); // 0 is 10/10, 1 just vanishes
+		mplew.writeInt(objectid);
+		return mplew.getPacket();
+	}
+        
+        public static byte[] sendCannotSpawnKite() {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CANNOT_SPAWN_KITE.getValue());
                 return mplew.getPacket();
         }
 
@@ -4754,47 +4780,6 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] getPlayerNPC(PlayerNPCs npc) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.IMITATED_NPC_DATA.getValue());
-                mplew.write(0x01);
-                mplew.writeInt(npc.getId());
-                mplew.writeMapleAsciiString(npc.getName());
-                mplew.write(0); // direction
-                mplew.write(npc.getSkin());
-                mplew.writeInt(npc.getFace());
-                mplew.write(0);
-                mplew.writeInt(npc.getHair());
-                Map<Short, Integer> equip = npc.getEquips();
-                Map<Short, Integer> myEquip = new LinkedHashMap<>();
-                for (short position : equip.keySet()) {
-                        short pos = (short) (position * -1);
-                        if (pos > 100) {
-                                pos -= 100;
-                                myEquip.put(pos, equip.get(position));
-                        } else {
-                                if (myEquip.get(pos) == null) {
-                                        myEquip.put(pos, equip.get(position));
-                                }
-                        }
-                }
-                for (Entry<Short, Integer> entry : myEquip.entrySet()) {
-                        mplew.write(entry.getKey());
-                        mplew.writeInt(entry.getValue());
-                }
-                mplew.writeShort(-1);
-                Integer cWeapon = equip.get((byte) -111);
-                if (cWeapon != null) {
-                        mplew.writeInt(cWeapon);
-                } else {
-                        mplew.writeInt(0);
-                }
-                for (int i = 0; i < 12; i++) {
-                        mplew.write(0);
-                }
-                return mplew.getPacket();
-        }
-
         public static byte[] updateAriantPQRanking(String name, int score, boolean empty) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.ARIANT_SCORE.getValue());
@@ -4871,7 +4856,7 @@ public class MaplePacketCreator {
                 mplew.write(0);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] getMiniGame(MapleClient c, MapleMiniGame minigame, boolean owner, int piece) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
@@ -5533,22 +5518,82 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] spawnPlayerNPC(PlayerNPCs npc) {
+        public static byte[] spawnPlayerNPC(MaplePlayerNPC npc) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_NPC_REQUEST_CONTROLLER.getValue());
                 mplew.write(1);
                 mplew.writeInt(npc.getObjectId());
-                mplew.writeInt(npc.getId());
+                mplew.writeInt(npc.getScriptId());
                 mplew.writeShort(npc.getPosition().x);
                 mplew.writeShort(npc.getCY());
-                mplew.write(1);
+                mplew.write(npc.getDirection());
                 mplew.writeShort(npc.getFH());
                 mplew.writeShort(npc.getRX0());
                 mplew.writeShort(npc.getRX1());
                 mplew.write(1);
                 return mplew.getPacket();
         }
+        
+        public static byte[] getPlayerNPC(MaplePlayerNPC npc) {     // thanks to Arnah
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.IMITATED_NPC_DATA.getValue());
+                mplew.write(0x01);
+                mplew.writeInt(npc.getScriptId());
+                mplew.writeMapleAsciiString(npc.getName());
+                mplew.write(npc.getGender());
+                mplew.write(npc.getSkin());
+                mplew.writeInt(npc.getFace());
+                mplew.write(0);
+                mplew.writeInt(npc.getHair());
+                Map<Short, Integer> equip = npc.getEquips();
+		Map<Short, Integer> myEquip = new LinkedHashMap<>();
+		Map<Short, Integer> maskedEquip = new LinkedHashMap<>();
+		for(short position : equip.keySet()){
+			short pos = (byte) (position * -1);
+			if(pos < 100 && myEquip.get(pos) == null){
+				myEquip.put(pos, equip.get(position));
+			}else if((pos > 100 || pos == -128) && pos != 111){ // don't ask. o.o
+				pos -= 100;
+				if(myEquip.get(pos) != null){
+					maskedEquip.put(pos, myEquip.get(pos));
+				}
+				myEquip.put(pos, equip.get(position));
+			}else if(myEquip.get(pos) != null){
+				maskedEquip.put(pos, equip.get(position));
+			}
+		}
+		for(Entry<Short, Integer> entry : myEquip.entrySet()){
+			mplew.write(entry.getKey());
+			mplew.writeInt(entry.getValue());
+		}
+		mplew.write(0xFF);
+		for(Entry<Short, Integer> entry : maskedEquip.entrySet()){
+			mplew.write(entry.getKey());
+			mplew.writeInt(entry.getValue());
+		}
+		mplew.write(0xFF);
+		Integer cWeapon = equip.get((byte) -111);
+		if(cWeapon != null){
+			mplew.writeInt(cWeapon);
+		}else{
+			mplew.writeInt(0);
+		}
+		for(int i = 0; i < 3; i++){
+			mplew.writeInt(0);
+		}
+                return mplew.getPacket();
+        }
 
+        public static byte[] removePlayerNPC(int oid) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.IMITATED_NPC_DATA.getValue());
+                mplew.write(0x00);
+                mplew.writeInt(oid);
+                for(int i = 0; i < ServerConstants.DEBUG_VALUES[0]; i++) mplew.writeInt(0);
+                
+                return mplew.getPacket();
+        }
+        
         public static byte[] sendYellowTip(String tip) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SET_WEEK_EVENT_MESSAGE.getValue());
@@ -7164,15 +7209,44 @@ public class MaplePacketCreator {
          * A8 = You cannot send a gift to your own account. Log in on the char and purchase
          * A9 = Please confirm whether the character's name is correct.
          * AA = Gender restriction!
+         * AB = gift cannot be sent because recipient inv is full
+         * AC = exceeded the number of cash items you can have
+         * AD = check and see if the character name is wrong or there is gender restrictions
          * //Skipped a few
          * B0 = Wrong Coupon Code
          * B1 = Disconnect from CS because of 3 wrong coupon codes < lol
          * B2 = Expired Coupon
          * B3 = Coupon has been used already
          * B4 = Nexon internet cafes? lolfk
-         *
          * BB = inv full
+         * BC = long as shet "(not?) available to purchase by a use at the premium" msg
+         * BD = invalid gift recipient
+         * BE = invalid receiver name
+         * BF = item unavailable to purchase at this hour
+         * C0 = not enough items in stock, therefore not available
+         * C1 = you have exceeded spending limit of NX
          * C2 = not enough mesos? Lol not even 1 mesos xD
+         * C3 = cash shop unavailable during beta phase
+         * C4 = check birthday code
+         * C7 = only available to users buying cash item, whatever msg too long
+         * C8 = already applied for this
+         * D2 = coupon system currently unavailable
+         * D3 = item can only be used 15 days after registration
+         * D4 = not enough gift tokens
+         * D6 = fresh people cannot gift items lul
+         * D7 = bad people cannot gift items >:(
+         * D8 = cannot gift due to limitations
+         * D9 = cannot gift due to amount of gifted times
+         * DA = cannot be gifted due to technical difficulties
+         * DB = cannot transfer to char below level 20
+         * DC = cannot transfer char to same world
+         * DD = cannot transfer char to new server world
+         * DE = cannot transfer char out of this world
+         * DF = cannot transfer char due to no empty char slots
+         * E0 = event or free test time ended
+         * E6 = item cannot be purchased with MaplePoints
+         * E7 = lol sorry for the inconvenience, eh?
+         * E8 = cannot be purchased by anyone under 7
          */
         public static byte[] showCashShopMessage(byte message) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(4);
@@ -7180,6 +7254,23 @@ public class MaplePacketCreator {
 
                 mplew.write(0x5C);
                 mplew.write(message);
+
+                return mplew.getPacket();
+        }
+        
+        public static byte[] showCashShopSurprise(int itemid) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(ServerConstants.DEBUG_VALUES[0]);
+
+                for(int i = 0; i < ServerConstants.DEBUG_VALUES[1]; i++) {
+                    mplew.write(0);
+                }
+                
+                mplew.writeInt(itemid);
+                
+                for(int i = 0; i < ServerConstants.DEBUG_VALUES[2]; i++) {
+                    mplew.write(0);
+                }
 
                 return mplew.getPacket();
         }

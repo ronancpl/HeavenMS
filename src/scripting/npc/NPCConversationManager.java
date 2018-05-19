@@ -24,6 +24,7 @@ package scripting.npc;
 import java.io.File;
 import java.sql.SQLException;
 
+import constants.ServerConstants;
 import net.server.Server;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
@@ -38,6 +39,7 @@ import server.MapleShopFactory;
 import server.events.gm.MapleEvent;
 import server.gachapon.MapleGachapon;
 import server.gachapon.MapleGachapon.MapleGachaponItem;
+import server.life.MaplePlayerNPC;
 import server.maps.MapleMap;
 import server.maps.MapleMapFactory;
 import server.partyquest.Pyramid;
@@ -56,6 +58,10 @@ import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MaplePet;
 import constants.ItemConstants;
+import java.awt.Point;
+import java.util.Arrays;
+import server.maps.MapleMapObject;
+import server.maps.MapleMapObjectType;
 
 /**
  *
@@ -308,6 +314,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public void displayGuildRanks() {
 		MapleGuild.displayGuildRanks(getClient(), npc);
 	}
+        
+        public boolean canSpawnPlayerNpc(int mapid) {
+                MapleCharacter chr = getPlayer();
+                return !ServerConstants.PLAYERNPC_AUTODEPLOY && chr.getLevel() >= chr.getMaxClassLevel() && MaplePlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
+        }
+        
+        public MaplePlayerNPC getPlayerNPCByScriptid(int scriptId) {
+                for(MapleMapObject pnpcObj : getPlayer().getMap().getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER_NPC))) {
+                        MaplePlayerNPC pn = (MaplePlayerNPC) pnpcObj;
+
+                        if(pn.getScriptId() == scriptId) {
+                                return pn;
+                        }
+                }
+                
+                return null;
+        }
 
 	@Override
 	public MapleParty getParty() {
