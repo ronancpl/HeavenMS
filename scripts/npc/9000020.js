@@ -37,7 +37,7 @@ function action(mode, type, selection) {
     }
     if (cm.getPlayer().getMapId() == 800000000) {
         if (status == 0) 
-            cm.sendSimple("How's the traveling? Are you enjoying it?#b\r\n#L0#Yes, I'm done with traveling. Can I go back to #m" + cm.getPlayer().getSavedLocation("WORLDTOUR") + "#?\r\n#L1#No, I'd like to continue exploring this place.");
+            cm.sendSimple("How's the traveling? Are you enjoying it?#b\r\n#L0#Yes, I'm done with traveling. Can I go back to #m" + cm.getPlayer().peekSavedLocation("WORLDTOUR") + "#?\r\n#L1#No, I'd like to continue exploring this place.");
         else if (status == 1) {
             if (selection == 0) {
                 cm.sendNext("Alright. I'll take you back to where you were before the visit to Japan. If you ever feel like traveling again down the road, please let me know!");
@@ -47,7 +47,7 @@ function action(mode, type, selection) {
             }
         } else if (status == 2) {
             var map = cm.getPlayer().getSavedLocation("WORLDTOUR");
-            if (map == undefined) map = 104000000;
+            if (map == -1) map = 104000000;
             
             cm.warp(map);
             cm.dispose();

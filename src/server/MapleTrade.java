@@ -32,7 +32,9 @@ import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
+import constants.GameConstants;
 import constants.ServerConstants;
 import tools.Pair;
 
@@ -57,22 +59,22 @@ public class MapleTrade {
         this.number = number;
     }
 
-    private static int getFee(int meso) {
-        int fee = 0;
+    private static int getFee(long meso) {
+        long fee = 0;
         if (meso >= 100000000) {
-            fee = (int) Math.round(0.06 * meso);
+            fee = (meso * 6) / 100;
         } else if (meso >= 25000000) {
-            fee = meso / 20;
+            fee = (meso * 5) / 100;
         } else if (meso >= 10000000) {
-            fee = meso / 25;
+            fee = (meso * 4) / 100;
         } else if (meso >= 5000000) {
-            fee = (int) Math.round(.03 * meso);
+            fee = (meso * 3) / 100;
         } else if (meso >= 1000000) {
-            fee = (int) Math.round(.018 * meso);
+            fee = (meso * 18) / 1000;
         } else if (meso >= 100000) {
-            fee = meso / 125;
+            fee = (meso * 8) / 1000;
         }
-        return fee;
+        return (int) fee;
     }
 
     private void lockTrade() {
@@ -91,14 +93,23 @@ public class MapleTrade {
         items.clear();
         meso = 0;
         for (Item item : exchangeItems) {
-            if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) 
-                item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
-
+            MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
             MapleInventoryManipulator.addFromDrop(chr.getClient(), item, show);
         }
+        
         if (exchangeMeso > 0) {
-            chr.gainMeso(exchangeMeso - getFee(exchangeMeso), show, true, show);
+            int fee = getFee(exchangeMeso);
+            
+            chr.gainMeso(exchangeMeso - fee, show, true, show);
+            if(fee > 0) {
+                chr.dropMessage(1, "Transaction completed. You received " + GameConstants.numberWithCommas(exchangeMeso - fee) + " mesos due to trade fees.");
+            } else {
+                chr.dropMessage(1, "Transaction completed. You received " + GameConstants.numberWithCommas(exchangeMeso) + " mesos.");
+            }
+        } else {
+            chr.dropMessage(1, "Transaction completed.");
         }
+        
         exchangeMeso = 0;
         if (exchangeItems != null) {
             exchangeItems.clear();

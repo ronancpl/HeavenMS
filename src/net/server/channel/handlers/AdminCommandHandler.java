@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
@@ -39,6 +38,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
 
 public final class AdminCommandHandler extends AbstractMaplePacketHandler {
 

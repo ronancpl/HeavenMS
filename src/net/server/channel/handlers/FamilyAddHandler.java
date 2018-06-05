@@ -33,6 +33,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Jay Estrella
  */
 public final class FamilyAddHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	if (!ServerConstants.USE_FAMILY_SYSTEM){
     		return;

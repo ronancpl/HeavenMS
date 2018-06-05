@@ -21,20 +21,9 @@
  */
 package net.server.channel.handlers;
 
-import client.MapleCharacter;
 import client.MapleClient;
-import client.autoban.AutobanFactory;
-import client.inventory.Item;
-import client.inventory.MapleInventory;
-import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import client.processor.StorageProcessor;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
-import server.MapleItemInformationProvider;
-import server.MapleStorage;
-import tools.FilePrinter;
-import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -44,122 +33,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class StorageHandler extends AbstractMaplePacketHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		MapleCharacter chr = c.getPlayer();
-		byte mode = slea.readByte();
-		final MapleStorage storage = chr.getStorage();
-
-		if (chr.getLevel() < 15){
-			chr.dropMessage(1, "You may only use the storage once you have reached level 15.");
-                        c.announce(MaplePacketCreator.enableActions());
-			return;
-		}
-		if (mode == 4) { // take out
-			byte type = slea.readByte();
-			byte slot = slea.readByte();
-			if (slot < 0 || slot > storage.getSlots()) { // removal starts at zero
-				AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
-				FilePrinter.print(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to work with storage slot " + slot + "\r\n");
-				c.disconnect(true, false);
-				return;
-			}
-			slot = storage.getSlot(MapleInventoryType.getByType(type), slot);
-			Item item = storage.getItem(slot);
-			if (item != null) {
-				if (MapleItemInformationProvider.getInstance().isPickupRestricted(item.getItemId()) && chr.haveItemWithId(item.getItemId(), true)) {
-					c.announce(MaplePacketCreator.getStorageError((byte) 0x0C));    
-					return;
-				}
-				if (chr.getMap().getId() == 910000000) {
-					if (chr.getMeso() < 1000) {
-						c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
-						return;
-					} else {
-						chr.gainMeso(-1000, false);
-					}
-				}           
-				if (MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {                
-					item = storage.takeOut(slot);//actually the same but idc
-					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
-					if ((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
-						item.setFlag((byte) (item.getFlag() ^ ItemConstants.KARMA)); //items with scissors of karma used on them are reset once traded
-					}
-					MapleInventoryManipulator.addFromDrop(c, item, false);
-					storage.sendTakenOut(c, item.getInventoryType());
-				} else {
-					c.announce(MaplePacketCreator.getStorageError((byte) 0x0A));
-				}
-			}
-		} else if (mode == 5) { // store
-			short slot = slea.readShort();
-			int itemId = slea.readInt();
-			short quantity = slea.readShort();
-			MapleInventoryType slotType = ItemConstants.getInventoryType(itemId);
-			MapleInventory Inv = chr.getInventory(slotType);
-			if (slot < 1 || slot > Inv.getSlotLimit()) { //player inv starts at one
-				AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
-				FilePrinter.print(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to store item at slot " + slot + "\r\n");
-				c.disconnect(true, false);
-				return;
-			}
-			if (quantity < 1 || chr.getItemQuantity(itemId, false) < quantity) {
-                                c.announce(MaplePacketCreator.enableActions());
-				return;
-			}
-			if (storage.isFull()) {
-				c.announce(MaplePacketCreator.getStorageError((byte) 0x11));
-				return;
-			}
-			short meso = (short) (chr.getMap().getId() == 910000000 ? -500 : -100);
-			if (chr.getMeso() < meso) {
-				c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
-			} else {
-				MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
-				Item item = chr.getInventory(invType).getItem(slot).copy();
-				if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
-					if (ItemConstants.isRechargeable(itemId)) {
-						quantity = item.getQuantity();
-					}
-					chr.gainMeso(meso, false, true, false);
-					MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
-					item.setQuantity(quantity);
-					storage.store(item);
-					storage.sendStored(c, ItemConstants.getInventoryType(itemId));
-					String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-					FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");	
-				}
-			}
-                } else if (mode == 6) { // arrange items
-                        if(ServerConstants.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);
-                        c.announce(MaplePacketCreator.enableActions());
-		} else if (mode == 7) { // meso
-			int meso = slea.readInt();
-			int storageMesos = storage.getMeso();
-			int playerMesos = chr.getMeso();
-			if ((meso > 0 && storageMesos >= meso) || (meso < 0 && playerMesos >= -meso)) {
-				if (meso < 0 && (storageMesos - meso) < 0) {
-					meso = -2147483648 + storageMesos;
-					if (meso < playerMesos) {
-                                                c.announce(MaplePacketCreator.enableActions());
-						return;
-					}
-				} else if (meso > 0 && (playerMesos + meso) < 0) {
-					meso = 2147483647 - playerMesos;
-					if (meso > storageMesos) {
-                                                c.announce(MaplePacketCreator.enableActions());
-						return;
-					}
-				}
-				storage.setMeso(storageMesos - meso);
-				chr.gainMeso(meso, false, true, false);
-				FilePrinter.print(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos\r\n");
-			} else {
-                                c.announce(MaplePacketCreator.enableActions());
-				return;
-			}
-			storage.sendMeso(c);
-		} else if (mode == 8) {// close
-			storage.close();
-		}
+		StorageProcessor.storageAction(slea, c);
 	}
 }

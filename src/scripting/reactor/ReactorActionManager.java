@@ -27,6 +27,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -255,6 +256,11 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
     
     public void hitMonsterWithReactor(int id, int hitsToKill) {  // until someone comes with a better solution, why not?
+        int customTime = ServerConstants.MOB_REACTOR_REFRESH_TIME;
+        if(customTime > 0) {
+            reactor.setDelay(customTime);
+        }
+        
         MapleMap map = reactor.getMap();
         MapleMonster mm = map.getMonsterById(id);
         if(mm != null) {

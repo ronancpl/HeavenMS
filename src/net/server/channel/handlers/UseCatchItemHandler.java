@@ -27,7 +27,7 @@ import client.inventory.MapleInventoryType;
 import client.autoban.AutobanManager;
 import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;

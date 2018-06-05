@@ -60,6 +60,9 @@ function action(mode, type, selection) {
                                         cm.sendOk("The Magatia PQ (Alcadno) has encountered an error.");
                                         cm.dispose();
                                         return;
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        action(1, 0, 0);
+                                        return;
                                 }
 
                                 cm.sendSimple("#e#b<Party Quest: Romeo and Juliet>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nMy beloved Romeo has been kidnapped! Although he is Zenumist's, I can't stand by and just see him suffer just because of this foolish clash. I need you and your colleagues help to save him! Please, help us!! Please have your #bparty leader#k talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

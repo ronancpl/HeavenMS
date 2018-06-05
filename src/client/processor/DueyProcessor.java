@@ -29,6 +29,8 @@ import client.autoban.AutobanFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
 import constants.ItemConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,7 +41,6 @@ import java.util.LinkedList;
 import java.util.List;
 import net.server.channel.Channel;
 import server.DueyPackages;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
@@ -163,10 +164,12 @@ public class DueyProcessor {
                 eq.setHands((short) rs.getInt("hands"));
                 eq.setSpeed((short) rs.getInt("speed"));
                 eq.setJump((short) rs.getInt("jump"));
+                eq.setFlag((byte) rs.getInt("flag"));
                 eq.setOwner(rs.getString("owner"));
                 dueypack = new DueyPackages(rs.getInt("PackageId"), eq);
             } else if (rs.getInt("type") == 2) {
                 Item newItem = new Item(rs.getInt("itemid"), (short) 0, (short) rs.getInt("quantity"));
+                newItem.setFlag((byte) rs.getInt("flag"));
                 newItem.setOwner(rs.getString("owner"));
                 dueypack = new DueyPackages(rs.getInt("PackageId"), newItem);
             } else {
@@ -186,13 +189,13 @@ public class DueyProcessor {
         ResultSet rs = null;
         try {
             con = DatabaseConnection.getConnection();
-            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE RecieverId = ? and Checked = 1");
+            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE ReceiverId = ? and Checked = 1");
             ps.setInt(1, player.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
                 try {
                     Connection con2 = DatabaseConnection.getConnection();
-                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
+                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where ReceiverId = ?");
                     pss.setInt(1, player.getId());
                     pss.executeUpdate();
                     pss.close();
@@ -225,31 +228,33 @@ public class DueyProcessor {
         }
     }
     
-    private static int getFee(int meso) {
-        int fee = 0;
-        if (meso >= 10000000) {
-            fee = meso / 25;
+    private static int getFee(long meso) {
+        long fee = 0;
+        if (meso >= 100000000) {
+            fee = (meso * 6) / 100;
+        } else if (meso >= 25000000) {
+            fee = (meso * 5) / 100;
+        } else if (meso >= 10000000) {
+            fee = (meso * 4) / 100;
         } else if (meso >= 5000000) {
-            fee = meso * 3 / 100;
+            fee = (meso * 3) / 100;
         } else if (meso >= 1000000) {
-            fee = meso / 50;
+            fee = (meso * 18) / 1000;
         } else if (meso >= 100000) {
-            fee = meso / 100;
-        } else if (meso >= 50000) {
-            fee = meso / 200;
+            fee = (meso * 8) / 1000;
         }
-        return fee;
+        return (int) fee;
     }
     
     private static void addMesoToDB(int mesos, String sName, int recipientID) {
         addItemToDB(null, 1, mesos, sName, recipientID);
     }
 
-    private static void addItemToDB(Item item, int quantity, int mesos, String sName, int recipientID) {
+    public static void addItemToDB(Item item, int quantity, int mesos, String sName, int recipientID) {
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("INSERT INTO dueypackages (RecieverId, SenderName, Mesos, TimeStamp, Checked, Type) VALUES (?, ?, ?, ?, ?, ?)")) {
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO dueypackages (ReceiverId, SenderName, Mesos, TimeStamp, Checked, Type) VALUES (?, ?, ?, ?, ?, ?)")) {
                 ps.setInt(1, recipientID);
                 ps.setString(2, sName);
                 ps.setInt(3, mesos);
@@ -266,7 +271,7 @@ public class DueyProcessor {
                         rs.next();
                         PreparedStatement ps2;
                         if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
-                            ps2 = con.prepareStatement("INSERT INTO dueyitems (PackageId, itemid, quantity, upgradeslots, level, str, dex, `int`, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            ps2 = con.prepareStatement("INSERT INTO dueyitems (PackageId, itemid, quantity, upgradeslots, level, str, dex, `int`, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, flag, owner) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
                             Equip eq = (Equip) item;
                             ps2.setInt(2, eq.getItemId());
                             ps2.setInt(3, 1);
@@ -287,12 +292,14 @@ public class DueyProcessor {
                             ps2.setInt(18, eq.getHands());
                             ps2.setInt(19, eq.getSpeed());
                             ps2.setInt(20, eq.getJump());
-                            ps2.setString(21, eq.getOwner());
+                            ps2.setInt(21, eq.getFlag());
+                            ps2.setString(22, eq.getOwner());
                         } else {
-                            ps2 = con.prepareStatement("INSERT INTO dueyitems (PackageId, itemid, quantity, owner) VALUES (?, ?, ?, ?)");
+                            ps2 = con.prepareStatement("INSERT INTO dueyitems (PackageId, itemid, quantity, flag, owner) VALUES (?, ?, ?, ?, ?)");
                             ps2.setInt(2, item.getItemId());
                             ps2.setInt(3, quantity);
-                            ps2.setString(4, item.getOwner());
+                            ps2.setInt(4, item.getFlag());
+                            ps2.setString(5, item.getOwner());
                         }
                         ps2.setInt(1, rs.getInt(1));
                         ps2.executeUpdate();
@@ -312,7 +319,7 @@ public class DueyProcessor {
         Connection con = null;
         try {
             con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM dueypackages dp LEFT JOIN dueyitems di ON dp.PackageId=di.PackageId WHERE RecieverId = ?")) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM dueypackages dp LEFT JOIN dueyitems di ON dp.PackageId=di.PackageId WHERE ReceiverId = ?")) {
                 ps.setInt(1, chr.getId());
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -337,13 +344,14 @@ public class DueyProcessor {
         c.lockClient();
         try {
             final int fee = 5000;
-            if (mesos < 0 || ((long) mesos + fee + getFee(mesos)) > Integer.MAX_VALUE || (amount < 1 && mesos == 0)) {
+            final long sendMesos = (long) mesos + fee;
+            if (mesos < 0 || sendMesos > Integer.MAX_VALUE || (amount < 1 && mesos == 0)) {
                 AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with duey.");
                 FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use duey with mesos " + mesos + " and amount " + amount + "\r\n");           	
                 c.disconnect(true, false);
                 return;
             }
-            int finalcost = mesos + fee + getFee(mesos);
+            int finalcost = mesos + fee;
             boolean send = false;
             if (c.getPlayer().getMeso() >= finalcost) {
                 int accid = getAccIdFromCNAME(recipient, true);
@@ -382,7 +390,8 @@ public class DueyProcessor {
                             MapleInventoryManipulator.removeFromSlot(c, inv, itemPos, amount, true, false);
                         }
 
-                        addItemToDB(item, amount, mesos, c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+                        MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
+                        addItemToDB(item, amount, mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
                     } else {
                         if (item != null) {
                             c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_INCORRECT_REQUEST.getCode()));
@@ -393,7 +402,7 @@ public class DueyProcessor {
                     c.getPlayer().gainMeso(-finalcost, false);
                     c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));    
 
-                    addMesoToDB(mesos, c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+                    addMesoToDB(mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
                 }
 
                 if (rClient != null && rClient.isLoggedIn() && !rClient.getPlayer().isAwayFromWorld()) {
@@ -460,14 +469,16 @@ public class DueyProcessor {
                     }
                 }
 
-                long gainmesos = 0;
-                long totalmesos = (long) dp.getMesos() + (long) c.getPlayer().getMeso();
+                long gainmesos;
+                long totalmesos = (long) dp.getMesos() + c.getPlayer().getMeso();
 
-                if (totalmesos < 0 || dp.getMesos() < 0) gainmesos = 0;
-                else {
+                if (totalmesos < 0 || dp.getMesos() < 0) {
+                    gainmesos = 0;
+                } else {
                     totalmesos = Math.min(totalmesos, Integer.MAX_VALUE);
                     gainmesos = totalmesos - c.getPlayer().getMeso();
                 }
+                
                 c.getPlayer().gainMeso((int)gainmesos, false);
 
                 removeItemFromDB(packageid);

@@ -13,6 +13,10 @@ var beginTime = 5 * 60 * 1000; //The time to begin the ride
 var  rideTime = 1 * 60 * 1000; //The time that require move to destination
 
 function init() {
+    closeTime = em.getTransportationTime(closeTime);
+    beginTime = em.getTransportationTime(beginTime);
+     rideTime = em.getTransportationTime(rideTime);
+    
     KC_bfd = em.getChannelServer().getMapFactory().getMap(540010100);
     CBD_bfd = em.getChannelServer().getMapFactory().getMap(540010001);
     Plane_to_CBD = em.getChannelServer().getMapFactory().getMap(540010101);

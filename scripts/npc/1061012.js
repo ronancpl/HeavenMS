@@ -5,7 +5,7 @@
 */
 
 function start() {
-    if (cm.getQuestStatus(6108) == 1) {
+    if (cm.getQuestStatus(6107) == 1 || cm.getQuestStatus(6108) == 1) {
 	var ret = checkJob();
 	if (ret == -1) {
 	    cm.sendOk("Please form a party and talk to me again.");
@@ -22,13 +22,17 @@ function start() {
 	    } else if (em.getProperty("started").equals("true")) {
 		cm.sendOk("Someone else is already attempting to defeat the Jr.Balrog in another world." );
 	    } else {
-		if(!em.startInstance(cm.getParty(), cm.getMap())) {
-                    cm.sendOk("A party in your name is already registered in this event.");
+                var eli = em.getEligibleParty(cm.getParty());
+                if(eli.size() > 0) {
+                    if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                        cm.sendOk("A party in your name is already registered in this event.");
+                    }
+                } else {
+                    cm.sendOk("You cannot start this party quest yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
                 }
 	    }
 	}
-    }
-    else {
+    } else {
         cm.sendOk("You're not allowed to enter the other world with unknown reason.");
     }
     

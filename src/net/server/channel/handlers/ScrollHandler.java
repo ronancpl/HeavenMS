@@ -34,7 +34,7 @@ import constants.ItemConstants;
 import java.util.ArrayList;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -107,11 +107,19 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         }
         final List<ModifyInventory> mods = new ArrayList<>();
         if (scrollSuccess == Equip.ScrollResult.CURSE) {
-            mods.add(new ModifyInventory(3, toScroll));
-            if (dst < 0) {
-                c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).removeItem(toScroll.getPosition());
+            if(!ItemConstants.isWeddingRing(toScroll.getItemId())) {
+                mods.add(new ModifyInventory(3, toScroll));
+                if (dst < 0) {
+                    c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).removeItem(toScroll.getPosition());
+                } else {
+                    c.getPlayer().getInventory(MapleInventoryType.EQUIP).removeItem(toScroll.getPosition());
+                }
             } else {
-                c.getPlayer().getInventory(MapleInventoryType.EQUIP).removeItem(toScroll.getPosition());
+                scrolled = toScroll;
+                scrollSuccess = Equip.ScrollResult.FAIL;
+                
+                mods.add(new ModifyInventory(3, scrolled));
+                mods.add(new ModifyInventory(0, scrolled));
             }
         } else {
             mods.add(new ModifyInventory(3, scrolled));

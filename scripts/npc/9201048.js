@@ -52,6 +52,9 @@ function action(mode, type, selection) {
                                 cm.sendOk("The Amoria PQ has encountered an error.");
                                 cm.dispose();
                                 return;
+                        } else if(cm.isUsingOldPqNpcStyle()) {
+                                action(1, 0, 0);
+                                return;
                         }
                     
                         cm.sendSimple("#e#b<Party Quest: Amorian Challenge>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nIf you're brave enough to attempt the Amorian Challenge, join with others like you and let your #bparty leader#k talk to me. If a party filled with whole married couples register to the challenge, better prizes awaits there.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

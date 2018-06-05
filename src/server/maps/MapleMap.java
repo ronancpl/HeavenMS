@@ -83,6 +83,7 @@ import server.life.SpawnPoint;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
 //import server.partyquest.Pyramid;
+import scripting.event.EventManager;
 import scripting.event.EventInstanceManager;
 import server.life.MaplePlayerNPC;
 import server.life.MonsterListener;
@@ -189,6 +190,14 @@ public class MapleMap {
     
     public EventInstanceManager getEventInstance() {
         return event;
+    }
+    
+    public Rectangle getMapArea() {
+        return mapArea;
+    }
+    
+    public int getWorld() {
+        return world;
     }
     
     public void broadcastMessage(MapleCharacter source, final byte[] packet) {
@@ -596,7 +605,9 @@ public class MapleMap {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         for (final MonsterDropEntry de : dropEntry) {
-            if (Randomizer.nextInt(999999) < (long) de.chance * chRate) {
+            int dropChance = (int) Math.min((float) de.chance * chRate, Integer.MAX_VALUE);
+            
+            if (Randomizer.nextInt(999999) < dropChance) {
                 if (droptype == 3) {
                     pos.x = (int) (mobpos + ((d % 2 == 0) ? (40 * ((d + 1) / 2)) : -(40 * (d / 2))));
                 } else {
@@ -1147,35 +1158,19 @@ public class MapleMap {
     }
     
     public void broadcastBalrogVictory(String leaderName) {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
     }
     
     public void broadcastHorntailVictory() {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
     }
     
     public void broadcastZakumVictory() {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
     }
     
     public void broadcastPinkBeanVictory(int channel) {
-        for (Channel cserv : Server.getInstance().getWorld(world).getChannels()) {
-            for (MapleCharacter player : cserv.getPlayerStorage().getAllCharacters()) {
-                player.dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
-            }
-        }
+        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
     }
     
     public void killMonster(final MapleMonster monster, final MapleCharacter chr, final boolean withDrops) {
@@ -1742,6 +1737,10 @@ public class MapleMap {
         spos.y--;//shouldn't be null!
         return spos;
     }
+    
+    public Point getPointBelow(Point pos) {
+        return calcPointBelow(pos);
+    }
 
     public void spawnRevives(final MapleMonster monster) {
         monster.setMap(this);
@@ -2279,10 +2278,13 @@ public class MapleMap {
             chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
             chr.cancelBuffStats(MapleBuffStat.MONSTER_RIDING);
         }
-        if (mapid == 923010000 && getMonsterById(9300102) == null) { // Kenta's Mount Quest
-            spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300102), new Point(77, 426));
+        if (mapid == 923010000) { // Kenta's Mount Quest
+            if(getMonsterById(9300102) == null) {
+                spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300102), new Point(77, 426));
+            }
         } else if (mapid == 200090060) { // To Rien
-            chr.announce(MaplePacketCreator.getClock(60));
+            int travelTime = EventManager.getTransportationTime(1 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2291,9 +2293,10 @@ public class MapleMap {
                         chr.changeMap(140020300, 0);
                     }
                 }
-            }, 60 * 1000);
+            }, travelTime);
         } else if (mapid == 200090070) { // To Lith Harbor
-            chr.announce(MaplePacketCreator.getClock(60));
+            int travelTime = EventManager.getTransportationTime(1 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2302,9 +2305,10 @@ public class MapleMap {
                         chr.changeMap(104000000, 3);
                     }
                 }
-            }, 60 * 1000);
+            }, travelTime);
         } else if (mapid == 200090030) { // To Ereve (SkyFerry)
-            chr.getClient().announce(MaplePacketCreator.getClock(2 * 60));
+            int travelTime = EventManager.getTransportationTime(2 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2313,9 +2317,10 @@ public class MapleMap {
                         chr.changeMap(130000210, 0);
                     }
                 }
-            }, 2 * 60 * 1000);
+            }, travelTime);
         } else if (mapid == 200090031) { // To Victoria Island (SkyFerry)
-            chr.getClient().announce(MaplePacketCreator.getClock(2 * 60));
+            int travelTime = EventManager.getTransportationTime(2 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2324,9 +2329,10 @@ public class MapleMap {
                         chr.changeMap(101000400, 0);
                     }
                 }
-            }, 2 * 60 * 1000);
+            }, travelTime);
         } else if (mapid == 200090021) { // To Orbis (SkyFerry)
-            chr.getClient().announce(MaplePacketCreator.getClock(8 * 60));
+            int travelTime = EventManager.getTransportationTime(8 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2335,9 +2341,10 @@ public class MapleMap {
                         chr.changeMap(200000161, 0);
                     }
                 }
-            }, 8 * 60 * 1000);
+            }, travelTime);
         } else if (mapid == 200090020) { // To Ereve From Orbis (SkyFerry)
-            chr.getClient().announce(MaplePacketCreator.getClock(8 * 60));
+            int travelTime = EventManager.getTransportationTime(8 * 60 * 1000);
+            chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
                 @Override
@@ -2346,7 +2353,7 @@ public class MapleMap {
                         chr.changeMap(130000210, 0);
                     }
                 }
-            }, 8 * 60 * 1000);
+            }, travelTime);
         } else if (mapid == 103040400) {
             if (chr.getEventInstance() != null) {
                 chr.getEventInstance().movePlayer(chr);
@@ -2366,13 +2373,13 @@ public class MapleMap {
             }
         }
         if (chr.isHidden()) {
-            broadcastGMMessage(chr, MaplePacketCreator.spawnPlayerMapObject(chr), false);
+            broadcastGMMessage(chr, MaplePacketCreator.spawnEnterPlayerMapObject(chr), false);
             chr.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
 
             List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
             broadcastGMMessage(chr, MaplePacketCreator.giveForeignBuff(chr.getId(), dsstat), false);
         } else {
-            broadcastMessage(chr, MaplePacketCreator.spawnPlayerMapObject(chr), false);
+            broadcastMessage(chr, MaplePacketCreator.spawnEnterPlayerMapObject(chr), false);
         }
 
         sendObjectPlacement(chr.getClient());
@@ -2699,7 +2706,7 @@ public class MapleMap {
         broadcastMessage(MaplePacketCreator.serverNotice(type, message));
     }
     
-    private boolean isNonRangedType(MapleMapObjectType type) {
+    private static boolean isNonRangedType(MapleMapObjectType type) {
         switch (type) {
             case NPC:
             case PLAYER:
@@ -2726,7 +2733,11 @@ public class MapleMap {
         }
         
         for (MapleMapObject o : objects) {
-            if (o.getType() == MapleMapObjectType.SUMMON) {
+            if (isNonRangedType(o.getType())) {
+                o.sendSpawnData(mapleClient);
+            } else if (o.getType() == MapleMapObjectType.MONSTER) {
+                updateMonsterController((MapleMonster) o);
+            } else if (o.getType() == MapleMapObjectType.SUMMON) {
                 MapleSummon summon = (MapleSummon) o;
                 if (summon.getOwner() == chr) {
                     if (chr.isSummonsEmpty() || !chr.containsSummon(summon)) {
@@ -2737,14 +2748,9 @@ public class MapleMap {
                             objectWLock.unlock();
                         }
                         
-                        continue;
+                        //continue;
                     }
                 }
-            }
-            if (isNonRangedType(o.getType())) {
-                o.sendSpawnData(mapleClient);
-            } else if (o.getType() == MapleMapObjectType.MONSTER) {
-                updateMonsterController((MapleMonster) o);
             }
         }
         
@@ -3788,196 +3794,5 @@ public class MapleMap {
 
             spawnMonsterOnGroundBelow(m, targetPoint);
         }
-    }
-    
-    private static boolean isPlayerNpcNearby(List<Point> otherPos, Point searchPos, int xLimit, int yLimit) {
-        int xLimit2 = xLimit / 2, yLimit2 = yLimit / 2;
-        
-        Rectangle searchRect = new Rectangle(searchPos.x - xLimit2, searchPos.y - yLimit2, xLimit, yLimit);
-        for(Point pos : otherPos) {
-            Rectangle otherRect = new Rectangle(pos.x - xLimit2, pos.y - yLimit2, xLimit, yLimit);
-            
-            if(otherRect.intersects(searchRect)) {
-                return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    private static int calcDx(int newStep) {
-        return ServerConstants.PLAYERNPC_AREA_X / (newStep + 1);
-    }
-    
-    private static int calcDy(int newStep) {
-        return (ServerConstants.PLAYERNPC_AREA_Y / 2) + (ServerConstants.PLAYERNPC_AREA_Y / (1 << (newStep + 1)));
-    }
-    
-    private List<Point> rearrangePlayerNpcPositions(int newStep, int pnpcsSize) {
-        int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
-        int cx = calcDx(newStep), cy = calcDy(newStep);
-        
-        List<Point> otherPlayerNpcs = new LinkedList<>();
-        while(py < outy) {
-            px = leftPx;
-
-            while(px < outx) {
-                Point searchPos = calcPointBelow(new Point(px, py));
-                if(searchPos != null) {
-                    if(!isPlayerNpcNearby(otherPlayerNpcs, searchPos, cx, cy)) {
-                        otherPlayerNpcs.add(searchPos);
-                        
-                        if(otherPlayerNpcs.size() == pnpcsSize) {
-                            return otherPlayerNpcs;
-                        }
-                    }
-                }
-
-                px += cx;
-            }
-
-            py += cy;
-        }
-        
-        return null;
-    }
-    
-    private Point rearrangePlayerNpcs(int newStep, List<MaplePlayerNPC> pnpcs) {
-        int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
-        int cx = calcDx(newStep), cy = calcDy(newStep);
-        
-        List<Point> otherPlayerNpcs = new LinkedList<>();
-        int i = 0;
-        
-        while(py < outy) {
-            px = leftPx;
-
-            while(px < outx) {
-                Point searchPos = calcPointBelow(new Point(px, py));
-                if(searchPos != null) {
-                    if(!isPlayerNpcNearby(otherPlayerNpcs, searchPos, cx, cy)) {
-                        if(i == pnpcs.size()) {
-                            return searchPos;
-                        }
-                        
-                        MaplePlayerNPC pn = pnpcs.get(i);
-                        i++;
-                        
-                        pn.updatePlayerNPCPosition(this, searchPos);
-                        otherPlayerNpcs.add(searchPos);
-                    }
-                }
-
-                px += cx;
-            }
-
-            py += cy;
-        }
-        
-        return null;    // this area should not be reached under any scenario
-    }
-    
-    private Point reorganizePlayerNpcs(int newStep, List<MapleMapObject> mmoList) {
-        if(!mmoList.isEmpty()) {
-            List<MaplePlayerNPC> playerNpcs = new ArrayList<>(mmoList.size());
-            for(MapleMapObject mmo : mmoList) {
-                playerNpcs.add((MaplePlayerNPC) mmo);
-            }
-            
-            Collections.sort(playerNpcs, new Comparator<MaplePlayerNPC>() {
-                @Override
-                public int compare(MaplePlayerNPC p1, MaplePlayerNPC p2) {
-                    return p1.getScriptId() - p2.getScriptId(); // scriptid as playernpc history
-                }
-            });
-            
-            for(Channel ch : Server.getInstance().getChannelsFromWorld(world)) {
-                MapleMap map = ch.getMapFactory().getMap(mapid);
-                
-                for(MaplePlayerNPC pn : playerNpcs) {
-                    map.removeMapObject(pn);
-                    map.broadcastMessage(MaplePacketCreator.removeNPCController(pn.getObjectId()));
-                    map.broadcastMessage(MaplePacketCreator.removePlayerNPC(pn.getObjectId()));
-                }
-            }
-            
-            Point ret = rearrangePlayerNpcs(newStep, playerNpcs);
-            
-            for(Channel ch : Server.getInstance().getChannelsFromWorld(world)) {
-                MapleMap map = ch.getMapFactory().getMap(mapid);
-                
-                for(MaplePlayerNPC pn : playerNpcs) {
-                    map.addPlayerNPCMapObject(pn);
-                    map.broadcastMessage(MaplePacketCreator.spawnPlayerNPC(pn));
-                    map.broadcastMessage(MaplePacketCreator.getPlayerNPC(pn));
-                }
-            }
-            
-            return ret;
-        }
-        
-        return null;
-    }
-    
-    public Point getNextPlayerNpcPosition() {
-        return getNextPlayerNpcPosition(Server.getInstance().getWorld(world).getPlayerNpcMapStep(mapid));
-    }
-    
-    private Point getNextPlayerNpcPosition(int initStep) {   // automated playernpc position thanks to Ronan
-        List<MapleMapObject> mmoList = getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER_NPC));
-        List<Point> otherPlayerNpcs = new LinkedList<>();
-        for(MapleMapObject mmo : mmoList) {
-            otherPlayerNpcs.add(mmo.getPosition());
-        }
-        
-        int cx = calcDx(initStep), cy = calcDy(initStep);
-        int outx = mapArea.x + mapArea.width - ServerConstants.PLAYERNPC_INITIAL_X, outy = mapArea.y + mapArea.height;
-        boolean reorganize = false;
-        
-        int i = initStep;
-        while(i < ServerConstants.PLAYERNPC_AREA_STEPS) {
-            int leftPx = mapArea.x + ServerConstants.PLAYERNPC_INITIAL_X, px, py = mapArea.y + ServerConstants.PLAYERNPC_INITIAL_Y;
-            
-            while(py < outy) {
-                px = leftPx;
-                
-                while(px < outx) {
-                    Point searchPos = calcPointBelow(new Point(px, py));
-                    if(searchPos != null) {
-                        if(!isPlayerNpcNearby(otherPlayerNpcs, searchPos, cx, cy)) {
-                            if(i > initStep) {
-                                Server.getInstance().getWorld(world).setPlayerNpcMapStep(mapid, i);
-                            }
-                            
-                            if(reorganize && ServerConstants.PLAYERNPC_ORGANIZE_AREA) {
-                                return reorganizePlayerNpcs(i, mmoList);
-                            }
-                            
-                            return searchPos;
-                        }
-                    }
-                    
-                    px += cx;
-                }
-                
-                py += cy;
-            }
-            
-            reorganize = true;
-            i++;
-            
-            cx = calcDx(i);
-            cy = calcDy(i);
-            if(ServerConstants.PLAYERNPC_ORGANIZE_AREA) {
-                otherPlayerNpcs = rearrangePlayerNpcPositions(i, mmoList.size());
-            }
-        }
-        
-        if(i > initStep) {
-            Server.getInstance().getWorld(world).setPlayerNpcMapStep(mapid, ServerConstants.PLAYERNPC_AREA_STEPS - 1);
-        }
-        return null;
     }
 }

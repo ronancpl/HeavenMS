@@ -43,18 +43,17 @@ function end(mode, type, selection) {
         } else if (status == 1) {
             if(qm.getQuestProgress(6033) == 1 && qm.haveItem(4260003, 1)) {
                 qm.sendNext("You indeed have crafted a fine piece of Monster Crystal, I see. You passed! Now, I shall teach you the next steps of the Maker skill. Keep the monster crystal with you as well, it's your work.");
-                
-                var skillid = Math.floor(qm.getPlayer().getJob().getId() / 1000) * 10000000 + 1007;
-                qm.teachSkill(skillid, 2, 3, -1);
-                
-                qm.gainExp(230000 * qm.getPlayer().getExpRate());
-                qm.forceCompleteQuest();
-                
-                
             } else {
                 qm.sendNext("Hey, what's wrong? I did tell you to make a monster crystal to pass my test, didn't I? Buying one or crafting before the start of the test is NOT part of the deal. Go craft me an #b#t4260003##k.");
+                qm.dispose();
+                return;
             }
-            
+        } else {
+            var skillid = Math.floor(qm.getPlayer().getJob().getId() / 1000) * 10000000 + 1007;
+            qm.teachSkill(skillid, 2, 3, -1);
+
+            qm.gainExp(230000 * qm.getPlayer().getExpRate());
+            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

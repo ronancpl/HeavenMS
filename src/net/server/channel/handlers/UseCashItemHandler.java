@@ -27,12 +27,15 @@ import client.MapleJob;
 import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
+import client.creator.veteran.*;
 import client.inventory.Equip;
 import client.inventory.Equip.ScrollResult;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -45,7 +48,6 @@ import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import scripting.npc.NPCScriptManager;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
 import server.MapleShopFactory;
@@ -64,12 +66,15 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final MapleCharacter player = c.getPlayer();
-        if (System.currentTimeMillis() - player.getLastUsedCashItem() < 3000) {
+        
+        long timeNow = System.currentTimeMillis();
+        if (timeNow - player.getLastUsedCashItem() < 3000) {
             player.dropMessage(1, "You have used a cash item recently. Wait a moment, then try again.");
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-        player.setLastUsedCashItem(System.currentTimeMillis());
+        player.setLastUsedCashItem(timeNow);
+        
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         slea.readShort();
         int itemId = slea.readInt();
@@ -389,7 +394,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         if (item == null) //hack
                         {
                             return;
-                        } else if (((item.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) || ii.isDropRestricted(item.getItemId())) {
+                        } else if (((item.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) || (ii.isDropRestricted(item.getItemId()) && !MapleKarmaManipulator.hasKarmaFlag(item))) {
                             player.dropMessage(1, "You cannot trade this item.");
                             c.announce(MaplePacketCreator.enableActions());
                             return;
@@ -511,6 +516,56 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             	}
             }, 1000 * 10);
             remove(c, itemId);
+        } else if (itemType == 543) {
+            if(itemId == 5432000 && !c.gainCharacterSlot()) {
+                player.dropMessage(1, "You have already used up all 12 extra character slots.");
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
+            String name = slea.readMapleAsciiString();
+            int face = slea.readInt();
+            int hair = slea.readInt();
+            int haircolor = slea.readInt();
+            int skin = slea.readInt();
+            int gender = slea.readInt();
+            int jobid = slea.readInt();
+            int improveSp = slea.readInt();
+            
+            int createStatus;
+            switch(jobid) {
+                case 0:
+                    createStatus = WarriorCreator.createCharacter(c, name, face, hair + haircolor, skin, gender, improveSp);
+                    break;
+                    
+                case 1:
+                    createStatus = MagicianCreator.createCharacter(c, name, face, hair + haircolor, skin, gender, improveSp);
+                    break;
+                    
+                case 2:
+                    createStatus = BowmanCreator.createCharacter(c, name, face, hair + haircolor, skin, gender, improveSp);
+                    break;
+                    
+                case 3:
+                    createStatus = ThiefCreator.createCharacter(c, name, face, hair + haircolor, skin, gender, improveSp);
+                    break;
+                    
+                default:
+                    createStatus = PirateCreator.createCharacter(c, name, face, hair + haircolor, skin, gender, improveSp);
+            }
+            
+            if(createStatus == 0) {
+                c.announce(MaplePacketCreator.sendMapleLifeError(0));   // success!
+                
+                player.showHint("#bSuccess#k on creation of the new character through the Maple Life card.");
+                remove(c, itemId);
+            } else {
+                if(createStatus == -1) {    // check name
+                    c.announce(MaplePacketCreator.sendMapleLifeNameError());
+                } else {
+                    c.announce(MaplePacketCreator.sendMapleLifeError(-1 * createStatus));
+                }
+            }
         } else if (itemType == 545) { // MiuMiu's travel store
             if (player.getShop() == null) {
                 MapleShop shop = MapleShopFactory.getInstance().getShop(1338);
@@ -527,14 +582,18 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             MapleInventoryType type = MapleInventoryType.getByType((byte) slea.readInt());
             short slot = (short) slea.readInt();
             Item item = c.getPlayer().getInventory(type).getItem(slot);
-            if (item == null || item.getQuantity() <= 0 || (item.getFlag() & ItemConstants.KARMA) > 0 && ii.isKarmaAble(item.getItemId())) {
+            if (item == null || item.getQuantity() <= 0 || MapleKarmaManipulator.hasKarmaFlag(item) || !ii.isKarmaAble(item.getItemId())) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
-            if (!type.equals(MapleInventoryType.USE)) {
-                item.setFlag((byte) ItemConstants.KARMA);
+            
+            if(MapleKarmaManipulator.hasUsedKarmaFlag(item)) {
+                c.getPlayer().dropMessage(6, "Scissors of Karma was already used on this item.");
+                c.announce(MaplePacketCreator.enableActions());
+                return;
             }
-
+            
+            MapleKarmaManipulator.setKarmaFlag(item);
             c.getPlayer().forceUpdateItem(item);
             remove(c, itemId);
             c.announce(MaplePacketCreator.enableActions());

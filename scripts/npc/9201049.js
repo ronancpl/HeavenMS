@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS (MapleSolaxiaV2) MapleStory Server
+    Copyleft (L) 2017 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,54 +17,52 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
-	Ames the Wise
--- By ---------------------------------------------------------------------------------------------
-	Xelkin
--- Edited by --------------------------------------------------------------------------------------
-	Angel (get31720 ragezone
--- Extra Info -------------------------------------------------------------------------------------
-	Fixed by  [happydud3 (BENG)] & [XotiCraze]
--- Fixed Dispose ----------------------------------------------------------------------------------
-        Fixed by Moogra
----------------------------------------------------------------------------------------------------
-**/
-var status = -1;
+/* Ames the Wise
+	Wedding exit map
+	Gives Onyx Chest to anyone completing the wedding event.
+ */
 
+var status;
+ 
 function start() {
-    var rings = new Array(1112806, 1112803, 1112807, 1112809);
-    var hasRing = false;
-    for (var x = 0; x < rings.length && !hasRing; x++)
-        if (cm.haveItem(rings[x])) {
-            hasRing = true;
-            break;
-        }
-    if (hasRing)
-        cm.sendNext("You've reached the end of the wedding. You will receive an Onyx Chest for Bride and Groom and an Onyx Chest. Exchange them at Pila, she is at the top of Amoria.");
-    else if (cm.haveItem(4000313)) {
-        cm.sendNext("Wow the end of the wedding already ? Good bye then.!");
-        status = 20;
-    } else {
-        cm.sendNext("You do not have the Gold Maple Leaf and you do not have a wedding ring so I will take you to Amoria.");
-        status = 21;
-    }
+        status = -1;
+        action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-    if (mode < 1) {
-        cm.sendOk("Goodbye then.");
-        cm.dispose();
-    } else {
-        status++;
-        if (status == 1) {
-            cm.gainItem(4031424,1);
-            cm.gainItem(4031423,1);
+        if (mode == -1) {
             cm.dispose();
-        } else if (status == 21) {
-            cm.gainItem(4000313,-1);
-            cm.gainItem(4031423,1);
+    } else {
+        if (mode == 0 && type > 0) {
+            cm.dispose();
+            return;
         }
-        cm.warp(680000000);
-        cm.dispose();
+        if (mode == 1)
+            status++;
+        else
+            status--;
+
+        if(status == 0) {
+            cm.sendOk("Hey there, did you enjoy the wedding? I will head you back to #bAmoria#k now.");                        
+        } else if(status == 1) {
+            var eim = cm.getEventInstance();
+            if(eim != null) {
+                var boxId = (cm.getPlayer().getId() == eim.getIntProperty("groomId") || cm.getPlayer().getId() == eim.getIntProperty("brideId")) ? 4031424 : 4031423;
+                
+                if(cm.canHold(boxId, 1)) {
+                    cm.gainItem(boxId, 1);
+                    cm.warp(680000000);
+                    cm.sendOk("You just received an Onyx Chest. Search for #b#p9201014##k, she is at the top of Amoria, she knows how to open these.");
+                } else {
+                    cm.sendOk("Please make room on your ETC inventory to receive the Onyx Chest.");
+                    cm.dispose();
+                    return;
+                }
+            } else {
+                cm.warp(680000000);
+            }
+            
+            cm.dispose();
+        }
     }
 }

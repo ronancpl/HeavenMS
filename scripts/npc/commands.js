@@ -55,6 +55,8 @@ function writeHeavenMSCommandsLv6() {    //Admin
         addCommand("shutdownnow", "");
         addCommand("clearquestcache", "");
         addCommand("clearquest", "");
+        addCommand("spawnallpnpcs", "");
+        addCommand("eraseallpnpcs", "");
 }
 
 function writeHeavenMSCommandsLv5() {    //Developer
@@ -74,6 +76,7 @@ function writeHeavenMSCommandsLv5() {    //Developer
         addCommand("debugcoupons", "");
         addCommand("debugplayercoupons", "");
         addCommand("debugtimer", "");
+        addCommand("debugmarriage", "");
         addCommand("set", "");
 }
 
@@ -96,7 +99,8 @@ function writeHeavenMSCommandsLv4() {    //SuperGM
         addCommand("pap", "");
         addCommand("pianus", "");
         addCommand("cake", "");
-        //addCommand("playernpc", "");
+        addCommand("pnpcremove", "");
+        addCommand("playernpc", "");
 }
 
 function writeHeavenMSCommandsLv3() {    //GM

@@ -26,7 +26,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import tools.Randomizer;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import tools.MaplePacketCreator;

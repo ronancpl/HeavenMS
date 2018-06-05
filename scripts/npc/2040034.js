@@ -33,6 +33,9 @@ function action(mode, type, selection) {
                                 cm.sendOk("The Ludibrium PQ has encountered an error.");
                                 cm.dispose();
                                 return;
+                        } else if(cm.isUsingOldPqNpcStyle()) {
+                                action(1, 0, 0);
+                                return;
                         }
                     
                         cm.sendSimple("#e#b<Party Quest: Dimensional Schism>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nYou can't go any higher because of the extremely dangerous creatures above. Would you like to collaborate with party members to complete the quest? If so, please have your #bparty leader#k talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

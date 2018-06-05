@@ -32,6 +32,12 @@
 var status = 0;
 
 function start() {
+    if(cm.haveItem(4031450, 1)) {
+        cm.warp(921100100);
+        cm.dispose();
+        return;
+    }
+    
     cm.sendNext("Hey, you look like you want to go farther and deeper past this place. Over there, though, you'll find yourself surrounded by aggressive, dangerous monsters, so even if you feel that you're ready to go, please be careful. Long ago, a few brave men from our town went in wanting to eliminate anyone threatening the town, but never came back out...");
 }
 

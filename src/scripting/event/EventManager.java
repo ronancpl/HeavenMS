@@ -100,14 +100,14 @@ public class EventManager {
         }
     }
     
-    private List<Integer> convertToIntegerArray(List<Double> list) {
+    private static List<Integer> convertToIntegerArray(List<Double> list) {
         List<Integer> intList = new ArrayList<>();
         for(Double d: list) intList.add(d.intValue());
 
         return intList;
     }
     
-    public long getLobbyDelay() {
+    public static long getLobbyDelay() {
         return ServerConstants.EVENT_LOBBY_DELAY;
     }
     
@@ -251,7 +251,7 @@ public class EventManager {
         return name;
     }
     
-    public int availableLobbyInstance() {
+    private int availableLobbyInstance() {
             List<Integer> lr = getLobbyRange();
             int lb = 0, hb = 0;
             
@@ -525,8 +525,6 @@ public class EventManager {
             wserv.removeGuildQueued(guildId);
             Integer leaderId = queuedGuildLeaders.remove(guildId);
             
-            exportReadyGuild(guildId);
-            
             int place = 1;
             for(Integer i: queuedGuilds) {
                 exportMovedQueueToGuild(i, place);
@@ -587,8 +585,9 @@ public class EventManager {
     
     public boolean attemptStartGuildInstance() {
         MapleCharacter chr = null;
+        List<Integer> guildInstance = null;
         while(chr == null) {
-            List<Integer> guildInstance = getNextGuildQueue();
+            guildInstance = getNextGuildQueue();
             if(guildInstance == null) {
                 return false;
             }
@@ -596,7 +595,12 @@ public class EventManager {
             chr = cserv.getPlayerStorage().getCharacterById(guildInstance.get(1));
         }
         
-        return startInstance(chr);
+        if(startInstance(chr)) {
+            exportReadyGuild(guildInstance.get(0));    
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void startQuest(MapleCharacter chr, int id, int npcid) {
@@ -613,6 +617,10 @@ public class EventManager {
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public static int getTransportationTime(int travelTime) {
+        return (int) Math.ceil(travelTime / ServerConstants.TRAVEL_RATE);
     }
     
     private void fillEimQueue() {

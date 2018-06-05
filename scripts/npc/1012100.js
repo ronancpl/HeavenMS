@@ -33,24 +33,20 @@ spawnPnpc = false;
 spawnPnpcFee = 7000000;
 jobType = 3;
 
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 function start() {
     if (parseInt(cm.getJobId() / 100) == jobType && cm.canSpawnPlayerNpc(Packages.constants.GameConstants.getHallOfFameMapid(cm.getJob()))) {
         spawnPnpc = true;
         
-        var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, didn't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
+        var sendStr = "You have walked a long way to reach the power, wisdom and courage you hold today, haven't you? What do you say about having right now #ra NPC on the Hall of Fame holding the current image of your character#k? Do you like it?";
         if(spawnPnpcFee > 0) {
-            sendStr += " I can do it for you, for the fee of #b " + numberWithCommas(spawnPnpcFee) + " mesos.#k";
+            sendStr += " I can do it for you, for the fee of #b " + cm.numberWithCommas(spawnPnpcFee) + " mesos.#k";
         }
         
         cm.sendYesNo(sendStr);
     } else {
         if (cm.getJobId() == 0) {
             actionx["1stJob"] = true;
-            if (cm.getLevel() >= 10)
+            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
                 cm.sendNext("So you decided to become a #rBowman#k?");
             else {
                 cm.sendOk("Train a bit more and I can show you the way of the #rBowman#k.");

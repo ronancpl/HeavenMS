@@ -1,9 +1,11 @@
 /*
  * Cygnus 1st Job advancement - Night Walker
  */
+
 importPackage(Packages.client);
 
 var status = -1;
+var jobType = 4;
 
 function end(mode, type, selection) {
     if (mode == 0) {
@@ -19,6 +21,12 @@ function end(mode, type, selection) {
     if (status == 0) {
     	qm.sendYesNo("Have you made your decision? The decision will be final, so think carefully before deciding what to do. Are you sure you want to become a Night Walker?");
     } else if (status == 1) {
+        if(!qm.canGetFirstJob(jobType)) {
+            cm.sendOk("Train a bit more and I can show you the way of the #rNight Walker#k.");
+            cm.dispose();
+            return;
+        }
+        
     	qm.sendNext("I have just molded your body to make it perfect for a Night Walker. If you wish to become more powerful, use Stat Window (S) to raise the appropriate stats. If you aren't sure what to raise, just click on #bAuto#k.");
 	if (qm.getPlayer().getJob().getId() != 1400) {
 	    qm.gainItem(1472061, 1);

@@ -209,14 +209,12 @@ public class MaplePet extends Item {
             
             enjoyed = true;
         } else {
-            if (incCloseness > 0) {
-                int newCloseness = closeness - 1;
-                if (newCloseness < 0) newCloseness = 0;
-                
-                closeness = newCloseness;
-                if (level > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(level - 1)) {
-                    level -= 1;
-                }
+            int newCloseness = closeness - 1;
+            if (newCloseness < 0) newCloseness = 0;
+
+            closeness = newCloseness;
+            if (level > 1 && newCloseness < ExpTable.getClosenessNeededForLevel(level - 1)) {
+                level -= 1;
             }
             
             enjoyed = false;

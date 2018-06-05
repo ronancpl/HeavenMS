@@ -19,12 +19,12 @@
 */
 package server.life;
 
-import constants.GameConstants;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
+import net.server.Server;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -52,7 +52,7 @@ public class MaplePlayerNPCFactory {
                 if(thisData != null) {
                     MapleData md = thisData.getChildByPath("anthem/brazil");
                     if(md != null) {
-                        GameConstants.setAvailableDeveloperRoom();
+                        Server.getInstance().setAvailableDeveloperRoom();
                     }
                 }
             }

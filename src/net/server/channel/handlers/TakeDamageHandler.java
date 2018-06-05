@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleStatEffect;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;

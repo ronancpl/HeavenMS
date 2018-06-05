@@ -32,15 +32,15 @@ var ambientSong = "Bgm04/Shinin'Harbor";
 var feature_tree = [];
 var feature_cursor;
 
-var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Admin/GM commands", "Project"];
+var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Admin/GM commands", "Localhost edits", "Project"];
 
 function addFeature(feature) {
         feature_cursor.push(feature);
 }
 
 function writeFeatureTab_PQs() {
-        addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ.");
-        addFeature("MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ.");
+        addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/AmoriaPQ.");
+        addFeature("MagatiaPQ/HorntailPQ/TreasurePQ/ElnathPQ.");
         addFeature("CWKPQ as Expedition-based event.");
         addFeature("Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.");
         addFeature("GuildPQ & queue with multi-lobby systems available.");
@@ -50,7 +50,7 @@ function writeFeatureTab_PQs() {
 }
 
 function writeFeatureTab_Skills() {
-        addFeature("Reviewed many skills, such as V. Star and M. Door.");
+        addFeature("Reviewed many skills, such as Steal and M. Door.");
         addFeature("Maker skill features properly developed.");
         addFeature("Chair Mastery - map chair boosts HP/MP rec.");
 }
@@ -60,14 +60,15 @@ function writeFeatureTab_Quests() {
         addFeature("Quests are now rewarding items properly.");
         addFeature("Selection of rewards works properly.");
         addFeature("Loads of quests have been patched.");
-        addFeature("Lots of job questlines have been reviewed.");
+        addFeature("Aran questline has been reviewed.");
+        addFeature("Reviewed several 4th job skill questlines.");
         addFeature("Rewarding system now looks up for item stacking.");
         addFeature("3rd job quiz with all 40-question pool available.");
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Guild and Alliance system fully functional.");
-        addFeature("Party for novices-only (may still be disabled locally).");
+        addFeature("Party for novices-only.");
         addFeature("Thoroughly reviewed P. Shops and H. Merchants.");
         addFeature("Transactions on Merchs instantly announced to owner.");
         addFeature("Game minirooms with semi-functional pw system.");
@@ -83,12 +84,16 @@ function writeFeatureTab_CashItems() {
         addFeature("New town scroll: antibanish. Counters boss banishes.");
         addFeature("Inventory system checks for free slot & stack space.");
         addFeature("Storage with 'Arrange Items' feature functional.");
+        addFeature("Further improved Karma scissors.");
+        addFeature("Scroll for Spikes on Shoes.");
+        addFeature("Scroll for Cold Protection.");
         addFeature("Vega's spell.");
         addFeature("Owl of Minerva.");
         addFeature("Pet item ignore.");
         addFeature("New Year's card.");
         addFeature("Kite.");
         addFeature("Cash Shop surprise.");
+        addFeature("Maple Life.");
 }
 
 function writeFeatureTab_MonstersMapsReactors() {
@@ -97,12 +102,15 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Monsterbook displays updated drop data info.");
         addFeature("Every skill/mastery book is now obtainable.");
         addFeature("Mobs now can drop more than one of the same equip.");
+        addFeature("Implemented Zombify disease status.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
         addFeature("Game will favor showing the targeted boss HPbar.");
+        addFeature("Dmg overtime on maps and neutralizers functional.");
         addFeature("Boats, elevator and other travel mechanics functional.");
         addFeature("C. Balrog's boat approaching visual effect functional.");
         addFeature("PQs, Taxis and events warps players to random SPs.");
         addFeature("PQ boxes sprays items when opened, GMS-like.");
+        addFeature("Reactors pick items up smartly from the field.");
         addFeature("Reviewed Masteria, W. Tour, N. Desert and Neo City.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
 }
@@ -127,16 +135,20 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
         addFeature("Enhanced buff system: best buffs effects takes place.");
         addFeature("Enhanced AP auto-assigner: focus on eqp demands.");
+        addFeature("NPC crafters won't take items freely anymore.");
+        addFeature("Duey: pkg rcvd popup and many delivery mechanics.");
         addFeature("Pet pickup gives preference to player attacks.");
         addFeature("Channel capacity bar and worlds with capacity check.");
         addFeature("Diseases visible for others, even after changing maps.");
         addFeature("Poison damage value visible for other players.");
         addFeature("M. book announcer displays info based on demand.");
         addFeature("Custom jail system.");
+        addFeature("Custom buyback system, uses mesos / NX, via MTS.");
         addFeature("Delete Character.");
         addFeature("Autosaver (periodically saves player's data on DB).");
         addFeature("Fixed and randomized HP/MP growth rate available.");
         addFeature("Prevented 'NPC gone after some uptime' issue.");
+        addFeature("AP assigning available for novices level 10 or below.");
         addFeature("Automatic account registration - thanks shavit!");
 }
 
@@ -144,6 +156,19 @@ function writeFeatureTab_AdminGMcommands() {
         addFeature("Server commands layered by GM levels.");
         addFeature("Spawn Zakum/Horntail/Pinkbean.");
         addFeature("Several new commands.");
+}
+
+function writeFeatureTab_Localhostedits() {
+        addFeature("Removed the 'n' NPC dialog issue.");
+        addFeature("Removed caps for MATK, WMDEF, ACC and AVOID.");
+        addFeature("Removed MTS block, buyback available anywhere.");
+        addFeature("Removed party blocks for novices under level 10.");
+        addFeature("Set a much more higher cap for SPEED.");
+        addFeature("Removed AP usage block for novices.");
+        addFeature("Removed attack gem block on defensiver gear w/ Maker.");
+        addFeature("Removed AP excess popup - thanks kevintjuh93!");
+        addFeature("Removed 'GMs can't attack' - thanks kevintjuh93!");
+        addFeature("Removed 'Gained a level!' - thanks PrinceReborn!");
 }
 
 function writeFeatureTab_Project() {

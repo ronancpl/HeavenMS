@@ -25,6 +25,9 @@ var beginTime = 60 * 1000; //The time to begin the ride
 var  rideTime = 60 * 1000; //The time that require move to destination
 
 function init() {
+    beginTime = em.getTransportationTime(beginTime);
+     rideTime = em.getTransportationTime(rideTime);
+    
     em.getChannelServer().getMapFactory().getMap(222020100).resetReactors();
     em.getChannelServer().getMapFactory().getMap(222020200).resetReactors();
     

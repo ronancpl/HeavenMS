@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `vanquisherKills` int(11) unsigned NOT NULL DEFAULT '0',
   `summonValue` int(11) unsigned NOT NULL DEFAULT '0',
   `partnerId` int(11) NOT NULL DEFAULT '0',
+  `marriageItemId` int(11) NOT NULL DEFAULT '0',
   `reborns` int(5) NOT NULL DEFAULT '0',
   `PQPoints` int(11) NOT NULL DEFAULT '0',
   `dataString` varchar(64) NOT NULL DEFAULT '',
@@ -11628,7 +11629,6 @@ INSERT IGNORE INTO `temp_data` (`id`, `dropperid`, `itemid`, `minimum_quantity`,
 (11627, 5120500, 1472055, 1, 1, 0, 750),
 (11626, 5120000, 1472055, 1, 1, 0, 750),
 (11625, 9001006, 4031856, 1, 1, 2191, 400000),
-(11624, 8190003, 4031461, 1, 1, 6169, 1000),
 (11623, 9400218, 4001106, 25, 50, 0, 999999),
 (11622, 9400217, 4001106, 1, 3, 0, 999999),
 (11613, 2110200, 4032390, 1, 1, 2248, 100000),
@@ -12819,6 +12819,7 @@ CREATE TABLE IF NOT EXISTS `dueyitems` (
   `hands` int(11) DEFAULT '0',
   `speed` int(11) DEFAULT '0',
   `jump` int(11) DEFAULT '0',
+  `flag` int(11) DEFAULT '0',
   `owner` varchar(13) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `PackageId` (`PackageId`)
@@ -12826,7 +12827,7 @@ CREATE TABLE IF NOT EXISTS `dueyitems` (
 
 CREATE TABLE IF NOT EXISTS `dueypackages` (
   `PackageId` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `RecieverId` int(10) unsigned NOT NULL,
+  `ReceiverId` int(10) unsigned NOT NULL,
   `SenderName` varchar(13) NOT NULL,
   `Mesos` int(10) unsigned DEFAULT '0',
   `TimeStamp` varchar(10) NOT NULL,
@@ -16508,6 +16509,7 @@ CREATE TABLE IF NOT EXISTS `playernpcs_field` (
   `world` int(11) NOT NULL,
   `map` int(11) NOT NULL,
   `step` tinyint(1) NOT NULL DEFAULT '0',
+  `podium` smallint(8) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

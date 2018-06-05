@@ -9,7 +9,8 @@
 	Dragon Evolver
 */
 
-importPackage(Packages.client);
+importPackage(Packages.client.inventory);
+importPackage(Packages.client.inventory.manipulator);
 importPackage(Packages.server);
 
 var status;

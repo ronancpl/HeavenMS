@@ -39,7 +39,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import constants.ItemConstants;
 import server.MapleItemInformationProvider;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;
 import tools.locks.MonitoredLockType;
 

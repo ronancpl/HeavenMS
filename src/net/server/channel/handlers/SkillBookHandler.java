@@ -29,7 +29,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import java.util.Map;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Randomizer;

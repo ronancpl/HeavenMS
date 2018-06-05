@@ -100,7 +100,8 @@ public final class PacketProcessor {
 
         registerHandler(RecvOpcode.PONG, new KeepAliveHandler());
         registerHandler(RecvOpcode.CUSTOM_PACKET, new CustomPacketHandler());
-        if (channel < 0) {//login
+        if (channel < 0) {
+            //LOGIN HANDLERS
             registerHandler(RecvOpcode.ACCEPT_TOS, new AcceptToSHandler());
             registerHandler(RecvOpcode.AFTER_LOGIN, new AfterLoginHandler());
             registerHandler(RecvOpcode.SERVERLIST_REREQUEST, new ServerlistRequestHandler());
@@ -124,6 +125,9 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.VIEW_ALL_PIC_REGISTER, new ViewAllPicRegisterHandler());
         } else {
             //CHANNEL HANDLERS
+            registerHandler(RecvOpcode.NAME_TRANSFER, new TransferNameHandler());
+            registerHandler(RecvOpcode.CHECK_CHAR_NAME, new TransferNameResultHandler());
+            registerHandler(RecvOpcode.WORLD_TRANSFER, new TransferWorldHandler());
             registerHandler(RecvOpcode.CHANGE_CHANNEL, new ChangeChannelHandler());
             registerHandler(RecvOpcode.STRANGE_DATA, LoginRequiringNoOpHandler.getInstance());
             registerHandler(RecvOpcode.GENERAL_CHAT, new GeneralChatHandler());
@@ -249,6 +253,8 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.MONSTER_CARNIVAL, new MonsterCarnivalHandler());
             registerHandler(RecvOpcode.REMOTE_STORE, new RemoteStoreHandler());
             registerHandler(RecvOpcode.WEDDING_ACTION, new WeddingHandler());
+            registerHandler(RecvOpcode.WEDDING_TALK, new WeddingTalkHandler());
+            registerHandler(RecvOpcode.WEDDING_TALK_MORE, new WeddingTalkMoreHandler());
             registerHandler(RecvOpcode.WATER_OF_LIFE, new UseWaterOfLifeHandler());
             registerHandler(RecvOpcode.ADMIN_CHAT, new AdminChatHandler());
             registerHandler(RecvOpcode.MOVE_DRAGON, new MoveDragonHandler());

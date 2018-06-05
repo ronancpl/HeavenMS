@@ -53,6 +53,9 @@ function action(mode, type, selection) {
                                         cm.sendOk("The Henesys PQ has encountered an error.");
                                         cm.dispose();
                                         return;
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        action(1, 0, 0);
+                                        return;
                                 }
 
                                 cm.sendSimple("#e#b<Party Quest: Primrose Hill>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nI'm Tory. Inside here is a beautiful hill where the primrose blooms. There's a tiger that lives in the hill, Growlie, and he seems to be looking for something to eat. Would you like to head over to the hill of primrose and join forces with your party members to help Growlie out?#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.\r\n#L3#I would like to redeem an event hat.");

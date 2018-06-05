@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import client.inventory.manipulator.MapleInventoryManipulator;
 import net.MaplePacketHandler;
 import net.PacketProcessor;
 import net.server.Server;
@@ -56,7 +57,6 @@ import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import scripting.npc.NPCScriptManager;
 import scripting.portal.PortalScriptManager;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.MapleShopFactory;
@@ -102,6 +102,7 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import client.processor.BuybackProcessor;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.util.ArrayList;
@@ -351,22 +352,6 @@ public class Commands {
                 MapleCharacter player = c.getPlayer();
             
                 switch(sub[0]) {
-                    case "wow":
-                        MaplePlayerNPC.multicastSpawnPlayerNPC(player.getMapId(), player.getWorld());
-                        break;
-                        
-                    case "out":
-                        MaplePlayerNPC.removeAllPlayerNPC();
-                        break;
-                    
-                    case "er":
-                        MaplePlayerNPC.spawnPlayerNPC(player.getMapId(), player);
-                        break;
-                        
-                    case "re":
-                        MaplePlayerNPC.removePlayerNPC(player);
-                        break;
-                    
                 case "help":
 		case "commands":
                 case "playercommands":
@@ -381,6 +366,10 @@ public class Commands {
                             c.getPlayer().showHint("Current drop count: #r" + dropCount + "#k / #e" + ServerConstants.ITEM_LIMIT_ON_MAP + "#n", 300);
                         }
                         
+                        break;
+                    
+                case "buyback":
+                        BuybackProcessor.processBuyback(c);
                         break;
                     
 		case "time":
@@ -1222,7 +1211,7 @@ public class Commands {
                 
                 case "item":
                 case "drop":
-                        if (sub.length < 2){
+                        if (sub.length < 2) {
 				player.yellowMessage("Syntax: !item <itemid> <quantity>");
 				break;
 			}
@@ -2613,13 +2602,24 @@ public class Commands {
                         player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
                         break;
                     
+                    case "pnpcremove":
+                        if (sub.length < 2) {
+                            player.yellowMessage("Syntax: !pnpcremove <playername>");
+                            break;
+                        }
+                        
+                        MaplePlayerNPC.removePlayerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]));
+                        break;
+                        
                     case "playernpc":
-                        if (sub.length < 3){
+                        if (sub.length < 2) {
                             player.yellowMessage("Syntax: !playernpc <playername>");
                             break;
                         }
                         
-                        MaplePlayerNPC.spawnPlayerNPC(player.getMapId(), player.getPosition(), c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]));
+                        if(!MaplePlayerNPC.spawnPlayerNPC(player.getMapId(), player.getPosition(), c.getChannelServer().getPlayerStorage().getCharacterByName(sub[1]))) {
+                            player.dropMessage(5, "Could not deploy PlayerNPC. Either there's no room available here or depleted out scriptids to use.");
+                        }
 			break;
                         
                     default:
@@ -2634,53 +2634,48 @@ public class Commands {
                 MapleMonster monster;
         
                 switch(sub[0]) {
-                case "debugmonster":
+                    case "debugmonster":
 			List<MapleMapObject> monsters = player.getMap().getMapObjectsInRange(player.getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER));
 			for (MapleMapObject monstermo : monsters) {
 				monster = (MapleMonster) monstermo;
 				player.message("Monster ID: " + monster.getId() + " Aggro target: " + ((monster.getController() != null) ? monster.getController().getName() : "<none>"));
 			}
-                    break;
+                        break;
                     
-		
-                    
-                case "debugpacket":
+                    case "debugpacket":
                         player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
                         break;
                     
-                case "debugportal":
+                    case "debugportal":
                         MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
                         if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
                         else player.dropMessage(6, "There is no portal on this map.");
-                        
                         break;
                 
-                case "debugspawnpoint":
+                    case "debugspawnpoint":
                         SpawnPoint sp = player.getMap().findClosestSpawnpoint(player.getPosition());
                         if(sp != null) player.dropMessage(6, "Closest mob spawn point: " + " Position: x " + sp.getPosition().getX() + " y " + sp.getPosition().getY() + " Spawns mobid: '" + sp.getMonsterId() + "' --> canSpawn: " + !sp.getDenySpawn() + " canSpawnRightNow: " + sp.shouldSpawn() + ".");
                         else player.dropMessage(6, "There is no mob spawn point on this map.");
-                        
                         break;
                     
-                case "debugpos":
+                    case "debugpos":
                         player.dropMessage(6, "Current map position: (" + player.getPosition().getX() + ", " + player.getPosition().getY() + ").");
                         break;
                     
-                case "debugmap":
+                    case "debugmap":
                         player.dropMessage(6, "Current map id " + player.getMap().getId() + ", event: '" + ((player.getMap().getEventInstance() != null) ? player.getMap().getEventInstance().getName() : "null") + "'; Players: " + player.getMap().getAllPlayers().size() + ", Mobs: " + player.getMap().countMonsters() + ", Reactors: " + player.getMap().countReactors() + ", Items: " + player.getMap().countItems() + ", Objects: " + player.getMap().getMapObjects().size() + ".");
                         break;
                     
-                case "debugmobsp":
+                    case "debugmobsp":
                         player.getMap().reportMonsterSpawnPoints(player);
                         break;
                     
-                case "debugevent":
+                    case "debugevent":
                         if(player.getEventInstance() == null) player.dropMessage(6, "Player currently not in an event.");
                         else player.dropMessage(6, "Current event name: " + player.getEventInstance().getName() + ".");
-                        
                         break;
                     
-                case "debugareas":
+                    case "debugareas":
                         player.dropMessage(6, "Configured areas on map " + player.getMapId() + ":");
 
                         byte index = 0;
@@ -2688,54 +2683,52 @@ public class Commands {
                             player.dropMessage(6, "Id: " + index + " -> posX: " + rect.getX() + " posY: '" + rect.getY() + "' dX: " + rect.getWidth() + " dY: " + rect.getHeight() + ".");
                             index++;
                         }
-                        
                         break;
                 
-                case "debugreactors":
+                    case "debugreactors":
                         player.dropMessage(6, "Current reactor states on map " + player.getMapId() + ":");
 
                         for(MapleMapObject mmo: player.getMap().getReactors()) {
                             MapleReactor mr = (MapleReactor) mmo;
                             player.dropMessage(6, "Id: " + mr.getId() + " Oid: " + mr.getObjectId() + " name: '" + mr.getName() + "' -> Type: " + mr.getReactorType() + " State: " + mr.getState() + " Event State: " + mr.getEventState() + " Position: x " + mr.getPosition().getX() + " y " + mr.getPosition().getY() + ".");
                         }
-                        
                         break;
                     
-                case "debugservercoupons":
-                case "debugcoupons":
+                    case "debugservercoupons":
+                    case "debugcoupons":
                         String s = "Currently active SERVER coupons: ";
                         for(Integer i : Server.getInstance().getActiveCoupons()) {
                             s += (i + " ");
                         }
 
                         player.dropMessage(6, s);
-                        
                         break;
                     
-                case "debugplayercoupons":
+                    case "debugplayercoupons":
                         String st = "Currently active PLAYER coupons: ";
                         for(Integer i : player.getActiveCoupons()) {
                             st += (i + " ");
                         }
 
                         player.dropMessage(6, st);
-                        
                         break;
                         
-                case "debugtimer":
+                    case "debugtimer":
 			TimerManager tMan = TimerManager.getInstance();
 			player.dropMessage(6, "Total Task: " + tMan.getTaskCount() + " Current Task: " + tMan.getQueuedTasks() + " Active Task: " + tMan.getActiveCount() + " Completed Task: " + tMan.getCompletedTaskCount());
-			break;
+                        break;
                 
-                case "set":
+                    case "debugmarriage":
+                        c.getChannelServer().debugMarriageStatus();
+                        break;
+                    
+                    case "set":
                         for(int i = 0; i < sub.length - 1; i++) {
                                 ServerConstants.DEBUG_VALUES[i] = Integer.parseInt(sub[i + 1]);
                         }
-                    
-                        
                         break;
-                    
-                default:
+                
+                    default:
                         return false;
                 }
                 
@@ -2747,7 +2740,7 @@ public class Commands {
                 MapleCharacter victim;
         
                 switch(sub[0]) {
-                case "setgmlevel":
+                    case "setgmlevel":
                         if (sub.length < 3){
                                 player.yellowMessage("Syntax: !setgmlevel <playername> <newlevel>");
                                 break;
@@ -2766,7 +2759,7 @@ public class Commands {
                         }
                         break;
                     
-		case "warpworld":
+                    case "warpworld":
                         if (sub.length < 2){
 				player.yellowMessage("Syntax: !warpworld <worldid>");
 				break;
@@ -2793,7 +2786,7 @@ public class Commands {
 			}
 			break;
                     
-		case "saveall":
+                    case "saveall":
 			for (World world : Server.getInstance().getWorlds()) {
 				for (MapleCharacter chr : world.getPlayerStorage().getAllCharacters()) {
 					chr.saveToDB();
@@ -2804,7 +2797,7 @@ public class Commands {
 			player.message("All players saved successfully.");
 			break;
                     
-		case "dcall":
+                    case "dcall":
 			for (World world : Server.getInstance().getWorlds()) {
 				for (MapleCharacter chr : world.getPlayerStorage().getAllCharacters()) {
 					if (!chr.isGM()) {
@@ -2815,7 +2808,7 @@ public class Commands {
 			player.message("All players successfully disconnected.");
 			break;
                     
-		case "mapplayers":
+                    case "mapplayers":
 			String names = "";
 			int map = player.getMapId();
 			for (World world : Server.getInstance().getWorlds()) {
@@ -2832,7 +2825,7 @@ public class Commands {
 			player.message("These b lurkin: " + names);
 			break;
                     
-		case "getacc":
+                    case "getacc":
 			if (sub.length < 2){
 				player.yellowMessage("Syntax: !getacc <playername>");
 				break;
@@ -2845,8 +2838,8 @@ public class Commands {
                         }
 			break;
 
-		case "shutdown":
-		case "shutdownnow":
+                    case "shutdown":
+                    case "shutdownnow":
 			int time = 60000;
 			if (sub[0].equals("shutdownnow")) {
 				time = 1;
@@ -2877,12 +2870,12 @@ public class Commands {
 			TimerManager.getInstance().schedule(Server.getInstance().shutdown(false), time);
 			break;
 
-		case "clearquestcache":
+                    case "clearquestcache":
 			MapleQuest.clearCache();
 			player.dropMessage(5, "Quest Cache Cleared.");
 			break;
                     
-		case "clearquest":
+                    case "clearquest":
 			if(sub.length < 1) {
 				player.dropMessage(5, "Please include a quest ID.");
 				break;
@@ -2891,11 +2884,19 @@ public class Commands {
 			player.dropMessage(5, "Quest Cache for quest " + sub[1] + " cleared.");
 			break;
                             
-                case "fred":
+                    case "fred":
                         c.announce(MaplePacketCreator.fredrickMessage(Byte.valueOf(sub[1])));
                         break;
                     
-                default:
+                    case "spawnallpnpcs":
+                        MaplePlayerNPC.multicastSpawnPlayerNPC(player.getMapId(), player.getWorld());
+                        break;
+                        
+                    case "eraseallpnpcs":
+                        MaplePlayerNPC.removeAllPlayerNPC();
+                        break;
+                    
+                    default:
                         return false;
                 }
                 
@@ -2942,7 +2943,7 @@ public class Commands {
                 else return true;
         }
         
-        public static boolean executeHeavenMSPlayerCommand(MapleClient c, String[] sub, char heading) {
+        public static boolean executeHeavenMsPlayerCommand(MapleClient c, String[] sub, char heading) {
 		Channel cserv = c.getChannelServer();
 		Server srv = Server.getInstance();
                 

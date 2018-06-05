@@ -31,12 +31,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.Semaphore;
 import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.locks.MonitoredLockType;
 
 public final class MonsterBook {
+    private static final Semaphore semaphore = new Semaphore(10);
+    
     private int specialCard = 0;
     private int normalCard = 0;
     private int bookLevel = 1;
@@ -171,6 +174,43 @@ public final class MonsterBook {
         calculateLevel();
     }
 
+    private static int saveStringConcat(char[] data, int pos, Integer i) {
+        return saveStringConcat(data, pos, i.toString());
+    }
+    
+    private static int saveStringConcat(char[] data, int pos, String s) {
+        int len = s.length();
+        for(int j = 0; j < len; j++) {
+            data[pos + j] = s.charAt(j);
+        }
+        
+        return pos + len;
+    }
+    
+    private static String getSaveString(Integer charid, Set<Entry<Integer, Integer>> cardSet) {
+        semaphore.acquireUninterruptibly();
+        try {
+            char[] save = new char[400000]; // 500 * 10 * 10 * 8
+            int i = 0;
+
+            i = saveStringConcat(save, i, "INSERT INTO monsterbook VALUES ");
+
+            for (Entry<Integer, Integer> all : cardSet) {   // assuming maxsize 500 unique cards
+                i = saveStringConcat(save, i, "(");
+                i = saveStringConcat(save, i, charid);  //10 chars
+                i = saveStringConcat(save, i, ", ");
+                i = saveStringConcat(save, i, all.getKey());  //10 chars
+                i = saveStringConcat(save, i, ", ");
+                i = saveStringConcat(save, i, all.getValue());  //1 char due to being 0 ~ 5
+                i = saveStringConcat(save, i, "),");
+            }
+            
+            return new String(save, 0, i - 1);
+        } finally {
+            semaphore.release();
+        }
+    }
+    
     public void saveCards(final int charid) {
         Set<Entry<Integer, Integer>> cardSet = getCardSet();
         
@@ -183,23 +223,8 @@ public final class MonsterBook {
             ps.setInt(1, charid);
             ps.execute();
             ps.close();
-            boolean first = true;
-            StringBuilder query = new StringBuilder();
-            for (Entry<Integer, Integer> all : cardSet) {
-                if (first) {
-                    query.append("INSERT INTO monsterbook VALUES (");
-                    first = false;
-                } else {
-                    query.append(",(");
-                }
-                query.append(charid);
-                query.append(", ");
-                query.append(all.getKey());
-                query.append(", ");
-                query.append(all.getValue());
-                query.append(")");
-            }
-            ps = con.prepareStatement(query.toString());
+            
+            ps = con.prepareStatement(getSaveString(charid, cardSet));
             ps.execute();
             ps.close();
             con.close();

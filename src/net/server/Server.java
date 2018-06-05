@@ -104,6 +104,7 @@ public class Server {
     private final List<MapleClient> processDiseaseAnnouncePlayers = new LinkedList<>();
     private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
     
+    private boolean availableDeveloperRoom = false;
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
     
@@ -133,6 +134,14 @@ public class Server {
     public NewYearCardRecord removeNewYearCard(int cardid) {
         return newyears.remove(cardid);
     }
+    
+    public void setAvailableDeveloperRoom() {
+        availableDeveloperRoom = true;
+    }
+    
+    public boolean canEnterDeveloperRoom() {
+        return availableDeveloperRoom;
+    }
 
     private void loadPlayerNpcMapStepFromDb() {
         try {
@@ -141,8 +150,8 @@ public class Server {
                         
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                int world = rs.getInt("world"), map = rs.getInt("map"), step = rs.getInt("step");
-                worlds.get(world).setPlayerNpcMapStep(map, step, true);
+                int world = rs.getInt("world"), map = rs.getInt("map"), step = rs.getInt("step"), podium = rs.getInt("podium");
+                worlds.get(world).setPlayerNpcMapData(map, step, podium);
             }
             
             rs.close();
@@ -401,9 +410,10 @@ public class Server {
                 worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
                 worlds.add(world);
                 channels.add(new HashMap<Integer, String>());
+                long bootTime = System.currentTimeMillis();
                 for (int j = 0; j < Integer.parseInt(p.getProperty("channels" + i)); j++) {
                     int channelid = j + 1;
-                    Channel channel = new Channel(i, channelid);
+                    Channel channel = new Channel(i, channelid, bootTime);
                     world.addChannel(channel);
                     channels.get(i).put(channelid, channel.getIP());
                 }

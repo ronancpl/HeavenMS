@@ -21,6 +21,7 @@
  */
 package provider.wz;
 
+import constants.GameConstants;
 import constants.ServerConstants;
 import java.awt.Point;
 import java.io.File;
@@ -45,7 +46,6 @@ import org.xml.sax.SAXException;
 public class XMLDomMapleData implements MapleData {
 	private Node node;
 	private File imageDataDir;
-        private NumberFormat nf;
 
 	public XMLDomMapleData(FileInputStream fis, File imageDataDir) {
 		try {
@@ -61,12 +61,10 @@ public class XMLDomMapleData implements MapleData {
 			throw new RuntimeException(e);
 		}
 		this.imageDataDir = imageDataDir;
-                this.nf = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
 	}
 
 	private XMLDomMapleData(Node node) {
 		this.node = node;
-                this.nf = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
 	}
 
 	@Override
@@ -117,52 +115,44 @@ public class XMLDomMapleData implements MapleData {
 		NamedNodeMap attributes = node.getAttributes();
 		MapleDataType type = getType();
 		switch (type) {
-		case DOUBLE:
-		case FLOAT:
-		case INT:
-                case SHORT: {
-                        String value = attributes.getNamedItem("value").getNodeValue();
-                        Number nval;
-                        
-                        try {
-                                nval = nf.parse(value);
-                        }
-                        catch(java.text.ParseException pe) {
-                                pe.printStackTrace();
-                                nval = 0.0f;
-                        }
-                                
-                        switch (type) {
                         case DOUBLE:
-                                return nval.doubleValue();
                         case FLOAT:
-                                return nval.floatValue();
                         case INT:
-                                return nval.intValue();
-                        case SHORT:
-                                return nval.shortValue();
+                        case SHORT: {
+                                String value = attributes.getNamedItem("value").getNodeValue();
+                                Number nval = GameConstants.parseNumber(value);
+
+                                switch (type) {
+                                        case DOUBLE:
+                                                return nval.doubleValue();
+                                        case FLOAT:
+                                                return nval.floatValue();
+                                        case INT:
+                                                return nval.intValue();
+                                        case SHORT:
+                                                return nval.shortValue();
+                                        default:
+                                                return null;
+                                }
+                        }
+                        case STRING:
+                        case UOL: {
+                                String value = attributes.getNamedItem("value").getNodeValue();
+                                return value;
+                        }
+                        case VECTOR: {
+                                String x = attributes.getNamedItem("x").getNodeValue();
+                                String y = attributes.getNamedItem("y").getNodeValue();
+                                return new Point(Integer.parseInt(x), Integer.parseInt(y));
+                        }
+                        case CANVAS: {
+                                String width = attributes.getNamedItem("width").getNodeValue();
+                                String height = attributes.getNamedItem("height").getNodeValue();
+                                return new FileStoredPngMapleCanvas(Integer.parseInt(width), Integer.parseInt(height), new File(
+                                                imageDataDir, getName() + ".png"));
+                        }
                         default:
                                 return null;
-                        }
-                }
-		case STRING:
-		case UOL: {
-			String value = attributes.getNamedItem("value").getNodeValue();
-                        return value;
-		}
-		case VECTOR: {
-			String x = attributes.getNamedItem("x").getNodeValue();
-			String y = attributes.getNamedItem("y").getNodeValue();
-			return new Point(Integer.parseInt(x), Integer.parseInt(y));
-		}
-		case CANVAS: {
-			String width = attributes.getNamedItem("width").getNodeValue();
-			String height = attributes.getNamedItem("height").getNodeValue();
-			return new FileStoredPngMapleCanvas(Integer.parseInt(width), Integer.parseInt(height), new File(
-					imageDataDir, getName() + ".png"));
-		}
-		default:
-			return null;
 		}
 	}
 

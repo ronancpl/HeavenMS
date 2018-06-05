@@ -26,13 +26,14 @@ import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
 import java.util.Arrays;
 
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleTrade;
 import constants.GameConstants;
@@ -407,7 +408,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             if (chr.getTrade() != null) {
                 if ((quantity <= item.getQuantity() && quantity >= 0) || ItemConstants.isRechargeable(item.getItemId())) {
                     if (ii.isDropRestricted(item.getItemId())) { // ensure that undroppable items do not make it to the trade window
-                        if (!((item.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA)) {
+                        if (!MapleKarmaManipulator.hasKarmaFlag(item)) {
                             c.announce(MaplePacketCreator.serverNotice(1, "That item is untradeable."));
                             c.announce(MaplePacketCreator.enableActions());
                             return;

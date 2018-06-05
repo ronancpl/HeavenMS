@@ -37,6 +37,8 @@ public enum RecvOpcode {
     PLAYER_DC(0x0C),
     VIEW_ALL_CHAR(0x0D),
     PICK_ALL_CHAR(0x0E),
+    NAME_TRANSFER(0x10),
+    WORLD_TRANSFER(0x12),
     CHAR_SELECT(0x13),
     PLAYER_LOGGEDIN(0x14),
     CHECK_CHAR_NAME(0x15),
@@ -114,7 +116,6 @@ public enum RecvOpcode {
     QUEST_ACTION(0x6B),
     //lolno
     SKILL_MACRO(0x6E),
-    SPOUSE_CHAT(0x6F),
     USE_ITEM_REWARD(0x70),
     MAKER_SKILL(0x71),
     USE_REMOTE(0x74),
@@ -122,6 +123,7 @@ public enum RecvOpcode {
     ADMIN_CHAT(0x76),
     MULTI_CHAT(0x77),
     WHISPER(0x78),
+    SPOUSE_CHAT(0x79),
     MESSENGER(0x7A),
     PLAYER_INTERACTION(0x7B),
     PARTY_OPERATION(0x7C),
@@ -137,6 +139,8 @@ public enum RecvOpcode {
     RPS_ACTION(0x88),
     RING_ACTION(0x89),
     WEDDING_ACTION(0x8A),
+    WEDDING_TALK(0x8B),
+    WEDDING_TALK_MORE(0x8B),
     ALLIANCE_OPERATION(0x8F),
     OPEN_FAMILY(0x92),
     ADD_FAMILY(0x93),
@@ -187,7 +191,7 @@ public enum RecvOpcode {
     CLOSE_ITEMUI(0xEC),
     USE_ITEMUI(0xED),
     MTS_OPERATION(0xFD),
-    USE_MAPLELIFE(0xFE),
+    USE_MAPLELIFE(0x100),
     USE_HAMMER(0x104);
     private int code = -2;
 

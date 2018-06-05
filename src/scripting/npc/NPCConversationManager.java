@@ -360,7 +360,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		getPlayer().changeJob(MapleJob.getById(a));
 	}
 
-	public void changeJob(MapleJob job){
+	public void changeJob(MapleJob job) {
 		getPlayer().changeJob(job);
 	}
 
@@ -525,6 +525,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		dispose();
 		return true;
 	}
+        
+        public boolean isUsingOldPqNpcStyle() {
+                return ServerConstants.USE_OLD_GMS_STYLED_PQ_NPCS && this.getPlayer().getParty() != null;
+        }
         
         public Object[] getAvailableMasteryBooks() {
                 return MapleItemInformationProvider.getInstance().usableMasteryBooks(this.getPlayer()).toArray();

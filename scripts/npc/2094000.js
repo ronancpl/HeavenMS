@@ -52,6 +52,9 @@ function action(mode, type, selection) {
                                 cm.sendOk("The Pirate PQ has encountered an error.");
                                 cm.dispose();
                                 return;
+                        } else if(cm.isUsingOldPqNpcStyle()) {
+                                action(1, 0, 0);
+                                return;
                         }
                     
                         cm.sendSimple("#e#b<Party Quest: Pirate Ship>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nHelp! My son has been kidnapped and is bound on the hands of the fearful #rLord Pirate#k. I need your help... Would you please assemble or join a team to save him? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

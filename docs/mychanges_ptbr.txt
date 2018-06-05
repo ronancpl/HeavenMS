@@ -1,4 +1,5 @@
 ﻿CUSTOM NPC SCRIPTS:
+	Spiegelmann -> 2042000
 	Coco -> 9000017
 	Agent E -> 9000036
 
@@ -842,13 +843,24 @@ Corrigido autoassigner para piratas somente preenchendo requisitos de gunslinger
 Mobs agora podem dropar mais de um equip de mesmo tipo, sistema utiliza quantidades min/max na tabela de drops.
 Nova ferramenta: MapleQuestItemCountFetcher. Localiza no Quest.wz possíveis locais onde um item deveria estar sendo tirado ao completar determinada quest, mas não o é (caso comum onde campo "count" não existe).
 
-28 - 29 Março 2018,
+28 - 30 Março 2018,
 Adicionado itens de pirata nas lojas de NPC em Singapore.
 Adicionado drop data para Flaming Racoon e Big Cloud Fox.
 Adicionado ganho de EXP em várias quests da região de Zipangu.
 Adicionado sistema de bonus para expedição de Showa, atingível se nenhum jogador morrer no evento.
 Nova ferramenta: MapleBossHpBarFetcher. Localiza no Mob.wz ids de mobs que possuem um boss hp bar mas não são labelados como "boss".
 Incrementado quiz de 3rd job, agora utilizando um pool de 40 perguntas com escolha arbitrária.
+
+31 Março 2018,
+Resolvido bug com diseases ao trocar de canais/entrar Cash Shop.
+
+05 Março 2018,
+Corrigido Holy Symbol atuando descomunalmente para um jogador.
+Corrigido sistema tirando mesos do jogador que tenta expandir guild com capacidade máxima alcançada.
+
+06 - 10 Março 2018,
+Implementado todo o sistema de marriages (rings, relacionamentos, spouse chat, etc).
+
 
 05 - 10 Abril 2018,
 Corrigido diseases não sendo removidas corretamente no cliente quando tentando trocar de canal/entrar Cash Shop, permitindo-as ficar no jogador infinitamente.
@@ -957,3 +969,45 @@ Corrigido pets permanentes expirando com o tempo.
 Adicionado suporte para Cash Shop Surprise.
 Revisado sistema de handlers que gerencia login no server.
 Resolvido um problema com flag ultra three snails.
+
+21 Maio 2018,
+Novo flag TRAVEL_RATE, que diminui linearmente valores de tempo de duração em scripts de viagens.
+Ajustado refresh rate de alguns reatores de bosses.
+Modificado stance para "pulo-direita" a ser mostrada pra outros jogadores quando jogador entra num mapa.
+Corrigido mobs utilizando demais skills, quebrando a fluidez de movimento do mesmo.
+Implementado sistema que permite PQ NPCs atuarem como no estilo GMS antigo, tentando registrar party na PQ imediatamente.
+
+22 - 23 Maio 2018,
+Implementado sistema de podio para PlayerNPCs.
+Corrigido problemas de overflow em diversas seções do código-fonte.
+Refatorado vários usos de NumberFormat com baixa expectativa de vida sendo criados no código-fonte.
+Otimizado busca por dados de quests na DB ao carregar jogadores.
+Otimizado método de salvar monster card do jogador na DB e quests.
+Corrigido birthday não sendo lido corretamente do DB.
+Corrigido mecânica de Scissors of Karma.
+Corrigido Duey não importando as flag de itens na entrega.
+
+24 - 25 Maio 2018,
+Adicionado sistema custom de buyback.
+Refatorado sistema de criação de personagens, passando a dar suporte para o cash item Maple Life.
+Corrigido sistema de automatização de pnpcs com algumas avarias.
+
+28 - 31 Maio 2018,
+Edição de localhost: removido bloqueio de acesso ao MTS em mapas que bloqueiam transição (change channel, cash shop, town scrolls), permitindo opção de buyback.
+Edição de localhost: removido bloqueio de criação/entrada em party para jogadores novatos com level menor que 10.
+Edição de localhost: removido cap para Speed.
+Corrigido marriage ring sendo destruído indevidamente ao usar certos pergaminhos. Somente pode ser retirado do inventário divorciando.
+Edição de localhost: removido bloqueio de uso de AP para jogadores novatos.
+Adicionado server flag que permite mecânica de statup para jogadores novatos com level menor que 11. Necessário uso do localhost editado.
+
+01 - 04 Maio 2018,
+Corrigido NPC de recrutamento para CafePQ não atuando corretamente com a flag que permite estilo do old-GMS PQ NPCs.
+Corrigido mensagem de anúncio de Strategy Time para todas as guilds que estiverem se registrando quando a fila está vazia (mesmo que outra guild já esteja nessa etapa).
+Edição de localhost: removido bloqueio de uso de gemas para WATK/MATK em equipamentos que não são weapons.
+Retirado possível exploit com Maker skill, não utilizando proteção a acesso concorrente em suas operações.
+Modificado sistema de EXP de mounts de forma a favorecer usar Revitalizer quando o mount estiver com 30+ de tiredness, adicionado proteção a acesso concorrente.
+Retirado aspecto aleatório de ganho de closeness em pets ao usar o Pet Food, adicionado proteção a acesso concorrente.
+Corrigido script da Arwen não retirando itens ao gerar certos itens.
+Corrigido script de viagem para Florina levando jogadores a Lith Harbor mesmo quando entrando por outras regiões.
+Corrigido Stance, Berserk, Ninja Storm, Concentrate, Mage skills and other 4th job skills questlines.
+Novo release: Light.

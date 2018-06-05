@@ -8,16 +8,16 @@ function start(mode, type, selection) {
     qm.forceCompleteQuest();
 
     var medalname = qm.getMedalName();
-    qm.message("<" + medalname + "> has been awarded.");
+    qm.message("<" + medalname + "> is not coded.");
     qm.earnTitle("<" + medalname + "> has been awarded.");
     qm.dispose();
 }
 
-function complete(mode, type, selection) {
+function end(mode, type, selection) {
     qm.forceCompleteQuest();
 
     var medalname = qm.getMedalName();
-    qm.message("<" + medalname + "> has been awarded.");
+    qm.message("<" + medalname + "> is not coded.");
     qm.earnTitle("<" + medalname + "> has been awarded.");
     qm.dispose();
 }

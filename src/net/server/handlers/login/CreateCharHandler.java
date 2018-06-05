@@ -21,20 +21,12 @@
  */
 package net.server.handlers.login;
 
+import client.MapleClient;
+import client.creator.novice.*;
 import net.AbstractMaplePacketHandler;
-import net.server.Server;
-import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import client.MapleCharacter;
-import client.MapleClient;
-import client.MapleJob;
-import client.MapleSkinColor;
-import client.autoban.AutobanFactory;
-import client.inventory.Item;
-import client.inventory.MapleInventory;
-import client.inventory.MapleInventoryType;
 
 public final class CreateCharHandler extends AbstractMaplePacketHandler {
 
@@ -60,83 +52,43 @@ public final class CreateCharHandler extends AbstractMaplePacketHandler {
 
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-		String name = slea.readMapleAsciiString();
-		if (!MapleCharacter.canCreateChar(name)) {
-			return;
-		}
-		MapleCharacter newchar = MapleCharacter.getDefault(c);
-		newchar.setWorld(c.getWorld());
-
-		int job = slea.readInt();
+                String name = slea.readMapleAsciiString();
+                int job = slea.readInt();
 		int face = slea.readInt();
 
 		int hair = slea.readInt();
-		int hairColor = slea.readInt();
+		int haircolor = slea.readInt();
 		int skincolor = slea.readInt();
 
-		newchar.setSkinColor(MapleSkinColor.getById(skincolor));
 		int top = slea.readInt();
 		int bottom = slea.readInt();
 		int shoes = slea.readInt();
 		int weapon = slea.readInt();
-		newchar.setGender(slea.readByte());
-		newchar.setName(name);
-		newchar.setHair(hair + hairColor);
-		newchar.setFace(face);
-
-		int [] items = new int [] {weapon, top, bottom, shoes, hair, face};
+                int gender = slea.readByte();
+                
+                int [] items = new int [] {weapon, top, bottom, shoes, hair, face};
 		for (int i = 0; i < items.length; i++){
 			if (!isLegal(items[i])) {
-				AutobanFactory.PACKET_EDIT.alert(newchar, name + " tried to packet edit in character creation.");
-                                FilePrinter.printError(FilePrinter.EXPLOITS  + newchar + ".txt", "Tried to packet edit in char creation.");	
+				FilePrinter.printError(FilePrinter.EXPLOITS + name + ".txt", "Owner from account '" + c.getAccountName() + "' tried to packet edit in char creation.");
 				c.disconnect(true, false);
 				return;
 			}
 		}
-
-		if (job == 0) { // Knights of Cygnus
-			newchar.setJob(MapleJob.NOBLESSE);
-			newchar.setMapId(130030000);
-			newchar.getInventory(MapleInventoryType.ETC).addItem(new Item(4161047, (short) 0, (short) 1));
+                
+                int status;
+                if (job == 0) { // Knights of Cygnus
+			status = NoblesseCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);
 		} else if (job == 1) { // Adventurer   
-			newchar.setJob(MapleJob.BEGINNER);
-			newchar.setMapId(/*specialJobType == 2 ? 3000600 : */10000);
-			newchar.getInventory(MapleInventoryType.ETC).addItem(new Item(4161001, (short) 0, (short) 1));
+			status = BeginnerCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);
 		} else if (job == 2) { // Aran
-			newchar.setJob(MapleJob.LEGEND);
-			newchar.setMapId(914000000);
-			newchar.getInventory(MapleInventoryType.ETC).addItem(new Item(4161048, (short) 0, (short) 1));
+			status = LegendCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);
 		} else {
 			c.announce(MaplePacketCreator.deleteCharResponse(0, 9));
 			return;
 		}
-
-		MapleInventory equipped = newchar.getInventory(MapleInventoryType.EQUIPPED);
-                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 
-		Item eq_top = ii.getEquipById(top);
-		eq_top.setPosition((byte) -5);
-		equipped.addFromDB(eq_top);
-                
-		Item eq_bottom = ii.getEquipById(bottom);
-		eq_bottom.setPosition((byte) -6);
-		equipped.addFromDB(eq_bottom);
-                
-		Item eq_shoes = ii.getEquipById(shoes);
-		eq_shoes.setPosition((byte) -7);
-		equipped.addFromDB(eq_shoes);
-                
-		Item eq_weapon = ii.getEquipById(weapon);
-		eq_weapon.setPosition((byte) -11);
-		equipped.addFromDB(eq_weapon.copy());
-
-		if (!newchar.insertNewChar()) {
-			c.announce(MaplePacketCreator.deleteCharResponse(0, 9));
-			return;
-		}
-		c.announce(MaplePacketCreator.addNewCharEntry(newchar));
-                
-                Server.getInstance().createCharacterid(newchar.getAccountID(), newchar.getId(), newchar.getWorld());
-                Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
+                if (status == -2) {
+                        c.announce(MaplePacketCreator.deleteCharResponse(0, 9));
+                }
 	}
 }

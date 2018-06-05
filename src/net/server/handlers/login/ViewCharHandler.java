@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -42,6 +43,8 @@ public final class ViewCharHandler extends AbstractMaplePacketHandler {
             List<Integer> worlds;
             List<MapleCharacter> chars;
             
+            int wlen = Server.getInstance().getWorlds().size();
+            
             Connection con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("SELECT world, id FROM characters WHERE accountid = ?")) {
                 ps.setInt(1, c.getAccID());
@@ -51,6 +54,8 @@ public final class ViewCharHandler extends AbstractMaplePacketHandler {
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
                         int cworld = rs.getByte("world");
+                        if(cworld >= wlen) continue;
+                        
                         boolean inside = false;
                         for (int w : worlds) {
                             if (w == cworld) {

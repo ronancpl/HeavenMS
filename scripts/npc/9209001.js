@@ -24,6 +24,10 @@ status = -1;
 var sel, sel2;
 
 function start() {
+    cm.sendOk("Hello, the Maple 7th Day Market is currently unavailable.");
+    cm.dispose();
+    return;
+    
     cm.sendSimple("Hello, the Maple 7th Day Market opens today.#b\r\n#L0#Move to Maple 7th Day Market map\r\n#L1#Listen for an explanation about the Maple 7th Day Market");
 }
 

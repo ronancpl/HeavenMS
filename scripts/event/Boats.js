@@ -19,6 +19,12 @@ var invasionDelayTime = 1 * 60 * 1000; //The time to balrog ship approach
 var invasionDelay = 5 * 1000; //The time that spawn balrog
 
 function init() {
+    closeTime = em.getTransportationTime(closeTime);
+    beginTime = em.getTransportationTime(beginTime);
+     rideTime = em.getTransportationTime(rideTime);
+    invasionStartTime = em.getTransportationTime(invasionStartTime);
+    invasionDelayTime = em.getTransportationTime(invasionDelayTime);
+    
     Orbis_btf = em.getChannelServer().getMapFactory().getMap(200000112);
     Ellinia_btf = em.getChannelServer().getMapFactory().getMap(101000301);
     Boat_to_Orbis = em.getChannelServer().getMapFactory().getMap(200090010);

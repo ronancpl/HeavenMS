@@ -12,10 +12,33 @@ function monsterValue(eim, mobId) {
     return 1;
 }
 
+function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
+        var eligible = [];
+        var hasLeader = false;
+        
+        if(party.size() > 0) {
+                var partyList = party.toArray();
+
+                for(var i = 0; i < party.size(); i++) {
+                        var ch = partyList[i];
+
+                        if(ch.getMapId() == 105090200 && ch.getLevel() >= 120) {
+                                if(ch.isLeader()) hasLeader = true;
+                                eligible.push(ch);
+                        }
+                }
+        }
+        
+        if(!(hasLeader && eligible.length >= minPlayers)) eligible = [];
+        return eligible;
+}
+
 function setup() {
     var eim = em.newInstance("s4aWorld");
 
-    eim.getInstanceMap(910500000).resetFully();
+    eim.getInstanceMap(910500000).resetPQ(1);
+    respawnStages(eim);
+    eim.getMapInstance(910500000).instanceMapForceRespawn();
     eim.startEventTimer(1200000);
 
     em.setProperty("started", "true");
@@ -24,6 +47,11 @@ function setup() {
 }
 
 function afterSetup(eim) {}
+
+function respawnStages(eim) {    
+        eim.getMapInstance(910500000).instanceMapRespawn();
+        eim.schedule("respawnStages", 15 * 1000);
+}
 
 function playerEntry(eim, player) {
     var map = eim.getMapFactory().getMap(910500000);
@@ -87,3 +115,5 @@ function monsterKilled(mob, eim) {}
 function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
+
+function dispose() {}

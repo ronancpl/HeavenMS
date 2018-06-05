@@ -57,6 +57,9 @@ function action(mode, type, selection) {
                                 if(em == null) {
                                         cm.sendOk("The Kerning PQ has encountered an error.");
                                         cm.dispose();
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        action(1, 0, 0);
+                                        return;
                                 }
                             
                                 cm.sendSimple("#e#b<Party Quest: 1st Accompaniment>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nHow about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

@@ -26,7 +26,8 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
-import constants.ItemConstants;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
 import constants.ServerConstants;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +39,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import net.SendOpcode;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -237,13 +237,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                     return;
                 }
                 
-                if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
-                    newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
-                }
+                MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
                 
                 visitorLock.lock();
                 try {
-                    int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
+                    int price = (int) Math.min((float)pItem.getPrice() * quantity, Integer.MAX_VALUE);
                     
                     if (c.getPlayer().getMeso() >= price) {
                         if (canBuy(c, newItem)) {

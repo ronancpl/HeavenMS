@@ -56,6 +56,9 @@ function action(mode, type, selection) {
                                 cm.sendOk("The Ludibrium Maze PQ has encountered an error.");
                                 cm.dispose();
                                 return;
+                        } else if(cm.isUsingOldPqNpcStyle()) {
+                                action(1, 0, 0);
+                                return;
                         }
                     
                         cm.sendSimple("#e#b<Party Quest: Ludibrium Maze>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nThis is the entrance to the Ludibrium Maze. Enjoy!\r\n#b#L0#Enter the Lubidrium Maze#l\r\n#L1#I want to find party members.\r\n#L2#What is the Ludibrium Maze?");

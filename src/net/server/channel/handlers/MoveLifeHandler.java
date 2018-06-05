@@ -27,8 +27,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import server.life.MapleMonster;
-import server.life.MobAttackInfo;
-import server.life.MobAttackInfoFactory;
+//import server.life.MobAttackInfo;
+//import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
 import server.maps.MapleMapObject;
@@ -95,11 +95,19 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 					toUse = null;
 				} else if (monster.canUseSkill(toUse)) {
 					toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
-					//System.out.println("Applied: " + nextCastSkill + " Level: " + nextCastSkillLevel);
-				}
+				} else {
+                                        toUse = null;
+                                }
 			} else {
-				MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
-				//System.out.println("Attacked");
+                                long curtime = System.currentTimeMillis();
+                                if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
+                                        //MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
+                                        //monster.setNextBasicSkillTime(curtime);
+                                    
+                                        toUse = null;   // paliative measure for suspicious mob movement
+                                } else {
+                                        toUse = null;
+                                }
 			}
 		}
 

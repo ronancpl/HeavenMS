@@ -736,7 +736,7 @@ public class MapleClient {
 	public int getLoginState() {  // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
 		try {
 			Connection con = DatabaseConnection.getConnection();
-			PreparedStatement ps = con.prepareStatement("SELECT loggedin, lastlogin, UNIX_TIMESTAMP(birthday) as birthday FROM accounts WHERE id = ?");
+			PreparedStatement ps = con.prepareStatement("SELECT loggedin, lastlogin, birthday FROM accounts WHERE id = ?");
 			ps.setInt(1, getAccID());
 			ResultSet rs = ps.executeQuery();
 			if (!rs.next()) {
@@ -744,11 +744,12 @@ public class MapleClient {
 				ps.close();
 				throw new RuntimeException("getLoginState - MapleClient");
 			}
+                        
 			birthday = Calendar.getInstance();
-			long blubb = rs.getLong("birthday");
-			if (blubb > 0) {
-				birthday.setTimeInMillis(blubb * 1000);
-			}
+                        try {
+                            birthday.setTime(rs.getDate("birthday"));
+                        } catch(SQLException e) {}
+			
 			int state = rs.getInt("loggedin");
 			if (state == LOGIN_SERVER_TRANSITION) {
                                 // Arnah's note: lastlogin is a date-type, in case of login and game servers being of different timezones this becomes broken
@@ -783,12 +784,13 @@ public class MapleClient {
 	}
 
 	public boolean checkBirthDate(Calendar date) {
-		return date.get(Calendar.YEAR) == birthday.get(Calendar.YEAR) && date.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) && date.get(Calendar.DAY_OF_MONTH) == birthday.get(Calendar.DAY_OF_MONTH);
+                return date.get(Calendar.YEAR) == birthday.get(Calendar.YEAR) && date.get(Calendar.MONTH) == birthday.get(Calendar.MONTH) && date.get(Calendar.DAY_OF_MONTH) == birthday.get(Calendar.DAY_OF_MONTH);
 	}
 
 	private void removePlayer() {
 		try {
                         player.setAwayFromWorld(true);
+                        player.notifyMapTransferToPartner(-1);
 			player.cancelAllBuffs(true);
 			player.cancelAllDebuffs();
                         
@@ -1167,7 +1169,7 @@ public class MapleClient {
 		return characterSlots;
 	}
 
-	public boolean gainCharacterSlot() {
+	public synchronized boolean gainCharacterSlot() {
 		if (characterSlots < 15) {
 			Connection con = null;
 			try {
@@ -1301,6 +1303,7 @@ public class MapleClient {
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
                 player.setAwayFromWorld(true);
+                player.notifyMapTransferToPartner(-1);
 		player.cancelAllBuffs(true);
                 player.cancelAllDebuffs();
                 player.cancelBuffExpireTask();

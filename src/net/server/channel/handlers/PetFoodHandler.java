@@ -27,9 +27,8 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.autoban.AutobanManager;
 import client.inventory.Item;
-import tools.Randomizer;
 import net.AbstractMaplePacketHandler;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -71,8 +70,13 @@ public final class PetFoodHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        // 50% chance to get +1 closeness
-        pet.gainClosenessFullness(chr, (Randomizer.nextInt(101) <= 50) ? 1 : 0, 30, 1);
+        c.lockClient();
+        try {
+            pet.gainClosenessFullness(chr, (pet.getFullness() <= 75) ? 1 : 0, 30, 1);   // 25+ "emptyness" to get +1 closeness
+        } finally {
+            c.unlockClient();
+        }
+        
         MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, pos, (short) 1, false);
     }
 }

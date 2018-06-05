@@ -156,7 +156,7 @@ function playerLeft(eim, player) {
 }
 
 function changedMap(eim, player, mapid) {
-        if (mapid < minMapId || mapid > maxMapId) {
+        if (mapid < minMapId || mapid > maxMapId || mapid == 910010300) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);

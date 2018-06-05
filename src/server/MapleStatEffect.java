@@ -21,6 +21,7 @@
  */
 package server;
 
+import client.inventory.manipulator.MapleInventoryManipulator;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;

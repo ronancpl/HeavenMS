@@ -21,36 +21,29 @@
 */
 package net.server.channel.handlers;
 
-//import client.MapleCharacter;
+import client.MapleCharacter;
 import client.MapleClient;
-//import client.command.CommandProcessor;
 import net.AbstractMaplePacketHandler;
-//import tools.MaplePacketCreator;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class SpouseChatHandler extends AbstractMaplePacketHandler {
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        System.out.println(slea.toString());
-//        slea.readMapleAsciiString();//recipient
-//        String msg = slea.readMapleAsciiString();
-//        if (!CommandProcessor.processCommand(c, msg))
-//            if (c.getPlayer().isMarried()) {
-//                MapleCharacter wife = c.getChannelServer().getPlayerStorage().getCharacterById(c.getPlayer().getPartnerId());
-//                if (wife != null) {
-//                    wife.getClient().announce(MaplePacketCreator.sendSpouseChat(c.getPlayer(), msg));
-//                    c.announce(MaplePacketCreator.sendSpouseChat(c.getPlayer(), msg));
-//                } else
-//                    try {
-//                        if (c.getChannelServer().getWorldInterface().isConnected(wife.getName())) {
-//                            c.getChannelServer().getWorldInterface().sendSpouseChat(c.getPlayer().getName(), wife.getName(), msg);
-//                            c.announce(MaplePacketCreator.sendSpouseChat(c.getPlayer(), msg));
-//                        } else
-//                            c.getPlayer().message("You are either not married or your spouse is currently offline.");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                        c.getPlayer().message("You are either not married or your spouse is currently offline.");
-//                        c.getChannelServer().reconnectWorld();
-//                    }
-//            }
+        slea.readMapleAsciiString();//recipient
+        String msg = slea.readMapleAsciiString();
+        
+        int partnerId = c.getPlayer().getPartnerId();
+        if (partnerId > 0) { // yay marriage
+            MapleCharacter spouse = c.getWorldServer().getPlayerStorage().getCharacterById(partnerId);
+            if (spouse != null) {
+                spouse.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
+                c.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
+            } else {
+                c.getPlayer().dropMessage(5, "Your spouse is currently offline.");
+            }
+        } else {
+            c.getPlayer().dropMessage(5, "You don't have a spouse.");
+        }
     }
 }

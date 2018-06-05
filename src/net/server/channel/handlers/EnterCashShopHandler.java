@@ -61,6 +61,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());
             Server.getInstance().getPlayerBuffStorage().addDiseasesToStorage(mc.getId(), mc.getAllDiseases());
             mc.setAwayFromWorld(true);
+            mc.notifyMapTransferToPartner(-1);
             mc.cancelAllBuffs(true);
             mc.cancelAllDebuffs();
             mc.cancelBuffExpireTask();

@@ -117,8 +117,11 @@ function action(mode, type, selection) {
                                         cm.sendOk("The Boss Rush PQ has encountered an error.");
                                         cm.dispose();
                                         return;
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        action(1, 0, 0);
+                                        return;
                                 }
-                            
+                                
                                 cm.sendSimple("#e#b<Party Quest: Boss Rush>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to collaborate with party members to complete the expedition, or are you brave enough to take it on all by yourself? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
                         }
                 } else if (status == 1) {

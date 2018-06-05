@@ -37,9 +37,11 @@ public final class ItemConstants {
     
     public final static int LOCK = 0x01;
     public final static int SPIKES = 0x02;
+    public final static int KARMA_USE = 0x02;
     public final static int COLD = 0x04;
     public final static int UNTRADEABLE = 0x08;
-    public final static int KARMA = 0x10;
+    public final static int KARMA_EQP = 0x10;
+    public final static int KARMA_UNTRADEABLE = 0x20;   // let 0x20 until it's proven something uses this
     public final static int PET_COME = 0x80;
     public final static int ACCOUNT_SHARING = 0x100;
 
@@ -190,6 +192,11 @@ public final class ItemConstants {
         int itemType = itemId / 10000;
         return itemType == 503 || itemType == 514;
     }
+    
+    public static boolean isMapleLife(int itemId) {
+        int itemType = itemId / 10000;
+        return itemType == 543 && itemId != 5430000;
+    }
 
     public static boolean isWeapon(int itemId) {
         return itemId >= 1302000 && itemId < 1492024;
@@ -198,8 +205,16 @@ public final class ItemConstants {
     public static boolean isEquipment(int itemId) {
         return itemId < 2000000 && itemId != 0;
     }
-    
+
     public static boolean isMedal(int itemId) {
         return itemId >= 1140000 && itemId < 1143000;
+    }
+    
+    public static boolean isWeddingRing(int itemId) {
+        return itemId >= 1112803 && itemId <= 1112809;
+    }
+    
+    public static boolean isWeddingToken(int itemId) {
+        return itemId >= 4031357 && itemId <= 4031364;
     }
 }

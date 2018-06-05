@@ -34,7 +34,7 @@ function action(mode, type, selection) {
     else {
         var map = cm.getPlayer().getSavedLocation("HAPPYVILLE");
         if (map == -1)
-                map = 101000000;
+            map = 101000000;
         
         cm.warp(map, 0);
     }

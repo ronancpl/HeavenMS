@@ -27,11 +27,27 @@ actionx = {"Mental" : false, "Physical" : false};
 
 function start() {
     if(cm.isQuestStarted(6192)) {
-        if(cm.getWarpMap(921100300).getCharacters().size() > 0)
-            cm.sendOk("There is someone currently in this map, come back later.");
+        if(cm.getParty() == null) {
+            cm.sendOk("Form a party to start this instance.");
+            cm.dispose();
+            return;
+        }
+        
+        var em = cm.getEventManager("ElnathPQ");
+        if(em == null) {
+            cm.sendOk("The El Nath PQ has encountered an error.");
+            cm.dispose();
+            return;
+        }
+        
+        var eli = em.getEligibleParty(cm.getParty());
+        if(eli.size() > 0) {
+            if(!em.startInstance(cm.getParty(), cm.getPlayer().getMap(), 1)) {
+                cm.sendOk("Another party is already challenging this instance. Please try another channel, or wait for the current party to finish.");
+            }
+        }
         else {
-            cm.resetMapObjects(921100300);
-            cm.warp(921100300, 0);
+            cm.sendOk("You cannot start this instance yet, because either your party is not in the range size, some of your party members are not eligible to attempt it or they are not in this map. If you're having trouble finding party members, try Party Search.");
         }
             
         cm.dispose();

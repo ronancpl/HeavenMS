@@ -21,6 +21,8 @@
 */
 package server.life;
 
+import server.life.positioner.MaplePlayerNPCPositioner;
+import server.life.positioner.MaplePlayerNPCPodium;
 import java.awt.Point;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,6 +43,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
+import constants.ServerConstants;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.World;
@@ -58,7 +61,7 @@ import tools.Pair;
  * @author Ronan
  */
 public class MaplePlayerNPC extends AbstractMapleMapObject {
-    private static final Map<Byte, AtomicInteger> runningPlayerNpcScriptIds = new HashMap<>();
+    private static final Map<Byte, List<Integer>> availablePlayerNpcScriptIds = new HashMap<>();
     private static final AtomicInteger runningOverallRank = new AtomicInteger();
     private static final List<AtomicInteger> runningWorldRank = new ArrayList<>();
     private static final Map<Pair<Integer, Integer>, AtomicInteger> runningWorldJobRank = new HashMap<>();
@@ -220,7 +223,6 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
         try {
             Connection con = DatabaseConnection.getConnection();
             
-            getRunningPlayerNpcScriptIds(con);
             getRunningOverallRanks(con);
             getRunningWorldRanks(con);
             getRunningWorldJobRanks(con);
@@ -229,25 +231,6 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    
-    private static void getRunningPlayerNpcScriptIds(Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT floor(scriptid / 100), max(scriptid) FROM playernpcs GROUP BY floor(scriptid / 100) ORDER BY floor(scriptid / 100)");
-        ResultSet rs = ps.executeQuery();
-
-        while(rs.next()) {
-            byte branch = (byte) (rs.getInt(1) % 100);
-            int maxid = rs.getInt(2);
-
-            if(branch < 26) {
-                runningPlayerNpcScriptIds.put(branch, new AtomicInteger(maxid));
-            } else {
-                runningPlayerNpcScriptIds.put((byte)(branch - ((branch - 26) % 4)), new AtomicInteger(maxid));
-            }
-        }
-
-        rs.close();
-        ps.close();
     }
     
     private static void getRunningOverallRanks(Connection con) throws SQLException {
@@ -356,17 +339,69 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
         }
     }
     
-    private static MaplePlayerNPC createPlayerNPCInternal(MapleMap map, Point pos, MapleCharacter chr) {
-        if(pos == null) {
-            pos = map.getNextPlayerNpcPosition();
-            if(pos == null) {
-                return null;
+    private static void fetchAvailableScriptIdsFromDb(byte branch, List<Integer> list) {
+        try {
+            int branchLen = (branch < 26) ? 100 : 400;
+            int branchSid = 9900000 + (branch * 100);
+            int nextBranchSid = branchSid + branchLen;
+            Set<Integer> usedScriptIds = new HashSet<>();
+            
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT scriptid FROM playernpcs WHERE scriptid >= ? AND scriptid < ? ORDER BY scriptid");
+            ps.setInt(1, branchSid);
+            ps.setInt(2, nextBranchSid);
+            
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                usedScriptIds.add(rs.getInt(1));
+            }
+            
+            List<Integer> availables = new ArrayList<>(20);
+            int j = 0;
+            for(int i = branchSid; i < nextBranchSid; i++) {
+                if(!usedScriptIds.contains(i)) {
+                    availables.add(i);
+                    j++;
+                    
+                    if(j == 20) {
+                        break;
+                    }
+                }
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+            
+            for(int i = availables.size() - 1; i >= 0; i--) {
+                list.add(availables.get(i));
+            }
+        } catch(SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+    
+    private static int getNextScriptId(byte branch) {
+        List<Integer> availablesBranch = availablePlayerNpcScriptIds.get(branch);
+        
+        if(availablesBranch == null) {
+            availablesBranch = new ArrayList<>(20);
+            availablePlayerNpcScriptIds.put(branch, availablesBranch);
+        }
+        
+        if(availablesBranch.isEmpty()) {
+            fetchAvailableScriptIdsFromDb(branch, availablesBranch);
+            
+            if(availablesBranch.isEmpty()) {
+                return -1;
             }
         }
-
+        
+        return availablesBranch.remove(availablesBranch.size() - 1);
+    }
+    
+    private static MaplePlayerNPC createPlayerNPCInternal(MapleMap map, Point pos, MapleCharacter chr) {
         int mapId = map.getId();
-        int worldId = chr.getWorld();
-        int jobId = (chr.getJob().getId() / 100) * 100;
         
         /*
         if(!canSpawnPlayerNpc(chr.getName(), mapId)) {
@@ -376,17 +411,27 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
         
         byte branch = GameConstants.getHallOfFameBranch(chr.getJob(), mapId);
         
-        int scriptId;
-        try {
-            scriptId = runningPlayerNpcScriptIds.get(branch).getAndIncrement();
+        int scriptId = getNextScriptId(branch);
+        if (scriptId == -1) {
+            return null;
+        }
+        
+        if(pos == null) {
+            if(GameConstants.isPodiumHallOfFameMap(map.getId())) {
+                pos = MaplePlayerNPCPodium.getNextPlayerNpcPosition(map);
+            } else {
+                pos = MaplePlayerNPCPositioner.getNextPlayerNpcPosition(map);
+            }
             
-            if(!GameConstants.canPnpcBranchUseScriptId(branch, scriptId)) {
+            if(pos == null) {
                 return null;
             }
-        } catch (NullPointerException npe) {
-            scriptId = 9900000 + (branch * 100);
-            runningPlayerNpcScriptIds.put(branch, new AtomicInteger(scriptId + 1));
         }
+        
+        if(ServerConstants.USE_DEBUG) System.out.println("GOT SID " + scriptId + " POS " + pos);
+        
+        int worldId = chr.getWorld();
+        int jobId = (chr.getJob().getId() / 100) * 100;
         
         MaplePlayerNPC ret;
         int npcId;
@@ -516,8 +561,9 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
     }
     
     public static boolean spawnPlayerNPC(int mapid, Point pos, MapleCharacter chr) {
-        MaplePlayerNPC pn = processPlayerNPCInternal(chr.getClient().getChannelServer().getMapFactory().getMap(mapid), pos, chr, true).getLeft();
+        if(chr == null) return false;
         
+        MaplePlayerNPC pn = processPlayerNPCInternal(chr.getClient().getChannelServer().getMapFactory().getMap(mapid), pos, chr, true).getLeft();
         if(pn != null) {
             for (Channel channel : Server.getInstance().getChannelsFromWorld(chr.getWorld())) {
                 MapleMap m = channel.getMapFactory().getMap(mapid);
@@ -547,6 +593,8 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
     }
     
     public static void removePlayerNPC(MapleCharacter chr) {
+        if(chr == null) return;
+        
         List<Integer> updateMapids = processPlayerNPCInternal(null, null, chr, false).getRight();
         int worldid = updateMapids.remove(0);
         
@@ -608,8 +656,10 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             PreparedStatement ps = con.prepareStatement("SELECT DISTINCT world, map FROM playernpcs");
             ResultSet rs = ps.executeQuery();
             
+            int wsize = Server.getInstance().getWorlds().size();
             while(rs.next()) {
                 int world = rs.getInt("world"), map = rs.getInt("map");
+                if(world >= wsize) continue;
                 
                 World w = Server.getInstance().getWorld(world);
                 for (Channel channel : w.getChannels()) {
@@ -635,6 +685,14 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             ps = con.prepareStatement("DELETE FROM playernpcs_equip");
             ps.executeUpdate();
             ps.close();
+            
+            ps = con.prepareStatement("DELETE FROM playernpcs_field");
+            ps.executeUpdate();
+            ps.close();
+            
+            for(World w : Server.getInstance().getWorlds()) {
+                w.resetPlayerNpcMapData();
+            }
             
             con.close();
         } catch (SQLException e) {

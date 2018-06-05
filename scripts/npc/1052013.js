@@ -96,6 +96,10 @@ function action(mode, type, selection) {
                                         cm.sendOk("The CafePQ_" + pqArea + "has encountered an error.");
                                         cm.dispose();
                                         return;
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        status = 1;
+                                        action(1, 0, 0);
+                                        return;
                                 }
 
                                 cm.sendSimple("#e#b<Party Quest: Premium Road - " + levels[selection] + ">\r\n#k#n" + em.getProperty("party") + "\r\n\r\nThe #p1052014# operates differently than the common ones. They do not use mesos or gachapon tickets, rather #rERASERS#k, that can be obtained by completing the missions held on the Premium Road. To go there, you must find partners and attend to a Party Quest. When teamed up and ready, have your #bparty leader#k talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");

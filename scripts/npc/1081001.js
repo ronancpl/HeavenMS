@@ -25,6 +25,7 @@
 -- By ---------------------------------------------------------------------------------------------
 	Information & Xterminator
 -- Version Info -----------------------------------------------------------------------------------
+        1.3 - Fixed saved location [Ronan]
         1.2 - Fixed and cleanup [Shootsource]
 	1.1 - Add null map check [Xterminator]
 	1.0 - First Version
@@ -34,7 +35,7 @@ var status = 0;
 var returnmap;
 
 function start() {
-    returnmap = cm.getPlayer().getSavedLocation("FLORINA");
+    returnmap = cm.getPlayer().peekSavedLocation("FLORINA");
     if (returnmap == -1)
         returnmap = 104000000;
     cm.sendNext("So you want to leave #b#m110000000##k? If you want, I can take you back to #b#m"+returnmap+"##k.");
@@ -53,6 +54,7 @@ function action(mode, type, selection) {
         if (status == 1)
             cm.sendYesNo("Are you sure you want to return to #b#m"+returnmap+"##k? Alright, we'll have to get going fast. Do you want to head back to #m"+returnmap+"# now?")
         else {
+            cm.getPlayer().getSavedLocation("FLORINA");
             cm.warp(returnmap);
             cm.dispose();
         }

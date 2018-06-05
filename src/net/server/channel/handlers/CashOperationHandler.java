@@ -37,7 +37,7 @@ import net.AbstractMaplePacketHandler;
 import server.CashShop;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -72,6 +72,11 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             }
             
             if (action == 0x03) { // Item
+                if(ItemConstants.isMapleLife(cItem.getItemId()) && chr.getLevel() < 30) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+                
                 Item item = cItem.toItem();
                 cs.addToInventory(item);
                 c.announce(MaplePacketCreator.showBoughtCashItem(item, c.getAccID()));
@@ -165,6 +170,9 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (chr.getStorage().gainSlots(4)) {
+                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 4 slots to their account storage.\r\n");
+                    chr.setUsedStorage();
+                    
                     c.announce(MaplePacketCreator.showBoughtStorageSlots(chr.getStorage().getSlots()));
                     cs.gainCash(cash, -4000);
                     c.announce(MaplePacketCreator.showCash(chr));
@@ -196,6 +204,10 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.showBoughtCharacterSlot(c.getCharacterSlots()));
                 cs.gainCash(cash, -cItem.getPrice());
                 c.announce(MaplePacketCreator.showCash(chr));
+            } else {
+                chr.dropMessage(1, "You have already used up all 12 extra character slots.");
+                c.announce(MaplePacketCreator.enableActions());
+                return;
             }
         } else if (action == 0x0D) { // Take from Cash Inventory
             Item item = cs.findByCashId(slea.readInt());
@@ -208,15 +220,11 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.takeFromCashInventory(item));
                 
                 if(item instanceof Equip) {
-                        Equip equip = (Equip) item;
-                        if(equip.getRingId() >= 0) {
-                                MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
-                                if (ring.getItemId() > 1112012) {
-                                        chr.addFriendshipRing(ring);
-                                } else {
-                                        chr.addCrushRing(ring);
-                                }
-                        }
+                    Equip equip = (Equip) item;
+                    if(equip.getRingId() >= 0) {
+                        MapleRing ring = MapleRing.loadFromDb(equip.getRingId());
+                        chr.addPlayerRing(ring);
+                    }
                 }
             }
         } else if (action == 0x0E) { // Put into Cash Inventory
@@ -236,8 +244,8 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             mi.removeSlot(item.getPosition());
             c.announce(MaplePacketCreator.putIntoCashInventory(item, c.getAccID()));
         } else if (action == 0x1D) { //crush ring (action 28)
-            slea.readInt();//Birthday
-           // if (checkBirthday(c, birthday)) { //We're using a default birthday, so why restrict rings to only people who know of it? 
+            int birthday = slea.readInt();
+            if (checkBirthday(c, birthday)) {
                 int toCharge = slea.readInt();
                 int SN = slea.readInt();
                 String recipientName = slea.readMapleAsciiString();
@@ -271,9 +279,10 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         partner.showNote();
                     }   
                 }
-           /* } else {
-                chr.dropMessage("The birthday you entered was incorrect.");
-            }*/
+            } else {
+                c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xC4));
+                c.announce(MaplePacketCreator.enableActions());
+            }
                 
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else if (action == 0x20) { // everything is 1 meso...
@@ -288,8 +297,8 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             }
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else if (action == 0x23) { //Friendship :3
-            slea.readInt(); //Birthday
-            // if (checkBirthday(c, birthday)) {
+            int birthday = slea.readInt();
+            if (checkBirthday(c, birthday)) {
                 int payment = slea.readByte();
                 slea.skip(3); //0s
                 int snID = slea.readInt();
@@ -320,17 +329,18 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         partner.showNote();
                     }
                 }
-           /* } else {
-                chr.dropMessage("The birthday you entered was incorrect.");
-            } */
+            } else {
+                c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xC4));
+                c.announce(MaplePacketCreator.enableActions());
+            }
                 
             c.announce(MaplePacketCreator.showCash(c.getPlayer()));
         } else {
-            System.out.println(slea);
+            System.out.println("Unhandled action: " + action + "\n" + slea);
         }
     }
 
-    private static boolean checkBirthday(MapleClient c, int idate) {
+    public static boolean checkBirthday(MapleClient c, int idate) {
         int year = idate / 10000;
         int month = (idate - year * 10000) / 100;
         int day = idate - year * 10000 - month * 100;
@@ -339,7 +349,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
         cal.set(year, month - 1, day);
         return c.checkBirthDate(cal);
     }
-
+    
     public static boolean canBuy(CashItem item, int cash) {
         return item != null && item.isOnSale() && item.getPrice() <= cash;
     }

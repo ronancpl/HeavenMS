@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-import server.MapleItemInformationProvider;
 
 public class Item implements Comparable<Item> {
 

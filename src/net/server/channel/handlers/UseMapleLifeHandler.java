@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -21,6 +19,7 @@
 */
 package net.server.channel.handlers;
 
+import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
@@ -28,10 +27,28 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author Jay Estrella
+ * @author RonanLana
  */
 public class UseMapleLifeHandler extends AbstractMaplePacketHandler {
+    @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.announce(MaplePacketCreator.charNameResponse(slea.readMapleAsciiString(), false));
+        MapleCharacter player = c.getPlayer();
+        long timeNow = System.currentTimeMillis();
+        
+        if(timeNow - player.getLastUsedCashItem() < 3000) {
+            player.dropMessage(5, "Please wait a moment before trying again.");
+            c.announce(MaplePacketCreator.sendMapleLifeError(3));
+            c.announce(MaplePacketCreator.enableActions());
+            return;
+        }
+        player.setLastUsedCashItem(timeNow);
+        
+        String name = slea.readMapleAsciiString();
+        if(MapleCharacter.canCreateChar(name)) {
+            c.announce(MaplePacketCreator.sendMapleLifeCharacterInfo());
+        } else {
+            c.announce(MaplePacketCreator.sendMapleLifeNameError());
+        }
+        c.announce(MaplePacketCreator.enableActions());
     }
 }

@@ -1350,8 +1350,8 @@ public class MapleItemInformationProvider {
             return null;
         }
         scriptedItem script = new scriptedItem(MapleDataTool.getInt("spec/npc", getItemData(itemId), 0),
-                MapleDataTool.getString("spec/script", getItemData(itemId), ""),
-                MapleDataTool.getInt("spec/runOnPickup", getItemData(itemId), 0) == 1);
+        MapleDataTool.getString("spec/script", getItemData(itemId), ""),
+        MapleDataTool.getInt("spec/runOnPickup", getItemData(itemId), 0) == 1);
         scriptedItemCache.put(itemId, script);
         return scriptedItemCache.get(itemId);
     }
@@ -1538,8 +1538,12 @@ public class MapleItemInformationProvider {
     public boolean canWearEquipment(MapleCharacter chr, Equip equip, int dst) {      
         int id = equip.getItemId();
         
-        String islot = getEquipmentSlot(id);
+        if(ItemConstants.isWeddingRing(id) && chr.hasJustMarried()) {
+            chr.dropMessage(5, "The Wedding Ring cannot be equipped on this map.");  // will dc everyone due to doubled couple effect
+            return false;
+        }
         
+        String islot = getEquipmentSlot(id);
         if (!EquipSlot.getFromTextSlot(islot).isAllowed(dst, isCash(id))) {
             equip.wear(false);
             String itemName = MapleItemInformationProvider.getInstance().getName(equip.getItemId());

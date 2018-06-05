@@ -52,6 +52,12 @@ function action(mode, type, selection) {
         else
             status--;
         
+        if(cm.haveItem(4001109, 1)) {
+            cm.warp(921100000, "out00");
+            cm.dispose();
+            return;
+        }
+        
         if(!cm.isQuestStarted(100200)) {
             cm.sendOk("Beware, for the power of olde has not been forgotten... ");
             cm.dispose();

@@ -59,9 +59,12 @@ function action(mode, type, selection) {
                                         cm.sendOk("The Horntail PQ has encountered an error.");
                                         cm.dispose();
                                         return;
+                                } else if(cm.isUsingOldPqNpcStyle()) {
+                                        action(1, 0, 0);
+                                        return;
                                 }
 
-                                cm.sendSimple("#e#b<Party Quest: Horntail Trial Grounds>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nThis is the path to Horntail's lair. If you want to face him, you and your team shall be tested on the trial grounds ahead.#b\r\n#L0#Let us pass to the trial grounds.\r\n#L1#I would like to hear more details.");
+                                cm.sendSimple("#e#b<Party Quest: Horntail Trial Grounds>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nThis is the path to Horntail's lair. If you want to face him, you and your team shall be tested on the trial grounds ahead.#b\r\n#L0#Let us pass to the trial grounds.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
                         } else if (status == 1) {
                                 if (selection == 0) {
                                         if (cm.getParty() == null) {
@@ -83,6 +86,9 @@ function action(mode, type, selection) {
 
                                                 cm.dispose();
                                         }
+                                } else if(selection == 1) {
+                                        cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
+                                        cm.dispose();
                                 } else {
                                         cm.sendOk("#e#b<Party Quest: Horntail Trial Grounds>#k#n\r\nAs the gatekeeper of Horntail's lair, I will grant access #bjust to those worthy#k of his presence. Even for those people, the path inside is that of a maze, full of branches and trials. However, those #radept at fighting squad bosses#k have a better chance to stand to our leader, although those #rof our kind#k have a shabby chance as well.");
                                         cm.dispose();

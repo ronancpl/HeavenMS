@@ -13,6 +13,10 @@ var beginTime = 1 * 60 * 1000; //The time to begin the ride
 var  rideTime = 4 * 60 * 1000; //The time that require move to destination
 
 function init() {
+    closeTime = em.getTransportationTime(closeTime);
+    beginTime = em.getTransportationTime(beginTime);
+     rideTime = em.getTransportationTime(rideTime);
+    
     KC_Waiting = em.getChannelServer().getMapFactory().getMap(600010004);
     NLC_Waiting = em.getChannelServer().getMapFactory().getMap(600010002);
     Subway_to_KC = em.getChannelServer().getMapFactory().getMap(600010003);
@@ -34,6 +38,7 @@ function stopEntry() {
 }
 
 function takeoff() {
+    //sound src: https://www.soundjay.com/transportation/metro-door-close-01.mp3
     KC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
     NLC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
     

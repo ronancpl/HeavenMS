@@ -58,6 +58,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 import server.life.MobSkill;
+import tools.packets.Wedding;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
@@ -137,7 +138,9 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         
         c.announce(MaplePacketCreator.getCharInfo(player));
         if (!player.isHidden()) {
-            player.toggleHide(true);
+            if(player.isGM() && ServerConstants.USE_AUTOHIDE_GM) {
+                player.toggleHide(true);
+            }
         }
         player.sendKeymap();
         player.sendMacros();
@@ -277,6 +280,16 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.updateCouponRates();
         
         player.receivePartyMemberHP();
+        
+        if(player.getPartnerId() > 0) {
+            int partnerId = player.getPartnerId();
+            final MapleCharacter partner = c.getWorldServer().getPlayerStorage().getCharacterById(partnerId);
+            
+            if(partner != null && !partner.isAwayFromWorld()) {
+                player.announce(Wedding.OnNotifyWeddingPartnerTransfer(partnerId, partner.getMapId()));
+                partner.announce(Wedding.OnNotifyWeddingPartnerTransfer(player.getId(), player.getMapId()));
+            }
+        }
     }
     
     private static void showDueyNotification(MapleClient c, MapleCharacter player) {
@@ -286,13 +299,13 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         ResultSet rs = null;
         try {
             con = DatabaseConnection.getConnection();
-            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE RecieverId = ? and Checked = 1");
+            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE ReceiverId = ? and Checked = 1");
             ps.setInt(1, player.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
                 try {
                     Connection con2 = DatabaseConnection.getConnection();
-                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where RecieverId = ?");
+                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where ReceiverId = ?");
                     pss.setInt(1, player.getId());
                     pss.executeUpdate();
                     pss.close();

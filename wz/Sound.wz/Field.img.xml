@@ -85,4 +85,27 @@
   <imgdir name="anthem">
     <sound name="brazil"/>
   </imgdir>
+  <imgdir name="Buyback">
+    <sound name="beginner"/>
+    <sound name="magician"/>
+    <sound name="thief"/>
+    <sound name="bowman"/>
+    <string name="src" value="https://freesound.org/
+www.freesfx.co.uk
+
+Warrior: https://freesound.org/people/Sclolex/sounds/209546/download/209546__sclolex__warriordrums.wav
+
+Magician: https://freesound.org/people/Timbre/sounds/221683/download/221683__timbre__another-magic-wand-spell-tinkle.flac
+
+Bowman: https://freesound.org/people/StephenSaldanha/sounds/166515/download/166515__stephensaldanha__srs-cinematic-hit.wav
+
+Thief: https://freesound.org/people/pcruzn/sounds/209579/download/209579__pcruzn__windy-transition.wav
+
+Pirate: https://freesound.org/people/plamdi1/sounds/95062/download/95062__plamdi1__suspense-cue-2.aiff
+
+Common: http://www.freesfx.co.uk/rx2/mp3s/6/18644_1464806042.mp3
+"/>
+    <sound name="warrior"/>
+    <sound name="pirate"/>
+  </imgdir>
 </imgdir>

@@ -19,10 +19,9 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package server;
+package client.inventory.manipulator;
 
 import client.MapleBuffStat;
-import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -38,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 
 import tools.MaplePacketCreator;
@@ -580,10 +580,7 @@ public class MapleInventoryManipulator {
                     NewYearCardRecord.removeAllNewYearCard(false, c.getPlayer());
                     c.getAbstractPlayerInteraction().removeAll(4301000);
                 }
-            }
-            
-            boolean weddingRing = source.getItemId() == 1112803 || source.getItemId() == 1112806 || source.getItemId() == 1112807 || source.getItemId() == 1112809;
-            if (weddingRing) {
+            } else if (ItemConstants.isWeddingRing(source.getItemId())) {
                 c.getPlayer().getMap().disappearingItemDrop(c.getPlayer(), c.getPlayer(), target, dropPos);
             } else if (c.getPlayer().getMap().getEverlast()) {
                 if (ii.isDropRestricted(target.getItemId()) || ii.isCash(target.getItemId()) || isDroppedItemRestricted(target)) {

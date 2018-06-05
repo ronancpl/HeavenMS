@@ -28,7 +28,7 @@ import constants.ItemConstants;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MapleItemInformationProvider.RewardItem;
 import tools.MaplePacketCreator;

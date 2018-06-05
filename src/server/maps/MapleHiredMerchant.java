@@ -27,8 +27,9 @@ import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleKarmaManipulator;
 import com.mysql.jdbc.Statement;
-import constants.ItemConstants;
 import constants.ServerConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,7 +42,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
 import net.server.Server;
-import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
@@ -214,11 +214,9 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                 return;
             }
             
-            if ((newItem.getFlag() & ItemConstants.KARMA) == ItemConstants.KARMA) {
-                newItem.setFlag((byte) (newItem.getFlag() ^ ItemConstants.KARMA));
-            }
+            MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
             
-            int price = (int) Math.min((long)pItem.getPrice() * quantity, Integer.MAX_VALUE);
+            int price = (int) Math.min((float) pItem.getPrice() * quantity, Integer.MAX_VALUE);
             if (c.getPlayer().getMeso() >= price) {
                 if (canBuy(c, newItem)) {
                     c.getPlayer().gainMeso(-price, false);

@@ -12,7 +12,9 @@ var onRide;
 //Time Setting is in millisecond
 var rideTime = 60 * 1000;
 
-function init() {}
+function init() {
+    rideTime = em.getTransportationTime(rideTime);
+}
 
 function setup() {
 	var eim = em.newInstance("Hak_" + + em.getProperty("player"));

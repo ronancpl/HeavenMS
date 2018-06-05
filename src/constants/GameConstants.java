@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import client.MapleJob;
 import constants.skills.Aran;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import server.maps.MapleMap;
 import server.maps.FieldLimit;
 import server.quest.MapleQuest;
@@ -14,8 +17,6 @@ import server.quest.MapleQuest;
  */
 public class GameConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
-    
-    final static Map<Integer, String> jobNames = new HashMap<>();
     public static final int[] OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
     
     // Ronan's rates upgrade system
@@ -23,15 +24,9 @@ public class GameConstants {
     private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105};
     private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610};    //fibonacci :3
     
-    public static boolean availableDeveloperRoom = false;
-    
-    public static void setAvailableDeveloperRoom() {
-        availableDeveloperRoom = true;
-    }
-    
-    public static boolean canEnterDeveloperRoom() {
-        return availableDeveloperRoom;
-    }
+    private final static Map<Integer, String> jobNames = new HashMap<>();
+    private final static NumberFormat nfFormatter = new DecimalFormat("#,###,###,###");
+    private final static NumberFormat nfParser = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
     
     public static int getPlayerBonusDropRate(int slot) {
         return(DROP_RATE_GAIN[slot]);
@@ -110,6 +105,20 @@ public class GameConstants {
             case 130000110:     // cygnus 2nd floor
             case 130000120:     // cygnus 3rd floor (beginners)
             case 140010110:     // aran
+                return true;
+                
+            default:
+                return false;
+        }
+    }
+    
+    public static boolean isPodiumHallOfFameMap(int mapid) {
+        switch(mapid) {
+            case 102000004:     // warrior
+            case 101000004:     // magician
+            case 100000204:     // bowman
+            case 103000008:     // thief
+            case 120000105:     // pirate
                 return true;
                 
             default:
@@ -394,6 +403,23 @@ public class GameConstants {
                 
             default:
                 return i + sufixes[i % 10];
+        }
+    }
+    
+    public synchronized static String numberWithCommas(int i) {
+        if(!ServerConstants.USE_DISPLAY_NUMBERS_WITH_COMMA) {
+            return nfFormatter.format(i);   // will display number on whatever locale is currently assigned on NumberFormat
+        } else {
+            return NumberFormat.getNumberInstance(Locale.UK).format(i);
+        }
+    }
+    
+    public synchronized static Number parseNumber(String value) {
+        try {
+            return nfParser.parse(value);
+        } catch(Exception e) {
+            e.printStackTrace();
+            return 0.0f;
         }
     }
 }

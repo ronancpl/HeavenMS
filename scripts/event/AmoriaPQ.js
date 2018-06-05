@@ -24,6 +24,7 @@
 */
 
 var isPq = true;
+var onlyMarriedPlayers = true;
 var minPlayers = 6, maxPlayers = 6;
 var minLevel = 40, maxLevel = 255;
 var entryMap = 670010200;
@@ -58,6 +59,7 @@ function setEventRequirements() {
         else reqStr += minLevel;
         
         reqStr += "\r\n    At least 1 of both genders";
+        if(onlyMarriedPlayers) reqStr += "\r\n    All married";
         
         reqStr += "\r\n    Time limit: ";
         reqStr += eventTime + " minutes";
@@ -84,7 +86,7 @@ function setEventRewards(eim) {
 
 function getEligibleParty(party) {      //selects, from the given party, the team that is allowed to attempt this event
         var eligible = [];
-        var hasLeader = false;
+        var hasLeader = false, hasNotMarried = false;
         var mask = 0;
         
         if(party.size() > 0) {
@@ -95,6 +97,7 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
 
                         if(ch.getMapId() == recruitMap && ch.getLevel() >= minLevel && ch.getLevel() <= maxLevel) {
                                 if(ch.isLeader()) hasLeader = true;
+                                if(!ch.getPlayer().isMarried()) hasNotMarried = true;
                                 eligible.push(ch);
                                 
                                 mask |= (1 << ch.getPlayer().getGender());
@@ -103,6 +106,7 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
         }
         
         if(!(hasLeader && eligible.length >= minPlayers && eligible.length <= maxPlayers && mask == 3)) eligible = [];
+        if(onlyMarriedPlayers && hasNotMarried) eligible = [];
         return eligible;
 }
 
@@ -155,8 +159,19 @@ function setup(level, lobbyid) {
         return eim;
 }
 
-function isTeamAllCouple(eim) {   // all players married each other, not implemented
-        return false;
+function isTeamAllCouple(eim) {     // everyone partner of someone on the team
+        var eventPlayers = eim.getPlayers();
+    
+        for (var iterator = eventPlayers.iterator(); iterator.hasNext();) {
+                var chr = iterator.next();
+                
+                var pid = chr.getPartnerId();
+                if(pid <= 0 || eim.getPlayerById(pid) == null) {
+                        return false;
+                }
+        }
+        
+        return true;
 }
 
 function afterSetup(eim) {

@@ -36,7 +36,7 @@ import net.server.world.MaplePartyCharacter;
 import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
 import scripting.npc.NPCScriptManager;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.expeditions.MapleExpedition;
 import server.expeditions.MapleExpeditionType;
@@ -61,6 +61,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
+import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import server.life.MapleNPC;
@@ -899,6 +900,10 @@ public class AbstractPlayerInteraction {
 	public void environmentChange(String env, int mode) {
 		getPlayer().getMap().broadcastMessage(MaplePacketCreator.environmentChange(env, mode));
 	}
+        
+        public String numberWithCommas(int number) {
+                return GameConstants.numberWithCommas(number);
+        }
 
 	public Pyramid getPyramid() {
 		return (Pyramid) getPlayer().getPartyQuest();
@@ -945,5 +950,31 @@ public class AbstractPlayerInteraction {
         
         public boolean startDungeonInstance(int dungeonid) {
                 return c.getChannelServer().addMiniDungeon(dungeonid);
+        }
+        
+        public boolean canGetFirstJob(int jobType) {
+                if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP) {
+                        return true;
+                }
+                
+                MapleCharacter chr = this.getPlayer();
+                
+                switch(jobType) {
+                    case 1:
+                        return chr.getStr() >= 35;
+                        
+                    case 2:
+                        return chr.getInt() >= 20;
+                        
+                    case 3:
+                    case 4:
+                        return chr.getDex() >= 25;
+                        
+                    case 5:
+                        return chr.getDex() >= 20;
+                        
+                    default:
+                        return true;
+                }
         }
 }

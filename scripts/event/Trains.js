@@ -15,6 +15,10 @@ var beginTime = 5 * 60 * 1000; //The time to begin the ride
 var  rideTime = 5 * 60 * 1000; //The time that require move to destination
 
 function init() {
+    closeTime = em.getTransportationTime(closeTime);
+    beginTime = em.getTransportationTime(beginTime);
+     rideTime = em.getTransportationTime(rideTime);
+    
     Orbis_btf = em.getChannelServer().getMapFactory().getMap(200000122);
     Ludibrium_btf = em.getChannelServer().getMapFactory().getMap(220000111);
     Train_to_Orbis = em.getChannelServer().getMapFactory().getMap(200090110);

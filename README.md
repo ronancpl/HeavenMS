@@ -5,11 +5,11 @@
 
 Credits are to be given too to Nexon(Duh!), the original MapleSolaxia staff and other colaborators, as just some changes/patches on the game were applied by myself, in which some of them diverged from the original v83 patch contents.
 
-Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is free to install, use, modify and redistribute the contents, as long as there is no kind of commercial trading involved and the credits to the original creators are maintained within the codes.
+Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is **free to install, use, modify and redistribute the contents**, as long as there is **no kind of commercial trading involved** and the **credits to the original creators are maintained** within the codes.
 
 This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
-In this project, many gameplay-wise issues generated from either the original WZ files and the server sources have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
+In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
 
@@ -22,36 +22,54 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-Recommended localhost: https://hostr.co/MluJQNtzAnV9
+Recommended localhost: https://hostr.co/m2bVtnizCtmD
 
 **Change log:**
+
+  * Removed block on applying attack-based strengthening gems on non-weapon equipments.
+
+  * Set a higher cap for SPEED.
+
+  * Removed the AP assigning block for beginners below level 10. https://hostr.co/AHAHzneCti9B
+
+  * Removed block on party for beginners level 10 or below. https://hostr.co/JZq53mMtToCz
+
+  * Removed block on MTS entering in some maps, rendering the buyback option available.
 
   * Removed "AP excess" popup and limited actions on Admin/MWLB, credits to kevintjuh93.
 
   * Removed "You've gained a level!" popup, credits to PrinceReborn.
 
-  * Removed caps for WATK, WDEF, MDEF, ACC, AVOID
+  * Removed caps for WATK, WDEF, MDEF, ACC, AVOID.
 
-  * 'n' problem fixed
+  * 'n' problem fixed.
 
   * Fraysa's https://hostr.co/gJbLZITRVHmv
 
-  * MapleSilver's starting on window-mode
+  * MapleSilver's starting on window-mode.
 
 ---
-### Support us
+### Development status
 
-Feel free to __root for us__ on our endeavour at our Discord channel, or even actively **help us improve** the server by issuing pull requests with informative details about what's changing.
+Status: <span style="color:green">__Released__</span>.
 
-Also, if you liked this project, please don't forget to __star__ the repo ;) .
+HeavenMS development achieved an acceptable state-of-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 
-Discord: https://discord.gg/Q7wKxHX
+Although development is halted, support for fixing features that were implemented here is still up. You can still actively help us improve the server by issuing pull requests with informative details about what's changing.
+
+If you liked this project, please don't forget to __star__ the repo ;) .
+
+Our Discord channel is still available on: https://discord.gg/Q7wKxHX
 
 ### Donation
 
 If you REALLY liked what you have seen on the project, please feel free to donate a little something as a helping hand for my contributions towards Maple development. Also remember to **support Nexon**!
 
 Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
+
+### Note about public server
+
+HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 
 ---
 ### Preparing the ambient 

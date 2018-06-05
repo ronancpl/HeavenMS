@@ -21,17 +21,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel.handlers;
 
-import tools.FilePrinter;
-import tools.MaplePacketCreator;
-import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.command.Commands;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import net.AbstractMaplePacketHandler;
+import tools.FilePrinter;
+import tools.MaplePacketCreator;
+import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
+public final class GeneralChatHandler extends AbstractMaplePacketHandler {
         private static boolean isCommandIssue(char heading, MapleCharacter chr) {
                 if(chr.gmLevel() > 1 && heading == '!') {
                         return true;
@@ -59,7 +60,7 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                         String[] sp = s.split(" ");
                         sp[0] = sp[0].toLowerCase().substring(1);
 
-                        if(Commands.executeHeavenMSPlayerCommand(c, sp, heading)) {
+                        if(Commands.executeHeavenMsPlayerCommand(c, sp, heading)) {
                             String command = "";
                             for (String used : sp) {
                                     command += used + " ";
@@ -85,4 +86,3 @@ public final class GeneralChatHandler extends net.AbstractMaplePacketHandler {
                 }
         }
 }
-

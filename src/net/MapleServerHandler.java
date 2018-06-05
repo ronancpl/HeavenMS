@@ -85,6 +85,10 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+        if (cause instanceof org.apache.mina.core.write.WriteToClosedSessionException) {
+            return;
+        }
+        
     	System.out.println("disconnect by exception");
         cause.printStackTrace();
         

@@ -45,9 +45,7 @@ import tools.MaplePacketCreator;
 import tools.locks.MonitoredLockType;
 
 public class MapleGuild {
-    public final static int CREATE_GUILD_COST = 1500000;
-    public final static int CHANGE_EMBLEM_COST = 5000000;
-
+    
     private enum BCOp {
         NONE, DISBAND, EMBLEMCHANGE
     }

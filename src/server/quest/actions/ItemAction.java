@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import provider.MapleData;
 import provider.MapleDataTool;
-import server.MapleInventoryManipulator;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestActionType;
 import tools.MaplePacketCreator;

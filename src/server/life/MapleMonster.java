@@ -70,6 +70,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private AtomicInteger hp = new AtomicInteger(1);
     private AtomicLong maxHpPlusHeal = new AtomicLong(1);
     private int mp;
+    private long nextBasicSkillTime;
     private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
     private boolean controllerHasAggro, controllerKnowsAboutAggro;
     private Collection<MonsterListener> listeners = new LinkedList<>();
@@ -394,7 +395,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 MapleParty p = mc.getParty();
                 if (p != null) {
                     int pID = p.getId();
-                    long pXP = (long)xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
+                    long pXP = (long) xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
                     partyExp.put(pID, (int)Math.min(pXP, Integer.MAX_VALUE));
                 } else {
                     if(mc.getLevel() >= minThresholdLevel) {
@@ -460,7 +461,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
         MapleCharacter controller = getController();
         if (controller != null) { // this can/should only happen when a hidden gm attacks the monster
-            controller.getClient().announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
+            controller.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
             controller.stopControllingMonster(this);
         }
 
@@ -1138,6 +1139,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
+    public long getNextBasicSkillTime() {
+        return nextBasicSkillTime;
+    }
+    
+    public void setNextBasicSkillTime(long time) {
+        nextBasicSkillTime = time + 4200;
+    }
+    
     public int getNoSkills() {
         return this.stats.getNoSkills();
     }

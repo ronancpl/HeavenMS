@@ -52,6 +52,9 @@ function action(mode, type, selection) {
                                 cm.sendOk("The Ellin PQ has encountered an error.");
                                 cm.dispose();
                                 return;
+                        } else if(cm.isUsingOldPqNpcStyle()) {
+                                action(1, 0, 0);
+                                return;
                         }
                     
                         cm.sendSimple("#e#b<Party Quest: Forest of Poison Haze>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble or join a team to solve the puzzles of the #bForest of Poison Haze#k? Have your #bparty leader#k talk to me or make yourself a party.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.\r\n#L3#I would like to reclaim a prize.");

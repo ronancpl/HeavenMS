@@ -261,9 +261,9 @@ function getStimID(equipID){
             return 4130012;
         case 146: //xbow
             return 4130013;
-        case 148: // Knuckle
+        case 148: //knuckle
             return 4130016;
-        case 149:
+        case 149: //pistol
             return 4130017;
         case 133: //dagger
             return 4130014;
