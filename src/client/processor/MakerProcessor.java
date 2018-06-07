@@ -90,7 +90,7 @@ public class MakerProcessor {
             } else {
                 if(ItemConstants.isEquipment(toCreate)) {   // only equips uses stimulant and reagents
                     if(slea.readByte() != 0) {  // stimulant
-                        stimulantid = getMakerStimulant(toCreate);
+                        stimulantid = ii.getMakerStimulant(toCreate);
                         if(!c.getAbstractPlayerInteraction().haveItem(stimulantid)) {
                             stimulantid = -1;
                         }
@@ -267,84 +267,6 @@ public class MakerProcessor {
             }
         } catch(NullPointerException npe) {
             return 0;
-        }
-    }
-    
-    private static int getMakerStimulant(int itemId) {
-        EquipType et = EquipType.getEquipTypeById(itemId);
-        
-        switch(et) {
-            case GLOVES:
-                return 4130000;
-            
-            case SHOES:
-                return 4130001;
-            
-            case SWORD:
-                return 4130002;
-            
-            case AXE:
-                return 4130003;
-                
-            case MACE:
-                return 4130004;
-            
-            case SWORD_2H:
-                return 4130005;
-            
-            case AXE_2H:
-                return 4130006;
-            
-            case MACE_2H:
-                return 4130007;
-            
-            case SPEAR:
-                return 4130008;
-            
-            case POLEARM:
-                return 4130009;
-            
-            case WAND:
-                return 4130010;
-                
-            case STAFF:
-                return 4130011;
-                    
-            case BOW:
-                return 4130012;
-                        
-            case CROSSBOW:
-                return 4130013;
-                            
-            case DAGGER:
-                return 4130014;
-                                
-            case CLAW:
-                return 4130015;
-                                    
-            case KNUCKLER:
-                return 4130016;
-                                        
-            case PISTOL:
-                return 4130017;
-            
-            case CAP:
-                return 4130018;
-                
-            case COAT:
-                return 4130019;
-                
-            case PANTS:
-                return 4130020;
-                
-            case LONGCOAT:
-                return 4130021;
-                
-            case SHIELD:
-                return 4130022;
-                
-            default:
-                return -1;
         }
     }
     

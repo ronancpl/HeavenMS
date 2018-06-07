@@ -372,7 +372,7 @@ public class AbstractPlayerInteraction {
             MaplePet evolved = null;
             MaplePet target;
             
-            long period = 90 * 24 * 60 * 60 * 1000;    //refreshes expiration date: 90 days
+            long period = (long) 90 * 24 * 60 * 60 * 1000;    //refreshes expiration date: 90 days
             
             target = getPlayer().getPet(slot);
             if(target == null) {
@@ -437,8 +437,8 @@ public class AbstractPlayerInteraction {
 		Item item = null;
                 MaplePet evolved;
                 int petId = -1;
-		
-		if (quantity >= 0) {
+                
+                if (quantity >= 0) {
                         if (ItemConstants.isPet(id)) {
                                 petId = MaplePet.createPet(id);
 
@@ -456,6 +456,7 @@ public class AbstractPlayerInteraction {
                                     evolved.setCloseness(from.getCloseness());
                                     evolved.setFullness(from.getFullness());
                                     evolved.setLevel(from.getLevel());
+                                    evolved.setExpiration(System.currentTimeMillis() + expires);
                                     evolved.saveToDb();
                                 }
 

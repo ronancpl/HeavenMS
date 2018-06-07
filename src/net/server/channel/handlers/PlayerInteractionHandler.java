@@ -240,21 +240,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     }
                 } else if (ob instanceof MapleHiredMerchant && chr.getHiredMerchant() == null) {
                     MapleHiredMerchant merchant = (MapleHiredMerchant) ob;
-                    if (merchant.isOwner(chr)) {
-                        merchant.setOpen(false);
-                        merchant.removeAllVisitors();
-                        
-                        c.announce(MaplePacketCreator.getHiredMerchant(chr, merchant, false));
-                    } else if (!merchant.isOpen()) {
-                        chr.getClient().announce(MaplePacketCreator.getMiniRoomError(18));
-                        return;
-                    } else if (!merchant.addVisitor(chr)) {
-                        chr.getClient().announce(MaplePacketCreator.getMiniRoomError(2));
-                        return;
-                    } else {
-                        c.announce(MaplePacketCreator.getHiredMerchant(chr, merchant, false));
-                    }
-                    chr.setHiredMerchant(merchant);
+                    merchant.visitShop(chr);
                 }
             }
         } else if (mode == Action.CHAT.getCode()) { // chat lol
@@ -527,10 +513,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             merchant.clearInexistentItems();
             
             if (merchant.getItems().isEmpty()) {
-                c.announce(MaplePacketCreator.hiredMerchantOwnerLeave());
-                c.announce(MaplePacketCreator.leaveHiredMerchant(0x00, 0x03));
-                merchant.closeShop(c, false);
-                chr.setHasMerchant(false);
+                merchant.closeOwnerMerchant(chr);
                 return;
             }
             c.announce(MaplePacketCreator.updateHiredMerchant(merchant, chr));
@@ -579,11 +562,8 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             if (isTradeOpen(chr)) return;
             
             MapleHiredMerchant merchant = chr.getHiredMerchant();
-            if (merchant != null && merchant.isOwner(chr)) {
-                c.announce(MaplePacketCreator.hiredMerchantOwnerLeave());
-                c.announce(MaplePacketCreator.leaveHiredMerchant(0x00, 0x03));
-                merchant.closeShop(c, false);
-                chr.setHasMerchant(false);
+            if (merchant != null) {
+                merchant.closeOwnerMerchant(chr);
             }
         } else if (mode == Action.MAINTENANCE_OFF.getCode()) {
             if (isTradeOpen(chr)) return;

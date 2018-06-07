@@ -100,7 +100,7 @@ function action(mode, type, selection) {
 				cm.gainItem(5380000, -1);
 				cm.evolvePet(i, after);
                                 
-				cm.sendOk("Your dragon has now evolved!! It used to be a #i" + id + "##t" + id + "#, and now it's a #i" + after + "##t" + after + "#!");
+				cm.sendOk("Your dragon has now evolved!! It used to be a #i" + id + "# #t" + id + "#, and now it's a #i" + after + "# #t" + after + "#!");
 				cm.dispose();
 			}
 		} else if (status == 2) {

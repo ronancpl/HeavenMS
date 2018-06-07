@@ -1732,7 +1732,7 @@ public class MapleMap {
     }
 
     public Point getGroundBelow(Point pos) {
-        Point spos = new Point(pos.x, pos.y - 7); // Using -7 fixes spawning pets causing a lot of issues.
+        Point spos = new Point(pos.x, pos.y - 14); // Using -14 fixes spawning pets causing a lot of issues.
         spos = calcPointBelow(spos);
         spos.y--;//shouldn't be null!
         return spos;

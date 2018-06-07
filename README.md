@@ -67,9 +67,11 @@ If you REALLY liked what you have seen on the project, please feel free to donat
 
 Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
 
-### Note about public server
+### Disclaimer
 
-HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
+* HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
+
+* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance checks are needed in order to make it stable for production use.
 
 ---
 ### Preparing the ambient 

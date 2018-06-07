@@ -39,7 +39,7 @@ function addFeature(feature) {
 }
 
 function writeFeatureTab_PQs() {
-        addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/AmoriaPQ.");
+        addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/APQ/EllinPQ/PiratePQ.");
         addFeature("MagatiaPQ/HorntailPQ/TreasurePQ/ElnathPQ.");
         addFeature("CWKPQ as Expedition-based event.");
         addFeature("Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.");
@@ -75,6 +75,7 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Proper item pickup cooldown on non-owned items.");
         addFeature("Improved ranking system, with daily movement.");
         addFeature("Automated support for Player NPCs and Hall of Fame.");
+        addFeature("Engagement & Wedding system.");
 }
 
 function writeFeatureTab_CashItems() {
@@ -127,6 +128,7 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("All Equipment levels up.");
         addFeature("Player level rates.");
         addFeature("Gain fame by quests.");
+        addFeature("Pet evolutions functional (not GMS-like).");
 }
 
 function writeFeatureTab_Serverpotentials() {
@@ -165,7 +167,7 @@ function writeFeatureTab_Localhostedits() {
         addFeature("Removed party blocks for novices under level 10.");
         addFeature("Set a much more higher cap for SPEED.");
         addFeature("Removed AP usage block for novices.");
-        addFeature("Removed attack gem block on defensiver gear w/ Maker.");
+        addFeature("Removed attack gem block on non-weapons w/ Maker.");
         addFeature("Removed AP excess popup - thanks kevintjuh93!");
         addFeature("Removed 'GMs can't attack' - thanks kevintjuh93!");
         addFeature("Removed 'Gained a level!' - thanks PrinceReborn!");

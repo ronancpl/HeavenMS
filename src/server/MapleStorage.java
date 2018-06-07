@@ -22,6 +22,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,6 +35,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
+import provider.MapleData;
+import provider.MapleDataProvider;
+import provider.MapleDataProviderFactory;
+import provider.MapleDataTool;
 import tools.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
@@ -45,8 +50,11 @@ import tools.locks.MonitoredLockType;
  * @author Matze
  */
 public class MapleStorage {
-
+    private static Map<Integer, Integer> trunkGetCache = new HashMap<>();
+    private static Map<Integer, Integer> trunkPutCache = new HashMap<>();
+    
     private int id;
+    private int currentNpcid;
     private int meso;
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
@@ -247,6 +255,8 @@ public class MapleStorage {
             for (MapleInventoryType type : MapleInventoryType.values()) {
                 typeItems.put(type, new ArrayList<>(storageItems));
             }
+            
+            currentNpcid = npcId;
             c.announce(MaplePacketCreator.getStorage(npcId, slots, storageItems, meso));
         } finally {
             lock.unlock();
@@ -301,6 +311,42 @@ public class MapleStorage {
 
     public void sendMeso(MapleClient c) {
         c.announce(MaplePacketCreator.mesoStorage(slots, meso));
+    }
+    
+    public int getStoreFee() {  // thanks to GabrielSin
+        int npcId = currentNpcid;
+        Integer fee = trunkPutCache.get(npcId);
+        if(fee == null) {
+            fee = 100;
+            
+            MapleDataProvider npc = MapleDataProviderFactory.getDataProvider(new File("wz/Npc.wz"));
+            MapleData npcData = npc.getData(npcId + ".img");
+            if(npcData != null) {
+                fee = MapleDataTool.getIntConvert("info/trunkPut", npcData, 100);
+            }
+            
+            trunkPutCache.put(npcId, fee);
+        }
+        
+        return fee;
+    }
+    
+    public int getTakeOutFee() {
+        int npcId = currentNpcid;
+        Integer fee = trunkGetCache.get(npcId);
+        if(fee == null) {
+            fee = 0;
+            
+            MapleDataProvider npc = MapleDataProviderFactory.getDataProvider(new File("wz/Npc.wz"));
+            MapleData npcData = npc.getData(npcId + ".img");
+            if(npcData != null) {
+                fee = MapleDataTool.getIntConvert("info/trunkGet", npcData, 0);
+            }
+            
+            trunkGetCache.put(npcId, fee);
+        }
+        
+        return fee;
     }
 
     public boolean isFull() {

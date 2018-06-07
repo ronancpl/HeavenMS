@@ -147,7 +147,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         return -1; //Actually 0 because of the +1's.
     }
 
-    public void removeAllVisitors() {
+    private void removeAllVisitors() {
         visitorLock.lock();
         try {
             for (int i = 0; i < 3; i++) {
@@ -271,6 +271,24 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     public void forceClose() {
+        //Server.getInstance().getChannel(world, channel).removeHiredMerchant(ownerId);
+        map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(getOwnerId()));
+        map.removeMapObject(this);
+        
+        MapleCharacter owner = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
+        
+        visitorLock.lock();
+        try {
+            setOpen(false);
+            removeAllVisitors();
+            
+            if(owner != null && owner.isLoggedinWorld() && this == owner.getHiredMerchant()) {
+                closeOwnerMerchant(owner);
+            }
+        } finally {
+            visitorLock.unlock();
+        }
+        
         Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
         
         try {
@@ -281,11 +299,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        //Server.getInstance().getChannel(world, channel).removeHiredMerchant(ownerId);
-        map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(getOwnerId()));
-
-        map.removeMapObject(this);
-		
+	
         MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
         if(player != null) {
                 player.setHasMerchant(false);
@@ -306,55 +320,87 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         map = null;
     }
 
-	public void closeShop(MapleClient c, boolean timeout) {
-            map.removeMapObject(this);
-            map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(ownerId));
-            c.getChannelServer().removeHiredMerchant(ownerId);
-            
-            try {
-                MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
-                if(player != null) {
-                        player.setHasMerchant(false);
-                } else {
-                        Connection con = DatabaseConnection.getConnection();
-                        try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
-                                ps.setInt(1, ownerId);
-                                ps.executeUpdate();
-                        }
-                        con.close();
-                }
+    public void closeOwnerMerchant(MapleCharacter chr) {
+        if(this.isOwner(chr)) {
+            chr.announce(MaplePacketCreator.hiredMerchantOwnerLeave());
+            chr.announce(MaplePacketCreator.leaveHiredMerchant(0x00, 0x03));
+            this.closeShop(chr.getClient(), false);
+            chr.setHasMerchant(false);
+        }
+    }
+    
+    public void closeShop(MapleClient c, boolean timeout) {
+        map.removeMapObject(this);
+        map.broadcastMessage(MaplePacketCreator.destroyHiredMerchant(ownerId));
+        c.getChannelServer().removeHiredMerchant(ownerId);
 
-                List<MaplePlayerShopItem> copyItems = getItems();
-                if (check(c.getPlayer(), copyItems) && !timeout) {
-                    for (MaplePlayerShopItem mpsi : copyItems) {
-                        if(mpsi.isExist()) {
-                            if (mpsi.getItem().getInventoryType().equals(MapleInventoryType.EQUIP)) {
-                                MapleInventoryManipulator.addFromDrop(c, mpsi.getItem(), false);
-                            } else {
-                                MapleInventoryManipulator.addById(c, mpsi.getItem().getItemId(), (short) (mpsi.getBundles() * mpsi.getItem().getQuantity()), null, -1, mpsi.getItem().getFlag(), mpsi.getItem().getExpiration());
-                            }
+        try {
+            MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(ownerId);
+            if(player != null) {
+                    player.setHasMerchant(false);
+            } else {
+                    Connection con = DatabaseConnection.getConnection();
+                    try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET HasMerchant = 0 WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                            ps.setInt(1, ownerId);
+                            ps.executeUpdate();
+                    }
+                    con.close();
+            }
+
+            List<MaplePlayerShopItem> copyItems = getItems();
+            if (check(c.getPlayer(), copyItems) && !timeout) {
+                for (MaplePlayerShopItem mpsi : copyItems) {
+                    if(mpsi.isExist()) {
+                        if (mpsi.getItem().getInventoryType().equals(MapleInventoryType.EQUIP)) {
+                            MapleInventoryManipulator.addFromDrop(c, mpsi.getItem(), false);
+                        } else {
+                            MapleInventoryManipulator.addById(c, mpsi.getItem().getItemId(), (short) (mpsi.getBundles() * mpsi.getItem().getQuantity()), null, -1, mpsi.getItem().getFlag(), mpsi.getItem().getExpiration());
                         }
                     }
-                    
-                    synchronized (items) {
-                        items.clear();
-                    }
-                }
-
-                try {
-                    this.saveItems(timeout);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
 
                 synchronized (items) {
                     items.clear();
                 }
+            }
+
+            try {
+                this.saveItems(timeout);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-            Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
+
+            synchronized (items) {
+                items.clear();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Server.getInstance().getWorld(world).unregisterHiredMerchant(this);
+    }
+    
+    public synchronized void visitShop(MapleCharacter chr) {
+        visitorLock.lock();
+        try {
+            if (this.isOwner(chr)) {
+                this.setOpen(false);
+                this.removeAllVisitors();
+
+                chr.announce(MaplePacketCreator.getHiredMerchant(chr, this, false));
+            } else if (!this.isOpen()) {
+                chr.announce(MaplePacketCreator.getMiniRoomError(18));
+                return;
+            } else if (!this.addVisitor(chr)) {
+                chr.announce(MaplePacketCreator.getMiniRoomError(2));
+                return;
+            } else {
+                chr.announce(MaplePacketCreator.getHiredMerchant(chr, this, false));
+            }
+            chr.setHiredMerchant(this);
+        } finally {
+            visitorLock.unlock();
+        }
     }
 
     public String getOwner() {

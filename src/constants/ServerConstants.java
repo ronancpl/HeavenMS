@@ -5,7 +5,7 @@ import java.util.Properties;
 
 public class ServerConstants {
     //Thread Tracker Configuration
-    public static final boolean USE_THREAD_TRACKER = false;     //[SEVERE] This deadlock auditing thing will bloat the memory as fast as the time frame one takes to lose track of a raindrop on a tempesting day. Only for debugging purposes.
+    public static final boolean USE_THREAD_TRACKER = true;      //[SEVERE] This deadlock auditing thing will bloat the memory as fast as the time frame one takes to lose track of a raindrop on a tempesting day. Only for debugging purposes.
     
     //Database Configuration
     public static String DB_URL = "";
@@ -20,12 +20,12 @@ public class ServerConstants {
     public static final int CHANNEL_LOAD = 100;                 //Max players per channel (limit actually used to calculate the World server capacity).
     
     public static final long RESPAWN_INTERVAL = 10 * 1000;	//10 seconds, 10000.
-    public static final long PURGING_INTERVAL =  5 * 60 * 1000;
+    public static final long PURGING_INTERVAL = 5 * 60 * 1000;
     public static final long RANKING_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     public static final long  COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     
-    public static final boolean ENABLE_PIC = true;              //Pick true/false to enable or disable Pic. Delete character needs this feature ENABLED.
-    public static final boolean ENABLE_PIN = true;              //Pick true/false to enable or disable Pin.
+    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character needs this feature ENABLED.
+    public static final boolean ENABLE_PIN = false;             //Pick true/false to enable or disable Pin.
     
     public static final boolean AUTOMATIC_REGISTER = true;      //Automatically register players when they login with a nonexistent username.
     public static final boolean BCRYPT_MIGRATION = true;        //Performs a migration from old SHA-1 and SHA-512 password to bcrypt.
@@ -38,7 +38,7 @@ public class ServerConstants {
     public static boolean SHUTDOWNHOOK;
     
     //Server Flags
-    public static final boolean USE_CUSTOM_KEYSET = false;          //Enables auto-setup of the HeavenMS's custom keybindings when creating characters.
+    public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the HeavenMS's custom keybindings when creating characters.
     public static final boolean USE_DEBUG = false;                  //Will enable some text prints on the client, oriented for debugging purposes.
     public static final boolean USE_DEBUG_SHOW_RCVD_PACKET = false; //Prints on the cmd all received packet ids.
     public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
@@ -46,8 +46,8 @@ public class ServerConstants {
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events on a map, rather than those of only view range.
     public static final boolean USE_MTS = false;
-    public static final boolean USE_AUTOHIDE_GM = true;            //When enabled, GMs are automatically hidden when joining. Thanks to Steven Deblois (steven1152).
-    public static final boolean USE_BUYBACK_SYSTEM = false;         //Enables the HeavenMS-builtin buyback system, to be used by dead players when clicking the MTS button.
+    public static final boolean USE_AUTOHIDE_GM = false;            //When enabled, GMs are automatically hidden when joining. Thanks to Steven Deblois (steven1152).
+    public static final boolean USE_BUYBACK_SYSTEM = true;          //Enables the HeavenMS-builtin buyback system, to be used by dead players when clicking the MTS button.
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
     public static final boolean USE_RANDOMIZE_HPMP_GAIN = true;     //Enables randomizing on MaxHP/MaxMP gains and INT accounting for the MaxMP gain.
@@ -55,13 +55,13 @@ public class ServerConstants {
     public static final boolean USE_ITEM_SORT = true;               //Enables inventory "Item Sort/Merge" feature.
     public static final boolean USE_ITEM_SORT_BY_NAME = false;      //Item sorting based on name rather than id.
     public static final boolean USE_PARTY_SEARCH = false;
-    public static final boolean USE_PARTY_FOR_STARTERS = false;     //Players level 10 or below can create/invite other players on the given level range.
-    public static final boolean USE_AUTOASSIGN_STARTERS_AP = true;  //Beginners level 10 or below have their AP autoassigned (they can't choose to levelup a stat). Set true if the localhost doesn't support AP assigning for beginners level 10 or below.
+    public static final boolean USE_PARTY_FOR_STARTERS = true;      //Players level 10 or below can create/invite other players on the given level range.
+    public static final boolean USE_AUTOASSIGN_STARTERS_AP = false; //Beginners level 10 or below have their AP autoassigned (they can't choose to levelup a stat). Set true if the localhost doesn't support AP assigning for beginners level 10 or below.
     public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
     public static final boolean USE_AUTOSAVE = true;                //Enables server autosaving feature (saves characters to DB each 1 hour).
-    public static final boolean USE_SERVER_AUTOASSIGNER = false;    //HeavenMS-builtin autoassigner, uses algorithm based on distributing AP accordingly with required secondary stat on equipments.
+    public static final boolean USE_SERVER_AUTOASSIGNER = true;     //HeavenMS-builtin autoassigner, uses algorithm based on distributing AP accordingly with required secondary stat on equipments.
     public static final boolean USE_REFRESH_RANK_MOVE = true;
-    public static final boolean USE_ENFORCE_HPMP_SWAP = true;       //Forces players to reuse stats (via AP Resetting) located on HP/MP pool only inside the HP/MP stats.
+    public static final boolean USE_ENFORCE_HPMP_SWAP = false;      //Forces players to reuse stats (via AP Resetting) located on HP/MP pool only inside the HP/MP stats.
     public static final boolean USE_ENFORCE_MOB_LEVEL_RANGE = true; //Players N levels below the killed mob will gain no experience from defeating it.
     public static final boolean USE_ENFORCE_JOB_LEVEL_RANGE = false;//Caps the player level on the minimum required to advance their current jobs.
     public static final boolean USE_ENFORCE_OWL_SUGGESTIONS = false;//Forces the Owl of Minerva to always display the defined item array on GameConstants.OWL_DATA instead of those featured by the players.
@@ -73,26 +73,26 @@ public class ServerConstants {
     public static final boolean USE_BUFF_MOST_SIGNIFICANT = true;   //When applying buffs, the player will stick with the highest stat boost among the listed, rather than overwriting stats.
     public static final boolean USE_QUEST_RATE = false;             //Exp/Meso gained by quests uses fixed server exp/meso rate times quest rate as multiplier, instead of player rates.
     public static final boolean USE_MULTIPLE_SAME_EQUIP_DROP = true;//Enables multiple drops by mobs of the same equipment, number of possible drops based on the quantities provided at the drop data.
-    public static final boolean USE_BANISHABLE_TOWN_SCROLL = false; //Enables town scrolls to act as if it's a "player banish", rendering the antibanish scroll effect available.
+    public static final boolean USE_BANISHABLE_TOWN_SCROLL = true;  //Enables town scrolls to act as if it's a "player banish", rendering the antibanish scroll effect available.
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
     
     //Announcement Configuration
     public static final boolean USE_ANNOUNCE_SHOPITEMSOLD = false;  //Automatic message sent to owner when an item from the Player Shop or Hired Merchant is sold.
     public static final boolean USE_ANNOUNCE_CHANGEJOB = false;     //Automatic message sent to acquantainces when changing jobs.
-
+    
     //Maker Configuration
-    public static final boolean USE_MAKER_PERMISSIVE_ATKUP = false; //Allows players to use attack-based strengthening gems on non-weapon items.
+    public static final boolean USE_MAKER_PERMISSIVE_ATKUP = true;  //Allows players to use attack-based strengthening gems on non-weapon items.
     public static final boolean USE_MAKER_FEE_HEURISTICS = true;    //Apply compiled values for stimulants and reagents into the Maker fee calculations (max error revolves around 50k mesos). Set false to use basic constant values instead (results are never higher than requested by the client-side).
     
     //Commands Configuration
     public static final boolean BLOCK_GENERATE_CASH_ITEM = false;   //Prevents creation of cash items with the item/drop command.
     
     //Server Rates And Experience
-    public static final int EXP_RATE = 1;
-    public static final int MESO_RATE = 1;
-    public static final int DROP_RATE = 1;
-    public static final int TRAVEL_RATE = 1;                        //Means of transportation rides/departs using 1/N of the default time.
-    public static final int QUEST_RATE = 1;                         //Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
+    public static final int EXP_RATE = 10;
+    public static final int MESO_RATE = 10;
+    public static final int DROP_RATE = 10;
+    public static final int TRAVEL_RATE = 10;                       //Means of transportation rides/departs using 1/N of the default time.
+    public static final int QUEST_RATE = 5;                         //Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
     public static final double EQUIP_EXP_RATE = 1.0;                //Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
     
     public static final double PARTY_BONUS_EXP_RATE = 1.0;          //Rate for the party exp reward.
@@ -102,7 +102,7 @@ public class ServerConstants {
     
     //Miscellaneous Configuration
     public static String TIMEZONE = "-GMT3";
-    public static boolean USE_DISPLAY_NUMBERS_WITH_COMMA = true;        //Enforce comma on displayed strings (use this when USE_UNITPRICE_WITH_COMMA is active and you still want to display comma-separated thousands).
+    public static boolean USE_DISPLAY_NUMBERS_WITH_COMMA = true;        //Enforce comma on displayed strings (use this when USE_UNITPRICE_WITH_COMMA is active and you still want to display comma-separated values).
     public static boolean USE_UNITPRICE_WITH_COMMA = true;              //Set this accordingly with the layout of the unitPrices on Item.wz XML's, whether it's using commas or dots to represent fractions.
     public static final byte MIN_UNDERLEVEL_TO_EXP_GAIN = 5;            //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_ENFORCE_MOB_LEVEL_RANGE" is enabled. For bosses, this attribute is doubled.
     public static final byte MAX_MONITORED_BUFFSTATS = 5;               //Limits accounting for "dormant" buff effects, that should take place when stronger stat buffs expires.
@@ -111,7 +111,7 @@ public class ServerConstants {
     public static final long BLOCK_NPC_RACE_CONDT = (long)(0.5 * 1000); //Time the player client must wait before reopening a conversation with an NPC.
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
     public static final int TOT_MOB_QUEST_REQUIREMENT = 0;              //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
-    public static final int MOB_REACTOR_REFRESH_TIME = 0;               //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
+    public static final int MOB_REACTOR_REFRESH_TIME = 30 * 1000;       //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
     
     //Dangling Items/Locks Configuration
     public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.
@@ -124,37 +124,37 @@ public class ServerConstants {
     
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
-    public static final boolean USE_PERFECT_GM_SCROLL = false;  //Scrolls from GMs never uses up slots nor fails.
-    public static final boolean USE_PERFECT_SCROLLING = false;  //Scrolls doesn't use slots upon failure.
-    public static final boolean USE_ENHANCED_CHSCROLL = false;  //Equips even more powerful with chaos upgrade.
-    public static final boolean USE_ENHANCED_CRAFTING = false;  //Apply chaos scroll on every equip crafted.
-    public static final int SCROLL_CHANCE_RATE = 0;             //Number of rolls for success on a scroll, set 0 for default.
-    public static final int CHSCROLL_STAT_RATE = 1;             //Number of rolls of stat upgrade on a successfully applied chaos scroll, set 1 for default.
+    public static final boolean USE_PERFECT_GM_SCROLL = true;   //Scrolls from GMs never uses up slots nor fails.
+    public static final boolean USE_PERFECT_SCROLLING = true;   //Scrolls doesn't use slots upon failure.
+    public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
+    public static final boolean USE_ENHANCED_CRAFTING = true;   //Apply chaos scroll on every equip crafted.
+    public static final int SCROLL_CHANCE_RATE = 10;            //Number of rolls for success on a scroll, set 0 for default.
+    public static final int CHSCROLL_STAT_RATE = 3;             //Number of rolls of stat upgrade on a successfully applied chaos scroll, set 1 for default.
     public static final int CHSCROLL_STAT_RANGE = 6;            //Stat upgrade range (-N, N) on chaos scrolls.
     
     //Beginner Skills Configuration
-    public static final boolean USE_ULTRA_NIMBLE_FEET = false;  //Haste-like speed & jump upgrade.
-    public static final boolean USE_ULTRA_RECOVERY = false;     //Massive recovery amounts overtime.
-    public static final boolean USE_ULTRA_THREE_SNAILS = false; //Massive damage on shell toss.
+    public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Haste-like speed & jump upgrade.
+    public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
+    public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
     
     //Character Configuration
-    public static final boolean USE_ADD_SLOTS_BY_LEVEL = false; //Slots are added each 20 levels.
-    public static final boolean USE_ADD_RATES_BY_LEVEL = false; //Rates are added each 20 levels.
-    public static final boolean USE_STACK_COUPON_RATES = false; //Multiple coupons effects builds up together.
-    public static final boolean USE_PERFECT_PITCH = false;      //For lvl 30 or above, each lvlup grants player 1 perfect pitch.
-    public static final int FAME_GAIN_BY_QUEST = 0;             //Fame gain each N quest completes, set 0 to disable.
+    public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
+    public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
+    public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
+    public static final boolean USE_PERFECT_PITCH = true;       //For lvl 30 or above, each lvlup grants player 1 perfect pitch.
+    public static final int FAME_GAIN_BY_QUEST = 4;             //Fame gain each N quest completes, set 0 to disable.
     
     //Guild Configuration
     public static final int CREATE_GUILD_COST = 1500000;
     public static final int CHANGE_EMBLEM_COST = 5000000;
 
     //Equipment Configuration
-    public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = false;//Equips can upgrade slots at level up.
-    public static final boolean USE_EQUIPMNT_LVLUP_POWER = false;//Enable more powerful stat upgrades at equip level up.
-    public static final boolean USE_SPIKES_AVOID_BANISH = false; //Shoes equipped with spikes prevents mobs from banishing wearer.
+    public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.
+    public static final boolean USE_EQUIPMNT_LVLUP_POWER = true;//Enable more powerful stat upgrades at equip level up.
+    public static final boolean USE_SPIKES_AVOID_BANISH = true; //Shoes equipped with spikes prevents mobs from banishing wearer.
     public static final int MAX_EQUIPMNT_LVLUP_STAT_UP = 10000; //Max stat upgrade an equipment can have on a levelup.
     public static final int MAX_EQUIPMNT_STAT = 32767;          //Max stat on an equipment by leveling up.
-    public static final int USE_EQUIPMNT_LVLUP = 1;             //All equips lvlup at max level of N, set 1 to disable.
+    public static final int USE_EQUIPMNT_LVLUP = 7;             //All equips lvlup at max level of N, set 1 to disable.
     
     //Map-Chair Configuration
     public static final boolean USE_CHAIR_EXTRAHEAL = true;     //Enable map chairs to further recover player's HP and MP (player must have the Chair Mastery skill).
@@ -188,7 +188,7 @@ public class ServerConstants {
     public static final long EVENT_LOBBY_DELAY = 10;            //Cooldown duration in seconds before reopening an event lobby.
     
     //Dojo Configuration
-    public static final boolean USE_DEADLY_DOJO = true;         //Should bosses really use 1HP,1MP attacks in dojo?
+    public static final boolean USE_DEADLY_DOJO = false;        //Should bosses really use 1HP,1MP attacks in dojo?
     public static final int DOJO_ENERGY_ATK = 100;              //Dojo energy gain when deal attack
     public static final int DOJO_ENERGY_DMG =  20;              //Dojo energy gain when recv attack
     
@@ -200,10 +200,10 @@ public class ServerConstants {
     public static final boolean WEDDING_BLESSER_SHOWFX = true;  //Pops bubble sprite effect on players blessing the couple. Setting this false shows the blessing effect on the couple instead.
 
     //Buyback Configuration
-    public static final boolean USE_BUYBACK_WITH_MESOS = false; //Enables usage of either mesos or NX for the buyback fee.
+    public static final boolean USE_BUYBACK_WITH_MESOS = true;  //Enables usage of either mesos or NX for the buyback fee.
     public static final int BUYBACK_FEE = 7770;                 //Sets the amount needed to buyback.
     public static final int BUYBACK_MESO_MULTIPLIER = 1000;     //Sets a multiplier for the fee when using meso as the charge unit.
-    public static final int BUYBACK_RETURN_MINUTES = 1;         //Sets the maximum amount of time the player must wait before decide to buyback.
+    public static final int BUYBACK_RETURN_MINUTES = 1;         //Sets the maximum amount of time the player can wait before decide to buyback.
     public static final int BUYBACK_COOLDOWN_MINUTES = 7;       //Sets the time the player must wait before using buyback again.
     
     //Event End Timestamp

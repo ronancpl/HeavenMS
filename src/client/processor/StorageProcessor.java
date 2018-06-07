@@ -72,14 +72,15 @@ public class StorageProcessor {
                                                 c.announce(MaplePacketCreator.getStorageError((byte) 0x0C));
                                                 return;
                                         }
-                                        if (chr.getMap().getId() == 910000000) {
-                                                if (chr.getMeso() < 1000) {
-                                                        c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
-                                                        return;
-                                                } else {
-                                                        chr.gainMeso(-1000, false);
-                                                }
-                                        }           
+                                        
+                                        int takeoutFee = storage.getTakeOutFee();
+                                        if (chr.getMeso() < takeoutFee) {
+                                                c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
+                                                return;
+                                        } else {
+                                                chr.gainMeso(-takeoutFee, false);
+                                        }
+                                        
                                         if (MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {                
                                                 item = storage.takeOut(slot);//actually the same but idc
                                                 String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
@@ -112,17 +113,19 @@ public class StorageProcessor {
                                         c.announce(MaplePacketCreator.getStorageError((byte) 0x11));
                                         return;
                                 }
-                                short meso = (short) (chr.getMap().getId() == 910000000 ? -500 : -100);
-                                if (chr.getMeso() < meso) {
+                                
+                                int storeFee = storage.getStoreFee();
+                                if (chr.getMeso() < storeFee) {
                                         c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
                                 } else {
                                         MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
                                         Item item = chr.getInventory(invType).getItem(slot).copy();
-                                        if (item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
+                                        if (item != null && item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
                                                 if (ItemConstants.isRechargeable(itemId)) {
                                                         quantity = item.getQuantity();
                                                 }
-                                                chr.gainMeso(meso, false, true, false);
+                                                
+                                                chr.gainMeso(-storeFee, false, true, false);
                                                 MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
                                                 MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
                                                 item.setQuantity(quantity);

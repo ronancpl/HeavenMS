@@ -1262,7 +1262,7 @@ public class MapleClient {
                 }
 	}
         
-	public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3
+        public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3
                 session.write(packet);
 	}
 

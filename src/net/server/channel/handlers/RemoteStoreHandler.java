@@ -38,13 +38,9 @@ public class RemoteStoreHandler extends AbstractMaplePacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         MapleHiredMerchant hm = getMerchant(c);
-        if (chr.hasMerchant() && hm != null) {
+        if (hm != null && hm.isOwner(chr)) {
             if (hm.getChannel() == chr.getClient().getChannel()) {
-                hm.setOpen(false);
-                hm.removeAllVisitors();
-                chr.setHiredMerchant(hm);
-                
-                chr.announce(MaplePacketCreator.getHiredMerchant(chr, hm, false));
+                hm.visitShop(chr);
             } else {
                 c.announce(MaplePacketCreator.remoteChannelChange((byte) (hm.getChannel() - 1)));
             }

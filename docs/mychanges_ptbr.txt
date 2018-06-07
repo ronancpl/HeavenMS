@@ -1000,7 +1000,7 @@ Corrigido marriage ring sendo destruído indevidamente ao usar certos pergaminho
 Edição de localhost: removido bloqueio de uso de AP para jogadores novatos.
 Adicionado server flag que permite mecânica de statup para jogadores novatos com level menor que 11. Necessário uso do localhost editado.
 
-01 - 04 Maio 2018,
+01 - 04 Junho 2018,
 Corrigido NPC de recrutamento para CafePQ não atuando corretamente com a flag que permite estilo do old-GMS PQ NPCs.
 Corrigido mensagem de anúncio de Strategy Time para todas as guilds que estiverem se registrando quando a fila está vazia (mesmo que outra guild já esteja nessa etapa).
 Edição de localhost: removido bloqueio de uso de gemas para WATK/MATK em equipamentos que não são weapons.
@@ -1011,3 +1011,12 @@ Corrigido script da Arwen não retirando itens ao gerar certos itens.
 Corrigido script de viagem para Florina levando jogadores a Lith Harbor mesmo quando entrando por outras regiões.
 Corrigido Stance, Berserk, Ninja Storm, Concentrate, Mage skills and other 4th job skills questlines.
 Novo release: Light.
+
+05 - 06 Junho 2018,
+Modificado storage para pegar taxas de transação de itens do WZ.
+Corrigido buff system retirando certos stats incoerentemente ao usar itens que atuam em diversos stats.
+Corrigido hired merchants agora removendo visitantes e dono quando expira.
+Item maker agora puxa itemid de catalisadores do WZ.
+Corrigido sistema de evolução de pets passando valor de expiração com overflow pro novo pet, que resultava em pet inativo.
+Melhorado proteção contra acesso concorrente em mais algumas seções de código de player shop e hired merchants.
+Adicionado comportamento de substituição de itens ao expirar, cortesia do GabrielSin.

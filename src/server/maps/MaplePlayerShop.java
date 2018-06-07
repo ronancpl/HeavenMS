@@ -99,20 +99,15 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
 
     private void addVisitor(MapleCharacter visitor) {
-        visitorLock.lock();
-        try {
-            for (int i = 0; i < 3; i++) {
-                if (visitors[i] == null) {
-                    visitors[i] = visitor;
-                    visitor.setSlot(i);
-                    this.broadcast(MaplePacketCreator.getPlayerShopNewVisitor(visitor, i + 1));
-                    
-                    if(i == 2) visitor.getMap().broadcastMessage(MaplePacketCreator.addCharBox(owner, 1));
-                    break;
-                }
+        for (int i = 0; i < 3; i++) {
+            if (visitors[i] == null) {
+                visitors[i] = visitor;
+                visitor.setSlot(i);
+                this.broadcast(MaplePacketCreator.getPlayerShopNewVisitor(visitor, i + 1));
+
+                if(i == 2) visitor.getMap().broadcastMessage(MaplePacketCreator.addCharBox(owner, 1));
+                break;
             }
-        } finally {
-            visitorLock.unlock();
         }
     }
 
@@ -490,11 +485,6 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
     
     public synchronized boolean visitShop(MapleCharacter chr) {
-        if(!open.get()) {
-            chr.dropMessage(1, "This store is not yet open.");
-            return false;
-        }
-        
         if (this.isBanned(chr.getName())) {
             chr.dropMessage(1, "You have been banned from this store.");
             return false;
@@ -502,6 +492,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         
         visitorLock.lock();
         try {
+            if(!open.get()) {
+                chr.dropMessage(1, "This store is not yet open.");
+                return false;
+            }
+            
             if (this.hasFreeSlot() && !this.isVisitor(chr)) {
                 this.addVisitor(chr);
                 chr.setPlayerShop(this);

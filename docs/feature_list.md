@@ -115,6 +115,7 @@ Player potentials:
 * All Equipment levels up.
 * Player level rates.
 * Gain fame by quests.
+* Pet evolutions functional (not GMS-like).
 
 Server potentials:
 
