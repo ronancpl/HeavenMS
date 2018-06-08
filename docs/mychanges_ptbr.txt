@@ -1020,3 +1020,9 @@ Item maker agora puxa itemid de catalisadores do WZ.
 Corrigido sistema de evolução de pets passando valor de expiração com overflow pro novo pet, que resultava em pet inativo.
 Melhorado proteção contra acesso concorrente em mais algumas seções de código de player shop e hired merchants.
 Adicionado comportamento de substituição de itens ao expirar, cortesia do GabrielSin.
+
+07 Junho 2018,
+Corrigido ponteiro nulo ao tentar usar return scroll em mapas como Mu Lung.
+Corrigido um crítico problema de deadlock com o MaplePacketEncoder.
+Corrigido um crítico problema de vazamento de dados na DB referente ao quest status.
+4th job Aran agora usa script de evento, evitando múltiplos jogadores lutando contra múltiplas Mahas.

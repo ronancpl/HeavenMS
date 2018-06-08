@@ -110,7 +110,7 @@ public class ServerConstants {
     public static final int MAX_EVENT_LEVELS = 8;                       //Event has different levels of rewarding system.
     public static final long BLOCK_NPC_RACE_CONDT = (long)(0.5 * 1000); //Time the player client must wait before reopening a conversation with an NPC.
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
-    public static final int TOT_MOB_QUEST_REQUIREMENT = 0;              //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
+    public static final int TOT_MOB_QUEST_REQUIREMENT = 77;              //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
     public static final int MOB_REACTOR_REFRESH_TIME = 30 * 1000;       //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
     
     //Dangling Items/Locks Configuration

@@ -24,9 +24,11 @@ function start(mode, type, selection) {
 	} else if (status == 4) {
 		qm.startQuest();
 		
-		var map = qm.getClient().getChannelServer().getMapFactory().getMap(914020000);
-		spawnMob(-365, 86, 9001014, map);
-		qm.warp(914020000, 0);
+                var mb = qm.getEventManager("MahaBattle");
+                mb.newInstance("MahaBattle");
+                mb.setProperty("player", qm.getPlayer().getName());
+                mb.startInstance(qm.getPlayer());
+		
 		qm.dispose();
 	}
 }

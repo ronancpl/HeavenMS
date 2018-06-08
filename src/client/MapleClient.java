@@ -106,6 +106,7 @@ public class MapleClient {
 	private byte gender = -1;
 	private boolean disconnecting = false;
 	private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
+        private final Lock encoderLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
         private static final Lock loginLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
 	private int votePoints;
 	private int voteTime = -1;
@@ -1141,6 +1142,14 @@ public class MapleClient {
         
         public void unlockClient() {
                 lock.unlock();
+	}
+        
+        public void lockEncoder() {
+                encoderLock.lock();
+	}
+        
+        public void unlockEncoder() {
+                encoderLock.unlock();
 	}
 
 	private static class CharNameAndId {

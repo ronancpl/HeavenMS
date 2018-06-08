@@ -185,7 +185,7 @@ Exploits patched:
 * Player being given free access to any character of any account once they have authenticated their account on login phase.
 * Player being given permission to delete any character of any account once they have authenticated their account on login phase.
 * Player being able to start/complete any quest freely.
-* Several assynchronous-oriented explots patched, highlights on those involving Fredrick & Duey.
+* Several assynchronous-oriented exploits patched, highlights on those involving Fredrick & Duey.
 
 Localhost:
 

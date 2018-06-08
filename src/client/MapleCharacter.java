@@ -2032,6 +2032,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.setInt(1, cid);
             ps.executeUpdate();
         }
+        
+        try (PreparedStatement ps = con.prepareStatement("DELETE FROM queststatus WHERE characterid = ?")) {
+            ps.setInt(1, cid);
+            ps.executeUpdate();
+        }
     }
 
     private void deleteWhereCharacterId(Connection con, String sql) throws SQLException {
@@ -3717,7 +3722,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     MapleBuffStatValueHolder mbsvh = effects.get(statup.getKey());
                     MapleBuffStatValueHolder statMbsvh = statup.getValue();
                     
-                    if(mbsvh == null || mbsvh.value < statMbsvh.value || (mbsvh.value == statMbsvh.value && mbsvh.effect.getStatups().size() < statMbsvh.effect.getStatups().size())) {
+                    if(mbsvh == null || mbsvh.value < statMbsvh.value || (mbsvh.value == statMbsvh.value && mbsvh.effect.getStatups().size() <= statMbsvh.effect.getStatups().size())) {
                         toDeploy.put(statup.getKey(), statMbsvh);
                     } else {
                         if(!isSingletonStatup(statup.getKey())) {
@@ -5969,7 +5974,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 rs = ps.executeQuery();
                 
                 Map<Integer, MapleQuestStatus> loadedQuestStatus = new LinkedHashMap<>();
-                
                 while (rs.next()) {
                     MapleQuest q = MapleQuest.getInstance(rs.getShort("quest"));
                     MapleQuestStatus status = new MapleQuestStatus(q, MapleQuestStatus.Status.getById(rs.getInt("status")));
@@ -6011,9 +6015,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                 }
                 
+                /*
                 for(MapleQuestStatus mqs : loadedQuestStatus.values()) {
                     mqs.resetUpdated();
                 }
+                */
                 
                 loadedQuestStatus.clear();
                 
@@ -7071,8 +7077,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 
                 synchronized (quests) {
                     for (MapleQuestStatus q : quests.values()) {
-                        if(!q.wasUpdated()) continue;
-                        
                         ps.setInt(2, q.getQuest().getId());
                         ps.setInt(3, q.getStatus().getId());
                         ps.setInt(4, (int) (q.getCompletionTime() / 1000));

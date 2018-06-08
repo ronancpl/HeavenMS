@@ -22,7 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package net.mina;
 
 import client.MapleClient;
-import java.util.concurrent.locks.Lock;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolEncoder;
@@ -36,7 +35,7 @@ public class MaplePacketEncoder implements ProtocolEncoder {
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         try {
-            client.lockClient();
+            client.lockEncoder();
             try {
                 final MapleAESOFB send_crypto = client.getSendCrypto();
                 final byte[] input = (byte[]) message;
@@ -52,7 +51,7 @@ public class MaplePacketEncoder implements ProtocolEncoder {
                 
                 out.write(IoBuffer.wrap(ret));
             } finally {
-                client.unlockClient();
+                client.unlockEncoder();
             }
 //            System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
 //            out.write(ByteBuffer.wrap(ret));
