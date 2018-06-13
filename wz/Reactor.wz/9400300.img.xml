@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="9400300.img">
+  <imgdir name="info">
+    <string name="info" value="로미오와줄리엣:비이커"/>
+  </imgdir>
+  <imgdir name="0">
+    <canvas name="0" width="1" height="1">
+      <vector name="origin" x="33" y="80"/>
+      <int name="z" value="0"/>
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="100"/>
+        <int name="state" value="0"/>
+        <int name="0" value="4032094"/>
+        <int name="1" value="1"/>
+        <vector name="lt" x="-220" y="-24"/>
+        <vector name="rb" x="220" y="9"/>
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <uol name="0" value="../0"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0" width="67" height="81">
+      <vector name="origin" x="33" y="80"/>
+      <int name="z" value="0"/>
+      <int name="delay" value="150"/>
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="type" value="101"/>
+        <int name="state" value="1"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

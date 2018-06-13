@@ -31,6 +31,7 @@ import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import server.MapleStatEffect;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -94,8 +95,16 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
             
             remove(c, slot);
             
-            ii.getItemEffect(toUse.getItemId()).applyTo(chr);
-            chr.checkBerserk(chr.isHidden());
+            if(toUse.getItemId() != 2022153) {
+                ii.getItemEffect(toUse.getItemId()).applyTo(chr);
+                chr.checkBerserk(chr.isHidden());
+            } else {
+                MapleStatEffect mse = ii.getItemEffect(toUse.getItemId());
+                for(MapleCharacter player : chr.getMap().getCharacters()) {
+                    mse.applyTo(player);
+                    player.checkBerserk(player.isHidden());
+                }
+            }
         }
     }
 

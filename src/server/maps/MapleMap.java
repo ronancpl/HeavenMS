@@ -470,26 +470,26 @@ public class MapleMap {
     public void generateMapDropRangeCache() {
         bndLock.lock();
         try {
-            Integer mapId = Integer.valueOf(mapid);
-            Pair<Integer, Integer> bounds = dropBoundsCache.get(mapId);
+            Pair<Integer, Integer> bounds = dropBoundsCache.get(mapid);
             
             if(bounds != null) {
                 xLimits = bounds;
             } else {
+                // assuming MINIMAP always have an equal-greater picture representation of the map area (players won't walk beyond the area known by the minimap).
                 Point lp = new Point(mapArea.x, mapArea.y), rp = new Point(mapArea.x + mapArea.width, mapArea.y), fallback = new Point(mapArea.x + (mapArea.width / 2), mapArea.y);
 
-                lp = bsearchDropPos(lp, fallback);
-                rp = bsearchDropPos(rp, fallback);
+                lp = bsearchDropPos(lp, fallback);  // approximated leftmost fh node position
+                rp = bsearchDropPos(rp, fallback);  // approximated rightmost fh node position
 
-                xLimits = new Pair<>(lp.x, rp.x);
-                dropBoundsCache.put(mapId, xLimits);
+                xLimits = new Pair<>(lp.x + 14, rp.x - 14);
+                dropBoundsCache.put(mapid, xLimits);
             }
         } finally {
             bndLock.unlock();
         }
     }
     
-    public Point bsearchDropPos(Point initial, Point fallback) {
+    private Point bsearchDropPos(Point initial, Point fallback) {
         Point res, dropPos = null;
                 
         int awayx = fallback.x;
@@ -1304,13 +1304,6 @@ public class MapleMap {
         }
     }
     
-    public void monsterCloakingDevice() {
-        for (MapleMapObject monstermo : getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.MONSTER))) {
-            MapleMonster monster = (MapleMonster) monstermo;
-            broadcastMessage(MaplePacketCreator.makeMonsterInvisible(monster));
-        }
-    }
-
     public void softKillAllMonsters() {
         closeMapSpawnPoints();
         
@@ -1808,6 +1801,8 @@ public class MapleMap {
             } else if (monster.getId() == 9300061) {
                 monsterItemDrop(monster, monster.getDropPeriodTime() / 3);
             } else if (monster.getId() == 9300093) {
+                monsterItemDrop(monster, monster.getDropPeriodTime());
+            } else if (monster.getId() == 9400326 || monster.getId() == 9400331 || monster.getId() == 9400336) {
                 monsterItemDrop(monster, monster.getDropPeriodTime());
             } else {
                 FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId() + "\r\n");
@@ -2373,6 +2368,9 @@ public class MapleMap {
                 break;
             }
         }
+        
+        chr.removeSandboxItems();
+        
         if (chr.isHidden()) {
             broadcastGMMessage(chr, MaplePacketCreator.spawnEnterPlayerMapObject(chr), false);
             chr.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
@@ -2842,11 +2840,11 @@ public class MapleMap {
     }
     
     public void setMapPointBoundings(int px, int py, int h, int w) {
-        mapArea.setBounds(px + 80, py, w - 160, h);
+        mapArea.setBounds(px, py, w, h);
     }
     
     public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {
-        mapArea.setBounds(vrLeft + 7, vrTop, vrRight - vrLeft - 14, vrBottom - vrTop);
+        mapArea.setBounds(vrLeft, vrTop, vrRight - vrLeft, vrBottom - vrTop);
     }
     
     /**

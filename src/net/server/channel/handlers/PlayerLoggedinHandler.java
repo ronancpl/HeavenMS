@@ -263,11 +263,14 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             if (!c.hasVotedAlready()){
             	player.announce(MaplePacketCreator.earnTitleMessage("You can vote now! Vote and earn a vote point!"));
             }
-                    */
+            */
             if (player.isGM()){
             	Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.earnTitleMessage((player.gmLevel() < 6 ? "GM " : "Admin ") + player.getName() + " has logged in"));
             }
-            
+        } else {
+            if(player.isRidingBattleship()) {
+                player.announceBattleshipHp();
+            }
         }
         
         showDueyNotification(c, player);

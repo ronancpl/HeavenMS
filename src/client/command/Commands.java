@@ -1285,8 +1285,10 @@ public class Commands {
                                     byte b = toDrop.getFlag();
                                     b |= ItemConstants.ACCOUNT_SHARING;
                                     b |= ItemConstants.UNTRADEABLE;
+                                    b |= ItemConstants.SANDBOX;
                                     
                                     toDrop.setFlag(b);
+                                    toDrop.setOwner("TRIAL-MODE");
                                 }
                                 
 				c.getPlayer().getMap().spawnItemDrop(c.getPlayer(), c.getPlayer(), toDrop, c.getPlayer().getPosition(), true, true);

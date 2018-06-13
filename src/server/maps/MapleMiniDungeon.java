@@ -58,6 +58,7 @@ public class MapleMiniDungeon {
                     }
                     
                     dispose();
+                    timeoutTask = null;
                 } finally {
                     lock.unlock();
                 }

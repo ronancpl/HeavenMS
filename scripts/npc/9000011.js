@@ -39,7 +39,7 @@ function action(mode, type, selection) {
 			} else if (selection == 1) {
 				cm.sendSimple("There are many games for this event. It will help you a lot to know how to play the game before you play it. Choose the one you want to know more of! #b\r\n#L0# Ola Ola#l\r\n#L1# MapleStory Maple Physical Fitness Test#l\r\n#L2# Snow Ball#l\r\n#L3# Coconut Harvest#l\r\n#L4# OX Quiz#l\r\n#L5# Treasure Hunt#l#k");
 			} else if (selection == 2) {
-				var marr = cm.getQuestRecord(160200);
+				var marr = cm.getQuestRecord(100295);
 				if (marr.getCustomData() == null) {
 					marr.setCustomData("0");
 				}

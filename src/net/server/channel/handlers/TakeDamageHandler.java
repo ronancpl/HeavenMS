@@ -237,10 +237,8 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                 }
                 chr.addMPHP(-damage, -mpattack);
             } else {
-                if (chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
-                    if (chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING).intValue() == Corsair.BATTLE_SHIP) {
-                        chr.decreaseBattleshipHp(damage);
-                    }
+                if (chr.isRidingBattleship()) {
+                    chr.decreaseBattleshipHp(damage);
                 }
                 chr.addMPHP(-damage, -mpattack);
             }

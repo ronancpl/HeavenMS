@@ -2,6 +2,8 @@
 	Spiegelmann -> 2042000
 	Coco -> 9000017
 	Agent E -> 9000036
+	Donation Box -> 9000041
+	Abdula -> 9209000
 
 CUSTOM NPC SHOPS:
 	Spindle -> 9201082
@@ -1026,3 +1028,15 @@ Corrigido ponteiro nulo ao tentar usar return scroll em mapas como Mu Lung.
 Corrigido um crítico problema de deadlock com o MaplePacketEncoder.
 Corrigido um crítico problema de vazamento de dados na DB referente ao quest status.
 4th job Aran agora usa script de evento, evitando múltiplos jogadores lutando contra múltiplas Mahas.
+
+08 - 10 Junho 2018,
+Corrigido Abdula não mostrando skill/mastery books para Aran.
+Corrigido fronteiras de mapa não mais deixando passar itens para fora do campo.
+Corrigido battleship não mostrando HP corretamente.
+Corrigido battleship não atuando corretamente com o sistema de buffs, deixando jogadores sem poder ativar a skill em certos casos.
+Corrigido battleship não dando buffs na defesa corretamente.
+
+11 - 12 Junho 2018,
+Adicionado efeito do usável Happy Birthday pra todos no mapa.
+Implementado HolidayPQ.
+Adicionado sistema de sandbox para itens.

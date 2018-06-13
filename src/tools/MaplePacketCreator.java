@@ -1883,13 +1883,25 @@ public class MaplePacketCreator {
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.writeShort(0);
                 mplew.write(0);
-                final Item mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18);
-                if (chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null && mount != null) {
-                        mplew.writeInt(mount.getItemId());
-                        mplew.writeInt(1004);
+                
+                Integer bv = chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING);
+                if (bv != null) {
+                        if(bv.equals(Corsair.BATTLE_SHIP)) {
+                                mplew.writeInt(1932000);
+                                mplew.writeInt(Corsair.BATTLE_SHIP);
+                        } else {
+                                final Item mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18);
+                                if(mount != null) {
+                                        mplew.writeInt(mount.getItemId());
+                                        mplew.writeInt(1004);
+                                } else {
+                                        mplew.writeLong(0);
+                                }
+                        }
                 } else {
                         mplew.writeLong(0);
                 }
+                
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.skip(9);
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
@@ -2107,7 +2119,7 @@ public class MaplePacketCreator {
                 if (ring != null) {
                         mplew.writeInt(chr.getId());
                         mplew.writeInt(ring.getPartnerChrId());
-                        mplew.writeInt(ring.getRingId());
+                        mplew.writeInt(ring.getItemId());
                 }
         }
 
@@ -3967,21 +3979,24 @@ public class MaplePacketCreator {
         }
 
         public static byte[] damageMonster(int oid, int damage) {
+                return damageMonster(oid, damage, 0, 0);
+        }
+        
+        public static byte[] healMonster(int oid, int heal, int curhp, int maxhp) {
+                return damageMonster(oid, -heal, curhp, maxhp);
+        }
+        
+        private static byte[] damageMonster(int oid, int damage, int curhp, int maxhp) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DAMAGE_MONSTER.getValue());
                 mplew.writeInt(oid);
                 mplew.write(0);
                 mplew.writeInt(damage);
-                mplew.write(0);
-                mplew.write(0);
-                mplew.write(0);
+                mplew.writeInt(curhp);
+                mplew.writeInt(maxhp);
                 return mplew.getPacket();
         }
-
-        public static byte[] healMonster(int oid, int heal) {
-                return damageMonster(oid, -heal);
-        }
-
+        
         public static byte[] updateBuddylist(Collection<BuddylistEntry> buddylist) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.BUDDYLIST.getValue());

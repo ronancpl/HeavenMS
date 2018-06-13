@@ -1225,28 +1225,20 @@
   </imgdir>
   <imgdir name="reactor">
     <imgdir name="0">
-      <string name="id" value="8892004"/>
+      <string name="id" value="9400300"/>
       <int name="x" value="-178"/>
       <int name="y" value="32"/>
       <int name="reactorTime" value="-1"/>
       <int name="f" value="0"/>
-      <string name="name" value="snow20"/>
+      <string name="name" value="snowmanCollector"/>
     </imgdir>
     <imgdir name="1">
-      <string name="id" value="8892005"/>
-      <int name="x" value="-188"/>
-      <int name="y" value="146"/>
+      <string name="id" value="9400301"/>
+      <int name="x" value="-178"/>
+      <int name="y" value="32"/>
       <int name="reactorTime" value="-1"/>
       <int name="f" value="0"/>
-      <string name="name" value="mob20"/>
-    </imgdir>
-    <imgdir name="2">
-      <string name="id" value="8898000"/>
-      <int name="x" value="-182"/>
-      <int name="y" value="31"/>
-      <int name="reactorTime" value="0"/>
-      <int name="f" value="1"/>
-      <string name="name" value="snow01"/>
+      <string name="name" value="snowmanFakeCollector"/>
     </imgdir>
   </imgdir>
   <imgdir name="snowMan">

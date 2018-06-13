@@ -9,7 +9,7 @@ Regarding distributability and usage of the code presented here: like it was bef
 
 This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
-In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of private server, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
+In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
 
@@ -71,7 +71,7 @@ Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8
 
 * HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 
-* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance checks are needed in order to make it stable for production use.
+* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance checks are needed in order to make it suitable for production use.
 
 ---
 ### Preparing the ambient 

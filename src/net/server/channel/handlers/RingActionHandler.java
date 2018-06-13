@@ -409,8 +409,12 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                                 if(guestChr != null && MapleInventoryManipulator.checkSpace(guestChr.getClient(), newItemId, 1, "") && MapleInventoryManipulator.addById(guestChr.getClient(), newItemId, (short) 1, expiration)) {
                                     guestChr.dropMessage(6, "[WEDDING] You've been invited to " + groom + " and " + bride + "'s Wedding!");
                                 } else {
-                                    c.getPlayer().sendNote(name, "You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!", (byte) 0);
-
+                                    if(guestChr != null && guestChr.isLoggedinWorld()) {
+                                        guestChr.dropMessage(6, "[WEDDING] You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!");
+                                    } else {
+                                        c.getPlayer().sendNote(name, "You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!", (byte) 0);
+                                    }
+                                    
                                     Item weddingTicket = new Item(newItemId, (short) 0, (short) 1);
                                     weddingTicket.setExpiration(expiration);
 

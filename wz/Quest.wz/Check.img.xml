@@ -27173,7 +27173,6 @@
   <imgdir name="28002">
     <imgdir name="0">
       <int name="npc" value="9105003"/>
-      <string name="end" value="2008123100"/>
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2020005"/>
@@ -27188,7 +27187,6 @@
   <imgdir name="28003">
     <imgdir name="0">
       <int name="npc" value="2020005"/>
-      <string name="end" value="2008123100"/>
       <imgdir name="quest">
         <imgdir name="0">
           <int name="id" value="28002"/>
@@ -27212,7 +27210,6 @@
     </imgdir>
     <imgdir name="0">
       <int name="npc" value="9105003"/>
-      <string name="end" value="2008123100"/>
       <string name="startscript" value="q28004s"/>
       <imgdir name="quest">
         <imgdir name="0">
@@ -27220,7 +27217,8 @@
           <int name="state" value="2"/>
         </imgdir>
       </imgdir>
-      <int name="interval" value="0"/>
+      <int name="lvmin" value="21"/>
+      <int name="lvmax" value="51"/>
     </imgdir>
   </imgdir>
   <imgdir name="28102">

@@ -42,6 +42,7 @@ public final class ItemConstants {
     public final static int UNTRADEABLE = 0x08;
     public final static int KARMA_EQP = 0x10;
     public final static int KARMA_UNTRADEABLE = 0x20;   // let 0x20 until it's proven something uses this
+    public final static int SANDBOX = 0x40;             // let 0x40 until it's proven something uses this
     public final static int PET_COME = 0x80;
     public final static int ACCOUNT_SHARING = 0x100;
 

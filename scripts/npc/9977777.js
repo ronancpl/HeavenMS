@@ -32,7 +32,7 @@ var ambientSong = "Bgm04/Shinin'Harbor";
 var feature_tree = [];
 var feature_cursor;
 
-var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Admin/GM commands", "Localhost edits", "Project"];
+var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Admin/GM commands", "Custom NPCs", "Localhost edits", "Project"];
 
 function addFeature(feature) {
         feature_cursor.push(feature);
@@ -40,7 +40,7 @@ function addFeature(feature) {
 
 function writeFeatureTab_PQs() {
         addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/APQ/EllinPQ/PiratePQ.");
-        addFeature("MagatiaPQ/HorntailPQ/TreasurePQ/ElnathPQ.");
+        addFeature("RnJPQ/HorntailPQ/TreasurePQ/ElnathPQ/HolidayPQ.");
         addFeature("CWKPQ as Expedition-based event.");
         addFeature("Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.");
         addFeature("GuildPQ & queue with multi-lobby systems available.");
@@ -51,8 +51,10 @@ function writeFeatureTab_PQs() {
 
 function writeFeatureTab_Skills() {
         addFeature("Reviewed many skills, such as Steal and M. Door.");
+        addFeature("Improved battleship: HP visible and map-persistent.");
         addFeature("Maker skill features properly developed.");
         addFeature("Chair Mastery - map chair boosts HP/MP rec.");
+        addFeature("Mu Lung Dojo skills functional.");
 }
 
 function writeFeatureTab_Quests() {
@@ -85,6 +87,7 @@ function writeFeatureTab_CashItems() {
         addFeature("New town scroll: antibanish. Counters boss banishes.");
         addFeature("Inventory system checks for free slot & stack space.");
         addFeature("Storage with 'Arrange Items' feature functional.");
+        addFeature("Close-quarters evaluation mode for items.");
         addFeature("Further improved Karma scissors.");
         addFeature("Scroll for Spikes on Shoes.");
         addFeature("Scroll for Cold Protection.");
@@ -103,12 +106,14 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Monsterbook displays updated drop data info.");
         addFeature("Every skill/mastery book is now obtainable.");
         addFeature("Mobs now can drop more than one of the same equip.");
+        addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
         addFeature("Game will favor showing the targeted boss HPbar.");
         addFeature("Dmg overtime on maps and neutralizers functional.");
         addFeature("Boats, elevator and other travel mechanics functional.");
         addFeature("C. Balrog's boat approaching visual effect functional.");
+        addFeature("Maps having everlasting items no longer expires them.");
         addFeature("PQs, Taxis and events warps players to random SPs.");
         addFeature("PQ boxes sprays items when opened, GMS-like.");
         addFeature("Reactors pick items up smartly from the field.");
@@ -129,6 +134,7 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("Player level rates.");
         addFeature("Gain fame by quests.");
         addFeature("Pet evolutions functional (not GMS-like).");
+        addFeature("Reviewed keybinding system.");
 }
 
 function writeFeatureTab_Serverpotentials() {
@@ -160,6 +166,14 @@ function writeFeatureTab_AdminGMcommands() {
         addFeature("Several new commands.");
 }
 
+function writeFeatureTab_CustomNPCs() {
+        addFeature("Spiegelmann: automatized rock-refiner.");
+        addFeature("Abdula: lists droppers of needed skill/mastery books.");
+        addFeature("Agent E: accessory crafter.");
+        addFeature("Donation Box: automatized item-buyer.");
+        addFeature("Coco & Ace of Hearts: C. scroll crafters.");
+}
+
 function writeFeatureTab_Localhostedits() {
         addFeature("Removed the 'n' NPC dialog issue.");
         addFeature("Removed caps for MATK, WMDEF, ACC and AVOID.");
@@ -180,6 +194,7 @@ function writeFeatureTab_Project() {
         addFeature("Fixed/added many missing packet opcodes.");
         addFeature("Uncovered many opcodes throughout the source.");
         addFeature("Reviewed many Java aspects that needed attention.");
+        addFeature("Reviewed SQL data, eliminating duplicated entries.");
         addFeature("Protected many flaws with login management system.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Heavily reviewed future task management, spawning much less threads and relieving task overload on the TimerManager.");

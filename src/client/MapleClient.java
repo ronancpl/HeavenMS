@@ -64,6 +64,7 @@ import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import constants.ServerConstants;
 import scripting.AbstractPlayerInteraction;
+import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
 import scripting.npc.NPCConversationManager;
 import scripting.npc.NPCScriptManager;
@@ -798,8 +799,9 @@ public class MapleClient {
                         player.closePlayerInteractions();
 			QuestScriptManager.getInstance().dispose(this);
 			
-			if (player.getEventInstance() != null) {
-				player.getEventInstance().playerDisconnected(player);
+                        EventInstanceManager eim = player.getEventInstance();
+			if (eim != null) {
+				eim.playerDisconnected(player);
 			}
 			if (player.getMap() != null) {
                                 int mapId = player.getMapId();

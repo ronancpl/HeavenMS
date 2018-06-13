@@ -200,7 +200,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int owlSearch;
     private long lastfametime, lastUsedCashItem, lastHealed, lastBuyback, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
-    private boolean hidden, canDoor = true, berserk, hasMerchant, whiteChat = false;
+    private boolean hidden, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false;
     private int linkedLevel = 0;
     private String linkedName = null;
     private boolean finishedDojoTutorial;
@@ -479,9 +479,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         effLock.lock();
         chrLock.lock();
         try {
-            if (this.coolDowns.containsKey(Integer.valueOf(skillId))) {
-                this.coolDowns.remove(Integer.valueOf(skillId));
-            }
             this.coolDowns.put(Integer.valueOf(skillId), new MapleCoolDownValueHolder(skillId, startTime, length));
         } finally {
             chrLock.unlock();
@@ -960,6 +957,33 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public boolean canDoor() {
         return canDoor;
+    }
+    
+    public void setHasSandboxItem() {
+        hasSandboxItem = true;
+    }
+    
+    public void removeSandboxItems() {  // sandbox idea thanks to Morty
+        if(!hasSandboxItem) return;
+        
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        for(MapleInventoryType invType : MapleInventoryType.values()) {
+            MapleInventory inv = this.getInventory(invType);
+            
+            inv.lockInventory();
+            try {
+                for(Item item : new ArrayList<>(inv.list())) {
+                    if(MapleInventoryManipulator.isSandboxItem(item)) {
+                        MapleInventoryManipulator.removeFromSlot(client, invType, item.getPosition(), item.getQuantity(), false);
+                        dropMessage(5, "[" + ii.getName(item.getItemId()) + "] has passed its trial conditions and will be removed from your inventory.");
+                    }
+                }
+            } finally {
+                inv.unlockInventory();
+            }
+        }
+        
+        hasSandboxItem = false;
     }
 
     public FameStatus canGiveFame(MapleCharacter from) {
@@ -1789,10 +1813,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return getInventory(ItemConstants.getInventoryType(itemid)).getNextFreeSlot() > -1;
     }
 
+    public boolean isRidingBattleship() {
+        Integer bv = getBuffedValue(MapleBuffStat.MONSTER_RIDING);
+        return bv != null && bv.equals(Corsair.BATTLE_SHIP);
+    }
+    
+    public void announceBattleshipHp() {
+        announce(MaplePacketCreator.skillCooldown(5221999, battleshipHp));
+    }
+    
     public void decreaseBattleshipHp(int decrease) {
         this.battleshipHp -= decrease;
         if (battleshipHp <= 0) {
-            this.battleshipHp = 0;
             Skill battleship = SkillFactory.getSkill(Corsair.BATTLE_SHIP);
             int cooldown = battleship.getEffect(getSkillLevel(battleship)).getCooldown();
             announce(MaplePacketCreator.skillCooldown(Corsair.BATTLE_SHIP, cooldown));
@@ -1800,7 +1832,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             removeCooldown(5221999);
             cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
         } else {
-            announce(MaplePacketCreator.skillCooldown(5221999, battleshipHp / 10));   //:D
+            announceBattleshipHp();
             addCooldown(5221999, 0, Long.MAX_VALUE);
         }
     }
@@ -2575,8 +2607,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                                 Pair<Integer, String> replace = ii.getReplaceOnExpire(item.getItemId());
                                 if (replace.left > 0) {
                                     toadd.add(replace.left);
-                                    if (replace.right != null)
+                                    if (!replace.right.isEmpty()) {
                                         dropMessage(replace.right);
+                                    }
                                 }
                                 for (Integer itemid : toadd) {
                                     MapleInventoryManipulator.addById(client, itemid, (short) 1);
@@ -3032,7 +3065,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    private void debugListAllBuffs() {
+    public void debugListAllBuffs() {
         effLock.lock();
         chrLock.lock();
         try {
@@ -3057,7 +3090,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
-    private void debugListAllBuffsCount() {
+    public void debugListAllBuffsCount() {
         effLock.lock();
         chrLock.lock();
         try {
@@ -3567,6 +3600,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         for(Pair<Integer, Pair<MapleStatEffect, Long>> lmse: toUpdateEffects) {
             Pair<MapleStatEffect, Long> msel = lmse.getRight();
             msel.getLeft().updateBuffEffect(this, getActiveStatupsFromSourceid(lmse.getLeft()), msel.getRight());
+        }
+        
+        if (this.isRidingBattleship()) {
+            List<Pair<MapleBuffStat, Integer>> statups = new ArrayList<>(1);
+            statups.add(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));
+            this.announce(MaplePacketCreator.giveBuff(1932000, 5221006, statups));
+            this.announceBattleshipHp();
         }
     }
     
@@ -5805,6 +5845,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.getInventory(MapleInventoryType.SETUP).setSlotLimit(rs.getByte("setupslots"));
             ret.getInventory(MapleInventoryType.ETC).setSlotLimit(rs.getByte("etcslots"));
             for (Pair<Item, MapleInventoryType> item : ItemFactory.INVENTORY.loadItems(ret.id, !channelserver)) {
+                if(MapleInventoryManipulator.isSandboxItem(item.getLeft())) {
+                    ret.setHasSandboxItem();
+                }
+                
                 ret.getInventory(item.getRight()).addFromDB(item.getLeft());
                 Item itemz = item.getLeft();
                 if (itemz.getPetId() > -1) {
@@ -6014,12 +6058,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         }
                     }
                 }
-                
-                /*
-                for(MapleQuestStatus mqs : loadedQuestStatus.values()) {
-                    mqs.resetUpdated();
-                }
-                */
                 
                 loadedQuestStatus.clear();
                 
@@ -6550,11 +6588,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         statup.add(new Pair<>(MapleStat.LUK, tluk));
         announce(MaplePacketCreator.updatePlayerStats(statup, this));
     }
-
+    
     public void resetBattleshipHp() {
-        this.battleshipHp = 4000 * getSkillLevel(SkillFactory.getSkill(Corsair.BATTLE_SHIP)) + ((getLevel() - 120) * 2000);
+        this.battleshipHp = 400 * getSkillLevel(SkillFactory.getSkill(Corsair.BATTLE_SHIP)) + ((getLevel() - 120) * 200);
     }
-
+    
     public void resetEnteredScript() {
         if (entered.containsKey(map.getId())) {
             entered.remove(map.getId());

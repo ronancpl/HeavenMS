@@ -234,8 +234,7 @@ public class EventInstanceManager {
                         wL.lock();
                         try {
                                 chars.put(chr.getId(), chr);
-                        }
-                        finally {
+                        } finally {
                                 wL.unlock();
                         }
                         
@@ -420,8 +419,7 @@ public class EventInstanceManager {
                 rL.lock();
                 try {
                         return chars.size();
-                }
-                finally {
+                } finally {
                         rL.unlock();
                 }
 	}
@@ -430,8 +428,7 @@ public class EventInstanceManager {
                 rL.lock();
                 try {
                         return chars.get(id);
-                }
-                finally {
+                } finally {
                         rL.unlock();
                 }
 	}
@@ -440,8 +437,7 @@ public class EventInstanceManager {
                 rL.lock();
                 try {
                         return new ArrayList<>(chars.values());
-                }
-                finally {
+                } finally {
                         rL.unlock();
                 }
 	}

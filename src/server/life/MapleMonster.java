@@ -275,6 +275,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
      *
      * @param from the player that dealt the damage
      * @param damage
+     * @param stayAlive
      */
     public synchronized void damage(MapleCharacter from, int damage, boolean stayAlive) {
         Integer trueDamage = applyAndGetHpDamage(damage, stayAlive);
@@ -293,7 +294,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
         broadcastMobHpBar(from);
     }
-
+    
     public void heal(int hp, int mp) {
         Integer hpHealed = applyAndGetHpDamage(-hp, false);
         if(hpHealed == null) return;
@@ -305,7 +306,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         setMp(mp2Heal);
         
-        if(hp > 0) getMap().broadcastMessage(MaplePacketCreator.healMonster(getObjectId(), hp));
+        if(hp > 0) getMap().broadcastMessage(MaplePacketCreator.healMonster(getObjectId(), hp, getHp(), getMaxHp()));
         
         maxHpPlusHeal.addAndGet(hpHealed);
         dispatchMonsterHealed(hpHealed);
@@ -695,7 +696,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public boolean hasBossHPBar() {
         return isBoss() && getTagColor() > 0;
     }
-
+    
     @Override
     public void sendSpawnData(MapleClient c) {
         if (!isAlive()) {

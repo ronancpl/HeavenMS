@@ -260,12 +260,6 @@ function action(mode, type, selection) {
                 var eim = getMarriageInstance(wid);
 
                 if(eim != null) {
-                    if(!cm.canHold(4000313)) {
-                        cm.sendOk("Please have a free ETC slot available to get the #b#t4000313##k.");
-                        cm.dispose();
-                        return;
-                    }
-
                     cm.gainItem(weddingGuestTicket, -1);
                     eim.registerPlayer(cm.getPlayer());     //cm.warp(680000210, 0);
                 } else {

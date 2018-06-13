@@ -1001,7 +1001,7 @@ public class MapleStatEffect {
             }
         }
         if (sourceid == Corsair.BATTLE_SHIP) {
-            chr.announce(MaplePacketCreator.skillCooldown(5221999, chr.getBattleshipHp()));
+            chr.announceBattleshipHp();
         }
     }
 
@@ -1107,14 +1107,17 @@ public class MapleStatEffect {
             } else if (isCombo()) {
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), statups);
             } else if (isMonsterRiding()) {
+                if (sourceid == Corsair.BATTLE_SHIP) {//hp
+                    if (applyto.getBattleshipHp() <= 0) {
+                        applyto.resetBattleshipHp();
+                    }
+                    
+                    localstatups = statups;
+                }
+                
                 buff = MaplePacketCreator.giveBuff(localsourceid, localDuration, localstatups);
                 mbuff = MaplePacketCreator.showMonsterRiding(applyto.getId(), givemount);
                 localDuration = duration;
-                if (sourceid == Corsair.BATTLE_SHIP) {//hp
-                    if (applyto.getBattleshipHp() == 0) {
-                        applyto.resetBattleshipHp();
-                    }
-                }
             } else if (isShadowPartner()) {
                 List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.SHADOWPARTNER, 0));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), stat);
@@ -1130,9 +1133,8 @@ public class MapleStatEffect {
             
             if (buff != null) {
             	if (!hasNoIcon()) { //Thanks flav for such a simple release! :)
-            		applyto.getClient().announce(buff);
-            	}
-                else {
+                    applyto.announce(buff);
+            	} else {
                     System.out.println("<Error> NO buff icon for id " + sourceid);
                 }
             }
@@ -1146,7 +1148,7 @@ public class MapleStatEffect {
                 applyto.getMap().broadcastMessage(applyto, mbuff, false);
             }
             if (sourceid == Corsair.BATTLE_SHIP) {
-                applyto.announce(MaplePacketCreator.skillCooldown(5221999, applyto.getBattleshipHp() / 10));
+                applyto.announceBattleshipHp();
             }
         }
     }

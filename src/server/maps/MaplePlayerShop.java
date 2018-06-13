@@ -241,8 +241,6 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                     if (c.getPlayer().getMeso() >= price) {
                         if (canBuy(c, newItem)) {
                             c.getPlayer().gainMeso(-price, false);
-                            
-                            if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to vcoc
                             owner.gainMeso(price, true);
                             
                             SoldItem soldItem = new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price);
@@ -275,12 +273,6 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
     }
     
-    private void announceItemSold(Item item, int mesos) {
-        String qtyStr = (item.getQuantity() > 1) ? " (qty. " + item.getQuantity() + ")" : "";
-        
-        owner.dropMessage(6, "[PLAYER SHOP] Item '" + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
-    }
-
     public void broadcastToVisitors(final byte[] packet) {
         visitorLock.lock();
         try {

@@ -22,7 +22,7 @@ Feature list:
 
 PQs:
 
-* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ/ElnathPQ.
+* HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ/ElnathPQ/HolidayPQ.
 * CWKPQ as Expedition-based event.
 * Expeditions: Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.
 * GuildPQ + Guild queue with multi-lobby systems available.
@@ -34,8 +34,10 @@ Skills:
 
 * Some skills behaving oddly have been patched, such as Steal, Venomous Star/Stab and Mystic Doors.
 * Maker skill features properly developed.
+* Improved current Battleship skill, now showing the HP properly on buff tab and making visible for others after changing maps.
 * Server is using heuristics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
 * New skill: Chair Mastery (max lv 1) - Players having this passive skill can gain a significant boost of HP/MP recovery when sitting on a field/map chair.
+* Mu Lung Dojo skills functional.
 
 Quests:
 
@@ -71,6 +73,7 @@ Cash & Items:
 * New scroll: antibanish. For use only in cases where bosses send a player back to town.
 * Inventory system properly checks for item slot free space and ownership.
 * Storage with "Arrange Items" feature functional.
+* Close-quarters evaluation mode for items (sandbox).
 * Spikes on shoes.
 * Vega's spell.
 * Owl of Minerva.
@@ -87,6 +90,7 @@ Monsters, Maps & Reactors:
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
 * Every skill/mastery book is now droppable by mobs.
 * Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
+* Redesigned HT mechanics for spawn and linked damage to the sponge.
 * Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the accessible map area.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
 * Implemented Zombify disease status.
@@ -95,6 +99,7 @@ Monsters, Maps & Reactors:
 * Boats, elevator and other travelling mechanics fully working.
 * HP decreasing overtime on maps and mechanics to prevent them (consumables, equips) fully functional.
 * Crimson Balrog boat approaching visual effect made functional.
+* Maps having everlasting items no longer expires them.
 * PQs, Taxis and other event-driven situations warps players at random spawnpoints, GMS-like.
 * Some reactors (PQ bonus boxes) spraying items on the map, instead of dropping everything at once.
 * Reactors pick items up smartly, checking for an option to pick up on many-items-nearby scenario.
@@ -116,6 +121,7 @@ Player potentials:
 * Player level rates.
 * Gain fame by quests.
 * Pet evolutions functional (not GMS-like).
+* Reviewed keybinding system.
 
 Server potentials:
 
@@ -140,6 +146,14 @@ Server potentials:
 * Implemented old GMS statup mechanic for novices level 10 or below. Usage of the edited localhost is mandatory on this.
 * Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
+
+Custom NPCs:
+
+* Spiegelmann: automatized rock-refiner.
+* Abdula: lists droppers of needed skill/mastery books.
+* Agent E: accessory crafter.
+* Donation Box: automatized item-buyer.
+* Coco & Ace of Hearts: C. scroll crafters.
 
 Admin/GM commands:
 
@@ -175,6 +189,7 @@ Project:
 * Fixed/added some missing packets for MoveEnvironment, summons and others.
 * Uncovered many Send/Recv opcodes throughout the source.
 * Reviewed many Java object aspects that needed concurrency protection.
+* Reviewed SQL data, eliminating duplicated entries on the tables.
 * Usage of HikariCP to improve the DB connection management.
 * Protected many flaws with login management system.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
@@ -198,12 +213,5 @@ Localhost:
 * Set a new high cap for SPEED.
 * Removed the AP assign block for novices.
 * Removed a block that would show up when trying to apply an attack gem on equipments that aren't weapons.
-
-Custom NPCs:
-
-* Agent E: Accessory crafter.
-* Donation Box: Instant-sell NPC.
-* Ace of Hearts & Coco: C. scroll crafter.
-* Spiegelmann: Instant-ore refiner NPC.
 
 ---------------------------

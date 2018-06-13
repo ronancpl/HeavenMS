@@ -121,6 +121,8 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Pair<String, Integer>> statUpgradeMakerCache = new HashMap<>();
     protected Map<Integer, MakerItemFactory.MakerItemCreateEntry> makerItemCache = new HashMap<>();
     protected Map<Integer, Integer> makerCatalystCache = new HashMap<>();
+    protected Map<Integer, Map<String, Integer>> skillUpgradeCache = new HashMap<>();
+    protected Map<Integer, MapleData> skillUpgradeInfoCache = new HashMap<>();
 
     private MapleItemInformationProvider() {
         loadCardIdData();
@@ -525,8 +527,9 @@ public class MapleItemInformationProvider {
             return replaceOnExpireCache.get(itemId);
         }
  
-        int itemReplacement = MapleDataTool.getInt("info/replace/itemid", getItemData(itemId), 0);
-        String msg = MapleDataTool.getString("info/replace/msg", getItemData(itemId));
+        MapleData data = getItemData(itemId);
+        int itemReplacement = MapleDataTool.getInt("info/replace/itemid", data, 0);
+        String msg = MapleDataTool.getString("info/replace/msg", data, "");
  
         Pair<Integer, String> ret = new Pair<>(itemReplacement, msg);
         replaceOnExpireCache.put(itemId, ret);
@@ -1239,25 +1242,42 @@ public class MapleItemInformationProvider {
         return bRestricted;
     }
 
-    public Map<String, Integer> getSkillStats(int itemId, double playerJob) {
-        Map<String, Integer> ret = new LinkedHashMap<>();
+    private Pair<Map<String, Integer>, MapleData> getSkillStatsInternal(int itemId) {
+        Map<String, Integer> ret = skillUpgradeCache.get(itemId);
+        MapleData retSkill = skillUpgradeInfoCache.get(itemId);
+        
+        if(ret != null) return new Pair<>(ret, retSkill);
+        
+        retSkill = null;
+        ret = new LinkedHashMap<>();
         MapleData item = getItemData(itemId);
-        if (item == null) {
-            return null;
-        }
-        MapleData info = item.getChildByPath("info");
-        if (info == null) {
-            return null;
-        }
-        for (MapleData data : info.getChildren()) {
-            if (data.getName().startsWith("inc")) {
-                ret.put(data.getName().substring(3), MapleDataTool.getIntConvert(data));
+        if (item != null) {
+            MapleData info = item.getChildByPath("info");
+            if (info != null) {
+                for (MapleData data : info.getChildren()) {
+                    if (data.getName().startsWith("inc")) {
+                        ret.put(data.getName().substring(3), MapleDataTool.getIntConvert(data));
+                    }
+                }
+                ret.put("masterLevel", MapleDataTool.getInt("masterLevel", info, 0));
+                ret.put("reqSkillLevel", MapleDataTool.getInt("reqSkillLevel", info, 0));
+                ret.put("success", MapleDataTool.getInt("success", info, 0));
+                
+                retSkill = info.getChildByPath("skill");
             }
         }
-        ret.put("masterLevel", MapleDataTool.getInt("masterLevel", info, 0));
-        ret.put("reqSkillLevel", MapleDataTool.getInt("reqSkillLevel", info, 0));
-        ret.put("success", MapleDataTool.getInt("success", info, 0));
-        MapleData skill = info.getChildByPath("skill");
+        
+        skillUpgradeCache.put(itemId, ret);
+        skillUpgradeInfoCache.put(itemId, retSkill);
+        return new Pair<>(ret, retSkill);
+    }
+    
+    public Map<String, Integer> getSkillStats(int itemId, double playerJob) {
+        Pair<Map<String, Integer>, MapleData> retData = getSkillStatsInternal(itemId);
+        if(retData.getLeft().isEmpty()) return null;
+        
+        Map<String, Integer> ret = new LinkedHashMap<>(retData.getLeft());
+        MapleData skill = retData.getRight();
         int curskill;
         for (int i = 0; i < skill.getChildren().size(); i++) {
             curskill = MapleDataTool.getInt(Integer.toString(i), skill, 0);
@@ -1933,7 +1953,7 @@ public class MapleItemInformationProvider {
     }
     
     private boolean canUseSkillBook(MapleCharacter player, Integer skillBookId) {
-        Map<String, Integer> skilldata = MapleItemInformationProvider.getInstance().getSkillStats(skillBookId, player.getJob().getId());
+        Map<String, Integer> skilldata = getSkillStats(skillBookId, player.getJob().getId());
         if(skilldata == null || skilldata.get("skillid") == 0) return false;
             
         Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
@@ -1942,7 +1962,7 @@ public class MapleItemInformationProvider {
     
     public List<Integer> usableMasteryBooks(MapleCharacter player) {
         List<Integer> masterybook = new LinkedList<>();
-        for(Integer i = 2290000; i <= 2290125; i++) {
+        for(Integer i = 2290000; i <= 2290139; i++) {
             if(canUseSkillBook(player, i)) {
                 masterybook.add(i);
             }
@@ -1953,7 +1973,7 @@ public class MapleItemInformationProvider {
     
     public List<Integer> usableSkillBooks(MapleCharacter player) {
         List<Integer> skillbook = new LinkedList<>();
-        for(Integer i = 2280000; i <= 2280012; i++) {
+        for(Integer i = 2280000; i <= 2280019; i++) {
             if(canUseSkillBook(player, i)) {
                 skillbook.add(i);
             }

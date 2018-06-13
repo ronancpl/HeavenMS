@@ -57,9 +57,11 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                         } else if(monster.getId() == 9300093) {   //tylus
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of the ambush."));
                         } else if(monster.getId() == 9300137) {   //juliet
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted on the middle of the combat."));
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted in the middle of the combat."));
                         } else if(monster.getId() == 9300138) {   //romeo
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Romeo has fainted on the middle of the combat."));
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Romeo has fainted in the middle of the combat."));
+                        } else if(monster.getId() == 9400322 || monster.getId() == 9400327 || monster.getId() == 9400332) {
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Snowman has melted on the heat of the battle."));
                         }
                         
                         c.getPlayer().getMap().killFriendlies(monster);

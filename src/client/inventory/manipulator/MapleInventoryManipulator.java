@@ -77,7 +77,7 @@ public class MapleInventoryManipulator {
                         if (i.hasNext()) {
                             Item eItem = (Item) i.next();
                             short oldQ = eItem.getQuantity();
-                            if (oldQ < slotMax && (eItem.getOwner().equals(owner) || owner == null)) {
+                            if (oldQ < slotMax && ((eItem.getOwner().equals(owner) || owner == null) && eItem.getFlag() == flag)) {
                                 short newQ = (short) Math.min(oldQ + quantity, slotMax);
                                 quantity -= (newQ - oldQ);
                                 eItem.setQuantity(newQ);
@@ -89,6 +89,7 @@ public class MapleInventoryManipulator {
                         }
                     }
                 }
+                boolean sandboxItem = (flag & ItemConstants.SANDBOX) == ItemConstants.SANDBOX;
                 while (quantity > 0 || ItemConstants.isRechargeable(itemId)) {
                     short newQ = (short) Math.min(quantity, slotMax);
                     if (newQ != 0) {
@@ -106,6 +107,7 @@ public class MapleInventoryManipulator {
                             nItem.setOwner(owner);
                         }
                         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
+                        if(sandboxItem) c.getPlayer().setHasSandboxItem();
                         if ((ItemConstants.isRechargeable(itemId)) && quantity == 0) {
                             break;
                         }
@@ -125,6 +127,7 @@ public class MapleInventoryManipulator {
                     return false;
                 }
                 c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
+                if(MapleInventoryManipulator.isSandboxItem(nItem)) c.getPlayer().setHasSandboxItem();
             }
         } else if (quantity == 1) {
             Item nEquip = ii.getEquipById(itemId);
@@ -140,6 +143,7 @@ public class MapleInventoryManipulator {
                 return false;
             }
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nEquip))));
+            if(MapleInventoryManipulator.isSandboxItem(nEquip)) c.getPlayer().setHasSandboxItem();
         } else {
             throw new RuntimeException("Trying to create equip with non-one quantity");
         }
@@ -173,7 +177,7 @@ public class MapleInventoryManipulator {
                         if (i.hasNext()) {
                             Item eItem = (Item) i.next();
                             short oldQ = eItem.getQuantity();
-                            if (oldQ < slotMax && item.getOwner().equals(eItem.getOwner())) {
+                            if (oldQ < slotMax && item.getFlag() == eItem.getFlag() && item.getOwner().equals(eItem.getOwner())) {
                                 short newQ = (short) Math.min(oldQ + quantity, slotMax);
                                 quantity -= (newQ - oldQ);
                                 eItem.setQuantity(newQ);
@@ -199,10 +203,12 @@ public class MapleInventoryManipulator {
                         return false;
                     }
                     c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
+                    if(MapleInventoryManipulator.isSandboxItem(nItem)) c.getPlayer().setHasSandboxItem();
                 }
             } else {
                 Item nItem = new Item(item.getItemId(), (short) 0, quantity, petId);
                 nItem.setExpiration(item.getExpiration());
+                nItem.setFlag(item.getFlag());
                 
                 short newSlot = c.getPlayer().getInventory(type).addItem(nItem);
                 if (newSlot == -1) {
@@ -211,6 +217,7 @@ public class MapleInventoryManipulator {
                     return false;
                 }
                 c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
+                if(MapleInventoryManipulator.isSandboxItem(nItem)) c.getPlayer().setHasSandboxItem();
                 c.announce(MaplePacketCreator.enableActions());
             }
         } else if (quantity == 1) {
@@ -221,6 +228,7 @@ public class MapleInventoryManipulator {
                 return false;
             }
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, item))));
+            if(MapleInventoryManipulator.isSandboxItem(item)) c.getPlayer().setHasSandboxItem();
         } else {
             FilePrinter.printError(FilePrinter.ITEM, "Tried to pickup Equip id " + item.getItemId() + " containing more than 1 quantity --> " + quantity);
             c.announce(MaplePacketCreator.getInventoryFull());
@@ -624,5 +632,9 @@ public class MapleInventoryManipulator {
 
     private static boolean isDroppedItemRestricted(Item it) {
         return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && ((it.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE);
+    }
+    
+    public static boolean isSandboxItem(Item it) {
+        return (it.getFlag() & ItemConstants.SANDBOX) == ItemConstants.SANDBOX;
     }
 }
