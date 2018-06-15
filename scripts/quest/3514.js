@@ -25,6 +25,8 @@
 
 importPackage(Packages.client);
 
+var status = -1;
+
 function start(mode, type, selection) {
         if(qm.getPlayer().getMeso() >= 1000000) {
             if(qm.canHold(2022337, 1)) {
@@ -48,21 +50,36 @@ function usedPotion(ch) {
 }
 
 function end(mode, type, selection) {
-        if(!usedPotion(qm.getPlayer())) {
-                if(qm.haveItem(2022337)) {
-                        qm.sendOk("Are you scared to drink the potion? I can assure you it has only a minor #rside effect#k.");
-                } else {
-                        if(qm.canHold(2022337)) {
-                                qm.gainItem(2022337, 1);
-                                qm.sendOk("Lost it? Luckily for you I managed to recover it back. Take it.");
-                        } else {
-                                qm.sendOk("Lost it? Luckily for you I managed to recover it back. Make a room to get it.");
-                        }
-                }
+        if (mode == 0 && type == 0) {
+		status--;
+	} else if (mode == -1) {
+		qm.dispose();
+		return;
 	} else {
-		qm.sendOk("It seems the potion worked and your emotions are no longer frozen. And, oh, my... You're ailing bad, #bpurge#k that out quickly.");
-                qm.gainExp(891500 * qm.getPlayer().getExpRate());
-		qm.completeQuest(3514);
+		status++;
 	}
-        qm.dispose();
+    
+        if(status == 0) {
+                if(!usedPotion(qm.getPlayer())) {
+                        if(qm.haveItem(2022337)) {
+                                qm.sendOk("Are you scared to drink the potion? I can assure you it has only a minor #rside effect#k.");
+                        } else {
+                                if(qm.canHold(2022337)) {
+                                        qm.gainItem(2022337, 1);
+                                        qm.sendOk("Lost it? Luckily for you I managed to recover it back. Take it.");
+                                } else {
+                                        qm.sendOk("Lost it? Luckily for you I managed to recover it back. Make a room to get it.");
+                                }
+                        }
+                        
+                        qm.dispose();
+                        return;
+                } else {
+                        qm.sendOk("It seems the potion worked and your emotions are no longer frozen. And, oh, my... You're ailing bad, #bpurge#k that out quickly.");
+                }
+        } else if(status == 1) {
+                qm.gainExp(891500 * qm.getPlayer().getExpRate());
+                qm.completeQuest(3514);
+                qm.dispose();
+        }
 }

@@ -136,7 +136,7 @@ function action(mode, type, selection) {
                                 cm.dispose();
                         } else if(state == 2) {
                                 var restSpot = ((cm.getMapId() - 1) % 5) + 1;
-                                cm.getPlayer().getEventInstance().addEventTimer(restSpot * 4 * 60000);  // adds (restspot number * 4) minutes
+                                cm.getPlayer().getEventInstance().restartEventTimer(restSpot * 4 * 60000);  // adds (restspot number * 4) minutes
                                 cm.getPlayer().getEventInstance().warpEventTeam(970030100 + cm.getEventInstance().getIntProperty("lobby") + (500 * restSpot));
                                 
                                 cm.dispose();

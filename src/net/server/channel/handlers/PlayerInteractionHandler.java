@@ -117,6 +117,16 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         final MapleCharacter chr = c.getPlayer();
         
         if (mode == Action.CREATE.getCode()) {
+            if(!chr.isAlive()) {    // thanks GabrielSin for pointing this
+                chr.getClient().announce(MaplePacketCreator.getMiniRoomError(4));
+                return;
+            }
+            
+            if(chr.getEventInstance() != null) {
+                chr.getClient().announce(MaplePacketCreator.getMiniRoomError(5));
+                return;
+            }
+            
             byte createType = slea.readByte();
             if (createType == 3) {// trade
                 MapleTrade.startTrade(chr);
@@ -585,8 +595,9 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         } else if (mode == Action.BAN_PLAYER.getCode()) {
             slea.skip(1);
             
-            if (chr.getPlayerShop() != null && chr.getPlayerShop().isOwner(chr)) {
-                chr.getPlayerShop().banPlayer(slea.readMapleAsciiString());
+            MaplePlayerShop shop = chr.getPlayerShop();
+            if (shop != null && shop.isOwner(chr)) {
+                shop.banPlayer(slea.readMapleAsciiString());
             }
         } else if (mode == Action.EXPEL.getCode()) {
             MapleMiniGame miniGame = chr.getMiniGame();

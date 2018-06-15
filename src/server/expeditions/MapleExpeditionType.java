@@ -22,6 +22,8 @@
 
 package server.expeditions;
 
+import constants.ServerConstants;
+
 /**
 *
 * @author SharpAceX(Alan)
@@ -55,7 +57,7 @@ public enum MapleExpeditionType {
     }
 
     public int getMinSize() {
-    	return minSize;
+    	return !ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? minSize : 1;
     }
     
     public int getMaxSize() {

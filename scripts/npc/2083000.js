@@ -24,10 +24,6 @@
  */
 
 var status = 0;
-var minLevel = 80;
-var maxLevel = 255;
-var minPlayers = 1;
-var maxPlayers = 6;
 
 function start() {
     status = -1;
@@ -49,6 +45,13 @@ function action(mode, type, selection) {
         if (status == 0) {
             if(cm.haveItem(4001086)) {
                 cm.sendYesNo("Do you want to access #b#m240050400##k right now?");
+            } else if(Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS) {
+                if(canBypassHTPQ()) {
+                    cm.sendYesNo("Do you want to access #b#m240050400##k right now?");
+                } else {
+                    cm.sendOk("Those who don't have the #r#t4001086##k must prove their valor before challenging #bHorntail#k. Come here holding the #r3 certificates#k that proves you're worthy to || the task.");    // NPC picture is so long it goes through some section of text, || to fill up that space
+                    cm.dispose();
+                }
             } else {
                 cm.sendOk("Those who don't have the #r#t4001086##k must prove their valor before challenging #bHorntail#k.");
                 cm.dispose();
@@ -60,5 +63,7 @@ function action(mode, type, selection) {
         }
     }
 }
-					
-					
+
+function canBypassHTPQ() {
+    return cm.haveItem(4001083) && cm.haveItem(4001084) && cm.haveItem(4001085);
+}

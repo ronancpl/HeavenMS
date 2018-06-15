@@ -583,14 +583,18 @@ public class MapleMap {
         return new Pair<>(getRoundedCoordinate(angle), Integer.valueOf((int)distn));
     }
 
-    private static void sortDropEntries(List<MonsterDropEntry> from, List<MonsterDropEntry> item, List<MonsterDropEntry> quest) {
+    private static void sortDropEntries(List<MonsterDropEntry> from, List<MonsterDropEntry> item, List<MonsterDropEntry> visibleQuest, List<MonsterDropEntry> otherQuest, MapleCharacter chr) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         for(MonsterDropEntry mde : from) {
             if(!ii.isQuestItem(mde.itemId)) {
                 item.add(mde);
             } else {
-                quest.add(mde);
+                if(chr.needQuestItem(mde.questid, mde.itemId)) {
+                    visibleQuest.add(mde);
+                } else {
+                    otherQuest.add(mde);
+                }
             }
         }
     }
@@ -690,8 +694,9 @@ public class MapleMap {
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
         
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
-        final List<MonsterDropEntry> questEntry = new ArrayList<>();
-        sortDropEntries(mi.retrieveEffectiveDrop(mob.getId()), dropEntry, questEntry);
+        final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
+        final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
+        sortDropEntries(mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
         // Normal Drops
         d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
@@ -701,7 +706,8 @@ public class MapleMap {
         d = dropGlobalItemsFromMonsterOnMap(globalEntry, pos, d, droptype, mobpos, chr, mob);
         
         // Quest Drops
-        dropItemsFromMonsterOnMap(questEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+        d = dropItemsFromMonsterOnMap(visibleQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+        dropItemsFromMonsterOnMap(otherQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
     }
     
     public void dropItemsFromMonster(List<MonsterDropEntry> list, final MapleCharacter chr, final MapleMonster mob) {

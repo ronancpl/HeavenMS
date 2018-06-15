@@ -198,7 +198,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
-    private long lastfametime, lastUsedCashItem, lastHealed, lastBuyback, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
+    private long lastfametime, lastUsedCashItem, lastHealed, lastBuyback = 0, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
     private boolean hidden, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false;
     private int linkedLevel = 0;
@@ -1729,14 +1729,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                                 if (mesosamm > 50000 * this.getMesoRate()) {
                                     return;
                                 }
+                                
+                                MapleMap thisMap = this.getMap();
                                 int partynum = 0;
-                                for (MaplePartyCharacter partymem : this.party.getMembers()) {
-                                    if (partymem.isOnline() && partymem.getMapId() == this.getMap().getId() && partymem.getChannel() == client.getChannel()) {
+                                Collection<MaplePartyCharacter> mpcs = this.party.getMembers();
+                                for (MaplePartyCharacter partymem : mpcs) {
+                                    if (partymem.getPlayer().isLoggedinWorld() && partymem.getMapId() == thisMap.getId() && partymem.getChannel() == client.getChannel()) {
                                         partynum++;
                                     }
                                 }
-                                for (MaplePartyCharacter partymem : this.party.getMembers()) {
-                                    if (partymem.isOnline() && partymem.getMapId() == this.getMap().getId()) {
+                                for (MaplePartyCharacter partymem : mpcs) {
+                                    if (partymem.getPlayer().isLoggedinWorld() && partymem.getMapId() == thisMap.getId()) {
                                         MapleCharacter somecharacter = client.getChannelServer().getPlayerStorage().getCharacterById(partymem.getId());
                                         if (somecharacter != null) {
                                             somecharacter.gainMeso(mesosamm / partynum, true, true, false);
@@ -5213,6 +5216,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
     
+    private long getNextBuybackTime() {
+        return lastBuyback + ServerConstants.BUYBACK_COOLDOWN_MINUTES * 60 * 1000;
+    }
+    
     public boolean couldBuyback() {  // Ronan's buyback system
         long timeNow = System.currentTimeMillis();
         
@@ -5221,7 +5228,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             return false;
         }
         
-        long nextBuybacktime = lastBuyback + ServerConstants.BUYBACK_COOLDOWN_MINUTES * 60 * 1000;
+        long nextBuybacktime = getNextBuybackTime();
         if(timeNow < nextBuybacktime) {
             long timeLeft = nextBuybacktime - timeNow;
             int seconds = (int) Math.floor(timeLeft / 1000) % 60;
@@ -5840,14 +5847,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.mgc = new MapleGuildCharacter(ret);
             int buddyCapacity = rs.getInt("buddyCapacity");
             ret.buddylist = new BuddyList(buddyCapacity);
+            
             ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit(rs.getByte("equipslots"));
             ret.getInventory(MapleInventoryType.USE).setSlotLimit(rs.getByte("useslots"));
             ret.getInventory(MapleInventoryType.SETUP).setSlotLimit(rs.getByte("setupslots"));
             ret.getInventory(MapleInventoryType.ETC).setSlotLimit(rs.getByte("etcslots"));
+            
+            byte sandboxCheck = 0x0;
             for (Pair<Item, MapleInventoryType> item : ItemFactory.INVENTORY.loadItems(ret.id, !channelserver)) {
-                if(MapleInventoryManipulator.isSandboxItem(item.getLeft())) {
-                    ret.setHasSandboxItem();
-                }
+                sandboxCheck |= item.getLeft().getFlag();
                 
                 ret.getInventory(item.getRight()).addFromDB(item.getLeft());
                 Item itemz = item.getLeft();
@@ -5872,6 +5880,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                 }
             }
+            if((sandboxCheck & ItemConstants.SANDBOX) == ItemConstants.SANDBOX) ret.setHasSandboxItem();
             
             World wserv = Server.getInstance().getWorld(ret.world);
             
@@ -6072,10 +6081,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps = con.prepareStatement("SELECT SkillID,StartTime,length FROM cooldowns WHERE charid = ?");
                 ps.setInt(1, ret.getId());
                 rs = ps.executeQuery();
+                long curTime = System.currentTimeMillis();
                 while (rs.next()) {
                     final int skillid = rs.getInt("SkillID");
                     final long length = rs.getLong("length"), startTime = rs.getLong("StartTime");
-                    if (skillid != 5221999 && (length + startTime < System.currentTimeMillis())) {
+                    if (skillid != 5221999 && (length + startTime < curTime)) {
                         continue;
                     }
                     ret.giveCoolDowns(skillid, startTime, length);

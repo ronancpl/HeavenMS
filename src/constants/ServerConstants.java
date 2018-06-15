@@ -75,6 +75,7 @@ public class ServerConstants {
     public static final boolean USE_MULTIPLE_SAME_EQUIP_DROP = true;//Enables multiple drops by mobs of the same equipment, number of possible drops based on the quantities provided at the drop data.
     public static final boolean USE_BANISHABLE_TOWN_SCROLL = true;  //Enables town scrolls to act as if it's a "player banish", rendering the antibanish scroll effect available.
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
+    public static final boolean USE_ENABLE_SOLO_EXPEDITIONS = true; //Enables start expeditions with any number of players. This will also bypass all the Zakum prequest.
     
     //Announcement Configuration
     public static final boolean USE_ANNOUNCE_SHOPITEMSOLD = false;  //Automatic message sent to owner when an item from the Player Shop or Hired Merchant is sold.
@@ -136,6 +137,9 @@ public class ServerConstants {
     public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Haste-like speed & jump upgrade.
     public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
     public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
+    
+    //Other Skills Configuration
+    public static final boolean USE_FAST_REUSE_HERO_WILL = true;//Greatly reduce cooldown on Hero's Will.
     
     //Character Configuration
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.

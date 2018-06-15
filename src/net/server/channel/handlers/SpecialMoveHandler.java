@@ -36,6 +36,7 @@ import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import constants.GameConstants;
+import constants.ServerConstants;
 import constants.skills.Brawler;
 import constants.skills.Corsair;
 import constants.skills.DarkKnight;
@@ -82,8 +83,13 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             if (chr.skillIsCooling(skillid)) {
                 return;
             } else if (skillid != Corsair.BATTLE_SHIP) {
-                c.announce(MaplePacketCreator.skillCooldown(skillid, effect.getCooldown()));
-                chr.addCooldown(skillid, System.currentTimeMillis(), effect.getCooldown() * 1000);
+                int cooldownTime = effect.getCooldown();
+                if(MapleStatEffect.isHerosWill(skillid) && ServerConstants.USE_FAST_REUSE_HERO_WILL) {
+                    cooldownTime /= 60;
+                }
+                
+                c.announce(MaplePacketCreator.skillCooldown(skillid, cooldownTime));
+                chr.addCooldown(skillid, System.currentTimeMillis(), cooldownTime * 1000);
             }
         }
         if (skillid == Hero.MONSTER_MAGNET || skillid == Paladin.MONSTER_MAGNET || skillid == DarkKnight.MONSTER_MAGNET) { // Monster Magnet

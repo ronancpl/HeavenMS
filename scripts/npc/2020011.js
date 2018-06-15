@@ -26,7 +26,15 @@ var sel;
 actionx = {"Mental" : false, "Physical" : false};
 
 function start() {
-    if (!(cm.getPlayer().getLevel() >= 70 && parseInt(cm.getJobId() / 100) == 4)){
+    var jobBase = parseInt(cm.getJobId() / 100);
+    var jobStyle = 4;
+    if (!(cm.getPlayer().getLevel() >= 70 && jobBase == jobStyle)){
+        if(cm.getPlayer().getLevel() >= 70 && jobBase % 10 == jobStyle) {
+            status++;
+            action(1, 0, 1);
+            return;
+        }
+        
         cm.sendNext("Hi there.");
         cm.dispose();
         return;
@@ -106,6 +114,7 @@ function action(mode, type, selection){
             if (cm.getPlayer().getLevel() >= 50){
             	cm.sendNext("Ok, go.");
                 if(!cm.isQuestStarted(100200)) cm.startQuest(100200);
+                if(Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS && !cm.isQuestCompleted(100201)) cm.completeQuest(100201);
             }else
                 cm.sendNext("You're weak.");
             cm.dispose();

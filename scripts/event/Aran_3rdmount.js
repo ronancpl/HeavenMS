@@ -92,7 +92,11 @@ function clearPQ(eim) {
     em.setProperty("noEntry","false");
 }
 
-function monsterKilled(mob, eim) {}
+function monsterKilled(mob, eim) {
+    if(eim.getInstanceMap(entryMap).countMonsters() == 0) {
+        eim.showClearEffect();
+    }
+}
 
 function monsterValue(eim, mobId) {
         return 1;

@@ -1444,26 +1444,31 @@ public class MapleStatEffect {
 
     private boolean isCureAllAbnormalStatus() {
         if (skill) {
-            switch (sourceid) {
-                case Hero.HEROS_WILL:
-                case Paladin.HEROS_WILL:
-                case DarkKnight.HEROS_WILL:
-                case FPArchMage.HEROS_WILL:
-                case ILArchMage.HEROS_WILL:
-                case Bishop.HEROS_WILL:
-                case Bowmaster.HEROS_WILL:
-                case Marksman.HEROS_WILL:
-                case NightLord.HEROS_WILL:
-                case Shadower.HEROS_WILL:
-                case Buccaneer.PIRATES_RAGE:
-                case Aran.HEROS_WILL:
-                    return true;
-                default:
-                    return false;
-            }
+            return isHerosWill(sourceid);
         } else if (sourceid == 2022544) return true;
         
         return false;
+    }
+    
+    public static boolean isHerosWill(int skillid) {
+        switch(skillid) {
+            case Hero.HEROS_WILL:
+            case Paladin.HEROS_WILL:
+            case DarkKnight.HEROS_WILL:
+            case FPArchMage.HEROS_WILL:
+            case ILArchMage.HEROS_WILL:
+            case Bishop.HEROS_WILL:
+            case Bowmaster.HEROS_WILL:
+            case Marksman.HEROS_WILL:
+            case NightLord.HEROS_WILL:
+            case Shadower.HEROS_WILL:
+            case Buccaneer.PIRATES_RAGE:
+            case Aran.HEROS_WILL:
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     private boolean isDash() {

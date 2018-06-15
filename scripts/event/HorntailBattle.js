@@ -214,6 +214,7 @@ function monsterKilled(mob, eim) {
         eim.showClearEffect(mob.getMap().getId());
         eim.clearPQ();
         
+        eim.dispatchUpdateQuestMobCount(8810018, 240060200);
         mob.getMap().broadcastHorntailVictory();
     } else if(isHorntailHead(mob)) {
         var killed = eim.getIntProperty("defeatedHead");

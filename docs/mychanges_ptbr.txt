@@ -1040,3 +1040,13 @@ Corrigido battleship não dando buffs na defesa corretamente.
 Adicionado efeito do usável Happy Birthday pra todos no mapa.
 Implementado HolidayPQ.
 Adicionado sistema de sandbox para itens.
+
+13 - 14 Junho 2018,
+Adicionado novo server flag para permitir criar expedições solo.
+Adicionado novo server flag para cooldown reduzido no Hero's Will.
+Adicionado recipes para forjar Mob Crystal lv120 e 130 pelo Maker, usando Maple Leaf e versão de cristal anterior.
+Corrigido Heaven's Hammer e Combo Tempest não mostrando dano aos jogadores.
+Corrigido exploit onde jogadores poderiam criar minirooms em certos casos onde os mesmos não poderiam fazê-lo.
+Quest itens dropados de mobs que não visíveis pelo jogador atacante agora são mostrados mais nas pontas, de forma que o conjunto de drops agora aparente não ter espaço com itens invisíveis no meio.
+Corrigido Horntail não atruibuindo quest progress corretamente para a quest The Last Hour of Horntail.
+Removido skill books agora desnecessários do drop data, uma vez que já foi implementado as quests para conseguir elas.

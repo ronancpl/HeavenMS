@@ -487,17 +487,17 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     }
                     if (attack.skill == Paladin.HEAVENS_HAMMER) {
                         if(!monster.isBoss()) {
-                            map.damageMonster(player, monster, monster.getHp() - 1);
+                            damageMonsterWithSkill(player, map, monster, monster.getHp() - 1, attack.skill, 1777);
                         } else {
                             int HHDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Paladin.HEAVENS_HAMMER).getEffect(player.getSkillLevel(SkillFactory.getSkill(Paladin.HEAVENS_HAMMER))).getDamage() / 100));
-                            map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (HHDmg / 5) + HHDmg * .8)));
+                            damageMonsterWithSkill(player, map, monster, (int) (Math.floor(Math.random() * (HHDmg / 5) + HHDmg * .8)), attack.skill, 1777);
                         }
                     } else if (attack.skill == Aran.COMBO_TEMPEST) {
                         if(!monster.isBoss()) {
-                            map.damageMonster(player, monster, monster.getHp());
+                            damageMonsterWithSkill(player, map, monster, monster.getHp(), attack.skill, 0);
                         } else {
                             int TmpDmg = (player.calculateMaxBaseDamage(player.getTotalWatk()) * (SkillFactory.getSkill(Aran.COMBO_TEMPEST).getEffect(player.getSkillLevel(SkillFactory.getSkill(Aran.COMBO_TEMPEST))).getDamage() / 100));
-                            map.damageMonster(player, monster, (int) (Math.floor(Math.random() * (TmpDmg / 5) + TmpDmg * .8)));
+                            damageMonsterWithSkill(player, map, monster, (int) (Math.floor(Math.random() * (TmpDmg / 5) + TmpDmg * .8)), attack.skill, 0);
                         }
                     } else {
                         if(attack.skill == Aran.BODY_PRESSURE) {
@@ -534,6 +534,26 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         }
     }
 
+    private static void damageMonsterWithSkill(final MapleCharacter attacker, final MapleMap map, final MapleMonster monster, final int damage, int skillid, int fixedTime) {
+        int animationTime;
+        
+        if(fixedTime == 0) animationTime = SkillFactory.getSkill(skillid).getAnimationTime();
+        else animationTime = fixedTime;
+        
+        if(animationTime > 0) { // be sure to only use LIMITED ATTACKS with animation time here
+            TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    map.broadcastMessage(MaplePacketCreator.damageMonster(monster.getObjectId(), damage), monster.getPosition());
+                    map.damageMonster(attacker, monster, damage);
+                }
+            }, animationTime);
+        } else {
+            map.broadcastMessage(MaplePacketCreator.damageMonster(monster.getObjectId(), damage), monster.getPosition());
+            map.damageMonster(attacker, monster, damage);
+        }
+    }
+    
     protected AttackInfo parseDamage(LittleEndianAccessor lea, MapleCharacter chr, boolean ranged, boolean magic) {    
     	//2C 00 00 01 91 A1 12 00 A5 57 62 FC E2 75 99 10 00 47 80 01 04 01 C6 CC 02 DD FF 5F 00
         AttackInfo ret = new AttackInfo();
