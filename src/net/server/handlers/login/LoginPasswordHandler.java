@@ -58,9 +58,11 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         if (ServerConstants.AUTOMATIC_REGISTER && loginok == 5) {
             try {
                 con = DatabaseConnection.getConnection();
-                ps = con.prepareStatement("INSERT INTO accounts (name, password) VALUES (?, ?);");
+                ps = con.prepareStatement("INSERT INTO accounts (name, password, birthday, tempban) VALUES (?, ?, ?, ?);"); //Jayd: Added birthday, tempban
                 ps.setString(1, login);
                 ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
+                ps.setString(3, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (birthday)
+                ps.setString(4, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (tempban)
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
