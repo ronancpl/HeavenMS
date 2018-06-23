@@ -88,6 +88,7 @@ import server.maps.MapleMapFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMiniGame;
+import server.maps.MapleMiniGame.MiniGameResult;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleSummon;
@@ -3600,9 +3601,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             toUpdateEffects.add(new Pair<>(mse.getBuffSourceId(), retrievedEffects.get(mse.getBuffSourceId())));
         }
         
+        List<Pair<MapleBuffStat, Integer>> activeStatups = new LinkedList<>();
         for(Pair<Integer, Pair<MapleStatEffect, Long>> lmse: toUpdateEffects) {
             Pair<MapleStatEffect, Long> msel = lmse.getRight();
-            msel.getLeft().updateBuffEffect(this, getActiveStatupsFromSourceid(lmse.getLeft()), msel.getRight());
+            
+            for(Pair<MapleBuffStat, Integer> statup : getActiveStatupsFromSourceid(lmse.getLeft())) {
+                if(!isSingletonStatup(statup.getLeft())) {
+                    activeStatups.add(statup);
+                }
+            }
+            
+            msel.getLeft().updateBuffEffect(this, activeStatups, msel.getRight());
+            activeStatups.clear();
         }
         
         if (this.isRidingBattleship()) {
@@ -4450,21 +4460,21 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return miniGame;
     }
 
-    public int getMiniGamePoints(String type, boolean omok) {
+    public int getMiniGamePoints(MiniGameResult type, boolean omok) {
         if (omok) {
             switch (type) {
-                case "wins":
+                case WIN:
                     return omokwins;
-                case "losses":
+                case LOSS:
                     return omoklosses;
                 default:
                     return omokties;
             }
         } else {
             switch (type) {
-                case "wins":
+                case WIN:
                     return matchcardwins;
-                case "losses":
+                case LOSS:
                     return matchcardlosses;
                 default:
                     return matchcardties;
@@ -5460,7 +5470,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
             }            
         }
-        if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the drop & meso rate
+        if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the rate upgrade
             revertLastPlayerRates();
             setPlayerRates();
             this.yellowMessage("You managed to get level " + level + "! Getting experience and items seems a little easier now, huh?");
@@ -8613,33 +8623,42 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public final void empty(final boolean remove) {
-        if (dragonBloodSchedule != null) {
-            dragonBloodSchedule.cancel(false);
-        }
-        if (hpDecreaseTask != null) {
-            hpDecreaseTask.cancel(false);
-        }
-        if (beholderHealingSchedule != null) {
-            beholderHealingSchedule.cancel(false);
-        }
-        if (beholderBuffSchedule != null) {
-            beholderBuffSchedule.cancel(false);
-        }
-        if (berserkSchedule != null) {
-            berserkSchedule.cancel(false);
-        }
-        if (recoveryTask != null) {
-            recoveryTask.cancel(false);
-        }
-        if (extraRecoveryTask != null) {
-            extraRecoveryTask.cancel(false);
-        }
-        
+        if (dragonBloodSchedule != null) { dragonBloodSchedule.cancel(true); }
+        dragonBloodSchedule = null;
+
+        if (hpDecreaseTask != null) { hpDecreaseTask.cancel(true); }
+        hpDecreaseTask = null;
+
+        if (beholderHealingSchedule != null) { beholderHealingSchedule.cancel(true); }
+        beholderHealingSchedule = null;
+
+        if (beholderBuffSchedule != null) { beholderBuffSchedule.cancel(true); }
+        beholderBuffSchedule = null;
+
+        if (berserkSchedule != null) { berserkSchedule.cancel(true); }
+        berserkSchedule = null;
+
         unregisterChairBuff();
         cancelBuffExpireTask();
         cancelDiseaseExpireTask();
         cancelSkillCooldownTask();
         cancelExpirationTask();
+
+        if (questExpireTask != null) { questExpireTask.cancel(true); }
+        questExpireTask = null;
+
+        if (recoveryTask != null) { recoveryTask.cancel(true); }
+        recoveryTask = null;
+
+        if (extraRecoveryTask != null) { extraRecoveryTask.cancel(true); }
+        extraRecoveryTask = null;
+
+        // already done on unregisterChairBuff
+        /* if (chairRecoveryTask != null) { chairRecoveryTask.cancel(true); }
+        chairRecoveryTask = null; */
+
+        if (pendantOfSpirit != null) { pendantOfSpirit.cancel(true); }
+        pendantOfSpirit = null;
         
         petLock.lock();
         try {

@@ -31,8 +31,6 @@ import client.inventory.manipulator.MapleKarmaManipulator;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
-import java.util.Arrays;
-
 import net.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
 import server.MapleTrade;
@@ -40,8 +38,8 @@ import constants.GameConstants;
 import server.maps.FieldLimit;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMapObject;
-import server.maps.MapleMapObjectType;
 import server.maps.MapleMiniGame;
+import server.maps.MapleMiniGame.MiniGameType;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import tools.FilePrinter;
@@ -111,6 +109,22 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         }
     }
 
+    private static int estabilishMiniroomStatus(MapleCharacter chr, boolean isMinigame) {
+        if (isMinigame && FieldLimit.CANNOTMINIGAME.check(chr.getMap().getFieldLimit())) {
+            return 11;
+        }
+
+        if (chr.getChalkboard() != null) {
+            return 13;
+        }
+
+        if(chr.getEventInstance() != null) {
+            return 5;
+        }
+        
+        return 0;
+    }
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         byte mode = slea.readByte();
@@ -122,17 +136,13 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 return;
             }
             
-            if(chr.getEventInstance() != null) {
-                chr.getClient().announce(MaplePacketCreator.getMiniRoomError(5));
-                return;
-            }
-            
             byte createType = slea.readByte();
             if (createType == 3) {// trade
                 MapleTrade.startTrade(chr);
             } else if (createType == 1) { // omok mini game
-                if (chr.getChalkboard() != null || FieldLimit.CANNOTMINIGAME.check(chr.getMap().getFieldLimit())) {
-                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(11));
+                int status = estabilishMiniroomStatus(chr, true);
+                if (status > 0) {
+                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(status));
                     return;
                 }
                 
@@ -143,13 +153,14 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 MapleMiniGame game = new MapleMiniGame(chr, desc, pw);
                 chr.setMiniGame(game);
                 game.setPieceType(type);
-                game.setGameType("omok");
+                game.setGameType(MiniGameType.OMOK);
                 chr.getMap().addMapObject(game);
                 chr.getMap().broadcastMessage(MaplePacketCreator.addOmokBox(chr, 1, 0));
                 game.sendOmok(c, type);
             } else if (createType == 2) { // matchcard
-                if (chr.getChalkboard() != null || FieldLimit.CANNOTMINIGAME.check(chr.getMap().getFieldLimit())) {
-                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(11));
+                int status = estabilishMiniroomStatus(chr, true);
+                if (status > 0) {
+                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(status));
                     return;
                 }
                 
@@ -166,16 +177,23 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 } else if (type == 2) {
                     game.setMatchesToWin(15);
                 }
-                game.setGameType("matchcard");
+                game.setGameType(MiniGameType.MATCH_CARD);
                 chr.setMiniGame(game);
                 chr.getMap().addMapObject(game);
                 chr.getMap().broadcastMessage(MaplePacketCreator.addMatchCardBox(chr, 1, 0));
                 game.sendMatchCard(c, type);
             } else if (createType == 4 || createType == 5) { // shop
-                if (!chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.HIRED_MERCHANT)).isEmpty()) {
-                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(14));
+                if(!GameConstants.isFreeMarketRoom(chr.getMapId())) {
+                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(15));
                     return;
                 }
+                
+                int status = estabilishMiniroomStatus(chr, false);
+                if (status > 0) {
+                    chr.getClient().announce(MaplePacketCreator.getMiniRoomError(status));
+                    return;
+                }
+                
                 String desc = slea.readMapleAsciiString();
                 slea.skip(3);
                 int itemId = slea.readInt();
@@ -184,7 +202,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
 
-                if (GameConstants.isFreeMarketRoom(chr.getMapId()) || itemId > 5030000 && itemId < 5030012 || itemId > 5140000 && itemId < 5140006) {
+                if (itemId > 5030000 && itemId < 5030012 || itemId > 5140000 && itemId < 5140006) {
                     if (createType == 4) {
                         MaplePlayerShop shop = new MaplePlayerShop(chr, desc);
                         chr.setPlayerShop(shop);
@@ -230,15 +248,15 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     String pw = slea.available() > 1 ? slea.readMapleAsciiString() : "";
                     
                     MapleMiniGame game = (MapleMiniGame) ob;
-                    if(game.checkPassword(pw) || game.checkPassword(chr.getName())) {
+                    if(game.checkPassword(pw)) {
                         if (game.hasFreeSlot() && !game.isVisitor(chr)) {
                             game.addVisitor(chr);
                             chr.setMiniGame(game);
                             switch (game.getGameType()) {
-                                case "omok":
+                                case OMOK:
                                     game.sendOmok(c, game.getPieceType());
                                     break;
-                                case "matchcard":
+                                case MATCH_CARD:
                                     game.sendMatchCard(c, game.getPieceType());
                                     break;
                             }

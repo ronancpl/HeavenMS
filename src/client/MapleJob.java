@@ -120,8 +120,9 @@ public enum MapleJob {
     			|| DAWNWARRIOR1 == beginners || NIGHTWALKER1 == beginners || BLAZEWIZARD1 == beginners;
      }
     
-    public boolean isA(MapleJob basejob) {        
-        return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
+    public boolean isA(MapleJob basejob) {  // thanks Steve (kaito1410) for pointing out an improvement here
+        int basebranch = basejob.getId() / 10;
+        return (getId() / 10 == basebranch && getId() >= basejob.getId()) || (basebranch % 10 == 0 && getId() / 100 == basejob.getId() / 100);
     }
     
     public int getJobNiche() {

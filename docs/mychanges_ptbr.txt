@@ -1050,3 +1050,16 @@ Corrigido exploit onde jogadores poderiam criar minirooms em certos casos onde o
 Quest itens dropados de mobs que não visíveis pelo jogador atacante agora são mostrados mais nas pontas, de forma que o conjunto de drops agora aparente não ter espaço com itens invisíveis no meio.
 Corrigido Horntail não atruibuindo quest progress corretamente para a quest The Last Hour of Horntail.
 Removido skill books agora desnecessários do drop data, uma vez que já foi implementado as quests para conseguir elas.
+
+16 Junho 2018,
+Corrigido Trade não podendo ser realizado dentro de PQ, problema ocorrendo devido a uma mudança feita no último commit.
+Refatorado minigames, agora utilizando enums ao invés de strings.
+Corrigido Transformations não recebendo stat buffs corretamente.
+Corrigido skills Crash agora atuando dentro de suas respectivas repartições.
+Adicionado server flag para permitir skills Crash retirar invencibilidades do mob.
+Corrigido Shark Wave não realizando contabilização de charges ao aplicar dano.
+Dragon Roar agora aplica stun em mobs (efeito de stun aparentemente não está sendo mostrado aos jogadores).
+
+22 Junho 2018,
+Refatorado método de empty em MapleCharacter, agora verificando e liberando mais recursos.
+Corrigido exploit onde pacotes referentes à chairs poderiam ser processados e reenviados aos outros em casos onde o personagem está fora do world server.

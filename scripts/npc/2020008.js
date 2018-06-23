@@ -56,8 +56,8 @@ function start() {
     
     var jobBase = parseInt(cm.getJobId() / 100);
     var jobStyle = 1;
-    if (!(cm.getPlayer().getLevel() >= 70 && jobBase == jobStyle)){
-        if(cm.getPlayer().getLevel() >= 70 && jobBase % 10 == jobStyle) {
+    if (!(cm.getPlayer().getLevel() >= 70 && jobBase == jobStyle && cm.getJobId() % 10 == 0)){
+        if(cm.getPlayer().getLevel() >= 50 && jobBase % 10 == jobStyle) {
             status++;
             action(1, 0, 1);
             return;

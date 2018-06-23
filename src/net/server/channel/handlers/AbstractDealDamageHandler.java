@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.AbstractMaplePacketHandler;
-import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import server.TimerManager;
 import server.life.Element;
@@ -43,7 +42,6 @@ import server.maps.MapleMap;
 import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import server.partyquest.Pyramid;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -55,13 +53,9 @@ import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import client.autoban.AutobanFactory;
-import client.inventory.Equip;
-import client.inventory.Item;
-import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.GameConstants;
-import constants.ItemConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Assassin;
@@ -304,7 +298,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         }
                     } else if (attack.skill == Marauder.ENERGY_DRAIN || attack.skill == ThunderBreaker.ENERGY_DRAIN || attack.skill == NightWalker.VAMPIRE || attack.skill == Assassin.DRAIN) {
                         player.addHP(Math.min(monster.getMaxHp(), Math.min((int) ((double) totDamage * (double) SkillFactory.getSkill(attack.skill).getEffect(player.getSkillLevel(SkillFactory.getSkill(attack.skill))).getX() / 100.0), player.getMaxHp() / 2)));
-                    } else if (attack.skill == Bandit.STEAL) {                    	
+                    } else if (attack.skill == Bandit.STEAL) {
                         Skill steal = SkillFactory.getSkill(Bandit.STEAL);
                         if (monster.getStolen().size() < 1) { // One steal per mob <3
                             if (steal.getEffect(player.getSkillLevel(steal)).makeChanceResult()) {
@@ -480,9 +474,12 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             }
                         }
                     }
-                    if (totDamageToOneMonster > 0 && attackEffect != null && attackEffect.getMonsterStati().size() > 0) {
-                        if (attackEffect.makeChanceResult()) {
-                            monster.applyStatus(player, new MonsterStatusEffect(attackEffect.getMonsterStati(), theSkill, null, false), attackEffect.isPoison(), attackEffect.getDuration());
+                    if (totDamageToOneMonster > 0 && attackEffect != null) {
+                        Map<MonsterStatus, Integer> attackEffectStati = attackEffect.getMonsterStati();
+                        if(!attackEffectStati.isEmpty()) {
+                            if (attackEffect.makeChanceResult()) {
+                                monster.applyStatus(player, new MonsterStatusEffect(attackEffectStati, theSkill, null, false), attackEffect.isPoison(), attackEffect.getDuration());
+                            }
                         }
                     }
                     if (attack.skill == Paladin.HEAVENS_HAMMER) {

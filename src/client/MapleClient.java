@@ -843,7 +843,7 @@ public class MapleClient {
                                 player.saveCooldowns();
                                 player.saveToDB(true);
                             
-				player = null;
+                                clear();
 				return;
 			}
                         
@@ -935,25 +935,32 @@ public class MapleClient {
                                         player.saveCooldowns();
                                         player.saveToDB();
                                 }
-                                player = null;
 			}
 		}
 		if (!serverTransition && isLoggedIn()) {
 			updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);
 			session.removeAttribute(MapleClient.CLIENT_KEY); // prevents double dcing during login
 			session.close(false);
-		}
-		engines.clear();
+                        
+                        clear();
+		} else {
+                        engines.clear();
+                }
 	}
 
 	private void clear() {  //usable when defining client = null shortly after
+                // player hard reference removal thanks to Steve (kaito1410)
+                if (this.player != null) {
+                    this.player.empty(true); // clears schedules and stuff
+                }
+            
                 Server.getInstance().unregisterLoginState(this);
             
 		this.accountName = null;
 		this.macs = null;
 		this.hwid = null;
 		this.birthday = null;
-		//this.engines = null;
+		this.engines = null;
 		this.player = null;
 		this.receive = null;
 		this.send = null;

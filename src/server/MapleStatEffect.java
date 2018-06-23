@@ -376,9 +376,6 @@ public class MapleStatEffect {
                 case DragonKnight.DRAGON_BLOOD:
                     statups.add(new Pair<>(MapleBuffStat.DRAGONBLOOD, Integer.valueOf(ret.x)));
                     break;
-                case DragonKnight.DRAGON_ROAR:
-                    ret.hpR = -x / 100.0;
-                    break;
                 case Hero.STANCE:
                 case Paladin.STANCE:
                 case DarkKnight.STANCE:
@@ -571,7 +568,7 @@ public class MapleStatEffect {
                 case Crusader.ARMOR_CRASH:
                 case DragonKnight.POWER_CRASH:
                 case WhiteKnight.MAGIC_CRASH:
-                    monsterStatus.put(MonsterStatus.SEAL_SKILL,  Integer.valueOf(1));
+                    monsterStatus.put(MonsterStatus.SEAL_SKILL, Integer.valueOf(1));
                     break;
                 case Rogue.DISORDER:
                     monsterStatus.put(MonsterStatus.WATK, Integer.valueOf(ret.x));
@@ -587,6 +584,10 @@ public class MapleStatEffect {
                 case Page.THREATEN:
                     monsterStatus.put(MonsterStatus.WATK, Integer.valueOf(ret.x));
                     monsterStatus.put(MonsterStatus.WDEF, Integer.valueOf(ret.y));
+                    break;
+                case DragonKnight.DRAGON_ROAR:
+                    ret.hpR = -x / 100.0;
+                    monsterStatus.put(MonsterStatus.STUN, Integer.valueOf(1));
                     break;
                 case Crusader.AXE_COMA:
                 case Crusader.SWORD_COMA:
@@ -1007,7 +1008,7 @@ public class MapleStatEffect {
 
     public final void applyComboBuff(final MapleCharacter applyto, int combo) {
         final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.ARAN_COMBO, combo));
-        applyto.getClient().announce(MaplePacketCreator.giveBuff(sourceid, 99999, stat));
+        applyto.announce(MaplePacketCreator.giveBuff(sourceid, 99999, stat));
 
         final long starttime = System.currentTimeMillis();
 //	final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
@@ -1021,8 +1022,7 @@ public class MapleStatEffect {
         
         long leftDuration = (starttime + localDuration) - System.currentTimeMillis();
         if(leftDuration > 0) {
-            byte[] buff = MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int)leftDuration, activeStats);
-            target.getClient().announce(buff);
+            target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int)leftDuration, activeStats));
         }
     }
 
@@ -1080,7 +1080,12 @@ public class MapleStatEffect {
             localsourceid = ridingMountId;
             localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));
         } else if (isSkillMorph()) {
-            localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.MORPH, getMorph(applyto)));
+            for(int i = 0; i < localstatups.size(); i++) {
+                if(localstatups.get(i).getLeft().equals(MapleBuffStat.MORPH)) {
+                    localstatups.set(i, new Pair<>(MapleBuffStat.MORPH, getMorph(applyto)));
+                    break;
+                }
+            }
         }
         if (primary) {
             localDuration = alchemistModifyVal(applyfrom, localDuration, false);

@@ -68,6 +68,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapItem;
 import server.maps.MapleMist;
 import server.maps.MapleMiniGame;
+import server.maps.MapleMiniGame.MiniGameResult;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleReactor;
@@ -672,7 +673,6 @@ public class MaplePacketCreator {
          * Gets a successful authentication packet.
          *
          * @param c
-         * @param account The account name.
          * @return the successful authentication packet
          */
         public static byte[] getAuthSuccess(MapleClient c) {
@@ -683,9 +683,8 @@ public class MaplePacketCreator {
                 mplew.writeInt(c.getAccID());
                 mplew.write(c.getGender());
                 
-                mplew.writeBool(c.getGMLevel() > 0);
-                
-                mplew.write((c.getGMLevel() > 0 && Server.getInstance().canFly(c.getAccID())) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                mplew.writeBool(c.getGMLevel() > 1);    // thanks Steve(kaito1410) for pointing this out
+                mplew.write((c.getGMLevel() > 1 && Server.getInstance().canFly(c.getAccID())) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
                 mplew.write(0); // Country Code.
                 
                 mplew.writeMapleAsciiString(c.getAccountName());
@@ -1967,9 +1966,9 @@ public class MaplePacketCreator {
                         MapleMiniGame miniGame = chr.getMiniGame();
                         if (miniGame != null && miniGame.isOwner(chr)) {
                                 if (miniGame.hasFreeSlot()) {
-                                        spawnAnnounceBox(mplew, miniGame, 1, 0, 1, 0);
+                                        spawnAnnounceBox(mplew, miniGame, 0, 1, 0);
                                 } else {
-                                        spawnAnnounceBox(mplew, miniGame, 1, 0, 2, 1);
+                                        spawnAnnounceBox(mplew, miniGame, 0, 2, 1);
                                 }
                         } else {
                                 mplew.write(0);
@@ -2141,8 +2140,8 @@ public class MaplePacketCreator {
                 mplew.write(0);
         }
 
-        private static void addAnnounceBox(final MaplePacketLittleEndianWriter mplew, MapleMiniGame game, int gametype, int type, int ammount, int joinable) {
-                mplew.write(gametype);
+        private static void addAnnounceBox(final MaplePacketLittleEndianWriter mplew, MapleMiniGame game, int type, int ammount, int joinable) {
+                mplew.write(game.getGameType().getValue());
                 mplew.writeInt(game.getObjectId()); // gameid/shopid
                 mplew.writeMapleAsciiString(game.getDescription()); // desc
                 mplew.writeMapleAsciiString(game.getPassword());
@@ -2152,14 +2151,14 @@ public class MaplePacketCreator {
                 mplew.write(joinable);
         }
         
-        private static void spawnAnnounceBox(final MaplePacketLittleEndianWriter mplew, MapleMiniGame game, int gametype, int type, int ammount, int joinable) {
-                mplew.write(gametype);
+        private static void spawnAnnounceBox(final MaplePacketLittleEndianWriter mplew, MapleMiniGame game, int type, int ammount, int joinable) {
+                mplew.write(game.getGameType().getValue());
                 mplew.writeInt(game.getObjectId()); // gameid/shopid
                 mplew.writeMapleAsciiString(game.getDescription()); // desc
-                mplew.write(0);
+                mplew.writeBool(!game.getPassword().isEmpty());    // password here, thanks GabrielSin!
                 mplew.write(type);
                 mplew.write(ammount);
-                mplew.write(2);
+                mplew.write(2);         //player capacity
                 mplew.write(joinable);
         }
         
@@ -4937,17 +4936,17 @@ public class MaplePacketCreator {
                 mplew.write(0xFF);
                 mplew.write(0);
                 mplew.writeInt(1);
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("wins", true));
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("ties", true));
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("losses", true));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.WIN, true));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.TIE, true));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.LOSS, true));
                 mplew.writeInt(2000);
                 if (minigame.getVisitor() != null) {
                         MapleCharacter visitor = minigame.getVisitor();
                         mplew.write(1);
                         mplew.writeInt(1);
-                        mplew.writeInt(visitor.getMiniGamePoints("wins", true));
-                        mplew.writeInt(visitor.getMiniGamePoints("ties", true));
-                        mplew.writeInt(visitor.getMiniGamePoints("losses", true));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.WIN, true));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.TIE, true));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.LOSS, true));
                         mplew.writeInt(2000);
                 }
                 mplew.write(0xFF);
@@ -5047,9 +5046,9 @@ public class MaplePacketCreator {
                 addCharLook(mplew, c, false);
                 mplew.writeMapleAsciiString(c.getName());
                 mplew.writeInt(1);
-                mplew.writeInt(c.getMiniGamePoints("wins", true));
-                mplew.writeInt(c.getMiniGamePoints("ties", true));
-                mplew.writeInt(c.getMiniGamePoints("losses", true));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.WIN, true));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.TIE, true));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.LOSS, true));
                 mplew.writeInt(2000);
                 return mplew.getPacket();
         }
@@ -5075,14 +5074,14 @@ public class MaplePacketCreator {
                 }
                 mplew.write(0); // owner
                 mplew.writeInt(1); // unknown
-                mplew.writeInt(game.getOwner().getMiniGamePoints("wins", omok) + win); // wins
-                mplew.writeInt(game.getOwner().getMiniGamePoints("ties", omok) + tie); // ties
-                mplew.writeInt(game.getOwner().getMiniGamePoints("losses", omok) + lose); // losses
+                mplew.writeInt(game.getOwner().getMiniGamePoints(MiniGameResult.WIN, omok) + win); // wins
+                mplew.writeInt(game.getOwner().getMiniGamePoints(MiniGameResult.TIE, omok) + tie); // ties
+                mplew.writeInt(game.getOwner().getMiniGamePoints(MiniGameResult.LOSS, omok) + lose); // losses
                 mplew.writeInt(2000); // points
                 mplew.writeInt(1); // start of visitor; unknown
-                mplew.writeInt(game.getVisitor().getMiniGamePoints("wins", omok) + lose); // wins
-                mplew.writeInt(game.getVisitor().getMiniGamePoints("ties", omok) + tie); // ties
-                mplew.writeInt(game.getVisitor().getMiniGamePoints("losses", omok) + win); // losses
+                mplew.writeInt(game.getVisitor().getMiniGamePoints(MiniGameResult.WIN, omok) + lose); // wins
+                mplew.writeInt(game.getVisitor().getMiniGamePoints(MiniGameResult.TIE, omok) + tie); // ties
+                mplew.writeInt(game.getVisitor().getMiniGamePoints(MiniGameResult.LOSS, omok) + win); // losses
                 mplew.writeInt(2000); // points
                 game.getOwner().setMiniGamePoints(game.getVisitor(), result, omok);
                 return mplew.getPacket();
@@ -5136,17 +5135,17 @@ public class MaplePacketCreator {
                 mplew.write(0xFF);
                 mplew.write(0);
                 mplew.writeInt(2);
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("wins", false));
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("ties", false));
-                mplew.writeInt(minigame.getOwner().getMiniGamePoints("losses", false));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.WIN, false));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.TIE, false));
+                mplew.writeInt(minigame.getOwner().getMiniGamePoints(MiniGameResult.LOSS, false));
                 mplew.writeInt(2000);
                 if (minigame.getVisitor() != null) {
                         MapleCharacter visitor = minigame.getVisitor();
                         mplew.write(1);
                         mplew.writeInt(2);
-                        mplew.writeInt(visitor.getMiniGamePoints("wins", false));
-                        mplew.writeInt(visitor.getMiniGamePoints("ties", false));
-                        mplew.writeInt(visitor.getMiniGamePoints("losses", false));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.WIN, false));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.TIE, false));
+                        mplew.writeInt(visitor.getMiniGamePoints(MiniGameResult.LOSS, false));
                         mplew.writeInt(2000);
                 }
                 mplew.write(0xFF);
@@ -5182,9 +5181,9 @@ public class MaplePacketCreator {
                 addCharLook(mplew, c, false);
                 mplew.writeMapleAsciiString(c.getName());
                 mplew.writeInt(1);
-                mplew.writeInt(c.getMiniGamePoints("wins", false));
-                mplew.writeInt(c.getMiniGamePoints("ties", false));
-                mplew.writeInt(c.getMiniGamePoints("losses", false));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.WIN, false));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.TIE, false));
+                mplew.writeInt(c.getMiniGamePoints(MiniGameResult.LOSS, false));
                 mplew.writeInt(2000);
                 return mplew.getPacket();
         }
@@ -5267,7 +5266,7 @@ public class MaplePacketCreator {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
                 mplew.writeInt(c.getId());
-                addAnnounceBox(mplew, c.getMiniGame(), 1, 0, ammount, type);
+                addAnnounceBox(mplew, c.getMiniGame(), 0, ammount, type);
                 return mplew.getPacket();
         }
 
@@ -5283,11 +5282,11 @@ public class MaplePacketCreator {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
                 mplew.writeInt(c.getId());
-                addAnnounceBox(mplew, c.getMiniGame(), 2, 0, ammount, type);
+                addAnnounceBox(mplew, c.getMiniGame(), 0, ammount, type);
                 return mplew.getPacket();
         }
 
-        public static byte[] removeMatchcardBox(MapleCharacter c) {
+        public static byte[] removeMatchCardBox(MapleCharacter c) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
                 mplew.writeInt(c.getId());

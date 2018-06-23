@@ -30,11 +30,14 @@ import client.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.ServerConstants;
+import constants.skills.Crusader;
+import constants.skills.DragonKnight;
 import constants.skills.FPMage;
 import constants.skills.ILMage;
 import constants.skills.NightLord;
 import constants.skills.NightWalker;
 import constants.skills.Shadower;
+import constants.skills.WhiteKnight;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -990,22 +993,35 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         effect.setCancelTask(timerManager.schedule(cancelTask, duration));
     }
 
+    private void debuffMobStat(MonsterStatus stat) {
+        if (isBuffed(stat)) {
+            final MonsterStatusEffect oldEffect = stati.get(stat);
+            byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
+            map.broadcastMessage(packet, getPosition());
+
+            MapleCharacter controller = getController();
+            if (controller != null && !controller.isMapObjectVisible(MapleMonster.this)) {
+                controller.getClient().announce(packet);
+            }
+            stati.remove(stat);
+        }
+    }
+    
     public void debuffMob(int skillid) {
-        //skillid is not going to be used for now until I get warrior debuff working
-        MonsterStatus[] stats = {MonsterStatus.WEAPON_ATTACK_UP, MonsterStatus.WEAPON_DEFENSE_UP, MonsterStatus.MAGIC_ATTACK_UP, MonsterStatus.MAGIC_DEFENSE_UP};
+        MonsterStatus[] stats = {MonsterStatus.WEAPON_ATTACK_UP, MonsterStatus.WEAPON_DEFENSE_UP, MonsterStatus.MAGIC_ATTACK_UP};
         statiLock.lock();
         try {
-            for (int i = 0; i < stats.length; i++) {
-                if (isBuffed(stats[i])) {
-                    final MonsterStatusEffect oldEffect = stati.get(stats[i]);
-                    byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
-                    map.broadcastMessage(packet, getPosition());
-
-                    MapleCharacter controller = getController();
-                    if (controller != null && !controller.isMapObjectVisible(MapleMonster.this)) {
-                        controller.getClient().announce(packet);
-                    }
-                    stati.remove(stats[i]);
+            int i = (skillid == Crusader.ARMOR_CRASH ? 1 : (skillid == WhiteKnight.MAGIC_CRASH ? 2 : 0));
+            debuffMobStat(stats[i]);
+            
+            if(ServerConstants.USE_ANTI_IMMUNITY_CRASH) {
+                if (skillid == Crusader.ARMOR_CRASH) {
+                    if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
+                    if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
+                } else if (skillid == WhiteKnight.MAGIC_CRASH) {
+                    if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
+                } else {
+                    if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
                 }
             }
         } finally {

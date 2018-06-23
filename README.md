@@ -53,7 +53,7 @@ Recommended localhost: https://hostr.co/m2bVtnizCtmD
 
 Status: <span style="color:green">__Released__</span>.
 
-HeavenMS development achieved an acceptable state-of-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
+HeavenMS development achieved an acceptable state-of-the-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 
 Although development is halted, support for fixing features that were implemented here is still up. You can still actively help us improve the server by issuing pull requests with informative details about what's changing.
 
@@ -153,7 +153,7 @@ The client's set-up is quite straightforward:
 2. Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
 3. Extract into the client folder the "localhost.exe" from the provided link.
 4. Overwrite the original WZ files with the ones provided from either one of those folders on the Google Drive:
-	- "rev???_wz" (last published RELEASE, referring to commit of same number).
+	- "commit???_wz" (last published RELEASE, referring to commit of same number).
 	- "current_wz" (latest source update).
 
 #### Editing localhost IP target

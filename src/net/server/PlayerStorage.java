@@ -21,6 +21,7 @@
 */
 package net.server;
 
+import client.MapleClient;
 import client.MapleCharacter;
 import java.util.Collection;
 import java.util.Iterator;
@@ -93,7 +94,11 @@ public class PlayerStorage {
 	try {	    
             final Iterator<MapleCharacter> chrit = storage.values().iterator();
 	    while (chrit.hasNext()) {
-                chrit.next().getClient().disconnect(true, false);
+                MapleClient client = chrit.next().getClient();
+                if(client != null) {
+                    client.disconnect(true, false);
+                }
+                
                 chrit.remove();
             }
 	} finally {
