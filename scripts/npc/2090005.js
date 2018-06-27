@@ -70,7 +70,7 @@ function action(mode, type, selection) {
                     cm.dispose();
                 } else {
                     cm.gainMeso(-cost[2]);
-                    cm.warp(251000000);
+                    cm.warp(251000000, 0);
                     cm.dispose();
                 }
             }
@@ -82,7 +82,7 @@ function action(mode, type, selection) {
                 } else {
                         if(cm.getPlayer().getMapId() == 251000000) {
                             cm.gainMeso(-cost[2]);
-                            cm.warp(250000100);
+                            cm.warp(250000100, 0);
                             cm.dispose();
                         } else {
                             cm.gainMeso(-cost[slct]);

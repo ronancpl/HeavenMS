@@ -39,7 +39,21 @@ function start(mode, type, selection) {
             qm.gainExp(7000 * qm.getPlayer().getExpRate());
             qm.forceCompleteQuest();
             
+            if(isAllSubquestsDone() && qm.haveItem(4031894)) {
+                qm.gainItem(4031894, -1);
+            }
+            
             qm.dispose();
         }
     }
+}
+
+function isAllSubquestsDone() {
+    for(var i = 2216; i <= 2219; i++) {
+        if(!qm.isQuestCompleted(i)) {
+            return false;
+        }
+    }
+    
+    return true;
 }

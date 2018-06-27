@@ -573,6 +573,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         } else {
             ret.charge = 0;
         }
+        
         lea.skip(8);
         ret.display = lea.readByte();
         ret.direction = lea.readByte();
@@ -674,10 +675,10 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     calcDmgMax = (int) Math.round((chr.getTotalInt() * 4.8 + chr.getTotalLuk() * 4) * chr.getTotalMagic() / 1000);
                     calcDmgMax = calcDmgMax * effect.getHp() / 100; 
                 }
-                } else if(ret.skill == Hermit.SHADOW_MESO) {
-                    // Shadow Meso also has its own formula
-                    calcDmgMax = effect.getMoneyCon() * 10;
-                    calcDmgMax = (int) Math.floor(calcDmgMax * 1.5);
+            } else if(ret.skill == Hermit.SHADOW_MESO) {
+                // Shadow Meso also has its own formula
+                calcDmgMax = effect.getMoneyCon() * 10;
+                calcDmgMax = (int) Math.floor(calcDmgMax * 1.5);
             } else {
                 // Normal damage formula for skills
                 calcDmgMax = calcDmgMax * effect.getDamage() / 100;
@@ -811,6 +812,10 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     } else if(ret.skill == Hermit.SHADOW_WEB) {
                             if(monster != null) {
                                     calcDmgMax = monster.getHp() / (50 - chr.getSkillLevel(skill));
+                            }
+                    } else if(ret.skill == Hermit.SHADOW_MESO) {
+                            if(monster != null) {
+                                    monster.debuffMob(Hermit.SHADOW_MESO);
                             }
                     }
             }

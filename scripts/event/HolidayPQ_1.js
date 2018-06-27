@@ -245,6 +245,8 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
+        
+        eim.applyEventPlayersItemBuff(2022436);
 }
 
 function isScrooge(mob) {

@@ -1063,3 +1063,24 @@ Dragon Roar agora aplica stun em mobs (efeito de stun aparentemente não está s
 22 Junho 2018,
 Refatorado método de empty em MapleCharacter, agora verificando e liberando mais recursos.
 Corrigido exploit onde pacotes referentes à chairs poderiam ser processados e reenviados aos outros em casos onde o personagem está fora do world server.
+
+23 - 24 Junho 2018,
+Corrigido problema de concorrência com adição de itens no inventário do jogador, onde raramente itens poderiam não ser registrados dentro ao serem obtidos.
+Ajustado sistema de buyback, agora utilizando valor de taxa escalado por nível (entre 30 e 120).
+Ajustado MaxHP do boss Shade, agora conformante com seu nível.
+Corrigido Rest Spots na BRPQ podendo usar return scrolls.
+Ajustado valores de EXP e MaxHP de bosses com evasão 999 que utilizavam valores incoerentes para o nível esperado deles.
+Corrigido exceção de nulo ocorrendo após tentar recuperar script engine de jogador que já havia desconectado.
+Ajustado Hak e Orbis Magic Spot NPCs para sempre spawnar jogadores próximos ao dual.
+Removido Snowball (flecha) do drop data.
+Adicionado drops característicos dos mobs "Extras/Leaders" de Zipangu, que estavam faltando.
+Adicionado ganho de pet tameness em quests.
+Protegido contra acesso em rajada o handler de spawn de pets.
+Ajustado drop rates de omok e cards, agora mais próximo do GMS-like.
+
+26 Junho 2018,
+Adicionado efeito de dispel de weapondef e magicdef up em mobs ao atacar com Shadow Meso.
+Corrigido Shadow Meso consumindo projetil (deveria usar meso somente).
+Adicionado recompensa de buff ao completar o HolidayPQ.
+Adicionado drops de itens que dão buffs característicos nos reatores da Zakum Prequest.
+Scroll shop custom mudou para a NPC Asia em Neo City (anteriormente estava no Spindle).

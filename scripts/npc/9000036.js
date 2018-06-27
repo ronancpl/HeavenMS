@@ -41,7 +41,7 @@ var maxEqp = 0;
 function start() {
     cm.getPlayer().setCS(true);
     var selStr = "Hello, I am the #bAccessory NPC Crafter#k! My works are widely recognized to be too fine, up to the point at which all my items mimic not only the appearance but too the attributes of them! Everything I charge is some 'ingredients' to make them and, of course, a fee for my services. On what kind of equipment are you interessed?#b";
-    var options = ["Pendants","Face accessories","Eye accessories","Belts & medals","Rings","#t4032496#"];
+    var options = ["Pendants","Face accessories","Eye accessories","Belts & medals","Rings"/*,"#t4032496#"*/];
     for (var i = 0; i < options.length; i++)
         selStr += "\r\n#L" + i + "# " + options[i] + "#l";
     cm.sendSimple(selStr);
@@ -91,19 +91,19 @@ function action(mode, type, selection) {
             for (var i = 0; i < items.length; i++)
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##b";
             
-        }else if (selection == 5) { //make necklace
+        }/*else if (selection == 5) { //make necklace
             var selStr = "Need to make #t4032496#?#b";
             items = [4032496];
             for (var i = 0; i < items.length; i++)
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##l";
-        }
+        }*/
         selectedType = selection;
         cm.sendSimple(selStr);
     }else if (status == 1) {
         if (selectedType != 3) selectedItem = selection;
         
         if (selectedType == 0) { //pendant refine
-            var matSet = [[4003004, 4030012, 4001356, 4000026], [4000026, 4001356, 4000073, 4001006], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [1122007, 4003002, 4032496]];
+            var matSet = [[4003004, 4030012, 4001356, 4000026], [4000026, 4001356, 4000073, 4001006], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [1122007, 4003002, 4000413]];
             var matQtySet = [[20, 20, 5, 1], [5, 5, 10, 1], [10, 4, 20, 4], [20, 8, 20, 8], [10, 4, 20, 4], [15, 6, 30, 6], [20, 8, 40, 8], [15, 6, 30, 6], [1, 1, 1]];
             var costSet = [150000, 500000, 200000, 400000, 200000, 300000, 400000, 300000, 2500000];
         }else if (selectedType == 1) { //face accessory refine
@@ -122,11 +122,11 @@ function action(mode, type, selection) {
             var matSet = [[4003001, 4001344, 4006000], [4003001, 4001344, 4006000], [4021004, 4011008], [4011008, 4001006], [1112413, 2022039], [1112414, 4000176], [4011007, 4021009]];
             var matQtySet = [[2, 2, 2], [2, 2, 2], [1, 1], [1, 1], [1, 1], [1, 1], [1, 1]];
             var costSet = [10000, 10000, 10000, 20000, 15000, 15000, 10000];
-        }else if (selectedType == 5) { //necklace refine
+        }/*else if (selectedType == 5) { //necklace refine
             var matSet = [[4011007, 4011008, 4021009]];
             var matQtySet = [[1, 1, 1]];
             var costSet = [10000];
-        }
+        }*/
         
         if (selectedType == 3) {
             selectedItem = Math.floor(Math.random() * maxEqp);
@@ -161,34 +161,36 @@ function action(mode, type, selection) {
             prompt += "\r\n#i4031138# " + (cost * qty) + " meso";
         cm.sendYesNo(prompt);
     }else if (status == 2) {
-        var complete = true;
-        if (cm.getMeso() < (cost * qty))
+        if (cm.getMeso() < (cost * qty)) {
             cm.sendOk("This is the fee I charge to make my items! No credit.");
-        else{
+        } else {
+            var complete = true;
             if (mats instanceof Array) {
                 for(var i = 0; complete && i < mats.length; i++)
                     if (!cm.haveItem(mats[i], matQty[i] * qty))
                         complete = false;
-            }else if (!cm.haveItem(mats, matQty * qty))
+            } else if (!cm.haveItem(mats, matQty * qty))
                 complete = false;
-        }	
-        if (!complete)
-            cm.sendOk("Are you sure you got all the items required? Double check it!");
-        else {
-            if (cm.canHold(item, qty)) {
-                if (mats instanceof Array) {
-                    for (var i = 0; i < mats.length; i++)
-                        cm.gainItem(mats[i], -(matQty[i] * qty));
-                } else
-                    cm.gainItem(mats, -(matQty * qty));
-                cm.gainMeso(-(cost * qty));
-                
-                cm.gainItem(item, qty);
-                cm.sendOk("The item is done! Take and try this piece of art yourself.");
-            }else {
-                cm.sendOk("You got no free slot on your inventory.");
+            
+            if (!complete)
+                cm.sendOk("Are you sure you got all the items required? Double check it!");
+            else {
+                if (cm.canHold(item, qty)) {
+                    if (mats instanceof Array) {
+                        for (var i = 0; i < mats.length; i++)
+                            cm.gainItem(mats[i], -(matQty[i] * qty));
+                    } else
+                        cm.gainItem(mats, -(matQty * qty));
+                    cm.gainMeso(-(cost * qty));
+
+                    cm.gainItem(item, qty);
+                    cm.sendOk("The item is done! Take and try this piece of art yourself.");
+                } else {
+                    cm.sendOk("You got no free slot on your inventory.");
+                }
             }
-        }
+        }	
+        
         cm.dispose();
     }
 }

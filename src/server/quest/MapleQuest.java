@@ -518,6 +518,9 @@ public class MapleQuest {
 			case SKILL:
 				ret = new SkillAction(this, data);
 				break;
+                        case PETTAMENESS:
+				ret = new PetTamenessAction(this, data);
+				break;
 			default:
 				//FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unhandled Action Type: " + type.toString() + " QuestID: " + this.getId());
 				break;

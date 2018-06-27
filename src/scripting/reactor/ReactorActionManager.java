@@ -265,9 +265,12 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         MapleMonster mm = map.getMonsterById(id);
         if(mm != null) {
             int damage = (int)Math.ceil(mm.getMaxHp() / hitsToKill);
+            MapleCharacter chr = this.getPlayer();
             
-            map.damageMonster(this.getPlayer(), mm, damage);
-            map.broadcastMessage(MaplePacketCreator.damageMonster(mm.getObjectId(), damage));
+            if(chr != null) {
+                map.damageMonster(chr, mm, damage);
+                map.broadcastMessage(MaplePacketCreator.damageMonster(mm.getObjectId(), damage));
+            }
         }
     }
 

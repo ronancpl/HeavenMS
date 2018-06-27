@@ -948,7 +948,7 @@ public class MapleClient {
                 }
 	}
 
-	private void clear() {  //usable when defining client = null shortly after
+	private void clear() {
                 // player hard reference removal thanks to Steve (kaito1410)
                 if (this.player != null) {
                     this.player.empty(true); // clears schedules and stuff

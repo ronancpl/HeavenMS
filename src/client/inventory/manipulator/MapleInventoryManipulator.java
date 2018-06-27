@@ -498,10 +498,10 @@ public class MapleInventoryManipulator {
         }
         
         source.setPosition(dst);
-        c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addFromDB(source);
+        c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addItemFromDB(source);
         if (target != null) {
             target.setPosition(src);
-            c.getPlayer().getInventory(MapleInventoryType.EQUIP).addFromDB(target);
+            c.getPlayer().getInventory(MapleInventoryType.EQUIP).addItemFromDB(target);
         }
         if (c.getPlayer().getBuffedValue(MapleBuffStat.BOOSTER) != null && ItemConstants.isWeapon(source.getItemId())) {
             c.getPlayer().cancelBuffStats(MapleBuffStat.BOOSTER);
@@ -536,10 +536,10 @@ public class MapleInventoryManipulator {
             c.getPlayer().getInventory(MapleInventoryType.EQUIP).removeSlot(dst);
         }
         source.setPosition(dst);
-        c.getPlayer().getInventory(MapleInventoryType.EQUIP).addFromDB(source);
+        c.getPlayer().getInventory(MapleInventoryType.EQUIP).addItemFromDB(source);
         if (target != null) {
             target.setPosition(src);
-            c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addFromDB(target);
+            c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addItemFromDB(target);
         }
         c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(2, source, src))));
         c.getPlayer().equipChanged();

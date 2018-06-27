@@ -59,7 +59,7 @@ function action(mode, type, selection) {
             if (cm.getMeso() < cost[location]) {
                 cm.sendNext("You don't seem to have enough mesos. I am terribly sorry, but I cannot help you unless you pay up. Bring in the mesos by hunting more and come back when you have enough.");
             } else {
-                cm.warp(toMap[location]);
+                cm.warp(toMap[location], location != 1 ? 0 : 1);
                 cm.gainMeso(-cost[location]);
             }
             cm.dispose();

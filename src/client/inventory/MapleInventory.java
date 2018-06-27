@@ -214,20 +214,19 @@ public class MapleInventory implements Iterable<Item> {
     }
 
     public short addItem(Item item) {
-        short slotId = getNextFreeSlot();
-        if (slotId < 0 || item == null) {
+        short slotId = addSlot(item);
+        if (slotId == -1) {
             return -1;
         }
-        addSlot(slotId, item);
         item.setPosition(slotId);
         return slotId;
     }
 
-    public void addFromDB(Item item) {
+    public void addItemFromDB(Item item) {
         if (item.getPosition() < 0 && !type.equals(MapleInventoryType.EQUIPPED)) {
             return;
         }
-        addSlot(item.getPosition(), item);
+        addSlotFromDB(item.getPosition(), item);
     }
 
     private static boolean isSameOwner(Item source, Item target) {
@@ -302,16 +301,39 @@ public class MapleInventory implements Iterable<Item> {
         }
     }
 
-    public void addSlot(short slot, Item item) {
+    private short addSlot(Item item) {
+        if(item == null) {
+            return -1;
+        }
+        
         lock.lock();
         try {
-            inventory.put(slot, item);
+            short slotId = getNextFreeSlot();
+            if (slotId < 0) {
+                return -1;
+            }
+            inventory.put(slotId, item);
+            
+            if(ItemConstants.isRateCoupon(item.getItemId())) {
+                owner.updateCouponRates();
+            }
+            
+            return slotId;
         } finally {
             lock.unlock();
         }
-        
-        if(ItemConstants.isRateCoupon(item.getItemId())) {
-            owner.updateCouponRates();
+    }
+    
+    private void addSlotFromDB(short slot, Item item) {
+        lock.lock();
+        try {
+            inventory.put(slot, item);
+            
+            if(ItemConstants.isRateCoupon(item.getItemId())) {
+                owner.updateCouponRates();
+            }
+        } finally {
+            lock.unlock();
         }
     }
     

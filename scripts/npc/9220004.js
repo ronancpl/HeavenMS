@@ -20,7 +20,7 @@ function action(mode, type, selection) {
                         status--; 
                  
                 if (status == 0) { 
-                        cm.sendSimple("#b<Raid Quest: Happyville>#k\r\nA raid is nothing but many people joining up in an attempt to defeat extremely powerful creatures. Here is no different. Here, everyone can take part in defeating the spawned creature. What will you do?\r\n#b\r\n#L0#Spawn Kid Snowman.\r\n#L1#Spawn Lost Rudolph.\r\n#L2#Nothing, just chilling.#k");
+                        cm.sendSimple("#b<Raid Quest: Happyville>#k\r\nA raid is nothing but many people joining up in an attempt to defeat extremely powerful creatures. Here is no different. Everyone can take part in defeating the spawned creature. What will you do?\r\n#b\r\n#L0#Spawn Kid Snowman.\r\n#L1#Spawn Lost Rudolph.\r\n#L2#Nothing, just chilling.#k");
                 } else if(status == 1) {
                         if(selection == 0) {
                                 if(cm.getMap().getMonsters().size() > 1) {  //reactor as a monster? wtf

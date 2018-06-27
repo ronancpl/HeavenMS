@@ -841,7 +841,7 @@
       <canvas name="iconRaw" width="32" height="29">
         <vector name="origin" x="0" y="31"/>
       </canvas>
-      <string name="price" value="675"/>
+      <int name="price" value="675"/>
     </imgdir>
     <imgdir name="spec">
       <int name="hp" value="400"/>
@@ -6267,8 +6267,8 @@
       </canvas>
     </imgdir>
     <imgdir name="spec">
-      <int name="jump" value="7"/>
       <int name="time" value="900000"/>
+      <int name="jump" value="5"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022437">
@@ -6281,8 +6281,8 @@
       </canvas>
     </imgdir>
     <imgdir name="spec">
-      <int name="speed" value="5"/>
       <int name="time" value="900000"/>
+      <int name="speed" value="7"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022438">

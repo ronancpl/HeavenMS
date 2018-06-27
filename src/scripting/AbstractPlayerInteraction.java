@@ -786,7 +786,7 @@ public class AbstractPlayerInteraction {
 		}
 		final Item newItem = MapleItemInformationProvider.getInstance().getEquipById(itemid);
 		newItem.setPosition(slot);
-		c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addFromDB(newItem);
+		c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).addItemFromDB(newItem);
 		c.announce(MaplePacketCreator.modifyInventory(false, Collections.singletonList(new ModifyInventory(0, newItem))));
 	}
         

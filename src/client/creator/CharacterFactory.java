@@ -60,25 +60,25 @@ public abstract class CharacterFactory {
                 if(top > 0) {
                     Item eq_top = ii.getEquipById(top);
                     eq_top.setPosition((byte) -5);
-                    equipped.addFromDB(eq_top);
+                    equipped.addItemFromDB(eq_top);
                 }
                 
                 if(bottom > 0) {
                     Item eq_bottom = ii.getEquipById(bottom);
                     eq_bottom.setPosition((byte) -6);
-                    equipped.addFromDB(eq_bottom);
+                    equipped.addItemFromDB(eq_bottom);
                 }
                 
                 if(shoes > 0) {
                     Item eq_shoes = ii.getEquipById(shoes);
                     eq_shoes.setPosition((byte) -7);
-                    equipped.addFromDB(eq_shoes);
+                    equipped.addItemFromDB(eq_shoes);
                 }
                 
                 if(weapon > 0) {
                     Item eq_weapon = ii.getEquipById(weapon);
                     eq_weapon.setPosition((byte) -11);
-                    equipped.addFromDB(eq_weapon.copy());
+                    equipped.addItemFromDB(eq_weapon.copy());
                 }
                 
                 if (!newchar.insertNewChar(recipe)) {

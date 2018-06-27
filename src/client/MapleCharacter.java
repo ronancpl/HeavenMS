@@ -5230,6 +5230,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return lastBuyback + ServerConstants.BUYBACK_COOLDOWN_MINUTES * 60 * 1000;
     }
     
+    private int getBuybackFee() {
+        float fee = ServerConstants.BUYBACK_FEE;
+        int grade = Math.min(Math.max(level, 30), 120) - 30;
+        
+        fee += (grade * ServerConstants.BUYBACK_LEVEL_STACK_FEE);
+        return (int) Math.floor(fee);
+    }
+    
     public boolean couldBuyback() {  // Ronan's buyback system
         long timeNow = System.currentTimeMillis();
         
@@ -5249,7 +5257,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         boolean usingMesos = ServerConstants.USE_BUYBACK_WITH_MESOS;
-        int fee = ServerConstants.BUYBACK_FEE;
+        int fee = getBuybackFee();
         if(usingMesos) fee *= ServerConstants.BUYBACK_MESO_MULTIPLIER;
         
         if(!canBuyback(fee, usingMesos)) {
@@ -5867,7 +5875,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             for (Pair<Item, MapleInventoryType> item : ItemFactory.INVENTORY.loadItems(ret.id, !channelserver)) {
                 sandboxCheck |= item.getLeft().getFlag();
                 
-                ret.getInventory(item.getRight()).addFromDB(item.getLeft());
+                ret.getInventory(item.getRight()).addItemFromDB(item.getLeft());
                 Item itemz = item.getLeft();
                 if (itemz.getPetId() > -1) {
                     MaplePet pet = itemz.getPet();
@@ -7977,12 +7985,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void unequipPet(MaplePet pet, boolean shift_left, boolean hunger) {
-        if (this.getPet(this.getPetIndex(pet)) != null) {
-            this.getPet(this.getPetIndex(pet)).setSummoned(false);
-            this.getPet(this.getPetIndex(pet)).saveToDb();
+        byte petIdx = this.getPetIndex(pet);
+        MaplePet chrPet = this.getPet(petIdx);
+        
+        if (chrPet != null) {
+            chrPet.setSummoned(false);
+            chrPet.saveToDb();
         }
         
-        this.getClient().getWorldServer().unregisterPetHunger(this, getPetIndex(pet));
+        this.getClient().getWorldServer().unregisterPetHunger(this, petIdx);
         getMap().broadcastMessage(this, MaplePacketCreator.showPet(this, pet, true, hunger), true);
         
         removePet(pet, shift_left);

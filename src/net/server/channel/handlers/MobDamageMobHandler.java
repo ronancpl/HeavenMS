@@ -22,6 +22,7 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
+import client.MapleCharacter;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
@@ -39,9 +40,11 @@ public final class MobDamageMobHandler extends AbstractMaplePacketHandler {
         int to = slea.readInt();
         slea.readByte();
         int dmg = slea.readInt();
-        MapleMap map = c.getPlayer().getMap();
+        MapleCharacter chr = c.getPlayer();
+        
+        MapleMap map = chr.getMap();
         if (map.getMonsterByOid(from) != null && map.getMonsterByOid(to) != null) {
-            map.damageMonster(c.getPlayer(), map.getMonsterByOid(to), dmg);
+            map.damageMonster(chr, map.getMonsterByOid(to), dmg);
             map.broadcastMessage(MaplePacketCreator.damageMonster(to, dmg));
         }
     }

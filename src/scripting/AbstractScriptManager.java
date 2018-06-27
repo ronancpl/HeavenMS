@@ -52,7 +52,11 @@ public abstract class AbstractScriptManager {
         path = "scripts/" + path;
         engine = null;
         if (c != null) {
-            engine = c.getScriptEngine(path);
+            try {
+                engine = c.getScriptEngine(path);
+            } catch (NullPointerException npe) {
+                c = null;   // player disconnected
+            }
         }
         if (engine == null) {
             File scriptFile = new File(path);

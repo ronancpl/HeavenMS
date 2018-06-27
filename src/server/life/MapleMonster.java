@@ -31,11 +31,12 @@ import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.ServerConstants;
 import constants.skills.Crusader;
-import constants.skills.DragonKnight;
 import constants.skills.FPMage;
+import constants.skills.Hermit;
 import constants.skills.ILMage;
 import constants.skills.NightLord;
 import constants.skills.NightWalker;
+import constants.skills.Priest;
 import constants.skills.Shadower;
 import constants.skills.WhiteKnight;
 import java.awt.Point;
@@ -999,29 +1000,38 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
             map.broadcastMessage(packet, getPosition());
 
-            MapleCharacter controller = getController();
-            if (controller != null && !controller.isMapObjectVisible(MapleMonster.this)) {
-                controller.getClient().announce(packet);
+            MapleCharacter chrController = getController();
+            if (chrController != null && !chrController.isMapObjectVisible(MapleMonster.this)) {
+                chrController.getClient().announce(packet);
             }
             stati.remove(stat);
         }
     }
     
     public void debuffMob(int skillid) {
-        MonsterStatus[] stats = {MonsterStatus.WEAPON_ATTACK_UP, MonsterStatus.WEAPON_DEFENSE_UP, MonsterStatus.MAGIC_ATTACK_UP};
+        MonsterStatus[] statups = {MonsterStatus.WEAPON_ATTACK_UP, MonsterStatus.WEAPON_DEFENSE_UP, MonsterStatus.MAGIC_ATTACK_UP, MonsterStatus.MAGIC_DEFENSE_UP};
         statiLock.lock();
         try {
-            int i = (skillid == Crusader.ARMOR_CRASH ? 1 : (skillid == WhiteKnight.MAGIC_CRASH ? 2 : 0));
-            debuffMobStat(stats[i]);
-            
-            if(ServerConstants.USE_ANTI_IMMUNITY_CRASH) {
-                if (skillid == Crusader.ARMOR_CRASH) {
-                    if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
-                    if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
-                } else if (skillid == WhiteKnight.MAGIC_CRASH) {
-                    if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
-                } else {
-                    if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
+            if(skillid == Hermit.SHADOW_MESO) {
+                debuffMobStat(statups[1]);
+                debuffMobStat(statups[3]);
+            } else if(skillid == Priest.DISPEL) {
+                for(MonsterStatus ms : statups) {
+                    debuffMobStat(ms);
+                }
+            } else {    // is a crash skill
+                int i = (skillid == Crusader.ARMOR_CRASH ? 1 : (skillid == WhiteKnight.MAGIC_CRASH ? 2 : 0));
+                debuffMobStat(statups[i]);
+
+                if(ServerConstants.USE_ANTI_IMMUNITY_CRASH) {
+                    if (skillid == Crusader.ARMOR_CRASH) {
+                        if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
+                        if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
+                    } else if (skillid == WhiteKnight.MAGIC_CRASH) {
+                        if(!isBuffed(MonsterStatus.MAGIC_REFLECT)) debuffMobStat(MonsterStatus.MAGIC_IMMUNITY);
+                    } else {
+                        if(!isBuffed(MonsterStatus.WEAPON_REFLECT)) debuffMobStat(MonsterStatus.WEAPON_IMMUNITY);
+                    }
                 }
             }
         } finally {

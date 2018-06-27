@@ -84,6 +84,7 @@ function writeFeatureTab_CashItems() {
         addFeature("EXP/DROP/Cosmetic Coupons.");
         addFeature("EXP/DROP Coupon as buff effect during active time.");
         addFeature("Great deal of cash items functional.");
+        addFeature("GMS-esque omok/match card drop chances.");
         addFeature("New town scroll: antibanish. Counters boss banishes.");
         addFeature("Inventory system checks for free slot & stack space.");
         addFeature("Storage with 'Arrange Items' feature functional.");

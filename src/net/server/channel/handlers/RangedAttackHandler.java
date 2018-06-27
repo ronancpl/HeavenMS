@@ -30,7 +30,6 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.MapleJob;
 import client.Skill;
 import client.SkillFactory;
 import client.inventory.Item;
@@ -113,6 +112,20 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                 if (effect.getCooldown() > 0) {
                     c.announce(MaplePacketCreator.skillCooldown(attack.skill, effect.getCooldown()));
                 }
+                
+                if(attack.skill == 4111004) {   // shadow meso
+                    bulletCount = 0;
+                    
+                    int money = effect.getMoneyCon();
+                    if (money != 0) {
+                        int moneyMod = money / 2;
+                        money += Randomizer.nextInt(moneyMod);
+                        if (money > chr.getMeso()) {
+                            money = chr.getMeso();
+                        }
+                        chr.gainMeso(-money, false);
+                    }
+                }
             }
             boolean hasShadowPartner = chr.getBuffedValue(MapleBuffStat.SHADOWPARTNER) != null;
             if (hasShadowPartner) {
@@ -165,7 +178,8 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                     else MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, bulletConsume, false, true);
                 }
             }
-            if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {                
+            
+            if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006 || attack.skill == 4111004) {
             	int visProjectile = projectile; //visible projectile sent to players
                 if (ItemConstants.isThrowingStar(projectile)) {
                     MapleInventory cash = chr.getInventory(MapleInventoryType.CASH);
@@ -178,10 +192,10 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                             }
                         }
                     }
-                } else //bow, crossbow
-                if (soulArrow || attack.skill == 3111004 || attack.skill == 3211004 || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {
+                } else if (soulArrow || attack.skill == 3111004 || attack.skill == 3211004 || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {
                     visProjectile = 0;
                 }
+                
                 byte[] packet;
                 switch (attack.skill) {
                     case 3121004: // Hurricane
@@ -195,17 +209,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                         break;
                 }
                 chr.getMap().broadcastMessage(chr, packet, false, true);
-                if (effect != null) {
-                    int money = effect.getMoneyCon();
-                    if (money != 0) {
-                        int moneyMod = money / 2;
-                        money += Randomizer.nextInt(moneyMod);
-                        if (money > chr.getMeso()) {
-                            money = chr.getMeso();
-                        }
-                        chr.gainMeso(-money, false);
-                    }
-                }
+                
                 if (attack.skill != 0) {
                     Skill skill = SkillFactory.getSkill(attack.skill);
                     MapleStatEffect effect_ = skill.getEffect(chr.getSkillLevel(skill));
