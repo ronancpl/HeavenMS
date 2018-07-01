@@ -32,6 +32,7 @@ import client.status.MonsterStatus;
 import constants.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
+import server.TimerManager;
 import tools.Randomizer;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
@@ -103,6 +104,17 @@ public class MobSkill {
         this.limit = limit;
     }
 
+    public void applyDelayedEffect(final MapleCharacter player, final MapleMonster monster, final boolean skill, final List<MapleCharacter> banishPlayers, int animationTime) {
+        TimerManager.getInstance().schedule(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    if(monster.isAlive()) {
+                                                        applyEffect(player, monster, skill, banishPlayers);
+                                                    }
+                                                }
+                                            }, animationTime);
+    }
+    
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill, List<MapleCharacter> banishPlayers) {
         MapleDisease disease = null;
         Map<MonsterStatus, Integer> stats = new ArrayMap<MonsterStatus, Integer>();
@@ -282,15 +294,15 @@ public class MobSkill {
                 System.out.println("Unhandled Mob skill: " + skillId);
                 break;
         }
-		if (stats.size() > 0) {
-		    if (lt != null && rb != null && skill) {
-				for (MapleMapObject mons : getObjectsInRange(monster, MapleMapObjectType.MONSTER)) {
-				    ((MapleMonster) mons).applyMonsterBuff(stats, getX(), getSkillId(), getDuration(), this, reflection);
-				}
-		    } else {
-		    	monster.applyMonsterBuff(stats, getX(), getSkillId(), getDuration(), this, reflection);
-		    }
-		}        
+        if (stats.size() > 0) {
+            if (lt != null && rb != null && skill) {
+                for (MapleMapObject mons : getObjectsInRange(monster, MapleMapObjectType.MONSTER)) {
+                    ((MapleMonster) mons).applyMonsterBuff(stats, getX(), getSkillId(), getDuration(), this, reflection);
+                }
+            } else {
+                monster.applyMonsterBuff(stats, getX(), getSkillId(), getDuration(), this, reflection);
+            }
+        }
         if (disease != null) {
             if (lt != null && rb != null && skill) {
                 int i = 0;

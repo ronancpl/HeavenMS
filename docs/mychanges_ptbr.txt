@@ -1084,3 +1084,13 @@ Corrigido Shadow Meso consumindo projetil (deveria usar meso somente).
 Adicionado recompensa de buff ao completar o HolidayPQ.
 Adicionado drops de itens que dão buffs característicos nos reatores da Zakum Prequest.
 Scroll shop custom mudou para a NPC Asia em Neo City (anteriormente estava no Spindle).
+
+27 Junho 2018,
+Resolvido um problema no sistema de ganho de EXP que daria ao jogador um valor abaixo do que seria o normal nos casos onde o EXP ganho é baixo.
+Otimizado mob buffs e diseases agora utilizando thread dedicada para lidar com a duração, anteriormente eram criadas novas schedules pra cada instância.
+Refatorado MonitoredLockTypes para agora dar um label específico a cada lock do sistema.
+
+29 - 30 Junho 2018,
+Corrigido quest Milk Jug com NPCs trocados.
+Adicionado um delay na aplicação de efeitos dos skills de mobs, buffs e demais efeitos agora são registrados após o tempo da animação.
+Corrigido Flame Thrower atuando passivamente quando o jogador usa uma skill de ataque.

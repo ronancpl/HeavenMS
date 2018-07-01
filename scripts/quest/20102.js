@@ -22,8 +22,8 @@ function end(mode, type, selection) {
     	qm.sendYesNo("Have you made your decision? The decision will be final, so think carefully before deciding what to do. Are you sure you want to become a Blaze Wizard?");
     } else if (status == 1) {
         if(!qm.canGetFirstJob(jobType)) {
-            cm.sendOk("Train a bit more and I can show you the way of the #rBlaze Wizard#k.");
-            cm.dispose();
+            qm.sendOk("Train a bit more until you reach #blevel 10, " + qm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rBlaze Wizard#k.");
+            qm.dispose();
             return;
         }
         

@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting.portal;
 
 import client.MapleClient;
+import constants.ServerConstants;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -65,6 +66,12 @@ public class PortalScriptManager {
         ScriptEngine portal = sef.getScriptEngine();
         try {
             fr = new FileReader(scriptFile);
+            
+            // java 8 support here thanks to Arufonsu
+            if (ServerConstants.JAVA_8){
+                    portal.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
+            }
+            
             ((Compilable) portal).compile(fr).eval();
         } catch (ScriptException | IOException | UndeclaredThrowableException e) {
             FilePrinter.printError(FilePrinter.PORTAL + scriptName + ".txt", e);

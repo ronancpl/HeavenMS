@@ -49,7 +49,7 @@ function start() {
             if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
                 cm.sendNext("Want to be a thief? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 10, with your DEX over 25#k. Let's see.");
             else {
-                cm.sendOk("Train a bit more and I can show you the way of the #rThief#k.");
+                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rThief#k.");
                 cm.dispose();
             }
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 400) {

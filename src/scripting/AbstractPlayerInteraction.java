@@ -978,4 +978,23 @@ public class AbstractPlayerInteraction {
                         return true;
                 }
         }
+        
+        public static String getFirstJobStatRequirement(int jobType) {
+                switch(jobType) {
+                    case 1:
+                        return "STR " + 35;
+                        
+                    case 2:
+                        return "INT " + 20;
+                        
+                    case 3:
+                    case 4:
+                        return "DEX " + 25;
+                        
+                    case 5:
+                        return "DEX " + 20;
+                }
+                
+                return null;
+        }
 }

@@ -107,8 +107,8 @@ public class MapleClient {
 	private byte gender = -1;
 	private boolean disconnecting = false;
 	private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
-        private final Lock encoderLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
-        private static final Lock loginLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
+        private final Lock encoderLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT_ENCODER, true);
+        private static final Lock loginLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT_LOGIN, true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;

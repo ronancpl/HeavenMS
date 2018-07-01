@@ -49,7 +49,7 @@ function start() {
             if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
                 cm.sendNext("So you decided to become a #rBowman#k?");
             else {
-                cm.sendOk("Train a bit more and I can show you the way of the #rBowman#k.");
+                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rBowman#k.");
                 cm.dispose();
             }
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 300) {

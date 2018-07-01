@@ -233,7 +233,7 @@ public class ThreadTracker {
 
                     List<MonitoredLockType> list = threadTracker.get(tid);
                     for(int i = list.size() - 1; i >= 0; i--) {
-                        if(lockId.getValue() == list.get(i).getValue()) {
+                        if(lockId.equals(list.get(i))) {
                             list.remove(i);
                             break;
                         }

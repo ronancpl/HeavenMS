@@ -144,6 +144,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
         addFeature("Enhanced buff system: best buffs effects takes place.");
         addFeature("Enhanced AP auto-assigner: focus on eqp demands.");
+        addFeature("Consistent experience gain system.");
         addFeature("NPC crafters won't take items freely anymore.");
         addFeature("Duey: pkg rcvd popup and many delivery mechanics.");
         addFeature("Pet pickup gives preference to player attacks.");
@@ -169,6 +170,7 @@ function writeFeatureTab_AdminGMcommands() {
 
 function writeFeatureTab_CustomNPCs() {
         addFeature("Spiegelmann: automatized rock-refiner.");
+        addFeature("Asia: scroll & rarities shop NPC.");
         addFeature("Abdula: lists droppers of needed skill/mastery books.");
         addFeature("Agent E: accessory crafter.");
         addFeature("Donation Box: automatized item-buyer.");
@@ -197,6 +199,7 @@ function writeFeatureTab_Project() {
         addFeature("Reviewed many Java aspects that needed attention.");
         addFeature("Reviewed SQL data, eliminating duplicated entries.");
         addFeature("Protected many flaws with login management system.");
+        addFeature("Developed many survey tools for content management.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Heavily reviewed future task management, spawning much less threads and relieving task overload on the TimerManager.");
 }

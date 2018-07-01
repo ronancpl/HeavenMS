@@ -19,34 +19,34 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-status = -1;
 
 function start() {
-    if(cm.haveItem(4031847))
-        cm.sendNext("The hungry calf is drinking all the milk! The bottle remains empty...");
-    else if(cm.haveItem(4031848) || cm.haveItem(4031849) || cm.haveItem(4031850)){
-        cm.sendNext("The hungry calf is drinking all the milk! The bottle is now empty.");
-        if(cm.haveItem(4031848))
-            cm.gainItem(4031848,-1);
-        else if(cm.haveItem(4031849))
-            cm.gainItem(4031849, -1);
-        else
-            cm.gainItem(4031850, -1);
-        cm.gainItem(4031847, 1);
+    if(cm.getQuestProgress(2180, 0) == 1) {
+        cm.sendNext("You have taken milk from this cow recently, check another cow.");
         cm.dispose();
+        return;
     }
-}
-
-function action(mode, type, selection){
-    if(mode == -1)
-        cm.dispose();
-    else if(mode == 0){
-        status--;
-        start();
-    }else
-        status++;
-    if(status == 0)
-        cm.sendPrev("The hungry calf isn't interested in the empty bottle.");
-    else if(status == 1)
-        cm.dispose();
+    
+    if (cm.canHold(4031848) && cm.haveItem(4031847)) {
+        cm.sendNext("Now filling up the bottle with milk. The bottle is now 1/3 full of milk.");
+        cm.gainItem(4031847, -1);
+        cm.gainItem(4031848, 1);
+        
+        cm.setQuestProgress(2180, 0, 1);
+    } else if (cm.canHold(4031849, 1) && cm.haveItem(4031848)) {
+        cm.sendNext("Now filling up the bottle with milk. The bottle is now 2/3 full of milk.");
+        cm.gainItem(4031848, -1);
+        cm.gainItem(4031849, 1);
+        
+        cm.setQuestProgress(2180, 0, 1);
+    } else if (cm.canHold(4031850) && cm.haveItem(4031849)) {
+        cm.sendNext("Now filling up the bottle with milk. The bottle is now completely full of milk.");
+        cm.gainItem(4031849, -1);
+        cm.gainItem(4031850, 1);
+        
+        cm.setQuestProgress(2180, 0, 1);
+    } else {
+        cm.sendNext("Your inventory is full, and there's no room for a milk bottle.");
+    }
+    cm.dispose();
 }

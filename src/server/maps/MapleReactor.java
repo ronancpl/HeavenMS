@@ -55,7 +55,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
     private Lock reactorLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
-    private Lock hitLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
+    private Lock hitLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR_HIT, true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
         this.evstate = (byte)0;

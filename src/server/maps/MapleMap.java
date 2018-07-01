@@ -59,7 +59,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.lang.ref.WeakReference;
-import java.util.Comparator;
 import net.server.Server;
 import net.server.channel.Channel;
 import scripting.map.MapScriptManager;
@@ -255,14 +254,42 @@ public class MapleMap {
     public int getId() {
         return mapid;
     }
+    
+    public Channel getChannelServer() {
+        return Server.getInstance().getWorld(world).getChannel(channel);
+    }
 
     public MapleMap getReturnMap() {
         if(returnMapId == 999999999) return this;
-        return Server.getInstance().getWorld(world).getChannel(channel).getMapFactory().getMap(returnMapId);
+        return getChannelServer().getMapFactory().getMap(returnMapId);
     }
 
     public int getReturnMapId() {
         return returnMapId;
+    }
+    
+    public MapleMap getForcedReturnMap() {
+        return getChannelServer().getMapFactory().getMap(forcedReturnMap);
+    }
+    
+    public int getForcedReturnId() {
+        return forcedReturnMap;
+    }
+
+    public void setForcedReturnMap(int map) {
+        this.forcedReturnMap = map;
+    }
+
+    public long getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    public int getTimeLeft() {
+        return (int) ((timeLimit - System.currentTimeMillis()) / 1000);
     }
 
     public void setReactorState() {
@@ -322,30 +349,6 @@ public class MapleMap {
         return true;
     }
     
-    public int getForcedReturnId() {
-        return forcedReturnMap;
-    }
-
-    public MapleMap getForcedReturnMap() {
-        return Server.getInstance().getWorld(world).getChannel(channel).getMapFactory().getMap(forcedReturnMap);
-    }
-
-    public void setForcedReturnMap(int map) {
-        this.forcedReturnMap = map;
-    }
-
-    public long getTimeLimit() {
-        return timeLimit;
-    }
-
-    public void setTimeLimit(int timeLimit) {
-        this.timeLimit = timeLimit;
-    }
-
-    public int getTimeLeft() {
-        return (int) ((timeLimit - System.currentTimeMillis()) / 1000);
-    }
-
     public int getCurrentPartyId() {
         for (MapleCharacter chr : this.getCharacters()) {
             if (chr.getPartyId() != -1) {

@@ -124,7 +124,7 @@ public class World {
     
     private Map<Runnable, Long> registeredTimedMapObjects = new LinkedHashMap<>();
     private ScheduledFuture<?> timedMapObjectsSchedule;
-    private Lock timedMapObjectLock = new MonitoredReentrantLock(MonitoredLockType.MAP_OBJS, true);
+    private Lock timedMapObjectLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MAPOBJS, true);
     
     private ScheduledFuture<?> charactersSchedule;
     private ScheduledFuture<?> marriagesSchedule;

@@ -53,6 +53,8 @@ public class MapleMonsterInformationProvider {
         private final Map<Integer, List<Integer>> dropsChancePool = new HashMap<>();    // thanks to ronan
         private final Set<Integer> hasNoMultiEquipDrops = new HashSet<>();
         private final Map<Integer, List<MonsterDropEntry>> extraMultiEquipDrops = new HashMap<>();
+        
+        private final Map<Pair<Integer, Integer>, Integer> mobSkillAnimationTime = new HashMap<>();
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
@@ -223,9 +225,17 @@ public class MapleMonsterInformationProvider {
                 dropsChancePool.put(monsterId, ret);
 		return ret;
 	}
+        
+        public final void setMobSkillAnimationTime(int monsterId, int skillPos, int animationTime) {
+                mobSkillAnimationTime.put(new Pair<>(monsterId, skillPos), animationTime);
+        }
+        
+        public final Integer getMobSkillAnimationTime(int monsterId, int skillPos) {
+                Integer time = mobSkillAnimationTime.get(new Pair<>(monsterId, skillPos));
+                return time == null ? 0 : time;
+        }
 
-	public static ArrayList<Pair<Integer, String>> getMobsIDsFromName(String search)
-	{
+	public static ArrayList<Pair<Integer, String>> getMobsIDsFromName(String search) {
 		MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
 		ArrayList<Pair<Integer, String>> retMobs = new ArrayList<Pair<Integer, String>>();
 		MapleData data = dataProvider.getData("Mob.img");
@@ -243,8 +253,7 @@ public class MapleMonsterInformationProvider {
 		return retMobs;
 	}
 
-	public static String getMobNameFromId(int id)
-	{
+	public static String getMobNameFromId(int id) {
 		try
 		{
 			return MapleLifeFactory.getMonster(id).getName();
@@ -261,8 +270,7 @@ public class MapleMonsterInformationProvider {
 		}
 	}
         
-        public static String getMobNameFromID(int id)
-	{
+        public static String getMobNameFromID(int id) {
 		try
 		{
 			return MapleLifeFactory.getMonster(id).getName();

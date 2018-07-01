@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -25,59 +25,56 @@ package tools.locks;
  */
 
 public enum MonitoredLockType {
-    UNDEFINED(-1),
-    CHR(0),
-    EFF(1),
-    PET(2),
-    PRT(3),
-    CLIENT(4),
-    BOOK(5),
-    ITEM(6),
-    INVENTORY(7),
-    SRVHANDLER_IDLE(8),
-    SRVHANDLER_TEMP(9),
-    BUFF_STORAGE(10),
-    PLAYER_STORAGE(11),
-    SERVER(12),
-    MERCHANT(13),
-    CHANNEL(14),
-    GUILD(15),
-    PARTY(16),
-    WORLD_PARTY(17),
-    WORLD_OWL(18),
-    WORLD_PETS(19),
-    WORLD_MOUNTS(20),
-    WORLD_PSHOPS(21),
-    WORLD_MERCHS(21),
-    EIM(22),
-    EIM_PARTY(23),
-    EIM_SCRIPT(24),
-    EM_LOBBY(25),
-    EM_QUEUE(26),
-    CASHSHOP(27),
-    VISITOR_PSHOP(28),
-    STORAGE(29),
-    MOB_EXT(30),
-    MOB(31),
-    MOB_STATI(32),
-    MOBSKILL_FACTORY(33),
-    PORTAL(34),
-    VISITOR_MERCH(35),
-    MAP_CHRS(36),
-    MAP_OBJS(37),
-    MAP_FACTORY(38),
-    MAP_ITEM(39),
-    MAP_BOUNDS(40),
-    MINIDUNGEON(41),
-    REACTOR(42);
-    
-    private final int i;
-    
-    private MonitoredLockType(int val) {
-        this.i = val;
-    }
-
-    public int getValue() {
-        return i;
-    }
+    UNDEFINED,
+    CHARACTER_CHR,
+    CHARACTER_EFF,
+    CHARACTER_PET,
+    CHARACTER_PRT,
+    CLIENT,
+    CLIENT_ENCODER,
+    CLIENT_LOGIN,
+    BOOK,
+    ITEM,
+    INVENTORY,
+    SRVHANDLER_IDLE,
+    SRVHANDLER_TEMP,
+    BUFF_STORAGE,
+    PLAYER_STORAGE,
+    SERVER,
+    SERVER_LOGIN,
+    SERVER_DISEASES,
+    MERCHANT,
+    CHANNEL,
+    CHANNEL_MOBSTATUS,
+    GUILD,
+    PARTY,
+    WORLD_PARTY,
+    WORLD_OWL,
+    WORLD_PETS,
+    WORLD_MOUNTS,
+    WORLD_PSHOPS,
+    WORLD_MERCHS,
+    WORLD_MAPOBJS,
+    EIM,
+    EIM_PARTY,
+    EIM_SCRIPT,
+    EM_LOBBY,
+    EM_QUEUE,
+    CASHSHOP,
+    VISITOR_PSHOP,
+    STORAGE,
+    MOB_EXT,
+    MOB,
+    MOB_STATI,
+    MOBSKILL_FACTORY,
+    PORTAL,
+    VISITOR_MERCH,
+    MAP_CHRS,
+    MAP_OBJS,
+    MAP_FACTORY,
+    MAP_ITEM,
+    MAP_BOUNDS,
+    MINIDUNGEON,
+    REACTOR,
+    REACTOR_HIT;
 }

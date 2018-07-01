@@ -24,7 +24,7 @@ import net.server.world.World;
 /**
  * @author Ronan
  */
-public class BaseWorker implements Runnable {
+public abstract class BaseWorker implements Runnable {
     protected World wserv;
     
     @Override

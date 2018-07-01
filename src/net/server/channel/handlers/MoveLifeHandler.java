@@ -27,6 +27,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 import server.life.MapleMonster;
+import server.life.MapleMonsterInformationProvider;
 //import server.life.MobAttackInfo;
 //import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
@@ -94,20 +95,27 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 				} else if (toUse.getHP() < percHpLeft) {
 					toUse = null;
 				} else if (monster.canUseSkill(toUse)) {
-					toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+                                        int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(monster.getId(), Random);
+                                        if(animationTime > 0) {
+                                                toUse.applyDelayedEffect(c.getPlayer(), monster, true, banishPlayers, animationTime);
+                                        } else {
+                                                toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+                                        }
 				} else {
                                         toUse = null;
                                 }
 			} else {
+                                toUse = null; // paliative measure for suspicious mob movement
+                            
+                                /*
                                 long curtime = System.currentTimeMillis();
                                 if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
-                                        //MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
-                                        //monster.setNextBasicSkillTime(curtime);
-                                    
-                                        toUse = null;   // paliative measure for suspicious mob movement
+                                        MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
+                                        monster.setNextBasicSkillTime(curtime);
                                 } else {
                                         toUse = null;
                                 }
+                                */
 			}
 		}
 

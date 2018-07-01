@@ -96,8 +96,8 @@ public class Server {
     private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
     private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
     private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
-    private final Lock lgnLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
-    private final Lock disLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
+    private final Lock lgnLock = new MonitoredReentrantLock(MonitoredLockType.SERVER_LOGIN);
+    private final Lock disLock = new MonitoredReentrantLock(MonitoredLockType.SERVER_DISEASES);
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
     private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();

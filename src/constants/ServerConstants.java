@@ -123,6 +123,10 @@ public class ServerConstants {
     public static final int ITEM_LIMIT_ON_MAP = 200;            //Max number of items allowed on a map.
     public static final int MAP_VISITED_SIZE = 5;               //Max length for last mapids visited by a player. This is used to recover and update drops on these maps accordingly with player actions.
     
+    //Channel Mob Disease Monitor Configuration
+    public static final int MOB_STATUS_MONITOR_PROC = 200;     //Frequency in milliseconds between each proc on the mob disease monitor schedule.
+    public static final int MOB_STATUS_MONITOR_LIFE = 84;      //Idle proc count the mob disease monitor is allowed to be there before closing it due to inactivity.
+    
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
     public static final boolean USE_PERFECT_GM_SCROLL = true;   //Scrolls from GMs never uses up slots nor fails.

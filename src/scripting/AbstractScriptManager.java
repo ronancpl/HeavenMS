@@ -69,7 +69,7 @@ public abstract class AbstractScriptManager {
             }
             try (FileReader fr = new FileReader(scriptFile)) {
             	if (ServerConstants.JAVA_8){
-            		engine.eval("load('nashorn:mozilla_compat.js');");
+            		engine.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
             	}
                 engine.eval(fr);
             } catch (final ScriptException | IOException t) {

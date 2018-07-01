@@ -50,7 +50,7 @@ function start() {
             if (cm.getLevel() >= 8 && cm.canGetFirstJob(jobType))
                 cm.sendNext("Want to be a magician? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 8#k, with getting INT as your top priority. Let's see.");
             else {
-                cm.sendOk("Train a bit more and I can show you the way of the #rMagician#k.");
+                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rMagician#k.");
                 cm.dispose();
             }
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 200) {

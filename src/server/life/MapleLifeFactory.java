@@ -132,12 +132,23 @@ public class MapleLifeFactory {
                     stats.setRevives(revives);
                 }
                 decodeElementalString(stats, MapleDataTool.getString("elemAttr", monsterInfoData, ""));
-                MapleData monsterSkillData = monsterInfoData.getChildByPath("skill");
-                if (monsterSkillData != null) {
+                MapleData monsterSkillInfoData = monsterInfoData.getChildByPath("skill");
+                if (monsterSkillInfoData != null) {
                     int i = 0;
                     List<Pair<Integer, Integer>> skills = new ArrayList<>();
-                    while (monsterSkillData.getChildByPath(Integer.toString(i)) != null) {
-                        skills.add(new Pair<>(Integer.valueOf(MapleDataTool.getInt(i + "/skill", monsterSkillData, 0)), Integer.valueOf(MapleDataTool.getInt(i + "/level", monsterSkillData, 0))));
+                    while (monsterSkillInfoData.getChildByPath(Integer.toString(i)) != null) {
+                        skills.add(new Pair<>(Integer.valueOf(MapleDataTool.getInt(i + "/skill", monsterSkillInfoData, 0)), Integer.valueOf(MapleDataTool.getInt(i + "/level", monsterSkillInfoData, 0))));
+                        
+                        MapleData monsterSkillData = monsterData.getChildByPath("skill" + i);
+                        if(monsterSkillData != null) {
+                            int animationTime = 0;
+                            for(MapleData effectEntry : monsterSkillData.getChildren()) {
+                                animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
+                            }
+                            
+                            MapleMonsterInformationProvider.getInstance().setMobSkillAnimationTime(mid, i, animationTime);
+                        }
+                        
                         i++;
                     }
                     stats.setSkills(skills);

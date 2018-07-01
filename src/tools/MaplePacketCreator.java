@@ -3877,12 +3877,13 @@ public class MaplePacketCreator {
         }
 
         public static byte[] applyMonsterStatus(final int oid, final MonsterStatusEffect mse, final List<Integer> reflection) {
+                Map<MonsterStatus, Integer> stati = mse.getStati();
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.APPLY_MONSTER_STATUS.getValue());
                 mplew.writeInt(oid);
                 mplew.writeLong(0);
-                writeIntMask(mplew, mse.getStati());
-                for (Map.Entry<MonsterStatus, Integer> stat : mse.getStati().entrySet()) {
+                writeIntMask(mplew, stati);
+                for (Map.Entry<MonsterStatus, Integer> stat : stati.entrySet()) {
                         mplew.writeShort(stat.getValue());
                         if (mse.isMonsterSkill()) {
                                 mplew.writeShort(mse.getMobSkill().getSkillId());
@@ -3892,7 +3893,7 @@ public class MaplePacketCreator {
                         }
                         mplew.writeShort(-1); // might actually be the buffTime but it's not displayed anywhere
                 }
-                int size = mse.getStati().size(); // size
+                int size = stati.size(); // size
                 if (reflection != null) {
                         for (Integer ref : reflection) {
                                 mplew.writeInt(ref);

@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel;
 
+import net.server.channel.worker.MobStatusScheduler;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ import server.maps.MapleMiniDungeon;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import client.MapleCharacter;
+import client.status.MonsterStatusEffect;
 import constants.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
 import tools.locks.MonitoredLockType;
@@ -83,6 +85,7 @@ public final class Channel {
     private String ip, serverMessage;
     private MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
+    private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
     private List<MapleExpedition> expeditions = new ArrayList<>();
@@ -147,6 +150,10 @@ public final class Channel {
                 dojoStage[i] = 0;
                 dojoFinishTime[i] = 0;
                 dojoTask[i] = null;
+            }
+            
+            for(int i = 0; i < 4; i++) {
+                mobStatusSchedulers[i] = new MobStatusScheduler();
             }
             
             System.out.println("    Channel " + getId() + ": Listening on port " + port);
@@ -815,6 +822,34 @@ public final class Channel {
         for (MapleCharacter player : getPlayerStorage().getAllCharacters()) {
             player.dropMessage(type, message);
         }
+    }
+    
+    private static int getMobStatusSchedulerIndex(int mapid) {
+        if(mapid >= 250000000) {
+            if(mapid >= 900000000) {
+                return 3;
+            } else {
+                return 2;
+            }
+        } else {
+            if(mapid >= 200000000) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
+    
+    public void registerMobStatus(int mapid, MonsterStatusEffect mse, Runnable cancelAction, long duration) {
+        registerMobStatus(mapid, mse, cancelAction, duration, null, -1);
+    }
+    
+    public void registerMobStatus(int mapid, MonsterStatusEffect mse, Runnable cancelAction, long duration, Runnable overtimeAction, int overtimeDelay) {
+        mobStatusSchedulers[getMobStatusSchedulerIndex(mapid)].registerMobStatus(mse, cancelAction, duration, overtimeAction, overtimeDelay);
+    }
+    
+    public void interruptMobStatus(int mapid, MonsterStatusEffect mse) {
+        mobStatusSchedulers[getMobStatusSchedulerIndex(mapid)].interruptMobStatus(mse);
     }
     
     public void debugMarriageStatus() {

@@ -50,7 +50,7 @@ function start() {
             if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
                 cm.sendNext("Do you want to become a Warrior? You need to meet some criteria in order to do so.#b You should be at least in level 10, with at least 35 in STR#k. Let's see...");
             else {
-                cm.sendOk("Train a bit more and I can show you the way of the #rWarrior#k.");
+                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rWarrior#k.");
                 cm.dispose();
             }
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 100) {

@@ -13,6 +13,7 @@ Known issues:
 - If there are multiple bosses that shows HPBar on the map, if a player hits more than one the HPBar may start flickering on the screen.
 - Sometimes battleship may behave oddly with the enhanced buff system, making the character d/c in certain scenarios.
 - Dragon Roar doesn't show the stun effect to players.
+- Some monster status such as freeze and weapon/magic reflect doesn't behave properly in certain scenarios. Freeze seems to not work on mobs with low OID or are starters from server boot time.
 ---------------------------
 
 ---------------------------

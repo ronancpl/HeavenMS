@@ -273,10 +273,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    private Lock chrLock = new MonitoredReentrantLock(MonitoredLockType.CHR, true);
-    private Lock effLock = new MonitoredReentrantLock(MonitoredLockType.EFF, true);
-    private Lock petLock = new MonitoredReentrantLock(MonitoredLockType.PET, true); // for quest tasks as well
-    private Lock prtLock = new MonitoredReentrantLock(MonitoredLockType.PRT);
+    private Lock chrLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_CHR, true);
+    private Lock effLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_EFF, true);
+    private Lock petLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_PET, true); // for quest tasks as well
+    private Lock prtLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
     private static String[] ariantroomleader = new String[3];

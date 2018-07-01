@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package scripting.item;
 
 import client.MapleClient;
+import constants.ServerConstants;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -29,7 +30,6 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.script.Compilable;
-import javax.script.CompiledScript;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
@@ -76,8 +76,13 @@ public class ItemScriptManager {
         ScriptEngine portal = sef.getScriptEngine();
         try {
             fr = new FileReader(scriptFile);
-            CompiledScript compiled = ((Compilable) portal).compile(fr);
-            compiled.eval();
+            
+            // java 8 support here thanks to Arufonsu
+            if (ServerConstants.JAVA_8){
+                    portal.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
+            }
+            
+            ((Compilable) portal).compile(fr).eval();
 
             final Invocable script = ((Invocable) portal);
             scripts.put(scriptName, script);

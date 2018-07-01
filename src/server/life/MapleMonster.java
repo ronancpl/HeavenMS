@@ -56,6 +56,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
+import net.server.channel.Channel;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import server.TimerManager;
@@ -320,7 +321,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return takenDamage.containsKey(chr.getId());
     }
 
-    private void distributeExperienceToParty(int pid, int exp, int killer, Set<MapleCharacter> underleveled, int minThresholdLevel) {
+    private void distributeExperienceToParty(int pid, float exp, int killer, Set<MapleCharacter> underleveled, int minThresholdLevel) {
         List<MapleCharacter> members = new LinkedList<>();
         MapleCharacter pchar = getMap().getAnyCharacterFromParty(pid);
         if(pchar != null) {
@@ -353,7 +354,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (level >= minThresholdLevel) {
                 boolean isKiller = killer == id;
                 boolean mostDamage = mostDamageCid == id;
-                int xp = (int) ((0.80f * exp * level) / partyLevel);
+                float xp = ((0.80f * exp * level) / partyLevel);
                 if (mostDamage) {
                     xp += (0.20f * exp);
                 }
@@ -378,14 +379,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         int minThresholdLevel = calcThresholdLevel(this.getMap().getEventInstance() != null);
         int exp = getExp();
         long totalHealth = maxHpPlusHeal.get();
-        Map<Integer, Integer> expDist = new HashMap<>();
-        Map<Integer, Integer> partyExp = new HashMap<>();
+        Map<Integer, Float> expDist = new HashMap<>();
+        Map<Integer, Float> partyExp = new HashMap<>();
         
         float exp8perHp = (0.8f * exp) / totalHealth;   // 80% of pool is split amongst all the damagers
         float exp2 = (0.2f * exp);                      // 20% of pool goes to the killer or his/her party
         
         for (Entry<Integer, AtomicInteger> damage : takenDamage.entrySet()) {
-            expDist.put(damage.getKey(), (int) (Math.min((exp8perHp * damage.getValue().get()), Integer.MAX_VALUE)));
+            expDist.put(damage.getKey(), exp8perHp * damage.getValue().get());
         }
         
         Collection<MapleCharacter> chrs = map.getCharacters();
@@ -393,15 +394,16 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         for (MapleCharacter mc : chrs) {
             if (expDist.containsKey(mc.getId())) {
                 boolean isKiller = (mc.getId() == killerId);
-                int xp = expDist.get(mc.getId());
+                float xp = expDist.get(mc.getId());
                 if (isKiller) {
-                    xp = (int)Math.min(exp2 + xp, Integer.MAX_VALUE);
+                    xp += exp2;
                 }
+                
                 MapleParty p = mc.getParty();
                 if (p != null) {
                     int pID = p.getId();
-                    long pXP = (long) xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
-                    partyExp.put(pID, (int)Math.min(pXP, Integer.MAX_VALUE));
+                    float pXP = xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
+                    partyExp.put(pID, pXP);
                 } else {
                     if(mc.getLevel() >= minThresholdLevel) {
                         //NO EXP WILL BE GIVEN for those who are underleveled!
@@ -413,7 +415,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         
-        for (Entry<Integer, Integer> party : partyExp.entrySet()) {
+        for (Entry<Integer, Float> party : partyExp.entrySet()) {
             distributeExperienceToParty(party.getKey(), party.getValue(), killerId, underleveled, minThresholdLevel);
         }
         
@@ -422,7 +424,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    public void giveExpToCharacter(MapleCharacter attacker, int exp, boolean isKiller, int numExpSharers) {
+    public void giveExpToCharacter(MapleCharacter attacker, float exp, boolean isKiller, int numExpSharers) {
         if (isKiller) {
             if (getMap().getEventInstance() != null) {
                 getMap().getEventInstance().monsterKilled(attacker, this);
@@ -434,9 +436,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
         int partyExp = 0;
         if (attacker.getHp() > 0) {
-            int personalExp = exp * attacker.getExpRate();
+            exp *= attacker.getExpRate();
+            int personalExp = (int) exp;
 
-            if (exp > 0) {
+            if (exp <= Integer.MAX_VALUE) {  // assuming no negative xp here
                 if (partyModifier > 0.0f) {
                     partyExp = (int) (personalExp * partyModifier * ServerConstants.PARTY_BONUS_EXP_RATE);
                 }
@@ -444,7 +447,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 if (holySymbol != null) {
                     personalExp *= 1.0 + (holySymbol.doubleValue() / 100.0);
                 }
-                
+
                 statiLock.lock();
                 try {
                     if (stati.containsKey(MonsterStatus.SHOWDOWN)) {
@@ -453,6 +456,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 } finally {
                     statiLock.unlock();
                 }
+            } else {
+                personalExp = Integer.MAX_VALUE;
             }
             
             attacker.gainExp(personalExp, partyExp, true, false, isKiller);
@@ -777,9 +782,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         byte[] packet = MaplePacketCreator.applyMonsterStatus(getObjectId(), status, null);
         map.broadcastMessage(packet, getPosition());
         
-        MapleCharacter controller = getController();
-        if (controller != null && !controller.isMapObjectVisible(this)) {
-            controller.getClient().announce(packet);
+        MapleCharacter chrController = getController();
+        if (chrController != null && !chrController.isMapObjectVisible(this)) {
+            chrController.getClient().announce(packet);
         }
         
         return animationTime;
@@ -832,6 +837,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
 
+        final Channel ch = map.getChannelServer();
+        final int mapid = map.getId();
         if(statis.size() > 0) {
             statiLock.lock();
             try {
@@ -840,8 +847,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     if (oldEffect != null) {
                         oldEffect.removeActiveStatus(stat);
                         if (oldEffect.getStati().isEmpty()) {
-                            oldEffect.cancelTask();
-                            oldEffect.cancelDamageSchedule();
+                            ch.interruptMobStatus(mapid, oldEffect);
                         }
                     }
                 }
@@ -850,7 +856,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         
-        TimerManager timerManager = TimerManager.getInstance();
         final Runnable cancelTask = new Runnable() {
 
             @Override
@@ -875,9 +880,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 }
                 
                 setVenomMulti(0);
-                status.cancelDamageSchedule();
             }
         };
+        
+        Runnable overtimeAction = null;
+        int overtimeDelay = -1;
         
         int animationTime;
         if (poison) {
@@ -885,7 +892,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             int poisonDamage = Math.min(Short.MAX_VALUE, (int) (getMaxHp() / (70.0 - poisonLevel) + 0.999));
             status.setValue(MonsterStatus.POISON, Integer.valueOf(poisonDamage));
             animationTime = broadcastStatusEffect(status);
-            status.setDamageSchedule(timerManager.register(new DamageTask(poisonDamage, from, status, cancelTask, 0), 1000, 1000));
+            
+            overtimeAction = new DamageTask(poisonDamage, from, status, 0);
+            overtimeDelay = 1000;
         } else if (venom) {
             if (from.getJob() == MapleJob.NIGHTLORD || from.getJob() == MapleJob.SHADOWER || from.getJob().isA(MapleJob.NIGHTWALKER3)) {
                 int poisonLevel, matk, jobid = from.getJob().getId();
@@ -910,7 +919,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 status.setValue(MonsterStatus.VENOMOUS_WEAPON, Integer.valueOf(poisonDamage));
                 status.setValue(MonsterStatus.POISON, Integer.valueOf(poisonDamage));
                 animationTime = broadcastStatusEffect(status);
-                status.setDamageSchedule(timerManager.register(new DamageTask(poisonDamage, from, status, cancelTask, 0), 1000, 1000));
+                
+                overtimeAction = new DamageTask(poisonDamage, from, status, 0);
+                overtimeDelay = 1000;
             } else {
                 return false;
             }
@@ -919,7 +930,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             int webDamage = (int) (getMaxHp() / 50.0 + 0.999);
             status.setValue(MonsterStatus.SHADOW_WEB, Integer.valueOf(webDamage));
             animationTime = broadcastStatusEffect(status);
-            status.setDamageSchedule(timerManager.schedule(new DamageTask(webDamage, from, status, cancelTask, 1), 3500));
+            
+            overtimeAction = new DamageTask(webDamage, from, status, 1);
+            overtimeDelay = 3500;
             */
         } else if (status.getSkill().getId() == 4121004 || status.getSkill().getId() == 4221004) { // Ninja Ambush
             final Skill skill = SkillFactory.getSkill(status.getSkill().getId());
@@ -928,7 +941,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             
             status.setValue(MonsterStatus.NINJA_AMBUSH, Integer.valueOf(damage));
             animationTime = broadcastStatusEffect(status);
-            status.setDamageSchedule(timerManager.register(new DamageTask(damage, from, status, cancelTask, 2), 1000, 1000));
+            
+            overtimeAction = new DamageTask(damage, from, status, 2);
+            overtimeDelay = 1000;
         } else {
             animationTime = broadcastStatusEffect(status);
         }
@@ -943,12 +958,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             statiLock.unlock();
         }
         
-        status.setCancelTask(timerManager.schedule(cancelTask, duration + animationTime - 100));
+        ch.registerMobStatus(mapid, status, cancelTask, duration + animationTime - 100, overtimeAction, overtimeDelay);
         return true;
     }
 
     public void applyMonsterBuff(final Map<MonsterStatus, Integer> stats, final int x, int skillId, long duration, MobSkill skill, final List<Integer> reflection) {
-        TimerManager timerManager = TimerManager.getInstance();
         final Runnable cancelTask = new Runnable() {
 
             @Override
@@ -991,7 +1005,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (controller != null && !controller.isMapObjectVisible(this)) {
             controller.getClient().announce(packet);
         }
-        effect.setCancelTask(timerManager.schedule(cancelTask, duration));
+        
+        map.getChannelServer().registerMobStatus(map.getId(), effect, cancelTask, duration);
     }
 
     private void debuffMobStat(MonsterStatus stat) {
@@ -1191,15 +1206,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         private final int dealDamage;
         private final MapleCharacter chr;
         private final MonsterStatusEffect status;
-        private final Runnable cancelTask;
         private final int type;
         private final MapleMap map;
 
-        private DamageTask(int dealDamage, MapleCharacter chr, MonsterStatusEffect status, Runnable cancelTask, int type) {
+        private DamageTask(int dealDamage, MapleCharacter chr, MonsterStatusEffect status, int type) {
             this.dealDamage = dealDamage;
             this.chr = chr;
             this.status = status;
-            this.cancelTask = cancelTask;
             this.type = type;
             this.map = chr.getMap();
         }
@@ -1207,20 +1220,26 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         @Override
         public void run() {
             int curHp = hp.get();
-            if(curHp <= 1) return;
+            if(curHp <= 1) {
+                map.getChannelServer().interruptMobStatus(map.getId(), status);
+                return;
+            }
             
             int damage = dealDamage;
             if (damage >= curHp) {
                 damage = curHp - 1;
                 if (type == 1 || type == 2) {
-                    cancelTask.run();
-                    status.getCancelTask().cancel(false);
+                    map.getChannelServer().interruptMobStatus(map.getId(), status);
                 }
             }
             if (damage > 0) {
                 damage(chr, damage, true);
-                if (type == 1) {    // ninja ambush (type 2) is already displaying DOT
+                if (type == 1) {
                     map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
+                } else if (type == 2) {
+                    if(damage < dealDamage) {    // ninja ambush (type 2) is already displaying DOT to the caster
+                        map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
+                    }
                 }
             }
         }

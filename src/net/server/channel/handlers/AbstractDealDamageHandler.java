@@ -326,6 +326,15 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     } else if (attack.skill == Outlaw.HOMING_BEACON || attack.skill == Corsair.BULLSEYE) {
                         player.setMarkedMonster(monster.getObjectId());
                         player.announce(MaplePacketCreator.giveBuff(1, attack.skill, Collections.singletonList(new Pair<>(MapleBuffStat.HOMING_BEACON, monster.getObjectId()))));
+                    } else if (attack.skill == Outlaw.FLAME_THROWER) {
+                        if (!monster.isBoss()) {
+                            Skill type = SkillFactory.getSkill(Outlaw.FLAME_THROWER);
+                            if (player.getSkillLevel(type) > 0) {
+                                MapleStatEffect DoT = type.getEffect(player.getSkillLevel(type));
+                                MonsterStatusEffect monsterStatusEffect = new MonsterStatusEffect(Collections.singletonMap(MonsterStatus.POISON, 1), type, null, false);
+                                monster.applyStatus(player, monsterStatusEffect, true, DoT.getDuration(), false);
+                            }
+                        }
                     }
                     
                     if (job == 2111 || job == 2112) {
@@ -404,15 +413,6 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                         monster.applyStatus(player, monsterStatusEffect, false, venomEffect.getDuration(), true);
                                     }
                                 }
-                            }
-                        }
-                    } else if (job == 521 || job == 522) { // from what I can gather this is how it should work
-                    	if (!monster.isBoss()) {
-                            Skill type = SkillFactory.getSkill(Outlaw.FLAME_THROWER);
-                            if (player.getSkillLevel(type) > 0) {
-                                MapleStatEffect DoT = type.getEffect(player.getSkillLevel(type));
-                                MonsterStatusEffect monsterStatusEffect = new MonsterStatusEffect(Collections.singletonMap(MonsterStatus.POISON, 1), type, null, false);
-                                monster.applyStatus(player, monsterStatusEffect, true, DoT.getDuration(), false);
                             }
                         }
                     } else if (job >= 311 && job <= 322) {                   	
