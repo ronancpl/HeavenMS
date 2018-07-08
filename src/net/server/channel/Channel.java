@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel;
 
-import net.server.channel.worker.MobStatusScheduler;
 import java.io.File;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
@@ -43,9 +42,12 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
-import net.server.Server;
-import net.server.world.World;
+
 import net.server.PlayerStorage;
+import net.server.Server;
+import net.server.channel.worker.*;
+
+import net.server.world.World;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 
@@ -86,6 +88,8 @@ public final class Channel {
     private MapleMapFactory mapFactory;
     private EventScriptManager eventSM;
     private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[4];
+    private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[4];
+    private OverallScheduler channelSchedulers[] = new OverallScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
     private List<MapleExpedition> expeditions = new ArrayList<>();
@@ -154,6 +158,8 @@ public final class Channel {
             
             for(int i = 0; i < 4; i++) {
                 mobStatusSchedulers[i] = new MobStatusScheduler();
+                mobAnimationSchedulers[i] = new MobAnimationScheduler();
+                channelSchedulers[i] = new OverallScheduler();
             }
             
             System.out.println("    Channel " + getId() + ": Listening on port " + port);
@@ -824,7 +830,7 @@ public final class Channel {
         }
     }
     
-    private static int getMobStatusSchedulerIndex(int mapid) {
+    private static int getChannelSchedulerIndex(int mapid) {
         if(mapid >= 250000000) {
             if(mapid >= 900000000) {
                 return 3;
@@ -845,11 +851,23 @@ public final class Channel {
     }
     
     public void registerMobStatus(int mapid, MonsterStatusEffect mse, Runnable cancelAction, long duration, Runnable overtimeAction, int overtimeDelay) {
-        mobStatusSchedulers[getMobStatusSchedulerIndex(mapid)].registerMobStatus(mse, cancelAction, duration, overtimeAction, overtimeDelay);
+        mobStatusSchedulers[getChannelSchedulerIndex(mapid)].registerMobStatus(mse, cancelAction, duration, overtimeAction, overtimeDelay);
     }
     
     public void interruptMobStatus(int mapid, MonsterStatusEffect mse) {
-        mobStatusSchedulers[getMobStatusSchedulerIndex(mapid)].interruptMobStatus(mse);
+        mobStatusSchedulers[getChannelSchedulerIndex(mapid)].interruptMobStatus(mse);
+    }
+    
+    public boolean registerMobOnAnimationEffect(int mapid, int mobHash, long delay) {
+        return mobAnimationSchedulers[getChannelSchedulerIndex(mapid)].registerAnimationMode(mobHash, delay);
+    }
+    
+    public void registerOverallAction(int mapid, Runnable runAction, long delay) {
+        channelSchedulers[getChannelSchedulerIndex(mapid)].registerDelayedAction(runAction, delay);
+    }
+    
+    public void forceRunOverallAction(int mapid, Runnable runAction) {
+        channelSchedulers[getChannelSchedulerIndex(mapid)].forceRunDelayedAction(runAction);
     }
     
     public void debugMarriageStatus() {

@@ -54,6 +54,7 @@ public class MapleMonsterInformationProvider {
         private final Set<Integer> hasNoMultiEquipDrops = new HashSet<>();
         private final Map<Integer, List<MonsterDropEntry>> extraMultiEquipDrops = new HashMap<>();
         
+        private final Map<Pair<Integer, Integer>, Integer> mobAttackAnimationTime = new HashMap<>();
         private final Map<Pair<Integer, Integer>, Integer> mobSkillAnimationTime = new HashMap<>();
 
 	protected MapleMonsterInformationProvider() {
@@ -225,6 +226,15 @@ public class MapleMonsterInformationProvider {
                 dropsChancePool.put(monsterId, ret);
 		return ret;
 	}
+        
+        public final void setMobAttackAnimationTime(int monsterId, int attackPos, int animationTime) {
+                mobAttackAnimationTime.put(new Pair<>(monsterId, attackPos), animationTime);
+        }
+        
+        public final Integer getMobAttackAnimationTime(int monsterId, int attackPos) {
+                Integer time = mobAttackAnimationTime.get(new Pair<>(monsterId, attackPos));
+                return time == null ? 0 : time;
+        }
         
         public final void setMobSkillAnimationTime(int monsterId, int skillPos, int animationTime) {
                 mobSkillAnimationTime.put(new Pair<>(monsterId, skillPos), animationTime);

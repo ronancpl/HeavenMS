@@ -189,10 +189,12 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     private void registerIdleSession(MapleClient c) {
         if(idleLock.tryLock()) {
-            idleSessions.put(c, System.currentTimeMillis());
-            c.announce(MaplePacketCreator.getPing());
-            
-            idleLock.unlock();
+            try {
+                idleSessions.put(c, System.currentTimeMillis());
+                c.announce(MaplePacketCreator.getPing());
+            } finally {
+                idleLock.unlock();
+            }
         } else {
             tempLock.lock();
             try {

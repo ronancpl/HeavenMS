@@ -40,6 +40,7 @@ function enter(pi) {
 		if(eim.getProperty("6stageclear") == null) {
 			eim.setProperty("6stageclear", "true");
 		}
+                pi.playPortalSound();
 		pi.getPlayer().changeMap(target, targetPortal);
 		return true;
 	}

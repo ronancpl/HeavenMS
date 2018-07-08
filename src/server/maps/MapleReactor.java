@@ -193,7 +193,7 @@ public class MapleReactor extends AbstractMapleMapObject {
             this.resetReactorActions(newState);
             map.broadcastMessage(MaplePacketCreator.triggerReactor(this, (short) 0));
         } finally {
-            this.unlockReactor();
+            this.reactorLock.unlock();
         }
     }
     

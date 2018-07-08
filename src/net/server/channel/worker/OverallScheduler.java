@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,24 +17,24 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
-LudiPQ - 1 - 2 Portal
-@author Jvlaple
-*/
+package net.server.channel.worker;
 
-function enter(pi) {
-    var nextMap = 922010300;
-    var eim = pi.getPlayer().getEventInstance();
-    var target = eim.getMapInstance(nextMap);
-    var targetPortal = target.getPortal("st00");
-    var avail = eim.getProperty("2stageclear");
-    if (avail == null) {
-        pi.getPlayer().dropMessage(5, "Some seal is blocking this door.");
-        return false;
+import tools.locks.MonitoredLockType;
+
+/**
+ *
+ * @author Ronan
+ */
+public class OverallScheduler extends BaseScheduler {
+    public OverallScheduler() {
+        super(MonitoredLockType.CHANNEL_OVERALL);
     }
-    else {
-        pi.playPortalSound();
-        pi.getPlayer().changeMap(target, targetPortal);
-        return true;
+    
+    public void registerDelayedAction(Runnable runAction, long delay) {
+        registerEntry(runAction, runAction, delay);
+    }
+    
+    public void forceRunDelayedAction(Runnable runAction) {
+        interruptEntry(runAction);
     }
 }

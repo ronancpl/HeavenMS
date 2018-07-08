@@ -39,6 +39,7 @@ function enter(pi) {
             return false;
         }
         
+        pi.playPortalSound();
         eim.warpEventTeam(target);
         return true;
     } else {

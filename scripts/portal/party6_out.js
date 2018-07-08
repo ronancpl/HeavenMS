@@ -3,6 +3,7 @@ function enter(pi) {
     
         if (eim.isEventCleared()) {
                 if(pi.isEventLeader()) {
+                        pi.playPortalSound();
                         eim.warpEventTeam(930000800);
                         return true;
                 } else {

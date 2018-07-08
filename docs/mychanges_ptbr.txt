@@ -1094,3 +1094,17 @@ Refatorado MonitoredLockTypes para agora dar um label específico a cada lock do
 Corrigido quest Milk Jug com NPCs trocados.
 Adicionado um delay na aplicação de efeitos dos skills de mobs, buffs e demais efeitos agora são registrados após o tempo da animação.
 Corrigido Flame Thrower atuando passivamente quando o jogador usa uma skill de ataque.
+
+01 Julho 2018,
+Implementado um sistema abstrato de temporizador para channels (otimizado para rodar numa única thread). A ideia é que quaisquer temporizadores a ser instalado num canal use uma extensão dessa classe.
+Implementado sistema de detecção de animação-em-andamento de mobs, buscando evitar assim spam de uso de habilidades pelos mobs.
+Server agora verifica se o mob está com alguma animação sendo rodada e baseado nisso informa ao cliente se o mob pode ou não enviar requisições de mob skill a ser ativada juntamente ao MoveLifeHandler.
+
+02 Julho 2018,
+Melhorado proteção contra acesso concorrente nos registros de listeners de MapleMonster.
+Melhorado liberação de recursos ao finalizar objeto MapleMonster.
+
+03 - 04 Julho 2018,
+Adicionado server flag que permite usar clean slates mesmo em equipamentos sem slots vazios (onde falhou o scroll).
+Corrigido um possível ponto crítico de deadlock com MapleServerHandler.
+Adicionado portal SFX para vários portais scriptados que ainda faltavam o efeito.

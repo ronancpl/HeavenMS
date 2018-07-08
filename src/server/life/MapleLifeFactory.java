@@ -139,10 +139,10 @@ public class MapleLifeFactory {
                     while (monsterSkillInfoData.getChildByPath(Integer.toString(i)) != null) {
                         skills.add(new Pair<>(Integer.valueOf(MapleDataTool.getInt(i + "/skill", monsterSkillInfoData, 0)), Integer.valueOf(MapleDataTool.getInt(i + "/level", monsterSkillInfoData, 0))));
                         
-                        MapleData monsterSkillData = monsterData.getChildByPath("skill" + i);
-                        if(monsterSkillData != null) {
+                        MapleData monsterSkillData = monsterData.getChildByPath("skill" + (i + 1));
+                        if (monsterSkillData != null) {
                             int animationTime = 0;
-                            for(MapleData effectEntry : monsterSkillData.getChildren()) {
+                            for (MapleData effectEntry : monsterSkillData.getChildren()) {
                                 animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
                             }
                             
@@ -153,6 +153,19 @@ public class MapleLifeFactory {
                     }
                     stats.setSkills(skills);
                 }
+                
+                int i = 0;
+                MapleData monsterAttackData;
+                while ((monsterAttackData = monsterData.getChildByPath("attack" + (i + 1))) != null) {
+                    int animationTime = 0;
+                    for (MapleData effectEntry : monsterAttackData.getChildren()) {
+                        animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
+                    }
+
+                    MapleMonsterInformationProvider.getInstance().setMobAttackAnimationTime(mid, i, animationTime);
+                    i++;
+                }
+                
                 MapleData banishData = monsterInfoData.getChildByPath("ban");
                 if (banishData != null) {
                     stats.setBanishInfo(new BanishInfo(MapleDataTool.getString("banMsg", banishData), MapleDataTool.getInt("banMap/0/field", banishData, -1), MapleDataTool.getString("banMap/0/portal", banishData, "sp")));

@@ -28,6 +28,7 @@ function enter(pi) {
     var target = eim.getMapInstance(103000801);
 
     if (eim.getProperty("1stageclear") != null) {
+        pi.playPortalSound();
         pi.getPlayer().changeMap(target, target.getPortal("st00"));
         return true;
     }

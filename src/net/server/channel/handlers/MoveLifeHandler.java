@@ -43,6 +43,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  * @author Danny (Leifde)
  * @author ExtremeDevilz
+ * @author Ronan (HeavenMS)
  */
 public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 	@Override
@@ -76,49 +77,62 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 
 		int nextCastSkill = useSkillId;
 		int nextCastSkillLevel = useSkillLevel;
-		
-		MobSkill toUse = null;
-		
-		int percHpLeft = (int) (((float) monster.getHp() / monster.getMaxHp()) * 100);
                 
-		if (nextMovementCouldBeSkill && monster.getNoSkills() > 0) {
-			int Random = Randomizer.nextInt(monster.getNoSkills());
-			Pair<Integer, Integer> skillToUse = monster.getSkills().get(Random);
-			nextCastSkill = skillToUse.getLeft();
-			nextCastSkillLevel = skillToUse.getRight();
-			toUse = MobSkillFactory.getMobSkill(nextCastSkill, nextCastSkillLevel);
+		MobSkill toUse = null;
+                int rndSkill = -1;
+                
+                if(monster.getNoSkills() > 0) {
+                        if(nextMovementCouldBeSkill) {
+                                rndSkill = Randomizer.nextInt(monster.getNoSkills());
+                        }
+                } else {
+                        nextMovementCouldBeSkill = false;
+                }
+		
+                if(monster.applyAnimationIfRoaming((attackId - 13) / 2, rndSkill)) {
+                        if (rndSkill > -1) {
+                                Pair<Integer, Integer> skillToUse = monster.getSkills().get(rndSkill);
+                                nextCastSkill = skillToUse.getLeft();
+                                nextCastSkillLevel = skillToUse.getRight();
+                                toUse = MobSkillFactory.getMobSkill(nextCastSkill, nextCastSkillLevel);
 
-			if (isSkill || isAttack) {
-				if (nextCastSkill != toUse.getSkillId() || nextCastSkillLevel != toUse.getSkillLevel()) {
-					//toUse.resetAnticipatedSkill();
-					return;
-				} else if (toUse.getHP() < percHpLeft) {
-					toUse = null;
-				} else if (monster.canUseSkill(toUse)) {
-                                        int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(monster.getId(), Random);
-                                        if(animationTime > 0) {
-                                                toUse.applyDelayedEffect(c.getPlayer(), monster, true, banishPlayers, animationTime);
+                                if (isSkill || isAttack) {
+                                        int percHpLeft = (int) (((float) monster.getHp() / monster.getMaxHp()) * 100);
+                                        if (nextCastSkill != toUse.getSkillId() || nextCastSkillLevel != toUse.getSkillLevel()) {
+                                                //toUse.resetAnticipatedSkill();
+                                                return;
+                                        } else if (toUse.getHP() < percHpLeft) {
+                                                toUse = null;
+                                        } else if (monster.canUseSkill(toUse)) {
+                                                int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(monster.getId(), rndSkill);
+                                                if(animationTime > 0) {
+                                                        toUse.applyDelayedEffect(c.getPlayer(), monster, true, banishPlayers, animationTime);
+                                                } else {
+                                                        toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+                                                }
                                         } else {
-                                                toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+                                                toUse = null;
                                         }
-				} else {
-                                        toUse = null;
-                                }
-			} else {
-                                toUse = null; // paliative measure for suspicious mob movement
-                            
-                                /*
-                                long curtime = System.currentTimeMillis();
-                                if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
-                                        MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
-                                        monster.setNextBasicSkillTime(curtime);
                                 } else {
-                                        toUse = null;
-                                }
-                                */
-			}
-		}
+                                        toUse = null; // paliative measure for suspicious mob movement
 
+                                        /*
+                                        long curtime = System.currentTimeMillis();
+                                        if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
+                                                MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
+                                                monster.setNextBasicSkillTime(curtime);
+                                        } else {
+                                                toUse = null;
+                                        }
+                                        */
+                                }
+                        }
+                } else {
+                        if(rndSkill > -1) {
+                                nextMovementCouldBeSkill = false;
+                        }
+                }
+                
 		slea.readByte();
 		slea.readInt(); // whatever
 		short start_x = slea.readShort(); // hmm.. startpos?

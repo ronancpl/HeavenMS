@@ -95,6 +95,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private Lock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
     private Lock monsterLock = new MonitoredReentrantLock(MonitoredLockType.MOB, true);
     private Lock statiLock = new MonitoredReentrantLock(MonitoredLockType.MOB_STATI);
+    private Lock animationLock = new MonitoredReentrantLock(MonitoredLockType.MOB_ANI);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -228,6 +229,28 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public void setHpZero() {     // force HP = 0
         applyAndGetHpDamage(Integer.MAX_VALUE, false);
+    }
+    
+    public boolean applyAnimationIfRoaming(int attackPos, int skillPos) {   // roam: not casting attack or skill animations
+        if(!animationLock.tryLock()) return false;
+        
+        try {
+            long animationTime;
+        
+            if(skillPos < 0) {
+                animationTime = MapleMonsterInformationProvider.getInstance().getMobAttackAnimationTime(this.getId(), attackPos);
+            } else {
+                animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(this.getId(), skillPos);
+            }
+
+            if(animationTime > 0) {
+                return map.getChannelServer().registerMobOnAnimationEffect(map.getId(), this.hashCode(), animationTime);
+            } else {
+                return true;
+            }
+        } finally {
+            animationLock.unlock();
+        }
     }
     
     public synchronized Integer applyAndGetHpDamage(int delta, boolean stayAlive) {
@@ -469,15 +492,15 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public MapleCharacter killBy(final MapleCharacter killer) {
         distributeExperience(killer != null ? killer.getId() : 0);
 
-        MapleCharacter controller = getController();
-        if (controller != null) { // this can/should only happen when a hidden gm attacks the monster
-            controller.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
-            controller.stopControllingMonster(this);
+        MapleCharacter chrController = getController();
+        if (chrController != null) { // this can/should only happen when a hidden gm attacks the monster
+            chrController.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
+            chrController.stopControllingMonster(this);
         }
 
         final List<Integer> toSpawn = this.getRevives(); // this doesn't work (?)
         if (toSpawn != null) {
-            final MapleMap reviveMap = killer.getMap();
+            final MapleMap reviveMap = map;
             if (toSpawn.contains(9300216) && reviveMap.getId() > 925000000 && reviveMap.getId() < 926000000) {
                 reviveMap.broadcastMessage(MaplePacketCreator.playSound("Dojang/clear"));
                 reviveMap.broadcastMessage(MaplePacketCreator.showEffect("dojang/end/clear"));
@@ -571,7 +594,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
-    public void dispatchMonsterKilled(boolean hasKiller) {
+    public synchronized void dispatchMonsterKilled(boolean hasKiller) {
         if(!hasKiller) {
             dispatchUpdateQuestMobCount();
         }
@@ -584,19 +607,52 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         
-        for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
+        MonsterListener[] listenersList;
+        statiLock.lock();
+        try {
+            listenersList = listeners.toArray(new MonsterListener[listeners.size()]);
+        } finally {
+            statiLock.unlock();
+        }
+        
+        for (MonsterListener listener : listenersList) {
             listener.monsterKilled(getAnimationTime("die1"));
+        }
+        
+        statiLock.lock();
+        try {
+            stati.clear();
+            alreadyBuffed.clear();
+            listeners.clear();
+        } finally {
+            statiLock.unlock();
         }
     }
     
     private void dispatchMonsterDamaged(MapleCharacter from, int trueDmg) {
-        for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
+        MonsterListener[] listenersList;
+        statiLock.lock();
+        try {
+            listenersList = listeners.toArray(new MonsterListener[listeners.size()]);
+        } finally {
+            statiLock.unlock();
+        }
+        
+        for (MonsterListener listener : listenersList) {
             listener.monsterDamaged(from, trueDmg);
         }
     }
     
     private void dispatchMonsterHealed(int trueHeal) {
-        for (MonsterListener listener : listeners.toArray(new MonsterListener[listeners.size()])) {
+        MonsterListener[] listenersList;
+        statiLock.lock();
+        try {
+            listenersList = listeners.toArray(new MonsterListener[listeners.size()]);
+        } finally {
+            statiLock.unlock();
+        }
+        
+        for (MonsterListener listener : listenersList) {
             listener.monsterHealed(trueHeal);
         }
     }
@@ -653,7 +709,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     public void addListener(MonsterListener listener) {
-        listeners.add(listener);
+        statiLock.lock();
+        try {
+            listeners.add(listener);
+        } finally {
+            statiLock.unlock();
+        }
     }
 
     public boolean isControllerHasAggro() {

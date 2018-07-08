@@ -929,14 +929,17 @@ public class MapleItemInformationProvider {
         }
     }
     
+    public boolean canUseCleanSlate(Equip nEquip) {
+        Map<String, Integer> eqstats = this.getEquipStats(nEquip.getItemId());
+        return ServerConstants.USE_ENHANCED_CLNSLATE || nEquip.getLevel() + nEquip.getUpgradeSlots() < eqstats.get("tuc");
+    }
+    
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
         boolean assertGM = (isGM && ServerConstants.USE_PERFECT_GM_SCROLL);
         
         if (equip instanceof Equip) {
             Equip nEquip = (Equip) equip;
-            
             Map<String, Integer> stats = this.getEquipStats(scrollId);
-            Map<String, Integer> eqstats = this.getEquipStats(equip.getItemId());
             
             if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || assertGM) {
                 double prop = (double)stats.get("success");
@@ -963,7 +966,7 @@ public class MapleItemInformationProvider {
                         case 2049001:
                         case 2049002:
                         case 2049003:
-                            if (nEquip.getLevel() + nEquip.getUpgradeSlots() < eqstats.get("tuc")) {
+                            if (canUseCleanSlate(nEquip)) {
                                 nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() + 1));
                             }
                             break;

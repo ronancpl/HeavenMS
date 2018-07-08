@@ -105,14 +105,16 @@ public class MobSkill {
     }
 
     public void applyDelayedEffect(final MapleCharacter player, final MapleMonster monster, final boolean skill, final List<MapleCharacter> banishPlayers, int animationTime) {
-        TimerManager.getInstance().schedule(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    if(monster.isAlive()) {
-                                                        applyEffect(player, monster, skill, banishPlayers);
-                                                    }
-                                                }
-                                            }, animationTime);
+        Runnable toRun = new Runnable() {
+                            @Override
+                            public void run() {
+                                if(monster.isAlive()) {
+                                    applyEffect(player, monster, skill, banishPlayers);
+                                }
+                            }
+                        };
+        
+        monster.getMap().getChannelServer().registerOverallAction(monster.getMap().getId(), toRun, animationTime);
     }
     
     public void applyEffect(MapleCharacter player, MapleMonster monster, boolean skill, List<MapleCharacter> banishPlayers) {
