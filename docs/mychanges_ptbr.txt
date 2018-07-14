@@ -6,7 +6,7 @@
 	Abdula -> 9209000
 
 CUSTOM NPC SHOPS:
-	Spindle -> 9201082
+	Asia -> 2082014
 	T-1337 -> 9201101
 
 LOGS:
@@ -1108,3 +1108,25 @@ Melhorado liberação de recursos ao finalizar objeto MapleMonster.
 Adicionado server flag que permite usar clean slates mesmo em equipamentos sem slots vazios (onde falhou o scroll).
 Corrigido um possível ponto crítico de deadlock com MapleServerHandler.
 Adicionado portal SFX para vários portais scriptados que ainda faltavam o efeito.
+
+08 - 10 Julho 2018,
+Refatorado sistema de login, agora utilizando caches para manter dados recorrentes, diminuindo consideravelmente consultas a DB.
+Server agora usa registros associativos de conta, personagem e mundo em seus objetos, diminuindo bastante o uso da DB e, por consequência, uma melhor fluidez em demais processos, mais notáveis aqueles referentes a fase de login.
+Corrigido metodo que localiza membros de party no mesmo mapa tentando acessar possível campo "map", que fica nulo para jogadores desconectados.
+
+11 - 12 Julho 2018,
+Otimizado chamadas a DB na fase de login, agora utilizando uma mesma query para recuperar dados de todos os personagens de uma dada conta (diminuindo drasticamente a quantidade de consultas a DB).
+Melhorado sistema de distribuicao de EXP, agora creditando EXP aos membros de party presentes no mapa mesmo quando o jogador que contribuiu com a ação nao se encontra presente no mesmo.
+Corrigido jogadores nao podendo usar portais apos logarem via "view-all-chars".
+Corrigido cash shop inventory de Cygnus e Aran nao propagando itens de cash comprado para outros personagens de mesma classe base da mesma conta.
+Melhorado mecânica de Magic Doors, permitindo jogadores serem spawnados corretamente ao atravessar portais quando em party.
+Corrigido comando "fly" nao atuando corretamente. Todos os personagens da conta poderao usar desta mecânica.
+Corrigido deadlock crítico introduzido no sistema abstrato de temporizadores em channels.
+Corrigido alguns mobs nao lançando skills, problema introduzido na última atualização do MoveLifeHandler.
+Ajustado MoveLifeHandler para melhor aplicar as skills/movimentações dos mobs.
+GMs nao mais geram playernpcs ao atingir level 200 (agora somente via comando).
+Corrigido função monsterValue dos scripts de eventos sendo processado múltiplas vezes no cenário onde jogadores estao em party.
+Corrigido pinkbean nao dropando itens dentro da expedição.
+
+14 Julho 2018,
+Movido "recharge" de Donator para JrGM.

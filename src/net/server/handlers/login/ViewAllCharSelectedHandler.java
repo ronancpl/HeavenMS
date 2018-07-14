@@ -31,7 +31,7 @@ import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class PickCharHandler extends AbstractMaplePacketHandler {
+public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -39,7 +39,7 @@ public final class PickCharHandler extends AbstractMaplePacketHandler {
         slea.readInt(); // please don't let the client choose which world they should login
         
         Server server = Server.getInstance();
-        if(!server.haveCharacterid(c.getAccID(), charId)) {
+        if(!server.haveCharacterEntry(c.getAccID(), charId)) {
             c.getSession().close(true);
             return;
         }
@@ -58,7 +58,8 @@ public final class PickCharHandler extends AbstractMaplePacketHandler {
         }
         
         try {
-            c.setChannel(Randomizer.nextInt(c.getWorldServer().getChannels().size()));
+            int channel = Randomizer.rand(1, c.getWorldServer().getChannels().size());
+            c.setChannel(channel);
         } catch (Exception e) {
             e.printStackTrace();
             c.setChannel(1);

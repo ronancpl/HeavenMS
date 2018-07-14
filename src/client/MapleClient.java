@@ -841,7 +841,7 @@ public class MapleClient {
                             
                                 removePlayer();
                                 player.saveCooldowns();
-                                player.saveToDB(true);
+                                player.saveCharToDB(true);
                             
                                 clear();
 				return;
@@ -924,7 +924,7 @@ public class MapleClient {
                                         //getChannelServer().removePlayer(player); already being done
                                         
                                         player.saveCooldowns();
-                                        player.saveToDB(true);
+                                        player.saveCharToDB(true);
 					if (player != null) {//no idea, occur :(
 						player.empty(false);
 					}
@@ -933,7 +933,7 @@ public class MapleClient {
                                         getChannelServer().removePlayer(player);
 
                                         player.saveCooldowns();
-                                        player.saveToDB();
+                                        player.saveCharToDB();
                                 }
 			}
 		}

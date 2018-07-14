@@ -241,30 +241,15 @@ public class NewYearCardRecord {
         }
     }
     
-    private static int getCharacterWorld(int receiverid) {
-        try (Connection con = DatabaseConnection.getConnection()) {
-            try (PreparedStatement ps = con.prepareStatement("SELECT world FROM characters WHERE id = ?")) {
-                ps.setInt(1, receiverid);
-                try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
-                        return rs.getInt("world");
-                    }
-                }
-            }
-        } catch(SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        
-        return -1;
-    }
-    
     public void startNewYearCardTask() {
         if(sendTask != null) return;
         
         sendTask = TimerManager.getInstance().register(new Runnable() {
             @Override
             public void run() {
-                int world = getCharacterWorld(receiverId);
+                Server server = Server.getInstance();
+                
+                int world = server.getCharacterWorld(receiverId);
                 if(world == -1) {
                     sendTask.cancel(false);
                     sendTask = null;
@@ -272,7 +257,7 @@ public class NewYearCardRecord {
                     return;
                 }
                 
-                MapleCharacter target = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(receiverId);
+                MapleCharacter target = server.getWorld(world).getPlayerStorage().getCharacterById(receiverId);
                 if(target != null && target.isLoggedinWorld()) {
                     target.announce(MaplePacketCreator.onNewYearCardRes(target, NewYearCardRecord.this, 0xC, 0));
                 }

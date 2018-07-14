@@ -22,6 +22,7 @@ public class FilePrinter {
             SQL_EXCEPTION = "sqlexceptions.txt",
             PACKET_HANDLER = "PacketHandler/",
             PORTAL = "portals/",
+            PORTAL_STUCK = "portalblocks/",
             NPC = "npcs/",
             INVOCABLE = "invocable/",
             REACTOR = "reactors/",

@@ -380,7 +380,7 @@ public class MapleQuestlineFetcher {
     }
     
     /*
-    static private List<Pair<Integer, List<Integer>>> getSortedMapEntries(Map<Integer, List<Integer>> map) {
+    private static List<Pair<Integer, List<Integer>>> getSortedMapEntries(Map<Integer, List<Integer>> map) {
         List<Pair<Integer, List<Integer>>> list = new ArrayList<>(map.size());
         for(Map.Entry<Integer, List<Integer>> e : map.entrySet()) {
             List<Integer> il = new ArrayList<>(2);

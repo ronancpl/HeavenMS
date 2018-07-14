@@ -784,26 +784,6 @@ public class Commands {
 				player.dropMessage(5, "That map does not exist.");
 			}
                                 break;
-								
-                case "recharge":
-                        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-                        for (Item torecharge : c.getPlayer().getInventory(MapleInventoryType.USE).list()) {
-                                if (ItemConstants.isThrowingStar(torecharge.getItemId())){
-                                        torecharge.setQuantity(ii.getSlotMax(c, torecharge.getItemId()));
-                                        c.getPlayer().forceUpdateItem(torecharge);
-                                } else if (ItemConstants.isArrow(torecharge.getItemId())){
-                                        torecharge.setQuantity(ii.getSlotMax(c, torecharge.getItemId()));
-                                        c.getPlayer().forceUpdateItem(torecharge);
-                                } else if (ItemConstants.isBullet(torecharge.getItemId())){
-                                        torecharge.setQuantity(ii.getSlotMax(c, torecharge.getItemId()));
-                                        c.getPlayer().forceUpdateItem(torecharge);
-                                } else if (ItemConstants.isConsumable(torecharge.getItemId())){
-                                        torecharge.setQuantity(ii.getSlotMax(c, torecharge.getItemId()));
-                                        c.getPlayer().forceUpdateItem(torecharge);
-                                }
-                        }
-                        player.dropMessage(5, "USE Recharged.");
-                                break;
 		            
                 default:
                         return false;
@@ -818,6 +798,26 @@ public class Commands {
                 Skill skill;
             
                 switch(sub[0]) {
+                case "recharge":
+                        MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
+                        for (Item torecharge : c.getPlayer().getInventory(MapleInventoryType.USE).list()) {
+                                if (ItemConstants.isThrowingStar(torecharge.getItemId())){
+                                        torecharge.setQuantity(mii.getSlotMax(c, torecharge.getItemId()));
+                                        c.getPlayer().forceUpdateItem(torecharge);
+                                } else if (ItemConstants.isArrow(torecharge.getItemId())){
+                                        torecharge.setQuantity(mii.getSlotMax(c, torecharge.getItemId()));
+                                        c.getPlayer().forceUpdateItem(torecharge);
+                                } else if (ItemConstants.isBullet(torecharge.getItemId())){
+                                        torecharge.setQuantity(mii.getSlotMax(c, torecharge.getItemId()));
+                                        c.getPlayer().forceUpdateItem(torecharge);
+                                } else if (ItemConstants.isConsumable(torecharge.getItemId())){
+                                        torecharge.setQuantity(mii.getSlotMax(c, torecharge.getItemId()));
+                                        c.getPlayer().forceUpdateItem(torecharge);
+                                }
+                        }
+                        player.dropMessage(5, "USE Recharged.");
+                                break;
+                    
                 case "whereami":
 			player.yellowMessage("Map ID: " + player.getMap().getId());
 			player.yellowMessage("Players on this map:");
@@ -1653,7 +1653,7 @@ public class Commands {
                         }
                 break;
                     
-                case "fly":
+                case "fly": // fly option will become available for any character of that account
                         if (sub.length < 2) {
 				player.yellowMessage("Syntax: !fly <on/off>");
 				break;
@@ -2776,7 +2776,7 @@ public class Commands {
 					player.getMap().removePlayer(player);//LOL FORGOT THIS ><                    
 					c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 					player.setWorld(worldb);
-					player.saveToDB();//To set the new world :O (true because else 2 player instances are created, one in both worlds)
+					player.saveCharToDB();//To set the new world :O (true because else 2 player instances are created, one in both worlds)
 					c.announce(MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1])));
 				} catch (UnknownHostException | NumberFormatException ex) {
                                         ex.printStackTrace();
@@ -2791,7 +2791,7 @@ public class Commands {
                     case "saveall":
 			for (World world : Server.getInstance().getWorlds()) {
 				for (MapleCharacter chr : world.getPlayerStorage().getAllCharacters()) {
-					chr.saveToDB();
+					chr.saveCharToDB();
 				}
 			}
 			String message = player.getName() + " used !saveall.";

@@ -86,7 +86,7 @@ public abstract class CharacterFactory {
                 }
                 c.announce(MaplePacketCreator.addNewCharEntry(newchar));
 
-                Server.getInstance().createCharacterid(newchar.getAccountID(), newchar.getId(), newchar.getWorld());
+                Server.getInstance().createCharacterEntry(newchar);
                 Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
                 
                 return 0;

@@ -55,6 +55,7 @@ public enum MonitoredLockType {
     WORLD_PARTY,
     WORLD_OWL,
     WORLD_PETS,
+    WORLD_CHARS,
     WORLD_MOUNTS,
     WORLD_PSHOPS,
     WORLD_MERCHS,

@@ -162,6 +162,7 @@ function writeHeavenMSCommandsLv2() {    //JrGM
         comm_cursor = comm_lv2;
         desc_cursor = desc_lv2;
 
+        addCommand("recharge", "");
         addCommand("whereami", "");
         addCommand("hide", "");
         addCommand("unhide", "");
@@ -205,7 +206,6 @@ function writeHeavenMSCommandsLv1() {    //Donator
         addCommand("whodrops", "");
         addCommand("buffme", "");
         addCommand("goto", "");
-        addCommand("recharge", "");
 }
 
 function writeHeavenMSCommandsLv0() {    //Common

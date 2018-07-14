@@ -403,11 +403,9 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
     private static MaplePlayerNPC createPlayerNPCInternal(MapleMap map, Point pos, MapleCharacter chr) {
         int mapId = map.getId();
         
-        /*
         if(!canSpawnPlayerNpc(chr.getName(), mapId)) {
             return null;
         }
-        */
         
         byte branch = GameConstants.getHallOfFameBranch(chr.getJob(), mapId);
         
@@ -613,39 +611,10 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
         }
     }
     
-    private static List<Integer> loadCharacteridsFromDB(int world) {
-        List<Integer> list = new LinkedList<>();
-        
-        try {
-            Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT id FROM characters WHERE world = ?");
-            ps.setInt(1, world);
-            
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                list.add(rs.getInt(1));
-            }
-            
-            rs.close();
-            ps.close();
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return list;
-    }
-    
     public static void multicastSpawnPlayerNPC(int mapid, int world) {
-        MapleClient mockClient = new MapleClient(null, null, null);
-        
-        for(Integer cid : loadCharacteridsFromDB(world)) {
-            try {
-                MapleCharacter mc = MapleCharacter.loadCharFromDB(cid, mockClient, false);
-                spawnPlayerNPC(mapid, mc);
-            } catch (SQLException sqle) {
-                sqle.printStackTrace();
-            }
+        World wserv = Server.getInstance().getWorld(world);
+        for(MapleCharacter mc : wserv.getAllCharactersView()) {
+            spawnPlayerNPC(mapid, mc);
         }
     }
     

@@ -558,6 +558,19 @@ public class EventInstanceManager {
 		}
 	}
 
+        public void reviveMonster(MapleMonster mob) {
+		try {
+                        sL.lock();
+                        try {
+                                em.getIv().invokeFunction("monsterRevive", this, mob);
+                        } finally {
+                                sL.unlock();
+                        }
+		} catch (ScriptException | NoSuchMethodException ex) {
+			ex.printStackTrace();
+		}
+	}
+        
 	public boolean revivePlayer(MapleCharacter chr) {
 		try {
                         Object b;
@@ -577,7 +590,7 @@ public class EventInstanceManager {
 		}
 		return true;
 	}
-
+        
 	public void playerDisconnected(MapleCharacter chr) {
 		try {
                         sL.lock();

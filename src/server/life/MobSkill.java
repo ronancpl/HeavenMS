@@ -154,7 +154,7 @@ public class MobSkill {
 		}
 		break;
 	    case 120:
-	    	disease = MapleDisease.SEAL;
+                disease = MapleDisease.SEAL;
 		break;
 	    case 121:
 	    	disease = MapleDisease.DARKNESS;
@@ -309,7 +309,7 @@ public class MobSkill {
             if (lt != null && rb != null && skill) {
                 int i = 0;
                 for (MapleCharacter character : getPlayersInRange(monster, player)) {
-                    if (!character.isActiveBuffedValue(2321005)) {
+                    if (!character.isActiveBuffedValue(2321005)) {  // holy shield
                         if (disease.equals(MapleDisease.SEDUCE)) {
                             if (i < 10) {
                                 character.giveDebuff(MapleDisease.SEDUCE, this);
@@ -329,9 +329,7 @@ public class MobSkill {
     }
 
     private List<MapleCharacter> getPlayersInRange(MapleMonster monster, MapleCharacter player) {
-        List<MapleCharacter> players = new ArrayList<MapleCharacter>();
-        players.add(player);
-        return monster.getMap().getPlayersInRange(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), players);
+        return monster.getMap().getPlayersInRange(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), Collections.singletonList(player));
     }
 
     public int getSkillId() {

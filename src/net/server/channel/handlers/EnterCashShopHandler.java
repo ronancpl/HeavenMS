@@ -81,7 +81,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             c.getChannelServer().removePlayer(mc);
             mc.getMap().removePlayer(mc);
             mc.getCashShop().open(true);
-            mc.saveToDB();
+            mc.saveCharToDB();
         } catch (Exception e) {
             e.printStackTrace();
         }

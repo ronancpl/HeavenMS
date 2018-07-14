@@ -162,6 +162,12 @@ function playerRevive(eim, player) {
     return true;
 }
 
+function monsterRevive(eim, mob) {
+        if(isPinkBean(mob)) {
+                mob.enableDrops();
+        }
+}
+
 function playerDisconnected(eim, player) {
     if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
         eim.dropMessage(5, "[Expedition] Either the leader has quit the expedition or there is no longer the minimum number of members required to continue it.");

@@ -62,7 +62,9 @@ public class MobAnimationScheduler extends BaseScheduler {
     public boolean registerAnimationMode(Integer mobHash, long animationTime) {
         animationLock.lock();
         try {
-            if(onAnimationMobs.contains(mobHash)) return false;
+            if(onAnimationMobs.contains(mobHash)) {
+                return false;
+            }
             
             registerEntry(mobHash, r, animationTime);
             onAnimationMobs.add(mobHash);

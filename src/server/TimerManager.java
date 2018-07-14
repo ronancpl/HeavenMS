@@ -27,6 +27,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.server.Server;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 import tools.FilePrinter;
@@ -78,7 +79,9 @@ public class TimerManager implements TimerManagerMBean {
 	
     public Runnable purge() {//Yay?
         return new Runnable() {
+            @Override
             public void run() {
+                Server.getInstance().forceUpdateCurrentTime();
                 ses.purge();
             }
         };

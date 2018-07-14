@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net;
+package net.opcodes;
 
 public enum RecvOpcode {
     CUSTOM_PACKET(0x3713),//13 37 lol
@@ -174,7 +174,7 @@ public enum RecvOpcode {
     ITEM_PICKUP(0xCA),
     DAMAGE_REACTOR(0xCD),
     TOUCHING_REACTOR(0xCE),
-    TEMP_SKILL(0xCF),
+    PLAYER_MAP_TRANSFER(0xCF),
     MAPLETV(0xFFFE),//Don't know
     SNOWBALL(0xD3),
     LEFT_KNOCKBACK(0xD4),

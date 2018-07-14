@@ -26,12 +26,14 @@ import client.MapleClient;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+import net.server.Server;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 //import server.life.MobAttackInfo;
 //import server.life.MobAttackInfoFactory;
 import server.life.MobSkill;
 import server.life.MobSkillFactory;
+import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.movement.LifeMovementFragment;
@@ -48,9 +50,12 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+                MapleCharacter player = c.getPlayer();
+                MapleMap map = player.getMap();
+            
 		int objectid = slea.readInt();
 		short moveid = slea.readShort();
-		MapleMapObject mmo = c.getPlayer().getMap().getMapObject(objectid);
+		MapleMapObject mmo = map.getMapObject(objectid);
 		if (mmo == null || mmo.getType() != MapleMapObjectType.MONSTER) {
 			return;
 		}
@@ -95,8 +100,18 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                                 nextCastSkill = skillToUse.getLeft();
                                 nextCastSkillLevel = skillToUse.getRight();
                                 toUse = MobSkillFactory.getMobSkill(nextCastSkill, nextCastSkillLevel);
+                                
+                                if (!isSkill && !isAttack) {
+                                        long curtime = Server.getInstance().getCurrentTime();
+                                        if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
+                                                //MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
+                                                monster.setNextBasicSkillTime(curtime);
+                                        } else {
+                                                toUse = null;   // paliative measure for suspicious mob movement
+                                        }
+                                }
 
-                                if (isSkill || isAttack) {
+                                if (toUse != null) {
                                         int percHpLeft = (int) (((float) monster.getHp() / monster.getMaxHp()) * 100);
                                         if (nextCastSkill != toUse.getSkillId() || nextCastSkillLevel != toUse.getSkillLevel()) {
                                                 //toUse.resetAnticipatedSkill();
@@ -106,25 +121,13 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                                         } else if (monster.canUseSkill(toUse)) {
                                                 int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(monster.getId(), rndSkill);
                                                 if(animationTime > 0) {
-                                                        toUse.applyDelayedEffect(c.getPlayer(), monster, true, banishPlayers, animationTime);
+                                                        toUse.applyDelayedEffect(player, monster, true, banishPlayers, animationTime);
                                                 } else {
-                                                        toUse.applyEffect(c.getPlayer(), monster, true, banishPlayers);
+                                                        toUse.applyEffect(player, monster, true, banishPlayers);
                                                 }
                                         } else {
                                                 toUse = null;
                                         }
-                                } else {
-                                        toUse = null; // paliative measure for suspicious mob movement
-
-                                        /*
-                                        long curtime = System.currentTimeMillis();
-                                        if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
-                                                MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
-                                                monster.setNextBasicSkillTime(curtime);
-                                        } else {
-                                                toUse = null;
-                                        }
-                                        */
                                 }
                         }
                 } else {
@@ -133,35 +136,44 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                         }
                 }
                 
+                if(toUse == null) {
+                        useSkillId = 0;
+                        useSkillLevel = 0;
+                        rawActivity = -1;
+                        pOption = 0;
+                }
+                
 		slea.readByte();
 		slea.readInt(); // whatever
 		short start_x = slea.readShort(); // hmm.. startpos?
 		short start_y = slea.readShort(); // hmm...
 		Point startPos = new Point(start_x, start_y);
 		res = parseMovement(slea);
-		if (monster.getController() != c.getPlayer()) {
-			if (monster.isAttackedBy(c.getPlayer())) {
-				monster.switchController(c.getPlayer(), true);
+		if (monster.getController() != player) {
+			if (monster.isAttackedBy(player)) {
+				monster.switchController(player, true);
 			} else {
 				return;
 			}
 		} else if (rawActivity == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
-			monster.setControllerHasAggro(false);
+                        monster.setControllerHasAggro(false);
 			monster.setControllerKnowsAboutAggro(false);
 		}
 		boolean aggro = monster.isControllerHasAggro();
-		if (toUse != null) {
-			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro, toUse.getSkillId(), toUse.getSkillLevel()));
+		
+                if (toUse != null) {
+                        c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro, toUse.getSkillId(), toUse.getSkillLevel()));
 		} else {
 			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, monster.getMp(), aggro));
 		}
+                
 		if (aggro) {
 			monster.setControllerKnowsAboutAggro(true);
 		}
 		if (res != null) {
-			c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());
+                        map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());
 			updatePosition(res, monster, -1);
-			c.getPlayer().getMap().moveMonster(monster, monster.getPosition());
+			map.moveMonster(monster, monster.getPosition());
 		}
                 
                 for (MapleCharacter chr : banishPlayers) {

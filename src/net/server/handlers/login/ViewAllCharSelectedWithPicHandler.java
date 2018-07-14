@@ -21,13 +21,13 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
         slea.readInt(); // please don't let the client choose which world they should login
         
         Server server = Server.getInstance();
-        if(!server.haveCharacterid(c.getAccID(), charId)) {
+        if(!server.haveCharacterEntry(c.getAccID(), charId)) {
             c.getSession().close(true);
             return;
         }
         
         c.setWorld(server.getCharacterWorld(charId));
-        int channel = Randomizer.rand(0, c.getWorldServer().getChannels().size());
+        int channel = Randomizer.rand(1, c.getWorldServer().getChannels().size());
         c.setChannel(channel);
         
         String macs = slea.readMapleAsciiString();

@@ -38,7 +38,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
-import net.SendOpcode;
+import net.opcodes.SendOpcode;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;

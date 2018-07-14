@@ -156,6 +156,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Custom jail system.");
         addFeature("Custom buyback system, uses mesos / NX, via MTS.");
         addFeature("Delete Character.");
+        addFeature("Smooth view-all-char, now showing all account chars.");
         addFeature("Autosaver (periodically saves player's data on DB).");
         addFeature("Fixed and randomized HP/MP growth rate available.");
         addFeature("Prevented 'NPC gone after some uptime' issue.");
@@ -199,6 +200,7 @@ function writeFeatureTab_Project() {
         addFeature("Uncovered many opcodes throughout the source.");
         addFeature("Reviewed many Java aspects that needed attention.");
         addFeature("Reviewed SQL data, eliminating duplicated entries.");
+        addFeature("Improved login phase, using cache over DB queries.");
         addFeature("Protected many flaws with login management system.");
         addFeature("Developed many survey tools for content profiling.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");

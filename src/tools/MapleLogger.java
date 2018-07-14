@@ -23,7 +23,7 @@ package tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.RecvOpcode;
+import net.opcodes.RecvOpcode;
 import client.MapleClient;
 
 /**

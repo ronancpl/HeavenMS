@@ -28,6 +28,9 @@ import net.server.Server;
 public class CharacterDiseaseWorker implements Runnable {
     @Override
     public void run() {
-        Server.getInstance().runAnnouncePlayerDiseasesSchedule();
+        Server serv = Server.getInstance();
+        
+        serv.updateCurrentTime();
+        serv.runAnnouncePlayerDiseasesSchedule();
     }
 }

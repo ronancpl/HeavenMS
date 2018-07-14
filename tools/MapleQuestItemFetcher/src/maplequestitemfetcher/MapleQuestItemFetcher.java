@@ -429,7 +429,7 @@ public class MapleQuestItemFetcher {
         printWriter.println();
     }
     
-    static private List<Entry<Integer, Integer>> getSortedMapEntries0(Map<Integer, Integer> map) {
+    private static List<Entry<Integer, Integer>> getSortedMapEntries0(Map<Integer, Integer> map) {
         List<Entry<Integer, Integer>> list = new ArrayList<>(map.size());
         for(Entry<Integer, Integer> e : map.entrySet()) {
             list.add(e);
@@ -445,7 +445,7 @@ public class MapleQuestItemFetcher {
         return list;
     }
     
-    static private List<Entry<Integer, int[]>> getSortedMapEntries1(Map<Integer, int[]> map) {
+    private static List<Entry<Integer, int[]>> getSortedMapEntries1(Map<Integer, int[]> map) {
         List<Entry<Integer, int[]>> list = new ArrayList<>(map.size());
         for(Entry<Integer, int[]> e : map.entrySet()) {
             list.add(e);
@@ -461,7 +461,7 @@ public class MapleQuestItemFetcher {
         return list;
     }
     
-    static private List<Pair<Integer, List<Integer>>> getSortedMapEntries2(Map<Integer, Set<Integer>> map) {
+    private static List<Pair<Integer, List<Integer>>> getSortedMapEntries2(Map<Integer, Set<Integer>> map) {
         List<Pair<Integer, List<Integer>>> list = new ArrayList<>(map.size());
         for(Entry<Integer, Set<Integer>> e : map.entrySet()) {
             List<Integer> il = new ArrayList<>(2);

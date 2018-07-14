@@ -10,7 +10,7 @@ import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class ViewAllPicRegisterHandler extends AbstractMaplePacketHandler { //Gey class name lol
+public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHandler { //Gey class name lol
 
 
     @Override
@@ -20,7 +20,7 @@ public final class ViewAllPicRegisterHandler extends AbstractMaplePacketHandler 
         slea.readInt(); // please don't let the client choose which world they should login
         
         Server server = Server.getInstance();
-        if(!server.haveCharacterid(c.getAccID(), charId)) {
+        if(!server.haveCharacterEntry(c.getAccID(), charId)) {
             c.getSession().close(true);
             return;
         }
@@ -31,7 +31,7 @@ public final class ViewAllPicRegisterHandler extends AbstractMaplePacketHandler 
             return;
         }
         
-        int channel = Randomizer.rand(0, server.getWorld(c.getWorld()).getChannels().size());
+        int channel = Randomizer.rand(1, server.getWorld(c.getWorld()).getChannels().size());
         c.setChannel(channel);
         
         String mac = slea.readMapleAsciiString();

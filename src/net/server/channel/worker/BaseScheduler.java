@@ -60,6 +60,8 @@ public abstract class BaseScheduler {
     }
     
     private void runBaseSchedule() {
+        List<Object> toRemove;
+        
         schedulerLock.lock();
         try {
             if(registeredEntries.isEmpty()) {
@@ -77,7 +79,7 @@ public abstract class BaseScheduler {
             idleProcs = 0;
             
             long timeNow = System.currentTimeMillis();
-            List<Object> toRemove = new LinkedList<>();
+            toRemove = new LinkedList<>();
             for(Entry<Object, Pair<Runnable, Long>> rmd : registeredEntries.entrySet()) {
                 Pair<Runnable, Long> r = rmd.getValue();
                 
@@ -90,17 +92,11 @@ public abstract class BaseScheduler {
             for(Object mse : toRemove) {
                 registeredEntries.remove(mse);
             }
-            
-            dispatchRemovedEntries(toRemove, true);
         } finally {
             schedulerLock.unlock();
         }
-    }
-    
-    private void dispatchRemovedEntries(List<Object> toRemove, boolean fromUpdate) {
-        for (SchedulerListener listener : listeners.toArray(new SchedulerListener[listeners.size()])) {
-            listener.removedScheduledEntries(toRemove, fromUpdate);
-        }
+        
+        dispatchRemovedEntries(toRemove, true);
     }
     
     protected void registerEntry(Object key, Runnable removalAction, long duration) {
@@ -122,10 +118,16 @@ public abstract class BaseScheduler {
         try {
             Pair<Runnable, Long> rm = registeredEntries.remove(key);
             if(rm != null) rm.getLeft().run();
-            
-            dispatchRemovedEntries(Collections.singletonList(key), false);
         } finally {
             schedulerLock.unlock();
+        }
+        
+        dispatchRemovedEntries(Collections.singletonList(key), false);
+    }
+    
+    private void dispatchRemovedEntries(List<Object> toRemove, boolean fromUpdate) {
+        for (SchedulerListener listener : listeners.toArray(new SchedulerListener[listeners.size()])) {
+            listener.removedScheduledEntries(toRemove, fromUpdate);
         }
     }
 }

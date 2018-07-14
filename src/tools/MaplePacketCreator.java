@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.SendOpcode;
+import net.opcodes.SendOpcode;
 import net.server.PlayerCoolDownValueHolder;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -152,9 +152,10 @@ public class MaplePacketCreator {
                 mplew.writeInt(chr.getHair()); // hair
 
                 for (int i = 0; i < 3; i++) {
-                        if (chr.getPet(i) != null) //Checked GMS.. and your pets stay when going into the cash shop.
+                        MaplePet pet = chr.getPet(i);
+                        if (pet != null) //Checked GMS.. and your pets stay when going into the cash shop.
                         {
-                                mplew.writeLong(chr.getPet(i).getUniqueId());
+                                mplew.writeLong(pet.getUniqueId());
                         } else {
                                 mplew.writeLong(0);
                         }
@@ -328,7 +329,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(chr.getJobRank()); // job rank
                 mplew.writeInt(chr.getJobRankMove()); // move (negative is downwards)
         }
-
+        
         private static void addQuestInfo(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
                 mplew.writeShort(chr.getStartedQuestsSize());
                 for (MapleQuestStatus q : chr.getStartedQuests()) {
@@ -1035,11 +1036,29 @@ public class MaplePacketCreator {
                 mplew.writeInt(to.getId());
                 mplew.write(spawnPoint);
                 mplew.writeShort(chr.getHp());
-                mplew.write(0);
+                mplew.writeBool(false);
                 mplew.writeLong(getTime(System.currentTimeMillis()));
+                mplew.writeShort(0);
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] getWarpToMap(MapleMap to, int spawnPoint, Point spawnPosition, MapleCharacter chr) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SET_FIELD.getValue());
+                mplew.writeInt(chr.getClient().getChannel() - 1);
+                mplew.writeInt(0);//updated
+                mplew.write(0);//updated
+                mplew.writeInt(to.getId());
+                mplew.write(spawnPoint);
+                mplew.writeShort(chr.getHp());
+                mplew.writeBool(true);
+                mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
+                mplew.writeInt(spawnPosition.y);
+                mplew.writeLong(getTime(System.currentTimeMillis()));
+                mplew.writeShort(0);
+                return mplew.getPacket();
+        }
+        
         /**
          * Gets a packet to spawn a portal.
          *
@@ -4873,13 +4892,13 @@ public class MaplePacketCreator {
         public static byte[] showAllCharacter(int chars, int unk) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(11);
                 mplew.writeShort(SendOpcode.VIEW_ALL_CHAR.getValue());
-                mplew.write(1);
+                mplew.write(chars > 0 ? 1 : 5); // 2: already connected to server, 3 : unk error (view-all-characters), 5 : cannot find any
                 mplew.writeInt(chars);
                 mplew.writeInt(unk);
                 return mplew.getPacket();
         }
 
-        public static byte[] showAllCharacterInfo(int worldid, List<MapleCharacter> chars) {
+        public static byte[] showAllCharacterInfo(int worldid, List<MapleCharacter> chars, boolean usePic) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.VIEW_ALL_CHAR.getValue());
                 mplew.write(0);
@@ -4888,6 +4907,7 @@ public class MaplePacketCreator {
                 for (MapleCharacter chr : chars) {
                         addCharEntry(mplew, chr, true);
                 }
+                mplew.write(usePic ? 1 : 2);
                 return mplew.getPacket();
         }
 

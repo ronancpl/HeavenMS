@@ -1350,7 +1350,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         eventChangedMap(target.getId());
         MapleMap to = getWarpMap(target.getId());
-        changeMapInternal(to, pos, MaplePacketCreator.getWarpToMap(to, 0x80, this));//Position :O (LEFT)
+        changeMapInternal(to, pos, MaplePacketCreator.getWarpToMap(to, 0x80, pos, this));
         canWarpMap = false;
         
         canWarpCounter--;
@@ -1392,6 +1392,25 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         return false;
+    }
+    
+    public List<Integer> getLastVisitedMapids() {
+        List<Integer> lastVisited = new ArrayList<>(5);
+        
+        petLock.lock();
+        try {
+            for(WeakReference<MapleMap> lv : lastVisitedMaps) {
+                MapleMap lvm = lv.get();
+                
+                if(lvm != null) {
+                    lastVisited.add(lvm.getId());
+                }
+            }
+        } finally {
+            petLock.unlock();
+        }
+        
+        return lastVisited;
     }
     
     public void updateMapDropsUponPartyOperation(List<MapleCharacter> exPartyMembers) {
@@ -1890,7 +1909,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     
     public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
             int cid = player.getId();
-            if(!Server.getInstance().haveCharacterid(senderAccId, cid)) {
+            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {
                     return false;
             }
             
@@ -2050,7 +2069,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     }
                     
                     con.close();
-                    Server.getInstance().deleteCharacterid(accId, cid);
+                    Server.getInstance().deleteCharacterEntry(accId, cid);
                     return true;
             } catch (SQLException e) {
                     e.printStackTrace();
@@ -4583,7 +4602,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if(party != null) {
                 for(MaplePartyCharacter partyMembers: party.getMembers()) {
                     MapleCharacter chr = partyMembers.getPlayer();
-                    if(chr.getMap().hashCode() == thisMapHash && chr.isLoggedinWorld()) list.add(chr);
+                    MapleMap chrMap = chr.getMap();
+                    if(chrMap != null && chrMap.hashCode() == thisMapHash && chr.isLoggedinWorld()) list.add(chr);
                 }
             }
         } finally {
@@ -5284,14 +5304,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             effLock.unlock();
         }
     }
-
-    public boolean isCygnus() {
-        return getJobType() == 1;
-    }
     
     public boolean isGmJob() {
         int jn = job.getJobNiche();
         return jn >= 8 && jn <= 9;
+    }
+    
+    public boolean isCygnus() {
+        return getJobType() == 1;
     }
 
     public boolean isAran() {
@@ -5423,7 +5443,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         maxmp = Math.min(30000, maxmp);
         if (level == 200) {
             exp.set(0);
-            if(ServerConstants.PLAYERNPC_AUTODEPLOY) MaplePlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), this);
+            if(ServerConstants.PLAYERNPC_AUTODEPLOY && !this.isGM()) MaplePlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), this);
         }
         recalcLocalStats();
         hp = localmaxhp;
@@ -5785,6 +5805,104 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         } else {
             this.addCrushRing(ring);
         }
+    }
+    
+    public static MapleCharacter loadCharacterEntryFromDB(ResultSet rs, List<Item> equipped) {
+        MapleCharacter ret = new MapleCharacter();
+        
+        try {
+            ret.accountid = rs.getInt("accountid");
+            ret.id = rs.getInt("id");
+            ret.name = rs.getString("name");
+            ret.gender = rs.getInt("gender");
+            ret.skinColor = MapleSkinColor.getById(rs.getInt("skincolor"));
+            ret.face = rs.getInt("face");
+            ret.hair = rs.getInt("hair");
+
+            // skipping pets, probably unneeded here
+
+            ret.level = rs.getInt("level");
+            ret.job = MapleJob.getById(rs.getInt("job"));
+            ret.str = rs.getInt("str");
+            ret.dex = rs.getInt("dex");
+            ret.int_ = rs.getInt("int");
+            ret.luk = rs.getInt("luk");
+            ret.hp = rs.getInt("hp");
+            ret.maxhp = rs.getInt("maxhp");
+            ret.mp = rs.getInt("mp");
+            ret.maxmp = rs.getInt("maxmp");
+
+            ret.remainingAp = rs.getInt("ap");
+            String[] skillPoints = rs.getString("sp").split(",");
+            for (int i = 0; i < ret.remainingSp.length; i++) {
+                ret.remainingSp[i] = Integer.parseInt(skillPoints[i]);
+            }
+
+            ret.exp.set(rs.getInt("exp"));
+            ret.fame = rs.getInt("fame");
+            ret.gachaexp.set(rs.getInt("gachaexp"));
+            ret.mapid = rs.getInt("map");
+            ret.initialSpawnPoint = rs.getInt("spawnpoint");
+            
+            ret.gmLevel = rs.getInt("gm");
+            ret.world = rs.getByte("world");
+            ret.rank = rs.getInt("rank");
+            ret.rankMove = rs.getInt("rankMove");
+            ret.jobRank = rs.getInt("jobRank");
+            ret.jobRankMove = rs.getInt("jobRankMove");
+            
+            MapleInventory inv = ret.inventory[MapleInventoryType.EQUIPPED.ordinal()];
+            for (Item item : equipped) {
+                inv.addItemFromDB(item);
+            }
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return ret;
+    }
+    
+    public MapleCharacter generateCharacterEntry() {
+        MapleCharacter ret = new MapleCharacter();
+        
+        ret.accountid = this.getAccountID();
+        ret.id = this.getId();
+        ret.name = this.getName();
+        ret.gender = this.getGender();
+        ret.skinColor = this.getSkinColor();
+        ret.face = this.getFace();
+        ret.hair = this.getHair();
+        
+        // skipping pets, probably unneeded here
+        
+        ret.level = this.getLevel();
+        ret.job = this.getJob();
+        ret.str = this.getStr();
+        ret.dex = this.getDex();
+        ret.int_ = this.getInt();
+        ret.luk = this.getLuk();
+        ret.hp = this.getHp();
+        ret.maxhp = this.getMaxHp();
+        ret.mp = this.getMp();
+        ret.maxmp = this.getMaxMp();
+        ret.remainingAp = this.getRemainingAp();
+        ret.remainingSp = this.getRemainingSps();
+        ret.exp.set(this.getExp());
+        ret.fame = this.getFame();
+        ret.gachaexp.set(this.getGachaExp());
+        ret.mapid = this.getMapId();
+        ret.initialSpawnPoint = this.getInitialSpawnpoint();
+        
+        ret.inventory[MapleInventoryType.EQUIPPED.ordinal()] = this.getInventory(MapleInventoryType.EQUIPPED);
+        
+        ret.gmLevel = this.gmLevel();
+        ret.world = this.getWorld();
+        ret.rank = this.getRank();
+        ret.rankMove = this.getRankMove();
+        ret.jobRank = this.getJobRank();
+        ret.jobRankMove = this.getJobRankMove();
+        
+        return ret;
     }
     
     public static MapleCharacter loadCharFromDB(int charid, MapleClient client, boolean channelserver) throws SQLException {
@@ -6845,30 +6963,32 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void saveToDB() {
+    public void saveCharToDB() {
         if(ServerConstants.USE_AUTOSAVE) {
             Runnable r = new Runnable() {
                 @Override
                 public void run() {
-                    saveToDB(true);
+                    saveCharToDB(true);
                 }
             };
             
             Thread t = new Thread(r);  //spawns a new thread to deal with this
             t.start();
         } else {
-            saveToDB(true);
+            saveCharToDB(true);
         }
     }
     
     //ItemFactory saveItems and monsterbook.saveCards are the most time consuming here.
-    public synchronized void saveToDB(boolean notAutosave) {
+    public synchronized void saveCharToDB(boolean notAutosave) {
         if(!loggedIn) return;
         
         Calendar c = Calendar.getInstance();
         
         if(notAutosave) FilePrinter.print(FilePrinter.SAVING_CHARACTER, "Attempting to save " + name + " at " + c.getTime().toString());
         else FilePrinter.print(FilePrinter.AUTOSAVING_CHARACTER, "Attempting to autosave " + name + " at " + c.getTime().toString());
+        
+        Server.getInstance().updateCharacterEntry(this);
         
         Connection con = null;
         try {
@@ -7693,7 +7813,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         if (slots <= 96) {
             inventory[type].setSlotLimit(slots);
 
-            this.saveToDB();
+            this.saveCharToDB();
             if (update) {
                 client.announce(MaplePacketCreator.updateInventorySlotLimit(type, slots));
             }

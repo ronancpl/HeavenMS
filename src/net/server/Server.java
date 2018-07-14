@@ -21,9 +21,6 @@
  */
 package net.server;
 
-import net.server.worker.CharacterDiseaseWorker;
-import net.server.worker.CouponWorker;
-import net.server.worker.RankingWorker;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -43,14 +40,22 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 import tools.locks.MonitoredReentrantLock;
+import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
+import net.server.worker.CharacterDiseaseWorker;
+import net.server.worker.CouponWorker;
+import net.server.worker.RankingWorker;
 import net.server.world.World;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -64,6 +69,8 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import client.MapleClient;
 import client.MapleCharacter;
 import client.SkillFactory;
+import client.inventory.Item;
+import client.inventory.ItemFactory;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
@@ -96,13 +103,17 @@ public class Server {
     private final Map<Integer, MapleGuild> guilds = new HashMap<>(100);
     private final Map<MapleClient, Long> inLoginState = new HashMap<>(100);
     private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
-    private final Lock lgnLock = new MonitoredReentrantLock(MonitoredLockType.SERVER_LOGIN);
     private final Lock disLock = new MonitoredReentrantLock(MonitoredLockType.SERVER_DISEASES);
+    private final ReentrantReadWriteLock lgnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_LOGIN, true);
+    private final ReadLock lgnRLock = lgnLock.readLock();
+    private final WriteLock lgnWLock = lgnLock.writeLock();
     private final PlayerBuffStorage buffStorage = new PlayerBuffStorage();
     private final Map<Integer, MapleAlliance> alliances = new HashMap<>(100);
     private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();
     private final List<MapleClient> processDiseaseAnnouncePlayers = new LinkedList<>();
     private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
+    
+    private final AtomicLong currentTime = new AtomicLong(0);
     
     private boolean availableDeveloperRoom = false;
     private boolean online = false;
@@ -115,6 +126,20 @@ public class Server {
         return instance;
     }
 
+    public void updateCurrentTime() {
+        currentTime.addAndGet(ServerConstants.UPDATE_INTERVAL);
+    }
+    
+    public long forceUpdateCurrentTime() {
+        long timeNow = System.currentTimeMillis();
+        currentTime.set(timeNow);
+        return timeNow;
+    }
+    
+    public long getCurrentTime() {  // returns a slightly delayed time value
+        return currentTime.get();
+    }
+    
     public boolean isOnline() {
         return online;
     }
@@ -372,7 +397,7 @@ public class Server {
         disconnectIdlesOnLoginTask();
         
         long timeLeft = getTimeLeftForNextHour();
-        tMan.register(new CharacterDiseaseWorker(), 777, 777);
+        tMan.register(new CharacterDiseaseWorker(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
         tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
         tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
         
@@ -822,122 +847,222 @@ public class Server {
     public List<World> getWorlds() {
         return worlds;
     }
-
-    private static void loadCharacteridsFromDb(Integer accountid, Set<Integer> accChars) {
-        try {
-            try (Connection con = DatabaseConnection.getConnection()) {
-                try (PreparedStatement ps = con.prepareStatement("SELECT id FROM characters WHERE accountid = ?")) {
-                    ps.setInt(1, accountid);
-
-                    try (ResultSet rs = ps.executeQuery()) {
-                        while(rs.next()) {
-                            accChars.add(rs.getInt("id"));
-                        }
-                    }
-                }
-            }
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-    }
-    
-    public boolean haveCharacterid(Integer accountid, Integer chrid) {
-        lgnLock.lock();
-        try {
-            Set<Integer> accChars = accountChars.get(accountid);
-            if(accChars == null) {
-                accChars = new HashSet<>(5);
-                loadCharacteridsFromDb(accountid, accChars);
-
-                accountChars.put(accountid, accChars);
-            }
-
-            return accChars.contains(chrid);
-        } finally {
-            lgnLock.unlock();
-        }
-    }
-    
-    public void createCharacterid(Integer accountid, Integer chrid, Integer world) {
-        lgnLock.lock();
-        try {
-            Set<Integer> accChars = accountChars.get(accountid);
-            if(accChars == null) {
-                accChars = new HashSet<>(5);
-                accountChars.put(accountid, accChars);
-            }
-
-            accChars.add(chrid);
-            worldChars.put(chrid, world);
-        } finally {
-            lgnLock.unlock();
-        }
-    }
-    
-    public void deleteCharacterid(Integer accountid, Integer chrid) {
-        lgnLock.lock();
-        try {
-            Set<Integer> accChars = accountChars.get(accountid);
-            if(accChars != null) {
-                accChars.remove(chrid);
-            }
-            
-            worldChars.remove(chrid);
-        } finally {
-            lgnLock.unlock();
-        }
-    }
-    
-    private static int getCharacterWorldFromDB(int chrid) {
-        int world = -1;
-        
-        try {
-            Connection con = DatabaseConnection.getConnection();
-
-            try (PreparedStatement ps = con.prepareStatement("SELECT world FROM characters WHERE id = ?")) {
-                ps.setInt(1, chrid);
-
-                try (ResultSet rs = ps.executeQuery()) {
-                    if(rs.next()) {
-                        world = rs.getInt("world");
-                    }
-                }
-            }
-
-            con.close();
-        } catch (SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        
-        return world;
-    }
     
     public int getCharacterWorld(Integer chrid) {
-        lgnLock.lock();
+        lgnRLock.lock();
         try {
             Integer worldid = worldChars.get(chrid);
+            return worldid != null ? worldid : -1;
+        } finally {
+            lgnRLock.unlock();
+        }
+    }
+    
+    public boolean haveCharacterEntry(Integer accountid, Integer chrid) {
+        lgnRLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            return accChars.contains(chrid);
+        } finally {
+            lgnRLock.unlock();
+        }
+    }
+    
+    private Set<Integer> getAccountCharacterEntries(Integer accountid) {
+        lgnRLock.lock();
+        try {
+            return new HashSet<>(accountChars.get(accountid));
+        } finally {
+            lgnRLock.unlock();
+        }
+    }
+    
+    public void updateCharacterEntry(MapleCharacter chr) {
+        MapleCharacter chrView = chr.generateCharacterEntry();
+        World wserv = worlds.get(chrView.getWorld());
+        
+        lgnWLock.lock();
+        try {
+            wserv.registerAccountCharacterView(chrView.getAccountID(), chrView);
+        } finally {
+            lgnWLock.unlock();
+        }
+    }
+    
+    public void createCharacterEntry(MapleCharacter chr) {
+        Integer accountid = chr.getAccountID(), chrid = chr.getId(), world = chr.getWorld();
+        
+        lgnWLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            accChars.add(chrid);
             
-            if(worldid == null) {
-                worldid = getCharacterWorldFromDB(chrid);
-                worldChars.put(chrid, worldid);
+            worldChars.put(chrid, world);
+            
+            MapleCharacter chrView = chr.generateCharacterEntry();
+            World wserv = worlds.get(chrView.getWorld());
+            wserv.registerAccountCharacterView(chrView.getAccountID(), chrView);
+        } finally {
+            lgnWLock.unlock();
+        }
+    }
+    
+    public void deleteCharacterEntry(Integer accountid, Integer chrid) {
+        lgnWLock.lock();
+        try {
+            Set<Integer> accChars = accountChars.get(accountid);
+            accChars.remove(chrid);
+            
+            Integer world = worldChars.remove(chrid);
+            if(world != null) {
+                World wserv = worlds.get(world);
+                wserv.unregisterAccountCharacterView(accountid, chrid);
+            }
+        } finally {
+            lgnWLock.unlock();
+        }
+    }
+    
+    public void transferWorldCharacterEntry(MapleCharacter chr, Integer toWorld) { // used before setting the new worldid on the character object
+        lgnWLock.lock();
+        try {
+            Integer chrid = chr.getId(), accountid = chr.getAccountID(), world = worldChars.get(chr.getId());
+            if(world != null) {
+                World wserv = worlds.get(world);
+                wserv.unregisterAccountCharacterView(accountid, chrid);
             }
             
-            return worldid;
+            worldChars.put(chrid, toWorld);
+            
+            MapleCharacter chrView = chr.generateCharacterEntry();
+            World wserv = worlds.get(toWorld);
+            wserv.registerAccountCharacterView(chrView.getAccountID(), chrView);
         } finally {
-            lgnLock.unlock();
+            lgnWLock.unlock();
         }
     }
     
     /*
-    public void deleteAccount(Integer accountid) { is this even a thing?
-        lgnLock.lock();
+    public void deleteAccountEntry(Integer accountid) { is this even a thing?
+        lgnWLock.lock();
         try {
             accountChars.remove(accountid);
         } finally {
-            lgnLock.unlock();
+            lgnWLock.unlock();
         }
     }
     */
+    
+    private static List<List<MapleCharacter>> loadAccountCharactersViewFromDb(MapleClient c, int wlen) {
+        List<List<MapleCharacter>> wchars = new ArrayList<>(wlen);
+        for(int i = 0; i < wlen; i++) wchars.add(i, new LinkedList<MapleCharacter>());
+        
+        List<MapleCharacter> chars = new LinkedList<>();
+        int curWorld = 0;
+        try {
+            List<Pair<Item, Integer>> accEquips = ItemFactory.loadEquippedItems(c.getAccID(), true, true);
+            Map<Integer, List<Item>> accPlayerEquips = new HashMap<>();
+            
+            for(Pair<Item, Integer> ae : accEquips) {
+                List<Item> playerEquips = accPlayerEquips.get(ae.getRight());
+                if(playerEquips == null) {
+                    playerEquips = new LinkedList<>();
+                    accPlayerEquips.put(ae.getRight(), playerEquips);
+                }
+                
+                playerEquips.add(ae.getLeft());
+            }
+            
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM characters WHERE accountid = ? ORDER BY world, id")) {
+                ps.setInt(1, c.getAccID());
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        int cworld = rs.getByte("world");
+                        if(cworld >= wlen) break;
+
+                        if(cworld > curWorld) {
+                            wchars.add(curWorld, chars);
+
+                            curWorld = cworld;
+                            chars = new LinkedList<>();
+                        }
+                        
+                        Integer cid = rs.getInt("id");
+                        chars.add(MapleCharacter.loadCharacterEntryFromDB(rs, accPlayerEquips.get(cid)));
+                    }
+                }
+            }
+            con.close();
+            
+            wchars.add(curWorld, chars);
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+        
+        return wchars;
+    }
+    
+    public void loadAccountCharactersView(MapleClient c) {
+        int accId = c.getAccID();
+        int gmLevel = 0;
+        boolean firstAccountLogin;
+        
+        lgnRLock.lock();
+        try {
+            firstAccountLogin = !accountChars.containsKey(accId);
+        } finally {
+            lgnRLock.unlock();
+        }
+        
+        if(!firstAccountLogin) {
+            Set<Integer> accWorlds = new HashSet<>();
+            
+            lgnRLock.lock();
+            try {
+                for(Integer chrid : getAccountCharacterEntries(accId)) {
+                    accWorlds.add(worldChars.get(chrid));
+                }
+            } finally {
+                lgnRLock.unlock();
+            }
+            
+            for(Integer aw : accWorlds) {
+                for(MapleCharacter chr : worlds.get(aw).getAllCharactersView()) {
+                    if(gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
+                }
+            }
+            
+            c.setGMLevel(gmLevel);
+            return;
+        }
+        
+        List<List<MapleCharacter>> accChars = loadAccountCharactersViewFromDb(c, worlds.size());
+        
+        lgnWLock.lock();
+        try {
+            Set<Integer> chars = new HashSet<>(5);
+            for(int wid = 0; wid < worlds.size(); wid++) {
+                World w = worlds.get(wid);
+                List<MapleCharacter> wchars = accChars.get(wid);
+                w.loadAccountCharactersView(accId, wchars);
+                
+                for(MapleCharacter chr : wchars) {
+                    int cid = chr.getId();
+                    if(gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
+                    
+                    chars.add(cid);
+                    worldChars.put(cid, wid);
+                }
+            }
+            
+            accountChars.put(accId, chars);
+        } finally {
+            lgnWLock.unlock();
+        }
+        
+        c.setGMLevel(gmLevel);
+    }
     
     private static String getRemoteIp(InetSocketAddress isa) {
         return isa.getAddress().getHostAddress();
@@ -946,23 +1071,23 @@ public class Server {
     public void setCharacteridInTransition(InetSocketAddress isa, int charId) {
         String remoteIp = getRemoteIp(isa);
         
-        lgnLock.lock();
+        lgnWLock.lock();
         try {
             transitioningChars.put(remoteIp, charId);
         } finally {
-            lgnLock.unlock();
+            lgnWLock.unlock();
         }
     }
     
     public boolean validateCharacteridInTransition(InetSocketAddress isa, int charId) {
         String remoteIp = getRemoteIp(isa);
         
-        lgnLock.lock();
+        lgnWLock.lock();
         try {
             Integer cid = transitioningChars.remove(remoteIp);
             return cid != null && cid.equals(charId);
         } finally {
-            lgnLock.unlock();
+            lgnWLock.unlock();
         }
     }
     

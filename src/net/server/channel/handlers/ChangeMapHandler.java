@@ -23,17 +23,19 @@ package net.server.channel.handlers;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Calendar;
 
 import net.AbstractMaplePacketHandler;
+import client.MapleCharacter;
+import client.MapleClient;
+import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MaplePortal;
 import server.MapleTrade;
 import server.maps.MapleMap;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import client.MapleCharacter;
-import client.MapleClient;
-import client.inventory.MapleInventoryType;
 
 public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 
@@ -42,6 +44,10 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 		MapleCharacter chr = c.getPlayer();
 
 		if (chr.isChangingMaps() || chr.isBanned()) {
+                        if(chr.isChangingMaps()) {
+                                FilePrinter.printError(FilePrinter.PORTAL_STUCK + chr.getName() + ".txt", "Player " + chr.getName() + " got stuck when changing maps. Timestamp: " + Calendar.getInstance().getTime().toString() + " Last visited mapids: " + chr.getLastVisitedMapids());
+                        }
+                    
                         c.announce(MaplePacketCreator.enableActions());
 			return;
 		}
@@ -49,7 +55,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 			MapleTrade.cancelTrade(chr);
 		}
 		if (slea.available() == 0) { //Cash Shop :)
-			if(!chr.getCashShop().isOpened()) {                 
+			if(!chr.getCashShop().isOpened()) {
                                 c.disconnect(false, false);
 				return;           
 			}
@@ -62,7 +68,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
                             ex.printStackTrace();
 			}
 		} else {
-			if(chr.getCashShop().isOpened()) {                 
+			if(chr.getCashShop().isOpened()) {
 				c.disconnect(false, false);
 				return;           
 			}
@@ -138,21 +144,22 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 					c.announce(MaplePacketCreator.enableActions());
 					return;
 				}
+                                
 				if (chr.getMapId() == 109040004) {
 					chr.getFitness().resetTimes();
-				}
-				if (chr.getMapId() == 109030003 || chr.getMapId() == 109030103) {
+				} else if (chr.getMapId() == 109030003 || chr.getMapId() == 109030103) {
 					chr.getOla().resetTimes();
 				}
+                                
 				if (portal != null) {
 					if(portal.getPosition().distanceSq(chr.getPosition()) > 400000) {
-						c.announce(MaplePacketCreator.enableActions());
+                                                c.announce(MaplePacketCreator.enableActions());
 						return;
 					}
 					
 					portal.enterPortal(c);
 				} else {
-					c.announce(MaplePacketCreator.enableActions());
+                                        c.announce(MaplePacketCreator.enableActions());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

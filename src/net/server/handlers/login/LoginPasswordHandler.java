@@ -113,6 +113,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
     }
 
     private static void login(MapleClient c){
+        Server.getInstance().loadAccountCharactersView(c);    // locks the login session until data is recovered from the cache or the DB.
         c.announce(MaplePacketCreator.getAuthSuccess(c));//why the fk did I do c.getAccountName()?
 
         Server.getInstance().registerLoginState(c);

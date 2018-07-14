@@ -317,7 +317,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         
         public boolean canSpawnPlayerNpc(int mapid) {
                 MapleCharacter chr = getPlayer();
-                return !ServerConstants.PLAYERNPC_AUTODEPLOY && chr.getLevel() >= chr.getMaxClassLevel() && MaplePlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
+                return !ServerConstants.PLAYERNPC_AUTODEPLOY && chr.getLevel() >= chr.getMaxClassLevel() && !chr.isGM() && MaplePlayerNPC.canSpawnPlayerNpc(chr.getName(), mapid);
         }
         
         public MaplePlayerNPC getPlayerNPCByScriptid(int scriptId) {

@@ -26,9 +26,7 @@ import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class PlayerUpdateHandler extends AbstractMaplePacketHandler {
-
+    
     @Override
-    public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        c.getPlayer().setMapTransitionComplete();
-    }
+    public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {}
 }

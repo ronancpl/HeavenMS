@@ -35,6 +35,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -43,6 +44,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
@@ -77,7 +80,7 @@ import tools.locks.MonitoredLockType;
 /**
  *
  * @author kevintjuh93
- * @author Ronan (thread-oriented world schedules)
+ * @author Ronan (thread-oriented world schedules, guild queue, marriages & party chars)
  */
 public class World {
 
@@ -94,10 +97,14 @@ public class World {
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     
+    private Map<Integer, SortedMap<Integer, MapleCharacter>> accountChars = new HashMap<>();
+    private Lock accountCharsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_CHARS, true);
+    
     private Set<Integer> queuedGuilds = new HashSet<>();
     private Map<Integer, Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>>> queuedMarriages = new HashMap<>();
     private Map<Integer, Set<Integer>> marriageGuests = new HashMap<>();
     
+    private Map<Integer, Integer> partyChars = new HashMap<>();
     private Map<Integer, MapleParty> parties = new HashMap<>();
     private AtomicInteger runningPartyId = new AtomicInteger();
     private Lock partyLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PARTY, true);
@@ -242,6 +249,87 @@ public class World {
         this.questrate = quest;
     }
 
+    public void loadAccountCharactersView(Integer accountId, List<MapleCharacter> chars) {
+        SortedMap<Integer, MapleCharacter> charsMap = new TreeMap<>();
+        for(MapleCharacter chr : chars) {
+            charsMap.put(chr.getId(), chr);
+        }
+        
+        accountCharsLock.lock();    // accountCharsLock should be used after server's lgnWLock for compliance
+        try {
+            accountChars.put(accountId, charsMap);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void registerAccountCharacterView(Integer accountId, MapleCharacter chr) {
+        accountCharsLock.lock();
+        try {
+            accountChars.get(accountId).put(chr.getId(), chr);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void unregisterAccountCharacterView(Integer accountId, Integer chrId) {
+        accountCharsLock.lock();
+        try {
+            accountChars.get(accountId).remove(chrId);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    private static List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> getSortedAccountCharacterView(Map<Integer, SortedMap<Integer, MapleCharacter>> map) {
+        List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> list = new ArrayList<>(map.size());
+        for(Entry<Integer, SortedMap<Integer, MapleCharacter>> e : map.entrySet()) {
+            list.add(e);
+        }
+        
+        Collections.sort(list, new Comparator<Entry<Integer, SortedMap<Integer, MapleCharacter>>>() {
+            @Override
+            public int compare(Entry<Integer, SortedMap<Integer, MapleCharacter>> o1, Entry<Integer, SortedMap<Integer, MapleCharacter>> o2) {
+                return o1.getKey() - o2.getKey();
+            }
+        });
+        
+        return list;
+    }
+    
+    public List<MapleCharacter> getAllCharactersView() {    // sorted by accountid, charid
+        List<MapleCharacter> chrList = new LinkedList<>();
+        Map<Integer, SortedMap<Integer, MapleCharacter>> accChars;
+        
+        accountCharsLock.lock();
+        try {
+            accChars = new HashMap<>(accountChars);
+        } finally {
+            accountCharsLock.unlock();
+        }
+        
+        for (Entry<Integer, SortedMap<Integer, MapleCharacter>> e : getSortedAccountCharacterView(accChars)) {
+            for (MapleCharacter chr : e.getValue().values()) {
+                chrList.add(chr);
+            }
+        }
+        
+        return chrList;
+    }
+    
+    public List<MapleCharacter> getAccountCharactersView(Integer accountId) {
+        List<MapleCharacter> chrList;
+                
+        accountCharsLock.lock();
+        try {
+            chrList = new LinkedList<>(accountChars.get(accountId).values());
+        } finally {
+            accountCharsLock.unlock();
+        }
+        
+        return chrList;
+    }
+    
     public PlayerStorage getPlayerStorage() {
         return players;
     }
@@ -511,6 +599,37 @@ public class World {
         System.out.println("Guest list: " + marriageGuests);
     }
     
+    private void registerCharacterParty(Integer chrid, Integer partyid) {
+        partyLock.lock();
+        try {
+            partyChars.put(chrid, partyid);
+        } finally {
+            partyLock.unlock();
+        }
+    }
+    
+    private void unregisterCharacterPartyInternal(Integer chrid) {
+        partyChars.remove(chrid);
+    }
+    
+    private void unregisterCharacterParty(Integer chrid) {
+        partyLock.lock();
+        try {
+            unregisterCharacterPartyInternal(chrid);
+        } finally {
+            partyLock.unlock();
+        }
+    }
+    
+    public Integer getCharacterPartyid(Integer chrid) {
+        partyLock.lock();
+        try {
+            return partyChars.get(chrid);
+        } finally {
+            partyLock.unlock();
+        }
+    }
+    
     public MapleParty createParty(MaplePartyCharacter chrfor) {
         int partyid = runningPartyId.getAndIncrement();
         MapleParty party = new MapleParty(partyid, chrfor);
@@ -518,6 +637,7 @@ public class World {
         partyLock.lock();
         try {
             parties.put(party.getId(), party);
+            registerCharacterParty(chrfor.getId(), partyid);
         } finally {
             partyLock.unlock();
         }
@@ -534,7 +654,7 @@ public class World {
         }
     }
 
-    public MapleParty disbandParty(int partyid) {
+    private MapleParty disbandParty(int partyid) {
         partyLock.lock();
         try {
             return parties.remove(partyid);
@@ -542,9 +662,39 @@ public class World {
             partyLock.unlock();
         }
     }
-
-    public void updateParty(MapleParty party, PartyOperation operation, MaplePartyCharacter target) {
-        for (MaplePartyCharacter partychar : party.getMembers()) {
+    
+    private void updateCharacterParty(MapleParty party, PartyOperation operation, MaplePartyCharacter target, Collection<MaplePartyCharacter> partyMembers) {
+        switch (operation) {
+            case JOIN:
+                registerCharacterParty(target.getId(), party.getId());
+                break;
+            
+            case LEAVE:
+            case EXPEL:
+                unregisterCharacterParty(target.getId());
+                break;
+                
+            case DISBAND:
+                partyLock.lock();
+                try {
+                    for (MaplePartyCharacter partychar : partyMembers) {
+                        unregisterCharacterPartyInternal(partychar.getId());
+                    }
+                } finally {
+                    partyLock.unlock();
+                }
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    private void updateParty(MapleParty party, PartyOperation operation, MaplePartyCharacter target) {
+        Collection<MaplePartyCharacter> partyMembers = party.getMembers();
+        updateCharacterParty(party, operation, target, partyMembers);
+        
+        for (MaplePartyCharacter partychar : partyMembers) {
             MapleCharacter chr = getPlayerStorage().getCharacterByName(partychar.getName());
             if (chr != null) {
                 if (operation == PartyOperation.DISBAND) {

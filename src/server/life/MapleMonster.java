@@ -56,9 +56,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import tools.locks.MonitoredReentrantLock;
+import net.server.Server;
 import net.server.channel.Channel;
+import net.server.world.World;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
+import scripting.event.EventInstanceManager;
 import server.TimerManager;
 import server.life.MapleLifeFactory.BanishInfo;
 import server.maps.MapleMap;
@@ -128,6 +131,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         this.dropsDisabled = true;
     }
 
+    public void enableDrops() {
+        this.dropsDisabled = false;
+    }
+    
     public boolean dropsDisabled() {
         return dropsDisabled;
     }
@@ -233,7 +240,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     
     public boolean applyAnimationIfRoaming(int attackPos, int skillPos) {   // roam: not casting attack or skill animations
         if(!animationLock.tryLock()) return false;
-        
+    
         try {
             long animationTime;
         
@@ -394,12 +401,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
-    public void distributeExperience(int killerId) {
+    private void distributeExperience(int killerId) {
         if (isAlive()) {
             return;
         }
         
-        int minThresholdLevel = calcThresholdLevel(this.getMap().getEventInstance() != null);
+        EventInstanceManager eim = getMap().getEventInstance();
+        int minThresholdLevel = calcThresholdLevel(eim != null);
         int exp = getExp();
         long totalHealth = maxHpPlusHeal.get();
         Map<Integer, Float> expDist = new HashMap<>();
@@ -412,12 +420,19 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             expDist.put(damage.getKey(), exp8perHp * damage.getValue().get());
         }
         
-        Collection<MapleCharacter> chrs = map.getCharacters();
         Set<MapleCharacter> underleveled = new HashSet<>();
-        for (MapleCharacter mc : chrs) {
-            if (expDist.containsKey(mc.getId())) {
+        Collection<MapleCharacter> mapChrs = map.getCharacters();
+        for (MapleCharacter mc : mapChrs) {
+            Float mcExp = expDist.remove(mc.getId());
+            if (mcExp != null) {
                 boolean isKiller = (mc.getId() == killerId);
-                float xp = expDist.get(mc.getId());
+                if (isKiller) {
+                    if (eim != null) {
+                        eim.monsterKilled(mc, this);
+                    }
+                }
+                
+                float xp = mcExp;
                 if (isKiller) {
                     xp += exp2;
                 }
@@ -438,6 +453,24 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         
+        if(!expDist.isEmpty()) {    // locate on world server the partyid of the missing characters
+            World wserv = Server.getInstance().getWorld(map.getWorld());
+            
+            for (Entry<Integer, Float> ed : expDist.entrySet()) {
+                boolean isKiller = (ed.getKey() == killerId);
+                float xp = ed.getValue();
+                if (isKiller) {
+                    xp += exp2;
+                }
+
+                Integer pID = wserv.getCharacterPartyid(ed.getKey());
+                if (pID != null) {
+                    float pXP = xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
+                    partyExp.put(pID, pXP);
+                }
+            }
+        }
+        
         for (Entry<Integer, Float> party : partyExp.entrySet()) {
             distributeExperienceToParty(party.getKey(), party.getValue(), killerId, underleveled, minThresholdLevel);
         }
@@ -447,13 +480,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    public void giveExpToCharacter(MapleCharacter attacker, float exp, boolean isKiller, int numExpSharers) {
-        if (isKiller) {
-            if (getMap().getEventInstance() != null) {
-                getMap().getEventInstance().monsterKilled(attacker, this);
-            }
-        }
-        
+    private void giveExpToCharacter(MapleCharacter attacker, float exp, boolean isKiller, int numExpSharers) {
         //PARTY BONUS: 2p -> +2% , 3p -> +4% , 4p -> +6% , 5p -> +8% , 6p -> +10%
         final float partyModifier = numExpSharers <= 1 ? 0.0f : 0.02f * (numExpSharers - 1);
         
@@ -528,6 +555,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
             
             if(toSpawn.size() > 0) {
+                final EventInstanceManager eim = this.getMap().getEventInstance();
+                
                 TimerManager.getInstance().schedule(new Runnable() {
                     @Override
                     public void run() {
@@ -564,6 +593,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                                 for(int i = 8810017; i >= 8810010; i--)
                                     reviveMap.killMonster(reviveMap.getMonsterById(i), killer, true);
                             }
+                            
+                            if(eim != null) {
+                                eim.reviveMonster(mob);
+                            }
                         }
                     }
                 }, getAnimationTime("die1"));
@@ -599,11 +632,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             dispatchUpdateQuestMobCount();
         }
         
-        if (getMap().getEventInstance() != null) {
+        EventInstanceManager eim = getMap().getEventInstance();
+        if (eim != null) {
             if (!this.getStats().isFriendly()) {
-                getMap().getEventInstance().monsterKilled(this, hasKiller);
+                eim.monsterKilled(this, hasKiller);
             } else {
-                getMap().getEventInstance().friendlyKilled(this, hasKiller);
+                eim.friendlyKilled(this, hasKiller);
             }
         }
         

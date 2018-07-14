@@ -19,11 +19,10 @@
 */
 package server.maps;
 
-import client.MapleCharacter;
 import java.awt.Point;
-
-import tools.MaplePacketCreator;
+import client.MapleCharacter;
 import client.MapleClient;
+import tools.MaplePacketCreator;
 
 /**
  *
@@ -49,10 +48,9 @@ public class MapleDoorObject extends AbstractMapleMapObject {
         toPos = toPosition;
     }
     
-    public void warp(final MapleCharacter chr, boolean toTown) {
+    public void warp(final MapleCharacter chr) {
         if (chr.getId() == ownerId || (chr.getParty() != null && chr.getParty().getMemberById(ownerId) != null)) {
-            if(chr.getParty() == null && (to.isLastDoorOwner(chr.getId()) || toTown)) chr.changeMap(to, toPos);
-            else chr.changeMap(to, to.findClosestPlayerSpawnpoint(toPos));    // weird issues happens with party, relocating players elsewhere....
+            chr.changeMap(to, toPos);
         } else {
             chr.getClient().announce(MaplePacketCreator.blockedMessage(6));
             chr.getClient().announce(MaplePacketCreator.enableActions());

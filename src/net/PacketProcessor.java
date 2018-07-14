@@ -24,6 +24,7 @@ package net;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.opcodes.RecvOpcode;
 import net.server.channel.handlers.*;
 import net.server.handlers.CustomPacketHandler;
 import net.server.handlers.KeepAliveHandler;
@@ -38,16 +39,16 @@ import net.server.handlers.login.CreateCharHandler;
 import net.server.handlers.login.DeleteCharHandler;
 import net.server.handlers.login.GuestLoginHandler;
 import net.server.handlers.login.LoginPasswordHandler;
-import net.server.handlers.login.PickCharHandler;
 import net.server.handlers.login.RegisterPicHandler;
 import net.server.handlers.login.RegisterPinHandler;
 import net.server.handlers.login.RelogRequestHandler;
 import net.server.handlers.login.ServerStatusRequestHandler;
 import net.server.handlers.login.ServerlistRequestHandler;
 import net.server.handlers.login.SetGenderHandler;
+import net.server.handlers.login.ViewAllCharHandler;
+import net.server.handlers.login.ViewAllCharRegisterPicHandler;
+import net.server.handlers.login.ViewAllCharSelectedHandler;
 import net.server.handlers.login.ViewAllCharSelectedWithPicHandler;
-import net.server.handlers.login.ViewAllPicRegisterHandler;
-import net.server.handlers.login.ViewCharHandler;
 
 public final class PacketProcessor {
 
@@ -114,15 +115,15 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.CHECK_CHAR_NAME, new CheckCharNameHandler());
             registerHandler(RecvOpcode.CREATE_CHAR, new CreateCharHandler());
             registerHandler(RecvOpcode.DELETE_CHAR, new DeleteCharHandler());
-            registerHandler(RecvOpcode.VIEW_ALL_CHAR, new ViewCharHandler());
-            registerHandler(RecvOpcode.PICK_ALL_CHAR, new PickCharHandler());
+            registerHandler(RecvOpcode.VIEW_ALL_CHAR, new ViewAllCharHandler());
+            registerHandler(RecvOpcode.PICK_ALL_CHAR, new ViewAllCharSelectedHandler());
             registerHandler(RecvOpcode.REGISTER_PIN, new RegisterPinHandler());
             registerHandler(RecvOpcode.GUEST_LOGIN, new GuestLoginHandler());
             registerHandler(RecvOpcode.REGISTER_PIC, new RegisterPicHandler());
             registerHandler(RecvOpcode.CHAR_SELECT_WITH_PIC, new CharSelectedWithPicHandler());
             registerHandler(RecvOpcode.SET_GENDER, new SetGenderHandler());
             registerHandler(RecvOpcode.VIEW_ALL_WITH_PIC, new ViewAllCharSelectedWithPicHandler());
-            registerHandler(RecvOpcode.VIEW_ALL_PIC_REGISTER, new ViewAllPicRegisterHandler());
+            registerHandler(RecvOpcode.VIEW_ALL_PIC_REGISTER, new ViewAllCharRegisterPicHandler());
         } else {
             //CHANNEL HANDLERS
             registerHandler(RecvOpcode.NAME_TRANSFER, new TransferNameHandler());
@@ -237,7 +238,8 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.ACCEPT_FAMILY, new AcceptFamilyHandler());
             registerHandler(RecvOpcode.DUEY_ACTION, new DueyHandler());
             registerHandler(RecvOpcode.USE_DEATHITEM, new UseDeathItemHandler());
-            registerHandler(RecvOpcode.PLAYER_UPDATE, new PlayerUpdateHandler());
+            //registerHandler(RecvOpcode.PLAYER_UPDATE, new PlayerUpdateHandler()); unused
+            registerHandler(RecvOpcode.PLAYER_MAP_TRANSFER, new PlayerMapTransitionHandler());
             registerHandler(RecvOpcode.USE_MAPLELIFE, new UseMapleLifeHandler());
             registerHandler(RecvOpcode.USE_CATCH_ITEM, new UseCatchItemHandler());
             registerHandler(RecvOpcode.MOB_DAMAGE_MOB_FRIENDLY, new MobDamageMobFriendlyHandler());

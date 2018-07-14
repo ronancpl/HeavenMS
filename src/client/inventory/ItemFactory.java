@@ -42,8 +42,8 @@ public enum ItemFactory {
     INVENTORY(1, false),
     STORAGE(2, true),
     CASH_EXPLORER(3, true),
-    CASH_CYGNUS(4, false),
-    CASH_ARAN(5, false),
+    CASH_CYGNUS(4, true),
+    CASH_ARAN(5, true),
     MERCHANT(6, false);
     private final int value;
     private final boolean account;
@@ -72,6 +72,68 @@ public enum ItemFactory {
         else saveItemsMerchant(items, bundlesList, id, con);
     }
     
+    private static Equip loadEquipFromResultSet(ResultSet rs) throws SQLException {
+        Equip equip = new Equip(rs.getInt("itemid"), (short) rs.getInt("position"));
+        equip.setOwner(rs.getString("owner"));
+        equip.setQuantity((short) rs.getInt("quantity"));
+        equip.setAcc((short) rs.getInt("acc"));
+        equip.setAvoid((short) rs.getInt("avoid"));
+        equip.setDex((short) rs.getInt("dex"));
+        equip.setHands((short) rs.getInt("hands"));
+        equip.setHp((short) rs.getInt("hp"));
+        equip.setInt((short) rs.getInt("int"));
+        equip.setJump((short) rs.getInt("jump"));
+        equip.setVicious((short) rs.getInt("vicious"));
+        equip.setFlag((byte) rs.getInt("flag"));
+        equip.setLuk((short) rs.getInt("luk"));
+        equip.setMatk((short) rs.getInt("matk"));
+        equip.setMdef((short) rs.getInt("mdef"));
+        equip.setMp((short) rs.getInt("mp"));
+        equip.setSpeed((short) rs.getInt("speed"));
+        equip.setStr((short) rs.getInt("str"));
+        equip.setWatk((short) rs.getInt("watk"));
+        equip.setWdef((short) rs.getInt("wdef"));
+        equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
+        equip.setLevel((byte) rs.getByte("level"));
+        equip.setItemExp(rs.getInt("itemexp"));
+        equip.setItemLevel(rs.getByte("itemlevel"));
+        equip.setExpiration(rs.getLong("expiration"));
+        equip.setGiftFrom(rs.getString("giftFrom"));
+        equip.setRingId(rs.getInt("ringid"));
+        
+        return equip;
+    }
+    
+    public static List<Pair<Item, Integer>> loadEquippedItems(int id, boolean isAccount, boolean login) throws SQLException {
+        List<Pair<Item, Integer>> items = new ArrayList<>();
+        
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT * FROM ");
+        query.append("(SELECT id, accountid FROM characters) AS accountterm ");
+        query.append("RIGHT JOIN ");
+        query.append("(SELECT * FROM (`inventoryitems` LEFT JOIN `inventoryequipment` USING(`inventoryitemid`))) AS equipterm");
+        query.append(" ON accountterm.id=equipterm.characterid ");
+        query.append("WHERE accountterm.`");
+        query.append(isAccount ? "accountid" : "characterid");
+        query.append("` = ?");
+        query.append(login ? " AND `inventorytype` = " + MapleInventoryType.EQUIPPED.getType() : "");
+        
+        try (Connection con = DatabaseConnection.getConnection()) {
+            try (PreparedStatement ps = con.prepareStatement(query.toString())) {
+                ps.setInt(1, id);
+                
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        Integer cid = rs.getInt("characterid");
+                        items.add(new Pair<Item, Integer>(loadEquipFromResultSet(rs), cid));
+                    }
+                }
+            }
+        }
+        
+        return items;
+    }
+    
     private List<Pair<Item, MapleInventoryType>> loadItemsCommon(int id, boolean login) throws SQLException {
         List<Pair<Item, MapleInventoryType>> items = new ArrayList<>();
 		
@@ -96,34 +158,7 @@ public enum ItemFactory {
                 MapleInventoryType mit = MapleInventoryType.getByType(rs.getByte("inventorytype"));
 
                 if (mit.equals(MapleInventoryType.EQUIP) || mit.equals(MapleInventoryType.EQUIPPED)) {
-                    Equip equip = new Equip(rs.getInt("itemid"), (short) rs.getInt("position"));
-                    equip.setOwner(rs.getString("owner"));
-                    equip.setQuantity((short) rs.getInt("quantity"));
-                    equip.setAcc((short) rs.getInt("acc"));
-                    equip.setAvoid((short) rs.getInt("avoid"));
-                    equip.setDex((short) rs.getInt("dex"));
-                    equip.setHands((short) rs.getInt("hands"));
-                    equip.setHp((short) rs.getInt("hp"));
-                    equip.setInt((short) rs.getInt("int"));
-                    equip.setJump((short) rs.getInt("jump"));
-                    equip.setVicious((short) rs.getInt("vicious"));
-                    equip.setFlag((byte) rs.getInt("flag"));
-                    equip.setLuk((short) rs.getInt("luk"));
-                    equip.setMatk((short) rs.getInt("matk"));
-                    equip.setMdef((short) rs.getInt("mdef"));
-                    equip.setMp((short) rs.getInt("mp"));
-                    equip.setSpeed((short) rs.getInt("speed"));
-                    equip.setStr((short) rs.getInt("str"));
-                    equip.setWatk((short) rs.getInt("watk"));
-                    equip.setWdef((short) rs.getInt("wdef"));
-                    equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
-                    equip.setLevel((byte) rs.getByte("level"));
-                    equip.setItemExp(rs.getInt("itemexp"));
-                    equip.setItemLevel(rs.getByte("itemlevel"));
-                    equip.setExpiration(rs.getLong("expiration"));
-                    equip.setGiftFrom(rs.getString("giftFrom"));
-                    equip.setRingId(rs.getInt("ringid"));
-                    items.add(new Pair<Item, MapleInventoryType>(equip, mit));
+                    items.add(new Pair<Item, MapleInventoryType>(loadEquipFromResultSet(rs), mit));
                 } else {
                     Item item = new Item(rs.getInt("itemid"), (byte) rs.getInt("position"), (short) rs.getInt("quantity"), rs.getInt("petid"));
                     item.setOwner(rs.getString("owner"));
@@ -277,34 +312,7 @@ public enum ItemFactory {
                 MapleInventoryType mit = MapleInventoryType.getByType(rs.getByte("inventorytype"));
 
                 if (mit.equals(MapleInventoryType.EQUIP) || mit.equals(MapleInventoryType.EQUIPPED)) {
-                    Equip equip = new Equip(rs.getInt("itemid"), (short) rs.getInt("position"));
-                    equip.setOwner(rs.getString("owner"));
-                    equip.setQuantity((short) rs.getInt("quantity"));
-                    equip.setAcc((short) rs.getInt("acc"));
-                    equip.setAvoid((short) rs.getInt("avoid"));
-                    equip.setDex((short) rs.getInt("dex"));
-                    equip.setHands((short) rs.getInt("hands"));
-                    equip.setHp((short) rs.getInt("hp"));
-                    equip.setInt((short) rs.getInt("int"));
-                    equip.setJump((short) rs.getInt("jump"));
-                    equip.setVicious((short) rs.getInt("vicious"));
-                    equip.setFlag((byte) rs.getInt("flag"));
-                    equip.setLuk((short) rs.getInt("luk"));
-                    equip.setMatk((short) rs.getInt("matk"));
-                    equip.setMdef((short) rs.getInt("mdef"));
-                    equip.setMp((short) rs.getInt("mp"));
-                    equip.setSpeed((short) rs.getInt("speed"));
-                    equip.setStr((short) rs.getInt("str"));
-                    equip.setWatk((short) rs.getInt("watk"));
-                    equip.setWdef((short) rs.getInt("wdef"));
-                    equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
-                    equip.setLevel((byte) rs.getByte("level"));
-                    equip.setItemExp(rs.getInt("itemexp"));
-                    equip.setItemLevel(rs.getByte("itemlevel"));
-                    equip.setExpiration(rs.getLong("expiration"));
-                    equip.setGiftFrom(rs.getString("giftFrom"));
-                    equip.setRingId(rs.getInt("ringid"));
-                    items.add(new Pair<Item, MapleInventoryType>(equip, mit));
+                    items.add(new Pair<Item, MapleInventoryType>(loadEquipFromResultSet(rs), mit));
                 } else {
                     if(bundles > 0) {
                         Item item = new Item(rs.getInt("itemid"), (byte) rs.getInt("position"), (short)(bundles * rs.getInt("quantity")), rs.getInt("petid"));
