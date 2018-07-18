@@ -59,6 +59,8 @@ Although development is halted, support for fixing features that were implemente
 
 If you liked this project, please don't forget to __star__ the repo ;) .
 
+It's never too much to tell this, even still thanks to everyone that have been contributing something for the continuous improvement of the server! Be it through bug reports, donation, code snippets and/or pull requests.
+
 Our Discord channel is still available on: https://discord.gg/Q7wKxHX
 
 ### Donation
