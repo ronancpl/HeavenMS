@@ -56,7 +56,7 @@ public abstract class CharacterFactory {
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 
                 int top = recipe.getTop(), bottom = recipe.getBottom(), shoes = recipe.getShoes(), weapon = recipe.getWeapon();
-
+                
                 if(top > 0) {
                     Item eq_top = ii.getEquipById(top);
                     eq_top.setPosition((byte) -5);
@@ -85,7 +85,7 @@ public abstract class CharacterFactory {
                         return -2;
                 }
                 c.announce(MaplePacketCreator.addNewCharEntry(newchar));
-
+                
                 Server.getInstance().createCharacterEntry(newchar);
                 Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[NEW CHAR]: " + c.getAccountName() + " has created a new character with IGN " + name));
                 

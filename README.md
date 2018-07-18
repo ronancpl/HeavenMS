@@ -51,7 +51,7 @@ Recommended localhost: https://hostr.co/m2bVtnizCtmD
 ---
 ### Development status
 
-Status: <span style="color:green">__Released__</span>.
+Status: <span style="color:grey">__In development (4th round)__</span>.
 
 HeavenMS development achieved an acceptable state-of-the-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 

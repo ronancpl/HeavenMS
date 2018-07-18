@@ -33,7 +33,7 @@ public class UseMapleLifeHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter player = c.getPlayer();
-        long timeNow = System.currentTimeMillis();
+        long timeNow = currentServerTime();
         
         if(timeNow - player.getLastUsedCashItem() < 3000) {
             player.dropMessage(5, "Please wait a moment before trying again.");

@@ -45,7 +45,7 @@ public final class GeneralChatHandler extends AbstractMaplePacketHandler {
         public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
                 String s = slea.readMapleAsciiString();
                 MapleCharacter chr = c.getPlayer();
-                if(chr.getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
+                if(chr.getAutobanManager().getLastSpam(7) + 200 > currentServerTime()) {
                         c.announce(MaplePacketCreator.enableActions());
                         return;
                 }

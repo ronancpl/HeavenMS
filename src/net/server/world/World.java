@@ -322,7 +322,14 @@ public class World {
                 
         accountCharsLock.lock();
         try {
-            chrList = new LinkedList<>(accountChars.get(accountId).values());
+            SortedMap<Integer, MapleCharacter> accChars = accountChars.get(accountId);
+            
+            if(accChars != null) {
+                chrList = new LinkedList<>(accChars.values());
+            } else {
+                accountChars.put(accountId, new TreeMap<Integer, MapleCharacter>());
+                chrList = null;
+            }
         } finally {
             accountCharsLock.unlock();
         }

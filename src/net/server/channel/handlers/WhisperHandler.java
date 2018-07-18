@@ -49,7 +49,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             String recipient = slea.readMapleAsciiString();
             String text = slea.readMapleAsciiString();
             MapleCharacter player = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
-			if(c.getPlayer().getAutobanManager().getLastSpam(7) + 200 > System.currentTimeMillis()) {
+			if(c.getPlayer().getAutobanManager().getLastSpam(7) + 200 > currentServerTime()) {
 				return;
 			}
             if (text.length() > Byte.MAX_VALUE && !player.isGM()) {

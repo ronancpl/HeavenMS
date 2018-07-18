@@ -24,11 +24,9 @@ package net.server.handlers.login;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
-import java.util.ArrayList;
 import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import net.server.world.World;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.Pair;
@@ -37,22 +35,17 @@ public final class ViewAllCharHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         try {
-            List<World> wlist = Server.getInstance().getWorlds();
-            List<Pair<Integer, List<MapleCharacter>>> worldChars = new ArrayList<>(wlist.size() + 1);
-            
-            int chrTotal = 0;
-            int accountId = c.getAccID();
-            List<MapleCharacter> lastwchars = null;
-            for(World w : wlist) {
-                List<MapleCharacter> wchars = w.getAccountCharactersView(accountId);
-                
-                if(!wchars.isEmpty()) {
-                    lastwchars = wchars;
-                    
-                    worldChars.add(new Pair<>(w.getId(), wchars));
-                    chrTotal += wchars.size();
-                }
+            if(!c.canRequestCharlist()) {
+                c.announce(MaplePacketCreator.showAllCharacter(0, 0));
+                return;
             }
+            
+            int accountId = c.getAccID();
+            Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loginBlob = Server.getInstance().loadAccountCharlist(accountId);
+            
+            List<Pair<Integer, List<MapleCharacter>>> worldChars = loginBlob.getRight();
+            int chrTotal = loginBlob.getLeft().getLeft();
+            List<MapleCharacter> lastwchars = loginBlob.getLeft().getRight();
             
             if (chrTotal > 9) {
                 int padRight = chrTotal % 3;

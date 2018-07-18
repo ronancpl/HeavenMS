@@ -78,7 +78,7 @@ public final class CreateCharHandler extends AbstractMaplePacketHandler {
                 int status;
                 if (job == 0) { // Knights of Cygnus
 			status = NoblesseCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);
-		} else if (job == 1) { // Adventurer   
+		} else if (job == 1) { // Adventurer
 			status = BeginnerCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);
 		} else if (job == 2) { // Aran
 			status = LegendCreator.createCharacter(c, name, face, hair + haircolor, skincolor, top, bottom, shoes, weapon, gender);

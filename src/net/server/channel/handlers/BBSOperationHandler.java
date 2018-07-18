@@ -133,7 +133,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
             ps = con.prepareStatement("INSERT INTO bbs_replies " + "(`threadid`, `postercid`, `timestamp`, `content`) VALUES " + "(?, ?, ?, ?)");
             ps.setInt(1, threadid);
             ps.setInt(2, c.getPlayer().getId());
-            ps.setLong(3, System.currentTimeMillis());
+            ps.setLong(3, currentServerTime());
             ps.setString(4, text);
             ps.execute();
             ps.close();
@@ -157,7 +157,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
             Connection con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("UPDATE bbs_threads SET `name` = ?, `timestamp` = ?, " + "`icon` = ?, " + "`startpost` = ? WHERE guildid = ? AND localthreadid = ? AND (postercid = ? OR ?)")) {
                 ps.setString(1, title);
-                ps.setLong(2, System.currentTimeMillis());
+                ps.setLong(2, currentServerTime());
                 ps.setInt(3, icon);
                 ps.setString(4, text);
                 ps.setInt(5, c.getGuildId());
@@ -194,7 +194,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
             ps = con.prepareStatement("INSERT INTO bbs_threads " + "(`postercid`, `name`, `timestamp`, `icon`, `startpost`, " + "`guildid`, `localthreadid`) " + "VALUES(?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, c.getId());
             ps.setString(2, title);
-            ps.setLong(3, System.currentTimeMillis());
+            ps.setLong(3, currentServerTime());
             ps.setInt(4, icon);
             ps.setString(5, text);
             ps.setInt(6, c.getGuildId());

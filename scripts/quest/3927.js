@@ -53,14 +53,18 @@ function end(mode, type, selection) {
         } else if (status == 2) {
             if(selection == 0) {
                 qm.sendOk("If I had an iron hammer and a dagger... a bow and an arrow... what does that mean? Do you want me to tell you? I don't know myself. It's something you should think about. If you need a clue... it would go something like... a weapon is just an item... until someone uses it...?");
-                qm.gainExp(1000 * qm.getPlayer().getExpRate());
-                qm.forceCompleteQuest();
             } else if(selection == 1) {
                 qm.sendOk("Man, Jiyur wrote on the wall again! Arrgh!!");
+                qm.dispose();
+                return;
             } else {
                 qm.sendOk("What? You forgot? Do you remember where it was written?");
+                qm.dispose();
+                return;
             }
-
+        } else if (status == 3) {
+            qm.gainExp(1000 * qm.getPlayer().getExpRate());
+            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

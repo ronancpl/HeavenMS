@@ -42,8 +42,7 @@ function end(mode, type, selection) {
             qm.sendSimple("Ehh... Yeah, the city is not really doing well because of the currently ruling govern, that's indeed a fact. If only the Guardians of the Deserts returned to put order on this mess...\r\n\r\n#L0##bWhat is the Guardian of the Deserts doing when we're under the Queen's tyranny?#k");
         } else if (status == 3) {
             qm.sendSimple("They have departed on an expedition to get rid of some major threats in the desert that were ravaging Ariant, for quite some time now... It's strange, they should have already returned... Thinking about it now, the last attack on the merchants was around the direction the Guardians departed... No, that can't be... Can it?\r\n\r\n#L0##bPerhaps Deo has already turned into a monster.#k");
-        }
-        else if (status == 4) {
+        } else if (status == 4) {
             qm.gainItem(4011008, -1);
             
             qm.sendNext("We're in great trouble, if it is like this. And it really seems like it. If the Royal Cactus Deo has gone insane, Ariant is done for. You, can you do something to defeat Deo? We really need your help now.");

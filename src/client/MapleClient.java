@@ -956,6 +956,7 @@ public class MapleClient {
             
                 Server.getInstance().unregisterLoginState(this);
             
+                this.session.setAttribute(MapleClient.CLIENT_KEY, null);
 		this.accountName = null;
 		this.macs = null;
 		this.hwid = null;
@@ -1151,6 +1152,10 @@ public class MapleClient {
         
         public void unlockClient() {
                 lock.unlock();
+	}
+        
+        public boolean trylockClient() {
+                return lock.tryLock();
 	}
         
         public void lockEncoder() {
@@ -1356,12 +1361,16 @@ public class MapleClient {
 		this.sessionId = sessionId;
 	}  
 
+        public boolean canRequestCharlist(){
+		return lastNpcClick + 877 < Server.getInstance().getCurrentTime();
+	}
+        
 	public boolean canClickNPC(){
-		return lastNpcClick + 500 < System.currentTimeMillis();
+		return lastNpcClick + 500 < Server.getInstance().getCurrentTime();
 	}
 
 	public void setClickedNPC(){
-		lastNpcClick = System.currentTimeMillis();
+		lastNpcClick = Server.getInstance().getCurrentTime();
 	}
 
 	public void removeClickedNPC(){

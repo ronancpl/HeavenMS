@@ -44,10 +44,10 @@ public final class SnowballHandler extends AbstractMaplePacketHandler{
         //slea.skip(4);
 
         if (snowball == null || othersnowball == null || snowball.getSnowmanHP() == 0) return;
-        if ((System.currentTimeMillis() - chr.getLastSnowballAttack()) < 500) return;
+        if ((currentServerTime() - chr.getLastSnowballAttack()) < 500) return;
         if (chr.getTeam() != (what % 2)) return;
 
-        chr.setLastSnowballAttack(System.currentTimeMillis());
+        chr.setLastSnowballAttack(currentServerTime());
         int damage = 0;
         if (what < 2 && othersnowball.getSnowmanHP() > 0)
             damage = 10;

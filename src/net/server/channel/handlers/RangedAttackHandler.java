@@ -51,9 +51,9 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.setPetLootCd(System.currentTimeMillis());
+        chr.setPetLootCd(currentServerTime());
 		
-        /*long timeElapsed = System.currentTimeMillis() - chr.getAutobanManager().getLastSpam(8);
+        /*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
         if(timeElapsed < 300) {
             AutobanFactory.FAST_ATTACK.alert(chr, "Time: " + timeElapsed);
         }
@@ -218,7 +218,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                             return;
                         } else {
                             c.announce(MaplePacketCreator.skillCooldown(attack.skill, effect_.getCooldown()));
-                            chr.addCooldown(attack.skill, System.currentTimeMillis(), effect_.getCooldown() * 1000);
+                            chr.addCooldown(attack.skill, currentServerTime(), effect_.getCooldown() * 1000);
                         }
                     }
                 }

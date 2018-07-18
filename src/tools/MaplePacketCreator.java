@@ -684,8 +684,9 @@ public class MaplePacketCreator {
                 mplew.writeInt(c.getAccID());
                 mplew.write(c.getGender());
                 
-                mplew.writeBool(c.getGMLevel() > 1);    // thanks Steve(kaito1410) for pointing this out
-                mplew.write((c.getGMLevel() > 1 && Server.getInstance().canFly(c.getAccID())) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                boolean canFly = Server.getInstance().canFly(c.getAccID());
+                mplew.writeBool((ServerConstants.USE_ENFORCE_ADMIN_ACCOUNT || canFly) ? c.getGMLevel() > 1 : false);    // thanks Steve(kaito1410) for pointing the GM account boolean here
+                mplew.write((c.getGMLevel() > 1 && canFly) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
                 mplew.write(0); // Country Code.
                 
                 mplew.writeMapleAsciiString(c.getAccountName());

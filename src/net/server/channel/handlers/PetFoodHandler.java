@@ -38,7 +38,7 @@ public final class PetFoodHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         AutobanManager abm = chr.getAutobanManager();
-        if (abm.getLastSpam(2) + 500 > System.currentTimeMillis()) {
+        if (abm.getLastSpam(2) + 500 > currentServerTime()) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }

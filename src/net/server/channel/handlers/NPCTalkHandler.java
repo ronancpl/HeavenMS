@@ -41,7 +41,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             return;
         }
         
-        if(System.currentTimeMillis() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT) {
+        if(currentServerTime() - c.getPlayer().getNpcCooldown() < ServerConstants.BLOCK_NPC_RACE_CONDT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
@@ -53,7 +53,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Talking to NPC " + npc.getId());
             
             if (npc.getId() == 9010009) {   //is duey
-                c.getPlayer().setNpcCooldown(System.currentTimeMillis());
+                c.getPlayer().setNpcCooldown(currentServerTime());
                 DueyProcessor.dueySendTalk(c);
             } else {
                 if (c.getCM() != null || c.getQM() != null) {

@@ -36,7 +36,7 @@ public final class ItemMoveHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.skip(4);
-        if(c.getPlayer().getAutobanManager().getLastSpam(6) + 300 > System.currentTimeMillis()) {
+        if(c.getPlayer().getAutobanManager().getLastSpam(6) + 300 > currentServerTime()) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }

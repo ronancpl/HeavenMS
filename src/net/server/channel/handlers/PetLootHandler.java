@@ -42,7 +42,7 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if(System.currentTimeMillis() - chr.getPetLootCd() < ServerConstants.PET_LOOT_UPON_ATTACK) {
+        if(currentServerTime() - chr.getPetLootCd() < ServerConstants.PET_LOOT_UPON_ATTACK) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }

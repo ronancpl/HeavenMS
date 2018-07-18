@@ -40,6 +40,7 @@ import tools.locks.MonitoredReentrantLock;
 public abstract class BaseScheduler {
     private int idleProcs = 0;
     private List<SchedulerListener> listeners = new LinkedList<>();
+    private final List<Lock> externalLocks;
     private Map<Object, Pair<Runnable, Long>> registeredEntries = new HashMap<>();
     
     private ScheduledFuture<?> schedulerTask = null;
@@ -53,16 +54,43 @@ public abstract class BaseScheduler {
     
     protected BaseScheduler(MonitoredLockType lockType) {
         schedulerLock = new MonitoredReentrantLock(lockType, true);
+        externalLocks = new LinkedList<>();
+    }
+    
+    // NOTE: practice EXTREME caution when adding external locks to the scheduler system, if you don't know what you're doing DON'T USE THIS.
+    protected BaseScheduler(MonitoredLockType lockType, List<Lock> extLocks) {
+        schedulerLock = new MonitoredReentrantLock(lockType, true);
+        externalLocks = extLocks;
     }
     
     protected void addListener(SchedulerListener listener) {
         listeners.add(listener);
     }
     
+    private void lockScheduler() {
+        if(!externalLocks.isEmpty()) {
+            for(Lock l : externalLocks) {
+                l.lock();
+            }
+        }
+        
+        schedulerLock.lock();
+    }
+    
+    private void unlockScheduler() {
+        if(!externalLocks.isEmpty()) {
+            for(Lock l : externalLocks) {
+                l.unlock();
+            }
+        }
+        
+        schedulerLock.unlock();
+    }
+    
     private void runBaseSchedule() {
         List<Object> toRemove;
         
-        schedulerLock.lock();
+        lockScheduler();
         try {
             if(registeredEntries.isEmpty()) {
                 idleProcs++;
@@ -93,14 +121,14 @@ public abstract class BaseScheduler {
                 registeredEntries.remove(mse);
             }
         } finally {
-            schedulerLock.unlock();
+            unlockScheduler();
         }
         
         dispatchRemovedEntries(toRemove, true);
     }
     
     protected void registerEntry(Object key, Runnable removalAction, long duration) {
-        schedulerLock.lock();
+        lockScheduler();
         try {
             idleProcs = 0;
             if(schedulerTask == null) {
@@ -109,17 +137,17 @@ public abstract class BaseScheduler {
             
             registeredEntries.put(key, new Pair<>(removalAction, System.currentTimeMillis() + duration));
         } finally {
-            schedulerLock.unlock();
+            unlockScheduler();
         }
     }
     
     protected void interruptEntry(Object key) {
-        schedulerLock.lock();
+        lockScheduler();
         try {
             Pair<Runnable, Long> rm = registeredEntries.remove(key);
             if(rm != null) rm.getLeft().run();
         } finally {
-            schedulerLock.unlock();
+            unlockScheduler();
         }
         
         dispatchRemovedEntries(Collections.singletonList(key), false);

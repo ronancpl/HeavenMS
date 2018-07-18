@@ -34,6 +34,8 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {
 
@@ -58,12 +60,17 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         if (ServerConstants.AUTOMATIC_REGISTER && loginok == 5) {
             try {
                 con = DatabaseConnection.getConnection();
-                ps = con.prepareStatement("INSERT INTO accounts (name, password, birthday, tempban) VALUES (?, ?, ?, ?);"); //Jayd: Added birthday, tempban
+                ps = con.prepareStatement("INSERT INTO accounts (name, password, birthday, tempban) VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
                 ps.setString(1, login);
                 ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
                 ps.setString(3, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (birthday)
                 ps.setString(4, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (tempban)
                 ps.executeUpdate();
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                c.setAccID(rs.getInt(1));
+                rs.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -113,9 +120,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
     }
 
     private static void login(MapleClient c){
-        Server.getInstance().loadAccountCharactersView(c);    // locks the login session until data is recovered from the cache or the DB.
         c.announce(MaplePacketCreator.getAuthSuccess(c));//why the fk did I do c.getAccountName()?
-
         Server.getInstance().registerLoginState(c);
     }
 

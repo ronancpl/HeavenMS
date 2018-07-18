@@ -1066,14 +1066,14 @@ public class MapleMap {
         return character;
     }
     
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chr) {
+    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chrList) {
         List<MapleCharacter> character = new LinkedList<>();
         chrRLock.lock();
         try {
-            for (MapleCharacter a : characters) {
-                if (chr.contains(a.getClient().getPlayer())) {
-                    if (box.contains(a.getPosition())) {
-                        character.add(a);
+            for (MapleCharacter chr : chrList) {
+                if (characters.contains(chr)) {
+                    if (box.contains(chr.getPosition())) {
+                        character.add(chr);
                     }
                 }
             }
@@ -2529,6 +2529,9 @@ public class MapleMap {
     */
 
     public void removePlayer(MapleCharacter chr) {
+        Channel cserv = chr.getClient().getChannelServer();
+        
+        cserv.unregisterFaceExpression(mapid, chr);
         chr.unregisterChairBuff();
         
         chrWLock.lock();
@@ -2540,10 +2543,10 @@ public class MapleMap {
         }
         
         if (MapleMiniDungeonInfo.isDungeonMap(mapid)) {
-            MapleMiniDungeon mmd = chr.getClient().getChannelServer().getMiniDungeon(mapid);
+            MapleMiniDungeon mmd = cserv.getMiniDungeon(mapid);
             if(mmd != null) {
                 if(!mmd.unregisterPlayer(chr)) {
-                    chr.getClient().getChannelServer().removeMiniDungeon(mapid);
+                    cserv.removeMiniDungeon(mapid);
                 }
             }
         }

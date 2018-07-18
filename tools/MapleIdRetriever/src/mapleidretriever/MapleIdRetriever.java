@@ -147,7 +147,7 @@ public class MapleIdRetriever {
         }
     }
     
-    public static void fetchDataOnMapleHandbook() throws SQLException {
+    private static void fetchDataOnMapleHandbook() throws SQLException {
         String line;
         
         try {

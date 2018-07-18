@@ -114,6 +114,7 @@ public class Server {
     private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
     
     private final AtomicLong currentTime = new AtomicLong(0);
+    private long serverCurrentTime = 0;
     
     private boolean availableDeveloperRoom = false;
     private boolean online = false;
@@ -126,18 +127,20 @@ public class Server {
         return instance;
     }
 
+    public long getCurrentTime() {  // returns a slightly delayed time value, under frequency of UPDATE_INTERVAL
+        return serverCurrentTime;
+    }
+    
     public void updateCurrentTime() {
-        currentTime.addAndGet(ServerConstants.UPDATE_INTERVAL);
+        serverCurrentTime = currentTime.addAndGet(ServerConstants.UPDATE_INTERVAL);
     }
     
     public long forceUpdateCurrentTime() {
         long timeNow = System.currentTimeMillis();
+        serverCurrentTime = timeNow;
         currentTime.set(timeNow);
+        
         return timeNow;
-    }
-    
-    public long getCurrentTime() {  // returns a slightly delayed time value
-        return currentTime.get();
     }
     
     public boolean isOnline() {
@@ -953,6 +956,34 @@ public class Server {
     }
     */
     
+    public Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loadAccountCharlist(Integer accountId) {
+        List<World> wlist = worlds;
+        List<Pair<Integer, List<MapleCharacter>>> accChars = new ArrayList<>(wlist.size() + 1);
+        int chrTotal = 0;
+        List<MapleCharacter> lastwchars = null;
+        
+        lgnRLock.lock();
+        try {
+            for(World w : wlist) {
+                List<MapleCharacter> wchars = w.getAccountCharactersView(accountId);
+                if(wchars == null) {
+                    if(!accountChars.containsKey(accountId)) {
+                        accountChars.put(accountId, new HashSet<Integer>());    // not advisable at all to write on the map on a read-protected environment
+                    }                                                           // yet it's known there's no problem since no other point in the source does
+                } else if(!wchars.isEmpty()) {                                  // this action.
+                    lastwchars = wchars;
+
+                    accChars.add(new Pair<>(w.getId(), wchars));
+                    chrTotal += wchars.size();
+                }
+            }
+        } finally {
+            lgnRLock.unlock();
+        }
+        
+        return new Pair<>(new Pair<>(chrTotal, lastwchars), accChars);
+    }
+    
     private static List<List<MapleCharacter>> loadAccountCharactersViewFromDb(MapleClient c, int wlen) {
         List<List<MapleCharacter>> wchars = new ArrayList<>(wlen);
         for(int i = 0; i < wlen; i++) wchars.add(i, new LinkedList<MapleCharacter>());
@@ -1003,8 +1034,8 @@ public class Server {
         return wchars;
     }
     
-    public void loadAccountCharactersView(MapleClient c) {
-        int accId = c.getAccID();
+    public void loadAccountCharacters(MapleClient c) {
+        Integer accId = c.getAccID();
         int gmLevel = 0;
         boolean firstAccountLogin;
         

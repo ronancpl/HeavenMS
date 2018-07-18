@@ -50,9 +50,9 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.setPetLootCd(System.currentTimeMillis());
+        chr.setPetLootCd(currentServerTime());
         
-        /*long timeElapsed = System.currentTimeMillis() - chr.getAutobanManager().getLastSpam(8);
+        /*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
         if(timeElapsed < 300) {
                 AutobanFactory.FAST_ATTACK.alert(chr, "Time: " + timeElapsed);
         }
@@ -115,7 +115,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                         int duration = combo.getEffect(olv).getDuration();
                         List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, neworbcount));
                         chr.setBuffedValue(MapleBuffStat.COMBO, neworbcount);                 
-                        duration -= (int) (System.currentTimeMillis() - chr.getBuffedStarttime(MapleBuffStat.COMBO));
+                        duration -= (int) (currentServerTime() - chr.getBuffedStarttime(MapleBuffStat.COMBO));
                         c.announce(MaplePacketCreator.giveBuff(oid, duration, stat));
                         chr.getMap().broadcastMessage(chr, MaplePacketCreator.giveForeignBuff(chr.getId(), stat), false);
                     }
@@ -174,7 +174,7 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
                     return;
                 } else {
                     c.announce(MaplePacketCreator.skillCooldown(attack.skill, effect_.getCooldown()));
-                    chr.addCooldown(attack.skill, System.currentTimeMillis(), effect_.getCooldown() * 1000);
+                    chr.addCooldown(attack.skill, currentServerTime(), effect_.getCooldown() * 1000);
                 }
             }
         }

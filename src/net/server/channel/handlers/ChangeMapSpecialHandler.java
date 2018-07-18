@@ -35,7 +35,7 @@ public final class ChangeMapSpecialHandler extends AbstractMaplePacketHandler {
             String startwp = slea.readMapleAsciiString();
             slea.readShort();
             MaplePortal portal = c.getPlayer().getMap().getPortal(startwp);
-            if (portal == null || c.getPlayer().portalDelay() > System.currentTimeMillis() || c.getPlayer().getBlockedPortals().contains(portal.getScriptName())) {
+            if (portal == null || c.getPlayer().portalDelay() > currentServerTime() || c.getPlayer().getBlockedPortals().contains(portal.getScriptName())) {
                     c.announce(MaplePacketCreator.enableActions());
                     return;
             }

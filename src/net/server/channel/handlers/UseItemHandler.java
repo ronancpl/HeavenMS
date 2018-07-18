@@ -74,7 +74,7 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
             } else if (ItemConstants.isTownScroll(itemId)) {
                 int banMap = chr.getMapId();
                 int banSp = chr.getMap().findClosestPlayerSpawnpoint(chr.getPosition()).getId();
-                long banTime = System.currentTimeMillis();
+                long banTime = currentServerTime();
                 
                 if (ii.getItemEffect(toUse.getItemId()).applyTo(chr)) {
                     if(ServerConstants.USE_BANISHABLE_TOWN_SCROLL) {

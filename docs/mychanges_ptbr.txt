@@ -1130,3 +1130,17 @@ Corrigido pinkbean nao dropando itens dentro da expedição.
 
 14 Julho 2018,
 Movido "recharge" de Donator para JrGM.
+Otimizado busca por currenttimemillis, agora buscando do objeto do servidor ao invés de verificar pelo ambiente JVM.
+Corrigido handlers de organização de inventários não protegendo concorrentemente inventários antes de realizar a ordenação.
+
+15 - 16 Julho 2018,
+Implementado parte da questline level 120+ de Cygnus Knights.
+Corrigido itens de cash sendo vendidos em player shop/hired merchant.
+Corrigido login atribuindo sempre conta de GM (limitando ações como trade) quando há pelo menos um char GM naquela conta - isso pode até ser mesmo necessário, criado um flag pra continuar enforcando o "GM account".
+Estabilizado mecânicas de MapleTV e separado atividade da MapleTV pra cada world.
+Normalizado Character.wz: agora todos os equipamentos que precisam ter "cash" o tem.
+Normalizado String.wz: agora todos os itens sem "name" o tem.
+Nova ferramenta: MapleInvalidItemWithNoNameFetcher. Busca por itemids sem as propriedades "cash" e "name" nos conjuntos de wz.xml.
+
+17 Julho 2018,
+Corrigido problema crítico no novo sistema de login, que impedia contas recém-criadas de logar no jogo.

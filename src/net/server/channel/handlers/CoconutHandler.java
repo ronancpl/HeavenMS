@@ -50,7 +50,7 @@ public final class CoconutHandler extends AbstractMaplePacketHandler {
 		if (event == null){
 			return;
 		}
-		if (System.currentTimeMillis() < nut.getHitTime()){
+		if (currentServerTime() < nut.getHitTime()){
 			return;
 		}
 		if (nut.getHits() > 2 && Math.random() < 0.4) {

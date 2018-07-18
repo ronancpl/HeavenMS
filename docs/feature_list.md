@@ -60,20 +60,24 @@ Player Social Network:
 * Implemented Marriage system from the ground-up (excluding character packet encoding parts that were already present, proper credits given throughout the source files).
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
-* Game minirooms such as match cards and omok now has semi-functional password system.
+* Game minirooms such as match cards and omok now has a functional password system.
 * Item pickup cooldown on non-owned/non-partyowned items functional.
 * Further improved the server's ranking system, now displaying properly daily player ranking movement.
 * Automated support for Player NPCs and Hall of Fame.
+* Protected concurrently and improved the face expression system, guarding from trivial packet spam and exploits.
 
 Cash & Items:
 
 * EXP/DROP/Cosmetic Coupons.
 * EXP/DROP coupons now appears as a buff effect when on active time.
 * Great deal of cash items functional.
+* MapleTV mechanics stabilized and separated by world.
+* GMS-esque omok/match card drop chances.
 * New scroll: antibanish. For use only in cases where bosses send a player back to town.
 * Inventory system properly checks for item slot free space and ownership.
 * Storage with "Arrange Items" feature functional.
 * Close-quarters evaluation mode for items (sandbox).
+* Further improved Karma scissors mechanics.
 * Spikes on shoes.
 * Vega's spell.
 * Owl of Minerva.
@@ -91,11 +95,11 @@ Monsters, Maps & Reactors:
 * Every skill/mastery book is now droppable by mobs.
 * Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
 * Redesigned HT mechanics for spawn and linked damage to the sponge.
-* Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the accessible map area.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
 * Implemented Zombify disease status.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
+* Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the accessible map area.
 * Boats, elevator and other travelling mechanics fully working.
 * HP decreasing overtime on maps and mechanics to prevent them (consumables, equips) fully functional.
 * Crimson Balrog boat approaching visual effect made functional.
@@ -131,7 +135,9 @@ Server potentials:
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
+* Consistent experience gain system.
 * NPC crafters (equips, plates/jewels, etc) now won't take items freely if the requirement conditions are not properly met.
+* Improved Duey mechanics: package received popup and reviewed many delivery mechanics.
 * Pet item pickup now gives preference to player attacks rather than forcing attack disables when automatically picking up.
 * Channel capacity bar functional and world servers with max capacity checks.
 * Disease status are now visible for other players, even when changing maps.
@@ -140,6 +146,8 @@ Server potentials:
 * Custom jail system (needs provided custom wz).
 * Custom buyback system.
 * Delete Character (requires ENABLE_PIC activated).
+* Smoothed up view-all-char feature, now showing properly all available characters and not disconnecting players too often.
+* Centralized getcurrenttime throughout several server handlers, boosting it's performance overall.
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 * Reallocated mapobjectids utilization throughout the source, preventing issues such as "NPC disappearing mysteriously after some server time" from happening.
@@ -150,6 +158,7 @@ Server potentials:
 Custom NPCs:
 
 * Spiegelmann: automatized rock-refiner.
+* Asia: scroll & rarities shop NPC.
 * Abdula: lists droppers of needed skill/mastery books.
 * Agent E: accessory crafter.
 * Donation Box: automatized item-buyer.
@@ -169,6 +178,7 @@ External tools:
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
+* MapleInvalidItemWithNoNameFetcher - Generates two files: one listing all itemid's with inexistent name and "cash" property. And other with a prepared XML to solve the name issue.
 * MapleMapInfoRetriever - Basic tool for detecting missing info nodes on the map field structures (maps failing to have an info node on the WZ is an critical issue).
 * MapleMesoFetcher - Creates meso drop data for mobs with more than 4 items (thus overworld mobs), calculations based on mob level and whether it's a boss or not.
 * MapleMobBookIndexer - Generates a SQL table with all relations of cardid and mobid present in the mob book.
@@ -190,8 +200,11 @@ Project:
 * Uncovered many Send/Recv opcodes throughout the source.
 * Reviewed many Java object aspects that needed concurrency protection.
 * Reviewed SQL data, eliminating duplicated entries on the tables.
+* Improved login phase, using cache over DB queries.
 * Usage of HikariCP to improve the DB connection management.
+* Developed many survey tools for content profiling.
 * Protected many flaws with login management system.
+* Channel, World and Server-wide timer management.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.
 * ThreadTracker: embedded auditing tool for run-time deadlock scanning throughout the server source (relies heavily on memory usage, designed only for debugging purposes).
 

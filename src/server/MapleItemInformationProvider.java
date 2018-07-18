@@ -1489,7 +1489,12 @@ public class MapleItemInformationProvider {
     }
 
     public boolean isCash(int itemId) {
-        return itemId / 1000000 == 5 || getEquipStats(itemId).get("cash") == 1;
+        int itemType = itemId / 1000000;
+        if (itemType == 5) return true;
+        if (itemType != 1) return false;
+        
+        Map<String, Integer> eqpStats = getEquipStats(itemId);
+        return eqpStats != null && eqpStats.get("cash") == 1;
     }
     
     public boolean isUpgradeable(int itemId) {

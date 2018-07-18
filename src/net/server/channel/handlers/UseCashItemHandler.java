@@ -67,7 +67,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final MapleCharacter player = c.getPlayer();
         
-        long timeNow = System.currentTimeMillis();
+        long timeNow = currentServerTime();
         if (timeNow - player.getLastUsedCashItem() < 3000) {
             player.dropMessage(1, "You have used a cash item recently. Wait a moment, then try again.");
             c.announce(MaplePacketCreator.enableActions());
@@ -310,7 +310,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 }
 
                 if (period > 0) {
-                    eq.setExpiration(System.currentTimeMillis() + (period * 60 * 60 * 24 * 1000));
+                    eq.setExpiration(currentServerTime() + (period * 60 * 60 * 24 * 1000));
                 }
 
                 remove(c, itemId);
@@ -335,12 +335,13 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             }
         } else if (itemType == 507) {
             boolean whisper;
-            switch (itemId / 1000 % 10) {
+            switch ((itemId / 1000) % 10) {
                 case 1: // Megaphone
                     if (player.getLevel() > 9) {
                         player.getClient().getChannelServer().broadcastPacket(MaplePacketCreator.serverNotice(2, medal + player.getName() + " : " + slea.readMapleAsciiString()));
                     } else {
                         player.dropMessage(1, "You may not use this until you're level 10.");
+                        return;
                     }
                     break;
                 case 2: // Super megaphone
@@ -375,15 +376,16 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         messages.add(message);
                     }
                     slea.readInt();
-                    if (megassenger) {
-                        Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + builder.toString(), ear));
-                    }
-                    if (!MapleTVEffect.isActive()) {
-                        new MapleTVEffect(player, victim, messages, tvType);
-                    } else {
+                    
+                    if (!MapleTVEffect.broadcastMapleTVIfNotActive(player, victim, messages, tvType)) {
                         player.dropMessage(1, "MapleTV is already in use.");
                         return;
                     }
+                    
+                    if (megassenger) {
+                        Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(3, c.getChannel(), medal + player.getName() + " : " + builder.toString(), ear));
+                    }
+                    
                     break;
                 case 6: //item megaphone
                     String msg = medal + c.getPlayer().getName() + " : " + slea.readMapleAsciiString();

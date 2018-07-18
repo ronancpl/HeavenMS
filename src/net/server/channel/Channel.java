@@ -89,6 +89,7 @@ public final class Channel {
     private EventScriptManager eventSM;
     private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[4];
     private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[4];
+    private FaceExpressionScheduler faceExpressionSchedulers[] = new FaceExpressionScheduler[4];
     private OverallScheduler channelSchedulers[] = new OverallScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
@@ -119,6 +120,8 @@ public final class Channel {
     private ReentrantReadWriteLock merchantLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MERCHANT, true);
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
+    
+    private Lock faceLock[] = new MonitoredReentrantLock[4];
     
     private Lock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
     
@@ -157,8 +160,11 @@ public final class Channel {
             }
             
             for(int i = 0; i < 4; i++) {
+                faceLock[i] = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_FACEEXPRS, true);
+                
                 mobStatusSchedulers[i] = new MobStatusScheduler();
                 mobAnimationSchedulers[i] = new MobAnimationScheduler();
+                faceExpressionSchedulers[i] = new FaceExpressionScheduler(faceLock[i]);
                 channelSchedulers[i] = new OverallScheduler();
             }
             
@@ -868,6 +874,40 @@ public final class Channel {
     
     public void forceRunOverallAction(int mapid, Runnable runAction) {
         channelSchedulers[getChannelSchedulerIndex(mapid)].forceRunDelayedAction(runAction);
+    }
+    
+    public void registerFaceExpression(final MapleMap map, final MapleCharacter chr, int emote) {
+        int lockid = getChannelSchedulerIndex(map.getId());
+        
+        Runnable cancelAction = new Runnable() {
+            @Override
+            public void run() {
+                if(chr.isLoggedinWorld()) {
+                    map.broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, 0), false);
+                }
+            }
+        };
+        
+        faceLock[lockid].lock();
+        try {
+            if(chr.isLoggedinWorld()) {
+                faceExpressionSchedulers[lockid].registerFaceExpression(chr.getId(), cancelAction);
+                map.broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
+            }
+        } finally {
+            faceLock[lockid].unlock();
+        }
+    }
+    
+    public void unregisterFaceExpression(int mapid, MapleCharacter chr) {
+        int lockid = getChannelSchedulerIndex(mapid);
+        
+        faceLock[lockid].lock();
+        try {
+            faceExpressionSchedulers[lockid].unregisterFaceExpression(chr.getId());
+        } finally {
+            faceLock[lockid].unlock();
+        }
     }
     
     public void debugMarriageStatus() {

@@ -201,22 +201,20 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     chr.getClient().announce(MaplePacketCreator.getMiniRoomError(6));
                     return;
                 }
-
-                if (itemId > 5030000 && itemId < 5030012 || itemId > 5140000 && itemId < 5140006) {
-                    if (createType == 4) {
-                        MaplePlayerShop shop = new MaplePlayerShop(chr, desc);
-                        chr.setPlayerShop(shop);
-                        chr.getMap().addMapObject(shop);
-                        shop.sendShop(c);
-                        c.getWorldServer().registerPlayerShop(shop);
-                        //c.announce(MaplePacketCreator.getPlayerShopRemoveVisitor(1));
-                    } else {
-                        MapleHiredMerchant merchant = new MapleHiredMerchant(chr, itemId, desc);
-                        chr.setHiredMerchant(merchant);
-                        c.getWorldServer().registerHiredMerchant(merchant);
-                        chr.getClient().getChannelServer().addHiredMerchant(chr.getId(), merchant);
-                        chr.announce(MaplePacketCreator.getHiredMerchant(chr, merchant, true));
-                    }
+                
+                if (ItemConstants.isPlayerShop(itemId)) {
+                    MaplePlayerShop shop = new MaplePlayerShop(chr, desc);
+                    chr.setPlayerShop(shop);
+                    chr.getMap().addMapObject(shop);
+                    shop.sendShop(c);
+                    c.getWorldServer().registerPlayerShop(shop);
+                    //c.announce(MaplePacketCreator.getPlayerShopRemoveVisitor(1));
+                } else if (ItemConstants.isHiredMerchant(itemId)) {
+                    MapleHiredMerchant merchant = new MapleHiredMerchant(chr, itemId, desc);
+                    chr.setHiredMerchant(merchant);
+                    c.getWorldServer().registerHiredMerchant(merchant);
+                    chr.getClient().getChannelServer().addHiredMerchant(chr.getId(), merchant);
+                    chr.announce(MaplePacketCreator.getHiredMerchant(chr, merchant, true));
                 }
             }
         } else if (mode == Action.INVITE.getCode()) {
@@ -473,12 +471,18 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             	FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " might of possibly packet edited Hired Merchants\nperBundle: " + perBundle + "\nperBundle * bundles (This multiplied cannot be greater than 2000): " + perBundle * bundles + "\nbundles: " + bundles + "\nprice: " + price);
                 return;
             }
-            Item sellItem = ivItem.copy();
-            if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(ivItem.getItemId())) {
-                c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Shop."));
+            
+            if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && MapleItemInformationProvider.getInstance().isCash(ivItem.getItemId())) {
+                c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be sold on the Player Store."));
                 return;
             }
             
+            if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(ivItem.getItemId())) {
+                c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Store."));
+                return;
+            }
+            
+            Item sellItem = ivItem.copy();
             if(!ItemConstants.isRechargeable(ivItem.getItemId())) {
                 sellItem.setQuantity(perBundle);
             }

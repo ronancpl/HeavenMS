@@ -22,21 +22,32 @@
 package net.server.channel.handlers;
 
 import client.MapleClient;
+import client.MapleCharacter;
 import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
-import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class FaceExpressionHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        MapleCharacter chr = c.getPlayer();
         int emote = slea.readInt();
+        
         if (emote > 7) {
             int emoteid = 5159992 + emote;
-            if (c.getPlayer().getInventory(ItemConstants.getInventoryType(emoteid)).findById(emoteid) == null) {
+            if (chr.getInventory(ItemConstants.getInventoryType(emoteid)).findById(emoteid) == null) {
                 return;
             }
         }
-        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.facialExpression(c.getPlayer(), emote), false);
+        
+        if(c.trylockClient()) {
+            try {   // expecting players never intends to wear the emote 0 (default face, that changes back after 5sec timeout)
+                if (emote != 0 && chr.isLoggedinWorld()) {
+                    chr.changeFaceExpression(emote);
+                }
+            } finally {
+                c.unlockClient();
+            }
+        }
     }
 }

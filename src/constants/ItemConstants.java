@@ -126,6 +126,11 @@ public final class ItemConstants {
         return itemId >= 1110000 && itemId < 1140000;
     }
     
+    public static boolean isTaming(int itemId) {
+        int itemType = itemId / 1000;
+        return itemType == 1902 || itemType == 1912;
+    }
+    
     public static boolean isTownScroll(int itemId) {
         return itemId >= 2030000 && itemId < 2030100;
     }
@@ -164,7 +169,15 @@ public final class ItemConstants {
     public static boolean isPartyAllcure(int itemId) {
         return itemId == 2022433;
     }
-
+    
+    public static boolean isHiredMerchant(int itemId) {
+        return itemId / 10000 == 503;
+    }
+    
+    public static boolean isPlayerShop(int itemId) {
+        return itemId / 10000 == 514;
+    }
+    
     public static MapleInventoryType getInventoryType(final int itemId) {
         if (inventoryTypeCache.containsKey(itemId)) {
             return inventoryTypeCache.get(itemId);

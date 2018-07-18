@@ -60,7 +60,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
         public Invited(String n, int id) {
             name = n.toLowerCase();
             gid = id;
-            expiration = System.currentTimeMillis() + 60 * 60 * 1000;
+            expiration = currentServerTime() + 60 * 60 * 1000;
         }
 
         @Override
@@ -81,20 +81,20 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
         }
     }
     private java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
-    private long nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
+    private long nextPruneTime = currentServerTime() + 20 * 60 * 1000;
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (System.currentTimeMillis() >= nextPruneTime) {
+        if (currentServerTime() >= nextPruneTime) {
             Iterator<Invited> itr = invited.iterator();
             Invited inv;
             while (itr.hasNext()) {
                 inv = itr.next();
-                if (System.currentTimeMillis() >= inv.expiration) {
+                if (currentServerTime() >= inv.expiration) {
                     itr.remove();
                 }
             }
-            nextPruneTime = System.currentTimeMillis() + 20 * 60 * 1000;
+            nextPruneTime = currentServerTime() + 20 * 60 * 1000;
         }
         MapleCharacter mc = c.getPlayer();
         byte type = slea.readByte();

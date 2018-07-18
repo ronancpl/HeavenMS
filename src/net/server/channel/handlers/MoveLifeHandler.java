@@ -26,7 +26,6 @@ import client.MapleClient;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import net.server.Server;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 //import server.life.MobAttackInfo;
@@ -102,7 +101,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                                 toUse = MobSkillFactory.getMobSkill(nextCastSkill, nextCastSkillLevel);
                                 
                                 if (!isSkill && !isAttack) {
-                                        long curtime = Server.getInstance().getCurrentTime();
+                                        long curtime = currentServerTime();
                                         if(curtime >= monster.getNextBasicSkillTime()) {  // dont use the special attack too often, chase the player f3
                                                 //MobAttackInfo mobAttack = MobAttackInfoFactory.getMobAttackInfo(monster, attackId);
                                                 monster.setNextBasicSkillTime(curtime);

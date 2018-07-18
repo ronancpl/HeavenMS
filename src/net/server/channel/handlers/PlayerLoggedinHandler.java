@@ -343,7 +343,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
     
     private static List<Pair<Long, PlayerBuffValueHolder>> getLocalStartTimes(List<PlayerBuffValueHolder> lpbvl) {
         List<Pair<Long, PlayerBuffValueHolder>> timedBuffs = new ArrayList<>();
-        long curtime = System.currentTimeMillis();
+        long curtime = currentServerTime();
         
         for(PlayerBuffValueHolder pb : lpbvl) {
             timedBuffs.add(new Pair<>(curtime - pb.usedTime, pb));

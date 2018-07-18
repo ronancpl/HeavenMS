@@ -199,7 +199,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
-    private long lastfametime, lastUsedCashItem, lastHealed, lastBuyback = 0, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
+    private long lastfametime, lastUsedCashItem, lastExpression = 0, lastHealed, lastBuyback = 0, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
     private boolean hidden, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false;
     private int linkedLevel = 0;
@@ -2369,7 +2369,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    private boolean dispelSkills(int skillid) {
+    private static boolean dispelSkills(int skillid) {
         switch (skillid) {
             case DarkKnight.BEHOLDER:
             case FPArchMage.ELQUINES:
@@ -2384,6 +2384,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 return true;
             default:
                 return false;
+        }
+    }
+    
+    public void changeFaceExpression(int emote) {
+        long timeNow = Server.getInstance().getCurrentTime();
+        if(timeNow - lastExpression > 2000) {
+            lastExpression = timeNow;
+            client.getChannelServer().registerFaceExpression(map, this, emote);
         }
     }
 

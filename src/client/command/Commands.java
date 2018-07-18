@@ -607,33 +607,40 @@ public class Commands {
                 case "dex":
                 case "int":
                 case "luk":
-                        int amount = (sub.length > 1) ? Integer.parseInt(sub[1]) : player.getRemainingAp();
+                        int remainingAp = player.getRemainingAp();
+                    
+                        int amount = (sub.length > 1) ? Math.min(Integer.parseInt(sub[1]), remainingAp) : remainingAp;
                         boolean str = sub[0].equalsIgnoreCase("str");
                         boolean Int = sub[0].equalsIgnoreCase("int");
                         boolean luk = sub[0].equalsIgnoreCase("luk");
                         boolean dex = sub[0].equalsIgnoreCase("dex");
 
-                        if (amount > 0 && amount <= player.getRemainingAp() && amount <= 32763 || amount < 0 && amount >= -32763 && Math.abs(amount) + player.getRemainingAp() <= 32767) {
-                            if (str && amount + player.getStr() <= 32767 && amount + player.getStr() >= 4) {
-                                player.setStr(player.getStr() + amount);
-                                player.updateSingleStat(MapleStat.STR, player.getStr());
-                                player.setRemainingAp(player.getRemainingAp() - amount);
-                                player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
-                            } else if (Int && amount + player.getInt() <= 32767 && amount + player.getInt() >= 4) {
-                                player.setInt(player.getInt() + amount);
-                                player.updateSingleStat(MapleStat.INT, player.getInt());
-                                player.setRemainingAp(player.getRemainingAp() - amount);
-                                player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
-                            } else if (luk && amount + player.getLuk() <= 32767 && amount + player.getLuk() >= 4) {
-                                player.setLuk(player.getLuk() + amount);
-                                player.updateSingleStat(MapleStat.LUK, player.getLuk());
-                                player.setRemainingAp(player.getRemainingAp() - amount);
-                                player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
-                            } else if (dex && amount + player.getDex() <= 32767 && amount + player.getDex() >= 4) {
-                                player.setDex(player.getDex() + amount);
-                                player.updateSingleStat(MapleStat.DEX, player.getDex());
-                                player.setRemainingAp(player.getRemainingAp() - amount);
-                                player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
+                        if (amount > 0 && amount <= remainingAp && amount <= 32763) {
+                            int playerStr = player.getStr();
+                            int playerDex = player.getDex();
+                            int playerInt = player.getInt();
+                            int playerLuk = player.getLuk();
+                            
+                            if (str && amount + playerStr <= 32767 && amount + playerStr >= 4) {
+                                player.setStr(playerStr + amount);
+                                player.updateSingleStat(MapleStat.STR, playerStr);
+                                player.setRemainingAp(remainingAp - amount);
+                                player.updateSingleStat(MapleStat.AVAILABLEAP, remainingAp);
+                            } else if (Int && amount + playerInt <= 32767 && amount + playerInt >= 4) {
+                                player.setInt(playerInt + amount);
+                                player.updateSingleStat(MapleStat.INT, playerInt);
+                                player.setRemainingAp(remainingAp - amount);
+                                player.updateSingleStat(MapleStat.AVAILABLEAP, remainingAp);
+                            } else if (luk && amount + playerLuk <= 32767 && amount + playerLuk >= 4) {
+                                player.setLuk(playerLuk + amount);
+                                player.updateSingleStat(MapleStat.LUK, playerLuk);
+                                player.setRemainingAp(remainingAp - amount);
+                                player.updateSingleStat(MapleStat.AVAILABLEAP, remainingAp);
+                            } else if (dex && amount + playerDex <= 32767 && amount + playerDex >= 4) {
+                                player.setDex(playerDex + amount);
+                                player.updateSingleStat(MapleStat.DEX, playerDex);
+                                player.setRemainingAp(remainingAp - amount);
+                                player.updateSingleStat(MapleStat.AVAILABLEAP, remainingAp);
                             } else {
                                 player.dropMessage("Please make sure the stat you are trying to raise is not over 32,767 or under 4.");
                             }

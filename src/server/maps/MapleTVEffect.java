@@ -22,7 +22,6 @@
 package server.maps;
 
 import client.MapleCharacter;
-import java.util.ArrayList;
 import java.util.List;
 import net.server.Server;
 import server.TimerManager;
@@ -31,34 +30,28 @@ import tools.MaplePacketCreator;
 /*
  * MapleTVEffect
  * @author MrXotic
+ * @author Ronan (made MapleTV mechanics synchronous)
  */
 public class MapleTVEffect {
 	
-	private static boolean ACTIVE;
+	private final static boolean ACTIVE[] = new boolean[Server.getInstance().getWorlds().size()];
 	
-	private List<String> message = new ArrayList<>(5);
-	private MapleCharacter user;
-	private int type;
-	private MapleCharacter partner;
-
-	public MapleTVEffect(MapleCharacter u, MapleCharacter p, List<String> msg, int t) {
-		this.message = msg;
-		this.user = u;
-		this.type = t;
-		this.partner = p;
-		broadcastTV(true);
+	public static synchronized boolean broadcastMapleTVIfNotActive(MapleCharacter player, MapleCharacter victim, List<String> messages, int tvType){
+                int w = player.getWorld();
+                if(!ACTIVE[w]) {
+                        broadcastTV(true, w, messages, player, tvType, victim);
+                        return true;
+                }
+            
+		return false;
 	}
 
-	public static boolean isActive(){
-		return ACTIVE;
-	}
-
-	private void broadcastTV(boolean activity) {
+	private static synchronized void broadcastTV(boolean activity, final int userWorld, List<String> message, MapleCharacter user, int type, MapleCharacter partner) {
 		Server server = Server.getInstance();
-		ACTIVE = activity;
-		if (ACTIVE) {
-			server.broadcastMessage(user.getWorld(), MaplePacketCreator.enableTV());
-			server.broadcastMessage(user.getWorld(), MaplePacketCreator.sendTV(user, message, type <= 2 ? type : type - 3, partner));
+		ACTIVE[userWorld] = activity;
+		if (activity) {
+			server.broadcastMessage(userWorld, MaplePacketCreator.enableTV());
+			server.broadcastMessage(userWorld, MaplePacketCreator.sendTV(user, message, type <= 2 ? type : type - 3, partner));
 			int delay = 15000;
 			if (type == 4) {
 				delay = 30000;
@@ -68,11 +61,11 @@ public class MapleTVEffect {
 			TimerManager.getInstance().schedule(new Runnable() {
 				@Override
 				public void run() {
-					broadcastTV(false);
+					broadcastTV(false, userWorld, null, null, -1, null);
 				}
 			}, delay);
 		} else {
-			server.broadcastMessage(user.getWorld(), MaplePacketCreator.removeTV());
+			server.broadcastMessage(userWorld, MaplePacketCreator.removeTV());
 		}
 	}
 }

@@ -89,7 +89,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 }
                 
                 c.announce(MaplePacketCreator.skillCooldown(skillid, cooldownTime));
-                chr.addCooldown(skillid, System.currentTimeMillis(), cooldownTime * 1000);
+                chr.addCooldown(skillid, currentServerTime(), cooldownTime * 1000);
             }
         }
         if (skillid == Hero.MONSTER_MAGNET || skillid == Paladin.MONSTER_MAGNET || skillid == DarkKnight.MONSTER_MAGNET) { // Monster Magnet

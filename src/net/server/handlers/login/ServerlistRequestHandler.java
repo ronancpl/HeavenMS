@@ -34,6 +34,9 @@ public final class ServerlistRequestHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	Server server = Server.getInstance();
+        server.loadAccountCharacters(c);    // locks the login session until data is recovered from the cache or the DB.
+        c.setClickedNPC();
+        
         for (World world : server.getWorlds()) {
             c.announce(MaplePacketCreator.getServerList(world.getId(), GameConstants.WORLD_NAMES[world.getId()], world.getFlag(), world.getEventMessage(), world.getChannels()));
         }

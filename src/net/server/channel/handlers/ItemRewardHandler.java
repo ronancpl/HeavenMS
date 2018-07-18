@@ -56,7 +56,7 @@ public final class ItemRewardHandler extends AbstractMaplePacketHandler {
             	if (ItemConstants.getInventoryType(reward.itemid) == MapleInventoryType.EQUIP) {
                     final Item item = ii.getEquipById(reward.itemid);
                     if (reward.period != -1) {
-                    	item.setExpiration(System.currentTimeMillis() + (reward.period * 60 * 60 * 10));
+                    	item.setExpiration(currentServerTime() + (reward.period * 60 * 60 * 10));
                     }
                     MapleInventoryManipulator.addFromDrop(c, item, false);
                 } else {

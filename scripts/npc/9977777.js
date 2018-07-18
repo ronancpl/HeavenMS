@@ -73,9 +73,10 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Party for novices-only.");
         addFeature("Thoroughly reviewed P. Shops and H. Merchants.");
         addFeature("Transactions on Merchs instantly announced to owner.");
-        addFeature("Game minirooms with semi-functional pw system.");
+        addFeature("Game minirooms with functional pw system.");
         addFeature("Proper item pickup cooldown on non-owned items.");
         addFeature("Improved ranking system, with daily movement.");
+        addFeature("Protected and improved face expression system.");
         addFeature("Automated support for Player NPCs and Hall of Fame.");
         addFeature("Engagement & Wedding system.");
 }
@@ -84,6 +85,7 @@ function writeFeatureTab_CashItems() {
         addFeature("EXP/DROP/Cosmetic Coupons.");
         addFeature("EXP/DROP Coupon as buff effect during active time.");
         addFeature("Great deal of cash items functional.");
+        addFeature("MapleTV mechanics stabilized and split by world.");
         addFeature("GMS-esque omok/match card drop chances.");
         addFeature("New town scroll: antibanish. Counters boss banishes.");
         addFeature("Inventory system checks for free slot & stack space.");
@@ -112,6 +114,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Added Boss HP Bar for dozens of bosses.");
         addFeature("Game will favor showing the targeted boss HPbar.");
         addFeature("Dmg overtime on maps and neutralizers functional.");
+        addFeature("Items will consistently stay within the walking area.");
         addFeature("Boats, elevator and other travel mechanics functional.");
         addFeature("C. Balrog's boat approaching visual effect functional.");
         addFeature("Maps having everlasting items no longer expires them.");
@@ -119,6 +122,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Uncovered missing portal SFX on scripted portals.");
         addFeature("PQ boxes sprays items when opened, GMS-like.");
         addFeature("Reactors pick items up smartly from the field.");
+        addFeature("Updated scripted portals now with proper portal SFX.");
         addFeature("Reviewed Masteria, W. Tour, N. Desert and Neo City.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
 }
@@ -145,6 +149,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
         addFeature("Enhanced buff system: best buffs effects takes place.");
         addFeature("Enhanced AP auto-assigner: focus on eqp demands.");
+        addFeature("Tweaked pet/mount hunger to a balanced growth rate.");
         addFeature("Consistent experience gain system.");
         addFeature("NPC crafters won't take items freely anymore.");
         addFeature("Duey: pkg rcvd popup and many delivery mechanics.");
@@ -157,9 +162,11 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Custom buyback system, uses mesos / NX, via MTS.");
         addFeature("Delete Character.");
         addFeature("Smooth view-all-char, now showing all account chars.");
+        addFeature("Centralized servertime, boosting handler performance.");
         addFeature("Autosaver (periodically saves player's data on DB).");
         addFeature("Fixed and randomized HP/MP growth rate available.");
         addFeature("Prevented 'NPC gone after some uptime' issue.");
+        addFeature("Implemented starters' AP assigning for under level 11.");
         addFeature("AP assigning available for novices level 10 or below.");
         addFeature("Automatic account registration - thanks shavit!");
 }
@@ -202,6 +209,7 @@ function writeFeatureTab_Project() {
         addFeature("Reviewed SQL data, eliminating duplicated entries.");
         addFeature("Improved login phase, using cache over DB queries.");
         addFeature("Protected many flaws with login management system.");
+        addFeature("Usage of HikariCP to improve DB connection calls.");
         addFeature("Developed many survey tools for content profiling.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");

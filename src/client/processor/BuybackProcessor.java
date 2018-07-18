@@ -41,7 +41,7 @@ public class BuybackProcessor {
     public static void processBuyback(MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         boolean buyback;
-            
+        
         c.lockClient();
         try {
             buyback = !chr.isAlive() && chr.couldBuyback();

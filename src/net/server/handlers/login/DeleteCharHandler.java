@@ -35,7 +35,7 @@ public final class DeleteCharHandler extends AbstractMaplePacketHandler {
         int cid = slea.readInt();
         if (c.checkPic(pic)) {
             if(c.deleteCharacter(cid, c.getAccID())) {
-                FilePrinter.printError(FilePrinter.DELETED_CHARACTERS + c.getAccountName() + ".txt", c.getAccountName() + " deleted CID: " + cid + "\r\n");			
+                FilePrinter.print(FilePrinter.DELETED_CHARACTERS + c.getAccountName() + ".txt", c.getAccountName() + " deleted CID: " + cid + "\r\n");			
                 c.announce(MaplePacketCreator.deleteCharResponse(cid, 0));
             } else {
                 c.announce(MaplePacketCreator.deleteCharResponse(cid, 0x14));

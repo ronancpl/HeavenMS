@@ -65,7 +65,7 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
                 break;
             case 2270001:
                 if (mob.getId() == 9500197) {
-                    if ((abm.getLastSpam(10) + 1000) < System.currentTimeMillis()) {
+                    if ((abm.getLastSpam(10) + 1000) < currentServerTime()) {
                         if (mob.getHp() < ((mob.getMaxHp() / 10) * 4)) {
                             chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
                             mob.getMap().killMonster(mob, null, false);
@@ -81,7 +81,7 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
                 break;
             case 2270002:
                 if (mob.getId() == 9300157) {
-                    if ((abm.getLastSpam(10) + 800) < System.currentTimeMillis()) {
+                    if ((abm.getLastSpam(10) + 800) < currentServerTime()) {
                         if (mob.getHp() < ((mob.getMaxHp() / 10) * 4)) {
                             if (Math.random() < 0.5) { // 50% chance
                                 chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
@@ -166,7 +166,7 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
                 break;
             case 2270008:
                 if (mob.getId() == 9500336) {
-                    if ((abm.getLastSpam(10) + 3000) < System.currentTimeMillis()) {
+                    if ((abm.getLastSpam(10) + 3000) < currentServerTime()) {
                         abm.spam(10);
                         chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
                         mob.getMap().killMonster(mob, null, false);
