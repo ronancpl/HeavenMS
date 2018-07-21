@@ -54,7 +54,7 @@ public class MapleQuest {
     
     private static final Set<Short> exploitableQuests = new HashSet<>();
     static {
-        exploitableQuests.add((short) 2338);
+        exploitableQuests.add((short) 2338);    // there are a lot more exploitable quests, they need to be nit-picked
         exploitableQuests.add((short) 3637);
         exploitableQuests.add((short) 3714);
         exploitableQuests.add((short) 21752);
@@ -106,25 +106,22 @@ public class MapleQuest {
                 MapleQuestRequirementType type = MapleQuestRequirementType.getByWZName(startReq.getName());
                 if (type.equals(MapleQuestRequirementType.INTERVAL)) {
                     repeatable = true;
-                }
-				
-                if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
+                } else if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
                     infoNumber = (short) MapleDataTool.getInt(startReq, 0);
-                }
-				
-                MapleQuestRequirement req = this.getRequirement(type, startReq);
-				
-                if(req == null)
-                        continue;
-				
-                if (type.equals(MapleQuestRequirementType.MOB)) {
+                } else if (type.equals(MapleQuestRequirementType.MOB)) {
                     for (MapleData mob : startReq.getChildren()) {
                         relevantMobs.add(MapleDataTool.getInt(mob.getChildByPath("id")));
                     }
                 }
+		
+                MapleQuestRequirement req = this.getRequirement(type, startReq);
+                if(req == null)
+                        continue;
+		
                 startReqs.put(type, req);
             }
         }
+        
         MapleData completeReqData = reqData.getChildByPath("1");
         if (completeReqData != null) {
             for (MapleData completeReq : completeReqData.getChildren()) {
@@ -136,8 +133,7 @@ public class MapleQuest {
 				
                 if (type.equals(MapleQuestRequirementType.INFO_NUMBER)) {
                     infoNumber = (short) MapleDataTool.getInt(completeReq, 0);
-                }
-                if (type.equals(MapleQuestRequirementType.MOB)) {
+                } else if (type.equals(MapleQuestRequirementType.MOB)) {
                     for (MapleData mob : completeReq.getChildren()) {
                         relevantMobs.add(MapleDataTool.getInt(mob.getChildByPath("id")));
                     }
@@ -175,13 +171,13 @@ public class MapleQuest {
         }
     }
 	
-	public boolean isAutoComplete() {
-            return autoPreComplete || autoComplete;
-	}
-	
-	public boolean isAutoStart() {
-            return autoStart;
-	}
+    public boolean isAutoComplete() {
+        return autoPreComplete || autoComplete;
+    }
+
+    public boolean isAutoStart() {
+        return autoStart;
+    }
 
     public static MapleQuest getInstance(int id) {
         MapleQuest ret = quests.get(id);
@@ -226,7 +222,14 @@ public class MapleQuest {
         
         return str.toString();
     }
-
+    
+    public boolean isSameDayRepeatable() {
+        if(!repeatable) return false;
+        
+        IntervalRequirement ir = (IntervalRequirement) startReqs.get(MapleQuestRequirementType.INTERVAL);
+        return ir.getInterval() < ServerConstants.FAME_GAIN_MIN_HOUR_INTERVAL * 60 * 60 * 1000;
+    }
+    
     public boolean canStartWithoutRequirements(MapleCharacter c) {
         MapleQuestStatus mqs = c.getQuest(this);
         return !(mqs.getStatus() != Status.NOT_STARTED && !(mqs.getStatus() == Status.COMPLETED && repeatable));

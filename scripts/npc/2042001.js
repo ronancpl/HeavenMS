@@ -146,7 +146,7 @@ function refineItems(refineType) {
             itemqty = refineQty * 10;
         
             var fee = getRefineFee(refineFees[refineType][(itemid % 100) | 0] * refineQty);
-            if(cm.canHold(itemid + 1000, refineQty) && cm.getMeso() >= fee) {
+            if(cm.canHold(itemid + 1000, refineQty, itemid, itemqty) && cm.getMeso() >= fee) {
                 cm.gainMeso(-fee);
                 cm.gainItem(itemid, -itemqty);
                 cm.gainItem(itemid + (itemid != 4010007 ? 1000 : 1001), refineQty);

@@ -36,13 +36,13 @@ import java.util.Map;
 import java.util.Set;
 
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 public class MapleGuild {
     

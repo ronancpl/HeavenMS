@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package tools.locks;
+package net.server.audit.locks;
 
 /**
  *
@@ -49,6 +49,8 @@ public enum MonitoredLockType {
     CHANNEL_FACESCHDL,
     CHANNEL_MOBACTION,
     CHANNEL_MOBANIMAT,
+    CHANNEL_MOBMIST,
+    CHANNEL_MOBSKILL,
     CHANNEL_MOBSTATUS,
     CHANNEL_OVTSTATUS,
     CHANNEL_OVERALL,

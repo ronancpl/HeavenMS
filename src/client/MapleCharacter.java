@@ -64,7 +64,6 @@ import net.server.world.PartyOperation;
 import net.server.world.World;
 import scripting.event.EventInstanceManager;
 import server.CashShop;
-import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
 import server.MapleShop;
@@ -104,7 +103,6 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.locks.MonitoredReentrantLock;
 import tools.packets.Wedding;
 import client.autoban.AutobanManager;
 import client.creator.CharacterFactoryRecipe;
@@ -112,11 +110,13 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryProof;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.MapleWeaponType;
 import client.inventory.ModifyInventory;
 import client.inventory.PetDataFactory;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import client.newyear.NewYearCardRecord;
 import constants.ExpTable;
 import constants.GameConstants;
@@ -156,7 +156,8 @@ import constants.skills.ThunderBreaker;
 import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -168,7 +169,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private int world;
     private int accountid, id;
     private int rank, rankMove, jobRank, jobRankMove;
-    private int level, str, dex, luk, int_, hp, maxhp, mp, maxmp;
+    private int level, str, dex, luk, int_, hp, maxhp, eqphp, mp, maxmp, eqpmp;
     private int hpMpApUsed;
     private int hair;
     private int face;
@@ -202,6 +203,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private long lastfametime, lastUsedCashItem, lastExpression = 0, lastHealed, lastBuyback = 0, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
     private transient int localmaxhp, localmaxmp, localstr, localdex, localluk, localint_, magic, watk;
     private boolean hidden, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false;
+    private boolean equippedMesoMagnet = false, equippedItemPouch = false, equippedPetItemIgnore = false;
     private int linkedLevel = 0;
     private String linkedName = null;
     private boolean finishedDojoTutorial;
@@ -325,6 +327,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         for (int i = 0; i < remainingSp.length; i++) {
             remainingSp[i] = 0;
         }
+        
         for (MapleInventoryType type : MapleInventoryType.values()) {
             byte b = 24;
             if (type == MapleInventoryType.CASH) {
@@ -332,6 +335,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             inventory[type.ordinal()] = new MapleInventory(this, type, (byte) b);
         }
+        inventory[MapleInventoryType.CANHOLD.ordinal()] = new MapleInventoryProof(this);
+        
         for (int i = 0; i < SavedLocationType.values().length; i++) {
             savedLocations[i] = null;
         }
@@ -4392,6 +4397,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public int getMaxHp() {
         return maxhp;
     }
+    
+    public int getMaxMp() {
+        return maxmp;
+    }
+    
+    public int getMaxHpEquipped() {
+        return Math.min(maxhp + eqphp, 30000);
+    }
+    
+    public int getMaxMpEquipped() {
+        return Math.min(maxmp + eqpmp, 30000);
+    }
 
     public int getMaxClassLevel() {
         return isCygnus() ? 120 : 200;
@@ -4404,11 +4421,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         return GameConstants.getJobMaxLevel(job);
     }
-
-    public int getMaxMp() {
-        return maxmp;
-    }
-
+    
     public int getMeso() {
         return meso.get();
     }
@@ -4693,7 +4706,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         
         this.setMiniGame(null);
         if (game.isOwner(this)) {
-            this.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(this));
+            this.getMap().broadcastMessage(MaplePacketCreator.removeMinigameBox(this));
             game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose(3));
         } else {
             game.removeVisitor(this);
@@ -5176,8 +5189,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.setInt(1, getId());
                 ps.setInt(2, to.getId());
                 ps.executeUpdate();
-            }
-            finally {
+            } finally {
                 con.close();
             }
         } catch (SQLException e) {
@@ -6610,7 +6622,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     if (partychar.getMapId() == mapId && partychar.getChannel() == channel) {
                         MapleCharacter other = Server.getInstance().getWorld(world).getChannel(channel).getPlayerStorage().getCharacterByName(partychar.getName());
                         if (other != null) {
-                            client.announce(MaplePacketCreator.updatePartyMemberHP(other.getId(), other.getHp(), other.getCurrentMaxHp()));
+                            client.announce(MaplePacketCreator.updatePartyMemberHP(other.getId(), other.getHp(), other.getMaxHpEquipped()));
                         }
                     }
                 }
@@ -7388,7 +7400,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ps.setString(1, to);
             ps.setString(2, this.getName());
             ps.setString(3, msg);
-            ps.setLong(4, System.currentTimeMillis());
+            ps.setLong(4, Server.getInstance().getCurrentTime());
             ps.setByte(5, fame);
             ps.executeUpdate();
         } finally {
@@ -8149,11 +8161,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             int channel = client.getChannel();
             int mapId = getMapId();
             
+            int curmaxhp = getMaxHpEquipped();
             for (MaplePartyCharacter partychar : party.getMembers()) {
                 if (partychar.getMapId() == mapId && partychar.getChannel() == channel) {
                     MapleCharacter other = Server.getInstance().getWorld(world).getChannel(channel).getPlayerStorage().getCharacterByName(partychar.getName());
                     if (other != null) {
-                        other.client.announce(MaplePacketCreator.updatePartyMemberHP(getId(), this.hp, maxhp));
+                        other.client.announce(MaplePacketCreator.updatePartyMemberHP(getId(), this.hp, curmaxhp));
                     }
                 }
             }
@@ -8202,8 +8215,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             announce(MaplePacketCreator.updateQuestInfo((short) quest.getQuest().getId(), quest.getNpc()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
-            short questid = quest.getQuest().getId();
-            if(!MapleQuest.isExploitableQuest(questid)) {
+            MapleQuest mquest = quest.getQuest();
+            short questid = mquest.getId();
+            if(!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
                 quest_fame += 1;
                 if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
                     fameGainByQuest();
@@ -8679,7 +8693,56 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return autoban;
     }
 
-    public void equipPendantOfSpirit() {
+    public void resetEquippedHpMp() {
+        eqphp = 0;
+        eqpmp = 0;
+    }
+    
+    public void equippedItem(Equip equip) {
+        int itemid = equip.getItemId();
+        eqphp += equip.getHp();
+        eqpmp += equip.getMp();
+        
+        if (itemid == 1122017) {
+            this.equipPendantOfSpirit();
+        } else if (itemid == 1812000) { // meso magnet
+            equippedMesoMagnet = true;
+        } else if (itemid == 1812001) { // item pouch
+            equippedItemPouch = true;
+        } else if (itemid == 1812007) { // item ignore pendant
+            equippedPetItemIgnore = true;
+        }
+    }
+    
+    public void unequippedItem(Equip equip) {
+        int itemid = equip.getItemId();
+        eqphp -= equip.getHp();
+        eqpmp -= equip.getMp();
+        
+        if (itemid == 1122017) {
+            this.unequipPendantOfSpirit();
+        } else if (itemid == 1812000) { // meso magnet
+            equippedMesoMagnet = false;
+        } else if (itemid == 1812001) { // item pouch
+            equippedItemPouch = false;
+        } else if (itemid == 1812007) { // item ignore pendant
+            equippedPetItemIgnore = false;
+        }
+    }
+    
+    public boolean isEquippedMesoMagnet() {
+        return equippedMesoMagnet;
+    }
+    
+    public boolean isEquippedItemPouch() {
+        return equippedItemPouch;
+    }
+    
+    public boolean isEquippedPetItemIgnore() {
+        return equippedPetItemIgnore;
+    }
+    
+    private void equipPendantOfSpirit() {
         if (pendantOfSpirit == null) {
             pendantOfSpirit = TimerManager.getInstance().register(new Runnable() {
                 @Override
@@ -8695,7 +8758,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
-    public void unequipPendantOfSpirit() {
+    private void unequipPendantOfSpirit() {
         if (pendantOfSpirit != null) {
             pendantOfSpirit.cancel(false);
             pendantOfSpirit = null;

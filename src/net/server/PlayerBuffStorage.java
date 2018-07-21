@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import server.life.MobSkill;
 import tools.Pair;
-import tools.locks.MonitoredLockType;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 /**
  *

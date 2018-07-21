@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 import tools.Pair;
 import client.MapleCharacter;
@@ -41,19 +41,19 @@ import constants.ItemConstants;
 import server.MapleItemInformationProvider;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 /**
  *
  * @author Matze, Ronan
  */
 public class MapleInventory implements Iterable<Item> {
-    private MapleCharacter owner;
-    private Map<Short, Item> inventory = new LinkedHashMap<>();
-    private byte slotLimit;
-    private MapleInventoryType type;
-    private boolean checked = false;
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.INVENTORY, true);
+    protected MapleCharacter owner;
+    protected Map<Short, Item> inventory = new LinkedHashMap<>();
+    protected byte slotLimit;
+    protected MapleInventoryType type;
+    protected boolean checked = false;
+    protected Lock lock = new MonitoredReentrantLock(MonitoredLockType.INVENTORY, true);
     
     public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
         this.owner = mc;
@@ -301,7 +301,7 @@ public class MapleInventory implements Iterable<Item> {
         }
     }
 
-    private short addSlot(Item item) {
+    protected short addSlot(Item item) {
         if(item == null) {
             return -1;
         }
@@ -324,7 +324,7 @@ public class MapleInventory implements Iterable<Item> {
         }
     }
     
-    private void addSlotFromDB(short slot, Item item) {
+    protected void addSlotFromDB(short slot, Item item) {
         lock.lock();
         try {
             inventory.put(slot, item);
@@ -418,18 +418,22 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public static boolean checkSpot(MapleCharacter chr, Item item) {
-    	if (chr.getInventory(item.getInventoryType()).isFull()) return false;
-    	return true;
+        return !chr.getInventory(item.getInventoryType()).isFull();
     }
     
     public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
-        List<Integer> zeroedList = new ArrayList<>(5);
-        for(byte i = 0; i < 5; i++) zeroedList.add(0);
-        
-        return checkSpots(chr, items, zeroedList);
+        return checkSpots(chr, items, false);
     }
     
-    public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed) {
+    public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, boolean useProofInv) {
+        int invTypesSize = MapleInventoryType.values().length;
+        List<Integer> zeroedList = new ArrayList<>(invTypesSize);
+        for(byte i = 0; i < invTypesSize; i++) zeroedList.add(0);
+        
+        return checkSpots(chr, items, zeroedList, useProofInv);
+    }
+    
+    public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed, boolean useProofInv) {
         // assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0.
         
         Map<Integer, Short> rcvItems = new LinkedHashMap<>();
@@ -452,7 +456,7 @@ public class MapleInventory implements Iterable<Item> {
                 int itemType = rcvTypes.get(it.getKey()) - 1;
                 int usedSlots = typesSlotsUsed.get(itemType);
                 
-                int result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getKey(), it.getValue(), "", usedSlots);
+                int result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getKey(), it.getValue(), "", usedSlots, useProofInv);
                 boolean hasSpace = ((result % 2) != 0);
                 
                 if(!hasSpace) return false;
@@ -481,13 +485,17 @@ public class MapleInventory implements Iterable<Item> {
     }
     
     public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
+        return checkSpotsAndOwnership(chr, items, false);
+    }
+    
+    public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, boolean useProofInv) {
         List<Integer> zeroedList = new ArrayList<>(5);
         for(byte i = 0; i < 5; i++) zeroedList.add(0);
         
-        return checkSpotsAndOwnership(chr, items, zeroedList);
+        return checkSpotsAndOwnership(chr, items, zeroedList, useProofInv);
     }
     
-    public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed) {
+    public static boolean checkSpotsAndOwnership(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items, List<Integer> typesSlotsUsed, boolean useProofInv) {
         //assumption: no "UNDEFINED" or "EQUIPPED" items shall be tested here, all counts are >= 0 and item list to be checked is a legal one.
         
         Map<Long, Short> rcvItems = new LinkedHashMap<>();
@@ -516,7 +524,7 @@ public class MapleInventory implements Iterable<Item> {
                 
                 //System.out.print("inserting " + itemId.intValue() + " with type " + itemType + " qty " + it.getValue() + " owner '" + rcvOwners.get(it.getKey()) + "' current usedSlots:");
                 //for(Integer i : typesSlotsUsed) System.out.print(" " + i);
-                int result = MapleInventoryManipulator.checkSpaceProgressively(c, itemId.intValue(), it.getValue(), rcvOwners.get(it.getKey()), usedSlots);
+                int result = MapleInventoryManipulator.checkSpaceProgressively(c, itemId.intValue(), it.getValue(), rcvOwners.get(it.getKey()), usedSlots, useProofInv);
                 boolean hasSpace = ((result % 2) != 0);
                 //System.out.print(" -> hasSpace: " + hasSpace + " RESULT : " + result + "\n");
                 

@@ -27,8 +27,8 @@ import scripting.portal.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredLockType;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 public class MapleGenericPortal implements MaplePortal {
 

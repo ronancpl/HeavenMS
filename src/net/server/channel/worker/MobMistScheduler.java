@@ -25,16 +25,12 @@ import net.server.audit.locks.MonitoredLockType;
  *
  * @author Ronan
  */
-public class OverallScheduler extends BaseScheduler {
-    public OverallScheduler() {
-        super(MonitoredLockType.CHANNEL_OVERALL);
+public class MobMistScheduler extends BaseScheduler {
+    public MobMistScheduler() {
+        super(MonitoredLockType.CHANNEL_MOBMIST);
     }
     
-    public void registerDelayedAction(Runnable runAction, long delay) {
+    public void registerMistCancelAction(Runnable runAction, long delay) {
         registerEntry(runAction, runAction, delay);
-    }
-    
-    public void forceRunDelayedAction(Runnable runAction) {
-        interruptEntry(runAction);
     }
 }

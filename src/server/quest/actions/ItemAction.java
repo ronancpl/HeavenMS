@@ -212,7 +212,7 @@ public class ItemAction extends MapleQuestAction {
                         for(Pair<Item, MapleInventoryType> it: randomList) {
                                 int idx = it.getRight().getType() - 1;
                             
-                                result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getLeft().getItemId(), it.getLeft().getQuantity(), "", rndUsed.get(idx));
+                                result = MapleInventoryManipulator.checkSpaceProgressively(c, it.getLeft().getItemId(), it.getLeft().getQuantity(), "", rndUsed.get(idx), false);
                                 if(result % 2 == 0) {
                                     chr.dropMessage(1, "Please check if you have enough space in your inventory.");
                                     return false;
@@ -227,7 +227,7 @@ public class ItemAction extends MapleQuestAction {
                         gainList.add(selected);
                 }
                 
-		if (!MapleInventory.checkSpots(chr, gainList, allSlotUsed)) {
+		if (!MapleInventory.checkSpots(chr, gainList, allSlotUsed, false)) {
 			chr.dropMessage(1, "Please check if you have enough space in your inventory.");
 			return false;
 		}

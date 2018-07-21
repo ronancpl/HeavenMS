@@ -25,9 +25,9 @@ import client.MapleClient;
 import client.inventory.Item;
 import java.awt.Point;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 public class MapleMapItem extends AbstractMapleMapObject {
     protected MapleClient ownerClient;

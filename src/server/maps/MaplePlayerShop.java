@@ -37,13 +37,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 import net.opcodes.SendOpcode;
-import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 /**
  *
@@ -53,6 +52,8 @@ import tools.locks.MonitoredLockType;
 public class MaplePlayerShop extends AbstractMapleMapObject {
     private AtomicBoolean open = new AtomicBoolean(false);
     private MapleCharacter owner;
+    private int itemid;
+    
     private MapleCharacter[] visitors = new MapleCharacter[3];
     private List<MaplePlayerShopItem> items = new ArrayList<>();
     private List<SoldItem> sold = new LinkedList<>();
@@ -63,10 +64,11 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private Map<Integer, Byte> chatSlot = new LinkedHashMap<>();
     private Lock visitorLock = new MonitoredReentrantLock(MonitoredLockType.VISITOR_PSHOP, true);
 
-    public MaplePlayerShop(MapleCharacter owner, String description) {
+    public MaplePlayerShop(MapleCharacter owner, String description, int itemid) {
         this.setPosition(owner.getPosition());
         this.owner = owner;
         this.description = description;
+        this.itemid = itemid;
     }
 
     public int getChannel() {
@@ -75,6 +77,10 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     
     public int getMapId() {
         return owner.getMapId();
+    }
+    
+    public int getItemId() {
+        return itemid;
     }
     
     public boolean isOpen() {
@@ -93,6 +99,22 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             visitorLock.unlock();
         }
     }
+    
+    public byte[] getShopRoomInfo() {
+        visitorLock.lock();
+        try {
+            byte count = 0;
+            for (MapleCharacter visitor : visitors) {
+                if (visitor != null) {
+                    count++;
+                }
+            }
+            
+            return new byte[]{count, (byte) visitors.length};
+        } finally {
+            visitorLock.unlock();
+        }
+    }
 
     public boolean isOwner(MapleCharacter c) {
         return owner.equals(c);
@@ -103,9 +125,9 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
             if (visitors[i] == null) {
                 visitors[i] = visitor;
                 visitor.setSlot(i);
+                
                 this.broadcast(MaplePacketCreator.getPlayerShopNewVisitor(visitor, i + 1));
-
-                if(i == 2) visitor.getMap().broadcastMessage(MaplePacketCreator.addCharBox(owner, 1));
+                owner.getMap().broadcastMessage(MaplePacketCreator.updatePlayerShopBox(this));
                 break;
             }
         }
@@ -123,7 +145,9 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                 if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
                     visitors[i] = null;
                     visitor.setSlot(-1);
+                    
                     this.broadcast(MaplePacketCreator.getPlayerShopRemoveVisitor(i + 1));
+                    owner.getMap().broadcastMessage(MaplePacketCreator.updatePlayerShopBox(this));
                     return;
                 }
             }
@@ -154,6 +178,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                         }
                         
                         this.broadcastRestoreToVisitors();
+                        owner.getMap().broadcastMessage(MaplePacketCreator.updatePlayerShopBox(this));
                         return;
                     }
                 }
@@ -161,7 +186,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                 visitorLock.unlock();
             }
             
-            if(owner.getPlayerShop() != null) visitor.getMap().broadcastMessage(MaplePacketCreator.addCharBox(owner, 4));
+            owner.getMap().broadcastMessage(MaplePacketCreator.updatePlayerShopBox(this));
         }
     }
 
@@ -394,7 +419,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
     
     public void closeShop() {
-        owner.getMap().broadcastMessage(MaplePacketCreator.removeCharBox(owner));
+        owner.getMap().broadcastMessage(MaplePacketCreator.removePlayerShopBox(this));
         clearChatLog();
         removeVisitors();
     }
@@ -527,12 +552,12 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
 
     @Override
     public void sendDestroyData(MapleClient client) {
-        client.announce(MaplePacketCreator.removeCharBox(owner));
+        client.announce(MaplePacketCreator.removePlayerShopBox(this));
     }
 
     @Override
     public void sendSpawnData(MapleClient client) {
-        client.announce(MaplePacketCreator.addCharBox(owner, 4));
+        client.announce(MaplePacketCreator.updatePlayerShopBox(this));
     }
 
     @Override

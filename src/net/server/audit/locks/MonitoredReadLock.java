@@ -17,7 +17,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package tools.locks;
+package net.server.audit.locks;
 
 import constants.ServerConstants;
 import java.text.DateFormat;
@@ -32,21 +32,22 @@ import java.util.concurrent.ScheduledFuture;
 import server.TimerManager;
 import net.server.Server;
 import net.server.audit.ThreadTracker;
+
 import tools.FilePrinter;
 
 /**
  *
  * @author RonanLana
  */
-public class MonitoredWriteLock extends ReentrantReadWriteLock.WriteLock {
+public class MonitoredReadLock extends ReentrantReadWriteLock.ReadLock {
     private ScheduledFuture<?> timeoutSchedule = null;
     private StackTraceElement[] deadlockedState = null;
     private final MonitoredLockType id;
     private final int hashcode;
     private final Lock state = new ReentrantLock(true);
     private final AtomicInteger reentrantCount = new AtomicInteger(0);
-
-    public MonitoredWriteLock(MonitoredReentrantReadWriteLock lock) {
+    
+    public MonitoredReadLock(MonitoredReentrantReadWriteLock lock) {
         super(lock);
         this.id = lock.id;
         hashcode = this.hashCode();

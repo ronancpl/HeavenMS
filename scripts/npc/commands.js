@@ -77,6 +77,7 @@ function writeHeavenMSCommandsLv5() {    //Developer
         addCommand("debugplayercoupons", "");
         addCommand("debugtimer", "");
         addCommand("debugmarriage", "");
+        addCommand("showpackets", "");
         addCommand("set", "");
 }
 
@@ -99,7 +100,7 @@ function writeHeavenMSCommandsLv4() {    //SuperGM
         addCommand("pap", "");
         addCommand("pianus", "");
         addCommand("cake", "");
-        addCommand("pnpcremove", "");
+        addCommand("playernpcremove", "");
         addCommand("playernpc", "");
 }
 
@@ -117,6 +118,7 @@ function writeHeavenMSCommandsLv3() {    //GM
         addCommand("reloaddrops", "");
         addCommand("reloadportals", "");
         addCommand("reloadmap", "");
+        addCommand("reloadshops", "");
         addCommand("hpmp", "");
         addCommand("maxhpmp", "");
         addCommand("music", "");

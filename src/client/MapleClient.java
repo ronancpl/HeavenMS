@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 
 import tools.*;
-import tools.locks.MonitoredReentrantLock;
 
 import javax.script.ScriptEngine;
 
@@ -74,7 +73,9 @@ import server.life.MapleMonster;
 import server.MapleTrade;
 import server.maps.*;
 import server.quest.MapleQuest;
-import tools.locks.MonitoredLockType;
+
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 public class MapleClient {
 
@@ -793,20 +794,19 @@ public class MapleClient {
 		try {
                         player.setAwayFromWorld(true);
                         player.notifyMapTransferToPartner(-1);
-			player.cancelAllBuffs(true);
-			player.cancelAllDebuffs();
+                        player.cancelAllBuffs(true);
+                        player.cancelAllDebuffs();
                         
                         player.closePlayerInteractions();
-			QuestScriptManager.getInstance().dispose(this);
+                        QuestScriptManager.getInstance().dispose(this);
 			
                         EventInstanceManager eim = player.getEventInstance();
 			if (eim != null) {
 				eim.playerDisconnected(player);
 			}
-			if (player.getMap() != null) {
+                        if (player.getMap() != null) {
                                 int mapId = player.getMapId();
-				player.getMap().removePlayer(player);
-                                
+                                player.getMap().removePlayer(player);
                                 if(GameConstants.isDojo(mapId)) {
                                         this.getChannelServer().freeDojoSectionIfEmpty(mapId);
                                 }
@@ -842,15 +842,15 @@ public class MapleClient {
                                 removePlayer();
                                 player.saveCooldowns();
                                 player.saveCharToDB(true);
-                            
+                                
                                 clear();
-				return;
+                                return;
 			}
                         
                         removePlayer();
 			
 			final World worlda = getWorldServer();
-			try {
+                        try {
 				if (!cashshop) {
 					if (!this.serverTransition) { // meaning not changing channels
 						if (messengerid > 0) {
@@ -861,7 +861,7 @@ public class MapleClient {
                                                         final MapleFamily family = worlda.getFamily(fid);
                                                         family.
                                                 }
-                                                */                  
+                                                */
 						for (MapleQuestStatus status : player.getStartedQuests()) { //This is for those quests that you have to stay logged in for a certain amount of time
 							MapleQuest quest = status.getQuest();
 							if (quest.getTimeLimit() > 0) {
@@ -870,7 +870,7 @@ public class MapleClient {
 								player.updateQuest(newStatus);
 							}
 						}	                   
-						if (guild != null) {
+                                                if (guild != null) {
 							final Server server = Server.getInstance();
 							server.setGuildMemberOnline(player, false, player.getClient().getChannel());
 							player.getClient().announce(MaplePacketCreator.showGuildInfo(player));
@@ -890,7 +890,7 @@ public class MapleClient {
 								}
 							}
 						}                   
-						if (bl != null) {
+                                                if (bl != null) {
 							worlda.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
 						}
 					}
@@ -910,7 +910,7 @@ public class MapleClient {
 									worlda.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, lchr);
 								}
 							}
-						}	                	
+						}	                
 						if (bl != null) {
 							worlda.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
 						}

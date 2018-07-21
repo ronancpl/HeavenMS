@@ -17,39 +17,43 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package tools.locks;
+package net.server.audit.locks;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.ScheduledFuture;
 import constants.ServerConstants;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-import java.util.concurrent.ScheduledFuture;
 import server.TimerManager;
 import net.server.Server;
 import net.server.audit.ThreadTracker;
-
 import tools.FilePrinter;
 
 /**
  *
  * @author RonanLana
  */
-public class MonitoredReadLock extends ReentrantReadWriteLock.ReadLock {
+public class MonitoredReentrantLock extends ReentrantLock {
     private ScheduledFuture<?> timeoutSchedule = null;
     private StackTraceElement[] deadlockedState = null;
     private final MonitoredLockType id;
     private final int hashcode;
     private final Lock state = new ReentrantLock(true);
     private final AtomicInteger reentrantCount = new AtomicInteger(0);
-    
-    public MonitoredReadLock(MonitoredReentrantReadWriteLock lock) {
-        super(lock);
-        this.id = lock.id;
+   
+    public MonitoredReentrantLock(MonitoredLockType id) {
+        super();
+        this.id = id;
+        hashcode = this.hashCode();
+    }
+            
+    public MonitoredReentrantLock(MonitoredLockType id, boolean fair) {
+        super(fair);
+        this.id = id;
         hashcode = this.hashCode();
     }
     

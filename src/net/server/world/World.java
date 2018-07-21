@@ -48,7 +48,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
@@ -75,7 +75,7 @@ import net.server.guild.MapleGuildSummary;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 /**
  *

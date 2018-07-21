@@ -718,27 +718,30 @@ public class MapleStatEffect {
     }
 
     public boolean applyTo(MapleCharacter chr) {
-        return applyTo(chr, chr, true, null, false);
+        return applyTo(chr, chr, true, null, false, 1);
     }
     
     public boolean applyTo(MapleCharacter chr, boolean useMaxRange) {
-        return applyTo(chr, chr, true, null, useMaxRange);
+        return applyTo(chr, chr, true, null, useMaxRange, 1);
     }
 
     public boolean applyTo(MapleCharacter chr, Point pos) {
-        return applyTo(chr, chr, true, pos, false);
+        return applyTo(chr, chr, true, pos, false, 1);
     }
 
     // primary: the player caster of the buff
-    private boolean applyTo(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary, Point pos, boolean useMaxRange) {
+    private boolean applyTo(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary, Point pos, boolean useMaxRange, int affectedPlayers) {
         if (skill && (sourceid == GM.HIDE || sourceid == SuperGM.HIDE)) {
             applyto.toggleHide(false);
             return true;
         }
         
-        int hpchange = calcHPChange(applyfrom, primary);
-        int mpchange = calcMPChange(applyfrom, primary);
+        if (primary && isHeal()) {
+            affectedPlayers = applyBuff(applyfrom, useMaxRange);
+        }
         
+        int hpchange = calcHPChange(applyfrom, primary, affectedPlayers);
+        int mpchange = calcMPChange(applyfrom, primary);
         if (primary) {
             if (itemConNo != 0) {
                 if(!applyto.getClient().getAbstractPlayerInteraction().hasItem(itemCon, itemConNo)) {
@@ -747,9 +750,7 @@ public class MapleStatEffect {
                 }
                 MapleInventoryManipulator.removeById(applyto.getClient(), ItemConstants.getInventoryType(itemCon), itemCon, itemConNo, false, true);
             }
-        }
-        List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
-        if (!primary) {
+        } else {
             if(isResurrection()) {
                 hpchange = applyto.getMaxHp();
                 applyto.setStance(0);
@@ -758,6 +759,7 @@ public class MapleStatEffect {
                 applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapObject(applyto), false);
             }
         }
+        
         if (isDispel() && makeChanceResult()) {
             applyto.dispelDebuffs();
         } else if (isCureAllAbnormalStatus()) {
@@ -770,6 +772,8 @@ public class MapleStatEffect {
         /*if (applyfrom.getMp() < getMpCon()) {
          AutobanFactory.MPCON.addPoint(applyfrom.getAutobanManager(), "mpCon hack for skill:" + sourceid + "; Player MP: " + applyto.getMp() + " MP Needed: " + getMpCon());
          } */
+        
+        List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
         if (hpchange != 0) {
             if (hpchange < 0 && (-hpchange) >= applyto.getHp() && (!applyto.hasDisease(MapleDisease.ZOMBIFY) || hpCon > 0)) {
                 if(!applyto.isGM()) {
@@ -784,8 +788,9 @@ public class MapleStatEffect {
             applyto.setHp(newHp);
             hpmpupdate.add(new Pair<>(MapleStat.HP, Integer.valueOf(applyto.getHp())));
         }
-        int newMp = applyto.getMp() + mpchange;
+        
         if (mpchange != 0) {
+            int newMp = applyto.getMp() + mpchange;
             if (mpchange < 0 && -mpchange > applyto.getMp()) {
                 if(!applyto.isGM()) {
                     applyto.getClient().announce(MaplePacketCreator.enableActions());
@@ -860,14 +865,16 @@ public class MapleStatEffect {
             applyBuffEffect(applyfrom, applyto, primary);
         }
 
-        if (primary && (overTime || isHeal())) {
-            applyBuff(applyfrom, useMaxRange);
-        }
+        if (primary) {
+            if (overTime) {
+                applyBuff(applyfrom, useMaxRange);
+            }
 
-        if (primary && isMonsterBuff()) {
-            applyMonsterBuff(applyfrom);
+            if (isMonsterBuff()) {
+                applyMonsterBuff(applyfrom);
+            }
         }
-
+        
         if (this.getFatigue() != 0) {
             applyto.getMount().setTiredness(applyto.getMount().getTiredness() + this.getFatigue());
         }
@@ -927,7 +934,9 @@ public class MapleStatEffect {
         return true;
     }
 
-    private void applyBuff(MapleCharacter applyfrom, boolean useMaxRange) {
+    private int applyBuff(MapleCharacter applyfrom, boolean useMaxRange) {
+        int affectedc = 1;
+        
         if (isPartyBuff() && (applyfrom.getParty() != null || isGmBuff())) {
             Rectangle bounds = (!useMaxRange) ? calculateBoundingBox(applyfrom.getPosition(), applyfrom.isFacingLeft()) : new Rectangle(Integer.MIN_VALUE / 2, Integer.MIN_VALUE / 2, Integer.MAX_VALUE, Integer.MAX_VALUE);
             List<MapleMapObject> affecteds = applyfrom.getMap().getMapObjectsInRect(bounds, Arrays.asList(MapleMapObjectType.PLAYER));
@@ -935,17 +944,27 @@ public class MapleStatEffect {
             for (MapleMapObject affectedmo : affecteds) {
                 MapleCharacter affected = (MapleCharacter) affectedmo;
                 if (affected != applyfrom && (isGmBuff() || applyfrom.getParty().equals(affected.getParty()))) {
-                    if ((!isResurrection() && affected.isAlive()) || (isResurrection() && !affected.isAlive())) {
-                        affectedp.add(affected);
+                    if (!isResurrection()) {
+                        if (affected.isAlive()) {
+                            affectedp.add(affected);
+                        }
+                    } else {
+                        if (!affected.isAlive()) {
+                            affectedp.add(affected);
+                        }
                     }
                 }
             }
+            
+            affectedc += affectedp.size();   // used for heal
             for (MapleCharacter affected : affectedp) {
-                applyTo(applyfrom, affected, false, null, useMaxRange);
+                applyTo(applyfrom, affected, false, null, useMaxRange, affectedc);
                 affected.getClient().announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 2));
                 affected.getMap().broadcastMessage(affected, MaplePacketCreator.showBuffeffect(affected.getId(), sourceid, 2), false);
             }
         }
+        
+        return affectedc;
     }
 
     private void applyMonsterBuff(MapleCharacter applyfrom) {
@@ -1158,7 +1177,7 @@ public class MapleStatEffect {
         }
     }
 
-    private int calcHPChange(MapleCharacter applyfrom, boolean primary) {
+    private int calcHPChange(MapleCharacter applyfrom, boolean primary, int affectedPlayers) {
         int hpchange = 0;
         if (hp != 0) {
             if (!skill) {
@@ -1171,7 +1190,8 @@ public class MapleStatEffect {
                     hpchange /= 2;
                 }
             } else { // assumption: this is heal
-                hpchange += makeHealHP(hp / 100.0, applyfrom.getTotalMagic(), 3, 5);
+                float hpHeal = (applyfrom.getMaxHpEquipped() * (float) hp / (100.0f * affectedPlayers));
+                hpchange += hpHeal;
                 if (applyfrom.hasDisease(MapleDisease.ZOMBIFY)) {
                     hpchange = -hpchange;
                     hpCon = 0;

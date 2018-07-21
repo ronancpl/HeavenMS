@@ -55,7 +55,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.World;
@@ -70,7 +70,7 @@ import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
     private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
@@ -1248,14 +1248,15 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         final MapleMonster mons = this;
-        TimerManager.getInstance().schedule(
-            new Runnable() {
-
-                @Override
-                public void run() {
-                    mons.clearSkill(skillId, level);
-                }
-            }, cooltime);
+        MapleMap mmap = mons.getMap();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                mons.clearSkill(skillId, level);
+            }
+        };
+        
+        mmap.getChannelServer().registerMobClearSkillAction(mmap.getId(), r, cooltime);
     }
 
     public void clearSkill(int skillId, int level) {
@@ -1359,8 +1360,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             final ElementalEffectiveness fEE = stats.getEffectiveness(e);
             if (!fEE.equals(ElementalEffectiveness.WEAK)) {
                 stats.setEffectiveness(e, ee);
-                TimerManager.getInstance().schedule(new Runnable() {
-
+                
+                MapleMap mmap = this.getMap();
+                Runnable r = new Runnable() {
                     @Override
                     public void run() {
                         monsterLock.lock();
@@ -1371,7 +1373,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                             monsterLock.unlock();
                         }
                     }
-                }, milli);
+                };
+                
+                mmap.getChannelServer().registerMobClearSkillAction(mmap.getId(), r, milli);
             }
         } finally {
             monsterLock.unlock();

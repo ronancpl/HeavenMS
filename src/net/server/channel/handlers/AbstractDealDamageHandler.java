@@ -674,6 +674,8 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     // This formula is still a bit wonky, but it is fairly accurate.
                     calcDmgMax = (int) Math.round((chr.getTotalInt() * 4.8 + chr.getTotalLuk() * 4) * chr.getTotalMagic() / 1000);
                     calcDmgMax = calcDmgMax * effect.getHp() / 100; 
+                    
+                    ret.speed = 7;
                 }
             } else if(ret.skill == Hermit.SHADOW_MESO) {
                 // Shadow Meso also has its own formula

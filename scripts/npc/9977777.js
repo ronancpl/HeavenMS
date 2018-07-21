@@ -51,6 +51,7 @@ function writeFeatureTab_PQs() {
 
 function writeFeatureTab_Skills() {
         addFeature("Reviewed many skills, such as Steal and M. Door.");
+        addFeature("Heal GMS-like: fixed HP gain & Heal skill packet.");
         addFeature("Improved battleship: HP visible and map-persistent.");
         addFeature("Maker skill features properly developed.");
         addFeature("Chair Mastery - map chair boosts HP/MP rec.");
@@ -71,6 +72,7 @@ function writeFeatureTab_Quests() {
 function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Guild and Alliance system fully functional.");
         addFeature("Party for novices-only.");
+        addFeature("P. members' HPBar accounts HP gain on equips.");
         addFeature("Thoroughly reviewed P. Shops and H. Merchants.");
         addFeature("Transactions on Merchs instantly announced to owner.");
         addFeature("Game minirooms with functional pw system.");
@@ -149,6 +151,8 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
         addFeature("Enhanced buff system: best buffs effects takes place.");
         addFeature("Enhanced AP auto-assigner: focus on eqp demands.");
+        addFeature("Enhanced inventory check: free slots smartly fetched.");
+        addFeature("Enhanced petloot handler: no brute-force inv. checks.");
         addFeature("Tweaked pet/mount hunger to a balanced growth rate.");
         addFeature("Consistent experience gain system.");
         addFeature("NPC crafters won't take items freely anymore.");
@@ -165,6 +169,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Centralized servertime, boosting handler performance.");
         addFeature("Autosaver (periodically saves player's data on DB).");
         addFeature("Fixed and randomized HP/MP growth rate available.");
+        addFeature("Players' MaxHP/MaxMP method accounting equip gain.");
         addFeature("Prevented 'NPC gone after some uptime' issue.");
         addFeature("Implemented starters' AP assigning for under level 11.");
         addFeature("AP assigning available for novices level 10 or below.");
@@ -202,7 +207,7 @@ function writeFeatureTab_Localhostedits() {
 function writeFeatureTab_Project() {
         addFeature("Organized project code.");
         addFeature("Highly updated drop data.");
-        addFeature("Highly configurable server.");
+        addFeature("Highly configurable & optimized server.");
         addFeature("Fixed/added many missing packet opcodes.");
         addFeature("Uncovered many opcodes throughout the source.");
         addFeature("Reviewed many Java aspects that needed attention.");

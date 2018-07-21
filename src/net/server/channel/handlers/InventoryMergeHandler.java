@@ -39,13 +39,19 @@ public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.getAutobanManager().setTimestamp(2, slea.readInt(), 3);
-        MapleInventoryType inventoryType = MapleInventoryType.getByType(slea.readByte());
-                
-	if(!ServerConstants.USE_ITEM_SORT) {
+        
+        if(!ServerConstants.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
 	}
-		
+        
+        byte invType = slea.readByte();
+        if (invType < 1 || invType > 5) {
+            c.disconnect(false, false);
+            return;
+        }
+        
+        MapleInventoryType inventoryType = MapleInventoryType.getByType(invType);	
 	MapleInventory inventory = c.getPlayer().getInventory(inventoryType);
         inventory.lockInventory();
         try {

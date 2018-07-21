@@ -2182,6 +2182,55 @@ public class MaplePacketCreator {
                 mplew.write(joinable);
         }
         
+        private static void updateHiredMerchantBoxInfo(MaplePacketLittleEndianWriter mplew, MapleHiredMerchant hm) {
+                byte[] roomInfo = hm.getShopRoomInfo();
+                
+                mplew.write(5);
+                mplew.writeInt(hm.getObjectId());
+                mplew.writeMapleAsciiString(hm.getDescription());
+                mplew.write(hm.getItemId() % 100);
+                mplew.write(roomInfo);
+        }
+        
+        public static byte[] updateHiredMerchantBox(MapleHiredMerchant hm) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.UPDATE_HIRED_MERCHANT.getValue());
+                mplew.writeInt(hm.getOwnerId());
+
+                updateHiredMerchantBoxInfo(mplew, hm);
+                return mplew.getPacket();
+        }
+        
+        private static void updatePlayerShopBoxInfo(final MaplePacketLittleEndianWriter mplew, MaplePlayerShop shop) {
+                byte[] roomInfo = shop.getShopRoomInfo();    
+            
+                mplew.write(4);
+                mplew.writeInt(shop.getObjectId());
+                mplew.writeMapleAsciiString(shop.getDescription());
+                mplew.write(0);                 // pw
+                mplew.write(shop.getItemId() % 100);
+                mplew.write(roomInfo[0]);       // curPlayers
+                mplew.write(roomInfo[1]);       // maxPlayers
+                mplew.write(0);
+        }
+        
+        public static byte[] updatePlayerShopBox(MaplePlayerShop shop) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
+                mplew.writeInt(shop.getOwner().getId());
+                
+                updatePlayerShopBoxInfo(mplew, shop);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] removePlayerShopBox(MaplePlayerShop shop) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
+                mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
+                mplew.writeInt(shop.getOwner().getId());
+                mplew.write(0);
+                return mplew.getPacket();
+        }
+        
         public static byte[] facialExpression(MapleCharacter from, int expression) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(10);
                 mplew.writeShort(SendOpcode.FACIAL_EXPRESSION.getValue());
@@ -3241,23 +3290,7 @@ public class MaplePacketCreator {
                 mplew.write(2);
                 return mplew.getPacket();
         }
-
-        public static byte[] addCharBox(MapleCharacter c, int type) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
-                mplew.writeInt(c.getId());
-                addAnnounceBox(mplew, c.getPlayerShop(), type);
-                return mplew.getPacket();
-        }
-
-        public static byte[] removeCharBox(MapleCharacter c) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
-                mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
-                mplew.writeInt(c.getId());
-                mplew.write(0);
-                return mplew.getPacket();
-        }
-
+        
         /**
          * Possible values for <code>speaker</code>:<br> 0: Npc talking (left)<br>
          * 1: Npc talking (right)<br> 2: Player talking (left)<br> 3: Player talking
@@ -5291,15 +5324,7 @@ public class MaplePacketCreator {
                 addAnnounceBox(mplew, c.getMiniGame(), 0, ammount, type);
                 return mplew.getPacket();
         }
-
-        public static byte[] removeOmokBox(MapleCharacter c) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
-                mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
-                mplew.writeInt(c.getId());
-                mplew.write(0);
-                return mplew.getPacket();
-        }
-
+        
         public static byte[] addMatchCardBox(MapleCharacter c, int ammount, int type) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
@@ -5307,11 +5332,11 @@ public class MaplePacketCreator {
                 addAnnounceBox(mplew, c.getMiniGame(), 0, ammount, type);
                 return mplew.getPacket();
         }
-
-        public static byte[] removeMatchCardBox(MapleCharacter c) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        
+        public static byte[] removeMinigameBox(MapleCharacter chr) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(7);
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_BOX.getValue());
-                mplew.writeInt(c.getId());
+                mplew.writeInt(chr.getId());
                 mplew.write(0);
                 return mplew.getPacket();
         }
@@ -5576,7 +5601,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] spawnHiredMerchant(MapleHiredMerchant hm) {
+        public static byte[] spawnHiredMerchantBox(MapleHiredMerchant hm) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_HIRED_MERCHANT.getValue());
                 mplew.writeInt(hm.getOwnerId());
@@ -5588,12 +5613,12 @@ public class MaplePacketCreator {
                 mplew.write(0x05);
                 mplew.writeInt(hm.getObjectId());
                 mplew.writeMapleAsciiString(hm.getDescription());
-                mplew.write(hm.getItemId() % 10);
+                mplew.write(hm.getItemId() % 100);
                 mplew.write(new byte[]{1, 4});
                 return mplew.getPacket();
         }
 
-        public static byte[] destroyHiredMerchant(int id) {
+        public static byte[] removeHiredMerchantBox(int id) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DESTROY_HIRED_MERCHANT.getValue());
                 mplew.writeInt(id);

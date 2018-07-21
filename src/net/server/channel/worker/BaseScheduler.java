@@ -30,8 +30,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
 import server.TimerManager;
 import tools.Pair;
-import tools.locks.MonitoredLockType;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 /**
  *
@@ -89,6 +89,7 @@ public abstract class BaseScheduler {
     
     private void runBaseSchedule() {
         List<Object> toRemove;
+        Map<Object, Pair<Runnable, Long>> registeredEntriesCopy;
         
         lockScheduler();
         try {
@@ -104,24 +105,33 @@ public abstract class BaseScheduler {
                 
                 return;
             }
+            
             idleProcs = 0;
-            
-            long timeNow = System.currentTimeMillis();
-            toRemove = new LinkedList<>();
-            for(Entry<Object, Pair<Runnable, Long>> rmd : registeredEntries.entrySet()) {
-                Pair<Runnable, Long> r = rmd.getValue();
-                
-                if(r.getRight() < timeNow) {
-                    r.getLeft().run();  // runs the cancel action
-                    toRemove.add(rmd.getKey());
-                }
-            }
-            
-            for(Object mse : toRemove) {
-                registeredEntries.remove(mse);
-            }
+            registeredEntriesCopy = new HashMap<>(registeredEntries);
         } finally {
             unlockScheduler();
+        }
+        
+        long timeNow = System.currentTimeMillis();
+        toRemove = new LinkedList<>();
+        for(Entry<Object, Pair<Runnable, Long>> rmd : registeredEntriesCopy.entrySet()) {
+            Pair<Runnable, Long> r = rmd.getValue();
+
+            if(r.getRight() < timeNow) {
+                r.getLeft().run();  // runs the cancel action
+                toRemove.add(rmd.getKey());
+            }
+        }
+        
+        if(!toRemove.isEmpty()) {
+            lockScheduler();
+            try {
+                for(Object o : toRemove) {
+                    registeredEntries.remove(o);
+                }
+            } finally {
+                unlockScheduler();
+            }
         }
         
         dispatchRemovedEntries(toRemove, true);

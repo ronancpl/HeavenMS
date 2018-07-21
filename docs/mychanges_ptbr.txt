@@ -1144,3 +1144,23 @@ Nova ferramenta: MapleInvalidItemWithNoNameFetcher. Busca por itemids sem as pro
 
 17 Julho 2018,
 Corrigido problema crítico no novo sistema de login, que impedia contas recém-criadas de logar no jogo.
+
+18 - 19 Julho 2018,
+Suavemente otimizado desempenho geral de channel workers e disease announce worker.
+Quests repetiveis no mesmo dia não geram fama.
+Equip drops de Leprechaun mais raros de aparecer (chance 2000 -> 1200).
+Corrigido Pet Item Ignore não checando certos casos corretamente e otimizado busca nos handlers pelos cash itens equipados.
+Corrigido alguns exploits e otimizado alguns recursos usados pelo PetLootHandler.
+Protegido contra acesso concorrente certos trechos de código críticos do MapleInventoryManipulator.
+Corrigido Heal para contabilizar ganho de HP GMS-like.
+Corrigido efeito de Heal para outros atuando extremamente lento.
+Corrigido maxHP sendo mostrado nas barras de HP de colegas de party para mostrar o HP efetivo (maxhp + aumento de HP equipado).
+Duração da mist foi rescalado pra 10x mais que a duração passada (wz representa duração de mist em 100ms).
+Otimizado manutenção de temporizadores em cooldown de skills de mobs e em elemental effectiveness.
+Implementado um sistema adicional de checagem de slots disponíveis no inventário, para casos onde se espera retirada de um vetor de (itemid, quantidade) para inserção de outro vetor de (itemid, quantidade).
+
+20 Julho 2018,
+Corrigido tooltip de player shops e hired merchants, agora com ícone mostrando se há como visitar uma loja ou está ocupada.
+Corrigido player shop permits diferentes do comum não sendo consumidos ao usar.
+Corrigido player shop sempre aparecendo como o tipo básico (sem estandes), para qualquer permit itemid.
+Corrigido cash pet food ignorando certos petids ao ler dados do WZ.

@@ -32,7 +32,7 @@ PQs:
 
 Skills:
 
-* Some skills behaving oddly have been patched, such as Steal, Venomous Star/Stab and Mystic Doors.
+* Some skills behaving oddly have been patched, such as Steal, Venomous Star/Stab, Heal and Mystic Doors.
 * Maker skill features properly developed.
 * Improved current Battleship skill, now showing the HP properly on buff tab and making visible for others after changing maps.
 * Server is using heuristics to calculate fee costs for the Maker (errors sums up to 8k mesos, reagent errors stacks up comformant with it's level).
@@ -59,7 +59,9 @@ Player Social Network:
 * Guild and Alliance system fully functional.
 * Implemented Marriage system from the ground-up (excluding character packet encoding parts that were already present, proper credits given throughout the source files).
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
+* HP bar of party members now properly calculates the HP gain from equipments.
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
+* Player Shops and Hired Merchants properly displaying the correct shop image to other players, and informing whether the shop is available to visit or full.
 * Game minirooms such as match cards and omok now has a functional password system.
 * Item pickup cooldown on non-owned/non-partyowned items functional.
 * Further improved the server's ranking system, now displaying properly daily player ranking movement.
@@ -134,6 +136,8 @@ Server potentials:
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
+* Enhanced inventory check: free slots on inventory smartly fetched on demand.
+* Enhanced auto-loot handler: optimized the brute-force checks for some cash items on the player equipped inventory at every requisition.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
 * Consistent experience gain system.
 * NPC crafters (equips, plates/jewels, etc) now won't take items freely if the requirement conditions are not properly met.
@@ -150,6 +154,7 @@ Server potentials:
 * Centralized getcurrenttime throughout several server handlers, boosting it's performance overall.
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
+* Implemented methods to get the current Players' MaxHP/MaxMP method with equipment HP/MP gains already summed up.
 * Reallocated mapobjectids utilization throughout the source, preventing issues such as "NPC disappearing mysteriously after some server time" from happening.
 * Implemented old GMS statup mechanic for novices level 10 or below. Usage of the edited localhost is mandatory on this.
 * Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.

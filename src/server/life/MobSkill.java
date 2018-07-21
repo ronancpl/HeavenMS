@@ -196,7 +196,7 @@ public class MobSkill {
                 }
                 break;
             case 131: // Mist
-                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), true), monster, this), x * 10, false, false, false);
+                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), true), monster, this), x * 100, false, false, false);
                 break;
             case 132:
                 disease = MapleDisease.CONFUSE;

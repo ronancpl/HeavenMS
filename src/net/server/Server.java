@@ -41,12 +41,16 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
-import tools.locks.MonitoredReentrantLock;
-import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+
+import net.server.audit.ThreadTracker;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
@@ -75,7 +79,6 @@ import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
 import constants.ServerConstants;
-import net.server.audit.ThreadTracker;
 import server.CashShop.CashItemFactory;
 import server.TimerManager;
 import server.life.MaplePlayerNPCFactory;
@@ -84,7 +87,6 @@ import tools.AutoJCE;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.Pair;
-import tools.locks.MonitoredLockType;
 
 public class Server {
     private static final Set<Integer> activeFly = new HashSet<>();
@@ -325,18 +327,27 @@ public class Server {
     }
     
     public void runAnnouncePlayerDiseasesSchedule() {
+        List<MapleClient> processDiseaseAnnounceClients;
         disLock.lock();
         try {
-            while(!processDiseaseAnnouncePlayers.isEmpty()) {
-                MapleClient c = processDiseaseAnnouncePlayers.remove(0);
-                MapleCharacter player = c.getPlayer();
-                if(player != null && player.isLoggedinWorld()) {
-                    for(MapleCharacter chr : player.getMap().getCharacters()) {
-                        chr.announceDiseases(c);
-                    }
+            processDiseaseAnnounceClients = new LinkedList<>(processDiseaseAnnouncePlayers);
+            processDiseaseAnnouncePlayers.clear();
+        } finally {
+            disLock.unlock();
+        }
+        
+        while(!processDiseaseAnnounceClients.isEmpty()) {
+            MapleClient c = processDiseaseAnnounceClients.remove(0);
+            MapleCharacter player = c.getPlayer();
+            if(player != null && player.isLoggedinWorld()) {
+                for(MapleCharacter chr : player.getMap().getCharacters()) {
+                    chr.announceDiseases(c);
                 }
             }
-            
+        }
+        
+        disLock.lock();
+        try {
             // this is to force the system to wait for at least one complete tick before releasing disease info for the registered clients
             while(!registeredDiseaseAnnouncePlayers.isEmpty()) {
                 MapleClient c = registeredDiseaseAnnouncePlayers.remove(0);
@@ -362,7 +373,7 @@ public class Server {
             p.load(new FileInputStream("world.ini"));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Please start create_server.bat");
+            System.out.println("[SEVERE] Could not find/open 'world.ini'.");
             System.exit(0);
         }
 
@@ -453,7 +464,7 @@ public class Server {
             loadPlayerNpcMapStepFromDb();
         } catch (Exception e) {
             e.printStackTrace();//For those who get errors
-            System.out.println("Error in moople.ini, start CreateINI.bat to re-make the file.");
+            System.out.println("[SEVERE] Syntax error in 'world.ini'.");
             System.exit(0);
         }
 

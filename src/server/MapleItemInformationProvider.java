@@ -123,6 +123,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Integer> makerCatalystCache = new HashMap<>();
     protected Map<Integer, Map<String, Integer>> skillUpgradeCache = new HashMap<>();
     protected Map<Integer, MapleData> skillUpgradeInfoCache = new HashMap<>();
+    protected Map<Integer, Pair<Integer, Set<Integer>>> cashPetFoodCache = new HashMap<>();
 
     private MapleItemInformationProvider() {
         loadCardIdData();
@@ -1298,18 +1299,37 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
-    public List<Integer> petsCanConsume(int itemId) {
-        List<Integer> ret = new ArrayList<>();
-        MapleData data = getItemData(itemId);
-        int curPetId;
-        for (int i = 0; i < data.getChildren().size(); i++) {
-            curPetId = MapleDataTool.getInt("spec/" + Integer.toString(i), data, 0);
-            if (curPetId == 0) {
-                break;
+    public Pair<Integer, Boolean> canPetConsume(Integer petId, Integer itemId) {
+        Pair<Integer, Set<Integer>> foodData = cashPetFoodCache.get(itemId);
+        
+        if(foodData == null) {
+            Set<Integer> pets = new HashSet<>(4);
+            int inc = 1;
+            
+            MapleData data = getItemData(itemId);
+            if(data != null) {
+                MapleData specData = data.getChildByPath("spec");
+                for(MapleData specItem : specData.getChildren()) {
+                    String itemName = specItem.getName();
+                    
+                    try {
+                        Integer.parseInt(itemName); // check if it's a petid node
+                        
+                        Integer petid = MapleDataTool.getInt(specItem, 0);
+                        pets.add(petid);
+                    } catch(NumberFormatException npe) {
+                        if(itemName.contentEquals("inc")) {
+                            inc = MapleDataTool.getInt(specItem, 1);
+                        }
+                    }
+                }
             }
-            ret.add(Integer.valueOf(curPetId));
+            
+            foodData = new Pair<>(inc, pets);
+            cashPetFoodCache.put(itemId, foodData);
         }
-        return ret;
+        
+        return new Pair<>(foodData.getLeft(), foodData.getRight().contains(petId));
     }
 
     public boolean isQuestItem(int itemId) {

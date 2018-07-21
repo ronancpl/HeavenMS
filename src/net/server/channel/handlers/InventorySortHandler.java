@@ -188,14 +188,14 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         chr.getAutobanManager().setTimestamp(3, slea.readInt(), 3);
-        byte inventoryType = slea.readByte();
         
         if(!ServerConstants.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-		
-	if (inventoryType < 1 || inventoryType > 5) {
+        
+        byte invType = slea.readByte();
+        if (invType < 1 || invType > 5) {
             c.disconnect(false, false);
             return;
         }
@@ -203,7 +203,7 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
         ArrayList<Item> itemarray = new ArrayList<>();
         List<ModifyInventory> mods = new ArrayList<>();
         
-        MapleInventory inventory = chr.getInventory(MapleInventoryType.getByType(inventoryType));
+        MapleInventory inventory = chr.getInventory(MapleInventoryType.getByType(invType));
         inventory.lockInventory();
         try {
             for (short i = 1; i <= inventory.getSlotLimit(); i++) {
@@ -218,7 +218,7 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
                     mods.add(new ModifyInventory(3, item));
             }
 
-            int invTypeCriteria = (MapleInventoryType.getByType(inventoryType) == MapleInventoryType.EQUIP) ? 3 : 1;
+            int invTypeCriteria = (MapleInventoryType.getByType(invType) == MapleInventoryType.EQUIP) ? 3 : 1;
             int sortCriteria = (ServerConstants.USE_ITEM_SORT_BY_NAME == true) ? 2 : 0;
             PairedQuicksort pq = new PairedQuicksort(itemarray, sortCriteria, invTypeCriteria);
 
@@ -232,7 +232,7 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
         }
         
         c.announce(MaplePacketCreator.modifyInventory(true, mods));
-        c.announce(MaplePacketCreator.finishedSort2(inventoryType));
+        c.announce(MaplePacketCreator.finishedSort2(invType));
         c.announce(MaplePacketCreator.enableActions());
     }
 }

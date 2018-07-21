@@ -34,11 +34,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
-import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -76,7 +77,6 @@ import client.MapleCharacter;
 import client.status.MonsterStatusEffect;
 import constants.ServerConstants;
 import server.maps.MapleMiniDungeonInfo;
-import tools.locks.MonitoredLockType;
 
 public final class Channel {
 
@@ -89,6 +89,8 @@ public final class Channel {
     private EventScriptManager eventSM;
     private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[4];
     private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[4];
+    private MobClearSkillScheduler mobClearSkillSchedulers[] = new MobClearSkillScheduler[4];
+    private MobMistScheduler mobMistSchedulers[] = new MobMistScheduler[4];
     private FaceExpressionScheduler faceExpressionSchedulers[] = new FaceExpressionScheduler[4];
     private OverallScheduler channelSchedulers[] = new OverallScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
@@ -164,6 +166,8 @@ public final class Channel {
                 
                 mobStatusSchedulers[i] = new MobStatusScheduler();
                 mobAnimationSchedulers[i] = new MobAnimationScheduler();
+                mobClearSkillSchedulers[i] = new MobClearSkillScheduler();
+                mobMistSchedulers[i] = new MobMistScheduler();
                 faceExpressionSchedulers[i] = new FaceExpressionScheduler(faceLock[i]);
                 channelSchedulers[i] = new OverallScheduler();
             }
@@ -866,6 +870,14 @@ public final class Channel {
     
     public boolean registerMobOnAnimationEffect(int mapid, int mobHash, long delay) {
         return mobAnimationSchedulers[getChannelSchedulerIndex(mapid)].registerAnimationMode(mobHash, delay);
+    }
+    
+    public void registerMobClearSkillAction(int mapid, Runnable runAction, long delay) {
+        mobClearSkillSchedulers[getChannelSchedulerIndex(mapid)].registerClearSkillAction(runAction, delay);
+    }
+    
+    public void registerMobMistCancelAction(int mapid, Runnable runAction, long delay) {
+        mobMistSchedulers[getChannelSchedulerIndex(mapid)].registerMistCancelAction(runAction, delay);
     }
     
     public void registerOverallAction(int mapid, Runnable runAction, long delay) {

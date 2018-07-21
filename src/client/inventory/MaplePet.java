@@ -36,6 +36,7 @@ import server.movement.LifeMovementFragment;
 import client.MapleCharacter;
 import java.sql.Connection;
 import tools.MaplePacketCreator;
+import tools.Pair;
 
 /**
  *
@@ -273,13 +274,8 @@ public class MaplePet extends Item {
         this.summoned = yes;
     }
 
-    public boolean canConsume(int itemId) {
-        for (int petId : MapleItemInformationProvider.getInstance().petsCanConsume(itemId)) {
-            if (petId == this.getItemId()) {
-                return true;
-            }
-        }
-        return false;
+    public Pair<Integer, Boolean> canConsume(int itemId) {
+        return MapleItemInformationProvider.getInstance().canPetConsume(this.getItemId(), itemId);
     }
 
     public void updatePosition(List<LifeMovementFragment> movement) {

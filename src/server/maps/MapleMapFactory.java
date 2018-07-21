@@ -33,10 +33,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataTool;
@@ -49,7 +50,7 @@ import server.life.MaplePlayerNPCFactory;
 import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
-import tools.locks.MonitoredLockType;
+
 
 public class MapleMapFactory {
 

@@ -49,6 +49,9 @@ import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
 import client.SkillFactory;
+import client.inventory.Equip;
+import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
@@ -223,9 +226,18 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             player.updatePartyMemberHP();
         }
         
-        if (player.getInventory(MapleInventoryType.EQUIPPED).findById(1122017) != null) {
-            player.equipPendantOfSpirit();
+        MapleInventory eqpInv = player.getInventory(MapleInventoryType.EQUIPPED);
+        eqpInv.lockInventory();
+        try {
+            player.resetEquippedHpMp();
+            
+            for(Item it : eqpInv.list()) {
+                player.equippedItem((Equip) it);
+            }
+        } finally {
+            eqpInv.unlockInventory();
         }
+        
         c.announce(MaplePacketCreator.updateBuddylist(player.getBuddylist().getBuddies()));
         
         CharacterNameAndId pendingBuddyRequest = c.getPlayer().getBuddylist().pollPendingRequest();

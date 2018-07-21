@@ -1768,8 +1768,12 @@ public class Commands {
 			}
 			newMap.respawn();
                     break;
+                    
+                case "reloadshops":
+                        MapleShopFactory.getInstance().reloadShops();
+                    break;
 
-               case "hpmp":
+                case "hpmp":
                         victim = player;
                         int statUpdate = 1;
                         
@@ -2611,9 +2615,9 @@ public class Commands {
                         player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
                         break;
                     
-                    case "pnpcremove":
+                    case "playernpcremove":
                         if (sub.length < 2) {
-                            player.yellowMessage("Syntax: !pnpcremove <playername>");
+                            player.yellowMessage("Syntax: !playernpcremove <playername>");
                             break;
                         }
                         
@@ -2654,7 +2658,7 @@ public class Commands {
                     case "debugpacket":
                         player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(sub, 1)));
                         break;
-                    
+                        
                     case "debugportal":
                         MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
                         if(portal != null) player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
@@ -2731,6 +2735,10 @@ public class Commands {
                         c.getChannelServer().debugMarriageStatus();
                         break;
                     
+                    case "showpackets":
+                        ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET = !ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET;
+                        break;
+                        
                     case "set":
                         for(int i = 0; i < sub.length - 1; i++) {
                                 ServerConstants.DEBUG_VALUES[i] = Integer.parseInt(sub[i + 1]);

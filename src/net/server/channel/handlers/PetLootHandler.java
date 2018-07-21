@@ -25,7 +25,6 @@ import java.util.Set;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleMapItem;
@@ -58,25 +57,35 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
         int oid = slea.readInt();
         MapleMapObject ob = chr.getMap().getMapObject(oid);
         if(ob == null) {
-            c.getSession().write(MaplePacketCreator.enableActions());
+            c.announce(MaplePacketCreator.enableActions());
             return;
         }
         
-        if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812007) != null) {
-            final Set<Integer> petIgnore = chr.getExcludedItems();
-            MapleMapItem mapitem = (MapleMapItem) ob;
+        MapleMapItem mapitem = (MapleMapItem) ob;
+        if (mapitem.getMeso() > 0) {
+            if (!chr.isEquippedMesoMagnet()) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
             
-            if(!petIgnore.isEmpty()) {
-                if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812000) != null) { // Meso magnet
-                    if (mapitem.getMeso() > 0 && petIgnore.contains(Integer.MAX_VALUE)) {
-                        c.getSession().write(MaplePacketCreator.enableActions());
-                        return;
-                    }
-                } else if (chr.getInventory(MapleInventoryType.EQUIPPED).findById(1812001) != null) { // Item Pouch
-                    if (petIgnore.contains(mapitem.getItem().getItemId())) {
-                        c.getSession().write(MaplePacketCreator.enableActions());
-                        return;
-                    }
+            if (chr.isEquippedPetItemIgnore()) {
+                final Set<Integer> petIgnore = chr.getExcludedItems();
+                if(!petIgnore.isEmpty() && petIgnore.contains(Integer.MAX_VALUE)) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+            }
+        } else {
+            if (!chr.isEquippedItemPouch()) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
+            if (chr.isEquippedPetItemIgnore()) {
+                final Set<Integer> petIgnore = chr.getExcludedItems();
+                if(!petIgnore.isEmpty() && petIgnore.contains(mapitem.getItem().getItemId())) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
                 }
             }
         }

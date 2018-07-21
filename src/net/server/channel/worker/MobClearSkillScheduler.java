@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft (L) 2016 - 2018 RonanLana
+    Copyleft 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -17,34 +17,20 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package tools.locks;
+package net.server.channel.worker;
 
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import net.server.audit.locks.MonitoredLockType;
 
 /**
  *
- * @author RonanLana
+ * @author Ronan
  */
-public class MonitoredReentrantReadWriteLock extends ReentrantReadWriteLock {
-    public final MonitoredLockType id;
-    
-    public MonitoredReentrantReadWriteLock(MonitoredLockType id) {
-        super();
-        this.id = id;
-    }
-            
-    public MonitoredReentrantReadWriteLock(MonitoredLockType id, boolean fair) {
-        super(fair);
-        this.id = id;
+public class MobClearSkillScheduler extends BaseScheduler {
+    public MobClearSkillScheduler() {
+        super(MonitoredLockType.CHANNEL_MOBSKILL);
     }
     
-    @Override
-    public ReadLock readLock() {
-        return super.readLock();
-    }
-    
-    @Override
-    public WriteLock writeLock() {
-        return super.writeLock();
+    public void registerClearSkillAction(Runnable runAction, long delay) {
+        registerEntry(runAction, runAction, delay);
     }
 }

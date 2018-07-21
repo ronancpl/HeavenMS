@@ -29,13 +29,13 @@ import java.util.List;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 import scripting.reactor.ReactorScriptManager;
 import server.TimerManager;
 import tools.MaplePacketCreator;
 import tools.Pair;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 /**
  *

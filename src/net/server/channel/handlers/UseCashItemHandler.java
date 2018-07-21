@@ -484,8 +484,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             for (byte i = 0; i < 3; i++) {
                 MaplePet pet = player.getPet(i);
                 if (pet != null) {
-                    if (pet.canConsume(itemId)) {
-                        pet.gainClosenessFullness(player, 100, 100, 1);
+                    Pair<Integer, Boolean> p = pet.canConsume(itemId);
+                    
+                    if (p.getRight()) {
+                        pet.gainClosenessFullness(player, p.getLeft(), 100, 1);
                         remove(c, itemId);
                         break;
                     }

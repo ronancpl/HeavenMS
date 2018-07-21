@@ -52,9 +52,10 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
-import tools.locks.MonitoredReentrantLock;
-import tools.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.Lock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -90,7 +91,6 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
-import tools.locks.MonitoredLockType;
 
 public class MapleMap {
     private static final List<MapleMapObjectType> rangedMapobjectTypes = Arrays.asList(MapleMapObjectType.SHOP, MapleMapObjectType.ITEM, MapleMapObjectType.NPC, MapleMapObjectType.MONSTER, MapleMapObjectType.DOOR, MapleMapObjectType.SUMMON, MapleMapObjectType.REACTOR);
@@ -1512,8 +1512,10 @@ public class MapleMap {
             chrRLock.lock();
             try {
                 for (MapleCharacter chr : characters) {
-                    if (!chr.isHidden() && (chr.getControlledMonsters().size() < mincontrolled || mincontrolled == -1)) {
-                        mincontrolled = chr.getControlledMonsters().size();
+                    int ctrlMonsSize = chr.getControlledMonsters().size();
+                    
+                    if (!chr.isHidden() && (ctrlMonsSize < mincontrolled || mincontrolled == -1)) {
+                        mincontrolled = ctrlMonsSize;
                         newController = chr;
                     }
                 }
@@ -1538,8 +1540,7 @@ public class MapleMap {
         objectRLock.lock();
         try {
             return new LinkedList(mapobjects.values());
-        }
-        finally {
+        } finally {
             objectRLock.unlock();
         }
     }
@@ -1997,8 +1998,9 @@ public class MapleMap {
             poisonSchedule = tMan.register(poisonTask, 2000, 2500);
         } else {
             poisonSchedule = null;
-        }      
-        tMan.schedule(new Runnable() {
+        }
+        
+        Runnable mistSchedule = new Runnable() {
             @Override
             public void run() {
                 removeMapObject(mist);
@@ -2007,7 +2009,9 @@ public class MapleMap {
                 }
                 broadcastMessage(mist.makeDestroyData());
             }
-        }, duration);
+        };
+        
+        this.getChannelServer().registerMobMistCancelAction(mapid, mistSchedule, duration);
     }
     
     public void spawnKite(final MapleKite kite) {
@@ -2899,8 +2903,7 @@ public class MapleMap {
             }
             
             return mapChars;
-        }
-        finally {
+        } finally {
             chrRLock.unlock();
         }
     }
@@ -2909,8 +2912,7 @@ public class MapleMap {
         chrRLock.lock();
         try {
             return Collections.unmodifiableCollection(this.characters);
-        }
-        finally {
+        } finally {
             chrRLock.unlock();
         }
     }
@@ -2929,7 +2931,7 @@ public class MapleMap {
         return null;
     }
 
-    private void updateMapObjectVisibility(MapleCharacter chr, MapleMapObject mo) {
+    private static void updateMapObjectVisibility(MapleCharacter chr, MapleMapObject mo) {
         if (!chr.isMapObjectVisible(mo)) { // item entered view range
             if (mo.getType() == MapleMapObjectType.SUMMON || mo.getPosition().distanceSq(chr.getPosition()) <= getRangedDistance()) {
                 chr.addVisibleMapObject(mo);
@@ -3291,8 +3293,7 @@ public class MapleMap {
             if(characters.isEmpty()) {
                 return;
             }
-        }
-        finally {
+        } finally {
             chrRLock.unlock();
         }
         

@@ -32,10 +32,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.Semaphore;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 public final class MonsterBook {
     private static final Semaphore semaphore = new Semaphore(10);

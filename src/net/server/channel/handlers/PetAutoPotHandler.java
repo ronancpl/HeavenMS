@@ -161,22 +161,8 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
         return false;
     }
     
-    private Pair<Short, Short> calcEffectivePool(MapleCharacter chr) {
-        short hp = 0, mp = 0;
-        
-        if(ServerConstants.USE_EQUIPS_ON_AUTOPOT) {
-            for(Item i : chr.getInventory(MapleInventoryType.EQUIPPED).list()) {
-                Equip e = (Equip) i;
-
-                hp += e.getHp();
-                mp += e.getMp();
-            }
-        }
-
-        hp = (short) Math.min(chr.getMaxHp() + hp, 30000);
-        mp = (short) Math.min(chr.getMaxMp() + mp, 30000);
-        
-        return new Pair<>(hp, mp);
+    private static Pair<Short, Short> calcEffectivePool(MapleCharacter chr) {
+        return new Pair<>((short) chr.getMaxHpEquipped(), (short) chr.getMaxMpEquipped());
     }
     
     private boolean shouldReusePot() {

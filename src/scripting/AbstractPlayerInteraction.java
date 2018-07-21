@@ -23,6 +23,7 @@ package scripting;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -36,7 +37,6 @@ import net.server.world.MaplePartyCharacter;
 import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
 import scripting.npc.NPCScriptManager;
-import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import server.expeditions.MapleExpedition;
 import server.expeditions.MapleExpeditionType;
@@ -58,9 +58,11 @@ import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryProof;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -247,7 +249,73 @@ public class AbstractPlayerInteraction {
                 addedItems.add(new Pair<>(it, ItemConstants.getInventoryType(itemids.get(i))));
             }
             
-            return MapleInventory.checkSpots(c.getPlayer(), addedItems);
+            return MapleInventory.checkSpots(c.getPlayer(), addedItems, false);
+        }
+        
+        public boolean canHold(int itemid, int quantity, int removeItemid, int removeQuantity) {
+            return canHoldAllAfterRemoving(Collections.singletonList(itemid), Collections.singletonList(quantity), Collections.singletonList(removeItemid), Collections.singletonList(removeQuantity));
+        }
+        
+        private static List<Pair<Item, MapleInventoryType>> prepareProofInventoryItems(List<Pair<Integer, Integer>> items) {
+            List<Pair<Item, MapleInventoryType>> addedItems = new LinkedList<>();
+            for(Pair<Integer, Integer> p : items) {
+                Item it = new Item(p.getLeft(), (short) 0, p.getRight().shortValue());
+                addedItems.add(new Pair<>(it, MapleInventoryType.CANHOLD));
+            }
+            
+            return addedItems;
+        }
+        
+        private static List<List<Pair<Integer, Integer>>> prepareInventoryItemList(List<Integer> itemids, List<Integer> quantity) {
+            int size = Math.min(itemids.size(), quantity.size());
+            
+            List<List<Pair<Integer, Integer>>> invList = new ArrayList<>(6);
+            for(int i = MapleInventoryType.UNDEFINED.getType(); i < MapleInventoryType.CASH.getType(); i++) {
+                invList.add(new LinkedList<Pair<Integer, Integer>>());
+            }
+            
+            for(int i = 0; i < size; i++) {
+                int itemid = itemids.get(i);
+                invList.get(ItemConstants.getInventoryType(itemid).getType()).add(new Pair<>(itemid, quantity.get(i)));
+            }
+            
+            return invList;
+        }
+        
+        public boolean canHoldAllAfterRemoving(List<Integer> toAddItemids, List<Integer> toAddQuantity, List<Integer> toRemoveItemids, List<Integer> toRemoveQuantity) {
+            List<List<Pair<Integer, Integer>>> toAddItemList = prepareInventoryItemList(toAddItemids, toAddQuantity);
+            List<List<Pair<Integer, Integer>>> toRemoveItemList = prepareInventoryItemList(toRemoveItemids, toRemoveQuantity);
+            
+            MapleInventoryProof prfInv = (MapleInventoryProof) this.getInventory(MapleInventoryType.CANHOLD);
+            prfInv.lockInventory();
+            try {
+                for(int i = MapleInventoryType.EQUIP.getType(); i < MapleInventoryType.CASH.getType(); i++) {
+                    List<Pair<Integer, Integer>> toAdd = toAddItemList.get(i);
+                    
+                    if(!toAdd.isEmpty()) {
+                        List<Pair<Integer, Integer>> toRemove = toRemoveItemList.get(i);
+                        
+                        MapleInventory inv = this.getInventory(i);
+                        prfInv.cloneContents(inv);
+                        
+                        for(Pair<Integer, Integer> p : toRemove) {
+                            MapleInventoryManipulator.removeById(c, MapleInventoryType.CANHOLD, p.getLeft(), p.getRight(), false, false);
+                        }
+                        
+                        List<Pair<Item, MapleInventoryType>> addItems = prepareProofInventoryItems(toAdd);
+                        
+                        boolean canHold = MapleInventory.checkSpots(c.getPlayer(), addItems, true);
+                        if(!canHold) {
+                            return false;
+                        }
+                    }
+                }
+            } finally {
+                prfInv.flushContents();
+                prfInv.unlockInventory();
+            }
+            
+            return true;
         }
      
         //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----

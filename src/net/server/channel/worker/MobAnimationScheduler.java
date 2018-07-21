@@ -19,13 +19,13 @@
 */
 package net.server.channel.worker;
 
-import tools.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredLockType;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 /**
  *

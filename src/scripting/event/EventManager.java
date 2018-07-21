@@ -54,8 +54,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.locks.Lock;
-import tools.locks.MonitoredLockType;
-import tools.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 
 /**
  *
