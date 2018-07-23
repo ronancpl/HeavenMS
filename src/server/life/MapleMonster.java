@@ -54,7 +54,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -95,10 +94,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int parentMobOid = 0;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
-    private Lock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
-    private Lock monsterLock = new MonitoredReentrantLock(MonitoredLockType.MOB, true);
-    private Lock statiLock = new MonitoredReentrantLock(MonitoredLockType.MOB_STATI);
-    private Lock animationLock = new MonitoredReentrantLock(MonitoredLockType.MOB_ANI);
+    private MonitoredReentrantLock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
+    private MonitoredReentrantLock monsterLock = new MonitoredReentrantLock(MonitoredLockType.MOB, true);
+    private MonitoredReentrantLock statiLock = new MonitoredReentrantLock(MonitoredLockType.MOB_STATI);
+    private MonitoredReentrantLock animationLock = new MonitoredReentrantLock(MonitoredLockType.MOB_ANI);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -1475,5 +1474,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     
     public final void changeDifficulty(final int difficulty, boolean pqMob) {
         changeLevelByDifficulty(difficulty, pqMob);
+    }
+    
+    public final void disposeLocks() {
+        externalLock.dispose();
+        monsterLock.dispose();
+        statiLock.dispose();
+        animationLock.dispose();
     }
 }

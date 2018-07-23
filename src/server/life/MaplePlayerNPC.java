@@ -248,7 +248,7 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
     }
 
     private static void getRunningWorldRanks(Connection con) throws SQLException {
-        int numWorlds = Server.getInstance().getWorlds().size();
+        int numWorlds = Server.getInstance().getWorldsSize();
         for(int i = 0; i < numWorlds; i++) {
             runningWorldRank.add(new AtomicInteger(1));
         }
@@ -625,7 +625,7 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             PreparedStatement ps = con.prepareStatement("SELECT DISTINCT world, map FROM playernpcs");
             ResultSet rs = ps.executeQuery();
             
-            int wsize = Server.getInstance().getWorlds().size();
+            int wsize = Server.getInstance().getWorldsSize();
             while(rs.next()) {
                 int world = rs.getInt("world"), map = rs.getInt("map");
                 if(world >= wsize) continue;

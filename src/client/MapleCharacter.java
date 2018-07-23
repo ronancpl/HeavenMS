@@ -2198,12 +2198,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public void disableDoorSpawn() {
         canDoor = false;
-        TimerManager.getInstance().schedule(new Runnable() {
+        
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 canDoor = true;
             }
-        }, 5000);
+        };
+        
+        client.getChannelServer().registerOverallAction(mapid, r, 5000);
     }
 
     public void disbandGuild() {
@@ -8195,13 +8198,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     private void fameGainByQuest() {
-        int delta = quest_fame / ServerConstants.FAME_GAIN_BY_QUEST;
-        if(delta > 0) {
-            gainFame(delta);
-            client.announce(MaplePacketCreator.getShowFameGain(delta));
+        synchronized (quests) {
+            quest_fame += 1;
+            
+            int delta = quest_fame / ServerConstants.FAME_GAIN_BY_QUEST;
+            if(delta > 0) {
+                gainFame(delta);
+                client.announce(MaplePacketCreator.getShowFameGain(delta));
+            }
+
+            quest_fame %= ServerConstants.FAME_GAIN_BY_QUEST;
         }
-        
-        quest_fame %= ServerConstants.FAME_GAIN_BY_QUEST;
     }
     
     public void updateQuest(MapleQuestStatus quest) {
@@ -8218,7 +8225,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             MapleQuest mquest = quest.getQuest();
             short questid = mquest.getId();
             if(!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
-                quest_fame += 1;
                 if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
                     fameGainByQuest();
             }
@@ -8388,8 +8394,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     @Override
-    public void setObjectId(int id) {
-    }
+    public void setObjectId(int id) {}
 
     @Override
     public String toString() {

@@ -147,6 +147,7 @@ function writeFeatureTab_Playerpotentials() {
 
 function writeFeatureTab_Serverpotentials() {
         addFeature("Multi-worlds.");
+        addFeature("Dynamic World/Channel deployment.");
         addFeature("Inventory auto-gather and auto-sorting feature.");
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
         addFeature("Enhanced buff system: best buffs effects takes place.");

@@ -31,7 +31,6 @@ import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Comparator;
 import net.server.audit.locks.MonitoredReentrantLock;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredLockType;
 
 public class MapleParty {
@@ -44,7 +43,7 @@ public class MapleParty {
     private Map<Integer, Integer> histMembers = new HashMap<>();
     private int nextEntry = 0;
     
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.PARTY, true);
+    private MonitoredReentrantLock lock = new MonitoredReentrantLock(MonitoredLockType.PARTY, true);
     
     public MapleParty(int id, MaplePartyCharacter chrfor) {
         this.leaderId = chrfor.getId();
@@ -213,6 +212,10 @@ public class MapleParty {
         }
 
         if(newLeadr != null) world.updateParty(this.getId(), PartyOperation.CHANGE_LEADER, newLeadr);
+    }
+    
+    public void disposeLocks() {
+        lock.dispose();
     }
     
     @Override

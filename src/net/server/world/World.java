@@ -47,11 +47,11 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredReentrantLock;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import scripting.event.EventInstanceManager;
 import server.TimerManager;
@@ -76,6 +76,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 
 /**
  *
@@ -97,8 +98,12 @@ public class World {
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     
+    private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
+    private final ReentrantReadWriteLock.ReadLock chnRLock = chnLock.readLock();
+    private final ReentrantReadWriteLock.WriteLock chnWLock = chnLock.writeLock();
+    
     private Map<Integer, SortedMap<Integer, MapleCharacter>> accountChars = new HashMap<>();
-    private Lock accountCharsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_CHARS, true);
+    private MonitoredReentrantLock accountCharsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_CHARS, true);
     
     private Set<Integer> queuedGuilds = new HashSet<>();
     private Map<Integer, Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>>> queuedMarriages = new HashMap<>();
@@ -107,31 +112,31 @@ public class World {
     private Map<Integer, Integer> partyChars = new HashMap<>();
     private Map<Integer, MapleParty> parties = new HashMap<>();
     private AtomicInteger runningPartyId = new AtomicInteger();
-    private Lock partyLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PARTY, true);
+    private MonitoredReentrantLock partyLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PARTY, true);
     
     private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
-    private Lock owlLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_OWL);
+    private MonitoredReentrantLock owlLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_OWL);
     
-    private Lock activePetsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PETS, true);
+    private MonitoredReentrantLock activePetsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PETS, true);
     private Map<Integer, Byte> activePets = new LinkedHashMap<>();
     private ScheduledFuture<?> petsSchedule;
     private long petUpdate;
     
-    private Lock activeMountsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MOUNTS, true);
+    private MonitoredReentrantLock activeMountsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MOUNTS, true);
     private Map<Integer, Byte> activeMounts = new LinkedHashMap<>();
     private ScheduledFuture<?> mountsSchedule;
     private long mountUpdate;
     
-    private Lock activePlayerShopsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PSHOPS, true);
+    private MonitoredReentrantLock activePlayerShopsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_PSHOPS, true);
     private Map<Integer, MaplePlayerShop> activePlayerShops = new LinkedHashMap<>();
     
-    private Lock activeMerchantsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MERCHS, true);
+    private MonitoredReentrantLock activeMerchantsLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MERCHS, true);
     private Map<Integer, Pair<MapleHiredMerchant, Byte>> activeMerchants = new LinkedHashMap<>();
     private long merchantUpdate;
     
     private Map<Runnable, Long> registeredTimedMapObjects = new LinkedHashMap<>();
     private ScheduledFuture<?> timedMapObjectsSchedule;
-    private Lock timedMapObjectLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MAPOBJS, true);
+    private MonitoredReentrantLock timedMapObjectLock = new MonitoredReentrantLock(MonitoredLockType.WORLD_MAPOBJS, true);
     
     private ScheduledFuture<?> charactersSchedule;
     private ScheduledFuture<?> marriagesSchedule;
@@ -159,20 +164,75 @@ public class World {
         
     }
 
+    public int getChannelsSize() {
+        chnRLock.lock();
+        try {
+            return channels.size();
+        } finally {
+            chnRLock.unlock();
+        }
+    }
+    
     public List<Channel> getChannels() {
-        return channels;
+        chnRLock.lock();
+        try {
+            return new ArrayList<>(channels);
+        } finally {
+            chnRLock.unlock();
+        }
     }
 
     public Channel getChannel(int channel) {
-        return channels.get(channel - 1);
+        chnRLock.lock();
+        try {
+            return channels.get(channel - 1);
+        } finally {
+            chnRLock.unlock();
+        }
     }
 
     public void addChannel(Channel channel) {
-        channels.add(channel);
+        chnWLock.lock();
+        try {
+            channels.add(channel);
+        } finally {
+            chnWLock.unlock();
+        }
     }
 
-    public void removeChannel(int channel) {
-        channels.remove(channel);
+    public int removeChannel() {
+        Channel ch;
+        int chIdx;
+        
+        chnRLock.lock();
+        try {
+            chIdx = channels.size() - 1;
+            if(chIdx < 0) {
+                return -1;
+            }
+            
+            ch = channels.get(chIdx);
+        } finally {
+            chnRLock.unlock();
+        }
+        
+        if(ch == null || ch.getPlayerStorage().getSize() > 0) {
+            return -1;
+        }
+        
+        chnWLock.lock();
+        try {
+            if(chIdx == channels.size() - 1) {
+                channels.remove(chIdx);
+            } else {
+                return -1;
+            }
+        } finally {
+            chnWLock.unlock();
+        }
+        
+        ch.shutdown();
+        return ch.getId();
     }
 
     public void setFlag(byte b) {
@@ -342,11 +402,11 @@ public class World {
     }
 
     public void removePlayer(MapleCharacter chr) {
-        if(!channels.get(chr.getClient().getChannel() - 1).removePlayer(chr)) {
+        if(!getChannel(chr.getClient().getChannel()).removePlayer(chr)) {
             if(!chr.getClient().getChannelServer().removePlayer(chr)) {
                 // oy the player is not where it should be, find this mf
                 
-                for(Channel ch : channels) {
+                for(Channel ch : getChannels()) {
                     if(ch.removePlayer(chr)) {
                         break;
                     }
@@ -394,7 +454,7 @@ public class World {
     }
     
     public int getWorldCapacityStatus() {
-        int worldCap = channels.size() * ServerConstants.CHANNEL_LOAD;
+        int worldCap = getChannelsSize() * ServerConstants.CHANNEL_LOAD;
         int num = players.getSize();
         
         int status;
@@ -555,7 +615,7 @@ public class World {
     }
     
     public Pair<Integer, Integer> getWeddingCoupleForGuest(int guestId, Boolean cathedral) {
-        for(Channel ch : channels) {
+        for(Channel ch : getChannels()) {
             Pair<Integer, Integer> p = ch.getWeddingCoupleForGuest(guestId, cathedral);
             if(p != null) {
                 return p;
@@ -580,7 +640,7 @@ public class World {
             int selectedPos = Integer.MAX_VALUE;
             
             for(Integer pw : possibleWeddings) {
-                for(Channel ch : channels) {
+                for(Channel ch : getChannels()) {
                     int pos = ch.getWeddingReservationStatus(pw, cathedral);
                     if(pos != -1) {
                         if(pos < selectedPos) {
@@ -1420,7 +1480,7 @@ public class World {
     }
     
     public void setServerMessage(String msg) {
-        for (Channel ch : channels) {
+        for (Channel ch : getChannels()) {
             ch.setServerMessage(msg);
         }
     }
@@ -1588,6 +1648,29 @@ public class World {
         }
     }
     
+    private void disposeLocks() {
+        List<MapleParty> pList;
+        partyLock.lock();
+        try {
+            pList = new ArrayList<>(parties.values());
+        } finally {
+            partyLock.unlock();
+        }
+        
+        for(MapleParty p : pList) {
+            p.disposeLocks();
+        }
+        
+        accountCharsLock.dispose();
+        partyLock.dispose();
+        owlLock.dispose();
+        activePetsLock.dispose();
+        activeMountsLock.dispose();
+        activePlayerShopsLock.dispose();
+        activeMerchantsLock.dispose();
+        timedMapObjectLock.dispose();
+    }
+    
     public final void shutdown() {
         for (Channel ch : getChannels()) {
             ch.shutdown();
@@ -1608,6 +1691,17 @@ public class World {
             timedMapObjectsSchedule = null;
         }
         
+        if(charactersSchedule != null) {
+            charactersSchedule.cancel(false);
+            charactersSchedule = null;
+        }
+        
+        if(marriagesSchedule != null) {
+            marriagesSchedule.cancel(false);
+            marriagesSchedule = null;
+        }
+        
         players.disconnectAll();
+        disposeLocks();
     }
 }

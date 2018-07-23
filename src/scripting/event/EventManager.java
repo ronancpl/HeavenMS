@@ -26,7 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,7 +41,7 @@ import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import server.TimerManager;
+import scripting.event.worker.EventScriptScheduler;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
 import server.life.MapleMonster;
@@ -53,7 +52,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 
@@ -67,6 +65,7 @@ public class EventManager {
     private Channel cserv;
     private World wserv;
     private Server server;
+    private EventScriptScheduler ess = new EventScriptScheduler();
     private Map<String, EventInstanceManager> instances = new HashMap<String, EventInstanceManager>();
     private Map<String, Integer> instanceLocks = new HashMap<String, Integer>();
     private final Queue<Integer> queuedGuilds = new LinkedList<>();
@@ -76,8 +75,8 @@ public class EventManager {
     private Integer readyId = 0;
     private Properties props = new Properties();
     private String name;
-    private Lock lobbyLock = new MonitoredReentrantLock(MonitoredLockType.EM_LOBBY);
-    private Lock queueLock = new MonitoredReentrantLock(MonitoredLockType.EM_QUEUE);
+    private MonitoredReentrantLock lobbyLock = new MonitoredReentrantLock(MonitoredLockType.EM_LOBBY);
+    private MonitoredReentrantLock queueLock = new MonitoredReentrantLock(MonitoredLockType.EM_QUEUE);
 
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     
@@ -92,12 +91,47 @@ public class EventManager {
         for(int i = 0; i < maxLobbys; i++) this.openedLobbys.add(false);
     }
 
-    public void cancel() {
+    public void cancel() {  // make sure to only call this when there are NO PLAYERS ONLINE to mess around with the event manager!
+        ess.dispose();
+        
         try {
             iv.invokeFunction("cancelSchedule", (Object) null);
         } catch (ScriptException | NoSuchMethodException ex) {
             ex.printStackTrace();
         }
+        
+        synchronized(instances) {
+            for(EventInstanceManager eim : instances.values()) {
+                eim.dispose();
+            }
+            instances.clear();
+        }
+        
+        List<EventInstanceManager> readyEims;
+        queueLock.lock();
+        try {
+            readyEims = new ArrayList<>(readyInstances);
+            readyInstances.clear();
+        } finally {
+            queueLock.unlock();
+        }
+        
+        for(EventInstanceManager eim : readyEims) {
+            eim.dispose();
+        }
+        
+        props.clear();
+        cserv = null;
+        wserv = null;
+        server = null;
+        iv = null;
+        
+        disposeLocks();
+    }
+    
+    private void disposeLocks() {
+        lobbyLock.dispose();
+        queueLock.dispose();
     }
     
     private static List<Integer> convertToIntegerArray(List<Double> list) {
@@ -123,12 +157,12 @@ public class EventManager {
         }
     }
 
-    public ScheduledFuture<?> schedule(String methodName, long delay) {
+    public EventScheduledFuture schedule(String methodName, long delay) {
         return schedule(methodName, null, delay);
     }
 
-    public ScheduledFuture<?> schedule(final String methodName, final EventInstanceManager eim, long delay) {
-        return TimerManager.getInstance().schedule(new Runnable() {
+    public EventScheduledFuture schedule(final String methodName, final EventInstanceManager eim, long delay) {
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -137,11 +171,16 @@ public class EventManager {
                     Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }, delay);
+        };
+        
+        ess.registerEntry(r, delay);
+        
+        // hate to do that, but those schedules can still be cancelled, so well... Let GC do it's job
+        return new EventScheduledFuture(r, ess);
     }
 
-    public ScheduledFuture<?> scheduleAtTimestamp(final String methodName, long timestamp) {
-        return TimerManager.getInstance().scheduleAtTimestamp(new Runnable() {
+    public EventScheduledFuture scheduleAtTimestamp(final String methodName, long timestamp) {
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -150,7 +189,10 @@ public class EventManager {
                     Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-        }, timestamp);
+        };
+        
+        ess.registerEntry(r, timestamp - server.getCurrentTime());
+        return new EventScheduledFuture(r, ess);
     }
 
     public World getWorldServer() {
@@ -187,7 +229,7 @@ public class EventManager {
     }
 
     public void disposeInstance(final String name) {
-        TimerManager.getInstance().schedule(new Runnable() {
+        ess.registerEntry(new Runnable() {
             @Override
             public void run() {
                 freeLobbyInstance(name);

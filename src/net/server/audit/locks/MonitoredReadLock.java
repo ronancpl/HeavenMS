@@ -146,4 +146,16 @@ public class MonitoredReadLock extends ReentrantReadWriteLock.ReadLock {
         
         return s;
     }
+    
+    public void dispose() {
+        state.lock();
+        try {
+            if(timeoutSchedule != null) {
+                timeoutSchedule.cancel(false);
+                timeoutSchedule = null;
+            }
+        } finally {
+            state.unlock();
+        }
+    }
 }

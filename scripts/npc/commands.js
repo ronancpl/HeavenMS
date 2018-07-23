@@ -51,6 +51,10 @@ function writeHeavenMSCommandsLv6() {    //Admin
         addCommand("dcall", "");
         addCommand("mapplayers", "");
         addCommand("getacc", "");
+        addCommand("addchannel", "");
+        addCommand("addworld", "");
+        //addCommand("removechannel", "");
+        //addCommand("removeworld", "");
         addCommand("shutdown", "");
         addCommand("shutdownnow", "");
         addCommand("clearquestcache", "");

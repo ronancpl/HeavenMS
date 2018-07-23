@@ -130,8 +130,7 @@ function monsterKilled(mob, eim) {}
 
 function allMonstersDead(eim) {}
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}
 
 function timeOut() {
     var iter = em.getInstances().iterator();

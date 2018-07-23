@@ -58,7 +58,7 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         }
         
         try {
-            int channel = Randomizer.rand(1, c.getWorldServer().getChannels().size());
+            int channel = Randomizer.rand(1, c.getWorldServer().getChannelsSize());
             c.setChannel(channel);
         } catch (Exception e) {
             e.printStackTrace();

@@ -24,7 +24,6 @@ import net.server.audit.locks.MonitoredLockType;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredReentrantLock;
 
 /**
@@ -33,7 +32,7 @@ import net.server.audit.locks.MonitoredReentrantLock;
  */
 public class MobAnimationScheduler extends BaseScheduler {
     Set<Integer> onAnimationMobs = new HashSet<>(1000);
-    private Lock animationLock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_MOBANIMAT, true);
+    private MonitoredReentrantLock animationLock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_MOBANIMAT, true);
     
     private static Runnable r = new Runnable() {
         @Override
@@ -72,5 +71,11 @@ public class MobAnimationScheduler extends BaseScheduler {
         } finally {
             animationLock.unlock();
         }
+    }
+    
+    @Override
+    public void dispose() {
+        animationLock.dispose();
+        super.dispose();
     }
 }

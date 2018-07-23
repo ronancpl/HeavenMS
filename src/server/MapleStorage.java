@@ -119,7 +119,7 @@ public class MapleStorage {
         return slots;
     }
 
-    public boolean gainSlots(int slots) {
+    public synchronized boolean gainSlots(int slots) {
         slots += this.slots;
 
         if (slots <= 48) {
@@ -129,11 +129,7 @@ public class MapleStorage {
 
         return false;
     }
-
-    public void setSlots(byte set) {
-        this.slots = set;
-    }
-
+    
     public void saveToDB(Connection con) {
         try {
             try (PreparedStatement ps = con.prepareStatement("UPDATE storages SET slots = ?, meso = ? WHERE storageid = ?")) {

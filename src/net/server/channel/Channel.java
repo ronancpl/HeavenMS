@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -92,6 +91,7 @@ public final class Channel {
     private MobClearSkillScheduler mobClearSkillSchedulers[] = new MobClearSkillScheduler[4];
     private MobMistScheduler mobMistSchedulers[] = new MobMistScheduler[4];
     private FaceExpressionScheduler faceExpressionSchedulers[] = new FaceExpressionScheduler[4];
+    private EventScheduler eventSchedulers[] = new EventScheduler[4];
     private OverallScheduler channelSchedulers[] = new OverallScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
@@ -100,6 +100,9 @@ public final class Channel {
     private MapleEvent event;
     private boolean finishedShutdown = false;
     private int usedDojo = 0;
+    
+    private ScheduledFuture<?> respawnTask;
+    
     private int[] dojoStage;
     private long[] dojoFinishTime;
     private ScheduledFuture<?>[] dojoTask;
@@ -123,9 +126,9 @@ public final class Channel {
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
     
-    private Lock faceLock[] = new MonitoredReentrantLock[4];
+    private MonitoredReentrantLock faceLock[] = new MonitoredReentrantLock[4];
     
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
+    private MonitoredReentrantLock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
     
     public Channel(final int world, final int channel, long startTime) {
         this.world = world;
@@ -141,7 +144,7 @@ public final class Channel {
             IoBuffer.setUseDirectBuffer(false);
             IoBuffer.setAllocator(new SimpleBufferAllocator());
             acceptor = new NioSocketAcceptor();
-            TimerManager.getInstance().register(new respawnMaps(), ServerConstants.RESPAWN_INTERVAL);
+            respawnTask = TimerManager.getInstance().register(new respawnMaps(), ServerConstants.RESPAWN_INTERVAL);
             acceptor.setHandler(new MapleServerHandler(world, channel));
             acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
             acceptor.getFilterChain().addLast("codec", (IoFilter) new ProtocolCodecFilter(new MapleCodecFactory()));
@@ -169,6 +172,7 @@ public final class Channel {
                 mobClearSkillSchedulers[i] = new MobClearSkillScheduler();
                 mobMistSchedulers[i] = new MobMistScheduler();
                 faceExpressionSchedulers[i] = new FaceExpressionScheduler(faceLock[i]);
+                eventSchedulers[i] = new EventScheduler();
                 channelSchedulers[i] = new OverallScheduler();
             }
             
@@ -191,6 +195,20 @@ public final class Channel {
             
             closeAllMerchants();
             players.disconnectAll();
+            
+            if(respawnTask != null) {
+                respawnTask.cancel(false);
+                respawnTask = null;
+            }
+            
+            mapFactory.dispose();
+            mapFactory = null;
+            
+            eventSM.cancel();
+            eventSM = null;
+            
+            closeChannelSchedules();
+            
             acceptor.unbind();
             
             finishedShutdown = true;
@@ -200,8 +218,58 @@ public final class Channel {
             System.err.println("Error while shutting down Channel " + channel + " on World " + world + "\r\n" + e);
         }
     }
+    
+    private void closeChannelSchedules() {
+        for(int i = 0; i < 20; i++) {
+            if(dojoTask[i] != null) {
+                dojoTask[i].cancel(false);
+                dojoTask[i] = null;
+            }
+        }
 
-    public void closeAllMerchants() {
+        for(int i = 0; i < 4; i++) {
+            if(mobStatusSchedulers[i] != null) {
+                mobStatusSchedulers[i].dispose();
+                mobStatusSchedulers[i] = null;
+            }
+            
+            if(mobAnimationSchedulers[i] != null) {
+                mobAnimationSchedulers[i].dispose();
+                mobAnimationSchedulers[i] = null;
+            }
+            
+            if(mobClearSkillSchedulers[i] != null) {
+                mobClearSkillSchedulers[i].dispose();
+                mobClearSkillSchedulers[i] = null;
+            }
+            
+            if(mobMistSchedulers[i] != null) {
+                mobMistSchedulers[i].dispose();
+                mobMistSchedulers[i] = null;
+            }
+            
+            if(faceExpressionSchedulers[i] != null) {
+                faceExpressionSchedulers[i].dispose();
+                faceExpressionSchedulers[i] = null;
+            }
+            
+            if(eventSchedulers[i] != null) {
+                eventSchedulers[i].dispose();
+                eventSchedulers[i] = null;
+            }
+            
+            if(channelSchedulers[i] != null) {
+                channelSchedulers[i].dispose();
+                channelSchedulers[i] = null;
+            }
+            
+            faceLock[i].dispose();
+        }
+        
+        lock.dispose();
+    }
+    
+    private void closeAllMerchants() {
         merchWlock.lock();
         try {
             final Iterator<MapleHiredMerchant> hmit = hiredMerchants.values().iterator();
@@ -442,7 +510,7 @@ public final class Channel {
         }
     }
     
-    private int getDojoSlot(int dojoMapId) {
+    private static int getDojoSlot(int dojoMapId) {
         return (dojoMapId % 100) + ((dojoMapId / 10000 == 92502) ? 5 : 0);
     }
     
@@ -456,7 +524,7 @@ public final class Channel {
         resetDojo(dojoMapId, 0);
     }
     
-    public void resetDojo(int dojoMapId, int thisStg) {
+    private void resetDojo(int dojoMapId, int thisStg) {
         int slot = getDojoSlot(dojoMapId);
         this.dojoStage[slot] = thisStg;
         
@@ -880,6 +948,10 @@ public final class Channel {
         mobMistSchedulers[getChannelSchedulerIndex(mapid)].registerMistCancelAction(runAction, delay);
     }
     
+    public void registerEventAction(int mapid, Runnable runAction, long delay) {
+        eventSchedulers[getChannelSchedulerIndex(mapid)].registerDelayedAction(runAction, delay);
+    }
+    
     public void registerOverallAction(int mapid, Runnable runAction, long delay) {
         channelSchedulers[getChannelSchedulerIndex(mapid)].registerDelayedAction(runAction, delay);
     }
@@ -902,13 +974,16 @@ public final class Channel {
         
         faceLock[lockid].lock();
         try {
-            if(chr.isLoggedinWorld()) {
-                faceExpressionSchedulers[lockid].registerFaceExpression(chr.getId(), cancelAction);
-                map.broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
+            if(!chr.isLoggedinWorld()) {
+                return;
             }
+            
+            faceExpressionSchedulers[lockid].registerFaceExpression(chr.getId(), cancelAction);
         } finally {
             faceLock[lockid].unlock();
         }
+        
+        map.broadcastMessage(chr, MaplePacketCreator.facialExpression(chr, emote), false);
     }
     
     public void unregisterFaceExpression(int mapid, MapleCharacter chr) {

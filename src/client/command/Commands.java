@@ -2784,7 +2784,7 @@ public class Commands {
                     
 			Server server = Server.getInstance();
 			byte worldb = Byte.parseByte(sub[1]);
-			if (worldb <= (server.getWorlds().size() - 1)) {
+			if (worldb <= (server.getWorldsSize() - 1)) {
 				try {
 					String[] socket = server.getIP(worldb, c.getChannel()).split(":");
 					c.getWorldServer().removePlayer(player);
@@ -2799,7 +2799,7 @@ public class Commands {
 				}
 
 			} else {
-				player.message("Invalid world; highest number available: " + (server.getWorlds().size() - 1));
+				player.message("Invalid world; highest number available: " + (server.getWorldsSize() - 1));
 			}
 			break;
                     
@@ -2855,6 +2855,82 @@ public class Commands {
                         }
 			break;
 
+                    case "addchannel":
+                        if (sub.length < 2) {
+				player.dropMessage(5, "Syntax: @addchannel <worldid>");
+                                break;
+			}
+                        
+                        int worldid = Integer.parseInt(sub[1]);
+                        
+                        int chid = Server.getInstance().addChannel(worldid);
+                        if(chid >= 0) {
+                            player.dropMessage(5, "NEW Channel " + chid + " successfully deployed on world " + worldid + ".");
+                        } else {
+                            if(chid == -3) {
+                                player.dropMessage(5, "Invalid worldid detected. Channel creation aborted.");
+                            } else if(chid == -2) {
+                                player.dropMessage(5, "Reached channel limit on worldid " + worldid + ". Channel creation aborted.");
+                            } else if(chid == -1) {
+                                player.dropMessage(5, "Error detected when loading the 'world.ini' file. Channel creation aborted.");
+                            } else {
+                                player.dropMessage(5, "NEW Channel failed to be deployed. Check if the needed port is already in use or other limitations are taking place.");
+                            }
+                        }
+                        
+                        break;
+                        
+                    case "addworld":
+                        int wid = Server.getInstance().addWorld();
+                        
+                        if(wid >= 0) {
+                            player.dropMessage(5, "NEW World " + wid + " successfully deployed.");
+                        } else {
+                            if(wid == -2) {
+                                player.dropMessage(5, "Error detected when loading the 'world.ini' file. World creation aborted.");
+                            } else {
+                                player.dropMessage(5, "NEW World failed to be deployed. Check if needed ports are already in use or maximum world count has been reached.");
+                            }
+                        }
+                        
+                        break;
+                    
+                        /*
+                    case "removechannel":
+                        if (sub.length < 2) {
+                            player.dropMessage(5, "Syntax: @removechannel <worldid>");
+                            break;
+			}
+                        
+                        int worldId = Integer.parseInt(sub[1]);
+                        if(Server.getInstance().removeChannel(worldId)) {
+                            player.dropMessage(5, "Successfully removed a channel on World " + worldId + ". Current channel count: " + Server.getInstance().getWorld(worldId).getChannelsSize() + ".");
+                        } else {
+                            player.dropMessage(5, "Failed to remove last Channel on world " + worldId + ". Check if either that world exists or there are people currently playing there.");
+                        }
+                        
+                        break;
+                        
+                    case "removeworld":
+                        int rwid = Server.getInstance().getWorldsSize() - 1;
+                        if(rwid <= 0) {
+                            player.dropMessage(5, "Unable to remove world 0.");
+                            break;
+                        }
+                        
+                        if(Server.getInstance().removeWorld()) {
+                            player.dropMessage(5, "Successfully removed a world. Current world count: " + Server.getInstance().getWorldsSize() + ".");
+                        } else {
+                            if(rwid < 0) {
+                                player.dropMessage(5, "No registered worlds to remove.");
+                            } else {
+                                player.dropMessage(5, "Failed to remove world " + rwid + ". Check if there are people currently playing there.");
+                            }
+                        }
+                        
+                        break;
+                                */
+                        
                     case "shutdown":
                     case "shutdownnow":
 			int time = 60000;

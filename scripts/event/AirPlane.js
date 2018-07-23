@@ -51,5 +51,4 @@ function arrived() {
     scheduleNew();
 }
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}

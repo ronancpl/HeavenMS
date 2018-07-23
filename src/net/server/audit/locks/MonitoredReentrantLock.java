@@ -150,4 +150,16 @@ public class MonitoredReentrantLock extends ReentrantLock {
         
         return s;
     }
+    
+    public void dispose() {
+        state.lock();
+        try {
+            if(timeoutSchedule != null) {
+                timeoutSchedule.cancel(false);
+                timeoutSchedule = null;
+            }
+        } finally {
+            state.unlock();
+        }
+    }
 }

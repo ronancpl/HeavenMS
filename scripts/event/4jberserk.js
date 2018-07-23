@@ -164,8 +164,7 @@ function allMonstersDead(eim) {
     eim.setProperty("canWarp","true");
 }
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}
 
 function timeOut() {
     var iter = em.getInstances().iterator();

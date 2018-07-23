@@ -132,6 +132,7 @@ Player potentials:
 Server potentials:
 
 * Multi-worlds.
+* Dynamic World/Channel deployment.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.

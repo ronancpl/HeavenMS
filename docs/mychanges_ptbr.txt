@@ -1164,3 +1164,12 @@ Corrigido tooltip de player shops e hired merchants, agora com ícone mostrando 
 Corrigido player shop permits diferentes do comum não sendo consumidos ao usar.
 Corrigido player shop sempre aparecendo como o tipo básico (sem estandes), para qualquer permit itemid.
 Corrigido cash pet food ignorando certos petids ao ler dados do WZ.
+
+21 - 23 Julho 2018,
+Adicionado "Add SETUP slot" na lista de itens do cash shop.
+Corrigido problema de acesso concorrente no método fameGainByQuest.
+Refatorado vários métodos de liberamento de recursos do server, tais como em: Channel, MapleMap, MapleMapFactory e EventManager.
+Implementado código que ofereçe suporte para abrir novos worlds e channels sob demanda.
+Adicionado scheduler dedicado para ações de event managers.
+Corrigido potencial de deadlock em alguns pontos do sistema de schedulers de canais.
+Refatorado vários temporizadores utilizados pelo EventManager e Channel, como o respawn de mobs e o disposeInstance.

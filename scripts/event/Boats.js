@@ -107,5 +107,4 @@ function invasion() {
     map2.spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8150000), pos2);
 }
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}

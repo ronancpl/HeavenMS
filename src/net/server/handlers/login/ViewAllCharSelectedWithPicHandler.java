@@ -27,7 +27,7 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
         }
         
         c.setWorld(server.getCharacterWorld(charId));
-        int channel = Randomizer.rand(1, c.getWorldServer().getChannels().size());
+        int channel = Randomizer.rand(1, c.getWorldServer().getChannelsSize());
         c.setChannel(channel);
         
         String macs = slea.readMapleAsciiString();

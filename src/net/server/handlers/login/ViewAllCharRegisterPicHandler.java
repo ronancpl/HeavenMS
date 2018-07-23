@@ -31,7 +31,7 @@ public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHand
             return;
         }
         
-        int channel = Randomizer.rand(1, server.getWorld(c.getWorld()).getChannels().size());
+        int channel = Randomizer.rand(1, server.getWorld(c.getWorld()).getChannelsSize());
         c.setChannel(channel);
         
         String mac = slea.readMapleAsciiString();

@@ -90,7 +90,7 @@ public class RankingWorker implements Runnable {
                 resetMoveRank(false);
             }
             
-            for(int j = 0; j < Server.getInstance().getWorlds().size(); j++) {
+            for(int j = 0; j < Server.getInstance().getWorldsSize(); j++) {
                 updateRanking(-1, j);    //overall ranking
                 for (int i = 0; i <= MapleJob.getMax(); i++) {
                     updateRanking(i, j);

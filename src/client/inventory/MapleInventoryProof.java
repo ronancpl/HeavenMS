@@ -33,7 +33,7 @@ public class MapleInventoryProof extends MapleInventory {
     
     public void cloneContents(MapleInventory inv) {
         inv.lockInventory();
-	lock.lock();
+        lock.lock();
         try {
             inventory.clear();
             this.setSlotLimit(inv.getSlotLimit());

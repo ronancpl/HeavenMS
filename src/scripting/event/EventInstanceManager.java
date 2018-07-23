@@ -34,7 +34,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
@@ -93,8 +92,8 @@ public class EventInstanceManager {
         private final ReadLock rL = lock.readLock();
         private final WriteLock wL = lock.writeLock();
         
-        private final Lock pL = new MonitoredReentrantLock(MonitoredLockType.EIM_PARTY, true);
-        private final Lock sL = new MonitoredReentrantLock(MonitoredLockType.EIM_SCRIPT, true);
+        private final MonitoredReentrantLock pL = new MonitoredReentrantLock(MonitoredLockType.EIM_PARTY, true);
+        private final MonitoredReentrantLock sL = new MonitoredReentrantLock(MonitoredLockType.EIM_SCRIPT, true);
         
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
@@ -638,13 +637,6 @@ public class EventInstanceManager {
 		return (kc == null) ? 0 : kc;
 	}
         
-        public void cancelSchedule() {
-            if(event_schedule != null) {
-                    event_schedule.cancel(false);
-                    event_schedule = null;
-            }
-        }
-
 	public synchronized void dispose() {
                 if(disposed) return;
                 
@@ -673,9 +665,14 @@ public class EventInstanceManager {
                         wL.unlock();
                 }
                 
-                cancelSchedule();
+                if(event_schedule != null) {
+                        event_schedule.cancel(false);
+                        event_schedule = null;
+                }
+                
                 killCount.clear();
                 mapIds.clear();
+                props.clear();
                 
                 disposeExpedition();
                 
@@ -686,14 +683,24 @@ public class EventInstanceManager {
                 } finally {
                         sL.unlock();
                 }
+                
+                disposeLocks();
 	}
+        
+        private void disposeLocks() {
+                pL.dispose();
+                sL.dispose();
+        }
 
 	public MapleMapFactory getMapFactory() {
 		return mapFactory;
 	}
 
 	public void schedule(final String methodName, long delay) {
-		TimerManager.getInstance().schedule(new Runnable() {
+                List<MapleCharacter> chrList = this.getPlayerList();
+                int mapid = !chrList.isEmpty() ? chrList.get(0).getMapId() : 0;
+                
+                Runnable r = new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -708,7 +715,9 @@ public class EventInstanceManager {
 					ex.printStackTrace();
 				}
 			}
-		}, delay);
+		};
+                
+                getEm().getChannelServer().registerEventAction(mapid, r, delay);
 	}
 
 	public String getName() {

@@ -57,5 +57,4 @@ function arrived() {
     NLC_docked.broadcastMessage(MaplePacketCreator.playSound("subway/whistle"));
 }
 
-function cancelSchedule() {
-}
+function cancelSchedule() {}

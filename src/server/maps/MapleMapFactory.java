@@ -437,7 +437,10 @@ public class MapleMapFactory {
             mapsRLock.unlock();
         }
         
-        for(MapleMap map: mapValues) map.setEventInstance(null);
+        for(MapleMap map: mapValues) {
+            map.dispose();
+        }
+        
         this.event = null;
     }
 }

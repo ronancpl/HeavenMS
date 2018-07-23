@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 
@@ -35,7 +34,7 @@ import net.server.audit.locks.MonitoredReentrantLock;
  */
 public class MobStatusScheduler extends BaseScheduler {
     private Map<MonsterStatusEffect, MobStatusOvertimeEntry> registeredMobStatusOvertime = new HashMap<>();
-    private Lock overtimeStatusLock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_OVTSTATUS, true);
+    private MonitoredReentrantLock overtimeStatusLock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_OVTSTATUS, true);
     
     private class MobStatusOvertimeEntry {
         private int procCount;
@@ -48,11 +47,11 @@ public class MobStatusScheduler extends BaseScheduler {
             r = run;
         }
         
-        protected void update() {
+        protected void update(List<Runnable> toRun) {
             procCount++;
             if(procCount >= procLimit) {
                 procCount = 0;
-                r.run();
+                toRun.add(r);
             }
         }
     }
@@ -63,6 +62,8 @@ public class MobStatusScheduler extends BaseScheduler {
         super.addListener(new SchedulerListener() {
             @Override
             public void removedScheduledEntries(List<Object> toRemove, boolean update) {
+                List<Runnable> toRun = new ArrayList<>();
+                
                 overtimeStatusLock.lock();
                 try {
                     for(Object mseo : toRemove) {
@@ -74,11 +75,15 @@ public class MobStatusScheduler extends BaseScheduler {
                         // it's probably ok to use one thread for both management & overtime actions
                         List<MobStatusOvertimeEntry> mdoeList = new ArrayList<>(registeredMobStatusOvertime.values());
                         for(MobStatusOvertimeEntry mdoe : mdoeList) {
-                            mdoe.update();
+                            mdoe.update(toRun);
                         }
                     }
                 } finally {
                     overtimeStatusLock.unlock();
+                }
+                
+                for(Runnable r : toRun) {
+                    r.run();
                 }
             }
         });
@@ -101,5 +106,11 @@ public class MobStatusScheduler extends BaseScheduler {
     
     public void interruptMobStatus(MonsterStatusEffect mse) {
         interruptEntry(mse);
+    }
+    
+    @Override
+    public void dispose() {
+        overtimeStatusLock.dispose();
+        super.dispose();
     }
 }

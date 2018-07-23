@@ -17,6 +17,8 @@ public class ServerConstants {
     public static short VERSION = 83;
 
     //Login Configuration
+    public static final int WLDLIST_SIZE = 21;                  //Max possible worlds on the server.
+    public static final int CHANNEL_SIZE = 20;                  //Max possible channels per world (which is 20, based on the channel list on login phase).
     public static final int CHANNEL_LOAD = 100;                 //Max players per channel (limit actually used to calculate the World server capacity).
     
     public static final long RESPAWN_INTERVAL = 10 * 1000;	//10 seconds, 10000.
@@ -120,7 +122,7 @@ public class ServerConstants {
     public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.
     public static final int KITE_EXPIRE_TIME  = 60 * 60 * 1000; //Time before kites (cash item) disappears.
     public static final int ITEM_MONITOR_TIME = 5 * 60 * 1000;  //Interval between item monitoring tasks on maps, which checks for dangling (null) item objects on the map item history.
-    public static final int LOCK_MONITOR_TIME = 30 * 1000;      //Waiting time for a lock to be released. If it reaches timeout, a critical server deadlock has made present.
+    public static final int LOCK_MONITOR_TIME = 3 * 60 * 1000;      //Waiting time for a lock to be released. If it reaches timeout, a critical server deadlock has made present.
     public static final int ITEM_EXPIRE_CHECK = 10 * 1000;      //Interval between item expiring tasks on maps, which checks and makes disappear expired items.
     public static final int ITEM_LIMIT_ON_MAP = 200;            //Max number of items allowed on a map.
     public static final int MAP_VISITED_SIZE = 5;               //Max length for last mapids visited by a player. This is used to recover and update drops on these maps accordingly with player actions.

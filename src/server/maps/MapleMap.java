@@ -2103,6 +2103,10 @@ public class MapleMap {
         }
     }
 
+    private void registerMapSchedule(Runnable r, long delay) {
+        this.getChannelServer().registerOverallAction(mapid, r, delay);
+    }
+    
     private void activateItemReactors(final MapleMapItem drop, final MapleClient c) {
         final Item item = drop.getItem();
 
@@ -2113,7 +2117,7 @@ public class MapleMap {
                 if (react.getReactItem(react.getEventState()).getLeft() == item.getItemId() && react.getReactItem(react.getEventState()).getRight() == item.getQuantity()) {
 
                     if (react.getArea().contains(drop.getPosition())) {
-                        TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, c), 5000);
+                        registerMapSchedule(new ActivateItemReactor(drop, react, c), 5000);
                         break;
                     }
                 }
@@ -2151,7 +2155,7 @@ public class MapleMap {
                     if (reactArea.contains(drop.getPosition())) {
                         MapleClient owner = drop.getOwnerClient();
                         if(owner != null) {
-                            TimerManager.getInstance().schedule(new ActivateItemReactor(drop, react, owner), 5000);
+                            registerMapSchedule(new ActivateItemReactor(drop, react, owner), 5000);
                         }
                     }
                 }
@@ -2173,13 +2177,16 @@ public class MapleMap {
         }
         mapEffect = new MapleMapEffect(msg, itemId);
         broadcastMessage(mapEffect.makeStartData());
-        TimerManager.getInstance().schedule(new Runnable() {
+        
+        Runnable r = new Runnable() {
             @Override
             public void run() {
                 broadcastMessage(mapEffect.makeDestroyData());
                 mapEffect = null;
             }
-        }, time);
+        };
+        
+        registerMapSchedule(r, time);
     }
     
     public MapleCharacter getAnyCharacterFromParty(int partyid) {
@@ -3805,6 +3812,39 @@ public class MapleMap {
             });
 
             spawnMonsterOnGroundBelow(m, targetPoint);
+        }
+    }
+    
+    public void dispose() {
+        for(MapleMonster mm : this.getMonsters()) {
+            mm.disposeLocks();
+        }
+        
+        clearMapObjects();
+        
+        event = null;
+        footholds = null;
+        portals.clear();
+        mapEffect = null;
+        
+        if(mapMonitor != null) {
+            mapMonitor.cancel(false);
+            mapMonitor = null;
+        }
+        
+        chrWLock.lock();
+        try {
+            if(itemMonitor != null) {
+                itemMonitor.cancel(false);
+                itemMonitor = null;
+            }
+
+            if(expireItemsTask != null) {
+                expireItemsTask.cancel(false);
+                expireItemsTask = null;
+            }
+        } finally {
+            chrWLock.unlock();
         }
     }
 }

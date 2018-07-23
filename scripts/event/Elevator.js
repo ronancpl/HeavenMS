@@ -83,6 +83,4 @@ function isDownNow() {
     goUp();
 }
 
-function cancelSchedule() {
-    
-}
+function cancelSchedule() {}

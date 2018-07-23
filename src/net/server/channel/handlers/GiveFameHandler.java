@@ -32,6 +32,8 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class GiveFameHandler extends AbstractMaplePacketHandler {
+    
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter target = (MapleCharacter) c.getPlayer().getMap().getMapObject(slea.readInt());
         int mode = slea.readByte();
