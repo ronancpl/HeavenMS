@@ -23,8 +23,9 @@ package net.server;
 
 import client.MapleClient;
 import client.MapleCharacter;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -35,10 +36,10 @@ import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 
 public class PlayerStorage {
     private final ReentrantReadWriteLock locks = new MonitoredReentrantReadWriteLock(MonitoredLockType.PLAYER_STORAGE, true);
-    private final ReadLock rlock = locks.readLock();
-    private final WriteLock wlock = locks.writeLock();
     private final Map<Integer, MapleCharacter> storage = new LinkedHashMap<>();
     private final Map<String, MapleCharacter> nameStorage = new LinkedHashMap<>();
+    private ReadLock rlock = locks.readLock();
+    private WriteLock wlock = locks.writeLock();
 
     public void addPlayer(MapleCharacter chr) {
         wlock.lock();
@@ -90,17 +91,24 @@ public class PlayerStorage {
     }
 
     public final void disconnectAll() {
-	wlock.lock();
-	try {	    
-            final Iterator<MapleCharacter> chrit = storage.values().iterator();
-	    while (chrit.hasNext()) {
-                MapleClient client = chrit.next().getClient();
-                if(client != null) {
-                    client.disconnect(true, false);
-                }
-                
-                chrit.remove();
+        List<MapleCharacter> chrList;
+	rlock.lock();
+	try {
+            chrList = new ArrayList<>(storage.values());
+	} finally {
+	    rlock.unlock();
+	}
+        
+        for(MapleCharacter mc : chrList) {
+            MapleClient client = mc.getClient();
+            if(client != null) {
+                client.disconnect(true, false);
             }
+        }
+        
+        wlock.lock();
+	try {
+            storage.clear();
 	} finally {
 	    wlock.unlock();
 	}

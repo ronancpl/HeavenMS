@@ -27,11 +27,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.locks.Lock;
 
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import server.TimerManager;
 import tools.Pair;
 
@@ -42,7 +42,7 @@ import tools.Pair;
 public abstract class BaseScheduler {
     private int idleProcs = 0;
     private List<SchedulerListener> listeners = new LinkedList<>();
-    private final List<Lock> externalLocks = new LinkedList<>();
+    private final List<MonitoredReentrantLock> externalLocks = new LinkedList<>();
     private Map<Object, Pair<Runnable, Long>> registeredEntries = new HashMap<>();
     
     private ScheduledFuture<?> schedulerTask = null;
@@ -55,14 +55,14 @@ public abstract class BaseScheduler {
                                     };
     
     protected BaseScheduler(MonitoredLockType lockType) {
-        schedulerLock = new MonitoredReentrantLock(lockType, true);
+        schedulerLock = MonitoredReentrantLockFactory.createLock(lockType, true);
     }
     
     // NOTE: practice EXTREME caution when adding external locks to the scheduler system, if you don't know what you're doing DON'T USE THIS.
-    protected BaseScheduler(MonitoredLockType lockType, List<Lock> extLocks) {
-        schedulerLock = new MonitoredReentrantLock(lockType, true);
+    protected BaseScheduler(MonitoredLockType lockType, List<MonitoredReentrantLock> extLocks) {
+        schedulerLock = MonitoredReentrantLockFactory.createLock(lockType, true);
         
-        for(Lock lock : extLocks) {
+        for(MonitoredReentrantLock lock : extLocks) {
             externalLocks.add(lock);
         }
     }
@@ -73,7 +73,7 @@ public abstract class BaseScheduler {
     
     private void lockScheduler() {
         if(!externalLocks.isEmpty()) {
-            for(Lock l : externalLocks) {
+            for(MonitoredReentrantLock l : externalLocks) {
                 l.lock();
             }
         }
@@ -83,7 +83,7 @@ public abstract class BaseScheduler {
     
     private void unlockScheduler() {
         if(!externalLocks.isEmpty()) {
-            for(Lock l : externalLocks) {
+            for(MonitoredReentrantLock l : externalLocks) {
                 l.unlock();
             }
         }
@@ -190,12 +190,12 @@ public abstract class BaseScheduler {
             }
             
             listeners.clear();
-            externalLocks.clear();
             registeredEntries.clear();
         } finally {
             unlockScheduler();
+            externalLocks.clear();
         }
         
-        schedulerLock.dispose();
+        schedulerLock = schedulerLock.dispose();
     }
 }

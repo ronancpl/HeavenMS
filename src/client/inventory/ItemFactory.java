@@ -28,10 +28,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -47,7 +47,7 @@ public enum ItemFactory {
     MERCHANT(6, false);
     private final int value;
     private final boolean account;
-    private static final Lock lock = new MonitoredReentrantLock(MonitoredLockType.ITEM, true);
+    private static final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.ITEM, true);
 
     private ItemFactory(int value, boolean account) {
         this.value = value;

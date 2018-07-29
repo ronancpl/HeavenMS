@@ -28,7 +28,6 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
-import constants.ServerConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -37,12 +36,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
 import net.opcodes.SendOpcode;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -62,7 +61,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     private List<String> bannedList = new ArrayList<>();
     private List<Pair<MapleCharacter, String>> chatLog = new LinkedList<>();
     private Map<Integer, Byte> chatSlot = new LinkedHashMap<>();
-    private Lock visitorLock = new MonitoredReentrantLock(MonitoredLockType.VISITOR_PSHOP, true);
+    private Lock visitorLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.VISITOR_PSHOP, true);
 
     public MaplePlayerShop(MapleCharacter owner, String description, int itemid) {
         this.setPosition(owner.getPosition());

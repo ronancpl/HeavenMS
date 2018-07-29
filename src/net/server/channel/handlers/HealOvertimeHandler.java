@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.autoban.AutobanManager;
 import net.AbstractMaplePacketHandler;
+import server.maps.MapleMapFactory;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.MaplePacketCreator;
 
@@ -33,6 +34,8 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
+        if(!chr.isLoggedinWorld()) return;
+        
         AutobanManager abm = chr.getAutobanManager();
         int timestamp = slea.readInt();
         abm.setTimestamp(0, timestamp, 3);
@@ -41,8 +44,7 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
         if (healHP != 0) {
             if ((abm.getLastSpam(0) + 1500) > timestamp) AutobanFactory.FAST_HP_HEALING.addPoint(abm, "Fast hp healing");
             
-            int abHeal = 140;
-            if(chr.getMapId() == 105040401 || chr.getMapId() == 105040402 || chr.getMapId() == 809000101 || chr.getMapId() == 809000201) abHeal += 40; // Sleepywood sauna and showa spa...
+            int abHeal = 120 + (int)(20 * MapleMapFactory.getMapRecoveryRate(chr.getMapId())); // Sleepywood sauna and showa spa...
             if (healHP > abHeal) {
                 AutobanFactory.HIGH_HP_HEALING.autoban(chr, "Healing: " + healHP + "; Max is " + abHeal + ".");
                 return;

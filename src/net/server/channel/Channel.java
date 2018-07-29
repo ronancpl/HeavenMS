@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -39,6 +40,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -95,6 +97,7 @@ public final class Channel {
     private OverallScheduler channelSchedulers[] = new OverallScheduler[4];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
+    private Set<Integer> playersAway = new HashSet<>();
     private List<MapleExpedition> expeditions = new ArrayList<>();
     private List<MapleExpeditionType> expedType = new ArrayList<>();
     private MapleEvent event;
@@ -128,7 +131,7 @@ public final class Channel {
     
     private MonitoredReentrantLock faceLock[] = new MonitoredReentrantLock[4];
     
-    private MonitoredReentrantLock lock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL, true);
+    private MonitoredReentrantLock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHANNEL, true);
     
     public Channel(final int world, final int channel, long startTime) {
         this.world = world;
@@ -165,7 +168,7 @@ public final class Channel {
             }
             
             for(int i = 0; i < 4; i++) {
-                faceLock[i] = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_FACEEXPRS, true);
+                faceLock[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHANNEL_FACEEXPRS, true);
                 
                 mobStatusSchedulers[i] = new MobStatusScheduler();
                 mobAnimationSchedulers[i] = new MobAnimationScheduler();
@@ -208,6 +211,7 @@ public final class Channel {
             eventSM = null;
             
             closeChannelSchedules();
+            players = null;
             
             acceptor.unbind();
             
@@ -263,10 +267,10 @@ public final class Channel {
                 channelSchedulers[i] = null;
             }
             
-            faceLock[i].dispose();
+            faceLock[i] = faceLock[i].dispose();
         }
         
-        lock.dispose();
+        lock = lock.dispose();
     }
     
     private void closeAllMerchants() {
@@ -291,7 +295,7 @@ public final class Channel {
     public int getWorld() {
         return world;
     }
-
+    
     public void addPlayer(MapleCharacter chr) {
         players.addPlayer(chr);
         chr.announce(MaplePacketCreator.serverMessage(serverMessage));
@@ -354,6 +358,18 @@ public final class Channel {
             }
         }
         return partym;
+    }
+    
+    public void insertPlayerAway(int chrId) {   // either they in CS or MTS
+        playersAway.add(chrId);
+    }
+    
+    public void removePlayerAway(int chrId) {
+        playersAway.remove(chrId);
+    }
+    
+    public boolean canUninstall() {
+        return players.getSize() == 0 && playersAway.isEmpty();
     }
         
     public class respawnMaps implements Runnable {

@@ -42,6 +42,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
+import client.BuddyList;
 import client.BuddylistEntry;
 import client.CharacterNameAndId;
 import client.MapleCharacter;
@@ -101,7 +102,17 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         
         int state = c.getLoginState();
         boolean allowLogin = true;
+        
         Channel cserv = c.getChannelServer();
+        if(cserv == null) {
+            c.setChannel(1);
+            cserv = c.getChannelServer();
+            
+            if(cserv == null) {  // world server is out
+                c.disconnect(true, false);
+                return;
+            }
+        }
 
         /*  is this check really necessary?
         if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.LOGIN_NOTLOGGEDIN) {
@@ -126,7 +137,11 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         }
         c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
 
+        World world = server.getWorld(c.getWorld());
+        
         cserv.addPlayer(player);
+        world.addPlayer(player);
+        player.setEnteredChannelWorld();
         
         List<PlayerBuffValueHolder> buffs = server.getPlayerBuffStorage().getBuffsFromStorage(cid);
         if (buffs != null) {
@@ -156,19 +171,16 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.getMap().addPlayer(player);
         player.visitMap(player.getMap());
         
-        World world = server.getWorld(c.getWorld());
-        world.getPlayerStorage().addPlayer(player);
-        
-        player.setAwayFromWorld(false);
-            
-        int buddyIds[] = player.getBuddylist().getBuddyIds();
+        BuddyList bl = player.getBuddylist();
+        int buddyIds[] = bl.getBuddyIds();
         world.loggedOn(player.getName(), player.getId(), c.getChannel(), buddyIds);
-        for (CharacterIdChannelPair onlineBuddy : server.getWorld(c.getWorld()).multiBuddyFind(player.getId(), buddyIds)) {
-            BuddylistEntry ble = player.getBuddylist().get(onlineBuddy.getCharacterId());
+        for (CharacterIdChannelPair onlineBuddy : world.multiBuddyFind(player.getId(), buddyIds)) {
+            BuddylistEntry ble = bl.get(onlineBuddy.getCharacterId());
             ble.setChannel(onlineBuddy.getChannel());
-            player.getBuddylist().put(ble);
+            bl.put(ble);
         }
-        c.announce(MaplePacketCreator.updateBuddylist(player.getBuddylist().getBuddies()));
+        c.announce(MaplePacketCreator.updateBuddylist(bl.getBuddies()));
+        
         c.announce(MaplePacketCreator.loadFamily(player));
         if (player.getFamilyId() > 0) {
             MapleFamily f = world.getFamily(player.getFamilyId());

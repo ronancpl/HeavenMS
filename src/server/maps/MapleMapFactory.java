@@ -51,9 +51,9 @@ import scripting.event.EventInstanceManager;
 import tools.DatabaseConnection;
 import tools.StringUtil;
 
-
 public class MapleMapFactory {
-
+    private static Map<Integer, Float> mapRecoveryRate = new HashMap<>();
+    
     private MapleDataProvider source;
     private MapleData nameData;
     private EventInstanceManager event;
@@ -278,7 +278,13 @@ public class MapleMapFactory {
         map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", infoData, -1));
         map.setFieldType(MapleDataTool.getIntConvert("fieldType", infoData, 0));
         map.setMobCapacity(MapleDataTool.getIntConvert("fixedMobCapacity", infoData, 500));//Is there a map that contains more than 500 mobs?
-
+        
+        MapleData recData = infoData.getChildByPath("recovery");
+        if(recData != null) {
+            float recoveryRate = MapleDataTool.getFloat(recData);
+            mapRecoveryRate.put(mapid, recoveryRate);
+        }
+        
         HashMap<Integer, Integer> backTypes = new HashMap<>();
         try {
             for (MapleData layer : mapData.getChildByPath("back")) { // yolo
@@ -442,5 +448,10 @@ public class MapleMapFactory {
         }
         
         this.event = null;
+    }
+    
+    public static float getMapRecoveryRate(int mapid) {
+        Float recRate = mapRecoveryRate.get(mapid);
+        return recRate != null ? recRate : 1.0f;
     }
 }

@@ -112,6 +112,10 @@ function playerDead(eim, player) {
     // Happens when player dies
 }
 
+function monsterRevive(mob, eim) {
+    // Happens when an opposing mob revives
+}
+
 function playerRevive(eim, player) {
     // Happens when player's revived.
     // @Param : returns true/false

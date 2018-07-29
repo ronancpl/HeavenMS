@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
 
 import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.Server;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -63,8 +63,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private static AtomicLong sessionId = new AtomicLong(7777);
     
-    private Lock idleLock = new MonitoredReentrantLock(MonitoredLockType.SRVHANDLER_IDLE, true);
-    private Lock tempLock = new MonitoredReentrantLock(MonitoredLockType.SRVHANDLER_TEMP, true);
+    private Lock idleLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_IDLE, true);
+    private Lock tempLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_TEMP, true);
     private Map<MapleClient, Long> idleSessions = new HashMap<>(100);
     private Map<MapleClient, Long> tempIdleSessions = new HashMap<>();
     private ScheduledFuture<?> idleManager = null;

@@ -1804,29 +1804,31 @@ public class Commands {
                         
                         if (sub.length >= 3) {
                                 victim = c.getWorldServer().getPlayerStorage().getCharacterByName(sub[1]);
-                                statUpdate = Integer.valueOf(sub[2]);
+                                statUpdate = Math.max(1, Integer.valueOf(sub[2]));
                         } else if(sub.length == 2) {
-                                statUpdate = Integer.valueOf(sub[1]);
+                                statUpdate = Math.max(1, Integer.valueOf(sub[1]));
                         } else {
 				player.yellowMessage("Syntax: !maxhpmp [<playername>] <value>");
                         }
                     
                         if(victim != null) {
+                                List<Pair<MapleStat, Integer>> statup = new ArrayList<>(4);
+                            
                                 if(victim.getHp() > statUpdate) {
                                         victim.setHp(statUpdate);
-                                        victim.updateSingleStat(MapleStat.HP, statUpdate);
+                                        statup.add(new Pair<>(MapleStat.HP, statUpdate));
                                 }
+                                statup.add(new Pair<>(MapleStat.MAXHP, statUpdate));
                                 
                                 if(victim.getMp() > statUpdate) {
                                         victim.setMp(statUpdate);
-                                        victim.updateSingleStat(MapleStat.MP, statUpdate);
+                                        statup.add(new Pair<>(MapleStat.MP, statUpdate));
                                 }
+                                statup.add(new Pair<>(MapleStat.MAXMP, statUpdate));
+                                c.announce(MaplePacketCreator.updatePlayerStats(statup, victim));
                             
                                 victim.setMaxHp(statUpdate);
                                 victim.setMaxMp(statUpdate);
-                                victim.updateSingleStat(MapleStat.MAXHP, statUpdate);
-                                victim.updateSingleStat(MapleStat.MAXMP, statUpdate);
-                                
                                 victim.checkBerserk(victim.isHidden());
                         } else {
                                 player.message("Player '" + sub[1] + "' could not be found on this world.");
@@ -2895,7 +2897,6 @@ public class Commands {
                         
                         break;
                     
-                        /*
                     case "removechannel":
                         if (sub.length < 2) {
                             player.dropMessage(5, "Syntax: @removechannel <worldid>");
@@ -2929,7 +2930,6 @@ public class Commands {
                         }
                         
                         break;
-                                */
                         
                     case "shutdown":
                     case "shutdownnow":

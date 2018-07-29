@@ -39,7 +39,7 @@ import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -59,7 +59,7 @@ public class MapleStorage {
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
     private List<Item> items;
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.STORAGE, true);
+    private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.STORAGE, true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;

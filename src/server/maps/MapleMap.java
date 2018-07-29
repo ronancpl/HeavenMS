@@ -43,6 +43,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,12 +54,12 @@ import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
-import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import java.lang.ref.WeakReference;
 import net.server.Server;
 import net.server.channel.Channel;
@@ -108,6 +109,7 @@ public class MapleMap {
     private Map<String, Integer> environment = new LinkedHashMap<>();
     private Map<MapleMapItem, Long> droppedItems = new LinkedHashMap<>();
     private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
+    private Map<MobLootEntry, Long> mobLootEntries = new HashMap(20);
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
     private Pair<Integer, Integer> xLimits;  // caches the min and max x's with available footholds
@@ -141,11 +143,11 @@ public class MapleMap {
     private ScheduledFuture<?> mapMonitor = null;
     private ScheduledFuture<?> itemMonitor = null;
     private ScheduledFuture<?> expireItemsTask = null;
+    private ScheduledFuture<?> mobSpawnLootTask = null;
     private short itemMonitorTimeout;
     private Pair<Integer, String> timeMob = null;
     private short mobInterval = 5000;
     private boolean allowSummons = true; // All maps should have this true at the beginning
-    private int lastDoorOwner = -1;
     
     // HPQ
     private int riceCakes = 0;
@@ -157,13 +159,15 @@ public class MapleMap {
     private MapleCoconut coconut;
     
     //locks
-    private final ReadLock chrRLock;
-    private final WriteLock chrWLock;
-    private final ReadLock objectRLock;
-    private final WriteLock objectWLock;
+    private ReadLock chrRLock;
+    private WriteLock chrWLock;
+    private ReadLock objectRLock;
+    private WriteLock objectWLock;
 
+    private Lock lootLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MAP_LOOT, true);
+    
     // due to the nature of loadMapFromWz (synchronized), sole function that calls 'generateMapDropRangeCache', this lock remains optional.
-    private static final Lock bndLock = new MonitoredReentrantLock(MonitoredLockType.MAP_BOUNDS, true);
+    private static final Lock bndLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MAP_BOUNDS, true);
     
     public MapleMap(int mapid, int world, int channel, int returnMapId, float monsterRate) {
         this.mapid = mapid;
@@ -695,22 +699,14 @@ public class MapleMap {
         if(useBaseRate) chRate = 1;
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
+        final List<MonsterGlobalDropEntry> globalEntry = mi.getGlobalDrop();
         
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
         sortDropEntries(mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
-        // Normal Drops
-        d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
-        
-        // Global Drops
-        final List<MonsterGlobalDropEntry> globalEntry = mi.getGlobalDrop();
-        d = dropGlobalItemsFromMonsterOnMap(globalEntry, pos, d, droptype, mobpos, chr, mob);
-        
-        // Quest Drops
-        d = dropItemsFromMonsterOnMap(visibleQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
-        dropItemsFromMonsterOnMap(otherQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+        registerMobItemDrops(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
     }
     
     public void dropItemsFromMonster(List<MonsterDropEntry> list, final MapleCharacter chr, final MapleMonster mob) {
@@ -736,15 +732,15 @@ public class MapleMap {
     }
 
     private void stopItemMonitor() {
-        chrWLock.lock();
-        try {
-            itemMonitor.cancel(false);
-            itemMonitor = null;
-            
-            expireItemsTask.cancel(false);
-            expireItemsTask = null;
-        } finally {
-            chrWLock.unlock();
+        itemMonitor.cancel(false);
+        itemMonitor = null;
+
+        expireItemsTask.cancel(false);
+        expireItemsTask = null;
+
+        if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+            mobSpawnLootTask.cancel(false);
+            mobSpawnLootTask = null;
         }
     }
     
@@ -765,18 +761,34 @@ public class MapleMap {
             itemMonitor = TimerManager.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
-                    if (getCharacters().isEmpty()) {
-                        if(itemMonitorTimeout == 0) {
-                            stopItemMonitor();
-                            return;
+                    chrWLock.lock();
+                    try {
+                        if (characters.isEmpty()) {
+                            if(itemMonitorTimeout == 0) {
+                                if(itemMonitor != null) {
+                                    stopItemMonitor();
+                                }
+                                
+                                return;
+                            } else {
+                                itemMonitorTimeout--;
+                            }
                         } else {
-                            itemMonitorTimeout--;
+                            itemMonitorTimeout = 1;
                         }
-                    } else {
-                        itemMonitorTimeout = 1;
+                    } finally {
+                        chrWLock.unlock();
                     }
                     
-                    if(!registeredDrops.isEmpty()) cleanItemMonitor();
+                    boolean tryClean;
+                    objectRLock.lock();
+                    try {
+                        tryClean = registeredDrops.size() > 70;
+                    } finally {
+                        objectRLock.unlock();
+                    }
+                    
+                    if(tryClean) cleanItemMonitor();
                 }
             }, ServerConstants.ITEM_MONITOR_TIME, ServerConstants.ITEM_MONITOR_TIME);
             
@@ -786,6 +798,22 @@ public class MapleMap {
                     makeDisappearExpiredItemDrops();
                 }
             }, ServerConstants.ITEM_EXPIRE_CHECK, ServerConstants.ITEM_EXPIRE_CHECK);
+            
+            if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+                lootLock.lock();
+                try {
+                    mobLootEntries.clear();
+                } finally {
+                    lootLock.unlock();
+                }
+
+                mobSpawnLootTask = TimerManager.getInstance().register(new Runnable() {
+                    @Override
+                    public void run() {
+                        spawnMobItemDrops();
+                    }
+                }, 200, 200);
+            }
                     
             itemMonitorTimeout = 1;
         } finally {
@@ -875,6 +903,63 @@ public class MapleMap {
             }
         } finally {
             objectWLock.unlock();
+        }
+    }
+    
+    private void registerMobItemDrops(byte droptype, int mobpos, int chRate, Point pos, List<MonsterDropEntry> dropEntry, List<MonsterDropEntry> visibleQuestEntry, List<MonsterDropEntry> otherQuestEntry, List<MonsterGlobalDropEntry> globalEntry, MapleCharacter chr, MapleMonster mob) {
+        MobLootEntry mle = new MobLootEntry(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
+        
+        if(ServerConstants.USE_SPAWN_LOOT_ON_ANIMATION) {
+            int animationTime = mob.getAnimationTime("die1");
+
+            lootLock.lock();
+            try {
+                long timeNow = Server.getInstance().getCurrentTime();
+                mobLootEntries.put(mle, timeNow + ((long)(0.42 * animationTime)));
+            } finally {
+                lootLock.unlock();
+            }
+        } else {
+            mle.run();
+        }
+    }
+    
+    private void spawnMobItemDrops() {
+        Set<Entry<MobLootEntry, Long>> mleList;
+        
+        lootLock.lock();
+        try {
+            mleList = new HashSet<>(mobLootEntries.entrySet());
+        } finally {
+            lootLock.unlock();
+        }
+        
+        long timeNow = Server.getInstance().getCurrentTime();
+        List<MobLootEntry> toRemove = new LinkedList<>();
+        for(Entry<MobLootEntry, Long> mlee : mleList) {
+            if(mlee.getValue() < timeNow) {
+                toRemove.add(mlee.getKey());
+            }
+        }
+        
+        if(!toRemove.isEmpty()) {
+            List<MobLootEntry> toSpawnLoot = new LinkedList<>();
+            
+            lootLock.lock();
+            try {
+                for(MobLootEntry mle : toRemove) {
+                    Long mler = mobLootEntries.remove(mle);
+                    if(mler != null) {
+                        toSpawnLoot.add(mle);
+                    }
+                }
+            } finally {
+                lootLock.unlock();
+            }
+            
+            for(MobLootEntry mle : toSpawnLoot) {
+                mle.run();
+            }
         }
     }
     
@@ -1748,6 +1833,7 @@ public class MapleMap {
 
     public void spawnRevives(final MapleMonster monster) {
         monster.setMap(this);
+        if(getEventInstance() != null) getEventInstance().registerMonster(monster);
 
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
@@ -1756,8 +1842,36 @@ public class MapleMap {
                 c.announce(MaplePacketCreator.spawnMonster(monster, false));
             }
         });
+        
         updateMonsterController(monster);
+        
+        if (monster.hasBossHPBar()) {
+            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
+        }
+        
         spawnedMonstersOnMap.incrementAndGet();
+        applyRemoveAfter(monster);
+    }
+    
+    private void applyRemoveAfter(final MapleMonster monster) {
+        final selfDestruction selfDestruction = monster.getStats().selfDestruction();
+        if (monster.getStats().removeAfter() > 0 || selfDestruction != null && selfDestruction.getHp() < 0) {
+            if (selfDestruction == null) {
+                TimerManager.getInstance().schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        killMonster(monster, null, false);
+                    }
+                }, monster.getStats().removeAfter() * 1000);
+            } else {
+                TimerManager.getInstance().schedule(new Runnable() {
+                    @Override
+                    public void run() {
+                        killMonster(monster, null, false, selfDestruction.getAction());
+                    }
+                }, selfDestruction.removeAfter() * 1000);
+            }
+        }
     }
     
     public void spawnAllMonsterIdFromMapSpawnList(int id) {
@@ -1781,7 +1895,7 @@ public class MapleMap {
             spawnMonster(sp.getMonster(), difficulty, isPq);
         }
     }
-
+    
     public void spawnMonster(final MapleMonster monster) {
         spawnMonster(monster, 1, false);
     }
@@ -1804,6 +1918,10 @@ public class MapleMap {
         }, null);
         
         updateMonsterController(monster);
+        
+        if (monster.hasBossHPBar()) {
+            broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
+        }
 
         if (monster.getDropPeriodTime() > 0) { //9300102 - Watchhog, 9300061 - Moon Bunny (HPQ), 9300093 - Tylus
             if (monster.getId() == 9300102) {
@@ -1818,25 +1936,9 @@ public class MapleMap {
                 FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId() + "\r\n");
             }
         }
+        
         spawnedMonstersOnMap.incrementAndGet();
-        final selfDestruction selfDestruction = monster.getStats().selfDestruction();
-        if (monster.getStats().removeAfter() > 0 || selfDestruction != null && selfDestruction.getHp() < 0) {
-            if (selfDestruction == null) {
-                TimerManager.getInstance().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        killMonster(monster, null, false);
-                    }
-                }, monster.getStats().removeAfter() * 1000);
-            } else {
-                TimerManager.getInstance().schedule(new Runnable() {
-                    @Override
-                    public void run() {
-                        killMonster(monster, null, false, selfDestruction.getAction());
-                    }
-                }, selfDestruction.removeAfter() * 1000);
-            }
-        }
+        applyRemoveAfter(monster);
     }
 
     public void spawnDojoMonster(final MapleMonster monster) {
@@ -1850,6 +1952,8 @@ public class MapleMap {
         spos = calcPointBelow(spos);
         if(spos == null) return;
         
+        if(getEventInstance() != null) getEventInstance().registerMonster(monster);
+        
         spos.y--;
         monster.setPosition(spos);
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
@@ -1858,12 +1962,14 @@ public class MapleMap {
                 c.announce(MaplePacketCreator.spawnMonster(monster, true, effect));
             }
         });
+        updateMonsterController(monster);
+        
         if (monster.hasBossHPBar()) {
             broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
         }
-        updateMonsterController(monster);
 
         spawnedMonstersOnMap.incrementAndGet();
+        applyRemoveAfter(monster);
     }
 
     public void spawnFakeMonster(final MapleMonster monster) {
@@ -1929,21 +2035,19 @@ public class MapleMap {
                 return chr.getMapId() == door.getFrom().getId();
             }
         });
-        
-        if(!door.inTown()) setLastDoorOwner(door.getOwnerId());
     }
     
     public List<MaplePortal> getAvailableDoorPortals() {
         objectRLock.lock();
         try {
             List<MaplePortal> availablePortals = new ArrayList<>();
-            
+
             for (MaplePortal port : portals.values()) {
                 if (port.getType() == MaplePortal.DOOR_PORTAL) {
                     availablePortals.add(port);
                 }
             }
-            
+
             return availablePortals;
         } finally {
             objectRLock.unlock();
@@ -2270,12 +2374,12 @@ public class MapleMap {
             chrSize = characters.size();
                     
             addPartyMemberInternal(chr);
+            itemMonitorTimeout = 1;
         } finally {
             chrWLock.unlock();
         }
         chr.setMapId(mapid);
-            
-        itemMonitorTimeout = 1;
+        
         if (chrSize == 1) {
             if(!hasItemMonitor()) startItemMonitor();
             
@@ -3143,6 +3247,47 @@ public class MapleMap {
         return false;
     }
 
+    private class MobLootEntry implements Runnable {
+        private byte droptype;
+        private int mobpos;
+        private int chRate;
+        private Point pos;
+        private List<MonsterDropEntry> dropEntry;
+        private List<MonsterDropEntry> visibleQuestEntry;
+        private List<MonsterDropEntry> otherQuestEntry;
+        private List<MonsterGlobalDropEntry> globalEntry;
+        private MapleCharacter chr;
+        private MapleMonster mob;
+
+        protected MobLootEntry(byte droptype, int mobpos, int chRate, Point pos, List<MonsterDropEntry> dropEntry, List<MonsterDropEntry> visibleQuestEntry, List<MonsterDropEntry> otherQuestEntry, List<MonsterGlobalDropEntry> globalEntry, MapleCharacter chr, MapleMonster mob) {
+            this.droptype = droptype;
+            this.mobpos = mobpos;
+            this.chRate = chRate;
+            this.pos = pos;
+            this.dropEntry = dropEntry;
+            this.visibleQuestEntry = visibleQuestEntry;
+            this.otherQuestEntry = otherQuestEntry;
+            this.globalEntry = globalEntry;
+            this.chr = chr;
+            this.mob = mob;
+        }
+
+        @Override
+        public void run() {
+            byte d = 1;
+            
+            // Normal Drops
+            d = dropItemsFromMonsterOnMap(dropEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+
+            // Global Drops
+            d = dropGlobalItemsFromMonsterOnMap(globalEntry, pos, d, droptype, mobpos, chr, mob);
+
+            // Quest Drops
+            d = dropItemsFromMonsterOnMap(visibleQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+            dropItemsFromMonsterOnMap(otherQuestEntry, pos, d, chRate, droptype, mobpos, chr, mob);
+        }
+    }
+    
     private class ActivateItemReactor implements Runnable {
 
         private MapleMapItem mapitem;
@@ -3292,18 +3437,11 @@ public class MapleMap {
         return closest;
     }
 
-    public void respawn() {
-        if(!allowSummons) return;
-        
-        chrRLock.lock();
-        try {
-            if(characters.isEmpty()) {
-                return;
-            }
-        } finally {
-            chrRLock.unlock();
-        }
-        
+    private static double getCurrentSpawnRate(int numPlayers) {
+        return 0.550 + (0.075 * Math.min(6, numPlayers));
+    }
+    
+    private int getNumShouldSpawn(int numPlayers) {
         /*
         System.out.println("----------------------------------");
         for (SpawnPoint spawnPoint : monsterSpawn) {
@@ -3313,7 +3451,30 @@ public class MapleMap {
         System.out.println("----------------------------------");
         */
         
-        short numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
+        if(ServerConstants.USE_ENABLE_FULL_RESPAWN) {
+            return (monsterSpawn.size() - spawnedMonstersOnMap.get());
+        }
+        
+        int maxNumShouldSpawn = (int) Math.ceil(getCurrentSpawnRate(numPlayers) * monsterSpawn.size());
+        return maxNumShouldSpawn - spawnedMonstersOnMap.get();
+    }
+    
+    public void respawn() {
+        if(!allowSummons) return;
+        
+        int numPlayers;
+        chrRLock.lock();
+        try {
+            numPlayers = characters.size();
+            
+            if(numPlayers == 0) {
+                return;
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        int numShouldSpawn = getNumShouldSpawn(numPlayers);
         if(numShouldSpawn > 0) {
             List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
             Collections.shuffle(randomSpawn);
@@ -3745,14 +3906,6 @@ public class MapleMap {
         this.setDocked(state);
     }
     
-    public boolean isLastDoorOwner(int cid) {
-        return lastDoorOwner == cid;
-    }
-    
-    public void setLastDoorOwner(int cid) {
-        lastDoorOwner = cid;
-    }
-    
     public boolean isDojoMap() {
         return mapid >= 925020000 && mapid < 925040000;
     }
@@ -3842,6 +3995,11 @@ public class MapleMap {
             if(expireItemsTask != null) {
                 expireItemsTask.cancel(false);
                 expireItemsTask = null;
+            }
+            
+            if(mobSpawnLootTask != null) {
+                mobSpawnLootTask.cancel(false);
+                mobSpawnLootTask = null;
             }
         } finally {
             chrWLock.unlock();

@@ -26,9 +26,9 @@ import java.awt.Point;
 import scripting.portal.PortalScriptManager;
 import server.MaplePortal;
 import tools.MaplePacketCreator;
-import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public class MapleGenericPortal implements MaplePortal {
 
@@ -41,7 +41,7 @@ public class MapleGenericPortal implements MaplePortal {
     private int id;
     private String scriptName;
     private boolean portalState;
-    private Lock scriptLock = null;
+    private MonitoredReentrantLock scriptLock = null;
     
     public MapleGenericPortal(int type) {
         this.type = type;
@@ -118,7 +118,7 @@ public class MapleGenericPortal implements MaplePortal {
         
         if(scriptName != null) {
             if(scriptLock == null) {
-                scriptLock = new MonitoredReentrantLock(MonitoredLockType.PORTAL, true);
+                scriptLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.PORTAL, true);
             }
         } else {
             scriptLock = null;

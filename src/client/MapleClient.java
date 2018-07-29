@@ -75,7 +75,7 @@ import server.maps.*;
 import server.quest.MapleQuest;
 
 import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public class MapleClient {
 
@@ -107,9 +107,9 @@ public class MapleClient {
 	private int picattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
-	private final Lock lock = new MonitoredReentrantLock(MonitoredLockType.CLIENT, true);
-        private final Lock encoderLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT_ENCODER, true);
-        private static final Lock loginLock = new MonitoredReentrantLock(MonitoredLockType.CLIENT_LOGIN, true);
+	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
+        private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
+        private static final Lock loginLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
 	private int votePoints;
 	private int voteTime = -1;
 	private long lastNpcClick;
@@ -792,7 +792,7 @@ public class MapleClient {
 
 	private void removePlayer() {
 		try {
-                        player.setAwayFromWorld(true);
+                        player.setDisconnectedFromChannelWorld();
                         player.notifyMapTransferToPartner(-1);
                         player.cancelAllBuffs(true);
                         player.cancelAllDebuffs();
@@ -836,10 +836,13 @@ public class MapleClient {
                         
                         player.cancelMagicDoor();
 
+                        final World wserv = getWorldServer();
 			if (channel == -1 || shutdown) {
                                 if(chrg != null) chrg.setCharacter(null);
-                            
+                                
+                                if(wserv != null) wserv.removePlayer(player);
                                 removePlayer();
+                                
                                 player.saveCooldowns();
                                 player.saveCharToDB(true);
                                 
@@ -849,12 +852,11 @@ public class MapleClient {
                         
                         removePlayer();
 			
-			final World worlda = getWorldServer();
                         try {
 				if (!cashshop) {
 					if (!this.serverTransition) { // meaning not changing channels
 						if (messengerid > 0) {
-							worlda.leaveMessenger(messengerid, chrm);
+							wserv.leaveMessenger(messengerid, chrm);
 						}
                                                 /*      
 						if (fid > 0) {
@@ -877,7 +879,7 @@ public class MapleClient {
 						}
 						if (party != null) {
 							chrp.setOnline(false);
-							worlda.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
+							wserv.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
 							if (map != null && party.getLeader().getId() == idz) {
 								MaplePartyCharacter lchr = null;
 								for (MaplePartyCharacter pchr : party.getMembers()) {
@@ -886,19 +888,19 @@ public class MapleClient {
 									}
 								}
 								if (lchr != null) {
-									worlda.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, lchr);
+									wserv.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, lchr);
 								}
 							}
 						}                   
                                                 if (bl != null) {
-							worlda.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
+							wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
 						}
 					}
 				} else {
 					if (!this.serverTransition) { // if dc inside of cash shop.
 						if (party != null) {
 							chrp.setOnline(false);
-							worlda.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
+							wserv.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
 							if (map != null && party.getLeader().getId() == idz) {
 								MaplePartyCharacter lchr = null;
 								for (MaplePartyCharacter pchr : party.getMembers()) {
@@ -907,12 +909,12 @@ public class MapleClient {
 									}
 								}
 								if (lchr != null) {
-									worlda.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, lchr);
+									wserv.updateParty(party.getId(), PartyOperation.CHANGE_LEADER, lchr);
 								}
 							}
 						}	                
 						if (bl != null) {
-							worlda.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
+							wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
 						}
 					}
 				}
@@ -920,7 +922,7 @@ public class MapleClient {
 				FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, e);
 			} finally {
                                 if (!this.serverTransition) {
-					worlda.removePlayer(player);
+					wserv.removePlayer(player);
                                         //getChannelServer().removePlayer(player); already being done
                                         
                                         player.saveCooldowns();
@@ -1309,7 +1311,15 @@ public class MapleClient {
 			return;
                 }
                 
-		String[] socket = Server.getInstance().getIP(getWorld(), channel).split(":");
+                String[] socket;
+                try {
+                        socket = Server.getInstance().getIP(getWorld(), channel).split(":");
+                } catch (Exception e) {
+                        announce(MaplePacketCreator.serverNotice(1, "Channel " + channel + " is currently disabled. Try another channel."));
+                        announce(MaplePacketCreator.enableActions());
+			return;
+                }
+                
 		if (player.getTrade() != null) {
 			MapleTrade.cancelTrade(getPlayer());
 		}
@@ -1325,7 +1335,7 @@ public class MapleClient {
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
-                player.setAwayFromWorld(true);
+                player.setDisconnectedFromChannelWorld();
                 player.notifyMapTransferToPartner(-1);
 		player.cancelAllBuffs(true);
                 player.cancelAllDebuffs();

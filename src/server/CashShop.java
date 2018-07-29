@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import provider.MapleData;
 import provider.MapleDataProvider;
@@ -269,7 +269,7 @@ public class CashShop {
     private List<Item> inventory = new ArrayList<>();
     private List<Integer> wishList = new ArrayList<>();
     private int notes = 0;
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.CASHSHOP);
+    private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CASHSHOP);
 
     public CashShop(int accountId, int characterId, int jobType) throws SQLException {
         this.accountId = accountId;

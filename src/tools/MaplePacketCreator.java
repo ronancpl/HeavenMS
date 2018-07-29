@@ -957,6 +957,7 @@ public class MaplePacketCreator {
          * Gets an update for specified stats.
          *
          * @param stats The stats to update.
+         * @param chr The update target.
          * @return The stat update packet.
          */
         public static byte[] updatePlayerStats(List<Pair<MapleStat, Integer>> stats, MapleCharacter chr) {
@@ -968,6 +969,7 @@ public class MaplePacketCreator {
          *
          * @param stats The list of stats to update.
          * @param itemReaction Result of an item reaction(?)
+         * @param chr The update target.
          * @return The stat update packet.
          */
         public static byte[] updatePlayerStats(List<Pair<MapleStat, Integer>> stats, boolean itemReaction, MapleCharacter chr) {
@@ -2189,7 +2191,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(hm.getObjectId());
                 mplew.writeMapleAsciiString(hm.getDescription());
                 mplew.write(hm.getItemId() % 100);
-                mplew.write(roomInfo);
+                mplew.write(roomInfo);    // visitor capacity here, thanks GabrielSin!
         }
         
         public static byte[] updateHiredMerchantBox(MapleHiredMerchant hm) {
@@ -4204,11 +4206,30 @@ public class MaplePacketCreator {
 
                 mplew.writeShort(SendOpcode.FIELD_OBSTACLE_ONOFF.getValue());
                 mplew.writeMapleAsciiString(env);
-                mplew.writeInt(mode);
+                mplew.writeInt(mode);   // 0: stop and back to start, 1: move
                 
                 return mplew.getPacket();
         }
-
+        
+        public static byte[] environmentMoveList(Set<Entry<String, Integer>> envList) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.FIELD_OBSTACLE_ONOFF_LIST.getValue());
+                mplew.writeInt(envList.size());
+                
+                for(Entry<String, Integer> envMove : envList) {
+                        mplew.writeMapleAsciiString(envMove.getKey());
+                        mplew.writeInt(envMove.getValue());
+                }
+                
+                return mplew.getPacket();
+        }
+        
+        public static byte[] environmentMoveReset() {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.FIELD_OBSTACLE_ALL_RESET.getValue());
+                return mplew.getPacket();
+        }
+        
         public static byte[] startMapEffect(String msg, int itemid, boolean active) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.BLOW_WEATHER.getValue());

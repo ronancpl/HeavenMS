@@ -17,26 +17,21 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package net.server.channel.worker;
+package net.server.audit.locks.factory;
 
-import java.util.Collections;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.active.TrackerReentrantLock;
 
 /**
  *
- * @author Ronan
+ * @author RonanLana
  */
-public class FaceExpressionScheduler extends BaseScheduler {
-    public FaceExpressionScheduler(final MonitoredReentrantLock channelFaceLock) {
-        super(MonitoredLockType.CHANNEL_FACESCHDL, Collections.singletonList(channelFaceLock));
+public class MonitoredReentrantLockFactory {
+    public static TrackerReentrantLock createLock(MonitoredLockType id) {
+        return new TrackerReentrantLock(id);
     }
     
-    public void registerFaceExpression(Integer characterId, Runnable runAction) {
-        registerEntry(characterId, runAction, 5000);
-    }
-    
-    public void unregisterFaceExpression(Integer characterId) {
-        interruptEntry(characterId);
+    public static TrackerReentrantLock createLock(MonitoredLockType id, boolean fair) {
+        return new TrackerReentrantLock(id, fair);
     }
 }

@@ -83,7 +83,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             chr.unregisterChairBuff();
             Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(chr.getId(), chr.getAllBuffs());
             Server.getInstance().getPlayerBuffStorage().addDiseasesToStorage(chr.getId(), chr.getAllDiseases());
-            chr.setAwayFromWorld(true);
+            chr.setAwayFromChannelWorld();
             chr.notifyMapTransferToPartner(-1);
             chr.cancelAllBuffs(true);
             chr.cancelAllDebuffs();
@@ -96,6 +96,8 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             chr.cancelQuestExpirationTask();
 
             chr.saveCharToDB();
+            
+            c.getChannelServer().removePlayer(chr);
             chr.getMap().removePlayer(c.getPlayer());
             try {
                 c.announce(MaplePacketCreator.openCashShop(c, true));

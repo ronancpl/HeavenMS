@@ -37,12 +37,13 @@ public final class ChangeChannelHandler extends AbstractMaplePacketHandler {
         int channel = slea.readByte() + 1;
         c.getPlayer().getAutobanManager().setTimestamp(6, slea.readInt(), 2);
         if(c.getChannel() == channel) {
-        	AutobanFactory.GENERAL.alert(c.getPlayer(), "CCing to same channel.");
-            c.disconnect(false, false);
-            return;
+                AutobanFactory.GENERAL.alert(c.getPlayer(), "CCing to same channel.");
+                c.disconnect(false, false);
+                return;
         } else if (c.getPlayer().getCashShop().isOpened() || c.getPlayer().getMiniGame() != null || c.getPlayer().getPlayerShop() != null) {
     		return;
     	}
+        
         c.changeChannel(channel);
     }
 }

@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Comparator;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public class MapleParty {
     private int id;
@@ -43,7 +44,7 @@ public class MapleParty {
     private Map<Integer, Integer> histMembers = new HashMap<>();
     private int nextEntry = 0;
     
-    private MonitoredReentrantLock lock = new MonitoredReentrantLock(MonitoredLockType.PARTY, true);
+    private MonitoredReentrantLock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.PARTY, true);
     
     public MapleParty(int id, MaplePartyCharacter chrfor) {
         this.leaderId = chrfor.getId();
@@ -215,7 +216,7 @@ public class MapleParty {
     }
     
     public void disposeLocks() {
-        lock.dispose();
+        lock = lock.dispose();
     }
     
     @Override

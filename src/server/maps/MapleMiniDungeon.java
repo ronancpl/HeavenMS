@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
 import tools.MaplePacketCreator;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -37,7 +37,7 @@ import net.server.audit.locks.MonitoredLockType;
 public class MapleMiniDungeon {
     List<MapleCharacter> players = new ArrayList<>();
     ScheduledFuture<?> timeoutTask = null;
-    Lock lock = new MonitoredReentrantLock(MonitoredLockType.MINIDUNGEON, true);
+    Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MINIDUNGEON, true);
     
     int baseMap;
     long expireTime;

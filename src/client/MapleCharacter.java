@@ -157,7 +157,7 @@ import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
 import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private static MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -275,10 +275,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    private Lock chrLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_CHR, true);
-    private Lock effLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_EFF, true);
-    private Lock petLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_PET, true); // for quest tasks as well
-    private Lock prtLock = new MonitoredReentrantLock(MonitoredLockType.CHARACTER_PRT);
+    private Lock chrLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CHR, true);
+    private Lock effLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EFF, true);
+    private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for quest tasks as well
+    private Lock prtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
     private static String[] ariantroomleader = new String[3];
@@ -445,8 +445,27 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return awayFromWorld.get();
     }
     
-    public void setAwayFromWorld(boolean away) {
-        awayFromWorld.set(away);
+    public void setEnteredChannelWorld() {
+        awayFromWorld.set(false);
+        client.getChannelServer().removePlayerAway(id);
+    }
+    
+    public void setAwayFromChannelWorld() {
+        setAwayFromChannelWorld(false);
+    }
+            
+    public void setDisconnectedFromChannelWorld() {
+        setAwayFromChannelWorld(true);
+    }
+    
+    private void setAwayFromChannelWorld(boolean disconnect) {
+        awayFromWorld.set(true);
+        
+        if(!disconnect) {
+            client.getChannelServer().insertPlayerAway(id);
+        } else {
+            client.getChannelServer().removePlayerAway(id);
+        }
     }
     
     public long getPetLootCd() {
@@ -1548,9 +1567,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
 
             // if this map has obstacle components moving, make it do so for this client
-            for(Entry<String, Integer> e: map.getEnvironment().entrySet()) {
-                announce(MaplePacketCreator.environmentMove(e.getKey(), e.getValue()));
-            }
+            announce(MaplePacketCreator.environmentMoveList(map.getEnvironment().entrySet()));
         }
     }
     
@@ -5273,6 +5290,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return lastBuyback + ServerConstants.BUYBACK_COOLDOWN_MINUTES * 60 * 1000;
     }
     
+    private boolean isBuybackInvincible() {
+        return Server.getInstance().getCurrentTime() - lastBuyback < 4200;
+    }
+    
     private int getBuybackFee() {
         float fee = ServerConstants.BUYBACK_FEE;
         int grade = Math.min(Math.max(level, 30), 120) - 30;
@@ -5282,10 +5303,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public boolean couldBuyback() {  // Ronan's buyback system
-        long timeNow = System.currentTimeMillis();
+        long timeNow = Server.getInstance().getCurrentTime();
         
         if(timeNow - lastDeathtime > ServerConstants.BUYBACK_RETURN_MINUTES * 60 * 1000) {
-            this.dropMessage(5, "You are unable to buyback now since the time available to decide has expired.");
+            this.dropMessage(5, "The time available to decide has expired, therefore you are unable to buyback now.");
             return false;
         }
         
@@ -7621,7 +7642,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             updatePartyMemberHP();
         }
         if (oldHp > hp && !isAlive()) {
-            playerDead();
+            if(!isBuybackInvincible()) {
+                playerDead();
+            } else {
+                this.hp = 1;
+            }
         }
     }
 

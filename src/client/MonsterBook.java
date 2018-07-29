@@ -32,10 +32,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.Semaphore;
-import net.server.audit.locks.MonitoredReentrantLock;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public final class MonsterBook {
     private static final Semaphore semaphore = new Semaphore(10);
@@ -44,7 +44,7 @@ public final class MonsterBook {
     private int normalCard = 0;
     private int bookLevel = 1;
     private Map<Integer, Integer> cards = new LinkedHashMap<>();
-    private Lock lock = new MonitoredReentrantLock(MonitoredLockType.BOOK);
+    private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.BOOK);
 
     private Set<Entry<Integer, Integer>> getCardSet() {
         lock.lock();

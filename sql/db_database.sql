@@ -12804,6 +12804,8 @@ CREATE TABLE IF NOT EXISTS `dueyitems` (
   `quantity` int(10) unsigned NOT NULL DEFAULT '0',
   `upgradeslots` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
+  `itemlevel` int(11) DEFAULT '0',
+  `itemexp` int(11) DEFAULT '0',
   `str` int(11) DEFAULT '0',
   `dex` int(11) DEFAULT '0',
   `int` int(11) DEFAULT '0',

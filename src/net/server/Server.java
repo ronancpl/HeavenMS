@@ -48,8 +48,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import net.server.audit.ThreadTracker;
 import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
@@ -111,8 +111,8 @@ public class Server {
     private final List<MapleClient> processDiseaseAnnouncePlayers = new LinkedList<>();
     private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
     
-    private final Lock srvLock = new MonitoredReentrantLock(MonitoredLockType.SERVER);
-    private final Lock disLock = new MonitoredReentrantLock(MonitoredLockType.SERVER_DISEASES);
+    private final Lock srvLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER);
+    private final Lock disLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER_DISEASES);
     
     private final ReentrantReadWriteLock wldLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.SERVER_WORLDS, true);
     private final ReadLock wldRLock = wldLock.readLock();
@@ -412,7 +412,7 @@ public class Server {
             wldRLock.unlock();
         }
         
-        if(w == null || w.getPlayerStorage().getSize() > 0) {
+        if(w == null || !w.canUninstall()) {
             return false;
         }
         
@@ -1414,12 +1414,11 @@ public class Server {
                         }
                     }*/
                     
+                    List<Channel> allChannels = getAllChannels();
+                    
                     if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
-
-                    TimerManager.getInstance().purge();
-                    TimerManager.getInstance().stop();
-
-                    for (Channel ch : getAllChannels()) {
+                    
+                    for (Channel ch : allChannels) {
                         while (!ch.finishedShutdown()) {
                             try {
                                 Thread.sleep(1000);
@@ -1431,6 +1430,9 @@ public class Server {
                     }
                     
                     resetServerWorlds();
+                    
+                    TimerManager.getInstance().purge();
+                    TimerManager.getInstance().stop();
 
                     System.out.println("Worlds + Channels are offline.");
                     acceptor.unbind();

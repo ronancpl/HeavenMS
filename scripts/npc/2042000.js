@@ -80,7 +80,7 @@ function action(mode, type, selection) {
                         if(allDone) {
                             cm.sendOk("Done. Thanks for showing up~.");
                         } else {
-                            cm.sendOk("Done. Be aware some of the items could not be synthetized because either you have a lack of space on your ETC inventory or there's not enough mesos to cover the fee.");
+                            cm.sendOk("Done. Be aware some of the items #rcould not be synthetized#k because either you have a lack of space on your ETC inventory or there's not enough mesos to cover the fee.");
                         }
                         cm.dispose();
                 }

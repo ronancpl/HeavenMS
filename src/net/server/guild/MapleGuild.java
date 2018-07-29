@@ -36,7 +36,7 @@ import java.util.Map;
 import java.util.Set;
 
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import net.server.Server;
 import net.server.channel.Channel;
@@ -51,7 +51,7 @@ public class MapleGuild {
     }
     
     private final List<MapleGuildCharacter> members;
-    private final Lock membersLock = new MonitoredReentrantLock(MonitoredLockType.GUILD, true);
+    private final Lock membersLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.GUILD, true);
     
     private String rankTitles[] = new String[5]; // 1 = master, 2 = jr, 5 = lowest member
     private String name, notice;

@@ -142,12 +142,15 @@ public class ThreadTracker {
                             if(tt.isEmpty()) {
                                 toRemove.add(l);
                             } else {
-                                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
-                                String df = dateFormat.format(new Date());
-
-                                FilePrinter.print(FilePrinter.DEADLOCK_LOCKS, printThreadLog(tt, df));
-                                FilePrinter.print(FilePrinter.DEADLOCK_STACK, printThreadStack(threads.get(l).getStackTrace(), df));
+                                StackTraceElement[] ste = threads.get(l).getStackTrace();
+                                if(ste.length > 0) {
+                                    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                                    dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+                                    String df = dateFormat.format(new Date());
+                                    
+                                    FilePrinter.print(FilePrinter.DEADLOCK_LOCKS, printThreadLog(tt, df));
+                                    FilePrinter.print(FilePrinter.DEADLOCK_STACK, printThreadStack(ste, df));
+                                }
                             }
                         }
 

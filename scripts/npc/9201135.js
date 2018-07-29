@@ -19,26 +19,55 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-var toMap = new Array(550000000, 551000000, 540000000,540000000);
-var inMap = new Array(540000000, 540000000, 551000000, 550000000);
-var cost = new Array(10000, 50000, 50000, 10000);
+var inMap = new Array(540000000, 550000000, 551000000);
+var toMap = new Array(550000000, new Array(551000000, 541000000), 550000000);
+var cost = new Array(42000, new Array(10000, 0), 10000);
+var toMapSp = new Array(0, new Array(2, 4), 4);
+
 var location;
-var text = "Where would you like to travel?\n\n";
+var text;
+
+var travelCost;
+var travelMap;
+var travelSp;
+
+var startedTravel = false;
+
 var status = 0;
 
 function start() {
 	if (cm.getPlayer().getMap().getId() != 540000000) {
-		for (var i = 0; i < toMap.length; i ++) {
-			if (inMap[i] == cm.getPlayer().getMap().getId()) {
-				location = i;
-				break;
-			}
-		}
-		text +="\t\r\n#b#L0##m" + toMap[location] + "# (" + cost[location] + "mesos)#l#k";
+                text = "Hey I'm #p9201135#, your tour guide here in #rMalaysia#k. Where would you like to travel?\n\n";
 	} else {
-    	text += "\t\r\n#b#L0##m" + toMap[0] + "# (" + cost[0] + "mesos)#l\n\t\r\n#L1##m" + toMap[1] + "# (" + cost[1] + "mesos)#l#k";
+                text = "Hey I'm #p9201135#, a tour guide on #rMalaysia#k. Since you're not registered in our special travel package with our partner #bMaple Travel Agency#k, the ride will be significantly more expensive. So, would you like to ride now?\n\n";
+                startedTravel = true;
 	}
-    cm.sendSimple(text);
+        
+        for (var i = 0; i < toMap.length; i ++) {
+                if (inMap[i] == cm.getPlayer().getMap().getId()) {
+                        if(inMap[i] == 550000000) {
+                                toMap[1][1] = cm.getPlayer().peekSavedLocation("WORLDTOUR");
+                        }
+                    
+                        location = i;
+                        break;
+                }
+        }
+
+        if(toMap[location] instanceof Array) {
+                var maps = toMap[location];
+                var costs = cost[location];
+
+                for(var i = 0; i < maps.length; i++) {
+                        text +="\t\r\n#b#L" + i + "##m" + maps[i] + "# " + (costs[i] > 0 ?  "(" + costs[i] + "mesos)" : "") + "#l";
+                }
+        } else {
+                text +="\t\r\n#b#L0##m" + toMap[location] + "# " + (cost[location] > 0 ?  "(" + cost[location] + "mesos)" : "") + "#l";
+        }
+
+        text += "#k";
+        
+        cm.sendSimple(text);
 }
 
 function action(mode, type, selection) {
@@ -51,22 +80,45 @@ function action(mode, type, selection) {
         return;
     } else {
         status++;
-     }
+    }
     if (status == 1) {
-        if (cm.getPlayer().getMap().getId() == 540000000) {
-            location = selection;
-        }
         if (toMap[location] == null) {
-            cm.dipose();
+            cm.dispose();
             return;
         }
-        cm.sendYesNo("Would you like to travel to #b#m"+toMap[location]+"##k? To head over to #b#m"+toMap[location]+"##k, it'll cost you cost you #b" + cost[location] + "#k. Would you like to go right now?");
+        
+        if(toMap[location] instanceof Array) {
+            var maps = toMap[location];
+            var costs = cost[location];
+            var sps = toMapSp[location];
+
+            travelCost = costs[selection];
+            travelMap = maps[selection];
+            travelSp = sps[selection];
+        } else {
+            travelCost = cost[location];
+            travelMap = toMap[location];
+            travelSp = toMapSp[location];
+        }
+        
+        if(travelCost > 0) {
+            cm.sendYesNo("Would you like to travel to #b#m" + travelMap + "##k? To head over to #b#m" + travelMap + "##k, it'll cost you #r" + cm.numberWithCommas(travelCost) + " mesos#k. Would you like to go right now?");
+        } else {
+            cm.sendNext("Had a great time in #rMalaysia#k? I hope so, have a safe travel back!");
+        }
     } else if (status == 2) {
-        if (cm.getMeso() < cost[location]) {
+        if (cm.getMeso() < travelCost) {
             cm.sendNext("You do not seem to have enough mesos.");
         } else {
-            cm.warp(toMap[location]);
-            cm.gainMeso(-cost[location]);
+            if(travelCost > 0) {
+                cm.gainMeso(-travelCost);
+                if(startedTravel) cm.getPlayer().saveLocation("WORLDTOUR");
+            }
+            else {
+                travelMap = cm.getPlayer().getSavedLocation("WORLDTOUR");
+            }
+            
+            cm.warp(travelMap, travelSp);
         }
         cm.dispose();
     }

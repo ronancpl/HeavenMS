@@ -40,7 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.Server;
 import server.MapleItemInformationProvider;
 import tools.DatabaseConnection;
@@ -65,7 +65,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     private List<SoldItem> sold = new LinkedList<>();
     private AtomicBoolean open = new AtomicBoolean();
     private MapleMap map;
-    private Lock visitorLock = new MonitoredReentrantLock(MonitoredLockType.VISITOR_MERCH, true);
+    private Lock visitorLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.VISITOR_MERCH, true);
 
     public MapleHiredMerchant(final MapleCharacter owner, String desc, int itemId) {
         this.setPosition(owner.getPosition());

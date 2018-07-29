@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import tools.Pair;
 import client.MapleCharacter;
@@ -53,7 +53,7 @@ public class MapleInventory implements Iterable<Item> {
     protected byte slotLimit;
     protected MapleInventoryType type;
     protected boolean checked = false;
-    protected Lock lock = new MonitoredReentrantLock(MonitoredLockType.INVENTORY, true);
+    protected Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.INVENTORY, true);
     
     public MapleInventory(MapleCharacter mc, MapleInventoryType type, byte slotLimit) {
         this.owner = mc;

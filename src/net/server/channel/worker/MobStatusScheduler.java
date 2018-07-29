@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -34,7 +35,7 @@ import net.server.audit.locks.MonitoredReentrantLock;
  */
 public class MobStatusScheduler extends BaseScheduler {
     private Map<MonsterStatusEffect, MobStatusOvertimeEntry> registeredMobStatusOvertime = new HashMap<>();
-    private MonitoredReentrantLock overtimeStatusLock = new MonitoredReentrantLock(MonitoredLockType.CHANNEL_OVTSTATUS, true);
+    private MonitoredReentrantLock overtimeStatusLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHANNEL_OVTSTATUS, true);
     
     private class MobStatusOvertimeEntry {
         private int procCount;
@@ -110,7 +111,7 @@ public class MobStatusScheduler extends BaseScheduler {
     
     @Override
     public void dispose() {
-        overtimeStatusLock.dispose();
+        overtimeStatusLock = overtimeStatusLock.dispose();
         super.dispose();
     }
 }

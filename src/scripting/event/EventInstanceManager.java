@@ -34,13 +34,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Properties;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import javax.script.ScriptException;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import provider.MapleDataProviderFactory;
@@ -61,6 +59,9 @@ import constants.ServerConstants;
 import java.awt.Point;
 import java.sql.Connection;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import scripting.AbstractPlayerInteraction;
@@ -89,11 +90,11 @@ public class EventInstanceManager {
         private List<Integer> mapIds = new LinkedList<>();
         
         private final ReentrantReadWriteLock lock = new MonitoredReentrantReadWriteLock(MonitoredLockType.EIM, true);
-        private final ReadLock rL = lock.readLock();
-        private final WriteLock wL = lock.writeLock();
+        private ReadLock rL = lock.readLock();
+        private WriteLock wL = lock.writeLock();
         
-        private final MonitoredReentrantLock pL = new MonitoredReentrantLock(MonitoredLockType.EIM_PARTY, true);
-        private final MonitoredReentrantLock sL = new MonitoredReentrantLock(MonitoredLockType.EIM_SCRIPT, true);
+        private MonitoredReentrantLock pL = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EIM_PARTY, true);
+        private MonitoredReentrantLock sL = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EIM_SCRIPT, true);
         
         private ScheduledFuture<?> event_schedule = null;
         private boolean disposed = false;
@@ -467,7 +468,7 @@ public class EventInstanceManager {
 		}
 	}
         
-        public void changedMap(MapleCharacter chr, int mapId) {     // optional
+        public void changedMap(MapleCharacter chr, int mapId) {
 		try {
                         sL.lock();
                         try {
@@ -475,10 +476,10 @@ public class EventInstanceManager {
                         } finally {
                                 sL.unlock();
                         }
-		} catch (ScriptException | NoSuchMethodException ex) {}
+		} catch (ScriptException | NoSuchMethodException ex) {} // optional
 	}
         
-        public void afterChangedMap(MapleCharacter chr, int mapId) {     // optional
+        public void afterChangedMap(MapleCharacter chr, int mapId) {
 		try {
                         sL.lock();
                         try {
@@ -486,7 +487,7 @@ public class EventInstanceManager {
                         } finally {
                                 sL.unlock();
                         }
-		} catch (ScriptException | NoSuchMethodException ex) {}
+		} catch (ScriptException | NoSuchMethodException ex) {} // optional
 	}
         
         public void changedLeader(MapleCharacter ldr) {
@@ -537,9 +538,7 @@ public class EventInstanceManager {
                         } finally {
                                 sL.unlock();
                         }
-                } catch (ScriptException | NoSuchMethodException ex) {
-                        //optional
-                }
+                } catch (ScriptException | NoSuchMethodException ex) {} //optional
 	}
 
 	public void playerKilled(MapleCharacter chr) {
@@ -563,9 +562,7 @@ public class EventInstanceManager {
                         } finally {
                                 sL.unlock();
                         }
-		} catch (ScriptException | NoSuchMethodException ex) {
-			ex.printStackTrace();
-		}
+		} catch (ScriptException | NoSuchMethodException ex) {} // optional
 	}
         
 	public boolean revivePlayer(MapleCharacter chr) {
@@ -637,7 +634,18 @@ public class EventInstanceManager {
 		return (kc == null) ? 0 : kc;
 	}
         
-	public synchronized void dispose() {
+        public void dispose() {
+                Thread t = new Thread( new Runnable() {
+                        @Override
+                        public void run() {
+                                dispose(false);
+                        }
+                });
+                
+                t.start();
+        }
+        
+        public synchronized void dispose(boolean shutdown) {
                 if(disposed) return;
                 
                 disposed = true;
@@ -688,8 +696,8 @@ public class EventInstanceManager {
 	}
         
         private void disposeLocks() {
-                pL.dispose();
-                sL.dispose();
+                pL = pL.dispose();
+                sL = sL.dispose();
         }
 
 	public MapleMapFactory getMapFactory() {

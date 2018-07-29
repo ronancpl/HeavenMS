@@ -28,8 +28,6 @@ function action(mode, type, selection) {
                 else if(mapid == 108010401) cm.getPlayer().changeMap(107000402);
                 else if(mapid == 108010501) cm.getPlayer().changeMap(105070200);
 
-                var em = cm.getEventManager("3rdjob");
-                em.getInstance(cm.getPlayer().getName()).unregisterPlayer(cm.getPlayer());
                 cm.dispose();
         }
     }

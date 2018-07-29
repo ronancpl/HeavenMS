@@ -70,6 +70,7 @@ import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
     private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
@@ -94,10 +95,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int parentMobOid = 0;
     private final HashMap<Integer, AtomicInteger> takenDamage = new HashMap<>();
 
-    private MonitoredReentrantLock externalLock = new MonitoredReentrantLock(MonitoredLockType.MOB_EXT);
-    private MonitoredReentrantLock monsterLock = new MonitoredReentrantLock(MonitoredLockType.MOB, true);
-    private MonitoredReentrantLock statiLock = new MonitoredReentrantLock(MonitoredLockType.MOB_STATI);
-    private MonitoredReentrantLock animationLock = new MonitoredReentrantLock(MonitoredLockType.MOB_ANI);
+    private MonitoredReentrantLock externalLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_EXT);
+    private MonitoredReentrantLock monsterLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB, true);
+    private MonitoredReentrantLock statiLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_STATI);
+    private MonitoredReentrantLock animationLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_ANI);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -1477,9 +1478,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     public final void disposeLocks() {
-        externalLock.dispose();
-        monsterLock.dispose();
-        statiLock.dispose();
-        animationLock.dispose();
+        externalLock = externalLock.dispose();
+        monsterLock = monsterLock.dispose();
+        statiLock = statiLock.dispose();
+        animationLock = animationLock.dispose();
     }
 }

@@ -30,6 +30,7 @@ import server.TimerManager;
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -50,7 +51,7 @@ public class EventScriptScheduler {
                                     };
     
     public EventScriptScheduler() {
-        schedulerLock = new MonitoredReentrantLock(MonitoredLockType.EM_SCHDL, true);
+        schedulerLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_SCHDL, true);
     }
     
     private void runBaseSchedule() {
@@ -160,7 +161,7 @@ public class EventScriptScheduler {
                                 schedulerLock.unlock();
                             }
                             
-                            schedulerLock.dispose();
+                            schedulerLock = schedulerLock.dispose();
                         }
                     });
         

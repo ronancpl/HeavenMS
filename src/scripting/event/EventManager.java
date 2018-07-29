@@ -54,6 +54,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -75,8 +76,8 @@ public class EventManager {
     private Integer readyId = 0;
     private Properties props = new Properties();
     private String name;
-    private MonitoredReentrantLock lobbyLock = new MonitoredReentrantLock(MonitoredLockType.EM_LOBBY);
-    private MonitoredReentrantLock queueLock = new MonitoredReentrantLock(MonitoredLockType.EM_QUEUE);
+    private MonitoredReentrantLock lobbyLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_LOBBY);
+    private MonitoredReentrantLock queueLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_QUEUE);
 
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     
@@ -102,7 +103,7 @@ public class EventManager {
         
         synchronized(instances) {
             for(EventInstanceManager eim : instances.values()) {
-                eim.dispose();
+                eim.dispose(true);
             }
             instances.clear();
         }
@@ -117,7 +118,7 @@ public class EventManager {
         }
         
         for(EventInstanceManager eim : readyEims) {
-            eim.dispose();
+            eim.dispose(true);
         }
         
         props.clear();
@@ -130,8 +131,8 @@ public class EventManager {
     }
     
     private void disposeLocks() {
-        lobbyLock.dispose();
-        queueLock.dispose();
+        lobbyLock = lobbyLock.dispose();
+        queueLock = queueLock.dispose();
     }
     
     private static List<Integer> convertToIntegerArray(List<Double> list) {

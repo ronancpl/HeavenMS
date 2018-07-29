@@ -1173,3 +1173,25 @@ Implementado código que ofereçe suporte para abrir novos worlds e channels sob
 Adicionado scheduler dedicado para ações de event managers.
 Corrigido potencial de deadlock em alguns pontos do sistema de schedulers de canais.
 Refatorado vários temporizadores utilizados pelo EventManager e Channel, como o respawn de mobs e o disposeInstance.
+
+24 Julho 2018,
+Implementado código que ofereçe suporte para remover worlds e channels sob demanda.
+Corrigido alguns problemas com deadlocks ao tentar remover worlds e channels.
+Melhorado envio de packets de objetos de ambiente. Agora é necessário enviar somente um packet, que lista o estado corrente de todos os obstáculos de um mapa (usado bastante na CWKPQ).
+Corrigido mobs não sendo devidamente registrados em eventos e não sumindo em certos cenários (e.g. quando chamado por outros mobs/bosses).
+
+25 - 26 Julho 2018,
+Melhorado sistema de respawn de mobs. Agora a quantidade de mobs em campo depende do número de jogadores no mesmo mapa.
+Corrigido certos pontos em MapleClient não liberando devidamente o jogador da estrutura que mantem todos os jogadores online num mundo.
+Corrigido corda atuando erroneamente em mapas de Malaysia.
+Remodelado viagens para Malaysia, agora por dois trajetos: CBD e Boat Quay. Para voltar de Malaysia somente conversando com Audrey (NPC agente de viagens) agora.
+Implementado um temporizador para drops de mobs. Aparentemente GMS drops levavam em conta o tempo de despawn do mob antes de lançar itens em campo.
+Corrigido dispose de EIM finalizando incorretamente se a função "dispose" estiver sendo disparado via scripts.
+Protegido concorrentemente acesso a módulos de distribuição de APs, evitando assim exploits críticos com APs.
+Melhorado desempenho do HealOvertimeHandler por fazendo buscar informação de mapas com recovery rate maior do XML ao invés de testar um conjunto limitado de mapas.
+
+27 Julho 2018,
+Corrigido comando "maxhpmp" permitindo efetivar valores negativos ao alvo.
+Corrigido Duey não registrando nível e experiência de equipamentos ao enviá-los.
+Buff no buyback: por um curto período após respawnar o jogador não morre (mínimo 1 HP), assim permitindo um tempo mínimo de reação.
+Revisado task do item monitor em MapleMap mal-protegido contra acessos concorrentes.

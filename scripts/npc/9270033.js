@@ -53,7 +53,7 @@ function action(mode, type, selection) {
                         }
                 } else if(status == 1) {
                         if(eim.isEventCleared()) {
-                                if(!eim.giveEventReward(cm.getPlayer)) {
+                                if(!eim.giveEventReward(cm.getPlayer())) {
                                         cm.sendOk("Please make a room on your inventory to receive the loot.");
                                         cm.dispose();
                                         return;

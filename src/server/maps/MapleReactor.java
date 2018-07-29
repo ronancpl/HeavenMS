@@ -29,7 +29,7 @@ import java.util.List;
 
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.Lock;
-import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import scripting.reactor.ReactorScriptManager;
 import server.TimerManager;
@@ -54,8 +54,8 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean shouldCollect;
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
-    private Lock reactorLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR, true);
-    private Lock hitLock = new MonitoredReentrantLock(MonitoredLockType.REACTOR_HIT, true);
+    private Lock reactorLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.REACTOR, true);
+    private Lock hitLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.REACTOR_HIT, true);
 
     public MapleReactor(MapleReactorStats stats, int rid) {
         this.evstate = (byte)0;
