@@ -57,7 +57,7 @@ function end(mode, type, selection) {
             
             qm.sendNext("(Ah, there is a crumbled note here... Hm, it contains details about some scheme that is about to happen, that must be what #r#p1052002##k was talking about.)");
             qm.gainItem(4031894, 1);
-            qm.gainExp(20000 * qm.getPlayer().getExpRate());
+            qm.gainExp(20000);
             qm.forceCompleteQuest();
             
             qm.dispose();

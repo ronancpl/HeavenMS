@@ -6,12 +6,12 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
+import net.server.world.World;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHandler { //Gey class name lol
-
+public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -26,7 +26,8 @@ public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHand
         }
         
         c.setWorld(server.getCharacterWorld(charId));
-        if(c.getWorldServer().isWorldCapacityFull()) {
+        World wserv = c.getWorldServer();
+        if(wserv == null || wserv.isWorldCapacityFull()) {
             c.announce(MaplePacketCreator.getAfterLoginError(10));
             return;
         }
@@ -45,11 +46,16 @@ public final class ViewAllCharRegisterPicHandler extends AbstractMaplePacketHand
         String pic = slea.readMapleAsciiString();
         c.setPic(pic);
         
+        String[] socket = server.getInetSocket(c.getWorld(), channel);
+        if (socket == null) {
+            c.announce(MaplePacketCreator.getAfterLoginError(10));
+            return;
+        }
+        
         server.unregisterLoginState(c);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
         server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
         
-        String[] socket = server.getIP(c.getWorld(), channel).split(":");
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
         } catch (UnknownHostException e) {

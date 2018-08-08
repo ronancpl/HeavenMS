@@ -39,7 +39,7 @@ function end(mode, type, selection) {
                 qm.sendNext("You haven't found the #rPuppeteer's cave#k yet, did you?");
             } else {
                 qm.sendNext("Hm, so the entrance is blocked by a powerful force? I see, gimme a time to think now...");
-                qm.gainExp(200 * qm.getPlayer().getExpRate());
+                qm.gainExp(200);
                 qm.forceCompleteQuest();
             }
             

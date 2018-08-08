@@ -37,7 +37,7 @@ function end(mode, type, selection) {
 	if (qm.getQuestStatus(21720) == 1) {
 	    qm.forceCompleteQuest();
 	    qm.teachSkill(21001003, qm.getPlayer().getSkillLevel(21001003), 20, -1);
-	    qm.gainExp(3900 * qm.getPlayer().getExpRate());
+	    qm.gainExp(3900);
 	}
         qm.showIntro("Effect/BasicEff.img/AranGetSkill");
         qm.sendNext('#b(You remembered the Polearm Booster skill!)#k', 2);

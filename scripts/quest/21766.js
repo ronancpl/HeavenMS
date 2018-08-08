@@ -17,7 +17,7 @@ function start(mode, type, selection) {
 }
 
 function end(mode, type, selection) {
-	qm.gainExp(200 * qm.getPlayer().getExpRate());
+	qm.gainExp(200);
 	qm.forceCompleteQuest();
 	qm.dispose();
 }

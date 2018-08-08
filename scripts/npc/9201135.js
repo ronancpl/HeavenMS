@@ -47,6 +47,7 @@ function start() {
                 if (inMap[i] == cm.getPlayer().getMap().getId()) {
                         if(inMap[i] == 550000000) {
                                 toMap[1][1] = cm.getPlayer().peekSavedLocation("WORLDTOUR");
+                                if(toMap[1][1] == -1) toMap[1][1] = 541000000;
                         }
                     
                         location = i;
@@ -116,6 +117,7 @@ function action(mode, type, selection) {
             }
             else {
                 travelMap = cm.getPlayer().getSavedLocation("WORLDTOUR");
+                if(travelMap == -1) travelMap = toMap[1][1];
             }
             
             cm.warp(travelMap, travelSp);

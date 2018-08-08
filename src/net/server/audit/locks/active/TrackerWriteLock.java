@@ -157,11 +157,13 @@ public class TrackerWriteLock extends ReentrantReadWriteLock.WriteLock implement
                 timeoutSchedule.cancel(false);
                 timeoutSchedule = null;
             }
+            
+            reentrantCount.set(Integer.MAX_VALUE);
         } finally {
             state.unlock();
         }
         
         //unlock();
-        return new EmptyWriteLock();
+        return new EmptyWriteLock(id);
     }
 }

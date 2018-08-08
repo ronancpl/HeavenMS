@@ -897,15 +897,7 @@ public class MapleStatEffect {
             MapleDoor door = new MapleDoor(applyto, doorPosition);
             
             if(door.getOwnerId() >= 0) {
-                if (applyto.getParty() != null) {
-                    for (MaplePartyCharacter partyMember : applyto.getParty().getMembers()) {
-                        partyMember.getPlayer().addDoor(door.getOwnerId(), door);
-                        partyMember.addDoor(door.getOwnerId(), door);
-                    }
-                    applyto.silentPartyUpdate();
-                } else {
-                    applyto.addDoor(door.getOwnerId(), door);
-                }
+                applyto.applyPartyDoor(door, false);
 
                 door.getTarget().spawnDoor(door.getAreaDoor());
                 door.getTown().spawnDoor(door.getTownDoor());

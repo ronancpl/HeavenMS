@@ -31,7 +31,7 @@ var fface = Array(21001, 21002, 21003, 21004, 21005, 21006, 21008, 21012, 21014,
 var facenew = Array();
 
 function start() {
-    cm.sendSimple("Hi, I pretty much shouldn't be doing this, but with a #b#t5152033##k, I will do it anyways for you. But don't forget, it will be random!\r\n#L1#I would like to buy a #b#t5152033##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
+    cm.sendSimple("Hi, I pretty much shouldn't be doing this, but with a #b#t5152033##k, I will do it anyways for you. But don't forget, it will be random!\r\n#L2#I already have a Coupon!#l");
 }
 
 function action(mode, type, selection) {
@@ -47,15 +47,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 1) {
-            if (selection == 1) {
-                if(cm.getMeso() >= price) {
-                    cm.gainMeso(-price);
-                    cm.gainItem(5152033, 1);
-                    cm.sendOk("Enjoy!");
-                } else
-                cm.sendOk("You don't have enough mesos to buy a coupon!");
-                cm.dispose();
-            } else if (selection == 2) {
+            if (selection == 2) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0)
                     for(var i = 0; i < mface.length; i++)
@@ -66,13 +58,15 @@ function action(mode, type, selection) {
                 cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152033##k?");
             }
         } else if (status == 2){
-            cm.dispose();
             if (cm.haveItem(5152033)){
                 cm.gainItem(5152033, -1);
                 cm.setFace(facenew[Math.floor(Math.random() * facenew.length)]);
                 cm.sendOk("Enjoy your new and improved face!");
-            } else 
+            } else {
                 cm.sendOk("Hmm ... it looks like you don't have the coupon specifically for this place. Sorry to say this, but without the coupon, there's no plastic surgery for you...");
+            }
+            
+            cm.dispose();
         }
     }
 }

@@ -36,7 +36,7 @@ function end(mode, type, selection) {
             item = qm.gainItem(item, 1);
             
             if (item != null) {
-                qm.gainExp(12000 * qm.getPlayer().getExpRate());
+                qm.gainExp(12000);
                 qm.completeQuest();
             }
                     

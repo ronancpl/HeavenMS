@@ -60,6 +60,7 @@ import net.server.guild.MapleGuildCharacter;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.RankingWorker;
+import net.server.worker.ReleaseLockWorker;
 import net.server.world.World;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -206,7 +207,11 @@ public class Server {
     public World getWorld(int id) {
         wldRLock.lock();
         try {
-            return worlds.get(id);
+            try {
+                return worlds.get(id);
+            } catch (IndexOutOfBoundsException e) {
+                return null;
+            }
         } finally {
             wldRLock.unlock();
         }
@@ -231,21 +236,33 @@ public class Server {
     }
     
     public Channel getChannel(int world, int channel) {
-        return this.getWorld(world).getChannel(channel);
+        try {
+            return this.getWorld(world).getChannel(channel);
+        } catch(NullPointerException npe) {
+            return null;
+        }
     }
 
     public List<Channel> getChannelsFromWorld(int world) {
-        return this.getWorld(world).getChannels();
+        try {
+            return this.getWorld(world).getChannels();
+        } catch(NullPointerException npe) {
+            return new ArrayList<>(0);
+        }
     }
     
     public List<Channel> getAllChannels() {
-        List<Channel> channelz = new ArrayList<>();
-        for (World world : this.getWorlds()) {
-            for (Channel ch : world.getChannels()) {
-                channelz.add(ch);
+        try {
+            List<Channel> channelz = new ArrayList<>();
+            for (World world : this.getWorlds()) {
+                for (Channel ch : world.getChannels()) {
+                    channelz.add(ch);
+                }
             }
+            return channelz;
+        } catch(NullPointerException npe) {
+            return new ArrayList<>(0);
         }
-        return channelz;
     }
     
     public Set<Integer> getOpenChannels(int world) {
@@ -257,7 +274,7 @@ public class Server {
         }
     }
     
-    public String getIP(int world, int channel) {
+    private String getIP(int world, int channel) {
         wldRLock.lock();
         try {
             return channels.get(world).get(channel);
@@ -265,6 +282,15 @@ public class Server {
             wldRLock.unlock();
         }
     }
+    
+    public String[] getInetSocket(int world, int channel) {
+        try {
+            return getIP(world, channel).split(":");
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
     
     private void dumpData() {
         wldWLock.lock();
@@ -643,6 +669,7 @@ public class Server {
         
         long timeLeft = getTimeLeftForNextHour();
         tMan.register(new CharacterDiseaseWorker(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
+        tMan.register(new ReleaseLockWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
         tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
         tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
         
@@ -1149,8 +1176,10 @@ public class Server {
     }
     */
     
-    public Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loadAccountCharlist(Integer accountId) {
+    public Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loadAccountCharlist(Integer accountId, int visibleWorlds) {
         List<World> wlist = this.getWorlds();
+        if(wlist.size() > visibleWorlds) wlist = wlist.subList(0, visibleWorlds);
+        
         List<Pair<Integer, List<MapleCharacter>>> accChars = new ArrayList<>(wlist.size() + 1);
         int chrTotal = 0;
         List<MapleCharacter> lastwchars = null;

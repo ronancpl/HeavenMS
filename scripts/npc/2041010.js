@@ -47,18 +47,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Well, hello! Welcome to the Ludibrium Plastic Surgery! Would you like to transform your face into something new? With a #b#t5152007##k, you can let us take care of the rest and have the face you've always wanted~!\r\n#L1#I would like to buy a #b#t5152007##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
+            cm.sendSimple("Well, hello! Welcome to the Ludibrium Plastic Surgery! Would you like to transform your face into something new? With a #b#t5152007##k, you can let us take care of the rest and have the face you've always wanted~!\r\n#L2#I already have a Coupon!#l");
         } else if (status == 1) {
-            if (selection == 1) {
-                if(cm.getMeso() >= price) {
-                    cm.gainMeso(-price);
-                    cm.gainItem(5152007, 1);
-                    cm.sendOk("Enjoy!");
-                } else {
-                    cm.sendOk("You don't have enough mesos to buy a coupon!");
-                }
-                cm.dispose();
-            } else if (selection == 2) {
+            if (selection == 2) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0) {
                     for(var i = 0; i < mface.length; i++) {

@@ -44,7 +44,7 @@ function end(mode, type, selection) {
             qm.gainItem(4031104, -1);
             qm.gainItem(4031105, -1);
             qm.gainItem(4031106, -1);
-            qm.gainExp(12000 * qm.getPlayer().getExpRate());
+            qm.gainExp(12000);
             qm.completeQuest();
                     
             qm.dispose();

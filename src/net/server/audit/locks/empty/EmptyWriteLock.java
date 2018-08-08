@@ -19,26 +19,56 @@
 */
 package net.server.audit.locks.empty;
 
+import constants.ServerConstants;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredWriteLock;
+import tools.FilePrinter;
 
 /**
  *
  * @author RonanLana
  */
 public class EmptyWriteLock implements MonitoredWriteLock {
+    private final MonitoredLockType id;
+    
+    public EmptyWriteLock(MonitoredLockType type) {
+        this.id = type;
+    }
+    
+    private static String printThreadStack(StackTraceElement[] list) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+        String df = dateFormat.format(new Date());
+        
+        String s = "\r\n" + df + "\r\n";
+        for(int i = 0; i < list.length; i++) {
+            s += ("    " + list[i].toString() + "\r\n");
+        }
+        s += "----------------------------";
+        
+        return s;
+    }
+    
     @Override
-    public void lock() {}
+    public void lock() {
+        FilePrinter.printError(FilePrinter.DISPOSED_LOCKS, "Captured locking tentative on disposed lock " + id + ":" + printThreadStack(Thread.currentThread().getStackTrace()));
+    }
     
     @Override
     public void unlock() {}
     
     @Override
     public boolean tryLock() {
+        FilePrinter.printError(FilePrinter.DISPOSED_LOCKS, "Captured try-locking tentative on disposed lock " + id + ":" + printThreadStack(Thread.currentThread().getStackTrace()));
         return false;
     }
     
     @Override
     public MonitoredWriteLock dispose() {
-        return null;
+        return this;
     }
 }

@@ -51,7 +51,7 @@ function end(mode, type, selection){
 		qm.sendNext("Hurray! #b#h ##k you defeated the #bPrime Minister#k.");
 	}
 	else if(status == 1){
-		qm.gainExp(15000 * qm.getPlayer().getExpRate());
+		qm.gainExp(15000);
 		qm.forceCompleteQuest();
 
 		var eim = qm.getEventInstance();

@@ -159,11 +159,13 @@ public class TrackerReadLock extends ReentrantReadWriteLock.ReadLock implements 
                 timeoutSchedule.cancel(false);
                 timeoutSchedule = null;
             }
+            
+            reentrantCount.set(Integer.MAX_VALUE);
         } finally {
             state.unlock();
         }
         
         //unlock();
-        return new EmptyReadLock();
+        return new EmptyReadLock(id);
     }
 }

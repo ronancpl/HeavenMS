@@ -41,18 +41,9 @@ function action(mode, type, selection) {
 		else
 			status--;
 		if (status == 0) {
-			cm.sendSimple("Oh, hello! Welcome to the Ludibrium Skin-Care! Are you interested in getting tanned and looking sexy? How about a beautiful, snow-white skin? If you have #b#t5153002##k, you can let us take care of the rest and have the kind of skin you've always dreamed of!\r\n#L1#I would like to buy a #b#t5153002##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
-			} else if (status == 1) {
-			if (selection == 1) {
-				if(cm.getMeso() >= price) {
-					cm.gainMeso(-price);
-					cm.gainItem(5153002, 1);
-					cm.sendOk("Enjoy!");
-				} else {
-					cm.sendOk("You don't have enough mesos to buy a coupon!");
-				}
-				cm.dispose();
-			} else if (selection == 2) {
+			cm.sendSimple("Oh, hello! Welcome to the Ludibrium Skin-Care! Are you interested in getting tanned and looking sexy? How about a beautiful, snow-white skin? If you have #b#t5153002##k, you can let us take care of the rest and have the kind of skin you've always dreamed of!\r\n#L2#I already have a Coupon!#l");
+                } else if (status == 1) {
+			if (selection == 2) {
 				cm.sendStyle("With our specialized machine, you can see the way you'll look after the treatment PRIOR to the procedure. What kind of a look are you looking for? Go ahead and choose the style of your liking~!", skin);
 			}
 		}

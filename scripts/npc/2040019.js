@@ -47,18 +47,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Well, I'm bored, so I'll help out the doctor. For a #b#t5152006##k, I will change the way you look. But don't forget, it will be random!\r\n#L1#I would like to buy a #b#t5152006##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
+            cm.sendSimple("Well, I'm bored, so I'll help out the doctor. For a #b#t5152006##k, I will change the way you look. But don't forget, it will be random!\r\n#L2#I already have a Coupon!#l");
         } else if (status == 1) {
-            if (selection == 1) {
-                if(cm.getMeso() >= price) {
-                    cm.gainMeso(-price);
-                    cm.gainItem(5152006, 1);
-                    cm.sendOk("Enjoy!");
-                } else {
-                    cm.sendOk("You don't have enough mesos to buy a coupon!");
-                }
-                cm.dispose();
-            } else if (selection == 2) {
+            if (selection == 2) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0) {
                     for(var i = 0; i < mface.length; i++) {

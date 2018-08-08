@@ -48,7 +48,7 @@ function end(mode, type, selection) {
             
             if(c == 4) {
                 qm.sendNext("You delivered all the food, good.");
-                qm.gainExp(2000 * qm.getPlayer().getExpRate());
+                qm.gainExp(2000);
                 qm.forceCompleteQuest();
             } else {
                 var missed = (4 - qm.getItemQuantity(4031580)) - c;

@@ -31,7 +31,7 @@ var fhair = Array(31040, 31000, 31250, 31220, 31260, 31240, 31110, 31270, 31030,
 var hairnew = Array();
 
 function start() {
-    cm.sendSimple("I'm Rinz, the assistant. Do you have #b#t5150013##k or #b#t5151004##k with you? If so, what do you think about letting me take care of your hairdo? What do you want to do with your hair?\r\n#L0#I want to buy a coupon!#l\r\n#L1#Haircut: #i5150013##t5150013##l\r\n#L2#Dye your hair: #i5151004##t5151004##l");
+    cm.sendSimple("I'm Rinz, the assistant. Do you have #b#t5150013##k or #b#t5151004##k with you? If so, what do you think about letting me take care of your hairdo? What do you want to do with your hair?\r\n#L1#Haircut: #i5150013##t5150013##l\r\n#L2#Dye your hair: #i5151004##t5151004##l");
 }
 
 function action(mode, type, selection) {
@@ -40,10 +40,7 @@ function action(mode, type, selection) {
     else {
         status++;
         if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Haircut for " + hairprice + " mesos: #i5150013##t5150013##l\r\n#L1#Dye your hair for " + haircolorprice + " mesos: #i5151004##t5151004##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0)

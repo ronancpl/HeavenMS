@@ -628,7 +628,7 @@ public class MaplePacketCreator {
         public static byte[] getAfterLoginError(int reason) {//same as above o.o
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(8);
                 mplew.writeShort(SendOpcode.SELECT_CHARACTER_BY_VAC.getValue());
-                mplew.writeShort(reason);//using other types then stated above = CRASH
+                mplew.writeShort(reason);//using other types than stated above = CRASH
                 return mplew.getPacket();
         }
 
@@ -677,6 +677,8 @@ public class MaplePacketCreator {
          * @return the successful authentication packet
          */
         public static byte[] getAuthSuccess(MapleClient c) {
+                Server.getInstance().loadAccountCharacters(c);    // locks the login session until data is recovered from the cache or the DB.
+            
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.LOGIN_STATUS.getValue());
                 mplew.writeInt(0);
@@ -686,7 +688,7 @@ public class MaplePacketCreator {
                 
                 boolean canFly = Server.getInstance().canFly(c.getAccID());
                 mplew.writeBool((ServerConstants.USE_ENFORCE_ADMIN_ACCOUNT || canFly) ? c.getGMLevel() > 1 : false);    // thanks Steve(kaito1410) for pointing the GM account boolean here
-                mplew.write((c.getGMLevel() > 1 && canFly) ? 0x80 : 0); // Admin Byte. 0x80,0x40,0x20.. Rubbish.
+                mplew.write(((ServerConstants.USE_ENFORCE_ADMIN_ACCOUNT || canFly) && c.getGMLevel() > 1) ? 0x80 : 0);  // Admin Byte. 0x80,0x40,0x20.. Rubbish.
                 mplew.write(0); // Country Code.
                 
                 mplew.writeMapleAsciiString(c.getAccountName());
@@ -3689,27 +3691,23 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] partyCreated(MaplePartyCharacter partychar, int partyId) {
+        public static byte[] partyCreated(MapleParty party, int partycharid) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PARTY_OPERATION.getValue());
                 mplew.write(8);
-                mplew.writeInt(partyId);
-                if (partychar.getDoors().size() > 0) {
-                        boolean deployedPortal = false;
-                    
-                        for (MapleDoor door : partychar.getDoors()) {
-                                if(door.getOwnerId() == partychar.getId()) {
-                                        MapleDoorObject mdo = door.getAreaDoor();
-                                        mplew.writeInt(mdo.getTo().getId());
-                                        mplew.writeInt(mdo.getFrom().getId());
-                                        mplew.writeInt(mdo.getPosition().x);
-                                        mplew.writeInt(mdo.getPosition().y);
-                                        
-                                        deployedPortal = true;
-                                }
-                        }
+                mplew.writeInt(party.getId());
+                
+                Map<Integer, MapleDoor> partyDoors = party.getDoors();
+                if (partyDoors.size() > 0) {
+                        MapleDoor door = partyDoors.get(partycharid);
                         
-                        if(!deployedPortal) {
+                        if(door != null) {
+                                MapleDoorObject mdo = door.getAreaDoor();
+                                mplew.writeInt(mdo.getTo().getId());
+                                mplew.writeInt(mdo.getFrom().getId());
+                                mplew.writeInt(mdo.getPosition().x);
+                                mplew.writeInt(mdo.getPosition().y);
+                        } else {
                                 mplew.writeInt(999999999);
                                 mplew.writeInt(999999999);
                                 mplew.writeInt(0);
@@ -3798,24 +3796,19 @@ public class MaplePacketCreator {
                                 lew.writeInt(0);
                         }
                 }
+                
+                Map<Integer, MapleDoor> partyDoors = party.getDoors();
                 for (MaplePartyCharacter partychar : partymembers) {
                         if (partychar.getChannel() == forchannel && !leaving) {
-                                if (partychar.getDoors().size() > 0) {
-                                        boolean deployedPortal = false;
-                                        
-                                        for (MapleDoor door : partychar.getDoors()) {
-                                                if(door.getOwnerId() == partychar.getId()) {
-                                                        MapleDoorObject mdo = door.getTownDoor();
-                                                        lew.writeInt(mdo.getTown().getId());
-                                                        lew.writeInt(mdo.getArea().getId());
-                                                        lew.writeInt(mdo.getPosition().x);
-                                                        lew.writeInt(mdo.getPosition().y);
-                                                        
-                                                        deployedPortal = true;
-                                                }
-                                        }
-                                        
-                                        if(!deployedPortal) {
+                                if (partyDoors.size() > 0) {
+                                        MapleDoor door = partyDoors.get(partychar.getId());
+                                        if(door != null) {
+                                                MapleDoorObject mdo = door.getTownDoor();
+                                                lew.writeInt(mdo.getTown().getId());
+                                                lew.writeInt(mdo.getArea().getId());
+                                                lew.writeInt(mdo.getPosition().x);
+                                                lew.writeInt(mdo.getPosition().y);
+                                        } else {
                                                 lew.writeInt(999999999);
                                                 lew.writeInt(999999999);
                                                 lew.writeInt(0);

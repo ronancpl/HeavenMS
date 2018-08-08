@@ -115,6 +115,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Implemented Zombify disease status.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
         addFeature("Game will favor showing the targeted boss HPbar.");
+        addFeature("Boss HPBar & Srv Message toggle - GabrielSin's idea.");
         addFeature("Dmg overtime on maps and neutralizers functional.");
         addFeature("Items will consistently stay within the walking area.");
         addFeature("Boats, elevator and other travel mechanics functional.");

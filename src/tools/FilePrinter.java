@@ -49,7 +49,8 @@ public class FilePrinter {
             DEADLOCK_ERROR = "deadlocks.txt",
             DEADLOCK_STACK = "deadlocks/path.txt",
             DEADLOCK_LOCKS = "deadlocks/locks.txt",
-            DEADLOCK_STATE = "deadlocks/state.txt";
+            DEADLOCK_STATE = "deadlocks/state.txt",
+            DISPOSED_LOCKS = "deadlocks/disposed.txt";
     
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //for file system purposes, it's nice to use yyyy-MM-dd
     private static final String FILE_PATH = "logs/" + sdf.format(Calendar.getInstance().getTime()) + "/"; // + sdf.format(Calendar.getInstance().getTime()) + "/"

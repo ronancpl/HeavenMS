@@ -261,7 +261,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Map<Integer, MapleSummon> summons = new LinkedHashMap<>();
     private Map<Integer, MapleCoolDownValueHolder> coolDowns = new LinkedHashMap<>();
     private EnumMap<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> diseases = new EnumMap<>(MapleDisease.class);
-    private Map<Integer, MapleDoor> doors = new LinkedHashMap<>();
+    private MapleDoor pdoor = null;
     private Map<MapleQuest, Long> questExpirations = new LinkedHashMap<>();
     private ScheduledFuture<?> dragonBloodSchedule;
     private ScheduledFuture<?> hpDecreaseTask;
@@ -277,6 +277,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
     private Lock chrLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CHR, true);
     private Lock effLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EFF, true);
+    private Lock evtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EVT, true);
     private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for quest tasks as well
     private Lock prtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
@@ -343,7 +344,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         quests = new LinkedHashMap<>();
         setPosition(new Point(0, 0));
         
-        petLootCd = System.currentTimeMillis();
+        petLootCd = Server.getInstance().getCurrentTime();
     }
     
     private static MapleJob getJobStyleInternal(int jobid, byte opt) {
@@ -586,25 +587,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         return pts;
     }
-
-    public void addDoor(Integer owner, MapleDoor door) {
-        chrLock.lock();
-        try {
-            doors.put(owner, door);
-        } finally {
-            chrLock.unlock();
-        }
-    }
     
-    public void removeDoor(Integer owner) {
-        chrLock.lock();
-        try {
-            doors.remove(owner);
-        } finally {
-            chrLock.unlock();
-        }
-    }
-
     public void addFame(int famechange) {
         this.fame += famechange;
     }
@@ -889,13 +872,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         this.loggedIn = true;
         c.setAccountName(this.client.getAccountName());//No null's for accountName
         this.client = c;
+        this.map = c.getChannelServer().getMapFactory().getMap(getMapId());
         MaplePortal portal = map.findClosestPlayerSpawnpoint(getPosition());
         if (portal == null) {
             portal = map.getPortal(0);
         }
         this.setPosition(portal.getPosition());
         this.initialSpawnPoint = portal.getId();
-        this.map = c.getChannelServer().getMapFactory().getMap(getMapId());
     }
 
     public String getMedalText() {
@@ -1352,9 +1335,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void changeMap(MapleMap to) {
-        changeMap(to, to.getPortal(0));
+        changeMap(to, 0);
     }
 
+    public void changeMap(MapleMap to, int portal) {
+        changeMap(to, to.getPortal(portal));
+    }
+    
     public void changeMap(final MapleMap target, final MaplePortal pto) {
         canWarpCounter++;
         
@@ -1437,7 +1424,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return lastVisited;
     }
     
-    public void updateMapDropsUponPartyOperation(List<MapleCharacter> exPartyMembers) {
+    public void partyOperationUpdate(MapleParty party, List<MapleCharacter> exPartyMembers) {
         List<WeakReference<MapleMap>> mapids;
         
         petLock.lock();
@@ -1466,6 +1453,84 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             
             if(mapObj != null) {
                 mapObj.updatePlayerItemDrops(partyId, id, partyMembers, partyLeaver);
+            }
+        }
+        
+        updatePartyTownDoors(party, this, partyLeaver, partyMembers);
+    }
+    
+    private static void addPartyPlayerDoor(MapleCharacter target) {
+        MapleDoor targetDoor = target.getPlayerDoor();
+        if(targetDoor != null) {
+            target.applyPartyDoor(targetDoor, true);
+        }
+    }
+    
+    private static void removePartyPlayerDoor(MapleParty party, MapleCharacter target) {
+        target.removePartyDoor(party);
+    }
+        
+    private static void updatePartyTownDoors(MapleParty party, MapleCharacter target, MapleCharacter partyLeaver, List<MapleCharacter> partyMembers) {
+        if(partyLeaver != null) {
+            removePartyPlayerDoor(party, target);
+        } else {
+            addPartyPlayerDoor(target);
+        }
+        
+        Map<Integer, MapleDoor> partyDoors = null;
+        if(!partyMembers.isEmpty()) {
+            partyDoors = party.getDoors();
+            
+            for(MapleCharacter pchr : partyMembers) {
+                MapleDoor door = partyDoors.get(pchr.getId());
+                if(door != null) {
+                    door.updateDoorPortal(pchr);
+                }
+            }
+            
+            for(MapleDoor door : partyDoors.values()) {
+                for(MapleCharacter pchar : partyMembers) {
+                    door.getTownDoor().sendDestroyData(pchar.getClient(), true);
+                }
+            }
+            
+            if(partyLeaver != null) {
+                Collection<MapleDoor> leaverDoors = partyLeaver.getDoors();
+                for(MapleDoor door : leaverDoors) {
+                    for(MapleCharacter pchar : partyMembers) {
+                        door.getTownDoor().sendDestroyData(pchar.getClient(), true);
+                    }
+                }
+            }
+            
+            List<Integer> histMembers = party.getMembersSortedByHistory();
+            for(Integer chrid : histMembers) {
+                MapleDoor door = partyDoors.get(chrid);
+
+                if(door != null) {
+                    for(MapleCharacter pchar : partyMembers) {
+                        door.getTownDoor().sendSpawnData(pchar.getClient());
+                    }
+                }
+            }
+        }
+        
+        if(partyLeaver != null) {
+            Collection<MapleDoor> leaverDoors = partyLeaver.getDoors();
+            
+            if(partyDoors != null) {
+                for(MapleDoor door : partyDoors.values()) {
+                    door.getTownDoor().sendDestroyData(partyLeaver.getClient(), true);
+                }
+            }
+            
+            for(MapleDoor door : leaverDoors) {
+                door.getTownDoor().sendDestroyData(partyLeaver.getClient(), true);
+            }
+            
+            for(MapleDoor door : leaverDoors) {
+                door.updateDoorPortal(partyLeaver);
+                door.getTownDoor().sendSpawnData(partyLeaver.getClient());
             }
         }
     }
@@ -2238,10 +2303,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void dispel() {
-        List<MapleBuffStatValueHolder> mbsvhList = getAllStatups();
-        for (MapleBuffStatValueHolder mbsvh : mbsvhList) {
-            if (mbsvh.effect.isSkill()) {
-                cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+        if(!(ServerConstants.USE_UNDISPEL_HOLY_SHIELD && this.isActiveBuffedValue(Bishop.HOLY_SHIELD))) {
+            List<MapleBuffStatValueHolder> mbsvhList = getAllStatups();
+            for (MapleBuffStatValueHolder mbsvh : mbsvhList) {
+                if (mbsvh.effect.isSkill()) {
+                    cancelEffect(mbsvh.effect, false, mbsvh.startTime);
+                }
             }
         }
     }
@@ -3376,14 +3443,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         if (effect.isMagicDoor()) {
-            MapleDoor destroyDoor;
-                    
-            chrLock.lock();
-            try {
-                destroyDoor = doors.remove(this.getId());
-            } finally {
-                chrLock.unlock();
-            }
+            MapleDoor destroyDoor = removePartyDoor(false);
             
             if (destroyDoor != null) {
                 destroyDoor.getTarget().removeMapObject(destroyDoor.getAreaDoor());
@@ -3392,21 +3452,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 for (MapleCharacter chr : destroyDoor.getTarget().getCharacters()) {
                     destroyDoor.getAreaDoor().sendDestroyData(chr.getClient());
                 }
-                for (MapleCharacter chr : destroyDoor.getTown().getCharacters()) {
+                
+                Collection<MapleCharacter> townChars = destroyDoor.getTown().getCharacters();
+                for (MapleCharacter chr : townChars) {
                     destroyDoor.getTownDoor().sendDestroyData(chr.getClient());
                 }
-
-                prtLock.lock();
-                try {
-                    if (party != null) {
-                        for (MaplePartyCharacter partyMembers : party.getMembers()) {
-                            partyMembers.getPlayer().removeDoor(this.getId());
-                            partyMembers.removeDoor(this.getId());
+                if(destroyDoor.getTownPortal().getId() == 0x80) {
+                    for (MapleCharacter chr : townChars) {
+                        MapleDoor door = chr.getMainTownDoor();
+                        if(door != null) {
+                            destroyDoor.getTownDoor().sendSpawnData(chr.getClient());
                         }
-                        silentPartyUpdateInternal();
                     }
-                } finally {
-                    prtLock.unlock();
                 }
             }
         } else if (effect.isMapChair()) {
@@ -3994,13 +4051,73 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return dojoStage;
     }
 
-    public Map<Integer, MapleDoor> getDoors() {
-        chrLock.lock();
+    public Collection<MapleDoor> getDoors() {
+        prtLock.lock();
         try {
-            return Collections.unmodifiableMap(doors);
+            return (party != null ? Collections.unmodifiableCollection(party.getDoors().values()) : (pdoor != null ? Collections.singleton(pdoor) : new LinkedHashSet<MapleDoor>()));
         } finally {
-            chrLock.unlock();
+            prtLock.unlock();
         }
+    }
+    
+    public MapleDoor getPlayerDoor() {
+        prtLock.lock();
+        try {
+            return pdoor;
+        } finally {
+            prtLock.unlock();
+        }
+    }
+    
+    public MapleDoor getMainTownDoor() {
+        for (MapleDoor door : getDoors()) {
+            if (door.getTownPortal().getId() == 0x80) {
+                return door;
+            }
+        }
+
+        return null;
+    }
+    
+    public void applyPartyDoor(MapleDoor door, boolean partyUpdate) {
+        prtLock.lock();
+        try {
+            if (!partyUpdate) {
+                pdoor = door;
+            }
+            
+            if (party != null) {
+                party.addDoor(id, door);
+                silentPartyUpdateInternal();
+            }
+        } finally {
+            prtLock.unlock();
+        }
+    }
+    
+    private MapleDoor removePartyDoor(boolean partyUpdate) {
+        MapleDoor ret = null;
+        
+        prtLock.lock();
+        try {
+            if (party != null) {
+                party.removeDoor(id);
+                silentPartyUpdateInternal();
+            }
+            
+            if (!partyUpdate) {
+                ret = pdoor;
+                pdoor = null;
+            }
+        } finally {
+            prtLock.unlock();
+        }
+        
+        return ret;
+    }
+    
+    private void removePartyDoor(MapleParty formerParty) {    // player is no longer registered at this party
+        formerParty.removeDoor(id);
     }
 
     public int getEnergyBar() {
@@ -4008,7 +4125,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public EventInstanceManager getEventInstance() {
-        return eventInstance;
+        evtLock.lock();
+        try {
+            return eventInstance;
+        } finally {
+            evtLock.unlock();
+        }
     }
 
     public void resetExcluded(int petId) {
@@ -4499,23 +4621,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
     
     public void resetPlayerAggro() {
+        if(client.getWorldServer().unregisterDisabledServerMessage(id)) {
+            client.announceServerMessage();
+        }
+        
         setTargetHpBarHash(0);
         setTargetHpBarTime(0);
     }
     
-    public int getDoorSlot() {
-        if(doorSlot == -1) {
-            prtLock.lock();
-            try {
-                doorSlot = (party == null) ? 0 : party.getPartyDoor(this.getId());
-            } finally {
-                prtLock.unlock();
-            }
-        }
-        
-        return doorSlot;
-    }
-
     public MapleMiniGame getMiniGame() {
         return miniGame;
     }
@@ -4750,7 +4863,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 merchant.saveItems(false);
             } catch (SQLException ex) {
                 ex.printStackTrace();
-                System.out.println("Error while saving Hired Merchant items.");
+                FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Error while saving " + name + "'s Hired Merchant items.");
             }
         }
     }
@@ -5895,9 +6008,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             ret.jobRank = rs.getInt("jobRank");
             ret.jobRankMove = rs.getInt("jobRankMove");
             
-            MapleInventory inv = ret.inventory[MapleInventoryType.EQUIPPED.ordinal()];
-            for (Item item : equipped) {
-                inv.addItemFromDB(item);
+            if(equipped != null) {  // players can have no equipped items at all, ofc
+                MapleInventory inv = ret.inventory[MapleInventoryType.EQUIPPED.ordinal()];
+                for (Item item : equipped) {
+                    inv.addItemFromDB(item);
+                }
             }
         } catch (SQLException sqle) {
             sqle.printStackTrace();
@@ -6641,10 +6756,11 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             if (party != null) {
                 int channel = client.getChannel();
                 int mapId = getMapId();
+                World wserv = Server.getInstance().getWorld(world);
                 
                 for (MaplePartyCharacter partychar : party.getMembers()) {
                     if (partychar.getMapId() == mapId && partychar.getChannel() == channel) {
-                        MapleCharacter other = Server.getInstance().getWorld(world).getChannel(channel).getPlayerStorage().getCharacterByName(partychar.getName());
+                        MapleCharacter other = wserv.getChannel(channel).getPlayerStorage().getCharacterById(partychar.getId());
                         if (other != null) {
                             client.announce(MaplePacketCreator.updatePartyMemberHP(other.getId(), other.getHp(), other.getMaxHpEquipped()));
                         }
@@ -7498,7 +7614,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void setEventInstance(EventInstanceManager eventInstance) {
-        this.eventInstance = eventInstance;
+        evtLock.lock();
+        try {
+            this.eventInstance = eventInstance;
+        } finally {
+            evtLock.unlock();
+        }
     }
 
     public void setExp(int amount) {
@@ -7806,7 +7927,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             e.printStackTrace();
         }
     }
-
+    
+    public int getDoorSlot() {
+        if(doorSlot != -1) return doorSlot;
+        return fetchDoorSlot();
+    }
+    
+    public int fetchDoorSlot() {
+        prtLock.lock();
+        try {
+            doorSlot = (party == null) ? 0 : party.getPartyDoor(this.getId());
+            return doorSlot;
+        } finally {
+            prtLock.unlock();
+        }
+    }
+    
     public void setParty(MapleParty p) {
         prtLock.lock();
         try {
@@ -8917,11 +9053,17 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             events = null;
             party = null;
             family = null;
-            client = null;
-            map = null;
+            
+            Server.getInstance().getWorld(world).registerTimedMapObject(new Runnable() {
+                @Override
+                public void run() {
+                    client = null;  // clients still triggers handlers a few times after disconnecting
+                    map = null;
+                }
+            }, 5 * 60 * 1000);
         }
     }
-
+    
     public void logOff() {
         this.loggedIn = false;
     }

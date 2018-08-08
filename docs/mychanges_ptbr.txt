@@ -1195,3 +1195,35 @@ Corrigido comando "maxhpmp" permitindo efetivar valores negativos ao alvo.
 Corrigido Duey não registrando nível e experiência de equipamentos ao enviá-los.
 Buff no buyback: por um curto período após respawnar o jogador não morre (mínimo 1 HP), assim permitindo um tempo mínimo de reação.
 Revisado task do item monitor em MapleMap mal-protegido contra acessos concorrentes.
+
+28 - 30 Julho 2018,
+Revisado vários problemas com Mystic Doors.
+Corrigido alguns acessos a nulos no Duey.
+Corrigido erro com XMLDomMapleData em casos onde múltiplos processos tentam ler dados simultaneamente.
+Revisado vários casos de "lock sem unlock" ocorrendo em casos onde o objeto no qual tal lock está acoplado já teve seus locks liberados.
+Corrigido falta de proteção contra registro concorrente de event instances no objeto que representa o jogador.
+Corrigido jogadores não sendo rapidamente removidos de um evento no momento do dispose deste evento, gerando diversas inconsistências ao trocar de mapa pra fora do evento.
+
+31 Julho 2018,
+Corrigido vários casos de nulos na fase de login perante a nova abordagem dinâmica de canais e mundos.
+Corrigido worker de playershops/hiredmerchs não ativado.
+Implementado melhoria para o sistema de server messages/boss HP bar, agora com atuação mutuamente exclusiva.
+Implementado mostrar novamente server messages (com boss HPbar ao fundo) para casos onde algum tempo se passou sem o cliente trocar ataques com o boss, nesse caso voltando a mensagem do server.
+Revisado sistema de encerramento de locks por todo o server. Colocado locks para serem devidamente liberados minutos após a finalização das estruturas, permitindo assim um tempo extra onde processos possam usar esses locks sem gerar conflitos de acesso concorrente.
+
+01 Agosto 2018,
+Corrigido um mapa de mushking empire levando jogador a um portal inexistente, levando o server a inserir o jogador no mapa por um portal default.
+Corrigido Kage (Item Maker) precisando de cristais nível 71~80 ao invés de 81~90.
+Removido possibilidade de comprar cosméticos por mesos pelos NPCs. Espera-se coupons somente disponível pelo Cash Shop.
+Corrigido NPC's da JQ de Sleepywood dando itens de cash aos jogadores em casos onde eles completam a JQ sem ter a quest ativa.
+Corrigido comando "fly" ainda não atuando corretamente. Com a busca de informação de GMlevel vindo mais cedo, o pacote de autenticação agora informa o cliente de seu GMlevel devidamente.
+Colocado comandos de adicionar/remover canais/mundos para rodar em uma nova thread, eliminando assim o GM de ter que esperar para realizar próximas ações.
+Corrigido alguns mapas com o NPC Duey sem caminhão característico ao fundo. Adicionado Duey em New Leaf City.
+Corrigido quests scriptadas bypassando flags de QUEST_RATE ao gerir EXP e MESO aos jogadores.
+
+02 Agosto 2018,
+Modificado algumas tabelas em ThreadTracker e World para usar Integer ao invés de Short/Byte, não há vantagens em usar tipos menores em Java para "otimizar uso de memória", piora o desempenho geral desta forma.
+
+07 Agosto 2018,
+Corrigido um bug na fase de login que nao construia corretamente overview de characters sem itens equipados, lancando excecoes posteriormente.
+Revisado alguns casos de borda com doors levando as mesmas a nao sumirem imediatamente em certos cenarios.

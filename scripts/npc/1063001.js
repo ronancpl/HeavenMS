@@ -21,29 +21,29 @@
 
 /* John JQ Flower pile #2
 */
+
+var repeatablePrizes = [[4020000, 4], [4020002, 4], [4020006, 4]];
+
 function start() {
-    var prizes = Array(1060034, 1060040, 1060049, 1060113, 1060121, 1061000, 1061001, 1061073, 1061089, 1061142, 1062010, 1062020, 1702140, 1702115);
-    var chances = Array(10, 10, 10, 10, 5, 10, 10, 10, 10, 5, 8, 8, 8, 8);
-    var totalodds = 0;
-    var choice = 0;
-    for (var i = 0; i < chances.length; i++) {
-        var itemGender = (Math.floor(prizes[i]/1000)%10);
-        if ((cm.getPlayer().getGender() != itemGender) && (itemGender != 2))
-            chances[i] = 0;
-    }
-    for (var i = 0; i < chances.length; i++)
-        totalodds += chances[i];
-    var randomPick = Math.floor(Math.random()*totalodds)+1;
-    for (var i = 0; i < chances.length; i++) {
-        randomPick -= chances[i];
-        if (randomPick <= 0) {
-            choice = i;
-            randomPick = totalodds + 100;
+    if (cm.isQuestStarted(2053) && !cm.haveItem(4031026,20)) {
+        if(!cm.canHold(4031026,20)) {
+            cm.sendNext("Check for a available slot on your ETC inventory.")
+            cm.dispose();
+            return;
         }
-    }
-    if (cm.isQuestStarted(2053))
+        
         cm.gainItem(4031026,20);
-    else cm.gainItem(prizes[choice],1);
+    } else {
+        if(cm.getPlayer().getInventory(Packages.client.inventory.MapleInventoryType.ETC).getNumFreeSlot() < 1) {
+            cm.sendNext("Check for a available slot on your ETC inventory.");
+            cm.dispose();
+            return;
+        }
+        
+        var itemPrize = repeatablePrizes[Math.floor((Math.random() * repeatablePrizes.length))];
+        cm.gainItem(itemPrize[0], itemPrize[1]);
+    }
+    
     cm.warp(105040300, 0);
     cm.dispose();
 }

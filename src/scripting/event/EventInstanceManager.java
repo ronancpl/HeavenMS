@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.script.ScriptException;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
@@ -232,11 +233,10 @@ public class EventInstanceManager {
                         wL.lock();
                         try {
                                 chars.put(chr.getId(), chr);
+                                chr.setEventInstance(this);
                         } finally {
                                 wL.unlock();
                         }
-                        
-			chr.setEventInstance(this);
                         
                         sL.lock();
                         try {
@@ -403,14 +403,13 @@ public class EventInstanceManager {
                 wL.lock();
                 try {
                         chars.remove(chr.getId());
+                        chr.setEventInstance(null);
                 } finally {
                         wL.unlock();
                 }
                 
                 gridRemove(chr);
                 dropExclusiveItems(chr);
-                
-		chr.setEventInstance(null);
 	}
 	
 	public int getPlayerCount() {
@@ -635,6 +634,13 @@ public class EventInstanceManager {
 	}
         
         public void dispose() {
+                rL.lock();
+                try {
+                        for(MapleCharacter chr: chars.values()) chr.setEventInstance(null);
+                } finally {
+                        rL.unlock();
+                }
+            
                 Thread t = new Thread( new Runnable() {
                         @Override
                         public void run() {
@@ -645,7 +651,7 @@ public class EventInstanceManager {
                 t.start();
         }
         
-        public synchronized void dispose(boolean shutdown) {
+        public synchronized void dispose(boolean shutdown) {    // should not trigger any event script method after disposed
                 if(disposed) return;
                 
                 disposed = true;
@@ -660,14 +666,12 @@ public class EventInstanceManager {
                         ex.printStackTrace();
                 }
 
+                mapFactory.dispose();
                 wL.lock();
                 try {
                         for(MapleCharacter chr: chars.values()) chr.setEventInstance(null);
                         chars.clear();
-                        
                         mobs.clear();
-                        
-                        mapFactory.dispose();
                         mapFactory = null;
                 } finally {
                         wL.unlock();
@@ -696,6 +700,15 @@ public class EventInstanceManager {
 	}
         
         private void disposeLocks() {
+            LockCollector.getInstance().registerDisposeAction(new Runnable() {
+                @Override
+                public void run() {
+                    emptyLocks();
+                }
+            });
+        }
+        
+        private void emptyLocks() {
                 pL = pL.dispose();
                 sL = sL.dispose();
         }
@@ -878,9 +891,9 @@ public class EventInstanceManager {
 		return (chr.getId() == getLeaderId());
 	}
         
-        public final MapleMap getInstanceMap(final int mapid) { //gets instance map from the channelserv
+        public final MapleMap getInstanceMap(final int mapid) {
                 if (disposed) {
-                        return getMapFactory().getMap(mapid);
+                        return null;
                 }
                 mapIds.add(mapid);
                 return getMapFactory().getMap(mapid);
@@ -1310,14 +1323,19 @@ public class EventInstanceManager {
         }
         
         public final void recoverOpenedGate(MapleCharacter chr, int thisMapId) {
+                Pair<String, Integer> gateData = null;
+            
                 rL.lock();
                 try {
                         if(openedGates.containsKey(thisMapId)) {
-                                Pair<String, Integer> gateData = openedGates.get(thisMapId);
-                                chr.announce(MaplePacketCreator.environmentChange(gateData.getLeft(), gateData.getRight()));
+                                gateData = openedGates.get(thisMapId);
                         }
                 } finally {
                         rL.unlock();
+                }
+                
+                if(gateData != null) {
+                        chr.announce(MaplePacketCreator.environmentChange(gateData.getLeft(), gateData.getRight()));
                 }
         }
         

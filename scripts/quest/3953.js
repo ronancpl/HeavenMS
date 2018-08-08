@@ -46,7 +46,7 @@ function end(mode, type, selection) {
             qm.gainItem(4011008, -1);
             
             qm.sendNext("We're in great trouble, if it is like this. And it really seems like it. If the Royal Cactus Deo has gone insane, Ariant is done for. You, can you do something to defeat Deo? We really need your help now.");
-            qm.gainExp(20000 * qm.getPlayer().getExpRate());
+            qm.gainExp(20000);
             
             qm.forceCompleteQuest();
             qm.dispose();

@@ -101,6 +101,7 @@ Monsters, Maps & Reactors:
 * Implemented Zombify disease status.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
 * If multiple bosses are on the same area, client will prioritize Boss HP bar of the target of the player.
+* Boss HP Bar and Server Messages now toggles (server message disappears when a boss battle is detected, and returns afterwards). Idea thanks to GabrielSin.
 * Improved map bounding checks for item drop points, assuring most of the items dropped will be available to pickup inside the accessible map area.
 * Boats, elevator and other travelling mechanics fully working.
 * HP decreasing overtime on maps and mechanics to prevent them (consumables, equips) fully functional.
@@ -132,7 +133,7 @@ Player potentials:
 Server potentials:
 
 * Multi-worlds.
-* Dynamic World/Channel deployment.
+* Dynamic World/Channel deployment. While not implemented here, new channel deployment sensitive to quantity of online players was originally resinate's idea.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
 * Enhanced buff system: smartly checks for the best available buff effects to be active on the player.

@@ -45,7 +45,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("What? You investigated the barrier at the Mushroom Forest?");
 	if (status == 1){
-		qm.gainExp(4000 * qm.getPlayer().getExpRate());
+		qm.gainExp(4000);
 		qm.sendOk("Hmmm...this is interesting. It's a barrier set up by someone with a powerful force of magic, which means there's no way we can manually break through it.");
 		qm.forceCompleteQuest(); 
 		qm.dispose();

@@ -102,7 +102,7 @@ function end(mode, type, selection)
         else if(selection == 3)
         {
             qm.sendOk("So that was the song he was playing... Well, it wasn't my song after all, but I'm glad I can know that now with certainty. Thank you so much.");
-            qm.gainExp(32500 * qm.getPlayer().getExpRate());
+            qm.gainExp(32500);
             qm.forceCompleteQuest();
             qm.dispose();
         }

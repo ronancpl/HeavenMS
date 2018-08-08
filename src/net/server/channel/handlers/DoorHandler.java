@@ -21,13 +21,11 @@
 */
 package net.server.channel.handlers;
 
-import java.util.Calendar;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleDoorObject;
 import server.maps.MapleMapObject;
-import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -43,10 +41,6 @@ public final class DoorHandler extends AbstractMaplePacketHandler {
         
         MapleCharacter chr = c.getPlayer();
         if (chr.isChangingMaps() || chr.isBanned()) {
-            if(chr.isChangingMaps()) {
-                FilePrinter.printError(FilePrinter.PORTAL_STUCK + chr.getName() + ".txt", "Player " + chr.getName() + " got stuck when changing maps (using Mystic Door). Timestamp: " + Calendar.getInstance().getTime().toString() + " Last visited mapids: " + chr.getLastVisitedMapids());
-            }
-
             c.announce(MaplePacketCreator.enableActions());
             return;
         }

@@ -355,63 +355,66 @@ public class DueyProcessor {
                 c.disconnect(true, false);
                 return;
             }
+            
             int finalcost = mesos + fee;
-            boolean send = false;
             if (c.getPlayer().getMeso() >= finalcost) {
                 int accid = getAccIdFromCNAME(recipient, true);
                 if (accid != -1) {
-                    if (accid != c.getAccID()) {
-                        send = true;
-                    } else {
+                    if (accid == c.getAccID()) {
                         c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SAMEACC_ERROR.getCode()));
-                    }
-                } else {
-                    c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_NAME_DOES_NOT_EXIST.getCode()));
-                }
-            } else {
-                c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_NOT_ENOUGH_MESOS.getCode()));
-            }
-
-            MapleClient rClient = null;
-            
-            int channel = c.getWorldServer().find(recipient);
-            if (channel > -1) {
-                Channel rcserv = c.getWorldServer().getChannel(channel);
-                rClient = rcserv.getPlayerStorage().getCharacterByName(recipient).getClient();
-            }
-            
-            if (send) {
-                if (inventId > 0) {
-                    MapleInventoryType inv = MapleInventoryType.getByType(inventId);
-                    Item item = c.getPlayer().getInventory(inv).getItem(itemPos);
-                    if (item != null && c.getPlayer().getItemQuantity(item.getItemId(), false) >= amount) {
-                        c.getPlayer().gainMeso(-finalcost, false);
-                        c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));
-
-                        if (ItemConstants.isRechargeable(item.getItemId())) {
-                            MapleInventoryManipulator.removeFromSlot(c, inv, itemPos, item.getQuantity(), true);
-                        } else {
-                            MapleInventoryManipulator.removeFromSlot(c, inv, itemPos, amount, true, false);
-                        }
-
-                        MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
-                        addItemToDB(item, amount, mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
-                    } else {
-                        if (item != null) {
-                            c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_INCORRECT_REQUEST.getCode()));
-                        }
                         return;
                     }
                 } else {
+                    c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_NAME_DOES_NOT_EXIST.getCode()));
+                    return;
+                }
+            } else {
+                c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_NOT_ENOUGH_MESOS.getCode()));
+                return;
+            }
+
+            MapleClient rClient = null;
+            int channel = c.getWorldServer().find(recipient);
+            if (channel > -1) {
+                Channel rcserv = c.getWorldServer().getChannel(channel);
+                if(rcserv != null) {
+                    MapleCharacter rChr = rcserv.getPlayerStorage().getCharacterByName(recipient);
+                    if(rChr != null) {
+                        rClient = rChr.getClient();
+                    }
+                }
+            }
+            
+            if (inventId > 0) {
+                MapleInventoryType inv = MapleInventoryType.getByType(inventId);
+                Item item = c.getPlayer().getInventory(inv).getItem(itemPos);
+                if (item != null && c.getPlayer().getItemQuantity(item.getItemId(), false) >= amount) {
                     c.getPlayer().gainMeso(-finalcost, false);
-                    c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));    
+                    c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));
 
-                    addMesoToDB(mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
-                }
+                    if (ItemConstants.isRechargeable(item.getItemId())) {
+                        MapleInventoryManipulator.removeFromSlot(c, inv, itemPos, item.getQuantity(), true);
+                    } else {
+                        MapleInventoryManipulator.removeFromSlot(c, inv, itemPos, amount, true, false);
+                    }
 
-                if (rClient != null && rClient.isLoggedIn() && !rClient.getPlayer().isAwayFromWorld()) {
-                    showDueyNotification(rClient, rClient.getPlayer());
+                    MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
+                    addItemToDB(item, amount, mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+                } else {
+                    if (item != null) {
+                        c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_INCORRECT_REQUEST.getCode()));
+                    }
+                    return;
                 }
+            } else {
+                c.getPlayer().gainMeso(-finalcost, false);
+                c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));    
+
+                addMesoToDB(mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+            }
+
+            if (rClient != null && rClient.isLoggedIn() && !rClient.getPlayer().isAwayFromWorld()) {
+                showDueyNotification(rClient, rClient.getPlayer());
             }
         } finally {
             c.unlockClient();

@@ -31,7 +31,7 @@ var fhair = Array(31040, 31250, 31310, 31220, 31300, 31680, 31160, 31030, 31230)
 var hairnew = Array();
 
 function start() {
-    cm.sendSimple("Welcome to the Mu Lung hair shop. If you have a #b#t5150025##k, or a #b#t5151020##k, allow me to take care of your hairdo. Please choose the one you want.\r\n#L0#I want to buy a coupon!#l\r\n#L1#Haircut: #i5150025##t5150025##l\r\n#L2#Dye your hair: #i5151020##t5151020##l");
+    cm.sendSimple("Welcome to the Mu Lung hair shop. If you have a #b#t5150025##k, or a #b#t5151020##k, allow me to take care of your hairdo. Please choose the one you want.\r\n#L1#Haircut: #i5150025##t5150025##l\r\n#L2#Dye your hair: #i5151020##t5151020##l");
 }
 
 function action(mode, type, selection) {
@@ -47,10 +47,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Haircut for " + hairprice + " mesos: #i5150025##t5150025##l\r\n#L1#Dye your hair for " + haircolorprice + " mesos: #i5151020##t5151020##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {

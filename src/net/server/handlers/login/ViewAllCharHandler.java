@@ -41,7 +41,7 @@ public final class ViewAllCharHandler extends AbstractMaplePacketHandler {
             }
             
             int accountId = c.getAccID();
-            Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loginBlob = Server.getInstance().loadAccountCharlist(accountId);
+            Pair<Pair<Integer, List<MapleCharacter>>, List<Pair<Integer, List<MapleCharacter>>>> loginBlob = Server.getInstance().loadAccountCharlist(accountId, c.getVisibleWorlds());
             
             List<Pair<Integer, List<MapleCharacter>>> worldChars = loginBlob.getRight();
             int chrTotal = loginBlob.getLeft().getLeft();

@@ -48,12 +48,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("I'm the head of Showa hair salon. If you have a #b#t5150009##k or a #b#t5151009##k allow me to take care of your hairdo. Please choose the one you want.\r\n#L0#I want to buy a coupon!#l\r\n#L1#Haircut: #i5150009##t5150009##l\r\n#L2#Dye your hair: #i5151009##t5151009##l");
+            cm.sendSimple("I'm the head of Showa hair salon. If you have a #b#t5150009##k or a #b#t5151009##k allow me to take care of your hairdo. Please choose the one you want.\r\n#L1#Haircut: #i5150009##t5150009##l\r\n#L2#Dye your hair: #i5151009##t5151009##l");
         } else if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Haircut for " + hairprice + " mesos: #i5150009##t5150009##l\r\n#L1#Dye your hair for " + haircolorprice + " mesos: #i5151009##t5151009##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {

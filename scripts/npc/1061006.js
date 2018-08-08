@@ -27,11 +27,11 @@ var selectedMap = -1;
 
 function start() {
     cm.sendNext("You feel a mysterious force surrounding this statue.");
-    if (cm.isQuestStarted(2054))
+    if (cm.isQuestStarted(2054) || cm.isQuestCompleted(2054))
         zones = 3;
-    else if (cm.isQuestStarted(2053))
+    else if (cm.isQuestStarted(2053) || cm.isQuestCompleted(2053))
         zones = 2;
-    else if (cm.isQuestStarted(2052))
+    else if (cm.isQuestStarted(2052) || cm.isQuestCompleted(2052))
         zones = 1;
     else
         zones = 0;

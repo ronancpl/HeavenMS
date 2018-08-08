@@ -68,7 +68,7 @@ function action(m,t,s) {
 					cm.sendNext("Welcome! I heard what happened from Baby Moon Bunny I'm glad you came since I was Planning on requesting some help. Gaga is a friend of mine who has helped me before and often stops by to say hello. Unfortunaley, he was kidnapped by aliens."); 
 				} else {
 					selected = 2;
-					cm.sendYesNo("At the Space Mine, you can find special ores called #bKrypto Crystals#k that contain the mysterious power of space. #bKrypto Crystals#l are usually emerald in color, but will turn brown if hit with the Spaceship's #bSpace Beam#k. Remember, in order to thwart this alien conspracy, #b10 Brown Krypto Crystal's and 10 Emerald Krypto Crystal's are needed. But since even #b1 Krypto Crystal#k can be of help, brign me as many as possible. Oh, and one more thing! The Space Mines are protected by the Space Mateons. They are extemely strong due to the power of the #Krypto Crystals#k, so don't try to defeat them. Simply concentrate on quickly collecting the crystals."); 
+					cm.sendYesNo("At the Space Mine, you can find special ores called #bKrypto Crystals#k that contains the mysterious power of space. #bKrypto Crystals#l are usually emerald in color, but will turn brown if hit with the Spaceship's #bSpace Beam#k. Remember, in order to thwart this alien conspracy, #b10 Brown Krypto Crystal's and 10 Emerald Krypto Crystal's are needed. But since even #b1 Krypto Crystal#k can be of help, brign me as many as possible. Oh, and one more thing! The Space Mines are protected by the Space Mateons. They are extemely strong due to the power of the #Krypto Crystals#k, so don't try to defeat them. Simply concentrate on quickly collecting the crystals."); 
 				} 
 			} else if (status == 2) {
 				if(selected == 1) {

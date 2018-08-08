@@ -15,40 +15,40 @@ function end(mode, type, selection) {
 				qm.gainItem(4000294, -1000);
 				qm.gainItem(2040501, 1);
 				qm.gainItem(2000005, 50);
-				qm.gainExp(54000 * qm.getPlayer().getExpRate());
+				qm.gainExp(54000);
 				qm.forceCompleteQuest();
 			}
 		
 			else if(qm.haveItem(4000294, 600)) {
 				qm.gainItem(4000294, -600);
 				qm.gainItem(2020013, 50);
-				qm.gainExp(54000 * qm.getPlayer().getExpRate());
+				qm.gainExp(54000);
 				qm.forceCompleteQuest();
 			}
 
 			else if(qm.haveItem(4000294, 500)) {
 				qm.gainItem(4000294, -500);
-				qm.gainExp(54000 * qm.getPlayer().getExpRate());
+				qm.gainExp(54000);
 				qm.forceCompleteQuest();
 			}
 
 			else if(qm.haveItem(4000294, 100)) {
 				qm.gainItem(4000294, -100);
-				qm.gainExp(45000 * qm.getPlayer().getExpRate());
+				qm.gainExp(45000);
 				qm.forceCompleteQuest();
 			}
 
 			else if(qm.haveItem(4000294, 50)) {
 				qm.gainItem(4000294, -50);
 				qm.gainItem(2020007, 50);
-				qm.gainExp(10000 * qm.getPlayer().getExpRate());
+				qm.gainExp(10000);
 				qm.forceCompleteQuest();
 			}
 
 			else if(qm.haveItem(4000294, 1)) {
 				qm.gainItem(4000294, -1);
 				qm.gainItem(2000000, 1);
-				qm.gainExp(10 * qm.getPlayer().getExpRate());
+				qm.gainExp(10);
 				qm.forceCompleteQuest();
 			}
 		}

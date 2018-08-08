@@ -64,7 +64,7 @@ function end(mode, type, selection) {
         } else if (status == 1) {
             qm.sendNext("But yet, something made you unhappy. What could it be? ... No... Black Wings took away the Seal stone? I'm afraid nothing can be done anymore. I suggest you return to your group tactician, Tru is it?, and tell him about the situation now. Tell him about the loss here in Mu Lung. There's no time to lose, hurry!");
         } else if (status == 2) {
-            qm.gainExp(16000 * qm.getPlayer().getExpRate());
+            qm.gainExp(16000);
             qm.forceCompleteQuest();
             
             qm.dispose();

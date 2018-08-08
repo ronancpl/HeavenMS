@@ -52,6 +52,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
@@ -131,6 +132,15 @@ public class EventManager {
     }
     
     private void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
         lobbyLock = lobbyLock.dispose();
         queueLock = queueLock.dispose();
     }
@@ -333,7 +343,9 @@ public class EventManager {
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
             if(eim == null) {
-                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                if(lobbyId > -1) {
+                    setLockLobby(lobbyId, false);
+                }
                 return false;
             }
             instanceLocks.put(eim.getName(), lobbyId);
@@ -363,15 +375,21 @@ public class EventManager {
         try {
             if(lobbyId == -1) {
                 lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) return false;
+                if(lobbyId == -1) {
+                    return false;
+                }
             }
             else {
-                if(!startLobbyInstance(lobbyId)) return false;
+                if(!startLobbyInstance(lobbyId)) {
+                    return false;
+                }
             }
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
             if(eim == null) {
-                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                if(lobbyId > -1) {
+                    setLockLobby(lobbyId, false);
+                }
                 return false;
             }
             instanceLocks.put(eim.getName(), lobbyId);
@@ -408,7 +426,9 @@ public class EventManager {
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
             if(eim == null) {
-                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                if(lobbyId > -1) {
+                    setLockLobby(lobbyId, false);
+                }
                 return false;
             }
             instanceLocks.put(eim.getName(), lobbyId);
@@ -446,7 +466,9 @@ public class EventManager {
             
             EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
             if(eim == null) {
-                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                if(lobbyId > -1) {
+                    setLockLobby(lobbyId, false);
+                }
                 return false;
             }
             instanceLocks.put(eim.getName(), lobbyId);
@@ -487,7 +509,9 @@ public class EventManager {
             }
             
             if(eim == null) {
-                if(lobbyId > -1) setLockLobby(lobbyId, false);
+                if(lobbyId > -1) {
+                    setLockLobby(lobbyId, false);
+                }
                 return false;
             }
             instanceLocks.put(eim.getName(), lobbyId);

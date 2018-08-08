@@ -72,7 +72,7 @@ function end(mode, type, selection) {
             }
         } else if (status == 1) {
             qm.gainItem(4032323, -1);
-            qm.gainExp(6037 * qm.getPlayer().getExpRate());
+            qm.gainExp(6037);
             qm.forceCompleteQuest();
             
             qm.dispose();

@@ -46,7 +46,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Oh! You're here on behalf of #bScarrs#k? \r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0# \r\n#fUI/UIWindow.img/QuestIcon/8/0# 8800 exp");
 	if (status == 1){
-		qm.gainExp(8800 * qm.getPlayer().getExpRate());
+		qm.gainExp(8800);
 		qm.gainItem(4032389, -1);
 		qm.sendOk("Ahh, so this is the #bKiller Mushroom Spores#k that I was working on in the past. I had a tough time gathering up the ingredients, so I left it in theory only, but he was able to complete it, with a sample to show for as well. Please tell him I appreciate his good work.");
 		qm.forceCompleteQuest();

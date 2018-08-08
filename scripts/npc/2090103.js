@@ -46,12 +46,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hey, I'm Pata, and I am a cosmetic lens expert here in Mu Lung. I believe your eyes are the most important feature in your body, and with #b#t5152042##k or #b#t5152041##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to use?\r\n#L0#I want to buy a coupon!#l\r\n#L1#Cosmetic Lenses: #i5152042##t5152042##l\r\n#L2#Cosmetic Lenses: #i5152041##t5152041##l");
+            cm.sendSimple("Hey, I'm Pata, and I am a cosmetic lens expert here in Mu Lung. I believe your eyes are the most important feature in your body, and with #b#t5152042##k or #b#t5152041##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to use?\r\n#L1#Cosmetic Lenses: #i5152042##t5152042##l\r\n#L2#Cosmetic Lenses: #i5152041##t5152041##l");
         } else if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Cosmetic Lenses for " + regprice + " mesos: #i5152042##t5152042##l\r\n#L1#Cosmetic Lenses for " + vipprice + " mesos: #i5152041##t5152041##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 if (cm.getPlayer().getGender() == 0) {
                     var current = cm.getPlayer().getFace()

@@ -69,6 +69,7 @@ import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
@@ -823,10 +824,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         if (hasBossHPBar()) {
-            if (this.getMap().countMonster(8810026) > 0 && this.getMap().getId() == 240060200) {
-                this.getMap().killAllMonsters();
-                return;
-            }
             c.announceBossHpBar(this, this.hashCode(), makeBossHPBarPacket());
         }
     }
@@ -855,12 +852,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             statiLock.unlock();
         }
         
-        monsterLock.lock();
-        try {
-            return stats.getEffectiveness(e);
-        } finally {
-            monsterLock.unlock();
-        }
+        return getMonsterEffectiveness(e);
     }
     
     private ElementalEffectiveness getMonsterEffectiveness(Element e) {
@@ -1478,6 +1470,15 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     public final void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
         externalLock = externalLock.dispose();
         monsterLock = monsterLock.dispose();
         statiLock = statiLock.dispose();

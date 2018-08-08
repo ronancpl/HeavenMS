@@ -982,7 +982,7 @@ public class MapleMap {
     }
     
     private static boolean shouldShowQuestItem(MapleCharacter chr, int questid, int itemid) {
-        return questid <= 0 || (chr.getQuestStatus(questid) == 1 && chr.needQuestItem(questid, itemid));
+        return questid <= 0 || chr.needQuestItem(questid, itemid);
     }
     
     public void updatePlayerItemDrops(int partyid, int charid, List<MapleCharacter> partyMembers, MapleCharacter partyLeaver) {
@@ -1462,7 +1462,7 @@ public class MapleMap {
         removeMapObject(reactor);
         
         if (reactor.getDelay() > 0) {
-            TimerManager.getInstance().schedule(new Runnable() {
+            registerMapSchedule(new Runnable() {
                 @Override
                 public void run() {
                     respawnReactor(reactor);
@@ -1857,14 +1857,14 @@ public class MapleMap {
         final selfDestruction selfDestruction = monster.getStats().selfDestruction();
         if (monster.getStats().removeAfter() > 0 || selfDestruction != null && selfDestruction.getHp() < 0) {
             if (selfDestruction == null) {
-                TimerManager.getInstance().schedule(new Runnable() {
+                registerMapSchedule(new Runnable() {
                     @Override
                     public void run() {
                         killMonster(monster, null, false);
                     }
                 }, monster.getStats().removeAfter() * 1000);
             } else {
-                TimerManager.getInstance().schedule(new Runnable() {
+                registerMapSchedule(new Runnable() {
                     @Override
                     public void run() {
                         killMonster(monster, null, false, selfDestruction.getAction());
@@ -2037,23 +2037,16 @@ public class MapleMap {
         });
     }
     
-    public List<MaplePortal> getAvailableDoorPortals() {
-        objectRLock.lock();
-        try {
-            List<MaplePortal> availablePortals = new ArrayList<>();
-
-            for (MaplePortal port : portals.values()) {
-                if (port.getType() == MaplePortal.DOOR_PORTAL) {
-                    availablePortals.add(port);
-                }
-            }
-
-            return availablePortals;
-        } finally {
-            objectRLock.unlock();
+    public MaplePortal getDoorPortal(int doorid) {
+        MaplePortal doorPortal = portals.get(0x80 + doorid);
+        if(doorPortal == null) {
+            FilePrinter.printError(FilePrinter.EXCEPTION, "[DOOR] " + mapName + "(" + mapid + ") does not contain door portalid " + doorid);
+            return portals.get(0x80);
         }
+        
+        return doorPortal;
     }
-
+    
     public void spawnSummon(final MapleSummon summon) {
         spawnAndAddRangedMapObject(summon, new DelayedPacketCreation() {
             @Override
@@ -2945,7 +2938,7 @@ public class MapleMap {
     public MaplePortal getPortal(int portalid) {
         return portals.get(portalid);
     }
-
+    
     public void addMapleArea(Rectangle rec) {
         areas.add(rec);
     }
@@ -3323,8 +3316,9 @@ public class MapleMap {
                             reactor.hitReactor(c);
 
                             if (reactor.getDelay() > 0) {
-                                TimerManager tMan = TimerManager.getInstance();
-                                tMan.schedule(new Runnable() {
+                                MapleMap reactorMap = reactor.getMap();
+                                
+                                reactorMap.getChannelServer().registerOverallAction(reactorMap.getId(), new Runnable() {
                                     @Override
                                     public void run() {
                                         reactor.lockReactor();

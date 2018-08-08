@@ -78,7 +78,7 @@ function end(mode, type, selection) {
                         qm.sendOk("It seems the potion worked and your emotions are no longer frozen. And, oh, my... You're ailing bad, #bpurge#k that out quickly.");
                 }
         } else if(status == 1) {
-                qm.gainExp(891500 * qm.getPlayer().getExpRate());
+                qm.gainExp(891500);
                 qm.completeQuest(3514);
                 qm.dispose();
         }

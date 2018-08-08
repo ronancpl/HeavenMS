@@ -49,7 +49,7 @@ function end(mode, type, selection) {
 	else if (status == 2){
 		if(qm.canHold(3992040, 1)) {
                     qm.gainItem(3992040, 1);
-                    qm.gainExp(175000 * qm.getPlayer().getExpRate());
+                    qm.gainExp(175000);
                     qm.forceCompleteQuest();
                 }
 		else {

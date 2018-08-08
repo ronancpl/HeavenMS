@@ -49,14 +49,18 @@ public class MesoAction extends MapleQuestAction {
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
-                if(mesos < 0) {
-                        chr.gainMeso(mesos, true, false, true);
+                runAction(chr, mesos);
+	}
+        
+        public static void runAction(MapleCharacter chr, int gain) {
+                if(gain < 0) {
+                        chr.gainMeso(gain, true, false, true);
                 } else {
                         if(!ServerConstants.USE_QUEST_RATE) {
-                                chr.gainMeso(mesos * chr.getMesoRate(), true, false, true);
+                                chr.gainMeso(gain * chr.getMesoRate(), true, false, true);
                         } else {
-                                chr.gainMeso(mesos * ServerConstants.MESO_RATE * ServerConstants.QUEST_RATE, true, false, true);
+                                chr.gainMeso(gain * ServerConstants.MESO_RATE * ServerConstants.QUEST_RATE, true, false, true);
                         }
                 }
-	}
+        }
 } 

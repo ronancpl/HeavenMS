@@ -103,12 +103,18 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         int state = c.getLoginState();
         boolean allowLogin = true;
         
-        Channel cserv = c.getChannelServer();
+        World world = server.getWorld(c.getWorld());
+        if(world == null) {
+            c.disconnect(true, false);
+            return;
+        }
+        
+        Channel cserv = world.getChannel(c.getChannel());
         if(cserv == null) {
             c.setChannel(1);
-            cserv = c.getChannelServer();
+            cserv = world.getChannel(c.getChannel());
             
-            if(cserv == null) {  // world server is out
+            if(cserv == null) {
                 c.disconnect(true, false);
                 return;
             }
@@ -136,8 +142,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             return;
         }
         c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
-
-        World world = server.getWorld(c.getWorld());
         
         cserv.addPlayer(player);
         world.addPlayer(player);

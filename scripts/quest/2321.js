@@ -45,7 +45,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("I have been keeping up on your fabulour work. I am aware that you have successfully created the #bKiller Mushroom Spores#k, which penetrates through the unpenetrable barrier of the forest. Congratulations!");
 	if (status == 1){
-		qm.gainExp(2500 * qm.getPlayer().getExpRate());
+		qm.gainExp(2500);
 		qm.sendOk("The problem now is to figure out how to enter the castle.");
 		qm.forceCompleteQuest();
 		qm.dispose();

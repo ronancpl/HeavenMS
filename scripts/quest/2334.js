@@ -37,7 +37,7 @@ function start(mode, type, selection){
 	}
 	else if(status == 6){
 		qm.forceStartQuest();
-		qm.gainExp(1000 * qm.getPlayer().getExpRate());
+		qm.gainExp(1000);
 		qm.forceCompleteQuest();
 		qm.dispose();
 	}

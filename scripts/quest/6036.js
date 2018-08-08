@@ -54,7 +54,7 @@ function end(mode, type, selection) {
             var skillid = Math.floor(qm.getPlayer().getJob().getId() / 1000) * 10000000 + 1007;
             qm.teachSkill(skillid, 3, 3, -1);
 
-            qm.gainExp(300000 * qm.getPlayer().getExpRate());
+            qm.gainExp(300000);
             qm.forceCompleteQuest();
             
             qm.dispose();

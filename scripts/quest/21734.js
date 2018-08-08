@@ -64,7 +64,7 @@ function end(mode, type, selection) {
         } else if(status == 2) {
             qm.sendNext("For your bravery inputted on these series of missions, I will now reward you properly. Behold, the #rCombo Drain#k Skill: that let's you heal back a portion of damage dealt to the monsters.");
         } else {
-            qm.gainExp(12500 * qm.getPlayer().getExpRate());
+            qm.gainExp(12500);
             qm.teachSkill(21100005, 0, 20, -1); // combo drain
             
             qm.forceCompleteQuest();

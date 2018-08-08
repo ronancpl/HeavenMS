@@ -222,7 +222,6 @@ public class MaplePet extends Item {
         }
         
         owner.getMap().broadcastMessage(MaplePacketCreator.commandResponse(owner.getId(), slot, type, enjoyed));
-        if(owner.getMount() != null) owner.getMap().broadcastMessage(MaplePacketCreator.updateMount(owner.getId(), owner.getMount(), false));
         saveToDb();
         
         Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());

@@ -23,6 +23,7 @@ package net.server.handlers.login;
 
 import client.MapleClient;
 import constants.GameConstants;
+import java.util.List;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import net.server.world.World;
@@ -34,10 +35,10 @@ public final class ServerlistRequestHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	Server server = Server.getInstance();
-        server.loadAccountCharacters(c);    // locks the login session until data is recovered from the cache or the DB.
-        c.setClickedNPC();
+        List<World> worlds = server.getWorlds();
+        c.requestedServerlist(worlds.size());
         
-        for (World world : server.getWorlds()) {
+        for (World world : worlds) {
             c.announce(MaplePacketCreator.getServerList(world.getId(), GameConstants.WORLD_NAMES[world.getId()], world.getFlag(), world.getEventMessage(), world.getChannels()));
         }
         c.announce(MaplePacketCreator.getEndOfServerList());

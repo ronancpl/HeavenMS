@@ -35,7 +35,7 @@ function end(mode, type, selection) {
             qm.gainItem(item, 1);
             qm.gainItem(4000007, -150);
             
-            qm.gainExp(2200 * qm.getPlayer().getExpRate());
+            qm.gainExp(2200);
             qm.completeQuest();
             
             qm.sendOk("Alright, if you need work sometime down the road, feel free to come back and see me. This town sure can use a person like you for help~");

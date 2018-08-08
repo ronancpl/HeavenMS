@@ -8,7 +8,7 @@ function end(mode, type, selection){
         if(qm.haveItem(4031853)){
             if(qm.canHold(2030019)) {
                 qm.gainItem(4031853, -1);
-                qm.gainExp(1700 * qm.getPlayer().getExpRate());
+                qm.gainExp(1700);
                 qm.gainItem(2030019, 10);
 
                 qm.sendOk("Geez, you found my glasses! Thank you, thank you so much. Now I'm able to see everything again!");
@@ -24,7 +24,7 @@ function end(mode, type, selection){
                 else
                     qm.gainItem(4031855, -1);
                    
-                qm.gainExp(1000 * qm.getPlayer().getExpRate());
+                qm.gainExp(1000);
                 qm.gainItem(2030019, 5);
  
                 qm.sendOk("Hm, those aren't my glasses... But alas, I'll take it anyway. Thanks.");

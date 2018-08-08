@@ -27,6 +27,7 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
+import net.server.world.World;
 import tools.MaplePacketCreator;
 import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -45,7 +46,9 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         }
         
         c.setWorld(server.getCharacterWorld(charId));
-        if(c.getWorldServer().isWorldCapacityFull()) {
+        
+        World wserv = c.getWorldServer();
+        if(wserv == null || wserv.isWorldCapacityFull()) {
             c.announce(MaplePacketCreator.getAfterLoginError(10));
             return;
         }
@@ -58,18 +61,23 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         }
         
         try {
-            int channel = Randomizer.rand(1, c.getWorldServer().getChannelsSize());
+            int channel = Randomizer.rand(1, wserv.getChannelsSize());
             c.setChannel(channel);
         } catch (Exception e) {
             e.printStackTrace();
             c.setChannel(1);
         }
         
+        String[] socket = server.getInetSocket(c.getWorld(), c.getChannel());
+        if(socket == null) {
+            c.announce(MaplePacketCreator.getAfterLoginError(10));
+            return;
+        }
+        
         server.unregisterLoginState(c);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
         server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
         
-        String[] socket = server.getIP(c.getWorld(), c.getChannel()).split(":");
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));
         } catch (UnknownHostException e) {

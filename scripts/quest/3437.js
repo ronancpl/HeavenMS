@@ -40,7 +40,7 @@ function end(mode, type, selection) {
             qm.gainItem(item, 1);
             qm.gainItem(4000122, -120);
             
-            qm.gainExp(6100 * qm.getPlayer().getExpRate());
+            qm.gainExp(6100);
             qm.completeQuest();
             
             qm.sendOk("Thank you so much for fulfilling your missions as one of the Mesorangers. I've told the Sector about your successful story, and the Sector seems to be very pleased with you, too. Hopefully you'll keep working with us. Bye~");

@@ -37,6 +37,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
@@ -266,7 +267,22 @@ public final class Channel {
                 channelSchedulers[i].dispose();
                 channelSchedulers[i] = null;
             }
-            
+        }
+        
+        disposeLocks();
+    }
+    
+    private void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
+        for(int i = 0; i < 4; i++) {
             faceLock[i] = faceLock[i].dispose();
         }
         
@@ -299,6 +315,10 @@ public final class Channel {
     public void addPlayer(MapleCharacter chr) {
         players.addPlayer(chr);
         chr.announce(MaplePacketCreator.serverMessage(serverMessage));
+    }
+    
+    public String getServerMessage() {
+        return serverMessage;
     }
 
     public PlayerStorage getPlayerStorage() {
@@ -443,6 +463,7 @@ public final class Channel {
     public void setServerMessage(String message) {
         this.serverMessage = message;
         broadcastPacket(MaplePacketCreator.serverMessage(message));
+        Server.getInstance().getWorld(world).resetDisabledServerMessages();
     }
     
     private static String [] getEvents(){
@@ -540,7 +561,7 @@ public final class Channel {
         resetDojo(dojoMapId, 0);
     }
     
-    private void resetDojo(int dojoMapId, int thisStg) {
+    public void resetDojo(int dojoMapId, int thisStg) {
         int slot = getDojoSlot(dojoMapId);
         this.dojoStage[slot] = thisStg;
         

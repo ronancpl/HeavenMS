@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
@@ -111,7 +112,20 @@ public class MobStatusScheduler extends BaseScheduler {
     
     @Override
     public void dispose() {
-        overtimeStatusLock = overtimeStatusLock.dispose();
+        disposeLocks();
         super.dispose();
+    }
+    
+    private void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
+        overtimeStatusLock = overtimeStatusLock.dispose();
     }
 }

@@ -48,14 +48,18 @@ public class ExpAction extends MapleQuestAction {
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
-		if (chr.isBeginnerJob() && chr.getLevel() < 10) {
-			chr.gainExp(exp, true, true);
+		runAction(chr, exp);
+	}
+        
+        public static void runAction(MapleCharacter chr, int gain) {
+                if (chr.isBeginnerJob() && chr.getLevel() < 10) {
+			chr.gainExp(gain, true, true);
 		} else {
                         if(!ServerConstants.USE_QUEST_RATE) {
-                                chr.gainExp(exp * chr.getExpRate(), true, true);
+                                chr.gainExp(gain * chr.getExpRate(), true, true);
                         } else {
-                                chr.gainExp(exp * ServerConstants.EXP_RATE * ServerConstants.QUEST_RATE, true, true);
+                                chr.gainExp(gain * ServerConstants.EXP_RATE * ServerConstants.QUEST_RATE, true, true);
                         }
 		}
-	}
+        }
 } 

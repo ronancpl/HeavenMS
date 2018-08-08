@@ -30,9 +30,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Map;
 import java.util.Comparator;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import server.maps.MapleDoor;
 
 public class MapleParty {
     private int id;
@@ -44,11 +46,12 @@ public class MapleParty {
     private Map<Integer, Integer> histMembers = new HashMap<>();
     private int nextEntry = 0;
     
+    private Map<Integer, MapleDoor> doors = new HashMap<>();
+    
     private MonitoredReentrantLock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.PARTY, true);
     
     public MapleParty(int id, MaplePartyCharacter chrfor) {
         this.leaderId = chrfor.getId();
-        this.members.add(chrfor);
         this.id = id;
     }
 
@@ -169,7 +172,7 @@ public class MapleParty {
         }
     }
     
-    public byte getPartyDoor(int cid) {
+    public List<Integer> getMembersSortedByHistory() {
         List<Entry<Integer, Integer>> histList;
         
         lock.lock();
@@ -187,14 +190,51 @@ public class MapleParty {
                     return ( o1.getValue() ).compareTo( o2.getValue() );
                 }
             });
-
+        
+        List<Integer> histSort = new LinkedList<>();
+        for(Entry<Integer, Integer> e : histList) {
+            histSort.add(e.getKey());
+        }
+        
+        return histSort;
+    }
+    
+    public byte getPartyDoor(int cid) {
+        List<Integer> histList = getMembersSortedByHistory();
         byte slot = 0;
-        for(Entry<Integer, Integer> e: histList) {
-            if(e.getKey() == cid) break;
+        for(Integer e: histList) {
+            if(e == cid) break;
             slot++;
         }
 
         return slot;
+    }
+    
+    public void addDoor(Integer owner, MapleDoor door) {
+        lock.lock();
+        try {
+            this.doors.put(owner, door);
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public void removeDoor(Integer owner) {
+    	lock.lock();
+        try {
+            this.doors.remove(owner);
+        } finally {
+            lock.unlock();
+        }
+    }
+    
+    public Map<Integer, MapleDoor> getDoors() {
+    	lock.lock();
+        try {
+            return Collections.unmodifiableMap(doors);
+        } finally {
+            lock.unlock();
+        }
     }
     
     public void assignNewLeader(MapleClient c) {
@@ -216,6 +256,15 @@ public class MapleParty {
     }
     
     public void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
         lock = lock.dispose();
     }
     

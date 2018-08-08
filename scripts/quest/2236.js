@@ -38,7 +38,7 @@ function end(mode, type, selection) {
 	if(status == 0) {
 		if(qm.getQuestProgress(2236) == 63) {	//111111
 			qm.sendOk("I, too, felt it. The force of the Shaman Rocks began to overpower the forces of evil. I think Sleepywood is safe now. The evil has been eliminated.");
-			qm.gainExp(60000 * qm.getPlayer().getExpRate());
+			qm.gainExp(60000);
 			qm.forceCompleteQuest();
 		}
 		else {

@@ -57,7 +57,7 @@ public class ThreadTracker {
     private final Map<Long, AtomicInteger> lockCount = new HashMap<>();
     private final Map<Long, MonitoredLockType> lockIds = new HashMap<>();
     private final Map<Long, Long> lockThreads = new HashMap<>();
-    private final Map<Long, Byte> lockUpdate = new HashMap<>();
+    private final Map<Long, Integer> lockUpdate = new HashMap<>();
     
     private final Map<MonitoredLockType, Map<Long, Integer>> locks = new HashMap<>();
     ScheduledFuture<?> threadTrackerSchedule;
@@ -169,8 +169,8 @@ public class ThreadTracker {
 
                     toRemove.clear();
 
-                    for(Entry<Long, Byte> it : lockUpdate.entrySet()) {
-                        byte val = (byte)(it.getValue() + 1);
+                    for(Entry<Long, Integer> it : lockUpdate.entrySet()) {
+                        int val = it.getValue() + 1;
 
                         if(val < 60) {
                             lockUpdate.put(it.getKey(), val);
@@ -202,7 +202,7 @@ public class ThreadTracker {
                         lockCount.put(lockOid, c);
                         lockIds.put(lockOid, lockId);
                         lockThreads.put(lockOid, tid);
-                        lockUpdate.put(lockOid, (byte) 0);
+                        lockUpdate.put(lockOid, 0);
                     }
                     c.incrementAndGet();
 
@@ -233,7 +233,7 @@ public class ThreadTracker {
                 else {
                     AtomicInteger c = lockCount.get(lockOid);
                     c.decrementAndGet();
-                    lockUpdate.put(lockOid, (byte) 0);
+                    lockUpdate.put(lockOid, 0);
 
                     List<MonitoredLockType> list = threadTracker.get(tid);
                     for(int i = list.size() - 1; i >= 0; i--) {

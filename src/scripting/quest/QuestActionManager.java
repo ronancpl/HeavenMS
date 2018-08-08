@@ -25,6 +25,8 @@ import client.MapleClient;
 import scripting.npc.NPCConversationManager;
 import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
+import server.quest.actions.ExpAction;
+import server.quest.actions.MesoAction;
 
 /**
  *
@@ -69,6 +71,16 @@ public class QuestActionManager extends NPCConversationManager {
     // For compatibility with some older scripts...
     public void completeQuest() {
         forceCompleteQuest();
+    }
+    
+    @Override
+    public void gainExp(int gain) {
+        ExpAction.runAction(getPlayer(), gain);
+    }
+    
+    @Override
+    public void gainMeso(int gain) {
+        MesoAction.runAction(getPlayer(), gain);
     }
     
     public String getMedalName() {  // usable only for medal quests (id 299XX)

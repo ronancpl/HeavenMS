@@ -39,7 +39,7 @@ function start(mode, type, selection) {
         } else if (status == 1) {
             qm.sendNext("Aran, your next objective will be to use the #btime gate to Ellin#k again. This time you will be retrieving the long lost #rSeal Stone of Ellin Forest#k. According to informations our network have gathered, #b#p2131002##k of that time have a clue about that gem, #rfind her#k. Please be successful on this task, our world is relying on you more than ever!");
         } else {
-            qm.gainExp(500 * qm.getPlayer().getExpRate());
+            qm.gainExp(500);
             qm.forceCompleteQuest();
             qm.dispose();
         }

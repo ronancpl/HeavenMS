@@ -48,12 +48,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hey, I'm Noma, and I am assiting Pata in changing faces into beautiful things here in Mu Lung. With #b#t5152027##k or #b#t5152028##k, I can change the way you look. Now, what would you like to use?\r\n#L0#I want to buy a coupon!#l\r\n#L1#Plastic Surgery: #i5152027##t5152027##l\r\n#L2#Plastic Surgery: #i5152028##t5152028##l");
+            cm.sendSimple("Hey, I'm Noma, and I am assiting Pata in changing faces into beautiful things here in Mu Lung. With #b#t5152027##k or #b#t5152028##k, I can change the way you look. Now, what would you like to use?\r\n#L1#Plastic Surgery: #i5152027##t5152027##l\r\n#L2#Plastic Surgery: #i5152028##t5152028##l");
         } else if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Plastic Surgery for " + regprice + " mesos: #i5152027##t5152027##l\r\n#L1#Plastic Surgery for " + vipprice + " mesos: #i5152028##t5152028##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0) {

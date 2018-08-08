@@ -37,7 +37,7 @@ function end(mode, type, selection) {
         if(status == 0) {
             qm.sendNext("So, have you defeated the giant? Oh, a Black Wing agent undercover? And he GOT THE SEAL STONE OF ORBIS?! Oh, no. That's horrible! We need to develop countermeasures as soon as possible! Tell the informant on Lith about the situation.");
         } else {
-            qm.gainExp(29500 * qm.getPlayer().getExpRate());
+            qm.gainExp(29500);
             qm.forceCompleteQuest();
             qm.dispose();
         }

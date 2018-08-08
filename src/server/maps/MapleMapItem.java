@@ -184,7 +184,7 @@ public class MapleMapItem extends AbstractMapleMapObject {
     public void sendSpawnData(final MapleClient client) {
         MapleCharacter chr = client.getPlayer();
         
-	if (questid <= 0 || (chr.getQuestStatus(questid) == 1 && chr.needQuestItem(questid, item.getItemId()))) {
+	if (questid <= 0 || chr.needQuestItem(questid, item.getItemId())) {
 	    this.lockItem();
             try {
                 client.announce(MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, this, null, getPosition(), (byte) 2));

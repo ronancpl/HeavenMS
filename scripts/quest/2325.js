@@ -24,7 +24,7 @@ function end(mode, type, selection){
 	else if(status == 2){
 		qm.sendOk("What? My brother sent you here? Ahhh... I am safe now. Thank you so much...");
 		qm.forceCompleteQuest();
-		qm.gainExp(6000 * qm.getPlayer().getExpRate());
+		qm.gainExp(6000);
 		qm.dispose();
 	}
 }

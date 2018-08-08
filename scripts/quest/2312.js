@@ -46,7 +46,7 @@ function end(mode, type, selection) {
 		qm.sendOk("Did you teach those Renegade Spores a lesson?");
 	if (status == 1){
 		qm.forceCompleteQuest();
-		qm.gainExp(11500 * qm.getPlayer().getExpRate());
+		qm.gainExp(11500);
 		qm.gainItem(4000499, -50);
 		qm.sendOk("That was amazing. I apologize for doubting your abilities. Please save our Kingdom of Mushroom from this crisis!");
 		qm.dispose();

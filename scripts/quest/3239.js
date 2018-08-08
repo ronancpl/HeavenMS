@@ -17,7 +17,7 @@ function end(mode, type, selection) {
 			else if(rnd == 2) qm.gainItem(2040707, 1);
 			else qm.gainItem(2040708, 1);
 
-			qm.gainExp(2700 * qm.getPlayer().getExpRate());
+			qm.gainExp(2700);
 			qm.forceCompleteQuest();
 		}
 		else {

@@ -63,7 +63,7 @@ function end(mode, type, selection) {
                 return;
             }
         } else if (status == 3) {
-            qm.gainExp(1000 * qm.getPlayer().getExpRate());
+            qm.gainExp(1000);
             qm.forceCompleteQuest();
             qm.dispose();
         }

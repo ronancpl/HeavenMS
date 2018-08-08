@@ -17,43 +17,24 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package net.server.worker;
 
-var status = -1;
+import net.server.world.World;
 
-function start(mode, type, selection) {
-    if (mode == -1) {
-        qm.dispose();
-    } else {
-        if(mode == 0 && type > 0) {
-            qm.dispose();
-            return;
-        }
+/**
+ * @author Ronan
+ */
+public class ServerMessageWorker extends BaseWorker implements Runnable {
+    
+    @Override
+    public void run() {
+        // It's purpose is for tracking whether the player client currently displays a boss HPBar and, if so,
+        // temporarily disable the server message for that player.
         
-        if (mode == 1)
-            status++;
-        else
-            status--;
-        
-        if (status == 0) {
-            qm.sendNext("I've just gathered an interesting information, #rDyle looks just like regular Ligators#k, but bigger.");
-            qm.gainExp(7000);
-            qm.forceCompleteQuest();
-            
-            if(isAllSubquestsDone() && qm.haveItem(4031894)) {
-                qm.gainItem(4031894, -1);
-            }
-            
-            qm.dispose();
-        }
-    }
-}
-
-function isAllSubquestsDone() {
-    for(var i = 2216; i <= 2219; i++) {
-        if(!qm.isQuestCompleted(i)) {
-            return false;
-        }
+        wserv.runDisabledServerMessagesSchedule();
     }
     
-    return true;
+    public ServerMessageWorker(World world) {
+        super(world);
+    }
 }

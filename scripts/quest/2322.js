@@ -30,7 +30,7 @@ function start(mode, type, selection) {
 	if (status == 2){
 		//qm.forceStartQuest();
 		//qm.forceStartQuest(2322, "1");
-		qm.gainExp(11000 * qm.getPlayer().getExpRate());
+		qm.gainExp(11000);
 		qm.sendOk("Good job navigating through the area.");
 		qm.forceCompleteQuest();
 		qm.dispose();
@@ -50,7 +50,7 @@ function end(mode, type, selection) {
 	if (status == 0)
 		qm.sendOk("Hmmm I see... so they have completely shut off the entrance and everything.");
 	if (status == 1){
-		qm.gainExp(11000 * qm.getPlayer().getExpRate());
+		qm.gainExp(11000);
 		qm.sendOk("Good job navigating through the area.");
 		qm.forceCompleteQuest();
 		qm.dispose();

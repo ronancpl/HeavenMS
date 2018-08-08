@@ -39,7 +39,7 @@ function end(mode, type, selection) {
         } else if (status == 1) {
             qm.sendNext("I've researched some skill books, trying to trace any lost skills of yours. Good news I found one of them: it's the #rFinal Charge#k! With it you will be able to draw closer opposing monsters at each swipe. It's a fine improvement for your arsenal, isn't it?");
         } else if (status == 2) {
-            qm.gainExp(20000 * qm.getPlayer().getExpRate());
+            qm.gainExp(20000);
             qm.teachSkill(21100002, 0, 30, -1); // final charge
             
             qm.forceCompleteQuest();

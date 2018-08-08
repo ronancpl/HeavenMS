@@ -112,6 +112,7 @@ public class MapleClient {
         private static final Lock loginLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
 	private int votePoints;
 	private int voteTime = -1;
+        private int visibleWorlds;
 	private long lastNpcClick;
 	private long sessionId;
 
@@ -1268,6 +1269,16 @@ public class MapleClient {
 		}
 	}
         
+        private void announceDisableServerMessage() {
+            if(!this.getWorldServer().registerDisabledServerMessage(player.getId())) {
+                announce(MaplePacketCreator.serverMessage(""));
+            }
+        }
+        
+        public void announceServerMessage() {
+            announce(MaplePacketCreator.serverMessage(this.getChannelServer().getServerMessage()));
+        }
+        
         public synchronized void announceBossHpBar(MapleMonster mm, final int mobHash, final byte[] packet) {
                 long timeNow = System.currentTimeMillis();
                 int targetHash = player.getTargetHpBarHash();
@@ -1275,12 +1286,14 @@ public class MapleClient {
                 if(mobHash != targetHash) {
                         if(timeNow - player.getTargetHpBarTime() >= 5 * 1000) {
                                 // is there a way to INTERRUPT this annoying thread running on the client that drops the boss bar after some time at every attack?
+                                announceDisableServerMessage();
                                 announce(packet);
                                 
                                 player.setTargetHpBarHash(mobHash);
                                 player.setTargetHpBarTime(timeNow);
                         }
                 } else {
+                        announceDisableServerMessage();
                         announce(packet);
                         
                         player.setTargetHpBarTime(timeNow);
@@ -1311,10 +1324,8 @@ public class MapleClient {
 			return;
                 }
                 
-                String[] socket;
-                try {
-                        socket = Server.getInstance().getIP(getWorld(), channel).split(":");
-                } catch (Exception e) {
+                String[] socket = Server.getInstance().getInetSocket(getWorld(), channel);
+                if(socket == null) {
                         announce(MaplePacketCreator.serverNotice(1, "Channel " + channel + " is currently disabled. Try another channel."));
                         announce(MaplePacketCreator.enableActions());
 			return;
@@ -1386,6 +1397,15 @@ public class MapleClient {
 	public void removeClickedNPC(){
 		lastNpcClick = 0;
 	}
+        
+        public int getVisibleWorlds(){
+		return visibleWorlds;
+	}
+        
+        public void requestedServerlist(int worlds) {
+                visibleWorlds = worlds;
+                setClickedNPC();
+        }
         
         public void closePlayerScriptInteractions() {
                 this.removeClickedNPC();

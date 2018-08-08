@@ -62,7 +62,7 @@ function end(mode, type, selection) {
         } else if(status == 1) {
             qm.sendNext("I will teach you the #rPolearm Mastery#k skill, to reward your actions here. You will be able to improve your accuracy and the overall mastery of your polearm arts.");
         } else {
-            qm.gainExp(8000 * qm.getPlayer().getExpRate());
+            qm.gainExp(8000);
             qm.teachSkill(21100000, 0, 20, -1); // polearm mastery
             
             qm.forceCompleteQuest();

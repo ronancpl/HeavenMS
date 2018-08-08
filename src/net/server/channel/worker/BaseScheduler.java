@@ -29,6 +29,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ScheduledFuture;
 
 import net.server.Server;
+import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
@@ -196,6 +197,19 @@ public abstract class BaseScheduler {
             externalLocks.clear();
         }
         
+        disposeLocks();
+    }
+    
+    private void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+    
+    private void emptyLocks() {
         schedulerLock = schedulerLock.dispose();
     }
 }

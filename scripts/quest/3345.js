@@ -39,7 +39,7 @@ function end(mode, type, selection) {
                 qm.sendNext("So, you have succeeded. With this, Magatia's upfront demise has been averted, well done brave adventurer!");
                 qm.forceCompleteQuest();
                 
-                qm.gainExp(20000 * qm.getPlayer().getExpRate());
+                qm.gainExp(20000);
             } else {
                 qm.sendNext("Did you not seal the #rmagic circle beneath Magatia#k yet? It is a matter of great importance, please haste yourself.");
             }

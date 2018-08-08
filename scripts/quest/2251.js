@@ -13,7 +13,7 @@ function end(mode, type, selection) {
     else {
         qm.gainItem(4032399, -20);
         qm.sendOk("Oh, you brought 20 #b#t4032399##k! Thank you.");
-        qm.gainExp(8000 * qm.getPlayer().getExpRate());
+        qm.gainExp(8000);
         qm.forceCompleteQuest();
     }
     

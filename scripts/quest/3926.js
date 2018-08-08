@@ -47,7 +47,7 @@ function end(mode, type, selection) {
             
             if(c == 4) {
                 qm.sendNext("You delivered all the jewels, well done!");
-                qm.gainExp(6500 * qm.getPlayer().getExpRate());
+                qm.gainExp(6500);
                 qm.forceCompleteQuest();
             } else {
                 qm.sendNext("Have you brought all the jewels from the Red Scorpions? They have to be delivered to the Residential areas of the Sand Bandits.");

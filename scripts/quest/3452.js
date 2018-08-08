@@ -15,7 +15,7 @@ function end(mode, type, selection) {
 		if(qm.getPlayer().getInventory(Packages.client.inventory.MapleInventoryType.USE).getNumFreeSlot() >= 1) {
 			qm.gainItem(4000099, -1);
 			qm.gainItem(2000011, 50);
-			qm.gainExp(8000 * qm.getPlayer().getExpRate());
+			qm.gainExp(8000);
 			qm.forceCompleteQuest();
 		}
 		else {

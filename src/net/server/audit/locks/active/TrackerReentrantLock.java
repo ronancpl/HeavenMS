@@ -46,7 +46,7 @@ public class TrackerReentrantLock extends ReentrantLock implements MonitoredReen
     private final int hashcode;
     private final Lock state = new ReentrantLock(true);
     private final AtomicInteger reentrantCount = new AtomicInteger(0);
-   
+    
     public TrackerReentrantLock(MonitoredLockType id) {
         super();
         this.id = id;
@@ -161,11 +161,13 @@ public class TrackerReentrantLock extends ReentrantLock implements MonitoredReen
                 timeoutSchedule.cancel(false);
                 timeoutSchedule = null;
             }
+            
+            reentrantCount.set(Integer.MAX_VALUE);
         } finally {
             state.unlock();
         }
         
         //unlock();
-        return new EmptyReentrantLock();
+        return new EmptyReentrantLock(id);
     }
 }

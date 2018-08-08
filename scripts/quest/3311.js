@@ -37,7 +37,7 @@ function end(mode, type, selection) {
         if (status == 0) {
             if(qm.getQuestProgress(3311, 0) == 1 && qm.getQuestProgress(3311, 1) == 1) {
                 qm.sendNext("Hmm, so the Alcadno doctor wrote something about researching some vanguardist Neo Huroid machine, that could beat by far the existing one, and was about to prepare the last steps of his rehearsal? We don't have a word about him for about three weeks now, something must have gone wrong...");
-                qm.gainExp(60000 * qm.getPlayer().getExpRate());
+                qm.gainExp(60000);
                 qm.forceCompleteQuest();
             } else {
                 qm.sendNext("Found nothing yet? Please check out Dr. De Lang's house properly, something there may give out a clue about what is going on.");

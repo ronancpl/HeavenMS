@@ -44,7 +44,7 @@ function start(mode, type, selection) {
             qm.sendNext("You have brought a #b#t4001094##k, thank you for the effort!");
         } else if (status == 1) {
             qm.gainItem(4001094, -1);
-            qm.gainExp(42000 * qm.getPlayer().getExpRate());
+            qm.gainExp(42000);
             
             qm.forceCompleteQuest();
             qm.dispose();

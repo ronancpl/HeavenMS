@@ -22,7 +22,6 @@
 package server.maps;
 
 import java.awt.Point;
-import java.util.List;
 import tools.Pair;
 
 import server.MaplePortal;
@@ -43,7 +42,7 @@ public class MapleDoor {
     
     private MapleDoorObject townDoor;
     private MapleDoorObject areaDoor;
-
+    
     public MapleDoor(MapleCharacter owner, Point targetPosition) {
         this.ownerId = owner.getId();
         this.target = owner.getMap();
@@ -55,11 +54,11 @@ public class MapleDoor {
             
             if(posStatus == null) {
                 this.town = this.target.getReturnMap();
-                this.townPortal = getDoorPortal(owner.getDoorSlot());
+                this.townPortal = getTownDoorPortal(owner.getDoorSlot());
 
                 if(townPortal != null) {
-                    this.areaDoor = new MapleDoorObject(ownerId, town, target, false, targetPosition, townPortal.getPosition());
-                    this.townDoor = new MapleDoorObject(ownerId, target, town, true, townPortal.getPosition(), targetPosition);
+                    this.areaDoor = new MapleDoorObject(ownerId, town, target, townPortal.getId(), targetPosition, townPortal.getPosition());
+                    this.townDoor = new MapleDoorObject(ownerId, target, town, -1, townPortal.getPosition(), targetPosition);
 
                     this.areaDoor.setPairOid(this.townDoor.getObjectId());
                     this.townDoor.setPairOid(this.areaDoor.getObjectId());
@@ -74,18 +73,18 @@ public class MapleDoor {
         }
     }
     
-    private MaplePortal getDoorPortal(int slot) {
-        List<MaplePortal> avail = town.getAvailableDoorPortals();
+    public void updateDoorPortal(MapleCharacter owner) {
+        int slot = owner.fetchDoorSlot();
         
-        try {
-            return avail.get(slot);
-        } catch (IndexOutOfBoundsException e) {
-            try {
-                return avail.get(0);
-            } catch (IndexOutOfBoundsException ex) {
-                return null;
-            }
+        MaplePortal nextTownPortal = getTownDoorPortal(slot);
+        if(nextTownPortal != null) {
+            townPortal = nextTownPortal;
+            areaDoor.update(nextTownPortal.getId(), nextTownPortal.getPosition());
         }
+    }
+    
+    private MaplePortal getTownDoorPortal(int doorid) {
+        return town.getDoorPortal(doorid);
     }
     
     public int getOwnerId() {

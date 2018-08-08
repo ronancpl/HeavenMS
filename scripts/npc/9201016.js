@@ -48,12 +48,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("I'm Salon Seamus. If you have #b#t5150019##k or #b#t5151016##k by any chance, then how about letting me change your hairdo?\r\n#L0#I want to buy a coupon!#l\r\n#L1#Haircut: #i5150019##t5150019##l\r\n#L2#Dye your hair: #i5151016##t5151016##l");
+            cm.sendSimple("I'm Salon Seamus. If you have #b#t5150019##k or #b#t5151016##k by any chance, then how about letting me change your hairdo?\r\n#L1#Haircut: #i5150019##t5150019##l\r\n#L2#Dye your hair: #i5151016##t5151016##l");
         } else if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Haircut for " + hairprice + " mesos: #i5150019##t5150019##l\r\n#L1#Dye your hair for " + haircolorprice + " mesos: #i5151016##t5151016##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
@@ -145,12 +142,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("I'm Salon Seamus. If you have #b#t5150019##k or #b#t5151016##k by any chance, then how about letting me change your hairdo?\r\n#L0#I want to buy a coupon!#l\r\n#L1#Haircut: #i5150019##t5150019##l\r\n#L2#Dye your hair: #i5151016##t5151016##l");
+            cm.sendSimple("I'm Salon Seamus. If you have #b#t5150019##k or #b#t5151016##k by any chance, then how about letting me change your hairdo?\r\n#L1#Haircut: #i5150019##t5150019##l\r\n#L2#Dye your hair: #i5151016##t5151016##l");
         } else if (status == 1) {
-            if (selection == 0) {
-                beauty = 0;
-                cm.sendSimple("Which coupon would you like to buy?\r\n#L0#Haircut for " + hairprice + " mesos: #i5150019##t5150019##l\r\n#L1#Dye your hair for " + haircolorprice + " mesos: #i5151016##t5151016##l");
-            } else if (selection == 1) {
+            if (selection == 1) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {

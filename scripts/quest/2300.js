@@ -57,6 +57,7 @@ function end(mode, type, selection) {
 		qm.sendNextPrev("Hmmm... okay. Since the letter is from the job instructor, I suppose you are really the one. I apologize for not introducing myself to you earlier. I'm the #bHead Security Officer#k in charge of protecting King Mush. As you can see, this temporary hideout is protected by the team of security and soldiers. Our situation may be dire, but nevertheless, welcome to Kingdom of Mushroom.");
 	if(status == 2){
 		qm.gainItem(4032375, -1);
+                qm.gainExp(6000);
 		qm.forceCompleteQuest();
 		qm.forceStartQuest(2312);
 		qm.dispose();

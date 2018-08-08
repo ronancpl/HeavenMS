@@ -82,9 +82,9 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     player.setMPC(partyplayer);
                     player.getMap().addPartyMember(player);
                     player.silentPartyUpdate();
-                    c.announce(MaplePacketCreator.partyCreated(partyplayer, party.getId()));
                     
-                    player.updateMapDropsUponPartyOperation(null);
+                    player.partyOperationUpdate(party, null);
+                    c.announce(MaplePacketCreator.partyCreated(party, partyplayer.getId()));
                 } else {
                     c.announce(MaplePacketCreator.serverNotice(5, "You can't create a party as you are already in one."));
                 }
@@ -94,7 +94,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                 List<MapleCharacter> partymembers = player.getPartyMembers();
                 
                 leaveParty(party, partyplayer, c);
-                player.updateMapDropsUponPartyOperation(partymembers);
+                player.partyOperationUpdate(party, partymembers);
                 break;
             }
             case 3: { // join
@@ -110,7 +110,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             player.receivePartyMemberHP();
                             player.updatePartyMemberHP();
                             
-                            player.updateMapDropsUponPartyOperation(null);
+                            player.partyOperationUpdate(party, null);
                         } else {
                             c.announce(MaplePacketCreator.partyStatusMessage(17));
                         }
@@ -147,9 +147,9 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             player.setParty(party);
                             player.setMPC(partyplayer);
                             player.getMap().addPartyMember(player);
-                            c.announce(MaplePacketCreator.partyCreated(partyplayer, party.getId()));
                             
-                            player.updateMapDropsUponPartyOperation(null);
+                            player.partyOperationUpdate(party, null);
+                            c.announce(MaplePacketCreator.partyCreated(party, partyplayer.getId()));
                         }
                         if (party.getMembers().size() < 6) {
                             invited.getClient().announce(MaplePacketCreator.partyInvite(player));
@@ -184,7 +184,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             emc.setParty(null);
                             world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                             
-                            emc.updateMapDropsUponPartyOperation(partyMembers);
+                            emc.partyOperationUpdate(party, partyMembers);
                         } else {
                             world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
                         }

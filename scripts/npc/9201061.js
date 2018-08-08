@@ -44,18 +44,9 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hi, there~! I'm Bomack. If you have a #b#t5152035##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to do?\r\n#L1#I would like to buy a #b#t5152035##k for " + price + " mesos, please!#l\r\n\#L2#I already have a Coupon!#l");
+            cm.sendSimple("Hi, there~! I'm Bomack. If you have a #b#t5152035##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to do?\r\n#L2#I already have a Coupon!#l");
         } else if (status == 1) {
-            if (selection == 1) {
-                if(cm.getMeso() >= price) {
-                    cm.gainMeso(-price);
-                    cm.gainItem(5152035, 1);
-                    cm.sendOk("Enjoy!");
-                } else {
-                    cm.sendOk("You don't have enough mesos to buy a coupon!");
-                }
-                cm.dispose();
-            } else if (selection == 2) {
+            if (selection == 2) {
                 if (cm.getPlayer().getGender() == 0) {
                     var current = cm.getPlayer().getFace() % 100 + 20000;
                 }

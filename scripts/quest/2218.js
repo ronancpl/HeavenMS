@@ -36,7 +36,7 @@ function start(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Hey did you see how strange #rLakelis#k has been acting these days? We should see what's going on aabout her, her actions have been so weird lately...");
-            qm.gainExp(7000 * qm.getPlayer().getExpRate());
+            qm.gainExp(7000);
             qm.forceCompleteQuest();
             
             if(isAllSubquestsDone() && qm.haveItem(4031894)) {
