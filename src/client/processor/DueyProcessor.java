@@ -116,8 +116,8 @@ public class DueyProcessor {
         int day = cal.get(Calendar.DATE) - 1; // instant duey ?
         int month = cal.get(Calendar.MONTH) + 1; // its an array of months.
         int year = cal.get(Calendar.YEAR);
-        date += day < 9 ? "0" + day + "-" : "" + day + "-";
-        date += month < 9 ? "0" + month + "-" : "" + month + "-";
+        date += day <= 9 ? "0" + day + "-" : "" + day + "-";
+        date += month <= 9 ? "0" + month + "-" : "" + month + "-";
         date += year;
         
         return date;
