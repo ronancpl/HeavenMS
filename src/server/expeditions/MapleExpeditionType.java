@@ -26,7 +26,7 @@ import constants.ServerConstants;
 
 /**
 *
-* @author SharpAceX(Alan)
+* @author Alan (SharpAceX)
 */
 
 public enum MapleExpeditionType {

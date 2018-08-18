@@ -116,6 +116,7 @@ Monsters, Maps & Reactors:
 
 PQ potentials:
 
+* Advanced synchronization and smart management of the PQ registration system, as expected for a core server mechanic that is largely used by the players.
 * Lobby system - Multiple PQ instances on same channel.
 * Expedition system - Multiples parties can attempt on a same instance (lobbies and expeds are mutually-exclusive).
 * Guild queue system - Guilds can register themselves on a queue for the GPQ.
@@ -129,6 +130,7 @@ Player potentials:
 * Gain fame by quests.
 * Pet evolutions functional (not GMS-like).
 * Reviewed keybinding system.
+* Account's Character slots: either each world has it's own count or there's a shared value between all worlds.
 
 Server potentials:
 
@@ -147,6 +149,7 @@ Server potentials:
 * Pet item pickup now gives preference to player attacks rather than forcing attack disables when automatically picking up.
 * Channel capacity bar functional and world servers with max capacity checks.
 * Disease status are now visible for other players, even when changing maps.
+* Players keep their current disease status saved when exiting the game, returning with them on login.
 * Poison damage value are now visible for other players.
 * Mastery book announcer displays droppers of needed books of a player, by reading underlying DB.
 * Custom jail system (needs provided custom wz).

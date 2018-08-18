@@ -1,7 +1,7 @@
 function enter(pi) {
     var nex = pi.getEventManager("GuardianNex");
     if(nex == null) {
-        pi.message("Guardian Nex event encontered an error and is unavailable.");
+        pi.message("Guardian Nex challenge encountered an error and is unavailable.");
         return false;
     }
     

@@ -22,18 +22,16 @@ function action(mode, type, selection) {
                 cm.sendOk("This training ground is available only for those under level 20.");
                 cm.dispose();
                 return;
-        }
-        
-        if (cm.isQuestActive(22515) || cm.isQuestActive(22516) || cm.isQuestActive(22517) || cm.isQuestActive(22518)) {
-		cm.sendYesNo("Would you like to go in the special Spore Training Center?");
+        } else if (cm.isQuestActive(22515) || cm.isQuestActive(22516) || cm.isQuestActive(22517) || cm.isQuestActive(22518)) {
+		cm.sendYesNo("Would you like to go in the special Training Center?");
 		status = 1;
-	}
-        
-	var selStr = "Would you like to go into the Training Center?";
-	for (var i = 0; i < num; i++) {
-		selStr += "\r\n#b#L" + i + "#Training Center " + i + " (" + cm.getPlayerCount(map + i) + "/" + maxp + ")#l#k";
-	}
-	cm.sendSimple(selStr);
+	} else {
+                var selStr = "Would you like to go into the Training Center?";
+                for (var i = 0; i < num; i++) {
+                        selStr += "\r\n#b#L" + i + "#Training Center " + i + " (" + cm.getPlayerCount(map + i) + "/" + maxp + ")#l#k";
+                }
+                cm.sendSimple(selStr);
+        }
     } else if (status == 1) {
 	if (selection < 0 || selection >= num) {
 		cm.dispose();

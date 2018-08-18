@@ -27,6 +27,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.AbstractMaplePacketHandler;
 import net.server.PlayerBuffValueHolder;
@@ -90,6 +91,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 e.printStackTrace();
             }
         } else {
+            c.setCharacterSlots((byte) player.getClient().getCharacterSlots());
             player.newClient(c);
         }
         if (player == null) { //If you are still getting null here then please just uninstall the game >.>, we dont need you fucking with the logs
@@ -275,16 +277,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         c.announce(MaplePacketCreator.enableReport());
         player.changeSkillLevel(SkillFactory.getSkill(10000000 * player.getJobType() + 12), (byte) (player.getLinkedLevel() / 10), 20, -1);
         player.checkBerserk(player.isHidden());
-        player.buffExpireTask();
-        player.diseaseExpireTask();
-        player.skillCooldownTask();
-        player.expirationTask();
-        player.questExpirationTask();
-        if (GameConstants.hasSPTable(player.getJob()) && player.getJob().getId() != 2001) {
-                player.createDragon();
-        }
-        
-        player.commitExcludedItems();
         
         if (newcomer){
             /*
@@ -295,12 +287,31 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             if (player.isGM()){
             	Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.earnTitleMessage((player.gmLevel() < 6 ? "GM " : "Admin ") + player.getName() + " has logged in"));
             }
+            
+            if(diseases != null) {
+                for(Entry<MapleDisease, Pair<Long, MobSkill>> e : diseases.entrySet()) {
+                    final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(e.getKey(), Integer.valueOf(e.getValue().getRight().getX())));
+                    c.announce(MaplePacketCreator.giveDebuff(debuff, e.getValue().getRight()));
+                }
+                
+                player.announceDiseases();
+            }
         } else {
             if(player.isRidingBattleship()) {
                 player.announceBattleshipHp();
             }
         }
         
+        player.buffExpireTask();
+        player.diseaseExpireTask();
+        player.skillCooldownTask();
+        player.expirationTask();
+        player.questExpirationTask();
+        if (GameConstants.hasSPTable(player.getJob()) && player.getJob().getId() != 2001) {
+            player.createDragon();
+        }
+        
+        player.commitExcludedItems();
         showDueyNotification(c, player);
         
         if (player.getMap().getHPDec() > 0) player.resetHpDecreaseTask();

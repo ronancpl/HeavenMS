@@ -25,7 +25,7 @@ import tools.Randomizer;
 
 /**
  *
- * @author SharpAceX(Alan)
+ * @author Alan (SharpAceX)
  */
 public class MapleGachapon {
 

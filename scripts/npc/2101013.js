@@ -1,4 +1,4 @@
-/* Author: aaroncsn(MapleSea Like)
+/* Author: aaroncsn <MapleSea Like>
 	NPC Name: 		Karcasa
 	Map(s): 		The Burning Sands: Tents of the Entertainers(260010600)
 	Description: 		Warps to Victoria Island

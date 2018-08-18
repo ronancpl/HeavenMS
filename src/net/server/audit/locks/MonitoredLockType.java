@@ -75,6 +75,7 @@ public enum MonitoredLockType {
     EM_LOBBY,
     EM_QUEUE,
     EM_SCHDL,
+    EM_START,
     CASHSHOP,
     VISITOR_PSHOP,
     STORAGE,

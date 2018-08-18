@@ -39,8 +39,8 @@ public final class ScriptedItemHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        slea.readInt(); // trash stamp (thx rmzero)
-        short itemSlot = slea.readShort(); // item sl0t (thx rmzero)
+        slea.readInt(); // trash stamp (thanks rmzero)
+        short itemSlot = slea.readShort(); // item slot (thanks rmzero)
         int itemId = slea.readInt(); // itemId
         scriptedItem info = ii.getScriptedItemInfo(itemId);
         if (info == null) return;

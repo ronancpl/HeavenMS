@@ -34,6 +34,7 @@ import client.inventory.ModifyInventory;
 import constants.ItemConstants;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
@@ -72,10 +73,17 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         Item scroll = useInventory.getItem(slot);
         Item wscroll = null;
 
-        if (((Equip) toScroll).getUpgradeSlots() < 1 && !ItemConstants.isCleanSlate(scroll.getItemId())) {
+        if (ItemConstants.isCleanSlate(scroll.getItemId())) {
+            Map<String, Integer> eqStats = ii.getEquipStats(scroll.getItemId());
+            if (eqStats == null || eqStats.get("tuc") == 0) {
+                c.announce(MaplePacketCreator.getInventoryFull());
+                return;
+            }
+        } else if (((Equip) toScroll).getUpgradeSlots() < 1) {
             c.announce(MaplePacketCreator.getInventoryFull());
             return;
         }
+        
         List<Integer> scrollReqs = ii.getScrollReqs(scroll.getItemId());
         if (scrollReqs.size() > 0 && !scrollReqs.contains(toScroll.getItemId())) {
             c.announce(MaplePacketCreator.getInventoryFull());

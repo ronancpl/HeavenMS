@@ -23,7 +23,7 @@ package server.maps;
 
 /**
  *
- * @author SharpAceX(Alan)
+ * @author Alan (SharpAceX)
  */
 
 public enum MapleMiniDungeonInfo {

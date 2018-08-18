@@ -20,7 +20,7 @@
  */
 
 /* 
- * @Authors Stereo, xQuasar, <<XkelvinchiaX@Kelvin(For make it Fully Working.)>>
+ * @Author Stereo, xQuasar, <<XkelvinchiaX@Kelvin(For make it Fully Working.)>>
  * 
  * Adobis - El Nath: Entrance to Zakum Altar (211042400)
  * 
@@ -80,7 +80,7 @@ function action(mode, type, selection) {
                     else { // start Zakum Battle
                         var eim = em.newInstance("Zakum" + passwd);
                         if(!em.startInstance(eim,cm.getPlayer().getName())) {
-                            cm.sendOk("A party in your name is already registered in this event.");
+                            cm.sendOk("A party in your name is already registered in this instance.");
                             cm.dispose();
                             return;
                         }

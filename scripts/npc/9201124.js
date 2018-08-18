@@ -23,11 +23,14 @@
 
     Version
     |- 1.0 by Jayd
+    |- 1.1 by Ronan (check job requirements)
  */
 
 var status;
 var map = 100000201;
 var job = "Bowman";
+var jobType = 3;
+var no = "Come back to me if you decided to be a #b"+job+"#k.";
 
 function start() {
     status = -1;
@@ -36,10 +39,11 @@ function start() {
 
 function action(mode, type, selection) {
     if (mode == -1) {
+        cm.sendOk(no);
         cm.dispose();
     } else {
         if (mode == 0 && type > 0) {
-            cm.sendOk("Come back to me if you decided to be a #b"+job+"#k.");
+            cm.sendOk(no);
             cm.dispose();
         }
 
@@ -50,7 +54,12 @@ function action(mode, type, selection) {
 
         if(status == 0) {
             if (cm.getJob() == "BEGINNER") {
-                cm.sendYesNo("Hey #h #, I can send you to #b#m"+map+"##k if you want to be a #b"+job+"#k. Do you want to go now?");
+                if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType)) {
+                    cm.sendYesNo("Hey #h #, I can send you to #b#m"+map+"##k if you want to be a #b"+job+"#k. Do you want to go now?");
+                } else {
+                    cm.sendOk("If you want to be a #b"+job+"#k, train yourself further until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k.");
+                    cm.dispose();
+                }
             } else {
                 cm.sendOk("You're much stronger now. Keep training!");
                 cm.dispose();

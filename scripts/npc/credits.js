@@ -36,6 +36,7 @@ function writeServerStaff_MapleNext() {
 function writeServerStaff_HeavenMS() {
         addPerson("Ronan", "Developer");
         addPerson("Vcoc", "Freelance Developer");
+        addPerson("Thora", "Contributor");
         
         setHistory(2015, 2018);
 }

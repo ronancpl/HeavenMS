@@ -21,6 +21,9 @@
 */
 package client;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum MapleDisease {
     NULL(0x0),
     SLOW(0x1),
@@ -55,5 +58,12 @@ public enum MapleDisease {
     public boolean isFirst() {
             return first;
     }
-	
+    
+    public static MapleDisease ordinal(int ord) {
+        try {
+            return MapleDisease.values()[ord];
+        } catch (IndexOutOfBoundsException io) {
+            return NULL;
+        }
+    }
 }

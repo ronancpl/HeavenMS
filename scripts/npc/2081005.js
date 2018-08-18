@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-//Fixed by Moogra, Ronan
+//@Author Moogra, Ronan
 //Fixed grammar, javascript syntax
 
 importPackage(Packages.client);

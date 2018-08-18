@@ -37,7 +37,7 @@ function enter(pi) {
                 return true;
         }
         else {
-                pi.message("Make a room available on all EQUIP, USE, SET-UP and ETC inventory to claim an event prize.");
+                pi.message("Make a room available on all EQUIP, USE, SET-UP and ETC inventory to claim an instance prize.");
                 return false;
         }
 }

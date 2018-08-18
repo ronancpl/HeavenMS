@@ -7,7 +7,7 @@ import server.maps.MapleMap;
 import tools.MaplePacketCreator;
 
 /**
- * @author Rob //Thanks :3  - LOST MOTIVATION >=(
+ * @author Rob
  */
 public class MonsterCarnivalParty {
 

@@ -89,7 +89,7 @@ function action(mode, type, selection) {
                                         cm.sendOk("Your party completed such an astounding feat coming this far, #byou have defeated all the bosses#k, congratulations! Now I will be handing your reward as you are being transported out...");
                                 }
                                 else {
-                                        cm.sendOk("For #bdefeating all bosses#k in this event, congratulations! You will now receive a prize that matches your performance here as I warp you out.");
+                                        cm.sendOk("For #bdefeating all bosses#k in this instance, congratulations! You will now receive a prize that matches your performance here as I warp you out.");
                                 }
                         }
                         else if(state == 2) {
@@ -109,7 +109,7 @@ function action(mode, type, selection) {
                                         return;
                                 }
                         } else if(state == 1) {
-                                cm.sendYesNo("Do you wish to abandon this event?");
+                                cm.sendYesNo("Do you wish to abandon this instance?");
                         }
                         else {
                                 em = cm.getEventManager("BossRushPQ");
@@ -174,7 +174,7 @@ function action(mode, type, selection) {
                                         cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                         cm.dispose();
                                 } else {
-                                        cm.sendOk("#e#b<Party Quest: Boss Rush>#k#n\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.\r\n\r\nThis event also supports #bmultiple lobbies for matchmaking several ranges of team levels#k at once: team up with players with lower level if you want better chances to swiftly set up a boss rush for your team.");
+                                        cm.sendOk("#e#b<Party Quest: Boss Rush>#k#n\r\nBrave adventurers from all over the places travels here to test their skills and abilities in combat, as they face even more powerful bosses from MapleStory. Join forces with fellow adventurers or face all the burden by yourself and receive all the glory, it is up to you. REWARDS are given accordingly to how far the adventurers reach and extra prizes may are given to a random member of the party, all attributed at the end of an expedition.\r\n\r\nThis instance also supports #bmultiple lobbies for matchmaking several ranges of team levels#k at once: team up with players with lower level if you want better chances to swiftly set up a boss rush for your team.");
                                         cm.dispose();
                                 }
                         }

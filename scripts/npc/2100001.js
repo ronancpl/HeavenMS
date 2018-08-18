@@ -1,4 +1,4 @@
-/* Author: aaroncsn (MapleSea Like)
+/* Author: aaroncsn <MapleSea Like>
 	NPC Name: 		Muhammad
 	Map(s): 		Ariant:The Town of Ariant(260000200)
 	Description: 	Jewel Refiner

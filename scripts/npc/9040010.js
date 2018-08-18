@@ -43,7 +43,7 @@ function start() {
             }
         }
         else {
-            cm.sendOk("This is your final challenge. Defeat the evil lurking within the Rubian and let your event leader return it to me. That is all.");
+            cm.sendOk("This is your final challenge. Defeat the evil lurking within the Rubian and let your instance leader return it to me. That is all.");
         }
     }
     else

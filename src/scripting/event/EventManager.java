@@ -48,10 +48,14 @@ import server.life.MapleMonster;
 import server.life.MapleLifeFactory;
 import server.quest.MapleQuest;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -74,12 +78,16 @@ public class EventManager {
     private final Map<Integer, Integer> queuedGuildLeaders = new HashMap<>();
     private List<Boolean> openedLobbys;
     private List<EventInstanceManager> readyInstances = new LinkedList<>();
-    private Integer readyId = 0;
+    private Integer readyId = 0, onLoadInstances = 0;
     private Properties props = new Properties();
     private String name;
     private MonitoredReentrantLock lobbyLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_LOBBY);
     private MonitoredReentrantLock queueLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_QUEUE);
-
+    private MonitoredReentrantLock startLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EM_START);
+    
+    private Set<Integer> playerPermit = new HashSet<>();
+    private Semaphore startSemaphore = new Semaphore(7);
+    
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     
     public EventManager(Channel cserv, Invocable iv, String name) {
@@ -114,6 +122,7 @@ public class EventManager {
         try {
             readyEims = new ArrayList<>(readyInstances);
             readyInstances.clear();
+            onLoadInstances = Integer.MIN_VALUE / 2;
         } finally {
             queueLock.unlock();
         }
@@ -143,6 +152,7 @@ public class EventManager {
     private void emptyLocks() {
         lobbyLock = lobbyLock.dispose();
         queueLock = queueLock.dispose();
+        startLock = startLock.dispose();
     }
     
     private static List<Integer> convertToIntegerArray(List<Double> list) {
@@ -333,33 +343,50 @@ public class EventManager {
     //Expedition method: starts an expedition
     public boolean startInstance(int lobbyId, MapleExpedition exped, MapleCharacter leader) {
         try {
-            if(lobbyId == -1) {
-                lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) return false;
-            }
-            else {
-                if(!startLobbyInstance(lobbyId)) return false;
-            }
-            
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
-            if(eim == null) {
-                if(lobbyId > -1) {
-                    setLockLobby(lobbyId, false);
+            if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
+                playerPermit.add(leader.getId());
+                
+                startLock.lock();
+                try {
+                    try {
+                        if(lobbyId == -1) {
+                            lobbyId = availableLobbyInstance();
+                            if(lobbyId == -1) return false;
+                        }
+                        else {
+                            if(!startLobbyInstance(lobbyId)) return false;
+                        }
+                        
+                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
+                        if(eim == null) {
+                            if(lobbyId > -1) {
+                                setLockLobby(lobbyId, false);
+                            }
+                            return false;
+                        }
+                        instanceLocks.put(eim.getName(), lobbyId);
+                        eim.setLeader(leader);
+
+                        exped.start();
+                        eim.registerExpedition(exped);
+
+                        eim.startEvent();
+                    } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    return true;
+                } finally {
+                    startLock.unlock();
+                    playerPermit.remove(leader.getId());
+                    startSemaphore.release();
                 }
-                return false;
             }
-            instanceLocks.put(eim.getName(), lobbyId);
-            eim.setLeader(leader);
-            
-            exped.start();
-            eim.registerExpedition(exped);
-            
-            eim.startEvent();
-        } catch (ScriptException | NoSuchMethodException ex) {
-            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(InterruptedException ie) {
+            playerPermit.remove(leader.getId());
         }
         
-        return true;
+        return false;
     }
 
     //Regular method: player 
@@ -373,36 +400,53 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleCharacter chr, MapleCharacter leader, int difficulty) {
         try {
-            if(lobbyId == -1) {
-                lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) {
-                    return false;
+            if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
+                playerPermit.add(leader.getId());
+                
+                startLock.lock();
+                try {
+                    try {
+                        if(lobbyId == -1) {
+                            lobbyId = availableLobbyInstance();
+                            if(lobbyId == -1) {
+                                return false;
+                            }
+                        }
+                        else {
+                            if(!startLobbyInstance(lobbyId)) {
+                                return false;
+                            }
+                        }
+                        
+                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
+                        if(eim == null) {
+                            if(lobbyId > -1) {
+                                setLockLobby(lobbyId, false);
+                            }
+                            return false;
+                        }
+                        instanceLocks.put(eim.getName(), lobbyId);
+                        eim.setLeader(leader);
+
+                        if(chr != null) eim.registerPlayer(chr);
+
+                        eim.startEvent();
+                    } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    return true;
+                } finally {
+                    startLock.unlock();
+                    playerPermit.remove(leader.getId());
+                    startSemaphore.release();
                 }
             }
-            else {
-                if(!startLobbyInstance(lobbyId)) {
-                    return false;
-                }
-            }
-            
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
-            if(eim == null) {
-                if(lobbyId > -1) {
-                    setLockLobby(lobbyId, false);
-                }
-                return false;
-            }
-            instanceLocks.put(eim.getName(), lobbyId);
-            eim.setLeader(leader);
-            
-            if(chr != null) eim.registerPlayer(chr);
-            
-            eim.startEvent();
-        } catch (ScriptException | NoSuchMethodException ex) {
-            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(InterruptedException ie) {
+            playerPermit.remove(leader.getId());
         }
         
-        return true;
+        return false;
     }    
     
     //PQ method: starts a PQ
@@ -416,33 +460,50 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, MapleCharacter leader) {
         try {
-            if(lobbyId == -1) {
-                lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) return false;
-            }
-            else {
-                if(!startLobbyInstance(lobbyId)) return false;
-            }
-            
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-            if(eim == null) {
-                if(lobbyId > -1) {
-                    setLockLobby(lobbyId, false);
+            if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
+                playerPermit.add(leader.getId());
+                
+                startLock.lock();
+                try {
+                    try {
+                        if(lobbyId == -1) {
+                            lobbyId = availableLobbyInstance();
+                            if(lobbyId == -1) return false;
+                        }
+                        else {
+                            if(!startLobbyInstance(lobbyId)) return false;
+                        }
+                        
+                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+                        if(eim == null) {
+                            if(lobbyId > -1) {
+                                setLockLobby(lobbyId, false);
+                            }
+                            return false;
+                        }
+                        instanceLocks.put(eim.getName(), lobbyId);
+                        eim.setLeader(leader);
+
+                        eim.registerParty(party, map);
+                        party.setEligibleMembers(null);
+
+                        eim.startEvent();
+                    } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    return true;
+                } finally {
+                    startLock.unlock();
+                    playerPermit.remove(leader.getId());
+                    startSemaphore.release();
                 }
-                return false;
             }
-            instanceLocks.put(eim.getName(), lobbyId);
-            eim.setLeader(leader);
-            
-            eim.registerParty(party, map);
-            party.setEligibleMembers(null);
-            
-            eim.startEvent();
-        } catch (ScriptException | NoSuchMethodException ex) {
-            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(InterruptedException ie) {
+            playerPermit.remove(leader.getId());
         }
         
-        return true;
+        return false;
     }
     
     //PQ method: starts a PQ with a difficulty level, requires function setup(difficulty, leaderid) instead of setup()
@@ -456,33 +517,50 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, int difficulty, MapleCharacter leader) {
         try {
-            if(lobbyId == -1) {
-                lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) return false;
-            }
-            else {
-                if(!startLobbyInstance(lobbyId)) return false;
-            }
-            
-            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
-            if(eim == null) {
-                if(lobbyId > -1) {
-                    setLockLobby(lobbyId, false);
+            if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
+                playerPermit.add(leader.getId());
+                
+                startLock.lock();
+                try {
+                    try {
+                        if(lobbyId == -1) {
+                            lobbyId = availableLobbyInstance();
+                            if(lobbyId == -1) return false;
+                        }
+                        else {
+                            if(!startLobbyInstance(lobbyId)) return false;
+                        }
+                        
+                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
+                        if(eim == null) {
+                            if(lobbyId > -1) {
+                                setLockLobby(lobbyId, false);
+                            }
+                            return false;
+                        }
+                        instanceLocks.put(eim.getName(), lobbyId);
+                        eim.setLeader(leader);
+
+                        eim.registerParty(party, map);
+                        party.setEligibleMembers(null);
+
+                        eim.startEvent();
+                    } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    return true;
+                } finally {
+                    startLock.unlock();
+                    playerPermit.remove(leader.getId());
+                    startSemaphore.release();
                 }
-                return false;
             }
-            instanceLocks.put(eim.getName(), lobbyId);
-            eim.setLeader(leader);
-            
-            eim.registerParty(party, map);
-            party.setEligibleMembers(null);
-            
-            eim.startEvent();
-        } catch (ScriptException | NoSuchMethodException ex) {
-            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(InterruptedException ie) {
+            playerPermit.remove(leader.getId());
         }
         
-        return true;
+        return false;
     }
 
     //non-PQ method for starting instance
@@ -500,32 +578,49 @@ public class EventManager {
     
     public boolean startInstance(int lobbyId, EventInstanceManager eim, String ldr, MapleCharacter leader) {
         try {
-            if(lobbyId == -1) {
-                lobbyId = availableLobbyInstance();
-                if(lobbyId == -1) return false;
-            }
-            else {
-                if(!startLobbyInstance(lobbyId)) return false;
-            }
-            
-            if(eim == null) {
-                if(lobbyId > -1) {
-                    setLockLobby(lobbyId, false);
+            if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
+                playerPermit.add(leader.getId());
+                
+                startLock.lock();
+                try {
+                    try {
+                        if(lobbyId == -1) {
+                            lobbyId = availableLobbyInstance();
+                            if(lobbyId == -1) return false;
+                        }
+                        else {
+                            if(!startLobbyInstance(lobbyId)) return false;
+                        }
+
+                        if(eim == null) {
+                            if(lobbyId > -1) {
+                                setLockLobby(lobbyId, false);
+                            }
+                            return false;
+                        }
+                        instanceLocks.put(eim.getName(), lobbyId);
+                        eim.setLeader(leader);
+                        
+                        iv.invokeFunction("setup", eim);
+                        eim.setProperty("leader", ldr);
+
+                        eim.startEvent();
+                    } catch (ScriptException | NoSuchMethodException ex) {
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    return true;
+                } finally {
+                    startLock.unlock();
+                    playerPermit.remove(leader.getId());
+                    startSemaphore.release();
                 }
-                return false;
             }
-            instanceLocks.put(eim.getName(), lobbyId);
-            eim.setLeader(leader);
-            
-            iv.invokeFunction("setup", eim);
-            eim.setProperty("leader", ldr);
-            
-            eim.startEvent();
-        } catch (ScriptException | NoSuchMethodException ex) {
-            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch(InterruptedException ie) {
+            playerPermit.remove(leader.getId());
         }
         
-        return true;
+        return false;
     }
     
     public List<MaplePartyCharacter> getEligibleParty(MapleParty party) {
@@ -713,12 +808,27 @@ public class EventManager {
     }
     
     private void instantiateQueuedInstance() {
+        int nextEventId;
         queueLock.lock();
         try {
-            if(readyInstances.size() >= Math.ceil((double)maxLobbys / 3.0)) return;
+            if(onLoadInstances <= -1000 || readyInstances.size() + onLoadInstances >= Math.ceil((double)maxLobbys / 3.0)) return;
             
-            readyInstances.add(new EventInstanceManager(this, "sampleName" + readyId));
+            onLoadInstances++;
+            nextEventId = readyId;
             readyId++;
+        } finally {
+            queueLock.unlock();
+        }
+        
+        EventInstanceManager eim = new EventInstanceManager(this, "sampleName" + nextEventId);
+        queueLock.lock();
+        try {
+            if(onLoadInstances <= -1000) {  // EM already disposed
+                return;
+            }
+            
+            readyInstances.add(eim);
+            onLoadInstances--;
         } finally {
             queueLock.unlock();
         }

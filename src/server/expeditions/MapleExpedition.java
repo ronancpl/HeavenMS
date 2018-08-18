@@ -38,7 +38,7 @@ import client.MapleCharacter;
 
 /**
  *
- * @author SharpAceX(Alan)
+ * @author Alan (SharpAceX)
  */
 public class MapleExpedition {
 

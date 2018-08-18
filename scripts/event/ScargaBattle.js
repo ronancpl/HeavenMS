@@ -118,7 +118,7 @@ function changedMap(eim, player, mapid) {
             end(eim);
         }
         else {
-            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+            eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the instance.");
             eim.unregisterPlayer(player);
         }
     }
@@ -135,7 +135,7 @@ function playerRevive(eim, player) {
         end(eim);
     }
     else {
-        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the instance.");
         eim.unregisterPlayer(player);
     }
 }
@@ -147,7 +147,7 @@ function playerDisconnected(eim, player) {
         end(eim);
     }
     else {
-        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the event.");
+        eim.dropMessage(5, "[Expedition] " + player.getName() + " has left the instance.");
         eim.unregisterPlayer(player);
     }
 }

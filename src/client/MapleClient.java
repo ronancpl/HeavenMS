@@ -516,13 +516,13 @@ public class MapleClient {
 		ResultSet rs = null;
 		try {
 			con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, gm, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
+			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
 				boolean banned = (rs.getByte("banned") == 1);
 				accId = rs.getInt("id");
-				gmlevel = rs.getInt("gm");
+				gmlevel = 0;
 				pin = rs.getString("pin");
 				pic = rs.getString("pic");
 				gender = rs.getByte("gender");
@@ -796,7 +796,6 @@ public class MapleClient {
                         player.setDisconnectedFromChannelWorld();
                         player.notifyMapTransferToPartner(-1);
                         player.cancelAllBuffs(true);
-                        player.cancelAllDebuffs();
                         
                         player.closePlayerInteractions();
                         QuestScriptManager.getInstance().dispose(this);
@@ -845,6 +844,7 @@ public class MapleClient {
                                 removePlayer();
                                 
                                 player.saveCooldowns();
+                                player.cancelAllDebuffs();
                                 player.saveCharToDB(true);
                                 
                                 clear();
@@ -927,6 +927,7 @@ public class MapleClient {
                                         //getChannelServer().removePlayer(player); already being done
                                         
                                         player.saveCooldowns();
+                                        player.cancelAllDebuffs();
                                         player.saveCharToDB(true);
 					if (player != null) {//no idea, occur :(
 						player.empty(false);
@@ -936,6 +937,7 @@ public class MapleClient {
                                         getChannelServer().removePlayer(player);
 
                                         player.saveCooldowns();
+                                        player.cancelAllDebuffs();
                                         player.saveCharToDB();
                                 }
 			}
@@ -1191,8 +1193,20 @@ public class MapleClient {
 		}
 	}
 
+        public short getAvailableCharacterSlots() {
+                return (short) Math.max(0, characterSlots - Server.getInstance().getAccountCharacterCount(accId));
+	}
+        
+        public short getAvailableCharacterWorldSlots() {
+                return (short) Math.max(0, characterSlots - Server.getInstance().getAccountWorldCharacterCount(accId, world));
+	}
+        
 	public short getCharacterSlots() {
 		return characterSlots;
+	}
+        
+        public void setCharacterSlots(byte slots) {
+                characterSlots = slots;
 	}
 
 	public synchronized boolean gainCharacterSlot() {

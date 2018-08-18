@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
     Camel Cab - Magatia (GMS Like)
 -- Version Info -----------------------------------------------------------------------------------
-    1.3 - Actually fixed by SharpAceX (Alan)
+    1.3 - Actually fixed by Alan (SharpAceX)
     1.2 - Fixed and recoded by Moogra
     1.1 - Shortened by Moogra
     1.0 - First Version by Maple4U, who actually can't code at all

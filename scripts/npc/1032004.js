@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* Shane 1032004
- * By Moogra
+ * @Author Moogra
 */
 
 function start() {

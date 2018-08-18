@@ -29,7 +29,7 @@ function action(mode, type, selection) {
         var eim = cm.getEventInstance();
         if (eim == null) {
             cm.warp(251010404,0);
-            cm.sendNext("How are you even here without being registered on an event?");
+            cm.sendNext("How are you even here without being registered on an instance?");
             cm.dispose();
             return;
         }

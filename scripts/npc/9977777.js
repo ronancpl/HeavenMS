@@ -41,7 +41,7 @@ function addFeature(feature) {
 function writeFeatureTab_PQs() {
         addFeature("HPQ/KPQ/LPQ/LMPQ/OPQ/APQ/EllinPQ/PiratePQ.");
         addFeature("RnJPQ/HorntailPQ/TreasurePQ/ElnathPQ/HolidayPQ.");
-        addFeature("CWKPQ as Expedition-based event.");
+        addFeature("CWKPQ as Expedition-based instance.");
         addFeature("Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.");
         addFeature("GuildPQ & queue with multi-lobby systems available.");
         addFeature("Brand-new PQs: BossRushPQ, CafePQ.");
@@ -131,6 +131,7 @@ function writeFeatureTab_MonstersMapsReactors() {
 }
 
 function writeFeatureTab_PQpotentials() {
+        addFeature("Advanced and well-safe PQ registration system.");
         addFeature("Lobby system: Same channel, multiple PQ instances.");
         addFeature("Exped system: Many parties can join a same instance.");
         addFeature("Guild queue: guild registration for the GPQ.");
@@ -144,6 +145,7 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("Gain fame by quests.");
         addFeature("Pet evolutions functional (not GMS-like).");
         addFeature("Reviewed keybinding system.");
+        addFeature("Character slots per world/server-wide.");
 }
 
 function writeFeatureTab_Serverpotentials() {
@@ -162,6 +164,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Pet pickup gives preference to player attacks.");
         addFeature("Channel capacity bar and worlds with capacity check.");
         addFeature("Diseases visible for others, even after changing maps.");
+        addFeature("Persistent diseases. Players keep their status on login.");
         addFeature("Poison damage value visible for other players.");
         addFeature("M. book announcer displays info based on demand.");
         addFeature("Custom jail system.");

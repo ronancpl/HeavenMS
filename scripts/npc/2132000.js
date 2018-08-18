@@ -1,4 +1,4 @@
-/* Author: aaroncsn(MapleSea Like)(Incomplete)
+/* Author: aaroncsn <(MapleSea Like)(Incomplete)>
 	NPC Name: 		Kanderun
 	Map(s): 		Elin Forest:Entrance to Rocky Mountain(300010400)
 	Description: 		Unknown

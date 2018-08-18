@@ -20,7 +20,7 @@
 */
 /*Aldol
  *
- *@author SharpAceX (Alan)
+ *@author Alan (SharpAceX)
  *@author Ronan
  */
 importPackage(Packages.server.expeditions);

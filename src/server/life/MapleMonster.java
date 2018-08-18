@@ -156,7 +156,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return hp.get();
     }
     
-    public void addHp(int hp) {
+    public synchronized void addHp(int hp) {
+        if(this.hp.get() <= 0) return;
         this.hp.addAndGet(hp);
     }
     
@@ -287,6 +288,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
+    public synchronized void disposeMapObject() {     // mob is no longer associated with the map it was in
+        hp.set(-1);
+    }
+    
     public void broadcastMobHpBar(MapleCharacter from) {
         if (hasBossHPBar()) {
             from.setPlayerAggro(this.hashCode());
@@ -307,13 +312,58 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
+    public boolean damage(MapleCharacter attacker, int damage, boolean stayAlive) {
+        boolean lastHit = false;
+        
+        this.lockMonster();
+        try {
+            if (!this.isAlive()) {
+                return false;
+            }
+
+            /* pyramid not implemented
+            Pair<Integer, Integer> cool = this.getStats().getCool();
+            if (cool != null) {
+                Pyramid pq = (Pyramid) chr.getPartyQuest();
+                if (pq != null) {
+                    if (damage > 0) {
+                        if (damage >= cool.getLeft()) {
+                            if ((Math.random() * 100) < cool.getRight()) {
+                                pq.cool();
+                            } else {
+                                pq.kill();
+                            }
+                        } else {
+                            pq.kill();
+                        }
+                    } else {
+                        pq.miss();
+                    }
+                    killed = true;
+                }
+            }
+            */
+
+            if (damage > 0) {
+                this.applyDamage(attacker, damage, stayAlive);
+                if (!this.isAlive()) {  // monster just died
+                    lastHit = true;
+                }
+            }
+        } finally {
+            this.unlockMonster();
+        }
+        
+        return lastHit;
+    }
+    
     /**
      *
      * @param from the player that dealt the damage
      * @param damage
      * @param stayAlive
      */
-    public synchronized void damage(MapleCharacter from, int damage, boolean stayAlive) {
+    private void applyDamage(MapleCharacter from, int damage, boolean stayAlive) {
         Integer trueDamage = applyAndGetHpDamage(damage, stayAlive);
         if (trueDamage == null) {
             return;
@@ -628,10 +678,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
-    public synchronized void dispatchMonsterKilled(boolean hasKiller) {
-        if(!hasKiller) {
-            dispatchUpdateQuestMobCount();
-        }
+    public void dispatchMonsterKilled(boolean hasKiller) {
+        processMonsterKilled(hasKiller);
         
         EventInstanceManager eim = getMap().getEventInstance();
         if (eim != null) {
@@ -640,6 +688,12 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             } else {
                 eim.friendlyKilled(this, hasKiller);
             }
+        }
+    }
+    
+    private synchronized void processMonsterKilled(boolean hasKiller) {
+        if(!hasKiller) {
+            dispatchUpdateQuestMobCount();
         }
         
         MonsterListener[] listenersList;
@@ -1321,7 +1375,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                 }
             }
             if (damage > 0) {
-                damage(chr, damage, true);
+                lockMonster();
+                try {
+                    applyDamage(chr, damage, true);
+                } finally {
+                    unlockMonster();
+                }
+                
                 if (type == 1) {
                     map.broadcastMessage(MaplePacketCreator.damageMonster(getObjectId(), damage), getPosition());
                 } else if (type == 2) {

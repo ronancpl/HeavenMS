@@ -37,6 +37,11 @@ public final class OwlWarpHandler extends AbstractMaplePacketHandler {
         int ownerid = slea.readInt();
         int mapid = slea.readInt();
         
+        if(ownerid == c.getPlayer().getId()) {
+            c.announce(MaplePacketCreator.serverNotice(1, "You cannot visit your own shop."));
+            return;
+        }
+        
         MapleHiredMerchant hm = c.getWorldServer().getHiredMerchant(ownerid);   // if both hired merchant and player shop is on the same map
         MaplePlayerShop ps;
         if(hm == null || hm.getMapId() != mapid || !hm.hasItem(c.getPlayer().getOwlSearch())) {

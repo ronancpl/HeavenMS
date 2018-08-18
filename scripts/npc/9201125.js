@@ -23,11 +23,13 @@
 
     Version
     |- 1.0 by Jayd
+    |- 1.1 by Ronan (check job requirements)
  */
 
 var status;
 var map = 101000003;
 var job = "Magician";
+var jobType = 2;
 var no = "Come back to me if you decided to be a #b"+job+"#k.";
 
 function start() {
@@ -52,7 +54,12 @@ function action(mode, type, selection) {
 
         if(status == 0) {
             if (cm.getJob() == "BEGINNER") {
-                cm.sendYesNo("Hey #h #, I can send you to #b#m"+map+"##k if you want to be a #b"+job+"#k. Do you want to go now?");
+                if (cm.getLevel() >= 8 && cm.canGetFirstJob(jobType)) {
+                    cm.sendYesNo("Hey #h #, I can send you to #b#m"+map+"##k if you want to be a #b"+job+"#k. Do you want to go now?");
+                } else {
+                    cm.sendOk("If you want to be a #b"+job+"#k, train yourself further until you reach #blevel 8, " + cm.getFirstJobStatRequirement(jobType) + "#k.");
+                    cm.dispose();
+                }
             } else {
                 cm.sendOk("You're much stronger now. Keep training!");
                 cm.dispose();

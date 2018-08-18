@@ -117,14 +117,16 @@ public class MapleGuild {
             return;
         }
         Set<Integer> chs = Server.getInstance().getOpenChannels(world);
-        if (notifications.keySet().size() != chs.size()) {
-            notifications.clear();
-            for (Integer ch : chs) {
-                notifications.put(ch, new LinkedList<Integer>());
-            }
-        } else {
-            for (List<Integer> l : notifications.values()) {
-                l.clear();
+        synchronized (notifications) {
+            if (notifications.keySet().size() != chs.size()) {
+                notifications.clear();
+                for (Integer ch : chs) {
+                    notifications.put(ch, new LinkedList<Integer>());
+                }
+            } else {
+                for (List<Integer> l : notifications.values()) {
+                    l.clear();
+                }
             }
         }
         
@@ -134,7 +136,11 @@ public class MapleGuild {
                 if (!mgc.isOnline()) {
                     continue;
                 }
-                List<Integer> chl = notifications.get(mgc.getChannel());
+                
+                List<Integer> chl;
+                synchronized (notifications) {
+                    chl = notifications.get(mgc.getChannel());
+                }
                 if (chl != null) chl.add(mgc.getId());
                 //Unable to connect to Channel... error was here
             }
@@ -279,26 +285,31 @@ public class MapleGuild {
     }
 
     public void broadcast(final byte[] packet, int exceptionId, BCOp bcop) {
-        synchronized (notifications) {
-            if (bDirty) {
-                buildNotifications();
-            }
-            try {
-                for (Integer b : Server.getInstance().getOpenChannels(world)) {
-                    if (notifications.get(b).size() > 0) {
-                        if (bcop == BCOp.DISBAND) {
-                            Server.getInstance().getWorld(world).setGuildAndRank(notifications.get(b), 0, 5, exceptionId);
-                        } else if (bcop == BCOp.EMBLEMCHANGE) {
-                            Server.getInstance().getWorld(world).changeEmblem(this.id, notifications.get(b), new MapleGuildSummary(this));
-                        } else {
-                            Server.getInstance().getWorld(world).sendPacket(notifications.get(b), packet, exceptionId);
+        membersLock.lock(); // membersLock awareness thanks to ProjectNano dev team
+        try {
+            synchronized (notifications) {
+                if (bDirty) {
+                    buildNotifications();
+                }
+                try {
+                    for (Integer b : Server.getInstance().getOpenChannels(world)) {
+                        if (notifications.get(b).size() > 0) {
+                            if (bcop == BCOp.DISBAND) {
+                                Server.getInstance().getWorld(world).setGuildAndRank(notifications.get(b), 0, 5, exceptionId);
+                            } else if (bcop == BCOp.EMBLEMCHANGE) {
+                                Server.getInstance().getWorld(world).changeEmblem(this.id, notifications.get(b), new MapleGuildSummary(this));
+                            } else {
+                                Server.getInstance().getWorld(world).sendPacket(notifications.get(b), packet, exceptionId);
+                            }
                         }
                     }
+                } catch (Exception re) {
+                    re.printStackTrace();
+                    System.out.println("Failed to contact channel(s) for broadcast.");//fu?
                 }
-            } catch (Exception re) {
-                re.printStackTrace();
-                System.out.println("Failed to contact channel(s) for broadcast.");//fu?
             }
+        } finally {
+            membersLock.unlock();
         }
     }
 

@@ -29,7 +29,7 @@ import client.MapleClient;
 /**
  * Logs packets to console and file.
  *
- * @author SharpAceX (Alan)
+ * @author Alan (SharpAceX)
  */
 
 public class MapleLogger {

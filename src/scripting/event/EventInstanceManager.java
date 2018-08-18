@@ -224,14 +224,18 @@ public class EventInstanceManager {
                 
 	}
 
-	public void registerPlayer(MapleCharacter chr) {
-		if (chr == null || !chr.isLoggedin()){
+	public synchronized void registerPlayer(MapleCharacter chr) {
+		if (chr == null || !chr.isLoggedinWorld() || disposed) {
 			return;
 		}
                 
                 try {
                         wL.lock();
                         try {
+                                if(chars.containsKey(chr.getId())) {
+                                        return;
+                                }
+                                
                                 chars.put(chr.getId(), chr);
                                 chr.setEventInstance(this);
                         } finally {
@@ -249,7 +253,7 @@ public class EventInstanceManager {
 		}
 	}  
         
-        public void exitPlayer(MapleCharacter chr) {    //unused
+        public void exitPlayer(MapleCharacter chr) {
 		if (chr == null || !chr.isLoggedin()){
 			return;
 		}
@@ -299,7 +303,7 @@ public class EventInstanceManager {
                                                 sL.unlock();
                                         }
                                 } catch (ScriptException | NoSuchMethodException ex) {
-                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, "Event '" + em.getName() + "' does not implement scheduledTimeout function.", ex);
                                 }
                         }
                 }, time);
@@ -324,7 +328,7 @@ public class EventInstanceManager {
                                                                 sL.unlock();
                                                         }
                                                 } catch (ScriptException | NoSuchMethodException ex) {
-                                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                                                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, "Event '" + em.getName() + "' does not implement scheduledTimeout function.", ex);
                                                 }
                                         }
                                 }, nextTime);
@@ -397,7 +401,7 @@ public class EventInstanceManager {
                                 sL.unlock();
                         }
                 } catch (ScriptException | NoSuchMethodException ex) {
-                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, "Event '" + em.getName() + "' does not implement playerUnregistered function.", ex);
                 }
                         
                 wL.lock();

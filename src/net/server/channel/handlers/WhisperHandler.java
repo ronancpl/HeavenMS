@@ -27,7 +27,6 @@ import java.sql.SQLException;
 
 import net.AbstractMaplePacketHandler;
 import net.server.world.World;
-import tools.LogHelper;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
@@ -42,7 +41,8 @@ import java.sql.Connection;
  * @author Matze
  */
 public final class WhisperHandler extends AbstractMaplePacketHandler {
-	
+    
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         byte mode = slea.readByte();
         if (mode == 6) { // whisper
@@ -92,7 +92,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 } else {
                     c.announce(MaplePacketCreator.getFindReply(victim.getName(), victim.getMap().getId(), 1));
                 }
-            } else { // not found
+            } else if (c.getPlayer().gmLevel() > 1) { // not found
                 try {
                     Connection con = DatabaseConnection.getConnection();
                     PreparedStatement ps = con.prepareStatement("SELECT gm FROM characters WHERE name = ?");
@@ -116,6 +116,8 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            } else {
+                c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
             }
         } else if (mode == 0x44) {
             //Buddy find?

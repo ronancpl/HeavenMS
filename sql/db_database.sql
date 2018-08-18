@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `birthday` date NOT NULL DEFAULT '0000-00-00',
   `banned` tinyint(1) NOT NULL DEFAULT '0',
   `banreason` text,
-  `gm` tinyint(1) NOT NULL DEFAULT '0',
   `macs` tinytext,
   `nxCredit` int(11) DEFAULT NULL,
   `maplePoint` int(11) DEFAULT NULL,
@@ -16471,6 +16470,16 @@ CREATE TABLE IF NOT EXISTS `petignores` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `petid` int(10) unsigned NOT NULL ,
   `itemid` int(10) unsigned NOT NULL ,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `playerdiseases` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `charid` int(11) NOT NULL,
+  `disease` int(11) NOT NULL,
+  `mobskillid` int(11) NOT NULL,
+  `mobskilllv` int(11) NOT NULL,
+  `length` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

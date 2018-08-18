@@ -2,7 +2,7 @@ package server.gachapon;
 
 /**
 *
-* @author SharpAceX(Alan)
+* @author Alan (SharpAceX)
 */
 
 public class Global extends GachaponItems {

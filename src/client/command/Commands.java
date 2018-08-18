@@ -1201,7 +1201,7 @@ public class Commands {
                                         player.dropMessage(5, "Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
                                 } else {
                                         MapleMap map = victim.getMap();
-                                        player.changeMap(map, map.findClosestPortal(victim.getPosition()));
+                                        player.forceChangeMap(map, map.findClosestPortal(victim.getPosition()));
                                 }
                         } else {
                                 player.dropMessage(6, "Unknown player.");
@@ -2416,6 +2416,72 @@ public class Commands {
                                 }
                         } catch(Exception e) {}
 			break;
+                    
+                case "startquest":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !startquest <questid>");
+				break;
+			}
+                        
+                        int questid = Integer.parseInt(sub[1]);
+                        
+                        if (player.getQuestStatus(questid) == 0) {
+                                MapleQuest quest = MapleQuest.getInstance(questid);
+                                if (quest != null) {
+                                        int npcid = quest.getNpcRequirement(false);
+                                        quest.forceStart(player, npcid);
+                                        player.dropMessage(5, "QUEST " + questid + " started.");
+                                } else {
+                                        player.dropMessage(5, "QUESTID " + questid + " is invalid.");
+                                }
+                        } else {
+                                player.dropMessage(5, "QUESTID " + questid + " already started/completed.");
+                        }
+                        
+                        break;
+                
+                case "completequest":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !completequest <questid>");
+				break;
+			}
+                    
+                        int questId = Integer.parseInt(sub[1]);
+                        
+                        if (player.getQuestStatus(questId) == 1) {
+                                MapleQuest quest = MapleQuest.getInstance(questId);
+                                if (quest != null) {
+                                        int npcid = quest.getNpcRequirement(true);
+                                        quest.forceComplete(player, npcid);
+                                        player.dropMessage(5, "QUEST " + questId + " completed.");
+                                } else {    // should not occur
+                                        player.dropMessage(5, "QUESTID " + questId + " is invalid.");
+                                }
+                        } else {
+                                player.dropMessage(5, "QUESTID " + questId + " not started or already completed.");
+                        }
+                        
+                        break;
+                    
+                case "resetquest":
+                        if (sub.length < 2){
+				player.yellowMessage("Syntax: !resetquest <questid>");
+				break;
+			}
+                    
+                        int questid_ = Integer.parseInt(sub[1]);
+                        
+                        if (player.getQuestStatus(questid_) != 0) {
+                                MapleQuest quest = MapleQuest.getInstance(questid_);
+                                if (quest != null) {
+                                        quest.reset(player);
+                                        player.dropMessage(5, "QUEST " + questid_ + " reseted.");
+                                } else {    // should not occur
+                                        player.dropMessage(5, "QUESTID " + questid_ + " is invalid.");
+                                }
+                        }
+                        
+                        break;
                     
                 default:
                         return false;

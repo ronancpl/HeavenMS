@@ -1,4 +1,4 @@
-/* Author: aaroncsn (MapleSea Like)
+/* Author: aaroncsn <MapleSea Like>
 	NPC Name: 		Badr
 	Map(s): 		The Burning Road: Ariant(2600000000)
 	Description: 	Ariant Plastic Surgery

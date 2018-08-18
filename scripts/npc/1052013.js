@@ -61,10 +61,10 @@ function action(mode, type, selection) {
                                                         cm.dispose();
                                                         return;
                                                 } else {
-                                                        cm.sendYesNo("Your team must collect #r" + couponsNeeded + "#k coupons to complete this event. Talk to me when you have the right amount in hands... Or you want to #bquit now#k? Note that if you quit now #ryour team will be forced to quit#k as well.");
+                                                        cm.sendYesNo("Your team must collect #r" + couponsNeeded + "#k coupons to complete this instance. Talk to me when you have the right amount in hands... Or you want to #bquit now#k? Note that if you quit now #ryour team will be forced to quit#k as well.");
                                                 }
                                         } else {
-                                                cm.sendYesNo("Your team must collect #r" + couponsNeeded + "#k coupons to complete this event. Let your leader talk to me with the right amount in hands... Or you want to #bquit now#k? Note that if you quit now your team #rmay become undermanned#k to complete this event.");
+                                                cm.sendYesNo("Your team must collect #r" + couponsNeeded + "#k coupons to complete this instance. Let your leader talk to me with the right amount in hands... Or you want to #bquit now#k? Note that if you quit now your team #rmay become undermanned#k to further continue this instance.");
                                         }
                                 } else {
                                         if(!eim.giveEventReward(cm.getPlayer())) {

@@ -66,14 +66,13 @@ function action(mode, type, selection) {
                         } else {
                             stage = parseInt(eim.getProperty("stage1phase"));
                         }
+                        
                         if (stage == 1) {
                             cm.sendOk("In this challenge, I shall show a pattern on the statues around me. When I give the word, repeat the pattern to me to proceed.");
-                        }
-                        else {
+                        } else {
                             cm.sendOk("I shall now present a more difficult puzzle for you. Good luck.");
                         }
-                    }
-                    else if (eim.getProperty("stage1status").equals("active")) {
+                    } else if (eim.getProperty("stage1status").equals("active")) {
                         stage = parseInt(eim.getProperty("stage1phase"));
                         
                         if (eim.getProperty("stage1combo").equals(eim.getProperty("stage1guess"))) {
@@ -97,8 +96,7 @@ function action(mode, type, selection) {
                         }
                         eim.setProperty("stage1status", "waiting");
                         cm.dispose();
-                    }
-                    else {
+                    } else {
                         cm.sendOk("The statues are working on the pattern. Please wait.");
                         cm.dispose();
                     }
@@ -116,7 +114,7 @@ function action(mode, type, selection) {
                     cm.dispose();
                 }
             } else {
-                cm.sendOk("I need the leader of this event to speak with me, nobody else.");
+                cm.sendOk("I need the leader of this instance to speak with me, nobody else.");
                 cm.dispose();
             }
         }
@@ -134,7 +132,7 @@ function getReactors() {
             reactors.push(mo.getObjectId());
         }
     }
-        
+    
     return reactors;
 }
 

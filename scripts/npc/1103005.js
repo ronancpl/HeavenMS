@@ -24,7 +24,7 @@
  * @ID: 1103005
  * @Map Id: 913040006
  * @Function: Cygnus Creator
- * @Author Jay (text)
+ * @Author Jay <text>
  * @Author David
  */
 

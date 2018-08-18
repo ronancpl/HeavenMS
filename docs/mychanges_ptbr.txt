@@ -1227,3 +1227,23 @@ Modificado algumas tabelas em ThreadTracker e World para usar Integer ao invés 
 07 Agosto 2018,
 Corrigido um bug na fase de login que nao construia corretamente overview de characters sem itens equipados, lancando excecoes posteriormente.
 Revisado alguns casos de borda com doors levando as mesmas a nao sumirem imediatamente em certos cenarios.
+
+08 - 10 Agosto 2018,
+Adicionado registro de diseases na DB. Agora jogadores continuam com diseases ao voltar a logar no jogo.
+Corrigido exploit com jogadores podendo visitar sua propria loja via owl.
+Corrigido varios problemas de acesso concorrente e deadlocks em recursos do MapleMap e MapleMonster.
+Implementado character slots para cobrir limite de personagens por conta (ao inves de 3 em cada mundo).
+Corrigido diversos problemas com character slots ao entrar/sair do cash shop (erro ligado a alternancia de MapleClients).
+Corrigido exploit com quest de Papulatus, onde jogadores poderiam gerar cracks of dimension por desistir de quests.
+Corrigido jogadores podendo ser registrados em event instances mesmo quando estas ja estao liberadas (disposed).
+Corrigido comando "reach" nao funcionando corretamente para casos que envolvam event instances.
+Implementado um sistema avancado e seguro de escalonamento de requisicoes delegadas com iniciar nova PQs.
+
+13 - 14 Agosto 2018,
+Corrigido quest "Revealed Identity" erroneamente requisitando itens de quest anteriores de jogadores, impossibilitando jogadores de comecar quests em certos casos.
+Melhorado handler de whisper, agora buscando referencias a DB somente em casos onde o jogador eh GM.
+Retirado campo de GM da tabela "accounts".
+Corrigido estatuas do stage1 da GuildPQ nao funcionando corretamente.
+Alterado varias strings de NPCs e de mensagens utilizando a palavra "evento" querendo dizer instancias (julgamento subjetivo).
+Adicionado comandos para start, complete e reset quests.
+Adicionado scripts para meteoritos de Omega Sector.

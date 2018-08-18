@@ -40,7 +40,7 @@ function act() {
                 if(!rm.getReactor().isRecentHitFromAttack()) {
                     var prevCombo = eim.getProperty("stage1combo");
 
-                    var n = "" + rm.getReactor().getObjectId();
+                    var n = "" + (rm.getReactor().getObjectId() % 1000);
                     prevCombo += padWithZeroes(n, 3);
 
                     eim.setProperty("stage1combo",prevCombo);
@@ -53,7 +53,7 @@ function act() {
             } else { //active
                 var prevGuess = "" + eim.getProperty("stage1guess");
                 if (prevGuess.length != (3 * (stage + 3))) {
-                    var n = "" + rm.getReactor().getObjectId();
+                    var n = "" + (rm.getReactor().getObjectId() % 1000);
                     prevGuess += padWithZeroes(n, 3);
                     
                     eim.setProperty("stage1guess",prevGuess);

@@ -155,6 +155,7 @@ import constants.skills.Swordsman;
 import constants.skills.ThunderBreaker;
 import net.server.channel.handlers.PartyOperationHandler;
 import scripting.item.ItemScriptManager;
+import server.life.MobSkillFactory;
 import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
@@ -1370,6 +1371,35 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         eventAfterChangedMap(this.getMapId());
     }
     
+    public void forceChangeMap(final MapleMap target, final MaplePortal pto) {
+        // will actually enter the map given as parameter, regardless of being an eventmap or whatnot
+        
+        canWarpCounter++;
+        eventChangedMap(999999999);
+        
+        EventInstanceManager mapEim = target.getEventInstance();
+        if(mapEim != null) {
+            EventInstanceManager playerEim = this.getEventInstance();
+            if(playerEim != null) {
+                playerEim.exitPlayer(this);
+                if(playerEim.getPlayerCount() == 0) {
+                    playerEim.dispose();
+                }
+            }
+            
+            mapEim.registerPlayer(this);
+        }
+        
+        MapleMap to = getWarpMap(target.getId());
+        changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
+        canWarpMap = false;
+        
+        canWarpCounter--;
+        if(canWarpCounter == 0) canWarpMap = true;
+        
+        eventAfterChangedMap(this.getMapId());
+    }
+    
     private boolean buffMapProtection() {
         effLock.lock();
         chrLock.lock();
@@ -2073,6 +2103,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                             ps.setInt(1, cid);
                             ps.executeUpdate();
                     }
+                    try (PreparedStatement ps = con.prepareStatement("DELETE FROM playerdiseases WHERE charid = ?")) {
+                            ps.setInt(1, cid);
+                            ps.executeUpdate();
+                    }
                     try (PreparedStatement ps = con.prepareStatement("DELETE FROM area_info WHERE charid = ?")) {
                             ps.setInt(1, cid);
                             ps.executeUpdate();
@@ -2359,30 +2393,33 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 long expTime = curTime + di.getValue().getLeft();
                 
                 diseaseExpires.put(di.getKey(), expTime);
-                diseases.put(di.getKey(), new Pair<>(new MapleDiseaseValueHolder(curTime, expTime), di.getValue().getRight()));
+                diseases.put(di.getKey(), new Pair<>(new MapleDiseaseValueHolder(curTime, di.getValue().getLeft()), di.getValue().getRight()));
             }
         } finally {
             chrLock.unlock();
         }
     }
     
-    public void announceDiseases(MapleClient c) {
+    public void announceDiseases() {
+        Set<Entry<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>>> chrDiseases;
+        
         chrLock.lock();
         try {
             // Poison damage visibility and diseases status visibility, extended through map transitions thanks to Ronan
-            
             if(!this.isLoggedinWorld()) return;
             
-            for(Entry<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> di : diseases.entrySet()) {
-                MapleDisease disease = di.getKey();
-                MobSkill skill = di.getValue().getRight();
-                final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
-                
-                if(disease != MapleDisease.SLOW) c.announce(MaplePacketCreator.giveForeignDebuff(id, debuff, skill));
-                else c.announce(MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill));
-            }
+            chrDiseases = new LinkedHashSet<>(diseases.entrySet());
         } finally {
             chrLock.unlock();
+        }
+        
+        for(Entry<MapleDisease, Pair<MapleDiseaseValueHolder, MobSkill>> di : chrDiseases) {
+            MapleDisease disease = di.getKey();
+            MobSkill skill = di.getValue().getRight();
+            final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
+
+            if(disease != MapleDisease.SLOW) map.broadcastMessage(MaplePacketCreator.giveForeignDebuff(id, debuff, skill));
+            else map.broadcastMessage(MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill));
         }
     }
     
@@ -6276,11 +6313,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             }
             rs.close();
             ps.close();
-            ps = con.prepareStatement("SELECT name FROM accounts WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("SELECT name, characterslots FROM accounts WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ret.accountid);
             rs = ps.executeQuery();
             if (rs.next()) {
-                ret.getClient().setAccountName(rs.getString("name"));
+                MapleClient retClient = ret.getClient();
+                
+                retClient.setAccountName(rs.getString("name"));
+                retClient.setCharacterSlots(rs.getByte("characterslots"));
             }
             rs.close();
             ps.close();
@@ -6348,7 +6388,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     try (ResultSet rsProgress = pse.executeQuery()) {
                         while(rsProgress.next()) {
                             MapleQuestStatus status = loadedQuestStatus.get(rsProgress.getInt("queststatusid"));
-                            status.setProgress(rsProgress.getInt("progressid"), rsProgress.getString("progress"));
+                            if(status != null) {
+                                status.setProgress(rsProgress.getInt("progressid"), rsProgress.getString("progress"));
+                            }
                         }
                     }
                 }
@@ -6358,7 +6400,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                     try (ResultSet rsMedalMaps = pse.executeQuery()) {
                         while(rsMedalMaps.next()) {
                             MapleQuestStatus status = loadedQuestStatus.get(rsMedalMaps.getInt("queststatusid"));
-                            status.addMedalMap(rsMedalMaps.getInt("mapid"));
+                            if(status != null) {
+                                status.addMedalMap(rsMedalMaps.getInt("mapid"));
+                            }
                         }
                     }
                 }
@@ -6391,6 +6435,29 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 ps.setInt(1, ret.getId());
                 ps.executeUpdate();
                 ps.close();
+                Map<MapleDisease, Pair<Long, MobSkill>> loadedDiseases = new LinkedHashMap<>();
+                ps = con.prepareStatement("SELECT * FROM playerdiseases WHERE charid = ?");
+                ps.setInt(1, ret.getId());
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    final MapleDisease disease = MapleDisease.ordinal(rs.getInt("disease"));
+                    if(disease == MapleDisease.NULL) continue;
+                    
+                    final int skillid = rs.getInt("mobskillid"), skilllv = rs.getInt("mobskilllv");
+                    final long length = rs.getInt("length");
+                    
+                    MobSkill ms = MobSkillFactory.getMobSkill(skillid, skilllv);
+                    if(ms != null) {
+                        loadedDiseases.put(disease, new Pair<>(length, ms));
+                    }
+                }
+                rs.close();
+                ps.close();
+                ps = con.prepareStatement("DELETE FROM playerdiseases WHERE charid = ?");
+                ps.setInt(1, ret.getId());
+                ps.executeUpdate();
+                ps.close();
+                if(!loadedDiseases.isEmpty()) Server.getInstance().getPlayerBuffStorage().addDiseasesToStorage(ret.id, loadedDiseases);
                 ps = con.prepareStatement("SELECT * FROM skillmacros WHERE characterid = ?");
                 ps.setInt(1, charid);
                 rs = ps.executeQuery();
@@ -6921,8 +6988,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
     public synchronized void saveCooldowns() {
         List<PlayerCoolDownValueHolder> listcd = getAllCooldowns();
-                
-        if (listcd.size() > 0) {
+        
+        if (!listcd.isEmpty()) {
             try {
                 Connection con = DatabaseConnection.getConnection();
                 deleteWhereCharacterId(con, "DELETE FROM cooldowns WHERE charid = ?");
@@ -6934,6 +7001,33 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         ps.setLong(4, cooling.length);
                         ps.addBatch();
                     }
+                    ps.executeBatch();
+                }
+                
+                con.close();
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        
+        Map<MapleDisease, Pair<Long, MobSkill>> listds = getAllDiseases();
+        if (!listds.isEmpty()) {
+            try {
+                Connection con = DatabaseConnection.getConnection();
+                deleteWhereCharacterId(con, "DELETE FROM playerdiseases WHERE charid = ?");
+                try (PreparedStatement ps = con.prepareStatement("INSERT INTO playerdiseases (charid, disease, mobskillid, mobskilllv, length) VALUES (?, ?, ?, ?, ?)")) {
+                    ps.setInt(1, getId());
+                    
+                    for (Entry<MapleDisease, Pair<Long, MobSkill>> e : listds.entrySet()) {
+                        ps.setInt(2, e.getKey().ordinal());
+                        
+                        MobSkill ms = e.getValue().getRight();
+                        ps.setInt(3, ms.getSkillId());
+                        ps.setInt(4, ms.getSkillLevel());
+                        ps.setInt(5, e.getValue().getLeft().intValue());
+                        ps.addBatch();
+                    }
+                    
                     ps.executeBatch();
                 }
                 
@@ -7454,13 +7548,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             psf.close();
             ps.close();
             
-            ps = con.prepareStatement("UPDATE accounts SET gm = ? WHERE id = ?");
-            ps.setInt(1, gmLevel > 1 ? 1 : 0);
-            ps.setInt(2, client.getAccID());
-            ps.executeUpdate();
-            ps.close();
-            
-	    
             con.commit();
             con.setAutoCommit(true);
 	    

@@ -863,11 +863,11 @@ public class MaplePacketCreator {
                 List<MapleCharacter> chars = c.loadCharacters(serverId);
                 mplew.write((byte) chars.size());
                 for (MapleCharacter chr : chars) {
-                        addCharEntry(mplew, chr, false);      
+                        addCharEntry(mplew, chr, false);
                 }
 
                 mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic() == null ? 0 : 1) : 2);
-                mplew.writeInt(c.getCharacterSlots());
+                mplew.writeInt(ServerConstants.COLLECTIVE_CHARSLOT ? chars.size() + c.getAvailableCharacterSlots() : c.getCharacterSlots());
                 return mplew.getPacket();
         }
 
@@ -2812,7 +2812,7 @@ public class MaplePacketCreator {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GIVE_FOREIGN_BUFF.getValue());
                 mplew.writeInt(cid);
-                mplew.writeLong(MapleBuffStat.MONSTER_RIDING.getValue()); //Thanks?
+                mplew.writeLong(MapleBuffStat.MONSTER_RIDING.getValue());
                 mplew.writeLong(0);
                 mplew.writeShort(0);
                 mplew.writeInt(mount.getItemId());
@@ -6079,14 +6079,14 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] enableReport() { // by snow
+        public static byte[] enableReport() { // thanks to snow
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(3);
                 mplew.writeShort(SendOpcode.CLAIM_STATUS_CHANGED.getValue());
                 mplew.write(1);
                 return mplew.getPacket();
         }
 
-        public static byte[] giveFinalAttack(int skillid, int time) {//packets found by lailainoob
+        public static byte[] giveFinalAttack(int skillid, int time) { // packets found thanks to lailainoob
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GIVE_BUFF.getValue());
                 mplew.writeLong(0);

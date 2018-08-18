@@ -83,7 +83,7 @@ function action(mode, type, selection) {
                                 cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
                                 cm.dispose();
                         } else {
-                                cm.sendOk("#e#b<Party Quest: Amorian Challenge>#k#n\r\nI am Amos, hoster of the well-round famed Amorian Challenge. The event consist of many team puzzles, where cooperation is the fundamental key for progress. Team up with other players to attempt for the bonus stage, where many goodies can be obtained at the end of the event. If an all-couple party is formed, they can get even better prizes on the extra bonus stage.");
+                                cm.sendOk("#e#b<Party Quest: Amorian Challenge>#k#n\r\nI am Amos, hoster of the well-round famed Amorian Challenge. The instance consist of many team puzzles, where cooperation is the fundamental key for progress. Team up with other players to attempt for the bonus stage, where many goodies can be obtained at the end of the instance. If an all-couple party is formed, they can get even better prizes on the extra bonus stage.");
                                 cm.dispose();
                         }
                 }

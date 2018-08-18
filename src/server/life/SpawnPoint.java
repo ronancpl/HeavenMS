@@ -24,6 +24,7 @@ package server.life;
 import client.MapleCharacter;
 import java.awt.Point;
 import java.util.concurrent.atomic.AtomicInteger;
+import net.server.Server;
 
 public class SpawnPoint {
     private int monster, mobTime, team, fh, f;
@@ -42,7 +43,7 @@ public class SpawnPoint {
         this.f = monster.getF();
         this.immobile = immobile;
         this.mobInterval = mobInterval;
-        this.nextPossibleSpawn = System.currentTimeMillis();
+        this.nextPossibleSpawn = Server.getInstance().getCurrentTime();
     }
     
     public int getSpawned() {
@@ -61,7 +62,7 @@ public class SpawnPoint {
     	if (denySpawn || mobTime < 0 || spawnedMonsters.get() > 0) {
             return false;
         }
-        return nextPossibleSpawn <= System.currentTimeMillis();
+        return nextPossibleSpawn <= Server.getInstance().getCurrentTime();
     }
 
     public boolean shouldForceSpawn() {
@@ -82,7 +83,7 @@ public class SpawnPoint {
         mob.addListener(new MonsterListener() {
             @Override
             public void monsterKilled(int aniTime) {
-                nextPossibleSpawn = System.currentTimeMillis();
+                nextPossibleSpawn = Server.getInstance().getCurrentTime();
                 if (mobTime > 0) {
                     nextPossibleSpawn += mobTime * 1000;
                 } else {
@@ -98,7 +99,7 @@ public class SpawnPoint {
             public void monsterHealed(int trueHeal) {}
         });
         if (mobTime == 0) {
-            nextPossibleSpawn = System.currentTimeMillis() + mobInterval;
+            nextPossibleSpawn = Server.getInstance().getCurrentTime() + mobInterval;
         }
         return mob;
     }

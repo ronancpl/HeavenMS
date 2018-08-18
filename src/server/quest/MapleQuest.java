@@ -540,6 +540,17 @@ public class MapleQuest {
                 return medalid != null ? medalid : -1;
         }
         
+        public int getNpcRequirement(boolean complete) {
+                Map<MapleQuestRequirementType, MapleQuestRequirement> reqs = !complete ? startReqs : completeReqs;
+                
+                MapleQuestRequirement mqr = reqs.get(MapleQuestRequirementType.NPC);
+                if (mqr != null) {
+                        return ((NpcRequirement) mqr).get();
+                } else {
+                        return -1;
+                }
+        }
+        
 	public static void loadAllQuest() {
 		questInfo = questData.getData("QuestInfo.img");
 		questReq = questData.getData("Check.img");

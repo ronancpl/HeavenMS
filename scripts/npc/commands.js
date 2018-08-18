@@ -162,6 +162,9 @@ function writeHeavenMSCommandsLv3() {    //GM
         addCommand("npc", "");
         addCommand("face", "");
         addCommand("hair", "");
+        addCommand("startquest", "");
+        addCommand("completequest", "");
+        addCommand("resetquest", "");
 }
 
 function writeHeavenMSCommandsLv2() {    //JrGM

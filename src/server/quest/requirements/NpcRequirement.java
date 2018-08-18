@@ -49,4 +49,8 @@ public class NpcRequirement extends MapleQuestRequirement {
 	public boolean check(MapleCharacter chr, Integer npcid) {
 		return npcid != null && npcid == reqNPC;
 	}
+        
+        public int get() {
+                return reqNPC;
+        }
 }

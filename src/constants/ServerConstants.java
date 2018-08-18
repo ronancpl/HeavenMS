@@ -32,6 +32,7 @@ public class ServerConstants {
     
     public static final boolean AUTOMATIC_REGISTER = true;      //Automatically register players when they login with a nonexistent username.
     public static final boolean BCRYPT_MIGRATION = true;        //Performs a migration from old SHA-1 and SHA-512 password to bcrypt.
+    public static final boolean COLLECTIVE_CHARSLOT = false;     //Available character slots are contabilized globally rather than per world server.
     
     //Ip Configuration
     public static String HOST;

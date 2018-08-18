@@ -100,6 +100,7 @@ public class Server {
     private final Properties subnetInfo = new Properties();
     private static Server instance = null;
     private final Map<Integer, Set<Integer>> accountChars = new HashMap<>();
+    private final Map<Integer, Short> accountCharacterCount = new HashMap<>();
     private final Map<Integer, Integer> worldChars = new HashMap<>();
     private final Map<String, Integer> transitioningChars = new HashMap<>();
     private List<Pair<Integer, String>> worldRecommendedList = new LinkedList<>();
@@ -601,9 +602,7 @@ public class Server {
             MapleClient c = processDiseaseAnnounceClients.remove(0);
             MapleCharacter player = c.getPlayer();
             if(player != null && player.isLoggedinWorld()) {
-                for(MapleCharacter chr : player.getMap().getCharacters()) {
-                    chr.announceDiseases(c);
-                }
+                player.announceDiseases();
             }
         }
         
@@ -1089,6 +1088,32 @@ public class Server {
         }
     }
     
+    public short getAccountCharacterCount(Integer accountid) {
+        lgnRLock.lock();
+        try {
+            return accountCharacterCount.get(accountid);
+        } finally {
+            lgnRLock.unlock();
+        }
+    }
+    
+    public short getAccountWorldCharacterCount(Integer accountid, Integer worldid) {
+        lgnRLock.lock();
+        try {
+            short count = 0;
+            
+            for(Integer chr : accountChars.get(accountid)) {
+                if(worldChars.get(chr).equals(worldid)) {
+                    count++;
+                }
+            }
+            
+            return count;
+        } finally {
+            lgnRLock.unlock();
+        }
+    }
+    
     private Set<Integer> getAccountCharacterEntries(Integer accountid) {
         lgnRLock.lock();
         try {
@@ -1115,6 +1140,8 @@ public class Server {
         
         lgnWLock.lock();
         try {
+            accountCharacterCount.put(accountid, (short)(accountCharacterCount.get(accountid) + 1));
+            
             Set<Integer> accChars = accountChars.get(accountid);
             accChars.add(chrid);
             
@@ -1132,6 +1159,8 @@ public class Server {
     public void deleteCharacterEntry(Integer accountid, Integer chrid) {
         lgnWLock.lock();
         try {
+            accountCharacterCount.put(accountid, (short)(accountCharacterCount.get(accountid) - 1));
+            
             Set<Integer> accChars = accountChars.get(accountid);
             accChars.remove(chrid);
             
@@ -1169,6 +1198,7 @@ public class Server {
     public void deleteAccountEntry(Integer accountid) { is this even a thing?
         lgnWLock.lock();
         try {
+            accountCharacterCount.remove(accountid);
             accountChars.remove(accountid);
         } finally {
             lgnWLock.unlock();
@@ -1190,6 +1220,7 @@ public class Server {
                 List<MapleCharacter> wchars = w.getAccountCharactersView(accountId);
                 if(wchars == null) {
                     if(!accountChars.containsKey(accountId)) {
+                        accountCharacterCount.put(accountId, (short) 0);
                         accountChars.put(accountId, new HashSet<Integer>());    // not advisable at all to write on the map on a read-protected environment
                     }                                                           // yet it's known there's no problem since no other point in the source does
                 } else if(!wchars.isEmpty()) {                                  // this action.
@@ -1206,7 +1237,8 @@ public class Server {
         return new Pair<>(new Pair<>(chrTotal, lastwchars), accChars);
     }
     
-    private static List<List<MapleCharacter>> loadAccountCharactersViewFromDb(int accId, int wlen) {
+    private static Pair<Short, List<List<MapleCharacter>>> loadAccountCharactersViewFromDb(int accId, int wlen) {
+        short characterCount = 0;
         List<List<MapleCharacter>> wchars = new ArrayList<>(wlen);
         for(int i = 0; i < wlen; i++) wchars.add(i, new LinkedList<MapleCharacter>());
         
@@ -1231,8 +1263,10 @@ public class Server {
                 ps.setInt(1, accId);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
+                        characterCount++;
+                        
                         int cworld = rs.getByte("world");
-                        if(cworld >= wlen) break;
+                        if(cworld >= wlen) continue;
 
                         if(cworld > curWorld) {
                             wchars.add(curWorld, chars);
@@ -1253,7 +1287,7 @@ public class Server {
             sqle.printStackTrace();
         }
         
-        return wchars;
+        return new Pair<>(characterCount, wchars);
     }
     
     public void loadAccountCharacters(MapleClient c) {
@@ -1300,10 +1334,13 @@ public class Server {
     
     private int loadAccountCharactersView(Integer accId, int gmLevel, int fromWorldid) {    // returns the maximum gmLevel found
         List<World> wlist = this.getWorlds();
-        List<List<MapleCharacter>> accChars = loadAccountCharactersViewFromDb(accId, wlist.size());
+        Pair<Short, List<List<MapleCharacter>>> accCharacters = loadAccountCharactersViewFromDb(accId, wlist.size());
         
         lgnWLock.lock();
         try {
+            List<List<MapleCharacter>> accChars = accCharacters.getRight();
+            accountCharacterCount.put(accId, accCharacters.getLeft());
+            
             Set<Integer> chars = accountChars.get(accId);
             if(chars == null) {
                 chars = new HashSet<>(5);

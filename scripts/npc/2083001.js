@@ -96,7 +96,7 @@ function action(mode, type, selection) {
                         }
                 } else {
                         if(!cm.isEventLeader()) {
-                                cm.sendOk("Only your event leader is allowed to interact with the Schedule.");
+                                cm.sendOk("Only your party leader is allowed to interact with the Schedule.");
                         } else if(cm.getMapId() == 240050100) {
                                 if(cm.haveItem(4001087) && cm.haveItem(4001088) && cm.haveItem(4001089) && cm.haveItem(4001090) && cm.haveItem(4001091)) {
                                         cm.gainItem(4001087, -1);
