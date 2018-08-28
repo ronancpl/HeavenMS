@@ -40,16 +40,17 @@ import tools.FilePrinter;
 public class MapScriptManager {
 
     private static MapScriptManager instance = new MapScriptManager();
+    
+    public static MapScriptManager getInstance() {
+        return instance;
+    }
+    
     private Map<String, Invocable> scripts = new HashMap<>();
     private ScriptEngineFactory sef;
 
     private MapScriptManager() {
         ScriptEngineManager sem = new ScriptEngineManager();
         sef = sem.getEngineByName("javascript").getFactory();
-    }
-
-    public static MapScriptManager getInstance() {
-        return instance;
     }
 
     public void reloadScripts() {

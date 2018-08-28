@@ -781,8 +781,8 @@ public class EventManager {
         }
     }
     
-    public static int getTransportationTime(int travelTime) {
-        return (int) Math.ceil(travelTime / ServerConstants.TRAVEL_RATE);
+    public int getTransportationTime(int travelTime) {
+        return this.getWorldServer().getTransportationTime(travelTime);
     }
     
     private void fillEimQueue() {

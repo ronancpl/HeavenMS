@@ -111,6 +111,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Monsterbook displays updated drop data info.");
         addFeature("Every skill/mastery book is now obtainable.");
         addFeature("Mobs now can drop more than one of the same equip.");
+        addFeature("Mobs only drop items collectable by the player/party.");
         addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
@@ -146,10 +147,12 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("Pet evolutions functional (not GMS-like).");
         addFeature("Reviewed keybinding system.");
         addFeature("Character slots per world/server-wide.");
+        addFeature("Optional cash shop inventory separated by classes.");
 }
 
 function writeFeatureTab_Serverpotentials() {
         addFeature("Multi-worlds.");
+        addFeature("Each world can hold it's own rates from server bootup.");
         addFeature("Dynamic World/Channel deployment.");
         addFeature("Inventory auto-gather and auto-sorting feature.");
         addFeature("Enhanced auto-pot system: smart pet potion handle.");
@@ -158,13 +161,13 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced inventory check: free slots smartly fetched.");
         addFeature("Enhanced petloot handler: no brute-force inv. checks.");
         addFeature("Tweaked pet/mount hunger to a balanced growth rate.");
-        addFeature("Consistent experience gain system.");
+        addFeature("Consistent experience and meso gain system.");
         addFeature("NPC crafters won't take items freely anymore.");
         addFeature("Duey: pkg rcvd popup and many delivery mechanics.");
         addFeature("Pet pickup gives preference to player attacks.");
         addFeature("Channel capacity bar and worlds with capacity check.");
         addFeature("Diseases visible for others, even after changing maps.");
-        addFeature("Persistent diseases. Players keep their status on login.");
+        addFeature("Persistent diseases. Players keeps status on login.");
         addFeature("Poison damage value visible for other players.");
         addFeature("M. book announcer displays info based on demand.");
         addFeature("Custom jail system.");
@@ -182,9 +185,11 @@ function writeFeatureTab_Serverpotentials() {
 }
 
 function writeFeatureTab_AdminGMcommands() {
-        addFeature("Server commands layered by GM levels.");
         addFeature("Spawn Zakum/Horntail/Pinkbean.");
         addFeature("Several new commands.");
+        addFeature("Rank command highlighting users by world or overall.");
+        addFeature("Server commands layered by GM levels.");
+        addFeature("Revamped command files layout - thanks Arthur L!");
 }
 
 function writeFeatureTab_CustomNPCs() {
@@ -219,6 +224,7 @@ function writeFeatureTab_Project() {
         addFeature("Reviewed SQL data, eliminating duplicated entries.");
         addFeature("Improved login phase, using cache over DB queries.");
         addFeature("Protected many flaws with login management system.");
+        addFeature("Developed a robust anti-exploit login coordinator.");
         addFeature("Usage of HikariCP to improve DB connection calls.");
         addFeature("Developed many survey tools for content profiling.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");

@@ -35,7 +35,7 @@ import net.server.Server;
  * @author Quit
  * @author Ronan
  */
-public class RankingWorker implements Runnable {
+public class RankingLoginWorker implements Runnable {
     private Connection con;
     private long lastUpdate = System.currentTimeMillis();
     

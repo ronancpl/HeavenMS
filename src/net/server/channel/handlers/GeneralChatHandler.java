@@ -24,23 +24,13 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
-import client.command.Commands;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import client.command.CommandsExecutor;
 import net.AbstractMaplePacketHandler;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class GeneralChatHandler extends AbstractMaplePacketHandler {
-        private static boolean isCommandIssue(char heading, MapleCharacter chr) {
-                if(chr.gmLevel() > 1 && heading == '!') {
-                        return true;
-                } else {
-                        return heading == '@';
-                }
-        }
-    
+public final class GeneralChatHandler extends AbstractMaplePacketHandler {    
 	@Override
         public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
                 String s = slea.readMapleAsciiString();
@@ -56,19 +46,8 @@ public final class GeneralChatHandler extends AbstractMaplePacketHandler {
                         return;
                 }
                 char heading = s.charAt(0);
-                if (isCommandIssue(heading, chr)) {
-                        String[] sp = s.split(" ");
-                        sp[0] = sp[0].toLowerCase().substring(1);
-
-                        if(Commands.executeHeavenMsPlayerCommand(c, sp, heading)) {
-                            String command = "";
-                            for (String used : sp) {
-                                    command += used + " ";
-                            }
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                            FilePrinter.print(FilePrinter.USED_COMMANDS, c.getPlayer().getName() + " used: " + heading + command + "on " + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
-                        }
+                if (CommandsExecutor.isCommand(c, s)) {
+                        CommandsExecutor.getInstance().handle(c, s);
                 } else if (heading != '/') {
                         int show = slea.readByte();
                         if(chr.getMap().isMuted() && !chr.isGM()) {

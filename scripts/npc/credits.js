@@ -61,7 +61,7 @@ function writeServerStaff_MoopleDEV() {
 }
 
 function writeServerStaff_MetroMS() {
-        addPerson("Moongra", "Developer");
+        addPerson("Moogra", "Developer");
         setHistory(2009, 2010);
 }
 
@@ -73,6 +73,7 @@ function writeServerStaff_BubblesDEV() {
 
 function writeServerStaff_ThePackII() {
         addPerson("Hofer", "Developer");
+        addPerson("Moogra", "Developer");
         setHistory(2008, 2009);
 }
 

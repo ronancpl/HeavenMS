@@ -28,13 +28,17 @@ import java.util.HashSet;
 import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicLong;
 
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.Server;
-
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
+
+import client.MapleClient;
+import constants.ServerConstants;
+
+import net.server.Server;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.coordinator.MapleSessionCoordinator;
 
 import tools.FilePrinter;
 import tools.MapleAESOFB;
@@ -43,8 +47,6 @@ import tools.MaplePacketCreator;
 import tools.data.input.ByteArrayByteStream;
 import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.SeekableLittleEndianAccessor;
-import client.MapleClient;
-import constants.ServerConstants;
 import java.util.Arrays;
 
 import java.util.concurrent.locks.Lock;
@@ -89,8 +91,10 @@ public class MapleServerHandler extends IoHandlerAdapter {
             return;
         }
         
+        /*
     	System.out.println("disconnect by exception");
         cause.printStackTrace();
+        */
         
         if (cause instanceof IOException || cause instanceof ClassCastException) {
             return;
@@ -101,18 +105,27 @@ public class MapleServerHandler extends IoHandlerAdapter {
         }
     }
 
+    private boolean isLoginServerHandler() {
+        return channel == -1 && world == -1;
+    }
+    
     @Override
     public void sessionOpened(IoSession session) {
         if (!Server.getInstance().isOnline()) {
-            session.close(true);
+            MapleSessionCoordinator.getInstance().closeSession(session, true);
             return;
         }
-        if (channel > -1 && world > -1) {
+        
+        if (!isLoginServerHandler()) {
             if (Server.getInstance().getChannel(world, channel) == null) {
-                session.close(true);
+                MapleSessionCoordinator.getInstance().closeSession(session, true);
                 return;
             }
         } else {
+            if (!MapleSessionCoordinator.getInstance().canStartLoginSession(session)) {
+                return;
+            }
+            
             FilePrinter.print(FilePrinter.SESSION, "IoSession with " + session.getRemoteAddress() + " opened on " + sdf.format(Calendar.getInstance().getTime()), false);
         }
 
@@ -132,6 +145,12 @@ public class MapleServerHandler extends IoHandlerAdapter {
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
+        if (isLoginServerHandler()) {
+            MapleSessionCoordinator.getInstance().closeLoginSession(session);
+        } else {
+            MapleSessionCoordinator.getInstance().closeSession(session, null);
+        }
+        
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (client != null) {
             try {
@@ -190,7 +209,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private void registerIdleSession(MapleClient c) {
         if(idleLock.tryLock()) {
             try {
-                idleSessions.put(c, System.currentTimeMillis());
+                idleSessions.put(c, Server.getInstance().getCurrentTime());
                 c.announce(MaplePacketCreator.getPing());
             } finally {
                 idleLock.unlock();
@@ -198,7 +217,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         } else {
             tempLock.lock();
             try {
-                tempIdleSessions.put(c, System.currentTimeMillis());
+                tempIdleSessions.put(c, Server.getInstance().getCurrentTime());
                 c.announce(MaplePacketCreator.getPing());
             } finally {
                 tempLock.unlock();
@@ -207,7 +226,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     }
     
     private void manageIdleSessions() {
-        long timeNow = System.currentTimeMillis();
+        long timeNow = Server.getInstance().getCurrentTime();
         long timeThen = timeNow - 15000;
         
         idleLock.lock();

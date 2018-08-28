@@ -217,7 +217,7 @@ public final class Channel {
             acceptor.unbind();
             
             finishedShutdown = true;
-            System.out.println("Successfully shut down Channel " + channel + " on World " + world + "\r\n");          
+            System.out.println("Successfully shut down Channel " + channel + " on World " + world + "\r\n");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error while shutting down Channel " + channel + " on World " + world + "\r\n" + e);

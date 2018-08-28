@@ -1247,3 +1247,22 @@ Corrigido estatuas do stage1 da GuildPQ nao funcionando corretamente.
 Alterado varias strings de NPCs e de mensagens utilizando a palavra "evento" querendo dizer instancias (julgamento subjetivo).
 Adicionado comandos para start, complete e reset quests.
 Adicionado scripts para meteoritos de Omega Sector.
+
+18 - 19 Agosto 2018,
+Refatorado comandos, desacoplando e distribuindo código para várias classes separadas por GM ranks.
+Refatorado comando "ranks", não mais requisitando acesso à DB para recuperar informações de ranking.
+Corrigido comando "ranks" não avaliando donators corretamente.
+
+20 - 23 Agosto 2018,
+Implementado mecânica com loot de mobs onde somente itens coletáveis pelo jogador/party podem aparecer.
+Implementado server flag que permite explorers, cygnus e legends compartilharem mesmo inventário de cash shop.
+Corrigido método de ganho de mesos ignorando atualização de meso quando há overflow.
+Implementado suporte para rates específicos pra cada world (exp, meso, drop, quest e travel rates).
+Adicionado listagem de tipos para o comando de debug.
+Implementado sistema anti-multicliente e detector de tentativas inautorizadas de acesso a contas durante a fase de login.
+Corrigido setGender não modificando estado do cliente para não-logado ao cancelar a ação.
+
+24 Agosto 2018,
+Melhorado mecânica de logout de líder de party, passando a liderança adiante antes de efetivamente deslogar, permitindo assim instâncias a continuarem após a saída do mesmo, dadas circunstâncias favoráveis.
+Outra correção no XMLDomMapleData, que ainda continua dando NullPointerExceptions.
+Corrigido stati de mobs não protegido concorrentemente em certos casos.

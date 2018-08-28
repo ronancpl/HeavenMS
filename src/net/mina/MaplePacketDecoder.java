@@ -22,6 +22,7 @@
 package net.mina;
 
 import client.MapleClient;
+import net.server.coordinator.MapleSessionCoordinator;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.CumulativeProtocolDecoder;
@@ -39,7 +40,7 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
     protected boolean doDecode(IoSession session, IoBuffer in, ProtocolDecoderOutput out) throws Exception {
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if(client == null) {
-            session.close(true);
+            MapleSessionCoordinator.getInstance().closeSession(session, true);
             return false;
         }
         
@@ -53,7 +54,7 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
         if (in.remaining() >= 4 && decoderState.packetlength == -1) {
             int packetHeader = in.getInt();
             if (!rcvdCrypto.checkPacket(packetHeader)) {
-                session.close(true);
+                MapleSessionCoordinator.getInstance().closeSession(session, true);
                 return false;
             }
             decoderState.packetlength = MapleAESOFB.getPacketLength(packetHeader);

@@ -43,11 +43,12 @@ import tools.FilePrinter;
 public class ReactorScriptManager extends AbstractScriptManager {
 
     private static ReactorScriptManager instance = new ReactorScriptManager();
-    private Map<Integer, List<ReactorDropEntry>> drops = new HashMap<>();
-
+    
     public synchronized static ReactorScriptManager getInstance() {
         return instance;
     }
+    
+    private Map<Integer, List<ReactorDropEntry>> drops = new HashMap<>();
     
     public void onHit(MapleClient c, MapleReactor reactor) {
         try {

@@ -46,6 +46,7 @@ import client.inventory.ItemFactory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.ItemConstants;
+import constants.ServerConstants;
 import java.util.Collections;
 import net.server.audit.locks.MonitoredLockType;
 
@@ -275,12 +276,16 @@ public class CashShop {
         this.accountId = accountId;
         this.characterId = characterId;
 
-        if (jobType == 0) {
-            factory = ItemFactory.CASH_EXPLORER;
-        } else if (jobType == 1) {
-            factory = ItemFactory.CASH_CYGNUS;
-        } else if (jobType == 2) {
-            factory = ItemFactory.CASH_ARAN;
+        if (!ServerConstants.USE_JOINT_CASHSHOP_INVENTORY) {
+            if (jobType == 0) {
+                factory = ItemFactory.CASH_EXPLORER;
+            } else if (jobType == 1) {
+                factory = ItemFactory.CASH_CYGNUS;
+            } else if (jobType == 2) {
+                factory = ItemFactory.CASH_ARAN;
+            }
+        } else {
+            factory = ItemFactory.CASH_OVERALL;
         }
 
         Connection con = DatabaseConnection.getConnection();

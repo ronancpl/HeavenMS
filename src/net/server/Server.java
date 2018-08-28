@@ -59,7 +59,10 @@ import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
-import net.server.worker.RankingWorker;
+import net.server.worker.LoginCoordinatorWorker;
+import net.server.worker.LoginStorageWorker;
+import net.server.worker.RankingCommandWorker;
+import net.server.worker.RankingLoginWorker;
 import net.server.worker.ReleaseLockWorker;
 import net.server.world.World;
 
@@ -90,6 +93,16 @@ import tools.FilePrinter;
 import tools.Pair;
 
 public class Server {
+    
+    private static Server instance = null;
+    
+    public static Server getInstance() {
+        if (instance == null) {
+            instance = new Server();
+        }
+        return instance;
+    }
+    
     private static final Set<Integer> activeFly = new HashSet<>();
     private static final Map<Integer, Integer> couponRates = new HashMap<>(30);
     private static final List<Integer> activeCoupons = new LinkedList<>();
@@ -98,7 +111,6 @@ public class Server {
     private List<Map<Integer, String>> channels = new LinkedList<>();
     private List<World> worlds = new ArrayList<>();
     private final Properties subnetInfo = new Properties();
-    private static Server instance = null;
     private final Map<Integer, Set<Integer>> accountChars = new HashMap<>();
     private final Map<Integer, Short> accountCharacterCount = new HashMap<>();
     private final Map<Integer, Integer> worldChars = new HashMap<>();
@@ -112,6 +124,8 @@ public class Server {
     private final Map<Integer, NewYearCardRecord> newyears = new HashMap<>();
     private final List<MapleClient> processDiseaseAnnouncePlayers = new LinkedList<>();
     private final List<MapleClient> registeredDiseaseAnnouncePlayers = new LinkedList<>();
+    
+    private final List<List<Pair<String, Integer>>> playerRanking = new LinkedList<>();
     
     private final Lock srvLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER);
     private final Lock disLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SERVER_DISEASES);
@@ -131,13 +145,6 @@ public class Server {
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
     
-    public static Server getInstance() {
-        if (instance == null) {
-            instance = new Server();
-        }
-        return instance;
-    }
-
     public long getCurrentTime() {  // returns a slightly delayed time value, under frequency of UPDATE_INTERVAL
         return serverCurrentTime;
     }
@@ -343,8 +350,9 @@ public class Server {
         
         int newWorld = initWorld(p);
         if(newWorld > -1) {
-            Set<Integer> accounts;
+            installWorldPlayerRanking(newWorld);
             
+            Set<Integer> accounts;
             lgnRLock.lock();
             try {
                 accounts = new HashSet<>(accountChars.keySet());
@@ -360,6 +368,11 @@ public class Server {
         return newWorld;
     }
     
+    private static int getWorldProperty(Properties p, String property, int wid, int defaultValue) {
+        String content = p.getProperty(property + wid);
+        return content != null ? Integer.parseInt(content) : defaultValue;
+    }
+    
     private int initWorld(Properties p) {
         wldWLock.lock();
         try {
@@ -370,13 +383,16 @@ public class Server {
             }
             
             System.out.println("Starting world " + i);
+            int exprate = getWorldProperty(p, "exprate", i, ServerConstants.EXP_RATE);
+            int mesorate = getWorldProperty(p, "mesorate", i, ServerConstants.MESO_RATE);
+            int droprate = getWorldProperty(p, "droprate", i, ServerConstants.DROP_RATE);
+            int questrate = getWorldProperty(p, "questrate", i, ServerConstants.QUEST_RATE);
+            int travelrate = getWorldProperty(p, "travelrate", i, ServerConstants.TRAVEL_RATE);
+            
             World world = new World(i,
                     Integer.parseInt(p.getProperty("flag" + i)),
                     p.getProperty("eventmessage" + i),
-                    ServerConstants.EXP_RATE,
-                    ServerConstants.DROP_RATE,
-                    ServerConstants.MESO_RATE,
-                    ServerConstants.QUEST_RATE);
+                    exprate, droprate, mesorate, questrate, travelrate);
 
             worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
             worlds.add(world);
@@ -446,6 +462,7 @@ public class Server {
         wldWLock.lock();
         try {
             if(worldid == worlds.size() - 1) {
+                removeWorldPlayerRanking();
                 w.shutdown();
                 
                 worlds.remove(worldid);
@@ -627,6 +644,157 @@ public class Server {
         }
     }
     
+    public List<Pair<String, Integer>> getWorldPlayerRanking(int worldid) {
+        wldRLock.lock();
+        try {
+            return new ArrayList<>(playerRanking.get(!ServerConstants.USE_WHOLE_SERVER_RANKING ? worldid : 0));
+        } finally {
+            wldRLock.unlock();
+        }
+    }
+    
+    private void installWorldPlayerRanking(int worldid) {
+        List<Pair<Integer, List<Pair<String, Integer>>>> ranking = updatePlayerRankingFromDB(worldid);
+        if(!ranking.isEmpty()) {
+            wldWLock.lock();
+            try {
+                if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                    for(int i = playerRanking.size(); i <= worldid; i++) {
+                        playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
+                    }
+                    
+                    playerRanking.add(worldid, ranking.get(0).getRight());
+                } else {
+                    playerRanking.add(0, ranking.get(0).getRight());
+                }
+            } finally {
+                wldWLock.unlock();
+            }
+        }
+    }
+    
+    private void removeWorldPlayerRanking() {
+        if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+            wldWLock.lock();
+            try {
+                if(playerRanking.size() < this.getWorldsSize()) {
+                    return;
+                }
+                
+                playerRanking.remove(playerRanking.size() - 1);
+            } finally {
+                wldWLock.unlock();
+            }
+        } else {
+            List<Pair<Integer, List<Pair<String, Integer>>>> ranking = updatePlayerRankingFromDB(-1 * (this.getWorldsSize() - 2));  // update ranking list
+            
+            wldWLock.lock();
+            try {
+                playerRanking.add(0, ranking.get(0).getRight());
+            } finally {
+                wldWLock.unlock();
+            }
+        }
+    }
+    
+    public void updateWorldPlayerRanking() {
+        List<Pair<Integer, List<Pair<String, Integer>>>> rankUpdates = updatePlayerRankingFromDB(-1 * (this.getWorldsSize() - 1));
+        if(!rankUpdates.isEmpty()) {
+            wldWLock.lock();
+            try {
+                if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                    for(int i = playerRanking.size(); i <= rankUpdates.get(rankUpdates.size() - 1).getLeft(); i++) {
+                        playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
+                    }
+                    
+                    for(Pair<Integer, List<Pair<String, Integer>>> wranks : rankUpdates) {
+                        playerRanking.set(wranks.getLeft(), wranks.getRight());
+                    }
+                } else {
+                    playerRanking.set(0, rankUpdates.get(0).getRight());
+                }
+            } finally {
+                wldWLock.unlock();
+            }
+        }
+    }
+    
+    private void initWorldPlayerRanking() {
+        if (ServerConstants.USE_WHOLE_SERVER_RANKING) {
+            playerRanking.add(new ArrayList<Pair<String, Integer>>(0));
+        }        
+        updateWorldPlayerRanking();
+    }
+    
+    private static List<Pair<Integer, List<Pair<String, Integer>>>> updatePlayerRankingFromDB(int worldid) {
+        List<Pair<Integer, List<Pair<String, Integer>>>> rankSystem = new ArrayList<>();
+        List<Pair<String, Integer>> rankUpdate = new ArrayList<>(0);
+        
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            
+            String worldQuery;
+            if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                if(worldid >= 0) {
+                    worldQuery = (" AND `characters`.`world` = " + worldid);
+                } else {
+                    worldQuery = (" AND `characters`.`world` >= 0 AND `characters`.`world` <= " + -worldid);
+                }
+            } else {
+                worldQuery = (" AND `characters`.`world` >= 0 AND `characters`.`world` <= " + Math.abs(worldid));
+            }
+            
+            ps = con.prepareStatement("SELECT `characters`.`name`, `characters`.`level`, `characters`.`world` FROM `characters` LEFT JOIN accounts ON accounts.id = characters.accountid WHERE `characters`.`gm` < 2 AND `accounts`.`banned` = '0'" + worldQuery + " ORDER BY " + (!ServerConstants.USE_WHOLE_SERVER_RANKING ? "world, " : "") + "level DESC, exp DESC LIMIT 50");
+            rs = ps.executeQuery();
+            
+            if (!ServerConstants.USE_WHOLE_SERVER_RANKING) {
+                int currentWorld = -1;
+                while(rs.next()) {
+                    int rsWorld = rs.getInt("world");
+                    if(currentWorld < rsWorld) {
+                        currentWorld = rsWorld;
+                        rankUpdate = new ArrayList<>(50);
+                        rankSystem.add(new Pair<>(rsWorld, rankUpdate));
+                    }
+
+                    rankUpdate.add(new Pair<>(rs.getString("name"), rs.getInt("level")));
+                }
+            } else {
+                rankUpdate = new ArrayList<>(50);
+                rankSystem.add(new Pair<>(0, rankUpdate));
+                
+                while(rs.next()) {
+                    rankUpdate.add(new Pair<>(rs.getString("name"), rs.getInt("level")));
+                }
+            }
+            
+            ps.close();
+            rs.close();
+            con.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if(ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if(rs != null && !rs.isClosed()) {
+                    rs.close();
+                }
+                if(con != null && !con.isClosed()) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        return rankSystem;
+    }
+    
     public void init() {
         Properties p = loadWorldINI();
         if(p == null) {
@@ -635,7 +803,7 @@ public class Server {
 
         System.out.println("HeavenMS v" + ServerConstants.VERSION + " starting up.\r\n");
 
-
+        
         if(ServerConstants.SHUTDOWNHOOK)
             Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
         
@@ -670,7 +838,10 @@ public class Server {
         tMan.register(new CharacterDiseaseWorker(), ServerConstants.UPDATE_INTERVAL, ServerConstants.UPDATE_INTERVAL);
         tMan.register(new ReleaseLockWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
         tMan.register(new CouponWorker(), ServerConstants.COUPON_INTERVAL, timeLeft);
-        tMan.register(new RankingWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
+        tMan.register(new RankingCommandWorker(), 5 * 60 * 1000, 5 * 60 * 1000);
+        tMan.register(new RankingLoginWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
+        tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();
@@ -696,6 +867,7 @@ public class Server {
             for (int i = 0; i < worldCount; i++) {
                 initWorld(p);
             }
+            initWorldPlayerRanking();
             
             MaplePlayerNPCFactory.loadFactoryMetadata();
             loadPlayerNpcMapStepFromDb();

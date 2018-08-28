@@ -22,9 +22,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package client.status;
 
 import client.Skill;
-import java.util.Map;
 import server.life.MobSkill;
-import tools.ArrayMap;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MonsterStatusEffect {
 
@@ -34,7 +35,7 @@ public class MonsterStatusEffect {
     private boolean monsterSkill;
     
     public MonsterStatusEffect(Map<MonsterStatus, Integer> stati, Skill skillId, MobSkill mobskill, boolean monsterSkill) {
-        this.stati = new ArrayMap<>(stati);
+        this.stati = new ConcurrentHashMap<>(stati);
         this.skill = skillId;
         this.monsterSkill = monsterSkill;
         this.mobskill = mobskill;

@@ -47,6 +47,11 @@ public class MapleMonsterInformationProvider {
 	// Author : LightPepsi
 
 	private static final MapleMonsterInformationProvider instance = new MapleMonsterInformationProvider();
+        
+        public static MapleMonsterInformationProvider getInstance() {
+		return instance;
+	}
+        
         private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();        
 	private final List<MonsterGlobalDropEntry> globaldrops = new ArrayList<>();
         
@@ -59,10 +64,6 @@ public class MapleMonsterInformationProvider {
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
-	}
-
-	public static MapleMonsterInformationProvider getInstance() {
-		return instance;
 	}
 
 	public final List<MonsterGlobalDropEntry> getGlobalDrop() {

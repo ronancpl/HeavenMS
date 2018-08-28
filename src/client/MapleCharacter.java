@@ -77,6 +77,7 @@ import server.events.gm.MapleFitness;
 import server.events.gm.MapleOla;
 import server.life.MapleMonster;
 import server.life.MobSkill;
+import server.loot.MapleLootManager;
 import server.maps.AbstractAnimatedMapleMapObject;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleDoor;
@@ -92,6 +93,7 @@ import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleSummon;
 import server.life.MaplePlayerNPC;
+import server.life.MonsterDropEntry;
 import server.maps.SavedLocation;
 import server.maps.SavedLocationType;
 import server.partyquest.MonsterCarnival;
@@ -279,7 +281,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private Lock chrLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CHR, true);
     private Lock effLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EFF, true);
     private Lock evtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EVT, true);
-    private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for quest tasks as well
+    private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for meso & quest tasks as well
     private Lock prtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PRT);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
@@ -1852,7 +1854,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                         return;
                     }
             
-                    if (mapitem.getQuest() > 0 && !this.needQuestItem(mapitem.getQuest(), mapitem.getItemId())) {
+                    if (!this.needQuestItem(mapitem.getQuest(), mapitem.getItemId())) {
                         client.announce(MaplePacketCreator.showItemUnavailable());
                         client.announce(MaplePacketCreator.enableActions());
                         return;
@@ -1984,13 +1986,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void deleteGuild(int guildId) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = 0, guildrank = 5 WHERE guildid = ?")) {
-                ps.setInt(1, guildId);
-                ps.execute();
-            }
-            try (PreparedStatement ps = con.prepareStatement("DELETE FROM guilds WHERE guildid = ?")) {
-                ps.setInt(1, id);
-                ps.execute();
+            try {
+                try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET guildid = 0, guildrank = 5 WHERE guildid = ?")) {
+                    ps.setInt(1, guildId);
+                    ps.execute();
+                }
+                try (PreparedStatement ps = con.prepareStatement("DELETE FROM guilds WHERE guildid = ?")) {
+                    ps.setInt(1, id);
+                    ps.execute();
+                }
             } finally {
                 con.close();
             }
@@ -2897,13 +2901,27 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void gainMeso(int gain, boolean show, boolean enableActions, boolean inChat) {
-        if (meso.get() + gain < 0) {
-            client.announce(MaplePacketCreator.enableActions());
-            return;
+        long nextMeso;
+        petLock.lock();
+        try {
+            nextMeso = meso.get() + gain;
+            if (nextMeso > Integer.MAX_VALUE) {
+                gain -= (nextMeso - Integer.MAX_VALUE);
+            } else if (nextMeso < 0) {
+                gain = -meso.get();
+            }
+            nextMeso = meso.addAndGet(gain);
+        } finally {
+            petLock.unlock();
         }
-        updateSingleStat(MapleStat.MESO, meso.addAndGet(gain), enableActions);
-        if (show) {
-            client.announce(MaplePacketCreator.getShowMesoGain(gain, inChat));
+        
+        if (gain != 0) {
+            updateSingleStat(MapleStat.MESO, (int) nextMeso, enableActions);
+            if (show) {
+                client.announce(MaplePacketCreator.getShowMesoGain(gain, inChat));
+            }
+        } else {
+            client.announce(MaplePacketCreator.enableActions());
         }
     }
 
@@ -4816,6 +4834,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         
         return false;
+    }
+    
+    public List<MonsterDropEntry> retrieveRelevantDrops(int monsterId) {
+        List<MapleCharacter> pchars = new LinkedList<>();
+        for (MapleCharacter chr : getPartyMembers()) {
+            if (chr.isLoggedinWorld()) {
+                pchars.add(chr);
+            }
+        }
+        
+        if(pchars.isEmpty()) pchars.add(this);
+        return MapleLootManager.retrieveRelevantDrops(monsterId, pchars);
     }
 
     public MaplePlayerShop getPlayerShop() {

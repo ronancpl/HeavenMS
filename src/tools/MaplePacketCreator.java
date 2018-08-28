@@ -4541,20 +4541,19 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] showPlayerRanks(int npcid, ResultSet rs) throws SQLException {
+        public static byte[] showPlayerRanks(int npcid, List<Pair<String, Integer>> worldRanking) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GUILD_OPERATION.getValue());
                 mplew.write(0x49);
                 mplew.writeInt(npcid);
-                if (!rs.last()) { 
+                if (worldRanking.isEmpty()) { 
                         mplew.writeInt(0);
                         return mplew.getPacket();
                 }
-                mplew.writeInt(rs.getRow());
-                rs.beforeFirst();
-                while (rs.next()) {
-                        mplew.writeMapleAsciiString(rs.getString("name"));
-                        mplew.writeInt(rs.getInt("level"));
+                mplew.writeInt(worldRanking.size());
+                for (Pair<String, Integer> wr : worldRanking) {
+                        mplew.writeMapleAsciiString(wr.getLeft());
+                        mplew.writeInt(wr.getRight());
                         mplew.writeInt(0);
                         mplew.writeInt(0);
                         mplew.writeInt(0);
@@ -4726,8 +4725,7 @@ public class MaplePacketCreator {
 
                 mplew.writeInt(pet.getItemId());
                 mplew.writeMapleAsciiString(pet.getName());
-                mplew.writeInt(pet.getUniqueId());
-                mplew.writeInt(0);
+                mplew.writeLong(pet.getUniqueId());
                 mplew.writePos(pet.getPos());
                 mplew.write(pet.getStance());
                 mplew.writeInt(pet.getFh());
@@ -4828,6 +4826,8 @@ public class MaplePacketCreator {
         }
 
         public static byte[] petStatUpdate(MapleCharacter chr) {
+                // this actually does nothing... packet structure and stats needs to be uncovered
+            
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.STAT_CHANGED.getValue());
                 int mask = 0;
@@ -4837,8 +4837,7 @@ public class MaplePacketCreator {
                 MaplePet[] pets = chr.getPets();
                 for (int i = 0; i < 3; i++) {
                         if (pets[i] != null) {
-                                mplew.writeInt(pets[i].getUniqueId());
-                                mplew.writeInt(0);
+                                mplew.writeLong(pets[i].getUniqueId());
                         } else {
                                 mplew.writeLong(0);
                         }
@@ -5477,7 +5476,7 @@ public class MaplePacketCreator {
         }
         /*
          * Possible things for ENTRUSTED_SHOP_CHECK_RESULT
-         * 0x0E = 00 = Renaming Failed - Can't find the merchant, 01 = Renaming succesful
+         * 0x0E = 00 = Renaming Failed - Can't find the merchant, 01 = Renaming successful
          * 0x10 = Changes channel to the store (Store is open at Channel 1, do you want to change channels?)
          * 0x11 = You cannot sell any items when managing.. blabla
          * 0x12 = FKING POPUP LOL

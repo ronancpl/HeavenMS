@@ -32,7 +32,15 @@ public class ServerConstants {
     
     public static final boolean AUTOMATIC_REGISTER = true;      //Automatically register players when they login with a nonexistent username.
     public static final boolean BCRYPT_MIGRATION = true;        //Performs a migration from old SHA-1 and SHA-512 password to bcrypt.
-    public static final boolean COLLECTIVE_CHARSLOT = false;     //Available character slots are contabilized globally rather than per world server.
+    public static final boolean COLLECTIVE_CHARSLOT = false;    //Available character slots are contabilized globally rather than per world server.
+    public static final boolean DETERRED_MULTICLIENT = false;    //Enables multi-client and suspicious remote IP detection on the login system.
+    
+    //Besides blocking logging in with several client sessions on the same machine, this also blocks suspicious login attempts for players that tries to login on an account using several diferent remote addresses.
+    
+    //Multiclient Coordinator Configuration
+    public static final int MAX_ALLOWED_ACCOUNT_IP = 4;         //Allows up to N concurrent IP's for an account. IP's remains linked to an account longer the more times it's used to login.
+    public static final int MAX_ACCOUNT_LOGIN_ATTEMPT = 15;     //After N tries on an account, login on that account gets disabled for a short period.
+    public static final int LOGIN_ATTEMPT_DURATION = 120;       //Period in seconds the login attempt remains registered on the system.
     
     //Ip Configuration
     public static String HOST;
@@ -74,6 +82,7 @@ public class ServerConstants {
     public static final boolean USE_ENFORCE_UNMERCHABLE_PET = true; //Forces players to not sell pets via merchants. (since non-named pets gets dirty name and other possible DB-related issues)
     public static final boolean USE_ENFORCE_MDOOR_POSITION = false; //Forces mystic door to be spawned near spawnpoints.
     public static final boolean USE_SPAWN_LOOT_ON_ANIMATION = false;//Makes loot appear some time after the mob has been killed (following the mob death animation, instead of instantly).
+    public static final boolean USE_SPAWN_RELEVANT_LOOT = true;     //Forces to only spawn loots that are collectable by the player or any of their party members.
     public static final boolean USE_ERASE_PERMIT_ON_OPENSHOP = true;//Forces "shop permit" item to be consumed when player deploy his/her player shop.
     public static final boolean USE_ERASE_UNTRADEABLE_DROP = true;  //Forces flagged untradeable items to disappear when dropped.
     public static final boolean USE_ERASE_PET_ON_EXPIRATION = false;//Forces pets to be removed from inventory when expire time comes, rather than converting it to a doll.
@@ -82,11 +91,14 @@ public class ServerConstants {
     public static final boolean USE_BANISHABLE_TOWN_SCROLL = true;  //Enables town scrolls to act as if it's a "player banish", rendering the antibanish scroll effect available.
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
     public static final boolean USE_ENABLE_SOLO_EXPEDITIONS = true; //Enables start expeditions with any number of players. This will also bypass all the Zakum prequest.
-    public static final boolean USE_ENABLE_FULL_RESPAWN = true;    //At respawn task, always respawn missing mobs when they're available. Spawn count doesn't depend on how many players are currently there.
+    public static final boolean USE_ENABLE_FULL_RESPAWN = true;     //At respawn task, always respawn missing mobs when they're available. Spawn count doesn't depend on how many players are currently there.
     
     //Announcement Configuration
     public static final boolean USE_ANNOUNCE_SHOPITEMSOLD = false;  //Automatic message sent to owner when an item from the Player Shop or Hired Merchant is sold.
     public static final boolean USE_ANNOUNCE_CHANGEJOB = false;     //Automatic message sent to acquantainces when changing jobs.
+    
+    //Cash Shop Configuration
+    public static final boolean USE_JOINT_CASHSHOP_INVENTORY = true;//Enables usage of a same cash shop inventory for explorers, cygnus and legends. Items from exclusive cash shop inventories won't show up on the shared inventory, though.
     
     //Maker Configuration
     public static final boolean USE_MAKER_PERMISSIVE_ATKUP = true;  //Allows players to use attack-based strengthening gems on non-weapon items.
@@ -94,15 +106,16 @@ public class ServerConstants {
     
     //Commands Configuration
     public static final boolean BLOCK_GENERATE_CASH_ITEM = false;   //Prevents creation of cash items with the item/drop command.
+    public static final boolean USE_WHOLE_SERVER_RANKING = false;   //Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of separated by worlds.
     
     //Server Rates And Experience
     public static final int EXP_RATE = 10;
     public static final int MESO_RATE = 10;
     public static final int DROP_RATE = 10;
-    public static final int TRAVEL_RATE = 10;                       //Means of transportation rides/departs using 1/N of the default time.
     public static final int QUEST_RATE = 5;                         //Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
-    public static final double EQUIP_EXP_RATE = 1.0;                //Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
+    public static final int TRAVEL_RATE = 10;                       //Means of transportation rides/departs using 1/N of the default time.
     
+    public static final double EQUIP_EXP_RATE = 1.0;                //Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
     public static final double PARTY_BONUS_EXP_RATE = 1.0;          //Rate for the party exp reward.
     public static final double PQ_BONUS_EXP_RATE = 0.5;             //Rate for the PQ exp reward.
     
@@ -118,7 +131,7 @@ public class ServerConstants {
     public static final int MAX_EVENT_LEVELS = 8;                       //Event has different levels of rewarding system.
     public static final long BLOCK_NPC_RACE_CONDT = (long)(0.5 * 1000); //Time the player client must wait before reopening a conversation with an NPC.
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
-    public static final int TOT_MOB_QUEST_REQUIREMENT = 77;              //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
+    public static final int TOT_MOB_QUEST_REQUIREMENT = 77;             //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
     public static final int MOB_REACTOR_REFRESH_TIME = 30 * 1000;       //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
     
     //Dangling Items/Locks Configuration

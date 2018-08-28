@@ -77,8 +77,12 @@ import tools.StringUtil;
  *
  */
 public class MapleItemInformationProvider {
-
-    private static MapleItemInformationProvider instance = null;
+    private final static MapleItemInformationProvider instance = new MapleItemInformationProvider();
+    
+    public static MapleItemInformationProvider getInstance() {
+        return instance;
+    }
+    
     protected MapleDataProvider itemData;
     protected MapleDataProvider equipData;
     protected MapleDataProvider stringData;
@@ -140,13 +144,6 @@ public class MapleItemInformationProvider {
         
         isQuestItemCache.put(0, false);
         isPartyQuestItemCache.put(0, false);
-    }
-
-    public static MapleItemInformationProvider getInstance() {
-        if (instance == null) {
-            instance = new MapleItemInformationProvider();
-        }
-        return instance;
     }
 
 //    public MapleInventoryType getInventoryType(int itemId) {
@@ -1224,14 +1221,19 @@ public class MapleItemInformationProvider {
         if (dropRestrictionCache.containsKey(itemId)) {
             return dropRestrictionCache.get(itemId);
         }
-        MapleData data = getItemData(itemId);
-        boolean bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
-        if (!bRestricted) {
-        	bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+        
+        boolean bRestricted = false;
+        if(itemId != 0) {
+            MapleData data = getItemData(itemId);
+            bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
+            if (!bRestricted) {
+                    bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+            }
+            if (!bRestricted) {
+                bRestricted = MapleDataTool.getIntConvert("info/quest", data, 0) == 1;
+            }
         }
-        if (!bRestricted) {
-            bRestricted = MapleDataTool.getIntConvert("info/quest", data, 0) == 1;
-        }
+        
         dropRestrictionCache.put(itemId, bRestricted);
         return bRestricted;
     }

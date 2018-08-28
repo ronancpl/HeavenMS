@@ -39,13 +39,15 @@ import client.MapleQuestStatus;
  * @author RMZero213
  */
 public class QuestScriptManager extends AbstractScriptManager {
-	private Map<MapleClient, QuestActionManager> qms = new HashMap<>();
-	private Map<MapleClient, Invocable> scripts = new HashMap<>();
-	private static QuestScriptManager instance = new QuestScriptManager();
+    
+        private static QuestScriptManager instance = new QuestScriptManager();
 
 	public synchronized static QuestScriptManager getInstance() {
 		return instance;
 	}
+    
+	private Map<MapleClient, QuestActionManager> qms = new HashMap<>();
+	private Map<MapleClient, Invocable> scripts = new HashMap<>();
         
 	public void start(MapleClient c, short questid, int npc) {
                 MapleQuest quest = MapleQuest.getInstance(questid);

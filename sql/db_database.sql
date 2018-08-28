@@ -1,4 +1,4 @@
-#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
+﻿#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `hwid` varchar(12) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
-  KEY `ranking1` (`id`,`banned`,`gm`),
+  KEY `ranking1` (`id`,`banned`),
   INDEX (id, name),
   INDEX (id, nxCredit, maplePoint, nxPrepaid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -13005,14 +13005,12 @@ CREATE TABLE IF NOT EXISTS `ipbans` (
   PRIMARY KEY (`ipbanid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `iplog` (
-  `iplogid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `ipaccounts` (
   `accountid` int(11) NOT NULL DEFAULT '0',
-  `ip` varchar(30) NOT NULL DEFAULT '',
-  `login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`iplogid`),
-  KEY `accountid` (`accountid`,`ip`),
-  KEY `ip` (`ip`)
+  `ip` varchar(40) NOT NULL DEFAULT '',
+  `relevance` tinyint(2) NOT NULL DEFAULT '0',
+  `expiresat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`accountid`,`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `keymap` (

@@ -44,7 +44,8 @@ public enum ItemFactory {
     CASH_EXPLORER(3, true),
     CASH_CYGNUS(4, true),
     CASH_ARAN(5, true),
-    MERCHANT(6, false);
+    MERCHANT(6, false),
+    CASH_OVERALL(7, true);
     private final int value;
     private final boolean account;
     private static final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.ITEM, true);

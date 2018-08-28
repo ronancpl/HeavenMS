@@ -92,7 +92,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
  */
 public class World {
 
-    private int id, flag, exprate, droprate, mesorate, questrate;
+    private int id, flag, exprate, droprate, mesorate, questrate, travelrate;
     private String eventmsg;
     private List<Channel> channels = new ArrayList<>();
     private Map<Integer, Byte> pnpcStep = new HashMap<>();
@@ -151,7 +151,7 @@ public class World {
     private ScheduledFuture<?> charactersSchedule;
     private ScheduledFuture<?> marriagesSchedule;
     
-    public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate) {
+    public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate, int travelrate) {
         this.id = world;
         this.flag = flag;
         this.eventmsg = eventmsg;
@@ -159,6 +159,7 @@ public class World {
         this.droprate = droprate;
         this.mesorate = mesorate;
         this.questrate = questrate;
+        this.travelrate = travelrate;
         runningPartyId.set(1);
         runningMessengerId.set(1);
         
@@ -336,7 +337,19 @@ public class World {
     public void setQuestRate(int quest) {
         this.questrate = quest;
     }
-
+    
+    public int getTravelRate() {
+        return travelrate;
+    }
+    
+    public void setTravelRate(int quest) {
+        this.travelrate = quest;
+    }
+    
+    public int getTransportationTime(int travelTime) {
+        return (int) Math.ceil(travelTime / travelrate);
+    }
+    
     public void loadAccountCharactersView(Integer accountId, List<MapleCharacter> chars) {
         SortedMap<Integer, MapleCharacter> charsMap = new TreeMap<>();
         for(MapleCharacter chr : chars) {
@@ -1825,5 +1838,6 @@ public class World {
         players = null;
         
         clearWorldData();
+        System.out.println("Finished shutting down world " + id + "\r\n");
     }
 }

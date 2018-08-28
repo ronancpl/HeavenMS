@@ -1,4 +1,4 @@
-#**HeavenMS**
+# HeavenMS
 
 Credits:
 
@@ -96,6 +96,7 @@ Monsters, Maps & Reactors:
 * Monsterbook displays drop data info conformant with the underlying DB (needs custom wz). See more on the MobBookUpdate feature.
 * Every skill/mastery book is now droppable by mobs.
 * Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
+* Mobs only drops items that are visible/collectable by the player's party.
 * Redesigned HT mechanics for spawn and linked damage to the sponge.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
 * Implemented Zombify disease status.
@@ -131,10 +132,12 @@ Player potentials:
 * Pet evolutions functional (not GMS-like).
 * Reviewed keybinding system.
 * Account's Character slots: either each world has it's own count or there's a shared value between all worlds.
+* Optional cash shop inventory separated by player classes or fully account-ranged.
 
 Server potentials:
 
 * Multi-worlds.
+* Dynamic world rates, each world can hold it's own rates from server bootup.
 * Dynamic World/Channel deployment. While not implemented here, new channel deployment sensitive to quantity of online players was originally resinate's idea.
 * Inventory auto-gather and auto-sorting feature.
 * Enhanced auto-pot system: pet uses as many potions as necessary to reach the desired threshold.
@@ -143,7 +146,7 @@ Server potentials:
 * Enhanced inventory check: free slots on inventory smartly fetched on demand.
 * Enhanced auto-loot handler: optimized the brute-force checks for some cash items on the player equipped inventory at every requisition.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
-* Consistent experience gain system.
+* Consistent experience and meso gain system.
 * NPC crafters (equips, plates/jewels, etc) now won't take items freely if the requirement conditions are not properly met.
 * Improved Duey mechanics: package received popup and reviewed many delivery mechanics.
 * Pet item pickup now gives preference to player attacks rather than forcing attack disables when automatically picking up.
@@ -178,7 +181,9 @@ Admin/GM commands:
 
 * Server commands layered by GM levels.
 * Spawn Zakum/Horntail/Pinkbean.
-* New commands.
+* Several new commands.
+* Rank command highlighting users either by world or server-wide.
+* Revamped command files layout -- thanks Arthur L.
 
 External tools:
 
@@ -213,6 +218,7 @@ Project:
 * Improved login phase, using cache over DB queries.
 * Usage of HikariCP to improve the DB connection management.
 * Developed many survey tools for content profiling.
+* Developed a robust anti-exploit login coordinator system.
 * Protected many flaws with login management system.
 * Channel, World and Server-wide timer management.
 * Heavily reviewed future task management inside the project. Way less trivial schedules are spawned now, relieving task overload on the TimerManager.

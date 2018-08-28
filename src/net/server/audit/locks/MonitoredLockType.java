@@ -45,6 +45,7 @@ public enum MonitoredLockType {
     SERVER,
     SERVER_DISEASES,
     SERVER_LOGIN,
+    SERVER_LOGIN_COORD,
     SERVER_WORLDS,
     MERCHANT,
     CHANNEL,

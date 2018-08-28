@@ -25,6 +25,7 @@ package net.server.handlers.login;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
+import net.server.coordinator.MapleSessionCoordinator;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -35,13 +36,17 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public class SetGenderHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        byte type = slea.readByte(); //?
-        if (type == 0x01 && c.getGender() == 10) { //Packet shouldn't come if Gender isn't 10.
-            c.setGender(slea.readByte());
-            c.announce(MaplePacketCreator.getAuthSuccess(c));
-            final MapleClient client = c;
-            
-            Server.getInstance().registerLoginState(c);
+        if (c.getGender() == 10) { //Packet shouldn't come if Gender isn't 10.
+            byte confirmed = slea.readByte();
+            if (confirmed == 0x01) {
+                c.setGender(slea.readByte());
+                c.announce(MaplePacketCreator.getAuthSuccess(c));
+
+                Server.getInstance().registerLoginState(c);
+            } else {
+                MapleSessionCoordinator.getInstance().closeSession(c.getSession(), null);
+                c.updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);
+            }
         }
     }
 

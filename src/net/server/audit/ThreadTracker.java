@@ -48,6 +48,14 @@ import tools.FilePrinter;
  */
 public class ThreadTracker {
     private static ThreadTracker instance = null;
+    
+    public static ThreadTracker getInstance() {
+        if (instance == null) {
+            instance = new ThreadTracker();
+        }
+        return instance;
+    }
+    
     private final Lock ttLock = new ReentrantLock(true);
     
     private final Map<Long, List<MonitoredLockType>> threadTracker = new HashMap<>();
@@ -277,12 +285,5 @@ public class ThreadTracker {
     
     public void cancelThreadTrackerTask() {
         threadTrackerSchedule.cancel(false);
-    }
-    
-    public static ThreadTracker getInstance() {
-        if (instance == null) {
-            instance = new ThreadTracker();
-        }
-        return instance;
     }
 }

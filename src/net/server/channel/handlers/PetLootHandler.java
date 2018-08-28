@@ -55,41 +55,40 @@ public final class PetLootHandler extends AbstractMaplePacketHandler {
         
         slea.skip(13);
         int oid = slea.readInt();
-        MapleMapObject ob = chr.getMap().getMapObject(oid);
-        if(ob == null) {
+        MapleMapObject ob = chr.getMap().getMapObject(oid);        
+        try {
+            MapleMapItem mapitem = (MapleMapItem) ob;
+            if (mapitem.getMeso() > 0) {
+                if (!chr.isEquippedMesoMagnet()) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+
+                if (chr.isEquippedPetItemIgnore()) {
+                    final Set<Integer> petIgnore = chr.getExcludedItems();
+                    if(!petIgnore.isEmpty() && petIgnore.contains(Integer.MAX_VALUE)) {
+                        c.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                }
+            } else {
+                if (!chr.isEquippedItemPouch()) {
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+
+                if (chr.isEquippedPetItemIgnore()) {
+                    final Set<Integer> petIgnore = chr.getExcludedItems();
+                    if(!petIgnore.isEmpty() && petIgnore.contains(mapitem.getItem().getItemId())) {
+                        c.announce(MaplePacketCreator.enableActions());
+                        return;
+                    }
+                }
+            }
+
+            chr.pickupItem(ob, petIndex);
+        } catch (NullPointerException | ClassCastException e) {
             c.announce(MaplePacketCreator.enableActions());
-            return;
         }
-        
-        MapleMapItem mapitem = (MapleMapItem) ob;
-        if (mapitem.getMeso() > 0) {
-            if (!chr.isEquippedMesoMagnet()) {
-                c.announce(MaplePacketCreator.enableActions());
-                return;
-            }
-            
-            if (chr.isEquippedPetItemIgnore()) {
-                final Set<Integer> petIgnore = chr.getExcludedItems();
-                if(!petIgnore.isEmpty() && petIgnore.contains(Integer.MAX_VALUE)) {
-                    c.announce(MaplePacketCreator.enableActions());
-                    return;
-                }
-            }
-        } else {
-            if (!chr.isEquippedItemPouch()) {
-                c.announce(MaplePacketCreator.enableActions());
-                return;
-            }
-            
-            if (chr.isEquippedPetItemIgnore()) {
-                final Set<Integer> petIgnore = chr.getExcludedItems();
-                if(!petIgnore.isEmpty() && petIgnore.contains(mapitem.getItem().getItemId())) {
-                    c.announce(MaplePacketCreator.enableActions());
-                    return;
-                }
-            }
-        }
-        
-        chr.pickupItem(ob, petIndex);
     }
 }

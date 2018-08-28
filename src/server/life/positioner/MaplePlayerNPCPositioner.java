@@ -204,7 +204,7 @@ public class MaplePlayerNPCPositioner {
                     if(searchPos != null) {
                         if(!isPlayerNpcNearby(otherPlayerNpcs, searchPos, cx, cy)) {
                             if(i > initStep) {
-                                Server.getInstance().getWorld(map.getWorld()).setPlayerNpcMapStep(map.getId(), i);
+                                map.getWorldServer().setPlayerNpcMapStep(map.getId(), i);
                             }
 
                             if(reorganize && ServerConstants.PLAYERNPC_ORGANIZE_AREA) {
@@ -232,12 +232,12 @@ public class MaplePlayerNPCPositioner {
         }
         
         if(i > initStep) {
-            Server.getInstance().getWorld(map.getWorld()).setPlayerNpcMapStep(map.getId(), ServerConstants.PLAYERNPC_AREA_STEPS - 1);
+            map.getWorldServer().setPlayerNpcMapStep(map.getId(), ServerConstants.PLAYERNPC_AREA_STEPS - 1);
         }
         return null;
     }
     
     public static Point getNextPlayerNpcPosition(MapleMap map) {
-        return getNextPlayerNpcPosition(map, Server.getInstance().getWorld(map.getWorld()).getPlayerNpcMapStep(map.getId()));
+        return getNextPlayerNpcPosition(map, map.getWorldServer().getPlayerNpcMapStep(map.getId()));
     }
 }

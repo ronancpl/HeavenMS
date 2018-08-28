@@ -63,6 +63,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import java.lang.ref.WeakReference;
 import net.server.Server;
 import net.server.channel.Channel;
+import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
 import server.MaplePortal;
@@ -84,7 +85,6 @@ import server.life.SpawnPoint;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
 //import server.partyquest.Pyramid;
-import scripting.event.EventManager;
 import scripting.event.EventInstanceManager;
 import server.life.MaplePlayerNPC;
 import server.life.MonsterListener;
@@ -261,6 +261,10 @@ public class MapleMap {
     
     public Channel getChannelServer() {
         return Server.getInstance().getWorld(world).getChannel(channel);
+    }
+    
+    public World getWorldServer() {
+        return Server.getInstance().getWorld(world);
     }
 
     public MapleMap getReturnMap() {
@@ -697,7 +701,7 @@ public class MapleMap {
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
-        sortDropEntries(mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
+        sortDropEntries(ServerConstants.USE_SPAWN_RELEVANT_LOOT ? chr.retrieveRelevantDrops(mob.getId()) : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
         registerMobItemDrops(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
     }
@@ -974,10 +978,6 @@ public class MapleMap {
         unregisterItemDrop(mdrop);
     }
     
-    private static boolean shouldShowQuestItem(MapleCharacter chr, int questid, int itemid) {
-        return questid <= 0 || chr.needQuestItem(questid, itemid);
-    }
-    
     public void updatePlayerItemDrops(int partyid, int charid, List<MapleCharacter> partyMembers, MapleCharacter partyLeaver) {
         for(MapleMapItem mdrop : getDroppedItems()) {
             if(mdrop.getOwnerId() == charid) {
@@ -994,7 +994,7 @@ public class MapleMap {
                         if(this.equals(mc.getMap())) {
                             mc.announce(removePacket);
                             
-                            if(shouldShowQuestItem(mc, mdrop.getQuest(), mdrop.getItemId())) {
+                            if(mc.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
                                 mc.announce(updatePacket);
                             }
                         }
@@ -1004,7 +1004,7 @@ public class MapleMap {
                         if(this.equals(partyLeaver.getMap())) {
                             partyLeaver.announce(removePacket);
                             
-                            if(shouldShowQuestItem(partyLeaver, mdrop.getQuest(), mdrop.getItemId())) {
+                            if(partyLeaver.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
                                 partyLeaver.announce(MaplePacketCreator.updateMapItemObject(mdrop, true));
                             }
                         }
@@ -1024,7 +1024,7 @@ public class MapleMap {
             public void sendPackets(MapleClient c) {
                 MapleCharacter chr = c.getPlayer();
                 
-                if (shouldShowQuestItem(chr, questid, idrop.getItemId())) {
+                if (chr.needQuestItem(questid, idrop.getItemId())) {
                     mdrop.lockItem();
                     try {
                         c.announce(MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, mdrop, dropper.getPosition(), dropPos, (byte) 1));
@@ -1208,19 +1208,19 @@ public class MapleMap {
     }
     
     public void broadcastBalrogVictory(String leaderName) {
-        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
+        getWorldServer().dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
     }
     
     public void broadcastHorntailVictory() {
-        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
+        getWorldServer().dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
     }
     
     public void broadcastZakumVictory() {
-        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
+        getWorldServer().dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
     }
     
     public void broadcastPinkBeanVictory(int channel) {
-        Server.getInstance().getWorld(world).dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
+        getWorldServer().dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
     }
     
     private boolean removeKilledMonsterObject(MapleMonster monster) {
@@ -2089,7 +2089,7 @@ public class MapleMap {
             }
         };
         
-        Server.getInstance().getWorld(world).registerTimedMapObject(expireKite, ServerConstants.KITE_EXPIRE_TIME);
+        getWorldServer().registerTimedMapObject(expireKite, ServerConstants.KITE_EXPIRE_TIME);
     }
     
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final boolean ffaDrop, final boolean playerDrop) {
@@ -2360,7 +2360,7 @@ public class MapleMap {
                 spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300102), new Point(77, 426));
             }
         } else if (mapid == 200090060) { // To Rien
-            int travelTime = EventManager.getTransportationTime(1 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(1 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
@@ -2372,7 +2372,7 @@ public class MapleMap {
                 }
             }, travelTime);
         } else if (mapid == 200090070) { // To Lith Harbor
-            int travelTime = EventManager.getTransportationTime(1 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(1 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
@@ -2384,7 +2384,7 @@ public class MapleMap {
                 }
             }, travelTime);
         } else if (mapid == 200090030) { // To Ereve (SkyFerry)
-            int travelTime = EventManager.getTransportationTime(2 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(2 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
@@ -2396,7 +2396,7 @@ public class MapleMap {
                 }
             }, travelTime);
         } else if (mapid == 200090031) { // To Victoria Island (SkyFerry)
-            int travelTime = EventManager.getTransportationTime(2 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(2 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
@@ -2408,7 +2408,7 @@ public class MapleMap {
                 }
             }, travelTime);
         } else if (mapid == 200090021) { // To Orbis (SkyFerry)
-            int travelTime = EventManager.getTransportationTime(8 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(8 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 
@@ -2420,7 +2420,7 @@ public class MapleMap {
                 }
             }, travelTime);
         } else if (mapid == 200090020) { // To Ereve From Orbis (SkyFerry)
-            int travelTime = EventManager.getTransportationTime(8 * 60 * 1000);
+            int travelTime = getWorldServer().getTransportationTime(8 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {
 

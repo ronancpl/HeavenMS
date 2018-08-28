@@ -41,16 +41,17 @@ import tools.FilePrinter;
 public class PortalScriptManager {
 
     private static PortalScriptManager instance = new PortalScriptManager();
+    
+    public static PortalScriptManager getInstance() {
+        return instance;
+    }
+    
     private Map<String, PortalScript> scripts = new HashMap<>();
     private ScriptEngineFactory sef;
 
     private PortalScriptManager() {
         ScriptEngineManager sem = new ScriptEngineManager();
         sef = sem.getEngineByName("javascript").getFactory();
-    }
-
-    public static PortalScriptManager getInstance() {
-        return instance;
     }
 
     private PortalScript getPortalScript(String scriptName) {

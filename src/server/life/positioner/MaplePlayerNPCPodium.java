@@ -138,16 +138,16 @@ public class MaplePlayerNPCPodium {
             if(podiumStep >= ServerConstants.PLAYERNPC_AREA_STEPS) return null;
             
             List<MapleMapObject> mmoList = map.getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER_NPC));
-            Server.getInstance().getWorld(map.getWorld()).setPlayerNpcMapPodiumData(map.getId(), encodePodiumData(podiumStep + 1, podiumCount + 1));
+            map.getWorldServer().setPlayerNpcMapPodiumData(map.getId(), encodePodiumData(podiumStep + 1, podiumCount + 1));
             return reorganizePlayerNpcs(map, podiumStep + 1, mmoList);
         } else {
-            Server.getInstance().getWorld(map.getWorld()).setPlayerNpcMapPodiumData(map.getId(), encodePodiumData(podiumStep, podiumCount + 1));
+            map.getWorldServer().setPlayerNpcMapPodiumData(map.getId(), encodePodiumData(podiumStep, podiumCount + 1));
             return calcNextPos(podiumCount, podiumStep);
         }
     }
     
     public static Point getNextPlayerNpcPosition(MapleMap map) {
-        Point pos = getNextPlayerNpcPosition(map, Server.getInstance().getWorld(map.getWorld()).getPlayerNpcMapPodiumData(map.getId()));
+        Point pos = getNextPlayerNpcPosition(map, map.getWorldServer().getPlayerNpcMapPodiumData(map.getId()));
         if(pos == null) return null;
         
         return map.getGroundBelow(pos);

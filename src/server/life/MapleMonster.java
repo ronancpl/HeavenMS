@@ -505,7 +505,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         if(!expDist.isEmpty()) {    // locate on world server the partyid of the missing characters
-            World wserv = Server.getInstance().getWorld(map.getWorld());
+            World wserv = map.getWorldServer();
             
             for (Entry<Integer, Float> ed : expDist.entrySet()) {
                 boolean isKiller = (ed.getKey() == killerId);
@@ -1151,16 +1151,21 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     private void debuffMobStat(MonsterStatus stat) {
-        if (isBuffed(stat)) {
-            final MonsterStatusEffect oldEffect = stati.get(stat);
-            byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
-            map.broadcastMessage(packet, getPosition());
+        statiLock.lock();
+        try {
+            if (isBuffed(stat)) {
+                final MonsterStatusEffect oldEffect = stati.get(stat);
+                byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
+                map.broadcastMessage(packet, getPosition());
 
-            MapleCharacter chrController = getController();
-            if (chrController != null && !chrController.isMapObjectVisible(MapleMonster.this)) {
-                chrController.getClient().announce(packet);
+                MapleCharacter chrController = getController();
+                if (chrController != null && !chrController.isMapObjectVisible(MapleMonster.this)) {
+                    chrController.getClient().announce(packet);
+                }
+                stati.remove(stat);
             }
-            stati.remove(stat);
+        } finally {
+            statiLock.unlock();
         }
     }
     

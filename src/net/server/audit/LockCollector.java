@@ -35,12 +35,12 @@ public class LockCollector {
     
     private static final LockCollector instance = new LockCollector();
     
-    private Map<Runnable, Integer> disposableLocks = new HashMap<>(200);
-    private final Lock lock = new ReentrantLock(true);
-    
     public static LockCollector getInstance() {
         return instance;
     }
+    
+    private Map<Runnable, Integer> disposableLocks = new HashMap<>(200);
+    private final Lock lock = new ReentrantLock(true);
     
     public void registerDisposeAction(Runnable r) {
         lock.lock();

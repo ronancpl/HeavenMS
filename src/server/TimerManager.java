@@ -34,6 +34,11 @@ import tools.FilePrinter;
 
 public class TimerManager implements TimerManagerMBean {
     private static TimerManager instance = new TimerManager();
+    
+    public static TimerManager getInstance() {
+        return instance;
+    }
+    
     private ScheduledThreadPoolExecutor ses;
 
     private TimerManager() {
@@ -43,10 +48,6 @@ public class TimerManager implements TimerManagerMBean {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static TimerManager getInstance() {
-        return instance;
     }
 
     public void start() {

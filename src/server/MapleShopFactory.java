@@ -29,13 +29,15 @@ import java.util.Map;
  * @author Matze
  */
 public class MapleShopFactory {
-    private Map<Integer, MapleShop> shops = new HashMap<Integer, MapleShop>();
-    private Map<Integer, MapleShop> npcShops = new HashMap<Integer, MapleShop>();
+    
     private static MapleShopFactory instance = new MapleShopFactory();
-
+    
     public static MapleShopFactory getInstance() {
         return instance;
     }
+    
+    private Map<Integer, MapleShop> shops = new HashMap<Integer, MapleShop>();
+    private Map<Integer, MapleShop> npcShops = new HashMap<Integer, MapleShop>();
 
     private MapleShop loadShop(int id, boolean isShopId) {
         MapleShop ret = MapleShop.createFromDB(id, isShopId);

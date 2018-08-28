@@ -30,6 +30,10 @@ import tools.Randomizer;
 public class MapleGachapon {
 
 	private static final MapleGachapon instance = new MapleGachapon();
+        
+        public static MapleGachapon getInstance() {
+		return instance;
+	}
 	
 	public enum Gachapon {
 
@@ -88,10 +92,6 @@ public class MapleGachapon {
 			}
 			return null;
 		}
-	}
-
-	public static MapleGachapon getInstance() {
-		return instance;
 	}
 	
 	public MapleGachaponItem process(int npcId) {

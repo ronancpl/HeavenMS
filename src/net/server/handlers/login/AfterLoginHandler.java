@@ -23,6 +23,7 @@ package net.server.handlers.login;
 
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
+import net.server.coordinator.MapleSessionCoordinator;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -56,6 +57,7 @@ public final class AfterLoginHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.requestPinAfterFailure());
             }
         } else if (c2 == 0 && c3 == 5) {
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), null);
             c.updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);
         }
     }

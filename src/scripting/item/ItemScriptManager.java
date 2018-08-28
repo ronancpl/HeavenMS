@@ -41,6 +41,11 @@ import tools.MaplePacketCreator;
 public class ItemScriptManager {
 
     private static ItemScriptManager instance = new ItemScriptManager();
+    
+    public static ItemScriptManager getInstance() {
+        return instance;
+    }
+    
     private Map<String, Invocable> scripts = new HashMap<>();
     private ScriptEngineFactory sef;
 
@@ -48,11 +53,7 @@ public class ItemScriptManager {
         ScriptEngineManager sem = new ScriptEngineManager();
         sef = sem.getEngineByName("javascript").getFactory();
     }
-
-    public static ItemScriptManager getInstance() {
-        return instance;
-    }
-
+    
     public boolean scriptExists(String scriptName) {
         File scriptFile = new File("scripts/item/" + scriptName + ".js");
         return scriptFile.exists();
