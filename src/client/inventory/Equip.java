@@ -66,7 +66,7 @@ public class Equip extends Item {
     private float itemExp;
     private int ringid = -1;
     private boolean wear = false;
-    private boolean isUpgradeable, isElemental = false;    // timeless or reverse
+    private boolean isUpgradeable, isElemental = false;    // timeless or reverse, or any equip that could levelup on GMS for all effects
 
     public Equip(int id, short position) {
         this(id, position, 0);
@@ -78,8 +78,7 @@ public class Equip extends Item {
         this.itemExp = 0;
         this.itemLevel = 1;
         
-        String itemName = MapleItemInformationProvider.getInstance().getName(id);
-        if(itemName != null) this.isElemental = (itemName.contains("Timeless") || itemName.contains("Reverse"));
+        this.isElemental = (MapleItemInformationProvider.getInstance().getEquipLevel(id, false) > 1);
     }
 
     @Override
@@ -533,17 +532,14 @@ public class Equip extends Item {
         }
     }
     
-    private boolean reachedMaxLevel(String eqpName) {
-        if(isElemental) {
-            if(eqpName.contains("Timeless")) {
-                if(itemLevel < 6) return false;
-            } else {
-                if(itemLevel < 4) return false;
+    private boolean reachedMaxLevel() {
+        if (isElemental) {
+            if (itemLevel < MapleItemInformationProvider.getInstance().getEquipLevel(getItemId(), true)) {
+                return false;
             }
         }
         
-        if(itemLevel < ServerConstants.USE_EQUIPMNT_LVLUP) return false;
-        return true;
+        return itemLevel >= ServerConstants.USE_EQUIPMNT_LVLUP;
     }
     
     public String showEquipFeatures(MapleClient c) {
@@ -551,7 +547,7 @@ public class Equip extends Item {
         if(!ii.isUpgradeable(this.getItemId())) return "";
         
         String eqpName = ii.getName(getItemId());
-        String eqpInfo = reachedMaxLevel(eqpName) ? " #e#rMAX LEVEL#k#n" : (" EXP: #e#b" + (int)itemExp + "#k#n / " + ExpTable.getEquipExpNeededForLevel(itemLevel));
+        String eqpInfo = reachedMaxLevel() ? " #e#rMAX LEVEL#k#n" : (" EXP: #e#b" + (int)itemExp + "#k#n / " + ExpTable.getEquipExpNeededForLevel(itemLevel));
         
         return "'" + eqpName + "' -> LV: #e#b" + itemLevel + "#k#n    " + eqpInfo + "\r\n";
     }

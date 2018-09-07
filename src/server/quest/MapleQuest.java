@@ -227,7 +227,7 @@ public class MapleQuest {
         if(!repeatable) return false;
         
         IntervalRequirement ir = (IntervalRequirement) startReqs.get(MapleQuestRequirementType.INTERVAL);
-        return ir.getInterval() < ServerConstants.FAME_GAIN_MIN_HOUR_INTERVAL * 60 * 60 * 1000;
+        return ir.getInterval() < ServerConstants.QUEST_POINT_REPEATABLE_INTERVAL * 60 * 60 * 1000;
     }
     
     public boolean canStartWithoutRequirements(MapleCharacter c) {
@@ -369,12 +369,11 @@ public class MapleQuest {
 
     public int getItemAmountNeeded(int itemid) {
         MapleQuestRequirement req = completeReqs.get(MapleQuestRequirementType.ITEM);
-		if(req == null)
-			return 0;
+        if(req == null)
+                return 0;
 		
-		ItemRequirement ireq = (ItemRequirement) req;
-		
-		return ireq.getItemAmountNeeded(itemid);
+        ItemRequirement ireq = (ItemRequirement) req;
+        return ireq.getItemAmountNeeded(itemid);
     }
 
     public int getMobAmountNeeded(int mid) {

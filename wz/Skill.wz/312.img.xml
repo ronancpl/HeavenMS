@@ -1039,12 +1039,16 @@
           <vector name="origin" x="90" y="162"/>
           <int name="delay" value="70"/>
         </canvas>
+        <canvas name="14" width="127" height="274">
+          <int name="delay" value="70"/>
+          <vector name="origin" x="88" y="167"/>
+        </canvas>
+        <string name="action" value="shoot1"/>
+        <int name="time" value="960"/>
         <canvas name="13" width="127" height="268">
           <vector name="origin" x="89" y="164"/>
           <int name="delay" value="70"/>
         </canvas>
-        <string name="action" value="shoot1"/>
-        <int name="time" value="960"/>
       </imgdir>
       <imgdir name="keydown">
         <canvas name="0" width="127" height="276">

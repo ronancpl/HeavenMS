@@ -23,6 +23,7 @@ package net.server.guild;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import constants.ServerConstants;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -752,6 +753,12 @@ public class MapleGuild {
     }
 
     public static int getIncreaseGuildCost(int size) {
-        return 500000 * (size - 6) / 6;
+        int cost = ServerConstants.EXPAND_GUILD_BASE_COST + Math.max(0, (size - 15) / 5) * ServerConstants.EXPAND_GUILD_TIER_COST;
+        
+        if (size > 30) {
+            return Math.min(ServerConstants.EXPAND_GUILD_MAX_COST, Math.max(cost, 5000000));
+        } else {
+            return cost;
+        }
     }
 }

@@ -301,7 +301,7 @@ public class CommandsExecutor {
         
         addCommand("servermessage", 4, ServerMessageCommand.class);
         addCommand("proitem", 4, ProItemCommand.class);
-        addCommand("seteqstat", 4, SetQStatCommand.class);
+        addCommand("seteqstat", 4, SetEqStatCommand.class);
         addCommand("exprate", 4, ExpRateCommand.class);
         addCommand("mesorate", 4, MesoRateCommand.class);
         addCommand("droprate", 4, DropRateCommand.class);

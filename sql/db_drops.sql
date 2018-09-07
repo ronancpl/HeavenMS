@@ -1871,7 +1871,7 @@ USE `heavenms`;
 (2230102, 4000020, 1, 1, 0, 200000), 
 (2230102, 4000021, 1, 1, 0, 200000), 
 (2230102, 4003004, 1, 1, 0, 7000), 
-(2230102, 4001372, 1, 1, 0, 200000), 
+(2230102, 4001372, 1, 1, 28282, 200000), 
 (2230102, 2000001, 1, 1, 0, 40000), 
 (2230102, 2000003, 1, 1, 0, 40000), 
 (2230102, 2002004, 1, 1, 0, 10000), 
@@ -2107,7 +2107,7 @@ USE `heavenms`;
 (2230112, 1082186, 1, 1, 0, 700), 
 (2230100, 4000007, 1, 1, 0, 200000), 
 (2230100, 4030012, 1, 1, 0, 125000), 
-(2230100, 4001373, 1, 1, 0, 7000), 
+(2230100, 4001373, 1, 1, 28282, 200000), 
 (2230100, 2000001, 1, 1, 0, 40000),
 (2230100, 2000003, 1, 1, 0, 40000),
 (2230100, 2002001, 1, 1, 0, 10000), 
@@ -20795,8 +20795,6 @@ USE `heavenms`;
   UPDATE drop_data SET chance=0 WHERE itemid=2050099;
   UPDATE drop_data SET questid=6191 WHERE itemid=4031477;
   UPDATE drop_data SET questid=6190 WHERE itemid=4001111;
-  UPDATE drop_data SET questid=28344 WHERE itemid=4001372;
-  UPDATE drop_data SET questid=28282 WHERE itemid=4001373;
 
   # two items named "Sparta": remove the entries where lv100 Sparta is being dropped by low-level mobs.
   UPDATE IGNORE drop_data SET itemid=1402011 WHERE itemid=1302056 AND dropperid < 8000000;

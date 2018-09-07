@@ -32,7 +32,7 @@ var ambientSong = "Bgm04/Shinin'Harbor";
 var feature_tree = [];
 var feature_cursor;
 
-var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Admin/GM commands", "Custom NPCs", "Localhost edits", "Project"];
+var tabs = ["PQs", "Skills", "Quests", "Player Social Network", "Cash & Items", "Monsters, Maps & Reactors", "PQ potentials", "Player potentials", "Server potentials", "Commands", "Custom NPCs", "Localhost edits", "Project"];
 
 function addFeature(feature) {
         feature_cursor.push(feature);
@@ -43,7 +43,7 @@ function writeFeatureTab_PQs() {
         addFeature("RnJPQ/HorntailPQ/TreasurePQ/ElnathPQ/HolidayPQ.");
         addFeature("CWKPQ as Expedition-based instance.");
         addFeature("Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.");
-        addFeature("GuildPQ & queue with multi-lobby systems available.");
+        addFeature("GuildPQ & queue with multi-lobby system available.");
         addFeature("Brand-new PQs: BossRushPQ, CafePQ.");
         addFeature("Mu Lung Dojo.");
         addFeature("Capt. Latanica with party fighting the boss.");
@@ -128,6 +128,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Reactors pick items up smartly from the field.");
         addFeature("Updated scripted portals now with proper portal SFX.");
         addFeature("Reviewed Masteria, W. Tour, N. Desert and Neo City.");
+        addFeature("Added world maps for M. Castle, W. Tour & Ellin areas.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
 }
 
@@ -137,13 +138,14 @@ function writeFeatureTab_PQpotentials() {
         addFeature("Exped system: Many parties can join a same instance.");
         addFeature("Guild queue: guild registration for the GPQ.");
         addFeature("EIM Pool system: optimized instance loadouts.");
+        addFeature("Recall system: players can rejoin PQ after d/c.");
 }
 
 function writeFeatureTab_Playerpotentials() {
         addFeature("Adventurer Mount quests functional.");
         addFeature("All Equipment levels up.");
         addFeature("Player level rates.");
-        addFeature("Gain fame by quests.");
+        addFeature("Gain fame by quests and event instances.");
         addFeature("Pet evolutions functional (not GMS-like).");
         addFeature("Reviewed keybinding system.");
         addFeature("Character slots per world/server-wide.");
@@ -160,6 +162,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Enhanced AP auto-assigner: focus on eqp demands.");
         addFeature("Enhanced inventory check: free slots smartly fetched.");
         addFeature("Enhanced petloot handler: no brute-force inv. checks.");
+        addFeature("Players-appointed bestsellers for Owl and Cash Shop.");
         addFeature("Tweaked pet/mount hunger to a balanced growth rate.");
         addFeature("Consistent experience and meso gain system.");
         addFeature("NPC crafters won't take items freely anymore.");
@@ -184,7 +187,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Automatic account registration - thanks shavit!");
 }
 
-function writeFeatureTab_AdminGMcommands() {
+function writeFeatureTab_Commands() {
         addFeature("Spawn Zakum/Horntail/Pinkbean.");
         addFeature("Several new commands.");
         addFeature("Rank command highlighting users by world or overall.");

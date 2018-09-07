@@ -42,11 +42,12 @@ public class ProItemCommand extends Command {
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
         if (params.length < 2) {
-            player.yellowMessage("Syntax: !proitem <itemid> <statvalue>");
+            player.yellowMessage("Syntax: !proitem <itemid> <stat value> [<spdjmp value>]");
             return;
         }
         int itemid = Integer.parseInt(params[0]);
-        short multiply = Short.parseShort(params[1]);
+        short stat = (short) Math.max(0, Short.parseShort(params[1]));
+        short spdjmp = params.length >= 3 ? (short) Math.max(0, Short.parseShort(params[2])) : 0;
 
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         MapleInventoryType type = ItemConstants.getInventoryType(itemid);
@@ -54,13 +55,13 @@ public class ProItemCommand extends Command {
             Item it = ii.getEquipById(itemid);
             it.setOwner(player.getName());
 
-            hardsetItemStats((Equip) it, multiply);
+            hardsetItemStats((Equip) it, stat, spdjmp);
             MapleInventoryManipulator.addFromDrop(c, it);
         } else {
             player.dropMessage(6, "Make sure it's an equippable item.");
         }
     }
-    private static void hardsetItemStats(Equip equip, short stat) {
+    private static void hardsetItemStats(Equip equip, short stat, short spdjmp) {
         equip.setStr(stat);
         equip.setDex(stat);
         equip.setInt(stat);
@@ -69,8 +70,8 @@ public class ProItemCommand extends Command {
         equip.setWatk(stat);
         equip.setAcc(stat);
         equip.setAvoid(stat);
-        equip.setJump(stat);
-        equip.setSpeed(stat);
+        equip.setJump(spdjmp);
+        equip.setSpeed(spdjmp);
         equip.setWdef(stat);
         equip.setMdef(stat);
         equip.setHp(stat);

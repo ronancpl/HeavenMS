@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.Lock;
+
+import net.server.Server;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 import provider.MapleData;
@@ -107,18 +109,18 @@ public class CashShop {
             if (ItemConstants.EXPIRING_ITEMS) {
                     if(period == 1) {
                             if(itemId == 5211048 || itemId == 5360042) { // 4 Hour 2X coupons, the period is 1, but we don't want them to last a day.
-                                    item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 4));
+                                    item.setExpiration(Server.getInstance().getCurrentTime() + (1000 * 60 * 60 * 4));
                             /*
                             } else if(itemId == 5211047 || itemId == 5360014) { // 3 Hour 2X coupons, unused as of now
-                                    item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 3));
+                                    item.setExpiration(Server.getInstance().getCurrentTime() + (1000 * 60 * 60 * 3));
                             */
                             } else if(itemId == 5211060) { // 2 Hour 3X coupons.
-                                    item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 2));
+                                    item.setExpiration(Server.getInstance().getCurrentTime() + (1000 * 60 * 60 * 2));
                             } else {
-                                    item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 24));
+                                    item.setExpiration(Server.getInstance().getCurrentTime() + (1000 * 60 * 60 * 24));
                             }
                     } else {
-                            item.setExpiration(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * period));
+                            item.setExpiration(Server.getInstance().getCurrentTime() + (1000 * 60 * 60 * 24 * period));
                     }
             }
             
@@ -352,6 +354,11 @@ public class CashShop {
                 nxPrepaid += cash;
                 break;
         }
+    }
+    
+    public void gainCash(int type, CashItem buyItem, int world) {
+        gainCash(type, -buyItem.getPrice());
+        if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) Server.getInstance().getWorld(world).addCashItemBought(buyItem.getSN());
     }
 
     public boolean isOpened() {

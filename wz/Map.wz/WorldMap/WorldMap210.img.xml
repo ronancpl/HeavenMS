@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="WorldMap210.img">
+  <imgdir name="BaseImg">
+    <canvas name="0" width="640" height="470">
+      <vector name="origin" x="320" y="235"/>
+      <int name="z" value="0"/>
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <string name="parentMap" value="WorldMap140"/>
+  </imgdir>
+  <imgdir name="MapLink">
+    <imgdir name="0">
+      <imgdir name="link">
+        <canvas name="linkImg" width="103" height="100">
+          <vector name="origin" x="-2" y="116"/>
+          <int name="z" value="1"/>
+        </canvas>
+        <string name="linkMap" value="WorldMap211"/>
+      </imgdir>
+      <string name="toolTip" value="Showa"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="MapList">
+    <imgdir name="2">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800010001"/>
+      </imgdir>
+      <vector name="spot" x="-7" y="-7"/>
+    </imgdir>
+    <imgdir name="0">
+      <int name="type" value="0"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800000000"/>
+      </imgdir>
+      <vector name="spot" x="-68" y="-14"/>
+    </imgdir>
+    <imgdir name="3">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020000"/>
+      </imgdir>
+      <vector name="spot" x="25" y="63"/>
+    </imgdir>
+    <imgdir name="4">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020100"/>
+      </imgdir>
+      <vector name="spot" x="163" y="144"/>
+    </imgdir>
+    <imgdir name="5">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020101"/>
+      </imgdir>
+      <vector name="spot" x="51" y="6"/>
+    </imgdir>
+    <imgdir name="6">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020110"/>
+      </imgdir>
+      <vector name="spot" x="90" y="76"/>
+    </imgdir>
+    <imgdir name="7">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020120"/>
+      </imgdir>
+      <vector name="spot" x="113" y="25"/>
+    </imgdir>
+    <imgdir name="8">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020130"/>
+      </imgdir>
+      <vector name="spot" x="137" y="-41"/>
+    </imgdir>
+    <imgdir name="9">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020200"/>
+      </imgdir>
+      <vector name="spot" x="253" y="81"/>
+    </imgdir>
+    <imgdir name="10">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800020300"/>
+      </imgdir>
+      <vector name="spot" x="286" y="43"/>
+    </imgdir>
+    <imgdir name="11">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800030000"/>
+      </imgdir>
+      <vector name="spot" x="-14" y="-25"/>
+    </imgdir>
+    <imgdir name="12">
+      <int name="type" value="2"/>
+      <imgdir name="mapNo">
+        <int name="0" value="801000000"/>
+        <int name="1" value="801000001"/>
+        <int name="2" value="801000002"/>
+        <int name="3" value="801000100"/>
+        <int name="4" value="801000110"/>
+        <int name="5" value="801000200"/>
+        <int name="6" value="801000210"/>
+        <int name="7" value="801000300"/>
+        <int name="8" value="801010000"/>
+        <int name="9" value="801020000"/>
+        <int name="10" value="801030000"/>
+        <int name="11" value="801040000"/>
+        <int name="12" value="801040001"/>
+        <int name="13" value="801040002"/>
+        <int name="14" value="801040003"/>
+        <int name="15" value="801040004"/>
+      </imgdir>
+      <vector name="spot" x="35" y="-55"/>
+    </imgdir>
+    <imgdir name="1">
+      <int name="type" value="1"/>
+      <imgdir name="mapNo">
+        <int name="0" value="800010000"/>
+        <int name="1" value="800010100"/>
+      </imgdir>
+      <vector name="spot" x="-23" y="33"/>
+    </imgdir>
+  </imgdir>
+</imgdir>

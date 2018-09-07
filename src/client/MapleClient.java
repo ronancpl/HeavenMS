@@ -85,6 +85,8 @@ public class MapleClient {
 	public static final int LOGIN_SERVER_TRANSITION = 1;
 	public static final int LOGIN_LOGGEDIN = 2;
 	public static final String CLIENT_KEY = "CLIENT";
+        public static final String CLIENT_HWID = "HWID";
+        public static final String CLIENT_NIBBLEHWID = "HWID2";
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
 	private final IoSession session;
@@ -507,7 +509,7 @@ public class MapleClient {
 		return false;
 	}
 
-	public int login(String login, String pwd) {
+	public int login(String login, String pwd, String nibbleHwid) {
 		loginattempt++;
 		if (loginattempt > 4) {
 			MapleSessionCoordinator.getInstance().closeSession(session, false);
@@ -571,7 +573,7 @@ public class MapleClient {
 		}
                 
 		if (loginok == 0 || loginok == 4) {
-                        AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptSessionLogin(session, accId, loginok == 4);
+                        AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptLoginSession(session, nibbleHwid, accId, loginok == 4);
                         
                         switch (res) {
                                 case SUCCESS:
@@ -887,71 +889,59 @@ public class MapleClient {
 
                         final World wserv = getWorldServer();   // obviously wserv is NOT null if this player was online on it
                         try {
-                                if (channel == -1 || shutdown) {
-                                        if(chrg != null) chrg.setCharacter(null);
-
-                                        wserv.removePlayer(player);
-                                        removePlayer(wserv);
-
-                                        player.saveCooldowns();
-                                        player.cancelAllDebuffs();
-                                        player.saveCharToDB(true);
-
-                                        clear();
-                                        return;
-                                }
-
                                 removePlayer(wserv);
-			
-				if (!cashshop) {
-					if (!this.serverTransition) { // meaning not changing channels
-						if (messengerid > 0) {
-							wserv.leaveMessenger(messengerid, chrm);
-						}
-                                                /*      
-						if (fid > 0) {
-                                                        final MapleFamily family = worlda.getFamily(fid);
-                                                        family.
+                                
+                                if (!(channel == -1 || shutdown)) {
+                                        if (!cashshop) {
+                                                if (!this.serverTransition) { // meaning not changing channels
+                                                        if (messengerid > 0) {
+                                                                wserv.leaveMessenger(messengerid, chrm);
+                                                        }
+                                                        /*      
+                                                        if (fid > 0) {
+                                                                final MapleFamily family = worlda.getFamily(fid);
+                                                                family.
+                                                        }
+                                                        */
+                                                        for (MapleQuestStatus status : player.getStartedQuests()) { //This is for those quests that you have to stay logged in for a certain amount of time
+                                                                MapleQuest quest = status.getQuest();
+                                                                if (quest.getTimeLimit() > 0) {
+                                                                        MapleQuestStatus newStatus = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
+                                                                        newStatus.setForfeited(player.getQuest(quest).getForfeited() + 1);
+                                                                        player.updateQuest(newStatus);
+                                                                }
+                                                        }	                   
+                                                        if (guild != null) {
+                                                                final Server server = Server.getInstance();
+                                                                server.setGuildMemberOnline(player, false, player.getClient().getChannel());
+                                                                player.getClient().announce(MaplePacketCreator.showGuildInfo(player));
+                                                        }
+                                                        if (bl != null) {
+                                                                wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
+                                                        }
                                                 }
-                                                */
-						for (MapleQuestStatus status : player.getStartedQuests()) { //This is for those quests that you have to stay logged in for a certain amount of time
-							MapleQuest quest = status.getQuest();
-							if (quest.getTimeLimit() > 0) {
-								MapleQuestStatus newStatus = new MapleQuestStatus(quest, MapleQuestStatus.Status.NOT_STARTED);
-								newStatus.setForfeited(player.getQuest(quest).getForfeited() + 1);
-								player.updateQuest(newStatus);
-							}
-						}	                   
-                                                if (guild != null) {
-							final Server server = Server.getInstance();
-							server.setGuildMemberOnline(player, false, player.getClient().getChannel());
-							player.getClient().announce(MaplePacketCreator.showGuildInfo(player));
-						}
-                                                if (bl != null) {
-							wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
-						}
-					}
-				} else {
-					if (!this.serverTransition) { // if dc inside of cash shop.	                
-						if (bl != null) {
-							wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
-						}
-					}
-				}
+                                        } else {
+                                                if (!this.serverTransition) { // if dc inside of cash shop.	                
+                                                        if (bl != null) {
+                                                                wserv.loggedOff(player.getName(), player.getId(), channel, player.getBuddylist().getBuddyIds());
+                                                        }
+                                                }
+                                        }
+                                }
 			} catch (final Exception e) {
 				FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, e);
 			} finally {
                                 if (!this.serverTransition) {
+                                        if(chrg != null) chrg.setCharacter(null);
 					wserv.removePlayer(player);
                                         //getChannelServer().removePlayer(player); already being done
                                         
                                         player.saveCooldowns();
                                         player.cancelAllDebuffs();
                                         player.saveCharToDB(true);
-					if (player != null) {//no idea, occur :(
-						player.empty(false);
-					}
+                                        
 					player.logOff();
+                                        clear();
 				} else {
                                         getChannelServer().removePlayer(player);
 

@@ -44,7 +44,7 @@ public class ReactorScriptManager extends AbstractScriptManager {
 
     private static ReactorScriptManager instance = new ReactorScriptManager();
     
-    public synchronized static ReactorScriptManager getInstance() {
+    public static ReactorScriptManager getInstance() {
         return instance;
     }
     

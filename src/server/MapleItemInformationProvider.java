@@ -97,6 +97,8 @@ public class MapleItemInformationProvider {
     protected Map<Integer, MapleStatEffect> itemEffects = new HashMap<>();
     protected Map<Integer, Map<String, Integer>> equipStatsCache = new HashMap<>();
     protected Map<Integer, Equip> equipCache = new HashMap<>();
+    protected Map<Integer, MapleData> equipLevelInfoCache = new HashMap<>();
+    protected Map<Integer, Integer> equipMaxLevelCache = new HashMap<>();
     protected Map<Integer, Integer> wholePriceCache = new HashMap<>();
     protected Map<Integer, Double> unitPriceCache = new HashMap<>();
     protected Map<Integer, Integer> projectileWatkCache = new HashMap<>();
@@ -1217,7 +1219,7 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
-    public boolean isDropRestricted(int itemId) {
+    public boolean isLootRestricted(int itemId) {
         if (dropRestrictionCache.containsKey(itemId)) {
             return dropRestrictionCache.get(itemId);
         }
@@ -1227,15 +1229,16 @@ public class MapleItemInformationProvider {
             MapleData data = getItemData(itemId);
             bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
             if (!bRestricted) {
-                    bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
-            }
-            if (!bRestricted) {
-                bRestricted = MapleDataTool.getIntConvert("info/quest", data, 0) == 1;
+                bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
             }
         }
         
         dropRestrictionCache.put(itemId, bRestricted);
         return bRestricted;
+    }
+    
+    public boolean isDropRestricted(int itemId) {
+        return isLootRestricted(itemId) || isQuestItem(itemId);
     }
 
     public boolean isPickupRestricted(int itemId) {
@@ -1674,24 +1677,72 @@ public class MapleItemInformationProvider {
         return true;
     }
     
-    public ArrayList<Pair<Integer, String>> getItemDataByName(String name)
-    {
+    public ArrayList<Pair<Integer, String>> getItemDataByName(String name) {
         ArrayList<Pair<Integer, String>> ret = new ArrayList<>();
-         for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
-                    if (itemPair.getRight().toLowerCase().contains(name.toLowerCase())) {
-                            ret.add(itemPair);
-                        }
-                    }
-         return ret;
+        for (Pair<Integer, String> itemPair : MapleItemInformationProvider.getInstance().getAllItems()) {
+            if (itemPair.getRight().toLowerCase().contains(name.toLowerCase())) {
+                ret.add(itemPair);
+            }
+        }
+        return ret;
     }
 
+    private MapleData getEquipLevelInfo(int itemId) {
+        MapleData equipLevelData = equipLevelInfoCache.get(itemId);
+        if (equipLevelData == null) {
+            if (equipLevelInfoCache.containsKey(itemId)) return null;
+            
+            MapleData iData = getItemData(itemId);
+            if (iData != null) {
+                MapleData data = iData.getChildByPath("info/level");
+                if (data != null) {
+                    equipLevelData = data.getChildByPath("info");
+                }
+            }
+            
+            equipLevelInfoCache.put(itemId, equipLevelData);
+        }
+        
+        return equipLevelData;
+    }
+    
+    public int getEquipLevel(int itemId, boolean getMaxLevel) {
+        Integer eqLevel = equipMaxLevelCache.get(itemId);
+        if (eqLevel == null) {
+            eqLevel = 1;    // greater than 1 means that it was supposed to levelup on GMS
+            
+            MapleData data = getEquipLevelInfo(itemId);
+            if (data != null) {
+                if (getMaxLevel) {
+                    int curLevel = 1;
+
+                    while (true) {
+                        MapleData data2 = data.getChildByPath(Integer.toString(curLevel));
+                        if (data2 == null || data2.getChildren().size() <= 1) {
+                            eqLevel = curLevel;
+                            equipMaxLevelCache.put(itemId, eqLevel);
+                            break;
+                        }
+                        
+                        curLevel++;
+                    }
+                } else {
+                    MapleData data2 = data.getChildByPath("1");
+                    if (data2 != null && data2.getChildren().size() > 1) {
+                        eqLevel = 2;
+                    }
+                }
+            }
+        }
+        
+        return eqLevel;
+    }
+    
     public List<Pair<String, Integer>> getItemLevelupStats(int itemId, int level) {
         List<Pair<String, Integer>> list = new LinkedList<>();
-        MapleData data = getItemData(itemId);
-        MapleData data1 = data.getChildByPath("info").getChildByPath("level");
-        
-        if (data1 != null) {
-            MapleData data2 = data1.getChildByPath("info").getChildByPath(Integer.toString(level));
+        MapleData data = getEquipLevelInfo(itemId);
+        if (data != null) {
+            MapleData data2 = data.getChildByPath(Integer.toString(level));
             if (data2 != null) {
                 for (MapleData da : data2.getChildren()) {
                     if (Math.random() < 0.9) {

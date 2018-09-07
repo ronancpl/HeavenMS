@@ -54,6 +54,7 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleQuestStatus;
+import client.MapleStat;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -581,8 +582,7 @@ public class AbstractPlayerInteraction {
 	}
         
         public void gainFame(int delta) {
-                c.getPlayer().addFame(delta);
-                c.announce(MaplePacketCreator.getShowFameGain(delta));
+                getPlayer().gainFame(delta);
         }
 
 	public void changeMusic(String songName) {

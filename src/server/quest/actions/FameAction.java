@@ -50,8 +50,6 @@ public class FameAction extends MapleQuestAction {
 	
 	@Override
 	public void run(MapleCharacter chr, Integer extSelection) {
-		chr.addFame(fame);
-		chr.updateSingleStat(MapleStat.FAME, chr.getFame());
-		chr.announce(MaplePacketCreator.getShowFameGain(fame));
+		chr.gainFame(fame);
 	}
 } 

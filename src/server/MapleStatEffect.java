@@ -30,7 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import net.server.world.MaplePartyCharacter;
+import net.server.Server;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.life.MapleMonster;
@@ -997,11 +997,15 @@ public class MapleStatEffect {
         return bounds;
     }
     
+    public int getBuffLocalDuration() {
+        return !ServerConstants.USE_BUFF_EVERLASTING ? duration : Integer.MAX_VALUE;
+    }
+    
     public void silentApplyBuff(MapleCharacter chr, long localStartTime) {
-        int localDuration = duration;
+        int localDuration = getBuffLocalDuration();
         localDuration = alchemistModifyVal(chr, localDuration, false);
         //CancelEffectAction cancelAction = new CancelEffectAction(chr, this, starttime);
-        //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + localDuration) - System.currentTimeMillis()));
+        //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + localDuration) - Server.getInstance().getCurrentTime()));
         
         chr.registerEffect(this, localStartTime, localStartTime + localDuration, true);
         SummonMovementType summonMovementType = getSummonMovementType();
@@ -1021,17 +1025,17 @@ public class MapleStatEffect {
         final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.ARAN_COMBO, combo));
         applyto.announce(MaplePacketCreator.giveBuff(sourceid, 99999, stat));
 
-        final long starttime = System.currentTimeMillis();
+        final long starttime = Server.getInstance().getCurrentTime();
 //	final CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
-//	final ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + 99999) - System.currentTimeMillis()));
+//	final ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, ((starttime + 99999) - Server.getInstance().getCurrentTime()));
         applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
     }
     
     public void updateBuffEffect(MapleCharacter target, List<Pair<MapleBuffStat, Integer>> activeStats, long starttime) {
-        int localDuration = duration;
+        int localDuration = getBuffLocalDuration();
         localDuration = alchemistModifyVal(target, localDuration, false);
         
-        long leftDuration = (starttime + localDuration) - System.currentTimeMillis();
+        long leftDuration = (starttime + localDuration) - Server.getInstance().getCurrentTime();
         if(leftDuration > 0) {
             target.announce(MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), (int)leftDuration, activeStats));
         }
@@ -1043,7 +1047,7 @@ public class MapleStatEffect {
         }
 
         List<Pair<MapleBuffStat, Integer>> localstatups = statups;
-        int localDuration = duration;
+        int localDuration = getBuffLocalDuration();
         int localsourceid = sourceid;
         int seconds = localDuration / 1000;
         MapleMount givemount = null;
@@ -1155,7 +1159,7 @@ public class MapleStatEffect {
                 }
             }
             
-            long starttime = System.currentTimeMillis();
+            long starttime = Server.getInstance().getCurrentTime();
             //CancelEffectAction cancelAction = new CancelEffectAction(applyto, this, starttime);
             //ScheduledFuture<?> schedule = TimerManager.getInstance().schedule(cancelAction, localDuration);
             applyto.registerEffect(this, starttime, starttime + localDuration, false);

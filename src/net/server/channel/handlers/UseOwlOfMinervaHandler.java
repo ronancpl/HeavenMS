@@ -56,7 +56,7 @@ public final class UseOwlOfMinervaHandler extends AbstractMaplePacketHandler {
                 }
             };
             
-            PriorityQueue<Pair<Integer, Integer>> queue = new PriorityQueue<>(10, comparator);
+            PriorityQueue<Pair<Integer, Integer>> queue = new PriorityQueue<>(Math.max(1, owlSearched.size()), comparator);
             for(Pair<Integer, Integer> p : owlSearched) {
                 queue.add(p);
             }

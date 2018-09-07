@@ -17,7 +17,8 @@ import server.quest.MapleQuest;
  */
 public class GameConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
-    public static final int[] OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
+    public static final int[]  OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
+    public static final int[] CASH_DATA = new int[]{50200004, 50200069, 50200117, 50100008, 50000047};
     
     // Ronan's rates upgrade system
     private static final int[] DROP_RATE_GAIN = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
@@ -39,6 +40,62 @@ public class GameConstants {
     public static int getPlayerBonusExpRate(int slot) {
         return(EXP_RATE_GAIN[slot]);
     }
+    
+    // used by the "goto" command
+    public static final HashMap<String, Integer> GOTO_MAPS = new HashMap<String, Integer>() {{
+        put("gmmap", 180000000);
+        put("southperry", 60000);
+        put("amherst", 1000000);
+        put("henesys", 100000000);
+        put("ellinia", 101000000);
+        put("perion", 102000000);
+        put("kerning", 103000000);
+        put("lith", 104000000);
+        put("sleepywood", 105040300);
+        put("florina", 110000000);
+        put("nautilus", 120000000);
+        put("ereve", 130000000);
+        put("rien", 140000000);
+        put("orbis", 200000000);
+        put("happy", 209000000);
+        put("elnath", 211000000);
+        put("ludi", 220000000);
+        put("aqua", 230000000);
+        put("leafre", 240000000);
+        put("mulung", 250000000);
+        put("herb", 251000000);
+        put("omega", 221000000);
+        put("korean", 222000000);
+        put("ellin", 300000000);
+        put("nlc", 600000000);
+        put("excavation", 990000000);
+        put("pianus", 230040420);
+        put("horntail", 240060200);
+        put("mushmom", 100000005);
+        put("griffey", 240020101);
+        put("manon", 240020401);
+        put("horseman", 682000001);
+        put("balrog", 105090900);
+        put("zakum", 211042300);
+        put("papu", 220080001);
+        put("showa", 801000000);
+        put("guild", 200000301);
+        put("shrine", 800000000);
+        put("skelegon", 240040511);
+        put("hpq", 100000200);
+        put("ht", 240050400);
+        put("ariant", 260000000);
+        put("magatia", 261000000);
+        put("singapore", 540000000);
+        put("quay", 541000000);
+        put("kampung", 551000000);
+        put("keep", 610020006);
+        put("amoria", 680000000);
+        put("temple", 270000100);
+        put("square", 103040000);
+        put("neo", 240070000);
+        put("fm", 910000000);
+    }};
     
     // MapleStory default keyset
     private static final int[] DEFAULT_KEY = {18, 65, 2, 23, 3, 4, 5, 6, 16, 17, 19, 25, 26, 27, 31, 34, 35, 37, 38, 40, 43, 44, 45, 46, 50, 56, 59, 60, 61, 62, 63, 64, 57, 48, 29, 7, 24, 33, 41, 39};

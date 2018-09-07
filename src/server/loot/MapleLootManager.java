@@ -34,25 +34,30 @@ import server.quest.MapleQuest;
  */
 public class MapleLootManager {
     
-    private static boolean needQuestItem(MonsterDropEntry dropEntry, MapleQuest quest, MapleCharacter chr, MapleLootInventory chrInv) {
-        if (chr.getQuestStatus(dropEntry.questid) != 1) return false;
-        return !chrInv.hasItem(dropEntry.itemId, quest.getItemAmountNeeded(dropEntry.itemId));
-    }
-    
     private static boolean isRelevantDrop(MonsterDropEntry dropEntry, List<MapleCharacter> partyMembers, List<MapleLootInventory> partyInv) {
         MapleQuest quest = MapleQuest.getInstance(dropEntry.questid);
-        boolean restricted = MapleItemInformationProvider.getInstance().isDropRestricted(dropEntry.itemId);
+        int qItemAmount = quest != null ? quest.getItemAmountNeeded(dropEntry.itemId) : 0;
         
+        boolean restricted = MapleItemInformationProvider.getInstance().isLootRestricted(dropEntry.itemId);
         for (int i = 0; i < partyMembers.size(); i++) {
             MapleLootInventory chrInv = partyInv.get(i);
             
-            if(restricted && chrInv.hasItem(dropEntry.itemId, 1)) {
+            if (dropEntry.questid > 0) {
+                if (partyMembers.get(i).getQuestStatus(dropEntry.questid) != 1) {
+                    continue;
+                }
+                
+                int qItemStatus = chrInv.hasItem(dropEntry.itemId, qItemAmount);
+                if (qItemStatus == 2) {
+                    continue;
+                } else if (restricted && qItemStatus == 1) {
+                    continue;
+                }
+            } else if (restricted && chrInv.hasItem(dropEntry.itemId, 1) > 0) {
                 continue;
             }
             
-            if(dropEntry.questid <= 0 || needQuestItem(dropEntry, quest, partyMembers.get(i), chrInv)) {
-                return true;
-            }
+            return true;
         }
         
         return false;

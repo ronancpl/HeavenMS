@@ -1266,3 +1266,30 @@ Corrigido setGender não modificando estado do cliente para não-logado ao cance
 Melhorado mecânica de logout de líder de party, passando a liderança adiante antes de efetivamente deslogar, permitindo assim instâncias a continuarem após a saída do mesmo, dadas circunstâncias favoráveis.
 Outra correção no XMLDomMapleData, que ainda continua dando NullPointerExceptions.
 Corrigido stati de mobs não protegido concorrentemente em certos casos.
+
+28 Agosto 2018,
+Implementado sistema de rewarp para instâncias de eventos, usado por jogadores ao se reconectar ao jogo. Ideia de Alisson.
+Adicionado contador de compras de itens do cash shop. Sugestão de mais comprados do cash shop implementado.
+Otimizado função goto, agora não mais gerando mapas de cidade/mapid a todo uso de comando.
+
+29 - 31 Agosto 2018,
+Melhorado função de disconnect do MapleClient, evitando múltiplos envios de dados do jogador à DB.
+Desenhado (todo conteúdo de imagens creditado à Nexon) e implementado novos mapas-mundi referente a regiões de M. Shrine, Showa, CBD e Metropolis/Kampung.
+
+03 Agosto 2018,
+Implementado buffs inexpiráveis.
+Corrigido comando resetStats não levando em conta AP's atuais dos jogadores.
+Corrigido novo sistema gerenciador de loots removendo a possibilidade de conseguir novos itens de quest após coleta do primeiro item.
+
+04 Agosto 2018,
+Corrigido um flicker na animação do efeito da skill Hurricane.
+Ajustado MapleSessionCoordinator, agora verificando HWID's ao invés de contar somente com o remote IP, evitando negação de serviço para usuários de VPNs.
+Corrigido dispel normal incorretamente mostrando efeitos aleatórios a outros jogadores, issue apontado por Thora.
+Corrigido change job não mostrando efeito a outros jogadores.
+Corrigido valores incorretos sendo retirado de jogadores para expansão de guild, issue apontado por Thora.
+
+05 Agosto 2018,
+Adicionado world map em Ellin Forest.
+Protegido concorrentemente sistema de fames.
+Adicionado ganho de quest points para jogadores que participam de PQs. Reformulado sistema de quest points para viabilizar a nova feature.
+Otimizado método de ganho de experiência em equipamentos, agora devidamente cacheado e sem busca em strings no processo.

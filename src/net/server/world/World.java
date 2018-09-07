@@ -27,6 +27,7 @@ import client.BuddyList.BuddyOperation;
 import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.MapleFamily;
+import constants.GameConstants;
 import constants.ServerConstants;
 import java.sql.Connection;
 
@@ -53,6 +54,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 import java.util.concurrent.ScheduledFuture;
 
 import scripting.event.EventInstanceManager;
@@ -122,6 +124,11 @@ public class World {
     private MonitoredReentrantLock partyLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.WORLD_PARTY, true);
     
     private Map<Integer, Integer> owlSearched = new LinkedHashMap<>();
+    private List<Map<Integer, Integer>> cashItemBought = new ArrayList<>(9);
+    private final ReentrantReadWriteLock suggestLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_SUGGEST, true);
+    private ReadLock suggestRLock = suggestLock.readLock();
+    private WriteLock suggestWLock = suggestLock.writeLock();
+    
     private Map<Integer, Integer> disabledServerMessages = new HashMap<>();    // reuse owl lock
     private MonitoredReentrantLock srvMessagesLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.WORLD_SRVMESSAGES);
     private ScheduledFuture<?> srvMessagesSchedule;
@@ -165,6 +172,10 @@ public class World {
         
         petUpdate = System.currentTimeMillis();
         mountUpdate = petUpdate;
+        
+        for (int i = 0; i < 9; i++) {
+            cashItemBought.add(new LinkedHashMap<Integer, Integer>());
+        }
         
         TimerManager tman = TimerManager.getInstance();
         petsSchedule = tman.register(new PetFullnessWorker(this), 60 * 1000, 60 * 1000);
@@ -1152,7 +1163,7 @@ public class World {
     }
     
     public void addOwlItemSearch(Integer itemid) {
-        srvMessagesLock.lock();
+        suggestWLock.lock();
         try {
             Integer cur = owlSearched.get(itemid);
             if(cur != null) {
@@ -1161,16 +1172,16 @@ public class World {
                 owlSearched.put(itemid, 1);
             }
         } finally {
-            srvMessagesLock.unlock();
+            suggestWLock.unlock();
         }
     }
     
     public List<Pair<Integer, Integer>> getOwlSearchedItems() {
-        if(ServerConstants.USE_ENFORCE_OWL_SUGGESTIONS) {
+        if(ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
             return new ArrayList<>(0);
         }
         
-        srvMessagesLock.lock();
+        suggestRLock.lock();
         try {
             List<Pair<Integer, Integer>> searchCounts = new ArrayList<>(owlSearched.size());
             
@@ -1180,8 +1191,106 @@ public class World {
             
             return searchCounts;
         } finally {
-            srvMessagesLock.unlock();
+            suggestRLock.unlock();
         }
+    }
+    
+    public void addCashItemBought(Integer snid) {
+        suggestWLock.lock();
+        try {
+            Map<Integer, Integer> tabItemBought = cashItemBought.get(snid / 10000000);
+            
+            Integer cur = tabItemBought.get(snid);
+            if (cur != null) {
+                tabItemBought.put(snid, cur + 1);
+            } else {
+                tabItemBought.put(snid, 1);
+            }
+        } finally {
+            suggestWLock.unlock();
+        }
+    }
+    
+    private List<List<Pair<Integer, Integer>>> getBoughtCashItems() {
+        if (ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
+            return new ArrayList<>(0);
+        }
+        
+        suggestRLock.lock();
+        try {
+            List<List<Pair<Integer, Integer>>> boughtCounts = new ArrayList<>(cashItemBought.size());
+            
+            for (Map<Integer, Integer> tab : cashItemBought) {
+                List<Pair<Integer, Integer>> tabItems = new LinkedList<>();
+                boughtCounts.add(tabItems);
+                
+                for (Entry<Integer, Integer> e : tab.entrySet()) {
+                    tabItems.add(new Pair<>(e.getKey(), e.getValue()));
+                }
+            }
+            
+            return boughtCounts;
+        } finally {
+            suggestRLock.unlock();
+        }
+    }
+    
+    private List<Integer> getMostSellerOnTab(List<Pair<Integer, Integer>> tabSellers) {
+        List<Integer> tabLeaderboards;
+        
+        Comparator<Pair<Integer, Integer>> comparator = new Comparator<Pair<Integer, Integer>>() {  // descending order
+            @Override
+            public int compare(Pair<Integer, Integer> p1, Pair<Integer, Integer> p2) {
+                return p2.getRight().compareTo(p1.getRight());
+            }
+        };
+
+        PriorityQueue<Pair<Integer, Integer>> queue = new PriorityQueue<>(Math.max(1, tabSellers.size()), comparator);
+        for(Pair<Integer, Integer> p : tabSellers) {
+            queue.add(p);
+        }
+
+        tabLeaderboards = new LinkedList<>();
+        for(int i = 0; i < Math.min(tabSellers.size(), 5); i++) {
+            tabLeaderboards.add(queue.remove().getLeft());
+        }
+        
+        return tabLeaderboards;
+    }
+    
+    public List<List<Integer>> getMostSellerCashItems() {
+        List<List<Pair<Integer, Integer>>> mostSellers = this.getBoughtCashItems();
+        List<List<Integer>> cashLeaderboards = new ArrayList<>(9);
+        List<Integer> tabLeaderboards;
+        List<Integer> allLeaderboards = null;
+        
+        for(List<Pair<Integer, Integer>> tabSellers : mostSellers) {
+            if (tabSellers.size() < 5) {
+                if (allLeaderboards == null) {
+                    List<Pair<Integer, Integer>> allSellers = new LinkedList<>();
+                    for (List<Pair<Integer, Integer>> tabItems : mostSellers) {
+                        allSellers.addAll(tabItems);
+                    }
+                    
+                    allLeaderboards = getMostSellerOnTab(allSellers);
+                }
+                
+                tabLeaderboards = new LinkedList<>();
+                if (allLeaderboards.size() < 5) {
+                    for(int i : GameConstants.CASH_DATA) {
+                        tabLeaderboards.add(i);
+                    }
+                } else {
+                    tabLeaderboards.addAll(allLeaderboards);
+                }
+            } else {
+                tabLeaderboards = getMostSellerOnTab(tabSellers);
+            }
+            
+            cashLeaderboards.add(tabLeaderboards);
+        }
+        
+        return cashLeaderboards;
     }
     
     public void registerPetHunger(MapleCharacter chr, byte petSlot) {

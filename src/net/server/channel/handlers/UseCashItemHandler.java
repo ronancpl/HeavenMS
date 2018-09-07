@@ -352,7 +352,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         } else if (itemType == 523) {
             int itemid = slea.readInt();
             
-            if(!ServerConstants.USE_ENFORCE_OWL_SUGGESTIONS) c.getWorldServer().addOwlItemSearch(itemid);
+            if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
             player.setOwlSearch(itemid);
             List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = c.getWorldServer().getAvailableItemBundles(itemid);
             if(!hmsAvailable.isEmpty()) remove(c, itemId);

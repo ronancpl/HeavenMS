@@ -62,7 +62,11 @@ import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
+import net.server.coordinator.MapleEventRecallCoordinator;
+import net.server.coordinator.MapleSessionCoordinator;
+import org.apache.mina.core.session.IoSession;
 import server.life.MobSkill;
+import scripting.event.EventInstanceManager;
 import tools.packets.Wedding;
 
 public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
@@ -79,9 +83,21 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(cid);
         boolean newcomer = false;
         if (player == null) {
-            if(!server.validateCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), cid)) {
+            IoSession session = c.getSession();
+            
+            if (!server.validateCharacteridInTransition((InetSocketAddress) session.getRemoteAddress(), cid)) {
                 c.disconnect(true, false);
                 return;
+            }
+            
+            if (ServerConstants.DETERRED_MULTICLIENT) {
+                String remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
+                if (remoteHwid == null) {
+                    c.disconnect(true, false);
+                    return;
+                }
+
+                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
             }
             
             try {
@@ -263,7 +279,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.requestBuddylistAdd(pendingBuddyRequest.getId(), c.getPlayer().getId(), pendingBuddyRequest.getName()));
         }
         
-        if(newcomer) {
+        if (newcomer) {
             for(MaplePet pet : player.getPets()) {
                 if(pet != null)
                     world.registerPetHunger(player, player.getPetIndex(pet));
@@ -330,6 +346,13 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             if(partner != null && !partner.isAwayFromWorld()) {
                 player.announce(Wedding.OnNotifyWeddingPartnerTransfer(partnerId, partner.getMapId()));
                 partner.announce(Wedding.OnNotifyWeddingPartnerTransfer(player.getId(), player.getMapId()));
+            }
+        }
+        
+        if (newcomer) {
+            EventInstanceManager eim = MapleEventRecallCoordinator.getInstance().recallEventInstance(cid);
+            if (eim != null) {
+                eim.registerPlayer(player);
             }
         }
     }

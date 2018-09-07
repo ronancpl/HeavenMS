@@ -185,7 +185,7 @@ function action(mode, type, selection) {
                     cm.gainItem(mats[i], -matQty [i]);
             else
                 cm.gainItem(mats, -matQty );
-            cm.gainMeso(-cost );
+            cm.gainMeso(-cost);
             cm.gainItem(item, 1);
             cm.sendOk("All done. Stay warm!");
         }

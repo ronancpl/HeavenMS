@@ -142,6 +142,11 @@ function scheduledTimeout(eim) {
         }
 }
 
+function bunnyDefeated(eim) {
+        eim.dropMessage(5, "Due to your failure to protect the Moon Bunny, you have been transported to the Exile Map.");
+        end(eim);
+}
+
 function playerUnregistered(eim, player) {}
 
 function playerExit(eim, player) {
@@ -231,6 +236,12 @@ function clearPQ(eim) {
 }
 
 function monsterKilled(mob, eim) {}
+
+function friendlyKilled(mob, eim) {
+        if (mob.getId() == 9300061) {
+                eim.schedule("bunnyDefeated", 5 * 1000);
+        }
+}
 
 function allMonstersDead(eim) {}
 

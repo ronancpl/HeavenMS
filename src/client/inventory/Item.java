@@ -25,10 +25,12 @@ import constants.ItemConstants;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Item implements Comparable<Item> {
 
+    private static AtomicInteger runningCashId = new AtomicInteger(0);
+    
     private int id, cashId, sn;
     private short position;
     private short quantity;
@@ -81,7 +83,7 @@ public class Item implements Comparable<Item> {
 
     public int getCashId() {
         if (cashId == 0) {
-            cashId = new Random().nextInt(Integer.MAX_VALUE) + 1;
+            cashId = runningCashId.incrementAndGet();
         }
         return cashId;
     }

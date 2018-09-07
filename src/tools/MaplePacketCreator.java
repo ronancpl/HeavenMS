@@ -758,6 +758,8 @@ public class MaplePacketCreator {
          *
          * @param serverId
          * @param serverName The name of the server.
+         * @param flag
+         * @param eventmsg
          * @param channelLoad Load of the channel - 1200 seems to be max.
          * @return The server info packet.
          */
@@ -777,8 +779,11 @@ public class MaplePacketCreator {
                 for (Channel ch : channelLoad) {
                         mplew.writeMapleAsciiString(serverName + "-" + ch.getId());
                         mplew.writeInt(ch.getChannelCapacity());
-                        mplew.write(1);
-                        mplew.writeShort(ch.getId() - 1);
+                        
+                        // thanks GabrielSin for this channel packet structure part
+                        mplew.write(1);// nWorldID
+                        mplew.write(ch.getId() - 1);// nChannelID
+                        mplew.writeBool(false);// bAdultChannel
                 }
                 mplew.writeShort(0);
                 return mplew.getPacket();
@@ -1042,8 +1047,8 @@ public class MaplePacketCreator {
                 mplew.write(spawnPoint);
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
-                mplew.writeLong(getTime(System.currentTimeMillis()));
-                mplew.writeShort(0);
+                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
+                mplew.writeInt(0);
                 return mplew.getPacket();
         }
         
@@ -1059,8 +1064,8 @@ public class MaplePacketCreator {
                 mplew.writeBool(true);
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
-                mplew.writeLong(getTime(System.currentTimeMillis()));
-                mplew.writeShort(0);
+                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
+                mplew.writeInt(0);
                 return mplew.getPacket();
         }
         
@@ -2461,27 +2466,27 @@ public class MaplePacketCreator {
                         mplew.write(mod.getInventoryType());
                         mplew.writeShort(mod.getMode() == 2 ? mod.getOldPosition() : mod.getPosition());
                         switch (mod.getMode()) {
-                        case 0: {//add item
-                                addItemInfo(mplew, mod.getItem(), true);
-                                break;
-                        }
-                        case 1: {//update quantity
-                                mplew.writeShort(mod.getQuantity());
-                                break;
-                        }
-                        case 2: {//move                  
-                                mplew.writeShort(mod.getPosition());
-                                if (mod.getPosition() < 0 || mod.getOldPosition() < 0) {
-                                        addMovement = mod.getOldPosition() < 0 ? 1 : 2;
+                                case 0: {//add item
+                                        addItemInfo(mplew, mod.getItem(), true);
+                                        break;
                                 }
-                                break;
-                        }
-                        case 3: {//remove
-                                if (mod.getPosition() < 0) {
-                                        addMovement = 2;
+                                case 1: {//update quantity
+                                        mplew.writeShort(mod.getQuantity());
+                                        break;
                                 }
-                                break;
-                        }
+                                case 2: {//move                  
+                                        mplew.writeShort(mod.getPosition());
+                                        if (mod.getPosition() < 0 || mod.getOldPosition() < 0) {
+                                                addMovement = mod.getOldPosition() < 0 ? 1 : 2;
+                                        }
+                                        break;
+                                }
+                                case 3: {//remove
+                                        if (mod.getPosition() < 0) {
+                                                addMovement = 2;
+                                        }
+                                        break;
+                                }
                         }
                         mod.clear();
                 }
@@ -7527,27 +7532,16 @@ public class MaplePacketCreator {
                         }
                         mplew.skip(121);
 
+                        List<List<Integer>> mostSellers = c.getWorldServer().getMostSellerCashItems();
                         for (int i = 1; i <= 8; i++) {
+                                List<Integer> mostSellersTab = mostSellers.get(i);
+                                
                                 for (int j = 0; j < 2; j++) {
-                                        mplew.writeInt(i);
-                                        mplew.writeInt(j);
-                                        mplew.writeInt(50200004);
-
-                                        mplew.writeInt(i);
-                                        mplew.writeInt(j);
-                                        mplew.writeInt(50200069);
-
-                                        mplew.writeInt(i);
-                                        mplew.writeInt(j);
-                                        mplew.writeInt(50200117);
-
-                                        mplew.writeInt(i);
-                                        mplew.writeInt(j);
-                                        mplew.writeInt(50100008);
-
-                                        mplew.writeInt(i);
-                                        mplew.writeInt(j);
-                                        mplew.writeInt(50000047);
+                                        for (Integer snid : mostSellersTab) {
+                                                mplew.writeInt(i);
+                                                mplew.writeInt(j);
+                                                mplew.writeInt(snid);
+                                        }
                                 }
                         }
 

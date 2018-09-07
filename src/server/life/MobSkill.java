@@ -32,7 +32,6 @@ import client.status.MonsterStatus;
 import constants.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
-import server.TimerManager;
 import tools.Randomizer;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;

@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import client.MapleClient;
 import constants.ServerConstants;
 
 import net.server.Server;
@@ -33,11 +34,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -58,14 +62,18 @@ public class MapleSessionCoordinator {
         REMOTE_LOGGEDIN,
         REMOTE_REACHED_LIMIT,
         REMOTE_PROCESSING,
+        REMOTE_NO_MATCH,
         MANY_ACCOUNT_ATTEMPTS,
         COORDINATOR_ERROR
     }
     
     private final LoginStorage loginStorage = new LoginStorage();
-    private final Set<String> onlineRemoteHosts = new HashSet<>();
+    private final Set<String> onlineRemoteHwids = new HashSet<>();
     private final Map<String, Set<IoSession>> loginRemoteHosts = new HashMap<>();
     private final Set<String> pooledRemoteHosts = new HashSet<>();
+    
+    private final ConcurrentHashMap<String, String> cachedHostHwids = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, Long> cachedHostTimeout = new ConcurrentHashMap<>();
     private final List<ReentrantLock> poolLock = new ArrayList<>(100);
     
     private MapleSessionCoordinator() {
@@ -74,7 +82,7 @@ public class MapleSessionCoordinator {
         }
     }
     
-    private static long ipExpirationUpdate(int relevance) {
+    private static long hwidExpirationUpdate(int relevance) {
         int degree = 1, i = relevance, subdegree;
         while ((subdegree = 5 * degree) <= i) {
             i -= subdegree;
@@ -109,59 +117,90 @@ public class MapleSessionCoordinator {
         return 3600000 * (baseTime + subdegreeTime);
     }
     
-    private static void updateAccessAccount(Connection con, String remoteHost, int accountId, int loginRelevance) throws SQLException {
-        java.sql.Timestamp nextTimestamp = new java.sql.Timestamp(Server.getInstance().getCurrentTime() + ipExpirationUpdate(loginRelevance));
+    private static void updateAccessAccount(Connection con, String remoteHwid, int accountId, int loginRelevance) throws SQLException {
+        java.sql.Timestamp nextTimestamp = new java.sql.Timestamp(Server.getInstance().getCurrentTime() + hwidExpirationUpdate(loginRelevance));
         if(loginRelevance < Byte.MAX_VALUE) {
             loginRelevance++;
         }
         
-        try (PreparedStatement ps = con.prepareStatement("UPDATE ipaccounts SET relevance = ?, expiresat = ? WHERE accountid = ? AND ip LIKE ?")) {
+        try (PreparedStatement ps = con.prepareStatement("UPDATE hwidaccounts SET relevance = ?, expiresat = ? WHERE accountid = ? AND hwid LIKE ?")) {
             ps.setInt(1, loginRelevance);
             ps.setTimestamp(2, nextTimestamp);
             ps.setInt(3, accountId);
-            ps.setString(4, remoteHost);
+            ps.setString(4, remoteHwid);
             
             ps.executeUpdate();
         }
     }
     
-    private static void registerAccessAccount(Connection con, String remoteHost, int accountId) throws SQLException {
-        try (PreparedStatement ps = con.prepareStatement("INSERT INTO ipaccounts (accountid, ip, expiresat) VALUES (?, ?, ?)")) {
+    private static void registerAccessAccount(Connection con, String remoteHwid, int accountId) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement("INSERT INTO hwidaccounts (accountid, hwid, expiresat) VALUES (?, ?, ?)")) {
             ps.setInt(1, accountId);
-            ps.setString(2, remoteHost);
-            ps.setTimestamp(3, new java.sql.Timestamp(Server.getInstance().getCurrentTime() + ipExpirationUpdate(0)));
+            ps.setString(2, remoteHwid);
+            ps.setTimestamp(3, new java.sql.Timestamp(Server.getInstance().getCurrentTime() + hwidExpirationUpdate(0)));
             
             ps.executeUpdate();
         }
     }
     
-    private static boolean attemptAccessAccount(String remoteHost, int accountId, boolean routineCheck) {
+    private static boolean associateHwidAccountIfAbsent(String remoteHwid, int accountId) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            int ipCount = 0;
+            int hwidCount = 0;
             
-            try (PreparedStatement ps = con.prepareStatement("SELECT SQL_CACHE * FROM ipaccounts WHERE accountid = ?")) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT SQL_CACHE hwid FROM hwidaccounts WHERE accountid = ?")) {
                 ps.setInt(1, accountId);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        if (remoteHost.contentEquals(rs.getString("ip"))) {
+                        String rsHwid = rs.getString("hwid");
+                        if (rsHwid.contentEquals(remoteHwid)) {
+                            return false;
+                        }
+                        
+                        hwidCount++;
+                    }
+                }
+                
+                if (hwidCount < ServerConstants.MAX_ALLOWED_ACCOUNT_HWID) {
+                    registerAccessAccount(con, remoteHwid, accountId);
+                    return true;
+                }
+            } finally {
+                con.close();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    private static boolean attemptAccessAccount(String nibbleHwid, int accountId, boolean routineCheck) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            int hwidCount = 0;
+            
+            try (PreparedStatement ps = con.prepareStatement("SELECT SQL_CACHE * FROM hwidaccounts WHERE accountid = ?")) {
+                ps.setInt(1, accountId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String rsHwid = rs.getString("hwid");
+                        if (rsHwid.endsWith(nibbleHwid)) {
                             if (!routineCheck) {
+                                // better update HWID relevance as soon as the login is authenticated
+                                
                                 int loginRelevance = rs.getInt("relevance");
-                                updateAccessAccount(con, remoteHost, accountId, loginRelevance);
+                                updateAccessAccount(con, rsHwid, accountId, loginRelevance);
                             }
                             
                             return true;
                         }
                         
-                        ipCount++;
+                        hwidCount++;
                     }
                 }
                 
-                if (ipCount < ServerConstants.MAX_ALLOWED_ACCOUNT_IP) {
-                    if (!routineCheck) {
-                        registerAccessAccount(con, remoteHost, accountId);
-                    }
-                    
+                if (hwidCount < ServerConstants.MAX_ALLOWED_ACCOUNT_HWID) {
                     return true;
                 }
             } finally {
@@ -218,7 +257,14 @@ public class MapleSessionCoordinator {
         }
         
         try {
-            if (onlineRemoteHosts.contains(remoteHost) || loginRemoteHosts.containsKey(remoteHost)) {
+            String knownHwid = cachedHostHwids.get(remoteHost);
+            if (knownHwid != null) {
+                if (onlineRemoteHwids.contains(knownHwid)) {
+                    return false;
+                }
+            }
+            
+            if (loginRemoteHosts.containsKey(remoteHost)) {
                 return false;
             }
             
@@ -244,11 +290,16 @@ public class MapleSessionCoordinator {
             lrh.remove(session);
             if (lrh.isEmpty()) {
                 loginRemoteHosts.remove(remoteIp);
+                
+                String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+                if (nibbleHwid != null) {
+                    onlineRemoteHwids.remove(nibbleHwid);
+                }
             }
         }
     }
     
-    public AntiMulticlientResult attemptSessionLogin(IoSession session, int accountId, boolean routineCheck) {
+    public AntiMulticlientResult attemptLoginSession(IoSession session, String nibbleHwid, int accountId, boolean routineCheck) {
         if (!ServerConstants.DETERRED_MULTICLIENT) return AntiMulticlientResult.SUCCESS;
         
         String remoteHost = getRemoteIp(session);
@@ -289,17 +340,18 @@ public class MapleSessionCoordinator {
             }
             
             if (!routineCheck) {
-                if (onlineRemoteHosts.contains(remoteHost)) {
+                if (onlineRemoteHwids.contains(nibbleHwid)) {
                     return AntiMulticlientResult.REMOTE_LOGGEDIN;
                 }
 
-                if (!attemptAccessAccount(remoteHost, accountId, routineCheck)) {
+                if (!attemptAccessAccount(nibbleHwid, accountId, routineCheck)) {
                     return AntiMulticlientResult.REMOTE_REACHED_LIMIT;
                 }
                 
-                onlineRemoteHosts.add(remoteHost);
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, nibbleHwid);
+                onlineRemoteHwids.add(nibbleHwid);
             } else {
-                if (!attemptAccessAccount(remoteHost, accountId, routineCheck)) {
+                if (!attemptAccessAccount(nibbleHwid, accountId, routineCheck)) {
                     return AntiMulticlientResult.REMOTE_REACHED_LIMIT;
                 }
             }
@@ -315,21 +367,120 @@ public class MapleSessionCoordinator {
         }
     }
     
-    public void closeSession(IoSession session, Boolean immediately) {
-        onlineRemoteHosts.remove(getRemoteIp(session));
-        if (immediately != null) session.close(immediately);
+    public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
+        if (!ServerConstants.DETERRED_MULTICLIENT) return AntiMulticlientResult.SUCCESS;
+        
+        String remoteHost = getRemoteIp(session);
+        Lock lock = getCoodinatorLock(remoteHost);
+        
+        try {
+            int tries = 0;
+            while (true) {
+                if (lock.tryLock()) {
+                    try {
+                        if (pooledRemoteHosts.contains(remoteHost)) {
+                            return AntiMulticlientResult.REMOTE_PROCESSING;
+                        }
+                        
+                        pooledRemoteHosts.add(remoteHost);
+                    } finally {
+                        lock.unlock();
+                    }
+                    
+                    break;
+                } else {
+                    if(tries == 2) {
+                        return AntiMulticlientResult.COORDINATOR_ERROR;
+                    }
+                    tries++;
+                    
+                    Thread.sleep(1777);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AntiMulticlientResult.COORDINATOR_ERROR;
+        }
+        
+        try {
+            String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+            if (nibbleHwid != null) {
+                onlineRemoteHwids.remove(nibbleHwid);
+                
+                if (remoteHwid.endsWith(nibbleHwid)) {
+                    if (!onlineRemoteHwids.contains(remoteHwid)) {
+                        // assumption: after a SUCCESSFUL login attempt, the incoming client WILL receive a new IoSession from the game server
+                        
+                        // updated session CLIENT_HWID attribute will be set when the player log in the game
+                        onlineRemoteHwids.add(remoteHwid);
+
+                        cachedHostHwids.put(remoteHost, remoteHwid);
+                        cachedHostTimeout.put(remoteHost, Server.getInstance().getCurrentTime() + 604800000);   // 1 week-time entry
+                        
+                        associateHwidAccountIfAbsent(remoteHwid, accountId);
+
+                        return AntiMulticlientResult.SUCCESS;
+                    } else {
+                        return AntiMulticlientResult.REMOTE_LOGGEDIN;
+                    }
+                } else {
+                    return AntiMulticlientResult.REMOTE_NO_MATCH;
+                }
+            } else {
+                return AntiMulticlientResult.REMOTE_NO_MATCH;
+            }
+        } finally {
+            lock.lock();
+            try {
+                pooledRemoteHosts.remove(remoteHost);
+            } finally {
+                lock.unlock();
+            }
+        }
     }
     
-    public void runUpdateIpHistory() {
+    public void closeSession(IoSession session, Boolean immediately) {
+        String hwid = (String) session.removeAttribute(MapleClient.CLIENT_HWID);
+        onlineRemoteHwids.remove(hwid);
+        
+        hwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID); // making sure to clean up calls to this function on login phase
+        onlineRemoteHwids.remove(hwid);
+        
+        if (immediately != null) {
+            session.close(immediately);
+        }
+    }
+    
+    public String getGameSessionHwid(IoSession session) {
+        String remoteHost = getRemoteIp(session);
+        return cachedHostHwids.get(remoteHost);
+    }
+    
+    public void runUpdateHwidHistory() {
         try {
             Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("DELETE FROM ipaccounts WHERE expiresat < CURRENT_TIMESTAMP")) {
+            try (PreparedStatement ps = con.prepareStatement("DELETE FROM hwidaccounts WHERE expiresat < CURRENT_TIMESTAMP")) {
                 ps.execute();
             } finally {
                 con.close();
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
+        }
+        
+        long timeNow = Server.getInstance().getCurrentTime();
+        List<String> toRemove = new LinkedList<>();
+        for (Entry<String, Long> cht : cachedHostTimeout.entrySet()) {
+            if (cht.getValue() < timeNow) {
+                toRemove.add(cht.getKey());
+            }
+        }
+        
+        if (!toRemove.isEmpty()) {
+            for (String s : toRemove) {
+                cachedHostHwids.remove(s);
+                cachedHostTimeout.remove(s);
+            }
         }
     }
     

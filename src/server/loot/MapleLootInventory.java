@@ -48,9 +48,9 @@ public class MapleLootInventory {
         }
     }
     
-    public boolean hasItem(int itemid, int quantity) {
+    public int hasItem(int itemid, int quantity) {
         Integer itemQty = items.get(itemid);
-        return itemQty != null && itemQty >= quantity;
+        return itemQty == null ? 0 : itemQty >= quantity ? 2 : itemQty > 0 ? 1 : 0;
     }
     
 }

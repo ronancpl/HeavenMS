@@ -47,7 +47,7 @@ function action(mode, type, selection) {
 
                         cm.sendSimple(sendStr);
                 } else if(status == 1) {
-                        var lvComm, lvDesc, lvHead = (cm.getPlayer().gmLevel() < 2) ? common_heading : staff_heading;
+                        var lvComm, lvDesc, lvHead = (selection < 2) ? common_heading : staff_heading;
                         
                         if(selection > 6) {
                                 selection = 6;

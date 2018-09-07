@@ -77,7 +77,6 @@ public final class NoteActionHandler extends AbstractMaplePacketHandler {
             }
             if (fame > 0) {
                 c.getPlayer().gainFame(fame);
-                c.announce(MaplePacketCreator.getShowFameGain(fame));
             }
         }
     }

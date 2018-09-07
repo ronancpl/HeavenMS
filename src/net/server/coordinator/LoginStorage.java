@@ -34,7 +34,7 @@ import net.server.Server;
  */
 public class LoginStorage {
     
-    ConcurrentHashMap<Integer, List<Long>> loginHistory = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer, List<Long>> loginHistory = new ConcurrentHashMap<>();
     
     public boolean registerLogin(int accountId) {
         List<Long> accHist = loginHistory.putIfAbsent(accountId, new LinkedList<Long>());

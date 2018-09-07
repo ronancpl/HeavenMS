@@ -40,6 +40,14 @@ public class HexTool {
         }
         return hexed.substring(0, hexed.length() - 1);
     }
+    
+    public static String toCompressedString(byte[] bytes) {
+        StringBuilder hexed = new StringBuilder();
+        for (int i = 0; i < bytes.length; i++) {
+            hexed.append(toString(bytes[i]));
+        }
+        return hexed.substring(0, hexed.length());
+    }
 
     public static byte[] getByteArrayFromHexString(String hex) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

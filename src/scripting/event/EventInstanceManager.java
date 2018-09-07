@@ -65,6 +65,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.server.coordinator.MapleEventRecallCoordinator;
 import scripting.AbstractPlayerInteraction;
 import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
@@ -599,6 +600,8 @@ public class EventInstanceManager {
 		} catch (ScriptException | NoSuchMethodException ex) {
 			ex.printStackTrace();
 		}
+                
+                MapleEventRecallCoordinator.getInstance().storeEventInstance(chr.getId(), this);
 	}
 
 	/**
@@ -862,7 +865,7 @@ public class EventInstanceManager {
 	}
 
 	public void clearPQ() {
-		try {
+                try {
                         sL.lock();
                         try {
                                 em.getIv().invokeFunction("clearPQ", this);
@@ -1157,6 +1160,10 @@ public class EventInstanceManager {
         public final void setEventCleared() {
                 eventCleared = true;
                 
+                for (MapleCharacter chr : getPlayers()) {
+                        chr.awardQuestPoint(ServerConstants.QUEST_POINT_PER_EVENT_CLEAR);
+                }
+                
                 sL.lock();
                 try {
                         em.disposeInstance(name);
@@ -1169,6 +1176,10 @@ public class EventInstanceManager {
         
         public final boolean isEventCleared() {
                 return eventCleared;
+        }
+        
+        public final boolean isEventDisposed() {
+                return disposed;
         }
         
         private boolean isEventTeamLeaderOn() {

@@ -10,18 +10,54 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
 import java.net.InetSocketAddress;
+import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
+import org.apache.mina.core.session.IoSession;
 
 public final class RegisterPicHandler extends AbstractMaplePacketHandler {
 
+    private static int parseAntiMulticlientError(AntiMulticlientResult res) {
+        switch (res) {
+            case REMOTE_PROCESSING:
+                return 10;
+
+            case REMOTE_LOGGEDIN:
+                return 7;
+
+            case REMOTE_NO_MATCH:
+                return 17;
+                
+            case COORDINATOR_ERROR:
+                return 8;
+                
+            default:
+                return 9;
+        }
+    }
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.readByte();
         int charId = slea.readInt();
         
         String macs = slea.readMapleAsciiString();
-        String hwid = slea.readMapleAsciiString();	
+        String hwid = slea.readMapleAsciiString();
+        
+        if (!hwid.matches("[0-9A-F]{12}_[0-9A-F]{8}")) {
+            c.announce(MaplePacketCreator.getAfterLoginError(17));
+            return;
+        }
+        
         c.updateMacs(macs);
         c.updateHWID(hwid);
+        
+        IoSession session = c.getSession();
+        AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptGameSession(session, c.getAccID(), hwid);
+        if (res != AntiMulticlientResult.SUCCESS) {
+            c.announce(MaplePacketCreator.getAfterLoginError(parseAntiMulticlientError(res)));
+            return;
+        }
+        
         if (c.hasBannedMac() || c.hasBannedHWID()) {
             c.getSession().close(true);
             return;

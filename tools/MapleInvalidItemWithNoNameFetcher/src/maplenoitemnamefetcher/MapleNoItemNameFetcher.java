@@ -36,16 +36,16 @@ import provider.MapleDataDirectoryEntry;
 import provider.MapleDataFileEntry;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
+import provider.MapleDataTool;
 
 /**
  *
  * @author RonanLana
  * 
- * This application finds inexistent itemids within the drop data from
- * the Maplestory database specified by the URL below. This program
- * assumes all itemids have at most 7 digits.
- * 
- * A file is generated listing all the inexistent ids.
+ * This application finds itemids with inexistent name and description from
+ * within the server-side XMLs, then identify them on a report file along
+ * with a XML excerpt to be appended on the String.wz xml nodes. This program
+ * assumes all equipids are depicted using 8 digits and item using 7 digits.
  * 
  * Estimated parse time: 2 minutes
  */
@@ -65,6 +65,9 @@ public class MapleNoItemNameFetcher {
     static Map<Integer, ItemType> itemsWithNoNameProperty = new HashMap<>();
     static Set<Integer> equipsWithNoCashProperty = new HashSet<>();
 
+    static Map<Integer, String> nameContentCache = new HashMap<>();
+    static Map<Integer, String> descContentCache = new HashMap<>();
+    
     static ItemType curType = ItemType.UNDEF;
     
     private enum ItemType {
@@ -78,11 +81,20 @@ public class MapleNoItemNameFetcher {
     private static void processStringSubdirectoryData(MapleData subdirData, String subdirPath) {
         for(MapleData md : subdirData.getChildren()) {
             try {
-                if(md.getChildByPath("name") != null) {
-                    int itemId = Integer.parseInt(md.getName());
+                MapleData nameData = md.getChildByPath("name");
+                MapleData descData = md.getChildByPath("desc");
+                
+                int itemId = Integer.parseInt(md.getName());
+                if (nameData != null && descData != null) {
                     itemsWithNoNameProperty.remove(itemId);
                 } else {
-                    System.out.println("Found itemid on String.wz with no name property: " + subdirPath + subdirData.getName() + "/" + md.getName());
+                    if (nameData != null) {
+                        nameContentCache.put(itemId, MapleDataTool.getString("name", md));
+                    } else if (descData != null) {
+                        descContentCache.put(itemId, MapleDataTool.getString("desc", md));
+                    }
+                    
+                    System.out.println("Found itemid on String.wz with no full property: " + subdirPath + subdirData.getName() + "/" + md.getName());
                 }
             } catch (NumberFormatException nfe) {
                 System.out.println("Error reading string image: " + subdirPath + subdirData.getName() + "/" + md.getName());
@@ -422,10 +434,33 @@ public class MapleNoItemNameFetcher {
         printWriter.println();
     }
     
+    private static String getMissingEquipName(int itemid) {
+        String s = nameContentCache.get(itemid);
+        if (s == null) {
+            s = "MISSING NAME " + itemid;
+        }
+        
+        return s;
+    }
+    
+    private static String getMissingEquipDesc(int itemid) {
+        String s = descContentCache.get(itemid);
+        if (s == null) {
+            s = "MISSING INFO " + itemid;
+        }
+        
+        return s;
+    }
+    
     private static void writeMissingEquipInfo(Integer itemid) {
         printWriter.println("      <imgdir name=\"" + itemid + "\">");
-        printWriter.println("        <string name=\"name\" value=\"MISSING NAME\"/>");
-        printWriter.println("        <string name=\"desc\" value=\"MISSING INFO\"/>");
+        
+        String s;
+        s = getMissingEquipName(itemid);
+        printWriter.println("        <string name=\"name\" value=\"" + s + "\"/>");
+        
+        s = getMissingEquipDesc(itemid);
+        printWriter.println("        <string name=\"desc\" value=\"" + s + "\"/>");
         printWriter.println("      </imgdir>");
     }
     

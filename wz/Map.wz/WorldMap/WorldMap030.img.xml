@@ -602,6 +602,29 @@
         <int name="2" value="220000111"/>
       </imgdir>
     </imgdir>
+    <imgdir name="72">
+      <imgdir name="mapNo">
+        <int name="0" value="300000000"/>
+        <int name="1" value="300000010"/>
+        <int name="2" value="300000011"/>
+        <int name="3" value="300000012"/>
+        <int name="4" value="300000001"/>
+        <int name="5" value="300000002"/>
+        <int name="6" value="300000100"/>
+        <int name="7" value="300010000"/>
+        <int name="8" value="300010100"/>
+        <int name="9" value="300010200"/>
+        <int name="10" value="300010300"/>
+        <int name="11" value="300010400"/>
+        <int name="12" value="300020000"/>
+        <int name="13" value="300020100"/>
+        <int name="14" value="300020200"/>
+        <int name="15" value="300030000"/>
+        <int name="16" value="300030100"/>
+      </imgdir>
+      <int name="type" value="2"/>
+      <vector name="spot" x="271" y="-155"/>
+    </imgdir>
   </imgdir>
   <imgdir name="MapLink">
     <imgdir name="0">
@@ -613,6 +636,16 @@
         <string name="linkMap" value="WorldMap031"/>
       </imgdir>
       <string name="toolTip" value="Lowest Floor of Clocktower"/>
+    </imgdir>
+    <imgdir name="1">
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap032"/>
+        <canvas name="linkImg" width="166" height="123">
+          <vector name="origin" x="-155" y="234"/>
+          <int name="z" value="1"/>
+        </canvas>
+      </imgdir>
+      <string name="toolTip" value="Ellin Forest"/>
     </imgdir>
   </imgdir>
 </imgdir>

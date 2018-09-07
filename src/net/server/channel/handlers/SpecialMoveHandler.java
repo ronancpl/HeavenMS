@@ -117,8 +117,8 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
             int gain = lose * (ef.getY() / 100);
             chr.setMp(chr.getMp() + gain);
             chr.updateSingleStat(MapleStat.MP, chr.getMp());
-        } else if (skillid == Priest.DISPEL || skillid == SuperGM.HEAL_PLUS_DISPEL) {
-            slea.skip((skillid == Priest.DISPEL) ? 10 : 11);
+        } else if (skillid == SuperGM.HEAL_PLUS_DISPEL) {
+            slea.skip(11);
             chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid)), false);
         } else if (skillid % 10000000 == 1004) {
             slea.readShort();

@@ -42,24 +42,23 @@ public final class GiveFameHandler extends AbstractMaplePacketHandler {
         if (target == null || target.getId() == player.getId() || player.getLevel() < 15) {
             return;
         } else if (famechange != 1 && famechange != -1) {
-        	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit fame.");
-        	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to fame hack with famechange " + famechange + "\r\n");
-        	c.disconnect(true, false);
-        	return;
+            AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit fame.");
+            FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to fame hack with famechange " + famechange + "\r\n");
+            c.disconnect(true, false);
+            return;
         }
+        
         FameStatus status = player.canGiveFame(target);
-        if (status == FameStatus.OK || player.isGM()){
-        	 if (Math.abs(target.getFame() + famechange) < 30001) {
-                 target.addFame(famechange);
-                 target.updateSingleStat(MapleStat.FAME, target.getFame());
-             }
-             if (!player.isGM()) {
-                 player.hasGivenFame(target);
-             }
-             c.announce(MaplePacketCreator.giveFameResponse(mode, target.getName(), target.getFame()));
-             target.getClient().announce(MaplePacketCreator.receiveFame(mode, player.getName()));
+        if (status == FameStatus.OK) {
+            if (target.gainFame(famechange, player, mode)) {
+                if (!player.isGM()) {
+                    player.hasGivenFame(target);
+                }
+            } else {
+                player.message("Could not process the request, since this character currently has the minimum/maximum level of fame.");
+            }
         } else {
-        	c.announce(MaplePacketCreator.giveFameErrorResponse(status == FameStatus.NOT_TODAY ? 3 : 4));
+            c.announce(MaplePacketCreator.giveFameErrorResponse(status == FameStatus.NOT_TODAY ? 3 : 4));
         }
     }
 }

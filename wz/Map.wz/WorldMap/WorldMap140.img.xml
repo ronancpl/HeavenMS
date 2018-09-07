@@ -2,6 +2,9 @@
 <imgdir name="WorldMap140.img">
   <imgdir name="info">
     <string name="parentMap" value="WorldMap"/>
+    <string name="disclaimer" value="HeavenMS rev227:
+
+Added world maps for Mushroom Castle, Zipangu, CBD/Malaysia and Ellin Forest regions. Original artwork content used on files depicted in this topic are rightful property of Nexon Corps., these files thoroughly trying to adhere the &quot;Fair Use&quot; disclaimer policy, their purpose being solely to fulfill gaming experience for the areas that were already present on v83 GMS but still lacked worldmaps. For more info regarding Fair Use, please refer to http://www.dmlp.org/legal-guide/fair-use."/>
   </imgdir>
   <imgdir name="BaseImg">
     <canvas name="0" width="640" height="470">
@@ -11,56 +14,136 @@
   </imgdir>
   <imgdir name="MapList">
     <imgdir name="0">
-      <vector name="spot" x="-118" y="70"/>
-      <int name="type" value="0"/>
+      <int name="type" value="2"/>
       <imgdir name="mapNo">
-        <int name="0" value="680000000"/>
-        <int name="1" value="680000001"/>
-        <int name="2" value="680000002"/>
-        <int name="3" value="680000003"/>
-        <int name="4" value="680000100"/>
-        <int name="5" value="680000110"/>
-        <int name="6" value="680000200"/>
-        <int name="7" value="680000210"/>
-        <int name="8" value="680000300"/>
-        <int name="9" value="680000400"/>
-        <int name="10" value="680000401"/>
+        <int name="0" value="540000000"/>
+        <int name="1" value="540000100"/>
+        <int name="2" value="540000200"/>
+        <int name="3" value="540000300"/>
+        <int name="4" value="540010000"/>
+        <int name="5" value="540020000"/>
+        <int name="6" value="540020100"/>
       </imgdir>
+      <vector name="spot" x="-29" y="142"/>
     </imgdir>
     <imgdir name="1">
-      <vector name="spot" x="-45" y="79"/>
-      <int name="type" value="1"/>
       <imgdir name="mapNo">
-        <int name="0" value="680010000"/>
+        <int name="0" value="541000000"/>
+        <int name="1" value="541000100"/>
+        <int name="10" value="541010060"/>
+        <int name="11" value="541010100"/>
+        <int name="12" value="541010110"/>
+        <int name="2" value="541000200"/>
+        <int name="3" value="541000300"/>
+        <int name="4" value="541010000"/>
+        <int name="5" value="541010010"/>
+        <int name="6" value="541010020"/>
+        <int name="7" value="541010030"/>
+        <int name="8" value="541010040"/>
+        <int name="9" value="541010050"/>
       </imgdir>
+      <vector name="spot" x="29" y="162"/>
+      <int name="type" value="2"/>
     </imgdir>
     <imgdir name="2">
-      <vector name="spot" x="8" y="34"/>
-      <int name="type" value="1"/>
       <imgdir name="mapNo">
-        <int name="0" value="680010100"/>
+        <int name="0" value="550000000"/>
+        <int name="1" value="550000100"/>
+        <int name="2" value="550000200"/>
+        <int name="3" value="550000300"/>
+        <int name="4" value="550000400"/>
       </imgdir>
+      <vector name="spot" x="-210" y="70"/>
+      <int name="type" value="2"/>
     </imgdir>
     <imgdir name="3">
-      <vector name="spot" x="24" y="-25"/>
-      <int name="type" value="1"/>
       <imgdir name="mapNo">
-        <int name="0" value="670000100"/>
+        <int name="0" value="551000000"/>
+        <int name="1" value="551000100"/>
+        <int name="2" value="551000200"/>
+        <int name="3" value="551010000"/>
+        <int name="4" value="551020000"/>
+        <int name="5" value="551030000"/>
+        <int name="6" value="551030100"/>
+        <int name="7" value="551030200"/>
       </imgdir>
+      <vector name="spot" x="-94" y="74"/>
+      <int name="type" value="2"/>
     </imgdir>
     <imgdir name="4">
-      <vector name="spot" x="49" y="-87"/>
-      <int name="type" value="1"/>
       <imgdir name="mapNo">
-        <int name="0" value="670000200"/>
+        <int name="0" value="800000000"/>
+        <int name="1" value="800010000"/>
+        <int name="10" value="800020200"/>
+        <int name="11" value="800020300"/>
+        <int name="12" value="800030000"/>
+        <int name="2" value="800010001"/>
+        <int name="3" value="800010100"/>
+        <int name="4" value="800020000"/>
+        <int name="5" value="800020100"/>
+        <int name="6" value="800020101"/>
+        <int name="7" value="800020110"/>
+        <int name="8" value="800020120"/>
+        <int name="9" value="800020130"/>
       </imgdir>
+      <vector name="spot" x="24" y="-32"/>
+      <int name="type" value="2"/>
     </imgdir>
     <imgdir name="5">
-      <vector name="spot" x="107" y="-121"/>
-      <int name="type" value="1"/>
       <imgdir name="mapNo">
-        <int name="0" value="670010000"/>
+        <int name="0" value="801000000"/>
+        <int name="1" value="801000001"/>
+        <int name="10" value="801030000"/>
+        <int name="11" value="801040000"/>
+        <int name="12" value="801040001"/>
+        <int name="13" value="801040002"/>
+        <int name="14" value="801040003"/>
+        <int name="15" value="801040004"/>
+        <int name="16" value="801040100"/>
+        <int name="17" value="801040101"/>
+        <int name="2" value="801000002"/>
+        <int name="3" value="801000100"/>
+        <int name="4" value="801000110"/>
+        <int name="5" value="801000200"/>
+        <int name="6" value="801000210"/>
+        <int name="7" value="801000300"/>
+        <int name="8" value="801010000"/>
+        <int name="9" value="801020000"/>
       </imgdir>
+      <vector name="spot" x="104" y="-92"/>
+      <int name="type" value="2"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="MapLink">
+    <imgdir name="0">
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap220"/>
+        <canvas name="linkImg" width="152" height="83">
+          <int name="z" value="1"/>
+          <vector name="origin" x="67" y="-117"/>
+        </canvas>
+      </imgdir>
+      <string name="toolTip" value="Singapore"/>
+    </imgdir>
+    <imgdir name="1">
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap230"/>
+        <canvas name="linkImg" width="194" height="132">
+          <int name="z" value="1"/>
+          <vector name="origin" x="260" y="-23"/>
+        </canvas>
+      </imgdir>
+      <string name="toolTip" value="Malaysia"/>
+    </imgdir>
+    <imgdir name="2">
+      <imgdir name="link">
+        <string name="linkMap" value="WorldMap210"/>
+        <canvas name="linkImg" width="253" height="195">
+          <int name="z" value="1"/>
+          <vector name="origin" x="68" y="164"/>
+        </canvas>
+      </imgdir>
+      <string name="toolTip" value="Japan"/>
     </imgdir>
   </imgdir>
 </imgdir>

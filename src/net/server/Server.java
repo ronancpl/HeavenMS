@@ -59,6 +59,7 @@ import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
+import net.server.worker.EventRecallCoordinatorWorker;
 import net.server.worker.LoginCoordinatorWorker;
 import net.server.worker.LoginStorageWorker;
 import net.server.worker.RankingCommandWorker;
@@ -841,6 +842,7 @@ public class Server {
         tMan.register(new RankingCommandWorker(), 5 * 60 * 1000, 5 * 60 * 1000);
         tMan.register(new RankingLoginWorker(), ServerConstants.RANKING_INTERVAL, timeLeft);
         tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
+        tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
         
         long timeToTake = System.currentTimeMillis();

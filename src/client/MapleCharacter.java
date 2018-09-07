@@ -998,7 +998,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public FameStatus canGiveFame(MapleCharacter from) {
-        if (gmLevel > 0) {
+        if (this.isGM()) {
             return FameStatus.OK;
         } else if (lastfametime >= System.currentTimeMillis() - 3600000 * 24) {
             return FameStatus.NOT_TODAY;
@@ -1171,9 +1171,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         setMasteries(this.job.getId());
         guildUpdate();
         
-        getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(this.getId()), false);
-        getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
-        getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 8), false);
+        getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(this.getId(), 8), false);
         
         if (GameConstants.hasSPTable(newJob) && newJob.getId() != 2001) {
             if (getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
@@ -1182,8 +1180,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             createDragon();
         }
         
-        if(ServerConstants.USE_ANNOUNCE_CHANGEJOB) {
-            if(gmLevel > 1) {
+        if (ServerConstants.USE_ANNOUNCE_CHANGEJOB) {
+            if (!this.isGM()) {
                 broadcastAcquaintances(6, "[" + GameConstants.ordinal(GameConstants.getJobBranch(newJob)) + " Job] " + name + " has just become a " + newJob.name() + ".");
             }
         }
@@ -2793,7 +2791,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public enum FameStatus {
-
         OK, NOT_TODAY, NOT_THIS_MONTH
     }
 
@@ -2887,9 +2884,39 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
     }
 
+    private synchronized int applyFame(int delta) {
+        int newFame = fame + delta;
+        if (newFame < -30000) {
+            delta = -(30000 + fame);
+        } else if (newFame > 30000) {
+            delta = 30000 - fame;
+        }
+        
+        fame += delta;
+        return delta;
+    }
+    
     public void gainFame(int delta) {
-        this.addFame(delta);
-        this.updateSingleStat(MapleStat.FAME, this.fame);
+        gainFame(delta, null, 0);
+    }
+    
+    public boolean gainFame(int delta, MapleCharacter fromPlayer, int mode) {
+        delta = applyFame(delta);
+        if (delta != 0) {
+            int thisFame = fame;
+            updateSingleStat(MapleStat.FAME, thisFame);
+            
+            if (fromPlayer != null) {
+                fromPlayer.announce(MaplePacketCreator.giveFameResponse(mode, getName(), thisFame));
+                announce(MaplePacketCreator.receiveFame(mode, fromPlayer.getName()));
+            } else {
+                announce(MaplePacketCreator.getShowFameGain(delta));
+            }
+            
+            return true;
+        } else {
+            return false;
+        }
     }
     
     public void gainMeso(int gain) {
@@ -5417,16 +5444,18 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         return getInventory(MapleInventoryType.getByType(invType)).getNextFreeSlot() > -1;
     }
 
-    public void increaseGuildCapacity() { //hopefully nothing is null
-        if (getMeso() < MapleGuild.getIncreaseGuildCost(getGuild().getCapacity())) {
+    public void increaseGuildCapacity() {
+        int cost = MapleGuild.getIncreaseGuildCost(getGuild().getCapacity());
+        
+        if (getMeso() < cost) {
             dropMessage(1, "You don't have enough mesos.");
             return;
         }
         
         if(Server.getInstance().increaseGuildCapacity(guildid)) {
-            gainMeso(-MapleGuild.getIncreaseGuildCost(getGuild().getCapacity()), true, false, false);
+            gainMeso(-cost, true, false, true);
         } else {
-            dropMessage(1, "You guild already reached the maximum capacity of players.");
+            dropMessage(1, "Your guild already reached the maximum capacity of players.");
         }
     }
 
@@ -5581,155 +5610,160 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     }
 
     public void levelUp(boolean takeexp) {
-        Skill improvingMaxHP = null;
-        Skill improvingMaxMP = null;
-        int improvingMaxHPLevel = 0;
-        int improvingMaxMPLevel = 0;
+        petLock.lock();
+        try {
+            Skill improvingMaxHP = null;
+            Skill improvingMaxMP = null;
+            int improvingMaxHPLevel = 0;
+            int improvingMaxMPLevel = 0;
 
-        boolean isBeginner = isBeginnerJob();
-        if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP && isBeginner && level < 11) {
-            remainingAp = 0;
-            if (level < 6) {
-                str += 5;
-            } else {
-                str += 4;
-                dex += 1;
-            }
-        } else {
-            remainingAp += 5;
-            if (isCygnus() && level > 10 && level < 70) {
-                remainingAp++;
-            }
-        }
-        
-        if (isBeginner) {
-            maxhp += Randomizer.rand(12, 16);
-            maxmp += Randomizer.rand(10, 12);
-        } else if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1)) {
-            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(DawnWarrior.MAX_HP_INCREASE) : SkillFactory.getSkill(Swordsman.IMPROVED_MAX_HP_INCREASE);
-            if (job.isA(MapleJob.CRUSADER)) {
-                improvingMaxMP = SkillFactory.getSkill(1210000);
-            } else if (job.isA(MapleJob.DAWNWARRIOR2)) {
-                improvingMaxMP = SkillFactory.getSkill(11110000);
-            }
-            improvingMaxHPLevel = getSkillLevel(improvingMaxHP);
-            maxhp += Randomizer.rand(24, 28);
-            maxmp += Randomizer.rand(4, 6);
-        } else if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
-            improvingMaxMP = isCygnus() ? SkillFactory.getSkill(BlazeWizard.INCREASING_MAX_MP) : SkillFactory.getSkill(Magician.IMPROVED_MAX_MP_INCREASE);
-            improvingMaxMPLevel = getSkillLevel(improvingMaxMP);
-            maxhp += Randomizer.rand(10, 14);
-            maxmp += Randomizer.rand(22, 24);
-        } else if (job.isA(MapleJob.BOWMAN) || job.isA(MapleJob.THIEF) || (job.getId() > 1299 && job.getId() < 1500)) {
-            maxhp += Randomizer.rand(20, 24);
-            maxmp += Randomizer.rand(14, 16);
-        } else if (job.isA(MapleJob.GM)) {
-            maxhp = 30000;
-            maxmp = 30000;
-        } else if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
-            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.IMPROVE_MAX_HP) : SkillFactory.getSkill(5100000);
-            improvingMaxHPLevel = getSkillLevel(improvingMaxHP);
-            maxhp += Randomizer.rand(22, 28);
-            maxmp += Randomizer.rand(18, 23);
-        } else if (job.isA(MapleJob.ARAN1)) {
-            maxhp += Randomizer.rand(44, 48);
-            int aids = Randomizer.rand(4, 8);
-            maxmp += aids + Math.floor(aids * 0.1);
-        }
-        if (improvingMaxHPLevel > 0 && (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.PIRATE) || job.isA(MapleJob.DAWNWARRIOR1))) {
-            maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getX();
-        }
-        if (improvingMaxMPLevel > 0 && (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.CRUSADER) || job.isA(MapleJob.BLAZEWIZARD1))) {
-            maxmp += improvingMaxMP.getEffect(improvingMaxMPLevel).getX();
-        }
-        
-        if (ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
-            if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
-                maxmp += localint_ / 20;
-            } else {
-                maxmp += localint_ / 10;
-            }
-        }
-        
-        if (takeexp) {
-            exp.addAndGet(-ExpTable.getExpNeededForLevel(level));
-            if (exp.get() < 0) {
-                exp.set(0);
-            }
-        }
-        level++;
-        if (level >= getMaxClassLevel()) {
-            exp.set(0);
-            level = getMaxClassLevel(); //To prevent levels past the maximum
-        }
-        
-        maxhp = Math.min(30000, maxhp);
-        maxmp = Math.min(30000, maxmp);
-        if (level == 200) {
-            exp.set(0);
-            if(ServerConstants.PLAYERNPC_AUTODEPLOY && !this.isGM()) MaplePlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), this);
-        }
-        recalcLocalStats();
-        hp = localmaxhp;
-        mp = localmaxmp;
-        List<Pair<MapleStat, Integer>> statup = new ArrayList<>(10);
-        statup.add(new Pair<>(MapleStat.AVAILABLEAP, remainingAp));
-        statup.add(new Pair<>(MapleStat.HP, localmaxhp));
-        statup.add(new Pair<>(MapleStat.MP, localmaxmp));
-        statup.add(new Pair<>(MapleStat.EXP, exp.get()));
-        statup.add(new Pair<>(MapleStat.LEVEL, level));
-        statup.add(new Pair<>(MapleStat.MAXHP, maxhp));
-        statup.add(new Pair<>(MapleStat.MAXMP, maxmp));
-        statup.add(new Pair<>(MapleStat.STR, Math.min(str, Short.MAX_VALUE)));
-        statup.add(new Pair<>(MapleStat.DEX, Math.min(dex, Short.MAX_VALUE)));
-        if (job.getId() % 1000 > 0) {
-        	remainingSp[GameConstants.getSkillBook(job.getId())] += 3;
-        	statup.add(new Pair<>(MapleStat.AVAILABLESP, remainingSp[GameConstants.getSkillBook(job.getId())]));
-        }
-        client.announce(MaplePacketCreator.updatePlayerStats(statup, this));
-        getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 0), false);
-        recalcLocalStats();
-        setMPC(new MaplePartyCharacter(this));
-        silentPartyUpdate();
-        
-        if(level == 10 && party != null) {
-            if(this.isPartyLeader()) party.assignNewLeader(client);
-            PartyOperationHandler.leaveParty(party, mpc, client);
-            
-            showHint("You have reached #blevel 10#k, therefore you must leave your #rstarter party#k.");
-        }
-        
-        if (this.guildid > 0) {
-            getGuild().broadcast(MaplePacketCreator.levelUpMessage(2, level, name), this.getId());
-        }
-        if (ServerConstants.USE_PERFECT_PITCH && level >= 30) {
-            //milestones?
-            if (MapleInventoryManipulator.checkSpace(client, 4310000, (short) 1, "")) {
-                MapleInventoryManipulator.addById(client, 4310000, (short) 1);
-            }
-        }
-        if (level == 200 && !isGM()) {
-            final String names = (getMedalText() + name);
-            client.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, String.format(LEVEL_200, names, names)));
-        }
-        
-        if(level % 20 == 0 && ServerConstants.USE_ADD_SLOTS_BY_LEVEL == true) {
-            if (!isGM()) {
-                for (byte i = 1; i < 5; i++) {
-                    gainSlots(i, 4, true);
+            boolean isBeginner = isBeginnerJob();
+            if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP && isBeginner && level < 11) {
+                remainingAp = 0;
+                if (level < 6) {
+                    str += 5;
+                } else {
+                    str += 4;
+                    dex += 1;
                 }
-                
-                this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
-            }            
+            } else {
+                remainingAp += 5;
+                if (isCygnus() && level > 10 && level < 70) {
+                    remainingAp++;
+                }
+            }
+
+            if (isBeginner) {
+                maxhp += Randomizer.rand(12, 16);
+                maxmp += Randomizer.rand(10, 12);
+            } else if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1)) {
+                improvingMaxHP = isCygnus() ? SkillFactory.getSkill(DawnWarrior.MAX_HP_INCREASE) : SkillFactory.getSkill(Swordsman.IMPROVED_MAX_HP_INCREASE);
+                if (job.isA(MapleJob.CRUSADER)) {
+                    improvingMaxMP = SkillFactory.getSkill(1210000);
+                } else if (job.isA(MapleJob.DAWNWARRIOR2)) {
+                    improvingMaxMP = SkillFactory.getSkill(11110000);
+                }
+                improvingMaxHPLevel = getSkillLevel(improvingMaxHP);
+                maxhp += Randomizer.rand(24, 28);
+                maxmp += Randomizer.rand(4, 6);
+            } else if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
+                improvingMaxMP = isCygnus() ? SkillFactory.getSkill(BlazeWizard.INCREASING_MAX_MP) : SkillFactory.getSkill(Magician.IMPROVED_MAX_MP_INCREASE);
+                improvingMaxMPLevel = getSkillLevel(improvingMaxMP);
+                maxhp += Randomizer.rand(10, 14);
+                maxmp += Randomizer.rand(22, 24);
+            } else if (job.isA(MapleJob.BOWMAN) || job.isA(MapleJob.THIEF) || (job.getId() > 1299 && job.getId() < 1500)) {
+                maxhp += Randomizer.rand(20, 24);
+                maxmp += Randomizer.rand(14, 16);
+            } else if (job.isA(MapleJob.GM)) {
+                maxhp = 30000;
+                maxmp = 30000;
+            } else if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
+                improvingMaxHP = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.IMPROVE_MAX_HP) : SkillFactory.getSkill(5100000);
+                improvingMaxHPLevel = getSkillLevel(improvingMaxHP);
+                maxhp += Randomizer.rand(22, 28);
+                maxmp += Randomizer.rand(18, 23);
+            } else if (job.isA(MapleJob.ARAN1)) {
+                maxhp += Randomizer.rand(44, 48);
+                int aids = Randomizer.rand(4, 8);
+                maxmp += aids + Math.floor(aids * 0.1);
+            }
+            if (improvingMaxHPLevel > 0 && (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.PIRATE) || job.isA(MapleJob.DAWNWARRIOR1))) {
+                maxhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getX();
+            }
+            if (improvingMaxMPLevel > 0 && (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.CRUSADER) || job.isA(MapleJob.BLAZEWIZARD1))) {
+                maxmp += improvingMaxMP.getEffect(improvingMaxMPLevel).getX();
+            }
+
+            if (ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+                if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
+                    maxmp += localint_ / 20;
+                } else {
+                    maxmp += localint_ / 10;
+                }
+            }
+
+            if (takeexp) {
+                exp.addAndGet(-ExpTable.getExpNeededForLevel(level));
+                if (exp.get() < 0) {
+                    exp.set(0);
+                }
+            }
+            level++;
+            if (level >= getMaxClassLevel()) {
+                exp.set(0);
+                level = getMaxClassLevel(); //To prevent levels past the maximum
+            }
+
+            maxhp = Math.min(30000, maxhp);
+            maxmp = Math.min(30000, maxmp);
+            if (level == 200) {
+                exp.set(0);
+                if(ServerConstants.PLAYERNPC_AUTODEPLOY && !this.isGM()) MaplePlayerNPC.spawnPlayerNPC(GameConstants.getHallOfFameMapid(job), this);
+            }
+            recalcLocalStats();
+            hp = localmaxhp;
+            mp = localmaxmp;
+            List<Pair<MapleStat, Integer>> statup = new ArrayList<>(10);
+            statup.add(new Pair<>(MapleStat.AVAILABLEAP, remainingAp));
+            statup.add(new Pair<>(MapleStat.HP, localmaxhp));
+            statup.add(new Pair<>(MapleStat.MP, localmaxmp));
+            statup.add(new Pair<>(MapleStat.EXP, exp.get()));
+            statup.add(new Pair<>(MapleStat.LEVEL, level));
+            statup.add(new Pair<>(MapleStat.MAXHP, maxhp));
+            statup.add(new Pair<>(MapleStat.MAXMP, maxmp));
+            statup.add(new Pair<>(MapleStat.STR, Math.min(str, Short.MAX_VALUE)));
+            statup.add(new Pair<>(MapleStat.DEX, Math.min(dex, Short.MAX_VALUE)));
+            if (job.getId() % 1000 > 0) {
+                    remainingSp[GameConstants.getSkillBook(job.getId())] += 3;
+                    statup.add(new Pair<>(MapleStat.AVAILABLESP, remainingSp[GameConstants.getSkillBook(job.getId())]));
+            }
+            client.announce(MaplePacketCreator.updatePlayerStats(statup, this));
+            getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(getId(), 0), false);
+            recalcLocalStats();
+            setMPC(new MaplePartyCharacter(this));
+            silentPartyUpdate();
+
+            if(level == 10 && party != null) {
+                if(this.isPartyLeader()) party.assignNewLeader(client);
+                PartyOperationHandler.leaveParty(party, mpc, client);
+
+                showHint("You have reached #blevel 10#k, therefore you must leave your #rstarter party#k.");
+            }
+
+            if (this.guildid > 0) {
+                getGuild().broadcast(MaplePacketCreator.levelUpMessage(2, level, name), this.getId());
+            }
+            if (ServerConstants.USE_PERFECT_PITCH && level >= 30) {
+                //milestones?
+                if (MapleInventoryManipulator.checkSpace(client, 4310000, (short) 1, "")) {
+                    MapleInventoryManipulator.addById(client, 4310000, (short) 1);
+                }
+            }
+            if (level == 200 && !isGM()) {
+                final String names = (getMedalText() + name);
+                client.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, String.format(LEVEL_200, names, names)));
+            }
+
+            if(level % 20 == 0 && ServerConstants.USE_ADD_SLOTS_BY_LEVEL == true) {
+                if (!isGM()) {
+                    for (byte i = 1; i < 5; i++) {
+                        gainSlots(i, 4, true);
+                    }
+
+                    this.yellowMessage("You reached level " + level + ". Congratulations! As a token of your success, your inventory has been expanded a little bit.");
+                }            
+            }
+            if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the rate upgrade
+                revertLastPlayerRates();
+                setPlayerRates();
+                this.yellowMessage("You managed to get level " + level + "! Getting experience and items seems a little easier now, huh?");
+            }
+
+            levelUpMessages();
+            guildUpdate();
+        } finally {
+            petLock.unlock();
         }
-        if (level % 20 == 0 && ServerConstants.USE_ADD_RATES_BY_LEVEL == true) { //For the rate upgrade
-            revertLastPlayerRates();
-            setPlayerRates();
-            this.yellowMessage("You managed to get level " + level + "! Getting experience and items seems a little easier now, huh?");
-        }
-        
-        levelUpMessages();
-        guildUpdate();
     }
 
     public void gainAp(int amount) {
@@ -6939,27 +6973,25 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         visibleMapObjects.remove(mo);
     }
 
-    public void resetStats() {
+    public synchronized void resetStats() {
         if(!ServerConstants.USE_AUTOASSIGN_STARTERS_AP) {
             return;
         }
         
         List<Pair<MapleStat, Integer>> statup = new ArrayList<>(5);
-        int tap = 0, tsp = 1;
+        int tap = remainingAp + str + dex + int_ + luk, tsp = 1;
         int tstr = 4, tdex = 4, tint = 4, tluk = 4;
-        int levelap = (isCygnus() ? 6 : 5);
+        
         switch (job.getId()) {
             case 100:
             case 1100:
             case 2100:
                 tstr = 35;
-                tap = ((getLevel() - 10) * levelap) + 14;
                 tsp += ((getLevel() - 10) * 3);
                 break;
             case 200:
             case 1200:
                 tint = 20;
-                tap = ((getLevel() - 8) * levelap) + 29;
                 tsp += ((getLevel() - 8) * 3);
                 break;
             case 300:
@@ -6967,29 +6999,37 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             case 400:
             case 1400:
                 tdex = 25;
-                tap = ((getLevel() - 10) * levelap) + 24;
                 tsp += ((getLevel() - 10) * 3);
                 break;
             case 500:
             case 1500:
                 tdex = 20;
-                tap = ((getLevel() - 10) * levelap) + 29;
                 tsp += ((getLevel() - 10) * 3);
                 break;
         }
-        this.remainingAp = tap;
-        this.remainingSp[GameConstants.getSkillBook(job.getId())] = tsp;
-        this.dex = tdex;
-        this.int_ = tint;
-        this.str = tstr;
-        this.luk = tluk;
-        statup.add(new Pair<>(MapleStat.AVAILABLEAP, tap));
-        statup.add(new Pair<>(MapleStat.AVAILABLESP, tsp));
-        statup.add(new Pair<>(MapleStat.STR, tstr));
-        statup.add(new Pair<>(MapleStat.DEX, tdex));
-        statup.add(new Pair<>(MapleStat.INT, tint));
-        statup.add(new Pair<>(MapleStat.LUK, tluk));
-        announce(MaplePacketCreator.updatePlayerStats(statup, this));
+        
+        tap -= tstr;
+        tap -= tdex;
+        tap -= tint;
+        tap -= tluk;
+        
+        if (tap >= 0) {
+            this.remainingAp = tap;
+            this.remainingSp[GameConstants.getSkillBook(job.getId())] = tsp;
+            this.str = tstr;
+            this.dex = tdex;
+            this.int_ = tint;
+            this.luk = tluk;
+            statup.add(new Pair<>(MapleStat.AVAILABLEAP, tap));
+            statup.add(new Pair<>(MapleStat.AVAILABLESP, tsp));
+            statup.add(new Pair<>(MapleStat.STR, tstr));
+            statup.add(new Pair<>(MapleStat.DEX, tdex));
+            statup.add(new Pair<>(MapleStat.INT, tint));
+            statup.add(new Pair<>(MapleStat.LUK, tluk));
+            announce(MaplePacketCreator.updatePlayerStats(statup, this));
+        } else {
+            FilePrinter.print(FilePrinter.EXCEPTION_CAUGHT, name + " tried to get their stats reseted, without having enough AP available.");
+        }
     }
     
     public void resetBattleshipHp() {
@@ -8474,18 +8514,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
         }
         announce(MaplePacketCreator.updateQuestInfo((short) qs.getQuest().getId(), qs.getNpc()));
     }
-
-    private void fameGainByQuest() {
+    
+    public void awardQuestPoint(int awardedPoints) {
+        if (ServerConstants.QUEST_POINT_REQUIREMENT < 1 || awardedPoints < 1) return;
+        
+        int delta;
         synchronized (quests) {
-            quest_fame += 1;
+            quest_fame += awardedPoints;
             
-            int delta = quest_fame / ServerConstants.FAME_GAIN_BY_QUEST;
-            if(delta > 0) {
-                gainFame(delta);
-                client.announce(MaplePacketCreator.getShowFameGain(delta));
-            }
-
-            quest_fame %= ServerConstants.FAME_GAIN_BY_QUEST;
+            delta = quest_fame / ServerConstants.QUEST_POINT_REQUIREMENT;
+            quest_fame %= ServerConstants.QUEST_POINT_REQUIREMENT;
+        }
+        
+        if(delta > 0) {
+            gainFame(delta);
         }
     }
     
@@ -8503,8 +8545,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
             MapleQuest mquest = quest.getQuest();
             short questid = mquest.getId();
             if(!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
-                if(ServerConstants.FAME_GAIN_BY_QUEST > 0)
-                    fameGainByQuest();
+                awardQuestPoint(ServerConstants.QUEST_POINT_PER_QUEST_COMPLETE);
             }
             
             announce(MaplePacketCreator.completeQuest(questid, quest.getCompletionTime()));
@@ -8572,7 +8613,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     private void runQuestExpireTask() {
         petLock.lock();
         try {
-            long timeNow = System.currentTimeMillis();
+            long timeNow = Server.getInstance().getCurrentTime();
             List<MapleQuest> expireList = new LinkedList<>();
             
             for(Entry<MapleQuest, Long> qe : questExpirations.entrySet()) {
@@ -8607,7 +8648,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 }, 10 * 1000);
             }
             
-            questExpirations.put(quest, System.currentTimeMillis() + time);
+            questExpirations.put(quest, Server.getInstance().getCurrentTime() + time);
         } finally {
             petLock.unlock();
         }
@@ -8880,6 +8921,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
 
         return false;
     }
+    
     //EVENTS
     private byte team = 0;
     private MapleFitness fitness;
@@ -8917,6 +8959,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
     public void setLastSnowballAttack(long time) {
         this.snowballattack = time;
     }
+    
     //Monster Carnival
     private int cp = 0;
     private int obtainedcp = 0;
@@ -9059,7 +9102,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject {
                 continue;
             }
 
-            if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) || (itemName.contains("Reverse") && nEquip.getItemLevel() < 4) || (itemName.contains("Timeless") && nEquip.getItemLevel() < 6)) {
+            if ((nEquip.getItemLevel() < ServerConstants.USE_EQUIPMNT_LVLUP) || (nEquip.getItemLevel() < ii.getEquipLevel(nEquip.getItemId(), true))) {
                 nEquip.gainItemExp(client, expGain);
             }
         }

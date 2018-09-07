@@ -31,6 +31,7 @@ import net.MaplePacketHandler;
 import net.server.Server;
 import tools.BCrypt;
 import tools.DatabaseConnection;
+import tools.HexTool;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
@@ -51,8 +52,10 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
         c.setAccountName(login);
-
-        int loginok = c.login(login, pwd);
+        
+        slea.skip(6);   // localhost masked the initial part with zeroes...
+        byte[] hwidNibbles = slea.read(4);
+        int loginok = c.login(login, pwd, HexTool.toCompressedString(hwidNibbles));
 
         Connection con = null;
         PreparedStatement ps = null;
@@ -63,8 +66,8 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 ps = con.prepareStatement("INSERT INTO accounts (name, password, birthday, tempban) VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
                 ps.setString(1, login);
                 ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
-                ps.setString(3, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (birthday)
-                ps.setString(4, "2018-06-20"); //Jayd: was added to solve the MySQL 5.7 strict checking (tempban)
+                ps.setString(3, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (birthday)
+                ps.setString(4, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (tempban)
                 ps.executeUpdate();
                 
                 ResultSet rs = ps.getGeneratedKeys();
@@ -75,7 +78,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 e.printStackTrace();
             } finally {
                 disposeSql(con, ps);
-                loginok = c.login(login, pwd);
+                loginok = c.login(login, pwd, HexTool.toCompressedString(hwidNibbles));
             }
         }
 
@@ -100,7 +103,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         }
         Calendar tempban = c.getTempBanCalendar();
         if (tempban != null) {
-            if (tempban.getTimeInMillis() > System.currentTimeMillis()) {
+            if (tempban.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
                 c.announce(MaplePacketCreator.getTempBan(tempban.getTimeInMillis(), c.getGReason()));
                 return;
             }

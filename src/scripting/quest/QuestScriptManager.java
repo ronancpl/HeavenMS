@@ -42,7 +42,7 @@ public class QuestScriptManager extends AbstractScriptManager {
     
         private static QuestScriptManager instance = new QuestScriptManager();
 
-	public synchronized static QuestScriptManager getInstance() {
+	public static QuestScriptManager getInstance() {
 		return instance;
 	}
     

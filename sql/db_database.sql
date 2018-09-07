@@ -12935,6 +12935,14 @@ CREATE TABLE IF NOT EXISTS `htsquads` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `hwidaccounts` (
+  `accountid` int(11) NOT NULL DEFAULT '0',
+  `hwid` varchar(40) NOT NULL DEFAULT '',
+  `relevance` tinyint(2) NOT NULL DEFAULT '0',
+  `expiresat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`accountid`,`hwid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 CREATE TABLE IF NOT EXISTS `hwidbans` (
   `hwidbanid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `hwid` varchar(30) NOT NULL,
@@ -13003,14 +13011,6 @@ CREATE TABLE IF NOT EXISTS `ipbans` (
   `ip` varchar(40) NOT NULL DEFAULT '',
   `aid` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`ipbanid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `ipaccounts` (
-  `accountid` int(11) NOT NULL DEFAULT '0',
-  `ip` varchar(40) NOT NULL DEFAULT '',
-  `relevance` tinyint(2) NOT NULL DEFAULT '0',
-  `expiresat` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`accountid`,`ip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `keymap` (

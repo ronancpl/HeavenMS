@@ -1144,11 +1144,11 @@ public class MapleMap {
         return character;
     }
     
-    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> chrList) {
+    public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> targets) {
         List<MapleCharacter> character = new LinkedList<>();
         chrRLock.lock();
         try {
-            for (MapleCharacter chr : chrList) {
+            for (MapleCharacter chr : targets) {
                 if (characters.contains(chr)) {
                     if (box.contains(chr.getPosition())) {
                         character.add(chr);

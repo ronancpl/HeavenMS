@@ -29,6 +29,6 @@ public class LoginCoordinatorWorker implements Runnable {
     
     @Override
     public void run() {
-        MapleSessionCoordinator.getInstance().runUpdateIpHistory();
+        MapleSessionCoordinator.getInstance().runUpdateHwidHistory();
     }
 }
