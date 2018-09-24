@@ -1,0 +1,859 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="925020610.img">
+  <imgdir name="info">
+    <int name="version" value="10"/>
+    <int name="cloud" value="0"/>
+    <int name="town" value="0"/>
+    <int name="swim" value="0"/>
+    <int name="returnMap" value="925020002"/>
+    <int name="forcedReturn" value="925020002"/>
+    <float name="mobRate" value="1.0"/>
+    <string name="bgm" value="Bgm17/MureungSchool1"/>
+    <string name="mapMark" value="MuruengRaid"/>
+    <int name="fly" value="0"/>
+    <int name="hideMinimap" value="0"/>
+    <int name="fieldLimit" value="927480"/>
+    <int name="VRTop" value="-686"/>
+    <int name="VRLeft" value="-495"/>
+    <int name="VRBottom" value="120"/>
+    <int name="VRRight" value="495"/>
+    <string name="onFirstUserEnter" value="dojang_Eff"/>
+    <string name="onUserEnter" value=""/>
+    <int name="fieldType" value="14"/>
+  </imgdir>
+  <imgdir name="back">
+    <imgdir name="0">
+      <string name="bS" value=""/>
+      <int name="front" value="0"/>
+      <int name="ani" value="0"/>
+      <int name="no" value="0"/>
+      <int name="f" value="0"/>
+      <int name="x" value="0"/>
+      <int name="y" value="0"/>
+      <int name="rx" value="0"/>
+      <int name="ry" value="0"/>
+      <int name="type" value="0"/>
+      <int name="cx" value="0"/>
+      <int name="cy" value="0"/>
+      <int name="a" value="255"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="life">
+    <imgdir name="0">
+      <string name="type" value="n"/>
+      <string name="id" value="2091005"/>
+      <int name="x" value="90"/>
+      <int name="y" value="-372"/>
+      <int name="mobTime" value="0"/>
+      <int name="f" value="0"/>
+      <int name="hide" value="0"/>
+      <int name="fh" value="2"/>
+      <int name="cy" value="-365"/>
+      <int name="rx0" value="40"/>
+      <int name="rx1" value="127"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="reactor">
+    <imgdir name="0">
+      <string name="id" value="2508000"/>
+      <int name="x" value="1"/>
+      <int name="y" value="-364"/>
+      <int name="reactorTime" value="0"/>
+      <int name="f" value="0"/>
+      <string name="name" value="door"/>
+    </imgdir>
+  </imgdir>
+  <imgdir name="0">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="gate"/>
+        <string name="l2" value="0"/>
+        <int name="x" value="1"/>
+        <int name="y" value="-476"/>
+        <int name="z" value="0"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="28"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="13"/>
+        <int name="x" value="0"/>
+        <int name="y" value="-361"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="25"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="14"/>
+        <int name="x" value="251"/>
+        <int name="y" value="-524"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="26"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="14"/>
+        <int name="x" value="-248"/>
+        <int name="y" value="-524"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="27"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="15"/>
+        <int name="x" value="-441"/>
+        <int name="y" value="-527"/>
+        <int name="z" value="10"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="23"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="16"/>
+        <int name="x" value="438"/>
+        <int name="y" value="-527"/>
+        <int name="z" value="10"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="24"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="14"/>
+        <int name="x" value="-390"/>
+        <int name="y" value="-524"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="23"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="14"/>
+        <int name="x" value="393"/>
+        <int name="y" value="-524"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="24"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="2">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="0"/>
+        <int name="x" value="-255"/>
+        <int name="y" value="-157"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="2"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="1"/>
+        <int name="x" value="258"/>
+        <int name="y" value="-157"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="1"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="4"/>
+        <int name="x" value="1"/>
+        <int name="y" value="-162"/>
+        <int name="z" value="8"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="2"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="3">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="17"/>
+        <int name="x" value="-312"/>
+        <int name="y" value="-520"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="22"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="18"/>
+        <int name="x" value="316"/>
+        <int name="y" value="-520"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="21"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="-110"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="34"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="-80"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="35"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="-50"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="36"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="-20"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="29"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="10"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="30"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="7">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="40"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="31"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="8">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="70"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="32"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="9">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="100"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="33"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="10">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="19"/>
+        <int name="x" value="122"/>
+        <int name="y" value="-667"/>
+        <int name="z" value="8"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="21"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="11">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="6"/>
+        <int name="x" value="-244"/>
+        <int name="y" value="-158"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="8"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="12">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="7"/>
+        <int name="x" value="258"/>
+        <int name="y" value="-158"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="7"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="13">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="-97"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="12"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="14">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="-67"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="13"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="15">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="-37"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="14"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="16">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="-7"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="15"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="17">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="23"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="16"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="18">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="53"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="17"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="19">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="83"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="18"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="20">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="8"/>
+        <int name="x" value="113"/>
+        <int name="y" value="-315"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="11"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="4">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="13"/>
+        <int name="x" value="-447"/>
+        <int name="y" value="-100"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="4"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="14"/>
+        <int name="x" value="448"/>
+        <int name="y" value="-113"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="6"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="16"/>
+        <int name="x" value="-397"/>
+        <int name="y" value="-131"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="4"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="17"/>
+        <int name="x" value="440"/>
+        <int name="y" value="-151"/>
+        <int name="z" value="8"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="6"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="signboard"/>
+        <string name="l2" value="0"/>
+        <int name="x" value="70"/>
+        <int name="y" value="-264"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="9"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="3"/>
+        <int name="x" value="-98"/>
+        <int name="y" value="-72"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="signboard"/>
+        <string name="l2" value="11"/>
+        <int name="x" value="-85"/>
+        <int name="y" value="-264"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="7">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="acc"/>
+        <string name="l2" value="9"/>
+        <int name="x" value="128"/>
+        <int name="y" value="-65"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="5">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+      <imgdir name="0">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="10"/>
+        <int name="x" value="324"/>
+        <int name="y" value="-438"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="20"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="1">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="11"/>
+        <int name="x" value="13"/>
+        <int name="y" value="-345"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="19"/>
+        <int name="r" value="0"/>
+        <int name="forbidFallDown" value="1"/>
+      </imgdir>
+      <imgdir name="2">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="9"/>
+        <int name="x" value="-309"/>
+        <int name="y" value="-438"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="19"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="3">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="5"/>
+        <int name="x" value="-363"/>
+        <int name="y" value="61"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="4">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="5"/>
+        <int name="x" value="-138"/>
+        <int name="y" value="61"/>
+        <int name="z" value="7"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="5">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="5"/>
+        <int name="x" value="98"/>
+        <int name="y" value="61"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+      <imgdir name="6">
+        <string name="oS" value="acc7"/>
+        <string name="l0" value="mureungSchool"/>
+        <string name="l1" value="frame"/>
+        <string name="l2" value="5"/>
+        <int name="x" value="365"/>
+        <int name="y" value="61"/>
+        <int name="z" value="9"/>
+        <int name="f" value="0"/>
+        <int name="zM" value="0"/>
+        <int name="r" value="0"/>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="6">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+    </imgdir>
+  </imgdir>
+  <imgdir name="7">
+    <imgdir name="info">
+    </imgdir>
+    <imgdir name="tile">
+    </imgdir>
+    <imgdir name="obj">
+    </imgdir>
+  </imgdir>
+  <imgdir name="foothold">
+    <imgdir name="5">
+      <imgdir name="19">
+        <imgdir name="1">
+          <int name="x1" value="-121"/>
+          <int name="y1" value="-761"/>
+          <int name="x2" value="-121"/>
+          <int name="y2" value="-365"/>
+          <int name="prev" value="0"/>
+          <int name="next" value="2"/>
+          <int name="forbidFallDown" value="1"/>
+        </imgdir>
+        <imgdir name="2">
+          <int name="x1" value="-121"/>
+          <int name="y1" value="-365"/>
+          <int name="x2" value="147"/>
+          <int name="y2" value="-365"/>
+          <int name="prev" value="1"/>
+          <int name="next" value="3"/>
+          <int name="forbidFallDown" value="1"/>
+        </imgdir>
+        <imgdir name="3">
+          <int name="x1" value="147"/>
+          <int name="y1" value="-365"/>
+          <int name="x2" value="147"/>
+          <int name="y2" value="-761"/>
+          <int name="prev" value="2"/>
+          <int name="next" value="0"/>
+          <int name="forbidFallDown" value="1"/>
+        </imgdir>
+      </imgdir>
+      <imgdir name="0">
+        <imgdir name="4">
+          <int name="x1" value="-499"/>
+          <int name="y1" value="7"/>
+          <int name="x2" value="-226"/>
+          <int name="y2" value="7"/>
+          <int name="prev" value="0"/>
+          <int name="next" value="5"/>
+        </imgdir>
+        <imgdir name="5">
+          <int name="x1" value="-226"/>
+          <int name="y1" value="7"/>
+          <int name="x2" value="-1"/>
+          <int name="y2" value="7"/>
+          <int name="prev" value="4"/>
+          <int name="next" value="6"/>
+        </imgdir>
+        <imgdir name="6">
+          <int name="x1" value="-1"/>
+          <int name="y1" value="7"/>
+          <int name="x2" value="235"/>
+          <int name="y2" value="7"/>
+          <int name="prev" value="5"/>
+          <int name="next" value="7"/>
+        </imgdir>
+        <imgdir name="7">
+          <int name="x1" value="235"/>
+          <int name="y1" value="7"/>
+          <int name="x2" value="502"/>
+          <int name="y2" value="7"/>
+          <int name="prev" value="6"/>
+          <int name="next" value="0"/>
+        </imgdir>
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="ladderRope">
+  </imgdir>
+  <imgdir name="miniMap">
+    <canvas name="canvas" width="70" height="62" basedata="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">
+    </canvas>
+    <int name="width" value="1135"/>
+    <int name="height" value="1006"/>
+    <int name="centerX" value="569"/>
+    <int name="centerY" value="842"/>
+    <int name="mag" value="4"/>
+  </imgdir>
+  <imgdir name="portal">
+    <imgdir name="0">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-391"/>
+      <int name="y" value="-68"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="1">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-322"/>
+      <int name="y" value="-62"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="2">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-274"/>
+      <int name="y" value="-73"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="3">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-443"/>
+      <int name="y" value="-68"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="4">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-400"/>
+      <int name="y" value="-134"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="5">
+      <string name="pn" value="sp"/>
+      <int name="pt" value="0"/>
+      <int name="x" value="-352"/>
+      <int name="y" value="-125"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+    </imgdir>
+    <imgdir name="6">
+      <string name="pn" value="out01"/>
+      <int name="pt" value="1"/>
+      <int name="x" value="6"/>
+      <int name="y" value="-367"/>
+      <int name="tm" value="-1"/>
+      <string name="tn" value="out001"/>
+      <string name="script" value=""/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+      <int name="delay" value="0"/>
+    </imgdir>
+    <imgdir name="7">
+      <string name="pn" value="out00"/>
+      <int name="pt" value="7"/>
+      <int name="x" value="429"/>
+      <int name="y" value="7"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="script" value="dojang_up"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+      <int name="delay" value="0"/>
+    </imgdir>
+    <imgdir name="8">
+      <string name="pn" value="out001"/>
+      <int name="pt" value="8"/>
+      <int name="x" value="6"/>
+      <int name="y" value="-367"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="script" value="dojang_next"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+      <int name="delay" value="0"/>
+    </imgdir>
+  </imgdir>
+</imgdir>

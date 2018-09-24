@@ -341,7 +341,7 @@ function action(mode, type, selection) {
                         if (mode == 0) {
                             cm.sendNext("You think you can go even higher? Good luck!");
                         } else if (cm.getPlayer().getDojoStage() == Math.floor(cm.getMapId() / 100) % 100) {
-                            cm.sendOk("Looks like you came all the way up here without recording your score. Sorry, but you can't record now.");
+                            cm.sendOk("Your score have already been recorded. Next time you get to challenge the Dojo, you'll be able to come back to this point.");
                         } else {
                             cm.sendNext("I recorded your score. If you tell me the next time you go up, you'll be able to start where you left off. Note that you will have your #rrecord erased#k if you choose to #bcontinue challenging the Dojo#k, so choose carefully.");
                             cm.getPlayer().setDojoStage(Math.floor(cm.getMapId() / 100) % 100);

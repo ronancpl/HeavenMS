@@ -196,6 +196,7 @@ External tools:
 * MapleBossHpBarFetcher - Searches the quest WZ files and reports in all relevant data regarding mobs that has a boss HP bar whilst not having a proper "boss" label.
 * MapleCashDropFetcher - Searches the DB for any CASH drop data entry and lists them on a report file.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
+* MapleDojoUpdate - Patches the dojo WZ nodes with correct script names for onUserEnter and onFirstUserEnter fields.
 * MapleEquipmentOmnileveler - Updates the equipment WZ nodes with item level information, allowing thus access for item level and EXP info for common equipments.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
