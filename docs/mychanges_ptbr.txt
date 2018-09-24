@@ -1293,3 +1293,35 @@ Adicionado world map em Ellin Forest.
 Protegido concorrentemente sistema de fames.
 Adicionado ganho de quest points para jogadores que participam de PQs. Reformulado sistema de quest points para viabilizar a nova feature.
 Otimizado método de ganho de experiência em equipamentos, agora devidamente cacheado e sem busca em strings no processo.
+
+08 Agosto 2018,
+MapleServerHandler agora é devidamente deregistrado ao finalizar uma instância de channel, eliminando possível foco de memory leak.
+Funções playerDead e playerRevive são agora opcionais em EIM scripts.
+Nova ferramenta: MapleEquipmentOmnileveler. Permite adicionar e atualizar nodos referentes a níveis para todos os equipamentos. Em jogo, essa adição permite jogadores a ver nível de qualquer equipamento do jogo.
+
+09 - 10 Agosto 2018,
+Adicionado cálculo de MP ao realizar ataques de mobs.
+Aplicado vários pequenos ajustes no handler que lida com movimentação de mobs, procurando assim reduzir ruidos no fluxo do jogo (e.g. mob caindo de foothold).
+Corrigido schedules de event instances sendo chamados após finalização da mesma, levando locks já liberados a serem chamados inesperadamente.
+Corrigido casos onde jogadores poderiam requisitar instanciação de uma nova PQ, cujo EM que já tenha sido liberado.
+Aplicado reformatação geral no Character.wz, adicionando nodos de level para todos os equipamentos do jogo. Tal mudança permite que todos os equipamentos exponham nível e experiência em todos os equipamentos no inventário.
+Implementado cálculo de experiência no lado do servidor que permite mostrar adequadamente EXP dos equipamentos no lado do cliente.
+
+11 - 19 Agosto 2018,
+Corrigido MP Recovery skill não atuando segundo descrição, além de matando jogador com pouco HP disponível.
+Refatorado completamente acessos de stats no código do server.
+Refatorado check de Berserk sendo chamado em múltiplas seções do código.
+Corrigido algumas cadeiras levando jogadores a desconectarem aleatoriamente.
+Corrigido puppets ficando no mapa indeterminadamente em certos cenários.
+Acrescentado proteção contra acesso concorrente em ganhos de EXP em equipamentos.
+Door bosses (Marbas, Crocell, etc) agora spawnam de tempos em tempos, ao invés de serem chamados ao entrar no mapa.
+Retrabalhado Chair Mastery, agora com cura atuando em porcentagem de HP/MP base.
+Corrigido problema de deadlock com inventário de jogadores e EXP/DROP coupons.
+Corrigido problema de deadlock com pickup de mesos e detecção de jogadores em party.
+Corrigido problema de deadlock com o handler de pet autopot.
+Melhorado desempenho do autopot handler.
+Corrigido diversos aspectos do novo modelo de acesso de stats, agora propriamente protegido contra acesso concorrente.
+Revitalizers de mounts são devidamente consumidos mesmo em casos mount tiredness seja zero.
+Corrigido alliances retendo informações de guilds que foram desfeitas na DB.
+Corrigido alliances não salvando nomes de ranks na DB ao serem criadas.
+Adicionado suporte para doors na região de Mushroom Castle.

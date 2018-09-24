@@ -50,6 +50,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
+import client.MapleKeyBinding;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -185,10 +186,12 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         player.sendKeymap();
         player.sendMacros();
         
-        if(player.getKeymap().get(91) != null)
-            player.announce(MaplePacketCreator.sendAutoHpPot(player.getKeymap().get(91).getAction()));
-        if(player.getKeymap().get(92) != null)
-            player.announce(MaplePacketCreator.sendAutoMpPot(player.getKeymap().get(92).getAction()));
+        // pot bindings being passed through other characters on the account detected thanks to Croosade dev team
+        MapleKeyBinding autohpPot = player.getKeymap().get(91);
+        player.announce(MaplePacketCreator.sendAutoHpPot(autohpPot != null ? autohpPot.getAction() : 0));
+        
+        MapleKeyBinding autompPot = player.getKeymap().get(92);
+        player.announce(MaplePacketCreator.sendAutoMpPot(autompPot != null ? autompPot.getAction() : 0));
         
         player.getMap().addPlayer(player);
         player.visitMap(player.getMap());
@@ -263,8 +266,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         MapleInventory eqpInv = player.getInventory(MapleInventoryType.EQUIPPED);
         eqpInv.lockInventory();
         try {
-            player.resetEquippedHpMp();
-            
             for(Item it : eqpInv.list()) {
                 player.equippedItem((Equip) it);
             }

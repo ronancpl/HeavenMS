@@ -23,6 +23,7 @@ package server.quest.actions;
 
 import client.MapleCharacter;
 import constants.ServerConstants;
+import net.server.world.World;
 import provider.MapleData;
 import provider.MapleDataTool;
 import server.quest.MapleQuest;
@@ -59,7 +60,8 @@ public class MesoAction extends MapleQuestAction {
                         if(!ServerConstants.USE_QUEST_RATE) {
                                 chr.gainMeso(gain * chr.getMesoRate(), true, false, true);
                         } else {
-                                chr.gainMeso(gain * ServerConstants.MESO_RATE * ServerConstants.QUEST_RATE, true, false, true);
+                                World w = chr.getClient().getWorldServer();
+                                chr.gainMeso(gain * w.getMesoRate() * w.getQuestRate(), true, false, true);
                         }
                 }
         }

@@ -254,16 +254,11 @@ function playerDead(eim, player) {
 function playerRevive(eim, player) { // player presses ok on the death pop up.
         if(eim.getIntProperty("canRevive") == 0) {
                 if (eim.isEventTeamLackingNow(true, minPlayers, player) && eim.getIntProperty("canJoin") == 0) {
-                        eim.unregisterPlayer(player);
-                        player.setHp(50);
-                        player.changeMap(exitMap);
-                        
+                        player.respawn(eim, exitMap);
                         end(eim);
                 }
                 else {
-                        eim.unregisterPlayer(player);
-                        player.setHp(50);
-                        player.changeMap(exitMap);
+                        player.respawn(eim, exitMap);
                 }
                 
                 return false;

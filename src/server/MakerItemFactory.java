@@ -71,7 +71,7 @@ public class MakerItemFactory {
     private static double getMakerStimulantFee(int itemid) {
         if(ServerConstants.USE_MAKER_FEE_HEURISTICS) {
             EquipType et = EquipType.getEquipTypeById(itemid);
-            int eqpLevel = ii.getEquipStats(itemid).get("reqLevel");
+            int eqpLevel = ii.getEquipLevelReq(itemid);
 
             switch(et) {
                 case CAP:
@@ -106,7 +106,7 @@ public class MakerItemFactory {
     private static double getMakerReagentFee(int itemid, int reagentLevel) {
         if(ServerConstants.USE_MAKER_FEE_HEURISTICS) {
             EquipType et = EquipType.getEquipTypeById(itemid);
-            int eqpLevel = ii.getEquipStats(itemid).get("reqLevel");
+            int eqpLevel = ii.getEquipLevelReq(itemid);
 
             switch(et) {
                 case CAP:

@@ -323,8 +323,6 @@ public class MobSkill {
                 player.giveDebuff(disease, this);
             }
         }
-        monster.usedSkill(skillId, skillLevel, cooltime);
-        monster.setMp(monster.getMp() - getMpCon());
     }
 
     private List<MapleCharacter> getPlayersInRange(MapleMonster monster, MapleCharacter player) {

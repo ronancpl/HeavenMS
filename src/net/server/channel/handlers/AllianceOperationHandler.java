@@ -201,7 +201,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
     
     private void changeLeaderAllianceRank(MapleAlliance alliance, MapleCharacter newLeader) {
         MapleGuildCharacter lmgc = alliance.getLeader();
-        MapleCharacter leader = Server.getInstance().getWorld(newLeader.getWorld()).getPlayerStorage().getCharacterById(lmgc.getId());
+        MapleCharacter leader = newLeader.getWorldServer().getPlayerStorage().getCharacterById(lmgc.getId());
         leader.getMGC().setAllianceRank(2);
         leader.saveGuildStatus();
         

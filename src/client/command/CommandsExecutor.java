@@ -23,14 +23,16 @@
 */
 package client.command;
 
+import client.command.commands.gm0.*;
+import client.command.commands.gm1.*;
+import client.command.commands.gm2.*;
+import client.command.commands.gm3.*;
+import client.command.commands.gm4.*;
+import client.command.commands.gm5.*;
+import client.command.commands.gm6.*;
+
 import client.MapleClient;
-import client.command.commands.v0.*;
-import client.command.commands.v1.*;
-import client.command.commands.v2.*;
-import client.command.commands.v3.*;
-import client.command.commands.v4.*;
-import client.command.commands.v5.*;
-import client.command.commands.v6.*;
+
 import tools.FilePrinter;
 import tools.Pair;
 

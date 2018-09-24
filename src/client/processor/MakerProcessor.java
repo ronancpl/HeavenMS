@@ -256,7 +256,7 @@ public class MakerProcessor {
     
     private static int getMakerReagentSlots(int itemId) {
         try {
-            int eqpLevel = ii.getEquipStats(itemId).get("reqLevel");
+            int eqpLevel = ii.getEquipLevelReq(itemId);
             
             if(eqpLevel < 78) {
                 return 1;

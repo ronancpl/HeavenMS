@@ -203,8 +203,8 @@
       </imgdir>
       <int name="attachfacing" value="1"/>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="400"/>
       <int name="PADamage" value="200"/>
+      <int name="attackAfter" value="400"/>
     </imgdir>
     <canvas name="0" width="134" height="157">
       <vector name="origin" x="59" y="156"/>
@@ -314,10 +314,10 @@
       <int name="magic" value="1"/>
       <int name="disease" value="125"/>
       <int name="level" value="1"/>
-      <short name="attackAfter" value="840"/>
       <int name="conMP" value="1"/>
       <int name="MADamage" value="100"/>
       <string name="elemAttr" value="S"/>
+      <int name="attackAfter" value="840"/>
     </imgdir>
     <canvas name="0" width="134" height="157">
       <vector name="origin" x="53" y="156"/>
@@ -492,12 +492,12 @@
       </imgdir>
       <int name="type" value="0"/>
       <int name="magic" value="1"/>
-      <short name="attackAfter" value="600"/>
       <int name="MADamage" value="100"/>
       <int name="AngerAttack" value="1"/>
       <int name="disease" value="123"/>
       <int name="level" value="16"/>
       <int name="conMP" value="5"/>
+      <int name="attackAfter" value="600"/>
     </imgdir>
     <canvas name="0" width="132" height="168">
       <vector name="origin" x="56" y="167"/>
@@ -637,7 +637,6 @@
         <int name="attach" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="3300"/>
       <int name="magic" value="1"/>
       <int name="MADamage" value="400"/>
       <int name="specialAttack" value="1"/>
@@ -646,6 +645,7 @@
       <int name="conMP" value="10"/>
       <int name="tremble" value="1"/>
       <int name="knockback" value="1"/>
+      <int name="attackAfter" value="3300"/>
     </imgdir>
     <canvas name="0" width="126" height="159">
       <vector name="origin" x="48" y="158"/>

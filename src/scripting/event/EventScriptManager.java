@@ -23,6 +23,7 @@ package scripting.event;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,6 +38,7 @@ import scripting.AbstractScriptManager;
  * @author Matze
  */
 public class EventScriptManager extends AbstractScriptManager {
+    
     private class EventEntry {
         public EventEntry(Invocable iv, EventManager em) {
             this.iv = iv;
@@ -77,8 +79,20 @@ public class EventScriptManager extends AbstractScriptManager {
         }
     }
     
-    public void reload(){
+    private void reloadScripts() {
+        if (events.isEmpty()) return;
+        
+        Channel cserv = events.values().iterator().next().em.getChannelServer();
+        for (Entry<String, EventEntry> entry : events.entrySet()) {
+            String script = entry.getKey();
+            Invocable iv = getInvocable("event/" + script + ".js", null);
+            events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
+        }
+    }
+    
+    public void reload() {
     	cancel();
+        reloadScripts();
     	init();
     }
 

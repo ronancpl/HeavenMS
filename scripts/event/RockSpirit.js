@@ -61,10 +61,7 @@ function playerEntry(eim, player) {
 }
 
 function playerRevive(eim, player) {
-    player.setHp(50);
-    player.setStance(0);
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap);
+    player.respawn(eim, exitMap);
     return false;
 }
 
@@ -136,9 +133,9 @@ function timeOut(eim) {
         if (eim.getPlayerCount() > 0) {
             var pIter = eim.getPlayers().iterator();
             while (pIter.hasNext()){
-				var player = pIter.next();
+                var player = pIter.next();
                 playerExit(eim, player);
-			}
+            }
         }
         eim.dispose();
     }

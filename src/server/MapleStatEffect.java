@@ -708,7 +708,7 @@ public class MapleStatEffect {
                         if (absorbMp > 0) {
                             mob.setMp(mob.getMp() - absorbMp);
                             applyto.addMP(absorbMp);
-                            applyto.getClient().announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 1));
+                            applyto.announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 1));
                             applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.showBuffeffect(applyto.getId(), sourceid, 1), false);
                         }
                     }
@@ -745,14 +745,14 @@ public class MapleStatEffect {
         if (primary) {
             if (itemConNo != 0) {
                 if(!applyto.getClient().getAbstractPlayerInteraction().hasItem(itemCon, itemConNo)) {
-                    applyto.getClient().announce(MaplePacketCreator.enableActions());
+                    applyto.announce(MaplePacketCreator.enableActions());
                     return false;
                 }
                 MapleInventoryManipulator.removeById(applyto.getClient(), ItemConstants.getInventoryType(itemCon), itemCon, itemConNo, false, true);
             }
         } else {
-            if(isResurrection()) {
-                hpchange = applyto.getMaxHp();
+            if (isResurrection()) {
+                hpchange = applyto.getCurrentMaxHp();
                 applyto.setStance(0);
                 
                 applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
@@ -773,38 +773,11 @@ public class MapleStatEffect {
          AutobanFactory.MPCON.addPoint(applyfrom.getAutobanManager(), "mpCon hack for skill:" + sourceid + "; Player MP: " + applyto.getMp() + " MP Needed: " + getMpCon());
          } */
         
-        List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
-        if (hpchange != 0) {
-            if (hpchange < 0 && (-hpchange) >= applyto.getHp() && (!applyto.hasDisease(MapleDisease.ZOMBIFY) || hpCon > 0)) {
-                if(!applyto.isGM()) {
-                    applyto.getClient().announce(MaplePacketCreator.enableActions());
-                    return false;
-                }
-            }
-            int newHp = applyto.getHp() + hpchange;
-            if (newHp < 1) {
-                newHp = 1;
-            }
-            applyto.setHp(newHp);
-            hpmpupdate.add(new Pair<>(MapleStat.HP, Integer.valueOf(applyto.getHp())));
+        if (!applyto.applyHpMpChange(hpCon, hpchange, mpchange)) {
+            applyto.announce(MaplePacketCreator.enableActions());
+            return false;
         }
         
-        if (mpchange != 0) {
-            int newMp = applyto.getMp() + mpchange;
-            if (mpchange < 0 && -mpchange > applyto.getMp()) {
-                if(!applyto.isGM()) {
-                    applyto.getClient().announce(MaplePacketCreator.enableActions());
-                    return false;
-                }
-                else {
-                    newMp = 0;
-                }
-            }
-
-            applyto.setMp(newMp);
-            hpmpupdate.add(new Pair<>(MapleStat.MP, Integer.valueOf(applyto.getMp())));
-        }
-        applyto.getClient().announce(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, applyto));
         if (moveTo != -1) {
             if (moveTo != applyto.getMapId()) {
                 MapleMap target;
@@ -835,7 +808,6 @@ public class MapleStatEffect {
             } else {
                 return false;
             }
-
         }
         if (isShadowClaw()) {
             int projectile = 0;
@@ -858,8 +830,13 @@ public class MapleStatEffect {
         SummonMovementType summonMovementType = getSummonMovementType();
         if (overTime || isCygnusFA() || summonMovementType != null) {
             if (summonMovementType != null && pos != null) {
-                if(summonMovementType.getValue() == summonMovementType.STATIONARY.getValue()) applyto.cancelBuffStats(MapleBuffStat.PUPPET);
-                else applyto.cancelBuffStats(MapleBuffStat.SUMMON);
+                if(summonMovementType.getValue() == summonMovementType.STATIONARY.getValue()) {
+                    applyto.cancelBuffStats(MapleBuffStat.PUPPET);
+                } else {
+                    applyto.cancelBuffStats(MapleBuffStat.SUMMON);
+                }
+                
+                applyto.announce(MaplePacketCreator.enableActions());
             }
             
             applyBuffEffect(applyfrom, applyto, primary);
@@ -951,7 +928,7 @@ public class MapleStatEffect {
             affectedc += affectedp.size();   // used for heal
             for (MapleCharacter affected : affectedp) {
                 applyTo(applyfrom, affected, false, null, useMaxRange, affectedc);
-                affected.getClient().announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 2));
+                affected.announce(MaplePacketCreator.showOwnBuffEffect(sourceid, 2));
                 affected.getMap().broadcastMessage(affected, MaplePacketCreator.showBuffeffect(affected.getId(), sourceid, 2), false);
             }
         }
@@ -1186,7 +1163,7 @@ public class MapleStatEffect {
                     hpchange /= 2;
                 }
             } else { // assumption: this is heal
-                float hpHeal = (applyfrom.getMaxHpEquipped() * (float) hp / (100.0f * affectedPlayers));
+                float hpHeal = (applyfrom.getCurrentMaxHp() * (float) hp / (100.0f * affectedPlayers));
                 hpchange += hpHeal;
                 if (applyfrom.hasDisease(MapleDisease.ZOMBIFY)) {
                     hpchange = -hpchange;
@@ -1196,7 +1173,6 @@ public class MapleStatEffect {
         }
         if (hpR != 0) {
             hpchange += (int) (applyfrom.getCurrentMaxHp() * hpR) / (applyfrom.hasDisease(MapleDisease.ZOMBIFY) ? 2 : 1);
-            applyfrom.checkBerserk(applyfrom.isHidden());
         }
         if (primary) {
             if (hpCon != 0) {
@@ -1206,7 +1182,7 @@ public class MapleStatEffect {
         if (isChakra()) {
             hpchange += makeHealHP(getY() / 100.0, applyfrom.getTotalLuk(), 2.3, 3.5);
         } else if (sourceid == SuperGM.HEAL_PLUS_DISPEL) {
-            hpchange += (applyfrom.getMaxHp() - applyfrom.getHp());
+            hpchange += applyfrom.getCurrentMaxHp();
         }
 
         return hpchange;
@@ -1250,7 +1226,7 @@ public class MapleStatEffect {
             }
         }
         if (sourceid == SuperGM.HEAL_PLUS_DISPEL) {
-            mpchange += (applyfrom.getMaxMp() - applyfrom.getMp());
+            mpchange += applyfrom.getCurrentMaxMp();
         }
 
         return mpchange;

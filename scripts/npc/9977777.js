@@ -81,6 +81,7 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Protected and improved face expression system.");
         addFeature("Automated support for Player NPCs and Hall of Fame.");
         addFeature("Engagement & Wedding system.");
+        addFeature("Equipments displays to everyone it's level & EXP info.");
 }
 
 function writeFeatureTab_CashItems() {
@@ -112,6 +113,9 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Every skill/mastery book is now obtainable.");
         addFeature("Mobs now can drop more than one of the same equip.");
         addFeature("Mobs only drop items collectable by the player/party.");
+        addFeature("Mobs shouldn't fall from foothold too often now.");
+        addFeature("Properly applying MP cost on non-skill mob moves.");
+        addFeature("Implemented banish mob skill move.");
         addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
@@ -126,7 +130,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Uncovered missing portal SFX on scripted portals.");
         addFeature("PQ boxes sprays items when opened, GMS-like.");
         addFeature("Reactors pick items up smartly from the field.");
-        addFeature("Updated scripted portals now with proper portal SFX.");
+        addFeature("Updated scripted portals, now with proper portal SFX.");
         addFeature("Reviewed Masteria, W. Tour, N. Desert and Neo City.");
         addFeature("Added world maps for M. Castle, W. Tour & Ellin areas.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
@@ -232,6 +236,7 @@ function writeFeatureTab_Project() {
         addFeature("Developed many survey tools for content profiling.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");
+        addFeature("Thoroughly reviewed encapsulation for player stats.");
         addFeature("Heavily reviewed future task management, spawning much less threads and relieving task overload on the TimerManager.");
 }
 

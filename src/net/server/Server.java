@@ -399,7 +399,7 @@ public class Server {
             worlds.add(world);
 
             Map<Integer, String> channelInfo = new HashMap<>();
-            long bootTime = System.currentTimeMillis();
+            long bootTime = getCurrentTime();
             for (int j = 1; j <= Integer.parseInt(p.getProperty("channels" + i)); j++) {
                 int channelid = j;
                 Channel channel = new Channel(i, channelid, bootTime);

@@ -60,7 +60,9 @@ public class MapleMonsterInformationProvider {
         private final Map<Integer, List<MonsterDropEntry>> extraMultiEquipDrops = new HashMap<>();
         
         private final Map<Pair<Integer, Integer>, Integer> mobAttackAnimationTime = new HashMap<>();
-        private final Map<Pair<Integer, Integer>, Integer> mobSkillAnimationTime = new HashMap<>();
+        private final Map<MobSkill, Integer> mobSkillAnimationTime = new HashMap<>();
+        
+        private final Map<Integer, Pair<Integer, Integer>> mobAttackInfo = new HashMap<>();
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
@@ -237,13 +239,22 @@ public class MapleMonsterInformationProvider {
                 return time == null ? 0 : time;
         }
         
-        public final void setMobSkillAnimationTime(int monsterId, int skillPos, int animationTime) {
-                mobSkillAnimationTime.put(new Pair<>(monsterId, skillPos), animationTime);
+        public final void setMobSkillAnimationTime(MobSkill skill, int animationTime) {
+                mobSkillAnimationTime.put(skill, animationTime);
         }
         
-        public final Integer getMobSkillAnimationTime(int monsterId, int skillPos) {
-                Integer time = mobSkillAnimationTime.get(new Pair<>(monsterId, skillPos));
+        public final Integer getMobSkillAnimationTime(MobSkill skill) {
+                Integer time = mobSkillAnimationTime.get(skill);
                 return time == null ? 0 : time;
+        }
+        
+        public final void setMobAttackInfo(int monsterId, int attackPos, int mpCon, int coolTime) {
+                mobAttackInfo.put((monsterId << 3) + attackPos, new Pair<>(mpCon, coolTime));
+        }
+        
+        public final Pair<Integer, Integer> getMobAttackInfo(int monsterId, int attackPos) {
+                if (attackPos < 0 || attackPos > 7) return null;
+                return mobAttackInfo.get((monsterId << 3) + attackPos);
         }
 
 	public static ArrayList<Pair<Integer, String>> getMobsIDsFromName(String search) {

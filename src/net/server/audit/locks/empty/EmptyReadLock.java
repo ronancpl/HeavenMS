@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -48,7 +48,7 @@ public class EmptyReadLock implements MonitoredReadLock {
         for(int i = 0; i < list.length; i++) {
             s += ("    " + list[i].toString() + "\r\n");
         }
-        s += "----------------------------";
+        s += "----------------------------\r\n\r\n";
         
         return s;
     }

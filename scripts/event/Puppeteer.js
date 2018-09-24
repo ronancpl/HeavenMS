@@ -34,10 +34,7 @@ function scheduledTimeout(eim){
 }
 
 function playerRevive(eim, player){
-	player.setHp(50);
-	player.setStance(0);
-	eim.unregisterPlayer(player);
-	player.changeMap(exitMap);
+	player.respawn(eim, exitMap);
 	return false;
 }
 

@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.autoban.AutobanManager;
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
 import server.maps.MapleMapFactory;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.MaplePacketCreator;
@@ -37,11 +38,12 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
         if(!chr.isLoggedinWorld()) return;
         
         AutobanManager abm = chr.getAutobanManager();
-        int timestamp = slea.readInt();
-        abm.setTimestamp(0, timestamp, 3);
-        slea.skip(4);
+        int timestamp = (int) (Server.getInstance().getCurrentTime() - Server.uptime);
+        slea.skip(8);
+        
         short healHP = slea.readShort();
         if (healHP != 0) {
+            abm.setTimestamp(8, timestamp, 3);  // thanks Vcoc for pointing out d/c happening here
             if ((abm.getLastSpam(0) + 1500) > timestamp) AutobanFactory.FAST_HP_HEALING.addPoint(abm, "Fast hp healing");
             
             int abHeal = 120 + (int)(20 * MapleMapFactory.getMapRecoveryRate(chr.getMapId())); // Sleepywood sauna and showa spa...
@@ -49,14 +51,14 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
                 AutobanFactory.HIGH_HP_HEALING.autoban(chr, "Healing: " + healHP + "; Max is " + abHeal + ".");
                 return;
             }
-            chr.addHP(healHP);
             
+            chr.addHP(healHP);
             chr.getMap().broadcastMessage(chr, MaplePacketCreator.showHpHealed(chr.getId(), healHP), false);
-            chr.checkBerserk(chr.isHidden());
             abm.spam(0, timestamp);
         }
         short healMP = slea.readShort();
         if (healMP != 0 && healMP < 1000) {
+            abm.setTimestamp(9, timestamp, 3);
             if ((abm.getLastSpam(1) + 1500) > timestamp) AutobanFactory.FAST_MP_HEALING.addPoint(abm, "Fast mp healing");
             chr.addMP(healMP);
             abm.spam(1, timestamp);

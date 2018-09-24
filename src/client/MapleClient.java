@@ -886,7 +886,7 @@ public class MapleClient {
 			final MapleGuild guild = player.getGuild();
                         
                         player.cancelMagicDoor();
-
+                        
                         final World wserv = getWorldServer();   // obviously wserv is NOT null if this player was online on it
                         try {
                                 removePlayer(wserv);
@@ -1028,7 +1028,7 @@ public class MapleClient {
 	}
 
 	public void pongReceived() {
-		lastPong = System.currentTimeMillis();
+		lastPong = Server.getInstance().getCurrentTime();
 	}
 
         public void testPing(long timeThen) {
@@ -1381,12 +1381,7 @@ public class MapleClient {
                 player.cancelQuestExpirationTask();
 		//Cancelling magicdoor? Nope
 		//Cancelling mounts? Noty
-		if (player.getBuffedValue(MapleBuffStat.PUPPET) != null) {
-			player.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
-		}
-		if (player.getBuffedValue(MapleBuffStat.COMBO) != null) {
-			player.cancelEffectFromBuffStat(MapleBuffStat.COMBO);
-		}
+		
 		player.getInventory(MapleInventoryType.EQUIPPED).checked(false); //test
 		player.getMap().removePlayer(player);
                 player.clearBanishPlayerData();

@@ -498,11 +498,18 @@ public class Equip extends Item {
         }
     }
     
-    public void gainItemExp(MapleClient c, int gain) {  // Ronan's Equip Exp gain method
+    public synchronized void gainItemExp(MapleClient c, int gain) {  // Ronan's Equip Exp gain method
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        if(!ii.isUpgradeable(this.getItemId()) || itemLevel >= 30) return;
+        if(!ii.isUpgradeable(this.getItemId())) {
+            return;
+        }
         
-        int reqLevel = ii.getEquipStats(this.getItemId()).get("reqLevel");
+        int equipMaxLevel = Math.min(30, Math.max(ii.getEquipLevel(this.getItemId(), true), ServerConstants.USE_EQUIPMNT_LVLUP));
+        if (itemLevel >= equipMaxLevel) {
+            return;
+        }
+        
+        int reqLevel = ii.getEquipLevelReq(this.getItemId());
         
         float masteryModifier = (float)(ServerConstants.EQUIP_EXP_RATE * ExpTable.getExpNeededForLevel(1)) / (float)normalizedMasteryExp(reqLevel);
         float elementModifier = (isElemental) ? 0.85f : 0.6f;
@@ -516,20 +523,20 @@ public class Equip extends Item {
         
         if (itemExp >= expNeeded) {
             while(itemExp >= expNeeded) {
-                itemExp = (itemExp - expNeeded);
+                itemExp -= expNeeded;
                 gainLevel(c);
 
-                if(itemLevel == ServerConstants.USE_EQUIPMNT_LVLUP) {
+                if(itemLevel >= equipMaxLevel) {
                     itemExp = 0.0f;
                     break;
                 }
                 
                 expNeeded = ExpTable.getEquipExpNeededForLevel(itemLevel);
             }
-        } else {
-            c.getPlayer().forceUpdateItem(this);
-            //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + ii.getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
         }
+        
+        c.getPlayer().forceUpdateItem(this);
+        //if(ServerConstants.USE_DEBUG) c.getPlayer().dropMessage("'" + ii.getName(this.getItemId()) + "': " + itemExp + " / " + expNeeded);
     }
     
     private boolean reachedMaxLevel() {

@@ -167,8 +167,8 @@
         <int name="attachfacing" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="420"/>
       <int name="PADamage" value="600"/>
+      <int name="attackAfter" value="420"/>
     </imgdir>
     <canvas name="0" width="250" height="131">
       <vector name="origin" x="130" y="130"/>
@@ -371,8 +371,8 @@
         <int name="attach" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="600"/>
       <int name="magic" value="1"/>
+      <int name="attackAfter" value="600"/>
     </imgdir>
     <canvas name="0" width="250" height="131">
       <vector name="origin" x="130" y="130"/>
@@ -524,8 +524,8 @@
         <int name="attachfacing" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="750"/>
       <int name="PADamage" value="600"/>
+      <int name="attackAfter" value="750"/>
     </imgdir>
     <canvas name="0" width="250" height="131">
       <vector name="origin" x="130" y="130"/>

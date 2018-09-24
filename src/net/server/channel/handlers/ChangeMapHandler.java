@@ -85,18 +85,17 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 						executeStandardPath = chr.getEventInstance().revivePlayer(chr);
 					}
 					if (executeStandardPath) {
-						MapleMap to = chr.getMap();
+                                                MapleMap map = chr.getMap();
+                                                
 						if (wheel && chr.haveItemWithId(5510000, false)) {
 							MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
 							chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));
+                                                        
+                                                        chr.updateHp(50);
+                                                        chr.changeMap(map, map.getRandomPlayerSpawnpoint());
 						} else {
-							chr.cancelAllBuffs(false);
-							to = chr.getWarpMap(chr.getMap().getReturnMapId());
-							chr.setStance(0);
+							chr.respawn(map.getReturnMapId());
 						}
-						chr.setHp(50);
-                                                chr.updatePartyMemberHP();
-						chr.changeMap(to, to.getRandomPlayerSpawnpoint());
 					}
 				} else if (targetid != -1) {
                                         if(chr.isGM()) {

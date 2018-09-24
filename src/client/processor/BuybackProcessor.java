@@ -49,7 +49,7 @@ public class BuybackProcessor {
             c.unlockClient();
         }
 
-        if(buyback) {
+        if (buyback) {
             String jobString;
             switch(chr.getJobStyle()) {
                 case WARRIOR:
@@ -78,15 +78,8 @@ public class BuybackProcessor {
             }
 
             chr.setStance(0);
-
-            chr.setHp(chr.getMaxHp());
-            chr.setMp(chr.getMaxMp());
-
-            List<Pair<MapleStat, Integer>> hpmpupdate = new ArrayList<>(2);
-            hpmpupdate.add(new Pair<>(MapleStat.HP, Integer.valueOf(chr.getHp())));
-            hpmpupdate.add(new Pair<>(MapleStat.MP, Integer.valueOf(chr.getMp())));
-            c.announce(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, chr));
-
+            chr.healHpMp();
+            
             AbsoluteLifeMovement alm = new AbsoluteLifeMovement(0, chr.getPosition(), 0, 0);
             alm.setPixelsPerSecond(new Point(0, 0));
             List<LifeMovementFragment> moveUpdate = Collections.singletonList((LifeMovementFragment) alm);

@@ -91,7 +91,6 @@ public class AutobanManager {
      * Timestamp checker
      *
      *  <code>type</code>:<br>
-     * 0: HealOverTime<br>
      * 1: Pet Food<br>
      * 2: InventoryMerge<br>
      * 3: InventorySort<br>
@@ -99,6 +98,8 @@ public class AutobanManager {
      * 5: UseCatchItem<br>
      * 6: Item Drop<br>
      * 7: Chat<br>
+     * 8: HealOverTimeHP<br>
+     * 9: HealOverTimeMP<br>
      *
      * @param type type
      * @return Timestamp checker
@@ -108,7 +109,7 @@ public class AutobanManager {
             this.timestampcounter[type]++;
             if (this.timestampcounter[type] >= times) {
                 chr.getClient().disconnect(false, false);
-                //System.out.println("Same timestamp for type: " + type + "; Character: " + chr);
+                FilePrinter.print(FilePrinter.EXPLOITS, "Player " + chr + " was caught spamming TYPE " + type + " and has been disconnected.");
             }
             return;
         }

@@ -604,10 +604,9 @@ public class MapleGuild {
 
     public void disbandGuild() {
         if(allianceId > 0) {
-            MapleAlliance alliance = Server.getInstance().getAlliance(allianceId);
-            
-            if(alliance.getLeader().getGuildId() != id) MapleAlliance.removeGuildFromAlliance(allianceId, id, world);
-            else MapleAlliance.disbandAlliance(allianceId);
+            if (!MapleAlliance.removeGuildFromAlliance(allianceId, id, world)) {
+                MapleAlliance.disbandAlliance(allianceId);
+            }
         }
         
         membersLock.lock();

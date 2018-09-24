@@ -58,10 +58,9 @@ public class ReactorScriptManager extends AbstractScriptManager {
             ReactorActionManager rm = new ReactorActionManager(c, reactor, iv);
             engine.put("rm", rm);
             iv.invokeFunction("hit");
-        } catch(final NoSuchMethodException e) {
-            //do nothing, hit is OPTIONAL
-        }
-        catch (final ScriptException | NullPointerException e) {
+        } catch (final NoSuchMethodException e) {} //do nothing, hit is OPTIONAL
+        
+          catch (final ScriptException | NullPointerException e) {
             FilePrinter.printError(FilePrinter.REACTOR + reactor.getId() + ".txt", e);
         }
     }

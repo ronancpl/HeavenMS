@@ -214,6 +214,8 @@ public final class Channel {
             closeChannelSchedules();
             players = null;
             
+            MapleServerHandler handler = (MapleServerHandler) acceptor.getHandler();
+            handler.dispose();
             acceptor.unbind();
             
             finishedShutdown = true;
@@ -611,7 +613,7 @@ public final class Channel {
             }
         }, clockTime + 3000);   // let the TIMES UP display for 3 seconds, then warp
         
-        dojoFinishTime[slot] = System.currentTimeMillis() + clockTime;
+        dojoFinishTime[slot] = Server.getInstance().getCurrentTime() + clockTime;
     }
     
     public void dismissDojoSchedule(int dojoMapId, MapleParty party) {

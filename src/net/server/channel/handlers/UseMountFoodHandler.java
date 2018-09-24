@@ -47,27 +47,27 @@ public final class UseMountFoodHandler extends AbstractMaplePacketHandler {
         MapleMount mount = chr.getMount();
         Item item = chr.getInventory(MapleInventoryType.USE).getItem(pos);
         if (item != null && item.getItemId() == itemid && mount != null) {
-            float healedFactor;
             c.lockClient();
             try {
                 int curTiredness = mount.getTiredness();
                 int healedTiredness = Math.min(curTiredness, 30);
                 
-                healedFactor = (float) healedTiredness / 30;
+                float healedFactor = (float) healedTiredness / 30;
                 mount.setTiredness(curTiredness - healedTiredness);
+                
+                if (healedFactor > 0.0f) {
+                    mount.setExp(mount.getExp() + (int) Math.ceil(healedFactor * (2 * mount.getLevel() + 6)));
+                    int level = mount.getLevel();
+                    boolean levelup = mount.getExp() >= ExpTable.getMountExpNeededForLevel(level) && level < 31;
+                    if (levelup) {
+                        mount.setLevel(level + 1);
+                    }
+                    chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr.getId(), mount, levelup));
+                }
+                
+                MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
             } finally {
                 c.unlockClient();
-            }
-            
-            if (healedFactor > 0.0f) {
-                mount.setExp(mount.getExp() + (int) Math.ceil(healedFactor * (2 * mount.getLevel() + 6)));
-                int level = mount.getLevel();
-                boolean levelup = mount.getExp() >= ExpTable.getMountExpNeededForLevel(level) && level < 31;
-                if (levelup) {
-                    mount.setLevel(level + 1);
-                }
-                chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr.getId(), mount, levelup));
-                MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
             }
         }
     }

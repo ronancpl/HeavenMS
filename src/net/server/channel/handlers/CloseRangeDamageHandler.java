@@ -132,14 +132,8 @@ public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
             if (dmgIt.hasNext()) {
                 totDamageToOneMonster = dmgIt.next().get(0).intValue();
             }
-            int remainingHP = chr.getHp() - totDamageToOneMonster * attack.getAttackEffect(chr, null).getX() / 100;
-            if (remainingHP > 1) {
-                chr.setHp(remainingHP);
-            } else {
-                chr.setHp(1);
-            }
-            chr.updateSingleStat(MapleStat.HP, chr.getHp());
-            chr.checkBerserk(chr.isHidden());
+            
+            chr.safeAddHP(-1 * totDamageToOneMonster * attack.getAttackEffect(chr, null).getX() / 100);
         }
         if (attack.numAttacked > 0 && attack.skill == 1211002) {
             boolean advcharge_prob = false;

@@ -205,8 +205,8 @@
       </imgdir>
       <int name="attachfacing" value="1"/>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="540"/>
       <int name="PADamage" value="610"/>
+      <int name="attackAfter" value="540"/>
     </imgdir>
     <canvas name="0" width="95" height="109">
       <vector name="origin" x="34" y="98"/>
@@ -379,8 +379,8 @@
         <int name="attach" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="2040"/>
       <int name="PADamage" value="610"/>
+      <int name="attackAfter" value="2040"/>
     </imgdir>
     <canvas name="0" width="95" height="109">
       <vector name="origin" x="34" y="97"/>
@@ -622,8 +622,8 @@
         <int name="attachfacing" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="450"/>
       <int name="PADamage" value="610"/>
+      <int name="attackAfter" value="450"/>
     </imgdir>
     <canvas name="0" width="95" height="109">
       <vector name="origin" x="34" y="97"/>
@@ -770,8 +770,8 @@
         <int name="attach" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="1500"/>
       <int name="PADamage" value="610"/>
+      <int name="attackAfter" value="1500"/>
     </imgdir>
     <canvas name="0" width="94" height="100">
       <vector name="origin" x="32" y="97"/>

@@ -132,12 +132,16 @@ public class MapleLifeFactory {
                     stats.setRevives(revives);
                 }
                 decodeElementalString(stats, MapleDataTool.getString("elemAttr", monsterInfoData, ""));
+                
+                MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
                 MapleData monsterSkillInfoData = monsterInfoData.getChildByPath("skill");
                 if (monsterSkillInfoData != null) {
                     int i = 0;
                     List<Pair<Integer, Integer>> skills = new ArrayList<>();
                     while (monsterSkillInfoData.getChildByPath(Integer.toString(i)) != null) {
-                        skills.add(new Pair<>(Integer.valueOf(MapleDataTool.getInt(i + "/skill", monsterSkillInfoData, 0)), Integer.valueOf(MapleDataTool.getInt(i + "/level", monsterSkillInfoData, 0))));
+                        int skillId = MapleDataTool.getInt(i + "/skill", monsterSkillInfoData, 0);
+                        int skillLv = MapleDataTool.getInt(i + "/level", monsterSkillInfoData, 0);
+                        skills.add(new Pair<>(skillId, skillLv));
                         
                         MapleData monsterSkillData = monsterData.getChildByPath("skill" + (i + 1));
                         if (monsterSkillData != null) {
@@ -146,7 +150,8 @@ public class MapleLifeFactory {
                                 animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
                             }
                             
-                            MapleMonsterInformationProvider.getInstance().setMobSkillAnimationTime(mid, i, animationTime);
+                            MobSkill skill = MobSkillFactory.getMobSkill(skillId, skillLv);
+                            mi.setMobSkillAnimationTime(skill, animationTime);
                         }
                         
                         i++;
@@ -162,7 +167,10 @@ public class MapleLifeFactory {
                         animationTime += MapleDataTool.getIntConvert("delay", effectEntry, 0);
                     }
 
-                    MapleMonsterInformationProvider.getInstance().setMobAttackAnimationTime(mid, i, animationTime);
+                    int mpCon = MapleDataTool.getIntConvert("info/conMP", monsterAttackData, 0);
+                    int coolTime = MapleDataTool.getIntConvert("info/attackAfter", monsterAttackData, 0);
+                    mi.setMobAttackInfo(mid, i, mpCon, coolTime);
+                    mi.setMobAttackAnimationTime(mid, i, animationTime);
                     i++;
                 }
                 

@@ -1,6 +1,6 @@
 /*
     This file is part of the HeavenMS MapleStory Server
-    Copyleft 2016 - 2018 RonanLana
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -31,6 +31,7 @@ public enum MonitoredLockType {
     CHARACTER_PET,
     CHARACTER_PRT,
     CHARACTER_EVT,
+    CHARACTER_STA,
     CLIENT,
     CLIENT_ENCODER,
     CLIENT_LOGIN,

@@ -97,12 +97,10 @@ public final class UseItemHandler extends AbstractMaplePacketHandler {
             
             if(toUse.getItemId() != 2022153) {
                 ii.getItemEffect(toUse.getItemId()).applyTo(chr);
-                chr.checkBerserk(chr.isHidden());
             } else {
                 MapleStatEffect mse = ii.getItemEffect(toUse.getItemId());
                 for(MapleCharacter player : chr.getMap().getCharacters()) {
                     mse.applyTo(player);
-                    player.checkBerserk(player.isHidden());
                 }
             }
         }

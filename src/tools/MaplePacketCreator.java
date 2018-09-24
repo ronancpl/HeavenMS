@@ -90,6 +90,7 @@ import client.MapleMount;
 import client.MapleQuestStatus;
 import client.MapleRing;
 import client.MapleStat;
+import client.MonsterBook;
 import client.Skill;
 import client.SkillMacro;
 import client.inventory.Equip;
@@ -103,6 +104,7 @@ import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -143,6 +145,24 @@ public class MaplePacketCreator {
                 return mplew.getPacket(); 
         }  
 
+        private static void addRemainingSkillInfo(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+                int remainingSp[] = chr.getRemainingSps();
+                int effectiveLength = 0;
+                for (int i = 0; i < remainingSp.length; i++) {
+                        if (remainingSp[i] > 0) {
+                                effectiveLength++;
+                        }
+                }
+
+                mplew.write(effectiveLength);
+                for (int i = 0; i < remainingSp.length; i++) {
+                        if (remainingSp[i] > 0) {
+                                mplew.write(i + 1);
+                                mplew.write(remainingSp[i]);
+                        }
+                }
+        }
+        
         private static void addCharStats(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
                 mplew.writeInt(chr.getId()); // character id
                 mplew.writeAsciiString(StringUtil.getRightPaddedStr(chr.getName(), '\0', 13));
@@ -168,18 +188,12 @@ public class MaplePacketCreator {
                 mplew.writeShort(chr.getInt()); // int
                 mplew.writeShort(chr.getLuk()); // luk
                 mplew.writeShort(chr.getHp()); // hp (?)
-                mplew.writeShort(chr.getMaxHp()); // maxhp
+                mplew.writeShort(chr.getClientMaxHp()); // maxhp
                 mplew.writeShort(chr.getMp()); // mp (?)
-                mplew.writeShort(chr.getMaxMp()); // maxmp
+                mplew.writeShort(chr.getClientMaxMp()); // maxmp
                 mplew.writeShort(chr.getRemainingAp()); // remaining ap
                 if (GameConstants.hasSPTable(chr.getJob())) {
-                        mplew.write(chr.getRemainingSpSize());
-                        for (int i = 0; i < chr.getRemainingSps().length; i++) {
-                                if (chr.getRemainingSpBySkill(i) > 0) {
-                                        mplew.write(i + 1);
-                                        mplew.write(chr.getRemainingSpBySkill(i));
-                                }
-                        }
+                        addRemainingSkillInfo(mplew, chr);
                 } else {
                         mplew.writeShort(chr.getRemainingSp()); // remaining sp
                 }
@@ -433,10 +447,14 @@ public class MaplePacketCreator {
                                 mplew.write(0x40);
                         }
                 } else {
+                        int itemLevel = equip.getItemLevel();
+                        
+                        long expNibble = (ExpTable.getExpNeededForLevel(ii.getEquipLevelReq(item.getItemId())) * equip.getItemExp());
+                        expNibble /= ExpTable.getEquipExpNeededForLevel(itemLevel);
+                        
                         mplew.write(0);
-                        mplew.write(equip.getItemLevel()); //Item Level
-                        mplew.writeShort(0);
-                        mplew.writeShort(equip.getItemExp()); //Works pretty weird :s
+                        mplew.write(itemLevel); //Item Level
+                        mplew.writeInt((int) expNibble);
                         mplew.writeInt(equip.getVicious()); //WTF NEXON ARE YOU SERIOUS?
                         mplew.writeLong(0);
                 }
@@ -963,26 +981,15 @@ public class MaplePacketCreator {
         /**
          * Gets an update for specified stats.
          *
-         * @param stats The stats to update.
-         * @param chr The update target.
-         * @return The stat update packet.
-         */
-        public static byte[] updatePlayerStats(List<Pair<MapleStat, Integer>> stats, MapleCharacter chr) {
-                return updatePlayerStats(stats, false, chr);
-        }
-
-        /**
-         * Gets an update for specified stats.
-         *
          * @param stats The list of stats to update.
-         * @param itemReaction Result of an item reaction(?)
+         * @param enableActions Allows actions after the update.
          * @param chr The update target.
          * @return The stat update packet.
          */
-        public static byte[] updatePlayerStats(List<Pair<MapleStat, Integer>> stats, boolean itemReaction, MapleCharacter chr) {
+        public static byte[] updatePlayerStats(List<Pair<MapleStat, Integer>> stats, boolean enableActions, MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.STAT_CHANGED.getValue());
-                mplew.write(itemReaction ? 1 : 0);
+                mplew.write(enableActions ? 1 : 0);
                 int updateMask = 0;
                 for (Pair<MapleStat, Integer> statupdate : stats) {
                         updateMask |= statupdate.getLeft().getValue();
@@ -1009,13 +1016,7 @@ public class MaplePacketCreator {
                                         mplew.write(statupdate.getRight().shortValue());
                                 } else if (statupdate.getLeft().getValue() == 0x8000) {
                                         if (GameConstants.hasSPTable(chr.getJob())) {
-                                                mplew.write(chr.getRemainingSpSize());
-                                                for (int i = 0; i < chr.getRemainingSps().length; i++) {
-                                                        if (chr.getRemainingSpBySkill(i) > 0) {
-                                                                mplew.write(i + 1);
-                                                                mplew.write(chr.getRemainingSpBySkill(i));
-                                                        }
-                                                }
+                                                addRemainingSkillInfo(mplew, chr);
                                         } else {
                                                 mplew.writeShort(statupdate.getRight().shortValue());
                                         }
@@ -2733,11 +2734,12 @@ public class MaplePacketCreator {
                 mplew.write(0); //end of pets
                 
                 Item mount;     //mounts can potentially crash the client if the player's level is not properly checked
-                if (chr.getMount() != null && (mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18)) != null && MapleItemInformationProvider.getInstance().getEquipStats(mount.getItemId()).get("reqLevel") <= chr.getLevel()) {
-                        mplew.write(chr.getMount().getId()); //mount
-                        mplew.writeInt(chr.getMount().getLevel()); //level
-                        mplew.writeInt(chr.getMount().getExp()); //exp
-                        mplew.writeInt(chr.getMount().getTiredness()); //tiredness
+                if (chr.getMount() != null && (mount = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -18)) != null && MapleItemInformationProvider.getInstance().getEquipLevelReq(mount.getItemId()) <= chr.getLevel()) {
+                        MapleMount mmount = chr.getMount();
+                        mplew.write(mmount.getId()); //mount
+                        mplew.writeInt(mmount.getLevel()); //level
+                        mplew.writeInt(mmount.getExp()); //exp
+                        mplew.writeInt(mmount.getTiredness()); //tiredness
                 } else {
                         mplew.write(0);
                 }
@@ -2745,10 +2747,12 @@ public class MaplePacketCreator {
                 for (int sn : chr.getCashShop().getWishList()) {
                         mplew.writeInt(sn);
                 }
-                mplew.writeInt(chr.getMonsterBook().getBookLevel());
-                mplew.writeInt(chr.getMonsterBook().getNormalCard());
-                mplew.writeInt(chr.getMonsterBook().getSpecialCard());
-                mplew.writeInt(chr.getMonsterBook().getTotalCards());
+                
+                MonsterBook book = chr.getMonsterBook();
+                mplew.writeInt(book.getBookLevel());
+                mplew.writeInt(book.getNormalCard());
+                mplew.writeInt(book.getSpecialCard());
+                mplew.writeInt(book.getTotalCards());
                 mplew.writeInt(chr.getMonsterBookCover() > 0 ? MapleItemInformationProvider.getInstance().getCardMobId(chr.getMonsterBookCover()) : 0);
                 Item medal = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -49);
                 if (medal != null) {

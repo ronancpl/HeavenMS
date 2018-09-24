@@ -297,17 +297,52 @@ public class MapleAlliance {
         }
     }
     
-    public static void removeGuildFromAlliance(int allianceId, int guildId, int worldId) {
-        MapleAlliance alliance = Server.getInstance().getAlliance(allianceId);
-                
-        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.removeGuildFromAlliance(alliance, guildId, worldId), -1, -1);
-        Server.getInstance().removeGuildFromAlliance(alliance.getId(), guildId);
-
-        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.getGuildAlliances(alliance, worldId), -1, -1);
-        Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
-        Server.getInstance().guildMessage(guildId, MaplePacketCreator.disbandAlliance(alliance.getId()));
-
-        alliance.dropMessage("[" + Server.getInstance().getGuild(guildId, worldId).getName() + "] guild has left the union.");
+    private static void removeGuildFromAllianceOnDb(int guildId) {
+        PreparedStatement ps = null;
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            
+            ps = con.prepareStatement("DELETE FROM `allianceguilds` WHERE guildid = ?");
+            ps.setInt(1, guildId);
+            ps.executeUpdate();
+            ps.close();
+            
+            con.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        } finally {
+            try {
+                if (ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if (con != null && !con.isClosed()) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    public static boolean removeGuildFromAlliance(int allianceId, int guildId, int worldId) {
+        Server srv = Server.getInstance();
+        MapleAlliance alliance = srv.getAlliance(allianceId);
+    
+        if (alliance.getLeader().getGuildId() == guildId) {
+            return false;
+        }
+        
+        srv.allianceMessage(alliance.getId(), MaplePacketCreator.removeGuildFromAlliance(alliance, guildId, worldId), -1, -1);
+        srv.removeGuildFromAlliance(alliance.getId(), guildId);
+        removeGuildFromAllianceOnDb(guildId);
+        
+        srv.allianceMessage(alliance.getId(), MaplePacketCreator.getGuildAlliances(alliance, worldId), -1, -1);
+        srv.allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
+        srv.guildMessage(guildId, MaplePacketCreator.disbandAlliance(alliance.getId()));
+        
+        alliance.dropMessage("[" + srv.getGuild(guildId, worldId).getName() + "] guild has left the union.");
+        return true;
     }
     
     public void updateAlliancePackets(MapleCharacter chr) {

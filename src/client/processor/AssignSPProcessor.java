@@ -25,7 +25,6 @@ package client.processor;
 
 import client.MapleCharacter;
 import client.MapleClient;
-import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import client.autoban.AutobanFactory;
@@ -49,7 +48,7 @@ public class AssignSPProcessor {
             }
 
             MapleCharacter player = c.getPlayer();
-            int remainingSp = player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000));
+            int remainingSp = player.getRemainingSps()[GameConstants.getSkillBook(skillid/10000)];
             boolean isBeginnerSkill = false;
             if ((!GameConstants.isPqSkillMap(player.getMapId()) && GameConstants.isPqSkill(skillid)) || (!player.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, player.getJob().getId()) && !player.isGM())) {
                 AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
@@ -78,9 +77,10 @@ public class AssignSPProcessor {
             int curLevel = player.getSkillLevel(skill);
             if ((remainingSp > 0 && curLevel + 1 <= (skill.isFourthJob() ? player.getMasterLevel(skill) : skill.getMaxLevel()))) {
                 if (!isBeginnerSkill) {
-                    player.setRemainingSp(player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000)) - 1, GameConstants.getSkillBook(skillid/10000));
-                }       	
-                player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSpBySkill(GameConstants.getSkillBook(skillid/10000)));
+                    player.gainSp(-1, GameConstants.getSkillBook(skillid/10000), false);
+                } else {
+                    player.announce(MaplePacketCreator.enableActions());
+                }
                 if (skill.getId() == Aran.FULL_SWING) {
                     player.changeSkillLevel(skill, (byte) (curLevel + 1), player.getMasterLevel(skill), player.getSkillExpiration(skill));
                     player.changeSkillLevel(SkillFactory.getSkill(Aran.HIDDEN_FULL_DOUBLE), (byte) player.getSkillLevel(skill), player.getMasterLevel(skill),  player.getSkillExpiration(skill));

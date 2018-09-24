@@ -111,12 +111,10 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         } else if (skillid == Brawler.MP_RECOVERY) {// MP Recovery
             Skill s = SkillFactory.getSkill(skillid);
             MapleStatEffect ef = s.getEffect(chr.getSkillLevel(s));
-            int lose = chr.getMaxHp() / ef.getX();
-            chr.setHp(chr.getHp() - lose);
-            chr.updateSingleStat(MapleStat.HP, chr.getHp());
-            int gain = lose * (ef.getY() / 100);
-            chr.setMp(chr.getMp() + gain);
-            chr.updateSingleStat(MapleStat.MP, chr.getMp());
+            
+            int lose = chr.safeAddHP(-1 * (chr.getCurrentMaxHp() / ef.getX()));
+            int gain = -lose * (ef.getY() / 100);
+            chr.addMP(gain);
         } else if (skillid == SuperGM.HEAL_PLUS_DISPEL) {
             slea.skip(11);
             chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid)), false);

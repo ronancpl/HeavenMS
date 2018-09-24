@@ -98,6 +98,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Map<String, Integer>> equipStatsCache = new HashMap<>();
     protected Map<Integer, Equip> equipCache = new HashMap<>();
     protected Map<Integer, MapleData> equipLevelInfoCache = new HashMap<>();
+    protected Map<Integer, Integer> equipLevelReqCache = new HashMap<>();
     protected Map<Integer, Integer> equipMaxLevelCache = new HashMap<>();
     protected Map<Integer, Integer> wholePriceCache = new HashMap<>();
     protected Map<Integer, Double> unitPriceCache = new HashMap<>();
@@ -596,6 +597,24 @@ public class MapleItemInformationProvider {
         ret.put("success", MapleDataTool.getInt("success", info, 0));
         ret.put("fs", MapleDataTool.getInt("fs", info, 0));
         equipStatsCache.put(itemId, ret);
+        return ret;
+    }
+    
+    public Integer getEquipLevelReq(int itemId) {
+        if (equipLevelReqCache.containsKey(itemId)) {
+            return equipLevelReqCache.get(itemId);
+        }
+        
+        int ret = 0;
+        MapleData item = getItemData(itemId);
+        if (item != null) {
+            MapleData info = item.getChildByPath("info");
+            if (info != null) {
+                ret = MapleDataTool.getInt("reqLevel", info, 0);
+            }
+        }
+        
+        equipLevelReqCache.put(itemId, ret);
         return ret;
     }
 
@@ -1570,7 +1589,7 @@ public class MapleItemInformationProvider {
         }
         for (Item item : items) {
             Equip equip = (Equip) item;
-            int reqLevel = getEquipStats(equip.getItemId()).get("reqLevel");
+            int reqLevel = getEquipLevelReq(equip.getItemId());
             if (highfivestamp) {
                 reqLevel -= 5;
                 if (reqLevel < 0) {
@@ -1645,7 +1664,7 @@ public class MapleItemInformationProvider {
             ex.printStackTrace();
          }*/
        
-        int reqLevel = getEquipStats(equip.getItemId()).get("reqLevel");
+        int reqLevel = getEquipLevelReq(equip.getItemId());
         if (highfivestamp) {
             reqLevel -= 5;
         }
@@ -1922,8 +1941,7 @@ public class MapleItemInformationProvider {
     
     public int getMakerCrystalFromEquip(Integer equipId) {
         try {
-            Map<String, Integer> stats = getEquipStats(equipId);
-            return getCrystalForLevel(stats.get("reqLevel"));
+            return getCrystalForLevel(getEquipLevelReq(equipId));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1933,7 +1951,7 @@ public class MapleItemInformationProvider {
     
     public int getMakerStimulantFromEquip(Integer equipId) {
         try {
-            return getCrystalForLevel(getEquipStats(equipId).get("reqLevel"));
+            return getCrystalForLevel(getEquipLevelReq(equipId));
         } catch (Exception e) {
             e.printStackTrace();
         }

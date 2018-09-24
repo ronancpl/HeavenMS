@@ -37,6 +37,7 @@ import constants.ServerConstants;
 
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.coordinator.MapleSessionCoordinator;
 
@@ -49,12 +50,12 @@ import tools.data.input.GenericSeekableLittleEndianAccessor;
 import tools.data.input.SeekableLittleEndianAccessor;
 import java.util.Arrays;
 
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.ScheduledFuture;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import net.server.audit.LockCollector;
 import server.TimerManager;
 
 public class MapleServerHandler extends IoHandlerAdapter {
@@ -65,8 +66,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     private static AtomicLong sessionId = new AtomicLong(7777);
     
-    private Lock idleLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_IDLE, true);
-    private Lock tempLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_TEMP, true);
+    private MonitoredReentrantLock idleLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_IDLE, true);
+    private MonitoredReentrantLock tempLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.SRVHANDLER_TEMP, true);
     private Map<MapleClient, Long> idleSessions = new HashMap<>(100);
     private Map<MapleClient, Long> tempIdleSessions = new HashMap<>();
     private ScheduledFuture<?> idleManager = null;
@@ -268,5 +269,39 @@ public class MapleServerHandler extends IoHandlerAdapter {
     private void cancelIdleManagerTask() {
         this.idleManager.cancel(false);
         this.idleManager = null;
+    }
+    
+    private void disposeLocks() {
+        LockCollector.getInstance().registerDisposeAction(new Runnable() {
+            @Override
+            public void run() {
+                emptyLocks();
+            }
+        });
+    }
+
+    private void emptyLocks() {
+        idleLock.dispose();
+        tempLock.dispose();
+    }
+    
+    public void dispose() {
+        cancelIdleManagerTask();
+        
+        idleLock.lock();
+        try {
+            idleSessions.clear();
+        } finally {
+            idleLock.unlock();
+        }
+        
+        tempLock.lock();
+        try {
+            tempIdleSessions.clear();
+        } finally {
+            tempLock.unlock();
+        }
+        
+        disposeLocks();
     }
 }

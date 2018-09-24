@@ -67,6 +67,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import net.server.coordinator.MapleEventRecallCoordinator;
 import scripting.AbstractPlayerInteraction;
+import scripting.event.worker.EventScriptScheduler;
 import server.MapleItemInformationProvider;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
@@ -83,6 +84,7 @@ public class EventInstanceManager {
 	private List<MapleMonster> mobs = new LinkedList<>();
 	private Map<MapleCharacter, Integer> killCount = new HashMap<>();
 	private EventManager em;
+        private EventScriptScheduler ess;
 	private MapleMapFactory mapFactory;
 	private String name;
 	private Properties props = new Properties();
@@ -124,6 +126,7 @@ public class EventInstanceManager {
 	public EventInstanceManager(EventManager em, String name) {
 		this.em = em;
 		this.name = name;
+                this.ess = new EventScriptScheduler();
 		mapFactory = new MapleMapFactory(this, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), (byte) 0, (byte) 1);//Fk this
 		mapFactory.setChannel(em.getChannelServer().getId());
 	}
@@ -553,9 +556,7 @@ public class EventInstanceManager {
                         } finally {
                                 sL.unlock();
                         }
-		} catch (ScriptException | NoSuchMethodException ex) {
-			ex.printStackTrace();
-		}
+		} catch (ScriptException | NoSuchMethodException ex) {} // optional
 	}
 
         public void reviveMonster(MapleMonster mob) {
@@ -583,9 +584,8 @@ public class EventInstanceManager {
 			if (b instanceof Boolean) {
 				return (Boolean) b;
 			}
-		} catch (ScriptException | NoSuchMethodException ex) {
-			ex.printStackTrace();
-		}
+		} catch (ScriptException | NoSuchMethodException ex) {} // optional
+                
 		return true;
 	}
         
@@ -674,12 +674,15 @@ public class EventInstanceManager {
                 }
 
                 mapFactory.dispose();
+                ess.dispose();
+                
                 wL.lock();
                 try {
                         for(MapleCharacter chr: chars.values()) chr.setEventInstance(null);
                         chars.clear();
                         mobs.clear();
                         mapFactory = null;
+                        ess = null;
                 } finally {
                         wL.unlock();
                 }
@@ -725,27 +728,31 @@ public class EventInstanceManager {
 	}
 
 	public void schedule(final String methodName, long delay) {
-                List<MapleCharacter> chrList = this.getPlayerList();
-                int mapid = !chrList.isEmpty() ? chrList.get(0).getMapId() : 0;
-                
-                Runnable r = new Runnable() {
-			@Override
-			public void run() {
-				try {
-                                        sL.lock();
-                                        try {
-                                               if(em == null) return;
-                                               em.getIv().invokeFunction(methodName, EventInstanceManager.this);
-                                        } finally {
-                                                sL.unlock();
+                rL.lock();
+                try {
+                        if (ess != null) {
+                                Runnable r = new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                try {
+                                                        sL.lock();
+                                                        try {
+                                                               if(em == null) return;
+                                                               em.getIv().invokeFunction(methodName, EventInstanceManager.this);
+                                                        } finally {
+                                                                sL.unlock();
+                                                        }
+                                                } catch (ScriptException | NoSuchMethodException ex) {
+                                                        ex.printStackTrace();
+                                                }
                                         }
-				} catch (ScriptException | NoSuchMethodException ex) {
-					ex.printStackTrace();
-				}
-			}
-		};
-                
-                getEm().getChannelServer().registerEventAction(mapid, r, delay);
+                                };
+
+                                ess.registerEntry(r, delay);
+                        }
+                } finally {
+                        rL.unlock();
+                }
 	}
 
 	public String getName() {

@@ -861,7 +861,7 @@ public class MapleMap {
     }
     
     private void registerItemDrop(MapleMapItem mdrop) {
-        droppedItems.put(mdrop, !everlast ? System.currentTimeMillis() + ServerConstants.ITEM_EXPIRE_TIME : Long.MAX_VALUE);
+        droppedItems.put(mdrop, !everlast ? Server.getInstance().getCurrentTime() + ServerConstants.ITEM_EXPIRE_TIME : Long.MAX_VALUE);
     }
     
     private void unregisterItemDrop(MapleMapItem mdrop) {
@@ -878,7 +878,7 @@ public class MapleMap {
         
         objectRLock.lock();
         try {
-            long timeNow = System.currentTimeMillis();
+            long timeNow = Server.getInstance().getCurrentTime();
             
             for(Entry<MapleMapItem, Long> it : droppedItems.entrySet()) {
                 if(it.getValue() < timeNow) {
@@ -1018,7 +1018,7 @@ public class MapleMap {
     
     private void spawnDrop(final Item idrop, final Point dropPos, final MapleMapObject dropper, final MapleCharacter chr, final byte droptype, final short questid) {
         final MapleMapItem mdrop = new MapleMapItem(idrop, dropPos, dropper, chr, chr.getClient(), droptype, false, questid);
-        mdrop.setDropTime(System.currentTimeMillis());
+        mdrop.setDropTime(Server.getInstance().getCurrentTime());
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
@@ -1042,7 +1042,7 @@ public class MapleMap {
     public final void spawnMesoDrop(final int meso, final Point position, final MapleMapObject dropper, final MapleCharacter owner, final boolean playerDrop, final byte droptype) {
         final Point droppos = calcDropPos(position, position);
         final MapleMapItem mdrop = new MapleMapItem(meso, droppos, dropper, owner, owner.getClient(), droptype, playerDrop);
-        mdrop.setDropTime(System.currentTimeMillis());
+        mdrop.setDropTime(Server.getInstance().getCurrentTime());
 
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
@@ -1904,7 +1904,7 @@ public class MapleMap {
         }
         
         spawnedMonstersOnMap.incrementAndGet();
-        applyRemoveAfter(monster);
+        applyRemoveAfter(monster);  // thanks LightRyuzaki for pointing issues with spawned CWKPQ mobs not applying this
     }
 
     public void spawnDojoMonster(final MapleMonster monster) {
@@ -2050,10 +2050,10 @@ public class MapleMap {
                     List<MapleMapObject> players = getMapObjectsInBox(mist.getBox(), Collections.singletonList(MapleMapObjectType.PLAYER));
                     for (MapleMapObject mo : players) {
                         if (mist.makeChanceResult()) {
-                        	MapleCharacter chr = (MapleCharacter) mo;
-                        	if (mist.getOwner().getId() == chr.getId() || mist.getOwner().getParty() != null && mist.getOwner().getParty().containsMembers(chr.getMPC())) {	                        	
-	                        	chr.addMP((int) mist.getSourceSkill().getEffect(chr.getSkillLevel(mist.getSourceSkill().getId())).getX() * chr.getMp() / 100);
-                        	}
+                            MapleCharacter chr = (MapleCharacter) mo;
+                            if (mist.getOwner().getId() == chr.getId() || mist.getOwner().getParty() != null && mist.getOwner().getParty().containsMembers(chr.getMPC())) {	                        	
+                                chr.addMP((int) mist.getSourceSkill().getEffect(chr.getSkillLevel(mist.getSourceSkill().getId())).getX() * chr.getMp() / 100);
+                            }
                         }
                     }
                 }
@@ -2099,7 +2099,7 @@ public class MapleMap {
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
         final Point droppos = calcDropPos(pos, pos);
         final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), dropType, playerDrop);
-        mdrop.setDropTime(System.currentTimeMillis());
+        mdrop.setDropTime(Server.getInstance().getCurrentTime());
 
         spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
             @Override
@@ -2636,11 +2636,11 @@ public class MapleMap {
             monster.setControllerKnowsAboutAggro(false);
             updateMonsterController(monster);
         }
-        chr.leaveMap();
         
+        chr.leaveMap();
         for (MapleSummon summon : new ArrayList<>(chr.getSummonsValues())) {
             if (summon.isStationary()) {
-                chr.cancelBuffStats(MapleBuffStat.PUPPET);
+                chr.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
             } else {
                 removeMapObject(summon);
             }

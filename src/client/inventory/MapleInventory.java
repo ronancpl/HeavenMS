@@ -306,34 +306,36 @@ public class MapleInventory implements Iterable<Item> {
             return -1;
         }
         
+        short slotId;
         lock.lock();
         try {
-            short slotId = getNextFreeSlot();
+            slotId = getNextFreeSlot();
             if (slotId < 0) {
                 return -1;
             }
+            
             inventory.put(slotId, item);
-            
-            if(ItemConstants.isRateCoupon(item.getItemId())) {
-                owner.updateCouponRates();
-            }
-            
-            return slotId;
         } finally {
             lock.unlock();
         }
+        
+        if (ItemConstants.isRateCoupon(item.getItemId())) {
+            owner.updateCouponRates();
+        }
+
+        return slotId;
     }
     
     protected void addSlotFromDB(short slot, Item item) {
         lock.lock();
         try {
             inventory.put(slot, item);
-            
-            if(ItemConstants.isRateCoupon(item.getItemId())) {
-                owner.updateCouponRates();
-            }
         } finally {
             lock.unlock();
+        }
+        
+        if (ItemConstants.isRateCoupon(item.getItemId())) {
+            owner.updateCouponRates();
         }
     }
     
@@ -346,7 +348,7 @@ public class MapleInventory implements Iterable<Item> {
             lock.unlock();
         }
         
-        if(item != null && ItemConstants.isRateCoupon(item.getItemId())) {
+        if (item != null && ItemConstants.isRateCoupon(item.getItemId())) {
             owner.updateCouponRates();
         }
     }

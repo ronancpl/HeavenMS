@@ -8020,7 +8020,7 @@
     <string name="h7" value="Uses 10% of MaxHP, Uses 85% of the used HP on MP, 40 seconds until next use"/>
     <string name="h8" value="Uses 10% of MaxHP, Uses 90% of the used HP on MP, 35 seconds until next use"/>
     <string name="h9" value="Uses 10% of MaxHP, Uses 95% of the used HP on MP, 30 seconds until next use"/>
-    <string name="h10" value="Uses 10% of MaxHP, Uses 100%of the used HP on MP 회대기 seconds until next use시간 25초"/>
+    <string name="h10" value="Uses 10% of MaxHP, Uses 100% of the used HP on MP, 25 seconds until next use"/>
   </imgdir>
   <imgdir name="5101006">
     <string name="name" value="Knuckler Booster"/>
@@ -12717,7 +12717,7 @@
   <imgdir name="0000100">
     <string name="name" value="Chair Mastery"/>
     <string name="desc" value="[Master Level : 1]\nBonus recovery gain from using map chairs throughout the world."/>
-    <string name="h1" value="Passively recover extra amounts of HP and MP by resting on map chairs."/>
+    <string name="h1" value="Passively recover extra amounts of HP and MP by resting on map chairs. Heal amount is calculated over a percentage of the character&apos;s base pool."/>
   </imgdir>
   <imgdir name="10000100">
     <string name="name" value="Chair Mastery"/>

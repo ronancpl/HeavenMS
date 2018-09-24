@@ -46,9 +46,8 @@ function start(mode, type, selection) {
     } else if (status == 3) { 
 	qm.sendAcceptDecline("Oh, but it seems our hero has become very weak since the Black Mage's curse. It's only makes sense, considering that the hero has been asleep for hundreds of years. #bHere, I'll give you a HP Recovery Potion.#k");//nexon probably forgot to remove the '.' before '#k', lol	
     } else if (status == 4) {
-       	if (qm.c.getPlayer().getHp() >= 50) {
-            	qm.c.getPlayer().setHp(25);
-            	qm.c.getPlayer().updateSingleStat(MapleStat.HP, 25);
+       	if (qm.getPlayer().getHp() >= 50) {
+            	qm.getPlayer().updateHp(25);
         } 
 	if (!qm.isQuestStarted(21010) && !qm.isQuestCompleted(21010)) {
         	qm.gainItem(2000022, 1);
@@ -59,8 +58,8 @@ function start(mode, type, selection) {
 	qm.sendNextPrev("#b(How do I drink the potion? I don't remember..)", 3);
     } else if (status == 6) {	
 	qm.guideHint(14);
-        qm.dispose();		
-	}	
+        qm.dispose();
+    }	
 }
 
 function end(mode, type, selection) {

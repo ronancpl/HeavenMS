@@ -79,7 +79,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private AtomicInteger hp = new AtomicInteger(1);
     private AtomicLong maxHpPlusHeal = new AtomicLong(1);
     private int mp;
-    private long nextBasicSkillTime;
     private WeakReference<MapleCharacter> controller = new WeakReference<>(null);
     private boolean controllerHasAggro, controllerKnowsAboutAggro;
     private Collection<MonsterListener> listeners = new LinkedList<>();
@@ -91,6 +90,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private boolean dropsDisabled = false;
     private List<Pair<Integer, Integer>> usedSkills = new ArrayList<>();
     private Map<Pair<Integer, Integer>, Integer> skillsUsed = new HashMap<>();
+    private Set<Integer> usedAttacks = new HashSet<>();
     private List<Integer> stolenItems = new ArrayList<>();
     private int team;
     private int parentMobOid = 0;
@@ -240,16 +240,16 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         applyAndGetHpDamage(Integer.MAX_VALUE, false);
     }
     
-    public boolean applyAnimationIfRoaming(int attackPos, int skillPos) {   // roam: not casting attack or skill animations
+    private boolean applyAnimationIfRoaming(int attackPos, MobSkill skill) {   // roam: not casting attack or skill animations
         if(!animationLock.tryLock()) return false;
     
         try {
             long animationTime;
         
-            if(skillPos < 0) {
+            if(skill == null) {
                 animationTime = MapleMonsterInformationProvider.getInstance().getMobAttackAnimationTime(this.getId(), attackPos);
             } else {
-                animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(this.getId(), skillPos);
+                animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(skill);
             }
 
             if(animationTime > 0) {
@@ -1238,10 +1238,34 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public boolean hasSkill(int skillId, int level) {
         return stats.hasSkill(skillId, level);
     }
-
+    
     public boolean canUseSkill(MobSkill toUse) {
         if (toUse == null) {
             return false;
+        }
+        
+        if (toUse.getSkillId() == 200) {
+            int i = 0;
+            for (MapleMapObject mo : getMap().getMapObjects()) {
+                if (mo.getType() == MapleMapObjectType.MONSTER) {
+                    i++;
+                }
+            }
+            if (i > 100) {
+                return false;
+            }
+        }
+        
+        if (toUse.getLimit() > 0) {
+            monsterLock.lock();
+            try {
+                Integer times = this.skillsUsed.get(new Pair<>(toUse.getSkillId(), toUse.getSkillLevel()));
+                if (times != null && times >= toUse.getLimit()) {
+                    return false;
+                }
+            } finally {
+                monsterLock.unlock();
+            }
         }
         
         monsterLock.lock();
@@ -1251,41 +1275,32 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     return false;
                 }
             }
+            
+            int mpCon = toUse.getMpCon();
+            if (mp < mpCon) {
+                return false;
+            }
+            
+            if (!this.applyAnimationIfRoaming(-1, toUse)) {
+                return false;
+            }
+            
+            this.usedSkill(toUse);
         } finally {
             monsterLock.unlock();
         }
         
-        if (toUse.getLimit() > 0) {
-            monsterLock.lock();
-            try {
-                if (this.skillsUsed.containsKey(new Pair<>(toUse.getSkillId(), toUse.getSkillLevel()))) {
-                    int times = this.skillsUsed.get(new Pair<>(toUse.getSkillId(), toUse.getSkillLevel()));
-                    if (times >= toUse.getLimit()) {
-                        return false;
-                    }
-                }
-            } finally {
-                monsterLock.unlock();
-            }
-        }
-        if (toUse.getSkillId() == 200) {
-            Collection<MapleMapObject> mmo = getMap().getMapObjects();
-            int i = 0;
-            for (MapleMapObject mo : mmo) {
-                if (mo.getType() == MapleMapObjectType.MONSTER) {
-                    i++;
-                }
-            }
-            if (i > 100) {
-                return false;
-            }
-        }
         return true;
     }
 
-    public void usedSkill(final int skillId, final int level, long cooltime) {
+    private void usedSkill(MobSkill skill) {
+        final int skillId = skill.getSkillId(), level = skill.getSkillLevel();
+        long cooltime = skill.getCoolTime();
+        
         monsterLock.lock();
         try {
+            mp -= skill.getMpCon();
+            
             this.usedSkills.add(new Pair<>(skillId, level));
             if (this.skillsUsed.containsKey(new Pair<>(skillId, level))) {
                 int times = this.skillsUsed.get(new Pair<>(skillId, level)) + 1;
@@ -1310,7 +1325,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         mmap.getChannelServer().registerMobClearSkillAction(mmap.getId(), r, cooltime);
     }
 
-    public void clearSkill(int skillId, int level) {
+    private void clearSkill(int skillId, int level) {
         monsterLock.lock();
         try {
             int index = -1;
@@ -1327,13 +1342,63 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             monsterLock.unlock();
         }
     }
-
-    public long getNextBasicSkillTime() {
-        return nextBasicSkillTime;
+    
+    public int canUseAttack(int attackPos) {
+        monsterLock.lock();
+        try {
+            if (usedAttacks.contains(attackPos)) {
+                return -1;
+            }
+            
+            Pair<Integer, Integer> attackInfo = MapleMonsterInformationProvider.getInstance().getMobAttackInfo(this.getId(), attackPos);
+            if (attackInfo == null) {
+                return usedAttacks.isEmpty() ? 0 : -1;
+            }
+            
+            int mpCon = attackInfo.getLeft();
+            if (mp < mpCon) {
+                return -1;
+            }
+            
+            if (!this.applyAnimationIfRoaming(attackPos, null)) {
+                return -1;
+            }
+            
+            usedAttack(attackPos, mpCon, attackInfo.getRight());
+            return 1;
+        } finally {
+            monsterLock.unlock();
+        }
     }
     
-    public void setNextBasicSkillTime(long time) {
-        nextBasicSkillTime = time + 4200;
+    private void usedAttack(final int attackPos, int mpCon, int cooltime) {
+        monsterLock.lock();
+        try {
+            mp -= mpCon;
+            usedAttacks.add(attackPos);
+
+            final MapleMonster mons = this;
+            MapleMap mmap = mons.getMap();
+            Runnable r = new Runnable() {
+                @Override
+                public void run() {
+                    mons.clearAttack(attackPos);
+                }
+            };
+
+            mmap.getChannelServer().registerMobClearSkillAction(mmap.getId(), r, cooltime);
+        } finally {
+            monsterLock.unlock();
+        }
+    }
+    
+    private void clearAttack(int attackPos) {
+        monsterLock.lock();
+        try {
+            usedAttacks.remove(attackPos);
+        } finally {
+            monsterLock.unlock();
+        }
     }
     
     public int getNoSkills() {

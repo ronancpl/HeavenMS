@@ -101,6 +101,10 @@ public class EventManager {
         for(int i = 0; i < maxLobbys; i++) this.openedLobbys.add(false);
     }
 
+    private boolean isDisposed() {
+        return onLoadInstances <= -1000;
+    }
+    
     public void cancel() {  // make sure to only call this when there are NO PLAYERS ONLINE to mess around with the event manager!
         ess.dispose();
         
@@ -342,6 +346,8 @@ public class EventManager {
 
     //Expedition method: starts an expedition
     public boolean startInstance(int lobbyId, MapleExpedition exped, MapleCharacter leader) {
+        if (this.isDisposed()) return false;
+        
         try {
             if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
                 playerPermit.add(leader.getId());
@@ -399,6 +405,8 @@ public class EventManager {
     }
     
     public boolean startInstance(int lobbyId, MapleCharacter chr, MapleCharacter leader, int difficulty) {
+        if (this.isDisposed()) return false;
+        
         try {
             if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
                 playerPermit.add(leader.getId());
@@ -459,6 +467,8 @@ public class EventManager {
     }
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, MapleCharacter leader) {
+        if (this.isDisposed()) return false;
+        
         try {
             if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
                 playerPermit.add(leader.getId());
@@ -516,6 +526,8 @@ public class EventManager {
     }
     
     public boolean startInstance(int lobbyId, MapleParty party, MapleMap map, int difficulty, MapleCharacter leader) {
+        if (this.isDisposed()) return false;
+        
         try {
             if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
                 playerPermit.add(leader.getId());
@@ -577,6 +589,8 @@ public class EventManager {
     }
     
     public boolean startInstance(int lobbyId, EventInstanceManager eim, String ldr, MapleCharacter leader) {
+        if (this.isDisposed()) return false;
+        
         try {
             if(!playerPermit.contains(leader.getId()) && startSemaphore.tryAcquire(7777, TimeUnit.MILLISECONDS)) {
                 playerPermit.add(leader.getId());
@@ -811,7 +825,7 @@ public class EventManager {
         int nextEventId;
         queueLock.lock();
         try {
-            if(onLoadInstances <= -1000 || readyInstances.size() + onLoadInstances >= Math.ceil((double)maxLobbys / 3.0)) return;
+            if (this.isDisposed() || readyInstances.size() + onLoadInstances >= Math.ceil((double)maxLobbys / 3.0)) return;
             
             onLoadInstances++;
             nextEventId = readyId;
@@ -823,7 +837,7 @@ public class EventManager {
         EventInstanceManager eim = new EventInstanceManager(this, "sampleName" + nextEventId);
         queueLock.lock();
         try {
-            if(onLoadInstances <= -1000) {  // EM already disposed
+            if (this.isDisposed()) {  // EM already disposed
                 return;
             }
             

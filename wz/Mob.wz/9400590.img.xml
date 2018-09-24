@@ -289,10 +289,10 @@
         <int name="attachfacing" value="1"/>
       </imgdir>
       <int name="type" value="0"/>
-      <short name="attackAfter" value="2860"/>
       <int name="PADamage" value="620"/>
       <int name="disease" value="125"/>
       <int name="level" value="3"/>
+      <int name="attackAfter" value="2860"/>
     </imgdir>
     <canvas name="0" width="151" height="127">
       <vector name="origin" x="45" y="126"/>

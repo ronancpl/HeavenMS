@@ -170,7 +170,7 @@ public class World {
         runningPartyId.set(1);
         runningMessengerId.set(1);
         
-        petUpdate = System.currentTimeMillis();
+        petUpdate = Server.getInstance().getCurrentTime();
         mountUpdate = petUpdate;
         
         for (int i = 0; i < 9; i++) {
@@ -1303,7 +1303,7 @@ public class World {
         activePetsLock.lock();
         try {
             int initProc;
-            if(System.currentTimeMillis() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
+            if(Server.getInstance().getCurrentTime() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
             else initProc = ServerConstants.PET_EXHAUST_COUNT - 1;
             
             activePets.put(key, initProc);
@@ -1328,7 +1328,7 @@ public class World {
         
         activePetsLock.lock();
         try {
-            petUpdate = System.currentTimeMillis();
+            petUpdate = Server.getInstance().getCurrentTime();
             deployedPets = Collections.unmodifiableMap(activePets);
         } finally {
             activePetsLock.unlock();
@@ -1362,7 +1362,7 @@ public class World {
         activeMountsLock.lock();
         try {
             int initProc;
-            if(System.currentTimeMillis() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
+            if(Server.getInstance().getCurrentTime() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
             else initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 1;
             
             activeMounts.put(key, initProc);
@@ -1386,7 +1386,7 @@ public class World {
         Map<Integer, Integer> deployedMounts;
         activeMountsLock.lock();
         try {
-            mountUpdate = System.currentTimeMillis();
+            mountUpdate = Server.getInstance().getCurrentTime();
             deployedMounts = Collections.unmodifiableMap(activeMounts);
         } finally {
             activeMountsLock.unlock();

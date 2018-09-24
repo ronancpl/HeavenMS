@@ -25,7 +25,7 @@ PQs:
 * HPQ/KPQ/LPQ/LMPQ/OPQ/EllinPQ/PiratePQ/MagatiaPQ/HorntailPQ/AmoriaPQ/TreasurePQ/ElnathPQ/HolidayPQ.
 * CWKPQ as Expedition-based event.
 * Expeditions: Scarga/Horntail/Showa/Balrog/Zakum/Pinkbean.
-* GuildPQ + Guild queue with multi-lobby systems available.
+* GuildPQ + Guild queue with multi-lobby system available.
 * Brand-new PQs: BossRushPQ, CafePQ.
 * Mu Lung Dojo.
 * Capt. Latanica remade as an event (parties can now fight the boss).
@@ -67,6 +67,7 @@ Player Social Network:
 * Further improved the server's ranking system, now displaying properly daily player ranking movement.
 * Automated support for Player NPCs and Hall of Fame.
 * Protected concurrently and improved the face expression system, guarding from trivial packet spam and exploits.
+* All upgradeable non-cash equipments in inventory with level & EXP information available for read by anyone, given proper visibility.
 
 Cash & Items:
 
@@ -98,6 +99,7 @@ Monsters, Maps & Reactors:
 * Mobs now can drop more than one of the same equipment (number of possible drops defined at droptime, uses the minimum/maximum quantity fields on DB).
 * Mobs only drops items that are visible/collectable by the player's party.
 * Redesigned HT mechanics for spawn and linked damage to the sponge.
+* Reviewed aspects of MoveLifeHandler: implemented banish move, patched MP cost not contabilized on non-skill mob moves and slightly fixed mobs dropping from footholds in certain cases.
 * Limited item count on maps, smartly expiring oldest registered items, preventing potential item flooding.
 * Implemented Zombify disease status.
 * Added Boss HP Bar for dozens of bosses (needs provided custom wz).
@@ -113,6 +115,7 @@ Monsters, Maps & Reactors:
 * Reactors pick items up smartly, checking for an option to pick up on many-items-nearby scenario.
 * Updated many scripted portals not implementing SFX properly.
 * Updated Crimsonwood, World Tour, Nihal Desert and Neo City, enabling quest completion and game progression in these areas.
+* Added world maps for Mushroom Castle, World Tour (Singapore, Malaysia and Zipangu) & Ellin Forest areas.
 * Giant Cake (anniversary-themed boss) drops Maple equipments, Maple scrolls, summoning bags and many more interesting items.
 
 PQ potentials:
@@ -122,13 +125,14 @@ PQ potentials:
 * Expedition system - Multiples parties can attempt on a same instance (lobbies and expeds are mutually-exclusive).
 * Guild queue system - Guilds can register themselves on a queue for the GPQ.
 * EIM Pool system - After the first instance setup, next event instances are loaded beforehand and set on a pooling queue, optimizing future loadouts.
+* Recall system - Players can rejoin the last event instance they were in before disconnection.
 
 Player potentials:
 
 * Adventurer Mount quests functional.
 * All Equipment levels up.
 * Player level rates.
-* Gain fame by quests.
+* Gain fame by quests and event instances.
 * Pet evolutions functional (not GMS-like).
 * Reviewed keybinding system.
 * Account's Character slots: either each world has it's own count or there's a shared value between all worlds.
@@ -145,6 +149,7 @@ Server potentials:
 * Enhanced AP auto-assigner: exactly matches AP with the needed for the player's current level, surplus assigned to the primary attribute.
 * Enhanced inventory check: free slots on inventory smartly fetched on demand.
 * Enhanced auto-loot handler: optimized the brute-force checks for some cash items on the player equipped inventory at every requisition.
+* Added players-appointed bestsellers item ranking system for Owl of Minerva and Cash Shop.
 * Tweaked pet/mount hunger: calculations for fullness/tiredness takes active time of the subject into account.
 * Consistent experience and meso gain system.
 * NPC crafters (equips, plates/jewels, etc) now won't take items freely if the requirement conditions are not properly met.
@@ -191,6 +196,7 @@ External tools:
 * MapleBossHpBarFetcher - Searches the quest WZ files and reports in all relevant data regarding mobs that has a boss HP bar whilst not having a proper "boss" label.
 * MapleCashDropFetcher - Searches the DB for any CASH drop data entry and lists them on a report file.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
+* MapleEquipmentOmnileveler - Updates the equipment WZ nodes with item level information, allowing thus access for item level and EXP info for common equipments.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
 * MapleInvalidItemWithNoNameFetcher - Generates two files: one listing all itemid's with inexistent name and "cash" property. And other with a prepared XML to solve the name issue.
