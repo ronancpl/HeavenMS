@@ -523,7 +523,7 @@ public class MapleClient {
 		ResultSet rs = null;
 		try {
 			con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT id, password, salt, gender, banned, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
+			ps = con.prepareStatement("SELECT id, password, gender, banned, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
