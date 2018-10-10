@@ -33,6 +33,5 @@ public class SuperGM {
     public static final int HIDE = 9101004;
     public static final int RESURRECTION = 9101005;
     public static final int SUPER_DRAGON_ROAR = 9001001;
-    public static final int TELEPORT = 9101007;
     public static final int HYPER_BODY = 9101008;
 }

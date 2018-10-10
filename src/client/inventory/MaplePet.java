@@ -21,7 +21,6 @@
 */
 package client.inventory;
 
-import com.mysql.jdbc.Statement;
 import constants.ExpTable;
 import java.awt.Point;
 import java.sql.PreparedStatement;
@@ -34,6 +33,7 @@ import server.movement.AbsoluteLifeMovement;
 import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import client.MapleCharacter;
+import client.inventory.manipulator.MapleCashidGenerator;
 import java.sql.Connection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -90,6 +90,8 @@ public class MaplePet extends Item {
             ps.executeUpdate();
             ps.close();
             con.close();
+            
+            MapleCashidGenerator.freeCashId(this.getUniqueId());
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -116,15 +118,11 @@ public class MaplePet extends Item {
     public static int createPet(int itemid) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, 1, 0, 100, 0)", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, MapleItemInformationProvider.getInstance().getName(itemid));
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned) VALUES (?, ?, 1, 0, 100, 0)");
+            int ret = MapleCashidGenerator.generateCashId();
+            ps.setInt(1, ret);
+            ps.setString(2, MapleItemInformationProvider.getInstance().getName(itemid));
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            int ret = -1;
-            if (rs.next()) {
-                ret = rs.getInt(1);
-            }
-            rs.close();
             ps.close();
             con.close();
             return ret;
@@ -137,18 +135,14 @@ public class MaplePet extends Item {
     public static int createPet(int itemid, byte level, int closeness, int fullness) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (name, level, closeness, fullness, summoned) VALUES (?, ?, ?, ?, 0)", Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, MapleItemInformationProvider.getInstance().getName(itemid));
-            ps.setByte(2, level);
-            ps.setInt(3, closeness);
-            ps.setInt(4, fullness);
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned) VALUES (?, ?, ?, ?, ?, 0)");
+            int ret = MapleCashidGenerator.generateCashId();
+            ps.setInt(1, ret);
+            ps.setString(2, MapleItemInformationProvider.getInstance().getName(itemid));
+            ps.setByte(3, level);
+            ps.setInt(4, closeness);
+            ps.setInt(5, fullness);
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            int ret = -1;
-            if (rs.next()) {
-                ret = rs.getInt(1);
-            }
-            rs.close();
             ps.close();
             con.close();
             return ret;

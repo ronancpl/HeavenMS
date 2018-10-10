@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import client.MapleCharacter;
 import net.AbstractMaplePacketHandler;
-import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class CancelChairHandler extends AbstractMaplePacketHandler {
@@ -35,21 +34,6 @@ public final class CancelChairHandler extends AbstractMaplePacketHandler {
         MapleCharacter mc = c.getPlayer();
         if(!mc.isLoggedinWorld()) return;
         
-        if (id == -1) { // Cancel Chair
-            mc.setChair(0);
-            if(mc.unregisterChairBuff()) {
-                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.cancelForeignChairSkillEffect(mc.getId()), false);
-            }
-            
-            c.announce(MaplePacketCreator.cancelChair(-1));
-            c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showChair(c.getPlayer().getId(), 0), false);
-        } else { // Use In-Map Chair
-            mc.setChair(id);
-            if(mc.registerChairBuff()) {
-                c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.giveForeignChairSkillEffect(mc.getId()), false);
-            }
-            
-            c.announce(MaplePacketCreator.cancelChair(id));
-        }
+        mc.sitChair(id == -1 ? 0 : id);
     }
 }

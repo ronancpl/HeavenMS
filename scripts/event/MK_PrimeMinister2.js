@@ -2,7 +2,7 @@ importPackage(Packages.tools);
 importPackage(Packages.server.life);
 
 var minPlayers = 1;
-var eventTime = 10;
+var eventTime = 10;     // 10 minutes
 var entryMap = 106021402;
 var exitMap = 106021600;
 
@@ -36,7 +36,7 @@ function playerEntry(eim, player){
         var pm = MapleLifeFactory.getMonster(3300008);
         weddinghall.spawnMonsterOnGroundBelow(pm, new Packages.java.awt.Point(472, 27));
         
-        player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+        player.getClient().announce(MaplePacketCreator.getClock(eventTime * 60));
         eim.startEventTimer(eventTime * 60000);
 }
 

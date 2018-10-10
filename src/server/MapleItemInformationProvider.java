@@ -373,6 +373,7 @@ public class MapleItemInformationProvider {
     private static short getExtraSlotMaxFromPlayer(MapleClient c, int itemId) {
         short ret = 0;
         
+        // thanks GMChuck for detecting player sensitive data being cached into getSlotMax
         if (ItemConstants.isThrowingStar(itemId)) {
             if(c.getPlayer().getJob().isA(MapleJob.NIGHTWALKER1)) {
                 ret += c.getPlayer().getSkillLevel(SkillFactory.getSkill(NightWalker.CLAW_MASTERY)) * 10;
@@ -658,11 +659,11 @@ public class MapleItemInformationProvider {
     }
     
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {
-        return (short)Math.min(Short.MAX_VALUE, Math.max(value1, value2));
+        return (short) Math.min(Short.MAX_VALUE, Math.max(value1, value2));
     }
     
     private static short getShortMaxIfOverflow(int value) {
-        return (short)Math.min(Short.MAX_VALUE, value);
+        return (short) Math.min(Short.MAX_VALUE, value);
     }
     
     private static short chscrollRandomizedStat(int range) {

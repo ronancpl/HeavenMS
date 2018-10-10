@@ -49,40 +49,49 @@ public class WhoDropsCommand extends Command {
             player.dropMessage(5, "Please do @whodrops <item name>");
             return;
         }
-        String searchString = joinStringFrom(params, 0);
-        String output = "";
-        Iterator<Pair<Integer, String>> listIterator = MapleItemInformationProvider.getInstance().getItemDataByName(searchString).iterator();
-        if(listIterator.hasNext()) {
-            int count = 1;
-            while(listIterator.hasNext() && count <= 3) {
-                Pair<Integer, String> data = listIterator.next();
-                output += "#b" + data.getRight() + "#k is dropped by:\r\n";
-                try {
-                    Connection con = DatabaseConnection.getConnection();
-                    PreparedStatement ps = con.prepareStatement("SELECT dropperid FROM drop_data WHERE itemid = ? LIMIT 50");
-                    ps.setInt(1, data.getLeft());
-                    ResultSet rs = ps.executeQuery();
-                    while(rs.next()) {
-                        String resultName = MapleMonsterInformationProvider.getMobNameFromID(rs.getInt("dropperid"));
-                        if (resultName != null) {
-                            output += resultName + ", ";
+        
+        if (c.tryacquireClient()) {
+            try {
+                String searchString = joinStringFrom(params, 0);
+                String output = "";
+                Iterator<Pair<Integer, String>> listIterator = MapleItemInformationProvider.getInstance().getItemDataByName(searchString).iterator();
+                if(listIterator.hasNext()) {
+                    int count = 1;
+                    while(listIterator.hasNext() && count <= 3) {
+                        Pair<Integer, String> data = listIterator.next();
+                        output += "#b" + data.getRight() + "#k is dropped by:\r\n";
+                        try {
+                            Connection con = DatabaseConnection.getConnection();
+                            PreparedStatement ps = con.prepareStatement("SELECT dropperid FROM drop_data WHERE itemid = ? LIMIT 50");
+                            ps.setInt(1, data.getLeft());
+                            ResultSet rs = ps.executeQuery();
+                            while(rs.next()) {
+                                String resultName = MapleMonsterInformationProvider.getMobNameFromID(rs.getInt("dropperid"));
+                                if (resultName != null) {
+                                    output += resultName + ", ";
+                                }
+                            }
+                            rs.close();
+                            ps.close();
+                            con.close();
+                        } catch (Exception e) {
+                            player.dropMessage(6, "There was a problem retrieving the required data. Please try again.");
+                            e.printStackTrace();
+                            return;
                         }
+                        output += "\r\n\r\n";
+                        count++;
                     }
-                    rs.close();
-                    ps.close();
-                    con.close();
-                } catch (Exception e) {
-                    player.dropMessage(6, "There was a problem retrieving the required data. Please try again.");
-                    e.printStackTrace();
+                } else {
+                    player.dropMessage(5, "The item you searched for doesn't exist.");
                     return;
                 }
-                output += "\r\n\r\n";
-                count++;
+                c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, output, "00 00", (byte) 0));
+            } finally {
+                c.releaseClient();
             }
         } else {
-            player.dropMessage(5, "The item you searched for doesn't exist.");
-            return;
+            player.dropMessage(5, "Please wait a while for your request to be processed.");
         }
-        c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, output, "00 00", (byte) 0));
     }
 }

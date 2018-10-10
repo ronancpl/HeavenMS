@@ -29,7 +29,7 @@ var exitMap = 105100100;
 var minMapId = 910520000;
 var maxMapId = 910520000;
 
-var eventTime = 10; //10 minutes
+var eventTime = 10;     //10 minutes
 
 var lobbyRange = [0, 0];
 
@@ -56,7 +56,7 @@ function playerEntry(eim, player) {
     player.changeMap(entryMap, 1);
     em.setProperty("noEntry","true");
     
-    player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+    player.getClient().announce(MaplePacketCreator.getClock(eventTime * 60));
     eim.startEventTimer(eventTime * 60000);
 }
 

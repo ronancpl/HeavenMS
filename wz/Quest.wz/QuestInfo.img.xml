@@ -4393,8 +4393,8 @@ You can now begin the &quot;Manji&apos;s Request&quot; quest.
     <string name="name" value="Searching for Fossils"/>
     <string name="parent" value="Winston&apos;s Fossil Dig-up"/>
     <int name="order" value="1"/>
-    <string name="0" value="I heard that #p1022006# the archeologist is searching for something in the Rocky Mountains on the East side of Perion..."/>
-    <string name="1" value="#b#p1022006##k the archeologist who I ran into on the rocky mountains on the east side of Perion said he lost the fossils he collected near Perion. He asked me to bring back #b100 #t4031146##k and #b100 #t4031147##k which #b#o1110100##k and #b#o1130100##k took. How can he lose something so important like that? He is careless than he looks...\n\n#t4031146# #c4031146#/100\n#t4031147# #c4031147#/100"/>
+    <string name="0" value="I heard that #p1022006# the archaeologist is searching for something in the Rocky Mountains on the East side of Perion..."/>
+    <string name="1" value="#b#p1022006##k the archaeologist who I ran into on the rocky mountains on the east side of Perion said he lost the fossils he collected near Perion. He asked me to bring back #b100 #t4031146##k and #b100 #t4031147##k which #b#o1110100##k and #b#o1130100##k took. How can he lose something so important like that? He is careless than he looks...\n\n#t4031146# #c4031146#/100\n#t4031147# #c4031147#/100"/>
     <string name="2" value="I found the fossil which #b#p1022006##k lost."/>
     <int name="area" value="30"/>
   </imgdir>
@@ -4402,8 +4402,8 @@ You can now begin the &quot;Manji&apos;s Request&quot; quest.
     <string name="name" value="Delivering a Box of Fossil"/>
     <string name="parent" value="Winston&apos;s Fossil Dig-up"/>
     <int name="order" value="2"/>
-    <string name="1" value="#b#p1022006# the Archeologist#k said that it is not safe to put the valuable fossils in the tent. He asked me to take the fossil and deliver it to #bDr. #p1032104##k in Ellinia. He also wrote a letter of introduction for me to show him. "/>
-    <string name="2" value="#b#p1022006# the Archeologist#k in Perion said that it is not safe to put the valuable fossils in his tent. He asked me to deliver it to #bDr. #p1032104##k in Ellinia. Dr. Betty said it is going to be really busy from now. He asked me to stop by again and give him a hand afterwards. Fossils huh...? Should I give it a try?"/>
+    <string name="1" value="#b#p1022006# the Archaeologist#k said that it is not safe to put the valuable fossils in the tent. He asked me to take the fossil and deliver it to #bDr. #p1032104##k in Ellinia. He also wrote a letter of introduction for me to show him. "/>
+    <string name="2" value="#b#p1022006# the Archaeologist#k in Perion said that it is not safe to put the valuable fossils in his tent. He asked me to deliver it to #bDr. #p1032104##k in Ellinia. Dr. Betty said it is going to be really busy from now. He asked me to stop by again and give him a hand afterwards. Fossils huh...? Should I give it a try?"/>
     <int name="area" value="30"/>
   </imgdir>
   <imgdir name="2067">
@@ -5419,7 +5419,7 @@ You can now begin the &quot;Manji&apos;s Request&quot; quest.
     <string name="name" value="Truth of the Rumor"/>
     <string name="parent" value="The Old Tree"/>
     <int name="order" value="1"/>
-    <string name="0" value="The archeologist, Doctor #p1022006#, currently does research at a camping site in #m102000000#. He recently called me about a strange rumor he heard. "/>
+    <string name="0" value="The archaeologist, Doctor #p1022006#, currently does research at a camping site in #m102000000#. He recently called me about a strange rumor he heard. "/>
     <string name="1" value="During the excavation, Doctor #p1022006# said he heard a rumor about a very old tree living in #m102000000#. However, he had no clue on what kind of tree it was, or where exactly it was located. That&apos;s why he&apos;s asked me to visit #b#m102000000# village to collect information on this particular tree.#k\n\n#y2148# #b (#u2148#)#k\n#y2149# #b(#u2149#)#k\n#y2150# #b(#u2150#)#k\n#y2151# #b(#u2151#)#k\n#y2152# #b(#u2152#)#k"/>
     <string name="2" value="Told Doctor #p1022006# what the villagers of #m102000000# talked about. Could #o3220000# mentioned by #p1020000# be the same tree Doctor #p1022006# is looking for?"/>
     <int name="area" value="30"/>
@@ -11097,7 +11097,7 @@ Can proceed to the &quot;A Request from Corporal Easy&quot; quest.
     <string name="name" value="The Descendent of the Author of the Book of Ancient"/>
     <string name="parent" value="In Search of the Book of Ancient"/>
     <string name="0" value="I should go see Alcaster of El Nath right now..."/>
-    <string name="1" value="I met #bAlcaster#k, the archeologist, at El Nath. He said he had heard about the #bBook of Ancient#k, which tells about the Great World War, happened hundreds years ago. Interesting... The only living descendant of the author of the &quot;Book of Ancient&quot;  #bHella#k who lives in Orbis. I better go to find her right now~"/>
+    <string name="1" value="I met #bAlcaster#k, the archaeologist, at El Nath. He said he had heard about the #bBook of Ancient#k, which tells about the Great World War, happened hundreds years ago. Interesting... The only living descendant of the author of the &quot;Book of Ancient&quot;  #bHella#k who lives in Orbis. I better go to find her right now~"/>
     <null name="2"/>
     <int name="order" value="1"/>
     <int name="area" value="33"/>
@@ -16897,7 +16897,7 @@ Able to proceed to &apos;Merry-go-round in Kampung&apos; as next quest.
     <string name="name" value="Bruce&apos;s Research"/>
     <string name="0" value="Bruce, the monster researcher, might know something. Maybe he can tell me how old Bob actually is. If I get to know how old he is, wouldn&apos;t that be a discovery of something remarkable?"/>
     <string name="1" value="He does seem to know something about his age but he looks spooked. I shouldn&apos;t hesitate to ask him what is wrong!"/>
-    <string name="2" value="Wow... Bruce told me that Bob&apos;s age is incalculable. This is getting serious, isn&apos;t it. A snail that even professional monster researcher can&apos;t tell the age. Maybe he was right about asking me to go see Winston. Maybe an archeologist knows more about the history and the age issue than Bruce."/>
+    <string name="2" value="Wow... Bruce told me that Bob&apos;s age is incalculable. This is getting serious, isn&apos;t it. A snail that even professional monster researcher can&apos;t tell the age. Maybe he was right about asking me to go see Winston. Maybe an archaeologist knows more about the history and the age issue than Bruce."/>
     <int name="area" value="30"/>
   </imgdir>
   <imgdir name="4937">
@@ -23717,7 +23717,7 @@ Able to proceed to &apos;Merry-go-round in Kampung&apos; as next quest.
     <string name="parent" value="Snow Silk and the Mysterious Fabric "/>
     <int name="order" value="1"/>
     <string name="0" value="Cassandra, maple world&apos;s informant, is said to have obtained some new information hot off the press.  I&apos;m curious what it is. "/>
-    <string name="1" value="Cassandra told me about the Snow Silk.  But for some reason she wouldn&apos;t explain in detail and kept telling me to just go see the archeologist, #bWinston#k..."/>
+    <string name="1" value="Cassandra told me about the Snow Silk.  But for some reason she wouldn&apos;t explain in detail and kept telling me to just go see the archaeologist, #bWinston#k..."/>
     <string name="2" value="Maple world&apos;s informant, Cassandra, notified me of her latest information, the Snow Silk.  I went to go see Winston, the archaeologist who is looking for this Snow Silk."/>
     <int name="area" value="50"/>
   </imgdir>

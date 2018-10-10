@@ -682,8 +682,8 @@ public class AbstractPlayerInteraction {
         public boolean isEventLeader() {
 		return getEventInstance() != null && getPlayer().getId() == getEventInstance().getLeaderId();
 	}
-
-	public void givePartyItems(int id, short quantity, List<MapleCharacter> party) {
+        
+        public void givePartyItems(int id, short quantity, List<MapleCharacter> party) {
 		for (MapleCharacter chr : party) {
 			MapleClient cl = chr.getClient();
 			if (quantity >= 0) {
@@ -694,7 +694,6 @@ public class AbstractPlayerInteraction {
 			cl.announce(MaplePacketCreator.getShowItemGain(id, quantity, true));
 		}
 	}
-
 
 	public void removeHPQItems() {
 		int[] items = {4001095, 4001096, 4001097, 4001098, 4001099, 4001100, 4001101};

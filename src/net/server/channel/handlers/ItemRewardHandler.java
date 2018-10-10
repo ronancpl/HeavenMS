@@ -60,7 +60,7 @@ public final class ItemRewardHandler extends AbstractMaplePacketHandler {
                     }
                     MapleInventoryManipulator.addFromDrop(c, item, false);
                 } else {
-                    MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity);
+                    MapleInventoryManipulator.addById(c, reward.itemid, reward.quantity, "", -1);
                 }
                 MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemId, 1, false, false);
                 if (reward.worldmsg != null) {

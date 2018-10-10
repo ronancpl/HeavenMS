@@ -427,21 +427,14 @@ public class MapleMapFactory {
     public Map<Integer, MapleMap> getMaps() {
         mapsRLock.lock();
         try {
-            return Collections.unmodifiableMap(maps);
+            return new HashMap<>(maps);
         } finally {
             mapsRLock.unlock();
         }
     }
     
     public void dispose() {
-        Collection<MapleMap> mapValues;
-        
-        mapsRLock.lock();
-        try {
-            mapValues = maps.values();
-        } finally {
-            mapsRLock.unlock();
-        }
+        Collection<MapleMap> mapValues = getMaps().values();
         
         for(MapleMap map: mapValues) {
             map.dispose();

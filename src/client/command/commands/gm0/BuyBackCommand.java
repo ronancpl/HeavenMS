@@ -30,6 +30,15 @@ import client.processor.BuybackProcessor;
 public class BuyBackCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
-        BuybackProcessor.processBuyback(c);
+        if (params.length < 1) {
+            c.getPlayer().yellowMessage("Syntax: @buyback <info|now>");
+            return;
+        }
+        
+        if (params[0].contentEquals("now")) {
+            BuybackProcessor.processBuyback(c);
+        } else {
+            c.getPlayer().showBuybackInfo();
+        }
     }
 }

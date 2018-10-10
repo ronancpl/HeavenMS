@@ -40,60 +40,61 @@ public class SpawnPetProcessor {
     private static MapleDataProvider dataRoot = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Item.wz"));
     
     public static void processSpawnPet(MapleClient c, byte slot, boolean lead) {
-        c.lockClient();
-        try {
-            MapleCharacter chr = c.getPlayer();
-            MaplePet pet = chr.getInventory(MapleInventoryType.CASH).getItem(slot).getPet();
-            if (pet == null) return;
+        if (c.tryacquireClient()) {
+            try {
+                MapleCharacter chr = c.getPlayer();
+                MaplePet pet = chr.getInventory(MapleInventoryType.CASH).getItem(slot).getPet();
+                if (pet == null) return;
 
-            int petid = pet.getItemId();
-            if (petid == 5000028 || petid == 5000047) //Handles Dragon AND Robos
-            {
-                if (chr.haveItem(petid + 1)) {
-                    chr.dropMessage(5, "You can't hatch your " + (petid == 5000028 ? "Dragon egg" : "Robo egg") + " if you already have a Baby " + (petid == 5000028 ? "Dragon." : "Robo."));
-                    c.announce(MaplePacketCreator.enableActions());
-                    return;
-                } else {
-                    int evolveid = MapleDataTool.getInt("info/evol1", dataRoot.getData("Pet/" + petid + ".img"));
-                    int petId = MaplePet.createPet(evolveid);
-                    if (petId == -1) {
+                int petid = pet.getItemId();
+                if (petid == 5000028 || petid == 5000047) //Handles Dragon AND Robos
+                {
+                    if (chr.haveItem(petid + 1)) {
+                        chr.dropMessage(5, "You can't hatch your " + (petid == 5000028 ? "Dragon egg" : "Robo egg") + " if you already have a Baby " + (petid == 5000028 ? "Dragon." : "Robo."));
+                        c.announce(MaplePacketCreator.enableActions());
+                        return;
+                    } else {
+                        int evolveid = MapleDataTool.getInt("info/evol1", dataRoot.getData("Pet/" + petid + ".img"));
+                        int petId = MaplePet.createPet(evolveid);
+                        if (petId == -1) {
+                            return;
+                        }
+                        long expiration = chr.getInventory(MapleInventoryType.CASH).getItem(slot).getExpiration();
+                        MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, petid, (short) 1, false, false);
+                        MapleInventoryManipulator.addById(c, evolveid, (short) 1, null, petId, expiration);
+                        pet.deleteFromDb();
+
+                        c.announce(MaplePacketCreator.enableActions());
                         return;
                     }
-                    long expiration = chr.getInventory(MapleInventoryType.CASH).getItem(slot).getExpiration();
-                    MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, petid, (short) 1, false, false);
-                    MapleInventoryManipulator.addById(c, evolveid, (short) 1, null, petId, expiration);
-                    pet.deleteFromDb();
-
+                }
+                if (chr.getPetIndex(pet) != -1) {
+                    chr.unequipPet(pet, true);
+                } else {
+                    if (chr.getSkillLevel(SkillFactory.getSkill(8)) == 0 && chr.getPet(0) != null) {
+                        chr.unequipPet(chr.getPet(0), false);
+                    }
+                    if (lead) {
+                        chr.shiftPetsRight();
+                    }
+                    Point pos = chr.getPosition();
+                    pos.y -= 12;
+                    pet.setPos(pos);
+                    pet.setFh(chr.getMap().getFootholds().findBelow(pet.getPos()).getId());
+                    pet.setStance(0);
+                    pet.setSummoned(true);
+                    pet.saveToDb();
+                    chr.addPet(pet);
+                    chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showPet(c.getPlayer(), pet, false, false), true);
+                    c.announce(MaplePacketCreator.petStatUpdate(c.getPlayer()));
                     c.announce(MaplePacketCreator.enableActions());
-                    return;
-                }
-            }
-            if (chr.getPetIndex(pet) != -1) {
-                chr.unequipPet(pet, true);
-            } else {
-                if (chr.getSkillLevel(SkillFactory.getSkill(8)) == 0 && chr.getPet(0) != null) {
-                    chr.unequipPet(chr.getPet(0), false);
-                }
-                if (lead) {
-                    chr.shiftPetsRight();
-                }
-                Point pos = chr.getPosition();
-                pos.y -= 12;
-                pet.setPos(pos);
-                pet.setFh(chr.getMap().getFootholds().findBelow(pet.getPos()).getId());
-                pet.setStance(0);
-                pet.setSummoned(true);
-                pet.saveToDb();
-                chr.addPet(pet);
-                chr.getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showPet(c.getPlayer(), pet, false, false), true);
-                c.announce(MaplePacketCreator.petStatUpdate(c.getPlayer()));
-                c.announce(MaplePacketCreator.enableActions());
 
-                chr.commitExcludedItems();
-                chr.getClient().getWorldServer().registerPetHunger(chr, chr.getPetIndex(pet));
+                    chr.commitExcludedItems();
+                    chr.getClient().getWorldServer().registerPetHunger(chr, chr.getPetIndex(pet));
+                }
+            } finally {
+                c.releaseClient();
             }
-        } finally {
-            c.unlockClient();
         }
     }
 }

@@ -92,7 +92,7 @@ function action(mode, type, selection){
         else if (status == 2) {
             if (cm.getPlayer().getRemainingSp() > 0)
                 if (cm.getPlayer().getRemainingSp() > (cm.getLevel() - 70) * 3) {
-                    cm.sendNext("Please, use all your SP before contining.");
+                    cm.sendNext("Please, use all your SP before continuing.");
                     cm.dispose();
                     return;
                 }

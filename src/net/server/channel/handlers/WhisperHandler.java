@@ -49,9 +49,9 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             String recipient = slea.readMapleAsciiString();
             String text = slea.readMapleAsciiString();
             MapleCharacter player = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
-			if(c.getPlayer().getAutobanManager().getLastSpam(7) + 200 > currentServerTime()) {
-				return;
-			}
+            if (c.getPlayer().getAutobanManager().getLastSpam(7) + 200 > currentServerTime()) {
+                return;
+            }
             if (text.length() > Byte.MAX_VALUE && !player.isGM()) {
             	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with whispers.");
             	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + text.length() + "\r\n");
@@ -92,7 +92,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 } else {
                     c.announce(MaplePacketCreator.getFindReply(victim.getName(), victim.getMap().getId(), 1));
                 }
-            } else if (c.getPlayer().gmLevel() > 1) { // not found
+            } else if (c.getPlayer().isGM()) { // not found
                 try {
                     Connection con = DatabaseConnection.getConnection();
                     PreparedStatement ps = con.prepareStatement("SELECT gm FROM characters WHERE name = ?");

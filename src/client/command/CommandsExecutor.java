@@ -162,6 +162,7 @@ public class CommandsExecutor {
         addCommand("droplimit", DropLimitCommand.class);
         addCommand("time", TimeCommand.class);
         addCommand("credits", StaffCommand.class);
+        addCommand("buyback", BuyBackCommand.class);
         addCommand("uptime", UptimeCommand.class);
         addCommand("gacha", GachaCommand.class);
         addCommand("dispose", DisposeCommand.class);
@@ -345,6 +346,7 @@ public class CommandsExecutor {
         addCommand("shutdown", 6, ShutdownCommand.class);
         addCommand("clearquestcache", 6, ClearQuestCacheCommand.class);
         addCommand("clearquest", 6, ClearQuestCommand.class);
+        addCommand("supplyratecoupon", 6, SupplyRateCouponCommand.class);
         addCommand("spawnallpnpcs", 6, SpawnAllPNpcsCommand.class);
         addCommand("eraseallpnpcs", 6, EraseAllPNpcsCommand.class);
         addCommand("addchannel", 6, ServerAddChannelCommand.class);

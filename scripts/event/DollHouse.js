@@ -26,7 +26,7 @@ importPackage(Packages.tools);
 
 var entryMap = 922000010;
 var exitMap = 221024400;
-var eventTime = 10; //10 minutes
+var eventTime = 10;     //10 minutes
 
 function init() {
     em.setProperty("noEntry","false");
@@ -39,7 +39,7 @@ function playerEntry(eim, player) {
     player.changeMap(entryMap, 0);
     em.setProperty("noEntry","true");
     
-    player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+    player.getClient().announce(MaplePacketCreator.getClock(eventTime * 60));
     eim.startEventTimer(eventTime * 60000);
 }
 

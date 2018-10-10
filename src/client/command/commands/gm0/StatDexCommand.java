@@ -39,7 +39,7 @@ public class StatDexCommand extends Command {
         int remainingAp = player.getRemainingAp();
 
         int amount = (params.length > 0) ? Math.min(Integer.parseInt(params[0]), remainingAp) : Math.min(remainingAp, ServerConstants.MAX_AP - player.getDex());
-        if (!player.assignDex(amount)) {
+        if (!player.assignDex(Math.max(amount, 0))) {
             player.dropMessage("Please make sure your AP is not over " + ServerConstants.MAX_AP + " and you have enough to distribute.");
         }
     }

@@ -276,7 +276,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         if (item == null) //hack
                         {
                             return;
-                        } else if (((item.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) || (ii.isDropRestricted(item.getItemId()) && !MapleKarmaManipulator.hasKarmaFlag(item))) {
+                        } else if (item.isUntradeable()) {
                             player.dropMessage(1, "You cannot trade this item.");
                             c.announce(MaplePacketCreator.enableActions());
                             return;
@@ -299,7 +299,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     break;
             }
             remove(c, itemId);
-        } else if (itemType == 508) {   // graduation banner, thanks to tmskdl12
+        } else if (itemType == 508) {   // graduation banner, thanks to tmskdl12. Also, thanks ratency for first pointing lack of Kite handling
             MapleKite kite = new MapleKite(player, slea.readMapleAsciiString(), itemId);
             
             if (!GameConstants.isFreeMarketRoom(player.getMapId())) {
@@ -517,7 +517,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             
             Equip toScroll = (Equip) eitem;
             if (toScroll.getUpgradeSlots() < 1) {
-                c.getSession().write(MaplePacketCreator.getInventoryFull());
+                c.announce(MaplePacketCreator.getInventoryFull());
                 return;
             }
             
@@ -527,10 +527,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             player.toggleBlockCashShop();
             
             final int curlevel = toScroll.getLevel();
-            c.getSession().write(MaplePacketCreator.sendVegaScroll(0x40));
+            c.announce(MaplePacketCreator.sendVegaScroll(0x40));
             
             final Equip scrolled = (Equip) ii.scrollEquipWithId(toScroll, uitem.getItemId(), false, itemId, player.isGM());
-            c.getSession().write(MaplePacketCreator.sendVegaScroll(scrolled.getLevel() > curlevel ? 0x41 : 0x43));
+            c.announce(MaplePacketCreator.sendVegaScroll(scrolled.getLevel() > curlevel ? 0x41 : 0x43));
             //opcodes 0x42, 0x44: "this item cannot be used"; 0x39, 0x45: crashes
             
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, uSlot, (short) 1, false);
@@ -555,7 +555,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         player.equipChanged();
                     }
 
-                    client.getSession().write(MaplePacketCreator.enableActions());
+                    client.announce(MaplePacketCreator.enableActions());
             	}
             }, 1000 * 3);
         } else {

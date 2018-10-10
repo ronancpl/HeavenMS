@@ -43,12 +43,12 @@ public class MapleKite extends AbstractMapleMapObject {
 
     @Override
     public void sendDestroyData(MapleClient client) {
-        client.getSession().write(makeDestroyData());
+        client.announce(makeDestroyData());
     }
 
     @Override
     public void sendSpawnData(MapleClient client) {
-        client.getSession().write(makeSpawnData());
+        client.announce(makeSpawnData());
     }
 
     public final byte[] makeSpawnData() {

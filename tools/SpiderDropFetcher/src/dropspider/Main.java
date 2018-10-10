@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package tools.dropspider;
+package dropspider;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,7 +37,7 @@ public class Main {
     private static String[] additionalPagesBB = {"101-120,", "121-140", "141-160", "161-180", "181-200"};
 
     public static void main(String[] args) {
-        System.setProperty("wzpath", "wz");
+        System.setProperty("wzpath", "../../wz");
         
         //DataTool.setHardcodedMobNames();
         //parsePage("https://bbb.hidden-street.net/monster/nibelung-3");

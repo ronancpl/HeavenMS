@@ -345,7 +345,7 @@ public class EventInstanceManager {
         
         private void dismissEventTimer() {
                 for(MapleCharacter chr: getPlayers()) {
-                        chr.getClient().getSession().write(MaplePacketCreator.removeClock());
+                        chr.getClient().announce(MaplePacketCreator.removeClock());
                 }
                 
                 event_schedule = null;

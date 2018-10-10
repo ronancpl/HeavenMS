@@ -23,6 +23,7 @@ package net.server.channel.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.autoban.AutobanManager;
@@ -65,18 +66,25 @@ public final class PetFoodHandler extends AbstractMaplePacketHandler {
         
         short pos = slea.readShort();
         int itemId = slea.readInt();
-        Item use = chr.getInventory(MapleInventoryType.USE).getItem(pos);
-        if (use == null || (itemId / 10000) != 212 || use.getItemId() != itemId) {
-            return;
-        }
         
-        c.lockClient();
-        try {
-            pet.gainClosenessFullness(chr, (pet.getFullness() <= 75) ? 1 : 0, 30, 1);   // 25+ "emptyness" to get +1 closeness
-        } finally {
-            c.unlockClient();
+        if (c.tryacquireClient()) {
+            try {
+                MapleInventory useInv = chr.getInventory(MapleInventoryType.USE);
+                useInv.lockInventory();
+                try {
+                    Item use = useInv.getItem(pos);
+                    if (use == null || (itemId / 10000) != 212 || use.getItemId() != itemId || use.getQuantity() < 1) {
+                        return;
+                    }
+
+                    pet.gainClosenessFullness(chr, (pet.getFullness() <= 75) ? 1 : 0, 30, 1);   // 25+ "emptyness" to get +1 closeness
+                    MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, pos, (short) 1, false);
+                } finally {
+                    useInv.unlockInventory();
+                }
+            } finally {
+                c.releaseClient();
+            }
         }
-        
-        MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, pos, (short) 1, false);
     }
 }

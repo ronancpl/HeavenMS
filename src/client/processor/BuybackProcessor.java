@@ -21,16 +21,13 @@ package client.processor;
 
 import client.MapleClient;
 import client.MapleCharacter;
-import client.MapleStat;
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import server.maps.MapleMap;
 import server.movement.AbsoluteLifeMovement;
 import server.movement.LifeMovementFragment;
 import tools.MaplePacketCreator;
-import tools.Pair;
 
 /**
  *

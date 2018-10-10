@@ -8,6 +8,7 @@ package client.autoban;
 import client.MapleCharacter;
 import java.util.HashMap;
 import java.util.Map;
+import net.server.Server;
 import tools.FilePrinter;
 
 /**
@@ -35,12 +36,12 @@ public class AutobanManager {
     		return;
     	}
         if (lastTime.containsKey(fac)) {
-            if (lastTime.get(fac) < (System.currentTimeMillis() - fac.getExpire())) {
+            if (lastTime.get(fac) < (Server.getInstance().getCurrentTime() - fac.getExpire())) {
                 points.put(fac, points.get(fac) / 2); //So the points are not completely gone.
             }
         }
         if (fac.getExpire() != -1)
-            lastTime.put(fac, System.currentTimeMillis());
+            lastTime.put(fac, Server.getInstance().getCurrentTime());
         
         if (points.containsKey(fac)) {
             points.put(fac, points.get(fac) + 1);
@@ -76,7 +77,7 @@ public class AutobanManager {
     
     //Don't use the same type for more than 1 thing
     public void spam(int type) {
-        this.spam[type] = System.currentTimeMillis();
+        this.spam[type] = Server.getInstance().getCurrentTime();
     }
     
     public void spam(int type, int timestamp) {

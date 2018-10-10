@@ -520,16 +520,18 @@ public class MapleInventoryManipulator {
         
         //1112413, 1112414, 1112405 (Lilin's Ring)
         source = (Equip) eqpInv.getItem(src);
-        Equip target = (Equip) eqpdInv.getItem(dst);
         eqpInv.removeSlot(src);
-        if (target != null) {
-            eqpdInv.lockInventory();
-            try {
+        
+        Equip target;
+        eqpdInv.lockInventory();
+        try {
+            target = (Equip) eqpdInv.getItem(dst);
+            if (target != null) {
                 chr.unequippedItem(target);
                 eqpdInv.removeSlot(dst);
-            } finally {
-                eqpdInv.unlockInventory();
             }
+        } finally {
+            eqpdInv.unlockInventory();
         }
 
         final List<ModifyInventory> mods = new ArrayList<>();
@@ -705,7 +707,7 @@ public class MapleInventoryManipulator {
     }
 
     private static boolean isDroppedItemRestricted(Item it) {
-        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && ((it.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE);
+        return ServerConstants.USE_ERASE_UNTRADEABLE_DROP && it.isUntradeable();
     }
     
     public static boolean isSandboxItem(Item it) {

@@ -35,8 +35,8 @@ function playerEntry(eim, player) {
         onRide = eim.getMapFactory().getMap(trainRide[myRide]);
         player.changeMap(onRide, onRide.getPortal(0));
         
-        player.getClient().getSession().write(MaplePacketCreator.getClock(rideTime / 1000));
-        player.getClient().getSession().write(MaplePacketCreator.earnTitleMessage("The next stop is at Kerning " + (myRide == 0 ? "Square" : "Subway") + " Station. The exit is to your left."));
+        player.getClient().announce(MaplePacketCreator.getClock(rideTime / 1000));
+        player.getClient().announce(MaplePacketCreator.earnTitleMessage("The next stop is at Kerning " + (myRide == 0 ? "Square" : "Subway") + " Station. The exit is to your left."));
         eim.schedule("timeOut", rideTime);
 }
 

@@ -582,4 +582,9 @@ public class CashShop {
             return null;
         }
     }
+    
+    public static Item generateCouponItem(int itemId, short quantity) {
+        CashItem it = new CashItem(77777777, itemId, 7777, ItemConstants.isPet(itemId) ? 30 : 0, quantity, true);
+        return it.toItem();
+    }
 }

@@ -22,7 +22,9 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-Recommended localhost: https://hostr.co/m2bVtnizCtmD
+  Latest localhost: https://hostr.co/m2bVtnizCtmD
+
+  The following list, in bottom-up chronological order, holds information regarding all changes that were applied from the starting localhost used in this development. Some lines have a link attached, that will lead you to a snapshot of the localhost at that version of the artifact. Naturally, later versions holds all previous changes along with the proposed changes.
 
 **Change log:**
 
@@ -49,9 +51,26 @@ Recommended localhost: https://hostr.co/m2bVtnizCtmD
   * MapleSilver's starting on window-mode.
 
 ---
-### Development status
+### Development information
 
 Status: <span style="color:grey">__In development (4th round)__</span>.
+
+#### Mission
+
+With non-profitting means intended, provide nostalgic pre-BB MapleStory players world-wide a quality local server for freestyle entertainment.
+
+#### Vision
+
+By taking the v83 MapleStory as the angular stone, incrementally look forward to improve the gaming experience whilst still retaining the "clean v83" conservative ideal. Also, through reviewing distinguished aspects of the server's behavior that could be classified as a potential server threat, in the long run look for ways to improve or even stabilize some of it's uncertain aspects.
+
+#### Values
+
+* Autonomy, seek self-improvement for tackling issues head-on;
+* Adventurous, take no fear of failures on the path of progress;
+* Light-hearted support, general people out there didn't experience what you've already had;
+* Humility, no matter how good you are, there's no good in boasting yourself over experiences only a few have had;
+
+#### Announcements
 
 HeavenMS development achieved an acceptable state-of-the-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 
@@ -178,6 +197,24 @@ In that case, extract "lolwut.exe" from "lolwut-v0.01.rar" and place it on the M
 * Opening "lolwut.exe", use Fraysa's method.
 
 Important: should the client be refused a connection to the game server, it may be because of firewall issues. Head to the end of this file to proceed in allowing this connection through the computer's firewall. Alternatively, one can deactivate the firewall and try opening the client again.
+
+---
+### Creating an account and logging in the game
+
+By default, the server source is set to allow AUTO-REGISTERING. This means that, by simply typing in a "Login ID" and a "Password", you're able to create a new account.
+
+After creating a character, experiment typing in all-chat "@commands". This will display all available commands for the current GM level your character has.
+
+To change a character's GM level, make sure that character is not logged in, then:
+
+* Open MySQL Query Browser;
+* Double-click "heavenms" schema;
+* Double click "characters" table;
+* Execute the selected query;
+* Mark "Edit" flag on the MySQL Query Browser UI screen;
+* Locate your character's row on the displayed ResultSet;
+* Edit your character's GM level;
+* Hit APPLY CHANGES.
 
 ---
 ### Some notes about WZ/WZ.XML EDITING 

@@ -58,7 +58,7 @@ function playerEntry(eim, player) {
     player.changeMap(map, map.getPortal(0));
 	
 //TODO: hold time across map changes
-//player.getClient().getSession().write(tools.MaplePacketCreator.getClock(1800));
+//player.getClient().announce(tools.MaplePacketCreator.getClock(1800));
 }
 
 function playerDead(eim, player) {

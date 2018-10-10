@@ -4757,66 +4757,56 @@
   </imgdir>
   <imgdir name="9001000">
     <string name="name" value="Haste (Normal)"/>
-    <string name="desc" value="[Master Level : 1]\n Haste"/>
+    <string name="desc" value="[Master Level : 1]\n GM Haste"/>
     <string name="h1" value="Moving Speed + 40, Jump + 20 for 30 Minutes (Only for self)"/>
   </imgdir>
   <imgdir name="9001001">
     <string name="name" value="Super Dragon Roar"/>
-    <string name="desc" value="[Master Level : 1]\n Super Dragon Roar"/>
+    <string name="desc" value="[Master Level : 1]\n GM Super Dragon Roar"/>
     <string name="h1" value="Damage 1000%, Full Screen Attack"/>
   </imgdir>
   <imgdir name="9001002">
     <string name="name" value="Teleport"/>
-    <string name="desc" value="[Master Level : 1]\n Teleport"/>
-    <string name="h1" value="Teleport "/>
+    <string name="desc" value="[Master Level : 1]\n GM Teleport"/>
+    <string name="h1" value="Teleport yourself."/>
   </imgdir>
   <imgdir name="910">
     <string name="bookName" value="Admin. Skill Book (Super)"/>
   </imgdir>
   <imgdir name="9101000">
     <string name="name" value="Heal + Dispel"/>
-    <string name="desc" value="[Master Level : 1]\nHeal + Dispel"/>
-    <string name="h1" value="Heal + Dispel"/>
+    <string name="desc" value="[Master Level : 1]\n GM Heal + Dispel"/>
+    <string name="h1" value="Heal and Dispel nearby players."/>
   </imgdir>
   <imgdir name="9101001">
     <string name="name" value="Haste (Super)"/>
-    <string name="desc" value="[Master Level : 1]\n Haste"/>
+    <string name="desc" value="[Master Level : 1]\n GM Haste"/>
     <string name="h1" value="Moving Speed + 40, Jump + 20 for 30 Minutes"/>
   </imgdir>
   <imgdir name="9101002">
     <string name="name" value="Holy Symbol"/>
-    <string name="desc" value="[Master Level : 1]\n Holy Symbol"/>
+    <string name="desc" value="[Master Level : 1]\n GM Holy Symbol"/>
     <string name="h1" value="EXP 150% for 30 Minutes"/>
   </imgdir>
   <imgdir name="9101003">
     <string name="name" value="Bless"/>
-    <string name="desc" value="[Master Level : 1]\n Bless"/>
+    <string name="desc" value="[Master Level : 1]\n GM Bless"/>
     <string name="h1" value="Attack &amp; Magic Attack + 20, Others + 100 for 30 Minutes"/>
   </imgdir>
   <imgdir name="9101004">
     <string name="name" value="Hide"/>
-    <string name="desc" value="[Master Level : 1]\n Hide"/>
-    <string name="h1" value="Hide"/>
+    <string name="desc" value="[Master Level : 1]\n GM Hide"/>
+    <string name="h1" value="Hide yourself."/>
   </imgdir>
   <imgdir name="9101005">
     <string name="name" value="Resurrection"/>
-    <string name="desc" value="[Master Level : 1]\n Resurrection"/>
-    <string name="h1" value="Ressurect"/>
-  </imgdir>
-  <imgdir name="9101006">
-    <string name="name" value="Super Dragon Roar"/>
-    <string name="desc" value="[Master Level : 1]\n Super Dragon Roar"/>
-    <string name="h1" value="Damage 1000%, Full Screen Attack"/>
-  </imgdir>
-  <imgdir name="9101007">
-    <string name="name" value="Teleport"/>
-    <string name="desc" value="[Master Level : 1]\n Teleport"/>
-    <string name="h1" value="Teleport "/>
+    <string name="desc" value="[Master Level : 1]\n GM Resurrection"/>
+    <string name="h1" value="Ressurect nearby players."/>
   </imgdir>
   <imgdir name="9101008">
     <string name="name" value="Hyper Body"/>
-    <string name="desc" value="[Master Level : 1]\nIncrease the Max HP and Max MP for 15 mins."/>
-    <string name="h1" value="Max HP, Max MP 60% increase."/>
+    <string name="desc" value="[Master Level : 1]\n GM Hyper Body"/>
+    <string name="h1" value="Max HP, Max MP 60% increase on players nearby for 15 mins."/>
   </imgdir>
   <imgdir name="0001005">
     <string name="name" value="Echo of Hero"/>
@@ -11675,28 +11665,28 @@
   </imgdir>
   <imgdir name="9001003">
     <string name="name" value="Bless"/>
-    <string name="desc" value="[Master Level:1]\nIncreases all abilities of those around you for 15 minutes."/>
+    <string name="desc" value="[Master Level:1]\n GM Bless"/>
     <string name="h1" value="Attack and Magic Ability +20, and other abilities +100 for 30 minutes."/>
   </imgdir>
   <imgdir name="9001004">
     <string name="name" value="Hide"/>
-    <string name="desc" value="[Master Level : 1]\n Hide"/>
-    <string name="h1" value="Hide"/>
+    <string name="desc" value="[Master Level : 1]\n GM Hide"/>
+    <string name="h1" value="Hide yourself."/>
   </imgdir>
   <imgdir name="9001005">
     <string name="name" value="Resurrection"/>
-    <string name="desc" value="[Master Level : 1]\n Resurrection"/>
-    <string name="h1" value="Ressurect"/>
+    <string name="desc" value="[Master Level : 1]\n GM Resurrection"/>
+    <string name="h1" value="Ressurect nearby players."/>
   </imgdir>
   <imgdir name="9001006">
     <string name="name" value="Super Dragon Roar"/>
-    <string name="desc" value="[Master Level : 1]\n Super Dragon Roar"/>
+    <string name="desc" value="[Master Level : 1]\n GM Super Dragon Roar"/>
     <string name="h1" value="Damage 1000%, Full Screen Attack"/>
   </imgdir>
   <imgdir name="9001007">
     <string name="name" value="Teleport"/>
-    <string name="desc" value="[Master Level : 1]\n Teleport"/>
-    <string name="h1" value="Teleport "/>
+    <string name="desc" value="[Master Level : 1]\n GM Teleport"/>
+    <string name="h1" value="Teleport yourself."/>
   </imgdir>
   <imgdir name="9001009">
     <string name="name" value="ADMIN_ANTIMACRO"/>
@@ -11705,8 +11695,8 @@
   </imgdir>
   <imgdir name="9001008">
     <string name="name" value="Hyper Body"/>
-    <string name="desc" value="[Master Level:1]\nMax HP, Max MP increases for 15 minutes."/>
-    <string name="h1" value="Max HP, Max MP 60% increase."/>
+    <string name="desc" value="[Master Level:1]\n GM Hyper Body"/>
+    <string name="h1" value="Max HP, Max MP 60% increase on players nearby for 15 minutes."/>
   </imgdir>
   <imgdir name="10001014">
     <string name="name" value="Spaceship"/>

@@ -354,7 +354,7 @@ public class MapleQuest {
         newStatus.setCompletionTime(System.currentTimeMillis());
         c.updateQuest(newStatus);
         
-        c.getClient().getSession().write(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
+        c.announce(MaplePacketCreator.showSpecialEffect(9)); // Quest completion
         c.getMap().broadcastMessage(c, MaplePacketCreator.showForeignEffect(c.getId(), 9), false); //use 9 instead of 12 for both
         return true;
     }

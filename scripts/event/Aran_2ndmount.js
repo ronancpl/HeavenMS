@@ -53,7 +53,7 @@ function playerEntry(eim, player) {
     player.changeMap(entryMap, 2);
     em.setProperty("noEntry","true");
     
-    player.getClient().getSession().write(MaplePacketCreator.getClock(eventTime * 60));
+    player.getClient().announce(MaplePacketCreator.getClock(eventTime * 60));
     eim.startEventTimer(eventTime * 60000);
 }
 

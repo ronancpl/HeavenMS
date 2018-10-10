@@ -25,8 +25,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import tools.Pair;
 import tools.DatabaseConnection;
+import client.inventory.manipulator.MapleCashidGenerator;
 
 /**
  *
@@ -86,6 +87,9 @@ public class MapleRing implements Comparable<MapleRing> {
             ps.executeBatch();
             ps.close();
             
+            MapleCashidGenerator.freeCashId(ring.getRingId());
+            MapleCashidGenerator.freeCashId(ring.getPartnerRingId());
+            
             ps = con.prepareStatement("UPDATE inventoryequipment SET ringid=-1 WHERE ringid=?");
             ps.setInt(1, ring.getRingId());
             ps.addBatch();
@@ -102,46 +106,40 @@ public class MapleRing implements Comparable<MapleRing> {
         }
     }
     
-    public static int createRing(int itemid, final MapleCharacter partner1, final MapleCharacter partner2) {
+    public static Pair<Integer, Integer> createRing(int itemid, final MapleCharacter partner1, final MapleCharacter partner2) {
         try {
             if (partner1 == null) {
-                return -2;
+                return new Pair<>(-3, -3);
             } else if (partner2 == null) {
-                return -1;
+                return new Pair<>(-2, -2);
             }
+            
             int[] ringID = new int[2];
+            ringID[0] = MapleCashidGenerator.generateCashId();
+            ringID[1] = MapleCashidGenerator.generateCashId();
+            
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO rings (itemid, partnerChrId, partnername) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, itemid);
-            ps.setInt(2, partner2.getId());
-            ps.setString(3, partner2.getName());
+            PreparedStatement ps = con.prepareStatement("INSERT INTO rings (id, itemid, partnerRingId, partnerChrId, partnername) VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, ringID[0]);
+            ps.setInt(2, itemid);
+            ps.setInt(3, ringID[1]);
+            ps.setInt(4, partner2.getId());
+            ps.setString(5, partner2.getName());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            ringID[0] = rs.getInt(1); // ID.
-            rs.close();
             ps.close();
-            ps = con.prepareStatement("INSERT INTO rings (itemid, partnerRingId, partnerChrId, partnername) VALUES (?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, itemid);
-            ps.setInt(2, ringID[0]);
-            ps.setInt(3, partner1.getId());
-            ps.setString(4, partner1.getName());
-            ps.executeUpdate();
-            rs = ps.getGeneratedKeys();
-            rs.next();
-            ringID[1] = rs.getInt(1);
-            rs.close();
-            ps.close();
-            ps = con.prepareStatement("UPDATE rings SET partnerRingId = ? WHERE id = ?");
+            ps = con.prepareStatement("INSERT INTO rings (id, itemid, partnerRingId, partnerChrId, partnername) VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, ringID[1]);
-            ps.setInt(2, ringID[0]);
+            ps.setInt(2, itemid);
+            ps.setInt(3, ringID[0]);
+            ps.setInt(4, partner1.getId());
+            ps.setString(5, partner1.getName());
             ps.executeUpdate();
             ps.close();
             con.close();
-            return ringID[0];
+            return new Pair<>(ringID[0], ringID[1]);
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return -1;
+            return new Pair<>(-1, -1);
         }
     }
 

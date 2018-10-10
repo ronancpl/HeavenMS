@@ -94,12 +94,12 @@ public class MapleShop {
             if (c.getPlayer().getMeso() >= amount) {
                 if (MapleInventoryManipulator.checkSpace(c, itemId, quantity, "")) {
                     if (!ItemConstants.isRechargeable(itemId)) { //Pets can't be bought from shops
-                        MapleInventoryManipulator.addById(c, itemId, quantity);          
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", -1);          
                         c.getPlayer().gainMeso(-amount, false);
                     } else {
                         short slotMax = ii.getSlotMax(c, item.getItemId());
                         quantity = slotMax;
-                        MapleInventoryManipulator.addById(c, itemId, quantity);
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", -1);
                         c.getPlayer().gainMeso(-item.getPrice(), false);
                     }
                     c.announce(MaplePacketCreator.shopTransaction((byte) 0));
@@ -115,12 +115,12 @@ public class MapleShop {
             if (c.getPlayer().getInventory(MapleInventoryType.ETC).countById(4310000) >= amount) {
                 if (MapleInventoryManipulator.checkSpace(c, itemId, quantity, "")) {
                     if (!ItemConstants.isRechargeable(itemId)) {
-                        MapleInventoryManipulator.addById(c, itemId, quantity);
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", -1);
                         MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4310000, amount, false, false);
                     } else {
                         short slotMax = ii.getSlotMax(c, item.getItemId());
                         quantity = slotMax;
-                        MapleInventoryManipulator.addById(c, itemId, quantity);
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", -1);
                         MapleInventoryManipulator.removeById(c, MapleInventoryType.ETC, 4310000, amount, false, false);
                     }
                     c.announce(MaplePacketCreator.shopTransaction((byte) 0));
@@ -138,9 +138,9 @@ public class MapleShop {
                 if (MapleInventoryManipulator.checkSpace(c, itemId, quantity, "")) {
                     if (ItemConstants.isPet(itemId)) {
                         int petid = MaplePet.createPet(itemId);
-                        MapleInventoryManipulator.addById(c, itemId, quantity, null, petid, -1);
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", petid, -1);
                     } else {
-                        MapleInventoryManipulator.addById(c, itemId, quantity);
+                        MapleInventoryManipulator.addById(c, itemId, quantity, "", -1, -1);
                     }
                     c.getPlayer().gainMeso(diff, false);
                 } else {

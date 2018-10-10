@@ -39,7 +39,7 @@ var questionTree = [
         //Questions Related to MONSTERS
         ["Green Mushroom, Tree Stump, Bubbling, Axe Stump, Octopus, which is highest level of all?", ["Tree Stump", "Bubbling", "Axe Stump", "Octopus", "Green Mushroom"], 2],
         ["Which monster will be seen during the ship trip to Orbis/Ellinia?", ["Werewolf", "Slime", "Crimson Balrog", "Zakum", "Star Pixie"], 2],
-        ["Maple Island doesn't have which following monsters?", ["Shroom", "Blue Snail", "Orange Mushroom", "Red Snail", "Pig"], 4],
+        ["Maple Island doesn't have which following monsters?", ["Green Mushroom", "Blue Snail", "Orange Mushroom", "Red Snail", "Pig"], 0],
         ["Which monster is not at Victoria Island and Sleepywood?", ["Evil Eye", "Sentinel", "Jr. Balrog", "Ghost Stump", "Snail"], 1],
         ["El Nath doesn't have which following monsters?", ["Dark Yeti", "Dark Ligator", "Yeti & Pepe", "Bain", "Coolie Zombie"], 1],
         ["Which of following monsters can fly?", ["Malady", "Ligator", "Cold Eye", "Meerkat", "Alishar"], 0],
@@ -79,6 +79,8 @@ var question;
 
 var questionPool;
 var questionPoolCursor;
+
+var questionAnswer;
 
 function start() {
     status = -1;
@@ -121,7 +123,10 @@ function action(mode, type, selection) {
             question = fetchNextQuestion();
             var questionHead = generateQuestionHeading();
             var questionEntry = questionTree[question][0];
-            var questionOptions = generateSelectionMenu(questionTree[question][1]);
+            
+            var questionData = generateSelectionMenu(questionTree[question][1], questionTree[question][2]);
+            var questionOptions = questionData[0];
+            questionAnswer = questionData[1];
             
             cm.sendSimple(questionHead + questionEntry + "\r\n\r\n#b" + questionOptions + "#k");
         } else if(status >= 2 && status <= 5) {
@@ -134,7 +139,10 @@ function action(mode, type, selection) {
             question = fetchNextQuestion();
             var questionHead = generateQuestionHeading();
             var questionEntry = questionTree[question][0];
-            var questionOptions = generateSelectionMenu(questionTree[question][1]);
+            
+            var questionData = generateSelectionMenu(questionTree[question][1], questionTree[question][2]);
+            var questionOptions = questionData[0];
+            questionAnswer = questionData[1];
             
             cm.sendSimple(questionHead + questionEntry + "\r\n\r\n#b" + questionOptions + "#k");
         } else if(status == 6) {
@@ -155,7 +163,7 @@ function action(mode, type, selection) {
 }
 
 function evaluateAnswer(selection) {
-    return selection == questionTree[question][2];
+    return selection == questionAnswer;
 }
 
 function generateQuestionHeading() {
@@ -189,10 +197,36 @@ function fetchNextQuestion() {
     return next;
 }
 
-function generateSelectionMenu(array) {
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
+
+function generateSelectionMenu(array, answer) {
+    var answerStr = array[answer], answerPos = -1;
+    
+    shuffle(array);
+    
     var menu = "";
     for (var i = 0; i < array.length; i++) {
         menu += "#L" + i + "#" + array[i] + "#l\r\n";
+        if (answerStr == array[i]) {
+            answerPos = i;
+        }
     }
-    return menu;
+    return [menu, answerPos];
 }

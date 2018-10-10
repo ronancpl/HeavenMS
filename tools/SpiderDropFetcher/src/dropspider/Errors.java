@@ -1,4 +1,4 @@
-package tools.dropspider;
+package dropspider;
 
 import java.util.LinkedList;
 

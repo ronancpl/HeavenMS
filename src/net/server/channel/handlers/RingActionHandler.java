@@ -273,20 +273,20 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
     }
     
     public static void giveMarriageRings(MapleCharacter player, MapleCharacter partner, int marriageRingId) {
-        int ringid = MapleRing.createRing(marriageRingId, player, partner);
+        Pair<Integer, Integer> rings = MapleRing.createRing(marriageRingId, player, partner);
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 
         Item ringObj = ii.getEquipById(marriageRingId);
         Equip ringEqp = (Equip) ringObj;
-        ringEqp.setRingId(ringid);
-        player.addMarriageRing(MapleRing.loadFromDb(ringid));
+        ringEqp.setRingId(rings.getLeft());
+        player.addMarriageRing(MapleRing.loadFromDb(rings.getLeft()));
         MapleInventoryManipulator.addFromDrop(player.getClient(), ringEqp, false, -1);
         player.broadcastMarriageMessage();
 
         ringObj = ii.getEquipById(marriageRingId);
         ringEqp = (Equip) ringObj;
-        ringEqp.setRingId(ringid + 1);
-        partner.addMarriageRing(MapleRing.loadFromDb(ringid + 1));
+        ringEqp.setRingId(rings.getRight());
+        partner.addMarriageRing(MapleRing.loadFromDb(rings.getRight()));
         MapleInventoryManipulator.addFromDrop(partner.getClient(), ringEqp, false, -1);
         partner.broadcastMarriageMessage();
     }
@@ -513,6 +513,6 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 break;
         }
         
-        c.getSession().write(MaplePacketCreator.enableActions());
+        c.announce(MaplePacketCreator.enableActions());
     }
 }

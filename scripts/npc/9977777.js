@@ -82,19 +82,22 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Automated support for Player NPCs and Hall of Fame.");
         addFeature("Engagement & Wedding system.");
         addFeature("Equipments displays to everyone it's level & EXP info.");
+        addFeature("Further improved the existent minigame mechanics.");
 }
 
 function writeFeatureTab_CashItems() {
         addFeature("EXP/DROP/Cosmetic Coupons.");
         addFeature("EXP/DROP Coupon as buff effect during active time.");
         addFeature("Great deal of cash items functional.");
+        addFeature("Code coupons functional, with multi-items support.");
+        addFeature("Merged unique ids for pets, rings and cash items.");
         addFeature("MapleTV mechanics stabilized and split by world.");
         addFeature("GMS-esque omok/match card drop chances.");
         addFeature("New town scroll: antibanish. Counters boss banishes.");
         addFeature("Inventory system checks for free slot & stack space.");
         addFeature("Storage with 'Arrange Items' feature functional.");
         addFeature("Close-quarters evaluation mode for items.");
-        addFeature("Further improved Karma scissors.");
+        addFeature("Reviewed Karma scissors & Untradeable items.");
         addFeature("Scroll for Spikes on Shoes.");
         addFeature("Scroll for Cold Protection.");
         addFeature("Vega's spell.");
@@ -133,6 +136,8 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Updated scripted portals, now with proper portal SFX.");
         addFeature("Reviewed Masteria, W. Tour, N. Desert and Neo City.");
         addFeature("Added world maps for M. Castle, W. Tour & Ellin areas.");
+        addFeature("Added W. Tour & Masteria continents in the world map.");
+        addFeature("Reviewed several issues with W. Map tooltips & links.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
 }
 
@@ -197,6 +202,7 @@ function writeFeatureTab_Commands() {
         addFeature("Rank command highlighting users by world or overall.");
         addFeature("Server commands layered by GM levels.");
         addFeature("Revamped command files layout - thanks Arthur L!");
+        addFeature("Improved 'Search' performance & added map search.");
 }
 
 function writeFeatureTab_CustomNPCs() {
@@ -274,9 +280,9 @@ function action(mode, type, selection) {
                         status++;
                 else
                         status--;
-    
+                    
                 if (status == 0) {
-                        var sendStr = "HeavenMS was developed on the timespan of 3 years, based on where Solaxia left. On the meantime many nice features emerged, development aimed to get back the old GMS experience. Now many of these so-long missing features are gracefully presented to you in the shape of this server. Long live MapleStory!!\r\n\r\nThese are the features from #bHeavenMS#k:\r\n\r\n";
+                        var sendStr = "HeavenMS was developed on the timespan of 3 years, based on where Solaxia left. I'm glad to say the development itself had continuously been agraciated by dozens of contributors and cheerers (truly thanks for the trusting vow, guys & gals!).\r\n\r\nTalking about results: many nice features emerged, development aimed to get back the old GMS experience. Now many of these so-long missing features are gracefully presented to you in the shape of this server. Long live MapleStory!!\r\n\r\nThese are the features from #bHeavenMS#k:\r\n\r\n";
                         for(var i = 0; i < tabs.length; i++) {
                             sendStr += "#L" + i + "##b" + tabs[i] + "#k#l\r\n";
                         }

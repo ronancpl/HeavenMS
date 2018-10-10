@@ -22,7 +22,7 @@
 importPackage(Packages.tools);
 
 var exitMap;
-var startMap;
+var entryMap;
 var otherMap;
 var minPlayers = 1;
 var fightTime = 60;
@@ -30,7 +30,7 @@ var timer = 1000 * 60 * fightTime;
 
 function init() {
 	exitMap = em.getChannelServer().getMapFactory().getMap(103040400);
-	startMap = em.getChannelServer().getMapFactory().getMap(103040410);
+	entryMap = em.getChannelServer().getMapFactory().getMap(103040410);
 	otherMap = em.getChannelServer().getMapFactory().getMap(103040420);
 }
 
@@ -44,7 +44,7 @@ function setup() {
 function afterSetup(eim) {}
 
 function respawn(eim) {
-	var map = eim.getMapInstance(startMap.getId());
+	var map = eim.getMapInstance(entryMap.getId());
 	var map2 = eim.getMapInstance(otherMap.getId());
 	map.allowSummonState(true);
 	map2.allowSummonState(true);
@@ -55,7 +55,7 @@ function respawn(eim) {
 
 
 function playerEntry(eim, player) {
-	var amplifierMap = eim.getMapInstance(startMap.getId());
+	var amplifierMap = eim.getMapInstance(entryMap.getId());
 	player.changeMap(amplifierMap);
     eim.schedule("timeOut", timer);
 }
@@ -107,7 +107,7 @@ function playerExit(eim, player) {
 function moveMap(eim, player) {
 	if (player.getMap().getId() == exitMap.getId()) {
 		removePlayer(eim, player);
-		player.getClient().getSession().write(MaplePacketCreator.removeClock());
+		player.getClient().announce(MaplePacketCreator.removeClock());
 		eim.dispose();
 	}
 }

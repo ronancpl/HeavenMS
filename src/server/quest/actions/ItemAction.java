@@ -149,7 +149,7 @@ public class ItemAction extends MapleQuestAction {
                 }
                 
                 for(Pair<Integer, Integer> iPair: giveItem) {
-                        MapleInventoryManipulator.addById(chr.getClient(), iPair.getLeft(), (short) iPair.getRight().shortValue());
+                        MapleInventoryManipulator.addById(chr.getClient(), iPair.getLeft(), (short) iPair.getRight().shortValue(), "", -1);
                         chr.announce(MaplePacketCreator.getShowItemGain(iPair.getLeft(), (short) iPair.getRight().shortValue(), true));
                 }
 	}

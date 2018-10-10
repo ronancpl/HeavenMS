@@ -37,8 +37,19 @@ import tools.Pair;
 import java.io.File;
 
 public class SearchCommand extends Command {
+    private static MapleData npcStringData;
+    private static MapleData mobStringData;
+    private static MapleData skillStringData;
+    private static MapleData mapStringData;
+    
     {
         setDescription("");
+        
+        MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
+        npcStringData = dataProvider.getData("Npc.img");
+        mobStringData = dataProvider.getData("Mob.img");
+        skillStringData = dataProvider.getData("Skill.img");
+        mapStringData = dataProvider.getData("Map.img");
     }
 
     @Override
@@ -53,26 +64,43 @@ public class SearchCommand extends Command {
         String search = joinStringFrom(params,1);
         long start = System.currentTimeMillis();//for the lulz
         MapleData data = null;
-        MapleDataProvider dataProvider = MapleDataProviderFactory.getDataProvider(new File("wz/String.wz"));
         if (!params[0].equalsIgnoreCase("ITEM")) {
+            boolean mapSearch = false;
+            
             if (params[0].equalsIgnoreCase("NPC")) {
-                data = dataProvider.getData("Npc.img");
+                data = npcStringData;
             } else if (params[0].equalsIgnoreCase("MOB") || params[0].equalsIgnoreCase("MONSTER")) {
-                data = dataProvider.getData("Mob.img");
+                data = mobStringData;
             } else if (params[0].equalsIgnoreCase("SKILL")) {
-                data = dataProvider.getData("Skill.img");
-                                /*} else if (sub[1].equalsIgnoreCase("MAP")) {
-                                        TODO
-                                */
+                data = skillStringData;
+            } else if (params[0].equalsIgnoreCase("MAP")) {
+                data = mapStringData;
+                mapSearch = true;
             } else {
-                sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is NPC, ITEM, MOB, or SKILL.");
+                sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is MAP, NPC, ITEM, MOB, or SKILL.");
             }
             if (data != null) {
                 String name;
-                for (MapleData searchData : data.getChildren()) {
-                    name = MapleDataTool.getString(searchData.getChildByPath("name"), "NO-NAME");
-                    if (name.toLowerCase().contains(search.toLowerCase())) {
-                        sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(name).append("\r\n");
+                
+                if (!mapSearch) {
+                    for (MapleData searchData : data.getChildren()) {
+                        name = MapleDataTool.getString(searchData.getChildByPath("name"), "NO-NAME");
+                        if (name.toLowerCase().contains(search.toLowerCase())) {
+                            sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(name).append("\r\n");
+                        }
+                    }
+                } else {
+                    String mapName, streetName;
+                    
+                    for (MapleData searchDataDir : data.getChildren()) {
+                        for (MapleData searchData : searchDataDir.getChildren()) {
+                            mapName = MapleDataTool.getString(searchData.getChildByPath("mapName"), "NO-NAME");
+                            streetName = MapleDataTool.getString(searchData.getChildByPath("streetName"), "NO-NAME");
+                            
+                            if (mapName.toLowerCase().contains(search.toLowerCase()) || streetName.toLowerCase().contains(search.toLowerCase())) {
+                                sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(streetName).append(" - ").append(mapName).append("\r\n");
+                            }
+                        }
                     }
                 }
             }

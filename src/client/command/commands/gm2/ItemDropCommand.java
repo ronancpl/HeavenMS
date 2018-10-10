@@ -92,7 +92,6 @@ public class ItemDropCommand extends Command {
                 return;        
             }
         }
-
         
         Item toDrop;
         if (ItemConstants.getInventoryType(itemId) == MapleInventoryType.EQUIP) {

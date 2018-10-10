@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="CouponCodes.img">
+  <imgdir name="0">
+    <short name="active" value="0"/>
+    <int name="quantity" value="100"/>
+    <int name="duration" value="1848"/>
+    <int name="maplePoint" value="7777">
+    <int name="nxCredit" value="1000">
+    <int name="nxPrepaid" value="100">
+    <imgdir name="items">
+      <imgdir name="0">
+        <int name="id" value="4000001">
+        <int name="count" value="100">
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="2030100">
+        <int name="count" value="12">
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="1">
+    <short name="active" value="1"/>
+    <int name="quantity" value="100"/>
+    <int name="duration" value="960"/>
+    <int name="maplePoint" value="5000">
+    <int name="nxCredit" value="14">
+    <int name="nxPrepaid" value="77">
+    <imgdir name="items">
+      <imgdir name="0">
+        <int name="id" value="1302000">
+        <int name="count" value="1">
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="5000001">
+        <int name="count" value="20">
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

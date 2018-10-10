@@ -37,6 +37,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {
 
@@ -45,6 +48,11 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         return !c.isLoggedIn();
     }
 
+    private static String hashpwSHA512(String pwd) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+        MessageDigest digester = MessageDigest.getInstance("SHA-512");
+        digester.update(pwd.getBytes("UTF-8"), 0, pwd.length());
+        return HexTool.toString(digester.digest()).replace(" ", "").toLowerCase();
+    }
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -65,7 +73,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 con = DatabaseConnection.getConnection();
                 ps = con.prepareStatement("INSERT INTO accounts (name, password, birthday, tempban) VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS); //Jayd: Added birthday, tempban
                 ps.setString(1, login);
-                ps.setString(2, BCrypt.hashpw(pwd, BCrypt.gensalt(12)));
+                ps.setString(2, ServerConstants.BCRYPT_MIGRATION ? BCrypt.hashpw(pwd, BCrypt.gensalt(12)) : hashpwSHA512(pwd));
                 ps.setString(3, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (birthday)
                 ps.setString(4, "2018-06-20"); //Jayd's idea: was added to solve the MySQL 5.7 strict checking (tempban)
                 ps.executeUpdate();
@@ -74,7 +82,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 rs.next();
                 c.setAccID(rs.getInt(1));
                 rs.close();
-            } catch (SQLException e) {
+            } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
                 e.printStackTrace();
             } finally {
                 disposeSql(con, ps);

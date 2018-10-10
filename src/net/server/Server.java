@@ -80,6 +80,7 @@ import client.MapleCharacter;
 import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
+import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
@@ -90,7 +91,6 @@ import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
 import tools.AutoJCE;
 import tools.DatabaseConnection;
-import tools.FilePrinter;
 import tools.Pair;
 
 public class Server {
@@ -518,6 +518,34 @@ public class Server {
         return couponRates;
     }
     
+    public static void cleanNxcodeCoupons(Connection con) throws SQLException {
+        if (!ServerConstants.USE_CLEAR_OUTDATED_COUPONS) return;
+        
+        long timeClear = System.currentTimeMillis() - 14 * 24 * 60 * 60 * 1000;
+        
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM nxcode WHERE expiration <= ?");
+        ps.setLong(1, timeClear);
+        ResultSet rs = ps.executeQuery();
+
+        if (!rs.isLast()) {
+            PreparedStatement ps2 = con.prepareStatement("DELETE FROM nxcode_items WHERE codeid = ?");
+            while (rs.next()) {
+                ps2.setInt(1, rs.getInt("id"));
+                ps2.addBatch();
+            }
+            ps2.executeBatch();
+            ps2.close();
+            
+            ps2 = con.prepareStatement("DELETE FROM nxcode WHERE expiration <= ?");
+            ps2.setLong(1, timeClear);
+            ps2.executeUpdate();
+            ps2.close();
+        }
+        
+        rs.close();
+        ps.close();
+    }
+    
     private void loadCouponRates(Connection c) throws SQLException {
         PreparedStatement ps = c.prepareStatement("SELECT couponid, rate FROM nxcoupons");
         ResultSet rs = ps.executeQuery();
@@ -818,6 +846,7 @@ public class Server {
             ps.executeUpdate();
             ps.close();
             
+            cleanNxcodeCoupons(c);
             loadCouponRates(c);
             updateActiveCoupons();
             
@@ -825,6 +854,9 @@ public class Server {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
+        
+        MapleCashidGenerator.loadExistentCashIdsFromDb();
+        
         IoBuffer.setUseDirectBuffer(false);
         IoBuffer.setAllocator(new SimpleBufferAllocator());
         acceptor = new NioSocketAcceptor();
@@ -891,17 +923,6 @@ public class Server {
 
         System.out.println("HeavenMS is now online.\r\n");
         online = true;
-    }
-
-    public void shutdown() {
-    	try {
-	        TimerManager.getInstance().stop();
-	        acceptor.unbind();
-    	} catch (NullPointerException e) {
-    		FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, e);
-    	}
-        System.out.println("Server offline.");
-        System.exit(0);// BOEIEND :D
     }
 
     public static void main(String args[]) {

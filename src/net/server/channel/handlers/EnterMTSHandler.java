@@ -111,7 +111,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                 ex.printStackTrace();
             }
             chr.getCashShop().open(true);// xD
-            c.announce(MaplePacketCreator.enableCSUse());
+            c.enableCSActions();
             c.announce(MaplePacketCreator.MTSWantedListingOver(0, 0));
             c.announce(MaplePacketCreator.showMTSCash(c.getPlayer()));
             List<MTSItemInfo> items = new ArrayList<>();

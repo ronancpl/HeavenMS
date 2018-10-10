@@ -68,11 +68,14 @@ Player Social Network:
 * Automated support for Player NPCs and Hall of Fame.
 * Protected concurrently and improved the face expression system, guarding from trivial packet spam and exploits.
 * All upgradeable non-cash equipments in inventory with level & EXP information available for read by anyone, given proper visibility.
+* Further improved the existent minigame mechanics: remarkably checking out for no-item match requests, allowing different omok/matchcard match layouts and status update on the player matchbox tooltips.
 
 Cash & Items:
 
 * EXP/DROP/Cosmetic Coupons.
 * EXP/DROP coupons now appears as a buff effect when on active time.
+* Code coupons functional, with support for multiple items on the same code.
+* Merged unique ids for pets, rings and cash items, thus solving some cash shop inventory issues.
 * Great deal of cash items functional.
 * MapleTV mechanics stabilized and separated by world.
 * GMS-esque omok/match card drop chances.
@@ -80,7 +83,7 @@ Cash & Items:
 * Inventory system properly checks for item slot free space and ownership.
 * Storage with "Arrange Items" feature functional.
 * Close-quarters evaluation mode for items (sandbox).
-* Further improved Karma scissors mechanics.
+* Further improved Karma scissors & Untradeable items mechanics.
 * Spikes on shoes.
 * Vega's spell.
 * Owl of Minerva.
@@ -116,6 +119,8 @@ Monsters, Maps & Reactors:
 * Updated many scripted portals not implementing SFX properly.
 * Updated Crimsonwood, World Tour, Nihal Desert and Neo City, enabling quest completion and game progression in these areas.
 * Added world maps for Mushroom Castle, World Tour (Singapore, Malaysia and Zipangu) & Ellin Forest areas.
+* Added World Tour and Masteria continents in the world map.
+* Reviewed World Map's town/field tooltips and links from the main world map and Masteria region.
 * Giant Cake (anniversary-themed boss) drops Maple equipments, Maple scrolls, summoning bags and many more interesting items.
 
 PQ potentials:
@@ -182,13 +187,14 @@ Custom NPCs:
 * Donation Box: automatized item-buyer.
 * Coco & Ace of Hearts: C. scroll crafters.
 
-Admin/GM commands:
+Server Commands:
 
 * Server commands layered by GM levels.
 * Spawn Zakum/Horntail/Pinkbean.
 * Several new commands.
 * Rank command highlighting users either by world or server-wide.
 * Revamped command files layout -- thanks Arthur L.
+* Optimized Search command, caching search range contents and added map search functionality.
 
 External tools:
 

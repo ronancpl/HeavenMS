@@ -26,10 +26,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import client.inventory.manipulator.MapleKarmaManipulator;
+import server.MapleItemInformationProvider;
 
 public class Item implements Comparable<Item> {
 
-    private static AtomicInteger runningCashId = new AtomicInteger(0);
+    private static AtomicInteger runningCashId = new AtomicInteger(777000000);  // pets & rings shares cashid values
     
     private int id, cashId, sn;
     private short position;
@@ -83,7 +85,7 @@ public class Item implements Comparable<Item> {
 
     public int getCashId() {
         if (cashId == 0) {
-            cashId = runningCashId.incrementAndGet();
+            cashId = runningCashId.getAndIncrement();
         }
         return cashId;
     }
@@ -176,5 +178,9 @@ public class Item implements Comparable<Item> {
 
     public MaplePet getPet() {
         return pet;
+    }
+    
+    public boolean isUntradeable() {
+        return ((this.getFlag() & ItemConstants.UNTRADEABLE) == ItemConstants.UNTRADEABLE) || (MapleItemInformationProvider.getInstance().isDropRestricted(this.getItemId()) && !MapleKarmaManipulator.hasKarmaFlag(this));
     }
 }

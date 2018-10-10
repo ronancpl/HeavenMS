@@ -198,6 +198,7 @@ public final class Channel {
             System.out.println("Shutting down Channel " + channel + " on World " + world);
             
             closeAllMerchants();
+            disconnectAwayPlayers();
             players.disconnectAll();
             
             if(respawnTask != null) {
@@ -314,6 +315,10 @@ public final class Channel {
         return world;
     }
     
+    public World getWorldServer() {
+        return Server.getInstance().getWorld(world);
+    }
+    
     public void addPlayer(MapleCharacter chr) {
         players.addPlayer(chr);
         chr.announce(MaplePacketCreator.serverMessage(serverMessage));
@@ -393,6 +398,16 @@ public final class Channel {
     public boolean canUninstall() {
         return players.getSize() == 0 && playersAway.isEmpty();
     }
+    
+    private void disconnectAwayPlayers() {
+        World wserv = getWorldServer();
+        for (Integer cid : playersAway) {
+            MapleCharacter chr = wserv.getPlayerStorage().getCharacterById(cid);
+            if (chr != null && chr.isLoggedin()) {
+                chr.getClient().disconnect(true, false);
+            }
+        }
+    }
         
     public class respawnMaps implements Runnable {
 
@@ -465,7 +480,7 @@ public final class Channel {
     public void setServerMessage(String message) {
         this.serverMessage = message;
         broadcastPacket(MaplePacketCreator.serverMessage(message));
-        Server.getInstance().getWorld(world).resetDisabledServerMessages();
+        getWorldServer().resetDisabledServerMessages();
     }
     
     private static String [] getEvents(){
@@ -692,7 +707,7 @@ public final class Channel {
             lock.unlock();
         }
         
-        World wserv = Server.getInstance().getWorld(world);
+        World wserv = getWorldServer();
         
         Pair<Integer, Integer> coupleId = wserv.getMarriageQueuedCouple(ret);
         Pair<Boolean, Set<Integer>> typeGuests = wserv.removeMarriageQueued(ret);
@@ -704,7 +719,7 @@ public final class Channel {
     }
     
     public boolean isWeddingReserved(Integer weddingId) {
-        World wserv = Server.getInstance().getWorld(world);
+        World wserv = getWorldServer();
         
         lock.lock();
         try {
@@ -746,7 +761,7 @@ public final class Channel {
     public int pushWeddingReservation(Integer weddingId, boolean cathedral, boolean premium, Integer groomId, Integer brideId) {
         if(weddingId == null || isWeddingReserved(weddingId)) return -1;
         
-        World wserv = Server.getInstance().getWorld(world);
+        World wserv = getWorldServer();
         wserv.putMarriageQueued(weddingId, cathedral, premium, groomId, brideId);
         
         lock.lock();
@@ -935,7 +950,7 @@ public final class Channel {
     public Pair<Integer, Integer> getWeddingCoupleForGuest(int guestId, boolean cathedral) {
         lock.lock();
         try {
-            return (isOngoingWeddingGuest(cathedral, guestId)) ? Server.getInstance().getWorld(world).getRelationshipCouple(getOngoingWedding(cathedral)) : null;
+            return (isOngoingWeddingGuest(cathedral, guestId)) ? getWorldServer().getRelationshipCouple(getOngoingWedding(cathedral)) : null;
         } finally {
             lock.unlock();
         }
@@ -1038,7 +1053,7 @@ public final class Channel {
     
     public void debugMarriageStatus() {
         System.out.println(" ----- WORLD DATA -----");
-        Server.getInstance().getWorld(world).debugMarriageStatus();
+        getWorldServer().debugMarriageStatus();
         
         System.out.println(" ----- CH. " + channel + " -----");
         System.out.println(" ----- CATHEDRAL -----");

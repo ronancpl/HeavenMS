@@ -25,7 +25,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedHashMap;
@@ -47,10 +46,8 @@ import java.util.Map.Entry;
 public class MapleQuestItemCountFetcher {
     static String actName = "../../wz/Quest.wz/Act.img.xml";
     static String checkName = "../../wz/Quest.wz/Check.img.xml";
-    static String directoryName = "../..";
     static String newFile = "lib/QuestReport.txt";
-
-    static Connection con = null;
+    
     static PrintWriter printWriter = null;
     static InputStreamReader fileReader = null;
     static BufferedReader bufferedReader = null;

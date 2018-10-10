@@ -21,13 +21,14 @@ function action(mode, type, selection) {
         if(status == 0){
                 cm.sendYesNo("Would you like to leave?");
         }else if(status == 1){
-                var mapid = cm.getMapId();
-                if(mapid == 108010101) cm.getPlayer().changeMap(105040305);
-                else if(mapid == 108010201) cm.getPlayer().changeMap(100040106);
-                else if(mapid == 108010301) cm.getPlayer().changeMap(105070001);
-                else if(mapid == 108010401) cm.getPlayer().changeMap(107000402);
-                else if(mapid == 108010501) cm.getPlayer().changeMap(105070200);
+                var mapid = cm.getMapId(), exitid = mapid;
+                if(mapid == 108010101) exitid = 105040305;
+                else if(mapid == 108010201) exitid = 100040106;
+                else if(mapid == 108010301) exitid = 105070001;
+                else if(mapid == 108010401) exitid = 107000402;
+                else if(mapid == 108010501) exitid = 105070200;
 
+                if (mapid != exitid) cm.getPlayer().changeMap(exitid);
                 cm.dispose();
         }
     }

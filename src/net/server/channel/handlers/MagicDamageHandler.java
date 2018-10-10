@@ -39,7 +39,7 @@ public final class MagicDamageHandler extends AbstractDealDamageHandler {
 	@Override
 	public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 		MapleCharacter chr = c.getPlayer();
-                chr.setPetLootCd(currentServerTime());
+                //chr.setPetLootCd(currentServerTime());
 
 		/*long timeElapsed = currentServerTime() - chr.getAutobanManager().getLastSpam(8);
 		if(timeElapsed < 300) {

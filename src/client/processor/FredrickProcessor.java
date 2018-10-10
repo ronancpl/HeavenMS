@@ -70,42 +70,43 @@ public class FredrickProcessor {
     }
     
     public static void fredrickRetrieveItems(MapleClient c) {     // thanks Gustav for pointing out the dupe on Fredrick handling
-        c.lockClient();
-        try {
-            MapleCharacter chr = c.getPlayer();
-            
-            List<Pair<Item, MapleInventoryType>> items;
+        if (c.tryacquireClient()) {
             try {
-                items = ItemFactory.MERCHANT.loadItems(chr.getId(), false);
-                if (!canRetrieveFromFredrick(chr, items)) {
-                    chr.announce(MaplePacketCreator.fredrickMessage((byte) 0x21));
-                    return;
-                }
+                MapleCharacter chr = c.getPlayer();
 
-                chr.withdrawMerchantMesos();
-
-                if (deleteFredrickItems(chr.getId())) {
-                    MapleHiredMerchant merchant = chr.getHiredMerchant();
-
-                    if(merchant != null)
-                        merchant.clearItems();
-
-                    for (Pair<Item, MapleInventoryType> it : items) {
-                        Item item = it.getLeft();
-                        MapleInventoryManipulator.addFromDrop(chr.getClient(), item, false);
-                        String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                        FilePrinter.print(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
+                List<Pair<Item, MapleInventoryType>> items;
+                try {
+                    items = ItemFactory.MERCHANT.loadItems(chr.getId(), false);
+                    if (!canRetrieveFromFredrick(chr, items)) {
+                        chr.announce(MaplePacketCreator.fredrickMessage((byte) 0x21));
+                        return;
                     }
 
-                    chr.announce(MaplePacketCreator.fredrickMessage((byte) 0x1E));
-                } else {
-                    chr.message("An unknown error has occured.");
+                    chr.withdrawMerchantMesos();
+
+                    if (deleteFredrickItems(chr.getId())) {
+                        MapleHiredMerchant merchant = chr.getHiredMerchant();
+
+                        if(merchant != null)
+                            merchant.clearItems();
+
+                        for (Pair<Item, MapleInventoryType> it : items) {
+                            Item item = it.getLeft();
+                            MapleInventoryManipulator.addFromDrop(chr.getClient(), item, false);
+                            String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
+                            FilePrinter.print(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
+                        }
+
+                        chr.announce(MaplePacketCreator.fredrickMessage((byte) 0x1E));
+                    } else {
+                        chr.message("An unknown error has occured.");
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
+            } finally {
+                c.releaseClient();
             }
-        } finally {
-            c.unlockClient();
         }
     }
 }

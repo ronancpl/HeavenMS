@@ -41,6 +41,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 
 import tools.*;
@@ -109,8 +110,10 @@ public class MapleClient {
 	private String pic = null;
 	private String hwid = null;
 	private int picattempt = 0;
+        private byte csattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
+        private final Semaphore actionsSemaphore = new Semaphore(7);
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
         private static final Lock loginLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
@@ -532,7 +535,6 @@ public class MapleClient {
 				gender = rs.getByte("gender");
 				characterSlots = rs.getByte("characterslots");
 				String passhash = rs.getString("password");
-				String salt = rs.getString("salt");
 				byte tos = rs.getByte("tos");
 
 				ps.close();
@@ -547,8 +549,9 @@ public class MapleClient {
 					loginok = 7;
 				} else if (passhash.charAt(0) == '$' && passhash.charAt(1) == '2' && BCrypt.checkpw(pwd, passhash)) {
 					loginok = (tos == 0) ? 23 : 0;
-				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd + salt)) {
-					loginok = (tos == 0) ? -23 : -10; // migrate to bcrypt
+				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd)) {
+                                        // thanks GabrielSin for detecting some no-bcrypt inconsistencies here
+					loginok = (tos == 0) ? (!ServerConstants.BCRYPT_MIGRATION ? 23 : -23) : (!ServerConstants.BCRYPT_MIGRATION ? 0 : -10); // migrate to bcrypt
 				} else {
 					loggedIn = false;
 					loginok = 4;
@@ -775,7 +778,7 @@ public class MapleClient {
 			if (!rs.next()) {
 				rs.close();
 				ps.close();
-				throw new RuntimeException("getLoginState - MapleClient");
+				throw new RuntimeException("getLoginState - MapleClient AccID: " + getAccID());
 			}
                         
 			birthday = Calendar.getInstance();
@@ -1170,9 +1173,19 @@ public class MapleClient {
                 lock.unlock();
 	}
         
-        public boolean trylockClient() {
-                return lock.tryLock();
+        public boolean tryacquireClient() {
+                if (actionsSemaphore.tryAcquire()) {
+                        lockClient();
+                        return true;
+                } else {
+                        return false;
+                }
 	}
+        
+        public void releaseClient() {
+                unlockClient();
+                actionsSemaphore.release();
+        }
         
         public void lockEncoder() {
                 encoderLock.lock();
@@ -1198,7 +1211,7 @@ public class MapleClient {
 		try {
 			MessageDigest digester = MessageDigest.getInstance(type);
 			digester.update(password.getBytes("UTF-8"), 0, password.length());
-			return HexTool.toString(digester.digest()).replace(" ", "").toLowerCase().equals(hash);
+                        return HexTool.toString(digester.digest()).replace(" ", "").toLowerCase().equals(hash);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			throw new RuntimeException("Encoding the string failed", e);
 		}
@@ -1430,5 +1443,23 @@ public class MapleClient {
         public void closePlayerScriptInteractions() {
                 this.removeClickedNPC();
                 NPCScriptManager.getInstance().dispose(this);
+        }
+        
+        public boolean attemptCsCoupon() {
+                if (csattempt > 2) {
+                        resetCsCoupon();
+                        return false;
+                }
+                
+                csattempt++;
+                return true;
+        }
+        
+        public void resetCsCoupon() {
+                csattempt = 0;
+        }
+        
+        public void enableCSActions() {
+                announce(MaplePacketCreator.enableCSUse(player));
         }
 }

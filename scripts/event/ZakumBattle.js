@@ -36,7 +36,7 @@ var clearMap = 211042400;
 var minMapId = 280030000;
 var maxMapId = 280030000;
 
-var eventTime = 60;     // 60 minutes
+var eventTime = 120;     // 120 minutes
 
 var lobbyRange = [0, 0];
 

@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(13) NOT NULL DEFAULT '',
   `password` varchar(128) NOT NULL DEFAULT '',
-  `salt` varchar(128) DEFAULT NULL,
   `pin` varchar(10) DEFAULT NULL,
   `pic` varchar(26) DEFAULT NULL,
   `loggedin` tinyint(4) NOT NULL DEFAULT '0',
@@ -4517,7 +4516,7 @@ INSERT IGNORE INTO `temp_data` (`id`, `dropperid`, `itemid`, `minimum_quantity`,
 (4298, 5130107, 4130006, 1, 1, 0, 6000),
 (4299, 5130107, 4130011, 1, 1, 0, 6000),
 (4300, 5130108, 4000069, 1, 1, 0, 600000),
-(4301, 5130108, 4000082, 1, 1, 0, 40000),
+(4301, 5130108, 4000082, 1, 1, 0, 20000),
 (4302, 5130108, 2000003, 1, 1, 0, 20000),
 (4303, 5130108, 2000004, 1, 1, 0, 20000),
 (4304, 5130108, 2000002, 1, 1, 0, 20000),
@@ -12926,15 +12925,6 @@ CREATE TABLE IF NOT EXISTS `hiredmerchant` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-CREATE TABLE IF NOT EXISTS `htsquads` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `channel` int(10) unsigned NOT NULL,
-  `leaderid` int(10) unsigned NOT NULL DEFAULT '0',
-  `status` int(10) unsigned NOT NULL DEFAULT '0',
-  `members` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
 CREATE TABLE IF NOT EXISTS `hwidaccounts` (
   `accountid` int(11) NOT NULL DEFAULT '0',
   `hwid` varchar(40) NOT NULL DEFAULT '',
@@ -16393,13 +16383,21 @@ CREATE TABLE IF NOT EXISTS `notes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `nxcode` (
-  `code` varchar(15) NOT NULL,
-  `valid` int(11) NOT NULL DEFAULT '1',
-  `user` varchar(13) DEFAULT NULL,
-  `type` int(11) NOT NULL DEFAULT '0',
-  `item` int(11) NOT NULL DEFAULT '10000',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(17) NOT NULL UNIQUE,
+  `retriever` varchar(13) DEFAULT NULL,
+  `expiration` bigint(20) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+CREATE TABLE IF NOT EXISTS `nxcode_items` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `codeid` int(11) NOT NULL,
+  `type` int(11) NOT NULL DEFAULT '5',
+  `item` int(11) NOT NULL DEFAULT '4000000',
+  `quantity` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `nxcoupons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -21411,15 +21409,6 @@ CREATE TABLE IF NOT EXISTS `wishlists` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `charid` int(11) NOT NULL,
   `sn` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `zaksquads` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `channel` int(10) unsigned NOT NULL,
-  `leaderid` int(10) unsigned NOT NULL DEFAULT '0',
-  `status` int(10) unsigned NOT NULL DEFAULT '0',
-  `members` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

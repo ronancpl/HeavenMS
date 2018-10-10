@@ -25,6 +25,7 @@ import client.MapleClient;
 import client.MapleCharacter;
 import client.MapleMount;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import constants.ExpTable;
 import net.AbstractMaplePacketHandler;
@@ -45,29 +46,37 @@ public final class UseMountFoodHandler extends AbstractMaplePacketHandler {
         
         MapleCharacter chr = c.getPlayer();
         MapleMount mount = chr.getMount();
-        Item item = chr.getInventory(MapleInventoryType.USE).getItem(pos);
-        if (item != null && item.getItemId() == itemid && mount != null) {
-            c.lockClient();
+        MapleInventory useInv = chr.getInventory(MapleInventoryType.USE);
+        
+        if (c.tryacquireClient()) {
             try {
-                int curTiredness = mount.getTiredness();
-                int healedTiredness = Math.min(curTiredness, 30);
-                
-                float healedFactor = (float) healedTiredness / 30;
-                mount.setTiredness(curTiredness - healedTiredness);
-                
-                if (healedFactor > 0.0f) {
-                    mount.setExp(mount.getExp() + (int) Math.ceil(healedFactor * (2 * mount.getLevel() + 6)));
-                    int level = mount.getLevel();
-                    boolean levelup = mount.getExp() >= ExpTable.getMountExpNeededForLevel(level) && level < 31;
-                    if (levelup) {
-                        mount.setLevel(level + 1);
+                useInv.lockInventory();
+                try {
+                    Item item = useInv.getItem(pos);
+                    if (item != null && item.getItemId() == itemid && mount != null) {
+                        int curTiredness = mount.getTiredness();
+                        int healedTiredness = Math.min(curTiredness, 30);
+
+                        float healedFactor = (float) healedTiredness / 30;
+                        mount.setTiredness(curTiredness - healedTiredness);
+
+                        if (healedFactor > 0.0f) {
+                            mount.setExp(mount.getExp() + (int) Math.ceil(healedFactor * (2 * mount.getLevel() + 6)));
+                            int level = mount.getLevel();
+                            boolean levelup = mount.getExp() >= ExpTable.getMountExpNeededForLevel(level) && level < 31;
+                            if (levelup) {
+                                mount.setLevel(level + 1);
+                            }
+                            chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr.getId(), mount, levelup));
+                        }
+
+                        MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
                     }
-                    chr.getMap().broadcastMessage(MaplePacketCreator.updateMount(chr.getId(), mount, levelup));
+                } finally {
+                    useInv.unlockInventory();
                 }
-                
-                MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemid, 1, true, false);
             } finally {
-                c.unlockClient();
+                c.releaseClient();
             }
         }
     }

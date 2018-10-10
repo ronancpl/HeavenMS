@@ -1276,30 +1276,30 @@ Otimizado função goto, agora não mais gerando mapas de cidade/mapid a todo us
 Melhorado função de disconnect do MapleClient, evitando múltiplos envios de dados do jogador à DB.
 Desenhado (todo conteúdo de imagens creditado à Nexon) e implementado novos mapas-mundi referente a regiões de M. Shrine, Showa, CBD e Metropolis/Kampung.
 
-03 Agosto 2018,
+03 Setembro 2018,
 Implementado buffs inexpiráveis.
 Corrigido comando resetStats não levando em conta AP's atuais dos jogadores.
 Corrigido novo sistema gerenciador de loots removendo a possibilidade de conseguir novos itens de quest após coleta do primeiro item.
 
-04 Agosto 2018,
+04 Setembro 2018,
 Corrigido um flicker na animação do efeito da skill Hurricane.
 Ajustado MapleSessionCoordinator, agora verificando HWID's ao invés de contar somente com o remote IP, evitando negação de serviço para usuários de VPNs.
 Corrigido dispel normal incorretamente mostrando efeitos aleatórios a outros jogadores, issue apontado por Thora.
 Corrigido change job não mostrando efeito a outros jogadores.
 Corrigido valores incorretos sendo retirado de jogadores para expansão de guild, issue apontado por Thora.
 
-05 Agosto 2018,
+05 Setembro 2018,
 Adicionado world map em Ellin Forest.
 Protegido concorrentemente sistema de fames.
 Adicionado ganho de quest points para jogadores que participam de PQs. Reformulado sistema de quest points para viabilizar a nova feature.
 Otimizado método de ganho de experiência em equipamentos, agora devidamente cacheado e sem busca em strings no processo.
 
-08 Agosto 2018,
+08 Setembro 2018,
 MapleServerHandler agora é devidamente deregistrado ao finalizar uma instância de channel, eliminando possível foco de memory leak.
 Funções playerDead e playerRevive são agora opcionais em EIM scripts.
 Nova ferramenta: MapleEquipmentOmnileveler. Permite adicionar e atualizar nodos referentes a níveis para todos os equipamentos. Em jogo, essa adição permite jogadores a ver nível de qualquer equipamento do jogo.
 
-09 - 10 Agosto 2018,
+09 - 10 Setembro 2018,
 Adicionado cálculo de MP ao realizar ataques de mobs.
 Aplicado vários pequenos ajustes no handler que lida com movimentação de mobs, procurando assim reduzir ruidos no fluxo do jogo (e.g. mob caindo de foothold).
 Corrigido schedules de event instances sendo chamados após finalização da mesma, levando locks já liberados a serem chamados inesperadamente.
@@ -1307,7 +1307,7 @@ Corrigido casos onde jogadores poderiam requisitar instanciação de uma nova PQ
 Aplicado reformatação geral no Character.wz, adicionando nodos de level para todos os equipamentos do jogo. Tal mudança permite que todos os equipamentos exponham nível e experiência em todos os equipamentos no inventário.
 Implementado cálculo de experiência no lado do servidor que permite mostrar adequadamente EXP dos equipamentos no lado do cliente.
 
-11 - 19 Agosto 2018,
+11 - 19 Setembro 2018,
 Corrigido MP Recovery skill não atuando segundo descrição, além de matando jogador com pouco HP disponível.
 Refatorado completamente acessos de stats no código do server.
 Refatorado check de Berserk sendo chamado em múltiplas seções do código.
@@ -1326,5 +1326,59 @@ Corrigido alliances retendo informações de guilds que foram desfeitas na DB.
 Corrigido alliances não salvando nomes de ranks na DB ao serem criadas.
 Adicionado suporte para doors na região de Mushroom Castle.
 
-24 Agosto 2018,
+24 Setembro 2018,
 Resolvido pequenas inconsistências entre os XMLs e WZs disponibilizados.
+Alterado "session write" para "announce", agora devidamente utilizando encapsulamento e lidando com sincronização de serviços.
+
+25 Setembro 2018,
+Corrigido diversas exceções no cash shop congelando próximas ações dos jogadores, somente ficando disponível após sair do mesmo.
+Reimplementado sistema de code coupons no cash shop.
+Removido skills Teleport e Super Dragon Roar redundantes do job SuperGM (jobid 910).
+Adicionado informações detalhadas do estado corrente do buyback, em forma de comando.
+Corrigido desligamento de channel com jogadores dentro do cash shop levando o sistema a lançar algumas exceções.
+
+26 Setembro 2018,
+Aprimorado code coupons, agora permitindo entrega de vários itens no mesmo código.
+Revisado uso de addById no código, não permitindo adicionar itens limpos em slots de itens que possuem marcação de dono.
+Implementado automatização de geração de coupon codes baseado em templates, utilizando arquivo XML para pegar os parâmetros.
+
+29 Setembro 2018,
+Corrigido Ereve faltando suporte para um Door portal.
+Adicionado suporte de Doors para Happyville e Crimsonwood Keep.
+Melhorado aspectos do world map da região de Masteria, adicionando interiores de Crimsonwood Keep no mapa e tooltip para interiores de Haunted House no mapa de Masteria.
+Aprimorado região interior de Crimsonwood Keep, não mais reposicionando jogadores com a funcionalidade forcedReturn do WZ.
+Corrigido arredores de Amoria não retornando jogadores para a cidade ao ressucitar pelo método usual.
+Corrigido petids e ringids misturando valores com cashids de itens comuns, potencialmente causando problemas com os inventários do jogador e do cash shop da conta do mesmo.
+
+30 Setembro 2018,
+Adicionado região de Masteria no World Map.
+Corrigido ligação de Ludibrium para Orbis não sendo mostrado corretamente.
+Melhorado ratio update de HP/MP, agora memorizando ratio recentes ao efetuar ações como modificar status do inventário de itens equipados, entre outros.
+
+01 - 03 Outubro 2018,
+Corrigido diversos problemas com o sistema de login quando o uso do bcrypt está desativado.
+Implementado/melhorado diversas mecânicas dos minigames (do aspecto dos tooltips dos boxes às pontuações visiveis dentro da sala e sistema de pontuação interno único), tornando agora finalmente viável a jogabilidade estendida dessa funcionalidade.
+Adicionado server flag para evitar levelup em equipamentos de cash.
+Melhorado verificação de itens untradeable em vários pontos do código, agora avaliando também status de Karma.
+Adicionado funcionalidade de pesquisa de mapas no comando Search.
+Otimizado comando Search, agora cacheando dados para as pesquisas.
+Corrigido pequenas inconsistências com HPMP ratio recém implementado.
+Revisado drop chance de vários itens de quest e diversos ETC drops de mobs de nível baixo.
+Revisado descrições de várias skills de GM.
+
+04 Outubro 2018,
+Prequest de Zakum agora recompensa 5 Eye of Fire, valor oficial.
+Modificado script de quiz do 3rd job, agora randomizando posicionamento das respostas.
+Modificado damage-over-time em mapas como arredores de El Nath e Aqua Road, agora dando dano a cada 5 segundos, como previsto na versão oficial.
+Corrigido comando Whodrops potencialmente lagando o servidor se comando for spammado por jogadores.
+Protegido concorrentemente handler de interação de jogadores (trades, player shops, minigames, entre outros).
+Melhorado checagem de acesso concorrente em alguns handlers, agora utilizando semáforos para fazer a filtragem de requisições a esses handlers.
+Revertido pet pickup para permitindo coletar itens indiscriminadamente de ataque. Causa de situações onde pet pickup evita ação de ataque de jogador não está claro.
+Modificado timers para diversas expedições, agora com duração máxima entre 1h30 a 2h.
+
+08 Outubro 2018,
+Protegido concorrentemente módulos de chairs.
+
+09 Outubro 2018,
+Corrigido disease seduce não funcionando da forma esperada quando jogador está sentado.
+Movido Dropspider para fora do código-fonte do server, agora estando como uma ferramenta externa.

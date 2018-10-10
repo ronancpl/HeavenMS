@@ -2106,6 +2106,66 @@
       <string name="tn" value="chimney00"/>
       <string name="pn" value="chimney00_2"/>
     </imgdir>
+    <imgdir name="19">
+      <int name="x" value="2735"/>
+      <int name="y" value="147"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
+    <imgdir name="20">
+      <int name="x" value="3000"/>
+      <int name="y" value="-80"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
+    <imgdir name="21">
+      <int name="x" value="1951"/>
+      <int name="y" value="148"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
+    <imgdir name="22">
+      <int name="x" value="1592"/>
+      <int name="y" value="145"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
+    <imgdir name="23">
+      <int name="x" value="636"/>
+      <int name="y" value="146"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
+    <imgdir name="24">
+      <int name="x" value="-489"/>
+      <int name="y" value="-28"/>
+      <int name="pt" value="6"/>
+      <int name="tm" value="999999999"/>
+      <string name="tn" value=""/>
+      <string name="pn" value="tp"/>
+      <int name="hideTooltip" value="0"/>
+      <int name="onlyOnce" value="0"/>
+    </imgdir>
   </imgdir>
   <imgdir name="reactor">
     <imgdir name="0">
@@ -3615,8 +3675,8 @@
       <int name="y" value="150"/>
       <int name="cy" value="153"/>
       <int name="mobTime" value="0"/>
-      <int name="rx0" value="2488"/>
-      <int name="rx1" value="2588"/>
+      <int name="rx0" value="2487"/>
+      <int name="rx1" value="2587"/>
       <int name="f" value="1"/>
       <string name="type" value="n"/>
       <int name="fh" value="131"/>
