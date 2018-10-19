@@ -60,6 +60,7 @@ import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import jdk.nashorn.api.scripting.ScriptUtils;
 
 /**
  *
@@ -645,7 +646,7 @@ public class EventManager {
             Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembers());
             
             if(p != null) {
-                List<MaplePartyCharacter> lmpc = new ArrayList<>((List<MaplePartyCharacter>) p);
+                List<MaplePartyCharacter> lmpc = new ArrayList<>(((Map<String, MaplePartyCharacter>)(ScriptUtils.convert(p, Map.class))).values());
                 party.setEligibleMembers(lmpc);
                 return lmpc;
             }
