@@ -616,7 +616,7 @@ public class EventInstanceManager {
                         
                         sL.lock();
                         try {
-                                inc = ((Double) em.getIv().invokeFunction("monsterValue", this, mob.getId())).intValue();
+                                  inc = (int)em.getIv().invokeFunction("monsterValue", this, mob.getId());
                         } finally {
                                 sL.unlock();
                         }
