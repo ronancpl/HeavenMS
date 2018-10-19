@@ -201,6 +201,61 @@ public class MapleMapFactory {
                 map.addMapleArea(new Rectangle(x1, y1, (x2 - x1), (y2 - y1)));
             }
         }
+         
+        try {
+        Connection con = DatabaseConnection.getConnection();
+        PreparedStatement ps = con.prepareStatement("SELECT * FROM npcs WHERE mid = ?");
+        ps.setInt(1, omapid);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            int id = rs.getInt("idd");
+            int f = rs.getInt("f");
+            boolean hide = false;
+            int fh = rs.getInt("fh");
+            int cy = rs.getInt("cy");
+            int rx0 = rs.getInt("rx0");
+            int rx1 = rs.getInt("rx1");
+            int x = rs.getInt("x");
+            int y = rs.getInt("y");
+            
+            AbstractLoadedMapleLife myLife = loadLife(id, f, hide, fh, cy, rx0, rx1, x, y, "n");
+            map.addMapObject(myLife);
+        }
+        ps.close();
+        rs.close();
+        
+        PreparedStatement ps1 = con.prepareStatement("SELECT * FROM mobs WHERE mid = ?");
+        ps1.setInt(1, omapid);
+        ResultSet rs1 = ps1.executeQuery();
+        while (rs1.next()) {
+            int id = rs1.getInt("idd");
+            int f = rs1.getInt("f");
+            boolean hide = false;
+            int fh = rs1.getInt("fh");
+            int cy = rs1.getInt("cy");
+            int rx0 = rs1.getInt("rx0");
+            int rx1 = rs1.getInt("rx1");
+            int x = rs1.getInt("x");
+            int y = rs1.getInt("y");
+            int mobTime = rs1.getInt("mobtime");
+            
+            AbstractLoadedMapleLife myLife = loadLife(id, f, hide, fh, cy, rx0, rx1, x, y, "m");
+            
+            MapleMonster monster = (MapleMonster) myLife;
+            if (mobTime == -1) { //does not respawn, force spawn once
+                map.spawnMonster(monster);
+            } else {
+                map.PermaddMonsterSpawn(monster, mobTime, -1);
+            }
+        }
+        ps1.close();
+        rs1.close();
+        
+        } catch (SQLException e) {
+                    e.printStackTrace();
+        }
+        
+        
         if(event == null) {
             try {
                 Connection con = DatabaseConnection.getConnection();
@@ -333,6 +388,20 @@ public class MapleMapFactory {
             mapsRLock.unlock();
         }
     }
+    
+    
+     private AbstractLoadedMapleLife loadLife(int id, int f, boolean hide, int fh, int cy, int rx0, int rx1, int x, int y, String type) {
+        AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
+        myLife.setCy(cy);
+        myLife.setF(f);
+        myLife.setFh(fh);
+        myLife.setRx0(rx0);
+        myLife.setRx1(rx1);
+        myLife.setPosition(new Point(x, y));
+        myLife.setHide(hide);
+        return myLife;
+    }
+
 
     private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {
         AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(Integer.parseInt(id), type);

@@ -100,6 +100,7 @@ public class MapleMap {
     private Map<Integer, MapleMapObject> mapobjects = new LinkedHashMap<>();
     private Collection<SpawnPoint> monsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private Collection<SpawnPoint> allMonsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
+    private Collection<SpawnPoint> PermMonsterSpawn = Collections.synchronizedList(new LinkedList<SpawnPoint>());
     private AtomicInteger spawnedMonstersOnMap = new AtomicInteger(0);
     private AtomicInteger droppedItemCount = new AtomicInteger(0);
     private Collection<MapleCharacter> characters = new LinkedHashSet<>();
@@ -2946,6 +2947,22 @@ public class MapleMap {
             spawnMonster(sp.getMonster());
         }
     }
+    
+     public void PermaddMonsterSpawn(MapleMonster monster, int mobTime, int team) {
+        Point newpos = calcPointBelow(monster.getPosition());
+        newpos.y -= 1;
+        SpawnPoint sp = new SpawnPoint(monster, newpos, !monster.isMobile(), mobTime, mobInterval, team);
+        PermMonsterSpawn.add(sp);
+        if (sp.shouldSpawn() || mobTime == -1) {// -1 does not respawn and should not either but force ONE spawn
+            spawnMonster(sp.getMonster());
+        }
+    }
+     
+      public Collection<SpawnPoint> GetPermMonsterSpawn()
+    {
+        return PermMonsterSpawn;
+    }
+    
     
     public void addAllMonsterSpawn(MapleMonster monster, int mobTime, int team) {
         Point newpos = calcPointBelow(monster.getPosition());
