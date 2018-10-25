@@ -31,10 +31,12 @@ import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.MapleItemInformationProvider;
+import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
 import java.io.File;
+import java.util.List;
 
 public class SearchCommand extends Command {
     private static MapleData npcStringData;
@@ -65,7 +67,7 @@ public class SearchCommand extends Command {
         long start = System.currentTimeMillis();//for the lulz
         MapleData data = null;
         if (!params[0].equalsIgnoreCase("ITEM")) {
-            boolean mapSearch = false;
+            int searchType = 0;
             
             if (params[0].equalsIgnoreCase("NPC")) {
                 data = npcStringData;
@@ -75,21 +77,24 @@ public class SearchCommand extends Command {
                 data = skillStringData;
             } else if (params[0].equalsIgnoreCase("MAP")) {
                 data = mapStringData;
-                mapSearch = true;
+                searchType = 1;
+            } else if (params[0].equalsIgnoreCase("QUEST")) {
+                data = mapStringData;
+                searchType = 2;
             } else {
-                sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is MAP, NPC, ITEM, MOB, or SKILL.");
+                sb.append("#bInvalid search.\r\nSyntax: '!search [type] [name]', where [type] is MAP, QUEST, NPC, ITEM, MOB, or SKILL.");
             }
             if (data != null) {
                 String name;
                 
-                if (!mapSearch) {
+                if (searchType == 0) {
                     for (MapleData searchData : data.getChildren()) {
                         name = MapleDataTool.getString(searchData.getChildByPath("name"), "NO-NAME");
                         if (name.toLowerCase().contains(search.toLowerCase())) {
                             sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(name).append("\r\n");
                         }
                     }
-                } else {
+                } else if (searchType == 1) {
                     String mapName, streetName;
                     
                     for (MapleData searchDataDir : data.getChildren()) {
@@ -101,6 +106,16 @@ public class SearchCommand extends Command {
                                 sb.append("#b").append(Integer.parseInt(searchData.getName())).append("#k - #r").append(streetName).append(" - ").append(mapName).append("\r\n");
                             }
                         }
+                    }
+                } else {
+                    for (MapleQuest mq : MapleQuest.getMatchedQuests(search)) {
+                        sb.append("#b").append(mq.getId()).append("#k - #r");
+                        
+                        String parentName = mq.getParentName();
+                        if (!parentName.isEmpty()) {
+                            sb.append(parentName).append(" - ");
+                        }
+                        sb.append(mq.getName()).append("\r\n");
                     }
                 }
             }

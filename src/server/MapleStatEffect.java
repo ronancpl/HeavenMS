@@ -753,10 +753,7 @@ public class MapleStatEffect {
         } else {
             if (isResurrection()) {
                 hpchange = applyto.getCurrentMaxHp();
-                applyto.setStance(0);
-                
-                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
-                applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapObject(applyto), false);
+                applyto.broadcastStance(applyto.isFacingLeft() ? 5 : 4);
             }
         }
         
@@ -895,9 +892,6 @@ public class MapleStatEffect {
             applyfrom.getMap().spawnMist(mist, getDuration(), mist.isPoisonMist(), false, mist.isRecoveryMist());
         } else if(isTimeLeap()) {
             applyto.removeAllCooldownsExcept(Buccaneer.TIME_LEAP, true);
-        } else if(isHyperBody() && !primary) {
-            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.removePlayerFromMap(applyto.getId()), false);
-            applyto.getMap().broadcastMessage(applyto, MaplePacketCreator.spawnPlayerMapObject(applyto), false);
         }
         
         return true;

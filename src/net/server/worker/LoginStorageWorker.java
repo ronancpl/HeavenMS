@@ -20,6 +20,7 @@
 package net.server.worker;
 
 import net.server.coordinator.MapleSessionCoordinator;
+import net.server.coordinator.MapleLoginBypassCoordinator;
 
 /**
  *
@@ -30,5 +31,6 @@ public class LoginStorageWorker implements Runnable {
     @Override
     public void run() {
         MapleSessionCoordinator.getInstance().runUpdateLoginHistory();
+        MapleLoginBypassCoordinator.getInstance().runUpdateLoginBypass();
     }
 }

@@ -132,7 +132,7 @@ function action(mode, type, selection) {
                             if(weddingId > 0) {
                                 if(cserv.isWeddingReserved(weddingId)) {    // registration check
                                     var placeTime = cserv.getWeddingReservationTimeLeft(weddingId);
-                                    cm.sendOk("Your wedding is set to start at the #r" + placeTime + "#k. Don't be late!");
+                                    cm.sendOk("Your wedding is set to start at the #r" + placeTime + "#k. Get formally dressed and don't be late!");
                                 } else {
                                     var partner = wserv.getPlayerStorage().getCharacterById(cm.getPlayer().getPartnerId());
                                     if(partner == null) {
@@ -177,10 +177,10 @@ function action(mode, type, selection) {
                                             var placeTime = cserv.getWeddingReservationTimeLeft(weddingId);
 
                                             var wedType = weddingType ? "Premium" : "Regular";
-                                            cm.sendOk("You both have received 15 Wedding Tickets, to be given to your guests. #bDouble-click the ticket#k to send it to someone. Invitations can only be sent #rbefore the wedding start time#k. Your #b" + wedType + " wedding#k is set to start at the #r" + placeTime + "#k. Don't be late!");
+                                            cm.sendOk("You both have received 15 Wedding Tickets, to be given to your guests. #bDouble-click the ticket#k to send it to someone. Invitations can only be sent #rbefore the wedding start time#k. Your #b" + wedType + " wedding#k is set to start at the #r" + placeTime + "#k. Get formally dressed and don't be late!");
 
-                                            player.dropMessage(6, "Wedding Assistant: You both have received 15 Wedding Tickets. Invitations can only be sent before the wedding start time. Your " + wedType + " wedding is set to start at the " + placeTime + ". Don't be late!");
-                                            partner.dropMessage(6, "Wedding Assistant: You both have received 15 Wedding Tickets. Invitations can only be sent before the wedding start time. Your " + wedType + " wedding is set to start at the " + placeTime + ". Don't be late!");
+                                            player.dropMessage(6, "Wedding Assistant: You both have received 15 Wedding Tickets. Invitations can only be sent before the wedding start time. Your " + wedType + " wedding is set to start at the " + placeTime + ". Get dressed and don't be late!");
+                                            partner.dropMessage(6, "Wedding Assistant: You both have received 15 Wedding Tickets. Invitations can only be sent before the wedding start time. Your " + wedType + " wedding is set to start at the " + placeTime + ". Get dressed and don't be late!");
 
                                             if(!hasSuitForWedding(player)) {
                                                 player.dropMessage(5, "Wedding Assistant: Please purchase a wedding garment before showing up for the ceremony. One can be bought at the Wedding Shop left-most Amoria.");

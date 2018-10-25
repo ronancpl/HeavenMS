@@ -641,21 +641,12 @@ public class MapleItemInformationProvider {
         return type[cat - 30];
     }
 
-    private static double testYourLuck() {
-        double result = 100.0, rolled;
-        int i, j = ServerConstants.SCROLL_CHANCE_RATE;
-        
-        if(j < 1) j = 1;
-        for(i = 0; i < j; i++) {
-            rolled = Math.ceil(Math.random() * 100.0);
-            if(result > rolled) result = rolled;
-        }
-        
-        return(result);
+    private static double testYourLuck(double prop, int dices) {   // revamped testYourLuck author: David A.
+        return Math.pow(1.0 - prop, dices);
     }
     
     public static boolean rollSuccessChance(double prop) {
-        return(testYourLuck() <= prop && prop > 0.0);
+        return Math.random() > testYourLuck(prop / 100.0, ServerConstants.SCROLL_CHANCE_RATE);
     }
     
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {

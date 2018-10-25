@@ -1382,3 +1382,36 @@ Protegido concorrentemente módulos de chairs.
 09 Outubro 2018,
 Corrigido disease seduce não funcionando da forma esperada quando jogador está sentado.
 Movido Dropspider para fora do código-fonte do server, agora estando como uma ferramenta externa.
+
+10 - 11 Outubro 2018,
+Corrigido comando ClearSlots não apagando recarregáveis do inventário.
+Adicionado busca por quests no comando Search.
+Corrigido notas musicais misturadas no mapa da harpa.
+Corrigido certas inconsistências com restanciação de jogadores, como pode ser visto ao aplicar Resurrection ou Hyper Body.
+Implementado funcionalidade "toggle PIN/PIC", após confirmado PIN/PIC jogador poderá evitar reutilizá-lo por um curto período de tempo.
+Corrigido sistema anti-multicliente não registrando devidamente jogadores que entram via all-chars.
+Corrigido casos onde jogadores muito abaixo do nível de mobs ainda poderiam ganhar EXP dos mesmos, quando se está dentro de um evento.
+
+13 - 16 Outubro 2018,
+Melhorada função que gerencia resultado no uso de scrolls.
+Implementado nova flag que permite bloquear ganho de SP ao atingir o cap para tal job, além de permitir recuperar pontos de SP assim que avançar de job.
+Adicionado possibilidade de overload de script para playerNPCs.
+Nova ferramenta: MapleWorldmapChecker. Verifica arquivo Map.wz em busca de possíveis mapids que não constam em hierarquias superiores de worldmaps.
+Adicionado informação extra ao NPC Abdula, agora definindo skill/mastery books como sendo parte de questline quando aplicável.
+Corrigido loots levando atraso arbitrariamente, devido a mudanças anteriores no código.
+
+17 Outubro 2018,
+Corrigido PlayerNPCs atuando inconsistentemente, por compartilhar objectid com personagens de jogadores.
+Corrigido comandos de colocar/retirar PlayerNPCs não atuando corretamente.
+Corrigido certos casos no uso do inventário de cash que leva itens a não serem retirados pelo jogador corretamente.
+Corrigido comando SpawnAllPnpcs não colocando de fato todos os personagens do servidor.
+
+18 Outubro 2018,
+Corrigido efeitos de rings de casamento não atuando corretamente.
+Implementado mecânica para reconhecimento de jogadores casados, agora jogadores podem ver efeitos dos respectivos itens.
+Removido possibilidade de colocar aneis de casamento no Cash Shop e Storage.
+Removido possibilidade de colocar itens "untradeable" no Duey.
+Removido possibilidade de preparar engagements enquanto segurando aneis de casamento.
+
+23 Outubro 2018,
+Adicionado script para quest de 4o job de Cygnus Knights.

@@ -64,7 +64,7 @@ public final class ViewAllCharHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.showAllCharacter(charsSize, unk));
             
             for (Pair<Integer, List<MapleCharacter>> wchars : worldChars) {
-                c.announce(MaplePacketCreator.showAllCharacterInfo(wchars.getLeft(), wchars.getRight(), ServerConstants.ENABLE_PIC));
+                c.announce(MaplePacketCreator.showAllCharacterInfo(wchars.getLeft(), wchars.getRight(), ServerConstants.ENABLE_PIC && !c.canBypassPic()));
             }
         } catch (Exception e) {
             e.printStackTrace();

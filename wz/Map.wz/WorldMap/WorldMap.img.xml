@@ -32,6 +32,7 @@
         <int name="15" value="1010400"/>
         <int name="16" value="2000000"/>
         <int name="17" value="2000001"/>
+        <int name="18" value="1020000"/>
       </imgdir>
       <canvas name="path" width="112" height="125">
         <vector name="origin" x="279" y="180"/>
@@ -130,6 +131,7 @@
         <int name="27" value="101020008"/>
         <int name="28" value="101020009"/>
         <int name="29" value="101020010"/>
+        <int name="30" value="101000400"/>
       </imgdir>
       <canvas name="path" width="215" height="59">
         <vector name="origin" x="214" y="132"/>
@@ -230,6 +232,7 @@
         <int name="41" value="103040302"/>
         <int name="42" value="103040303"/>
         <int name="43" value="103040400"/>
+        <int name="44" value="193000000"/>
       </imgdir>
       <vector name="spot" x="-273" y="-99"/>
       <canvas name="path" width="287" height="116">
@@ -305,6 +308,8 @@
         <int name="40" value="105090800"/>
         <int name="41" value="105090900"/>
         <int name="42" value="107000500"/>
+        <int name="43" value="105040306"/>
+        <int name="44" value="105050500"/>
       </imgdir>
     </imgdir>
     <imgdir name="7">
@@ -410,6 +415,8 @@
         <int name="54" value="200081200"/>
         <int name="55" value="200081300"/>
         <int name="56" value="200081400"/>
+        <int name="57" value="200080101"/>
+        <int name="58" value="200082301"/>
       </imgdir>
       <canvas name="path" width="462" height="316">
         <vector name="origin" x="214" y="132"/>
@@ -466,6 +473,8 @@
         <int name="42" value="211042300"/>
         <int name="43" value="211042400"/>
         <int name="44" value="211050000"/>
+        <int name="45" value="280030000"/>
+        <int name="46" value="211040401"/>
       </imgdir>
     </imgdir>
     <imgdir name="11">
@@ -578,6 +587,8 @@
         <int name="96" value="300010000"/>
         <int name="97" value="300010100"/>
         <int name="98" value="300010200"/>
+        <int name="106" value="220010001"/>
+        <int name="107" value="220011001"/>
       </imgdir>
       <canvas name="path" width="59" height="119">
         <vector name="origin" x="60" y="102"/>
@@ -628,6 +639,8 @@
         <int name="37" value="221040200"/>
         <int name="38" value="221040300"/>
         <int name="39" value="221040400"/>
+        <int name="40" value="221022100"/>
+        <int name="41" value="221022200"/>
       </imgdir>
     </imgdir>
     <imgdir name="13">
@@ -648,6 +661,7 @@
         <int name="11" value="222010400"/>
         <int name="12" value="222020000"/>
         <int name="13" value="222020100"/>
+        <int name="14" value="222010310"/>
       </imgdir>
     </imgdir>
     <imgdir name="14">
@@ -748,6 +762,8 @@
         <int name="91" value="240070601"/>
         <int name="92" value="240070602"/>
         <int name="93" value="240070603"/>
+        <int name="94" value="240040201"/>
+        <int name="95" value="240040301"/>
       </imgdir>
       <canvas name="path" width="273" height="275">
         <vector name="origin" x="279" y="95"/>
@@ -802,6 +818,9 @@
         <int name="7" value="251010402"/>
         <int name="8" value="251010403"/>
         <int name="9" value="251010500"/>
+        <int name="10" value="251000100"/>
+        <int name="11" value="251000404"/>
+        <int name="12" value="251010404"/>
       </imgdir>
     </imgdir>
     <imgdir name="17">
@@ -980,6 +999,15 @@
         <int name="4" value="680000001"/>
         <int name="5" value="680000002"/>
         <int name="6" value="680000003"/>
+        <int name="7" value="680000100"/>
+        <int name="8" value="680000110"/>
+        <int name="9" value="680000200"/>
+        <int name="10" value="680000210"/>
+        <int name="11" value="680000300"/>
+        <int name="12" value="680000400"/>
+        <int name="13" value="680000401"/>
+        <int name="14" value="680010000"/>
+        <int name="15" value="680010100"/>
       </imgdir>
     </imgdir>
     <imgdir name="22">
@@ -1006,6 +1034,7 @@
         <int name="17" value="140090500"/>
         <int name="18" value="140010110"/>
         <int name="19" value="140090000"/>
+        <int name="20" value="140020110"/>
       </imgdir>
       <canvas name="path" width="29" height="96">
         <vector name="origin" x="279" y="75"/>
@@ -1135,6 +1164,7 @@
         <int name="7" value="600010400"/>
         <int name="8" value="600010500"/>
         <int name="9" value="600010600"/>
+        <int name="17" value="600010002"/>
       </imgdir>
       <int name="type" value="3"/>
       <vector name="spot" x="-222" y="-150"/>

@@ -427,8 +427,9 @@ public class MapleMap {
         try {
             Integer curOid;
             
+            // clashes with playernpc on curOid >= 2147000000, developernpc uses >= 2147483000
             do {
-                if ((curOid = runningOid.incrementAndGet()) < 0) {  // clashes with playernpc on curOid >= 2147000000, developernpc uses >= 2147483000
+                if ((curOid = runningOid.incrementAndGet()) >= 2147000000) {
                     runningOid.set(curOid = 1000000001);
                 }
             } while (mapobjects.containsKey(curOid));
@@ -1610,9 +1611,6 @@ public class MapleMap {
     }
     
     public boolean containsNPC(int npcid) {
-        if (npcid == 9000066) {
-            return true;
-        }
         objectRLock.lock();
         try {
             for (MapleMapObject obj : mapobjects.values()) {
@@ -2453,13 +2451,13 @@ public class MapleMap {
         chr.removeSandboxItems();
         
         if (chr.isHidden()) {
-            broadcastGMMessage(chr, MaplePacketCreator.spawnEnterPlayerMapObject(chr), false);
+            broadcastGMSpawnPlayerMapObjectMessage(chr, chr, true);
             chr.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
 
             List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
             broadcastGMMessage(chr, MaplePacketCreator.giveForeignBuff(chr.getId(), dsstat), false);
         } else {
-            broadcastMessage(chr, MaplePacketCreator.spawnEnterPlayerMapObject(chr), false);
+            broadcastSpawnPlayerMapObjectMessage(chr, chr, true);
         }
 
         sendObjectPlacement(chr.getClient());
@@ -2774,6 +2772,50 @@ public class MapleMap {
                     }
                 } else {
                     chr.announce(packet);
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+    }
+    
+    public void broadcastSpawnPlayerMapObjectMessage(MapleCharacter source, MapleCharacter player, boolean enteringField) {
+        broadcastSpawnPlayerMapObjectMessage(source, player, enteringField, false);
+    }
+            
+    public void broadcastGMSpawnPlayerMapObjectMessage(MapleCharacter source, MapleCharacter player, boolean enteringField) {
+        broadcastSpawnPlayerMapObjectMessage(source, player, enteringField, true);
+    }
+    
+    private void broadcastSpawnPlayerMapObjectMessage(MapleCharacter source, MapleCharacter player, boolean enteringField, boolean gmBroadcast) {
+        chrRLock.lock();
+        try {
+            if (gmBroadcast) {
+                for (MapleCharacter chr : characters) {
+                    if (chr.isGM()) {
+                        if (chr != source) {
+                            chr.announce(MaplePacketCreator.spawnPlayerMapObject(chr.getClient(), player, enteringField));
+                        }
+                    }
+                }
+            } else {
+                for (MapleCharacter chr : characters) {
+                    if (chr != source) {
+                        chr.announce(MaplePacketCreator.spawnPlayerMapObject(chr.getClient(), player, enteringField));
+                    }
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+    }
+    
+    public void broadcastUpdateCharLookMessage(MapleCharacter source, MapleCharacter player) {
+        chrRLock.lock();
+        try {
+            for (MapleCharacter chr : characters) {
+                if (chr != source) {
+                    chr.announce(MaplePacketCreator.updateCharLook(chr.getClient(), player));
                 }
             }
         } finally {

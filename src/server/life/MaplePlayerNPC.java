@@ -613,7 +613,14 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
     
     public static void multicastSpawnPlayerNPC(int mapid, int world) {
         World wserv = Server.getInstance().getWorld(world);
-        for(MapleCharacter mc : wserv.getAllCharactersView()) {
+        if (wserv == null) return;
+        
+        MapleClient c = new MapleClient(null, null, null);  // mock client
+        c.setWorld(world);
+        c.setChannel(1);
+        
+        for(MapleCharacter mc : wserv.loadAndGetAllCharactersView()) {
+            mc.setClient(c);
             spawnPlayerNPC(mapid, mc);
         }
     }
@@ -630,14 +637,12 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
                 int world = rs.getInt("world"), map = rs.getInt("map");
                 if(world >= wsize) continue;
                 
-                World w = Server.getInstance().getWorld(world);
-                for (Channel channel : w.getChannels()) {
+                for (Channel channel : Server.getInstance().getChannelsFromWorld(world)) {
                     MapleMap m = channel.getMapFactory().getMap(map);
                     
                     for(MapleMapObject pnpcObj : m.getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.PLAYER_NPC))) {
                         MaplePlayerNPC pn = (MaplePlayerNPC) pnpcObj;
-
-                        m.removeMapObject(pn);
+                        m.removeMapObject(pnpcObj);
                         m.broadcastMessage(MaplePacketCreator.removeNPCController(pn.getObjectId()));
                         m.broadcastMessage(MaplePacketCreator.removePlayerNPC(pn.getObjectId()));
                     }

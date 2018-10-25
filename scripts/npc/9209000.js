@@ -98,20 +98,22 @@ function action(mode, type, selection) {
         } else if(status == 2) {
             selected = selection;
             var mobList = cm.getNamesWhoDropsItem(table[selected]);
-
+            
             var sendStr;
             if(mobList.length == 0) {
-                sendStr = "No mobs drop '#b#t" + table[selected] + "##k'.";
-
+                sendStr = "No mobs drop '#b#t" + table[selected] + "##k'.\r\n\r\n";
             } else {
                 sendStr = "The following mobs drop '#b#t" + table[selected] + "##k':\r\n\r\n";
 
                 for(var i = 0; i < mobList.length; i++) {
                     sendStr += "  #L" + i + "# " + mobList[i] + "#l\r\n";
                 }
+                
+                sendStr += "\r\n";
             }
+            sendStr += cm.getSkillBookInfo(table[selected]);
 
-            cm.sendSimple(sendStr);
+            cm.sendNext(sendStr);
             cm.dispose();
         }
     }

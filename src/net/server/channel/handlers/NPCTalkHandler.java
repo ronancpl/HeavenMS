@@ -80,11 +80,12 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             }
         } else if (obj instanceof MaplePlayerNPC) {
             MaplePlayerNPC pnpc = (MaplePlayerNPC) obj;
+            NPCScriptManager nsm = NPCScriptManager.getInstance();
             
-            if(pnpc.getScriptId() < 9977777) {
-                NPCScriptManager.getInstance().start(c, pnpc.getScriptId(), "rank_user", null);
+            if (pnpc.getScriptId() < 9977777 && !nsm.isNpcScriptAvailable(c, "" + pnpc.getScriptId())) {
+                nsm.start(c, pnpc.getScriptId(), "rank_user", null);
             } else {
-                NPCScriptManager.getInstance().start(c, pnpc.getScriptId(), null);
+                nsm.start(c, pnpc.getScriptId(), null);
             }
         }
     }

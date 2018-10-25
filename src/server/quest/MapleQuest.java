@@ -71,6 +71,7 @@ public class MapleQuest {
     private boolean autoStart;
     private boolean autoPreComplete, autoComplete;
     private boolean repeatable = false;
+    private String name = "", parent = "";
     private final static MapleDataProvider questData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Quest.wz"));
     private static MapleData questInfo;
     private static MapleData questAct;
@@ -87,6 +88,9 @@ public class MapleQuest {
         if(questInfo != null) {
             MapleData reqInfo = questInfo.getChildByPath(String.valueOf(id));
             if(reqInfo != null) {
+                name = MapleDataTool.getString("name", reqInfo, "");
+                parent = MapleDataTool.getString("parent", reqInfo, "");
+                
                 timeLimit = MapleDataTool.getInt("timeLimit", reqInfo, 0);
                 timeLimit2 = MapleDataTool.getInt("timeLimit2", reqInfo, 0);
                 autoStart = MapleDataTool.getInt("autoStart", reqInfo, 0) == 1;
@@ -548,6 +552,27 @@ public class MapleQuest {
                 } else {
                         return -1;
                 }
+        }
+        
+        public String getName() {
+                return name;
+        }
+        
+        public String getParentName() {
+                return parent;
+        }
+        
+        public static List<MapleQuest> getMatchedQuests(String search) {
+                List<MapleQuest> ret = new LinkedList<>();
+                
+                search = search.toLowerCase();
+                for (MapleQuest mq : quests.values()) {
+                        if (mq.name.toLowerCase().contains(search) || mq.parent.toLowerCase().contains(search)) {
+                                ret.add(mq);
+                        }
+                }
+                
+                return ret;
         }
         
 	public static void loadAllQuest() {

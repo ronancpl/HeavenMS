@@ -86,6 +86,7 @@ import constants.ItemConstants;
 import constants.GameConstants;
 import constants.ServerConstants;
 import server.CashShop.CashItemFactory;
+import server.MapleSkillbookInformationProvider;
 import server.TimerManager;
 import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
@@ -329,7 +330,7 @@ public class Server {
             if(p == null) {
                 return -1;
             }
-
+            
             channelid++;
             World world = this.getWorld(worldid);
             Channel channel = new Channel(worldid, channelid, getCurrentTime());
@@ -923,6 +924,8 @@ public class Server {
 
         System.out.println("HeavenMS is now online.\r\n");
         online = true;
+        
+        MapleSkillbookInformationProvider.getInstance();
     }
 
     public static void main(String args[]) {
@@ -1485,23 +1488,44 @@ public class Server {
         return new Pair<>(characterCount, wchars);
     }
     
-    public void loadAccountCharacters(MapleClient c) {
-        Integer accId = c.getAccID();
-        boolean firstAccountLogin;
-        
+    public void loadAllAccountsCharactersView() {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT id FROM accounts");
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                int accountId = rs.getInt("id");
+                if (isFirstAccountLogin(accountId)) {
+                    loadAccountCharactersView(accountId, 0, 0);
+                }
+            }
+            
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException se) {
+            se.printStackTrace();
+        }
+    }
+    
+    private boolean isFirstAccountLogin(Integer accId) {
         lgnRLock.lock();
         try {
-            firstAccountLogin = !accountChars.containsKey(accId);
+            return !accountChars.containsKey(accId);
         } finally {
             lgnRLock.unlock();
         }
-        
-        if(!firstAccountLogin) {
+    }
+    
+    public void loadAccountCharacters(MapleClient c) {
+        Integer accId = c.getAccID();
+        if (!isFirstAccountLogin(accId)) {
             Set<Integer> accWorlds = new HashSet<>();
             
             lgnRLock.lock();
             try {
-                for(Integer chrid : getAccountCharacterEntries(accId)) {
+                for (Integer chrid : getAccountCharacterEntries(accId)) {
                     accWorlds.add(worldChars.get(chrid));
                 }
             } finally {
@@ -1509,12 +1533,12 @@ public class Server {
             }
             
             int gmLevel = 0;
-            for(Integer aw : accWorlds) {
+            for (Integer aw : accWorlds) {
                 World wserv = this.getWorld(aw);
                 
                 if (wserv != null) {
-                    for(MapleCharacter chr : wserv.getAllCharactersView()) {
-                        if(gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
+                    for (MapleCharacter chr : wserv.getAllCharactersView()) {
+                        if (gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
                     }
                 }
             }
@@ -1541,14 +1565,14 @@ public class Server {
                 chars = new HashSet<>(5);
             }
             
-            for(int wid = fromWorldid; wid < wlist.size(); wid++) {
+            for (int wid = fromWorldid; wid < wlist.size(); wid++) {
                 World w = wlist.get(wid);
                 List<MapleCharacter> wchars = accChars.get(wid);
                 w.loadAccountCharactersView(accId, wchars);
                 
-                for(MapleCharacter chr : wchars) {
+                for (MapleCharacter chr : wchars) {
                     int cid = chr.getId();
-                    if(gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
+                    if (gmLevel < chr.gmLevel()) gmLevel = chr.gmLevel();
                     
                     chars.add(cid);
                     worldChars.put(cid, wid);

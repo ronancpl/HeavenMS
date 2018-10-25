@@ -290,17 +290,20 @@ public class MapleSessionCoordinator {
             lrh.remove(session);
             if (lrh.isEmpty()) {
                 loginRemoteHosts.remove(remoteIp);
-                
-                String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
-                if (nibbleHwid != null) {
-                    onlineRemoteHwids.remove(nibbleHwid);
-                }
             }
+        }
+        
+        String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+        if (nibbleHwid != null) {
+            onlineRemoteHwids.remove(nibbleHwid);
         }
     }
     
     public AntiMulticlientResult attemptLoginSession(IoSession session, String nibbleHwid, int accountId, boolean routineCheck) {
-        if (!ServerConstants.DETERRED_MULTICLIENT) return AntiMulticlientResult.SUCCESS;
+        if (!ServerConstants.DETERRED_MULTICLIENT) {
+            session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, nibbleHwid);
+            return AntiMulticlientResult.SUCCESS;
+        }
         
         String remoteHost = getRemoteIp(session);
         Lock lock = getCoodinatorLock(remoteHost);
@@ -368,11 +371,13 @@ public class MapleSessionCoordinator {
     }
     
     public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
-        if (!ServerConstants.DETERRED_MULTICLIENT) return AntiMulticlientResult.SUCCESS;
-        
         String remoteHost = getRemoteIp(session);
-        Lock lock = getCoodinatorLock(remoteHost);
+        if (!ServerConstants.DETERRED_MULTICLIENT) {
+            associateRemoteHostHwid(remoteHost, remoteHwid);
+            return AntiMulticlientResult.SUCCESS;
+        }
         
+        Lock lock = getCoodinatorLock(remoteHost);
         try {
             int tries = 0;
             while (true) {
@@ -413,10 +418,7 @@ public class MapleSessionCoordinator {
                         
                         // updated session CLIENT_HWID attribute will be set when the player log in the game
                         onlineRemoteHwids.add(remoteHwid);
-
-                        cachedHostHwids.put(remoteHost, remoteHwid);
-                        cachedHostTimeout.put(remoteHost, Server.getInstance().getCurrentTime() + 604800000);   // 1 week-time entry
-                        
+                        associateRemoteHostHwid(remoteHost, remoteHwid);
                         associateHwidAccountIfAbsent(remoteHwid, accountId);
 
                         return AntiMulticlientResult.SUCCESS;
@@ -454,6 +456,11 @@ public class MapleSessionCoordinator {
     public String getGameSessionHwid(IoSession session) {
         String remoteHost = getRemoteIp(session);
         return cachedHostHwids.get(remoteHost);
+    }
+    
+    private void associateRemoteHostHwid(String remoteHost, String remoteHwid) {
+        cachedHostHwids.put(remoteHost, remoteHwid);
+        cachedHostTimeout.put(remoteHost, Server.getInstance().getCurrentTime() + 604800000);   // 1 week-time entry
     }
     
     public void runUpdateHwidHistory() {

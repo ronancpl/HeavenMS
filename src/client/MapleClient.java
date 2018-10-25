@@ -79,6 +79,7 @@ import server.quest.MapleQuest;
 
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.coordinator.MapleLoginBypassCoordinator;
 
 public class MapleClient {
 
@@ -473,6 +474,7 @@ public class MapleClient {
 		}
 		if (pin.equals(other)) {
 			pinattempt = 0;
+                        MapleLoginBypassCoordinator.getInstance().registerLoginBypassEntry(getNibbleHWID(), accId, false);
 			return true;
 		}
 		return false;
@@ -499,7 +501,7 @@ public class MapleClient {
 	}
 
 	public boolean checkPic(String other) {
-                if(!ServerConstants.ENABLE_PIC) return true;
+                if(!(ServerConstants.ENABLE_PIC && !canBypassPic())) return true;
             
 		picattempt++;
 		if (picattempt > 5) {
@@ -507,6 +509,7 @@ public class MapleClient {
 		}
 		if (pic.equals(other)) {
 			picattempt = 0;
+                        MapleLoginBypassCoordinator.getInstance().registerLoginBypassEntry(getNibbleHWID(), accId, true);
 			return true;
 		}
 		return false;
@@ -743,7 +746,7 @@ public class MapleClient {
 	public int getAccID() {
 		return accId;
 	}
-
+        
 	public void updateLoginState(int newstate) {
 		try {
                         Connection con = DatabaseConnection.getConnection();
@@ -1051,6 +1054,10 @@ public class MapleClient {
 	public String getHWID() {
 		return hwid;
 	}
+        
+        public void setHWID(String hwid) {
+		this.hwid = hwid;
+	}
 
 	public Set<String> getMacs() {
 		return Collections.unmodifiableSet(macs);
@@ -1232,8 +1239,8 @@ public class MapleClient {
         public void setCharacterSlots(byte slots) {
                 characterSlots = slots;
 	}
-
-	public synchronized boolean gainCharacterSlot() {
+        
+        public synchronized boolean gainCharacterSlot() {
 		if (characterSlots < 15) {
 			Connection con = null;
 			try {
@@ -1461,5 +1468,17 @@ public class MapleClient {
         
         public void enableCSActions() {
                 announce(MaplePacketCreator.enableCSUse(player));
+        }
+        
+        public String getNibbleHWID() {
+                return (String) session.getAttribute(MapleClient.CLIENT_NIBBLEHWID);
+        }
+        
+        public boolean canBypassPin() {
+                return MapleLoginBypassCoordinator.getInstance().canLoginBypass(getNibbleHWID(), accId, false);
+        }
+        
+        public boolean canBypassPic() {
+                return MapleLoginBypassCoordinator.getInstance().canLoginBypass(getNibbleHWID(), accId, true);
         }
 }

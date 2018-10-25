@@ -50,6 +50,15 @@ public class NPCScriptManager extends AbstractScriptManager {
     private Map<MapleClient, NPCConversationManager> cms = new HashMap<>();
     private Map<MapleClient, Invocable> scripts = new HashMap<>();
     
+    public boolean isNpcScriptAvailable(MapleClient c, String fileName) {
+        Invocable iv = null;
+        if (fileName != null) {
+            iv = getInvocable("npc/" + fileName + ".js", c);
+        }
+        
+        return iv != null;
+    }
+    
     public boolean start(MapleClient c, int npc, MapleCharacter chr) {
         return start(c, npc, null, chr);
     }

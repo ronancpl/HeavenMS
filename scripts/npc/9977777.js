@@ -80,7 +80,7 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Improved ranking system, with daily movement.");
         addFeature("Protected and improved face expression system.");
         addFeature("Automated support for Player NPCs and Hall of Fame.");
-        addFeature("Engagement & Wedding system.");
+        addFeature("Engagement & Wedding system with ring effects.");
         addFeature("Equipments displays to everyone it's level & EXP info.");
         addFeature("Further improved the existent minigame mechanics.");
 }
@@ -191,8 +191,9 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Fixed and randomized HP/MP growth rate available.");
         addFeature("Players' MaxHP/MaxMP method accounting equip gain.");
         addFeature("Prevented 'NPC gone after some uptime' issue.");
-        addFeature("Implemented starters' AP assigning for under level 11.");
         addFeature("AP assigning available for novices level 10 or below.");
+        addFeature("SP cap past tier-level, recovered after job upgrade.");
+        addFeature("Bypassable PIN/PIC system for authenticated users.");
         addFeature("Automatic account registration - thanks shavit!");
 }
 

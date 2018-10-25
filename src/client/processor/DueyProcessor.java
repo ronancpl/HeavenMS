@@ -389,6 +389,11 @@ public class DueyProcessor {
                     MapleInventoryType inv = MapleInventoryType.getByType(inventId);
                     Item item = c.getPlayer().getInventory(inv).getItem(itemPos);
                     if (item != null && c.getPlayer().getItemQuantity(item.getItemId(), false) >= amount) {
+                        if (item.isUntradeable()) {
+                            c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_INCORRECT_REQUEST.getCode()));
+                            return;
+                        }
+                        
                         c.getPlayer().gainMeso(-finalcost, false);
                         c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));
 

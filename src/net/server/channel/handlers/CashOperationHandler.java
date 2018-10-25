@@ -243,8 +243,12 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             if (item == null) {
                 c.enableCSActions();
                 return;
-            } else if(c.getPlayer().getPetIndex(item.getPetId()) > -1) {
+            } else if (c.getPlayer().getPetIndex(item.getPetId()) > -1) {
                 chr.getClient().announce(MaplePacketCreator.serverNotice(1, "You cannot put the pet you currently equip into the Cash Shop inventory."));
+                c.enableCSActions();
+                return;
+            } else if (ItemConstants.isWeddingRing(item.getItemId()) || ItemConstants.isWeddingToken(item.getItemId())) {
+                chr.getClient().announce(MaplePacketCreator.serverNotice(1, "You cannot put relationship items into the Cash Shop inventory."));
                 c.enableCSActions();
                 return;
             }

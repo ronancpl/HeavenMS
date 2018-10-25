@@ -17,7 +17,7 @@ function action(mode, type, selection){
         cm.dispose();
     }
     else{
-        if (mode == 0 && status == 0){
+        if (mode == 0 && type > 0){
             cm.dispose();
             return;
         }
@@ -31,11 +31,10 @@ function action(mode, type, selection){
             if (cm.getQuestStatus(2175) == 1){
                 if (cm.getPlayer().canHold(2030019)){
                     cm.sendOk("Please take this #b#t2030019##k, it will make your life a lot easier.  #i2030019#");
-                    cm.gainItem(2030019, 1);
                 }
                 else{
                     cm.sendOk("No free inventory spot available. Please make room in your USE inventory first.");
-                    cm.dipose();
+                    cm.dispose();
                 }
             }
             else{
@@ -44,6 +43,7 @@ function action(mode, type, selection){
             }
         }
         else if (status == 1){
+            cm.gainItem(2030019, 1);
             cm.warp(100000006, 0);
             cm.dispose();
         }

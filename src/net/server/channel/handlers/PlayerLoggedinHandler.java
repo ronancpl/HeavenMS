@@ -83,22 +83,19 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         final Server server = Server.getInstance();
         MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterById(cid);
         boolean newcomer = false;
+        
+        IoSession session = c.getSession();
+        String remoteHwid;
         if (player == null) {
-            IoSession session = c.getSession();
-            
             if (!server.validateCharacteridInTransition((InetSocketAddress) session.getRemoteAddress(), cid)) {
                 c.disconnect(true, false);
                 return;
             }
             
-            if (ServerConstants.DETERRED_MULTICLIENT) {
-                String remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
-                if (remoteHwid == null) {
-                    c.disconnect(true, false);
-                    return;
-                }
-
-                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+            remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
+            if (remoteHwid == null) {
+                c.disconnect(true, false);
+                return;
             }
             
             try {
@@ -108,6 +105,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 e.printStackTrace();
             }
         } else {
+            remoteHwid = player.getClient().getHWID();
             c.setCharacterSlots((byte) player.getClient().getCharacterSlots());
             player.newClient(c);
         }
@@ -115,6 +113,11 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             c.disconnect(true, false);
             return;
         }
+        
+        int hwidLen = remoteHwid.length();
+        session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+        session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
+        c.setHWID(remoteHwid);
         
         c.setPlayer(player);
         c.setAccID(player.getAccountID());

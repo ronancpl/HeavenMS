@@ -60,6 +60,8 @@ import client.inventory.MaplePet;
 import constants.ItemConstants;
 import java.awt.Point;
 import java.util.Arrays;
+import server.MapleSkillbookInformationProvider;
+import server.MapleSkillbookInformationProvider.SkillBookEntry;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 
@@ -543,6 +545,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         
         public Object[] getNamesWhoDropsItem(Integer itemId) {
                 return MapleItemInformationProvider.getInstance().getWhoDrops(itemId).toArray();
+        }
+        
+        public String getSkillBookInfo(int itemid) {
+                SkillBookEntry sbe = MapleSkillbookInformationProvider.getInstance().getSkillbookAvailability(itemid);
+                return sbe != SkillBookEntry.UNAVAILABLE ? "    Obtainable through #rquestline#k." : "";
         }
         
 }

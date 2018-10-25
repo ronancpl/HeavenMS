@@ -121,6 +121,11 @@ public class StorageProcessor {
                                                 MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
                                                 Item item = chr.getInventory(invType).getItem(slot).copy();
                                                 if (item != null && item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
+                                                        if (ItemConstants.isWeddingRing(itemId) || ItemConstants.isWeddingToken(itemId)) {
+                                                                c.announce(MaplePacketCreator.enableActions());
+                                                                return;
+                                                        }
+                                                    
                                                         if (ItemConstants.isRechargeable(itemId)) {
                                                                 quantity = item.getQuantity();
                                                         }

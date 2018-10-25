@@ -25,7 +25,7 @@ importPackage(Packages.tools);
 
 var status;
 var harpNote = 'A';
-var harpSounds = ["do", "la", "mi", "pa", "re", "si", "sol"];
+var harpSounds = ["do", "re", "mi", "pa", "sol", "la", "si"];   // musical order detected thanks to Arufonsu
 var harpSong = "CCGGAAGFFEEDDC|GGFFEED|GGFFEED|CCGGAAGFFEEDDC|";
  
 function start() {

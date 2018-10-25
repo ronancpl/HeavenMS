@@ -47,9 +47,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
         return true;
     }
 
-    private void respawnPlayer(MapleCharacter mc) {
-        mc.getMap().broadcastMessage(mc, MaplePacketCreator.removePlayerFromMap(mc.getId()), false);
-        mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapObject(mc), false);
+    private void restancePlayer(MapleCharacter mc) {
+        mc.broadcastStance();
     }
 
     private class Invited {
@@ -132,7 +131,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.showGuildInfo(mc));
                 
                 c.getPlayer().dropMessage(1, "You have successfully created a Guild.");
-                respawnPlayer(mc);
+                restancePlayer(mc);
                 break;
             case 0x05:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {
@@ -192,7 +191,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if(allianceId > 0) Server.getInstance().getAlliance(allianceId).updateAlliancePackets(mc);
                 
                 mc.saveGuildStatus(); // update database
-                respawnPlayer(mc);
+                restancePlayer(mc);
                 break;
             case 0x07:
                 allianceId = mc.getGuild().getAllianceId();
@@ -211,7 +210,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 
                 mc.getMGC().setGuildId(0);
                 mc.saveGuildStatus();
-                respawnPlayer(mc);
+                restancePlayer(mc);
                 break;
             case 0x08:
                 allianceId = mc.getGuild().getAllianceId();
@@ -271,7 +270,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 
                 mc.gainMeso(-ServerConstants.CHANGE_EMBLEM_COST, true, false, true);
-                respawnPlayer(mc);
+                restancePlayer(mc);
                 break;
             case 0x10:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {

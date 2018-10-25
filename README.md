@@ -7,7 +7,7 @@ Besides myself for maintaining this repository, credits are to be given to Wizet
 
 Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is **free to install, use, modify and redistribute the contents**, as long as there is **no kind of commercial trading involved** and the **credits to the original creators are maintained** within the codes.
 
-This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
+This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 (1.7.0_79+) in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
 In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
 
@@ -57,7 +57,7 @@ Status: <span style="color:grey">__In development (4th round)__</span>.
 
 #### Mission
 
-With non-profitting means intended, provide nostalgic pre-BB MapleStory players world-wide a quality local server for freestyle entertainment.
+With non-profitting means intended, provide nostalgic pre-BB maplers world-wide a quality local server for freestyle entertainment.
 
 #### Vision
 
@@ -131,7 +131,9 @@ Hamachi is optional, though. You don't have to install Hamachi if you want to ma
 ---
 ### Installing the SERVER 
 
-Set the "HeavenMS" folder on a place of your preference. It is recommended to use "C:\Nexon\HeavenMS".
+By downloading through the Github download button, you may have obtained a ZIP file with a single "HeavenMS-master" folder on it. EXTRACT that folder.
+
+For expediency, "HeavenMS-master" folder on this guide will be referred just as "HeavenMS". Rename it for convenience. Then, set "HeavenMS" the folder on a place of your preference. It is recommended to use "C:\Nexon\HeavenMS".
 
 Setting up the SQL: open MySQL Query Browser, then create a new session with the parameters below, then click OK.
 
@@ -151,9 +153,11 @@ At the end of the execution of these SQLs, you should have installed a database 
 
 Configure the IP you want to use for your MapleStory server in "configuration.ini" file, or set it as "localhost" if you want to run it only on your machine. Alternatively, you can use the IP given by Hamachi to use on a Hamachi network, or you can use a non-Hamachi method of port-forwarding. Neither will be approached here.
 
+#### Open the NetBeans project
+
 Now open NetBeans, and click "Open a project..." . Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
 
-#### Inside the project, you may encounter some code errors.
+Inside the project, you may encounter some code errors.
 
 These errors pops-up because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
 

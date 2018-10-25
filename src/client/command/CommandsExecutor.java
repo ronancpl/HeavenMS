@@ -180,6 +180,7 @@ public class CommandsExecutor {
         addCommand("dex", StatDexCommand.class);
         addCommand("int", StatIntCommand.class);
         addCommand("luk", StatLukCommand.class);
+        addCommand("enableauth", EnableAuthCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

@@ -379,13 +379,16 @@ public class CashShop {
     }
 
     public Item findByCashId(int cashId) {
-        boolean isRing = false;
+        boolean isRing;
         Equip equip = null;
         for (Item item : getInventory()) {
             if (item.getInventoryType().equals(MapleInventoryType.EQUIP)) {
                 equip = (Equip) item;
                 isRing = equip.getRingId() > -1;
+            } else {
+                isRing = false;
             }
+            
             if ((item.getPetId() > -1 ? item.getPetId() : isRing ? equip.getRingId() : item.getCashId()) == cashId) {
                 return item;
             }

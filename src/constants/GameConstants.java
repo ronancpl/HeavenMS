@@ -25,6 +25,8 @@ public class GameConstants {
     private static final int[] MESO_RATE_GAIN = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78, 91, 105};
     private static final int[]  EXP_RATE_GAIN = {1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610};    //fibonacci :3
     
+    private static final int[] jobUpgradeBlob = {1, 20, 60, 110, 190};
+    private static final int[] jobUpgradeSpUp = {0, 1, 2, 3, 6};
     private final static Map<Integer, String> jobNames = new HashMap<>();
     private final static NumberFormat nfFormatter = new DecimalFormat("#,###,###,###");
     private final static NumberFormat nfParser = NumberFormat.getInstance(ServerConstants.USE_UNITPRICE_WITH_COMMA ? Locale.FRANCE : Locale.UK);
@@ -150,6 +152,14 @@ public class GameConstants {
         }
         
         return name;
+    }
+    
+    public static int getJobUpgradeLevelRange(int jobbranch) {
+        return jobUpgradeBlob[jobbranch];
+    }
+    
+    public static int getChangeJobSpUpgrade(int jobbranch) {
+        return jobUpgradeSpUp[jobbranch];
     }
     
     public static boolean isHallOfFameMap(int mapid) {

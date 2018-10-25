@@ -713,13 +713,13 @@ public class MaplePacketCreator {
                 mplew.write(0);
                 
                 mplew.write(0); // IsQuietBan
-        		mplew.writeLong(0);//IsQuietBanTimeStamp
-        		mplew.writeLong(0); //CreationTimeStamp
+                mplew.writeLong(0);//IsQuietBanTimeStamp
+                mplew.writeLong(0); //CreationTimeStamp
 
                 mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
-
-                mplew.write(ServerConstants.ENABLE_PIN ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
-                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic() == null ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
+                
+                mplew.write(ServerConstants.ENABLE_PIN && !c.canBypassPin() ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
+                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
                 
                 return mplew.getPacket();
         }
@@ -889,7 +889,7 @@ public class MaplePacketCreator {
                         addCharEntry(mplew, chr, false);
                 }
 
-                mplew.write(ServerConstants.ENABLE_PIC ? (c.getPic() == null ? 0 : 1) : 2);
+                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null ? 0 : 1) : 2);
                 mplew.writeInt(ServerConstants.COLLECTIVE_CHARSLOT ? chars.size() + c.getAvailableCharacterSlots() : c.getCharacterSlots());
                 return mplew.getPacket();
         }
@@ -1049,7 +1049,7 @@ public class MaplePacketCreator {
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.writeInt(0);
+                mplew.skip(5);
                 return mplew.getPacket();
         }
         
@@ -1066,7 +1066,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.writeInt(0);
+                mplew.skip(5);
                 return mplew.getPacket();
         }
         
@@ -1829,19 +1829,12 @@ public class MaplePacketCreator {
         /**
          * Gets a packet spawning a player as a mapobject to other clients.
          *
+         * @param target The client receiving this packet.
          * @param chr The character to spawn to other clients.
+         * @param enteringField Whether the character to spawn is not yet present in the map or already is.
          * @return The spawn player packet.
          */
-        
-        public static byte[] spawnPlayerMapObject(MapleCharacter chr) {
-                return spawnPlayerMapObject(chr, false);
-        }
-        
-        public static byte[] spawnEnterPlayerMapObject(MapleCharacter chr) {
-                return spawnPlayerMapObject(chr, true);
-        }
-        
-        private static byte[] spawnPlayerMapObject(MapleCharacter chr, boolean enteringField) {
+        public static byte[] spawnPlayerMapObject(MapleClient target, MapleCharacter chr, boolean enteringField) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_PLAYER.getValue());
                 mplew.writeInt(chr.getId());
@@ -2013,7 +2006,7 @@ public class MaplePacketCreator {
                 }
                 addRingLook(mplew, chr, true);  // crush
                 addRingLook(mplew, chr, false); // friendship
-                addMarriageRingLook(mplew, chr);
+                addMarriageRingLook(target, mplew, chr);
                 encodeNewYearCardInfo(mplew, chr);  // new year seems to crash sometimes...
                 mplew.skip(2);
                 mplew.write(chr.getTeam());//only needed in specific fields
@@ -2137,17 +2130,23 @@ public class MaplePacketCreator {
                 }
         }
 
-        private static void addMarriageRingLook(final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
+        private static void addMarriageRingLook(MapleClient target, final MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
                 MapleRing ring = chr.getMarriageRing();
             
-                if (ring != null && !ring.equipped()) {
+                if (ring == null || !ring.equipped()) {
                         mplew.write(0);
-                        return;
-                }
-                mplew.writeBool(ring != null);
-                if (ring != null) {
-                        mplew.writeInt(chr.getId());
-                        mplew.writeInt(ring.getPartnerChrId());
+                } else {
+                        mplew.write(1);
+                        
+                        MapleCharacter targetChr = target.getPlayer();
+                        if (targetChr != null && targetChr.getPartnerId() == chr.getId()) {
+                            mplew.writeInt(0);    // 1a pessoa: ser 0 0 implica match...
+                            mplew.writeInt(0);    // 3a pessoa: 1 2 2 1 funciona!
+                        } else {
+                            mplew.writeInt(chr.getId());    // 1a pessoa: ser 0 0 implica match...
+                            mplew.writeInt(ring.getPartnerChrId());    // 3a pessoa: 1 2 2 1 funciona!
+                        }
+                        
                         mplew.writeInt(ring.getItemId());
                 }
         }
@@ -2558,7 +2557,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] updateCharLook(MapleCharacter chr) {
+        public static byte[] updateCharLook(MapleClient target, MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.UPDATE_CHAR_LOOK.getValue());
                 mplew.writeInt(chr.getId());
@@ -2566,7 +2565,7 @@ public class MaplePacketCreator {
                 addCharLook(mplew, chr, false);
                 addRingLook(mplew, chr, true);
                 addRingLook(mplew, chr, false);
-                addMarriageRingLook(mplew, chr);
+                addMarriageRingLook(target, mplew, chr);
                 mplew.writeInt(0);
                 return mplew.getPacket();
         }
@@ -2913,6 +2912,7 @@ public class MaplePacketCreator {
                 }
 
                 mplew.writeMapleAsciiString(q.getQuestData());
+                mplew.skip(5);
                 return mplew.getPacket();
         }
 

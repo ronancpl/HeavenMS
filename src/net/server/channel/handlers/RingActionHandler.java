@@ -107,8 +107,16 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
             source.dropMessage(1, "The player is already engaged!");
             source.announce(Wedding.OnMarriageResult((byte) 0));
             return;
-        } else if (target.getGender() != 1) {
-            source.dropMessage(1, "You may only propose to a girl!");
+        } else if (target.haveWeddingRing()) {
+            source.dropMessage(1, "The player already holds a marriage ring...");
+            source.announce(Wedding.OnMarriageResult((byte) 0));
+            return;
+        } else if (source.haveWeddingRing()) {
+            source.dropMessage(1, "You can't propose while holding a marriage ring!");
+            source.announce(Wedding.OnMarriageResult((byte) 0));
+            return;
+        } else if (target.getGender() == source.getGender()) {
+            source.dropMessage(1, "You may only propose to a " + (source.getGender() == 1 ? "male" : "female") + "!");
             source.announce(Wedding.OnMarriageResult((byte) 0));
             return;
         } else if (!MapleInventoryManipulator.checkSpace(c, newBoxId, 1, "")) {

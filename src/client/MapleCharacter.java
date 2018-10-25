@@ -159,6 +159,8 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import server.movement.AbsoluteLifeMovement;
+import server.movement.LifeMovementFragment;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -804,10 +806,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         blockCashShop = !blockCashShop;
     }
 
+    public void setClient(MapleClient c) {
+        this.client = c;
+    }
+    
     public void newClient(MapleClient c) {
         this.loggedIn = true;
         c.setAccountName(this.client.getAccountName());//No null's for accountName
-        this.client = c;
+        this.setClient(c);
         this.map = c.getChannelServer().getMapFactory().getMap(getMapId());
         MaplePortal portal = map.findClosestPlayerSpawnpoint(getPosition());
         if (portal == null) {
@@ -833,7 +839,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 announce(MaplePacketCreator.getGMEffect(0x10, (byte) 0));
                 List<MapleBuffStat> dsstat = Collections.singletonList(MapleBuffStat.DARKSIGHT);
                 getMap().broadcastGMMessage(this, MaplePacketCreator.cancelForeignBuff(id, dsstat), false);
-                getMap().broadcastMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
+                getMap().broadcastSpawnPlayerMapObjectMessage(this, this, false);
                 
                 for(MapleSummon ms: this.getSummonsValues()) {
                     getMap().broadcastNONGMMessage(this, MaplePacketCreator.spawnSummon(ms, false), false);
@@ -842,9 +848,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 this.hidden = true;
                 announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
                 if (!login) {
-                    getMap().broadcastMessage(this, MaplePacketCreator.removePlayerFromMap(getId()), false);
+                    getMap().broadcastNONGMMessage(this, MaplePacketCreator.removePlayerFromMap(getId()), false);
                 }
-                getMap().broadcastGMMessage(this, MaplePacketCreator.spawnPlayerMapObject(this), false);
                 List<Pair<MapleBuffStat, Integer>> ldsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
                 getMap().broadcastGMMessage(this, MaplePacketCreator.giveForeignBuff(id, ldsstat), false);
                 for (MapleMonster mon : this.getControlledMonsters()) {
@@ -1034,8 +1039,15 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             if (newJob.getId() % 10 == 2) {
                 spGain += 2;
             }
+            
+            if (ServerConstants.USE_ENFORCE_JOB_SP_RANGE) {
+                spGain = getChangedJobSp(newJob);
+            }
         }
-        gainSp(spGain, GameConstants.getSkillBook(newJob.getId()), true);
+        
+        if (spGain > 0) {
+            gainSp(spGain, GameConstants.getSkillBook(newJob.getId()), true);
+        }
         
         if (newJob.getId() % 10 > 1) {
             gainAp(5, true);
@@ -1158,6 +1170,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else {
             keymap.remove(Integer.valueOf(key));
         }
+    }
+    
+    public void broadcastStance(int newStance) {
+        setStance(newStance);
+        broadcastStance();
+    }
+    
+    public void broadcastStance() {
+        AbsoluteLifeMovement alm = new AbsoluteLifeMovement(0, getPosition(), 0, getStance());
+        alm.setPixelsPerSecond(new Point(0, 0));
+        List<LifeMovementFragment> moveUpdate = Collections.singletonList((LifeMovementFragment) alm);
+        
+        map.broadcastMessage(this, MaplePacketCreator.movePlayer(id, moveUpdate), false);
     }
     
     public MapleMap getWarpMap(int map) {
@@ -1743,7 +1768,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 		
         if (ob instanceof MapleMapItem) {
             MapleMapItem mapitem = (MapleMapItem) ob;
-            if(Server.getInstance().getCurrentTime() - mapitem.getDropTime() < 900 || !mapitem.canBePickedBy(this)) {
+            if (System.currentTimeMillis() - mapitem.getDropTime() < 900 || !mapitem.canBePickedBy(this)) {
                 client.announce(MaplePacketCreator.enableActions());
                 return;
             }
@@ -2585,7 +2610,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void equipChanged() {
-        getMap().broadcastMessage(this, MaplePacketCreator.updateCharLook(this), false);
+        getMap().broadcastUpdateCharLookMessage(this, this);
         equipchanged = true;
         updateLocalStats();
         if (getMessenger() != null) {
@@ -3939,8 +3964,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 extraRecInterval = effect.getMpRRate();
             }
             
-            stopExtraTask();
-            startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder
+            chrLock.lock();
+            try {
+                stopExtraTask();
+                startExtraTask(extraHpRec, extraMpRec, extraRecInterval);   // HP & MP sharing the same task holder
+            } finally {
+                chrLock.unlock();
+            }
+            
         } else if (effect.isMapChair()) {
             startChairTask();
         }
@@ -4502,6 +4533,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public boolean haveItemEquipped(int itemid) {
         return (inventory[MapleInventoryType.EQUIPPED.ordinal()].findById(itemid) != null);
+    }
+    
+    public boolean haveWeddingRing() {
+        int rings[] = {1112806, 1112803, 1112807, 1112809};
+        
+        for (int ringid : rings) {
+            if (haveItemWithId(ringid, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
     
     public int getItemQuantity(int itemid, boolean checkEquipped) {
@@ -5572,7 +5615,85 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             hpDecreaseTask.cancel(false);
         }
     }
+    
+    private int getChangedJobSp(MapleJob newJob) {
+        int curSp = getUsedSp(newJob) + getJobRemainingSp(newJob);
+        int spGain = 0;
+        int expectedSp = getJobLevelSp(level - 10, newJob, GameConstants.getJobBranch(newJob));
+        if (curSp < expectedSp) {
+            spGain += (expectedSp - curSp);
+        }
+        
+        return getSpGain(spGain, curSp, job);
+    }
+    
+    private int getUsedSp(MapleJob job) {
+        int jobId = job.getId();
+        int spUsed = 0;
+        
+        for (Entry<Skill, SkillEntry> s : this.getSkills().entrySet()) {
+            Skill skill = s.getKey();
+            if (GameConstants.isInJobTree(skill.getId(), jobId) && !skill.isBeginnerSkill()) {
+                spUsed += s.getValue().skillevel;
+            }
+        }
+        
+        return spUsed;
+    }
+    
+    private int getJobLevelSp(int level, MapleJob job, int jobBranch) {
+        if (getJobStyleInternal(job.getId(), (byte) 0x40) == MapleJob.MAGICIAN) {
+            level += 2;  // starts earlier, level 8
+        }
+        
+        return 3 * level + GameConstants.getChangeJobSpUpgrade(jobBranch);
+    }
+    
+    private int getJobMaxSp(MapleJob job) {
+        int jobBranch = GameConstants.getJobBranch(job);
+        int jobRange = GameConstants.getJobUpgradeLevelRange(jobBranch);
+        return getJobLevelSp(jobRange, job, jobBranch);
+    }
+    
+    private int getJobRemainingSp(MapleJob job) {
+        int skillBook = GameConstants.getSkillBook(job.getId());
+        
+        int ret = 0;
+        for (int i = 0; i <= skillBook; i++) {
+            ret += this.getRemainingSp(i);
+        }
+        
+        return ret;
+    }
+    
+    private int getSpGain(int spGain, MapleJob job) {
+        int curSp = getUsedSp(job) + getJobRemainingSp(job);
+        return getSpGain(spGain, curSp, job);
+    }
+    
+    private int getSpGain(int spGain, int curSp, MapleJob job) {
+        int maxSp = getJobMaxSp(job);
 
+        spGain = Math.min(spGain, maxSp - curSp);
+        int jobBranch = GameConstants.getJobBranch(job);
+        return spGain;
+    }
+    
+    private void levelUpGainSp() {
+        if (GameConstants.getJobBranch(job) == 0) {
+            return;
+        }
+        
+        int spGain = 3;
+        if (ServerConstants.USE_ENFORCE_JOB_SP_RANGE && !GameConstants.hasSPTable(job)) {
+            spGain = getSpGain(spGain, job);
+        }
+        
+        if (spGain > 0) {
+            gainSp(spGain, GameConstants.getSkillBook(job.getId()), true);
+        }
+    }
+    
     public synchronized void levelUp(boolean takeexp) {
         Skill improvingMaxHP = null;
         Skill improvingMaxMP = null;
@@ -5693,9 +5814,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             level = maxClassLevel; //To prevent levels past the maximum
         }
         
-        if (job.getId() % 1000 > 0) {
-            gainSp(3, GameConstants.getSkillBook(job.getId()), true);
-        }
+        levelUpGainSp();
         
         effLock.lock();
         statWlock.lock();
@@ -8835,7 +8954,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     @Override
     public void sendSpawnData(MapleClient client) {
         if (!this.isHidden() || client.getPlayer().gmLevel() > 1) {
-            client.announce(MaplePacketCreator.spawnPlayerMapObject(this));
+            client.announce(MaplePacketCreator.spawnPlayerMapObject(client, this, false));
             
             if(hasBuffFromSourceid(getJobMapChair(job))) {
                 client.announce(MaplePacketCreator.giveForeignChairSkillEffect(id));

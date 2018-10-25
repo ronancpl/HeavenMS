@@ -6,6 +6,10 @@ Ronan - Head Developer
 
 Vcoc - Freelance Developer
 
+Thora - Contributor
+
+GabrielSin - Contributor
+
 ---------------------------
 DISCLAIMER:
 ---------------------------
@@ -58,6 +62,7 @@ Player Social Network:
 
 * Guild and Alliance system fully functional.
 * Implemented Marriage system from the ground-up (excluding character packet encoding parts that were already present, proper credits given throughout the source files).
+* Marriage ring effects functional.
 * Beginners can create and join a "beginner-only" party (characters up to level 10).
 * HP bar of party members now properly calculates the HP gain from equipments.
 * Enhanced synchronization on Player Shops and Hired Merchants. Transactions made are instantly informed to the owner.
@@ -174,7 +179,9 @@ Server potentials:
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 * Implemented methods to get the current Players' MaxHP/MaxMP method with equipment HP/MP gains already summed up.
 * Reallocated mapobjectids utilization throughout the source, preventing issues such as "NPC disappearing mysteriously after some server time" from happening.
-* Implemented old GMS statup mechanic for novices level 10 or below. Usage of the edited localhost is mandatory on this.
+* Implemented old GMS AP assigning for novices level 10 or below. Usage of the edited localhost is mandatory on this.
+* Implemented SP capping for players that passed the job upgrade level. After upgrading jobs, the missing SP amount is replenished.
+* Bypassable PIN/PIC system for players that were already authenticated and are currently loggedin and active.
 * Accounts can be created automatically when trying to login on an inexistent account -- credits to shavit.
 * Usage of Bcrypt (up-to-date) as the main password hashing algorithm, replacing old SHA's -- credits to shavit.
 
@@ -201,8 +208,9 @@ External tools:
 * MapleArrowFetcher - Updates min/max quantity dropped on all arrows drop data, calculations based on mob level and whether it's a boss or not.
 * MapleBossHpBarFetcher - Searches the quest WZ files and reports in all relevant data regarding mobs that has a boss HP bar whilst not having a proper "boss" label.
 * MapleCashDropFetcher - Searches the DB for any CASH drop data entry and lists them on a report file.
+* MapleCodeCouponGenerator - Reads the XML recipe at the input folder and loads into the DB new coupon codes bundled with all depicted items.
 * MapleCouponInstaller - Retrieves coupon info from the WZ and makes a SQL table with it. The server will use that table to gather info regarding rates and intervals.
-* MapleDojoUpdate - Patches the dojo WZ nodes with correct script names for onUserEnter and onFirstUserEnter fields.
+* MapleDojoUpdater - Patches the dojo WZ nodes with correct script names for onUserEnter and onFirstUserEnter fields.
 * MapleEquipmentOmnileveler - Updates the equipment WZ nodes with item level information, allowing thus access for item level and EXP info for common equipments.
 * MapleIdRetriever - Two behaviors: generates a SQL table with relation (id, name) of the handbook given as input. Given a file with names, outputs a file with ids.
 * MapleInvalidItemIdFetcher - Generates a file listing all inexistent itemid's currently laying on the DB.
@@ -218,6 +226,7 @@ External tools:
 * MapleReactorDropFetcher - Searches the DB for reactors with drop data and reports in reactorids that are not yet coded.
 * MapleSkillMakerFetcher - Updates the DB Maker-related tables with the current info present on the WZs.
 * MapleSkillMakerReagentIndexer - Generates a new maker table describing all stat-improvements from the Maker reagents (those empowering crystals and jewels).
+* MapleWorldmapChecker - Searches the map WZ files for map/field entries with missing tooltip informations (that would point which map the character currently is on the overworld maps).
 
 Project:
 

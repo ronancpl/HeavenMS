@@ -36,7 +36,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  */
 public final class QuestActionHandler extends AbstractMaplePacketHandler {
     
-    // credits to gabriel.sin
+    // isNpcNearby credits to gabriel.sin
     private static boolean isNpcNearby(SeekableLittleEndianAccessor slea, MapleCharacter player, MapleQuest quest, int npcId) {
         Point playerP = null;
         

@@ -294,7 +294,7 @@ public class Equip extends Item {
         int stat = 0;
         if(rnd >= limit) {
             rnd -= limit;
-            stat = 1 + (int)Math.floor((-1 + Math.sqrt((8 * rnd) + 1)) / 2);
+            stat = 1 + (int)Math.floor((-1 + Math.sqrt((8 * rnd) + 1)) / 2);    // optimized randomizeStatUpgrade author: David A.
         }
         
         return stat;

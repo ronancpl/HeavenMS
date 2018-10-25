@@ -11,15 +11,59 @@ import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
 import java.net.InetSocketAddress;
+import net.server.coordinator.MapleSessionCoordinator;
+import org.apache.mina.core.session.IoSession;
 
 public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandler {
 
+    private static int parseAntiMulticlientError(MapleSessionCoordinator.AntiMulticlientResult res) {
+        switch (res) {
+            case REMOTE_PROCESSING:
+                return 10;
+
+            case REMOTE_LOGGEDIN:
+                return 7;
+
+            case REMOTE_NO_MATCH:
+                return 17;
+                
+            case COORDINATOR_ERROR:
+                return 8;
+                
+            default:
+                return 9;
+        }
+    }
+    
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
 
         String pic = slea.readMapleAsciiString();
         int charId = slea.readInt();
         slea.readInt(); // please don't let the client choose which world they should login
+        
+        String macs = slea.readMapleAsciiString();
+        String hwid = slea.readMapleAsciiString();
+        
+        if (!hwid.matches("[0-9A-F]{12}_[0-9A-F]{8}")) {
+            c.announce(MaplePacketCreator.getAfterLoginError(17));
+            return;
+        }
+        
+        c.updateMacs(macs);
+        c.updateHWID(hwid);
+        
+        if (c.hasBannedMac() || c.hasBannedHWID()) {
+            c.getSession().close(true);
+            return;
+        }
+        
+        IoSession session = c.getSession();
+        MapleSessionCoordinator.AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptGameSession(session, c.getAccID(), hwid);
+        if (res != MapleSessionCoordinator.AntiMulticlientResult.SUCCESS) {
+            c.announce(MaplePacketCreator.getAfterLoginError(parseAntiMulticlientError(res)));
+            return;
+        }
         
         Server server = Server.getInstance();
         if(!server.haveCharacterEntry(c.getAccID(), charId)) {
@@ -36,13 +80,6 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
         
         int channel = Randomizer.rand(1, wserv.getChannelsSize());
         c.setChannel(channel);
-        
-        String macs = slea.readMapleAsciiString();
-        c.updateMacs(macs);
-        if (c.hasBannedMac()) {
-            c.getSession().close(true);
-            return;
-        }
         
         if (c.checkPic(pic)) {
             String[] socket = server.getInetSocket(c.getWorld(), c.getChannel());

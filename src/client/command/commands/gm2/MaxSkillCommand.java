@@ -56,5 +56,6 @@ public class MaxSkillCommand extends Command {
             player.changeSkillLevel(skill, (byte) -1, -1, -1);
         }
 
+        player.yellowMessage("Skills maxed out.");
     }
 }

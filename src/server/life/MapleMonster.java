@@ -445,8 +445,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
 
     private int calcThresholdLevel(boolean isPqMob) {
-        if(isPqMob || !ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) {
+        if(!ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) {
             return 0;
+        } else if (isPqMob) {
+            double thresholdLevel = getLevel();
+            thresholdLevel /= 32.55916838;
+            thresholdLevel = Math.log(thresholdLevel) / 0.02058204546;
+            
+            return (int) Math.ceil(thresholdLevel);
         } else {
             return getLevel() - (!isBoss() ? ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN : 2 * ServerConstants.MIN_UNDERLEVEL_TO_EXP_GAIN);
         }

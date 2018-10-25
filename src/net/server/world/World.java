@@ -409,6 +409,11 @@ public class World {
         return list;
     }
     
+    public List<MapleCharacter> loadAndGetAllCharactersView() {
+        Server.getInstance().loadAllAccountsCharactersView();
+        return getAllCharactersView();
+    }
+    
     public List<MapleCharacter> getAllCharactersView() {    // sorted by accountid, charid
         List<MapleCharacter> chrList = new LinkedList<>();
         Map<Integer, SortedMap<Integer, MapleCharacter>> accChars;
@@ -598,8 +603,7 @@ public class World {
             mc.saveGuildStatus();
         }
         if (bDifferentGuild) {
-            mc.getMap().broadcastMessage(mc, MaplePacketCreator.removePlayerFromMap(cid), false);
-            mc.getMap().broadcastMessage(mc, MaplePacketCreator.spawnPlayerMapObject(mc), false);
+            mc.broadcastStance();
         }
     }
 

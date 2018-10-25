@@ -28,6 +28,10 @@ import client.command.Command;
 import client.processor.BuybackProcessor;
 
 public class BuyBackCommand extends Command {
+    {
+        setDescription("");
+    }
+    
     @Override
     public void execute(MapleClient c, String[] params) {
         if (params.length < 1) {

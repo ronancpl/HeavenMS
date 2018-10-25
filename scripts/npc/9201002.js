@@ -199,7 +199,7 @@ function action(mode, type, selection) {
                     } else {
                         var placeTime = cserv.getWeddingReservationTimeLeft(wid);
 
-                        cm.sendOk("Have patience. Your wedding is set to happen at the #r" + placeTime + "#k.");
+                        cm.sendOk("Have patience. Your wedding is set to happen at the #r" + placeTime + "#k. Don't forget the wedding garment.");
                         cm.dispose();
                     }
                 } else {
