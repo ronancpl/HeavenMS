@@ -984,8 +984,14 @@ public class EventInstanceManager {
         }
         
         private List<Integer> convertToIntegerArray(List<Double> list) {
-            
-                List<Integer> intList=new ArrayList<Integer> (new ArrayList(java.util.Arrays.asList(list.toArray())));
+            List<Integer> intList;
+            if(ServerConstants.JAVA_8)
+                 intList=new ArrayList<Integer> (new ArrayList(java.util.Arrays.asList(list.toArray())));
+            else
+            {
+                 intList = new ArrayList<>();
+                for(Double d: list) intList.add(d.intValue());
+            }
                 return intList;
         }
         
