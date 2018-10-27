@@ -646,7 +646,11 @@ public class EventManager {
             Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembers());
             
             if(p != null) {
-                List<MaplePartyCharacter> lmpc = new ArrayList<>(((Map<String, MaplePartyCharacter>)(ScriptUtils.convert(p, Map.class))).values());
+                List<MaplePartyCharacter> lmpc;
+                if(ServerConstants.JAVA_8)
+                    lmpc = new ArrayList<>(((Map<String, MaplePartyCharacter>)(ScriptUtils.convert(p, Map.class))).values());
+                else
+                    lmpc = new ArrayList<>((List<MaplePartyCharacter>) p);
                 party.setEligibleMembers(lmpc);
                 return lmpc;
             }
