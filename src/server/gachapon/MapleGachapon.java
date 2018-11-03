@@ -49,6 +49,8 @@ public class MapleGachapon {
 		NEW_LEAF_CITY(9100109, 90, 8, 2, new NewLeafCity()),
 		NAUTILUS_HARBOR(9100117, 90, 8, 2, new NautilusHarbor());
 
+		private static final List<Gachapon> values = List.of(Gachapon.values());
+
 		private GachaponItems gachapon;
 		private int npcId;
 		private int common;
@@ -56,11 +58,11 @@ public class MapleGachapon {
 		private int rare;
 
 		private Gachapon(int npcid, int c, int u, int r, GachaponItems g) {
-			npcId = npcid;
-			gachapon = g;
-			common = c;
-			uncommon = u;
-			rare = r;
+			this.npcId = npcid;
+			this.gachapon = g;
+			this.common = c;
+			this.uncommon = u;
+			this.rare = r;
 		}
 
 		private int getTier() {
@@ -85,7 +87,7 @@ public class MapleGachapon {
 		}
 
 		public static Gachapon getByNpcId(int npcId) {
-			for (Gachapon gacha : Gachapon.values()) {
+			for (Gachapon gacha : values) {
 				if (npcId == gacha.npcId) {
 					return gacha;
 				}
