@@ -49,7 +49,7 @@ public class MapleGachapon {
 		NEW_LEAF_CITY(9100109, 90, 8, 2, new NewLeafCity()),
 		NAUTILUS_HARBOR(9100117, 90, 8, 2, new NautilusHarbor());
 
-		private static final List<Gachapon> values = List.of(Gachapon.values());
+		private static final Gachapon[] values = Gachapon.values();
 
 		private GachaponItems gachapon;
 		private int npcId;
