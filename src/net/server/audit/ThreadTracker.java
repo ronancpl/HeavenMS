@@ -153,7 +153,7 @@ public class ThreadTracker {
                                 StackTraceElement[] ste = threads.get(l).getStackTrace();
                                 if(ste.length > 0) {
                                     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                                    dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+                                    dateFormat.setTimeZone(TimeZone.getDefault());
                                     String df = dateFormat.format(new Date());
                                     
                                     FilePrinter.print(FilePrinter.DEADLOCK_LOCKS, printThreadLog(tt, df));
@@ -195,7 +195,7 @@ public class ThreadTracker {
                     }
                 } else {    // print status
                     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+                    dateFormat.setTimeZone(TimeZone.getDefault());
 
                     FilePrinter.printError(FilePrinter.DEADLOCK_STATE, printThreadTrackerState(dateFormat.format(new Date())));
                     //FilePrinter.printError(FilePrinter.DEADLOCK_STATE, "[" + dateFormat.format(new Date()) + "] Presenting current lock path for lockid " + lockId.name() + ".\r\n" + printLockStatus(lockId) + "\r\n-------------------------------\r\n");

@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.world.MapleParty;
 import tools.MaplePacketCreator;
 
 /**
@@ -84,10 +85,9 @@ public class MapleDoorObject extends AbstractMapleMapObject {
     }
     
     public void warp(final MapleCharacter chr) {
-        boolean onParty = chr.getParty() != null;
-        
-        if (chr.getId() == ownerId || (onParty && chr.getParty().getMemberById(ownerId) != null)) {
-            if(!inTown() && !onParty) {
+        MapleParty party = chr.getParty();
+        if (chr.getId() == ownerId || (party != null && party.getMemberById(ownerId) != null)) {
+            if(!inTown() && party == null) {
                 chr.changeMap(to, getLinkedPortalId());
             } else {
                 chr.changeMap(to, getLinkedPortalPosition());
@@ -100,8 +100,10 @@ public class MapleDoorObject extends AbstractMapleMapObject {
 
     @Override
     public void sendSpawnData(MapleClient client) {
-        if (from.getId() == client.getPlayer().getMapId()) {
-            if (client.getPlayer().getParty() != null && (ownerId == client.getPlayer().getId() || client.getPlayer().getParty().getMemberById(ownerId) != null)) {
+        MapleCharacter chr = client.getPlayer();
+        if (from.getId() == chr.getMapId()) {
+            MapleParty party = chr.getParty();
+            if (party != null && (ownerId == chr.getId() || party.getMemberById(ownerId) != null)) {
                 client.announce(MaplePacketCreator.partyPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
             }
             
@@ -112,8 +114,10 @@ public class MapleDoorObject extends AbstractMapleMapObject {
 
     @Override
     public void sendDestroyData(MapleClient client) {
-        if (from.getId() == client.getPlayer().getMapId()) {
-            if (client.getPlayer().getParty() != null && (ownerId == client.getPlayer().getId() || client.getPlayer().getParty().getMemberById(ownerId) != null)) {
+        MapleCharacter chr = client.getPlayer();
+        if (from.getId() == chr.getMapId()) {
+            MapleParty party = chr.getParty();
+            if (party != null && (ownerId == chr.getId() || party.getMemberById(ownerId) != null)) {
                 client.announce(MaplePacketCreator.partyPortal(999999999, 999999999, new Point(-1, -1)));
             }
             client.announce(MaplePacketCreator.removeDoor(ownerId, inTown()));

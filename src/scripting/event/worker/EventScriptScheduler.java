@@ -32,6 +32,7 @@ import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import server.ThreadManager;
 
 /**
  *
@@ -105,68 +106,62 @@ public class EventScriptScheduler {
     
     public void registerEntry(final Runnable scheduledAction, final long duration) {
         
-        Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            schedulerLock.lock();
-                            try {
-                                idleProcs = 0;
-                                if(schedulerTask == null) {
-                                    if(disposed) return;
+        ThreadManager.getInstance().newTask(new Runnable() {
+            @Override
+            public void run() {
+                schedulerLock.lock();
+                try {
+                    idleProcs = 0;
+                    if(schedulerTask == null) {
+                        if(disposed) return;
 
-                                    schedulerTask = TimerManager.getInstance().register(monitorTask, ServerConstants.MOB_STATUS_MONITOR_PROC, ServerConstants.MOB_STATUS_MONITOR_PROC);
-                                }
+                        schedulerTask = TimerManager.getInstance().register(monitorTask, ServerConstants.MOB_STATUS_MONITOR_PROC, ServerConstants.MOB_STATUS_MONITOR_PROC);
+                    }
 
-                                registeredEntries.put(scheduledAction, Server.getInstance().getCurrentTime() + duration);
-                            } finally {
-                                schedulerLock.unlock();
-                            }
-                        }
-                    });
-        
-        t.start();
+                    registeredEntries.put(scheduledAction, Server.getInstance().getCurrentTime() + duration);
+                } finally {
+                    schedulerLock.unlock();
+                }
+            }
+        });
     }
     
     public void cancelEntry(final Runnable scheduledAction) {
         
-        Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            schedulerLock.lock();
-                            try {
-                                registeredEntries.remove(scheduledAction);
-                            } finally {
-                                schedulerLock.unlock();
-                            }
-                        }
-                    });
-        
-        t.start();
+        ThreadManager.getInstance().newTask(new Runnable() {
+            @Override
+            public void run() {
+                schedulerLock.lock();
+                try {
+                    registeredEntries.remove(scheduledAction);
+                } finally {
+                    schedulerLock.unlock();
+                }
+            }
+        });
     }
     
     public void dispose() {
         
-        Thread t = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            schedulerLock.lock();
-                            try {
-                                if(schedulerTask != null) {
-                                    schedulerTask.cancel(false);
-                                    schedulerTask = null;
-                                }
+        ThreadManager.getInstance().newTask(new Runnable() {
+            @Override
+            public void run() {
+                schedulerLock.lock();
+                try {
+                    if(schedulerTask != null) {
+                        schedulerTask.cancel(false);
+                        schedulerTask = null;
+                    }
 
-                                registeredEntries.clear();
-                                disposed = true;
-                            } finally {
-                                schedulerLock.unlock();
-                            }
-                            
-                            disposeLocks();
-                        }
-                    });
-        
-        t.start();
+                    registeredEntries.clear();
+                    disposed = true;
+                } finally {
+                    schedulerLock.unlock();
+                }
+
+                disposeLocks();
+            }
+        });
     }
     
     private void disposeLocks() {

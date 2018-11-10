@@ -79,7 +79,7 @@ function action(mode, type, selection) {
                     
                 if(status == 0) {
                         hasCoin = cm.haveItem(coinId);
-                        cm.sendNext("This is the vending machine of the Internet Cafe. Place your erasers or #t" + coinId + "# earned throughout the quests to redeem a prize. You can place #bany amount of erasers#k, however take note that bigger shots improves the reward possibilities!");
+                        cm.sendNext("This is the vending machine of the Internet Cafe. Place your erasers or #t" + coinId + "# earned throughout the quests to redeem a prize. You can place #bany amount of erasers#k, however take note that placing #rdifferent erasers#k and #rbigger shots of any of them#k will improve the reward possibilities!");
                 } else if(status == 1) {
                         var sendStr;
                         currentTier = getRewardTier();

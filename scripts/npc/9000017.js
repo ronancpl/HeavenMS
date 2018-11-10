@@ -51,6 +51,12 @@ function action(mode, type, selection) {
     }
 
     if (status == 0) {
+        if (!Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+            cm.sendOk("Hi, I'm #b#p" + cm.getNpc() + "##k.");
+            cm.dispose();
+            return;
+        }
+        
         var selStr = "Hey traveler! Come, come closer... We offer a #bhuge opportunity of business#k to you. If you want to know what it is, keep listening...";
         cm.sendNext(selStr);
     }

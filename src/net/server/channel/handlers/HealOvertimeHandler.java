@@ -38,12 +38,12 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
         if(!chr.isLoggedinWorld()) return;
         
         AutobanManager abm = chr.getAutobanManager();
-        int timestamp = (int) (Server.getInstance().getCurrentTime() - Server.uptime);
+        int timestamp = Server.getInstance().getCurrentTimestamp();
         slea.skip(8);
         
         short healHP = slea.readShort();
         if (healHP != 0) {
-            abm.setTimestamp(8, timestamp, 3);  // thanks Vcoc for pointing out d/c happening here
+            abm.setTimestamp(8, timestamp, 4);  // thanks Vcoc for pointing out d/c happening here
             if ((abm.getLastSpam(0) + 1500) > timestamp) AutobanFactory.FAST_HP_HEALING.addPoint(abm, "Fast hp healing");
             
             int abHeal = 120 + (int)(20 * MapleMapFactory.getMapRecoveryRate(chr.getMapId())); // Sleepywood sauna and showa spa...
@@ -58,7 +58,7 @@ public final class HealOvertimeHandler extends AbstractMaplePacketHandler {
         }
         short healMP = slea.readShort();
         if (healMP != 0 && healMP < 1000) {
-            abm.setTimestamp(9, timestamp, 3);
+            abm.setTimestamp(9, timestamp, 4);
             if ((abm.getLastSpam(1) + 1500) > timestamp) AutobanFactory.FAST_MP_HEALING.addPoint(abm, "Fast mp healing");
             chr.addMP(healMP);
             abm.spam(1, timestamp);

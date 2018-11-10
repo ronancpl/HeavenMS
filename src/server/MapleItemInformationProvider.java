@@ -646,7 +646,7 @@ public class MapleItemInformationProvider {
     }
     
     public static boolean rollSuccessChance(double prop) {
-        return Math.random() > testYourLuck(prop / 100.0, ServerConstants.SCROLL_CHANCE_RATE);
+        return Math.random() >= testYourLuck(prop / 100.0, ServerConstants.SCROLL_CHANCE_RATE);
     }
     
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {
@@ -1238,9 +1238,11 @@ public class MapleItemInformationProvider {
         boolean bRestricted = false;
         if(itemId != 0) {
             MapleData data = getItemData(itemId);
-            bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
-            if (!bRestricted) {
-                bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+            if (data != null) {
+                bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
+                if (!bRestricted) {
+                    bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+                }
             }
         }
         

@@ -43,7 +43,9 @@ public class SummonCommand extends Command {
         }
 
         MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
-        if (victim == null) {//If victim isn't on current channel, loop all channels on current world.
+        if (victim == null) {
+            //If victim isn't on current channel, loop all channels on current world.
+            
             for (Channel ch : Server.getInstance().getChannelsFromWorld(c.getWorld())) {
                 victim = ch.getPlayerStorage().getCharacterByName(params[0]);
                 if (victim != null) {
@@ -61,9 +63,10 @@ public class SummonCommand extends Command {
                     victim.getEventInstance().unregisterPlayer(victim);
                 }
             }
+            
             //Attempt to join the warpers instance.
             if (player.getEventInstance() != null && changingEvent) {
-                if (player.getClient().getChannel() == victim.getClient().getChannel()) {//just in case.. you never know...
+                if (player.getClient().getChannel() == victim.getClient().getChannel()) {
                     player.getEventInstance().registerPlayer(victim);
                     victim.changeMap(player.getEventInstance().getMapInstance(player.getMapId()), player.getMap().findClosestPortal(player.getPosition()));
                 } else {

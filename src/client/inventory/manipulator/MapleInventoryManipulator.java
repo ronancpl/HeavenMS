@@ -188,6 +188,7 @@ public class MapleInventoryManipulator {
                                 short newQ = (short) Math.min(oldQ + quantity, slotMax);
                                 quantity -= (newQ - oldQ);
                                 eItem.setQuantity(newQ);
+                                item.setPosition(eItem.getPosition());
                                 c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(1, eItem))));
                             }
                         } else {
@@ -209,6 +210,8 @@ public class MapleInventoryManipulator {
                         item.setQuantity((short) (quantity + newQ));
                         return false;
                     }
+                    nItem.setPosition(newSlot);
+                    item.setPosition(newSlot);
                     c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
                     if(MapleInventoryManipulator.isSandboxItem(nItem)) chr.setHasSandboxItem();
                 }
@@ -223,6 +226,8 @@ public class MapleInventoryManipulator {
                     c.announce(MaplePacketCreator.getShowInventoryFull());
                     return false;
                 }
+                nItem.setPosition(newSlot);
+                item.setPosition(newSlot);
                 c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, nItem))));
                 if(MapleInventoryManipulator.isSandboxItem(nItem)) chr.setHasSandboxItem();
                 c.announce(MaplePacketCreator.enableActions());
@@ -234,6 +239,7 @@ public class MapleInventoryManipulator {
                 c.announce(MaplePacketCreator.getShowInventoryFull());
                 return false;
             }
+            item.setPosition(newSlot);
             c.announce(MaplePacketCreator.modifyInventory(true, Collections.singletonList(new ModifyInventory(0, item))));
             if(MapleInventoryManipulator.isSandboxItem(item)) chr.setHasSandboxItem();
         } else {

@@ -33,6 +33,7 @@ public class WindArcher {
     public static final int BOW_BOOSTER = 13101001;
     public static final int FINAL_ATTACK = 13101002;
     public static final int SOUL_ARROW = 13101003;
+    public static final int STORM_BREAK = 13101005;
     public static final int WIND_WALK = 13101006;
     public static final int HURRICANE = 13111002;
     public static final int PUPPET = 13111004;

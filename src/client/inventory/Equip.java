@@ -24,8 +24,10 @@ package client.inventory;
 import client.MapleClient;
 import constants.ServerConstants;
 import constants.ExpTable;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -47,7 +49,7 @@ public class Equip extends Item {
         }
     }
     
-    private static enum StatUpgrade {
+    public static enum StatUpgrade {
 
         incDEX(0), incSTR(1), incINT(2), incLUK(3),
         incMHP(4), incMMP(5), incPAD(6), incMAD(7),
@@ -332,49 +334,30 @@ public class Equip extends Item {
         if(jump > 0) getUnitStatUpgrade(stats, StatUpgrade.incJump, jump, false);
     }
     
-    private void gainLevel(MapleClient c) {
-        List<Pair<StatUpgrade, Integer>> stats = new LinkedList<>();
-                
-        if(isElemental) {
-            List<Pair<String, Integer>> elementalStats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
-            
-            for(Pair<String, Integer> p: elementalStats) {
-                if(p.getRight() > 0) stats.add(new Pair<>(StatUpgrade.valueOf(p.getLeft()), p.getRight()));
-            }
-        }
+    public Map<StatUpgrade, Short> getStats() {
+        Map<StatUpgrade, Short> stats = new HashMap<>(5);
         
-        if(!stats.isEmpty()) {
-            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
-                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
-            }
-        }
-        else {
-            isUpgradeable = false;
-            
-            improveDefaultStats(stats);
-            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
-                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
-            }
-            
-            if(isUpgradeable) {
-                while(stats.isEmpty()) {
-                    improveDefaultStats(stats);
-                    if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
-                        if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
-                        getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
-                    }
-                }
-            }
-        }
+        if(dex > 0) stats.put(StatUpgrade.incDEX, dex);
+        if(str > 0) stats.put(StatUpgrade.incSTR, str);
+        if(_int > 0) stats.put(StatUpgrade.incINT,_int);
+        if(luk > 0) stats.put(StatUpgrade.incLUK, luk);
+        if(hp > 0) stats.put(StatUpgrade.incMHP, hp);
+        if(mp > 0) stats.put(StatUpgrade.incMMP, mp);
+        if(watk > 0) stats.put(StatUpgrade.incPAD, watk);
+        if(matk > 0) stats.put(StatUpgrade.incMAD, matk);
+        if(wdef > 0) stats.put(StatUpgrade.incPDD, wdef);
+        if(mdef > 0) stats.put(StatUpgrade.incMDD, mdef);
+        if(avoid > 0) stats.put(StatUpgrade.incEVA, avoid);
+        if(acc > 0) stats.put(StatUpgrade.incACC, acc);
+        if(speed > 0) stats.put(StatUpgrade.incSpeed, speed);
+        if(jump > 0) stats.put(StatUpgrade.incJump, jump);
         
-        itemLevel++;
-        boolean gotVicious = false, gotSlot = false;
-        
-        String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
-        String showStr = "#e'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "'#b is now #elevel #r" + itemLevel + "#k#b!";
-        
+        return stats;
+    }
+    
+    public Pair<String, Pair<Boolean, Boolean>> gainStats(List<Pair<StatUpgrade, Integer>> stats) {
+        boolean gotSlot = false, gotVicious = false;
+        String lvupStr = "";
         Integer statUp, maxStat = ServerConstants.MAX_EQUIPMNT_STAT;
         for (Pair<StatUpgrade, Integer> stat : stats) {
             switch (stat.getLeft()) {
@@ -459,6 +442,55 @@ public class Equip extends Item {
                     break;
             }
         }
+        
+        return new Pair<>(lvupStr, new Pair<>(gotSlot, gotVicious));
+    }
+    
+    private void gainLevel(MapleClient c) {
+        List<Pair<StatUpgrade, Integer>> stats = new LinkedList<>();
+        
+        if(isElemental) {
+            List<Pair<String, Integer>> elementalStats = MapleItemInformationProvider.getInstance().getItemLevelupStats(getItemId(), itemLevel);
+            
+            for(Pair<String, Integer> p: elementalStats) {
+                if(p.getRight() > 0) stats.add(new Pair<>(StatUpgrade.valueOf(p.getLeft()), p.getRight()));
+            }
+        }
+        
+        if(!stats.isEmpty()) {
+            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
+            }
+        } else {
+            isUpgradeable = false;
+            
+            improveDefaultStats(stats);
+            if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
+            }
+            
+            if(isUpgradeable) {
+                while(stats.isEmpty()) {
+                    improveDefaultStats(stats);
+                    if(ServerConstants.USE_EQUIPMNT_LVLUP_SLOTS) {
+                        if(vicious > 0) getUnitSlotUpgrade(stats, StatUpgrade.incVicious);
+                        getUnitSlotUpgrade(stats, StatUpgrade.incSlot);
+                    }
+                }
+            }
+        }
+        
+        itemLevel++;
+        
+        String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
+        String showStr = "#e'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "'#b is now #elevel #r" + itemLevel + "#k#b!";
+        
+        Pair<String, Pair<Boolean, Boolean>> res = gainStats(stats);
+        lvupStr += res.getLeft();
+        boolean gotSlot = res.getRight().getLeft();
+        boolean gotVicious = res.getRight().getRight();
         
         if(gotVicious) {
             //c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");

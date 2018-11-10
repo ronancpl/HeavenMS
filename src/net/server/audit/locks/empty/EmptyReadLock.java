@@ -41,7 +41,7 @@ public class EmptyReadLock implements MonitoredReadLock {
     
     private static String printThreadStack(StackTraceElement[] list) {
         DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+        dateFormat.setTimeZone(TimeZone.getDefault());
         String df = dateFormat.format(new Date());
         
         String s = "\r\n" + df + "\r\n";

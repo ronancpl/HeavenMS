@@ -114,7 +114,8 @@ public enum RecvOpcode {
     TROCK_ADD_MAP(0x66),
     REPORT(0x6A),
     QUEST_ACTION(0x6B),
-    //lolno
+    //USER_CALC_DAMAGE_STAT_SET_REQUEST(0x6C),
+    GRENADE_EFFECT(0x6D),
     SKILL_MACRO(0x6E),
     USE_ITEM_REWARD(0x70),
     MAKER_SKILL(0x71),

@@ -103,12 +103,12 @@ public class MobSkill {
         this.limit = limit;
     }
 
-    public void applyDelayedEffect(final MapleCharacter player, final MapleMonster monster, final boolean skill, final List<MapleCharacter> banishPlayers, int animationTime) {
+    public void applyDelayedEffect(final MapleCharacter player, final MapleMonster monster, final boolean skill, int animationTime) {
         Runnable toRun = new Runnable() {
                             @Override
                             public void run() {
                                 if(monster.isAlive()) {
-                                    applyEffect(player, monster, skill, banishPlayers);
+                                    applyEffect(player, monster, skill, null);
                                 }
                             }
                         };

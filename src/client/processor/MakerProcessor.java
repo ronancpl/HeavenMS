@@ -20,6 +20,7 @@
 package client.processor;
 
 import client.MapleClient;
+import client.MapleCharacter;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
@@ -199,7 +200,7 @@ public class MakerProcessor {
                             c.announce(MaplePacketCreator.showMakerEffect(makerSucceeded));
                             c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignMakerEffect(c.getPlayer().getId(), makerSucceeded), false);
 
-                            if(toCreate == 4260003 && c.getPlayer().getQuestStatus(6033) == 1) {
+                            if(toCreate == 4260003 && type == 3 && c.getPlayer().getQuestStatus(6033) == 1) {
                                 c.getAbstractPlayerInteraction().setQuestProgress(6033, 1);
                             }
                         } else {
@@ -282,6 +283,10 @@ public class MakerProcessor {
         return null;
     }
     
+    public static int getMakerSkillLevel(MapleCharacter chr) {
+        return chr.getSkillLevel((chr.getJob().getId() / 1000) * 10000000 + 1007);
+    }
+    
     private static short getCreateStatus(MapleClient c, MakerItemFactory.MakerItemCreateEntry recipe) {
         if(recipe == null) {
             return -1;
@@ -299,7 +304,7 @@ public class MakerProcessor {
             return 3;
         }
         
-        if(c.getPlayer().getSkillLevel((c.getPlayer().getJob().getId() / 1000) * 10000000 + 1007) < recipe.getReqSkillLevel()) {
+        if(getMakerSkillLevel(c.getPlayer()) < recipe.getReqSkillLevel()) {
             return 4;
         }
         

@@ -35,8 +35,8 @@ public class MapleDragon extends AbstractAnimatedMapleMapObject {
         super();
         this.owner = chr;
         this.setPosition(chr.getPosition());
-		this.setStance(chr.getStance());
-        sendSpawnData(chr.getClient());
+        this.setStance(chr.getStance());
+        this.sendSpawnData(chr.getClient());
     }
 
     @Override
@@ -45,8 +45,8 @@ public class MapleDragon extends AbstractAnimatedMapleMapObject {
     }
 
     @Override
-    public void sendSpawnData(MapleClient c) {
-        c.announce(MaplePacketCreator.spawnDragon(this));     
+    public void sendSpawnData(MapleClient client) {
+        client.announce(MaplePacketCreator.spawnDragon(this));     
     }
 
     @Override

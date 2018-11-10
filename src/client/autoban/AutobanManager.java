@@ -6,6 +6,7 @@
 package client.autoban;
 
 import client.MapleCharacter;
+import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.Map;
 import net.server.Server;
@@ -109,11 +110,15 @@ public class AutobanManager {
         if (this.timestamp[type] == time) {  
             this.timestampcounter[type]++;
             if (this.timestampcounter[type] >= times) {
-                chr.getClient().disconnect(false, false);
+                if (ServerConstants.USE_AUTOBAN) {
+                    chr.getClient().disconnect(false, false);
+                }
+                
                 FilePrinter.print(FilePrinter.EXPLOITS, "Player " + chr + " was caught spamming TYPE " + type + " and has been disconnected.");
             }
             return;
         }
         this.timestamp[type] = time;
+        this.timestampcounter[type] = 0;
     }
 }

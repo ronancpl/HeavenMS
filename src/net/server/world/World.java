@@ -1402,7 +1402,9 @@ public class World {
             
             int dpVal = dp.getValue() + 1;
             if(dpVal == ServerConstants.MOUNT_EXHAUST_COUNT) {
-                chr.runTirednessSchedule();
+                if (!chr.runTirednessSchedule()) {
+                    continue;
+                }
                 dpVal = 0;
             }
             

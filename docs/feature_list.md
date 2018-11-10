@@ -89,6 +89,7 @@ Cash & Items:
 * Storage with "Arrange Items" feature functional.
 * Close-quarters evaluation mode for items (sandbox).
 * Further improved Karma scissors & Untradeable items mechanics.
+* Reviewed pet/item position data inconsistency within CASH inventory.
 * Spikes on shoes.
 * Vega's spell.
 * Owl of Minerva.
@@ -175,6 +176,7 @@ Server potentials:
 * Delete Character (requires ENABLE_PIC activated).
 * Smoothed up view-all-char feature, now showing properly all available characters and not disconnecting players too often.
 * Centralized getcurrenttime throughout several server handlers, boosting it's performance overall.
+* Centralized server timestamping, several timestamps received from clients are now unused, preventing some spammable exploits.
 * Autosaver (periodically saves on DB current state of every player in-game).
 * Both fixed and randomized versions of HP/MP growth rate available, regarding player job (enable one at ServerConstants). Placeholder for HP/MP washing feature.
 * Implemented methods to get the current Players' MaxHP/MaxMP method with equipment HP/MP gains already summed up.
@@ -191,6 +193,7 @@ Custom NPCs:
 * Asia: scroll & rarities shop NPC.
 * Abdula: lists droppers of needed skill/mastery books.
 * Agent E: accessory crafter.
+* Dalair: automatized equipment-merger.
 * Donation Box: automatized item-buyer.
 * Coco & Ace of Hearts: C. scroll crafters.
 
@@ -239,6 +242,7 @@ Project:
 * Reviewed SQL data, eliminating duplicated entries on the tables.
 * Improved login phase, using cache over DB queries.
 * Usage of HikariCP to improve the DB connection management.
+* Usage of Java Threadpool to improve runnable call management.
 * Developed many survey tools for content profiling.
 * Developed a robust anti-exploit login coordinator system.
 * Protected many flaws with login management system.

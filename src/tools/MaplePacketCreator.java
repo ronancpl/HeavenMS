@@ -877,12 +877,28 @@ public class MaplePacketCreator {
          *
          * @param c The MapleClient to load characters of.
          * @param serverId The ID of the server requested.
+         * @param status The charlist request result.
          * @return The character list packet.
+         * 
+         * Possible values for <code>status</code>:
+         * <br> 2: ID deleted or blocked<br>
+         * <br> 3: ID deleted or blocked<br>
+         * <br> 4: Incorrect password<br>
+         * <br> 5: Not an registered ID<br> 
+         * <br> 6: Trouble logging in?<br>
+         * <br> 10: Server handling too many connections<br>
+         * <br> 11: Only 20 years or older<br>
+         * <br> 13: Unable to log as master at IP<br>
+         * <br> 14: Wrong gateway or personal info<br>
+         * <br> 15: Still processing request<br>
+         * <br> 16: Verify account via email<br>
+         * <br> 17: Wrong gateway or personal info<br>
+         * <br> 21: Verify account via email<br>
          */
-        public static byte[] getCharList(MapleClient c, int serverId) {
+        public static byte[] getCharList(MapleClient c, int serverId, int status) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CHARLIST.getValue());
-                mplew.write(0);
+                mplew.write(status);
                 List<MapleCharacter> chars = c.loadCharacters(serverId);
                 mplew.write((byte) chars.size());
                 for (MapleCharacter chr : chars) {
@@ -1425,7 +1441,6 @@ public class MaplePacketCreator {
                 mplew.write(1);
                 mplew.writeInt(life.getObjectId());
                 return mplew.getPacket();
-                //return spawnMonsterInternal(life, true, false, false, 0, false);
         }
 
         /**
@@ -2140,11 +2155,11 @@ public class MaplePacketCreator {
                         
                         MapleCharacter targetChr = target.getPlayer();
                         if (targetChr != null && targetChr.getPartnerId() == chr.getId()) {
-                            mplew.writeInt(0);    // 1a pessoa: ser 0 0 implica match...
-                            mplew.writeInt(0);    // 3a pessoa: 1 2 2 1 funciona!
+                            mplew.writeInt(0);
+                            mplew.writeInt(0);
                         } else {
-                            mplew.writeInt(chr.getId());    // 1a pessoa: ser 0 0 implica match...
-                            mplew.writeInt(ring.getPartnerChrId());    // 3a pessoa: 1 2 2 1 funciona!
+                            mplew.writeInt(chr.getId());
+                            mplew.writeInt(ring.getPartnerChrId());
                         }
                         
                         mplew.writeInt(ring.getItemId());
@@ -2385,6 +2400,18 @@ public class MaplePacketCreator {
                                 }
                         }
                 }
+        }
+        
+        public static byte[] throwGrenade(int cid, Point p, int keyDown, int skillId, int skillLevel) { // packets found thanks to GabrielSin
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.THROW_GRENADE.getValue());
+                mplew.writeInt(cid);
+                mplew.writeInt(p.x);
+                mplew.writeInt(p.y);
+                mplew.writeInt(keyDown);
+                mplew.writeInt(skillId);
+                mplew.writeInt(skillLevel);
+                return mplew.getPacket();
         }
 
         // someone thought it was a good idea to handle floating point representation through packets ROFL
@@ -4765,19 +4792,26 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] commandResponse(int cid, byte index, int animation, boolean success) {
-                //AE 00 01 00 00 00 00 01 00 00
+        public static byte[] petFoodResponse(int cid, byte index, boolean success, boolean balloonType) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PET_COMMAND.getValue());
                 mplew.writeInt(cid);
                 mplew.write(index);
-                mplew.write((animation == 1 || !success) ? 1 : 0);
+                mplew.write(1);
+                mplew.writeBool(success);
+                mplew.writeBool(balloonType);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] commandResponse(int cid, byte index, boolean talk, int animation, boolean balloonType) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PET_COMMAND.getValue());
+                mplew.writeInt(cid);
+                mplew.write(index);
+                mplew.write(0);
                 mplew.write(animation);
-                if (animation == 1) {
-                        mplew.write(0);
-                } else {
-                        mplew.writeShort(success ? 1 : 0);
-                }
+                mplew.writeBool(!talk);
+                mplew.writeBool(balloonType);
                 return mplew.getPacket();
         }
 

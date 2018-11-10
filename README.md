@@ -9,7 +9,7 @@ Regarding distributability and usage of the code presented here: like it was bef
 
 This is a NetBeans 8.0.2 Project, that MUST be built and run under JDK/JRE 7 (1.7.0_79+) in order to run properly. This means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
 
-In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though! Refer to "README_wzchanges.txt" for more information on what has been changed from Nexon's v83 WZ files.
+In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though!
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
 
@@ -48,7 +48,7 @@ Client files & general tools: https://drive.google.com/drive/folders/0BzDsHSr-0V
 
   * Fraysa's https://hostr.co/gJbLZITRVHmv
 
-  * MapleSilver's starting on window-mode.
+  * Eric's MapleSilver starting on window-mode.
 
 ---
 ### Development information
@@ -175,7 +175,7 @@ Finally, select "Clean and Build project" to build the JAR file for the MapleSto
 The client's set-up is quite straightforward:
 
 1. From "ManagerMsv83.exe", install MapleStory on your folder of preference (e.g. "C:\Nexon\MapleStory") and follow their instructions.
-2. Once done, erase these files: "HShield" (folder), "ASPLauncher.exe", "MapleStory.exe" and "patcher.exe".
+2. Once done, erase these files: "HShield" (folder), "ASPLnchr.exe", "MapleStory.exe" and "Patcher.exe".
 3. Extract into the client folder the "localhost.exe" from the provided link.
 4. Overwrite the original WZ files with the ones provided from either one of those folders on the Google Drive:
 	- "commit???_wz" (last published RELEASE, referring to commit of same number).

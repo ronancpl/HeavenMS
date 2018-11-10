@@ -27,6 +27,7 @@ import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
 import net.server.Server;
+import server.ThreadManager;
 
 public class ServerAddWorldCommand extends Command {
     {
@@ -37,7 +38,7 @@ public class ServerAddWorldCommand extends Command {
     public void execute(MapleClient c, String[] params) {
         final MapleCharacter player = c.getPlayer();
         
-        new Thread(new Runnable() {
+        ThreadManager.getInstance().newTask(new Runnable() {
             @Override
             public void run() {
                 int wid = Server.getInstance().addWorld();
@@ -54,6 +55,6 @@ public class ServerAddWorldCommand extends Command {
                     }
                 }
             }
-        }).start();
+        });
     }
 }

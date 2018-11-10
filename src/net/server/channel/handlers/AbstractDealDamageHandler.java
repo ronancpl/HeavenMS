@@ -259,8 +259,9 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     else if(attack.skill == Shadower.BOOMERANG_STEP)
                         distanceToDetect += 60000;
                     
-                    if(distance > distanceToDetect) {
+                    if (distance > distanceToDetect) {
                         AutobanFactory.DISTANCE_HACK.alert(player, "Distance Sq to monster: " + distance + " SID: " + attack.skill + " MID: " + monster.getId());
+                        monster.refreshMobPosition();
                     }
                     
                     int totDamageToOneMonster = 0;
@@ -338,7 +339,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         }
                     }
                     
-                    if (job == 2111 || job == 2112) {
+                    if (player.isAran()) {
                     	if (player.getBuffedValue(MapleBuffStat.WK_CHARGE) != null) {
                             Skill snowCharge = SkillFactory.getSkill(Aran.SNOW_CHARGE);
                             if (totDamageToOneMonster > 0) {

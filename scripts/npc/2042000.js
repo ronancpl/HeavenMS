@@ -49,18 +49,24 @@ function action(mode, type, selection) {
                         status--;
     
                 if(status == 0) {
+                        if (!Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+                                cm.sendOk("The Monster Carnival is currently unavailable.");
+                                cm.dispose();
+                                return;
+                        }
+                    
                         var selStr = "The Monster Carnival is currently unavailable, but instead I offer a steadfast #bore refining#k service for you, taxing #r" + ((feeMultiplier * 100) | 0) + "%#k over the usual fee to synthetize them. What will you do?#b";
                         
                         var options = new Array("Refine mineral ores","Refine jewel ores");
                         if(refineCrystals) {
-                            options.push("Refine crystal ores");
+                                options.push("Refine crystal ores");
                         }
                         if(refineRocks) {
-                            options.push("Refine plates/jewels");
+                                options.push("Refine plates/jewels");
                         }
                         
                         for (var i = 0; i < options.length; i++){
-                            selStr += "\r\n#L" + i + "# " + options[i] + "#l";
+                                selStr += "\r\n#L" + i + "# " + options[i] + "#l";
                         }
                         
                         cm.sendSimple(selStr);

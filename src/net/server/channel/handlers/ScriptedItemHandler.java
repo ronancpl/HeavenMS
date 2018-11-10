@@ -49,7 +49,7 @@ public final class ScriptedItemHandler extends AbstractMaplePacketHandler {
         if (item == null || item.getItemId() != itemId || item.getQuantity() < 1 || !ism.scriptExists(info.getScript())) {
             return;
         }
-        ism.getItemScript(c, info.getScript());
+        ism.runItemScript(c, info.getScript());
         c.announce(MaplePacketCreator.enableActions());
         //NPCScriptManager.getInstance().start(c, info.getNpc(), null, null);        
     }

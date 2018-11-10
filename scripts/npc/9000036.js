@@ -39,6 +39,12 @@ var equip;
 var maxEqp = 0;
 
 function start() {
+    if (!Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+        cm.sendOk("Hi, I'm #b#p" + cm.getNpc() + "##k.");
+        cm.dispose();
+        return;
+    }
+    
     cm.getPlayer().setCS(true);
     var selStr = "Hello, I am the #bAccessory NPC Crafter#k! My works are widely recognized to be too fine, up to the point at which all my items mimic not only the appearance but too the attributes of them! Everything I charge is some 'ingredients' to make them and, of course, a fee for my services. On what kind of equipment are you interessed?#b";
     var options = ["Pendants","Face accessories","Eye accessories","Belts & medals","Rings"/*,"#t4032496#"*/];
@@ -56,7 +62,7 @@ function action(mode, type, selection) {
     if (status == 0) {
         if (selection == 0) { //pendants
             var selStr = "Well, I've got these pendants on my repertoire:#b";
-            items = [1122018,1122007,1122001,1122002,1122003,1122004,1122005,1122006,1122058];
+            items = [1122018,1122007,1122001,1122003,1122004,1122006,1122002,1122005,1122058];
             for (var i = 0; i < items.length; i++)
                 selStr += "\r\n#L" + i + "##t" + items[i] + "##b";
         }else if (selection == 1) { //face accessory
@@ -103,9 +109,9 @@ function action(mode, type, selection) {
         if (selectedType != 3) selectedItem = selection;
         
         if (selectedType == 0) { //pendant refine
-            var matSet = [[4003004, 4030012, 4001356, 4000026], [4000026, 4001356, 4000073, 4001006], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [4001344, 4003001, 4003004, 4003005], [1122007, 4003002, 4000413]];
-            var matQtySet = [[20, 20, 5, 1], [5, 5, 10, 1], [10, 4, 20, 4], [20, 8, 20, 8], [10, 4, 20, 4], [15, 6, 30, 6], [20, 8, 40, 8], [15, 6, 30, 6], [1, 1, 1]];
-            var costSet = [150000, 500000, 200000, 400000, 200000, 300000, 400000, 300000, 2500000];
+            var matSet = [[4003004, 4030012, 4001356, 4000026], [4000026, 4001356, 4000073, 4001006], [4001343, 4011002, 4003004, 4003005], [4001343, 4011006, 4003004, 4003005], [4000091, 4011005, 4003004, 4003005], [4000091, 4011001, 4003004, 4003005], [4000469, 4011000, 4003004, 4003005], [4000469, 4011004, 4003004, 4003005], [1122007, 4003002, 4000413]];
+            var matQtySet = [[20, 20, 5, 1], [5, 5, 10, 1], [10, 2, 20, 4], [10, 1, 20, 4], [15, 3, 30, 6], [15, 3, 30, 6], [20, 5, 20, 8], [20, 4, 40, 8], [1, 1, 1]];
+            var costSet = [150000, 500000, 200000, 200000, 300000, 300000, 400000, 400000, 2500000];
         }else if (selectedType == 1) { //face accessory refine
             var matSet = [[4006000, 4003004],[4006000, 4003004,4000026],[4006000, 4003004,4000026,4000082,4003002],[4006000, 4003005],[4006000, 4003005,4000026],[4006000, 4003005,4000026,4000082,4003002],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008],[4001006, 4011008]];
             var matQtySet = [[5,5],[5,5,5],[5,5,5,5,1],[5,5],[5,5,5],[5,5,5,5,1],[1,1],[1,1],[1,1],[1,1]];
@@ -145,9 +151,9 @@ function action(mode, type, selection) {
         var prompt = "You want me to make ";
         if(selectedType != 3) {
             if (qty == 1)
-                prompt += "a #t" + item + "#?";
+                prompt += "a #b#t" + item + "##k?";
             else
-                prompt += qty + " #t" + item + "#?";
+                prompt += "#b" + qty + " #t" + item + "##k?";
         }
         else prompt += "a #bbelt#k or a #bmedal#k?";
         

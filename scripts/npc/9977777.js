@@ -98,6 +98,7 @@ function writeFeatureTab_CashItems() {
         addFeature("Storage with 'Arrange Items' feature functional.");
         addFeature("Close-quarters evaluation mode for items.");
         addFeature("Reviewed Karma scissors & Untradeable items.");
+        addFeature("Reviewed an pet position issue within CASH inventory.");
         addFeature("Scroll for Spikes on Shoes.");
         addFeature("Scroll for Cold Protection.");
         addFeature("Vega's spell.");
@@ -187,6 +188,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Delete Character.");
         addFeature("Smooth view-all-char, now showing all account chars.");
         addFeature("Centralized servertime, boosting handler performance.");
+        addFeature("Centralized timestamping, unused rcvd timestamps.");
         addFeature("Autosaver (periodically saves player's data on DB).");
         addFeature("Fixed and randomized HP/MP growth rate available.");
         addFeature("Players' MaxHP/MaxMP method accounting equip gain.");
@@ -211,6 +213,7 @@ function writeFeatureTab_CustomNPCs() {
         addFeature("Asia: scroll & rarities shop NPC.");
         addFeature("Abdula: lists droppers of needed skill/mastery books.");
         addFeature("Agent E: accessory crafter.");
+        addFeature("Dalair: automatized equipment-merger.");
         addFeature("Donation Box: automatized item-buyer.");
         addFeature("Coco & Ace of Hearts: C. scroll crafters.");
 }
@@ -240,6 +243,7 @@ function writeFeatureTab_Project() {
         addFeature("Protected many flaws with login management system.");
         addFeature("Developed a robust anti-exploit login coordinator.");
         addFeature("Usage of HikariCP to improve DB connection calls.");
+        addFeature("Usage of Java Threadpool to improve runnable calls.");
         addFeature("Developed many survey tools for content profiling.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");

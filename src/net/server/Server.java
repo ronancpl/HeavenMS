@@ -85,8 +85,10 @@ import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
 import constants.ServerConstants;
+import java.util.TimeZone;
 import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
+import server.ThreadManager;
 import server.TimerManager;
 import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
@@ -146,6 +148,10 @@ public class Server {
     private boolean availableDeveloperRoom = false;
     private boolean online = false;
     public static long uptime = System.currentTimeMillis();
+    
+    public int getCurrentTimestamp() {
+        return (int) (Server.getInstance().getCurrentTime() - Server.uptime);
+    }
     
     public long getCurrentTime() {  // returns a slightly delayed time value, under frequency of UPDATE_INTERVAL
         return serverCurrentTime;
@@ -825,6 +831,33 @@ public class Server {
         return rankSystem;
     }
     
+    private static void clearUnreferencedPetIds() {
+        PreparedStatement ps = null;
+        Connection con = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            
+            ps = con.prepareStatement("UPDATE inventoryitems SET petid = -1, expiration = 0 WHERE petid != -1 AND petid NOT IN (SELECT petid FROM pets)");
+            ps.executeUpdate();
+            
+            ps.close();
+            con.close();
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if(ps != null && !ps.isClosed()) {
+                    ps.close();
+                }
+                if(con != null && !con.isClosed()) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     public void init() {
         Properties p = loadWorldINI();
         if(p == null) {
@@ -832,10 +865,11 @@ public class Server {
         }
 
         System.out.println("HeavenMS v" + ServerConstants.VERSION + " starting up.\r\n");
-
         
         if(ServerConstants.SHUTDOWNHOOK)
             Runtime.getRuntime().addShutdownHook(new Thread(shutdown(false)));
+        
+        TimeZone.setDefault(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
         
         Connection c = null;
         try {
@@ -856,6 +890,7 @@ public class Server {
             sqle.printStackTrace();
         }
         
+        clearUnreferencedPetIds();
         MapleCashidGenerator.loadExistentCashIdsFromDb();
         
         IoBuffer.setUseDirectBuffer(false);
@@ -863,6 +898,7 @@ public class Server {
         acceptor = new NioSocketAcceptor();
         acceptor.getFilterChain().addLast("codec", (IoFilter) new ProtocolCodecFilter(new MapleCodecFactory()));
         
+        ThreadManager.getInstance().start();
         TimerManager tMan = TimerManager.getInstance();
         tMan.start();
         tMan.register(tMan.purge(), ServerConstants.PURGING_INTERVAL);//Purging ftw...
@@ -1716,6 +1752,7 @@ public class Server {
                     
                     resetServerWorlds();
                     
+                    ThreadManager.getInstance().stop();
                     TimerManager.getInstance().purge();
                     TimerManager.getInstance().stop();
 

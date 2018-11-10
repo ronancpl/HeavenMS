@@ -49,7 +49,7 @@ function end(mode, type, selection) {
             qm.sendNextPrev("And remember this: the maxima of #bExchange#k, the area of the fundamentals of Alchemy where the total amount of the material does not change, is that no item can be created from nothing. Understood?");
         } else if (status == 5) {
             qm.gainMeso(-10000);
-
+            
             qm.forceCompleteQuest();
             qm.dispose();
         }

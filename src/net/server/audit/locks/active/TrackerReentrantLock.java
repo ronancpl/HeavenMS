@@ -64,7 +64,7 @@ public class TrackerReentrantLock extends ReentrantLock implements MonitoredReen
         if(ServerConstants.USE_THREAD_TRACKER) {
             if(deadlockedState != null) {
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                dateFormat.setTimeZone(TimeZone.getTimeZone(ServerConstants.TIMEZONE));
+                dateFormat.setTimeZone(TimeZone.getDefault());
 
                 //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "[CRITICAL] " + dateFormat.format(new Date()) + " Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState) + "\r\n\r\n");
                 ThreadTracker.getInstance().accessThreadTracker(true, true, id, hashcode);

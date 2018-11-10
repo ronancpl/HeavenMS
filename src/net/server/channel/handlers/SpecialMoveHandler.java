@@ -30,7 +30,6 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import constants.ServerConstants;
@@ -41,14 +40,15 @@ import constants.skills.Hero;
 import constants.skills.Paladin;
 import constants.skills.Priest;
 import constants.skills.SuperGM;
-
+import net.server.Server;
 
 public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	MapleCharacter chr = c.getPlayer();
-        chr.getAutobanManager().setTimestamp(4, slea.readInt(), 3);
+        slea.readInt();
+        chr.getAutobanManager().setTimestamp(4, Server.getInstance().getCurrentTimestamp(), 5);
         int skillid = slea.readInt();
         
         /*
@@ -99,9 +99,14 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 chr.getMap().broadcastMessage(chr, MaplePacketCreator.showMagnet(mobId, success), false);
                 MapleMonster monster = chr.getMap().getMonsterByOid(mobId);
                 if (monster != null) {
-                	if (!monster.isBoss()) {
-                		monster.switchController(chr, monster.isControllerHasAggro());
-                	}
+                    if (!monster.isBoss()) {
+                        monster.lockMonster();
+                        try {
+                            monster.switchController(chr, monster.isControllerHasAggro());
+                        } finally {
+                            monster.unlockMonster();
+                        }
+                    }
                 }
             }
             byte direction = slea.readByte();

@@ -31,6 +31,7 @@ import client.MapleClient;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import net.server.Server;
 import server.MapleItemInformationProvider;
 
 public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
@@ -38,7 +39,8 @@ public final class InventoryMergeHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.getAutobanManager().setTimestamp(2, slea.readInt(), 3);
+        slea.readInt();
+        chr.getAutobanManager().setTimestamp(2, Server.getInstance().getCurrentTimestamp(), 4);
         
         if(!ServerConstants.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());

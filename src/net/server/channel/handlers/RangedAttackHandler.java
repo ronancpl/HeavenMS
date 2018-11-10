@@ -163,7 +163,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                         }
                     }
                 }
-            }
+            }            
             boolean soulArrow = chr.getBuffedValue(MapleBuffStat.SOULARROW) != null;
             boolean shadowClaw = chr.getBuffedValue(MapleBuffStat.SHADOW_CLAW) != null;
             if (projectile != 0) {
@@ -179,7 +179,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                 }
             }
             
-            if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006 || attack.skill == 4111004) {
+            if (projectile != 0 || soulArrow || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006 || attack.skill == 4111004 || attack.skill == 13101005) {
             	int visProjectile = projectile; //visible projectile sent to players
                 if (ItemConstants.isThrowingStar(projectile)) {
                     MapleInventory cash = chr.getInventory(MapleInventoryType.CASH);
@@ -192,7 +192,7 @@ public final class RangedAttackHandler extends AbstractDealDamageHandler {
                             }
                         }
                     }
-                } else if (soulArrow || attack.skill == 3111004 || attack.skill == 3211004 || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006) {
+                } else if (soulArrow || attack.skill == 3111004 || attack.skill == 3211004 || attack.skill == 11101004 || attack.skill == 15111007 || attack.skill == 14101006 || attack.skill == 13101005) {
                     visProjectile = 0;
                 }
                 

@@ -646,14 +646,13 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
 
     @Override
-    public void sendDestroyData(MapleClient client) {
-    }
-
-    @Override
     public MapleMapObjectType getType() {
         return MapleMapObjectType.HIRED_MERCHANT;
     }
-
+    
+    @Override
+    public void sendDestroyData(MapleClient client) {}
+    
     @Override
     public void sendSpawnData(MapleClient client) {
         client.announce(MaplePacketCreator.spawnHiredMerchantBox(this));

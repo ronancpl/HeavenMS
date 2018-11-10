@@ -27,6 +27,7 @@ import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
 import net.server.Server;
+import server.ThreadManager;
 
 public class ServerRemoveChannelCommand extends Command {
     {
@@ -43,7 +44,7 @@ public class ServerRemoveChannelCommand extends Command {
         }
 
         final int worldId = Integer.parseInt(params[0]);
-        new Thread(new Runnable() {
+        ThreadManager.getInstance().newTask(new Runnable() {
             @Override
             public void run() {
                 if(Server.getInstance().removeChannel(worldId)) {
@@ -56,6 +57,6 @@ public class ServerRemoveChannelCommand extends Command {
                     }
                 }
             }
-        }).start();
+        });
     }
 }

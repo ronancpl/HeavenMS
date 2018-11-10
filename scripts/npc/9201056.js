@@ -20,7 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var status = 0;
-var goToMansion = false;
 var fee = 15000;
 
 function start() {
@@ -37,19 +36,11 @@ function action(mode, type, selection) {
     else {
         status++;
         if (cm.getPlayer().getMapId() == 682000000) {
-            if (status == 0)
-                cm.sendSimple("Where to, boss? \r\n#b#L0#New Leaf City (" + fee + " mesos)#l\r\n#L1#Haunted Mansion#l#k");
-            else if (status == 1) {
+            if (status == 0) {
                 if (selection == 0)
-                    cm.sendYesNo("You want to go to New Leaf City?");
-                else {
-                    goToMansion = true;
-                    cm.sendYesNo("You're sure you want to enter the Mansion?");
-                }
-            } else if (status == 2) {
-                if(goToMansion) {
-                    cm.warp(682000100, 0);
-                } else if(cm.getMeso() >= fee) {
+                    cm.sendYesNo("Would you like to return back to #bcivilization#k? The fee is " + fee + " mesos.");
+            } else if (status == 1) {
+                if(cm.getMeso() >= fee) {
                     cm.gainMeso(-fee);
                     cm.warp(600000000);
                 } else {

@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import java.util.ArrayList;
 import java.util.List;
 
-import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -35,7 +34,9 @@ import client.inventory.Equip;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.ModifyInventory;
+import constants.ServerConstants;
 import server.MapleItemInformationProvider;
+import net.server.Server;
 
 /**
  *
@@ -187,7 +188,8 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        chr.getAutobanManager().setTimestamp(3, slea.readInt(), 3);
+        slea.readInt();
+        chr.getAutobanManager().setTimestamp(3, Server.getInstance().getCurrentTimestamp(), 4);
         
         if(!ServerConstants.USE_ITEM_SORT) {
             c.announce(MaplePacketCreator.enableActions());

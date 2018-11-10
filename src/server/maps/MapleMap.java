@@ -1552,9 +1552,11 @@ public class MapleMap {
             if (!monster.isAlive()) {
                 return;
             }
-            if (monster.getController() != null) {
-                if (monster.getController().getMap() != this) {
-                    monster.getController().stopControllingMonster(monster);
+            
+            MapleCharacter chrController = monster.getController();
+            if (chrController != null) {
+                if (chrController.getMap() != this) {
+                    chrController.stopControllingMonster(monster);
                 } else {
                     return;
                 }
@@ -1574,7 +1576,7 @@ public class MapleMap {
             } finally {
                 chrRLock.unlock();
             }
-            if (newController != null) {// was a new controller found? (if not no one is on the map)
+            if (newController != null) { // was a new controller found? (if not no one is on the map)
                 if (monster.isFirstAttack()) {
                     newController.controlMonster(monster, true);
                     monster.setControllerHasAggro(true);
@@ -1588,6 +1590,15 @@ public class MapleMap {
         }
     }
 
+    private Map<Integer, MapleMapObject> getCopyMapObjects() {
+        objectRLock.lock();
+        try {
+            return new HashMap<>(mapobjects);
+        } finally {
+            objectRLock.unlock();
+        }
+    }
+    
     public List<MapleMapObject> getMapObjects() {
         objectRLock.lock();
         try {
@@ -2340,14 +2351,14 @@ public class MapleMap {
             
             if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
                 chr.enteredScript(onFirstUserEnter, mapid);
-                MapScriptManager.getInstance().getMapScript(chr.getClient(), onFirstUserEnter, true);
+                MapScriptManager.getInstance().runMapScript(chr.getClient(), onFirstUserEnter, true);
             }
         }
         if (onUserEnter.length() != 0) {
             if (onUserEnter.equals("cygnusTest") && (mapid < 913040000 || mapid > 913040006)) {
                 chr.saveLocation("INTRO");
             }
-            MapScriptManager.getInstance().getMapScript(chr.getClient(), onUserEnter, false);
+            MapScriptManager.getInstance().runMapScript(chr.getClient(), onUserEnter, false);
         }
         if (FieldLimit.CANNOTUSEMOUNTS.check(fieldLimit) && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
             chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
@@ -2629,10 +2640,15 @@ public class MapleMap {
         }
 
         for (MapleMonster monster : chr.getControlledMonsters()) {
-            monster.setController(null);
-            monster.setControllerHasAggro(false);
-            monster.setControllerKnowsAboutAggro(false);
-            updateMonsterController(monster);
+            monster.lockMonster();
+            try {
+                monster.setController(null);
+                monster.setControllerHasAggro(false);
+                monster.setControllerKnowsAboutAggro(false);
+                updateMonsterController(monster);
+            } finally {
+                monster.unlockMonster();
+            }
         }
         
         chr.leaveMap();
@@ -3042,7 +3058,7 @@ public class MapleMap {
     }
 
     private static void updateMapObjectVisibility(MapleCharacter chr, MapleMapObject mo) {
-        if (!chr.isMapObjectVisible(mo)) { // item entered view range
+        if (!chr.isMapObjectVisible(mo)) { // object entered view range
             if (mo.getType() == MapleMapObjectType.SUMMON || mo.getPosition().distanceSq(chr.getPosition()) <= getRangedDistance()) {
                 chr.addVisibleMapObject(mo);
                 mo.sendSpawnData(chr.getClient());
@@ -3055,27 +3071,22 @@ public class MapleMap {
 
     public void moveMonster(MapleMonster monster, Point reportedPos) {
         monster.setPosition(reportedPos);
-        chrRLock.lock();
-        try {
-            for (MapleCharacter chr : characters) {
-                updateMapObjectVisibility(chr, monster);
-            }
-        } finally {
-            chrRLock.unlock();
+        for (MapleCharacter chr : getAllPlayers()) {
+            updateMapObjectVisibility(chr, monster);
         }
     }
 
     public void movePlayer(MapleCharacter player, Point newPosition) {
         player.setPosition(newPosition);
-        Collection<MapleMapObject> visibleObjects = player.getVisibleMapObjects();
         
-        objectRLock.lock();
         try {
+            Collection<MapleMapObject> visibleObjects = player.getVisibleMapObjects();
             MapleMapObject[] visibleObjectsNow = visibleObjects.toArray(new MapleMapObject[visibleObjects.size()]);
-            
+
+            Map<Integer, MapleMapObject> mapObjects = getCopyMapObjects();
             for (MapleMapObject mo : visibleObjectsNow) {
                 if (mo != null) {
-                    if (mapobjects.get(mo.getObjectId()) == mo) {
+                    if (mapObjects.get(mo.getObjectId()) == mo) {
                         updateMapObjectVisibility(player, mo);
                     } else {
                         player.removeVisibleMapObject(mo);
@@ -3084,8 +3095,6 @@ public class MapleMap {
             }
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            objectRLock.unlock();
         }
         
         for (MapleMapObject mo : getMapObjectsInRange(player.getPosition(), getRangedDistance(), rangedMapobjectTypes)) {

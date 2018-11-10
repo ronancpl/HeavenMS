@@ -42,6 +42,12 @@ function action(mode, type, selection) {
     }
 
     if (status == 0) {
+        if (!Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+            cm.sendOk("The medal ranking system is currently unavailable...");
+            cm.dispose();
+            return;
+        }
+        
         var selStr = "Hello, I am the #bBazaar NPC#k! Sell to me any item on your inventory you don't need. #rWARNING#b: Make sure you have your items ready to sell at the slots #rAFTER#b the item you have selected to sell.#k Any items #bunder#k the item selected will be sold thoroughly.";
         for (var i = 0; i < options.length; i++)
             selStr += "\r\n#L" + i + "# " + options[i] + "#l";

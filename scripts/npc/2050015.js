@@ -47,10 +47,14 @@ function action(mode, type, selection) {
                                 
                                 var progress = cm.getQuestProgress(3421, 0);
                                 if((progress >> meteoriteId) % 2 == 0 || (progress == 63 && !cm.haveItem(4031117, 6))) {
-                                        progress |= (1 << meteoriteId);
-                                        
-                                        cm.gainItem(4031117, 1);
-                                        cm.setQuestProgress(3421, 0, progress);
+                                        if (cm.canHold(4031117, 1)) {
+                                                progress |= (1 << meteoriteId);
+                                                
+                                                cm.gainItem(4031117, 1);
+                                                cm.setQuestProgress(3421, 0, progress);
+                                        } else {
+                                                cm.getPlayer().dropMessage(1, "Have a ETC slot available for this item.");
+                                        }
                                 }
                         }
                         

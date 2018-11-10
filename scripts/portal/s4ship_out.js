@@ -1,5 +1,5 @@
 /*
-    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    This file is part of the HeavenMS MapleStory Server
     Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
@@ -17,30 +17,16 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-/*
-   @Author: Arthur L - Refactored command content into modules
-*/
-package client.command.commands.gm0;
-
-import client.MapleClient;
-import client.command.Command;
-import constants.ServerConstants;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
-
-public class TimeCommand extends Command {
-    {
-        setDescription("");
-    }
-    
-    @Override
-    public void execute(MapleClient client, String[] params) {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        dateFormat.setTimeZone(TimeZone.getDefault());
-        client.getPlayer().yellowMessage("HeavenMS Server Time: " + dateFormat.format(new Date()));
+function enter(pi) {
+    var exit = pi.getEventInstance().getIntProperty("canLeave");
+    if (exit == 0) {
+        pi.message("You have to wait one minute before you can leave this place.");
+        return false;
+    } else if (exit == 2) {
+        pi.warp(912010200);
+        return true;
+    } else {
+        pi.warp(120000101);
+        return true;
     }
 }

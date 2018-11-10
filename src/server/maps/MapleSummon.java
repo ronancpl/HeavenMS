@@ -47,11 +47,12 @@ public class MapleSummon extends AbstractAnimatedMapleMapObject {
         setPosition(pos);
     }
 
+    @Override
     public void sendSpawnData(MapleClient client) {
-        if (this != null) client.announce(MaplePacketCreator.spawnSummon(this, false));
-
+        client.announce(MaplePacketCreator.spawnSummon(this, false));
     }
 
+    @Override
     public void sendDestroyData(MapleClient client) {
         client.announce(MaplePacketCreator.removeSummon(this, true));
     }

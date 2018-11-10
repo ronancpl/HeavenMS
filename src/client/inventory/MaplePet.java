@@ -215,7 +215,7 @@ public class MaplePet extends Item {
             enjoyed = false;
         }
         
-        owner.getMap().broadcastMessage(MaplePacketCreator.commandResponse(owner.getId(), slot, type, enjoyed));
+        owner.getMap().broadcastMessage(MaplePacketCreator.petFoodResponse(owner.getId(), slot, enjoyed, false));
         saveToDb();
         
         Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());

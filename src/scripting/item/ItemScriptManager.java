@@ -59,7 +59,7 @@ public class ItemScriptManager {
         return scriptFile.exists();
     }
 
-    public void getItemScript(MapleClient c, String scriptName) {
+    public void runItemScript(MapleClient c, String scriptName) {
         if (scripts.containsKey(scriptName)) {
             try {
                 scripts.get(scriptName).invokeFunction("start", new ItemScriptMethods(c));

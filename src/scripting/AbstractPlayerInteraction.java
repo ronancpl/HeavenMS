@@ -512,21 +512,21 @@ public class AbstractPlayerInteraction {
                                 petId = MaplePet.createPet(id);
 
                                 if(from != null) {
-                                    evolved = MaplePet.loadFromDb(id, (short) 0, petId);
+                                        evolved = MaplePet.loadFromDb(id, (short) 0, petId);
 
-                                    Point pos = getPlayer().getPosition();
-                                    pos.y -= 12;
-                                    evolved.setPos(pos);
-                                    evolved.setFh(getPlayer().getMap().getFootholds().findBelow(evolved.getPos()).getId());
-                                    evolved.setStance(0);
-                                    evolved.setSummoned(true);
+                                        Point pos = getPlayer().getPosition();
+                                        pos.y -= 12;
+                                        evolved.setPos(pos);
+                                        evolved.setFh(getPlayer().getMap().getFootholds().findBelow(evolved.getPos()).getId());
+                                        evolved.setStance(0);
+                                        evolved.setSummoned(true);
 
-                                    evolved.setName(from.getName().compareTo(MapleItemInformationProvider.getInstance().getName(from.getItemId())) != 0 ? from.getName() : MapleItemInformationProvider.getInstance().getName(id));
-                                    evolved.setCloseness(from.getCloseness());
-                                    evolved.setFullness(from.getFullness());
-                                    evolved.setLevel(from.getLevel());
-                                    evolved.setExpiration(System.currentTimeMillis() + expires);
-                                    evolved.saveToDb();
+                                        evolved.setName(from.getName().compareTo(MapleItemInformationProvider.getInstance().getName(from.getItemId())) != 0 ? from.getName() : MapleItemInformationProvider.getInstance().getName(id));
+                                        evolved.setCloseness(from.getCloseness());
+                                        evolved.setFullness(from.getFullness());
+                                        evolved.setLevel(from.getLevel());
+                                        evolved.setExpiration(System.currentTimeMillis() + expires);
+                                        evolved.saveToDb();
                                 }
 
                                 //MapleInventoryManipulator.addById(c, id, (short) 1, null, petId, expires == -1 ? -1 : System.currentTimeMillis() + expires);

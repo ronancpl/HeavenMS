@@ -27,6 +27,7 @@ import client.inventory.MapleInventoryType;
 import client.autoban.AutobanManager;
 import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
@@ -41,7 +42,8 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         AutobanManager abm = chr.getAutobanManager();
-        abm.setTimestamp(5, slea.readInt(), 3);
+        slea.readInt();
+        abm.setTimestamp(5, Server.getInstance().getCurrentTimestamp(), 4);
         slea.readShort();
         int itemId = slea.readInt();
         int monsterid = slea.readInt();

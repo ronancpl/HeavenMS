@@ -74,6 +74,7 @@ import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
 import server.life.MapleMonster;
 import server.MapleTrade;
+import server.ThreadManager;
 import server.maps.*;
 import server.quest.MapleQuest;
 
@@ -159,7 +160,7 @@ public class MapleClient {
         }
 
 	public void sendCharList(int server) {
-		this.announce(MaplePacketCreator.getCharList(this, server));
+		this.announce(MaplePacketCreator.getCharList(this, server, 0));
 	}
 
 	public List<MapleCharacter> loadCharacters(int serverId) {
@@ -878,11 +879,33 @@ public class MapleClient {
 		}
 	}
 
-	public final synchronized void disconnect(boolean shutdown, boolean cashshop) {//once per MapleClient instance
+        public final void disconnect(final boolean shutdown, final boolean cashshop) {
+                if (isDisconnecting()) {
+                        ThreadManager.getInstance().newTask(new Runnable() {
+                                @Override
+                                public void run() {
+                                        disconnectInternal(shutdown, cashshop);
+                                }
+                        });
+                }
+        }
+        
+        public final void forceDisconnect() {
+                if (isDisconnecting()) {
+                        disconnectInternal(true, false);
+                }
+        }
+        
+        private synchronized boolean isDisconnecting() {
                 if (disconnecting) {
-			return;
+			return false;
 		}
+                
 		disconnecting = true;
+                return true;
+        }
+        
+	private void disconnectInternal(boolean shutdown, boolean cashshop) {//once per MapleClient instance
 		if (player != null && player.isLoggedin() && player.getClient() != null) {
 			final int messengerid = player.getMessenger() == null ? 0 : player.getMessenger().getId();
 			//final int fid = player.getFamilyId();

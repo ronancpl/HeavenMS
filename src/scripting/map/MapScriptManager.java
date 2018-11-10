@@ -62,7 +62,7 @@ public class MapScriptManager {
         return scriptFile.exists();
     }
 
-    public void getMapScript(MapleClient c, String scriptName, boolean firstUser) {
+    public void runMapScript(MapleClient c, String scriptName, boolean firstUser) {
         if (scripts.containsKey(scriptName)) {
             try {
                 scripts.get(scriptName).invokeFunction("start", new MapScriptMethods(c));

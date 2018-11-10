@@ -33,7 +33,7 @@ function enter(pi) {
                 }
                 
                 if(pi.haveItem(4032101 + jobtype, 1)) {
-                        pi.message("You have already challenged the Master of Disguise, report your success to Neinheart.");
+                        pi.message("You have already challenged the Master of Disguise, report your success to the Chief Knight.");
                         return false;
                 }
                 

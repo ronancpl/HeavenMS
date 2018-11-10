@@ -2,12 +2,15 @@
 	Spiegelmann -> 2042000
 	Coco -> 9000017
 	Agent E -> 9000036
+	Dalair -> 9000040
 	Donation Box -> 9000041
-	Abdula -> 9209000
+	Abdula -> 9209000 *
 
-CUSTOM NPC SHOPS:
-	Asia -> 2082014
-	T-1337 -> 9201101
+CUSTOM NPC SHOPS (db_shopupdate.sql):
+	Asia -> 2082014 *
+	T-1337 -> 9201101 *
+
+	* : those won't get disabled when USE_ENABLE_CUSTOM_NPC_SCRIPTS = false
 
 LOGS:
 
@@ -1415,3 +1418,39 @@ Removido possibilidade de preparar engagements enquanto segurando aneis de casam
 
 23 Outubro 2018,
 Adicionado script para quest de 4o job de Cygnus Knights.
+
+25 - 27 Outubro 2018,
+Scripts de eventos agora executam em uma thread separada, assim resolvendo possíveis problemas de deadlocks.
+Realizada tentativa de solução para casos onde jogadores percebem mobs em pontos diferentes do mapa em certas situações.
+Clareado um problema de deadlock relacionado a packets de visão/desaparecimento de jogadores e mobs.
+Resolvido diversos problemas de deadlocks relacionados com event instances.
+Implementado ThreadManager. Este sistema utiliza a abordagem de ThreadPool para reciclagem de threads utilizadas, assim eliminando realização de overhead ao criar novas threads a todo uso.
+Resolvido certos casos onde requisição de item pickup de jogador não era devidamente registrado pelo servidor como ação válida.
+
+29 - 31 Outubro 2018,
+Corrigido mobs não lançando skills em determinados casos. Comportamento notável era mobs de nível baixo utilizando nenhuma skill.
+Skill Storm Break não mais remove flechas ao ser utilizada.
+Implementado método que força alteração na posição atual de mobs no mapa.
+Mobs que forem atacados de muito longe terão suas posições atualizadas para todos os jogadores no mapa, buscando assim evitar dessincronizações entre clientes.
+Adicionado drops de red bean porridge em alguns mobs de El Nath.
+Implementado flag para opção de aquisição de belts de Dojo regular ou fácil.
+Corrigido map banish de mobs não funcionando corretamente após as últimas atualizações do MoveLifeHandler.
+Corrigido bug na quest do 2nd Maker que permitia conclusão de quest ao realizar disassemble em equipamentos.
+Adicionado nova mecânica custom: amalgama de equipamentos. Jogadores acima do nível 160, que possuem Maker level 3, poderão utilizar esta mecânica para alavancar atributos dos itens equipados.
+Refatorado método de ganho de fama para não mais usar modificador synchronized, assim evitando possível caso de deadlock.
+Adicionado server flag que permite acesso a todas as skills de job de Aran ao iniciar novo job.
+Corrigido horário irregular no sistema do servidor.
+Adicionado scripts para skill quests de Battleship e Super Transformation.
+
+03 Novembro 2018,
+Corrigido caso onde pets estavam com posições de inventário desatualizadas, levando a certas inconsistências com evoluir/administrar pets.
+
+05 Novembro 2018,
+Alterado administração de timestamp nos handlers. Agora detecção de spam é inteiramente responsabilidade do servidor, onde a detecção de spam ocorre de acordo com quantidade de vezes que um pacote é recebido num dado intervalo de tempo estipulado internamente.
+Refatorado packets que lidam com respostas a comandos de pets.
+
+07 - 09 Novembro 2018,
+Corrigido drop data de Ultra Gray com item inexistente.
+Corrigido quest de meteoritos mudando estado da quest mesmo quando jogador não recebe o item devido a inventário cheio.
+Corrigido quest de Maker lv1 retirando mesos além da quantidade esperada, ao realizar ações da quest.
+Adicionado server flag que lida com utilização de features NPCs custom.
