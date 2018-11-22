@@ -37,7 +37,7 @@ import tools.Pair;
  */
 public class MapleMonsterStats {
     private boolean changeable;
-    private int exp, hp, mp, level, PADamage, PDDamage, MADamage, MDDamage, dropPeriod, cp, buffToGive, removeAfter;
+    private int exp, hp, mp, level, PADamage, PDDamage, MADamage, MDDamage, dropPeriod, cp, buffToGive = -1, removeAfter;
     private boolean boss, undead, ffaLoot, isExplosiveReward, firstAttack, removeOnMiss;
     private String name;
     private Map<String, Integer> animationTimes = new HashMap<String, Integer>();
@@ -151,7 +151,7 @@ public class MapleMonsterStats {
         this.undead = undead;
     }
 
-    public boolean getUndead() {
+    public boolean isUndead() {
         return undead;
     }
 
@@ -193,8 +193,12 @@ public class MapleMonsterStats {
     }
 
     public void setSkills(List<Pair<Integer, Integer>> skills) {
-        for (Pair<Integer, Integer> skill : skills) {
-            this.skills.add(skill);
+        for (int i = this.skills.size(); i < skills.size(); i++) {
+            this.skills.add(null);
+        }
+        
+        for (int i = 0; i < skills.size(); i++) {
+            this.skills.set(i, skills.get(i));
         }
     }
 

@@ -850,7 +850,7 @@ public class MapleClient {
                 }
         }
         
-	private void removePlayer(World wserv) {
+	private void removePlayer(World wserv, boolean serverTransition) {
 		try {
                         player.setDisconnectedFromChannelWorld();
                         player.notifyMapTransferToPartner(-1);
@@ -859,12 +859,14 @@ public class MapleClient {
                         player.closePlayerInteractions();
                         QuestScriptManager.getInstance().dispose(this);
                         
-                        removePartyPlayer(wserv);
-                        
-                        EventInstanceManager eim = player.getEventInstance();
-			if (eim != null) {
-				eim.playerDisconnected(player);
-			}
+                        if (!serverTransition) {    // thanks MedicOP for detecting an issue with party leader change on changing channels
+                                removePartyPlayer(wserv);
+
+                                EventInstanceManager eim = player.getEventInstance();
+                                if (eim != null) {
+                                        eim.playerDisconnected(player);
+                                }
+                        }
                         
                         if (player.getMap() != null) {
                                 int mapId = player.getMapId();
@@ -918,7 +920,7 @@ public class MapleClient {
                         
                         final World wserv = getWorldServer();   // obviously wserv is NOT null if this player was online on it
                         try {
-                                removePlayer(wserv);
+                                removePlayer(wserv, this.serverTransition);
                                 
                                 if (!(channel == -1 || shutdown)) {
                                         if (!cashshop) {

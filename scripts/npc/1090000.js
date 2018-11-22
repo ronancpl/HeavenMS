@@ -48,7 +48,7 @@ function start() {
             cm.teachSkill(5121003, 0, 10, -1);
             cm.forceCompleteQuest(6330);
             
-            cm.sendNext("Congratulations. You have managed to pass my test. I'll teach you a new skill called \"Super Transformation\".\r\n\r\n  #s5221003#    #b#q5221003##k");
+            cm.sendNext("Congratulations. You have managed to pass my test. I'll teach you a new skill called \"Super Transformation\".\r\n\r\n  #s5121003#    #b#q5121003##k");
         }
     } else if (cm.isQuestStarted(6370)) {
         if (cm.getEventInstance() != null) {

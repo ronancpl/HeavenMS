@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
-By kevintjuh93
+@author kevintjuh93
 */
 function enter(pi) { 
 	if (pi.isQuestCompleted(1008))

@@ -29,8 +29,8 @@
         1.5 - Fix for infinity looping [Information]
 	1.4 - Ship/boat is now showed
 	    - Removed temp message[Information]
-	    - Credit to Snow/superraz777 for old source
-	    - Credit to Titan/Kool for the ship/boat packet
+	    - Credits to Snow, superraz777 for old source
+	    - Credits to Titan, Kool for the ship/boat packet
 	1.3 - Removing some function since is not needed [Information]
 	    - Remove register player menthod [Information]
 	1.2 - It should be 2 ships not 1 [Information]

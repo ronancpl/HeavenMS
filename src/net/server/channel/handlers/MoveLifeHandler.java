@@ -26,6 +26,7 @@ import client.MapleClient;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
+import constants.ServerConstants;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
 //import server.life.MobAttackInfo;
@@ -63,10 +64,10 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 		MapleMonster monster = (MapleMonster) mmo;
                 List<MapleCharacter> banishPlayers = null;
                 
-		byte pNibbles = slea.readByte();
+                byte pNibbles = slea.readByte();
 		byte rawActivity = slea.readByte();
-		slea.readByte();
-		slea.readByte();
+		int skillId = slea.readByte() & 0xff;
+		int skillLv = slea.readByte() & 0xff;
 		short pOption = slea.readShort();
                 slea.skip(8);
                 
@@ -74,65 +75,69 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 			rawActivity = (byte) (rawActivity & 0xFF >> 1);
 		}
 
-		boolean isAttack = inRangeInclusive(rawActivity, 12, 20);
-		boolean isSkill = inRangeInclusive(rawActivity, 21, 25);
-
-		byte attackId = (byte) (isAttack ? rawActivity - 12 : -1);
-                isSkill |= (pNibbles != 0);
-                
-		boolean nextMovementCouldBeSkill = true;
-		boolean pUnk = (pNibbles & 0xF0) != 0;
-                
+		boolean isAttack = inRangeInclusive(rawActivity, 24, 41);
+		boolean isSkill = inRangeInclusive(rawActivity, 42, 59);
+		
                 boolean currentController = (monster.getController() == player);
                 
 		MobSkill toUse = null;
                 int useSkillId = 0, useSkillLevel = 0;
                 
-                int rnd = 0;
+                MobSkill nextUse = null;
+                int nextSkillId = 0, nextSkillLevel = 0;
+                
+                boolean nextMovementCouldBeSkill = !(isSkill || (pNibbles != 0));
+                
+                int castPos;
                 if (isSkill) {
-                        int noSkills = monster.getNoSkills();
-                        if (noSkills > 0) {
-                                int rndSkill = Randomizer.nextInt(noSkills);
-
-                                Pair<Integer, Integer> skillToUse = monster.getSkills().get(rndSkill);
-                                useSkillId = skillToUse.getLeft();
-                                useSkillLevel = skillToUse.getRight();
+                        useSkillId = skillId;
+                        useSkillLevel = skillLv;
+                        
+                        castPos = monster.getSkillPos(useSkillId, useSkillLevel);
+                        if (castPos != -1) {
                                 toUse = MobSkillFactory.getMobSkill(useSkillId, useSkillLevel);
                                 
-                                rnd = rndSkill;
-                                nextMovementCouldBeSkill = false;
-                        }
-                }
-                
-                int mobMp;
-                if (toUse != null && toUse.getHP() >= (int) (((float) monster.getHp() / monster.getMaxHp()) * 100) && monster.canUseSkill(toUse)) {
-                        mobMp = monster.getMp();
-                        
-                        int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(toUse);
-                        if(animationTime > 0 && toUse.getSkillId() != 129) {
-                                toUse.applyDelayedEffect(player, monster, true, animationTime);
-                        } else {
-                                banishPlayers = new LinkedList<>();
-                                toUse.applyEffect(player, monster, true, banishPlayers);
+                                if (monster.canUseSkill(toUse)) {
+                                        int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(toUse);
+                                        if(animationTime > 0 && toUse.getSkillId() != 129) {
+                                                toUse.applyDelayedEffect(player, monster, true, animationTime);
+                                        } else {
+                                                banishPlayers = new LinkedList<>();
+                                                toUse.applyEffect(player, monster, true, banishPlayers);
+                                        }
+                                }
                         }
                 } else {
-                        int atkStatus = monster.canUseAttack((attackId - 13) / 2);
+                        castPos = (rawActivity - 24) / 2;
+                        
+                        int atkStatus = monster.canUseAttack(castPos, isSkill);
                         if (atkStatus < 1) {
                                 if (!currentController) {
                                         return;
                                 }
                                 
-                                mobMp = atkStatus < 0 ? 0 : monster.getMp();
-                        } else {
-                                mobMp = monster.getMp();
+                                rawActivity = -1;
+                                pOption = 0;
                         }
-                        
-                        useSkillId = 0;
-                        useSkillLevel = 0;
-                        rawActivity = -1;
-                        pOption = 0;
-                        
-                        toUse = null;
+                }
+                
+                int mobMp = monster.getMp();
+                if (nextMovementCouldBeSkill) {
+                        int noSkills = monster.getNoSkills();
+                        if (noSkills > 0) {
+                                int rndSkill = Randomizer.nextInt(noSkills);
+                                
+                                Pair<Integer, Integer> skillToUse = monster.getSkills().get(rndSkill);
+                                nextSkillId = skillToUse.getLeft();
+                                nextSkillLevel = skillToUse.getRight();
+                                nextUse = MobSkillFactory.getMobSkill(nextSkillId, nextSkillLevel);
+                                
+                                if (!(nextUse != null && nextUse.getHP() >= (int) (((float) monster.getHp() / monster.getMaxHp()) * 100) && mobMp >= nextUse.getMpCon())) {
+                                        nextSkillId = 0;
+                                        nextSkillLevel = 0;
+                                        nextUse = null;
+                                }
+                        }
                 }
                 
 		slea.readByte();
@@ -151,9 +156,6 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                                 } else {
                                         return;
                                 }
-                        } else if (rawActivity == -1 && monster.isControllerKnowsAboutAggro() && !monster.isMobile() && !monster.isFirstAttack()) {
-                                monster.setControllerHasAggro(false);
-                                monster.setControllerKnowsAboutAggro(false);
                         }
 
                         aggro = monster.isControllerHasAggro();
@@ -164,13 +166,17 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                         monster.unlockMonster();
                 }
                 
-                if (toUse != null) {
-                        c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro, toUse.getSkillId(), toUse.getSkillLevel()));
+                if (nextUse != null) {
+                        c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro, nextSkillId, nextSkillLevel));
 		} else {
 			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro));
 		}
                 
 		if (res != null) {
+                        if (ServerConstants.USE_DEBUG_SHOW_RCVD_MVLIFE) {
+                                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill);
+                        }
+                        
                         map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());
 			updatePosition(res, monster, -2);
 			map.moveMonster(monster, monster.getPosition());

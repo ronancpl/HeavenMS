@@ -38,8 +38,15 @@ function action(mode, type, selection) {
                 else
                         status--;
     
-                if(status == 0) {
-                        cm.sendOk("Hey, do you have any business with me?");
+                if (status == 0) {
+                        if (!cm.isQuestStarted(6410)) {
+                                cm.sendOk("Hey, do you have any business with me?");
+                                cm.dispose();
+                        } else {
+                                cm.sendYesNo("Let's go save #r#p2095000##k?");
+                        }
+                } else if (status == 1) {
+                        cm.warp(925010000, 0);
                         cm.dispose();
                 }
         }

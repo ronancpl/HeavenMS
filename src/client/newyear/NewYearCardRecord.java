@@ -35,7 +35,7 @@ import tools.MaplePacketCreator;
 
 /**
  *
- * @author Ronan (credits to Eric for showing the New Year opcodes and handler layout)
+ * @author Ronan - credits to Eric for showing the New Year opcodes and handler layout
  */
 public class NewYearCardRecord {
     private int id;

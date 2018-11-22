@@ -48,7 +48,7 @@ import tools.MaplePacketCreator;
 
 /**
  *
- * @author RonanLana (synchronization of Duey modules)
+ * @author RonanLana - synchronization of Duey modules
  */
 public class DueyProcessor {
     

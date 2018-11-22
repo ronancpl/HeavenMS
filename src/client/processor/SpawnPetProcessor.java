@@ -34,7 +34,7 @@ import tools.MaplePacketCreator;
 
 /**
  *
- * @author RonanLana (just added locking on OdinMS' SpawnPetHandler method body)
+ * @author RonanLana - just added locking on OdinMS' SpawnPetHandler method body
  */
 public class SpawnPetProcessor {
     private static MapleDataProvider dataRoot = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Item.wz"));

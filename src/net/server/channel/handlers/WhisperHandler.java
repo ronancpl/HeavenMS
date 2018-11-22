@@ -83,12 +83,14 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
 			c.getPlayer().getAutobanManager().spam(7);
         } else if (mode == 5) { // - /find
             String recipient = slea.readMapleAsciiString();
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(recipient);
+            MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(recipient);
             if (victim != null && c.getPlayer().gmLevel() >= victim.gmLevel()) {
-                if (victim.getCashShop().isOpened()) {
+                if (victim.getCashShop().isOpened()) {  // in CashShop
                     c.announce(MaplePacketCreator.getFindReply(victim.getName(), -1, 2));
-                //} else if (victim.inMTS()) {
-                //    c.announce(MaplePacketCreator.getFindReply(victim.getName(), -1, 0));
+                } else if (victim.isAwayFromWorld()) {  // in MTS
+                    c.announce(MaplePacketCreator.getFindReply(victim.getName(), -1, 0));
+                } else if (victim.getClient().getChannel() != c.getChannel()) { // in another channel, issue detected thanks to MedicOP
+                    c.announce(MaplePacketCreator.getFindReply(victim.getName(), victim.getClient().getChannel() - 1, 3));
                 } else {
                     c.announce(MaplePacketCreator.getFindReply(victim.getName(), victim.getMap().getId(), 1));
                 }

@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
 	Alcaster - El Nath Market (211000100)
 -- By ---------------------------------------------------------------------------------------------
-	Unknown/Information/xQuasar
+	Unknown & Information & xQuasar
 -- Version Info -----------------------------------------------------------------------------------
 	1.3 - Fixed up completely [xQuasar]
 	1.2 - Add a missing text part [Information]

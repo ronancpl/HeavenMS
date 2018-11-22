@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
 	Bamboo Warrior Spawner
 -- Edited by --------------------------------------------------------------------------------------
-	Ronan (based on xQuasar's King Clang spawner)
+	Ronan - based on xQuasar's King Clang spawner
 
 **/
 function init() {

@@ -1,5 +1,5 @@
 /*
-	Author: DietStory dev team
+	Author: DietStory v1.02 dev team
 	NPC: Matthias
 	Quest: Hidden Inside the Trash Can
 */

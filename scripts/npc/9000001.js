@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Edited by: kevintjuh93
+/* Credits to: kevintjuh93
     NPC Name:         Jean
     Map(s):         Victoria Road : Lith Harbour (104000000)
     Description:         Event Assistant

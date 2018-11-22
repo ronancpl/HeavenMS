@@ -25,7 +25,7 @@
 -- By ---------------------------------------------------------------------------------------------
 	Unknown
 -- Version Info -----------------------------------------------------------------------------------
-    1.2 - Now Official method (action(x,0,0) is weak) by Moogra.
+        1.2 - Now Official method (action(x,0,0) is weak) by Moogra.
 	1.1 - Official Text and Method [Information]
 	1.0 - First Version by Unknown
 ---------------------------------------------------------------------------------------------------

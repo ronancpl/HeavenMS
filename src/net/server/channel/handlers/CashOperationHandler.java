@@ -63,7 +63,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             final int snCS = slea.readInt();
             CashItem cItem = CashItemFactory.getItem(snCS);
             if (!canBuy(cItem, cs.getCash(useNX))) {
-                FilePrinter.printError(FilePrinter.ITEM, "Denied to sell cash item with SN " + cItem.getSN());
+                FilePrinter.printError(FilePrinter.ITEM, "Denied to sell cash item with SN " + snCS);   // preventing NPE here thanks to MedicOP
                 c.enableCSActions();
                 return;
             }
@@ -185,7 +185,10 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     c.enableCSActions();
                     return;
                 }
-                if (chr.getStorage().gainSlots(8)) {
+                if (chr.getStorage().gainSlots(8)) {    // thanks ABaldParrot & Thora for detecting storage issues here
+                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 8 slots to their account storage.\r\n");
+                    chr.setUsedStorage();
+                    
                     c.announce(MaplePacketCreator.showBoughtStorageSlots(chr.getStorage().getSlots()));
                     cs.gainCash(cash, cItem, chr.getWorld());
                     c.announce(MaplePacketCreator.showCash(chr));

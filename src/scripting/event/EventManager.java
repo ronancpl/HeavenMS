@@ -174,7 +174,21 @@ public class EventManager {
     
     private List<Integer> getLobbyRange() {
         try {
-            return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
+            if (!ServerConstants.JAVA_8) {
+                return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
+            } else {  // java 8 support here thanks to MedicOP
+                /*
+                ScriptObjectMirror object = (ScriptObjectMirror) iv.invokeFunction("setLobbyRange", (Object) null);
+                int[] to = object.to(int[].class);
+                List<Integer> list = new ArrayList<>();
+                for (int i : to) {
+                    list.add(i);
+                }
+                return list;
+                */
+                
+                throw new NoSuchMethodException();
+            }
         } catch (ScriptException | NoSuchMethodException ex) { // they didn't define a lobby range
             List<Integer> defaultRange = new ArrayList<>();
             defaultRange.add(0);

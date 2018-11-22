@@ -20,7 +20,7 @@
  */
 
 /* 
- * @Author Stereo, xQuasar, <<XkelvinchiaX@Kelvin(For make it Fully Working.)>>
+ * @Author Stereo, xQuasar, XkelvinchiaX (Kelvin) - For make it Fully Working.
  * 
  * Adobis - El Nath: Entrance to Zakum Altar (211042400)
  * 

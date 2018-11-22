@@ -21,7 +21,7 @@
 */
 /* 	Kelvin
 	SingaPore VIP Face changer
-	Made by aaron and cody 
+	@Author AAron (aaroncsn), Cody
 */
 var status = 0;
 var beauty = 0;

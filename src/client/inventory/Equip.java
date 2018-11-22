@@ -487,19 +487,21 @@ public class Equip extends Item {
         String lvupStr = "'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "' is now level " + itemLevel + "! ";
         String showStr = "#e'" + MapleItemInformationProvider.getInstance().getName(this.getItemId()) + "'#b is now #elevel #r" + itemLevel + "#k#b!";
         
-        Pair<String, Pair<Boolean, Boolean>> res = gainStats(stats);
+        Pair<String, Pair<Boolean, Boolean>> res = this.gainStats(stats);
         lvupStr += res.getLeft();
         boolean gotSlot = res.getRight().getLeft();
         boolean gotVicious = res.getRight().getRight();
         
-        if(gotVicious) {
+        if (gotVicious) {
             //c.getPlayer().dropMessage(6, "A new Vicious Hammer opportunity has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
             lvupStr += "+VICIOUS ";
         }
-        if(gotSlot) {
+        if (gotSlot) {
             //c.getPlayer().dropMessage(6, "A new upgrade slot has been found on the '" + MapleItemInformationProvider.getInstance().getName(getItemId()) + "'!");
             lvupStr += "+UPGSLOT ";
         }
+        
+        c.getPlayer().equipChanged();
         
         showLevelupMessage(showStr, c); // thanks to Polaris dev team !
         c.getPlayer().dropMessage(6, lvupStr);

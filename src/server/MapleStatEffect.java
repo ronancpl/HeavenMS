@@ -717,6 +717,18 @@ public class MapleStatEffect {
         }
     }
 
+    public boolean applyEchoOfHero(MapleCharacter applyfrom) {
+        Map<Integer, MapleCharacter> mapPlayers = applyfrom.getMap().getMapPlayers();
+        mapPlayers.remove(applyfrom.getId());
+        
+        boolean hwResult = applyTo(applyfrom);
+        for (MapleCharacter chr : mapPlayers.values()) {    // Echo of Hero not buffing players in the map detected thanks to Masterrulax
+            applyTo(applyfrom, chr, false, null, false, 1);
+        }
+        
+        return hwResult;
+    }
+    
     public boolean applyTo(MapleCharacter chr) {
         return applyTo(chr, chr, true, null, false, 1);
     }
@@ -886,11 +898,11 @@ public class MapleStatEffect {
                 
                 applyto.cancelBuffStats(MapleBuffStat.SOULARROW);  // cancel door buff
             }
-        }  else if (isMist()) {
+        } else if (isMist()) {
             Rectangle bounds = calculateBoundingBox(sourceid == NightWalker.POISON_BOMB ? pos : applyfrom.getPosition(), applyfrom.isFacingLeft());
             MapleMist mist = new MapleMist(bounds, applyfrom, this);
             applyfrom.getMap().spawnMist(mist, getDuration(), mist.isPoisonMist(), false, mist.isRecoveryMist());
-        } else if(isTimeLeap()) {
+        } else if (isTimeLeap()) {
             applyto.removeAllCooldownsExcept(Buccaneer.TIME_LEAP, true);
         }
         

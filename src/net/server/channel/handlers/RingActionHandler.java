@@ -51,7 +51,7 @@ import client.inventory.Item;
 
 /**
  * @author Jvlaple
- * @author Ronan (major overhaul on Ring handling mechanics)
+ * @author Ronan - major overhaul on Ring handling mechanics
  */
 public final class RingActionHandler extends AbstractMaplePacketHandler {
     private static int getBoxId(int useItemId) {

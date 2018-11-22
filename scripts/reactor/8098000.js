@@ -20,8 +20,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /*
- * @author RMZero213 (base)
- * @author Moogra (fixed, clean up)
+ * @author RMZero213 - base
+ * @author Moogra - fixed, clean up
  */
 function act() {
     var map = rm.getPlayer().getMapId();

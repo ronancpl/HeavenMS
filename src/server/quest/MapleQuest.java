@@ -45,7 +45,7 @@ import tools.StringUtil;
 /**
  *
  * @author Matze
- * @author Ronan (support for medal quests)
+ * @author Ronan - support for medal quests
  */
 public class MapleQuest {
 

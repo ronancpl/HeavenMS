@@ -50,7 +50,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author RonanLana (synchronization of AP transaction modules)
+ * @author RonanLana - synchronization of AP transaction modules
  */
 public class AssignAPProcessor {
     

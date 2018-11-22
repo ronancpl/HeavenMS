@@ -51,12 +51,15 @@ public class ServerConstants {
     //Other Configuration
     public static boolean JAVA_8;
     public static boolean SHUTDOWNHOOK;
+    // JAVA_8: every static function in AbstractPlayerInteraction are to be made non-static, and code comment sections uncommented after enabling this functionality.
+    
     
     //Server Flags
     public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the HeavenMS's custom keybindings when creating characters.
     public static final boolean USE_DEBUG = false;                  //Will enable some text prints on the client, oriented for debugging purposes.
     public static final boolean USE_DEBUG_SHOW_INFO_EQPEXP = false; //Prints on the cmd all equip exp gain info.
     public static       boolean USE_DEBUG_SHOW_RCVD_PACKET = false; //Prints on the cmd all received packet ids.
+    public static       boolean USE_DEBUG_SHOW_RCVD_MVLIFE = false; //Prints on the cmd all received move life content.
     public static       boolean USE_SUPPLY_RATE_COUPONS = true;     //Allows rate coupons to be sold through the Cash Shop.
     
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events on a map, rather than those of only view range.
@@ -141,6 +144,7 @@ public class ServerConstants {
     public static boolean USE_DISPLAY_NUMBERS_WITH_COMMA = true;        //Enforce comma on displayed strings (use this when USE_UNITPRICE_WITH_COMMA is active and you still want to display comma-separated values).
     public static boolean USE_UNITPRICE_WITH_COMMA = true;              //Set this accordingly with the layout of the unitPrices on Item.wz XML's, whether it's using commas or dots to represent fractions.
     public static final byte MIN_UNDERLEVEL_TO_EXP_GAIN = 20;           //Characters are unable to get EXP from a mob if their level are under this threshold, only if "USE_ENFORCE_MOB_LEVEL_RANGE" is enabled. For bosses, this attribute is doubled.
+    public static final byte MIN_UNDERLEVEL_TO_EXP_LEECH = 40;          //Characters are unable to leech EXP from party member kills whose level difference are past this limit.
     public static final byte MAX_MONITORED_BUFFSTATS = 5;               //Limits accounting for "dormant" buff effects, that should take place when stronger stat buffs expires.
     public static final int MAX_AP = 32767;                             //Max AP allotted on the auto-assigner.
     public static final int MAX_EVENT_LEVELS = 8;                       //Event has different levels of rewarding system.
@@ -172,7 +176,7 @@ public class ServerConstants {
     public static final boolean USE_ENHANCED_CHSCROLL = true;   //Equips even more powerful with chaos upgrade.
     public static final boolean USE_ENHANCED_CRAFTING = true;   //Apply chaos scroll on every equip crafted.
     public static final boolean USE_ENHANCED_CLNSLATE = true;   //Clean slates can be applied to recover successfully used slots as well.
-    public static final int SCROLL_CHANCE_RATE = 10;            //Number of rolls for success on a scroll, set 0 for default.
+    public static final int SCROLL_CHANCE_RATE = 10;            //Number of rolls for success on a scroll, set 1 for default.
     public static final int CHSCROLL_STAT_RATE = 3;             //Number of rolls of stat upgrade on a successfully applied chaos scroll, set 1 for default.
     public static final int CHSCROLL_STAT_RANGE = 6;            //Stat upgrade range (-N, N) on chaos scrolls.
     

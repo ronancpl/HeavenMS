@@ -51,7 +51,7 @@ import net.server.audit.locks.MonitoredLockType;
 /**
  *
  * @author XoticStory
- * @author Ronan (concurrency protection)
+ * @author Ronan - concurrency protection
  */
 public class MapleHiredMerchant extends AbstractMapleMapObject {
     private int ownerId, itemId, mesos = 0;

@@ -21,7 +21,8 @@
 */
 /* 	Jimmy
 	Singa Random Hair/Color Changer
-	Credits to Cody and AAron from FlowsionMS
+	@Author Cody (FlowsionMS)
+        @Author AAron (FlowsionMS)
  */
 var status = 0;
 var beauty = 0;

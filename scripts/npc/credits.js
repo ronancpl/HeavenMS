@@ -98,6 +98,7 @@ function writeServerStaff_Contributors() {
         addPerson("xQuasar", "Contributor");
         addPerson("Xterminator", "Contributor");
         addPerson("XoticStory", "Contributor");
+        addPerson("Masterrulax", "Contributor");
 }
 
 function writeAllServerStaffs() {

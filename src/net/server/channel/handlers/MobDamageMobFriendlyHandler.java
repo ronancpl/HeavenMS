@@ -47,8 +47,7 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
 		}
 
 		int damage = Randomizer.nextInt(((monster.getMaxHp() / 13 + monster.getPADamage() * 10)) * 2 + 500) / 10; //Beng's formula.
-		//  int damage = monster.getStats().getPADamage() + monster.getStats().getPDDamage() - 1;
-
+                
                 if (monster.getHp() - damage < 1) {     // friendly dies
                         if(monster.getId() == 9300102) {
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Watch Hog has been injured by the aliens. Better luck next time..."));
@@ -60,8 +59,10 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted in the middle of the combat."));
                         } else if(monster.getId() == 9300138) {   //romeo
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Romeo has fainted in the middle of the combat."));
-                        } else if(monster.getId() == 9400322 || monster.getId() == 9400327 || monster.getId() == 9400332) {
+                        } else if(monster.getId() == 9400322 || monster.getId() == 9400327 || monster.getId() == 9400332) { //snowman
                                 monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Snowman has melted on the heat of the battle."));
+                        } else if(monster.getId() == 9300162) {   //delli
+                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Delli vanished after the ambush, sheets still laying on the ground..."));
                         }
                         
                         c.getPlayer().getMap().killFriendlies(monster);

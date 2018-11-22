@@ -48,13 +48,12 @@ public class GotoCommand extends Command {
         }
         if (gotomaps.containsKey(params[0])) {
             MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(params[0]));
-            MaplePortal targetPortal = target.getPortal(0);
-            if (player.getEventInstance() != null) {
-                player.getEventInstance().removePlayer(player);
-            }
+            
+            // expedition issue with this command detected thanks to Masterrulax
+            MaplePortal targetPortal = target.getRandomPlayerSpawnpoint();
             player.changeMap(target, targetPortal);
         } else {
-            player.dropMessage(5, "That map does not exist.");
+            player.dropMessage(5, "Area '" + params[0] + "' is not registered.");
         }
     }
 }

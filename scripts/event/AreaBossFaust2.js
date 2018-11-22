@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
 	Faust2 Spawner
 -- Edited by --------------------------------------------------------------------------------------
-	ThreeStep (based on xQuasar's King Clang spawner)
+	ThreeStep - based on xQuasar's King Clang spawner
 
 **/
 

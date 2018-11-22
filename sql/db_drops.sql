@@ -20300,7 +20300,8 @@ USE `heavenms`;
 (6130102, 2022001, 1, 1, 0, 20000),
 (6130103, 2022001, 1, 1, 0, 20000),
 (6130200, 2022001, 1, 1, 0, 20000),
-(6130201, 2022001, 1, 1, 0, 20000);
+(6130201, 2022001, 1, 1, 0, 20000),
+(2220000, 1322001, 1, 1, 0, 8000);
 
 # (dropperid, itemid, minqty, maxqty, questid, chance)
 
@@ -21534,7 +21535,7 @@ USE `heavenms`;
  INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)
  SELECT 3000004, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance` FROM drop_data WHERE dropperid = 3000001;
 
- -- Thanks to DietStory dev team
+ -- Thanks to DietStory v1.02 dev team
  -- There are two Jr. Boogies mob ids for some unknown reason. 3230301 had no drops, but 3230300 had all the correct drops.
  -- Just copying the drops from the one with the correct drop data.
  INSERT IGNORE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`)

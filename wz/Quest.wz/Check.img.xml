@@ -59883,12 +59883,6 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="1092012"/>
-      <int name="infoNumber" value="6364"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="2"/>
-        </imgdir>
-      </imgdir>
     </imgdir>
   </imgdir>
   <imgdir name="6370">
@@ -60008,12 +60002,7 @@
     </imgdir>
     <imgdir name="1">
       <int name="npc" value="2095000"/>
-      <int name="infoNumber" value="6411"/>
-      <imgdir name="infoex">
-        <imgdir name="0">
-          <string name="value" value="p2"/>
-        </imgdir>
-      </imgdir>
+      <string name="endscript" value="q6410e"/>
     </imgdir>
   </imgdir>
   <imgdir name="6700">

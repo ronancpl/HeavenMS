@@ -37,7 +37,8 @@ import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
- * @author Jay Estrella/ Modified by kevintjuh93
+ * @author Jay Estrella
+ * @author kevintjuh93
  */
 public final class ItemRewardHandler extends AbstractMaplePacketHandler {
     @Override

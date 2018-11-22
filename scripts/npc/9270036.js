@@ -21,7 +21,7 @@
 */
 /*     Eric
     Singapore VIP Hair/Color Changer
-    MADE BY AAron and Cody from the FlowsionMS Forums
+    @Author AAron, Cody (FlowsionMS) Forums
 */
 var status = 0;
 var beauty = 0;

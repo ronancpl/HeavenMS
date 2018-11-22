@@ -645,8 +645,8 @@ public class MapleItemInformationProvider {
         return Math.pow(1.0 - prop, dices);
     }
     
-    public static boolean rollSuccessChance(double prop) {
-        return Math.random() >= testYourLuck(prop / 100.0, ServerConstants.SCROLL_CHANCE_RATE);
+    public static boolean rollSuccessChance(double propPercent) {
+        return Math.random() >= testYourLuck(propPercent / 100.0, ServerConstants.SCROLL_CHANCE_RATE);
     }
     
     private static short getMaximumShortMaxIfOverflow(int value1, int value2) {

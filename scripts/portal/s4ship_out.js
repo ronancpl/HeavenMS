@@ -23,9 +23,11 @@ function enter(pi) {
         pi.message("You have to wait one minute before you can leave this place.");
         return false;
     } else if (exit == 2) {
+        pi.playPortalSound();
         pi.warp(912010200);
         return true;
     } else {
+        pi.playPortalSound();
         pi.warp(120000101);
         return true;
     }

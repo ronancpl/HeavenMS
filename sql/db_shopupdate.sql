@@ -165,10 +165,10 @@ INSERT IGNORE INTO `shopitems` (`shopid`, `itemid`, `price`, `pitch`, `position`
 (9270065, 2030100, 450, 0, 3),
 (9270022, 2030100, 450, 0, 118);
 
-# Thanks to Vcoc
-# GMShop: Sacks, GmEquip, Cheese & Onyx, Utils, 
-#         Arrows, Bullets, Throwings and Capsules,
-#         Others, Equips, Mounts, Scrolls.
+-- Thanks to Vcoc
+-- GMShop: Sacks, GmEquip, Cheese & Onyx, Utils, 
+--        Arrows, Bullets, Throwings and Capsules,
+--        Others, Equips, Mounts, Scrolls.
 
 DELETE FROM `shopitems` WHERE `shopid`=1337;
 INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
@@ -258,7 +258,7 @@ INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `position`) VALUES
 (1337, 2210032, 1, 84),
 (1337, 2050004, 1, 85);
 
-# Thanks to DietStory dev team
+-- Thanks to DietStory v1.02 dev team
 INSERT INTO `shopitems` ( `shopid`, `itemid`, `price`, `pitch`, `position`) VALUES
  (1200001, 3010001, 1000, 0, 1),
  (1200001, 1092003, 2000, 0, 2),

@@ -23,7 +23,7 @@
 -- JavaScript -----------------
 Bart - Nautilus' Port
 -- Created By --
-Cody/Cyndicate
+    Cody (Cyndicate)
 -- Function --
 No specific function, useless text.
 -- GMS LIKE --

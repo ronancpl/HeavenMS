@@ -1,4 +1,4 @@
-//credits to kevintjuh93
+//@author kevintjuh93
 
 var status = -1;
 

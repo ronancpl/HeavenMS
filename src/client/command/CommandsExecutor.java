@@ -331,6 +331,7 @@ public class CommandsExecutor {
         addCommand("debug", 5, DebugCommand.class);
         addCommand("set", 5, SetCommand.class);
         addCommand("showpackets", 5, ShowPacketsCommand.class);
+        addCommand("showmovelife", 5, ShowMoveLifeCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

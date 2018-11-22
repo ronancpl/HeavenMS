@@ -27,6 +27,7 @@ package net.server.audit.locks;
 public enum MonitoredLockType {
     UNDEFINED,
     CHARACTER_CHR,
+    CHARACTER_CPN,
     CHARACTER_EFF,
     CHARACTER_PET,
     CHARACTER_PRT,

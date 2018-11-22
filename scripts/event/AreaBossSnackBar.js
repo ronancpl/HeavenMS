@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
 	Snack Bar Spawner
 -- Edited by --------------------------------------------------------------------------------------
-	Ronan (based on xQuasar's King Clang spawner)
+	Ronan - based on xQuasar's King Clang spawner
 
 **/
 function init() {

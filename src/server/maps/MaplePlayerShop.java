@@ -46,7 +46,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 /**
  *
  * @author Matze
- * @author Ronan (concurrency protection)
+ * @author Ronan - concurrency protection
  */
 public class MaplePlayerShop extends AbstractMapleMapObject {
     private AtomicBoolean open = new AtomicBoolean(false);

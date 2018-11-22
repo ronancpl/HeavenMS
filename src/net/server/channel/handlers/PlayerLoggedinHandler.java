@@ -224,6 +224,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             if (playerGuild == null) {
                 player.deleteGuild(player.getGuildId());
                 player.getMGC().setGuildId(0);
+                player.getMGC().setGuildRank(5);
             } else {
                 playerGuild.getMGC(player.getId()).setCharacter(player);
                 player.setMGC(playerGuild.getMGC(player.getId()));

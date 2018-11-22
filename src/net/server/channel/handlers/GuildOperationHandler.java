@@ -194,14 +194,15 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 restancePlayer(mc);
                 break;
             case 0x07:
-                allianceId = mc.getGuild().getAllianceId();
-                
                 cid = slea.readInt();
                 name = slea.readMapleAsciiString();
                 if (cid != mc.getId() || !name.equals(mc.getName()) || mc.getGuildId() <= 0) {
                     System.out.println("[hax] " + mc.getName() + " tried to quit guild under the name \"" + name + "\" and current guild id of " + mc.getGuildId() + ".");
                     return;
                 }
+                
+                allianceId = mc.getGuild().getAllianceId();
+                
                 c.announce(MaplePacketCreator.updateGP(mc.getGuildId(), 0));
                 Server.getInstance().leaveGuild(mc.getMGC());
                 
@@ -209,6 +210,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if(allianceId > 0) Server.getInstance().getAlliance(allianceId).updateAlliancePackets(mc);
                 
                 mc.getMGC().setGuildId(0);
+                mc.getMGC().setGuildRank(5);
                 mc.saveGuildStatus();
                 restancePlayer(mc);
                 break;

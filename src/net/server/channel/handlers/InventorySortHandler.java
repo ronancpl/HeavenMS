@@ -216,8 +216,8 @@ public final class InventorySortHandler extends AbstractMaplePacketHandler {
             }
 
             for (Item item : itemarray) {
-                    inventory.removeSlot(item.getPosition());
-                    mods.add(new ModifyInventory(3, item));
+                inventory.removeSlot(item.getPosition());
+                mods.add(new ModifyInventory(3, item));
             }
 
             int invTypeCriteria = (MapleInventoryType.getByType(invType) == MapleInventoryType.EQUIP) ? 3 : 1;

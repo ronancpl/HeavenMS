@@ -192,7 +192,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int mesosTraded = 0;
     private int possibleReports = 10;
     private int dojoPoints, vanquisherStage, dojoStage, dojoEnergy, vanquisherKills;
-    private int warpToId;
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
@@ -277,6 +276,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private Lock evtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EVT, true);
     private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for meso & quest tasks as well
     private Lock prtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PRT);
+    private Lock cpnLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CPN);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
     private static String[] ariantroomleader = new String[3];
@@ -1593,7 +1593,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             map.addPlayer(this);
             visitMap(map);
             
-            silentPartyUpdateInternal(getParty());  // EIM script calls inside
             prtLock.lock();
             try {
                 if (party != null) {
@@ -1604,6 +1603,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             } finally {
                 prtLock.unlock();
             }
+            silentPartyUpdateInternal(getParty());  // EIM script calls inside
             
             if (getMap().getHPDec() > 0) resetHpDecreaseTask();
         } else {
@@ -3027,10 +3027,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public int getAllianceRank() {
         return allianceRank;
-    }
-
-    public int getAllowWarpToId() {
-        return warpToId;
     }
 
     public static String getAriantRoomLeaderName(int room) {
@@ -6064,8 +6060,23 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void updateCouponRates() {
-        revertCouponRates();
-        setCouponRates();
+        if (cpnLock.tryLock()) {
+            MapleInventory cashInv = this.getInventory(MapleInventoryType.CASH);
+            
+            effLock.lock();
+            chrLock.lock();
+            cashInv.lockInventory();
+            try {
+                revertCouponRates();
+                setCouponRates();
+            } finally {
+                cpnLock.unlock();
+                
+                cashInv.unlockInventory();
+                chrLock.unlock();
+                effLock.unlock();
+            }
+        }
     }
     
     public void resetPlayerRates() {
@@ -8009,10 +8020,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } finally {
             con.close();
         }
-    }
-
-    public void setAllowWarpToId(int id) {
-        this.warpToId = id;
     }
 
     public static void setAriantRoomLeader(int room, String charname) {

@@ -23,7 +23,7 @@
 -- Odin JavaScript --------------------------------------------------------------------------------
 	Timer1 Spawner
 -- Edited by --------------------------------------------------------------------------------------
-	ThreeStep (based on xQuasar's King Clang spawner)
+	ThreeStep - based on xQuasar's King Clang spawner
 **/
 
 importPackage(Packages.client);

@@ -49,7 +49,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  *
  * @author Matze
- * @author Ronan (concurrency safety & reviewed minigames)
+ * @author Ronan - concurrency safety & reviewed minigames
  */
 public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
     public enum Action {

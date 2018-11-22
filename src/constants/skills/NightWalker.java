@@ -39,6 +39,7 @@ public class NightWalker {
     public static final int SHADOW_PARTNER = 14111000;
     public static final int SHADOW_WEB = 14111001;
     public static final int VANISH = 14100005;
+    public static final int FLASH_JUMP = 14101004;
     public static final int VAMPIRE = 14101006;
     public static final int VENOM = 14110004;
 }

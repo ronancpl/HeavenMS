@@ -41,7 +41,7 @@ import tools.Pair;
 /**
  *
  * @author Matze
- * @author Ronan (concurrency safety & check available slots)
+ * @author Ronan - concurrency safety & check available slots
  */
 public class MapleTrade {
     private MapleTrade partner = null;

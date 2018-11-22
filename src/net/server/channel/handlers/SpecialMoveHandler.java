@@ -48,7 +48,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
     	MapleCharacter chr = c.getPlayer();
         slea.readInt();
-        chr.getAutobanManager().setTimestamp(4, Server.getInstance().getCurrentTimestamp(), 5);
+        chr.getAutobanManager().setTimestamp(4, Server.getInstance().getCurrentTimestamp(), 28);
         int skillid = slea.readInt();
         
         /*
@@ -132,7 +132,11 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         }
         if (chr.isAlive()) {
             if (skill.getId() != Priest.MYSTIC_DOOR) {
-                skill.getEffect(skillLevel).applyTo(chr, pos);
+                if (skill.getId() % 10000000 != 1005) {
+                    skill.getEffect(skillLevel).applyTo(chr, pos);
+                } else {
+                    skill.getEffect(skillLevel).applyEchoOfHero(chr);
+                }
             } else if(chr.canDoor()) {
                 //update door lists
                 chr.cancelMagicDoor();

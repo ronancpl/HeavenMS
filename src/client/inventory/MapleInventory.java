@@ -42,6 +42,7 @@ import server.MapleItemInformationProvider;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.FilePrinter;
 import net.server.audit.locks.MonitoredLockType;
+import server.ThreadManager;
 
 /**
  *
@@ -320,7 +321,12 @@ public class MapleInventory implements Iterable<Item> {
         }
         
         if (ItemConstants.isRateCoupon(item.getItemId())) {
-            owner.updateCouponRates();
+            ThreadManager.getInstance().newTask(new Runnable() {    // deadlocks with coupons rates found thanks to GabrielSin & Masterrulax
+                @Override
+                public void run() {
+                    owner.updateCouponRates();
+                }
+            });
         }
 
         return slotId;
@@ -335,7 +341,12 @@ public class MapleInventory implements Iterable<Item> {
         }
         
         if (ItemConstants.isRateCoupon(item.getItemId())) {
-            owner.updateCouponRates();
+            ThreadManager.getInstance().newTask(new Runnable() {
+                @Override
+                public void run() {
+                    owner.updateCouponRates();
+                }
+            });
         }
     }
     
@@ -349,7 +360,12 @@ public class MapleInventory implements Iterable<Item> {
         }
         
         if (item != null && ItemConstants.isRateCoupon(item.getItemId())) {
-            owner.updateCouponRates();
+            ThreadManager.getInstance().newTask(new Runnable() {
+                @Override
+                public void run() {
+                    owner.updateCouponRates();
+                }
+            });
         }
     }
 

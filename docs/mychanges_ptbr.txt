@@ -1454,3 +1454,32 @@ Corrigido drop data de Ultra Gray com item inexistente.
 Corrigido quest de meteoritos mudando estado da quest mesmo quando jogador não recebe o item devido a inventário cheio.
 Corrigido quest de Maker lv1 retirando mesos além da quantidade esperada, ao realizar ações da quest.
 Adicionado server flag que lida com utilização de features NPCs custom.
+
+11 Novembro 2018,
+Implementado questline para as skills Hypnotize e Time Leap.
+Corrigido um problema de deadlock envolvendo inventários e locks de status de jogadores.
+Corrigido detecção de spam de Flash Jump desconectando jogadores que tentam usá-lo em rampas.
+Corrigido mapa no 4o estágio de Tera Gate com footholds irregulares.
+
+12 - 14 Novembro 2018,
+Método de update de cupons dos jogadores agora atua de forma mais otimizada, evitando execuções desnecessárias.
+Corrigido update de mapas não atuando corretamente para jogadores de party.
+Revisado leitura de uso de skills e ataques de mobs, agora aplicando os limites para detecção de ataque/skill de uma forma mais correta.
+Corrigido caso onde registros de MaxHP e MaxMP de jogadores se tornariam inconsistentes após equipamento aumentar de nível.
+Corrigido mobs parando de ser spawnados em mapas de Dojo após diversos usos de MobSkill.
+Implementado suporte apropriado para mobs linkados. Registros de mobs base são propagados para seus links, para eventualmente ter informações sobrescritas.
+Corrigido MoveLife não lançando corretamente pacotes para outros jogadores em diversos cenários, diversas vezes tornando a jogabilidade inconstante no multiplayer.
+
+15 - 17 Novembro 2018,
+Corrigido /find não identificando canal do jogador-alvo corretamente.
+Corrigido lider de party sendo passado para outro membro no mapa ao mudar canais.
+Corrigido Echo of Hero não atuando em outros jogadores no mapa.
+Corrigido quest inicial de Mushroom Castle não levando jogadores à área diretamente.
+Corrigido comandos warp e goto não retirando jogadores corretamente de eventos/expedição ao mudar de mapas.
+Implementado script para questline de skill Aerial Strike.
+
+20 - 21 Novembro 2018,
+Corrigido limite do Cash Shop storage não atualizando corretamente quando jogador compra expansão de 8.
+Atualizado guild rank de jogadores ao resetar guildid dos mesmos, agora evitando jogadores com rank acima de 5 mesmo sem guild.
+Adicionado restrição no sistema de partilha de EXP. Jogadores que possuem uma diferença de nível com o last hitter satisfatoriamente grande não recebe este ganho.
+Modificado nome de skill Maple Hero destacados em quest e itens para Maple Warrior.

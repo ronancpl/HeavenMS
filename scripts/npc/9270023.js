@@ -21,7 +21,7 @@
 */
 /* 	Noel
 	Singapore Random Face Changer
-	Credits to aaron and cody
+	@Author AAron (aaroncsn), Cody
 	Side note by aaron [If there is something wrong PM me on fMS]
 */
 var status = 0;

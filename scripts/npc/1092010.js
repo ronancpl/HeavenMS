@@ -23,7 +23,9 @@
 -- JavaScript -----------------
 Jack - Nautilus' Port
 -- Created By --
-Cody/Cyndicate, totally recoded by Moogra
+    Cody (Cyndicate)
+-- totally recoded By --
+    Moogra
 -- Function --
 No specific function, useless text.
 -- GMS LIKE --

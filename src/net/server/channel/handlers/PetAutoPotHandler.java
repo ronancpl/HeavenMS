@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  *
- * @author Ronan (multi-pot consumption feature)
+ * @author Ronan - multi-pot consumption feature
  */
 public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
     short slot;

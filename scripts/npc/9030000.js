@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* Fredrick NPC (9030000)
- * By kevintjuh93
+ * @author kevintjuh93
  */
 
 var status;

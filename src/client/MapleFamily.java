@@ -31,7 +31,7 @@ import tools.DatabaseConnection;
 
 /**
  *
- * @author Jay Estrella :3 (Mr.Trash)
+ * @author Jay Estrella - Mr.Trash :3
  */
 public class MapleFamily {
 	private static int id;

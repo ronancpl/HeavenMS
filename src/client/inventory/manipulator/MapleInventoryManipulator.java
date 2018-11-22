@@ -47,7 +47,7 @@ import tools.MaplePacketCreator;
 /**
  *
  * @author Matze
- * @author Ronan (improved check space feature & removed redundant object calls)
+ * @author Ronan - improved check space feature & removed redundant object calls
  */
 public class MapleInventoryManipulator {
 

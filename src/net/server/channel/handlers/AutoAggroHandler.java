@@ -32,8 +32,7 @@ public final class AutoAggroHandler extends AbstractMaplePacketHandler {
 
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(c.getPlayer().isHidden())
-            return; // Don't auto aggro GM's in hide...
+        if (c.getPlayer().isHidden()) return; // Don't auto aggro GM's in hide...
         
         MapleMap map = c.getPlayer().getMap();
         int oid = slea.readInt();

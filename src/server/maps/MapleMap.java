@@ -1539,7 +1539,40 @@ public class MapleMap {
             mr.setPosition(points.remove(points.size() - 1));
         }
     }
-
+    
+    private MapleCharacter getNextControllerCandidate() {
+        int mincontrolled = Integer.MAX_VALUE;
+        MapleCharacter newController = null;
+        
+        int mincontrolleddead = Integer.MAX_VALUE;
+        MapleCharacter newControllerDead = null;
+        
+        chrRLock.lock();
+        try {
+            for (MapleCharacter chr : characters) {
+                if (!chr.isHidden()) {
+                    int ctrlMonsSize = chr.getControlledMonsters().size();
+                    
+                    if (chr.isAlive()) {
+                        if (ctrlMonsSize < mincontrolled) {
+                            mincontrolled = ctrlMonsSize;
+                            newController = chr;
+                        }
+                    } else {
+                        if (ctrlMonsSize < mincontrolleddead) {
+                            mincontrolleddead = ctrlMonsSize;
+                            newControllerDead = chr;
+                        }
+                    }
+                }
+            }
+        } finally {
+            chrRLock.unlock();
+        }
+        
+        return newController != null ? newController : newControllerDead;
+    }
+    
     /**
      * Automagically finds a new controller for the given monster from the chars
      * on the map...
@@ -1553,29 +1586,28 @@ public class MapleMap {
                 return;
             }
             
+            MapleCharacter newController;
             MapleCharacter chrController = monster.getController();
             if (chrController != null) {
                 if (chrController.getMap() != this) {
                     chrController.stopControllingMonster(monster);
+                    newController = getNextControllerCandidate();
                 } else {
-                    return;
-                }
-            }
-            int mincontrolled = -1;
-            MapleCharacter newController = null;
-            chrRLock.lock();
-            try {
-                for (MapleCharacter chr : characters) {
-                    int ctrlMonsSize = chr.getControlledMonsters().size();
-                    
-                    if (!chr.isHidden() && (ctrlMonsSize < mincontrolled || mincontrolled == -1)) {
-                        mincontrolled = ctrlMonsSize;
-                        newController = chr;
+                    if (chrController.isAlive()) {
+                        return;
                     }
+                    
+                    newController = getNextControllerCandidate();
+                    if (newController == null || !newController.isAlive()) {
+                        return;
+                    }
+                    
+                    chrController.stopControllingMonster(monster);
                 }
-            } finally {
-                chrRLock.unlock();
+            } else {
+                newController = getNextControllerCandidate();
             }
+            
             if (newController != null) { // was a new controller found? (if not no one is on the map)
                 if (monster.isFirstAttack()) {
                     newController.controlMonster(monster, true);
@@ -2364,11 +2396,8 @@ public class MapleMap {
             chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
             chr.cancelBuffStats(MapleBuffStat.MONSTER_RIDING);
         }
-        if (mapid == 923010000) { // Kenta's Mount Quest
-            if(getMonsterById(9300102) == null) {
-                spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(9300102), new Point(77, 426));
-            }
-        } else if (mapid == 200090060) { // To Rien
+        
+        if (mapid == 200090060) { // To Rien
             int travelTime = getWorldServer().getTransportationTime(1 * 60 * 1000);
             chr.announce(MaplePacketCreator.getClock(travelTime / 1000));
             TimerManager.getInstance().schedule(new Runnable() {

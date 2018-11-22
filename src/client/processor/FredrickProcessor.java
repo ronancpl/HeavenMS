@@ -43,7 +43,7 @@ import tools.Pair;
 
 /**
  *
- * @author RonanLana (synchronization of Fredrick modules)
+ * @author RonanLana - synchronization of Fredrick modules
  */
 public class FredrickProcessor {
     private static boolean canRetrieveFromFredrick(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
