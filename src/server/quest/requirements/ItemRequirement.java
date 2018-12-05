@@ -97,7 +97,7 @@ public class ItemRequirement extends MapleQuestRequirement {
 	}
 	
 	public int getItemAmountNeeded(int itemid) {
-		if(items.containsKey(itemid)) {
+                if(items.containsKey(itemid)) {
 			return items.get(itemid);
 		}
 		

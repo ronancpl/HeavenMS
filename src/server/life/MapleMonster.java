@@ -1303,7 +1303,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
         
         int useLimit = toUse.getLimit();
-        if (toUse.getSkillId() == 200) {
+        int useSkillid = toUse.getSkillId();
+        if (useSkillid == 200) {
             int i = 0;
             for (MapleMapObject mo : getMap().getMapObjects()) {
                 if (mo.getType() == MapleMapObjectType.MONSTER) {
@@ -1316,12 +1317,16 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (map.isDojoMap()) {  // spawns in dojo should be unlimited
                 useLimit = 0;
             }
+        } else if (useSkillid >= 143 && useSkillid <= 145) {
+            if (this.isBuffed(MonsterStatus.WEAPON_REFLECT) || this.isBuffed(MonsterStatus.MAGIC_REFLECT)) {
+                return false;
+            }
         }
         
         if (useLimit > 0) {
             monsterLock.lock();
             try {
-                Integer times = this.skillsUsed.get(new Pair<>(toUse.getSkillId(), toUse.getSkillLevel()));
+                Integer times = this.skillsUsed.get(new Pair<>(useSkillid, toUse.getSkillLevel()));
                 if (times != null && times >= useLimit) {
                     return false;
                 }
@@ -1334,7 +1339,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         try {
             /*
             for (Pair<Integer, Integer> skill : usedSkills) {
-                if (skill.getLeft() == toUse.getSkillId() && skill.getRight() == toUse.getSkillLevel()) {
+                if (skill.getLeft() == useSkillid && skill.getRight() == toUse.getSkillLevel()) {
                     return false;
                 }
             }

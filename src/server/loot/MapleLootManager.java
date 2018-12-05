@@ -35,15 +35,28 @@ import server.quest.MapleQuest;
 public class MapleLootManager {
     
     private static boolean isRelevantDrop(MonsterDropEntry dropEntry, List<MapleCharacter> partyMembers, List<MapleLootInventory> partyInv) {
+        int qStartAmount = 0, qCompleteAmount = 0;
         MapleQuest quest = MapleQuest.getInstance(dropEntry.questid);
-        int qItemAmount = quest != null ? quest.getItemAmountNeeded(dropEntry.itemId) : 0;
+        if (quest != null) {
+            qStartAmount = quest.getStartItemAmountNeeded(dropEntry.itemId);
+            qCompleteAmount = quest.getCompleteItemAmountNeeded(dropEntry.itemId);
+        }
         
-        boolean restricted = MapleItemInformationProvider.getInstance().isLootRestricted(dropEntry.itemId);
+        boolean restricted = MapleItemInformationProvider.getInstance().isPickupRestricted(dropEntry.itemId);
         for (int i = 0; i < partyMembers.size(); i++) {
             MapleLootInventory chrInv = partyInv.get(i);
             
             if (dropEntry.questid > 0) {
-                if (partyMembers.get(i).getQuestStatus(dropEntry.questid) != 1) {
+                int qItemAmount, chrQuestStatus = partyMembers.get(i).getQuestStatus(dropEntry.questid);
+                if (chrQuestStatus == 0) {
+                    qItemAmount = qStartAmount;
+                } else if (chrQuestStatus != 1) {
+                    continue;
+                } else {
+                    qItemAmount = qCompleteAmount;
+                }
+                
+                if (qItemAmount <= 0) {
                     continue;
                 }
                 

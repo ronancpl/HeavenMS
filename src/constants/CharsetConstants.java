@@ -7,7 +7,7 @@
 package constants;
  
 /*
- * Courtesy of GabrielSin (gabrielsin@playellin.net)
+ * Thanks to GabrielSin (EllinMS) - gabrielsin@playellin.net
  * Ellin
  * MapleStory Server
  * CharsetConstants

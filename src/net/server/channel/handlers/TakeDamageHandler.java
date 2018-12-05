@@ -106,7 +106,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                                 for (loseItem loseItem : loseItems) {
                                     type = ItemConstants.getInventoryType(loseItem.getId());
                                     for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
-                                        if (Randomizer.nextInt(101) >= loseItem.getChance()) {
+                                        if (Randomizer.nextInt(100) < loseItem.getChance()) {
                                             if (chr.haveItem(loseItem.getId())) {
                                                 pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
                                                 MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);

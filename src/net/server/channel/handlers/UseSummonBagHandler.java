@@ -54,7 +54,7 @@ public final class UseSummonBagHandler extends AbstractMaplePacketHandler {
             int[][] toSpawn = MapleItemInformationProvider.getInstance().getSummonMobs(itemId);
             for (int z = 0; z < toSpawn.length; z++) {
                 int[] toSpawnChild = toSpawn[z];
-                if (Randomizer.nextInt(101) <= toSpawnChild[1]) {
+                if (Randomizer.nextInt(100) < toSpawnChild[1]) {
                     c.getPlayer().getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(toSpawnChild[0]), c.getPlayer().getPosition());
                 }
             }

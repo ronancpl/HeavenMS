@@ -60,6 +60,7 @@ function writeFeatureTab_Skills() {
 
 function writeFeatureTab_Quests() {
         addFeature("Doll house quest functional.");
+        addFeature("Q. items required to start quests shows up properly.");
         addFeature("Quests are now rewarding items properly.");
         addFeature("Selection of rewards works properly.");
         addFeature("Loads of quests have been patched.");
@@ -122,6 +123,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Implemented banish mob skill move.");
         addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
+        addFeature("Dmg Reflect mobskill icons no longer lags to display.");
         addFeature("Added Boss HP Bar for dozens of bosses.");
         addFeature("Game will favor showing the targeted boss HPbar.");
         addFeature("Boss HPBar & Srv Message toggle - GabrielSin's idea.");

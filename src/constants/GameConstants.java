@@ -71,8 +71,6 @@ public class GameConstants {
         put("ellin", 300000000);
         put("nlc", 600000000);
         put("excavation", 990000000);
-        put("pianus", 230040420);
-        put("horntail", 240060200);
         put("mushmom", 100000005);
         put("griffey", 240020101);
         put("manon", 240020401);
@@ -85,7 +83,9 @@ public class GameConstants {
         put("shrine", 800000000);
         put("skelegon", 240040511);
         put("hpq", 100000200);
-        put("ht", 240050400);
+        put("pianus", 230040420);
+        put("horntail", 240050400);
+        put("pinkbean", 270050000);
         put("ariant", 260000000);
         put("magatia", 261000000);
         put("singapore", 540000000);

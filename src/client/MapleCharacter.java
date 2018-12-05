@@ -1583,7 +1583,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.unregisterChairBuff();
         this.clearBanishPlayerData();
         this.closePlayerInteractions();
-        this.resetPlayerAggro();
         
         client.announce(warpPacket);
         map.removePlayer(this);
@@ -2001,7 +2000,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
             int cid = player.getId();
-            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {
+            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {    // thanks zera (EpiphanyMS) for pointing a critical exploit with non-authored character deletion request
                     return false;
             }
             
@@ -2979,7 +2978,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         long nextMeso;
         petLock.lock();
         try {
-            nextMeso = meso.get() + gain;
+            nextMeso = (long) meso.get() + gain;  // thanks Thora for pointing integer overflow here
             if (nextMeso > Integer.MAX_VALUE) {
                 gain -= (nextMeso - Integer.MAX_VALUE);
             } else if (nextMeso < 0) {
@@ -4933,6 +4932,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         closePlayerMessenger();
         
         client.closePlayerScriptInteractions();
+        resetPlayerAggro();
     }
     
     public void closeNpcShop() {
@@ -5140,10 +5140,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public boolean needQuestItem(int questid, int itemid) {
         if (questid <= 0) return true; //For non quest items :3
-        if (this.getQuestStatus(questid) != 1) return false;
         
-        MapleQuest quest = MapleQuest.getInstance(questid);
-        return getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid) < quest.getItemAmountNeeded(itemid);
+        int amountNeeded, questStatus = this.getQuestStatus(questid);
+        if (questStatus == 0) {
+            amountNeeded = MapleQuest.getInstance(questid).getStartItemAmountNeeded(itemid);
+        } else if (questStatus != 1) {
+            return false;
+        } else {
+            amountNeeded = MapleQuest.getInstance(questid).getCompleteItemAmountNeeded(itemid);
+        }
+        
+        return amountNeeded > 0 && getInventory(ItemConstants.getInventoryType(itemid)).countById(itemid) < amountNeeded;
     }
 
     public int getRank() {

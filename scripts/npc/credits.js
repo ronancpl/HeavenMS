@@ -38,6 +38,7 @@ function writeServerStaff_HeavenMS() {
         addPerson("Vcoc", "Freelance Developer");
         addPerson("Thora", "Contributor");
         addPerson("GabrielSin", "Contributor");
+        addPerson("Masterrulax", "Contributor");
         
         setHistory(2015, 2018);
 }
@@ -90,15 +91,16 @@ function writeServerStaff_OdinMS() {
 function writeServerStaff_Contributors() {
         addPerson("Jvlaple", "Contributor");
         addPerson("Stereo", "Contributor");
+        addPerson("AngelSL", "Contributor");
         addPerson("Lerk", "Contributor");
         addPerson("Leifde", "Contributor");
         addPerson("ThreeStep", "Contributor");
         addPerson("RMZero213", "Contributor");
+        addPerson("ExtremeDevilz", "Contributor");
         addPerson("aaroncsn", "Contributor");
         addPerson("xQuasar", "Contributor");
         addPerson("Xterminator", "Contributor");
         addPerson("XoticStory", "Contributor");
-        addPerson("Masterrulax", "Contributor");
 }
 
 function writeAllServerStaffs() {

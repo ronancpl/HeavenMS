@@ -217,9 +217,8 @@ public class CommandsExecutor {
         addCommand("cleardrops", 2, ClearDropsCommand.class);
         addCommand("clearslot", 2, ClearSlotCommand.class);
         addCommand("warp", 2, WarpCommand.class);
-        addCommand("warpto", 2, WarpToCommand.class);
         addCommand(new String[]{"warphere", "summon"}, 2, SummonCommand.class);
-        addCommand(new String[]{"reach", "follow"}, 2, ReachCommand.class);
+        addCommand(new String[]{"warpto", "reach", "follow"}, 2, ReachCommand.class);
         addCommand("gmshop", 2, GmShopCommand.class);
         addCommand("heal", 2, HealCommand.class);
         addCommand("item", 2, ItemCommand.class);

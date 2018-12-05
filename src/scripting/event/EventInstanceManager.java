@@ -1111,6 +1111,17 @@ public class EventInstanceManager {
                 return false;
         }
         
+        public final boolean isExpeditionTeamLackingNow(boolean leavingEventMap, int minPlayers, MapleCharacter quitter) {
+                if(eventCleared) {
+                        if(leavingEventMap && getPlayerCount() <= 1) return true;
+                } else {
+                        if(leavingEventMap && getLeaderId() == quitter.getId()) return true;
+                        if(getPlayerCount() <= (ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : minPlayers)) return true;
+                }
+                
+                return false;
+        }
+        
         public final boolean isEventTeamLackingNow(boolean leavingEventMap, int minPlayers, MapleCharacter quitter) {
                 if(eventCleared) {
                         if(leavingEventMap && getPlayerCount() <= 1) return true;

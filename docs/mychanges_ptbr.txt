@@ -1483,3 +1483,25 @@ Corrigido limite do Cash Shop storage não atualizando corretamente quando jogad
 Atualizado guild rank de jogadores ao resetar guildid dos mesmos, agora evitando jogadores com rank acima de 5 mesmo sem guild.
 Adicionado restrição no sistema de partilha de EXP. Jogadores que possuem uma diferença de nível com o last hitter satisfatoriamente grande não recebe este ganho.
 Modificado nome de skill Maple Hero destacados em quest e itens para Maple Warrior.
+
+24 Novembro 2018,
+Modificado pontos no código com RNG especificado incorretamente (pool atuante com mais elementos que o esperado).
+Corrigido problema de overflow de inteiro com mesos, causando perda total dos mesos do mesmo.
+
+27 - 29 Novembro 2018,
+Modificado code coupons, agora utilizando a coluna de "quantity" para definição de ganhos dos pontos de cash.
+Removido múltiplos Bobs no mapa onde ele aparece. Bob's agora aparecem a cada 4 horas, e caracteristicamente liberam drops de Snails comuns com maiores chances.
+Removido comando duplicado "warpto". Agora sua funcionalidade é a mesma do comando "reach".
+Expedições agora não finaliza expedições inapropriadamente por falta de pessoal quando flag que permite expedições solo é ativada.
+Corrigido skill de mobs de "refletir dano" não atualizando devidamente o ícone de status assim que a habilidade se ativa.
+Corrigido clean slate scroll não atuando devidamente.
+Adicionado diversas novas recompensas ao bonus da GPQ.
+Corrigido sistema de detecção de loots não atuando corretamente ao lidar com itens one-of-a-kind.
+Adicionado checagens de quest itens necessários para começar quests.
+Corrigido sistema de server messages/boss HP bar não atuando de forma esperada ao mudar de canais/entrar no Cash Shop.
+
+01 Dezembro 2018,
+Corrigido um problema com o gerador de code coupons, que levava em consideração hifens ("-") no código do cupom, além de um problema de overflow na data de expiração.
+
+03 Dezembro 2018,
+Melhorado desenho do worldmap de Victoria, na região do metro de Kerning.

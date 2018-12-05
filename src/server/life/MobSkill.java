@@ -214,20 +214,20 @@ public class MobSkill {
                 }
                 break;
 	    case 143: // Weapon Reflect
-                    stats.put(MonsterStatus.WEAPON_REFLECT, Integer.valueOf(x));
-                    stats.put(MonsterStatus.WEAPON_IMMUNITY, Integer.valueOf(x));
+                    stats.put(MonsterStatus.WEAPON_REFLECT, 10);
+                    stats.put(MonsterStatus.WEAPON_IMMUNITY, 10);
                     reflection.add(x);
 		break;
 	    case 144: // Magic Reflect
-                    stats.put(MonsterStatus.MAGIC_REFLECT, Integer.valueOf(x));
-                    stats.put(MonsterStatus.MAGIC_IMMUNITY, Integer.valueOf(x));
+                    stats.put(MonsterStatus.MAGIC_REFLECT, 10);
+                    stats.put(MonsterStatus.MAGIC_IMMUNITY, 10);
                     reflection.add(x);
 		break;
 	    case 145: // Weapon / Magic reflect
-                    stats.put(MonsterStatus.WEAPON_REFLECT, Integer.valueOf(x));
-                    stats.put(MonsterStatus.WEAPON_IMMUNITY, Integer.valueOf(x));
-                    stats.put(MonsterStatus.MAGIC_REFLECT, Integer.valueOf(x));
-                    stats.put(MonsterStatus.MAGIC_IMMUNITY, Integer.valueOf(x));
+                    stats.put(MonsterStatus.WEAPON_REFLECT, 10);
+                    stats.put(MonsterStatus.WEAPON_IMMUNITY, 10);
+                    stats.put(MonsterStatus.MAGIC_REFLECT, 10);
+                    stats.put(MonsterStatus.MAGIC_IMMUNITY, 10);
                     reflection.add(x);
                 break;
             case 154: // accuracy up

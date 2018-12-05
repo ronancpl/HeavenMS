@@ -40,18 +40,35 @@ public class GiveMesosCommand extends Command {
             return;
         }
 
-        String recv_;
-        int value_;
+        String recv_, value_;
+        long mesos_ = 0;
+        
         if (params.length == 2) {
             recv_ = params[0];
-            value_ = Integer.parseInt(params[1]);
+            value_ = params[1];
         } else {
             recv_ = c.getPlayer().getName();
-            value_ = Integer.parseInt(params[0]);
+            value_ = params[0];
         }
+        
+        try {
+            mesos_ = Long.parseLong(value_);
+            if (mesos_ > Integer.MAX_VALUE) {
+                mesos_ = Integer.MAX_VALUE;
+            } else if (mesos_ < Integer.MIN_VALUE) {
+                mesos_ = Integer.MIN_VALUE;
+            }
+        } catch (NumberFormatException nfe) {
+            if (value_.contentEquals("max")) {  // "max" descriptor suggestion thanks to Vcoc
+                mesos_ = Integer.MAX_VALUE;
+            } else if (value_.contentEquals("min")) {
+                mesos_ = Integer.MIN_VALUE;
+            }
+        }
+        
         MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(recv_);
         if (victim != null) {
-            victim.gainMeso(value_, true);
+            victim.gainMeso((int) mesos_, true);
             player.message("MESO given.");
         } else {
             player.message("Player '" + recv_ + "' could not be found on this channel.");

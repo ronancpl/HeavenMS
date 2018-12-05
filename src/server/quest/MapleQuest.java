@@ -371,7 +371,16 @@ public class MapleQuest {
         return relevantMobs;
     }
 
-    public int getItemAmountNeeded(int itemid) {
+    public int getStartItemAmountNeeded(int itemid) {
+        MapleQuestRequirement req = startReqs.get(MapleQuestRequirementType.ITEM);
+        if(req == null)
+                return 0;
+		
+        ItemRequirement ireq = (ItemRequirement) req;
+        return ireq.getItemAmountNeeded(itemid);
+    }
+    
+    public int getCompleteItemAmountNeeded(int itemid) {
         MapleQuestRequirement req = completeReqs.get(MapleQuestRequirementType.ITEM);
         if(req == null)
                 return 0;

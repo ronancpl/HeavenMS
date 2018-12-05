@@ -74,7 +74,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
         Item wscroll = null;
 
         if (ItemConstants.isCleanSlate(scroll.getItemId())) {
-            Map<String, Integer> eqStats = ii.getEquipStats(scroll.getItemId());
+            Map<String, Integer> eqStats = ii.getEquipStats(toScroll.getItemId());  // clean slate issue found thanks to Masterrulax
             if (eqStats == null || eqStats.get("tuc") == 0) {
                 c.announce(MaplePacketCreator.getInventoryFull());
                 return;

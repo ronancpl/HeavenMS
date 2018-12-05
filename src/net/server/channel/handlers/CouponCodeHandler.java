@@ -62,17 +62,17 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
 
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
-            int type = rs.getInt("type"), item = rs.getInt("item");
+            int type = rs.getInt("type"), quantity = rs.getInt("quantity");
             
             if (type < 5) {
                 Integer i = couponPoints.get(type);
                 if (i != null) {
-                    couponPoints.put(type, i + item);
+                    couponPoints.put(type, i + quantity);
                 } else {
-                    couponPoints.put(type, item);
+                    couponPoints.put(type, quantity);
                 }
             } else {
-                int quantity = rs.getInt("quantity");
+                int item = rs.getInt("item");
                 
                 Integer i = couponItems.get(item);
                 if (i != null) {
@@ -108,7 +108,7 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
         
         if (!couponPoints.isEmpty()) {
             for (Entry<Integer, Integer> e : couponPoints.entrySet()) {
-                ret.add(new Pair<>(e.getKey(), new Pair<>(e.getValue(), 777)));
+                ret.add(new Pair<>(e.getKey(), new Pair<>(777, e.getValue())));
             }
         }
         
@@ -199,27 +199,37 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
 
                     for (Pair<Integer, Pair<Integer, Integer>> p : codeRes.getRight()) {
                         type = p.getLeft();
-                        int item = p.getRight().getLeft();
+                        int quantity = p.getRight().getRight();
 
                         CashShop cs = c.getPlayer().getCashShop();
                         switch (type) {
                             case 0:
                             case 4:
-                                cs.gainCash(1, item);   //nxCredit
+                                cs.gainCash(1, quantity);    //nxCredit
                                 break;
                             case 1:
-                                cs.gainCash(2, item);   //maplePoint
+                                cs.gainCash(2, quantity);    //maplePoint
                                 break;
                             case 2:
-                                cs.gainCash(4, item);   //nxPrepaid
+                                cs.gainCash(4, quantity);    //nxPrepaid
                                 break;
                             case 3:
-                                cs.gainCash(1, item);
-                                cs.gainCash(4, (item / 5000));
+                                cs.gainCash(1, quantity);
+                                cs.gainCash(4, (quantity / 5000));
                                 break;
 
                             default:
-                                short qty = p.getRight().getRight().shortValue();
+                                int item = p.getRight().getLeft();
+                                
+                                short qty;
+                                if (quantity > Short.MAX_VALUE) {
+                                    qty = Short.MAX_VALUE;
+                                } else if (quantity < Short.MIN_VALUE) {
+                                    qty = Short.MIN_VALUE;
+                                } else {
+                                    qty = (short) quantity;
+                                }
+                                
                                 if (MapleItemInformationProvider.getInstance().isCash(item)) {
                                     Item it = CashShop.generateCouponItem(item, qty);
 

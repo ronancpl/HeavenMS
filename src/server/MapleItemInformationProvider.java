@@ -1001,7 +1001,7 @@ public class MapleItemInformationProvider {
                     if (!ServerConstants.USE_PERFECT_SCROLLING && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM) {
                         nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                     }
-                    if (Randomizer.nextInt(101) < stats.get("cursed")) {
+                    if (Randomizer.nextInt(100) < stats.get("cursed")) {
                         return null;
                     }
                 }
@@ -1258,8 +1258,15 @@ public class MapleItemInformationProvider {
         if (pickupRestrictionCache.containsKey(itemId)) {
             return pickupRestrictionCache.get(itemId);
         }
-        MapleData data = getItemData(itemId);
-        boolean bRestricted = MapleDataTool.getIntConvert("info/only", data, 0) == 1;
+        
+        boolean bRestricted = false;
+        if(itemId != 0) {
+            MapleData data = getItemData(itemId);
+            if (data != null) {
+                bRestricted = MapleDataTool.getIntConvert("info/only", data, 0) == 1;
+            }
+        }
+        
         pickupRestrictionCache.put(itemId, bRestricted);
         return bRestricted;
     }

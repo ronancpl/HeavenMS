@@ -37,7 +37,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author Ronan - header layout courtesy of Eric 
+ * @author Ronan
+ * 
+ * Header layout thanks to Eric 
  */
 public final class NewYearCardHandler extends AbstractMaplePacketHandler {
 

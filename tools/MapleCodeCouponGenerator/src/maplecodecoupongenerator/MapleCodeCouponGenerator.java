@@ -239,10 +239,7 @@ public class MapleCodeCouponGenerator {
     }
     
     private static String randomizeCouponCode() {
-        StringBuilder rnd = new StringBuilder(Long.toHexString(Double.doubleToLongBits(Math.random())));
-        rnd.setCharAt(5, '-');
-        rnd.insert(11, '-');
-        return rnd.toString();
+        return Long.toHexString(Double.doubleToLongBits(Math.random())).substring(0, 15);
     }
     
     private static String generateCouponCode() {
@@ -276,7 +273,7 @@ public class MapleCodeCouponGenerator {
         generatedKeys = null;
         
         PreparedStatement ps = con.prepareStatement("INSERT IGNORE INTO `nxcode` (`code`, `expiration`) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
-        ps.setLong(2, currentTime + (recipe.duration * 60 * 60 * 1000));
+        ps.setLong(2, currentTime + ((long) recipe.duration * 60 * 60 * 1000));
         
         for(int i = 0; i < recipe.quantity; i++) {
             ps.setString(1, generateCouponCode());
@@ -300,10 +297,10 @@ public class MapleCodeCouponGenerator {
             }
         }
         
-        ps2.setInt(4, 0);
+        ps2.setInt(3, 0);
         if (recipe.nxCredit > 0) {
             ps2.setInt(2, 0);
-            ps2.setInt(3, recipe.nxCredit);
+            ps2.setInt(4, recipe.nxCredit);
             List<Integer> keys = getGeneratedKeys(ps);
             
             for(Integer codeid : keys) {
@@ -314,7 +311,7 @@ public class MapleCodeCouponGenerator {
         
         if (recipe.maplePoint > 0) {
             ps2.setInt(2, 1);
-            ps2.setInt(3, recipe.maplePoint);
+            ps2.setInt(4, recipe.maplePoint);
             List<Integer> keys = getGeneratedKeys(ps);
             
             for(Integer codeid : keys) {
@@ -325,7 +322,7 @@ public class MapleCodeCouponGenerator {
         
         if (recipe.nxPrepaid > 0) {
             ps2.setInt(2, 2);
-            ps2.setInt(3, recipe.nxPrepaid);
+            ps2.setInt(4, recipe.nxPrepaid);
             List<Integer> keys = getGeneratedKeys(ps);
             
             for(Integer codeid : keys) {

@@ -569,7 +569,7 @@ public class Server {
     }
     
     public List<Integer> getActiveCoupons() {
-        synchronized(activeCoupons) {
+        synchronized (activeCoupons) {
             return activeCoupons;
         }
     }
@@ -586,7 +586,7 @@ public class Server {
     
     public void toggleCoupon(Integer couponId) {
         if(ItemConstants.isRateCoupon(couponId)) {
-            synchronized(activeCoupons) {
+            synchronized (activeCoupons) {
                 if(activeCoupons.contains(couponId)) {
                     activeCoupons.remove(couponId);
                 }
@@ -600,7 +600,7 @@ public class Server {
     }
     
     public void updateActiveCoupons() throws SQLException {
-        synchronized(activeCoupons) {
+        synchronized (activeCoupons) {
             activeCoupons.clear();
             Calendar c = Calendar.getInstance();
 
@@ -1669,9 +1669,10 @@ public class Server {
     }
     
     private void disconnectIdlesOnLoginState() {
+        List<MapleClient> toDisconnect = new LinkedList<>();
+        
         srvLock.lock();
         try {
-            List<MapleClient> toDisconnect = new LinkedList<>();
             long timeNow = System.currentTimeMillis();
             
             for(Entry<MapleClient, Long> mc : inLoginState.entrySet()) {
@@ -1681,16 +1682,18 @@ public class Server {
             }
             
             for(MapleClient c : toDisconnect) {
-                if(c.isLoggedIn()) {
-                    c.disconnect(false, false);
-                } else {
-                    c.getSession().close(true);
-                }
-                
                 inLoginState.remove(c);
             }
         } finally {
             srvLock.unlock();
+        }
+        
+        for (MapleClient c : toDisconnect) {    // thanks Lei for pointing a deadlock issue with srvLock
+            if(c.isLoggedIn()) {
+                c.disconnect(false, false);
+            } else {
+                c.getSession().close(true);
+            }
         }
     }
     
@@ -1707,75 +1710,73 @@ public class Server {
         return new Runnable() {
             @Override
             public void run() {
-                srvLock.lock();
-                
-                try {
-                    System.out.println((restart ? "Restarting" : "Shutting down") + " the server!\r\n");
-                    if (getWorlds() == null) return;//already shutdown
-                    for (World w : getWorlds()) {
-                        w.shutdown();
-                    }
-                    
-                    /*for (World w : getWorlds()) {
-                        while (w.getPlayerStorage().getAllCharacters().size() > 0) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException ie) {
-                                System.err.println("FUCK MY LIFE");
-                            }
-                        }
-                    }
-                    for (Channel ch : getAllChannels()) {
-                        while (ch.getConnectedClients() > 0) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException ie) {
-                                System.err.println("FUCK MY LIFE");
-                            }
-                        }
-                    }*/
-                    
-                    List<Channel> allChannels = getAllChannels();
-                    
-                    if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
-                    
-                    for (Channel ch : allChannels) {
-                        while (!ch.finishedShutdown()) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException ie) {
-                                ie.printStackTrace();
-                                System.err.println("FUCK MY LIFE");
-                            }
-                        }
-                    }
-                    
-                    resetServerWorlds();
-                    
-                    ThreadManager.getInstance().stop();
-                    TimerManager.getInstance().purge();
-                    TimerManager.getInstance().stop();
-
-                    System.out.println("Worlds + Channels are offline.");
-                    acceptor.unbind();
-                    acceptor = null;
-                    if (!restart) {
-                        System.exit(0);
-                    } else {
-                        System.out.println("\r\nRestarting the server....\r\n");
-                        try {
-                            instance.finalize();//FUU I CAN AND IT'S FREE
-                        } catch (Throwable ex) {
-                            ex.printStackTrace();
-                        }
-                        instance = null;
-                        System.gc();
-                        getInstance().init();//DID I DO EVERYTHING?! D:
-                    }
-                } finally {
-                    srvLock.unlock();
-                }
+                shutdownInternal(restart);
             }
         };
+    }
+    
+    private synchronized void shutdownInternal(boolean restart) {
+        System.out.println((restart ? "Restarting" : "Shutting down") + " the server!\r\n");
+        if (getWorlds() == null) return;//already shutdown
+        for (World w : getWorlds()) {
+            w.shutdown();
+        }
+
+        /*for (World w : getWorlds()) {
+            while (w.getPlayerStorage().getAllCharacters().size() > 0) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    System.err.println("FUCK MY LIFE");
+                }
+            }
+        }
+        for (Channel ch : getAllChannels()) {
+            while (ch.getConnectedClients() > 0) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    System.err.println("FUCK MY LIFE");
+                }
+            }
+        }*/
+
+        List<Channel> allChannels = getAllChannels();
+
+        if(ServerConstants.USE_THREAD_TRACKER) ThreadTracker.getInstance().cancelThreadTrackerTask();
+
+        for (Channel ch : allChannels) {
+            while (!ch.finishedShutdown()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                    System.err.println("FUCK MY LIFE");
+                }
+            }
+        }
+
+        resetServerWorlds();
+
+        ThreadManager.getInstance().stop();
+        TimerManager.getInstance().purge();
+        TimerManager.getInstance().stop();
+
+        System.out.println("Worlds + Channels are offline.");
+        acceptor.unbind();
+        acceptor = null;
+        if (!restart) {
+            System.exit(0);
+        } else {
+            System.out.println("\r\nRestarting the server....\r\n");
+            try {
+                instance.finalize();//FUU I CAN AND IT'S FREE
+            } catch (Throwable ex) {
+                ex.printStackTrace();
+            }
+            instance = null;
+            System.gc();
+            getInstance().init();//DID I DO EVERYTHING?! D:
+        }
     }
 }
