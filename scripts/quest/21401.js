@@ -51,7 +51,7 @@ function end(mode, type, selection) {
 	} else if(status == 2) {
 		if(!qm.isQuestCompleted(21401)) {
 			if(!qm.canHold(1142132)) {
-				cm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
+				qm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
 				qm.dispose();
 				return;
 			}
