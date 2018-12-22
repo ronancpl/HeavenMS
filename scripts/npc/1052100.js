@@ -21,15 +21,22 @@
 */
 /* Don Giovanni
 	Kerning VIP Hair/Hair Color Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var hairprice = 1000000;
 var haircolorprice = 1000000;
-var mhair = Array(30030, 30020, 30000, 30130, 30350, 30190, 30110, 30180, 30050, 30040, 30160);
-var fhair = Array(31050, 31040, 31000, 31060, 31090, 31020, 31130, 31120, 31140, 31330, 31010);
+var mhair_v = Array(30040, 30130, 30780, 30850, 30860, 30920, 33040);
+var fhair_v = Array(31090, 31140, 31330, 31440, 31760, 31880, 34050);
 var hairnew = Array();
 
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 function start() {
     status = -1;
     action(1, 0, 0);
@@ -54,12 +61,12 @@ function action(mode, type, selection) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mhair.length; i++)
-                        hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair() % 10));
+                    for(var i = 0; i < mhair_v.length; i++)
+                        pushIfItemExists(hairnew, mhair_v[i] + parseInt(cm.getPlayer().getHair() % 10));
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++)
-                        hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair() % 10));
+                    for(var i = 0; i < fhair_v.length; i++)
+                        pushIfItemExists(hairnew, fhair_v[i] + parseInt(cm.getPlayer().getHair() % 10));
                 }
                 cm.sendStyle("I can totally change up your hairstyle and make it look so good. Why don't you change it up a bit? If you have #b#t5150003##k I'll change it for you. Choose the one to your liking~.", hairnew);
             } else if (selection == 2) {
@@ -67,7 +74,7 @@ function action(mode, type, selection) {
                 haircolor = Array();
                 var current = parseInt(cm.getPlayer().getHair()/10)*10;
                 for(var i = 0; i < 8; i++) {
-                    haircolor.push(current + i);
+                    pushIfItemExists(haircolor, current + i);
                 }
                 cm.sendStyle("I can totally change your haircolor and make it look so good. Why don't you change it up a bit? With #b#t5151003##k I'll change it for you. Choose the one to your liking.", haircolor);
             }

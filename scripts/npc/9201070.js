@@ -21,17 +21,24 @@
 */
 /* Nerbit
 	NLC Random Eye Change.
-@TODO: Make this not sell tickets like in GMS
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var price = 1000000;
-var mface = Array(20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20012);
-var fface = Array(21001, 21002, 21003, 21004, 21005, 21006, 21008, 21012, 21014, 21016);
+var mface_r = Array(20001, 20008, 20011, 20013, 20024, 20029, 20032);
+var fface_r = Array(21000, 21007, 21011, 21012, 21017, 21020, 21022);
 var facenew = Array();
 
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
+
 function start() {
-    cm.sendSimple("Hi, I pretty much shouldn't be doing this, but with a #b#t5152033##k, I will do it anyways for you. But don't forget, it will be random!\r\n#L2#I already have a Coupon!#l");
+    cm.sendSimple("Hi, I pretty much shouldn't be doing this, but with a #b#t5152033##k, I will do it anyways for you. But don't forget, it will be random!\r\n#L2#Plastic Surgery: #i5152033##t5152033##l");
 }
 
 function action(mode, type, selection) {
@@ -50,11 +57,11 @@ function action(mode, type, selection) {
             if (selection == 2) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0)
-                    for(var i = 0; i < mface.length; i++)
-                        facenew.push(mface[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
+                    for(var i = 0; i < mface_r.length; i++)
+                        pushIfItemExists(facenew, mface_r[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
                 if (cm.getPlayer().getGender() == 1)
-                    for(var i = 0; i < fface.length; i++)
-                        facenew.push(fface[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
+                    for(var i = 0; i < fface_r.length; i++)
+                        pushIfItemExists(facenew, fface_r[i] + cm.getPlayer().getFace() % 1000 - (cm.getPlayer().getFace() % 100));
                 cm.sendYesNo("If you use the regular coupon, your face may transform into a random new look...do you still want to do it using #b#t5152033##k?");
             }
         } else if (status == 2){

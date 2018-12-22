@@ -257,6 +257,8 @@ public class MapleStatEffect {
                             addBuffStatPairToListIfNotZero(statups, MapleBuffStat.COUPON_DRP3, 1);
                             break;
                     }
+                } else if(isExpIncrease(sourceid)) {
+                    addBuffStatPairToListIfNotZero(statups, MapleBuffStat.EXP_INCREASE, MapleDataTool.getInt("expinc", source, 0));
                 }
             } else {
                 if(isMapChair(sourceid)) {
@@ -1364,6 +1366,10 @@ public class MapleStatEffect {
     public static boolean isRateCoupon(int sourceid) {
         int itemType = sourceid / 1000;
         return itemType == 5211 || itemType == 5360;
+    }
+    
+    public static boolean isExpIncrease(int sourceid) {
+        return sourceid >= 2022450 && sourceid <= 2022452;
     }
     
     private boolean isDs() {

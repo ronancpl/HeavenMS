@@ -1505,3 +1505,29 @@ Corrigido um problema com o gerador de code coupons, que levava em consideraçã
 
 03 Dezembro 2018,
 Melhorado desenho do worldmap de Victoria, na região do metro de Kerning.
+
+07 - 08 Dezembro 2018,
+Corrigido clean slates não checando limites corretamente, levando a bloqueio de uso de clean slates em itens com certas propriedades.
+Removido comando ambíguo Mesos.
+Corrigido limites inválidos no comando SetStat.
+Implementado log em compra de itens de cash.
+Implementado retorno ao stage 1 na questline Hypnotize ao tocar em mobs.
+Implementado diversas novas ferramentas, que auxiliam na busca e processamento de itens cosméticos ainda não catalogados pelos NPCs estilistas/cirurgiões.
+Implementado e revisado scripts dos NPCs estilistas/cirurgiões, adicionando itens cosméticos ainda não referenciados nos scripts.
+Nova ferramenta: MapleEmptyItemWzChecker, cuja finalidade é reportar itemids presentes nos arquivos Wz onde faltam registros de nome ou de propriedades.
+Aplicado nova reformatação nos wzs de itens e strings. Removido possibilidade de itens sem nome ou dados nos arquivos, que poderiam levar potencialmente a quebras no cliente.
+
+09 - 12 Dezembro 2018,
+Removido todas as opções de tingimento de cores em todas as cidades com salão de beleza. Agora possui um comportamento GMS-like.
+Aplicado correções nos nomes das faces em ambos String.wz e handbook.
+Resolvido um possível caso de deadlock com a interação de spawn de objetos para os jogadores no mapa.
+Melhorado itens cosméticos dos NPCs estilistas/cirurgiões, garantindo o uso de grande parte dos cosméticos disponíveis na fonte, enquanto seguindo o padrão GMS-like.
+
+13 - 14 Dezembro 2018,
+Corrigido possibilidade de mudança de face/cabelo podendo levar jogadores a adquirir itens inexistentes, invariavelmente tornando o personagem inacessível.
+Corrigido equipamentos labelados como "somente movimentação dentro da conta" sendo incorretamente gerados com a flag de "Untradeable" também.
+Corrigido comandos que transportam jogadores entre mapas não levando em consideração retorno ao mapa onde estavam antes do transporte, para os casos onde se espera retornar ao mapa anterior (e.g. FM's).
+
+21 Dezembro 2018,
+Cosméticos já usados pelo jogador não estão mais disponíveis nos estilistas/cirurgiões.
+Corrigido alguns itens estéticos não sendo devidamente disponibilizados se jogadores usam algum cosmético de cor não-default.

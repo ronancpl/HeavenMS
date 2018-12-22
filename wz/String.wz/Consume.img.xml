@@ -140,18 +140,6 @@
     <string name="name" value="Pain Reliever"/>
     <string name="desc" value="A special pain reliever created in Omega Sector.nWeapon Def + 30 for 30 min."/>
   </imgdir>
-  <imgdir name="2002012">
-    <string name="name" value="Elixir"/>
-    <string name="desc" value="Recovers both HP and MP by 50%."/>
-  </imgdir>
-  <imgdir name="2002013">
-    <string name="name" value="Power Elixir"/>
-    <string name="desc" value="Fully recovers HP and MP."/>
-  </imgdir>
-  <imgdir name="2002014">
-    <string name="name" value="Iron Body Medicine"/>
-    <string name="desc" value="A n enhanced pain reliever smuggled out of Omega Sector.n Def + 30 for 30 min. (Modification Request)"/>
-  </imgdir>
   <imgdir name="2002015">
     <string name="name" value="Elpam Elixir"/>
     <string name="desc" value="A rare, powerful elixir from Versal. Restores 90% HP &amp; MP, and gives a boost of +5 Att and +40 Def for a duration of 15 minutes."/>
@@ -267,10 +255,6 @@
   <imgdir name="2012003">
     <string name="name" value="Drake&apos;s Meat"/>
     <string name="desc" value="Drake&apos;s meat.nWeapon Def. +10 for 5 min."/>
-  </imgdir>
-  <imgdir name="2012004">
-    <string name="name" value="Purified Honey"/>
-    <string name="desc" value="Fairies favorite purified honey.nAvoidability +40 for 5 min. (Modification Request)"/>
   </imgdir>
   <imgdir name="2020000">
     <string name="name" value="Salad"/>
@@ -540,17 +524,9 @@
     <string name="name" value="Candy"/>
     <string name="desc" value="A sparkling candy with a scent of tropical fruit."/>
   </imgdir>
-  <imgdir name="2022034">
-    <string name="name" value="Zong Zi"/>
-    <string name="desc" value="A tiny seed of a fruit.\nRecovers 50 HP."/>
-  </imgdir>
   <imgdir name="2022035">
     <string name="name" value="Maple Cola"/>
     <string name="desc" value="none"/>
-  </imgdir>
-  <imgdir name="2022036">
-    <string name="name" value="Candy Basket"/>
-    <string name="desc" value="Defense and avoidablity will be increased by 300 for 30 minutes."/>
   </imgdir>
   <imgdir name="2022037">
     <string name="name" value="Pink Rice Cake"/>
@@ -587,10 +563,6 @@
   <imgdir name="2022045">
     <string name="name" value="New Year Lunchbox"/>
     <string name="desc" value="Recovers 2000 HP &amp; MP"/>
-  </imgdir>
-  <imgdir name="2022046">
-    <string name="name" value="Seaweed"/>
-    <null name="desc"/>
   </imgdir>
   <imgdir name="2022047">
     <string name="name" value="Cooked Sea Bream"/>
@@ -811,10 +783,6 @@
   <imgdir name="2022113">
     <string name="name" value="Pumpkin Pie"/>
     <string name="desc" value="A piping hot, delicious pie right from Grandma Benson&apos;s oven. Eat up! \nRecovers 700 HP, 400 MP and Defense +50 for 10 mins."/>
-  </imgdir>
-  <imgdir name="2022114">
-    <string name="name" value="Enchanted Apple Crisp"/>
-    <string name="desc" value="A hot pastry made from mystic apples. At an HP-decreasing map, whenever such map damage is dealt, 50% HP will be protected. (Modification Request)"/>
   </imgdir>
   <imgdir name="2022116">
     <string name="name" value="Peach"/>
@@ -3807,10 +3775,6 @@
     <string name="name" value="Orange"/>
     <string name="desc" value="A tasty orange that can be thrown at things. Attack + 20"/>
   </imgdir>
-  <imgdir name="2070014">
-    <string name="name" value="Devil Rain Throwing Star"/>
-    <string name="desc" value="Throwing Star"/>
-  </imgdir>
   <imgdir name="2070015">
     <string name="name" value="A Beginner Thief&apos;s Throwing Stars"/>
     <string name="desc" value="These are steel throwing stars given by Dark Lord for Beginner Thieves. Unlike normal throwing stars, you can&apos;t recharge it. \nAttack + 15"/>
@@ -3822,14 +3786,6 @@
   <imgdir name="2070018">
     <string name="name" value="Balanced Fury"/>
     <string name="desc" value="Ancient Shadowknight throwing stars made from black crystal.  These can be recharged when used up. rnAttack + 30"/>
-  </imgdir>
-  <imgdir name="2083000">
-    <string name="name" value="Heart Megaphone"/>
-    <string name="desc" value="Shout to everyone in the world your character is on with this megaphone. (Heart accents)"/>
-  </imgdir>
-  <imgdir name="2084000">
-    <string name="name" value="Skull Megaphone"/>
-    <string name="desc" value="Shout to everyone in the world your character is on with this megaphone. (Skull accents)"/>
   </imgdir>
   <imgdir name="2100000">
     <string name="name" value="Black Sack"/>
@@ -4187,20 +4143,6 @@
     <string name="name" value="Summon Bodyguard A"/>
     <string name="desc" value="Summons Bodyguard A."/>
   </imgdir>
-  <imgdir name="2101016">
-    <string name="name" value="Summon Toy Robot"/>
-    <string name="desc" value="Summons toy robots."/>
-  </imgdir>
-  <imgdir name="2101017">
-    <string name="name" value="Summon Black Boogie"/>
-    <string name="desc" value="Summons Black Boogie."/>
-  </imgdir>
-  <imgdir name="2101018">
-    <string name="name" value="Summon Black Boogie"/>
-  </imgdir>
-  <imgdir name="2101019">
-    <string name="name" value="Summon Pachinko Monster"/>
-  </imgdir>
   <imgdir name="2101020">
     <string name="name" value="Halloween Monster Sack"/>
     <string name="desc" value="Summon Halloween monsters."/>
@@ -4208,9 +4150,6 @@
   <imgdir name="2101021">
     <string name="name" value="Monster Sack (Jr. Mimick)"/>
     <string name="desc" value="Summons 1 Jr. Mimick"/>
-  </imgdir>
-  <imgdir name="2101022">
-    <string name="name" value="Monster Sack (Golden Egg)"/>
   </imgdir>
   <imgdir name="2101023">
     <string name="name" value="Monster Sack (Slime Gold)"/>
@@ -4289,10 +4228,6 @@
     <string name="desc" value="Summons some monsters. Crimson Crash"/>
   </imgdir>
   <imgdir name="2101057">
-    <string name="name" value="Amoria Penalty Monster Sack8"/>
-    <string name="desc" value="Summons some monsters."/>
-  </imgdir>
-  <imgdir name="2101058">
     <string name="name" value="Amoria Penalty Monster Sack8"/>
     <string name="desc" value="Summons some monsters."/>
   </imgdir>
@@ -4567,14 +4502,6 @@
     <string name="name" value="Mini Draco Transformation"/>
     <string name="desc" value="The mysterious skills of an old halfling has transformed you into a form of a dragon. You can now fly."/>
   </imgdir>
-  <imgdir name="2210023">
-    <string name="name" value="Cliff&apos;s Special Potion"/>
-    <string name="desc" value="No one knows what you&apos;ll transform into when you drink this, but something WILL happen for one hour.  It&apos;s all about the risk..."/>
-  </imgdir>
-  <imgdir name="2210024">
-    <string name="name" value="Maplemas Party Potion"/>
-    <string name="desc" value="Double-click on this to transform a character of your choice. Which one? Try it and find out!"/>
-  </imgdir>
   <imgdir name="2210032">
     <string name="name" value="Cody&apos;s Picture"/>
     <string name="desc" value="A picture given by Cody of himself.  I get a feeling something fun will happen when I use it."/>
@@ -4606,54 +4533,6 @@
   <imgdir name="2240003">
     <string name="name" value="Silver Swan Engagement Ring Box"/>
     <string name="desc" value="Engagement Ring made of silver. The ring will be inside a wrapped box. Required for proposal."/>
-  </imgdir>
-  <imgdir name="2240004">
-    <string name="name" value="Ring of Moon Stone"/>
-    <string name="desc" value="An engagement ring crafted out of Moon Rock and Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240005">
-    <string name="name" value="Ring of Moon Stone: 2 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Moon Rock and 2 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240006">
-    <string name="name" value="Ring of Moon Stone: 3 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Moon Rock and 3 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240007">
-    <string name="name" value="Ring of Shining Star"/>
-    <string name="desc" value="An engagement ring crafted out of Star Rock and Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240008">
-    <string name="name" value="Ring of Shining Star: 2 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Star Rock and 2 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240009">
-    <string name="name" value="Ring of Shining Star: 3 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Star Rock and 3 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240010">
-    <string name="name" value="Gold Heart Ring"/>
-    <string name="desc" value="An engagement ring crafted out of Gold and Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240011">
-    <string name="name" value="Gold Heart Ring: 2 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Gold and 2 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240012">
-    <string name="name" value="Gold Heart Ring: 3 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Gold and 3 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240013">
-    <string name="name" value="Ring of Silver Wing"/>
-    <string name="desc" value="An engagement ring crafted out of Silver and Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240014">
-    <string name="name" value="Ring of Silver Wing: 2 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Silver and 2 carats of Diamond. Use this to propose to your loved one."/>
-  </imgdir>
-  <imgdir name="2240015">
-    <string name="name" value="Ring of Silver Wing: 3 Carats"/>
-    <string name="desc" value="An engagement ring crafted out of Silver and 3 carats of Diamond. Use this to propose to your loved one."/>
   </imgdir>
   <imgdir name="2260000">
     <string name="name" value="Revitalizer"/>
@@ -6147,10 +6026,6 @@
   <imgdir name="2388043">
     <string name="name" value="Pink Bean"/>
     <string name="desc" value="A card with a picture of Pink Bean.n#cWhen hunting at the Temple of TimenItem/Meso Drop rate increase#"/>
-  </imgdir>
-  <imgdir name="2390000">
-    <string name="name" value="Helena&apos;s Marble"/>
-    <string name="desc" value="A marble given by Helena. Use this to communicate with her regardless of the place. This item is good for one-time use only..."/>
   </imgdir>
   <imgdir name="2430000">
     <string name="name" value="Torn Cygnus&apos; Book Volume 1"/>
@@ -9135,10 +9010,6 @@
   <imgdir name="2290108">
     <string name="name" value="[Mastery Book] Speed Infusion"/>
     <string name="desc" value="With a 70% success rate, it raises the Master Level of #cSpeed Infusion# to 20.nJob : Buccaneer\r\nRequirement : At least Level 5 in this skill"/>
-  </imgdir>
-  <imgdir name="2290109">
-    <string name="name" value="[Mastery Book] Wind Booster"/>
-    <string name="desc" value="With a 50% success rate, it raises the Master Level of #cWind Booster# to 30. nJob : Buccaneer\r\nRequirement : At least Level 15 in this skill"/>
   </imgdir>
   <imgdir name="2290110">
     <string name="name" value="[Mastery Book] Time Leap"/>

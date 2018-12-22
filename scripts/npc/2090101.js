@@ -21,14 +21,22 @@
 
 /* Lilishu
 	Mu Lung Random Hair/Hair Color Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var hairprice = 1000000;
 var haircolorprice = 1000000;
-var mhair = Array(30250, 30350, 30270, 30150, 30300, 30600, 30160, 30700, 30720, 30420);
-var fhair = Array(31040, 31250, 31310, 31220, 31300, 31680, 31160, 31030, 31230, 31690, 31210, 31170, 31450);
+var mhair_e = Array(30030, 30150, 30240, 30370, 30420, 30550, 30600, 30640, 30700, 30710, 30720, 30750, 30810, 30830);
+var fhair_e = Array(31140, 31160, 31180, 31210, 31300, 31430, 31460, 31470, 31660, 31690, 31800, 31890, 31910, 31940);
 var hairnew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     status = -1;
@@ -54,14 +62,14 @@ function action(mode, type, selection) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mhair.length; i++) {
-                        hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < mhair_e.length; i++) {
+                        pushIfItemExists(hairnew, mhair_e[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++) {
-                        hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < fhair_e.length; i++) {
+                        pushIfItemExists(hairnew, fhair_e[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
@@ -72,7 +80,7 @@ function action(mode, type, selection) {
                 var current = parseInt(cm.getPlayer().getHair()
                     /10)*10;
                 for(var i = 0; i < 8; i++) {
-                    haircolor.push(current + i);
+                    pushIfItemExists(haircolor, current + i);
                 }
                 cm.sendYesNo("If you use a regular coupon your hair will change RANDOMLY. Do you still want to use #b#t5151019##k and change it up?");
             }

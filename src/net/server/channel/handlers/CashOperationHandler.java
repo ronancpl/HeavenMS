@@ -39,6 +39,7 @@ import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import constants.ServerConstants;
+import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -62,7 +63,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             final int useNX = slea.readInt();
             final int snCS = slea.readInt();
             CashItem cItem = CashItemFactory.getItem(snCS);
-            if (!canBuy(cItem, cs.getCash(useNX))) {
+            if (!canBuy(chr, cItem, cs.getCash(useNX))) {
                 FilePrinter.printError(FilePrinter.ITEM, "Denied to sell cash item with SN " + snCS);   // preventing NPE here thanks to MedicOP
                 c.enableCSActions();
                 return;
@@ -98,7 +99,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             CashItem cItem = CashItemFactory.getItem(slea.readInt());
             Map<String, String> recipient = MapleCharacter.getCharacterFromDatabase(slea.readMapleAsciiString());
             String message = slea.readMapleAsciiString();
-            if (!canBuy(cItem, cs.getCash(4)) || message.length() < 1 || message.length() > 73) {
+            if (!canBuy(chr, cItem, cs.getCash(4)) || message.length() < 1 || message.length() > 73) {
                 c.enableCSActions();
                 return;
             }
@@ -151,7 +152,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             } else {
                 CashItem cItem = CashItemFactory.getItem(slea.readInt());
                 int type = (cItem.getItemId() - 9110000) / 1000;
-                if (!canBuy(cItem, cs.getCash(cash))) {
+                if (!canBuy(chr, cItem, cs.getCash(cash))) {
                     c.enableCSActions();
                     return;
                 }
@@ -181,7 +182,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             } else {
                 CashItem cItem = CashItemFactory.getItem(slea.readInt());
 
-                if (!canBuy(cItem, cs.getCash(cash))) {
+                if (!canBuy(chr, cItem, cs.getCash(cash))) {
                     c.enableCSActions();
                     return;
                 }
@@ -199,7 +200,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
             int cash = slea.readInt();
             CashItem cItem = CashItemFactory.getItem(slea.readInt());
 
-            if (!canBuy(cItem, cs.getCash(cash))) {
+            if (!canBuy(chr, cItem, cs.getCash(cash))) {
                 c.enableCSActions();
                 return;
             }
@@ -380,7 +381,12 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
         return c.checkBirthDate(cal);
     }
     
-    private static boolean canBuy(CashItem item, int cash) {
-        return item != null && item.isOnSale() && item.getPrice() <= cash;
+    private static boolean canBuy(MapleCharacter chr, CashItem item, int cash) {
+        if (item != null && item.isOnSale() && item.getPrice() <= cash) {
+            FilePrinter.print(FilePrinter.CASHITEM_BOUGHT, chr + " bought " + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + " (SN " + item.getSN() + ") for " + item.getPrice());
+            return true;
+        } else {
+            return false;
+        }
     }
 }

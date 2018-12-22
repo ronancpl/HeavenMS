@@ -21,14 +21,22 @@
 */
 /* Ari
 	NLC Random Hair/Hair Color Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var hairprice = 1000000;
 var haircolorprice = 1000000;
-var mhair = Array(30250, 30110, 30230, 30050, 30280, 30410, 30730, 30160, 30200, 30440, 30360, 30740, 30400);
-var fhair = Array(31150, 31310, 31220, 31300, 31260, 31160, 31730, 31410, 31410, 31720, 31560, 31450);
+var mhair_e = Array(30250, 30400, 30430, 30440, 30490, 30730, 30830, 30870, 30880, 33100);
+var fhair_e = Array(31320, 31450, 31560, 31570, 31690, 31720, 31730, 31830, 34010);
 var hairnew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     status = -1;
@@ -54,13 +62,13 @@ function action(mode, type, selection) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mhair.length; i++) {
-                        hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair() % 10));
+                    for(var i = 0; i < mhair_e.length; i++) {
+                        pushIfItemExists(hairnew, mhair_e[i] + parseInt(cm.getPlayer().getHair() % 10));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++) {
-                        hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair() % 10));
+                    for(var i = 0; i < fhair_e.length; i++) {
+                        pushIfItemExists(hairnew, fhair_e[i] + parseInt(cm.getPlayer().getHair() % 10));
                     }
                 }
                 cm.sendYesNo("If you use the EXP coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150030##k and really change your hairstyle?");
@@ -69,7 +77,7 @@ function action(mode, type, selection) {
                 haircolor = Array();
                 var current = parseInt(cm.getPlayer().getHair()/10)*10;
                 for(var i = 0; i < 8; i++) {
-                    haircolor.push(current + i);
+                    pushIfItemExists(haircolor, current + i);
                 }
                 cm.sendYesNo("If you use a regular coupon your hair will change RANDOMLY. Do you still want to use #b#t5151025##k and change it up?");
             }

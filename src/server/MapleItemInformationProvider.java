@@ -110,7 +110,8 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Boolean> pickupRestrictionCache = new HashMap<>();
     protected Map<Integer, Integer> getMesoCache = new HashMap<>();
     protected Map<Integer, Integer> monsterBookID = new HashMap<>();
-    protected Map<Integer, Boolean> onEquipUntradableCache = new HashMap<>();
+    protected Map<Integer, Boolean> untradeableCache = new HashMap<>();
+    protected Map<Integer, Boolean> onEquipUntradeableCache = new HashMap<>();
     protected Map<Integer, scriptedItem> scriptedItemCache = new HashMap<>();
     protected Map<Integer, Boolean> karmaCache = new HashMap<>();
     protected Map<Integer, Integer> triggerItemCache = new HashMap<>();
@@ -942,7 +943,7 @@ public class MapleItemInformationProvider {
     
     public boolean canUseCleanSlate(Equip nEquip) {
         Map<String, Integer> eqstats = this.getEquipStats(nEquip.getItemId());
-        return ServerConstants.USE_ENHANCED_CLNSLATE || nEquip.getLevel() + nEquip.getUpgradeSlots() < eqstats.get("tuc");
+        return ServerConstants.USE_ENHANCED_CLNSLATE || nEquip.getUpgradeSlots() < eqstats.get("tuc");  // issue with clean slate found thanks to Masterrulax
     }
     
     public Item scrollEquipWithId(Item equip, int scrollId, boolean usingWhiteScroll, int vegaItemId, boolean isGM) {
@@ -1102,7 +1103,7 @@ public class MapleItemInformationProvider {
                     nEquip.setMp((short) stat.getValue().intValue());
                 } else if (stat.getKey().equals("tuc")) {
                     nEquip.setUpgradeSlots((byte) stat.getValue().intValue());
-                } else if (isDropRestricted(equipId)) {
+                } else if (isUntradeableRestricted(equipId)) {  // thanks Hyun & Thora for showing an issue with more than only "Untradeable" items being flagged as such here
                     byte flag = nEquip.getFlag();
                     flag |= ItemConstants.UNTRADEABLE;
                     nEquip.setFlag(flag);
@@ -1230,6 +1231,23 @@ public class MapleItemInformationProvider {
         return ret;
     }
 
+    public boolean isUntradeableRestricted(int itemId) {
+        if (untradeableCache.containsKey(itemId)) {
+            return untradeableCache.get(itemId);
+        }
+        
+        boolean bRestricted = false;
+        if(itemId != 0) {
+            MapleData data = getItemData(itemId);
+            if (data != null) {
+                bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
+            }
+        }
+        
+        untradeableCache.put(itemId, bRestricted);
+        return bRestricted;
+    }
+    
     public boolean isLootRestricted(int itemId) {
         if (dropRestrictionCache.containsKey(itemId)) {
             return dropRestrictionCache.get(itemId);
@@ -1421,12 +1439,12 @@ public class MapleItemInformationProvider {
     }
 
     public boolean isUntradeableOnEquip(int itemId) {
-        if (onEquipUntradableCache.containsKey(itemId)) {
-            return onEquipUntradableCache.get(itemId);
+        if (onEquipUntradeableCache.containsKey(itemId)) {
+            return onEquipUntradeableCache.get(itemId);
         }
-        boolean untradableOnEquip = MapleDataTool.getIntConvert("info/equipTradeBlock", getItemData(itemId), 0) > 0;
-        onEquipUntradableCache.put(itemId, untradableOnEquip);
-        return untradableOnEquip;
+        boolean untradeableOnEquip = MapleDataTool.getIntConvert("info/equipTradeBlock", getItemData(itemId), 0) > 0;
+        onEquipUntradeableCache.put(itemId, untradeableOnEquip);
+        return untradeableOnEquip;
     }
 
     public scriptedItem getScriptedItemInfo(int itemId) {

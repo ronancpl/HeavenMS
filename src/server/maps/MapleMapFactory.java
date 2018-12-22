@@ -100,7 +100,7 @@ public class MapleMapFactory {
         }
         
         String mapName = getMapName(mapid);
-        MapleData mapData = source.getData(mapName);
+        MapleData mapData = source.getData(mapName);    // source.getData issue with giving nulls in rare ocasions found thanks to MedicOP
         MapleData infoData = mapData.getChildByPath("info");
 
         String link = MapleDataTool.getString(infoData.getChildByPath("link"), "");

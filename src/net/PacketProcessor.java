@@ -216,6 +216,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.TOUCH_MONSTER_ATTACK, new TouchMonsterDamageHandler());
             registerHandler(RecvOpcode.TROCK_ADD_MAP, new TrockAddMapHandler());
             registerHandler(RecvOpcode.HIRED_MERCHANT_REQUEST, new HiredMerchantRequest());
+            registerHandler(RecvOpcode.MOB_BANISH_PLAYER, new MobBanishPlayerHandler());
             registerHandler(RecvOpcode.MOB_DAMAGE_MOB, new MobDamageMobHandler());
             registerHandler(RecvOpcode.REPORT, new ReportHandler());
             registerHandler(RecvOpcode.MONSTER_BOOK_COVER, new MonsterBookCoverHandler());

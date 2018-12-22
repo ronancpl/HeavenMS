@@ -21,14 +21,22 @@
 
 /* Julius Styleman
 	Amoria VIP Hair/Hair Color Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var hairprice = 1000000;
 var haircolorprice = 1000000;
-var mhair = Array(30580, 30590, 30280, 30670, 30410, 30200, 30050, 30230, 30290, 30300, 30250);
-var fhair = Array(31580, 31590, 31310, 31200, 31150, 31160, 31020, 31260, 31230, 31220, 31110);
+var mhair_v = Array(30050, 30300, 30410, 30450, 30510, 30570, 30580, 30590, 30660, 30910);
+var fhair_v = Array(31150, 31220, 31260, 31310, 31420, 31480, 31490, 31580, 31590, 31610, 31630);
 var hairnew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     status = -1;
@@ -54,14 +62,14 @@ function action(mode, type, selection) {
                 beauty = 1;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mhair.length; i++) {
-                        hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < mhair_v.length; i++) {
+                        pushIfItemExists(hairnew, mhair_v[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++) {
-                        hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < fhair_v.length; i++) {
+                        pushIfItemExists(hairnew, fhair_v[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
@@ -72,7 +80,7 @@ function action(mode, type, selection) {
                 var current = parseInt(cm.getPlayer().getHair()
                     /10)*10;
                 for(var i = 0; i < 8; i++) {
-                    haircolor.push(current + i);
+                    pushIfItemExists(haircolor, current + i);
                 }
                 cm.sendStyle("I can totally change your haircolor and make it look so good. Why don't you change it up a bit? With #b#t5151017##k, I'll take care of the rest. Choose the color of your liking!", haircolor);
             }

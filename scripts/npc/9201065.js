@@ -27,7 +27,7 @@ var price = 1000000;
 var skin = Array(0, 1, 2, 3, 4);
 
 function start() {
-    cm.sendSimple("Well, hello! Welcome to the NLC Skin-Care! Would you like to have a firm, tight, healthy looking skin like mine?  With #b#t5153009##k, you can let us take care of the rest and have the kind of skin you've always wanted~!\r\n#L2#I already have a Coupon!#l");
+    cm.sendSimple("Well, hello! Welcome to the NLC Skin-Care! Would you like to have a firm, tight, healthy looking skin like mine?  With #b#t5153009##k, you can let us take care of the rest and have the kind of skin you've always wanted~!\r\n#L2#Skin Care: #i5153009##t5153009##l");
 }
 
 function action(mode, type, selection) {

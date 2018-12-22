@@ -46,6 +46,7 @@ public class LeaveEventCommand extends Command {
                 player.setFitness(null);
             }
 
+            player.saveLocationOnWarp();
             player.changeMap(returnMap);
             if(c.getChannelServer().getEvent() != null) {
                 c.getChannelServer().getEvent().addLimit();

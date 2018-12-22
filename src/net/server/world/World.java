@@ -1333,7 +1333,7 @@ public class World {
         activePetsLock.lock();
         try {
             petUpdate = Server.getInstance().getCurrentTime();
-            deployedPets = Collections.unmodifiableMap(activePets);
+            deployedPets = new HashMap<>(activePets);   // exception here found thanks to MedicOP
         } finally {
             activePetsLock.unlock();
         }
@@ -1391,7 +1391,7 @@ public class World {
         activeMountsLock.lock();
         try {
             mountUpdate = Server.getInstance().getCurrentTime();
-            deployedMounts = Collections.unmodifiableMap(activeMounts);
+            deployedMounts = new HashMap<>(activeMounts);
         } finally {
             activeMountsLock.unlock();
         }

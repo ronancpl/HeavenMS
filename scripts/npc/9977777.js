@@ -100,6 +100,8 @@ function writeFeatureTab_CashItems() {
         addFeature("Close-quarters evaluation mode for items.");
         addFeature("Reviewed Karma scissors & Untradeable items.");
         addFeature("Reviewed an pet position issue within CASH inventory.");
+        addFeature("Reviewed fashion-related contents, almost GMS-like.");
+        addFeature("Plastic surgeons/stylists no longer stuck characters.");
         addFeature("Scroll for Spikes on Shoes.");
         addFeature("Scroll for Cold Protection.");
         addFeature("Vega's spell.");
@@ -109,6 +111,7 @@ function writeFeatureTab_CashItems() {
         addFeature("Kite.");
         addFeature("Cash Shop surprise.");
         addFeature("Maple Life.");
+        addFeature("EXP Increase.");
 }
 
 function writeFeatureTab_MonstersMapsReactors() {
@@ -120,7 +123,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Mobs only drop items collectable by the player/party.");
         addFeature("Mobs shouldn't fall from foothold too often now.");
         addFeature("Properly applying MP cost on non-skill mob moves.");
-        addFeature("Implemented banish mob skill move.");
+        addFeature("Implemented mob banish by touch & skill move.");
         addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
         addFeature("Dmg Reflect mobskill icons no longer lags to display.");
@@ -247,6 +250,7 @@ function writeFeatureTab_Project() {
         addFeature("Usage of HikariCP to improve DB connection calls.");
         addFeature("Usage of Java Threadpool to improve runnable calls.");
         addFeature("Developed many survey tools for content profiling.");
+        addFeature("Removed dangling item name throughout game files.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");
         addFeature("Thoroughly reviewed encapsulation for player stats.");

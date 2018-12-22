@@ -47,6 +47,7 @@ public class ReachCommand extends Command {
                 player.dropMessage(5, "Player '" + victim.getName() + "' is at channel " + victim.getClient().getChannel() + ".");
             } else {
                 MapleMap map = victim.getMap();
+                player.saveLocationOnWarp();
                 player.forceChangeMap(map, map.findClosestPortal(victim.getPosition()));
             }
         } else {

@@ -20,15 +20,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* 	Jimmy
-	Singa Random Hair/Color Changer
+	Singapore Random Hair/Color Changer
 	@Author Cody (FlowsionMS)
         @Author AAron (FlowsionMS)
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
  */
 var status = 0;
 var beauty = 0;
-var mhair = Array(30110, 30290, 30230, 30260, 30320, 30190, 30240, 30350, 30270, 30180);
-var fhair = Array(31260, 31090, 31220, 31250, 31140, 31160, 31100, 31120, 31030, 31270, 31810);
+var mhair_r = Array(30110, 30180, 30260, 30290, 30300, 30350, 30470, 30720, 30840);
+var fhair_r = Array(31110, 31200, 31250, 31280, 31600, 31640, 31670, 31810, 34020);
 var hairnew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     cm.sendSimple("Hi, I'm the assistant here. Dont worry, I'm plenty good enough for this. If you have #b#t5150032##k or #b#t5151027##k by any chance, then allow me to take care of the rest?\r\n#L1#Haircut: #i5150032##t5150032##l\r\n#L2#Dye your hair: #i5151027##t5151027##l");
@@ -42,15 +50,15 @@ function action(mode, type, selection) {
         if (selection == 1) {
             beauty = 1;
             hairnew = Array();
-            for (var id = 0; id < cm.getPlayer().getGender() == 0 ? mhair.length : fhair.length; id++)
-                hairnew.push(cm.getPlayer().getGender == 0 ? mhair[i] : fhair[i] +  parseInt(cm.getPlayer().getHair() % 10));
+            for (var id = 0; id < cm.getPlayer().getGender() == 0 ? mhair_r.length : fhair_r.length; id++)
+                pushIfItemExists(hairnew, cm.getPlayer().getGender == 0 ? mhair_r[i] : fhair_r[i] +  parseInt(cm.getPlayer().getHair() % 10));
             cm.sendYesNo("If you use the REG coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150032##k and really change your hairstyle?");
         } else if (selection == 2) {
             beauty = 2;
             haircolor = Array();
             var current = parseInt(cm.getPlayer().getHair()/10)*10;
             for(var i = 0; i < 8; i++)
-                haircolor.push(current + i);
+                pushIfItemExists(haircolor, current + i);
             cm.sendYesNo("If you use the REG coupon your hair will change RANDOMLY. Do you still want to use #b#t5151027##k and change it up?");
         } else if (status == 2) {
             if (beauty == 1){

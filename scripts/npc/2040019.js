@@ -21,13 +21,21 @@
 
 /* Everton
 	Ludibrium Random Eye Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var price = 1000000;
-var mface = Array(20000, 20001, 20002, 20003, 20004, 20005, 20006, 20007, 20008, 20012, 20014);
-var fface = Array(21000, 21001, 21002, 21003, 21004, 21005, 21006, 21007, 21008, 21012, 21014);
+var mface_r = Array(20001, 20003, 20007, 20013, 20021, 20023, 20025);
+var fface_r = Array(21002, 21004, 21006, 21008, 21022, 21027, 21029);
 var facenew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     status = -1;
@@ -47,20 +55,20 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Well, I'm bored, so I'll help out the doctor. For a #b#t5152006##k, I will change the way you look. But don't forget, it will be random!\r\n#L2#I already have a Coupon!#l");
+            cm.sendSimple("Well, I'm bored, so I'll help out the doctor. For a #b#t5152006##k, I will change the way you look. But don't forget, it will be random!\r\n#L2#Plastic Surgery: #i5152006##t5152006##l");
         } else if (status == 1) {
             if (selection == 2) {
                 facenew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mface.length; i++) {
-                        facenew.push(mface[i] + cm.getPlayer().getFace()
+                    for(var i = 0; i < mface_r.length; i++) {
+                        pushIfItemExists(facenew, mface_r[i] + cm.getPlayer().getFace()
                             % 1000 - (cm.getPlayer().getFace()
                                 % 100));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fface.length; i++) {
-                        facenew.push(fface[i] + cm.getPlayer().getFace()
+                    for(var i = 0; i < fface_r.length; i++) {
+                        pushIfItemExists(facenew, fface_r[i] + cm.getPlayer().getFace()
                             % 1000 - (cm.getPlayer().getFace()
                                 % 100));
                     }

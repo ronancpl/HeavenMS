@@ -49,6 +49,7 @@ public class JoinEventCommand extends Command {
 
                         event.minusLimit();
 
+                        player.saveLocationOnWarp();
                         player.changeMap(event.getMapId());
                     } else {
                         player.dropMessage(5, "The limit of players for the event has already been reached.");

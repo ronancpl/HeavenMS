@@ -6496,8 +6496,9 @@
       <int name="tradeBlock" value="1"/>
     </imgdir>
     <imgdir name="spec">
-      <int name="expinc" value="30"/>
+      <int name="expinc" value="50"/>
       <int name="consumeOnPickup" value="1"/>
+      <int name="time" value="2147483647"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022451">
@@ -6515,6 +6516,7 @@
     <imgdir name="spec">
       <int name="expinc" value="200"/>
       <int name="consumeOnPickup" value="1"/>
+      <int name="time" value="2147483647"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022452">
@@ -6532,6 +6534,7 @@
     <imgdir name="spec">
       <int name="expinc" value="500"/>
       <int name="consumeOnPickup" value="1"/>
+      <int name="time" value="2147483647"/>
     </imgdir>
   </imgdir>
   <imgdir name="02022453">

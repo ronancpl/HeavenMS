@@ -19,10 +19,23 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/* Claudia
+	Amoria Quest Hair Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+*/
+
 var status = 0;
-var mhair = Array(30270, 30240, 30020, 30000, 30132, 30192, 30032, 30112, 30162);
-var fhair = Array(31150, 31250, 31310, 31050, 31050, 31030, 31070, 31091, 31001);
+var mhair_q = Array(30270, 30240, 30020, 30000, 30132, 30192, 30032, 30112, 30162);
+var fhair_q = Array(31150, 31250, 31310, 31050, 31050, 31030, 31070, 31091, 31001);
 var hairnew = Array();
+
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 
 function start() {
     if (cm.isQuestCompleted(8860) && !cm.haveItem(4031528)) {
@@ -44,11 +57,11 @@ function action(mode, type, selection) {
     if (status == 1) {
         hairnew = Array();
         if (cm.getPlayer().getGender() == 0)
-            for(var i = 0; i < mhair.length; i++)
-                hairnew.push(mhair[i]);
+            for(var i = 0; i < mhair_q.length; i++)
+                pushIfItemExists(hairnew, mhair_q[i]);
         else
-            for(var j = 0; j < fhair.length; j++)
-                hairnew.push(fhair[j]);
+            for(var j = 0; j < fhair_q.length; j++)
+                pushIfItemExists(hairnew, fhair_q[j]);
         cm.sendNext("Here we go!");
     } else {
         if (cm.haveItem(4031528)) {

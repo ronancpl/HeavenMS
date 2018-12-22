@@ -53,7 +53,7 @@ public class XMLWZFile implements MapleDataProvider {
     }
 
     @Override
-    public MapleData getData(String path) {
+    public synchronized MapleData getData(String path) {
         File dataFile = new File(root, path + ".xml");
         File imageDataDir = new File(root, path);
         if (!dataFile.exists()) {

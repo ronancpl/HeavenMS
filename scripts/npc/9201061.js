@@ -26,6 +26,16 @@ var status = 0;
 var price = 1000000;
 var colors = Array();
 
+function pushIfItemsExists(array, itemidList) {
+    for (var i = 0; i < itemidList.length; i++) {
+        var itemid = itemidList[i];
+        
+        if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+            array.push(itemid);
+        }
+    }
+}
+
 function start() {
     status = -1;
     action(1, 0, 0);
@@ -44,7 +54,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Hi, there~! I'm Bomack. If you have a #b#t5152035##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to do?\r\n#L2#I already have a Coupon!#l");
+            cm.sendSimple("Hi, there~! I'm Bomack. If you have a #b#t5152035##k, I can prescribe the right kind of cosmetic lenses for you. Now, what would you like to do?\r\n#L2#Cosmetic Lens: #i5152035##t5152035##l");
         } else if (status == 1) {
             if (selection == 2) {
                 if (cm.getPlayer().getGender() == 0) {
@@ -54,7 +64,7 @@ function action(mode, type, selection) {
                     var current = cm.getPlayer().getFace() % 100 + 21000;
                 }
                 colors = Array();
-                colors = Array(current , current + 100, current + 200, current + 300, current +400, current + 500, current + 600, current + 700);
+                pushIfItemsExists(colors, [current + 100, current + 200, current + 300, current +400, current + 500, current + 600, current + 700]);
                 cm.sendYesNo("If you use the regular coupon, you'll be awarded a random pair of cosmetic lenses. Are you going to use #b#t5152035##k and really make the change to your eyes?");
             }
         }

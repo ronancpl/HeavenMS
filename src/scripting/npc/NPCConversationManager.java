@@ -531,6 +531,35 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		return true;
 	}
         
+        public boolean itemExists(int itemid) {
+                return MapleItemInformationProvider.getInstance().getName(itemid) != null;
+        }
+        
+        public int getCosmeticItem(int itemid) {
+                if (itemExists(itemid)) return itemid;
+                
+                int baseid;
+                if (itemid < 30000) {
+                        baseid = (itemid / 1000) * 1000 + (itemid % 100);
+                } else {
+                        baseid = (itemid / 10) * 10;
+                }
+                
+                return itemid != baseid && itemExists(baseid) ? baseid : -1;
+        }
+        
+        private int getEquippedItemid(int itemid) {
+                if (itemid < 30000) {
+                        return getPlayer().getFace();
+                } else {
+                        return getPlayer().getHair();
+                }
+        }
+        
+        public boolean isCosmeticEquipped(int itemid) {
+                return getEquippedItemid(itemid) == itemid;
+        }
+        
         public boolean isUsingOldPqNpcStyle() {
                 return ServerConstants.USE_OLD_GMS_STYLED_PQ_NPCS && this.getPlayer().getParty() != null;
         }

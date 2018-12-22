@@ -21,15 +21,24 @@
 */
 /* Andre
 	Kerning Random Hair/Hair Color Change.
+
+        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;
 var hairprice = 1000000;
 var haircolorprice = 1000000;
-var mhair = Array(30130, 30350, 30190, 30110, 30180, 30050, 30040, 30160, 30770, 30620, 30550, 30520);
-var fhair = Array(31060, 31090, 31020, 31130, 31120, 31140, 31330, 31010, 31520, 31440, 31750, 31620);
+var mhair_r = Array(30040, 30130, 30520, 30770, 30780, 30850, 30920, 33040);
+var fhair_r = Array(31060, 31140, 31330, 31440, 31520, 31750, 31760, 31880, 34050);
+var mhair_e = Array(30130, 30430, 30520, 30770, 30780, 30850, 30920, 33040);
+var fhair_e = Array(31060, 31140, 31330, 31520, 31760, 31880, 34010, 34050);
 var hairnew = Array();
 
+function pushIfItemExists(array, itemid) {
+    if ((itemid = cm.getCosmeticItem(itemid)) != -1 && !cm.isCosmeticEquipped(itemid)) {
+        array.push(itemid);
+    }
+}
 function start() {
     status = -1;
     action(1, 0, 0);
@@ -48,31 +57,47 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("I'm Andre, Don's assistant. Everyone calls me Andre, though. If you have a #b#t5150011##k or a #b#t5151002##k, please let me change your hairdo!\r\n#L1#Haircut: #i5150011##t5150011##l\r\n#L2#Dye your hair: #i5151002##t5151002##l");
+            cm.sendSimple("I'm Andre, Don's assistant. Everyone calls me Andre, though. If you have a #b#t5150002##k, #b#t5150011##k or a #b#t5151002##k, please let me change your hairdo!\r\n#L0#Haircut: #i5150002##t5150002##l\r\n#L1#Haircut: #i5150011##t5150011##l\r\n#L2#Dye your hair: #i5151002##t5151002##l");
         } else if (status == 1) {
-            if (selection == 1) {
-                beauty = 1;
+            if (selection == 0) {
+                beauty = 3;
                 hairnew = Array();
                 if (cm.getPlayer().getGender() == 0) {
-                    for(var i = 0; i < mhair.length; i++) {
-                        hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < mhair_r.length; i++) {
+                        pushIfItemExists(hairnew, mhair_r[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++) {
-                        hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < fhair_r.length; i++) {
+                        pushIfItemExists(hairnew, fhair_r[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
-                cm.sendYesNo("If you use the EXP coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150010##k and really change your hairstyle?");
+                cm.sendYesNo("If you use the REG coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150011##k and really change your hairstyle?");
+            } else if (selection == 1) {
+                beauty = 1;
+                hairnew = Array();
+                if (cm.getPlayer().getGender() == 0) {
+                    for(var i = 0; i < mhair_e.length; i++) {
+                        pushIfItemExists(hairnew, mhair_e[i] + parseInt(cm.getPlayer().getHair()
+                            % 10));
+                    }
+                }
+                if (cm.getPlayer().getGender() == 1) {
+                    for(var i = 0; i < fhair_e.length; i++) {
+                        pushIfItemExists(hairnew, fhair_e[i] + parseInt(cm.getPlayer().getHair()
+                            % 10));
+                    }
+                }
+                cm.sendYesNo("If you use the EXP coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150011##k and really change your hairstyle?");
             } else if (selection == 2) {
                 beauty = 2;
                 haircolor = Array();
                 var current = parseInt(cm.getPlayer().getHair()
                     /10)*10;
                 for(var i = 0; i < 8; i++) {
-                    haircolor.push(current + i);
+                    pushIfItemExists(haircolor, current + i);
                 }
                 cm.sendYesNo("If you use a regular coupon your hair will change RANDOMLY. Do you still want to use #b#t5151002##k and change it up?");
             }
@@ -95,6 +120,15 @@ function action(mode, type, selection) {
                     cm.sendOk("Enjoy your new and improved haircolor!");
                 } else {
                     cm.sendOk("Hmmm...it looks like you don't have our designated coupon...I'm afraid I can't dye your hair without it. I'm sorry...");
+                }
+            }
+            if (beauty == 3){
+                if (cm.haveItem(5150002) == true){
+                    cm.gainItem(5150002, -1);
+                    cm.setHair(hairnew[Math.floor(Math.random() * hairnew.length)]);
+                    cm.sendOk("Enjoy your new and improved hairstyle!");
+                } else {
+                    cm.sendOk("Hmmm...it looks like you don't have our designated coupon...I'm afraid I can't give you a haircut without it. I'm sorry...");
                 }
             }
             if (beauty == 0){

@@ -68,11 +68,13 @@ public class SummonCommand extends Command {
             if (player.getEventInstance() != null && changingEvent) {
                 if (player.getClient().getChannel() == victim.getClient().getChannel()) {
                     player.getEventInstance().registerPlayer(victim);
+                    victim.saveLocationOnWarp();
                     victim.changeMap(player.getEventInstance().getMapInstance(player.getMapId()), player.getMap().findClosestPortal(player.getPosition()));
                 } else {
                     player.dropMessage("Target isn't on your channel, not able to warp into event instance.");
                 }
             } else {//If victim isn't in an event instance or is in the same event instance as the one the caller is, just warp them.
+                victim.saveLocationOnWarp();
                 victim.changeMap(player.getMapId(), player.getMap().findClosestPortal(player.getPosition()));
             }
             if (player.getClient().getChannel() != victim.getClient().getChannel()) {//And then change channel if needed.

@@ -49,6 +49,7 @@ public class WarpCommand extends Command {
             }
             
             // expedition issue with this command detected thanks to Masterrulax
+            player.saveLocationOnWarp();
             player.changeMap(target, target.getRandomPlayerSpawnpoint());
         } catch (Exception ex) {
             player.yellowMessage("Map ID " + params[0] + " is invalid.");

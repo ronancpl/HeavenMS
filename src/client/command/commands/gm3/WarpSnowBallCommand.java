@@ -40,6 +40,7 @@ public class WarpSnowBallCommand extends Command {
         MapleCharacter player = c.getPlayer();
         List<MapleCharacter> chars = new ArrayList<>(player.getMap().getCharacters());
         for (MapleCharacter chr : chars) {
+            chr.saveLocationOnWarp();
             chr.changeMap(109060000, chr.getTeam());
         }
     }

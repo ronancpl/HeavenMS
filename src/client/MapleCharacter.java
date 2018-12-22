@@ -1243,9 +1243,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         int banSp = this.getMap().findClosestPlayerSpawnpoint(this.getPosition()).getId();
         long banTime = System.currentTimeMillis();
         
-        dropMessage(5, msg);
+        if (msg != null) dropMessage(5, msg);
+        
         MapleMap map_ = getWarpMap(mapid);
-        changeMap(map_, map_.getPortal(portal));
+        MaplePortal portal_ = map_.getPortal(portal);
+        changeMap(map_, portal_ != null ? portal_ : map_.getRandomPlayerSpawnpoint());
         
         setBanishPlayerData(banMap, banSp, banTime);
     }
@@ -2123,7 +2125,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                                                             }
                                                     }
                                             }
-                                        
+                                            
                                             try (PreparedStatement ps2 = con.prepareStatement("DELETE FROM inventoryequipment WHERE inventoryitemid = ?")) {
                                                     ps2.setInt(1, inventoryitemid);
                                                     ps2.executeUpdate();
@@ -2897,7 +2899,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         gainExpInternal(-loss, 0, 0, show, inChat, white);
     }
     
-    private void gainExpInternal(long gain, int equip, int party, boolean show, boolean inChat, boolean white) {
+    private synchronized void gainExpInternal(long gain, int equip, int party, boolean show, boolean inChat, boolean white) {   // need of method synchonization here detected thanks to MedicOP
         long total = Math.max(gain, -exp.get());
         
         if (level < getMaxLevel()) {
@@ -5161,7 +5163,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return rankMove;
     }
 
-    private void clearSavedLocation(SavedLocationType type) {
+    public void clearSavedLocation(SavedLocationType type) {
         savedLocations[type.ordinal()] = null;
     }
     
@@ -7441,6 +7443,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
 
+    public void saveLocationOnWarp() {  // suggestion to remember the map before warp command thanks to Lei
+        MaplePortal closest = map.findClosestPortal(getPosition());
+        int curMapid = getMapId();
+        
+        for (int i = 0; i < savedLocations.length; i++) {
+            if (savedLocations[i] == null) {
+                savedLocations[i] = new SavedLocation(curMapid, closest != null ? closest.getId() : 0);
+            }
+        }
+    }
+    
     public void saveLocation(String type) {
         MaplePortal closest = map.findClosestPortal(getPosition());
         savedLocations[SavedLocationType.fromString(type).ordinal()] = new SavedLocation(getMapId(), closest != null ? closest.getId() : 0);
@@ -8612,8 +8625,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
 
             /*
-            for (Entry<StatUpgrade, Float> e : statups.entrySet()) {
-                System.out.println(e);
+            for (Entry<StatUpgrade, Float> es : statups.entrySet()) {
+                System.out.println(es);
             }
             */
 

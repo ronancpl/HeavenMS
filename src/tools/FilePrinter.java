@@ -18,6 +18,7 @@ public class FilePrinter {
             MAPLE_MAP = "mapleMap.txt",
             ERROR38 = "error38.txt",
             PACKET_LOG = "log.txt",
+            CASHITEM_BOUGHT = "cashlog.txt",
             EXCEPTION = "exceptions.txt",
             SQL_EXCEPTION = "sqlexceptions.txt",
             PACKET_HANDLER = "PacketHandler/",

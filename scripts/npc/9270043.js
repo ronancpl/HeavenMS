@@ -27,7 +27,7 @@ var status = 0;
 function start() {
     if (cm.haveItem(5451000)) {
         cm.gainItem(5451000, -1);
-        cm.processGachapon(ids, true);
+        cm.doGachapon();
         cm.dispose();
     } else if (cm.haveItem(5220000))
         cm.sendYesNo("You may use Gachapon. Would you like to use your Gachapon ticket?");
@@ -38,7 +38,7 @@ function start() {
 
 function action(mode, type, selection){
     if (mode == 1 && cm.haveItem(5220000)) {
-        cm.processGachapon(ids, false);
+        cm.doGachapon();
         cm.dispose();
     } else {
         if (mode > 0) {

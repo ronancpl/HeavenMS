@@ -44,7 +44,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            cm.sendSimple("Well, hello! Welcome to the Mu Lung Skin-Care! Would you like to have a firm, tight, healthy looking skin like mine?  With #b#t5153006##k, you can let us take care of the rest and have the kind of skin you've always wanted~!\r\n#L2#I already have a Coupon!#l");
+            cm.sendSimple("Well, hello! Welcome to the Mu Lung Skin-Care! Would you like to have a firm, tight, healthy looking skin like mine?  With #b#t5153006##k, you can let us take care of the rest and have the kind of skin you've always wanted~!\r\n#L2#Skin Care: #i5153006##t5153006##l");
         } else if (status == 1) {
             if (selection == 2) {
                 cm.sendStyle("With our specialized machine, you can see the way you'll look after the treatment PRIOR to the procedure. What kind of a look are you looking for? Go ahead and choose the style of your liking~!", skin);

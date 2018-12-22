@@ -51,6 +51,7 @@ public class GotoCommand extends Command {
             
             // expedition issue with this command detected thanks to Masterrulax
             MaplePortal targetPortal = target.getRandomPlayerSpawnpoint();
+            player.saveLocationOnWarp();
             player.changeMap(target, targetPortal);
         } else {
             player.dropMessage(5, "Area '" + params[0] + "' is not registered.");

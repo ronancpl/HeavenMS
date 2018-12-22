@@ -23,7 +23,6 @@
 */
 package client.command.commands.gm2;
 
-import client.MapleStat;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
@@ -45,7 +44,7 @@ public class SetStatCommand extends Command {
             int x = Integer.parseInt(params[0]);
 
             if (x > Short.MAX_VALUE) x = Short.MAX_VALUE;
-            else if (x < 0) x = 0;
+            else if (x < 4) x = 4;  // thanks Vcoc for pointing the minimal allowed stat value here
 
             player.updateStrDexIntLuk(x);
         } catch (NumberFormatException nfe) {}

@@ -216,6 +216,7 @@ public class CommandsExecutor {
         addCommand("dc", 2, DcCommand.class);
         addCommand("cleardrops", 2, ClearDropsCommand.class);
         addCommand("clearslot", 2, ClearSlotCommand.class);
+        addCommand("clearsavelocs", 2, ClearSavedLocationsCommand.class);
         addCommand("warp", 2, WarpCommand.class);
         addCommand(new String[]{"warphere", "summon"}, 2, SummonCommand.class);
         addCommand(new String[]{"warpto", "reach", "follow"}, 2, ReachCommand.class);
@@ -229,7 +230,6 @@ public class CommandsExecutor {
         addCommand("maxstat", 2, MaxStatCommand.class);
         addCommand("maxskill", 2, MaxSkillCommand.class);
         addCommand("resetskill", 2, ResetSkillCommand.class);
-        addCommand("mesos", 2, MesosCommand.class);
         addCommand("search", 2, SearchCommand.class);
         addCommand("jail", 2, JailCommand.class);
         addCommand("unjail", 2, UnJailCommand.class);

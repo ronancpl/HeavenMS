@@ -384,6 +384,8 @@ public class MapleMap {
     }
 
     private void spawnAndAddRangedMapObject(MapleMapObject mapobject, DelayedPacketCreation packetbakery, SpawnCondition condition) {
+        List<MapleCharacter> inRangeCharacters = new LinkedList<>();
+        
         chrRLock.lock();
         objectWLock.lock();
         try {
@@ -393,7 +395,7 @@ public class MapleMap {
             for (MapleCharacter chr : characters) {
                 if (condition == null || condition.canSpawn(chr)) {
                     if (chr.getPosition().distanceSq(mapobject.getPosition()) <= getRangedDistance()) {
-                        packetbakery.sendPackets(chr.getClient());
+                        inRangeCharacters.add(chr);
                         chr.addVisibleMapObject(mapobject);
                     }
                 }
@@ -402,9 +404,15 @@ public class MapleMap {
             objectWLock.unlock();
             chrRLock.unlock();
         }
+        
+        for (MapleCharacter chr : inRangeCharacters) {
+            packetbakery.sendPackets(chr.getClient());
+        }
     }
     
     private void spawnRangedMapObject(MapleMapObject mapobject, DelayedPacketCreation packetbakery, SpawnCondition condition) {
+        List<MapleCharacter> inRangeCharacters = new LinkedList<>();
+        
         chrRLock.lock();
         try {
             int curOID = getUsableOID();
@@ -412,13 +420,17 @@ public class MapleMap {
             for (MapleCharacter chr : characters) {
                 if (condition == null || condition.canSpawn(chr)) {
                     if (chr.getPosition().distanceSq(mapobject.getPosition()) <= getRangedDistance()) {
-                        packetbakery.sendPackets(chr.getClient());
+                        inRangeCharacters.add(chr);
                         chr.addVisibleMapObject(mapobject);
                     }
                 }
             }
         } finally {
             chrRLock.unlock();
+        }
+        
+        for (MapleCharacter chr : inRangeCharacters) {
+            packetbakery.sendPackets(chr.getClient());
         }
     }
 

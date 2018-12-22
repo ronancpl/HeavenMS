@@ -544,8 +544,13 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         int partyExp = 0;
         if (attacker.getHp() > 0) {
             exp *= attacker.getExpRate();
+            
+            Integer expBonus = attacker.getBuffedValue(MapleBuffStat.EXP_INCREASE);
+            if (expBonus != null) {     // exp increase buff found thanks to HighKey21
+                exp += expBonus;
+            }
+            
             int personalExp = (int) exp;
-
             if (exp <= Integer.MAX_VALUE) {  // assuming no negative xp here
                 if (partyModifier > 0.0f) {
                     partyExp = (int) (personalExp * partyModifier * ServerConstants.PARTY_BONUS_EXP_RATE);
