@@ -23,7 +23,9 @@ package net.server.channel.handlers;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
+import tools.LogHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -39,6 +41,9 @@ public final class SpouseChatHandler extends AbstractMaplePacketHandler {
             if (spouse != null) {
                 spouse.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
                 c.announce(MaplePacketCreator.OnCoupleMessage(c.getPlayer().getName(), msg, true));
+                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                    LogHelper.logChat(c, "Spouse", msg);
+                }
             } else {
                 c.getPlayer().dropMessage(5, "Your spouse is currently offline.");
             }

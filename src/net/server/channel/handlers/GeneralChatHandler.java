@@ -25,8 +25,10 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.command.CommandsExecutor;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.FilePrinter;
+import tools.LogHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -56,9 +58,15 @@ public final class GeneralChatHandler extends AbstractMaplePacketHandler {
                         }
 
                         if (!chr.isHidden()) {
-                                chr.getMap().broadcastMessage(MaplePacketCreator.getChatText(chr.getId(), s, chr.getWhiteChat(), show));	
+                                chr.getMap().broadcastMessage(MaplePacketCreator.getChatText(chr.getId(), s, chr.getWhiteChat(), show));
+                                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                                        LogHelper.logChat(c, "General", s);
+                                }
                         } else {
                                 chr.getMap().broadcastGMMessage(MaplePacketCreator.getChatText(chr.getId(), s, chr.getWhiteChat(), show));
+                                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                                        LogHelper.logChat(c, "GM General", s);
+                                }
                         }
 
                         chr.getAutobanManager().spam(7);
