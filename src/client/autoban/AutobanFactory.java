@@ -80,14 +80,12 @@ public enum AutobanFactory {
 	}
 
 	public void addPoint(AutobanManager ban, String reason) {
-            if(ServerConstants.USE_AUTOBAN == true) {
 		ban.addPoint(this, reason);
-            }
 	}
 	
 	public void alert(MapleCharacter chr, String reason) {
-            if(ServerConstants.USE_AUTOBAN == true) {
 		FilePrinter.printError("autobanwarning.txt", (chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason + "\r\n");
+			if(ServerConstants.USE_AUTOBAN == true) {
 		if (chr != null && MapleLogger.ignored.contains(chr.getName())){
 			return;
 		}
@@ -96,9 +94,7 @@ public enum AutobanFactory {
 	}
 	
 	public void autoban(MapleCharacter chr, String value) {
-            if(ServerConstants.USE_AUTOBAN == true) {
 		chr.autoban("Autobanned for (" + this.name() + ": " + value + ")");
 		//chr.sendPolice("You will be disconnected for (" + this.name() + ": " + value + ")");
-            }
 	}
 }

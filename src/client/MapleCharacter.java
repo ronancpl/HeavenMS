@@ -9293,6 +9293,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void autoban(String reason) {
+        if (!ServerConstants.USE_AUTOBAN) {
+            return;
+        }
         this.ban(reason);
         announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for HACK reason.#k", "HeavenMS")));
         TimerManager.getInstance().schedule(new Runnable() {
