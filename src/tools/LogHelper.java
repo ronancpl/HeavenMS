@@ -1,8 +1,10 @@
 package tools;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+import client.MapleClient;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.MapleParty;
@@ -71,4 +73,10 @@ public class LogHelper {
 		String log = player.getName() + " got a " + itemName + "(" + itemid + ") from the " + map + " gachapon. - " + timeStamp + "\r\n";
 		FilePrinter.print("gachapon.txt", log);
 	}
+
+	public static void logChat(MapleClient player, String chatType, String text){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+		FilePrinter.print("chat.txt", "[" + sdf.format(Calendar.getInstance().getTime()) + "] (" + chatType + ") " +player.getPlayer().getName() + ": " + text + "\r\n");
+	}
+
 }
