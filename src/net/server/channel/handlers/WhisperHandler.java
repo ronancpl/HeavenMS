@@ -25,10 +25,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.world.World;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
+import tools.LogHelper;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
@@ -60,7 +62,9 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             }
             if (player != null) {
                 player.getClient().announce(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getChannel(), text));
-                
+                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                    LogHelper.logChat(c, "Whisper To " + player.getName(), text);
+                }
                 if(player.isHidden() && player.gmLevel() >= c.getPlayer().gmLevel()) {
                     c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
                 } else {
@@ -70,7 +74,9 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 World world = c.getWorldServer();
                     if (world.isConnected(recipient)) {
                         world.whisper(c.getPlayer().getName(), recipient, c.getChannel(), text);
-                        
+                        if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                            LogHelper.logChat(c, "Whisper To " + recipient, text);
+                        }
                         player = world.getPlayerStorage().getCharacterByName(recipient);
                         if(player.isHidden() && player.gmLevel() >= c.getPlayer().gmLevel())
                             c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
