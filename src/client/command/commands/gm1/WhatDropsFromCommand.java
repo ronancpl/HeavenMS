@@ -59,7 +59,7 @@ public class WhatDropsFromCommand extends Command {
                 for (MonsterDropEntry drop : MapleMonsterInformationProvider.getInstance().retrieveDrop(mobId)){
                     try {
                         String name = MapleItemInformationProvider.getInstance().getName(drop.itemId);
-                        if (name.equals("null") || drop.chance == 0){
+                        if (name == null || name.equals("null") || drop.chance == 0){
                             continue;
                         }
                         float chance = 1000000 / drop.chance / player.getDropRate();
