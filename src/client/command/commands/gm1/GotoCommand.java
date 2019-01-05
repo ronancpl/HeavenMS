@@ -28,7 +28,9 @@ import client.command.Command;
 import client.MapleClient;
 import constants.GameConstants;
 import server.MaplePortal;
+import server.maps.FieldLimit;
 import server.maps.MapleMap;
+import server.maps.MapleMiniDungeonInfo;
 
 import java.util.HashMap;
 
@@ -46,6 +48,12 @@ public class GotoCommand extends Command {
             player.yellowMessage("Syntax: @goto <map name>");
             return;
         }
+
+        if (player.getEventInstance() != null || MapleMiniDungeonInfo.isDungeonMap(player.getMapId()) || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit()) || !player.isAlive()) {
+            player.yellowMessage("This command can not be used in this map.");
+            return;
+        }
+
         if (gotomaps.containsKey(params[0])) {
             MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(params[0]));
             
