@@ -1064,8 +1064,8 @@ public class MaplePacketCreator {
                 mplew.write(spawnPoint);
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
-                mplew.writeLong(0);                 // getTime(Server.getInstance().getCurrentTime())?
-                mplew.skip(ServerConstants.DEBUG_VALUES[0]);
+                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
+                mplew.skip(8);
                 return mplew.getPacket();
         }
         
@@ -1081,8 +1081,8 @@ public class MaplePacketCreator {
                 mplew.writeBool(true);
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
-                mplew.writeLong(0);                 // getTime(Server.getInstance().getCurrentTime())?
-                mplew.skip(ServerConstants.DEBUG_VALUES[0]);
+                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
+                mplew.skip(8);
                 return mplew.getPacket();
         }
         
