@@ -11,55 +11,67 @@ import java.util.Calendar;
 public class FilePrinter {
 
     public static final String 
-            ACCOUNT_STUCK = "accountStuck.txt",
-            EXCEPTION_CAUGHT = "exceptionCaught.txt",
-            CLIENT_START = "clientStartError.txt",
-            ADD_PLAYER = "addPlayer.txt",
-            MAPLE_MAP = "mapleMap.txt",
-            ERROR38 = "error38.txt",
-            PACKET_LOG = "log.txt",
-            CASHITEM_BOUGHT = "cashlog.txt",
-            EXCEPTION = "exceptions.txt",
-            SQL_EXCEPTION = "sqlexceptions.txt",
-            PACKET_HANDLER = "PacketHandler/",
-            PORTAL = "portals/",
-            PORTAL_STUCK = "portalblocks/",
-            NPC = "npcs/",
-            INVOCABLE = "invocable/",
-            REACTOR = "reactors/",
-            QUEST = "quests/",
-            ITEM = "items/",
-            MOB_MOVEMENT = "mobmovement.txt",
-            MAP_SCRIPT = "mapscript/",
-            DIRECTION = "directions/",
-            SAVE_CHAR = "saveToDB.txt",
-            INSERT_CHAR = "insertCharacter.txt",
-            LOAD_CHAR = "loadCharFromDB.txt",
-            UNHANDLED_EVENT = "doesNotExist.txt",
-            SESSION = "sessions.txt",
-            EXPLOITS = "exploits/",
-            STORAGE = "storage/",
-            PACKET_LOGS = "packetlogs/",
-            DELETED_CHARACTERS = "deletedchars/",
-            FREDRICK = "fredrick/",
-            NPC_UNCODED = "uncodedNPCs.txt",
-            QUEST_UNCODED = "uncodedQuests.txt",
-            AUTOSAVING_CHARACTER = "saveCharAuto.txt",
-            SAVING_CHARACTER = "saveChar.txt",
-            USED_COMMANDS = "usedCommands.txt",
-            DEADLOCK_ERROR = "deadlocks.txt",
-            DEADLOCK_STACK = "deadlocks/path.txt",
-            DEADLOCK_LOCKS = "deadlocks/locks.txt",
-            DEADLOCK_STATE = "deadlocks/state.txt",
-            DISPOSED_LOCKS = "deadlocks/disposed.txt";
+            AUTOBAN_WARNING = "game/AutoBanWarning.txt",    // log naming version by Vcoc
+            AUTOBAN_DC = "game/AutoBanDC.txt",
+            ACCOUNT_STUCK = "players/AccountStuck.txt",
+            COMMAND_GM = "reports/Gm.txt",
+            COMMAND_BUG = "reports/Bug.txt",
+            LOG_TRADE = "interactions/Trades.txt",
+            LOG_EXPEDITION = "interactions/Expeditions.txt",
+            LOG_LEAF = "interactions/MapleLeaves.txt",
+            LOG_GACHAPON = "interactions/Gachapon.txt",
+            LOG_CHAT = "interactions/ChatLog.txt",
+            EXCEPTION_CAUGHT = "game/ExceptionCaught.txt",
+            CLIENT_START = "game/ClientStartError.txt",
+            MAPLE_MAP = "game/MapleMap.txt",
+            ERROR38 = "game/Error38.txt",
+            PACKET_LOG = "game/Log.txt",
+            CASHITEM_BOUGHT = "interactions/CashLog.txt",
+            EXCEPTION = "game/Exceptions.txt",
+            SQL_EXCEPTION = "game/SqlExceptions.txt",
+            PACKET_HANDLER = "game/packethandler/",
+            PORTAL = "game/portals/",
+            PORTAL_STUCK = "game/portalblocks/",
+            NPC = "game/npcs/",
+            INVOCABLE = "game/invocable/",
+            REACTOR = "game/reactors/",
+            QUEST = "game/quests/",
+            ITEM = "game/items/",
+            MOB_MOVEMENT = "game/MobMovement.txt",
+            MAP_SCRIPT = "game/mapscript/",
+            DIRECTION = "game/directions/",
+            SAVE_CHAR = "players/SaveToDB.txt",
+            INSERT_CHAR = "players/InsertCharacter.txt",
+            LOAD_CHAR = "players/LoadCharFromDB.txt",
+            CREATED_CHAR = "players/createdchars/",
+            DELETED_CHAR = "players/deletedchars/",
+            UNHANDLED_EVENT = "game/DoesNotExist.txt",
+            SESSION = "players/Sessions.txt",
+            EXPLOITS = "game/exploits/",
+            STORAGE = "game/storage/",
+            PACKET_LOGS = "game/packetlogs/",
+            FREDRICK = "game/npcs/fredrick/",
+            NPC_UNCODED = "game/npcs/UncodedNPCs.txt",
+            QUEST_UNCODED = "game/quests/UncodedQuests.txt",
+            AUTOSAVING_CHARACTER = "players/SaveCharAuto.txt",
+            SAVING_CHARACTER = "players/SaveChar.txt",
+            USED_COMMANDS = "commands/UsedCommands.txt",
+            DEADLOCK_ERROR = "deadlocks/Deadlocks.txt",
+            DEADLOCK_STACK = "deadlocks/Path.txt",
+            DEADLOCK_LOCKS = "deadlocks/Locks.txt",
+            DEADLOCK_STATE = "deadlocks/State.txt",
+            DISPOSED_LOCKS = "deadlocks/Disposed.txt";
     
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); //for file system purposes, it's nice to use yyyy-MM-dd
     private static final String FILE_PATH = "logs/" + sdf.format(Calendar.getInstance().getTime()) + "/"; // + sdf.format(Calendar.getInstance().getTime()) + "/"
     private static final String ERROR = "error/";
 
     public static void printError(final String name, final Throwable t) {
+        String stringT = getString(t);
+        
     	System.out.println("Error thrown: " + name);
-    	System.out.println(getString(t));
+    	System.out.println(stringT);
+        System.out.println();
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
         try {
@@ -68,8 +80,9 @@ public class FilePrinter {
                 outputFile.getParentFile().mkdirs();
             }
             out = new FileOutputStream(file, true);
-            out.write(getString(t).getBytes());
-            out.write("\n---------------------------------\r\n".getBytes());
+            out.write(stringT.getBytes());
+            out.write("\r\n---------------------------------\r\n".getBytes());
+            out.write("\r\n".getBytes()); // thanks Vcoc for suggesting review body log structure
         } catch (IOException ess) {
             ess.printStackTrace();
         } finally {
@@ -84,8 +97,11 @@ public class FilePrinter {
     }
 
     public static void printError(final String name, final Throwable t, final String info) {
+        String stringT = getString(t);
+        
     	System.out.println("Error thrown: " + name);
-    	System.out.println(getString(t));
+    	System.out.println(stringT);
+        System.out.println();
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
         try {
@@ -95,8 +111,9 @@ public class FilePrinter {
             }
             out = new FileOutputStream(file, true);
             out.write((info + "\r\n").getBytes());
-            out.write(getString(t).getBytes());
-            out.write("\n---------------------------------\r\n".getBytes());
+            out.write(stringT.getBytes());
+            out.write("\r\n---------------------------------\r\n".getBytes());
+            out.write("\r\n".getBytes());
         } catch (IOException ess) {
             ess.printStackTrace();
         } finally {
@@ -113,6 +130,7 @@ public class FilePrinter {
     public static void printError(final String name, final String s) {
     	System.out.println("Error thrown: " + name);
     	System.out.println(s);
+        System.out.println();
         FileOutputStream out = null;
         final String file = FILE_PATH + ERROR + name;
         try {
@@ -122,7 +140,8 @@ public class FilePrinter {
             }
             out = new FileOutputStream(file, true);
             out.write(s.getBytes());
-            //out.write("\n---------------------------------\n".getBytes());
+            //out.write("\r\n---------------------------------\r\n".getBytes());
+            out.write("\r\n".getBytes());
         } catch (IOException ess) {
             ess.printStackTrace();
         } finally {
@@ -143,6 +162,7 @@ public class FilePrinter {
     public static void print(final String name, final String s, boolean line) {
     	System.out.println("Log: " + name);
     	System.out.println(s);
+        System.out.println();
         FileOutputStream out = null;
         String file = FILE_PATH + name;
         try {
@@ -152,10 +172,10 @@ public class FilePrinter {
             }
             out = new FileOutputStream(file, true);
             out.write(s.getBytes());
-            out.write("\r\n".getBytes());
             if (line) {
-                out.write("---------------------------------\r\n".getBytes());
+                out.write("\r\n---------------------------------\r\n".getBytes());
             }
+            out.write("\r\n".getBytes());
         } catch (IOException ess) {
             ess.printStackTrace();
         } finally {

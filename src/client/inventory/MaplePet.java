@@ -81,17 +81,24 @@ public class MaplePet extends Item {
             return null;
         }
     }
-
-    public void deleteFromDb() {
+    
+    public static void deleteFromDb(int petid) {
         try {
             Connection con = DatabaseConnection.getConnection();
+            
             PreparedStatement ps = con.prepareStatement("DELETE FROM pets WHERE `petid` = ?");
-            ps.setInt(1, this.getUniqueId());
+            ps.setInt(1, petid);
             ps.executeUpdate();
             ps.close();
+            
+            ps = con.prepareStatement("DELETE FROM petignores WHERE `petid` = ?");  // thanks Vcoc for detecting petignores remaining after deletion
+            ps.setInt(1, petid);
+            ps.executeUpdate();
+            ps.close();
+            
             con.close();
             
-            MapleCashidGenerator.freeCashId(this.getUniqueId());
+            MapleCashidGenerator.freeCashId(petid);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

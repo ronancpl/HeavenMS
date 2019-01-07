@@ -50,15 +50,14 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == -1)
+    if (mode < 1)  // disposing issue with stylishs found thanks to Vcoc
         cm.dispose();
     else {
-        if (mode == 0 && status == 0)
-            cm.dispose();
         if (mode == 1)
             status++;
         else
             status--;
+        
         if (status == 0)
             cm.sendSimple("Hi, there~! I'm Dr. Lenu, in charge of the cosmetic lenses here at the Henesys Plastic Surgery Shop! With #b#t5152010##k or #b#t5152013##k, you can let us take care of the rest and have the kind of beautiful look you've always craved~! Remember, the first thing everyone notices about you is the eyes, and we can help you find the cosmetic lens that most fits you! Now, what would you like to use?\r\n#L1#Cosmetic Lenses: #i5152010##t5152010##l\r\n#L2#Cosmetic Lenses: #i5152013##t5152013##l\r\n#L3#One-time Cosmetic Lenses: #i5152103# (any color)#l");
         else if (status == 1) {

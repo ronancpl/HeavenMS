@@ -1016,6 +1016,14 @@ public class MapleStatEffect {
         applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
     }
     
+    public final void applyBeaconBuff(final MapleCharacter applyto, int objectid) { // thanks Thora & Hyun for reporting an issue with homing beacon autoflagging mobs when changing maps
+        final List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.HOMING_BEACON, objectid));
+        applyto.announce(MaplePacketCreator.giveBuff(1, sourceid, stat));
+
+        final long starttime = Server.getInstance().getCurrentTime();
+        applyto.registerEffect(this, starttime, Long.MAX_VALUE, false);
+    }
+    
     public void updateBuffEffect(MapleCharacter target, List<Pair<MapleBuffStat, Integer>> activeStats, long starttime) {
         int localDuration = getBuffLocalDuration();
         localDuration = alchemistModifyVal(target, localDuration, false);

@@ -64,7 +64,7 @@ public class DebugCommand extends Command {
                     msgTypes += ("#L" + i + "#" + debugTypes[i] + "#l\r\n");
                 }
                 
-                player.announce(MaplePacketCreator.getNPCTalk(9201143, (byte) 0, msgTypes, "00 00", (byte) 0));
+                c.getAbstractPlayerInteraction().npcTalk(9201143, msgTypes);
                 break;
             
             case "monster":

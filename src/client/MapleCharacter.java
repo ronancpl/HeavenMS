@@ -187,7 +187,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private MapleFamily family;
     private int familyId;
     private int bookCover;
-    private int markedMonster = 0;
     private int battleshipHp = 0;
     private int mesosTraded = 0;
     private int possibleReports = 10;
@@ -2785,11 +2784,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                                         deletedCoupon = true;
                                     }
                                 } else {
-                                    if (item.getPetId() > -1) {
-                                        int petIdx = getPetIndex(item.getPetId());
-                                        if(petIdx > -1) unequipPet(getPet(petIdx), true);
-                                    }
-                                    
                                     if (ItemConstants.isExpirablePet(item.getItemId())) {
                                         client.announce(MaplePacketCreator.itemExpired(item.getItemId()));
                                         toberemove.add(item);
@@ -4636,10 +4630,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             return map.getId();
         }
         return mapid;
-    }
-
-    public int getMarkedMonster() {
-        return markedMonster;
     }
 
     public MapleRing getMarriageRing() {
@@ -8003,10 +7993,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         String message = getName() + " received this - " + text;
         if (Server.getInstance().isGmOnline(this.getWorld())) { //Alert and log if a GM is online
             Server.getInstance().broadcastGMMessage(this.getWorld(), MaplePacketCreator.sendYellowTip(message));
-            FilePrinter.printError("autobanwarning.txt", message + "\r\n");
+            FilePrinter.print(FilePrinter.AUTOBAN_WARNING, message);
         } else { //Auto DC and log if no GM is online
             client.disconnect(false, false);
-            FilePrinter.printError("autobandced.txt", message + "\r\n");
+            FilePrinter.print(FilePrinter.AUTOBAN_DC, message);
         }
         //Server.getInstance().broadcastGMMessage(0, MaplePacketCreator.serverNotice(1, getName() + " received this - " + text));
         //announce(MaplePacketCreator.sendPolice(text));
@@ -8356,10 +8346,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void setMap(MapleMap newmap) {
         this.map = newmap;
-    }
-
-    public void setMarkedMonster(int markedMonster) {
-        this.markedMonster = markedMonster;
     }
     
     public void setMessenger(MapleMessenger messenger) {

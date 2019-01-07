@@ -34,7 +34,7 @@ public class CouponWorker implements Runnable {
             Server.getInstance().updateActiveCoupons();
             Server.getInstance().commitActiveCoupons();
         } catch(SQLException sqle) {
-            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unexpected SQL error: " + sqle.getMessage() + "\n\n");
+            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, "Unexpected SQL error: " + sqle.getMessage());
         }
     }
 }

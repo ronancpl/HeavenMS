@@ -41,7 +41,7 @@ public final class NPCShopHandler extends AbstractMaplePacketHandler {
             short quantity = slea.readShort();
             if (quantity < 1) {
             	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit a npc shop.");
-            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to buy quantity " + quantity + " of item id " + itemId + "\r\n");
+            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to buy quantity " + quantity + " of item id " + itemId);
             	c.disconnect(true, false);
             	return;
             }

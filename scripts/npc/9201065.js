@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* Miranda
-NLC Skin Change.
+        NLC Skin Change.
 */
 var status = 0;
 var price = 1000000;
@@ -31,13 +31,9 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == -1)
+    if (mode < 1)  // disposing issue with stylishs found thanks to Vcoc
         cm.dispose();
     else {
-        if (mode == 0 && status == 0) {
-            cm.dispose();
-            return;
-        }
         if (mode == 1)
             status++;
         else

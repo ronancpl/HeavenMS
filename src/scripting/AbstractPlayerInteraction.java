@@ -450,7 +450,6 @@ public class AbstractPlayerInteraction {
             }
             
             Item tmp = gainItem(afterId, (short) 1, false, true, period, target);
-            getPlayer().unequipPet(target, true, false);
             
             /*
             evolved = MaplePet.loadFromDb(tmp.getItemId(), tmp.getPosition(), tmp.getPetId());

@@ -61,6 +61,7 @@ public class GachaCommand extends Command {
             }
         }
         talkStr += "\r\nPlease keep in mind that there are items that are in all gachapons and are not listed here.";
-        c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, talkStr, "00 00", (byte) 0));
+        
+        c.getAbstractPlayerInteraction().npcTalk(9010000, talkStr);
     }
 }

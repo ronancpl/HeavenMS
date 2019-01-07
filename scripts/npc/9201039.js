@@ -46,12 +46,12 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == -1) {
+    if (mode < 1) {  // disposing issue with stylishs found thanks to Vcoc
+        if (type == 7) {
+            cm.sendNext("Ok, I'll give you a minute.");
+        }
+        
         cm.dispose();
-    } else if (mode == 0) {
-        cm.sendNext("Ok, I'll give you a minute.");
-        cm.dispose();
-        return;
     }
     status++;
     if (status == 1) {

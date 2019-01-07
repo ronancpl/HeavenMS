@@ -49,7 +49,7 @@ public class MapleLogger {
 			return;
 		}
 		String packet = op.toString() + "\r\n" + HexTool.toString((byte[]) message);
-		FilePrinter.printError(FilePrinter.PACKET_LOGS + c.getAccountName() + "-" + c.getPlayer().getName() + ".txt", packet + "\r\n\r\n");
+		FilePrinter.printError(FilePrinter.PACKET_LOGS + c.getAccountName() + "-" + c.getPlayer().getName() + ".txt", packet);
 	}
 	
 	private static final boolean isRecvBlocked(RecvOpcode op){

@@ -72,6 +72,7 @@ public class WhatDropsFromCommand extends Command {
                 output += "\r\n";
             }
         }
-        c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, output, "00 00", (byte) 0));
+        
+        c.getAbstractPlayerInteraction().npcTalk(9010000, output);
     }
 }

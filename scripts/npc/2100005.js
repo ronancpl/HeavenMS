@@ -24,14 +24,13 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
+	if (mode < 1) {  // disposing issue with stylishs found thanks to Vcoc
+                if (type == 7) {
+                        cm.sendNext("I guess you aren't ready to make the change yet. Let me know when you are!");
+                }
+                
 		cm.dispose();
 	} else {
-		if (mode == 0 && status >= 0) {
-			cm.sendNext("I guess you aren't ready to make the change yet. Let me know when you are!");
-			cm.dispose();
-			return;
-		}
 		if (mode == 1)
 			status++;
 		else

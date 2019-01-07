@@ -50,7 +50,7 @@ public class GotoCommand extends Command {
         }
 
         if (player.getEventInstance() != null || MapleMiniDungeonInfo.isDungeonMap(player.getMapId()) || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit()) || !player.isAlive()) {
-            player.yellowMessage("This command can not be used in this map.");
+            player.dropMessage(1, "This command can not be used in this map.");
             return;
         }
 

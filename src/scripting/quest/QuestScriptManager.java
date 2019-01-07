@@ -67,7 +67,7 @@ public class QuestScriptManager extends AbstractScriptManager {
                                         if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
                                                 iv = getInvocable("quest/medalQuest.js", c);
                                         } else {
-                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.\r\n");
+                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.");
                                         }
                                 }
                                 if (iv == null || QuestScriptManager.getInstance() == null) {
@@ -122,7 +122,7 @@ public class QuestScriptManager extends AbstractScriptManager {
                                         if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
                                                 iv = getInvocable("quest/medalQuest.js", c);
                                         } else {
-                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.\r\n");
+                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.");
                                                 qm.dispose();
                                                 return;
                                         }

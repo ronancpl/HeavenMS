@@ -94,7 +94,7 @@ public class FredrickProcessor {
                             Item item = it.getLeft();
                             MapleInventoryManipulator.addFromDrop(chr.getClient(), item, false);
                             String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                            FilePrinter.print(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")\r\n");
+                            FilePrinter.print(FilePrinter.FREDRICK + chr.getName() + ".txt", chr.getName() + " gained " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
                         }
 
                         chr.announce(MaplePacketCreator.fredrickMessage((byte) 0x1E));

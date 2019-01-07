@@ -1531,3 +1531,19 @@ Corrigido comandos que transportam jogadores entre mapas não levando em conside
 21 Dezembro 2018,
 Cosméticos já usados pelo jogador não estão mais disponíveis nos estilistas/cirurgiões.
 Corrigido alguns itens estéticos não sendo devidamente disponibilizados se jogadores usam algum cosmético de cor não-default.
+
+28 Dezembro 2018,
+Corrigido um problema com comando Music, que não identificaria informações das músicas do jogo corretamente.
+Corrigido scripts de NPC de cosméticos bloqueando dialógo de jogadores em certos casos.
+
+29 - 31 Dezembro 2018,
+Resolvido envio de temporarização descompassada pro cliente (quests, expirações de itens, BBS threads, etc).
+Corrigido quests não registrando tempo de completude corretamente.
+Corrigido mob Jesters utilizando autoaggro.
+
+03 - 06 Janeiro 2019,
+Corrigido Homing Beacon skill provocando autoflag em mobs para jogadores que mudam de mapas, onde há mobs com mesmo objectid do mob alvejado anteriormente.
+Resolvido casos onde pets equipados poderiam provocar inconsistências na DB ao ser removido da aba de cash no inventário.
+Revisado sistema de log por todo o código-fonte. Espera-se uma formatação similar para os vários logs.
+Corrigido pet excludes não sendo devidamente removidos ao retirar o pet da DB.
+Corrigido bug na expedição de Horntail ao tentar reentrar numa expedição já começada.

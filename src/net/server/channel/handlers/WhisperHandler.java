@@ -56,7 +56,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             }
             if (text.length() > Byte.MAX_VALUE && !player.isGM()) {
             	AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with whispers.");
-            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + text.length() + "\r\n");
+            	FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + text.length());
             	c.disconnect(true, false);
             	return;
             }

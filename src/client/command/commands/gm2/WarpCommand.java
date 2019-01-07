@@ -26,7 +26,9 @@ package client.command.commands.gm2;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import server.maps.FieldLimit;
 import server.maps.MapleMap;
+import server.maps.MapleMiniDungeonInfo;
 
 public class WarpCommand extends Command {
     {
@@ -45,6 +47,11 @@ public class WarpCommand extends Command {
             MapleMap target = c.getChannelServer().getMapFactory().getMap(Integer.parseInt(params[0]));
             if (target == null) {
                 player.yellowMessage("Map ID " + params[0] + " is invalid.");
+                return;
+            }
+            
+            if (player.getEventInstance() != null || MapleMiniDungeonInfo.isDungeonMap(player.getMapId()) || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit()) || !player.isAlive()) {
+                player.dropMessage(1, "This command cannot be used in this map.");
                 return;
             }
             

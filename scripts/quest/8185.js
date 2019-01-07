@@ -44,7 +44,7 @@ function end(mode, type, selection) {
                             return;
                         }
                     
-			qm.sendNextPrev("#e#bHey, you did it!#n#k \r\n#rWow!#k Now I could complete my studies on your pet!");
+			qm.sendNext("#e#bHey, you did it!#n#k \r\n#rWow!#k Now I could complete my studies on your pet!");
 		} else if (status == 1) {
 			if (mode == 0) {
 				qm.sendOk("I see... Come back when you wish to do it. I'm really excited to do this.");

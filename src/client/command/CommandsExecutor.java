@@ -113,7 +113,7 @@ public class CommandsExecutor {
     private void writeLog(MapleClient client, String command){
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         FilePrinter.print(FilePrinter.USED_COMMANDS, client.getPlayer().getName() + " used: " + command + " on "
-                + sdf.format(Calendar.getInstance().getTime()) + "\r\n");
+                + sdf.format(Calendar.getInstance().getTime()));
     }
 
     private void addCommandInfo(String name, Class<? extends Command> commandClass) {
@@ -262,7 +262,7 @@ public class CommandsExecutor {
         addCommand("ignored", 3, IgnoredCommand.class);
         addCommand("pos", 3, PosCommand.class);
         addCommand("togglecoupon", 3, ToggleCouponCommand.class);
-        addCommand("chat", 3, ChatCommand.class);
+        addCommand("togglewhitechat", 3, ChatCommand.class);
         addCommand("fame", 3, FameCommand.class);
         addCommand("givenx", 3, GiveNxCommand.class);
         addCommand("givevp", 3, GiveVpCommand.class);

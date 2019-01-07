@@ -577,7 +577,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     int slot = slea.readShort();
                     if (slot >= shop.getItems().size() || slot < 0) {
                         AutobanFactory.PACKET_EDIT.alert(chr, chr.getName() + " tried to packet edit with a player shop.");
-                        FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to remove item at slot " + slot + "\r\n");
+                        FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to remove item at slot " + slot);
                         c.disconnect(true, false);
                         return;
                     }
@@ -609,7 +609,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 short quantity = slea.readShort();
                 if (quantity < 1) {
                     AutobanFactory.PACKET_EDIT.alert(chr, chr.getName() + " tried to packet edit with a hired merchant and or player shop.");
-                    FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to buy item " + itemid + " with quantity " + quantity + "\r\n");
+                    FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to buy item " + itemid + " with quantity " + quantity);
                     c.disconnect(true, false);
                     return;
                 }
@@ -635,7 +635,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     int slot = slea.readShort();
                     if (slot >= merchant.getItems().size() || slot < 0) {
                         AutobanFactory.PACKET_EDIT.alert(chr, chr.getName() + " tried to packet edit with a hired merchant.");
-                        FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to remove item at slot " + slot + "\r\n");
+                        FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to remove item at slot " + slot);
                         c.disconnect(true, false);
                         return;
                     }

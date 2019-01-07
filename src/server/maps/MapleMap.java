@@ -1952,7 +1952,7 @@ public class MapleMap {
             } else if (monster.getId() == 9400326 || monster.getId() == 9400331 || monster.getId() == 9400336) {
                 monsterItemDrop(monster, monster.getDropPeriodTime());
             } else {
-                FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId() + "\r\n");
+                FilePrinter.printError(FilePrinter.UNHANDLED_EVENT, "UNCODED TIMED MOB DETECTED: " + monster.getId());
             }
         }
         

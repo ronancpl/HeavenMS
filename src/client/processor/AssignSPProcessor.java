@@ -53,7 +53,7 @@ public class AssignSPProcessor {
             boolean isBeginnerSkill = false;
             if ((!GameConstants.isPqSkillMap(player.getMapId()) && GameConstants.isPqSkill(skillid)) || (!player.isGM() && GameConstants.isGMSkills(skillid)) || (!GameConstants.isInJobTree(skillid, player.getJob().getId()) && !player.isGM())) {
                 AutobanFactory.PACKET_EDIT.alert(player, "tried to packet edit in distributing sp.");
-                FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.\r\n");
+                FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to use skill " + skillid + " without it being in their job.");
                 
                 final MapleClient client = c;
                 ThreadManager.getInstance().newTask(new Runnable() {

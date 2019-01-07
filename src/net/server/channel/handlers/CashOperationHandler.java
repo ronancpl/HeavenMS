@@ -172,7 +172,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (chr.getStorage().gainSlots(4)) {
-                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 4 slots to their account storage.\r\n");
+                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 4 slots to their account storage.");
                     chr.setUsedStorage();
                     
                     c.announce(MaplePacketCreator.showBoughtStorageSlots(chr.getStorage().getSlots()));
@@ -187,7 +187,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 if (chr.getStorage().gainSlots(8)) {    // thanks ABaldParrot & Thora for detecting storage issues here
-                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 8 slots to their account storage.\r\n");
+                    FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " bought 8 slots to their account storage.");
                     chr.setUsedStorage();
                     
                     c.announce(MaplePacketCreator.showBoughtStorageSlots(chr.getStorage().getSlots()));

@@ -86,7 +86,8 @@ public class WhoDropsCommand extends Command {
                     player.dropMessage(5, "The item you searched for doesn't exist.");
                     return;
                 }
-                c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, output, "00 00", (byte) 0));
+                
+                c.getAbstractPlayerInteraction().npcTalk(9010000, output);
             } finally {
                 c.releaseClient();
             }

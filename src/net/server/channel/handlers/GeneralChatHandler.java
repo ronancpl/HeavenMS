@@ -43,7 +43,7 @@ public final class GeneralChatHandler extends AbstractMaplePacketHandler {
                 }
                 if (s.length() > Byte.MAX_VALUE && !chr.isGM()) {
                         AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit in General Chat.");
-                        FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + s.length() + "\r\n");
+                        FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to send text with length of " + s.length());
                         c.disconnect(true, false);
                         return;
                 }

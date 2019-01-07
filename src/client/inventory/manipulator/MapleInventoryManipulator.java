@@ -28,6 +28,7 @@ import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
@@ -361,14 +362,15 @@ public class MapleInventoryManipulator {
     }
 
     public static void removeFromSlot(MapleClient c, MapleInventoryType type, short slot, short quantity, boolean fromDrop, boolean consume) {
-        MapleInventory inv = c.getPlayer().getInventory(type);
+        MapleCharacter chr = c.getPlayer();
+        MapleInventory inv = chr.getInventory(type);
         Item item = inv.getItem(slot);
         boolean allowZero = consume && ItemConstants.isRechargeable(item.getItemId());
         
         if(type == MapleInventoryType.EQUIPPED) {
             inv.lockInventory();
             try {
-                c.getPlayer().unequippedItem((Equip) item);
+                chr.unequippedItem((Equip) item);
                 inv.removeItem(slot, quantity, allowZero);
             } finally {
                 inv.unlockInventory();
@@ -376,10 +378,25 @@ public class MapleInventoryManipulator {
             
             announceModifyInventory(c, item, fromDrop, allowZero);
         } else {
-            inv.removeItem(slot, quantity, allowZero);
+            int petid = item.getPetId();
+            if (petid > -1) { // thanks Vcoc for finding a d/c issue with equipped pets & pets remaining on DB here
+                int petIdx = chr.getPetIndex(petid);
+                if(petIdx > -1) {
+                    MaplePet pet = chr.getPet(petIdx);
+                    chr.unequipPet(pet, true);
+                }
             
-            if(type != MapleInventoryType.CANHOLD) {
-                announceModifyInventory(c, item, fromDrop, allowZero);
+                inv.removeItem(slot, quantity, allowZero);
+                if(type != MapleInventoryType.CANHOLD) {
+                    announceModifyInventory(c, item, fromDrop, allowZero);
+                }
+                
+                MaplePet.deleteFromDb(petid);
+            } else {
+                inv.removeItem(slot, quantity, allowZero);
+                if(type != MapleInventoryType.CANHOLD) {
+                    announceModifyInventory(c, item, fromDrop, allowZero);
+                }
             }
         }
     }

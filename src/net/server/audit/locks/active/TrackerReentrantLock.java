@@ -66,7 +66,7 @@ public class TrackerReentrantLock extends ReentrantLock implements MonitoredReen
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 dateFormat.setTimeZone(TimeZone.getDefault());
 
-                //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "[CRITICAL] " + dateFormat.format(new Date()) + " Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState) + "\r\n\r\n");
+                //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "[CRITICAL] " + dateFormat.format(new Date()) + " Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState));
                 ThreadTracker.getInstance().accessThreadTracker(true, true, id, hashcode);
                 deadlockedState = null;
             }
@@ -91,7 +91,7 @@ public class TrackerReentrantLock extends ReentrantLock implements MonitoredReen
         if(super.tryLock()) {
             if(ServerConstants.USE_THREAD_TRACKER) {
                 if(deadlockedState != null) {
-                    //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState) + "\r\n\r\n");
+                    //FilePrinter.printError(FilePrinter.DEADLOCK_ERROR, "Deadlock occurred when trying to use the '" + id.name() + "' lock resources:\r\n" + printStackTrace(deadlockedState));
                     ThreadTracker.getInstance().accessThreadTracker(true, true, id, hashcode);
                     deadlockedState = null;
                 }

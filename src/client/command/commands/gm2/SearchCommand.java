@@ -136,6 +136,6 @@ public class SearchCommand extends Command {
         }
         sb.append("\r\n#kLoaded within ").append((double) (System.currentTimeMillis() - start) / 1000).append(" seconds.");//because I can, and it's free
 
-        c.announce(MaplePacketCreator.getNPCTalk(9010000, (byte) 0, sb.toString(), "00 00", (byte) 0));
+        c.getAbstractPlayerInteraction().npcTalk(9010000, sb.toString());
     }
 }

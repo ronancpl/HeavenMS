@@ -34,14 +34,13 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
+	if (mode < 1) {  // disposing issue with stylishs found thanks to Vcoc
+                if (type == 7) {
+			cm.sendNext("I see...take your time, see if you really want it. Let me know when you make up your mind.");
+		}
+            
 		cm.dispose();
 	} else {
-		if (mode == 0 && status == 0) {
-			cm.sendNext("I see...take your time, see if you really want it. Let me know when you make up your mind.");
-			cm.dispose();
-			return;
-		}
 		if (mode == 1)
 			status++;
 		else

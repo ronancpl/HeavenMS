@@ -56,13 +56,9 @@ function start() {
 }
 
 function action(mode, type, selection) {
-    if (mode == -1) {
+    if (mode < 1) {  // disposing issue with stylishs found thanks to Vcoc
         cm.dispose();
     } else {
-        if (mode == 0 && status == 0) {
-            cm.dispose();
-            return;
-        }
         if (mode == 1)
             status++;
         else

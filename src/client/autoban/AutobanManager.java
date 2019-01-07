@@ -58,7 +58,7 @@ public class AutobanManager {
         }
         if (ServerConstants.USE_AUTOBAN_LOG) {
             // Lets log every single point too.
-            FilePrinter.printError("autobanwarning.txt", MapleCharacter.makeMapleReadable(chr.getName()) + " caused " + fac.name() + " " + reason + "\r\n");
+            FilePrinter.print(FilePrinter.AUTOBAN_WARNING, MapleCharacter.makeMapleReadable(chr.getName()) + " caused " + fac.name() + " " + reason);
         }
     }
 

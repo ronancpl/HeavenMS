@@ -120,7 +120,7 @@ import server.maps.AbstractMapleMapObject;
 public class MaplePacketCreator {
 
         public static final List<Pair<MapleStat, Integer>> EMPTY_STATUPDATE = Collections.emptyList();
-        private final static long FT_UT_OFFSET = 116444592000000000L; // EDT
+        private final static long FT_UT_OFFSET = 116444628000000000L;
         private final static long DEFAULT_TIME = 150842304000000000L;//00 80 05 BB 46 E6 17 02
         public final static long ZERO_TIME = 94354848000000000L;//00 40 E0 FD 3B 37 4F 01
         private final static long PERMANENT = 150841440000000000L; // 00 C0 9B 90 7D E5 17 02
@@ -363,7 +363,7 @@ public class MaplePacketCreator {
         }
 
         private static void addExpirationTime(final MaplePacketLittleEndianWriter mplew, long time) {
-                mplew.writeLong(getTime(time));
+                mplew.writeLong(getTime(time)); // offset expiration time issue found thanks to Thora
         }
 
         private static void addItemInfo(final MaplePacketLittleEndianWriter mplew, Item item) {
@@ -1064,8 +1064,8 @@ public class MaplePacketCreator {
                 mplew.write(spawnPoint);
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
-                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(8);
+                mplew.writeLong(0);                 // getTime(Server.getInstance().getCurrentTime())?
+                mplew.skip(ServerConstants.DEBUG_VALUES[0]);
                 return mplew.getPacket();
         }
         
@@ -1081,8 +1081,8 @@ public class MaplePacketCreator {
                 mplew.writeBool(true);
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
-                mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(8);
+                mplew.writeLong(0);                 // getTime(Server.getInstance().getCurrentTime())?
+                mplew.skip(ServerConstants.DEBUG_VALUES[0]);
                 return mplew.getPacket();
         }
         
@@ -2867,7 +2867,7 @@ public class MaplePacketCreator {
                 mplew.write(1);
                 mplew.writeShort(quest);
                 mplew.write(2);
-                mplew.writeLong(time);
+                mplew.writeLong(getTime(time));
                 return mplew.getPacket();
         }
 
