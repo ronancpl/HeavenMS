@@ -35,12 +35,7 @@ public class MapleKarmaManipulator {
         int karmaFlag = getKarmaFlag(item);
         return (item.getFlag() & karmaFlag) == karmaFlag;
     }
-    
-    public static boolean hasUsedKarmaFlag(Item item) {
-        int karmaFlag = ItemConstants.KARMA_UNTRADEABLE;
-        return (item.getFlag() & karmaFlag) == karmaFlag;
-    }
-    
+
     public static void toggleKarmaFlagToUntradeable(Item item) {
         int karmaFlag = getKarmaFlag(item);
         int flag = item.getFlag();
@@ -48,8 +43,7 @@ public class MapleKarmaManipulator {
         if ((flag & karmaFlag) == karmaFlag) {
             flag ^= karmaFlag;
             flag |= ItemConstants.UNTRADEABLE;
-            flag |= ItemConstants.KARMA_UNTRADEABLE;
-            
+
             item.setFlag((byte) flag);
         }
     }
