@@ -470,13 +470,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
-            
-            if(MapleKarmaManipulator.hasUsedKarmaFlag(item)) {
-                player.dropMessage(6, "Scissors of Karma was already used on this item.");
-                c.announce(MaplePacketCreator.enableActions());
-                return;
-            }
-            
+
             MapleKarmaManipulator.setKarmaFlag(item);
             player.forceUpdateItem(item);
             remove(c, itemId);
