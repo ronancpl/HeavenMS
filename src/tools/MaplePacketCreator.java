@@ -6067,6 +6067,37 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        public static byte[] getFindReplyWithMap(String target, int mapid) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.WHISPER.getValue());
+                mplew.write(72);
+                mplew.writeMapleAsciiString(target);
+                mplew.write(1);
+                mplew.writeInt(mapid);
+                mplew.write(new byte[8]);
+                return mplew.getPacket();
+        }
+
+        public static byte[] getFindReplyWithCS(String target) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.WHISPER.getValue());
+                mplew.write(72);
+                mplew.writeMapleAsciiString(target);
+                mplew.write(2);
+                mplew.writeInt(-1);
+                return mplew.getPacket();
+        }
+
+        public static byte[] getFindReplyWithMTS(String target) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.WHISPER.getValue());
+                mplew.write(72);
+                mplew.writeMapleAsciiString(target);
+                mplew.write(0);
+                mplew.writeInt(-1);
+                return mplew.getPacket();
+        }
+
         public static byte[] sendAutoHpPot(int itemId) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.AUTO_HP_POT.getValue());
