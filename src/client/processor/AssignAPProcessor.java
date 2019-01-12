@@ -526,7 +526,7 @@ public class AssignAPProcessor {
                     boolean canWash = true;
                     if (job.isA(MapleJob.SPEARMAN) && mp < 4 * level + 156) {
                         canWash = false;
-                    } else if (job.isA(MapleJob.FIGHTER) && mp < 4 * level + 56) {
+                    } else if ((job.isA(MapleJob.FIGHTER) || job.isA(MapleJob.ARAN1)) && mp < 4 * level + 56) {
                         canWash = false;
                     } else if (job.isA(MapleJob.THIEF) && job.getId() % 100 > 0 && mp < level * 14 - 4) {
                         canWash = false;
