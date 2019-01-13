@@ -157,14 +157,16 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             }
         }
         */
-        
-        if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
-            c.setPlayer(null);
-            c.announce(MaplePacketCreator.getAfterLoginError(7));
-            return;
+
+        synchronized (this) {
+            if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
+                c.setPlayer(null);
+                c.announce(MaplePacketCreator.getAfterLoginError(7));
+                return;
+            }
+            c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
         }
-        c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
-        
+
         cserv.addPlayer(player);
         world.addPlayer(player);
         player.setEnteredChannelWorld();
