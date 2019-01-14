@@ -37,7 +37,17 @@ public class StatStrCommand extends Command {
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
         int remainingAp = player.getRemainingAp();
-        int amount = (params.length > 0) ? Math.min(Integer.parseInt(params[0]), remainingAp) : Math.min(remainingAp, ServerConstants.MAX_AP - player.getStr());
+        int amount;
+        if (params.length > 0) {
+            try {
+                amount = Math.min(Integer.parseInt(params[0]), remainingAp);
+            } catch (NumberFormatException e) {
+                player.dropMessage("That is not a valid number!");
+                return;
+            }
+        } else {
+            amount = Math.min(remainingAp, ServerConstants.MAX_AP - player.getStr());
+        }
         
         if (!player.assignStr(Math.max(amount, 0))) {
             player.dropMessage("Please make sure your AP is not over " + ServerConstants.MAX_AP + " and you have enough to distribute.");
