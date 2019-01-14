@@ -75,7 +75,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.partyStatusMessage(10));
                     return;
             	}
-                if (player.getParty() == null) {
+                if (party == null) {
                     partyplayer = new MaplePartyCharacter(player);
                     party = world.createParty(partyplayer);
                     player.setParty(party);
@@ -91,15 +91,17 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                 break;
             }
             case 2: { // leave/disband
-                List<MapleCharacter> partymembers = player.getPartyMembers();
-                
-                leaveParty(party, partyplayer, c);
-                player.partyOperationUpdate(party, partymembers);
+                if (party != null) {
+                    List<MapleCharacter> partymembers = player.getPartyMembers();
+
+                    leaveParty(party, partyplayer, c);
+                    player.partyOperationUpdate(party, partymembers);
+                }
                 break;
             }
             case 3: { // join
                 int partyid = slea.readInt();
-                if (player.getParty() == null) {
+                if (party == null) {
                     party = world.getParty(partyid);
                     if (party != null) {
                         if (party.getMembers().size() < 6) {
@@ -136,7 +138,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     }
                     
                     if (invited.getParty() == null) {
-                        if (player.getParty() == null) {
+                        if (party == null) {
                             if(player.getLevel() < 10 && !ServerConstants.USE_PARTY_FOR_STARTERS) {
                                 c.announce(MaplePacketCreator.partyStatusMessage(10));
                                 return;
