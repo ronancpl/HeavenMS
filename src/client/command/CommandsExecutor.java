@@ -295,7 +295,10 @@ public class CommandsExecutor {
         addCommand("startquest", 3, QuestStartCommand.class);
         addCommand("completequest", 3, QuestCompleteCommand.class);
         addCommand("resetquest", 3, QuestResetCommand.class);
-        
+        addCommand("timer", 3, TimerCommand.class);
+        addCommand("timermap", 3, TimerMapCommand.class);
+        addCommand("timerall", 3, TimerAllCommand.class);
+
         commandsNameDesc.add(levelCommandsCursor);
     }
 
