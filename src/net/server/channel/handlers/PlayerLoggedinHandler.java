@@ -122,7 +122,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         c.setPlayer(player);
         c.setAccID(player.getAccountID());
         
-        int state = c.getLoginState();
         boolean allowLogin = true;
         
         World world = server.getWorld(c.getWorld());
@@ -157,13 +156,19 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
             }
         }
         */
-        
-        if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
-            c.setPlayer(null);
-            c.announce(MaplePacketCreator.getAfterLoginError(7));
-            return;
+
+        c.lockClient(); // Sync this to prevent wrong login state for double channel changes
+        try {
+            int state = c.getLoginState();
+            if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
+                c.setPlayer(null);
+                c.announce(MaplePacketCreator.getAfterLoginError(7));
+                return;
+            }
+            c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
+        } finally {
+            c.unlockClient();
         }
-        c.updateLoginState(MapleClient.LOGIN_LOGGEDIN);
         
         cserv.addPlayer(player);
         world.addPlayer(player);
