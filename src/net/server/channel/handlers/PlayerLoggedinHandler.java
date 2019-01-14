@@ -160,6 +160,9 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         c.lockClient(); // Sync this to prevent wrong login state for double channel changes
         try {
             int state = c.getLoginState();
+            if (state == MapleClient.LOGIN_LOGGEDIN) {
+                return;
+            }
             if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
                 c.setPlayer(null);
                 c.announce(MaplePacketCreator.getAfterLoginError(7));
