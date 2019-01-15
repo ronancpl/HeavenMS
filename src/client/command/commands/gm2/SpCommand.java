@@ -48,7 +48,7 @@ public class SpCommand extends Command {
 
             player.updateRemainingSp(newSp);
         } else {
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+            MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
             if (victim != null) {
                 int newSp = Integer.parseInt(params[1]);
                 if (newSp < 0) newSp = 0;
@@ -58,7 +58,7 @@ public class SpCommand extends Command {
 
                 player.dropMessage(5, "SP given.");
             } else {
-                player.message("Player '" + params[0] + "' could not be found on this channel.");
+                player.message("Player '" + params[0] + "' could not be found.");
             }
         }
     }

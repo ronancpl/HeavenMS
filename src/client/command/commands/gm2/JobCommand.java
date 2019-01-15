@@ -46,7 +46,7 @@ public class JobCommand extends Command {
             player.changeJob(MapleJob.getById(jobid));
             player.equipChanged();
         } else if (params.length == 2) {
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+            MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
 
             if (victim != null) {
                 int jobid = Integer.parseInt(params[1]);
@@ -58,7 +58,7 @@ public class JobCommand extends Command {
                 victim.changeJob(MapleJob.getById(jobid));
                 player.equipChanged();
             } else {
-                player.message("Player '" + params[0] + "' could not be found on this channel.");
+                player.message("Player '" + params[0] + "' could not be found.");
             }
         } else {
             player.message("Syntax: !job <job id> <opt: IGN of another person>");

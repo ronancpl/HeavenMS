@@ -41,13 +41,13 @@ public class FameCommand extends Command {
             return;
         }
 
-        MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+        MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
         if (victim != null) {
             victim.setFame(Integer.parseInt(params[1]));
             victim.updateSingleStat(MapleStat.FAME, victim.getFame());
             player.message("FAME given.");
         } else {
-            player.message("Player '" + params[0] + "' could not be found on this channel.");
+            player.message("Player '" + params[0] + "' could not be found.");
         }
     }
 }
