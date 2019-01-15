@@ -48,7 +48,7 @@ public class ApCommand extends Command {
 
             player.changeRemainingAp(newAp, false);
         } else {
-            MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+            MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
             if (victim != null) {
                 int newAp = Integer.parseInt(params[1]);
                 if (newAp < 0) newAp = 0;
@@ -56,7 +56,7 @@ public class ApCommand extends Command {
 
                 victim.changeRemainingAp(newAp, false);
             } else {
-                player.message("Player '" + params[0] + "' could not be found on this channel.");
+                player.message("Player '" + params[0] + "' could not be found.");
             }
         }
     }

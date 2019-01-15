@@ -38,9 +38,9 @@ public class ClearSavedLocationsCommand extends Command {
         MapleCharacter player = c.getPlayer(), victim;
         
         if (params.length > 0) {
-            victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+            victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
             if (victim == null) {
-                player.message("Player '" + params[0] + "' could not be found on this channel.");
+                player.message("Player '" + params[0] + "' could not be found.");
                 return;
             }
         } else {

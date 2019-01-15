@@ -40,12 +40,12 @@ public class GiveVpCommand extends Command {
             return;
         }
 
-        MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+        MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
         if (victim != null) {
             victim.getClient().addVotePoints(Integer.parseInt(params[1]));
             player.message("VP given.");
         } else {
-            player.message("Player '" + params[0] + "' could not be found on this channel.");
+            player.message("Player '" + params[0] + "' could not be found.");
         }
     }
 }

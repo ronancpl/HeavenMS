@@ -66,12 +66,12 @@ public class GiveMesosCommand extends Command {
             }
         }
         
-        MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(recv_);
+        MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(recv_);
         if (victim != null) {
             victim.gainMeso((int) mesos_, true);
             player.message("MESO given.");
         } else {
-            player.message("Player '" + recv_ + "' could not be found on this channel.");
+            player.message("Player '" + recv_ + "' could not be found.");
         }
     }
 }

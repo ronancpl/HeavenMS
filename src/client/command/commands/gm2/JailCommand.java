@@ -51,7 +51,7 @@ public class JailCommand extends Command {
             }
         }
 
-        MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(params[0]);
+        MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(params[0]);
         if (victim != null) {
             victim.addJailExpirationTime(minutesJailed * 60 * 1000);
 
@@ -68,7 +68,7 @@ public class JailCommand extends Command {
             }
 
         } else {
-            player.message("Player '" + params[0] + "' could not be found on this channel.");
+            player.message("Player '" + params[0] + "' could not be found.");
         }
     }
 }
