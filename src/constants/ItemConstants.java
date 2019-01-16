@@ -143,6 +143,10 @@ public final class ItemConstants {
         return scrollId > 2048999 && scrollId < 2049004;
     }
     
+    public static boolean isModifierScroll(int scrollId) {
+        return scrollId == 2040727 || scrollId == 2041058;
+    }
+    
     public static boolean isFlagModifier(int scrollId, byte flag) {
         if(scrollId == 2041058 && ((flag & ItemConstants.COLD) == ItemConstants.COLD)) return true;
         if(scrollId == 2040727 && ((flag & ItemConstants.SPIKES) == ItemConstants.SPIKES)) return true;

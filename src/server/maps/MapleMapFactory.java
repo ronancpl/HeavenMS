@@ -85,6 +85,77 @@ public class MapleMapFactory {
         return getMap(mapid);
     }
     
+    private void loadLifeFromWz(MapleMap map, MapleData mapData) {
+        for (MapleData life : mapData.getChildByPath("life")) {
+            String id = MapleDataTool.getString(life.getChildByPath("id"));
+            String type = MapleDataTool.getString(life.getChildByPath("type"));
+            int cy = MapleDataTool.getInt(life.getChildByPath("cy"));
+            MapleData dF = life.getChildByPath("f");
+            int f = (dF != null) ? MapleDataTool.getInt(dF) : 0;
+            int fh = MapleDataTool.getInt(life.getChildByPath("fh"));
+            int rx0 = MapleDataTool.getInt(life.getChildByPath("rx0"));
+            int rx1 = MapleDataTool.getInt(life.getChildByPath("rx1"));
+            int x = MapleDataTool.getInt(life.getChildByPath("x"));
+            int y = MapleDataTool.getInt(life.getChildByPath("y"));
+            int hide = MapleDataTool.getInt("hide", life, 0);
+            int mobTime = MapleDataTool.getInt("mobTime", life, 0);
+            int team = MapleDataTool.getInt("team", life, -1);
+
+            loadLifeRaw(map, Integer.parseInt(id), type, cy, f, fh, rx0, rx1, x, y, hide, mobTime, team);
+        }
+    }
+    
+    private void loadLifeFromDb(MapleMap map) {
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM plife WHERE map = ? and world = ?");
+            ps.setInt(1, map.getId());
+            ps.setInt(2, map.getWorld());
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("life");
+                String type = rs.getString("type");
+                int cy = rs.getInt("cy");
+                int f = rs.getInt("f");
+                int fh = rs.getInt("fh");
+                int rx0 = rs.getInt("rx0");
+                int rx1 = rs.getInt("rx1");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int hide = rs.getInt("hide");
+                int mobTime = rs.getInt("mobtime");
+                int team = rs.getInt("team");
+
+                loadLifeRaw(map, id, type, cy, f, fh, rx0, rx1, x, y, hide, mobTime, team);
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException sqle) {
+            sqle.printStackTrace();
+        }
+    }
+    
+    private void loadLifeRaw(MapleMap map, int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide, int mobTime, int team) {
+        AbstractLoadedMapleLife myLife = loadLife(id, type, cy, f, fh, rx0, rx1, x, y, hide);
+        if (myLife instanceof MapleMonster) {
+            MapleMonster monster = (MapleMonster) myLife;
+            
+            if (mobTime == -1) { //does not respawn, force spawn once
+                map.spawnMonster(monster);
+            } else {
+                map.addMonsterSpawn(monster, mobTime, team);
+            }
+
+            //should the map be reseted, use allMonsterSpawn list of monsters to spawn them again
+            map.addAllMonsterSpawn(monster, mobTime, team);
+        } else {
+            map.addMapObject(myLife);
+        }
+    }
+    
     private synchronized MapleMap loadMapFromWz(int mapid, Integer omapid) {
         MapleMap map;
         
@@ -225,27 +296,10 @@ public class MapleMapFactory {
                 }
             }
         }
-        for (MapleData life : mapData.getChildByPath("life")) {
-            String id = MapleDataTool.getString(life.getChildByPath("id"));
-            String type = MapleDataTool.getString(life.getChildByPath("type"));
-            AbstractLoadedMapleLife myLife = loadLife(life, id, type);
-            if (myLife instanceof MapleMonster) {
-                MapleMonster monster = (MapleMonster) myLife;
-                int mobTime = MapleDataTool.getInt("mobTime", life, 0);
-                int team = MapleDataTool.getInt("team", life, -1);
-                if (mobTime == -1) { //does not respawn, force spawn once
-                    map.spawnMonster(monster);
-                } else {
-                    map.addMonsterSpawn(monster, mobTime, team);
-                }
-
-                //should the map be reseted, use allMonsterSpawn list of monsters to spawn them again
-                map.addAllMonsterSpawn(monster, mobTime, team);
-            } else {
-                map.addMapObject(myLife);
-            }
-        }
-
+        
+        loadLifeFromWz(map, mapData);
+        loadLifeFromDb(map);
+        
         if (mapData.getChildByPath("reactor") != null) {
             for (MapleData reactor : mapData.getChildByPath("reactor")) {
                 String id = MapleDataTool.getString(reactor.getChildByPath("id"));
@@ -333,21 +387,15 @@ public class MapleMapFactory {
             mapsRLock.unlock();
         }
     }
-
-    private AbstractLoadedMapleLife loadLife(MapleData life, String id, String type) {
-        AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(Integer.parseInt(id), type);
-        myLife.setCy(MapleDataTool.getInt(life.getChildByPath("cy")));
-        MapleData dF = life.getChildByPath("f");
-        if (dF != null) {
-            myLife.setF(MapleDataTool.getInt(dF));
-        }
-        myLife.setFh(MapleDataTool.getInt(life.getChildByPath("fh")));
-        myLife.setRx0(MapleDataTool.getInt(life.getChildByPath("rx0")));
-        myLife.setRx1(MapleDataTool.getInt(life.getChildByPath("rx1")));
-        int x = MapleDataTool.getInt(life.getChildByPath("x"));
-        int y = MapleDataTool.getInt(life.getChildByPath("y"));
+    
+    private AbstractLoadedMapleLife loadLife(int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide) {
+        AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
+        myLife.setCy(cy);
+        myLife.setF(f);
+        myLife.setFh(fh);
+        myLife.setRx0(rx0);
+        myLife.setRx1(rx1);
         myLife.setPosition(new Point(x, y));
-        int hide = MapleDataTool.getInt("hide", life, 0);
         if (hide == 1) {
             myLife.setHide(true);
         }

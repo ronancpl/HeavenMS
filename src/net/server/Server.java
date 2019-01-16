@@ -394,13 +394,14 @@ public class Server {
             int exprate = getWorldProperty(p, "exprate", i, ServerConstants.EXP_RATE);
             int mesorate = getWorldProperty(p, "mesorate", i, ServerConstants.MESO_RATE);
             int droprate = getWorldProperty(p, "droprate", i, ServerConstants.DROP_RATE);
+            int bossdroprate = getWorldProperty(p, "bossdroprate", i, ServerConstants.BOSS_DROP_RATE);
             int questrate = getWorldProperty(p, "questrate", i, ServerConstants.QUEST_RATE);
             int travelrate = getWorldProperty(p, "travelrate", i, ServerConstants.TRAVEL_RATE);
             
             World world = new World(i,
                     Integer.parseInt(p.getProperty("flag" + i)),
                     p.getProperty("eventmessage" + i),
-                    exprate, droprate, mesorate, questrate, travelrate);
+                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate);
 
             worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
             worlds.add(world);

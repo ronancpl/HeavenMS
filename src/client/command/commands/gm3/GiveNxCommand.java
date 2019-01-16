@@ -50,12 +50,12 @@ public class GiveNxCommand extends Command {
             value = Integer.parseInt(params[0]);
         }
 
-        MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(recv);
+        MapleCharacter victim = c.getWorldServer().getPlayerStorage().getCharacterByName(recv);
         if (victim != null) {
             victim.getCashShop().gainCash(1, value);
             player.message("NX given.");
         } else {
-            player.message("Player '" + recv + "' could not be found on this channel.");
+            player.message("Player '" + recv + "' could not be found.");
         }
     }
 }

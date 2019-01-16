@@ -94,7 +94,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
  */
 public class World {
 
-    private int id, flag, exprate, droprate, mesorate, questrate, travelrate;
+    private int id, flag, exprate, droprate, bossdroprate, mesorate, questrate, travelrate;
     private String eventmsg;
     private List<Channel> channels = new ArrayList<>();
     private Map<Integer, Byte> pnpcStep = new HashMap<>();
@@ -158,12 +158,13 @@ public class World {
     private ScheduledFuture<?> charactersSchedule;
     private ScheduledFuture<?> marriagesSchedule;
     
-    public World(int world, int flag, String eventmsg, int exprate, int droprate, int mesorate, int questrate, int travelrate) {
+    public World(int world, int flag, String eventmsg, int exprate, int droprate, int bossdroprate, int mesorate, int questrate, int travelrate) {
         this.id = world;
         this.flag = flag;
         this.eventmsg = eventmsg;
         this.exprate = exprate;
         this.droprate = droprate;
+        this.bossdroprate = bossdroprate;
         this.mesorate = mesorate;
         this.questrate = questrate;
         this.travelrate = travelrate;
@@ -321,6 +322,14 @@ public class World {
             if(!chr.isLoggedin()) continue;
             chr.setWorldRates();
         }
+    }
+    
+    public int getBossDropRate() {  // boss rate concept thanks to Lapeiro
+        return bossdroprate;
+    }
+    
+    public void setBossDropRate(int bossdrop) {
+        bossdroprate = bossdrop;
     }
 
     public int getMesoRate() {

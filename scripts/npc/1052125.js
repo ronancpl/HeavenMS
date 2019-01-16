@@ -61,7 +61,7 @@ function action(mode, type, selection) {
                         if(cm.getPlayer().getLevel() > 50) {
                                 cm.sendOk("The VIP area is available only for players #rlevel 50 or below#k.");
                         } else {
-                                cm.sendOk("The VIP area is available via completing the #r'Admission to the VIP Zone'#k quest.");
+                                cm.sendOk("The VIP area only gets available after handing over #r#t4032521#s#k from the #b'Admission to the VIP Zone'#k quest.");
                         }
                 } else {
                         cm.sendOk("#rVIP#k? Yeah that is funny #rMr. VIP#k, now get lost before I call security."); 

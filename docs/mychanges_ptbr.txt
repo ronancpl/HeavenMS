@@ -1547,3 +1547,30 @@ Resolvido casos onde pets equipados poderiam provocar inconsistências na DB ao 
 Revisado sistema de log por todo o código-fonte. Espera-se uma formatação similar para os vários logs.
 Corrigido pet excludes não sendo devidamente removidos ao retirar o pet da DB.
 Corrigido bug na expedição de Horntail ao tentar reentrar numa expedição já começada.
+
+07 Janeiro 2019,
+Corrigido petignores não sendo devidamente liberados da cache ao deletar pets, levando a possível leak na DB dos ignores.
+Revisado cash consumíveis sendo sempre retirado do primeiro slot em que aparece no inventário.
+Implementado comandos "pnpc" e "pmob".
+Revisado mecânica de eventos de RockSpirit, eliminando uso escasso de chamada de função de script em MapleMap.addPlayer().
+Removido finalização de evento ao sair de party em alguns eventos solo.
+Adicionado funções nos scripts de evento para todos os casos onde ainda faltava referência obrigatória.
+
+08 - 09 Janeiro 2019,
+Corrigido função de script revivePlayer sendo ativado mesmo ao usar Wheel of Destiny (uso indevido da função, que assume retorno usual do character para a cidade).
+Implementado comandos "pnpcremove" e "pmobremove".
+
+13 Janeiro 2019,
+Adicionado interação com NPC "Mom & Dad" na quest de noivado.
+Revisado problema com dispose em mapas de eventos ocorrendo muito cedo, havendo casos não previstos onde mapas ainda tendo alguma atividade levaria dispose.
+Corrigido scrolls de modificação de flags em equipamentos removendo slots quando não deveriam.
+
+14 Janeiro 2019,
+Implementado nova flag que permite evitar consumo compulsório de recursos via autopot de pets.
+Otimizado busca por nome de mobs em requisições de comando WhoDrops e provedor de info de mobs, agora utilizando cache.
+Implementado nova server flag para boss drop rate.
+Protegido concorrentemente sistema de comandos, assim evitando processamento em rajada de instanciações de comandos de um mesmo jogador.
+
+16 Janeiro 2019,
+Revisado login handler, trazendo métodos de desconexão para antes de checar LoginState, e não permitindo reatribuição de objeto-cliente para jogador já logado em canal.
+Revisado disconnect no login handler, agora devidamente finalizando sessões recém-criadas que falham em conectar jogador ao mundo.

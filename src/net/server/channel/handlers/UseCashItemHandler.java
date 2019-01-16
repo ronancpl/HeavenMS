@@ -29,6 +29,7 @@ import client.creator.veteran.*;
 import client.inventory.Equip;
 import client.inventory.Equip.ScrollResult;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.inventory.ModifyInventory;
@@ -75,24 +76,38 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         player.setLastUsedCashItem(timeNow);
         
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        slea.readShort();
+        short position = slea.readShort();
         int itemId = slea.readInt();
         int itemType = itemId / 10000;
-        Item toUse = player.getInventory(MapleInventoryType.CASH).getItem(player.getInventory(MapleInventoryType.CASH).findById(itemId).getPosition());
+        
+        MapleInventory cashInv = player.getInventory(MapleInventoryType.CASH);
+        Item toUse = cashInv.getItem(position);
+        if (toUse == null || toUse.getItemId() != itemId) {
+            toUse = cashInv.findById(itemId);
+            
+            if (toUse == null) {
+                c.announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
+            position = toUse.getPosition();
+        }
+        
+        if (toUse.getQuantity() < 1) {
+            c.announce(MaplePacketCreator.enableActions());
+            return;
+        }
+        
         String medal = "";
         Item medalItem = player.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -49);
         if (medalItem != null) {
             medal = "<" + ii.getName(medalItem.getItemId()) + "> ";
         }
-        if (toUse == null || toUse.getItemId() != itemId || toUse.getQuantity() < 1) {
-            c.announce(MaplePacketCreator.enableActions());
-            return;
-        }
         
         if (itemType == 504) { // vip teleport rock
             String error1 = "Either the player could not be found or you were trying to teleport to an illegal location.";
             boolean vip = slea.readByte() == 1;
-            remove(c, itemId);
+            remove(c, position, itemId);
             if (!vip) {
                 int mapId = slea.readInt();
                 if (c.getChannelServer().getMapFactory().getMap(mapId).getForcedReturnId() == 999999999) {
@@ -155,7 +170,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     return;
                 }
             }
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 506) {
             Item eq = null;
             if (itemId == 5060000) { // Item tag.
@@ -193,7 +208,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     eq.setExpiration(currentServerTime() + (period * 60 * 60 * 24 * 1000));
                 }
 
-                remove(c, itemId);
+                remove(c, position, itemId);
             } else if (itemId == 5060002) { // Incubator
                 byte inventory2 = (byte) slea.readInt();
                 short slot2 = (short) slea.readInt();
@@ -204,14 +219,14 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 }
                 if (getIncubatedItem(c, itemId)) {
                     MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.getByType(inventory2), slot2, (short) 1, false);
-                    remove(c, itemId);
+                    remove(c, position, itemId);
                 }
                 return;
             }
             slea.readInt(); // time stamp
             if (eq != null) {
                 player.forceUpdateItem(eq);
-                remove(c, itemId);
+                remove(c, position, itemId);
             }
         } else if (itemType == 507) {
             boolean whisper;
@@ -298,13 +313,13 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.getMultiMegaphone(msg2, c.getChannel(), whisper));
                     break;
             }
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 508) {   // graduation banner, thanks to tmskdl12. Also, thanks ratency for first pointing lack of Kite handling
             MapleKite kite = new MapleKite(player, slea.readMapleAsciiString(), itemId);
             
             if (!GameConstants.isFreeMarketRoom(player.getMapId())) {
                 player.getMap().spawnKite(kite);
-                remove(c, itemId);
+                remove(c, position, itemId);
             } else {
                 c.announce(MaplePacketCreator.sendCannotSpawnKite());
             }
@@ -316,10 +331,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 510) {
             player.getMap().broadcastMessage(MaplePacketCreator.musicChange("Jukebox/Congratulation"));
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 512) {
             if (ii.getStateChangeItem(itemId) != 0) {
                 for (MapleCharacter mChar : player.getMap().getCharacters()) {
@@ -327,7 +342,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 }
             }
             player.getMap().startMapEffect(ii.getMsg(itemId).replaceFirst("%s", player.getName()).replaceFirst("%s", slea.readMapleAsciiString()), itemId);
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 517) {
             MaplePet pet = player.getPet(0);
             if (pet == null) {
@@ -344,10 +359,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             
             player.getMap().broadcastMessage(player, MaplePacketCreator.changePetName(player, newName, 1), true);
             c.announce(MaplePacketCreator.enableActions());
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 520) {
             player.gainMeso(ii.getMeso(itemId), true, false, true);
-            remove(c, itemId);
+            remove(c, position, itemId);
             c.announce(MaplePacketCreator.enableActions());
         } else if (itemType == 523) {
             int itemid = slea.readInt();
@@ -355,7 +370,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
             player.setOwlSearch(itemid);
             List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = c.getWorldServer().getAvailableItemBundles(itemid);
-            if(!hmsAvailable.isEmpty()) remove(c, itemId);
+            if(!hmsAvailable.isEmpty()) remove(c, position, itemId);
             
             c.announce(MaplePacketCreator.owlOfMinerva(c, itemid, hmsAvailable));
             c.announce(MaplePacketCreator.enableActions());
@@ -368,7 +383,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                     
                     if (p.getRight()) {
                         pet.gainClosenessFullness(player, p.getLeft(), 100, 1);
-                        remove(c, itemId);
+                        remove(c, position, itemId);
                         break;
                     }
                 } else {
@@ -378,7 +393,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
         } else if (itemType == 530) {
             ii.getItemEffect(itemId).applyTo(player);
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 533) {
             NPCScriptManager.getInstance().start(c, 9010009, null);
         } else if (itemType == 537) {
@@ -399,7 +414,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             		Server.getInstance().broadcastMessage(world, MaplePacketCreator.byeAvatarMega());
             	}
             }, 1000 * 10);
-            remove(c, itemId);
+            remove(c, position, itemId);
         } else if (itemType == 543) {
             if(itemId == 5432000 && !c.gainCharacterSlot()) {
                 player.dropMessage(1, "You have already used up all 12 extra character slots.");
@@ -442,7 +457,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.sendMapleLifeError(0));   // success!
                 
                 player.showHint("#bSuccess#k on creation of the new character through the Maple Life card.");
-                remove(c, itemId);
+                remove(c, position, itemId);
             } else {
                 if(createStatus == -1) {    // check name
                     c.announce(MaplePacketCreator.sendMapleLifeNameError());
@@ -455,7 +470,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 MapleShop shop = MapleShopFactory.getInstance().getShop(1338);
                 if (shop != null) {
                     shop.sendShop(c);
-                    remove(c, itemId);
+                    remove(c, position, itemId);
                 }
             } else {
                 c.announce(MaplePacketCreator.enableActions());
@@ -470,10 +485,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
-
+            
             MapleKarmaManipulator.setKarmaFlag(item);
             player.forceUpdateItem(item);
-            remove(c, itemId);
+            remove(c, position, itemId);
             c.announce(MaplePacketCreator.enableActions());
         } else if (itemType == 552) { //DS EGG THING
             c.announce(MaplePacketCreator.enableActions());
@@ -487,7 +502,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             }
             equip.setVicious(equip.getVicious() + 1);
             equip.setUpgradeSlots(equip.getUpgradeSlots() + 1);
-            remove(c, itemId);
+            remove(c, position, itemId);
             c.announce(MaplePacketCreator.enableActions());
             c.announce(MaplePacketCreator.sendHammerData(equip.getVicious()));
             player.forceUpdateItem(equip);
@@ -528,7 +543,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             //opcodes 0x42, 0x44: "this item cannot be used"; 0x39, 0x45: crashes
             
             MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, uSlot, (short) 1, false);
-            remove(c, itemId);
+            remove(c, position, itemId);
             
             final MapleClient client = c;
             TimerManager.getInstance().schedule(new Runnable() {
@@ -558,8 +573,22 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         }
     }
 
-    private static void remove(MapleClient c, int itemId) {
-        MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, itemId, 1, true, false);
+    private static void remove(MapleClient c, short position, int itemid) {
+        MapleInventory cashInv = c.getPlayer().getInventory(MapleInventoryType.CASH);
+        cashInv.lockInventory();
+        try {
+            Item it = cashInv.getItem(position);
+            if (it == null || it.getItemId() != itemid) {
+                it = cashInv.findById(itemid);
+                if (it != null) {
+                    position = it.getPosition();
+                }
+            }
+        } finally {
+            cashInv.unlockInventory();
+        }
+        
+        MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.CASH, position, (short) 1, true, false);
     }
 
     private static boolean getIncubatedItem(MapleClient c, int id) {

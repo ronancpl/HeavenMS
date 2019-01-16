@@ -128,7 +128,8 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
             }
         } else if (mode == 0x44) {
-            //Buddy find
+            //Buddy find, thanks to Atoot
+            
             String recipient = slea.readMapleAsciiString();
             MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterByName(recipient);
             if (player != null && c.getPlayer().gmLevel() >= player.gmLevel()) {

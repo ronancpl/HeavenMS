@@ -104,12 +104,16 @@ public final class PetAutoPotHandler extends AbstractMaplePacketHandler {
                 incMp = stat.getMp();
                 if(incMp <= 0 && hasMpGain) incMp = Math.ceil(maxMp * stat.getMpRate());
                 
-                if (hasHpGain) {
-                    qtyCount = (int) Math.ceil(((ServerConstants.PET_AUTOHP_RATIO * maxHp) - curHp) / incHp);
-                }
-                
-                if (hasMpGain) {
-                    qtyCount = Math.max(qtyCount, (int) Math.ceil(((ServerConstants.PET_AUTOMP_RATIO * maxMp) - curMp) / incMp));
+                if (ServerConstants.USE_COMPULSORY_AUTOPOT) {
+                    if (hasHpGain) {
+                        qtyCount = (int) Math.ceil(((ServerConstants.PET_AUTOHP_RATIO * maxHp) - curHp) / incHp);
+                    }
+
+                    if (hasMpGain) {
+                        qtyCount = Math.max(qtyCount, (int) Math.ceil(((ServerConstants.PET_AUTOMP_RATIO * maxMp) - curMp) / incMp));
+                    }
+                } else {
+                    qtyCount = 1;   // non-compulsory autopot concept thanks to marcuswoon
                 }
 
                 while (true) {

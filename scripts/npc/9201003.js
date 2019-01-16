@@ -22,9 +22,23 @@
 /**
  *9201003.js - Mom and Dad
  *@author Jvlaple
+ *@author Ronan
  */
 var numberOfLoves = 0;
-var status = 0;
+var status = -1;
+var state = 0;
+
+function hasProofOfLoves(player) {
+    var count = 0;
+    
+    for(var i = 4031367; i <= 4031372; i++) {
+        if(player.haveItem(i)) {
+            count++;
+        }
+    }
+    
+    return count >= 4;
+}
 
 function start() {
     status = -1;
@@ -35,7 +49,7 @@ function action(mode, type, selection) {
     if (mode == -1) {
         cm.dispose();
     } else {
-        if (mode == 0 && status == 0) {
+        if (mode == 0 && type > 0) {
             cm.dispose();
             return;
         }
@@ -43,45 +57,42 @@ function action(mode, type, selection) {
             status++;
         else
             status--;
-        if (cm.getPlayer().getMarriageQuestLevel() == 51) {
-            if (status == 0) {
-                if (cm.getPlayer().getGender() == 0) {
-                    cm.sendYesNo("Hello my child. Are you sure that you want to get married to this girl? I believe in love at first sight, but this is rather sudden... I don't think we are ready for this. Lets think about it. Do you really love this girl?");
+
+        if (status == 0) {
+            if (!cm.isQuestStarted(100400)) {
+                cm.sendOk("Hello we're Mom and Dad...");
+                cm.dispose();
+            } else {
+                if (cm.getQuestProgress(100400, 1) == 0) {
+                    cm.sendNext("Mom, dad, I have a request to do to both of you... I wanna know more about the path you've already been walking since always, the path of loving and caring for someone dear to me.", 2);
                 } else {
-                    cm.sendYesNo("Hello my child. Are you sure that you want to get married to this man? I believe in love at first sight, but this is rather sudden... I don't think we are ready for this. Lets think about it. Do you really love this man?");
+                    if(!hasProofOfLoves(cm.getPlayer())) {
+                        cm.sendOk("Dear, we need to make sure you are really ready to fall in love with whoever you choose to be your partner, please bring here #b4 #t4031367#'s#k.");
+                        cm.dispose();
+                    } else {
+                        cm.sendNext("#b#h0##k, you made us proud today. You may now have #rour blessings#k to choose whoever you like to be your fiancee. You may now consult #p9201000#, the Wedding Jeweler. Have a sooth, loving and caring journey ahead~~");
+                        state = 1;
+                    }
                 }
-            } else if (status == 1) {
-                cm.getPlayer().addMarriageQuestLevel();
-                cm.sendNext("Okay then. Go back to town and collect two more #bProof of Loves#k to prove it.");
+            }
+        } else if (status == 1) {
+            if (state == 0) {
+                cm.sendNextPrev("My dear! How thoughtful of you asking our help. Surely we will help you out!");
+            } else {
+                cm.sendOk("Mom... Dad... Thanks a lot for your tender support!!!", 2);
+                
+                cm.completeQuest(100400);
+                cm.gainExp(20000 * cm.getPlayer().getExpRate());
+                for(var i = 4031367; i <= 4031372; i++) {
+                    cm.removeAll(i);
+                }
+                
                 cm.dispose();
             }
-        } else if (cm.getPlayer().getMarriageQuestLevel() == 52) {
-            if (status == 0) {
-                numberOfLoves += cm.getPlayer().countItem(4031367);
-                numberOfLoves += cm.getPlayer().countItem(4031368);
-                numberOfLoves += cm.getPlayer().countItem(4031369);
-                numberOfLoves += cm.getPlayer().countItem(4031370);
-                numberOfLoves += cm.getPlayer().countItem(4031371);
-                numberOfLoves += cm.getPlayer().countItem(4031372);
-                if (numberOfLoves >= 2) {
-                    cm.sendNext("Wow, you really are serious! Okay then, here is our blessing.");
-                } else {
-                    cm.sendNext("Come back when you get two #bProof of Loves#k.");
-                    cm.dispose();
-                }
-            } else if (status == 1) {
-                cm.getPlayer().addMarriageQuestLevel();
-                cm.removeAll(4031367);
-                cm.removeAll(4031368);
-                cm.removeAll(4031369);
-                cm.removeAll(4031370);
-                cm.removeAll(4031371);
-                cm.removeAll(4031372);
-                cm.gainItem(4031373, 1);
-                cm.dispose();
-            }
-        } else {
-            cm.sendOk("Hello we're Mom and Dad...");
+        } else if (status == 2) {
+            cm.sendNextPrev("Certainly you must have already seen #rNanas, the fairies of Love#k, around the Maple world. From 4 of them, collect #b4 #t4031367#'s#k and bring them here. This journey shall clear some questions you may have about love...");
+        } else if (status == 3) {
+            cm.setQuestProgress(100400, 1, 1);
             cm.dispose();
         }
     }

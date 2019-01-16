@@ -989,6 +989,11 @@ public class MapleClient {
 			
                         clear();
 		} else {
+                        if (session.containsAttribute(MapleClient.CLIENT_KEY)) {
+                                MapleSessionCoordinator.getInstance().closeSession(session, false);
+                                session.removeAttribute(MapleClient.CLIENT_KEY);
+                        }
+                    
                         engines.clear();
                 }
 	}

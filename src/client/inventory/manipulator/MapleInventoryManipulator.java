@@ -391,7 +391,7 @@ public class MapleInventoryManipulator {
                     announceModifyInventory(c, item, fromDrop, allowZero);
                 }
                 
-                MaplePet.deleteFromDb(petid);
+                MaplePet.deleteFromDb(chr, petid);
             } else {
                 inv.removeItem(slot, quantity, allowZero);
                 if(type != MapleInventoryType.CANHOLD) {

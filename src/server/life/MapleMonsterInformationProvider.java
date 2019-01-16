@@ -63,6 +63,9 @@ public class MapleMonsterInformationProvider {
         private final Map<MobSkill, Integer> mobSkillAnimationTime = new HashMap<>();
         
         private final Map<Integer, Pair<Integer, Integer>> mobAttackInfo = new HashMap<>();
+        
+        private final Map<Integer, Boolean> mobBossCache = new HashMap<>();
+        private final Map<Integer, String> mobNameCache = new HashMap<>();
 
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
@@ -275,38 +278,48 @@ public class MapleMonsterInformationProvider {
 		return retMobs;
 	}
 
-	public static String getMobNameFromId(int id) {
-		try
-		{
-			return MapleLifeFactory.getMonster(id).getName();
-		} 
-                catch (NullPointerException npe)
-		{
-			return null; //nonexistant mob
-		}
-                catch (Exception e)
-		{
-                        e.printStackTrace();
-                        System.err.println("Nonexistant mob id " + id);
-			return null; //nonexistant mob
-		}
+        public boolean isBoss(int id) {
+                Boolean boss = mobBossCache.get(id);
+                if (boss == null) {
+                        try {
+                                boss = MapleLifeFactory.getMonster(id).isBoss();
+                        } catch (NullPointerException npe) {
+                                boss = false;
+                        } catch (Exception e) {   //nonexistant mob
+                                boss = false;
+                                
+                                e.printStackTrace();
+                                System.err.println("Nonexistant mob id " + id);
+                        }
+                        
+                        mobBossCache.put(id, boss);
+                }
+                
+                return boss;
 	}
         
-        public static String getMobNameFromID(int id) {
-		try
-		{
-			return MapleLifeFactory.getMonster(id).getName();
-		}
-                catch (NullPointerException npe)
-		{
-			return null; //nonexistant mob
-		}
-                catch (Exception e)
-		{
-                        e.printStackTrace();
-                        System.err.println("Nonexistant mob id " + id);
-			return null; //nonexistant mob
-		}
+	public String getMobNameFromId(int id) {
+                String mobName = mobNameCache.get(id);
+                if (mobName == null) {
+                        try
+                        {
+                                mobName = MapleLifeFactory.getMonster(id).getName();
+                        } 
+                        catch (NullPointerException npe)
+                        {
+                                mobName = ""; //nonexistant mob
+                        }
+                        catch (Exception e)
+                        {
+                                e.printStackTrace();
+                                System.err.println("Nonexistant mob id " + id);
+                                mobName = ""; //nonexistant mob
+                        }
+                        
+                        mobNameCache.put(id, mobName);
+                }
+                
+                return mobName;
 	}
 
 	public final void clearDrops() {

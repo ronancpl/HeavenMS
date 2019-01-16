@@ -79,7 +79,7 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.getInventoryFull());
                 return;
             }
-        } else if (((Equip) toScroll).getUpgradeSlots() < 1) {
+        } else if (!ItemConstants.isModifierScroll(scroll.getItemId()) && ((Equip) toScroll).getUpgradeSlots() < 1) {
             c.announce(MaplePacketCreator.getInventoryFull());
             return;
         }

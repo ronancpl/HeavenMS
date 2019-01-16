@@ -61,19 +61,7 @@ function monsterValue(eim, mobId){
 	return -1;
 }
 
-function leftParty(eim, player){
-	var party = eim.getPlayers();
-
-	if(party.size() < minPlayers){
-		for(var i = 0; i < party.size(); i++){
-			playerExit(eim, party.get(i));
-		}
-		eim.dispose();
-	}
-	else{
-		playerExit(eim, player);
-	}
-}
+function leftParty(eim, player){}
 
 function disbandParty(eim){}
 
@@ -103,3 +91,8 @@ function clearPQ(eim){}
 function monsterKilled(mob, eim){}
 
 function allMonstersDead(eim){}
+
+// ---------- FILLER FUNCTIONS ----------
+
+function changedLeader(eim, leader) {}
+
