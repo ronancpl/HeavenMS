@@ -64,8 +64,8 @@ function action(mode, type, selection) {
                     }
                 }
                 if (cm.getPlayer().getGender() == 1) {
-                    for(var i = 0; i < fhair.length; i++) {
-                        pushIfItemExists(hairnew, fhair[i] + parseInt(cm.getPlayer().getHair()
+                    for(var i = 0; i < fhair_v.length; i++) {
+                        pushIfItemExists(hairnew, fhair_v[i] + parseInt(cm.getPlayer().getHair()
                             % 10));
                     }
                 }
