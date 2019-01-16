@@ -128,17 +128,18 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.getWhisperReply(recipient, (byte) 0));
             }
         } else if (mode == 0x44) {
-            //Buddy find
+            //Buddy find, thanks to Atoot
+            
             String recipient = slea.readMapleAsciiString();
             MapleCharacter player = c.getWorldServer().getPlayerStorage().getCharacterByName(recipient);
             if (player != null && c.getPlayer().gmLevel() >= player.gmLevel()) {
                 if (player.getCashShop().isOpened()) {  // in CashShop
-                    c.getSession().write(MaplePacketCreator.getFindReplyWithCS(recipient));
+                    c.getSession().write(MaplePacketCreator.getFindReplyWithCS(recipient));  
                 } else if (player.isAwayFromWorld()) {  // in MTS
-                    c.getSession().write(MaplePacketCreator.getFindReplyWithMTS(recipient));
+                    c.getSession().write(MaplePacketCreator.getFindReplyWithMTS(recipient));   
                 } else {
                     c.getSession().write(MaplePacketCreator.getFindReplyWithMap(player.getName(), player.getMap().getId()));
-                }
+                }        
             }
         }
     }

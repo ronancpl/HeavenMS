@@ -62,7 +62,7 @@ public class WhatDropsFromCommand extends Command {
                         if (name == null || name.equals("null") || drop.chance == 0){
                             continue;
                         }
-                        float chance = 1000000 / drop.chance / player.getDropRate();
+                        float chance = 1000000 / drop.chance / (!MapleMonsterInformationProvider.getInstance().isBoss(mobId) ? player.getDropRate() : player.getBossDropRate());
                         output += "- " + name + " (1/" + (int) chance + ")\r\n";
                     } catch (Exception ex){
                         ex.printStackTrace();

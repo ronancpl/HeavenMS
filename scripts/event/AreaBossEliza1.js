@@ -57,3 +57,36 @@ function start() {
     stairwayToTheSky2.broadcastMessage(Packages.tools.MaplePacketCreator.serverNotice(6, "Eliza has appeared with a black whirlwind."));
 	em.schedule("start", 3 * 60 *60 * 1000);
 }
+
+// ---------- FILLER FUNCTIONS ----------
+
+function dispose() {}
+
+function setup(eim, leaderid) {}
+
+function monsterValue(eim, mobid) {return 0;}
+
+function disbandParty(eim, player) {}
+
+function playerDisconnected(eim, player) {}
+
+function playerEntry(eim, player) {}
+
+function monsterKilled(mob, eim) {}
+
+function scheduledTimeout(eim) {}
+
+function afterSetup(eim) {}
+
+function changedLeader(eim, leader) {}
+
+function playerExit(eim, player) {}
+
+function leftParty(eim, player) {}
+
+function clearPQ(eim) {}
+
+function allMonstersDead(eim) {}
+
+function playerUnregistered(eim, player) {}
+

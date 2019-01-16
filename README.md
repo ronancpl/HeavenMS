@@ -1,5 +1,4 @@
-# HeavenMS
----
+<img src="https://heavenmssurveyhome.files.wordpress.com/2018/12/heavenmslogo.png"  width="370" height="auto">
 
 ## Head developer: Ronan C. P. Lana
 
@@ -89,6 +88,8 @@ If you REALLY liked what you have seen on the project, please feel free to donat
 Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8KVTWRLFBQ4
 
 ### Disclaimer
+
+* HeavenMS development is decisively __ONLY accepting donations__ from the Paypal link aforementioned, in the __ronancpl/HeavenMS__ repository readme (no patreons or other revenue resources).
 
 * HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 

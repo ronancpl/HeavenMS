@@ -80,23 +80,24 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
 				slea.readByte();
 				boolean wheel = slea.readShort() > 0;
 				if (targetid != -1 && !chr.isAlive()) {
-					boolean executeStandardPath = true;
-					if (chr.getEventInstance() != null) {
-						executeStandardPath = chr.getEventInstance().revivePlayer(chr);
-					}
-					if (executeStandardPath) {
-                                                MapleMap map = chr.getMap();
+                                        MapleMap map = chr.getMap();
+                                        if (wheel && chr.haveItemWithId(5510000, false)) {
+                                                // thanks lucasziron for showing revivePlayer() also being triggered by Wheel
                                                 
-						if (wheel && chr.haveItemWithId(5510000, false)) {
-							MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
-							chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));
-                                                        
-                                                        chr.updateHp(50);
-                                                        chr.changeMap(map, map.getRandomPlayerSpawnpoint());
-						} else {
-							chr.respawn(map.getReturnMapId());
-						}
-					}
+                                                MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
+                                                chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));
+
+                                                chr.updateHp(50);
+                                                chr.changeMap(map, map.findClosestPlayerSpawnpoint(chr.getPosition()));
+                                        } else {
+                                                boolean executeStandardPath = true;
+                                                if (chr.getEventInstance() != null) {
+                                                        executeStandardPath = chr.getEventInstance().revivePlayer(chr);
+                                                }
+                                                if (executeStandardPath) {
+                                                        chr.respawn(map.getReturnMapId());
+                                                }
+                                        }
 				} else if (targetid != -1) {
                                         if(chr.isGM()) {
                                                 MapleMap to = chr.getWarpMap(targetid);

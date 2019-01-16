@@ -32,18 +32,6 @@ var cost;
 
 var options;
 
-function hasProofOfLoves(player) {
-    var count = 0;
-    
-    for(var i = 4031367; i <= 4031372; i++) {
-        if(player.haveItem(i)) {
-            count++;
-        }
-    }
-    
-    return count >= 4;
-}
-
 function hasEngagementBox(player) {
     for(var i = 2240000; i <= 2240003; i++) {
         if(player.haveItem(i)) {
@@ -80,21 +68,9 @@ function action(mode, type, selection) {
                 if(!cm.isQuestCompleted(100400)) {
                     if(!cm.isQuestStarted(100400)) {
                         state = 0;
-                        cm.sendAcceptDecline("So you want to make a engagement ring, huh? Very well, I can provide one for you if you pass my test. Certainly you must have already seen #rNanas, the fairies of Love#k, around the Maple world. From 4 of them, collect #b4 #t4031367#'s#k and bring them here. Only then I'll accept you as a proper ring holder. Are you up to it?");
+                        cm.sendNext("So you want to make a engagement ring, huh? Very well, I can provide one after you receive #rblessings#k from your #b#p9201003##k.");
                     } else {
-                        if(!hasProofOfLoves(cm.getPlayer())) {
-                            cm.sendOk("Please bring here #b4 #t4031367#'s#k. That's a must for me to accept you as a proper holder for the wedding ring.");
-                        } else {
-                            cm.completeQuest(100400);
-                            cm.gainExp(20000 * cm.getPlayer().getExpRate());
-
-                            for(var i = 4031367; i <= 4031372; i++) {
-                                cm.removeAll(i);
-                            }
-
-                            cm.sendOk("You brought the #t4031367#'s, good. From now on you are eligible for holding the rings I make. Talk to me again to start forging the kind of ring you want.");
-                        }
-
+                        cm.sendOk("Take the blessings from your #b#p9201003##k before trying to craft an engagement ring. They must be waiting for you at home, beyond #rHenesys hunting grounds#k.");
                         cm.dispose();
                     }
                 } else {
@@ -129,9 +105,8 @@ function action(mode, type, selection) {
             }
         } else if(status == 2) {
             if(state == 0) {
+                cm.sendOk("Where do they live, you ask? My, it goes way back... you see, I'm a friend of theirs, and I was the one who crafted and personally delivered their engagement ring. They live beyond #rHenesys Hunting Grounds#k, I'm sure you know where it is.");
                 cm.startQuest(100400);
-                cm.sendOk("Very well, then go after these #t4031367#'s. I will be waiting here.");
-                
                 cm.dispose();
             } else {
                 var itemSet = new Array(2240000,2240001,2240002,2240003);

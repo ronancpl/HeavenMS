@@ -993,13 +993,13 @@ public class MapleItemInformationProvider {
                             break;
                     }
                     if (!ItemConstants.isCleanSlate(scrollId)) {
-                        if (!assertGM) {
+                        if (!assertGM && !ItemConstants.isModifierScroll(scrollId)) {   // issue with modifier scrolls taking slots found thanks to Masterrulax, justin, BakaKnyx
                             nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                         }
                         nEquip.setLevel((byte) (nEquip.getLevel() + 1));
                     }
                 } else {
-                    if (!ServerConstants.USE_PERFECT_SCROLLING && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM) {
+                    if (!ServerConstants.USE_PERFECT_SCROLLING && !usingWhiteScroll && !ItemConstants.isCleanSlate(scrollId) && !assertGM && !ItemConstants.isModifierScroll(scrollId)) {
                         nEquip.setUpgradeSlots((byte) (nEquip.getUpgradeSlots() - 1));
                     }
                     if (Randomizer.nextInt(100) < stats.get("cursed")) {
@@ -2055,7 +2055,7 @@ public class MapleItemInformationProvider {
             ps.setInt(1, itemId);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                String resultName = MapleMonsterInformationProvider.getMobNameFromId(rs.getInt("dropperid"));
+                String resultName = MapleMonsterInformationProvider.getInstance().getMobNameFromId(rs.getInt("dropperid"));
                 if (resultName != null) {
                     list.add(resultName);
                 }

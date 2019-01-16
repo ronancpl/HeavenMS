@@ -178,3 +178,13 @@ function timeOut() {
         eim.dispose();
     }
 }
+
+
+// ---------- FILLER FUNCTIONS ----------
+
+function dispose() {}
+
+function scheduledTimeout(eim) {}
+
+function changedLeader(eim, leader) {}
+

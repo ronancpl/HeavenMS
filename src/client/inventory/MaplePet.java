@@ -82,7 +82,7 @@ public class MaplePet extends Item {
         }
     }
     
-    public static void deleteFromDb(int petid) {
+    public static void deleteFromDb(MapleCharacter owner, int petid) {
         try {
             Connection con = DatabaseConnection.getConnection();
             
@@ -98,6 +98,7 @@ public class MaplePet extends Item {
             
             con.close();
             
+            owner.resetExcluded(petid);
             MapleCashidGenerator.freeCashId(petid);
         } catch (SQLException ex) {
             ex.printStackTrace();

@@ -40,7 +40,7 @@ public enum MapleExpeditionType {
     CHAOS_ZAKUM(6, 30, 120, 255, 5),
     CHAOS_HORNTAIL(6, 30, 120, 255, 5),
     PINKBEAN(6, 30, 120, 255, 5),
-    CWKPQ(6, 30, 100, 255, 5);
+    CWKPQ(6, 30, 90, 255, 5);   // CWKPQ min-level 90, found thanks to Cato
     
     private int minSize;
     private int maxSize;

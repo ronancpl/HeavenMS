@@ -68,3 +68,36 @@ function stop() {
    world.setExpRate(4);
    world.broadcastPacket(Packages.tools.MaplePacketCreator.serverNotice(6, "Unfortunately the Emergency XP Pool (EXP) has run out of juice for now and needs to recharge causing the EXP rate to go back to normal."));
 }
+
+// ---------- FILLER FUNCTIONS ----------
+
+function dispose() {}
+
+function setup(eim, leaderid) {}
+
+function monsterValue(eim, mobid) {return 0;}
+
+function disbandParty(eim, player) {}
+
+function playerDisconnected(eim, player) {}
+
+function playerEntry(eim, player) {}
+
+function monsterKilled(mob, eim) {}
+
+function scheduledTimeout(eim) {}
+
+function afterSetup(eim) {}
+
+function changedLeader(eim, leader) {}
+
+function playerExit(eim, player) {}
+
+function leftParty(eim, player) {}
+
+function clearPQ(eim) {}
+
+function allMonstersDead(eim) {}
+
+function playerUnregistered(eim, player) {}
+

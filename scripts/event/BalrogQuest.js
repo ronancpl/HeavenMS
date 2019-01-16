@@ -100,3 +100,17 @@ function allMonstersDead(eim) {}
 function cancelSchedule() {}
 
 function dispose() {}
+
+
+// ---------- FILLER FUNCTIONS ----------
+
+function setup(eim, leaderid) {}
+
+function disbandParty(eim, player) {}
+
+function changedLeader(eim, leader) {}
+
+function leftParty(eim, player) {}
+
+function clearPQ(eim) {}
+

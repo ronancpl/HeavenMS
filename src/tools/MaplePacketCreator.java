@@ -1065,7 +1065,7 @@ public class MaplePacketCreator {
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(8);
+                mplew.skip(10);
                 return mplew.getPacket();
         }
         
@@ -1082,7 +1082,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(8);
+                mplew.skip(10);
                 return mplew.getPacket();
         }
         
@@ -6066,7 +6066,7 @@ public class MaplePacketCreator {
                 }
                 return mplew.getPacket();
         }
-
+        
         public static byte[] getFindReplyWithMap(String target, int mapid) {
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.WHISPER.getValue());
@@ -6074,7 +6074,7 @@ public class MaplePacketCreator {
                 mplew.writeMapleAsciiString(target);
                 mplew.write(1);
                 mplew.writeInt(mapid);
-                mplew.write(new byte[8]);
+                mplew.skip(8);
                 return mplew.getPacket();
         }
 

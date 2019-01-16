@@ -129,9 +129,10 @@ public class ServerConstants {
     public static final boolean USE_WHOLE_SERVER_RANKING = false;   //Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of separated by worlds.
     
     //Server Rates And Experience
-    public static final int EXP_RATE = 10;
+    public static final int EXP_RATE = 10;                          //NOTE: World-specific rates within "world.ini" OVERRIDES the default rates from here.
     public static final int MESO_RATE = 10;
     public static final int DROP_RATE = 10;
+    public static final int BOSS_DROP_RATE = 10;                    //NOTE: Boss drop rate OVERRIDES common drop rate, for bosses-only.
     public static final int QUEST_RATE = 5;                         //Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
     public static final int TRAVEL_RATE = 10;                       //Means of transportation rides/departs using 1/N of the default time.
     
@@ -196,7 +197,7 @@ public class ServerConstants {
     //Character Configuration
     public static final boolean USE_ADD_SLOTS_BY_LEVEL = true;  //Slots are added each 20 levels.
     public static final boolean USE_ADD_RATES_BY_LEVEL = true;  //Rates are added each 20 levels.
-    public static final boolean USE_STACK_COUPON_RATES = true;  //Multiple coupons effects builds up together.
+    public static final boolean USE_STACK_COUPON_RATES = false; //Multiple coupons effects builds up together.
     public static final boolean USE_PERFECT_PITCH = true;       //For lvl 30 or above, each lvlup grants player 1 perfect pitch.
     
     //Quest Configuration
@@ -239,6 +240,7 @@ public class ServerConstants {
     public static final boolean PLAYERNPC_AUTODEPLOY = true;    //Makes PlayerNPC automatically deployed on the Hall of Fame at the instant one reaches max level. If false, eligible players must talk to 1st job instructor to deploy a NPC.
     
     //Pet Auto-Pot Configuration
+    public static final boolean USE_COMPULSORY_AUTOPOT = true;  //Pets will consume as many potions as needed to fulfill the AUTOHP/MP ratio threshold.
     public static final boolean USE_EQUIPS_ON_AUTOPOT = true;   //Player MaxHP and MaxMP check values on autopot handler will be updated by the HP/MP bonuses on equipped items.
     public static final double PET_AUTOHP_RATIO = 0.99;         //Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;

@@ -39,6 +39,7 @@ function writeServerStaff_HeavenMS() {
         addPerson("Thora", "Contributor");
         addPerson("GabrielSin", "Contributor");
         addPerson("Masterrulax", "Contributor");
+        addPerson("MedicOP", "Adjunct Developer");
         
         setHistory(2015, 2018);
 }

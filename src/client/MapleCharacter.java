@@ -4362,6 +4362,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return dropRate / (dropCoupon * getWorldServer().getDropRate());
     }
     
+    public int getBossDropRate() {
+        World w = getWorldServer();
+        return (dropRate / w.getDropRate()) * w.getBossDropRate();
+    }
+    
     public int getMesoRate() {
         return mesoRate;
     }
@@ -5545,7 +5550,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         long timeNow = Server.getInstance().getCurrentTime();
         
         if (timeNow - lastDeathtime > ServerConstants.BUYBACK_RETURN_MINUTES * 60 * 1000) {
-            this.dropMessage(5, "The time available to decide has expired, therefore you are unable to buyback.");
+            this.dropMessage(5, "The period of time to decide has expired, therefore you are unable to buyback.");
             return false;
         }
         

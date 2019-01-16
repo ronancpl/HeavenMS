@@ -81,6 +81,18 @@ public class CommandsExecutor {
     }
     
     public void handle(MapleClient client, String message){
+            if (client.tryacquireClient()) {
+            try {
+                handleInternal(client, message);
+            } finally {
+                client.releaseClient();
+            }
+        } else {
+            client.getPlayer().dropMessage(5, "Try again in a while... Latest commands are currently being processed.");
+        }
+    }
+    
+    private void handleInternal(MapleClient client, String message){
         final String[] spitedMessage = message.toLowerCase().substring(1).split("[ ]");
         final String commandName = spitedMessage[0];
         final RegisteredCommand command = registeredCommands.get(commandName);
@@ -321,8 +333,12 @@ public class CommandsExecutor {
         addCommand("pap", 4, PapCommand.class);
         addCommand("pianus", 4, PianusCommand.class);
         addCommand("cake", 4, CakeCommand.class);
-        addCommand("playernpcremove", 4, PlayerNpcRemoveCommand.class);
         addCommand("playernpc", 4, PlayerNpcCommand.class);
+        addCommand("playernpcremove", 4, PlayerNpcRemoveCommand.class);
+        addCommand("pnpc", 4, PnpcCommand.class);
+        addCommand("pnpcremove", 4, PnpcRemoveCommand.class);
+        addCommand("pmob", 4, PmobCommand.class);
+        addCommand("pmobremove", 4, PmobRemoveCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

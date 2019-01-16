@@ -78,7 +78,7 @@ function action(mode, type, selection) {
         } else if(status == 1) {
             switch(selection) {
                 case 0:
-                    cm.sendOk("The #bengagement process#k is as straightforward as it can be. Firstly one must start a prequest from the #bring maker, #p9201000##k. They must gather #b#t4031367#'s#k thoughout the Maple world.\r\nFrom the completion of the quest, the player will gain an engagement ring. With that in hand, declare yourself to someone you become fond of. Then, hope the person accepts your proposal.");
+                    cm.sendOk("The #bengagement process#k is as straightforward as it can be. Starting from a prequest from the #bring maker, #p9201000##k, gather #b#t4031367#'s#k thoughout the Maple world.\r\n\r\nCompleting it, you will be able to craft an engagement ring. With one in hands, declare yourself to someone you become fond of, and hope that person feels the same way.");
                     cm.dispose();
                     break;
                     

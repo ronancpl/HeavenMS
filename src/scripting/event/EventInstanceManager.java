@@ -602,7 +602,6 @@ public class EventInstanceManager {
                         ex.printStackTrace();
                 }
                 
-                mapFactory.dispose();
                 ess.dispose();
                 
                 wL.lock();
@@ -610,7 +609,6 @@ public class EventInstanceManager {
                         for(MapleCharacter chr: chars.values()) chr.setEventInstance(null);
                         chars.clear();
                         mobs.clear();
-                        mapFactory = null;
                         ess = null;
                 } finally {
                         wL.unlock();
@@ -635,7 +633,20 @@ public class EventInstanceManager {
                         sL.unlock();
                 }
                 
-                disposeLocks();
+                TimerManager.getInstance().schedule(new Runnable() {
+                        @Override
+                        public void run() {
+                                mapFactory.dispose();   // reactors issue on dispose event maps found thanks to MedicOP
+                                wL.lock();
+                                try {
+                                        mapFactory = null;
+                                } finally {
+                                        wL.unlock();
+                                }
+
+                                disposeLocks();
+                        }
+                }, 60 * 1000);
 	}
         
         private void disposeLocks() {

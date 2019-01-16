@@ -697,7 +697,7 @@ public class MapleMap {
         
         final byte droptype = (byte) (mob.getStats().isExplosiveReward() ? 3 : mob.getStats().isFfaLoot() ? 2 : chr.getParty() != null ? 1 : 0);
         final int mobpos = mob.getPosition().x;
-        int chRate = chr.getDropRate();
+        int chRate = !mob.isBoss() ? chr.getDropRate() : chr.getBossDropRate();
         byte d = 1;
         Point pos = new Point(0, mob.getPosition().y);
 
@@ -1681,7 +1681,7 @@ public class MapleMap {
         return false;
     }
     
-    public void destroyNPC(int npcid) {
+    public void destroyNPC(int npcid) {     // assumption: there's at most one of the same NPC in a map.
         List<MapleMapObject> npcs = getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.NPC));
 
         chrRLock.lock();
@@ -1893,12 +1893,24 @@ public class MapleMap {
         }
     }
     
+    private List<SpawnPoint> getMonsterSpawn() {
+        synchronized (monsterSpawn) {
+            return new ArrayList<>(monsterSpawn);
+        }
+    }
+    
+    private List<SpawnPoint> getAllMonsterSpawn() {
+        synchronized (allMonsterSpawn) {
+            return new ArrayList<>(allMonsterSpawn);
+        }
+    }
+    
     public void spawnAllMonsterIdFromMapSpawnList(int id) {
         spawnAllMonsterIdFromMapSpawnList(id, 1, false);
     }
     
     public void spawnAllMonsterIdFromMapSpawnList(int id, int difficulty, boolean isPq) {
-        for(SpawnPoint sp: allMonsterSpawn) {
+        for(SpawnPoint sp: getAllMonsterSpawn()) {
             if(sp.getMonsterId() == id) {
                 spawnMonster(sp.getMonster(), difficulty, isPq);
             }
@@ -1910,7 +1922,7 @@ public class MapleMap {
     }
     
     public void spawnAllMonstersFromMapSpawnList(int difficulty, boolean isPq) {
-        for(SpawnPoint sp: allMonsterSpawn) {
+        for(SpawnPoint sp: getAllMonsterSpawn()) {
             spawnMonster(sp.getMonster(), difficulty, isPq);
         }
     }
@@ -2481,10 +2493,6 @@ public class MapleMap {
                     }
                 }
             }, travelTime);
-        } else if (mapid == 103040400) {
-            if (chr.getEventInstance() != null) {
-                chr.getEventInstance().movePlayer(chr);
-            }
         } else if (MapleMiniDungeonInfo.isDungeonMap(mapid)) {
             MapleMiniDungeon mmd = chr.getClient().getChannelServer().getMiniDungeon(mapid);
             if(mmd != null) mmd.registerPlayer(chr);
@@ -3053,9 +3061,55 @@ public class MapleMap {
         allMonsterSpawn.add(sp);
     }
     
+    public void removeMonsterSpawn(int mobId, int x, int y) {
+        // assumption: spawn points are identified by tuple (lifeid, x, y)
+        
+        Point checkpos = calcPointBelow(new Point(x, y));
+        checkpos.y -= 1;
+        
+        List<SpawnPoint> toRemove = new LinkedList<>();
+        for(SpawnPoint sp: getMonsterSpawn()) {
+            Point pos = sp.getPosition();
+            if (sp.getMonsterId() == mobId && checkpos.equals(pos)) {
+                toRemove.add(sp);
+            }
+        }
+        
+        if (!toRemove.isEmpty()) {
+            synchronized (monsterSpawn) {
+                for (SpawnPoint sp : toRemove) {
+                    monsterSpawn.remove(sp);
+                }
+            }
+        }
+    }
+    
+    public void removeAllMonsterSpawn(int mobId, int x, int y) {
+        // assumption: spawn points are identified by tuple (lifeid, x, y)
+        
+        Point checkpos = calcPointBelow(new Point(x, y));
+        checkpos.y -= 1;
+        
+        List<SpawnPoint> toRemove = new LinkedList<>();
+        for(SpawnPoint sp: getAllMonsterSpawn()) {
+            Point pos = sp.getPosition();
+            if (sp.getMonsterId() == mobId && checkpos.equals(pos)) {
+                toRemove.add(sp);
+            }
+        }
+        
+        if (!toRemove.isEmpty()) {
+            synchronized (allMonsterSpawn) {
+                for (SpawnPoint sp : toRemove) {
+                    allMonsterSpawn.remove(sp);
+                }
+            }
+        }
+    }
+    
     public void reportMonsterSpawnPoints(MapleCharacter chr) {
         chr.dropMessage(6, "Mob spawnpoints on map " + getId() + ", with available Mob SPs " + monsterSpawn.size() + ", used " + spawnedMonstersOnMap.get() + ":");
-        for(SpawnPoint sp: allMonsterSpawn) {
+        for(SpawnPoint sp: getAllMonsterSpawn()) {
             chr.dropMessage(6, "  id: " + sp.getMonsterId() + " canSpawn: " + !sp.getDenySpawn() + " numSpawned: " + sp.getSpawned() + " x: " + sp.getPosition().getX() + " y: " + sp.getPosition().getY() + " time: " + sp.getMobTime() + " team: " + sp.getTeam());
         }
     }
@@ -3399,7 +3453,7 @@ public class MapleMap {
     }
     
     public void instanceMapFirstSpawn(int difficulty, boolean isPq) {
-        for(SpawnPoint spawnPoint: allMonsterSpawn) {
+        for(SpawnPoint spawnPoint: getAllMonsterSpawn()) {
             if(spawnPoint.getMobTime() == -1) {   //just those allowed to be spawned only once
                 spawnMonster(spawnPoint.getMonster());
             }
@@ -3411,7 +3465,7 @@ public class MapleMap {
         
         final int numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
         if (numShouldSpawn > 0) {
-            List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
+            List<SpawnPoint> randomSpawn = getMonsterSpawn();
             Collections.shuffle(randomSpawn);
             int spawned = 0;
             for (SpawnPoint spawnPoint : randomSpawn) {
@@ -3431,7 +3485,7 @@ public class MapleMap {
         
         final int numShouldSpawn = (short) ((monsterSpawn.size() - spawnedMonstersOnMap.get()));//Fking lol'd
         if (numShouldSpawn > 0) {
-            List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
+            List<SpawnPoint> randomSpawn = getMonsterSpawn();
             Collections.shuffle(randomSpawn);
             int spawned = 0;
             for (SpawnPoint spawnPoint : randomSpawn) {
@@ -3447,19 +3501,19 @@ public class MapleMap {
     }
     
     public void closeMapSpawnPoints() {
-        for (SpawnPoint spawnPoint : monsterSpawn) {
+        for (SpawnPoint spawnPoint : getMonsterSpawn()) {
             spawnPoint.setDenySpawn(true);
         }
     }
     
     public void restoreMapSpawnPoints() {
-        for (SpawnPoint spawnPoint : monsterSpawn) {
+        for (SpawnPoint spawnPoint : getMonsterSpawn()) {
             spawnPoint.setDenySpawn(false);
         }
     }
     
     public void setAllowSpawnPointInBox(boolean allow, Rectangle box) {
-        for(SpawnPoint sp: monsterSpawn)  {
+        for(SpawnPoint sp: getMonsterSpawn())  {
             if(box.contains(sp.getPosition())) {
                 sp.setDenySpawn(!allow);
             }
@@ -3467,7 +3521,7 @@ public class MapleMap {
     }
     
     public void setAllowSpawnPointInRange(boolean allow, Point from, double rangeSq) {
-        for(SpawnPoint sp: monsterSpawn)  {
+        for(SpawnPoint sp: getMonsterSpawn())  {
             if(from.distanceSq(sp.getPosition()) <= rangeSq) {
                 sp.setDenySpawn(!allow);
             }
@@ -3477,7 +3531,7 @@ public class MapleMap {
     public SpawnPoint findClosestSpawnpoint(Point from) {
         SpawnPoint closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
-        for (SpawnPoint sp : monsterSpawn) {
+        for (SpawnPoint sp : getMonsterSpawn()) {
             double distance = sp.getPosition().distanceSq(from);
             if (distance < shortestDistance) {
                 closest = sp;
@@ -3494,7 +3548,7 @@ public class MapleMap {
     private int getNumShouldSpawn(int numPlayers) {
         /*
         System.out.println("----------------------------------");
-        for (SpawnPoint spawnPoint : monsterSpawn) {
+        for (SpawnPoint spawnPoint : getMonsterSpawn()) {
             System.out.println("sp " + spawnPoint.getPosition().getX() + ", " + spawnPoint.getPosition().getY() + ": " + spawnPoint.getDenySpawn());
         }
         System.out.println("try " + monsterSpawn.size() + " - " + spawnedMonstersOnMap.get());
@@ -3526,7 +3580,7 @@ public class MapleMap {
         
         int numShouldSpawn = getNumShouldSpawn(numPlayers);
         if(numShouldSpawn > 0) {
-            List<SpawnPoint> randomSpawn = new ArrayList<>(monsterSpawn);
+            List<SpawnPoint> randomSpawn = new ArrayList<>(getMonsterSpawn());
             Collections.shuffle(randomSpawn);
             short spawned = 0;
             for(SpawnPoint spawnPoint : randomSpawn) {

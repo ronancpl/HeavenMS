@@ -64,3 +64,23 @@ function playerDisconnected(eim, player) {
 function cancelSchedule() {}
 
 function dispose(eim) {}
+
+
+// ---------- FILLER FUNCTIONS ----------
+
+function monsterValue(eim, mobid) {return 0;}
+
+function disbandParty(eim, player) {}
+
+function monsterKilled(mob, eim) {}
+
+function scheduledTimeout(eim) {}
+
+function changedLeader(eim, leader) {}
+
+function leftParty(eim, player) {}
+
+function clearPQ(eim) {}
+
+function allMonstersDead(eim) {}
+

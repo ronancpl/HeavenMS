@@ -93,3 +93,8 @@ function clearPQ(eim){}
 function monsterKilled(mob, eim){}
 
 function allMonstersDead(eim){}
+
+// ---------- FILLER FUNCTIONS ----------
+
+function changedLeader(eim, leader) {}
+

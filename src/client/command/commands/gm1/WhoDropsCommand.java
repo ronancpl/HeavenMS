@@ -29,7 +29,6 @@ import client.MapleClient;
 import server.MapleItemInformationProvider;
 import server.life.MapleMonsterInformationProvider;
 import tools.DatabaseConnection;
-import tools.MaplePacketCreator;
 import tools.Pair;
 
 import java.sql.Connection;
@@ -66,7 +65,7 @@ public class WhoDropsCommand extends Command {
                             ps.setInt(1, data.getLeft());
                             ResultSet rs = ps.executeQuery();
                             while(rs.next()) {
-                                String resultName = MapleMonsterInformationProvider.getMobNameFromID(rs.getInt("dropperid"));
+                                String resultName = MapleMonsterInformationProvider.getInstance().getMobNameFromId(rs.getInt("dropperid"));
                                 if (resultName != null) {
                                     output += resultName + ", ";
                                 }

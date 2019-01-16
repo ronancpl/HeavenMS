@@ -107,3 +107,9 @@ function allMonstersDead(eim) {}
 function cancelSchedule() {}
 
 function dispose() {}
+
+
+// ---------- FILLER FUNCTIONS ----------
+
+function changedLeader(eim, leader) {}
+

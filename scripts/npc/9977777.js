@@ -47,6 +47,7 @@ function writeFeatureTab_PQs() {
         addFeature("Brand-new PQs: BossRushPQ, CafePQ.");
         addFeature("Mu Lung Dojo.");
         addFeature("Capt. Latanica with party fighting the boss.");
+        addFeature("Filled up missing obligatory event script methods.");
 }
 
 function writeFeatureTab_Skills() {
@@ -90,6 +91,7 @@ function writeFeatureTab_CashItems() {
         addFeature("EXP/DROP/Cosmetic Coupons.");
         addFeature("EXP/DROP Coupon as buff effect during active time.");
         addFeature("Great deal of cash items functional.");
+        addFeature("Proper depletion of picked slot for usable cash items.");
         addFeature("Code coupons functional, with multi-items support.");
         addFeature("Merged unique ids for pets, rings and cash items.");
         addFeature("MapleTV mechanics stabilized and split by world.");
@@ -206,6 +208,7 @@ function writeFeatureTab_Serverpotentials() {
 
 function writeFeatureTab_Commands() {
         addFeature("Spawn Zakum/Horntail/Pinkbean.");
+        addFeature("Permanent NPCs & mobs.");
         addFeature("Several new commands.");
         addFeature("Rank command highlighting users by world or overall.");
         addFeature("Server commands layered by GM levels.");
