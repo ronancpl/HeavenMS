@@ -310,6 +310,8 @@ public class CommandsExecutor {
         addCommand("timer", 3, TimerCommand.class);
         addCommand("timermap", 3, TimerMapCommand.class);
         addCommand("timerall", 3, TimerAllCommand.class);
+        addCommand("warpmap", 3, WarpMapCommand.class);
+        addCommand("warparea", 3, WarpAreaCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }
