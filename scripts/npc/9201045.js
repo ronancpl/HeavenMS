@@ -108,13 +108,6 @@ function action(mode, type, selection) {
                                                 if(stage == 4) {
                                                         if(cm.haveItem(4031597, 50)) {
                                                             cm.gainItem(4031597, -50);
-
-                                                            var tl = eim.getTimeLeft();
-                                                            if(tl >= 5 * 60 * 1000) {
-                                                                eim.setProperty("timeLeft", tl.toString());
-                                                                eim.restartEventTimer(4 * 60 * 1000);
-                                                            }
-
                                                             cm.sendNext("Well done! Let me open the gate for you now.");
                                                             cm.mapMessage(5, "Amos: The time runs short now. Your objective is to open the gates and gather together on the other side of the next map. Good luck!");
                                                             clearStage(stage, eim, curMap);
@@ -143,14 +136,6 @@ function action(mode, type, selection) {
 
                                                         if(pass) {
                                                                 if(isAllGatesOpen()) {
-                                                                    var tl = eim.getProperty("timeLeft");
-                                                                    if(tl != null) {
-                                                                        var tr = eim.getTimeLeft();
-
-                                                                        var tl = parseFloat(tl);
-                                                                        eim.restartEventTimer(tl - (4 * 60 * 1000 - tr));
-                                                                    }
-
                                                                     cm.sendNext("Okay, your team is already gathered. Talk to me when you guys feel ready to fight the #rGeist Balrog#k.");
 
                                                                     cm.mapMessage(5, "Amos: Now only the boss fight remains! Once inside, talk to me only if you want to join the boss fight, you will be transported to action immediately.");
