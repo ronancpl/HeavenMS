@@ -2917,7 +2917,7 @@ public class MapleMap {
         
         objectRLock.lock();
         try {
-            objects = Collections.unmodifiableCollection(mapobjects.values());
+            objects = new ArrayList<>(mapobjects.values());
         } finally {
             objectRLock.unlock();
         }
