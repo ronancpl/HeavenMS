@@ -111,7 +111,7 @@ function action(mode, type, selection) {
 
                                                             var tl = eim.getTimeLeft();
                                                             if(tl >= 5 * 60 * 1000) {
-                                                                eim.setProperty("timeLeft", tl);
+                                                                eim.setProperty("timeLeft", tl.toString());
                                                                 eim.restartEventTimer(4 * 60 * 1000);
                                                             }
 
