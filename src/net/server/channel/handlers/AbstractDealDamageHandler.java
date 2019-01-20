@@ -725,7 +725,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         if(chr.getEnergyBar() == 15000) {
             int energycharge = chr.isCygnus() ? ThunderBreaker.ENERGY_CHARGE : Marauder.ENERGY_CHARGE;
             MapleStatEffect ceffect = SkillFactory.getSkill(energycharge).getEffect(chr.getSkillLevel(energycharge));
-            calcDmgMax *= ceffect.getDamage() / 100;
+            calcDmgMax *= (100 + ceffect.getDamage()) / 100;
         }
         
         if(chr.getMapId() >= 914000000 && chr.getMapId() <= 914000500) {
