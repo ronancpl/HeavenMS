@@ -616,6 +616,9 @@ public final class Channel {
                 MapleParty party = null;
                 
                 for (int i = 0; i < 5; i++) { //only 32 stages, but 38 maps
+                    if (stage + i > 38) {
+                        break;
+                    }
                     for(MapleCharacter chr: getMapFactory().getMap(dojoBaseMap + (100 * (stage + i)) + delta).getAllPlayers()) {
                         if(chr.getMap().isDojoMap()) {
                             chr.timeoutFromDojo();
