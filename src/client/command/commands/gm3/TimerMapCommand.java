@@ -36,18 +36,18 @@ public class TimerMapCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-        if (params.length < 2) {
+        if (params.length < 1) {
             player.yellowMessage("Syntax: !timermap <seconds>|remove");
             return;
         }
 
-        if (params[1].equalsIgnoreCase("remove")) {
+        if (params[0].equalsIgnoreCase("remove")) {
             for (MapleCharacter victim : player.getMap().getCharacters()) {
                 victim.announce(MaplePacketCreator.removeClock());
             }
         } else {
             try {
-                int seconds = Integer.parseInt(params[1]);
+                int seconds = Integer.parseInt(params[0]);
                 for (MapleCharacter victim : player.getMap().getCharacters()) {
                     victim.announce(MaplePacketCreator.getClock(seconds));
                 }
