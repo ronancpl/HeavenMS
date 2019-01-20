@@ -60,6 +60,7 @@ import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Assassin;
 import constants.skills.Bandit;
+import constants.skills.Beginner;
 import constants.skills.Bishop;
 import constants.skills.BlazeWizard;
 import constants.skills.Bowmaster;
@@ -83,10 +84,12 @@ import constants.skills.Hero;
 import constants.skills.Hunter;
 import constants.skills.ILArchMage;
 import constants.skills.ILMage;
+import constants.skills.Legend;
 import constants.skills.Marauder;
 import constants.skills.Marksman;
 import constants.skills.NightLord;
 import constants.skills.NightWalker;
+import constants.skills.Noblesse;
 import constants.skills.Outlaw;
 import constants.skills.Page;
 import constants.skills.Paladin;
@@ -841,6 +844,8 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if(ret.skill == Marksman.SNIPE) {
                             damage = 195000 + Randomizer.nextInt(5000);
                             hitDmgMax = 200000;
+                    } else if (ret.skill == Beginner.BAMBOO_RAIN || ret.skill == Noblesse.BAMBOO_RAIN || ret.skill == Evan.BAMBOO_THRUST || ret.skill == Legend.BAMBOO_THRUST) {
+                        hitDmgMax = 82569000; // Max HP of strongest Dojo boss
                     }
 
                     int maxWithCrit = hitDmgMax;
