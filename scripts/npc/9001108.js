@@ -34,7 +34,7 @@ function start() {
 		cm.sendYesNo("Don't worry if you fail. You'll have 3 chances. Do you still want to give up?"); 
 	} else if (cm.getPlayer().getMapId() >= 922240100 && cm.getPlayer().getMapId() <= 922240119) {
 		var text = "You went through so much trouble to rescue Gaga, but it looks like we're back to square one. ";				
-		var rgaga = cm.getPlayer().getEvents().getGagaRescue();
+		var rgaga = cm.getPlayer().getEvents().get("rescueGaga");
 		if (rgaga.getCompleted() == 10 || rgaga.getCompleted() == 20) {
 			text += "Please don't give up untill Gaga is rescued. To show you my appreciation for what you've accomplished thus far, I've given you a Spaceship. It's rather worn out, but it should still be operational. Check your #bSkill Window#k.";
 			rgaga.giveSkill(cm.getPlayer());
