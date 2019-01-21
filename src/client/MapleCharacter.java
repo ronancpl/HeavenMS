@@ -314,6 +314,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int banishMap = -1;
     private int banishSp = -1;
     private long banishTime = 0;
+    private long lastExpGainTime;
     
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
@@ -2917,7 +2918,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
             
-            if(leftover > 0) gainExpInternal(leftover, equip, party, false, inChat, white);
+            if(leftover > 0) {
+                gainExpInternal(leftover, equip, party, false, inChat, white);
+            } else {
+                lastExpGainTime = System.currentTimeMillis();
+            }
         }
     }
 
@@ -6411,6 +6416,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.mgc = new MapleGuildCharacter(ret);
             int buddyCapacity = rs.getInt("buddyCapacity");
             ret.buddylist = new BuddyList(buddyCapacity);
+            ret.lastExpGainTime = rs.getTimestamp("lastExpGainTime").getTime();
             
             ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit(rs.getByte("equipslots"));
             ret.getInventory(MapleInventoryType.USE).setSlotLimit(rs.getByte("useslots"));
@@ -7643,7 +7649,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ?, lastExpGainTime = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             if (gmLevel < 1 && level > 199) {
                 ps.setInt(1, isCygnus() ? 120 : 200);
             } else {
@@ -7756,7 +7762,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.setLong(50, jailExpiration);
             ps.setInt(51, partnerId);
             ps.setInt(52, marriageItemid);
-            ps.setInt(53, id);
+            ps.setTimestamp(53, new Timestamp(lastExpGainTime));
+            ps.setInt(54, id);
 
             int updateRows = ps.executeUpdate();
             ps.close();

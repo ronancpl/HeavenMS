@@ -50,7 +50,7 @@ public class RankingLoginWorker implements Runnable {
         if (job != -1) {
             sqlCharSelect += "AND c.job DIV 100 = ? ";
         }
-        sqlCharSelect += "ORDER BY c.level DESC , c.exp DESC , c.fame DESC , c.meso DESC";
+        sqlCharSelect += "ORDER BY c.level DESC , c.exp DESC , c.lastExpGainTime ASC, c.fame DESC , c.meso DESC";
         
         PreparedStatement charSelect = con.prepareStatement(sqlCharSelect);
         charSelect.setInt(1, world);
