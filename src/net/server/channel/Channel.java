@@ -595,6 +595,9 @@ public final class Channel {
             final int dojoBaseMap = (dojoMapId >= 925030000) ? 925030000 : 925020000;
 
             for (int i = 0; i < 5; i++) { //only 32 stages, but 38 maps
+                if (stage + i > 38) {
+                    break;
+                }
                 MapleMap dojoMap = getMapFactory().getMap(dojoBaseMap + (100 * (stage + i)) + delta);
                 if(!dojoMap.getAllPlayers().isEmpty()) return;
             }
@@ -616,6 +619,9 @@ public final class Channel {
                 MapleParty party = null;
                 
                 for (int i = 0; i < 5; i++) { //only 32 stages, but 38 maps
+                    if (stage + i > 38) {
+                        break;
+                    }
                     for(MapleCharacter chr: getMapFactory().getMap(dojoBaseMap + (100 * (stage + i)) + delta).getAllPlayers()) {
                         if(chr.getMap().isDojoMap()) {
                             chr.timeoutFromDojo();
