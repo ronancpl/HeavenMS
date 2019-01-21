@@ -7762,8 +7762,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.setLong(50, jailExpiration);
             ps.setInt(51, partnerId);
             ps.setInt(52, marriageItemid);
-            ps.setInt(53, id);
-            ps.setTimestamp(54, new Timestamp(lastExpGainTime));
+            ps.setTimestamp(53, new Timestamp(lastExpGainTime));
+            ps.setInt(54, id);
 
             int updateRows = ps.executeUpdate();
             ps.close();
