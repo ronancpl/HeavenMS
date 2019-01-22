@@ -825,7 +825,10 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             }
                     } else if (ret.skill == Aran.BODY_PRESSURE) {
                         if (monster != null) {
-                            calcDmgMax = monster.getMaxHp() * SkillFactory.getSkill(Aran.BODY_PRESSURE).getEffect(ret.skilllevel).getDamage() / 100;
+                            int bodyPressureDmg = monster.getMaxHp() * SkillFactory.getSkill(Aran.BODY_PRESSURE).getEffect(ret.skilllevel).getDamage() / 100;
+                            if (bodyPressureDmg > calcDmgMax) {
+                                calcDmgMax = bodyPressureDmg;
+                            }
                         }
                     }
             }
