@@ -823,6 +823,13 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             if(monster != null) {
                                     monster.debuffMob(Hermit.SHADOW_MESO);
                             }
+                    } else if (ret.skill == Aran.BODY_PRESSURE) {
+                        if (monster != null) {
+                            int bodyPressureDmg = monster.getMaxHp() * SkillFactory.getSkill(Aran.BODY_PRESSURE).getEffect(ret.skilllevel).getDamage() / 100;
+                            if (bodyPressureDmg > calcDmgMax) {
+                                calcDmgMax = bodyPressureDmg;
+                            }
+                        }
                     }
             }
             
