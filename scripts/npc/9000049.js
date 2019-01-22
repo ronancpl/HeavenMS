@@ -55,7 +55,7 @@ function action(mode, type, selection) {
 				if(stage == 0) {
 					cm.sendOk("It looks like the Tower isn't unlocked yet. Please wait for a GM to unlock it!");
 				} else {
-					cm.warp(980040000 + stage * 1000);
+					cm.warp(980040000 + stage * 1000, 0);
 				}
 				cm.dispose();
 			}
@@ -65,7 +65,7 @@ function action(mode, type, selection) {
 				if(stage == 0) {
 					cm.sendOk("It looks like the Tower isn't unlocked yet. Please wait for a GM to unlock it!");
 				} else {
-					cm.warp(980040000 + stage * 1000);
+					cm.warp(980040000 + stage * 1000, 0);
 				}
 				cm.dispose();
 				return;
