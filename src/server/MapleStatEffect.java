@@ -1035,7 +1035,7 @@ public class MapleStatEffect {
     }
 
     private void applyBuffEffect(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary) {
-        if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor()) {     // last mystic door already dispelled if it has been used before.
+        if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
         }
 
