@@ -1359,7 +1359,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             mapEim.registerPlayer(this);
         }
         
-        MapleMap to = getWarpMap(target.getId());
+        MapleMap to = target; // warps directly to the target intead of the target's map id, this allows GMs to patrol players inside instances.
         changeMapInternal(to, pto.getPosition(), MaplePacketCreator.getWarpToMap(to, pto.getId(), this));
         canWarpMap = false;
         
