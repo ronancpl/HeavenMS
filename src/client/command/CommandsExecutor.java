@@ -292,6 +292,7 @@ public class CommandsExecutor {
         addCommand("pe", 3, PeCommand.class);
         addCommand("startevent", 3, StartEventCommand.class);
         addCommand("endevent", 3, EndEventCommand.class);
+        addCommand("startmapevent", 3, StartMapEventCommand.class);
         addCommand("online2", 3, OnlineTwoCommand.class);
         addCommand("warpsnowball", 3, WarpSnowBallCommand.class);
         addCommand("ban", 3, BanCommand.class);
