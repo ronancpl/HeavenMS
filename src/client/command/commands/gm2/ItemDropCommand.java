@@ -43,7 +43,7 @@ public class ItemDropCommand extends Command {
         MapleCharacter player = c.getPlayer();
         
         if (params.length < 1) {
-            player.yellowMessage("Syntax: !item <itemid> <quantity>");
+            player.yellowMessage("Syntax: !drop <itemid> <quantity>");
             return;
         }
 
@@ -88,7 +88,7 @@ public class ItemDropCommand extends Command {
 
                 return;
             } else {
-                player.yellowMessage("Pet Syntax: !item <itemid> <expiration>");
+                player.yellowMessage("Pet Syntax: !drop <itemid> <expiration>");
                 return;        
             }
         }
