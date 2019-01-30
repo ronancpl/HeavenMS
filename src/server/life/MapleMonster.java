@@ -715,7 +715,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         processMonsterKilled(hasKiller);
         
         EventInstanceManager eim = getMap().getEventInstance();
-        if (eim != null) {
+        if (eim != null && !eim.isEventDisposed()) {
             if (!this.getStats().isFriendly()) {
                 eim.monsterKilled(this, hasKiller);
             } else {
