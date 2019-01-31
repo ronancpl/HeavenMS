@@ -28,7 +28,6 @@ import client.MapleClient;
 import client.MapleCharacter;
 import server.maps.MapleMap;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class ReloadMapCommand extends Command {
@@ -42,7 +41,7 @@ public class ReloadMapCommand extends Command {
         MapleMap newMap = c.getChannelServer().getMapFactory().resetMap(player.getMapId());
         int callerid = c.getPlayer().getId();
 
-        Collection<MapleCharacter> characters = new ArrayList<>(player.getMap().getCharacters());
+        Collection<MapleCharacter> characters = player.getMap().getAllPlayers();
         
         for (MapleCharacter chr : characters) {
             chr.saveLocationOnWarp();

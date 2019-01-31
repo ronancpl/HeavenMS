@@ -51,11 +51,11 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                     short ypos = lea.readShort();
                     short xwobble = lea.readShort();
                     short ywobble = lea.readShort();
-                    short unk = lea.readShort();
+                    short fh = lea.readShort();
                     byte newstate = lea.readByte();
                     short duration = lea.readShort();
                     AbsoluteLifeMovement alm = new AbsoluteLifeMovement(command, new Point(xpos, ypos), duration, newstate);
-                    alm.setUnk(unk);
+                    alm.setFh(fh);
                     alm.setPixelsPerSecond(new Point(xwobble, ywobble));
                     res.add(alm);
                     break;
@@ -105,11 +105,11 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                 /*case 11: { // Chair
                     short xpos = lea.readShort();
                     short ypos = lea.readShort();
-                    short unk = lea.readShort();
+                    short fh = lea.readShort();
                     byte newstate = lea.readByte();
                     short duration = lea.readShort();
                     ChairMovement cm = new ChairMovement(command, new Point(xpos, ypos), duration, newstate);
-                    cm.setUnk(unk);
+                    cm.setFh(fh);
                     res.add(cm);
                     break;
                 }*/
@@ -118,14 +118,14 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
                     short ypos = lea.readShort();
                     short xwobble = lea.readShort();
                     short ywobble = lea.readShort();
-                    short unk = lea.readShort();
                     short fh = lea.readShort();
+                    short ofh = lea.readShort();
                     byte newstate = lea.readByte();
                     short duration = lea.readShort();
                     JumpDownMovement jdm = new JumpDownMovement(command, new Point(xpos, ypos), duration, newstate);
-                    jdm.setUnk(unk);
+                    jdm.setFh(fh);
                     jdm.setPixelsPerSecond(new Point(xwobble, ywobble));
-                    jdm.setFH(fh);
+                    jdm.setOriginFh(ofh);
                     res.add(jdm);
                     break;
                 }

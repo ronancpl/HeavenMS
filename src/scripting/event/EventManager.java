@@ -22,7 +22,6 @@
 package scripting.event;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -116,11 +115,14 @@ public class EventManager {
             ex.printStackTrace();
         }
         
+        Collection<EventInstanceManager> eimList;
         synchronized(instances) {
-            for(EventInstanceManager eim : instances.values()) {
-                eim.dispose(true);
-            }
+            eimList = getInstances();
             instances.clear();
+        }
+        
+        for(EventInstanceManager eim : eimList) {
+            eim.dispose(true);
         }
         
         List<EventInstanceManager> readyEims;
@@ -253,7 +255,9 @@ public class EventManager {
     }
 
     public Collection<EventInstanceManager> getInstances() {
-        return Collections.unmodifiableCollection(instances.values());
+        synchronized (instances) {
+            return new LinkedList<>(instances.values());
+        }
     }
 
     public EventInstanceManager newInstance(String name) {
@@ -265,7 +269,13 @@ public class EventManager {
             ret.setName(name);
         }
         
-        instances.put(name, ret);
+        synchronized (instances) {
+            if (instances.containsKey(name)) {
+                return null;
+            }
+            
+            instances.put(name, ret);
+        }
         return ret;
     }
 
@@ -274,7 +284,10 @@ public class EventManager {
             @Override
             public void run() {
                 freeLobbyInstance(name);
-                instances.remove(name);
+                
+                synchronized (instances) {
+                    instances.remove(name);
+                }
             }
         }, ServerConstants.EVENT_LOBBY_DELAY * 1000);
     }
@@ -379,14 +392,17 @@ public class EventManager {
                             if(!startLobbyInstance(lobbyId)) return false;
                         }
                         
-                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
-                        if(eim == null) {
+                        EventInstanceManager eim;
+                        try {
+                            eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
+                            instanceLocks.put(eim.getName(), lobbyId);
+                        } catch (NullPointerException npe) {
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
                             return false;
                         }
-                        instanceLocks.put(eim.getName(), lobbyId);
+                        
                         eim.setLeader(leader);
 
                         exped.start();
@@ -442,14 +458,16 @@ public class EventManager {
                             }
                         }
                         
-                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
-                        if(eim == null) {
+                        EventInstanceManager eim;
+                        try {
+                            eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
+                            instanceLocks.put(eim.getName(), lobbyId);
+                        } catch (NullPointerException npe) {
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
                             return false;
                         }
-                        instanceLocks.put(eim.getName(), lobbyId);
                         eim.setLeader(leader);
 
                         if(chr != null) eim.registerPlayer(chr);
@@ -500,14 +518,17 @@ public class EventManager {
                             if(!startLobbyInstance(lobbyId)) return false;
                         }
                         
-                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-                        if(eim == null) {
+                        EventInstanceManager eim;
+                        try {
+                            eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+                            instanceLocks.put(eim.getName(), lobbyId);
+                        } catch (NullPointerException npe) {
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
                             return false;
                         }
-                        instanceLocks.put(eim.getName(), lobbyId);
+                        
                         eim.setLeader(leader);
 
                         eim.registerParty(party, map);
@@ -559,14 +580,17 @@ public class EventManager {
                             if(!startLobbyInstance(lobbyId)) return false;
                         }
                         
-                        EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
-                        if(eim == null) {
+                        EventInstanceManager eim;
+                        try {
+                            eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
+                            instanceLocks.put(eim.getName(), lobbyId);
+                        } catch (NullPointerException npe) {
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
                             return false;
                         }
-                        instanceLocks.put(eim.getName(), lobbyId);
+                        
                         eim.setLeader(leader);
 
                         eim.registerParty(party, map);

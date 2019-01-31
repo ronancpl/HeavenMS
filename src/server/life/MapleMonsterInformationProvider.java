@@ -52,8 +52,9 @@ public class MapleMonsterInformationProvider {
 		return instance;
 	}
         
-        private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();        
+        private final Map<Integer, List<MonsterDropEntry>> drops = new HashMap<>();
 	private final List<MonsterGlobalDropEntry> globaldrops = new ArrayList<>();
+        private final Map<Integer, List<MonsterGlobalDropEntry>> continentdrops = new HashMap<>();
         
         private final Map<Integer, List<Integer>> dropsChancePool = new HashMap<>();    // thanks to ronan
         private final Set<Integer> hasNoMultiEquipDrops = new HashSet<>();
@@ -70,9 +71,24 @@ public class MapleMonsterInformationProvider {
 	protected MapleMonsterInformationProvider() {
 		retrieveGlobal();
 	}
-
-	public final List<MonsterGlobalDropEntry> getGlobalDrop() {
-		return globaldrops;
+        
+        public final List<MonsterGlobalDropEntry> getRelevantGlobalDrops(int mapid) {
+                int continentid = mapid / 100000000;
+            
+                List<MonsterGlobalDropEntry> contiItems = continentdrops.get(continentid);
+                if (contiItems == null) {   // continent separated global drops found thanks to marcuswoon
+                    contiItems = new ArrayList<>();
+                    
+                    for (MonsterGlobalDropEntry e : globaldrops) {
+                        if (e.continentid < 0 || e.continentid == continentid) {
+                            contiItems.add(e);
+                        }
+                    }
+                    
+                    continentdrops.put(continentid, contiItems);
+                }
+                
+		return contiItems;
 	}
 
 	private void retrieveGlobal() {
@@ -90,8 +106,7 @@ public class MapleMonsterInformationProvider {
 						new MonsterGlobalDropEntry(
 								rs.getInt("itemid"),
 								rs.getInt("chance"),
-								rs.getInt("continent"),
-								rs.getByte("dropType"),
+								rs.getByte("continent"),
 								rs.getInt("minimum_quantity"),
 								rs.getInt("maximum_quantity"),
 								rs.getShort("questid")));

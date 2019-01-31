@@ -23,12 +23,11 @@
 */
 package client.command.commands.gm3;
 
-        import client.command.Command;
-        import client.MapleClient;
-        import client.MapleCharacter;
+import client.command.Command;
+import client.MapleClient;
+import client.MapleCharacter;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.List;
 
 public class WarpSnowBallCommand extends Command {
     {
@@ -38,7 +37,7 @@ public class WarpSnowBallCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-        List<MapleCharacter> chars = new ArrayList<>(player.getMap().getCharacters());
+        List<MapleCharacter> chars = player.getMap().getAllPlayers();
         for (MapleCharacter chr : chars) {
             chr.saveLocationOnWarp();
             chr.changeMap(109060000, chr.getTeam());

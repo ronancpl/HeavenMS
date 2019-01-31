@@ -47,12 +47,7 @@ function start() {
     } else {
         if (cm.getJobId() == 0) {
             actionx["1stJob"] = true;
-            if (cm.getLevel() >= 8 && cm.canGetFirstJob(jobType))
-                cm.sendNext("Want to be a magician? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 8#k, with getting INT as your top priority. Let's see.");
-            else {
-                cm.sendOk("Train a bit more until you reach #blevel 8, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rMagician#k.");
-                cm.dispose();
-            }
+            cm.sendNext("Want to be a #rmagician#k? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 8#k, with getting " + cm.getFirstJobStatRequirement(jobType) + " as your top priority. Let's see.");   // thanks Vcoc for noticing a need to state and check requirements on first job adv starting message
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 200) {
             actionx["2ndJob"] = true;
             if (cm.haveItem(4031012))
@@ -80,8 +75,13 @@ function start() {
 
 function action(mode, type, selection) {
     status++;
-    if (mode == 0 && type == 0)
+    if (mode == -1 && selection == -1) {
+        cm.dispose();
+        return;
+    } else if (mode == 0 && type == 0) {
         status -= 2;
+    }
+    
     if (status == -1){
         start();
         return;
@@ -117,9 +117,14 @@ function action(mode, type, selection) {
     }
     
     if (actionx["1stJob"]){
-        if (status == 0)
-            cm.sendYesNo("Oh...! You look like someone that can definitely be a part of us... all you need is a little sinister mind, and... yeah... so, what do you think? Wanna be the Magician?");
-        else if (status == 1){
+        if (status == 0) {
+            if (cm.getLevel() >= 8 && cm.canGetFirstJob(jobType)) {
+                cm.sendYesNo("Oh...! You look like someone that can definitely be a part of us... all you need is a little sinister mind, and... yeah... so, what do you think? Wanna be the Magician?");
+            } else {
+                cm.sendOk("Train a bit more until you reach the base requirements and I can show you the way of the #rMagician#k.");
+                cm.dispose();
+            }
+        } else if (status == 1){
             if (cm.canHold(1372043)){
                 if (cm.getJobId() == 0){
                     cm.changeJobById(200);

@@ -612,7 +612,15 @@ public class World {
             mc.saveGuildStatus();
         }
         if (bDifferentGuild) {
-            mc.broadcastStance();
+            if (mc.isLoggedinWorld()) {
+                MapleGuild guild = Server.getInstance().getGuild(guildid);
+                if (guild != null) {
+                    mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildNameChanged(cid, guild.getName()));
+                    mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildMarkChanged(cid, guild));
+                } else {
+                    mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildNameChanged(cid, ""));
+                }
+            }
         }
     }
 

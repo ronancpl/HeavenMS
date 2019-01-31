@@ -24,7 +24,7 @@
 */
  
 function enter(pi) {
-    if (!pi.isQuestStarted(100200)) {
+    if (!(pi.isQuestStarted(100200) || pi.isQuestCompleted(100200))) {
         pi.getPlayer().dropMessage(5,"You need approval from the masters to battle. You may not attempt the boss right now.");
         return false;
     }

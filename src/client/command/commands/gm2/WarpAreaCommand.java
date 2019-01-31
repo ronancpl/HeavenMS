@@ -29,7 +29,6 @@ import client.command.Command;
 import server.maps.MapleMap;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class WarpAreaCommand extends Command {
@@ -54,7 +53,7 @@ public class WarpAreaCommand extends Command {
 
             Point pos = player.getPosition();
 
-            Collection<MapleCharacter> characters = new ArrayList<>(player.getMap().getCharacters());
+            Collection<MapleCharacter> characters = player.getMap().getAllPlayers();
             
             for (MapleCharacter victim : characters) {
                 if (victim.getPosition().distanceSq(pos) <= 50000) {

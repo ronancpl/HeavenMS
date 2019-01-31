@@ -47,12 +47,7 @@ function start() {
     } else {
         if (cm.getJobId() == 0) {
             actionx["1stJob"] = true;
-            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
-                cm.sendNext("Do you want to become a Warrior? You need to meet some criteria in order to do so.#b You should be at least in level 10, with at least 35 in STR#k. Let's see...");
-            else {
-                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rWarrior#k.");
-                cm.dispose();
-            }
+            cm.sendNext("Do you want to become a #rwarrior#k? You need to meet some criteria in order to do so.#b You should be at least in level 10, and at least " + cm.getFirstJobStatRequirement(jobType) + "#k. Let's see...");   // thanks Vcoc for noticing a need to state and check requirements on first job adv starting message
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 100) {
             actionx["2ndJob"] = true;
             if (cm.haveItem(4031012))
@@ -80,8 +75,13 @@ function start() {
 
 function action(mode, type, selection) {
     status++;
-    if (mode == 0 && type != 1)
+    if (mode == -1 && selection == -1) {
+        cm.dispose();
+        return;
+    } else if (mode == 0 && type != 1) {
         status -= 2;
+    }
+    
     if (status == -1){
         start();
         return;
@@ -117,9 +117,14 @@ function action(mode, type, selection) {
     }
     
     if (actionx["1stJob"]){
-        if (status == 0)
-            cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
-        else if (status == 1){
+        if (status == 0) {
+            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType)) {
+                cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
+            } else {
+                cm.sendOk("Train a bit more until you reach the base requirements and I can show you the way of the #rWarrior#k.");
+                cm.dispose();
+            }
+        } else if (status == 1){
             if (cm.canHold(1302077)){
                 if (cm.getJobId() == 0){
                     cm.changeJobById(100);

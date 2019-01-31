@@ -77,6 +77,7 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("P. members' HPBar accounts HP gain on equips.");
         addFeature("Thoroughly reviewed P. Shops and H. Merchants.");
         addFeature("Transactions on Merchs instantly announced to owner.");
+        addFeature("Proper meso space check on player transactions.");
         addFeature("Game minirooms with functional pw system.");
         addFeature("Proper item pickup cooldown on non-owned items.");
         addFeature("Improved ranking system, with daily movement.");
@@ -121,6 +122,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Added meso drop data for many missing mobs.");
         addFeature("Monsterbook displays updated drop data info.");
         addFeature("Every skill/mastery book is now obtainable.");
+        addFeature("Enhanced aggro system: real-time DPS aggro detection.");
         addFeature("Mobs now can drop more than one of the same equip.");
         addFeature("Mobs only drop items collectable by the player/party.");
         addFeature("Mobs shouldn't fall from foothold too often now.");
@@ -146,6 +148,7 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Added world maps for M. Castle, W. Tour & Ellin areas.");
         addFeature("Added W. Tour & Masteria continents in the world map.");
         addFeature("Reviewed several issues with W. Map tooltips & links.");
+        addFeature("Continent separated global drops.");
         addFeature("Giant Cake boss drops s. bags and Maple items.");
 }
 

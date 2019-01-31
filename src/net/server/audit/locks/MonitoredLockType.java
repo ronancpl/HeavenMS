@@ -84,6 +84,7 @@ public enum MonitoredLockType {
     VISITOR_PSHOP,
     STORAGE,
     MOB,
+    MOB_AGGRO,
     MOB_ANI,
     MOB_EXT,
     MOB_STATI,
@@ -96,6 +97,8 @@ public enum MonitoredLockType {
     MAP_ITEM,
     MAP_LOOT,
     MAP_BOUNDS,
+    MAP_AGGRO,
+    MAP_AGGRO_IDLE,
     MINIDUNGEON,
     REACTOR,
     REACTOR_HIT;

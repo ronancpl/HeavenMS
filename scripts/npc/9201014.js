@@ -61,7 +61,7 @@ function action(mode, type, selection) {
     } else if (status == 1) {
         if (selection == 0) {
             if (cm.haveItem(4031424)) {
-                if (cm.isMarried()) {
+                if (cm.getPlayer().isMarried()) {   // thanks MedicOP for solving an issue here
                     if(cm.getInventory(2).getNextFreeSlot() >= 0) {
                         var rand = Math.floor(Math.random() * bgPrizes.length);
                         cm.gainItem(bgPrizes[rand][0], bgPrizes[rand][1]);

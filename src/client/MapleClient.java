@@ -175,22 +175,22 @@ public class MapleClient {
 		return chars;
 	}
 
-	public List<String> loadCharacterNames(int serverId) {
+	public List<String> loadCharacterNames(int worldId) {
 		List<String> chars = new ArrayList<>(15);
-		for (CharNameAndId cni : loadCharactersInternal(serverId)) {
+		for (CharNameAndId cni : loadCharactersInternal(worldId)) {
 			chars.add(cni.name);
 		}
 		return chars;
 	}
 
-	private List<CharNameAndId> loadCharactersInternal(int serverId) {
+	private List<CharNameAndId> loadCharactersInternal(int worldId) {
 		PreparedStatement ps;
 		List<CharNameAndId> chars = new ArrayList<>(15);
 		try {
                         Connection con = DatabaseConnection.getConnection();
 			ps = con.prepareStatement("SELECT id, name FROM characters WHERE accountid = ? AND world = ?");
 			ps.setInt(1, this.getAccID());
-			ps.setInt(2, serverId);
+			ps.setInt(2, worldId);
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
 					chars.add(new CharNameAndId(rs.getString("name"), rs.getInt("id")));
@@ -882,7 +882,7 @@ public class MapleClient {
 	}
 
         public final void disconnect(final boolean shutdown, final boolean cashshop) {
-                if (isDisconnecting()) {
+                if (canDisconnect()) {
                         ThreadManager.getInstance().newTask(new Runnable() {
                                 @Override
                                 public void run() {
@@ -893,12 +893,12 @@ public class MapleClient {
         }
         
         public final void forceDisconnect() {
-                if (isDisconnecting()) {
+                if (canDisconnect()) {
                         disconnectInternal(true, false);
                 }
         }
         
-        private synchronized boolean isDisconnecting() {
+        private synchronized boolean canDisconnect() {
                 if (disconnecting) {
 			return false;
 		}

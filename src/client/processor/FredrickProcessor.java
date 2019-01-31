@@ -47,7 +47,7 @@ import tools.Pair;
  */
 public class FredrickProcessor {
     private static boolean canRetrieveFromFredrick(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
-        if (chr.getMeso() + chr.getMerchantMeso() < 0) {
+        if (!chr.canHoldMeso(chr.getMerchantMeso())) {
             return false;
         }
         return MapleInventory.checkSpotsAndOwnership(chr, items);

@@ -8,7 +8,7 @@ function action(mode, type, selection) {
 	if (mode == 0 && type == 0) {
 		status--;
 	} else if (mode == -1) {
-		qm.dispose();
+		cm.dispose();
 		return;
 	} else {
 		status++;

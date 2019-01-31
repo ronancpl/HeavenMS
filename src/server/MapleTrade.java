@@ -202,6 +202,10 @@ public class MapleTrade {
     	return exchangeMeso;
     }
     
+    private boolean fitsMeso() {
+        return chr.canHoldMeso(exchangeMeso - getFee(exchangeMeso));
+    }
+    
     private boolean fitsInInventory() {
         List<Pair<Item, MapleInventoryType>> tradeItems = new LinkedList<>();
         for (Item item : exchangeItems) {
@@ -218,6 +222,18 @@ public class MapleTrade {
         if (partner.isLocked()) {
             local.complete1();
             partner.complete1();
+            if (!local.fitsMeso()) {
+                cancelTrade(c);
+                c.message("There is not enough meso inventory space to complete the trade.");
+                partner.getChr().message("Partner does not have enough meso inventory space to complete the trade.");
+                return;
+            }
+            else if (!partner.fitsMeso()) {
+                cancelTrade(c);
+                c.message("Partner does not have enough meso inventory space to complete the trade.");
+                partner.getChr().message("There is not enough meso inventory space to complete the trade.");
+                return;
+            }
             if (!local.fitsInInventory()) {
                 cancelTrade(c);
                 c.message("There is not enough inventory space to complete the trade.");

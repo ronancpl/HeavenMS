@@ -29,6 +29,7 @@ importPackage(Packages.scripting.event);
 
 var status = 0;
 var expedition;
+var expedMembers;
 var player;
 var em;
 var exped = MapleExpeditionType.SCARGA;
@@ -69,7 +70,7 @@ function action(mode, type, selection) {
                 status = 2;
             } else if (expedition.isRegistering()) { //If the expedition is registering
                 if (expedition.contains(player)) { //If you're in it but it hasn't started, be patient
-                    cm.sendOk("You have already registered for the expedition. Please wait for #r" + expedition.getLeader().getName() + "#k to begin the expedition.");
+                    cm.sendOk("You have already registered for the expedition. Please wait for #r" + expedition.getLeader().getName() + "#k to begin it.");
                     cm.dispose();
                 } else { //If you aren't in it, you're going to get added
                     cm.sendOk(expedition.addMember(cm.getPlayer()));
@@ -121,7 +122,8 @@ function action(mode, type, selection) {
                     cm.dispose();
                     return;
                 }
-                var size = expedition.getMembers().size();
+                expedMembers = expedition.getMemberList();
+                var size = expedMembers.size();
                 if (size == 1) {
                     cm.sendOk("You are the only member of the expedition.");
                     cm.dispose();
@@ -130,13 +132,13 @@ function action(mode, type, selection) {
                 var text = "The following members make up your expedition (Click on them to expel them):\r\n";
                 text += "\r\n\t\t1." + expedition.getLeader().getName();
                 for (var i = 1; i < size; i++) {
-                    text += "\r\n#b#L" + (i + 1) + "#" + (i + 1) + ". " + expedition.getMembers().get(i).getName() + "#l\n";
+                    text += "\r\n#b#L" + (i + 1) + "#" + (i + 1) + ". " + expedMembers.get(i).getValue() + "#l\n";
                 }
                 cm.sendSimple(text);
                 status = 6;
             } else if (selection == 2) {
                 var min = exped.getMinSize();
-                var size = expedition.getMembers().size();
+                var size = expedition.getMemberList().size();
                 if (size < min) {
                     cm.sendOk("You need at least " + min + " players registered in your expedition.");
                     cm.dispose();
@@ -171,7 +173,7 @@ function action(mode, type, selection) {
             return;
         } else if (status == 6) {
             if (selection > 0) {
-                var banned = expedition.getMembers().get(selection - 1);
+                var banned = expedMembers.get(selection - 1);
                 expedition.ban(banned);
                 cm.sendOk("You have banned " + banned.getName() + " from the expedition.");
                 cm.dispose();

@@ -25,15 +25,14 @@ package server.life;
  * @author LightPepsi
  */
 public class MonsterGlobalDropEntry {
-    public MonsterGlobalDropEntry(int itemId, int chance, int continent, byte dropType, int Minimum, int Maximum, short questid) {
+    public MonsterGlobalDropEntry(int itemId, int chance, int continent, int Minimum, int Maximum, short questid) {
     this.itemId = itemId;
     this.chance = chance;
-    this.dropType = dropType;
     this.questid = questid;
+    this.continentid = continent;
     this.Minimum = Minimum;
     this.Maximum = Maximum;
     }
-    public byte dropType;
-    public int itemId, chance, Minimum, Maximum;
+    public int itemId, chance, Minimum, Maximum, continentid;
     public short questid;
 }

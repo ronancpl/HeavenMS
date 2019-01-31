@@ -40,8 +40,8 @@ public class LogHelper {
 		String log = expedition.getType().toString() + " EXPEDITION\r\n";
 		log += getTimeString(expedition.getStartTime()) + "\r\n";
 
-		for (MapleCharacter member : expedition.getMembers()){
-			log += ">>" + member.getName() + "\r\n";
+		for (String memberName : expedition.getMembers().values()){
+			log += ">>" + memberName + "\r\n";
 		}
 		log += "BOSS KILLS\r\n";
 		for (String message: expedition.getBossLogs()){

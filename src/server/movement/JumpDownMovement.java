@@ -26,8 +26,8 @@ import tools.data.output.LittleEndianWriter;
 
 public class JumpDownMovement extends AbstractLifeMovement {
     private Point pixelsPerSecond;
-    private int unk;
     private int fh;
+    private int originFh;
 
     public JumpDownMovement(int type, Point position, int duration, int newstate) {
         super(type, position, duration, newstate);
@@ -41,20 +41,20 @@ public class JumpDownMovement extends AbstractLifeMovement {
         this.pixelsPerSecond = wobble;
     }
 
-    public int getUnk() {
-        return unk;
-    }
-
-    public void setUnk(int unk) {
-        this.unk = unk;
-    }
-
-    public int getFH() {
+    public int getFh() {
         return fh;
     }
 
-    public void setFH(int fh) {
+    public void setFh(int fh) {
         this.fh = fh;
+    }
+
+    public int getOriginFh() {
+        return originFh;
+    }
+
+    public void setOriginFh(int fh) {    // fh actually originFh, thanks Spoon for pointing this out
+        this.originFh = fh;
     }
 
     @Override
@@ -64,8 +64,8 @@ public class JumpDownMovement extends AbstractLifeMovement {
         lew.writeShort(getPosition().y);
         lew.writeShort(pixelsPerSecond.x);
         lew.writeShort(pixelsPerSecond.y);
-        lew.writeShort(unk);
         lew.writeShort(fh);
+        lew.writeShort(originFh);
         lew.write(getNewstate());
         lew.writeShort(getDuration());
     }

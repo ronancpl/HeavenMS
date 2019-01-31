@@ -1574,3 +1574,49 @@ Protegido concorrentemente sistema de comandos, assim evitando processamento em 
 16 Janeiro 2019,
 Revisado login handler, trazendo métodos de desconexão para antes de checar LoginState, e não permitindo reatribuição de objeto-cliente para jogador já logado em canal.
 Revisado disconnect no login handler, agora devidamente finalizando sessões recém-criadas que falham em conectar jogador ao mundo.
+Revisado skill Monster Magnet, agora devidamente mostrando efeitos de skill.
+Mais uma tentativa de proteção contra acesso concorrente no login handler, buscando evitar múltiplas requisições concorrente por um accountId durante processo e múltiplas requisições de mesmo objeto de cliente.
+Revisado objeto das expedições, não mais permitindo armazenar objetos de jogadores (que já podem ter sido desativados).
+Corrigido expedições enviando pacotes para jogadores que estão fora de jogo.
+Normalizado mensagens de 1o job de NPCs explorers, com afirmação de mínimo de stats antes de checar requerimentos.
+
+18 Janeiro 2019,
+Corrigido dispose de interação com NPCs não devolvendo controle de certas ações ao jogador, mais notável quando a interação ocorreu automaticamente (jogador caminhou pra área de atuação).
+Removido pigs de Maple Island, já que o quiz de 3rd job sugere não há os mesmos lá. Cynical Orange Mushrooms passam a ocupar posições dos mesmos.
+Editado "launch.bat" para somente usar Java7, assim permitindo usuários a não terem que especificar preferência de uso de Java7 nas variáveis de ambiente PATH.
+
+20 Janeiro 2019,
+Corrigido necessidade de repetir aprovação dos mestres para realizar expedições de Zakum.
+Revisado comando goto. Jogadores tem acesso somente a mapas de cidade, GMs tem acesso a areas também.
+Implementado EXP rate específico para novatos de nível menor que 11.
+Revisado petid sendo setado fora de área de atuação (até então não compete setar isso após criado objeto de Item).
+
+21 - 24 Janeiro 2019,
+Corrigido sistema de guilds não atualizando corretamente tooltips de informação de guild de jogadores no mapa, para ampla quantidade de eventos com guilds (adicionar player na guild, trocar emblema, remover player, etc).
+Corrigido sistema de eventos permitindo entrada duplicada de eventos com mesmo nome nos registros do gerenciador de eventos, potencialmente levando a nulos em EIMs.
+Corrigido skill Hyper Body cancelando efeito do buff anterior ao reutilizar a skill, levando valores suficientemente grandes de HP corrente do jogador ao MaxHP base (MaxHP antes de utilizar a skill).
+Refatorado uso de evtLock para métodos que gerenciam expiração de quests, possívelmente resolvendo caso de deadlock no método de desistência de quests expiráveis.
+Revisado MoveLifeHandler, não mais propagando pacotes de movimentação de mobs vindas de jogadores que não são controladores.
+Refatorado completamente o sistema de aggro de mobs. Agora, métodos que atuam na atualização de aggros de mobs usam funções comuns.
+
+25 - 26 Janeiro 2019,
+Corrigido problema de acesso a ponteiro nulo ao realizar dispose no sistema de mapas das instâncias de eventos. Referência ao gerenciador de eventos já era nulo ao atingir tal método.
+Implementado retorno de estado de aggro para "sem aggro" se não houveram atividades de aggro num mob por algum tempo.
+Implementado checagem de aniversário ao adicionar itens de cash às lojas de player.
+Corrigido Hired Merchants não fechando devidamente ao abrir loja com itens de cash.
+Corrigido tooltip de Hired Merchant não atualizando para "indisponível" quando a loja está em manutenção.
+Corrigido tooltip de Player Shops não fechando corretamente se ainda havia visitantes na loja.
+Mais alguns ajustes no novo sistema de aggros. Nesta implementação aparentemente somente controladores processam ataques do tipo "areaWarning" de mobs.
+Corrigido função forceChangeMap não levando devidamente jogadores para o mapa dado como parâmetro, quando tal mapa é de instância de evento.
+Revisado comando de summon de jogadores, agora utilizando função padrão forceChangeMap, que lida com registro de jogadores em instâncias e coloca jogador no mapa alvo.
+Adicionado, no comando de summon de jogadores, habilidade de colocar jogadores em outros canais dentro do mapa de evento.
+
+27 - 29 Janeiro 2019,
+Corrigido custom AP autoassigner não utilizando devidamente os caps definidos no escopo do handler.
+Revisado custom AP autoassigner. Classes que usam DEX como atributo secundário para STR foram rebalanceados, de forma que o aumento no uso do atributo secundário permita melhores condições de ataque no jogo.
+Adicionado checagem de mesos em transações entre jogadores, lojas de jogador, ao receber itens de Duey e Fredrick.
+Adicionado checagem em quantidade de itens nas lojas e mercantes de jogadores, assim evitando bugs quando há mais itens a serem vendidos do que o esperado.
+Corrigido um exploit com mercantes, envolvendo chamada à DB antes de retirar item (que está sendo inserido na loja) do inventário do jogador.
+
+30 Janeiro 2019,
+Corrigido chamadas irregulares a "qm/cm" em scripts.

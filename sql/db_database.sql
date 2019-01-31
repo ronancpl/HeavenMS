@@ -12776,8 +12776,7 @@ INSERT IGNORE INTO `temp_data` (`id`, `dropperid`, `itemid`, `minimum_quantity`,
 
 CREATE TABLE IF NOT EXISTS `drop_data_global` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `continent` int(11) NOT NULL,
-  `dropType` tinyint(1) NOT NULL DEFAULT '0',
+  `continent` tinyint(1) NOT NULL DEFAULT '-1',
   `itemid` int(11) NOT NULL DEFAULT '0',
   `minimum_quantity` int(11) NOT NULL DEFAULT '1',
   `maximum_quantity` int(11) NOT NULL DEFAULT '1',
@@ -12788,12 +12787,12 @@ CREATE TABLE IF NOT EXISTS `drop_data_global` (
   KEY `mobid` (`continent`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC AUTO_INCREMENT=5 ;
 
-INSERT INTO `drop_data_global` (`id`, `continent`, `dropType`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`, `comments`) VALUES
-(1, 0, 0, 4031865, 1, 1, 0, 35000, 'NX Card 100 PTS'),
-(2, 0, 0, 4031866, 1, 1, 0, 20000, 'NX Card 250 PTS'),
-(3, 0, 0, 4001126, 1, 2, 0, 8000, 'Maple Leaves'),
-(4, 0, 0, 2049100, 1, 1, 0, 1200, 'Chaos Scroll 60%'),
-(5, 0, 0, 4001006, 1, 1, 0, 10000, 'Flaming Feather');
+INSERT INTO `drop_data_global` (`id`, `continent`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`, `comments`) VALUES
+(1, -1, 4031865, 1, 1, 0, 35000, 'NX Card 100 PTS'),
+(2, -1, 4031866, 1, 1, 0, 20000, 'NX Card 250 PTS'),
+(3, -1, 4001126, 1, 2, 0, 8000, 'Maple Leaves'),
+(4, -1, 2049100, 1, 1, 0, 1200, 'Chaos Scroll 60%'),
+(5, -1, 4001006, 1, 1, 0, 10000, 'Flaming Feather');
 
 CREATE TABLE IF NOT EXISTS `dueyitems` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,

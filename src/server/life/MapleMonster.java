@@ -55,7 +55,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import net.server.audit.locks.MonitoredReentrantLock;
-import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.World;
 import net.server.world.MapleParty;
@@ -72,6 +71,7 @@ import tools.Randomizer;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.coordinator.MapleMonsterAggroCoordinator;
 
 public class MapleMonster extends AbstractLoadedMapleLife {
     private ChangeableStats ostats = null;  //unused, v83 WZs offers no support for changeable stats.
@@ -100,6 +100,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private MonitoredReentrantLock monsterLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB, true);
     private MonitoredReentrantLock statiLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_STATI);
     private MonitoredReentrantLock animationLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_ANI);
+    private MonitoredReentrantLock aggroUpdateLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.MOB_AGGRO);
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -578,31 +579,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    private Pair<MapleCharacter, Boolean> removeController() {
-        this.lockMonster();
-        try {
-            MapleCharacter chrController = getController();
-            boolean hadAggro = isControllerHasAggro();
-            
-            if (chrController != null) { // this can/should only happen when a hidden gm attacks the monster
-                chrController.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
-                chrController.stopControllingMonster(this);
-            }
-            
-            setController(null);
-            setControllerHasAggro(false);
-            setControllerKnowsAboutAggro(false);
-            
-            return new Pair<>(chrController, hadAggro);
-        } finally {
-            this.unlockMonster();
-        }
-    }
-    
     public MapleCharacter killBy(final MapleCharacter killer) {
         distributeExperience(killer != null ? killer.getId() : 0);
         
-        final Pair<MapleCharacter, Boolean> lastController = removeController();
+        final Pair<MapleCharacter, Boolean> lastController = aggroRemoveController();
         final List<Integer> toSpawn = this.getRevives();
         if (toSpawn != null) {
             final MapleMap reviveMap = map;
@@ -675,7 +655,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                                     reviveMap.killMonster(reviveMap.getMonsterById(i), killer, true);
                                 }
                             } else if (controller != null) {
-                                mob.switchController(controller, aggro);
+                                mob.aggroSwitchController(controller, aggro);
                             }
                             
                             if(eim != null) {
@@ -725,9 +705,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     private synchronized void processMonsterKilled(boolean hasKiller) {
-        if(!hasKiller) {
+        if(!hasKiller) {    // players won't gain EXP from a mob that has no killer, but a quest count they should
             dispatchUpdateQuestMobCount();
         }
+        
+        this.aggroClearDamages();
         
         MonsterListener[] listenersList;
         statiLock.lock();
@@ -794,46 +776,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public boolean isAlive() {
         return this.hp.get() > 0;
     }
-
-    public MapleCharacter getController() {
-        monsterLock.lock();
-        try {
-            return controller.get();
-        } finally {
-            monsterLock.unlock();
-        }
-    }
-
-    public void setController(MapleCharacter controller) {
-        monsterLock.lock();
-        try {
-            this.controller = new WeakReference<>(controller);
-        } finally {
-            monsterLock.unlock();
-        }
-    }
-
-    public void switchController(MapleCharacter newController, boolean immediateAggro) {
-        this.lockMonster();
-        try {
-            MapleCharacter controllers = getController();
-            if (controllers == newController) {
-                return;
-            }
-            
-            removeController();
-            
-            newController.controlMonster(this, immediateAggro);
-            setController(newController);
-            if (immediateAggro) {
-                setControllerHasAggro(true);
-            }
-            setControllerKnowsAboutAggro(false);
-        } finally {
-            this.unlockMonster();
-        }
-    }
-
+    
     public void addListener(MonsterListener listener) {
         statiLock.lock();
         try {
@@ -843,46 +786,28 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
-    public boolean isControllerHasAggro() {
-        monsterLock.lock();
-        try {
-            return fake ? false : controllerHasAggro;
-        } finally {
-            monsterLock.unlock();
-        }
+    public MapleCharacter getController() {
+        return controller.get();
     }
 
-    public void setControllerHasAggro(boolean controllerHasAggro) {
-        monsterLock.lock();
-        try {
-            if (fake) {
-                return;
-            }
-            this.controllerHasAggro = controllerHasAggro;
-        } finally {
-            monsterLock.unlock();
-        }
+    private void setController(MapleCharacter controller) {
+        this.controller = new WeakReference<>(controller);
+    }
+    
+    public boolean isControllerHasAggro() {
+        return fake ? false : controllerHasAggro;
+    }
+
+    private void setControllerHasAggro(boolean controllerHasAggro) {
+        if (!fake) this.controllerHasAggro = controllerHasAggro;
     }
 
     public boolean isControllerKnowsAboutAggro() {
-        monsterLock.lock();
-        try {
-            return fake ? false : controllerKnowsAboutAggro;
-        } finally {
-            monsterLock.unlock();
-        }
+        return fake ? false : controllerKnowsAboutAggro;
     }
 
-    public void setControllerKnowsAboutAggro(boolean controllerKnowsAboutAggro) {
-        monsterLock.lock();
-        try {
-            if (fake) {
-                return;
-            }
-            this.controllerKnowsAboutAggro = controllerKnowsAboutAggro;
-        } finally {
-            monsterLock.unlock();
-        }
+    private void setControllerKnowsAboutAggro(boolean controllerKnowsAboutAggro) {
+        if (!fake) this.controllerKnowsAboutAggro = controllerKnowsAboutAggro;
     }
 
     public byte[] makeBossHPBarPacket() {
@@ -956,15 +881,29 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
 
+    private MapleCharacter getActiveController() {
+        MapleCharacter chr = getController();
+        
+        if (chr != null && chr.isLoggedinWorld() && chr.getMap() == this.getMap()) {
+            return chr;
+        } else {
+            return null;
+        }
+    }
+    
+    private void broadcastMonsterStatusMessage(byte[] packet) {
+        map.broadcastMessage(packet, getPosition());
+        
+        MapleCharacter chrController = getActiveController();
+        if (chrController != null && !chrController.isMapObjectVisible(MapleMonster.this)) {
+            chrController.announce(packet);
+        }
+    }
+    
     private int broadcastStatusEffect(final MonsterStatusEffect status) {
         int animationTime = status.getSkill().getAnimationTime();
         byte[] packet = MaplePacketCreator.applyMonsterStatus(getObjectId(), status, null);
-        map.broadcastMessage(packet, getPosition());
-        
-        MapleCharacter chrController = getController();
-        if (chrController != null && !chrController.isMapObjectVisible(this)) {
-            chrController.getClient().announce(packet);
-        }
+        broadcastMonsterStatusMessage(packet);
         
         return animationTime;
     }
@@ -1041,12 +980,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             public void run() {
                 if (isAlive()) {
                     byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), status.getStati());
-                    map.broadcastMessage(packet, getPosition());
-                    
-                    MapleCharacter controller = getController();
-                    if (controller != null && !controller.isMapObjectVisible(MapleMonster.this)) {
-                        controller.getClient().announce(packet);
-                    }
+                    broadcastMonsterStatusMessage(packet);
                 }
                 
                 statiLock.lock();
@@ -1148,12 +1082,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             public void run() {
                 if (isAlive()) {
                     byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), stats);
-                    map.broadcastMessage(packet, getPosition());
-                    
-                    MapleCharacter controller = getController();
-                    if (controller != null && !controller.isMapObjectVisible(MapleMonster.this)) {
-                        controller.getClient().announce(packet);
-                    }
+                    broadcastMonsterStatusMessage(packet);
                     
                     statiLock.lock();
                     try {
@@ -1168,7 +1097,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         };
         final MonsterStatusEffect effect = new MonsterStatusEffect(stats, null, skill, true);
         byte[] packet = MaplePacketCreator.applyMonsterStatus(getObjectId(), effect, reflection);
-        map.broadcastMessage(packet, getPosition());
+        broadcastMonsterStatusMessage(packet);
         
         statiLock.lock();
         try {
@@ -1180,11 +1109,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             statiLock.unlock();
         }
         
-        MapleCharacter controller = getController();
-        if (controller != null && !controller.isMapObjectVisible(this)) {
-            controller.getClient().announce(packet);
-        }
-        
         map.getChannelServer().registerMobStatus(map.getId(), effect, cancelTask, duration);
     }
     
@@ -1193,29 +1117,27 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     public void resetMobPosition(Point newPoint) {
-        removeController();
+        aggroRemoveController();
+        
         setPosition(newPoint);
         map.broadcastMessage(MaplePacketCreator.moveMonster(this.getObjectId(), false, -1, 0, 0, 0, this.getPosition(), this.getIdleMovement()));
         map.moveMonster(this, this.getPosition());
-        map.updateMonsterController(this);
+        
+        aggroUpdateController();
     }
 
     private void debuffMobStat(MonsterStatus stat) {
+        MonsterStatusEffect oldEffect;
         statiLock.lock();
         try {
-            if (isBuffed(stat)) {
-                final MonsterStatusEffect oldEffect = stati.get(stat);
-                byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
-                map.broadcastMessage(packet, getPosition());
-
-                MapleCharacter chrController = getController();
-                if (chrController != null && !chrController.isMapObjectVisible(MapleMonster.this)) {
-                    chrController.getClient().announce(packet);
-                }
-                stati.remove(stat);
-            }
+            oldEffect = stati.remove(stat);
         } finally {
             statiLock.unlock();
+        }
+        
+        if (oldEffect != null) {
+            byte[] packet = MaplePacketCreator.cancelMonsterStatus(getObjectId(), oldEffect.getStati());
+            broadcastMonsterStatusMessage(packet);
         }
     }
     
@@ -1280,7 +1202,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public MapleMap getMap() {
         return map;
     }
-
+    
+    public MapleMonsterAggroCoordinator getMapAggroCoordinator() {
+        return map.getAggroCoordinator();
+    }
+    
     public List<Pair<Integer, Integer>> getSkills() {
         return stats.getSkills();
     }
@@ -1677,6 +1603,206 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     
     public final void changeDifficulty(final int difficulty, boolean pqMob) {
         changeLevelByDifficulty(difficulty, pqMob);
+    }
+    
+    private MapleCharacter getNextControllerCandidate() {
+        int mincontrolled = Integer.MAX_VALUE;
+        MapleCharacter newController = null;
+        
+        int mincontrolleddead = Integer.MAX_VALUE;
+        MapleCharacter newControllerDead = null;
+        
+        for (MapleCharacter chr : getMap().getAllPlayers()) {
+            if (!chr.isHidden()) {
+                int ctrlMonsSize = chr.getNumControlledMonsters();
+
+                if (chr.isAlive()) {
+                    if (ctrlMonsSize < mincontrolled) {
+                        mincontrolled = ctrlMonsSize;
+                        newController = chr;
+                    }
+                } else {
+                    if (ctrlMonsSize < mincontrolleddead) {
+                        mincontrolleddead = ctrlMonsSize;
+                        newControllerDead = chr;
+                    }
+                }
+            }
+        }
+        
+        return newController != null ? newController : newControllerDead;
+    }
+    
+    /**
+     * Removes controllability status from the current controller of this mob.
+     * 
+     */
+    private Pair<MapleCharacter, Boolean> aggroRemoveController() {
+        MapleCharacter chrController;
+        boolean hadAggro;
+        
+        aggroUpdateLock.lock();
+        try {
+            chrController = getActiveController();
+            hadAggro = isControllerHasAggro();
+            
+            this.setController(null);
+            this.setControllerHasAggro(false);
+            this.setControllerKnowsAboutAggro(false);
+        } finally {
+            aggroUpdateLock.unlock();
+        }
+        
+        if (chrController != null) { // this can/should only happen when a hidden gm attacks the monster
+            chrController.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
+            chrController.stopControllingMonster(this);
+        }
+        
+        return new Pair<>(chrController, hadAggro);
+    }
+    
+    /**
+     * Pass over the mob controllability and updates aggro status on the new
+     * player controller.
+     * 
+     */
+    public void aggroSwitchController(MapleCharacter newController, boolean immediateAggro) {
+        if (aggroUpdateLock.tryLock()) {
+            try {
+                MapleCharacter prevController = getController();
+                if (prevController == newController) {
+                    return;
+                }
+                
+                aggroRemoveController();
+                if (!(newController != null && newController.isLoggedinWorld() && newController.getMap() == this.getMap())) {
+                    return;
+                }
+                
+                this.setController(newController);
+                this.setControllerHasAggro(immediateAggro);
+                this.setControllerKnowsAboutAggro(false);
+            } finally {
+                aggroUpdateLock.unlock();
+            }
+            
+            newController.announce(MaplePacketCreator.controlMonster(this, false, immediateAggro));
+            newController.controlMonster(this);
+        }
+    }
+    
+    /**
+     * Automagically finds a new controller for the given monster from the chars
+     * on the map it is from...
+     * 
+     */
+    public void aggroUpdateController() {
+        MapleCharacter chrController = this.getActiveController();
+        if (chrController != null && chrController.isAlive()) {
+            return;
+        }
+        
+        MapleCharacter newController = getNextControllerCandidate();
+        if (newController == null) {    // was a new controller found? (if not no one is on the map)
+            return;
+        }
+        
+        this.aggroSwitchController(newController, false);
+    }
+    
+    /**
+     * Ensures controllability removal of the current player controller, and
+     * fetches for any player on the map to start controlling in place.
+     * 
+     */
+    public void aggroRedirectController() {
+        this.aggroRemoveController();   // don't care if new controller not found, at least remove current controller
+        this.aggroUpdateController();
+    }
+    
+    /**
+     * Returns the current aggro status on the specified player, or null if the
+     * specified player is currently not this mob's controller.
+     * 
+     */
+    public Boolean aggroMoveLifeUpdate(MapleCharacter player) {
+        MapleCharacter chrController = getController();
+        if (chrController != null && player.getId() == chrController.getId()) {
+            boolean aggro = this.isControllerHasAggro();
+            if (aggro) {
+                this.setControllerKnowsAboutAggro(true);
+            }
+            
+            return aggro;
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Refreshes auto aggro for the player passed as parameter, does nothing if
+     * there is already an active controller for this mob.
+     * 
+     */
+    public void aggroAutoAggroUpdate(MapleCharacter player) {
+        MapleCharacter chrController = this.getActiveController();
+        
+        if (chrController == null) {
+            this.aggroSwitchController(player, true);
+        } else if (chrController.getId() == player.getId()) {
+            this.setControllerHasAggro(true);
+        }
+    }
+    
+    /**
+     * Applied damage input for this mob, enough damage taken implies
+     * an aggro target update for the attacker shortly.
+     * 
+     */
+    public void aggroMonsterDamage(MapleCharacter attacker, int damage) {
+        MapleMonsterAggroCoordinator mmac = this.getMapAggroCoordinator();
+        mmac.addAggroDamage(this, attacker.getId(), damage);
+        
+        MapleCharacter chrController = this.getController();    // aggro based on DPS rather than first-come-first-served, now live after suggestions thanks to MedicOP, Thora, Vcoc
+        if (chrController != attacker) {
+            if (this.getMapAggroCoordinator().isLeadingCharacterAggro(this, attacker)) {
+                this.aggroSwitchController(attacker, true);
+            }
+            
+            /*
+            For some reason, some mobs loses aggro on controllers if other players also attacks them.
+            Maybe it was intended by Nexon to interchange controllers at every attack...
+            
+            else if (chrController != null) {
+                chrController.announce(MaplePacketCreator.stopControllingMonster(this.getObjectId()));
+                chrController.announce(MaplePacketCreator.controlMonster(this, false, true));
+            }
+            */
+        } else {
+            this.setControllerHasAggro(true);
+        }
+    }
+    
+    /**
+     * Clears all applied damage input for this mob, doesn't refresh target aggro.
+     * 
+     */
+    public void aggroClearDamages() {
+        this.getMapAggroCoordinator().removeAggroEntries(this);
+    }
+
+    /**
+     * Clears this mob aggro on the current controller.
+     * 
+     */
+    public void aggroResetAggro() {
+        aggroUpdateLock.lock();
+        try {
+            this.setControllerHasAggro(false);
+            this.setControllerKnowsAboutAggro(false);
+        } finally {
+            aggroUpdateLock.unlock();
+        }
     }
     
     public final void disposeLocks() {

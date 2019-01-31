@@ -62,6 +62,7 @@ import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import java.lang.ref.WeakReference;
 import net.server.Server;
+import net.server.coordinator.MapleMonsterAggroCoordinator;
 import net.server.channel.Channel;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
@@ -140,6 +141,7 @@ public class MapleMap {
     private int fieldType;
     private int fieldLimit = 0;
     private int mobCapacity = -1;
+    private MapleMonsterAggroCoordinator aggroMonitor = null;   // aggroMonitor activity in sync with itemMonitor
     private ScheduledFuture<?> mapMonitor = null;
     private ScheduledFuture<?> itemMonitor = null;
     private ScheduledFuture<?> expireItemsTask = null;
@@ -185,6 +187,8 @@ public class MapleMap {
         final ReentrantReadWriteLock objectLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_OBJS, true);
         objectRLock = objectLock.readLock();
         objectWLock = objectLock.writeLock();
+        
+        aggroMonitor = new MapleMonsterAggroCoordinator();
     }
     
     public void setEventInstance(EventInstanceManager eim) {
@@ -709,7 +713,7 @@ public class MapleMap {
         if(useBaseRate) chRate = 1;
 
         final MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
-        final List<MonsterGlobalDropEntry> globalEntry = mi.getGlobalDrop();
+        final List<MonsterGlobalDropEntry> globalEntry = mi.getRelevantGlobalDrops(this.getId());
         
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
@@ -777,6 +781,7 @@ public class MapleMap {
                             if(itemMonitorTimeout == 0) {
                                 if(itemMonitor != null) {
                                     stopItemMonitor();
+                                    aggroMonitor.stopAggroCoordinator();
                                 }
                                 
                                 return;
@@ -1144,12 +1149,10 @@ public class MapleMap {
     }
     
     public List<MapleCharacter> getAllPlayers() {
-        List<MapleCharacter> character = new LinkedList<>();
+        List<MapleCharacter> character;
         chrRLock.lock();
         try {
-            for (MapleCharacter a : characters) {
-                character.add(a);
-            }
+            character = new ArrayList<>(characters);
         } finally {
             chrRLock.unlock();
         }
@@ -1316,7 +1319,7 @@ public class MapleMap {
                             if (mons != null) {
                                 if (mons.getId() == 8800000) {
                                     makeMonsterReal(mons);
-                                    updateMonsterController(mons);
+                                    mons.aggroUpdateController();
                                     break;
                                 }
                             }
@@ -1552,88 +1555,6 @@ public class MapleMap {
         }
     }
     
-    private MapleCharacter getNextControllerCandidate() {
-        int mincontrolled = Integer.MAX_VALUE;
-        MapleCharacter newController = null;
-        
-        int mincontrolleddead = Integer.MAX_VALUE;
-        MapleCharacter newControllerDead = null;
-        
-        chrRLock.lock();
-        try {
-            for (MapleCharacter chr : characters) {
-                if (!chr.isHidden()) {
-                    int ctrlMonsSize = chr.getControlledMonsters().size();
-                    
-                    if (chr.isAlive()) {
-                        if (ctrlMonsSize < mincontrolled) {
-                            mincontrolled = ctrlMonsSize;
-                            newController = chr;
-                        }
-                    } else {
-                        if (ctrlMonsSize < mincontrolleddead) {
-                            mincontrolleddead = ctrlMonsSize;
-                            newControllerDead = chr;
-                        }
-                    }
-                }
-            }
-        } finally {
-            chrRLock.unlock();
-        }
-        
-        return newController != null ? newController : newControllerDead;
-    }
-    
-    /**
-     * Automagically finds a new controller for the given monster from the chars
-     * on the map...
-     *
-     * @param monster
-     */
-    public void updateMonsterController(MapleMonster monster) {
-        monster.lockMonster();
-        try {
-            if (!monster.isAlive()) {
-                return;
-            }
-            
-            MapleCharacter newController;
-            MapleCharacter chrController = monster.getController();
-            if (chrController != null) {
-                if (chrController.getMap() != this) {
-                    chrController.stopControllingMonster(monster);
-                    newController = getNextControllerCandidate();
-                } else {
-                    if (chrController.isAlive()) {
-                        return;
-                    }
-                    
-                    newController = getNextControllerCandidate();
-                    if (newController == null || !newController.isAlive()) {
-                        return;
-                    }
-                    
-                    chrController.stopControllingMonster(monster);
-                }
-            } else {
-                newController = getNextControllerCandidate();
-            }
-            
-            if (newController != null) { // was a new controller found? (if not no one is on the map)
-                if (monster.isFirstAttack()) {
-                    newController.controlMonster(monster, true);
-                    monster.setControllerHasAggro(true);
-                    monster.setControllerKnowsAboutAggro(true);
-                } else {
-                    newController.controlMonster(monster, false);
-                }
-            }
-        } finally {
-            monster.unlockMonster();
-        }
-    }
-
     private Map<Integer, MapleMapObject> getCopyMapObjects() {
         objectRLock.lock();
         try {
@@ -1862,7 +1783,7 @@ public class MapleMap {
             }
         });
         
-        updateMonsterController(monster);
+        monster.aggroUpdateController();
         
         if (monster.hasBossHPBar()) {
             broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
@@ -1948,7 +1869,7 @@ public class MapleMap {
             }
         }, null);
         
-        updateMonsterController(monster);
+        monster.aggroUpdateController();
         
         if (monster.hasBossHPBar()) {
             broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
@@ -1993,7 +1914,8 @@ public class MapleMap {
                 c.announce(MaplePacketCreator.spawnMonster(monster, true, effect));
             }
         });
-        updateMonsterController(monster);
+        
+        monster.aggroUpdateController();
         
         if (monster.hasBossHPBar()) {
             broadcastBossHpMessage(monster, monster.hashCode(), monster.makeBossHPBarPacket(), monster.getPosition());
@@ -2019,7 +1941,8 @@ public class MapleMap {
     public void makeMonsterReal(final MapleMonster monster) {
         monster.setFake(false);
         broadcastMessage(MaplePacketCreator.makeMonsterReal(monster));
-        updateMonsterController(monster);
+        
+        monster.aggroUpdateController();
     }
 
     public void spawnReactor(final MapleReactor reactor) {
@@ -2403,7 +2326,10 @@ public class MapleMap {
         chr.setMapId(mapid);
         
         if (chrSize == 1) {
-            if(!hasItemMonitor()) startItemMonitor();
+            if(!hasItemMonitor()) {
+                startItemMonitor();
+                aggroMonitor.startAggroCoordinator();
+            }
             
             if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
                 chr.enteredScript(onFirstUserEnter, mapid);
@@ -2688,19 +2614,8 @@ public class MapleMap {
             broadcastGMMessage(MaplePacketCreator.removePlayerFromMap(chr.getId()));
         }
 
-        for (MapleMonster monster : chr.getControlledMonsters()) {
-            monster.lockMonster();
-            try {
-                monster.setController(null);
-                monster.setControllerHasAggro(false);
-                monster.setControllerKnowsAboutAggro(false);
-                updateMonsterController(monster);
-            } finally {
-                monster.unlockMonster();
-            }
-        }
-        
         chr.leaveMap();
+        
         for (MapleSummon summon : new ArrayList<>(chr.getSummonsValues())) {
             if (summon.isStationary()) {
                 chr.cancelEffectFromBuffStat(MapleBuffStat.PUPPET);
@@ -2926,7 +2841,7 @@ public class MapleMap {
             if (isNonRangedType(o.getType())) {
                 o.sendSpawnData(mapleClient);
             } else if (o.getType() == MapleMapObjectType.MONSTER) {
-                updateMonsterController((MapleMonster) o);
+                ((MapleMonster) o).aggroUpdateController();
             } else if (o.getType() == MapleMapObjectType.SUMMON) {
                 MapleSummon summon = (MapleSummon) o;
                 if (summon.getOwner() == chr) {
@@ -3036,6 +2951,10 @@ public class MapleMap {
     
     public void setMapLineBoundings(int vrTop, int vrBottom, int vrLeft, int vrRight) {
         mapArea.setBounds(vrLeft, vrTop, vrRight - vrLeft, vrBottom - vrTop);
+    }
+    
+    public MapleMonsterAggroCoordinator getAggroCoordinator() {
+        return aggroMonitor;
     }
     
     /**
@@ -4091,6 +4010,9 @@ public class MapleMap {
         
         chrWLock.lock();
         try {
+            aggroMonitor.dispose();
+            aggroMonitor = null;
+            
             if(itemMonitor != null) {
                 itemMonitor.cancel(false);
                 itemMonitor = null;

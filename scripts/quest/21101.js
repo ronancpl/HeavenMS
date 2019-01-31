@@ -39,7 +39,7 @@ function start(mode, type, selection) {
     } else if (status == 1) {
         if (qm.getPlayer().getJob().getId() == 2000) {
             if(!qm.canHold(1142129)) {
-                    cm.sendOk("Wow, your #bequip#k inventory is full. You need to make at least 1 empty slot to complete this quest.");
+                    qm.sendOk("Wow, your #bequip#k inventory is full. You need to make at least 1 empty slot to complete this quest.");
                     qm.dispose();
                     return;
             }

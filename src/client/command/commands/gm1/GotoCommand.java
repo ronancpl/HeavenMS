@@ -41,8 +41,6 @@ public class GotoCommand extends Command {
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        final HashMap<String, Integer> gotomaps = GameConstants.GOTO_MAPS;
-
         MapleCharacter player = c.getPlayer();
         if (params.length < 1){
             player.yellowMessage("Syntax: @goto <map name>");
@@ -54,6 +52,13 @@ public class GotoCommand extends Command {
             return;
         }
 
+        HashMap<String, Integer> gotomaps;
+        if (player.isGM()) {
+            gotomaps = new HashMap<>(GameConstants.GOTO_AREAS);     // distinct map registry for GM/users suggested thanks to Vcoc
+        } else {
+            gotomaps = new HashMap<>(GameConstants.GOTO_TOWNS);
+        }
+        
         if (gotomaps.containsKey(params[0])) {
             MapleMap target = c.getChannelServer().getMapFactory().getMap(gotomaps.get(params[0]));
             

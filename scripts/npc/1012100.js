@@ -46,12 +46,7 @@ function start() {
     } else {
         if (cm.getJobId() == 0) {
             actionx["1stJob"] = true;
-            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
-                cm.sendNext("So you decided to become a #rBowman#k?");
-            else {
-                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rBowman#k.");
-                cm.dispose();
-            }
+            cm.sendNext("So you decided to become a #rbowman#k? There are some standards to meet, y'know... #bYour level should be at least 10, with at least " + cm.getFirstJobStatRequirement(jobType) + "#k. Let's see.");   // thanks Vcoc for noticing a need to state and check requirements on first job adv starting message
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 300) {
             actionx["2ndJob"] = true;
             if (cm.haveItem(4031012))
@@ -79,8 +74,13 @@ function start() {
 
 function action(mode, type, selection) {
     status++;
-    if (mode == 0 && type != 1)
+    if (mode == -1 && selection == -1) {
+        cm.dispose();
+        return;
+    } else if (mode == 0 && type != 1) {
         status -= 2;
+    }
+    
     if (status == -1){
         start();
         return;
@@ -116,10 +116,15 @@ function action(mode, type, selection) {
     }
     
     if (actionx["1stJob"]){
-        if (status == 0)
-            cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
-        else if (status == 1){
-            if (cm.canHold(1452051) && cm.canHold(2060000)){
+        if (status == 0) {
+            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType)) {
+                cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
+            } else {
+                cm.sendOk("Train a bit more until you reach the base requirements and I can show you the way of the #rBowman#k.");
+                cm.dispose();
+            }
+        } else if (status == 1){
+            if (cm.canHold(1452051) && cm.canHold(2070000)){
                 if (cm.getJobId() == 0){
                     cm.changeJobById(300);
                     cm.gainItem(1452051, 1);

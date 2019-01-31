@@ -45,9 +45,8 @@ public class GameConstants {
         return(EXP_RATE_GAIN[slot]);
     }
     
-    // used by the "goto" command
-    public static final HashMap<String, Integer> GOTO_MAPS = new HashMap<String, Integer>() {{
-        put("gmmap", 180000000);
+    // used by the "goto" command for players
+    public static final HashMap<String, Integer> GOTO_TOWNS = new HashMap<String, Integer>() {{
         put("southperry", 60000);
         put("amherst", 1000000);
         put("henesys", 100000000);
@@ -72,6 +71,25 @@ public class GameConstants {
         put("korean", 222000000);
         put("ellin", 300000000);
         put("nlc", 600000000);
+        put("showa", 801000000);
+        put("shrine", 800000000);
+        put("ariant", 260000000);
+        put("magatia", 261000000);
+        put("singapore", 540000000);
+        put("quay", 541000000);
+        put("kampung", 551000000);
+        put("amoria", 680000000);
+        put("temple", 270000100);
+        put("square", 103040000);
+        put("neo", 240070000);
+        put("mushking", 106020000);
+    }};
+    
+    // used by the "goto" command for only-GMs
+    public static final HashMap<String, Integer> GOTO_AREAS = new HashMap<String, Integer>() {{
+        putAll(GOTO_TOWNS);
+        
+        put("gmmap", 180000000);
         put("excavation", 990000000);
         put("mushmom", 100000005);
         put("griffey", 240020101);
@@ -80,25 +98,13 @@ public class GameConstants {
         put("balrog", 105090900);
         put("zakum", 211042300);
         put("papu", 220080001);
-        put("showa", 801000000);
         put("guild", 200000301);
-        put("shrine", 800000000);
         put("skelegon", 240040511);
         put("hpq", 100000200);
         put("pianus", 230040420);
         put("horntail", 240050400);
         put("pinkbean", 270050000);
-        put("ariant", 260000000);
-        put("magatia", 261000000);
-        put("singapore", 540000000);
-        put("quay", 541000000);
-        put("kampung", 551000000);
         put("keep", 610020006);
-        put("amoria", 680000000);
-        put("temple", 270000100);
-        put("square", 103040000);
-        put("neo", 240070000);
-        put("mushking", 106020000);
         put("dojo", 925020001);
         put("bosspq", 970030000);
         put("fm", 910000000);

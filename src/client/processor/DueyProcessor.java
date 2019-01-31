@@ -469,6 +469,11 @@ public class DueyProcessor {
                     }
 
                     if (dp.getItem() != null) {
+                        if (!c.getPlayer().canHoldMeso(dp.getMesos())) {
+                            c.announce(MaplePacketCreator.sendDueyMSG(Actions.TOCLIENT_RECV_UNKNOWN_ERROR.getCode()));
+                            return;
+                        }
+                        
                         if (!MapleInventoryManipulator.checkSpace(c, dp.getItem().getItemId(), dp.getItem().getQuantity(), dp.getItem().getOwner())) {
                             int itemid = dp.getItem().getItemId();
                             if(MapleItemInformationProvider.getInstance().isPickupRestricted(itemid) && c.getPlayer().getInventory(ItemConstants.getInventoryType(itemid)).findById(itemid) != null) {
@@ -483,17 +488,7 @@ public class DueyProcessor {
                         }
                     }
 
-                    long gainmesos;
-                    long totalmesos = (long) dp.getMesos() + c.getPlayer().getMeso();
-
-                    if (totalmesos < 0 || dp.getMesos() < 0) {
-                        gainmesos = 0;
-                    } else {
-                        totalmesos = Math.min(totalmesos, Integer.MAX_VALUE);
-                        gainmesos = totalmesos - c.getPlayer().getMeso();
-                    }
-
-                    c.getPlayer().gainMeso((int)gainmesos, false);
+                    c.getPlayer().gainMeso(dp.getMesos(), false);
 
                     removeItemFromDB(packageid);
                     c.announce(MaplePacketCreator.removeItemFromDuey(false, packageid));

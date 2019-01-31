@@ -56,8 +56,13 @@ public class Item implements Comparable<Item> {
         this.id = id;
         this.position = position;
         this.quantity = quantity;
+        if (petid > -1) {   // issue with null "pet" having petid > -1 found thanks to MedicOP
+            this.pet = MaplePet.loadFromDb(id, position, petid);
+            if (this.pet == null) {
+                petid = -1;
+            }
+        }
         this.petid = petid;
-        if (petid > -1) this.pet = MaplePet.loadFromDb(id, position, petid);
         this.flag = 0;
         this.log = new LinkedList<>();
     }
@@ -120,10 +125,6 @@ public class Item implements Comparable<Item> {
 
     public int getPetId() {
         return petid;
-    }
-
-    public void setPetId(int id) {
-        this.petid = id;
     }
  
     @Override

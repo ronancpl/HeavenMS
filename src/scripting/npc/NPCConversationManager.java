@@ -100,6 +100,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
 	public void dispose() {
 		NPCScriptManager.getInstance().dispose(this);
+                getClient().announce(MaplePacketCreator.enableActions());
 	}
 
 	public void sendNext(String text) {

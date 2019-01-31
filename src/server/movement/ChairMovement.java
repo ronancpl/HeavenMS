@@ -25,18 +25,18 @@ import java.awt.Point;
 import tools.data.output.LittleEndianWriter;
 
 public class ChairMovement extends AbstractLifeMovement {
-    private int unk;
+    private int fh;
 
     public ChairMovement(int type, Point position, int duration, int newstate) {
         super(type, position, duration, newstate);
     }
 
-    public int getUnk() {
-        return unk;
+    public int getFh() {
+        return fh;
     }
 
-    public void setUnk(int unk) {
-        this.unk = unk;
+    public void setFh(int fh) {
+        this.fh = fh;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ChairMovement extends AbstractLifeMovement {
         lew.write(getType());
         lew.writeShort(getPosition().x);
         lew.writeShort(getPosition().y);
-        lew.writeShort(unk);
+        lew.writeShort(fh);
         lew.write(getNewstate());
         lew.writeShort(getDuration());
     }

@@ -23,11 +23,17 @@
 package server.expeditions;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledFuture;
 
+import net.server.PlayerStorage;
 import net.server.Server;
 import server.TimerManager;
 import server.life.MapleMonster;
@@ -78,18 +84,18 @@ public class MapleExpedition {
 	private MapleExpeditionType type;
 	private boolean registering;
 	private MapleMap startMap;
-	private ArrayList<String> bossLogs;
+	private List<String> bossLogs;
 	private ScheduledFuture<?> schedule;
-	private List<MapleCharacter> members = new ArrayList<>();
-	private List<Integer> banned = new ArrayList<>();
+	private Map<Integer, String> members = new ConcurrentHashMap<>();
+	private List<Integer> banned = new CopyOnWriteArrayList<>();
 	private long startTime;
 
 	public MapleExpedition(MapleCharacter player, MapleExpeditionType met) {
 		leader = player;
-		members.add(leader);
+		members.put(player.getId(), player.getName());
                 startMap = player.getMap();
 		type = met;
-		bossLogs = new ArrayList<String>();
+		bossLogs = new CopyOnWriteArrayList<>();
 		beginRegistration();
 	}
 
@@ -109,7 +115,7 @@ public class MapleExpedition {
 			@Override
 			public void run() {
 				if (registering){
-					leader.getClient().getChannelServer().getExpeditions().remove(exped);
+                                        startMap.getChannelServer().getExpeditions().remove(exped);
 					startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Expedition] The time limit has been reached. Expedition has been disbanded."));
                                         
                                         dispose(false);
@@ -134,7 +140,7 @@ public class MapleExpedition {
 		broadcastExped(MaplePacketCreator.removeClock());
 		broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
-		Server.getInstance().broadcastGMMessage(leader.getWorld(), MaplePacketCreator.serverNotice(6, "[Expedition] " + type.toString() + " Expedition started with leader: " + leader.getName()));
+		Server.getInstance().broadcastGMMessage(startMap.getWorld(), MaplePacketCreator.serverNotice(6, "[Expedition] " + type.toString() + " Expedition started with leader: " + leader.getName()));
 	}
 
 	public String addMember(MapleCharacter player) {
@@ -147,22 +153,21 @@ public class MapleExpedition {
 		if (members.size() >= type.getMaxSize()){ //Would be a miracle if anybody ever saw this
 			return "Sorry, this expedition is full!";
 		}
-		if (members.add(player)){
-                        player.announce(MaplePacketCreator.getClock((int)(startTime - System.currentTimeMillis()) / 1000));
-			broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
-			return "You have registered for the expedition successfully!";
-		} 
-		return "Sorry, something went really wrong. Report this on the forum with a screenshot!";
+                
+                members.put(player.getId(), player.getName());
+                player.announce(MaplePacketCreator.getClock((int)(startTime - System.currentTimeMillis()) / 1000));
+                broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
+                return "You have registered for the expedition successfully!";
 	}
 
-	private void broadcastExped(byte [] data){
-		for (MapleCharacter member : members){
-			member.getClient().announce(data);
+	private void broadcastExped(byte[] packet){
+		for (MapleCharacter chr : getActiveMembers()){
+                        chr.announce(packet);
 		}
 	}
 
 	public boolean removeMember(MapleCharacter chr) {
-		if(members.remove(chr)) {
+		if(members.remove(chr.getId()) != null) {
                     chr.announce(MaplePacketCreator.removeClock());
                     broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getName() + " has left the expedition."));
                     chr.dropMessage(6, "[Expedition] You have left this expedition.");
@@ -175,9 +180,42 @@ public class MapleExpedition {
 	public MapleExpeditionType getType() {
 		return type;
 	}
-
-	public List<MapleCharacter> getMembers() {
-		return members;
+        
+        public List<MapleCharacter> getActiveMembers() {    // thanks MedicOP for figuring out an issue with broadcasting packets to offline members
+                PlayerStorage ps = startMap.getWorldServer().getPlayerStorage();
+                
+                List<MapleCharacter> activeMembers = new LinkedList<>();
+		for (Integer chrid : getMembers().keySet()){
+                        MapleCharacter chr = ps.getCharacterById(chrid);
+                        if (chr != null && chr.isLoggedinWorld()) {
+                                activeMembers.add(chr);
+                        }
+		}
+                
+                return activeMembers;
+        }
+        
+        public Map<Integer, String> getMembers() {
+                return new HashMap<>(members);
+	}
+        
+        public List<Entry<Integer, String>> getMemberList() {
+                List<Entry<Integer, String>> memberList = new LinkedList<>();
+                Entry<Integer, String> leaderEntry = null;
+                
+                for (Entry<Integer, String> e : getMembers().entrySet()) {
+                        if (!isLeader(e.getKey())) {
+                                memberList.add(e);
+                        } else {
+                                leaderEntry = e;
+                        }
+                }
+                
+                if (leaderEntry != null) {
+                        memberList.add(0, leaderEntry);
+                }
+            
+                return memberList;
 	}
 
 	public MapleCharacter getLeader(){
@@ -189,16 +227,15 @@ public class MapleExpedition {
         }
 
 	public boolean contains(MapleCharacter player) {
-		for (MapleCharacter member : members){
-			if (member.getId() == player.getId()){
-				return true;
-			}
-		}
-		return false;
+                return members.containsKey(player.getId());
 	}
 
 	public boolean isLeader(MapleCharacter player) {
-		return leader.equals(player);
+		return isLeader(player.getId());
+	}
+        
+        public boolean isLeader(int playerid) {
+		return leader.getId() == playerid;
 	}
 
 	public boolean isRegistering(){
@@ -209,15 +246,20 @@ public class MapleExpedition {
 		return !registering;
 	}
 
-	public void ban(MapleCharacter player) {
-		if (!banned.contains(player.getId())) {
-			banned.add(player.getId());
-			members.remove(player);
+	public void ban(Entry<Integer, String> chr) {
+                int cid = chr.getKey();
+                
+		if (!banned.contains(cid)) {
+			banned.add(cid);
+			members.remove(cid);
                         
-                        broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has been banned from the expedition."));
+                        broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getValue() + " has been banned from the expedition."));
                         
-                        player.announce(MaplePacketCreator.removeClock());
-                        player.dropMessage(6, "[Expedition] You have been banned from this expedition.");
+                        MapleCharacter player = startMap.getWorldServer().getPlayerStorage().getCharacterById(cid);
+                        if (player != null && player.isLoggedinWorld()) {
+                                player.announce(MaplePacketCreator.removeClock());
+                                player.dropMessage(6, "[Expedition] You have been banned from this expedition.");
+                        }
 		}
 	}
 
@@ -225,7 +267,7 @@ public class MapleExpedition {
 		return startTime;
 	}
 	
-	public ArrayList<String> getBossLogs(){
+	public List<String> getBossLogs(){
 		return bossLogs;
 	}
 	

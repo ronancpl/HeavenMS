@@ -77,12 +77,7 @@ function start() {
     } else {
         if (cm.getJobId() == 0) {
             actionx["1stJob"] = true;
-            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType))
-                cm.sendNext("Want to be a pirate? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 10#k. Let's see.");
-            else {
-                cm.sendOk("Train a bit more until you reach #blevel 10, " + cm.getFirstJobStatRequirement(jobType) + "#k and I can show you the way of the #rPirate#k.");
-                cm.dispose();
-            }
+            cm.sendNext("Want to be a #rpirate#k? There are some standards to meet. because we can't just accept EVERYONE in... #bYour level should be at least 10, with " + cm.getFirstJobStatRequirement(jobType) + " minimum#k. Let's see.");   // thanks Vcoc for noticing a need to state and check requirements on first job adv starting message
         } else if (cm.getLevel() >= 30 && cm.getJobId() == 500) {
             actionx["2ndJob"] = true;
             if (cm.isQuestCompleted(2191) || cm.isQuestCompleted(2192))
@@ -107,8 +102,13 @@ function start() {
 
 function action(mode, type, selection) {
     status++;
-    if (mode == 0 && type != 1)
+    if (mode == -1 && selection == -1) {
+        cm.dispose();
+        return;
+    } else if (mode == 0 && type != 1) {
         status -= 2;
+    }
+    
     if (status == -1){
         start();
         return;
@@ -161,10 +161,15 @@ function action(mode, type, selection) {
     }
     
     if (actionx["1stJob"]){
-        if (status == 0)
-            cm.sendYesNo("Oh...! You look like someone that can definitely be a part of us... all you need is a little slang, and... yeah... so, what do you think? Wanna be the Pirate?");
-        else if (status == 1){
-            if (cm.canHold(2070000) && cm.canHold(1472061)){
+        if (status == 0) {
+            if (cm.getLevel() >= 10 && cm.canGetFirstJob(jobType)) {
+                cm.sendYesNo("Oh...! You look like someone that can definitely be a part of us... all you need is a little slang, and... yeah... so, what do you think? Wanna be the Pirate?");
+            } else {
+                cm.sendOk("Train a bit more until you reach the base requirements and I can show you the way of the #rPirate#k.");
+                cm.dispose();
+            }
+        } else if (status == 1){
+            if (cm.canHold(2070000) && cm.canHoldAll([1482000, 1492000])){
                 if (cm.getJobId() == 0){
                     cm.changeJobById(500);
                     cm.gainItem(1492000, 1);

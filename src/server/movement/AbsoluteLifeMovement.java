@@ -26,7 +26,7 @@ import tools.data.output.LittleEndianWriter;
 
 public class AbsoluteLifeMovement extends AbstractLifeMovement {
     private Point pixelsPerSecond;
-    private int unk;
+    private int fh;
 
     public AbsoluteLifeMovement(int type, Point position, int duration, int newstate) {
         super(type, position, duration, newstate);
@@ -40,12 +40,12 @@ public class AbsoluteLifeMovement extends AbstractLifeMovement {
         this.pixelsPerSecond = wobble;
     }
 
-    public int getUnk() {
-        return unk;
+    public int getFh() {    // unk -> fh, thanks Spoon for pointing this out
+        return fh;
     }
 
-    public void setUnk(int unk) {
-        this.unk = unk;
+    public void setFh(int fh) {
+        this.fh = fh;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class AbsoluteLifeMovement extends AbstractLifeMovement {
         lew.writeShort(getPosition().y);
         lew.writeShort(pixelsPerSecond.x);
         lew.writeShort(pixelsPerSecond.y);
-        lew.writeShort(unk);
+        lew.writeShort(fh);
         lew.write(getNewstate());
         lew.writeShort(getDuration());
     }

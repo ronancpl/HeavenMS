@@ -58,7 +58,7 @@ function action(mode, type, selection) {
             return;
         }
         
-        if(!cm.isQuestStarted(100200)) {
+        if(!(cm.isQuestStarted(100200) || cm.isQuestCompleted(100200))) {   // thanks Vcoc for finding out a need of reapproval from the masters for Zakum expeditions
             cm.sendOk("Beware, for the power of olde has not been forgotten... ");
             cm.dispose();
             return;

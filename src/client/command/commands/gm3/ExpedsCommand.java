@@ -30,6 +30,8 @@ import net.server.Server;
 import net.server.channel.Channel;
 import server.expeditions.MapleExpedition;
 
+import java.util.Map.Entry;
+
 public class ExpedsCommand extends Command {
     {
         setDescription("");
@@ -53,11 +55,11 @@ public class ExpedsCommand extends Command {
                 player.yellowMessage(">> Size: " + exped.getMembers().size());
                 player.yellowMessage(">> Leader: " + exped.getLeader().getName());
                 int memId = 2;
-                for (MapleCharacter member : exped.getMembers()) {
-                    if (exped.isLeader(member)) {
+                for (Entry<Integer, String> e : exped.getMembers().entrySet()) {
+                    if (exped.isLeader(e.getKey())) {
                         continue;
                     }
-                    player.yellowMessage(">>> Member " + memId + ": " + member.getName());
+                    player.yellowMessage(">>> Member " + memId + ": " + e.getValue());
                     memId++;
                 }
             }

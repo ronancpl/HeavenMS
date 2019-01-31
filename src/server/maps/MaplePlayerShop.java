@@ -103,11 +103,15 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         visitorLock.lock();
         try {
             byte count = 0;
-            for (MapleCharacter visitor : visitors) {
-                if (visitor != null) {
-                    count++;
+            //if (this.isOpen()) {
+                for (MapleCharacter visitor : visitors) {
+                    if (visitor != null) {
+                        count++;
+                    }
                 }
-            }
+            //} else {  shouldn't happen since there isn't a "closed" state for player shops.
+            //    count = (byte) (visitors.length + 1);
+            //}
             
             return new byte[]{count, (byte) visitors.length};
         } finally {
@@ -198,9 +202,12 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         }
     }
 
-    public void addItem(MaplePlayerShopItem item) {
+    public boolean addItem(MaplePlayerShopItem item) {
         synchronized (items) {
+            if (items.size() >= 16) return false;
+            
             items.add(item);
+            return true;
         }
     }
 
@@ -241,7 +248,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
      * @param item
      * @param quantity
      */
-    public void buy(MapleClient c, int item, short quantity) {
+    public boolean buy(MapleClient c, int item, short quantity) {
         synchronized (items) {
             if (isVisitor(c.getPlayer())) {
                 MaplePlayerShopItem pItem = items.get(item);
@@ -250,10 +257,10 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                 newItem.setQuantity((short) ((pItem.getItem().getQuantity() * quantity)));
                 if (quantity < 1 || !pItem.isExist() || pItem.getBundles() < quantity) {
                     c.announce(MaplePacketCreator.enableActions());
-                    return;
+                    return false;
                 } else if (newItem.getInventoryType().equals(MapleInventoryType.EQUIP) && newItem.getQuantity() > 1) {
                     c.announce(MaplePacketCreator.enableActions());
-                    return;
+                    return false;
                 }
                 
                 MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
@@ -264,6 +271,12 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                     
                     if (c.getPlayer().getMeso() >= price) {
                         if (canBuy(c, newItem)) {
+                            if (!owner.canHoldMeso(price)) {
+                                owner.dropMessage(1, "Transaction failed since the shop owner can't hold any more mesos.");
+                                c.announce(MaplePacketCreator.enableActions());
+                                return false;
+                            }
+                            
                             c.getPlayer().gainMeso(-price, false);
                             owner.gainMeso(price, true);
                             
@@ -286,13 +299,21 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                             }
                         } else {
                             c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
+                            c.announce(MaplePacketCreator.enableActions());
+                            return false;
                         }
                     } else {
                         c.getPlayer().dropMessage(1, "You don't have enough mesos to purchase this item.");
+                        c.announce(MaplePacketCreator.enableActions());
+                        return false;
                     }
+                    
+                    return true;
                 } finally {
                     visitorLock.unlock();
                 }
+            } else {
+                return false;
             }
         }
     }
@@ -418,9 +439,9 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
     }
     
     public void closeShop() {
-        owner.getMap().broadcastMessage(MaplePacketCreator.removePlayerShopBox(this));
         clearChatLog();
         removeVisitors();
+        owner.getMap().broadcastMessage(MaplePacketCreator.removePlayerShopBox(this));
     }
 
     public void sendShop(MapleClient c) {

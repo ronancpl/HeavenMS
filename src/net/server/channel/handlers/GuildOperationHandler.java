@@ -47,10 +47,6 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
         return true;
     }
 
-    private void restancePlayer(MapleCharacter mc) {
-        mc.broadcastStance();
-    }
-
     private class Invited {
         public String name;
         public int gid;
@@ -131,7 +127,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.showGuildInfo(mc));
                 
                 c.getPlayer().dropMessage(1, "You have successfully created a Guild.");
-                restancePlayer(mc);
+                mc.getGuild().broadcastNameChanged();
+                mc.getGuild().broadcastEmblemChanged();
                 break;
             case 0x05:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {
@@ -191,7 +188,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if(allianceId > 0) Server.getInstance().getAlliance(allianceId).updateAlliancePackets(mc);
                 
                 mc.saveGuildStatus(); // update database
-                restancePlayer(mc);
+                mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildNameChanged(mc.getId(), mc.getGuild().getName())); // thanks Vcoc for pointing out an issue with updating guild tooltip to players in the map
+                mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildMarkChanged(mc.getId(), mc.getGuild()));
                 break;
             case 0x07:
                 cid = slea.readInt();
@@ -212,7 +210,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 mc.getMGC().setGuildId(0);
                 mc.getMGC().setGuildRank(5);
                 mc.saveGuildStatus();
-                restancePlayer(mc);
+                mc.getMap().broadcastMessage(mc, MaplePacketCreator.guildNameChanged(mc.getId(), ""));
                 break;
             case 0x08:
                 allianceId = mc.getGuild().getAllianceId();
@@ -272,7 +270,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 }
                 
                 mc.gainMeso(-ServerConstants.CHANGE_EMBLEM_COST, true, false, true);
-                restancePlayer(mc);
+                mc.getGuild().broadcastNameChanged();
+                mc.getGuild().broadcastEmblemChanged();
                 break;
             case 0x10:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {

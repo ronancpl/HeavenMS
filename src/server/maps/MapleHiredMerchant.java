@@ -64,6 +64,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     private List<Pair<String, Byte>> messages = new LinkedList<>();
     private List<SoldItem> sold = new LinkedList<>();
     private AtomicBoolean open = new AtomicBoolean();
+    private boolean published = false;
     private MapleMap map;
     private Lock visitorLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.VISITOR_MERCH, true);
 
@@ -100,10 +101,14 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         visitorLock.lock();
         try {
             byte count = 0;
-            for (MapleCharacter visitor : visitors) {
-                if (visitor != null) {
-                    count++;
+            if (this.isOpen()) {
+                for (MapleCharacter visitor : visitors) {
+                    if (visitor != null) {
+                        count++;
+                    }
                 }
+            } else {
+                count = (byte) (visitors.length + 1);
             }
             
             return new byte[]{count, (byte) (visitors.length + 1)};
@@ -471,15 +476,12 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         return false;
     }
 
-    public void addItem(MaplePlayerShopItem item) {
+    public boolean addItem(MaplePlayerShopItem item) {
         synchronized (items) {
+            if (items.size() >= 16) return false;
+            
             items.add(item);
-        }
-        
-        try {
-            this.saveItems(false);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+            return true;
         }
     }
 
@@ -521,13 +523,18 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    
+    public boolean isPublished() {
+        return published;
+    }
+    
     public boolean isOpen() {
         return open.get();
     }
 
     public void setOpen(boolean set) {
         open.getAndSet(set);
+        published = true;
     }
 
     public int getItemId() {

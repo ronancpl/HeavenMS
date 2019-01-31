@@ -40,7 +40,7 @@ public class ShowRatesCommand extends Command {
         showMsg += "World EXP Rate: #k" + c.getWorldServer().getExpRate() + "x#k" + "\r\n";
         showMsg += "Player EXP Rate: #k" + player.getRawExpRate() + "x#k" + "\r\n";
         if(player.getCouponExpRate() != 1) showMsg += "Coupon EXP Rate: #k" + player.getCouponExpRate() + "x#k" + "\r\n";
-        showMsg += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + "\r\n";
+        showMsg += "EXP Rate: #e#b" + player.getExpRate() + "x#k#n" + (player.hasNoviceExpRate() ? " - novice rate" : "") + "\r\n";
 
         showMsg += "\r\n" + "#eMESO RATE#n" + "\r\n";
         showMsg += "World MESO Rate: #k" + c.getWorldServer().getMesoRate() + "x#k" + "\r\n";
@@ -66,7 +66,7 @@ public class ShowRatesCommand extends Command {
         }
         
         showMsg += "\r\n";
-        showMsg += "World TRAVEL Rate: #e#b" + c.getWorldServer().getTravelRate() + "x#k#n" + "\r\nServer\r\nPlayer";
+        showMsg += "World TRAVEL Rate: #e#b" + c.getWorldServer().getTravelRate() + "x#k#n" + "\r\n";
 
         player.showHint(showMsg, 300);
     }

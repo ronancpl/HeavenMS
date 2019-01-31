@@ -134,10 +134,10 @@ public class AssignAPProcessor {
                         luk = scStat;
                         str = 0; dex = 0;
 
-                        if(luk + chr.getLuk() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && luk + chr.getLuk() > CAP) {
                             temp = luk + chr.getLuk() - CAP;
-                            luk -= temp;
-                            int_ += temp;
+                            scStat -= temp;
+                            prStat += temp;
                         }
 
                         primary = MapleStat.INT;
@@ -160,10 +160,10 @@ public class AssignAPProcessor {
                         str = scStat;
                         int_ = 0; luk = 0;
 
-                        if(str + chr.getStr() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
-                            str -= temp;
-                            dex += temp;
+                            scStat -= temp;
+                            prStat += temp;
                         }
 
                         primary = MapleStat.DEX;
@@ -186,10 +186,10 @@ public class AssignAPProcessor {
                         str = scStat;
                         int_ = 0; luk = 0;
 
-                        if(str + chr.getStr() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
-                            str -= temp;
-                            dex += temp;
+                            scStat -= temp;
+                            prStat += temp;
                         }
 
                         primary = MapleStat.DEX;
@@ -240,15 +240,15 @@ public class AssignAPProcessor {
                         str = trStat;
                         int_ = 0;
 
-                        if(dex + chr.getDex() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
                             temp = dex + chr.getDex() - CAP;
-                            dex -= temp;
-                            luk += temp;
+                            scStat -= temp;
+                            prStat += temp;
                         }
-                        if(str + chr.getStr() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
-                            str -= temp;
-                            luk += temp;
+                            trStat -= temp;
+                            prStat += temp;
                         }
 
                         primary = MapleStat.LUK;
@@ -258,50 +258,64 @@ public class AssignAPProcessor {
                         break;
 
                     case BRAWLER:
-                        CAP = 120;
-
-                        scStat = chr.getLevel() - (chr.getDex() + dex - eqpDex);
-                        if(scStat < 0) scStat = 0;
-                        scStat = Math.min(scStat, tempAp);
-
-                        if(tempAp > scStat) tempAp -= scStat;
-                        else tempAp = 0;
-
-                        prStat = tempAp;
-                        str = prStat;
-                        dex = scStat;
-                        int_ = 0; luk = 0;
-
-                        if(dex + chr.getDex() > CAP) {
-                            temp = dex + chr.getDex() - CAP;
-                            dex -= temp;
-                            str += temp;
-                        }
-
-                        primary = MapleStat.STR;
-                        secondary = MapleStat.DEX;
-
-                        break;
-
                     default:    //warrior, beginner, ...
-                        CAP = 80;
+                        CAP = 300;
+                        
+                        boolean highDex = false;    // thanks lucasziron & Vcoc for finding out DEX autoassigning poorly for STR-based characters
+                        if (chr.getLevel() < 40) {
+                            if (chr.getDex() >= (2 * chr.getLevel()) + 2) {
+                                highDex = true;
+                            }
+                        } else {
+                            if (chr.getDex() >= chr.getLevel() + 42) {
+                                highDex = true;
+                            }
+                        }
+                        
+                        // other classes will start favoring more DEX only if a level-based threshold is reached.
+                        if(!highDex) {
+                            scStat = 0;
+                            if(chr.getDex() < 80) {
+                                scStat = (2 * chr.getLevel()) - (chr.getDex() + dex - eqpDex);
+                                if(scStat < 0) scStat = 0;
 
-                        scStat = ((2 * chr.getLevel()) / 3) - (chr.getDex() + dex - eqpDex);
-                        if(scStat < 0) scStat = 0;
-                        scStat = Math.min(scStat, tempAp);
+                                scStat = Math.min(80 - chr.getDex(), scStat);
+                                scStat = Math.min(tempAp, scStat);
+                                tempAp -= scStat;
+                            }
 
-                        if(tempAp > scStat) tempAp -= scStat;
-                        else tempAp = 0;
+                            temp = (chr.getLevel() + 40) - Math.max(80, scStat + chr.getDex() + dex - eqpDex);
+                            if(temp < 0) temp = 0;
+                            temp = Math.min(tempAp, temp);
+                            scStat += temp;
+                            tempAp -= temp;
+                        } else {
+                            scStat = 0;
+                            if(chr.getDex() < 96) {
+                                scStat = (int)(2.4 * chr.getLevel()) - (chr.getDex() + dex - eqpDex);
+                                if(scStat < 0) scStat = 0;
 
+                                scStat = Math.min(96 - chr.getDex(), scStat);
+                                scStat = Math.min(tempAp, scStat);
+                                tempAp -= scStat;
+                            }
+
+                            temp = 96 + (int)(1.2 * (chr.getLevel() - 40)) - Math.max(96, scStat + chr.getDex() + dex - eqpDex);
+                            if(temp < 0) temp = 0;
+                            temp = Math.min(tempAp, temp);
+                            scStat += temp;
+                            tempAp -= temp;
+                        }
+                        
                         prStat = tempAp;
                         str = prStat;
                         dex = scStat;
                         int_ = 0; luk = 0;
 
-                        if(dex + chr.getDex() > CAP) {
+                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
                             temp = dex + chr.getDex() - CAP;
-                            dex -= temp;
-                            str += temp;
+                            scStat -= temp;
+                            prStat += temp;
                         }
 
                         primary = MapleStat.STR;

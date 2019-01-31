@@ -91,26 +91,22 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
         }
         if (skillid == Hero.MONSTER_MAGNET || skillid == Paladin.MONSTER_MAGNET || skillid == DarkKnight.MONSTER_MAGNET) { // Monster Magnet
             int num = slea.readInt();
-            int mobId;
-            byte success;
             for (int i = 0; i < num; i++) {
-                mobId = slea.readInt();
-                success = slea.readByte();
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.showMagnet(mobId, success), false);
-                MapleMonster monster = chr.getMap().getMonsterByOid(mobId);
+                int mobOid = slea.readInt();
+                byte success = slea.readByte();
+                chr.getMap().broadcastMessage(chr, MaplePacketCreator.catchMonster(mobOid, success), false);
+                MapleMonster monster = chr.getMap().getMonsterByOid(mobOid);
                 if (monster != null) {
                     if (!monster.isBoss()) {
-                        monster.lockMonster();
-                        try {
-                            monster.switchController(chr, monster.isControllerHasAggro());
-                        } finally {
-                            monster.unlockMonster();
-                        }
+                        monster.aggroClearDamages();
+                        monster.aggroMonsterDamage(chr, 1);
+                        
+                        monster.aggroSwitchController(chr, true);
                     }
                 }
             }
-            byte direction = slea.readByte();
-            chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid), direction), false);
+            byte direction = slea.readByte();   // thanks MedicOP for pointing some 3rd-party related issues with Magnet
+            chr.getMap().broadcastMessage(chr, MaplePacketCreator.showBuffeffect(chr.getId(), skillid, chr.getSkillLevel(skillid), 1, direction), false);
             c.announce(MaplePacketCreator.enableActions());
             return;
         } else if (skillid == Brawler.MP_RECOVERY) {// MP Recovery

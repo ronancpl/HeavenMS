@@ -27,6 +27,12 @@ function end(mode, type, selection) {
             return;
         }
         
+        if (!(qm.canHoldAll([1452051, 1142066]) && qm.canHold(2070000))) {
+            qm.sendOk("Make some room in your inventory and talk back to me.");
+            qm.dispose();
+            return;
+        }
+        
     	qm.sendNext("I have just molded your body to make it perfect for a Wind Archer. If you wish to become more powerful, use Stat Window (S) to raise the appropriate stats. If you aren't sure what to raise, just click on #bAuto#k.");
 	if (qm.getPlayer().getJob().getId() != 1300) {
 	    qm.gainItem(2060000, 2000);

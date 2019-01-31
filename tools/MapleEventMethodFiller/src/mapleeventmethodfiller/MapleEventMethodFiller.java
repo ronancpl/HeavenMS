@@ -41,7 +41,7 @@ import org.apache.commons.io.FileUtils;
   and fill empty functions for every function name not yet present in the
   script.
   
-  Estimated parse time: 
+  Estimated parse time: 10 seconds
  */
 public class MapleEventMethodFiller {
 

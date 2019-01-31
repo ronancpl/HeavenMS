@@ -112,7 +112,7 @@ function action(mode, type, selection){
         } else {
             if (cm.getPlayer().getLevel() >= 50){
             	cm.sendNext("Ok, go.");
-                if(!cm.isQuestStarted(100200)) cm.startQuest(100200);
+                if(!(cm.isQuestStarted(100200) || cm.isQuestCompleted(100200))) cm.startQuest(100200);
                 if(Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS && !cm.isQuestCompleted(100201)) cm.completeQuest(100201);
             }else
                 cm.sendNext("You're weak.");

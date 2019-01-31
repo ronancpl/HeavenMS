@@ -237,6 +237,15 @@ public class AbstractPlayerInteraction {
                 return intList;
         }
         
+        public boolean canHoldAll(List<Double> itemids) {
+                List<Double> quantity = new LinkedList<>();
+                for (int i = 0; i < itemids.size(); i++) {
+                        quantity.add(1.0);
+                }
+            
+                return canHoldAll(itemids, quantity);
+        }
+        
         public boolean canHoldAll(List<Double> itemids, List<Double> quantity) {
                 return canHoldAll(convertToIntegerArray(itemids), convertToIntegerArray(quantity), true);
         }
@@ -554,8 +563,6 @@ public class AbstractPlayerInteraction {
 
 			if(expires >= 0)
 				item.setExpiration(System.currentTimeMillis() + expires);
-                        
-                        item.setPetId(petId);
 
 			if (!MapleInventoryManipulator.checkSpace(c, id, quantity, "")) {
 				c.getPlayer().dropMessage(1, "Your inventory is full. Please remove an item from your " + ItemConstants.getInventoryType(id).name() + " inventory.");

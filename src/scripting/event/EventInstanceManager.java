@@ -229,7 +229,11 @@ public class EventInstanceManager {
                 
 	}
 
-	public synchronized void registerPlayer(final MapleCharacter chr) {
+        public synchronized void registerPlayer(final MapleCharacter chr) {
+                registerPlayer(chr, true);
+        }
+        
+	public synchronized void registerPlayer(final MapleCharacter chr, boolean runEntryScript) {
 		if (chr == null || !chr.isLoggedinWorld() || disposed) {
 			return;
 		}
@@ -246,10 +250,12 @@ public class EventInstanceManager {
                         wL.unlock();
                 }
                 
-                try {
-                        em.getIv().invokeFunction("playerEntry", EventInstanceManager.this, chr);
-                } catch (ScriptException | NoSuchMethodException ex) {
-                        ex.printStackTrace();
+                if (runEntryScript) {
+                        try {
+                                em.getIv().invokeFunction("playerEntry", EventInstanceManager.this, chr);
+                        } catch (ScriptException | NoSuchMethodException ex) {
+                                ex.printStackTrace();
+                        }
                 }
 	}  
         
@@ -372,7 +378,7 @@ public class EventInstanceManager {
         private void registerExpeditionTeam(MapleExpedition exped, int recruitMap) {
 		expedition = exped;
                 
-                for (MapleCharacter chr: exped.getMembers()) {
+                for (MapleCharacter chr: exped.getActiveMembers()) {
                         if (chr.getMapId() == recruitMap) {
                                 registerPlayer(chr);
                         }
@@ -628,7 +634,6 @@ public class EventInstanceManager {
                 sL.lock();
                 try {
                         if(!eventCleared) em.disposeInstance(name);
-                        em = null;
                 } finally {
                         sL.unlock();
                 }
@@ -636,10 +641,11 @@ public class EventInstanceManager {
                 TimerManager.getInstance().schedule(new Runnable() {
                         @Override
                         public void run() {
-                                mapFactory.dispose();   // reactors issue on dispose event maps found thanks to MedicOP
+                                mapFactory.dispose();   // issues from instantly disposing some event objects found thanks to MedicOP
                                 wL.lock();
                                 try {
                                         mapFactory = null;
+                                        em = null;
                                 } finally {
                                         wL.unlock();
                                 }
@@ -675,7 +681,6 @@ public class EventInstanceManager {
                                         @Override
                                         public void run() {
                                                 try {
-                                                        if(em == null) return;
                                                         em.getIv().invokeFunction(methodName, EventInstanceManager.this);
                                                 } catch (ScriptException | NoSuchMethodException ex) {
                                                         ex.printStackTrace();

@@ -77,8 +77,6 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 
 		boolean isAttack = inRangeInclusive(rawActivity, 24, 41);
 		boolean isSkill = inRangeInclusive(rawActivity, 42, 59);
-		
-                boolean currentController = (monster.getController() == player);
                 
 		MobSkill toUse = null;
                 int useSkillId = 0, useSkillLevel = 0;
@@ -112,10 +110,6 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                         
                         int atkStatus = monster.canUseAttack(castPos, isSkill);
                         if (atkStatus < 1) {
-                                if (!currentController) {
-                                        return;
-                                }
-                                
                                 rawActivity = -1;
                                 pOption = 0;
                         }
@@ -147,24 +141,8 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 		Point startPos = new Point(start_x, start_y - 2);
 		List<LifeMovementFragment> res = parseMovement(slea);
 		
-                boolean aggro;
-                monster.lockMonster();
-                try {
-                        if (!currentController) {
-                                if (monster.isAttackedBy(player)) {
-                                        monster.switchController(player, true);
-                                } else {
-                                        return;
-                                }
-                        }
-
-                        aggro = monster.isControllerHasAggro();
-                        if (aggro) {
-                                monster.setControllerKnowsAboutAggro(true);
-                        }
-                } finally {
-                        monster.unlockMonster();
-                }
+                Boolean aggro = monster.aggroMoveLifeUpdate(player);
+                if (aggro == null) return;
                 
                 if (nextUse != null) {
                         c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro, nextSkillId, nextSkillLevel));
@@ -174,7 +152,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                 
 		if (res != null) {
                         if (ServerConstants.USE_DEBUG_SHOW_RCVD_MVLIFE) {
-                                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill);
+                                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
                         }
                         
                         map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());

@@ -1842,6 +1842,30 @@ public class MaplePacketCreator {
         }
         
         /**
+         * Guild Name & Mark update packet, thanks to Arnah (Vertisy)
+         * 
+	 * @param guildName The Guild name, blank for nothing.
+	 */
+	public static byte[] guildNameChanged(int chrid, String guildName){
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		mplew.writeShort(SendOpcode.GUILD_NAME_CHANGED.getValue());
+		mplew.writeInt(chrid);
+		mplew.writeMapleAsciiString(guildName);
+		return mplew.getPacket();
+	}
+        
+	public static byte[] guildMarkChanged(int chrid, MapleGuild guild){
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		mplew.writeShort(SendOpcode.GUILD_MARK_CHANGED.getValue());
+		mplew.writeInt(chrid);
+		mplew.writeShort(guild.getLogoBG());
+		mplew.write(guild.getLogoBGColor());
+		mplew.writeShort(guild.getLogo());
+		mplew.write(guild.getLogoColor());
+		return mplew.getPacket();
+	}
+        
+        /**
          * Gets a packet spawning a player as a mapobject to other clients.
          *
          * @param target The client receiving this packet.
@@ -3384,7 +3408,7 @@ public class MaplePacketCreator {
         public static byte[] showBuffeffect(int cid, int skillid, int effectid) {
                 return showBuffeffect(cid, skillid, effectid, (byte) 3);
         }
-
+        
         public static byte[] showBuffeffect(int cid, int skillid, int effectid, byte direction) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SHOW_FOREIGN_EFFECT.getValue());
@@ -3394,6 +3418,19 @@ public class MaplePacketCreator {
                 mplew.write(direction);
                 mplew.write(1);
                 mplew.writeLong(0);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] showBuffeffect(int cid, int skillid, int skilllv, int effectid, byte direction) {   // updated packet structure found thanks to Rien dev team
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SHOW_FOREIGN_EFFECT.getValue());
+                mplew.writeInt(cid);
+                mplew.write(effectid);
+                mplew.writeInt(skillid);
+                mplew.write(0);
+                mplew.write(skilllv);
+                mplew.write(direction);
+        
                 return mplew.getPacket();
         }
 
@@ -4597,13 +4634,21 @@ public class MaplePacketCreator {
                 mplew.writeInt(skillId);
                 return mplew.getPacket();
         }
-
-        public static byte[] showMagnet(int mobid, byte success) { // Monster Magnet
+        
+        public static byte[] catchMonster(int mobOid, byte success) {   // updated packet structure found thanks to Rien dev team
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.SHOW_MAGNET.getValue());
-                mplew.writeInt(mobid);
+                mplew.writeShort(SendOpcode.CATCH_MONSTER.getValue());
+                mplew.writeInt(mobOid);
                 mplew.write(success);
-                mplew.skip(10); //Mmmk
+                return mplew.getPacket();
+        }
+        
+        public static byte[] catchMonster(int mobOid, int itemid, byte success) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CATCH_MONSTER_WITH_ITEM.getValue());
+                mplew.writeInt(mobOid);
+                mplew.writeInt(itemid);
+                mplew.write(success);
                 return mplew.getPacket();
         }
 
@@ -4929,15 +4974,6 @@ public class MaplePacketCreator {
                         mplew.writeMapleAsciiString(name);
                         mplew.writeInt(score);
                 }
-                return mplew.getPacket();
-        }
-
-        public static byte[] catchMonster(int monsobid, int itemid, byte success) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.CATCH_MONSTER.getValue());
-                mplew.writeInt(monsobid);
-                mplew.writeInt(itemid);
-                mplew.write(success);
                 return mplew.getPacket();
         }
 
@@ -5599,12 +5635,20 @@ public class MaplePacketCreator {
                 }
                 return mplew.getPacket();
         }
-
+        
         public static byte[] hiredMerchantOwnerLeave() {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.REAL_CLOSE_MERCHANT.getCode());
                 mplew.write(0);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] hiredMerchantOwnerMaintenanceLeave() {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
+                mplew.write(PlayerInteractionHandler.Action.REAL_CLOSE_MERCHANT.getCode());
+                mplew.write(5);
                 return mplew.getPacket();
         }
 

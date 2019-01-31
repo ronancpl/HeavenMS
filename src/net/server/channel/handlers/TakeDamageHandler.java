@@ -191,7 +191,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                 damage -= bouncedamage;
                 map.damageMonster(chr, attacker, bouncedamage);
                 map.broadcastMessage(chr, MaplePacketCreator.damageMonster(oid, bouncedamage), false, true);
-                chr.checkMonsterAggro(attacker);
+                attacker.aggroMonsterDamage(chr, bouncedamage);
             }
             if (attacker != null && damagefrom == -1 && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) != null) {
                 Skill skill = SkillFactory.getSkill(Aran.BODY_PRESSURE);

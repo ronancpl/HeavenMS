@@ -273,7 +273,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
     private Lock chrLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CHR, true);
     private Lock evtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EVT, true);
-    private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true); // for meso & quest tasks as well
+    private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true);
     private Lock prtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PRT);
     private Lock cpnLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CPN);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
@@ -852,17 +852,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
                 List<Pair<MapleBuffStat, Integer>> ldsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.DARKSIGHT, 0));
                 getMap().broadcastGMMessage(this, MaplePacketCreator.giveForeignBuff(id, ldsstat), false);
-                for (MapleMonster mon : this.getControlledMonsters()) {
-                    mon.lockMonster();
-                    try {
-                        mon.setController(null);
-                        mon.setControllerHasAggro(false);
-                        mon.setControllerKnowsAboutAggro(false);
-                        mon.getMap().updateMonsterController(mon);
-                    } finally {
-                        mon.unlockMonster();
-                    }
-                }
+                this.releaseControlledMonsters();
             }
             announce(MaplePacketCreator.enableActions());
         }
@@ -1356,7 +1346,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
             
-            mapEim.registerPlayer(this);
+            // thanks Thora for finding an issue with players not being actually warped into the target event map (rather sent to the event starting map)
+            mapEim.registerPlayer(this, false);
         }
         
         MapleMap to = target; // warps directly to the target intead of the target's map id, this allows GMs to patrol players inside instances.
@@ -1708,29 +1699,48 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
 
-    public void checkMonsterAggro(MapleMonster monster) {
-        monster.lockMonster();
-        try {
-            if (!monster.isControllerHasAggro()) {
-                if (monster.getController() == this) {
-                    monster.setControllerHasAggro(true);
-                } else {
-                    monster.switchController(this, true);
-                }
+    public void controlMonster(MapleMonster monster) {
+        if (cpnLock.tryLock()) {
+            try {
+                controlled.add(monster);
+            } finally {
+                cpnLock.unlock();
             }
-        } finally {
-            monster.unlockMonster();
         }
     }
-
-    public void controlMonster(MapleMonster monster, boolean aggro) {
-        monster.lockMonster();
+    
+    public void stopControllingMonster(MapleMonster monster) {
+        if (cpnLock.tryLock()) {
+            try {
+                controlled.remove(monster);
+            } finally {
+                cpnLock.unlock();
+            }
+        }
+    }
+    
+    public int getNumControlledMonsters() {
+        cpnLock.lock();
         try {
-            monster.setController(this);
-            controlled.add(monster);
-            client.announce(MaplePacketCreator.controlMonster(monster, false, aggro));
+            return controlled.size();
         } finally {
-            monster.unlockMonster();
+            cpnLock.unlock();
+        }
+    }
+    
+    public void releaseControlledMonsters() {
+        Collection<MapleMonster> controlledMonsters;
+        
+        cpnLock.lock();
+        try {
+            controlledMonsters = new ArrayList<>(controlled);
+            controlled.clear();
+        } finally {
+            cpnLock.unlock();
+        }
+        
+        for (MapleMonster monster : controlledMonsters) {
+            monster.aggroRedirectController();
         }
     }
     
@@ -2967,6 +2977,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
+    public boolean canHoldMeso(int gain) {  // thanks lucasziron found pointing out a need to check space availability for mesos on player transactions
+        long nextMeso = (long) meso.get() + gain;
+        return nextMeso <= Integer.MAX_VALUE;
+    }
+    
     public void gainMeso(int gain) {
         gainMeso(gain, true, false, true);
     }
@@ -4124,11 +4139,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             return Collections.unmodifiableList(ret);
         }
     }
-
-    public Collection<MapleMonster> getControlledMonsters() {
-        return Collections.unmodifiableCollection(controlled);
-    }
-
+    
     public List<MapleRing> getCrushRings() {
         Collections.sort(crushRings);
         return crushRings;
@@ -4343,7 +4354,15 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return gachaexp.get();
     }
 
+    public boolean hasNoviceExpRate() {
+        return ServerConstants.USE_ENFORCE_NOVICE_EXPRATE && isBeginnerJob() && level < 11;
+    }
+    
     public int getExpRate() {
+        if (hasNoviceExpRate()) {   // base exp rate 1x for early levels idea thanks to Vcoc
+            return 1;
+        }
+        
         return expRate;
     }
     
@@ -4383,7 +4402,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getRawMesoRate() {
         return mesoRate / (mesoCoupon * getWorldServer().getMesoRate());
     }
-
+    
+    public int getQuestExpRate() {
+        World w = getWorldServer();
+        return w.getExpRate() * w.getQuestRate();
+    }
+    
+    public int getQuestMesoRate() {
+        World w = getWorldServer();
+        return w.getMesoRate() * w.getQuestRate();
+    }
+    
     public int getFace() {
         return face;
     }
@@ -4827,10 +4856,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } finally {
             petLock.unlock();
         }
-    }
-
-    public int getNumControlledMonsters() {
-        return controlled.size();
     }
 
     public MapleParty getParty() {
@@ -5635,9 +5660,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public boolean isGuildLeader() {    // true on guild master or jr. master
         return guildid > 0 && guildRank < 3;
     }
-
+    
     public void leaveMap() {
-        controlled.clear();
+        releaseControlledMonsters();
         visibleMapObjects.clear();
         setChair(0);
         if (hpDecreaseTask != null) {
@@ -7772,15 +7797,20 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 throw new RuntimeException("Character not in database (" + id + ")");
             }
             
+            List<MaplePet> petList = new LinkedList<>();
             petLock.lock();
             try {
                 for (int i = 0; i < 3; i++) {
                     if (pets[i] != null) {
-                        pets[i].saveToDb();
+                        petList.add(pets[i]);
                     }
                 }
             } finally {
                 petLock.unlock();
+            }
+            
+            for (MaplePet pet : petList) {
+                pet.saveToDb();
             }
             
             for(Entry<Integer, Set<Integer>> es: getExcluded().entrySet()) {    // this set is already protected
@@ -8912,11 +8942,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
         }, duration);
     }
-
-    public void stopControllingMonster(MapleMonster monster) {
-        controlled.remove(monster);
-    }
-
+    
     public void unequipAllPets() {
         for (int i = 0; i < 3; i++) {
             MaplePet pet = getPet(i);
@@ -9046,19 +9072,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void cancelQuestExpirationTask() {
-        petLock.lock();
+        evtLock.lock();
         try {
             if (questExpireTask != null) {
                 questExpireTask.cancel(false);
                 questExpireTask = null;
             }
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
     }
     
     public void forfeitExpirableQuests() {
-        petLock.lock();
+        evtLock.lock();
         try {
             for(MapleQuest quest : questExpirations.keySet()) {
                 quest.forfeit(this);
@@ -9066,12 +9092,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             questExpirations.clear();
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
     }
     
     public void questExpirationTask() {
-        petLock.lock();
+        evtLock.lock();
         try {
             if(!questExpirations.isEmpty()) {
                 if(questExpireTask == null) {
@@ -9084,12 +9110,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
     }
     
     private void runQuestExpireTask() {
-        petLock.lock();
+        evtLock.lock();
         try {
             long timeNow = Server.getInstance().getCurrentTime();
             List<MapleQuest> expireList = new LinkedList<>();
@@ -9110,12 +9136,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
     }
     
     private void registerQuestExpire(MapleQuest quest, long time) {
-        petLock.lock();
+        evtLock.lock();
         try {
             if(questExpireTask == null) {
                 questExpireTask = TimerManager.getInstance().register(new Runnable() {
@@ -9128,7 +9154,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             questExpirations.put(quest, Server.getInstance().getCurrentTime() + time);
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
     }
     
@@ -9671,7 +9697,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (pendantOfSpirit != null) { pendantOfSpirit.cancel(true); }
         pendantOfSpirit = null;
         
-        petLock.lock();
+        evtLock.lock();
         try {
             if (questExpireTask != null) {
                 questExpireTask.cancel(false);
@@ -9681,7 +9707,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 questExpirations = null;
             }
         } finally {
-            petLock.unlock();
+            evtLock.unlock();
         }
         
         if (maplemount != null) {

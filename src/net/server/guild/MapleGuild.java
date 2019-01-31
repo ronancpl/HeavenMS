@@ -39,6 +39,7 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
+import net.server.PlayerStorage;
 import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
@@ -109,11 +110,11 @@ public class MapleGuild {
             con.close();
         } catch (SQLException se) {
             se.printStackTrace();
-            System.out.println("Unable to read guild information from sql" + se);
+            System.out.println("Unable to read guild information from sql: " + se);
         }
     }
 
-    public void buildNotifications() {
+    private void buildNotifications() {
         if (!bDirty) {
             return;
         }
@@ -260,10 +261,10 @@ public class MapleGuild {
         return name;
     }
 
-    public java.util.Collection<MapleGuildCharacter> getMembers() {
+    public List<MapleGuildCharacter> getMembers() {
         membersLock.lock();
         try {
-            return java.util.Collections.unmodifiableCollection(members);
+            return new ArrayList<>(members);
         } finally {
             membersLock.unlock();
         }
@@ -277,6 +278,30 @@ public class MapleGuild {
         return signature;
     }
 
+    public void broadcastNameChanged() {
+        PlayerStorage ps = Server.getInstance().getWorld(world).getPlayerStorage();
+        
+        for (MapleGuildCharacter mgc : getMembers()) {
+            MapleCharacter chr = ps.getCharacterById(mgc.getId());
+            if (chr == null || !chr.isLoggedinWorld()) continue;
+
+            byte[] packet = MaplePacketCreator.guildNameChanged(chr.getId(), this.getName());
+            chr.getMap().broadcastMessage(chr, packet);
+        }
+    }
+    
+    public void broadcastEmblemChanged() {
+        PlayerStorage ps = Server.getInstance().getWorld(world).getPlayerStorage();
+        
+        for (MapleGuildCharacter mgc : getMembers()) {
+            MapleCharacter chr = ps.getCharacterById(mgc.getId());
+            if (chr == null || !chr.isLoggedinWorld()) continue;
+            
+            byte[] packet = MaplePacketCreator.guildMarkChanged(chr.getId(), this);
+            chr.getMap().broadcastMessage(chr, packet);
+        }
+    }
+    
     public void broadcast(final byte[] packet) {
         broadcast(packet, -1, BCOp.NONE);
     }
