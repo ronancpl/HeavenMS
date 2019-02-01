@@ -699,31 +699,6 @@ public class EventInstanceManager {
 		return name;
 	}
 
-	public void saveWinner(MapleCharacter chr) {
-                String emName;
-                sL.lock();
-                try {
-                       emName = em.getName();
-                } finally {
-                        sL.unlock();
-                }
-            
-		try {
-                        Connection con = DatabaseConnection.getConnection();
-			try (PreparedStatement ps = con.prepareStatement("INSERT INTO eventstats (event, instance, characterid, channel) VALUES (?, ?, ?, ?)")) {
-				ps.setString(1, emName);
-				ps.setString(2, getName());
-				ps.setInt(3, chr.getId());
-				ps.setInt(4, chr.getClient().getChannel());
-				ps.executeUpdate();
-			}
-                        
-                        con.close();
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
-
 	public MapleMap getMapInstance(int mapId) {
 		MapleMap map = mapFactory.getMap(mapId);
                 map.setEventInstance(this);

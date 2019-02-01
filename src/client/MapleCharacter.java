@@ -6605,6 +6605,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
                 //ret.events = new MapleEvents(new RescueGaga(rs.getInt("rescuegaga")), new ArtifactHunt(rs.getInt("artifacthunt")));
             }
+            if (!ret.events.containsKey("rescueGaga")) {
+                ret.events.put("rescueGaga", new RescueGaga(0));
+            }
             rs.close();
             ps.close();
             ret.cashshop = new CashShop(ret.accountid, ret.id, ret.getJobType());
@@ -7945,6 +7948,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.close();
             
             deleteWhereCharacterId(con, "DELETE FROM eventstats WHERE characterid = ?");
+            ps = con.prepareStatement("INSERT INTO eventstats (characterid, name, info) VALUES (?, ?, ?)");
+            ps.setInt(1, id);
+            
+            for (Map.Entry<String, MapleEvents> entry : events.entrySet()) {
+                ps.setString(2, entry.getKey());
+                ps.setInt(3, entry.getValue().getInfo());
+                ps.addBatch();
+            }
+            
+            ps.executeBatch();
+            ps.close();
             
             deleteQuestProgressWhereCharacterId(con, id);
             
