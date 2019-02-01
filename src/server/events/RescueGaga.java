@@ -42,6 +42,10 @@ public class RescueGaga extends MapleEvents {
         public void complete() {
             completed++;
         }
+        
+        public int getInfo() {
+            return getCompleted();
+        }
 
         public void giveSkill(MapleCharacter chr) {
             int skillid = 0;
