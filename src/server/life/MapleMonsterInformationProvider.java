@@ -343,6 +343,7 @@ public class MapleMonsterInformationProvider {
                 extraMultiEquipDrops.clear();
                 dropsChancePool.clear();
 		globaldrops.clear();
+		continentdrops.clear();
 		retrieveGlobal();
 	}
 }
