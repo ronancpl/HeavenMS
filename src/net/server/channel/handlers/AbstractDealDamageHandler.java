@@ -836,7 +836,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             for (int j = 0; j < ret.numDamage; j++) {
                     int damage = lea.readInt();
                     int hitDmgMax = calcDmgMax;
-                    if(ret.skill == Buccaneer.BARRAGE) {
+                    if(ret.skill == Buccaneer.BARRAGE || ret.skill == ThunderBreaker.BARRAGE) {
                         if(j > 3)
                             hitDmgMax *= Math.pow(2, (j - 3));
                     }

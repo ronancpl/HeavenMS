@@ -605,6 +605,7 @@ public class MapleStatEffect {
                 case Buccaneer.BARRAGE:
                 case Gunslinger.BLANK_SHOT:
                 case DawnWarrior.COMA:
+                case ThunderBreaker.BARRAGE: 
                 case Aran.ROLLING_SPIN:
                 case Evan.FIRE_BREATH:
                 case Evan.BLAZE:
