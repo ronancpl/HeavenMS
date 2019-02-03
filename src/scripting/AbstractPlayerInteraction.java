@@ -1089,4 +1089,8 @@ public class AbstractPlayerInteraction {
         public void npcTalk(int npcid, String message) {
                 c.announce(MaplePacketCreator.getNPCTalk(npcid, (byte) 0, message, "00 00", (byte) 0));
         }
+
+    public long getCurrentTime() {
+	    return System.currentTimeMillis();
+    }    
 }
