@@ -293,7 +293,7 @@ public class World {
     }
 
     public void setExpRate(int exp) {
-        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
+        Collection<MapleCharacter> list = getPlayerStorage().getAllCharacters();
         
         for(MapleCharacter chr : list) {
             if(!chr.isLoggedin()) continue;
@@ -311,7 +311,7 @@ public class World {
     }
 
     public void setDropRate(int drop) {
-        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
+        Collection<MapleCharacter> list = getPlayerStorage().getAllCharacters();
         
         for(MapleCharacter chr : list) {
             if(!chr.isLoggedin()) continue;
@@ -337,8 +337,8 @@ public class World {
     }
 
     public void setMesoRate(int meso) {
-        List<MapleCharacter> list = new LinkedList<>(getPlayerStorage().getAllCharacters());
-        
+        Collection<MapleCharacter> list = getPlayerStorage().getAllCharacters();
+
         for(MapleCharacter chr : list) {
             if(!chr.isLoggedin()) continue;
             chr.revertWorldRates();

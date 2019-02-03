@@ -84,7 +84,7 @@ public class PlayerStorage {
     public Collection<MapleCharacter> getAllCharacters() {
         rlock.lock();
         try {
-            return storage.values();
+            return new ArrayList<>(storage.values());
         } finally {
             rlock.unlock();
         }
