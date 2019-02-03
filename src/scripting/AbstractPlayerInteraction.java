@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import client.Skill;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
@@ -843,7 +844,22 @@ public class AbstractPlayerInteraction {
 	}  
 
 	public void teachSkill(int skillid, byte level, byte masterLevel, long expiration) {
-		getPlayer().changeSkillLevel(SkillFactory.getSkill(skillid), level, masterLevel, expiration);
+	    teachSkill(skillid, level, masterLevel, expiration, false);
+    }
+
+	public void teachSkill(int skillid, byte level, byte masterLevel, long expiration, boolean force) {
+	    Skill skill = SkillFactory.getSkill(skillid);
+	    
+	    if (!force && level > -1) {
+            MapleCharacter.SkillEntry skillEntry = getPlayer().getSkills().get(skill);
+
+            if (skillEntry != null) {
+                getPlayer().changeSkillLevel(skill, (byte) Math.max(skillEntry.skillevel, level), Math.max(skillEntry.masterlevel, masterLevel), expiration == -1 ? -1 : Math.max(skillEntry.expiration, expiration));
+                return;
+            }
+        }
+        
+        getPlayer().changeSkillLevel(skill, level, masterLevel, expiration);
 	}
 
 	public void removeEquipFromSlot(short slot) {
