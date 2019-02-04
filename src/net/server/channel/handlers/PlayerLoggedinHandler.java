@@ -158,27 +158,23 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 c.setAccID(player.getAccountID());
 
                 boolean allowLogin = true;
-
-                /*  is this check really necessary?
-                if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.LOGIN_NOTLOGGEDIN) {
-                    List<String> charNames = c.loadCharacterNames(c.getWorld());
-                    if(!newcomer) {
-                        charNames.remove(player.getName());
-                    }
-
-                    for (String charName : charNames) {
-                        if(wserv.getPlayerStorage().getCharacterByName(charName) != null) {
-                            allowLogin = false;
-                            break;
-                        }
-                    }
-                }
-                */
                 
                 int accId = c.getAccID();
                 if (tryAcquireAccount(accId)) { // Sync this to prevent wrong login state for double loggedin handling
                     try {
                         int state = c.getLoginState();
+                        
+                        if (state == MapleClient.LOGIN_SERVER_TRANSITION || state == MapleClient.LOGIN_NOTLOGGEDIN) {
+                            for (String charName : c.loadCharacterNames(c.getWorld())) {
+                                for (Channel ch : c.getWorldServer().getChannels()) {
+                                    if (ch.isConnected(charName)) {
+                                        allowLogin = false;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
                         if (state != MapleClient.LOGIN_SERVER_TRANSITION || !allowLogin) {
                             c.setPlayer(null);
                             c.setAccID(0);
