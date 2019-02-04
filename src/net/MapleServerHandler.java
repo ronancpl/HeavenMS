@@ -87,7 +87,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
     }
     
     @Override
-    public void exceptionCaught(IoSession session, Throwable cause) throws Exception {
+    public void exceptionCaught(IoSession session, Throwable cause) {
         if (cause instanceof org.apache.mina.core.write.WriteToClosedSessionException) {
             return;
         }
@@ -97,12 +97,26 @@ public class MapleServerHandler extends IoHandlerAdapter {
         cause.printStackTrace();
         */
         
-        if (cause instanceof IOException || cause instanceof ClassCastException) {
-            return;
-        }
-        MapleClient mc = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
-        if (mc != null && mc.getPlayer() != null) {
-            FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, cause, "Exception caught by: " + mc.getPlayer());
+        MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+        
+        if (client != null) {
+            if (cause instanceof IOException) { // mina closes session automatically and does not call sessionClosed on IOException
+                if (isLoginServerHandler()) {
+                    MapleSessionCoordinator.getInstance().closeLoginSession(session);
+                } else {
+                    MapleSessionCoordinator.getInstance().closeSession(session, null);
+                }
+                
+                try {
+                    client.disconnect(false, client.getPlayer() != null && client.getPlayer().getCashShop().isOpened());
+                } catch (Throwable t) {
+                    FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, t);
+                } finally {
+                    session.removeAttribute(MapleClient.CLIENT_KEY);
+                }
+            } else if (client.getPlayer() != null) {
+                FilePrinter.printError(FilePrinter.EXCEPTION_CAUGHT, cause, "Exception caught by: " + client.getPlayer());
+            }
         }
     }
 
