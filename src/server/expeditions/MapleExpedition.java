@@ -227,7 +227,7 @@ public class MapleExpedition {
         }
 
 	public boolean contains(MapleCharacter player) {
-                return members.containsKey(player.getId());
+                return members.containsKey(player.getId()) || isLeader(player);
 	}
 
 	public boolean isLeader(MapleCharacter player) {
