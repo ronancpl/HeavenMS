@@ -1828,7 +1828,8 @@ public class MaplePacketCreator {
                 mplew.writeInt(!drop.isFFADrop() ? (recvrInParty ? drop.getPartyOwnerId() : drop.getOwnerId()) : 0); // owner charid/partyid :)
                 mplew.write(drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
-                mplew.writeInt(!drop.isFFADrop() ? drop.getOwnerId() : 0); // owner charid
+                // its not charId, but dropper's oid, this error will occur only if a monster's oid in map equals charId, (the item will drop from the error monster)
+                mplew.writeInt(drop.getDropper().getObjectId());
 
                 if (mod != 2) {
                         mplew.writePos(dropfrom);
