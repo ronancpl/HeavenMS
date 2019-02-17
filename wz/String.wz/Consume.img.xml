@@ -1468,7 +1468,7 @@
     <string name="desc" value="Returns you to Sleepywood, a quiet and dark forest-town."/>
   </imgdir>
   <imgdir name="2030007">
-    <string name="name" value="Return Scroll for Dead Mine"/>
+    <string name="name" value="Return Scroll to Dead Mine"/>
     <string name="desc" value="Returns you to the dead mine at the higher ground of El Nath.nCan only be used in Orbis and El Nath."/>
   </imgdir>
   <imgdir name="2030008">
@@ -1496,7 +1496,7 @@
     <string name="desc" value="Warp powder made by fairy Phyllia.  Teleports you to Magatia when used inside the Nihal desert region."/>
   </imgdir>
   <imgdir name="2030019">
-    <string name="name" value="Nautilus Return Scroll"/>
+    <string name="name" value="Return Scroll to Nautilus"/>
     <string name="desc" value="This scroll enables you to return to the Pirate village, Nautilus. This is a one use item and will disappear after use."/>
   </imgdir>
   <imgdir name="2030100">
@@ -4588,7 +4588,7 @@
   </imgdir>
   <imgdir name="2280004">
     <string name="name" value="[Skill Book] Infinity"/>
-    <string name="desc" value="You can learn #Infinity# with this book.rnJob : 4th Advancement MagicianrnCondition : #cInfinity# not acquired"/>
+    <string name="desc" value="You can learn #cInfinity# with this book.rnJob : 4th Advancement MagicianrnCondition : #cInfinity# not acquired"/>
   </imgdir>
   <imgdir name="2280005">
     <string name="name" value="[Skill Book] Dragon&apos;s Breath"/>
@@ -8044,59 +8044,59 @@
     <string name="desc" value="Skill Book from which you can learn about the #cSlime&apos;s Weakness# skill.\nCondition: #cSlime&apos;s Weakness# not available"/>
   </imgdir>
   <imgdir name="2290126">
-    <string name="name" value="[Mastery Book] Overswing 20"/>
+    <string name="name" value="[Mastery Book] Overswing"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cOverswing# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290127">
-    <string name="name" value="[Mastery Book] Overswing 30"/>
+    <string name="name" value="[Mastery Book] Overswing"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cOverswing# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290128">
-    <string name="name" value="[Mastery Book] High Mastery 20"/>
+    <string name="name" value="[Mastery Book] High Mastery"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cHigh Mastery# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290129">
-    <string name="name" value="[Mastery Book] High Mastery 30"/>
+    <string name="name" value="[Mastery Book] High Mastery"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cHigh Mastery# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290130">
-    <string name="name" value="[Mastery Book] Freeze Standing 20"/>
+    <string name="name" value="[Mastery Book] Freeze Standing"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cFreeze Standing# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290131">
-    <string name="name" value="[Mastery Book] Freeze Standing 30"/>
+    <string name="name" value="[Mastery Book] Freeze Standing"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cFreeze Standing# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290132">
-    <string name="name" value="[Mastery Book] Final Blow 20"/>
+    <string name="name" value="[Mastery Book] Final Blow"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cFinal Blow# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290133">
-    <string name="name" value="[Mastery Book] Final Blow 30"/>
+    <string name="name" value="[Mastery Book] Final Blow"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cFinal Blow# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290134">
-    <string name="name" value="[Mastery Book] High Defense 20"/>
+    <string name="name" value="[Mastery Book] High Defense"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cHigh Defense# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290135">
-    <string name="name" value="[Mastery Book] High Defense 30"/>
+    <string name="name" value="[Mastery Book] High Defense"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cHigh Defense# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290136">
-    <string name="name" value="[Mastery Book] Combo Tempest 20"/>
+    <string name="name" value="[Mastery Book] Combo Tempest"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cCombo Tempest# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290137">
-    <string name="name" value="[Mastery Book] Combo Tempest 30"/>
+    <string name="name" value="[Mastery Book] Combo Tempest"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cCombo Tempest# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2290138">
-    <string name="name" value="[Mastery Book] Combo Barrier 20"/>
+    <string name="name" value="[Mastery Book] Combo Barrier"/>
     <string name="desc" value="With a 70% success rate, raises the Mastery Level of #cCombo Barrier# to 20.\nJob: Aran\nCondition: Min Skill Lv. 5"/>
   </imgdir>
   <imgdir name="2290139">
-    <string name="name" value="[Mastery Book] Combo Barrier 30"/>
+    <string name="name" value="[Mastery Book] Combo Barrier"/>
     <string name="desc" value="With a 50% success rate, raises the Mastery Level of #cCombo Barrier# to 30.\nJob: Aran\nCondition: Min Skill Lv. 15"/>
   </imgdir>
   <imgdir name="2380014">
@@ -8205,7 +8205,7 @@
   </imgdir>
   <imgdir name="2040759">
     <string name="name" value="Scroll for Shoes for ATT"/>
-    <string name="desc" value="Improves attack on gloves.\nSuccess rate: 60%. Weapon Attack +2. The success rate of this scroll can be enhanced by Vega&apos;s Spell."/>
+    <string name="desc" value="Improves attack on shoes.\nSuccess rate: 60%. Weapon Attack +2. The success rate of this scroll can be enhanced by Vega&apos;s Spell."/>
   </imgdir>
   <imgdir name="2040760">
     <string name="name" value="Scroll for Shoes for ATT"/>
@@ -8556,7 +8556,7 @@
     <string name="desc" value="A mysterious and unripe Onyx Apple. When consumed, it grants the following: ATT +60, Magic ATT +70, DEF +10 for 1 minute."/>
   </imgdir>
   <imgdir name="2030020">
-    <string name="name" value="Return to New Leaf City Scroll"/>
+    <string name="name" value="Return Scroll to New Leaf City"/>
     <string name="desc" value="Use this scroll to venture back to New Leaf City whenever you want!"/>
   </imgdir>
   <imgdir name="2000000">
@@ -8960,7 +8960,7 @@
     <string name="desc" value="This increases the master level of #cSmokescreen# up to 30 with 50% of chance.\r\nClass : Shadower\r\nCondition : Skill level above 15"/>
   </imgdir>
   <imgdir name="2290096">
-    <string name="name" value="[Mastery Book] Maple Warrior 20"/>
+    <string name="name" value="[Mastery Book] Maple Warrior"/>
     <string name="desc" value="This increases the master level of #cMaple Warrior# up to 20 with 70% of chance.\r\nJob : All 4th Advancement Jobs\r\nCondition : Skill level above 5"/>
   </imgdir>
   <imgdir name="2290097">
@@ -9072,7 +9072,7 @@
     <string name="desc" value="With a 70% success rate, it raises the Master Level of #cBullseye# to 20.nJob : Corsair\r\nRequirement : At least Level 5 in this skill"/>
   </imgdir>
   <imgdir name="2290125">
-    <string name="name" value="[Mastery Book] Maple Warrior 30"/>
+    <string name="name" value="[Mastery Book] Maple Warrior"/>
     <string name="desc" value="This increases the master level of #cMaple Warrior# up to 30 with 50% of chance.\r\nJob : All 4th Advancement Jobs\r\nCondition : Skill level above 15"/>
   </imgdir>
   <imgdir name="2022303">

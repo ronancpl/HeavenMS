@@ -6,14 +6,13 @@ function enter(pi) {
             return false;
         }
         else {
-            if (em.getProperty("noEntry") == "false") {
-                var eim = em.newInstance("Aran_2ndmount");
-                eim.registerPlayer(pi.getPlayer());
-                return true;
-            }
-            else {
+            var em = pi.getEventManager("Aran_2ndmount");
+            if (!em.startInstance(pi.getPlayer())) {
                 pi.message("There is currently someone in this map, come back later.");
                 return false;
+            } else {
+                pi.playPortalSound();
+                return true;
             }
         }
     } else {

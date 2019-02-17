@@ -33,8 +33,9 @@ function getEligibleParty(party) {      //selects, from the given party, the tea
         return eligible;
 }
 
-function setup() {
-    var eim = em.newInstance("s4aWorld");
+function setup(level, lobbyid) {
+    var eim = em.newInstance("s4aWorld_" + lobbyid);
+    eim.setProperty("level", level);
 
     eim.getInstanceMap(910500000).resetPQ(1);
     respawnStages(eim);

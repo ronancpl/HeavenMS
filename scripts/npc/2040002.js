@@ -56,8 +56,11 @@ function action(mode, type, selection) {
         if (status == 1) 
             cm.sendYesNo("Are you ready to enter the dollhouse map?");
         else if (status == 2) {
-            var eim = em.newInstance("DollHouse");
-            eim.registerPlayer(cm.getPlayer());
+            var em = cm.getEventManager("DollHouse");
+            if (!em.startInstance(cm.getPlayer())) {
+                cm.sendOk("Hmm... The DollHouse is being challenged already, it seems. Try again later.");
+            }
+            
             cm.dispose();
         }
     }

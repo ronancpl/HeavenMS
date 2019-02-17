@@ -227,6 +227,18 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         return MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false);
     }
     
+    private int getQuantityLeft(int itemid) {
+        int count = 0;
+        
+        for (MaplePlayerShopItem mpsi : items) {
+            if (mpsi.getItem().getItemId() == itemid) {
+                count += (mpsi.getBundles() * mpsi.getItem().getQuantity());
+            }
+        }
+        
+        return count;
+    }
+    
     public void buy(MapleClient c, int item, short quantity) {
         synchronized (items) {
             MaplePlayerShopItem pItem = items.get(item);
@@ -247,7 +259,6 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             if (c.getPlayer().getMeso() >= price) {
                 if (canBuy(c, newItem)) {
                     c.getPlayer().gainMeso(-price, false);
-                    if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) announceItemSold(newItem, price);   // idea thanks to Vcoc
                     
                     synchronized (sold) {
                         sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), newItem.getQuantity(), price));
@@ -257,6 +268,11 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                     if (pItem.getBundles() < 1) {
                         pItem.setDoesExist(false);
                     }
+                    
+                    if(ServerConstants.USE_ANNOUNCE_SHOPITEMSOLD) {   // idea thanks to Vcoc
+                        announceItemSold(newItem, price, getQuantityLeft(pItem.getItem().getItemId()));
+                    }
+                    
                     MapleCharacter owner = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterByName(ownerName);
                     if (owner != null) {
                         owner.addMerchantMesos(price);
@@ -288,12 +304,12 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
         }
     }
     
-    private void announceItemSold(Item item, int mesos) {
-        String qtyStr = (item.getQuantity() > 1) ? " (qty. " + item.getQuantity() + ")" : "";
+    private void announceItemSold(Item item, int mesos, int inStore) {
+        String qtyStr = (item.getQuantity() > 1) ? " x " + item.getQuantity() : "";
         
         MapleCharacter player = Server.getInstance().getWorld(world).getPlayerStorage().getCharacterById(ownerId);
         if(player != null && player.isLoggedinWorld()) {
-            player.dropMessage(6, "[HIRED MERCHANT] Item '" + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos.");
+            player.dropMessage(6, "[Hired Merchant] Item '" + MapleItemInformationProvider.getInstance().getName(item.getItemId()) + "'" + qtyStr + " has been sold for " + mesos + " mesos. (" + inStore + " left)");
         }
     }
 

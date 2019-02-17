@@ -83,6 +83,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
                 c.setAccID(rs.getInt(1));
                 rs.close();
             } catch (SQLException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+                c.setAccID(-1);
                 e.printStackTrace();
             } finally {
                 disposeSql(con, ps);

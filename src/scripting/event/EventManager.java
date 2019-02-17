@@ -260,7 +260,7 @@ public class EventManager {
         }
     }
 
-    public EventInstanceManager newInstance(String name) {
+    public EventInstanceManager newInstance(String name) throws EventInstanceInProgressException {
         EventInstanceManager ret = getReadyInstance();
         
         if(ret == null) {
@@ -271,7 +271,7 @@ public class EventManager {
         
         synchronized (instances) {
             if (instances.containsKey(name)) {
-                return null;
+                throw new EventInstanceInProgressException(name, this.getName());
             }
             
             instances.put(name, ret);
@@ -365,6 +365,34 @@ public class EventManager {
             return -1;
     }
     
+    private String getInternalScriptExceptionMessage(Throwable a) {
+        if (!(a instanceof ScriptException)) {
+            return null;
+        }
+        
+        while(true) {
+            Throwable t = a;
+            a = a.getCause();
+            
+            if (a == null) {
+                return t.getMessage();
+            }
+        }
+    }
+    
+    private EventInstanceManager createInstance(String name, Object... args) throws ScriptException, NoSuchMethodException {
+        return (EventInstanceManager) iv.invokeFunction(name, args);
+    }
+    
+    private void registerEventInstance(String eventName, int lobbyId) {
+        Integer oldLobby = instanceLocks.get(eventName);
+        if (oldLobby != null) {
+            setLockLobby(oldLobby, false);
+        }
+        
+        instanceLocks.put(eventName, lobbyId);
+    }
+    
     public boolean startInstance(MapleExpedition exped) {
         return startInstance(-1, exped);
     }
@@ -394,9 +422,14 @@ public class EventManager {
                         
                         EventInstanceManager eim;
                         try {
-                            eim = (EventInstanceManager) (iv.invokeFunction("setup", leader.getClient().getChannel()));
-                            instanceLocks.put(eim.getName(), lobbyId);
-                        } catch (NullPointerException npe) {
+                            eim = createInstance("setup", leader.getClient().getChannel());
+                            registerEventInstance(eim.getName(), lobbyId);
+                        } catch (ScriptException | NullPointerException e) {
+                            String message = getInternalScriptExceptionMessage(e);
+                            if (message != null && !message.startsWith(EventInstanceInProgressException.EIIP_KEY)) {
+                                throw e;
+                            }
+                            
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
@@ -460,9 +493,14 @@ public class EventManager {
                         
                         EventInstanceManager eim;
                         try {
-                            eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId()));
-                            instanceLocks.put(eim.getName(), lobbyId);
-                        } catch (NullPointerException npe) {
+                            eim = createInstance("setup", difficulty, (lobbyId > -1) ? lobbyId : leader.getId());
+                            registerEventInstance(eim.getName(), lobbyId);
+                        } catch (ScriptException | NullPointerException e) {
+                            String message = getInternalScriptExceptionMessage(e);
+                            if (message != null && !message.startsWith(EventInstanceInProgressException.EIIP_KEY)) {
+                                throw e;
+                            }
+                            
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
@@ -520,9 +558,14 @@ public class EventManager {
                         
                         EventInstanceManager eim;
                         try {
-                            eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
-                            instanceLocks.put(eim.getName(), lobbyId);
-                        } catch (NullPointerException npe) {
+                            eim = createInstance("setup", (Object) null);
+                            registerEventInstance(eim.getName(), lobbyId);
+                        } catch (ScriptException | NullPointerException e) {
+                            String message = getInternalScriptExceptionMessage(e);
+                            if (message != null && !message.startsWith(EventInstanceInProgressException.EIIP_KEY)) {
+                                throw e;
+                            }
+                            
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
@@ -582,9 +625,14 @@ public class EventManager {
                         
                         EventInstanceManager eim;
                         try {
-                            eim = (EventInstanceManager) (iv.invokeFunction("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId()));
-                            instanceLocks.put(eim.getName(), lobbyId);
-                        } catch (NullPointerException npe) {
+                            eim = createInstance("setup", difficulty, (lobbyId > -1) ? lobbyId : party.getLeaderId());
+                            registerEventInstance(eim.getName(), lobbyId);
+                        } catch (ScriptException | NullPointerException e) {
+                            String message = getInternalScriptExceptionMessage(e);
+                            if (message != null && !message.startsWith(EventInstanceInProgressException.EIIP_KEY)) {
+                                throw e;
+                            }
+                            
                             if(lobbyId > -1) {
                                 setLockLobby(lobbyId, false);
                             }
@@ -652,7 +700,7 @@ public class EventManager {
                             }
                             return false;
                         }
-                        instanceLocks.put(eim.getName(), lobbyId);
+                        registerEventInstance(eim.getName(), lobbyId);
                         eim.setLeader(leader);
                         
                         iv.invokeFunction("setup", eim);

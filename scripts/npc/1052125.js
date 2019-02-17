@@ -47,10 +47,10 @@ function action(mode, type, selection) {
     if (status == 0) {
     	if (selection == 0) {
     		if (cm.isQuestStarted(2286) || cm.isQuestStarted(2287) || cm.isQuestStarted(2288)) {
-        		var rock = cm.getEventManager("RockSpirit");
-        		rock.newInstance("RockSpirit");
-        		rock.setProperty("player", cm.getPlayer().getName());
-        		rock.startInstance(cm.getPlayer());
+        		var em = cm.getEventManager("RockSpirit");
+                        if (!em.startInstance(cm.getPlayer())) {
+                            cm.sendOk("Uh... It looks like the rooms ahead are a bit crowded right now. Please wait around here for a bit, ok?");
+                        }
     			cm.dispose();
     			return;
     		} else {

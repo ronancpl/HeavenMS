@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,17 +17,19 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package scripting.item;
+package scripting.event;
 
-import client.MapleClient;
-import scripting.AbstractPlayerInteraction;
 
 /**
  *
- * @author kevintjuh93
+ * @author Ronan
  */
-public class ItemScriptMethods extends AbstractPlayerInteraction {
-    public ItemScriptMethods(MapleClient c) {
-    	super(c);
+public class EventInstanceInProgressException extends Exception {
+    
+    public static String EIIP_KEY = "Event instance ";
+    
+    public EventInstanceInProgressException(String eventName, String eventInstance) {
+        super(EIIP_KEY + "already in progress - " + eventName + ", EM: " + eventInstance);
     }
+
 }

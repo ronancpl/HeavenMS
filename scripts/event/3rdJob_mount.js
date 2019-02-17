@@ -43,13 +43,36 @@ function init() {
     em.setProperty("noEntry","false");
 }
 
+function checkHogHealth(eim) {
+    var watchHog = eim.getInstanceMap(923010000).getMonsterById(9300102);
+    if (watchHog != null) {
+        var hp = watchHog.getHp();
+        var oldHp = eim.getIntProperty("whog_hp");
+        
+        if (oldHp - hp > 1000) {    // or 800, if using mobHP / eventTime
+            eim.dropMessage(6, "Please protect the pig from the aliens!");  // thanks Vcoc
+        }
+        eim.setIntProperty("whog_hp", hp);
+    }
+}
+
 function respawnStages(eim) {
     var i;
     for (i = 0; i < eventMaps.length; i++) {
         eim.getInstanceMap(eventMaps[i]).instanceMapRespawn();
     }
-
+    checkHogHealth(eim);
+    
     eim.schedule("respawnStages", 10 * 1000);
+}
+
+function setup(level, lobbyid) {
+    var eim = em.newInstance("3rdJob_mount_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    eim.setProperty("whog_hp", "0");
+    
+    return eim;
 }
 
 function playerEntry(eim, player) {
@@ -126,8 +149,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function disbandParty(eim, player) {}
 

@@ -218,7 +218,7 @@ public class MakerProcessor {
         Map<Integer, Integer> reagentType = new LinkedHashMap<>();
         List<Integer> toRemove = new LinkedList<>();
         
-        boolean isWeapon = ItemConstants.isWeapon(toCreate) || ServerConstants.USE_MAKER_PERMISSIVE_ATKUP;
+        boolean isWeapon = ItemConstants.isWeapon(toCreate) || ServerConstants.USE_MAKER_PERMISSIVE_ATKUP;  // thanks Vcoc for finding a case where a weapon wouldn't be counted as such due to a bounding on isWeapon
         
         for(Map.Entry<Integer, Short> r : reagentids.entrySet()) {
             int curRid = r.getKey();

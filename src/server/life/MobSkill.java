@@ -33,6 +33,7 @@ import constants.GameConstants;
 import java.util.LinkedList;
 import java.util.Map;
 import tools.Randomizer;
+import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMist;
@@ -235,57 +236,72 @@ public class MobSkill {
             case 156: // speed up
                 break;
             case 200: // summon
-                if (monster.getMap().getSpawnedMonstersOnMap() < 80) {
-                    for (Integer mobId : getSummons()) {
-                        MapleMonster toSpawn = MapleLifeFactory.getMonster(mobId);
-                        if(toSpawn != null) {
-                            if(GameConstants.isBossRush(monster.getMap().getId())) toSpawn.disableDrops();  // no littering on BRPQ pls
-                            
-                            toSpawn.setPosition(monster.getPosition());
-                            int ypos, xpos;
-                            xpos = (int) monster.getPosition().getX();
-                            ypos = (int) monster.getPosition().getY();
-                            switch (mobId) {
-                                case 8500003: // Pap bomb high
-                                    toSpawn.setFh((int) Math.ceil(Math.random() * 19.0));
-                                    ypos = -590;
-                                    break;
-                                case 8500004: // Pap bomb
-                                    xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
-                                    if (ypos != -590) {
-                                        ypos = (int) monster.getPosition().getY();
-                                    }
-                                    break;
-                                case 8510100: //Pianus bomb
-                                    if (Math.ceil(Math.random() * 5) == 1) {
-                                        ypos = 78;
-                                        xpos = (int) Randomizer.nextInt(5) + (Randomizer.nextInt(2) == 1 ? 180 : 0);
-                                    } else {
+                int skillLimit = this.getLimit();
+                MapleMap map = monster.getMap();
+                
+                if (map.isDojoMap()) {  // spawns in dojo should be unlimited
+                    skillLimit = Integer.MAX_VALUE;
+                }
+                
+                if (map.getSpawnedMonstersOnMap() < 80) {
+                    List<Integer> summons = getSummons();
+                    int summonLimit = monster.countAvailableMobSummons(summons.size(), skillLimit);
+                    if (summonLimit >= 1) {
+                        Collections.shuffle(summons);
+                        boolean bossRushMap = GameConstants.isBossRush(map.getId());
+
+                        for (Integer mobId : summons.subList(0, summonLimit)) {
+                            MapleMonster toSpawn = MapleLifeFactory.getMonster(mobId);
+                            if(toSpawn != null) {
+                                if(bossRushMap) toSpawn.disableDrops();  // no littering on BRPQ pls
+
+                                toSpawn.setPosition(monster.getPosition());
+                                int ypos, xpos;
+                                xpos = (int) monster.getPosition().getX();
+                                ypos = (int) monster.getPosition().getY();
+                                switch (mobId) {
+                                    case 8500003: // Pap bomb high
+                                        toSpawn.setFh((int) Math.ceil(Math.random() * 19.0));
+                                        ypos = -590;
+                                        break;
+                                    case 8500004: // Pap bomb
                                         xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
-                                    }
-                                    break;          
-                            }
-                            switch (monster.getMap().getId()) {
-                                case 220080001: //Pap map
-                                    if (xpos < -890) {
-                                        xpos = (int) (Math.ceil(Math.random() * 150) - 890);
-                                    } else if (xpos > 230) {
-                                        xpos = (int) (230 - Math.ceil(Math.random() * 150));
-                                    }
-                                    break;
-                                case 230040420: // Pianus map
-                                    if (xpos < -239) {
-                                        xpos = (int) (Math.ceil(Math.random() * 150) - 239);
-                                    } else if (xpos > 371) {
-                                        xpos = (int) (371 - Math.ceil(Math.random() * 150));
-                                    }
-                                    break;
-                            }
-                            toSpawn.setPosition(new Point(xpos, ypos));
-                            if (toSpawn.getId() == 8500004) {
-                                    monster.getMap().spawnFakeMonster(toSpawn);
-                            } else {
-                                    monster.getMap().spawnMonsterWithEffect(toSpawn, getSpawnEffect(), toSpawn.getPosition());
+                                        if (ypos != -590) {
+                                            ypos = (int) monster.getPosition().getY();
+                                        }
+                                        break;
+                                    case 8510100: //Pianus bomb
+                                        if (Math.ceil(Math.random() * 5) == 1) {
+                                            ypos = 78;
+                                            xpos = (int) Randomizer.nextInt(5) + (Randomizer.nextInt(2) == 1 ? 180 : 0);
+                                        } else {
+                                            xpos = (int) (monster.getPosition().getX() + Randomizer.nextInt(1000) - 500);
+                                        }
+                                        break;          
+                                }
+                                switch (map.getId()) {
+                                    case 220080001: //Pap map
+                                        if (xpos < -890) {
+                                            xpos = (int) (Math.ceil(Math.random() * 150) - 890);
+                                        } else if (xpos > 230) {
+                                            xpos = (int) (230 - Math.ceil(Math.random() * 150));
+                                        }
+                                        break;
+                                    case 230040420: // Pianus map
+                                        if (xpos < -239) {
+                                            xpos = (int) (Math.ceil(Math.random() * 150) - 239);
+                                        } else if (xpos > 371) {
+                                            xpos = (int) (371 - Math.ceil(Math.random() * 150));
+                                        }
+                                        break;
+                                }
+                                toSpawn.setPosition(new Point(xpos, ypos));
+                                if (toSpawn.getId() == 8500004) {
+                                        map.spawnFakeMonster(toSpawn);
+                                } else {
+                                        map.spawnMonsterWithEffect(toSpawn, getSpawnEffect(), toSpawn.getPosition());
+                                }
+                                monster.addSummonedMob(toSpawn);
                             }
                         }
                     }
@@ -342,7 +358,7 @@ public class MobSkill {
     }
 
     public List<Integer> getSummons() {
-        return Collections.unmodifiableList(toSummon);
+        return new ArrayList<>(toSummon);
     }
 
     public int getSpawnEffect() {

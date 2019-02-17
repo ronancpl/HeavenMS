@@ -66,6 +66,7 @@ import net.server.world.World;
 import scripting.event.EventInstanceManager;
 import server.CashShop;
 import server.MapleItemInformationProvider;
+import server.MapleItemInformationProvider.ScriptedItem;
 import server.MaplePortal;
 import server.MapleShop;
 import server.MapleStatEffect;
@@ -287,6 +288,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private AutobanManager autoban;
     private boolean isbanned = false;
     private boolean blockCashShop = false;
+    private boolean allowExpGain = false;
     private byte pendantExp = 0, lastmobcount = 0, doorSlot = -1;
     private List<Integer> trockmaps = new ArrayList<>();
     private List<Integer> viptrockmaps = new ArrayList<>();
@@ -649,6 +651,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void addSummon(int id, MapleSummon summon) {
         summons.put(id, summon);
+        
+        if (summon.isPuppet()) {
+            map.addPlayerPuppet(this);
+        }
     }
 
     public void addVisibleMapObject(MapleMapObject mo) {
@@ -804,6 +810,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void toggleBlockCashShop() {
         blockCashShop = !blockCashShop;
+    }
+    
+    public void toggleExpGain() {
+        allowExpGain = !allowExpGain;
     }
 
     public void setClient(MapleClient c) {
@@ -1728,6 +1738,15 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
+    public Collection<MapleMonster> getControlledMonsters() {
+        cpnLock.lock();
+        try {
+            return new ArrayList<>(controlled);
+        } finally {
+            cpnLock.unlock();
+        }
+    }
+    
     public void releaseControlledMonsters() {
         Collection<MapleMonster> controlledMonsters;
         
@@ -1799,7 +1818,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 mpcs = getPartyMembersOnSameMap();
             }
             
-            String itemScriptName = null;
+            ScriptedItem itemScript = null;
             mapitem.lockItem();
             try {
                 if (mapitem.isPickedUp()) {
@@ -1872,9 +1891,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             this.gainMeso(mapitem.getMeso(), true, true, false);
                         }
                     } else if (mItem.getItemId() / 10000 == 243) {
-                        MapleItemInformationProvider.scriptedItem info = ii.getScriptedItemInfo(mItem.getItemId());
-                        if (info.runOnPickup()) {
-                            itemScriptName = info.getScript();
+                        ScriptedItem info = ii.getScriptedItemInfo(mItem.getItemId());
+                        if (info != null && info.runOnPickup()) {
+                            itemScript = info;
                         } else {
                             if (!MapleInventoryManipulator.addFromDrop(client, mItem, true)) {
                                 client.announce(MaplePacketCreator.enableActions());
@@ -1908,11 +1927,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 mapitem.unlockItem();
             }
             
-            if (itemScriptName != null) {
+            if (itemScript != null) {
                 ItemScriptManager ism = ItemScriptManager.getInstance();
-                if (ism.scriptExists(itemScriptName)) {
-                    ism.runItemScript(client, itemScriptName);
-                }
+                ism.runItemScript(client, itemScript);
             }
         }
         client.announce(MaplePacketCreator.enableActions());
@@ -1927,14 +1944,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
         
     public boolean canHold(int itemid, int quantity) {
-        int hold = getCleanItemQuantity(itemid, false);
-        
-        if(hold > 0) {
-            if(hold + quantity <= ii.getSlotMax(client, itemid))
-                return true;
-        }
-        
-        return getInventory(ItemConstants.getInventoryType(itemid)).getNextFreeSlot() > -1;
+        return client.getAbstractPlayerInteraction().canHold(itemid, quantity);
     }
 
     public boolean isRidingBattleship() {
@@ -2907,7 +2917,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private synchronized void gainExpInternal(long gain, int equip, int party, boolean show, boolean inChat, boolean white) {   // need of method synchonization here detected thanks to MedicOP
         long total = Math.max(gain, -exp.get());
         
-        if (level < getMaxLevel()) {
+        if (level < getMaxLevel() && (allowExpGain || this.getEventInstance() != null)) {
             long leftover = 0;
             long nextExp = exp.get() + total;
             
@@ -3464,9 +3474,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             getMap().broadcastMessage(MaplePacketCreator.removeSummon(summon, true), summon.getPosition());
                             getMap().removeMapObject(summon);
                             removeVisibleMapObject(summon);
+                            
                             summons.remove(summonId);
-
-                            if (summon.getSkill() == DarkKnight.BEHOLDER) {
+                            if (summon.isPuppet()) {
+                                map.removePlayerPuppet(this);
+                            } else if (summon.getSkill() == DarkKnight.BEHOLDER) {
                                 if (beholderHealingSchedule != null) {
                                     beholderHealingSchedule.cancel(false);
                                     beholderHealingSchedule = null;
@@ -4602,19 +4614,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public int getItemQuantity(int itemid, boolean checkEquipped) {
-        int possesed = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
+        int count = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countById(itemid);
         if (checkEquipped) {
-            possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countById(itemid);
+            count += inventory[MapleInventoryType.EQUIPPED.ordinal()].countById(itemid);
         }
-        return possesed;
+        return count;
     }
     
     public int getCleanItemQuantity(int itemid, boolean checkEquipped) {
-        int possesed = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
+        int count = inventory[ItemConstants.getInventoryType(itemid).ordinal()].countNotOwnedById(itemid);
         if (checkEquipped) {
-            possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countNotOwnedById(itemid);
+            count += inventory[MapleInventoryType.EQUIPPED.ordinal()].countNotOwnedById(itemid);
         }
-        return possesed;
+        return count;
     }
 
     public MapleJob getJob() {
@@ -6600,13 +6612,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             rs = ps.executeQuery();
             while (rs.next()) {
                 String name = rs.getString("name");
-                if (rs.getString("name").equals("rescueGaga")) {
+                if (rs.getString("name").contentEquals("rescueGaga")) {
                     ret.events.put(name, new RescueGaga(rs.getInt("info")));
                 }
-                //ret.events = new MapleEvents(new RescueGaga(rs.getInt("rescuegaga")), new ArtifactHunt(rs.getInt("artifacthunt")));
-            }
-            if (!ret.events.containsKey("rescueGaga")) {
-                ret.events.put("rescueGaga", new RescueGaga(0));
             }
             rs.close();
             ps.close();
@@ -6988,13 +6996,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void respawn(EventInstanceManager eim, int returnMap) {
-        cancelAllBuffs(false);
-        
-        updateHp(50);
-        setStance(0);
-        
         if (eim != null) eim.unregisterPlayer(this);    // some event scripts uses this...
         changeMap(returnMap);
+        
+        cancelAllBuffs(false);  // thanks Oblivium91 for finding out players still could revive in area and take damage before returning to town
+        updateHp(50);
+        setStance(0);
     }
 
     private void prepareDragonBlood(final MapleStatEffect bloodEffect) {
@@ -7513,6 +7520,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         for(Pair<Item, MapleInventoryType> itEntry : itemsWithType) {
             this.getInventory(itEntry.getRight()).addItem(itEntry.getLeft());
         }
+        
+        this.events.put("rescueGaga", new RescueGaga(0));
         
         Connection con = null;
         PreparedStatement ps = null;
@@ -9733,7 +9742,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             events = null;
             mpc = null;
             mgc = null;
-            events = null;
             party = null;
             family = null;
             

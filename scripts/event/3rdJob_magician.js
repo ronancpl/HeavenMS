@@ -41,6 +41,14 @@ function init() {
     em.setProperty("noEntry","false");
 }
 
+function setup(level, lobbyid) {
+    var eim = em.newInstance("3rdJob_magician_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
+    return eim;
+}
+
 function playerEntry(eim, player) {
     eim.getInstanceMap(maxMapId).resetPQ(1);
     
@@ -96,8 +104,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function disbandParty(eim, player) {}
 

@@ -20,6 +20,9 @@ function enter(pi) {
 	case 100000201:
             pi.warp(100000204, 2); //or 100000205
             break;
+        case 101000003: // portal warp fix thanks to Vcoc
+            pi.warp(101000004, 2); //or 101000005
+            break;
 	default:
             pi.warp(pi.getMapId() + 1, 1); //or + 2
             break;

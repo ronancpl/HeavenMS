@@ -228,7 +228,11 @@ public class AbstractPlayerInteraction {
         }
         
         public boolean canHold(int itemid, int quantity) {
-                return getPlayer().canHold(itemid, quantity);
+                return canHoldAll(Collections.singletonList(itemid), Collections.singletonList(quantity), true);
+        }
+        
+        public boolean canHold(int itemid, int quantity, int removeItemid, int removeQuantity) {
+                return canHoldAllAfterRemoving(Collections.singletonList(itemid), Collections.singletonList(quantity), Collections.singletonList(removeItemid), Collections.singletonList(removeQuantity));
         }
         
         private static List<Integer> convertToIntegerArray(List<Double> list) {
@@ -261,10 +265,6 @@ public class AbstractPlayerInteraction {
             }
             
             return MapleInventory.checkSpots(c.getPlayer(), addedItems, false);
-        }
-        
-        public boolean canHold(int itemid, int quantity, int removeItemid, int removeQuantity) {
-            return canHoldAllAfterRemoving(Collections.singletonList(itemid), Collections.singletonList(quantity), Collections.singletonList(removeItemid), Collections.singletonList(removeQuantity));
         }
         
         private static List<Pair<Item, MapleInventoryType>> prepareProofInventoryItems(List<Pair<Integer, Integer>> items) {

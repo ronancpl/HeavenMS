@@ -59,13 +59,13 @@ public final class RegisterPicHandler extends AbstractMaplePacketHandler {
         }
         
         if (c.hasBannedMac() || c.hasBannedHWID()) {
-            c.getSession().close(true);
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
             return;
         }
         
         Server server = Server.getInstance();
         if(!server.haveCharacterEntry(c.getAccID(), charId)) {
-            c.getSession().close(true);
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
             return;
         }
 		
@@ -96,7 +96,7 @@ public final class RegisterPicHandler extends AbstractMaplePacketHandler {
                 e.printStackTrace();
             }
         } else {
-            c.getSession().close(true);
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
         }
     }
 }

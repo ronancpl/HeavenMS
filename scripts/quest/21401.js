@@ -22,13 +22,13 @@ function start(mode, type, selection) {
 	} else if (status == 3) {
 		qm.sendAcceptDecline("Please, Aran. Please stop me from becoming enraged. Only you can control me. It's getting out of my hands now. Please do whatever it takes to #rstop me from going berserk#k!");
 	} else if (status == 4) {
-		qm.startQuest();
-		
-                var mb = qm.getEventManager("MahaBattle");
-                mb.newInstance("MahaBattle");
-                mb.setProperty("player", qm.getPlayer().getName());
-                mb.startInstance(qm.getPlayer());
-		
+		var em = qm.getEventManager("MahaBattle");
+                if (!em.startInstance(qm.getPlayer())) {
+                    qm.sendOk("There is currently someone in this map, come back later.");
+                } else {
+                    qm.startQuest();
+                }
+                
 		qm.dispose();
 	}
 }

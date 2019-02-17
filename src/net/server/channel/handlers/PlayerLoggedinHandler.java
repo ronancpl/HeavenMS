@@ -289,7 +289,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                                 }
                             }
                             if (newAlliance != null) {
-                                c.announce(MaplePacketCreator.updateAllianceInfo(newAlliance, c));
+                                c.announce(MaplePacketCreator.updateAllianceInfo(newAlliance, c.getWorld()));
                                 c.announce(MaplePacketCreator.allianceNotice(newAlliance.getId(), newAlliance.getNotice()));
 
                                 if (newcomer) {

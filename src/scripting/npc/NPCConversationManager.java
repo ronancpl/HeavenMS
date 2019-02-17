@@ -74,16 +74,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         private int npcOid;
 	private String scriptName;
 	private String getText;
+        private boolean itemScript;
         
         public NPCConversationManager(MapleClient c, int npc, String scriptName) {
-               this(c, npc, -1, scriptName);
+               this(c, npc, -1, scriptName, false);
         }
         
-	public NPCConversationManager(MapleClient c, int npc, int oid, String scriptName) {
+	public NPCConversationManager(MapleClient c, int npc, int oid, String scriptName, boolean itemScript) {
 		super(c);
 		this.npc = npc;
                 this.npcOid = oid;
 		this.scriptName = scriptName;
+                this.itemScript = itemScript;
 	}
 
 	public int getNpc() {
@@ -97,6 +99,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public String getScriptName() {
 		return scriptName;
 	}
+        
+        public boolean isItemScript() {
+                return itemScript;
+        }
+        
+        public void resetItemScript() {
+                this.itemScript = false;
+        }
 
 	public void dispose() {
 		NPCScriptManager.getInstance().dispose(this);

@@ -41,6 +41,14 @@ function init() {
     em.setProperty("noEntry","false");
 }
 
+function setup(level, lobbyid) {
+    var eim = em.newInstance("BalrogQuest_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
+    return eim;
+}
+
 function respawnStages(eim) {}
 
 function afterSetup(eim) {}
@@ -103,8 +111,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function disbandParty(eim, player) {}
 

@@ -130,7 +130,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                 chr.saveGuildStatus();
 
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.addGuildToAlliance(alliance, guildid, c), -1, -1);
-                Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.updateAllianceInfo(alliance, c), -1, -1);
+                Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.updateAllianceInfo(alliance, c.getWorld()), -1, -1);
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
                 chr.getGuild().dropMessage("Your guild has joined the [" + alliance.getName() + "] union.");
                

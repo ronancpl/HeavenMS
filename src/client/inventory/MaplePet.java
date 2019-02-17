@@ -52,6 +52,21 @@ public class MaplePet extends Item {
     private Point pos;
     private int stance;
     private boolean summoned;
+    private int petFlag = 0;
+    
+    public enum PetFlag {
+        OWNER_SPEED(0x01);
+        
+        private int i;
+
+        private PetFlag(int i) {
+            this.i = i;
+        }
+
+        public int getValue() {
+            return i;
+        }
+    }
 
     private MaplePet(int id, short position, int uniqueid) {
         super(id, position, (short) 1);
@@ -63,7 +78,7 @@ public class MaplePet extends Item {
         try {
             MaplePet ret = new MaplePet(itemid, position, petid);
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("SELECT name, level, closeness, fullness, summoned FROM pets WHERE petid = ?"); // Get pet details..
+            PreparedStatement ps = con.prepareStatement("SELECT name, level, closeness, fullness, summoned, flag FROM pets WHERE petid = ?"); // Get pet details..
             ps.setInt(1, petid);
             ResultSet rs = ps.executeQuery();
             rs.next();
@@ -72,6 +87,7 @@ public class MaplePet extends Item {
             ret.setLevel((byte) Math.min(rs.getByte("level"), 30));
             ret.setFullness(Math.min(rs.getInt("fullness"), 100));
             ret.setSummoned(rs.getInt("summoned") == 1);
+            ret.setPetFlag(rs.getInt("flag"));
             rs.close();
             ps.close();
             con.close();
@@ -108,13 +124,14 @@ public class MaplePet extends Item {
     public void saveToDb() {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, summoned = ? WHERE petid = ?");
+            PreparedStatement ps = con.prepareStatement("UPDATE pets SET name = ?, level = ?, closeness = ?, fullness = ?, summoned = ?, flag = ? WHERE petid = ?");
             ps.setString(1, getName());
             ps.setInt(2, getLevel());
             ps.setInt(3, getCloseness());
             ps.setInt(4, getFullness());
             ps.setInt(5, isSummoned() ? 1 : 0);
-            ps.setInt(6, getUniqueId());
+            ps.setInt(6, getPetFlag());
+            ps.setInt(7, getUniqueId());
             ps.executeUpdate();
             ps.close();
             con.close();
@@ -126,7 +143,7 @@ public class MaplePet extends Item {
     public static int createPet(int itemid) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned) VALUES (?, ?, 1, 0, 100, 0)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned, flag) VALUES (?, ?, 1, 0, 100, 0, 0)");
             int ret = MapleCashidGenerator.generateCashId();
             ps.setInt(1, ret);
             ps.setString(2, MapleItemInformationProvider.getInstance().getName(itemid));
@@ -143,7 +160,7 @@ public class MaplePet extends Item {
     public static int createPet(int itemid, byte level, int closeness, int fullness) {
         try {
             Connection con = DatabaseConnection.getConnection();
-            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned) VALUES (?, ?, ?, ?, ?, 0)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO pets (petid, name, level, closeness, fullness, summoned, flag) VALUES (?, ?, ?, ?, ?, 0, 0)");
             int ret = MapleCashidGenerator.generateCashId();
             ps.setInt(1, ret);
             ps.setString(2, MapleItemInformationProvider.getInstance().getName(itemid));
@@ -273,6 +290,32 @@ public class MaplePet extends Item {
 
     public void setSummoned(boolean yes) {
         this.summoned = yes;
+    }
+    
+    public int getPetFlag() {
+        return this.petFlag;
+    }
+    
+    private void setPetFlag(int flag) {
+        this.petFlag = flag;
+    }
+    
+    public void addPetFlag(MapleCharacter owner, PetFlag flag) {
+        this.petFlag |= flag.getValue();
+        saveToDb();
+        
+        Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());
+        if (petz != null)
+            owner.forceUpdateItem(petz);
+    }
+    
+    public void removePetFlag(MapleCharacter owner, PetFlag flag) {
+        this.petFlag &= 0xFFFFFFFF ^ flag.getValue();
+        saveToDb();
+        
+        Item petz = owner.getInventory(MapleInventoryType.CASH).getItem(getPosition());
+        if (petz != null)
+            owner.forceUpdateItem(petz);
     }
 
     public Pair<Integer, Boolean> canConsume(int itemId) {

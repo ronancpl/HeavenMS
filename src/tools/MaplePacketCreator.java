@@ -406,7 +406,7 @@ public class MaplePacketCreator {
                         mplew.writeShort(pet.getCloseness());
                         mplew.write(pet.getFullness());
                         addExpirationTime(mplew, item.getExpiration());
-                        mplew.writeInt(0);
+                        mplew.writeInt(pet.getPetFlag());  /* pet flags found by -- Irenex & Spoon */
                         mplew.write(new byte[]{(byte) 0x50, (byte) 0x46}); //wonder what this is
                         mplew.writeInt(0);
                         return;
@@ -1065,7 +1065,7 @@ public class MaplePacketCreator {
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(10);
+                mplew.skip(14);
                 return mplew.getPacket();
         }
         
@@ -1082,7 +1082,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(10);
+                mplew.skip(14);
                 return mplew.getPacket();
         }
         
@@ -1158,7 +1158,8 @@ public class MaplePacketCreator {
                 mplew.write(0x0A); //v83
                 mplew.write(summon.getSkillLevel());
                 mplew.writePos(summon.getPosition());
-                mplew.skip(3);
+                mplew.write(summon.getStance());    //bMoveAction & foothold, found thanks to Rien dev team
+                mplew.writeShort(0);
                 mplew.write(summon.getMovementType().getValue()); // 0 = don't move, 1 = follow (4th mage summons?), 2/4 = only tele follow, 3 = bird follow
                 mplew.write(summon.isPuppet() ? 0 : 1); // 0 and the summon can't attack - but puppets don't attack with 1 either ^.-
                 mplew.write(animated ? 0 : 1);
@@ -1828,8 +1829,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(!drop.isFFADrop() ? (recvrInParty ? drop.getPartyOwnerId() : drop.getOwnerId()) : 0); // owner charid/partyid :)
                 mplew.write(drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
-                // its not charId, but dropper's oid, this error will occur only if a monster's oid in map equals charId, (the item will drop from the error monster)
-                mplew.writeInt(drop.getDropper().getObjectId());
+                mplew.writeInt(drop.getDropper().getObjectId()); // dropper oid, found thanks to Li Jixue
 
                 if (mod != 2) {
                         mplew.writePos(dropfrom);
@@ -2736,9 +2736,9 @@ public class MaplePacketCreator {
                         }
                 }
                 mplew.writeMapleAsciiString(guildName);
-                mplew.writeMapleAsciiString(allianceName);  // does not seems to work
+                mplew.writeMapleAsciiString(allianceName);  // does not seem to work
+                mplew.write(0); // pMedalInfo, thanks to Arnah (Vertisy)
                 
-                mplew.write(0);
                 MaplePet[] pets = chr.getPets();
                 Item inv = chr.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -114);
                 for (int i = 0; i < 3; i++) {
@@ -3778,11 +3778,16 @@ public class MaplePacketCreator {
         }
 
         /**
-         * 10: A beginner can't create a party. 1/11/14/19: Your request for a party
-         * didn't work due to an unexpected error. 13: You have yet to join a party.
+         * 10: A beginner can't create a party. 1/5/6/11/14/19: Your request for a
+         * party didn't work due to an unexpected error. 12: Quit as leader of the
+         * party. 13: You have yet to join a party.
          * 16: Already have joined a party. 17: The party you're trying to join is
          * already in full capacity. 19: Unable to find the requested character in
-         * this channel.
+         * this channel. 21: Player is blocking any party invitations. 22: Player
+         * is taking care of another invitation. 23: Player denied request.
+         * 25: Cannot kick another user in this map. 28/29: Leadership can only be
+         * given to a party member in the vicinity. 30: Change leadership only on
+         * same channel.
          *
          * @param message
          * @return
@@ -4065,7 +4070,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(cid);
                 mplew.writeInt(oid);
                 mplew.write(12);
-                mplew.writeInt(damage);         // damage display doesn't seems to work...
+                mplew.writeInt(damage);         // damage display doesn't seem to work...
                 mplew.writeInt(monsterIdFrom);
                 mplew.write(0);
                 return mplew.getPacket();
@@ -6746,7 +6751,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] updateAllianceInfo(MapleAlliance alliance, MapleClient c) {
+        public static byte[] updateAllianceInfo(MapleAlliance alliance, int world) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.ALLIANCE_OPERATION.getValue());
                 mplew.write(0x0F);
@@ -6761,8 +6766,8 @@ public class MaplePacketCreator {
                 }
                 mplew.writeInt(alliance.getCapacity()); // probably capacity
                 mplew.writeShort(0);
-                for (Integer guildd : alliance.getGuilds()) {
-                        getGuildInfo(mplew, Server.getInstance().getGuild(guildd, c.getWorld()));
+                for (Integer guildid : alliance.getGuilds()) {
+                        getGuildInfo(mplew, Server.getInstance().getGuild(guildid, world));
                 }
                 return mplew.getPacket();
         }

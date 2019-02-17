@@ -59,13 +59,12 @@ function start() {
         if (em == null)
             cm.sendOk("Sorry, but 3rd job advancement (" + js + ") is closed.");
         else {
-            if (em.getProperty("noEntry") == "false") {
-                var eim = em.newInstance("3rdjob_" + js);
-                eim.registerPlayer(cm.getPlayer());
-            }
-            else {
+            if (!em.startInstance(cm.getPlayer())) {
                 cm.sendOk("Someone else is already challenging the clone. Please wait until the area is cleared.");
             }
+            
+            cm.dispose();
+            return;
         }
     }
     

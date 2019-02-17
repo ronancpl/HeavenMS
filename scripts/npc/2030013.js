@@ -176,7 +176,7 @@ function action(mode, type, selection) {
             if (selection > 0) {
                 var banned = expedMembers.get(selection - 1);
                 expedition.ban(banned);
-                cm.sendOk("You have banned " + banned.getName() + " from the expedition.");
+                cm.sendOk("You have banned " + banned.getValue() + " from the expedition.");    // getValue, thanks MedicOP for finding this issue
                 cm.dispose();
             } else {
                 cm.sendSimple(list);

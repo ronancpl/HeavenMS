@@ -72,7 +72,7 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         c.updateHWID(hwid);
         
         if (c.hasBannedMac() || c.hasBannedHWID()) {
-            c.getSession().close(true);
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
             return;
         }
         
@@ -85,7 +85,7 @@ public final class ViewAllCharSelectedHandler extends AbstractMaplePacketHandler
         
         Server server = Server.getInstance();
         if(!server.haveCharacterEntry(c.getAccID(), charId)) {
-            c.getSession().close(true);
+            MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
             return;
         }
         

@@ -16458,6 +16458,7 @@ CREATE TABLE IF NOT EXISTS `pets` (
   `closeness` int(10) unsigned NOT NULL,
   `fullness` int(10) unsigned NOT NULL,
   `summoned` tinyint(1) NOT NULL DEFAULT '0',
+  `flag` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`petid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

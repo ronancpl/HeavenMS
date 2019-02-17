@@ -88,8 +88,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void exceptionCaught(IoSession session, Throwable cause) {
-        if (cause instanceof IOException) { // mina closes session automatically and does not call sessionClosed on IOException
-            session.closeNow(); // calls sessionClosed
+        if (cause instanceof IOException) {
+            closeMapleSession(session);
         } else {
             MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
             
@@ -137,8 +137,7 @@ public class MapleServerHandler extends IoHandlerAdapter {
         session.setAttribute(MapleClient.CLIENT_KEY, client);
     }
 
-    @Override
-    public void sessionClosed(IoSession session) throws Exception {
+    private void closeMapleSession(IoSession session) {
         if (isLoginServerHandler()) {
             MapleSessionCoordinator.getInstance().closeLoginSession(session);
         } else {
@@ -157,10 +156,15 @@ public class MapleServerHandler extends IoHandlerAdapter {
                 FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, t);
             } finally {
                 session.close();
-                session.removeAttribute(MapleClient.CLIENT_KEY);      
+                session.removeAttribute(MapleClient.CLIENT_KEY);
                 //client.empty();
             }
         }
+    }
+    
+    @Override
+    public void sessionClosed(IoSession session) throws Exception {
+        closeMapleSession(session);
         super.sessionClosed(session);
     }
 

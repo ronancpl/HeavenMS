@@ -53,6 +53,7 @@ public class MapleKarmaManipulator {
         int flag = item.getFlag();
         
         flag |= karmaFlag;
+        flag &= (0xFFFFFFFF ^ ItemConstants.UNTRADEABLE);
         item.setFlag((byte) flag);
     }
 }

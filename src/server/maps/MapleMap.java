@@ -1796,21 +1796,36 @@ public class MapleMap {
     private void applyRemoveAfter(final MapleMonster monster) {
         final selfDestruction selfDestruction = monster.getStats().selfDestruction();
         if (monster.getStats().removeAfter() > 0 || selfDestruction != null && selfDestruction.getHp() < 0) {
+            Runnable removeAfterAction;
+            
             if (selfDestruction == null) {
-                registerMapSchedule(new Runnable() {
+                removeAfterAction = new Runnable() {
                     @Override
                     public void run() {
                         killMonster(monster, null, false);
                     }
-                }, monster.getStats().removeAfter() * 1000);
+                };
+                
+                registerMapSchedule(removeAfterAction, monster.getStats().removeAfter() * 1000);
             } else {
-                registerMapSchedule(new Runnable() {
+                removeAfterAction = new Runnable() {
                     @Override
                     public void run() {
                         killMonster(monster, null, false, selfDestruction.getAction());
                     }
-                }, selfDestruction.removeAfter() * 1000);
+                };
+                
+                registerMapSchedule(removeAfterAction, selfDestruction.removeAfter() * 1000);
             }
+            
+            monster.pushRemoveAfterAction(removeAfterAction);
+        }
+    }
+    
+    public void dismissRemoveAfter(final MapleMonster monster) {
+        Runnable removeAfterAction = monster.popRemoveAfterAction();
+        if (removeAfterAction != null) {
+            this.getChannelServer().forceRunOverallAction(mapid, removeAfterAction);
         }
     }
     
@@ -2583,6 +2598,18 @@ public class MapleMap {
         return Collections.unmodifiableCollection(portals.values());
     }
     */
+    
+    public void addPlayerPuppet(MapleCharacter player) {
+        for (MapleMonster mm : this.getMonsters()) {
+            mm.aggroAddPuppet(player);
+        }
+    }
+    
+    public void removePlayerPuppet(MapleCharacter player) {
+        for (MapleMonster mm : this.getMonsters()) {
+            mm.aggroRemovePuppet(player);
+        }
+    }
 
     public void removePlayer(MapleCharacter chr) {
         Channel cserv = chr.getClient().getChannelServer();
@@ -3699,8 +3726,11 @@ public class MapleMap {
                     if (mapid >= 922240100 && mapid <= 922240119) {
                         toggleHiddenNPC(9001108);
                     }
-                    mapMonitor.cancel(true);
-                    mapMonitor = null;
+                    
+                    if (mapMonitor != null) {
+                        mapMonitor.cancel(true);
+                        mapMonitor = null;
+                    }
                 }
             }
         }, 1000);
@@ -3993,7 +4023,7 @@ public class MapleMap {
     
     public void dispose() {
         for(MapleMonster mm : this.getMonsters()) {
-            mm.disposeLocks();
+            mm.dispose();
         }
         
         clearMapObjects();

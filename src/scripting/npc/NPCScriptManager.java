@@ -32,6 +32,7 @@ import javax.script.Invocable;
 import javax.script.ScriptException;
 
 import scripting.AbstractScriptManager;
+import server.MapleItemInformationProvider.ScriptedItem;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
 
@@ -60,7 +61,7 @@ public class NPCScriptManager extends AbstractScriptManager {
     }
     
     public boolean start(MapleClient c, int npc, MapleCharacter chr) {
-        return start(c, npc, null, chr);
+        return start(c, npc, -1, chr);
     }
     
     public boolean start(MapleClient c, int npc, int oid, MapleCharacter chr) {
@@ -70,27 +71,42 @@ public class NPCScriptManager extends AbstractScriptManager {
     public boolean start(MapleClient c, int npc, String fileName, MapleCharacter chr) {
         return start(c, npc, -1, fileName, chr);
     }
-
+    
     public boolean start(MapleClient c, int npc, int oid, String fileName, MapleCharacter chr) {
+        return start(c, npc, oid, fileName, chr, false, "cm");
+    }
+    
+    public boolean start(MapleClient c, ScriptedItem scriptItem, MapleCharacter chr) {
+        return start(c, scriptItem.getNpc(), -1, scriptItem.getScript(), chr, true, "im");
+    }
+
+    private boolean start(MapleClient c, int npc, int oid, String fileName, MapleCharacter chr, boolean itemScript, String engineName) {
         try {
-            NPCConversationManager cm = new NPCConversationManager(c, npc, oid, fileName);
+            NPCConversationManager cm = new NPCConversationManager(c, npc, oid, fileName, itemScript);
             if (cms.containsKey(c)) {
                 dispose(c);
             }
             if (c.canClickNPC()) {
                 cms.put(c, cm);
                 Invocable iv = null;
-                if (fileName != null) {
-                    iv = getInvocable("npc/" + fileName + ".js", c);
+                if (!itemScript) {
+                    if (fileName != null) {
+                        iv = getInvocable("npc/" + fileName + ".js", c);
+                    }
+                } else {
+                    if (fileName != null) {     // thanks MiLin for drafting NPC-based item scripts
+                        iv = getInvocable("item/" + fileName + ".js", c);
+                    }
                 }
                 if (iv == null) {
                     iv = getInvocable("npc/" + npc + ".js", c);
+                    cm.resetItemScript();
                 }
                 if (iv == null || NPCScriptManager.getInstance() == null) {
                     dispose(c);
                     return false;
                 }
-                engine.put("cm", cm);
+                engine.put(engineName, cm);
                 scripts.put(c, iv);
                 c.setClickedNPC();
                 try {
@@ -142,10 +158,11 @@ public class NPCScriptManager extends AbstractScriptManager {
         cms.remove(c);
         scripts.remove(c);
         
+        String scriptFolder = (cm.isItemScript() ? "item" : "npc");
         if(cm.getScriptName() != null) {
-            resetContext("npc/" + cm.getScriptName() + ".js", c);
+            resetContext(scriptFolder + "/" + cm.getScriptName() + ".js", c);
         } else {
-            resetContext("npc/" + cm.getNpc() + ".js", c);
+            resetContext(scriptFolder + "/" + cm.getNpc() + ".js", c);
         }
     }
 

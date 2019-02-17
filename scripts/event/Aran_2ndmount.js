@@ -41,6 +41,14 @@ function init() {
     em.setProperty("noEntry","false");
 }
 
+function setup(level, lobbyid) {
+    var eim = em.newInstance("Aran_2ndmount_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
+    return eim;
+}
+
 function respawnStages(eim) {}
 
 function playerEntry(eim, player) {
@@ -113,8 +121,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function disbandParty(eim, player) {}
 

@@ -16,8 +16,8 @@ function init() {
     rideTime = em.getTransportationTime(rideTime);
 }
 
-function setup() {
-	var eim = em.newInstance("Hak_" + + em.getProperty("player"));
+function setup(level, lobbyid) {
+	var eim = em.newInstance("Hak_" + lobbyid);
 	return eim;
 }
 

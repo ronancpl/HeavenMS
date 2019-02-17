@@ -36,11 +36,7 @@ function start() {
         if (em == null)
             cm.sendOk("Sorry, but 3rd job advancement (mount) is closed.");
         else {
-            if (em.getProperty("noEntry") == "false") {
-                var eim = em.newInstance("3rdjob_mount");
-                eim.registerPlayer(cm.getPlayer());
-            }
-            else {
+            if (!em.startInstance(cm.getPlayer())) {
                 cm.sendOk("There is currently someone in this map, come back later.");
             }
         }

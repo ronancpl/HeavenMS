@@ -34,8 +34,11 @@ function init() {
     otherMap = em.getChannelServer().getMapFactory().getMap(103040420);
 }
 
-function setup() {
-    var eim = em.newInstance("RockSpirit_" + em.getProperty("player"));
+function setup(level, lobbyid) {
+    var eim = em.newInstance("RockSpirit_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
     respawn(eim);
     eim.startEventTimer(timer);    
     return eim;

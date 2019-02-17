@@ -42,17 +42,14 @@ function start(mode, type, selection) {
                 return;
             }
             
-            if (em.getProperty("noEntry") == "false") {
-                var eim = em.newInstance("BalrogQuest");
-                eim.registerPlayer(qm.getPlayer());
-                eim.startEvent();
-
-                qm.dispose();
-            }
-            else {
+            var em = qm.getEventManager("BalrogQuest");
+            if (!em.startInstance(qm.getPlayer())) {
                 qm.sendOk("There is currently someone in this map, come back later.");
-                qm.dispose();
+            } else {
+                qm.forceStartQuest();
             }
+
+            qm.dispose();
         }
     }
 }

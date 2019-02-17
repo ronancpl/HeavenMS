@@ -78,13 +78,13 @@ function action(mode, type, selection) {
                     if (getEimForString(em,passwd) != null)
                         cm.sendOk("You may not use that password.");
                     else { // start Zakum Battle
-                        var eim = em.newInstance("Zakum" + passwd);
-                        if(!em.startInstance(eim,cm.getPlayer().getName())) {
-                            cm.sendOk("A party in your name is already registered in this instance.");
-                            cm.dispose();
-                            return;
+                        //var em = cm.getEventManager("Zakum" + passwd);
+                        if (!em.startInstance(cm.getPlayer())) {
+                            cm.sendOk("A party is already registered in this instance.");
                         }
-                        eim.registerPlayer(cm.getPlayer());
+
+                        cm.dispose();
+                        return;
                     }
                 }
                 if (state == 1) { // Member

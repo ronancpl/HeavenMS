@@ -78,13 +78,13 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
         }
         
         if (c.hasBannedMac() || c.hasBannedHWID()) {
-            session.close(true);
+            MapleSessionCoordinator.getInstance().closeSession(session, true);
             return;
         }
 
         Server server = Server.getInstance();
         if(!server.haveCharacterEntry(c.getAccID(), charId)) {
-            session.close(true);
+            MapleSessionCoordinator.getInstance().closeSession(session, true);
             return;
         }
         

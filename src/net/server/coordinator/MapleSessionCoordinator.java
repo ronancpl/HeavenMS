@@ -68,6 +68,7 @@ public class MapleSessionCoordinator {
     }
     
     private final LoginStorage loginStorage = new LoginStorage();
+    private final Map<Integer, MapleClient> onlineClients = new HashMap<>();
     private final Set<String> onlineRemoteHwids = new HashSet<>();
     private final Map<String, Set<IoSession>> loginRemoteHosts = new HashMap<>();
     private final Set<String> pooledRemoteHosts = new HashSet<>();
@@ -221,6 +222,24 @@ public class MapleSessionCoordinator {
         return ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
     }
     
+    private static MapleClient getSessionClient(IoSession session) {
+        return (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
+    }
+    
+    public void updateOnlineSession(IoSession session) {
+        MapleClient client = getSessionClient(session);
+        
+        if (client != null) {
+            int accountId = client.getAccID();
+            MapleClient ingameClient = onlineClients.get(accountId);
+            if (ingameClient != null) {     // thanks MedicOP for finding out a loss of loggedin account uniqueness when using the CMS "Unstuck" feature
+                ingameClient.forceDisconnect();
+            }
+
+            onlineClients.put(accountId, client);
+        }
+    }
+    
     public boolean canStartLoginSession(IoSession session) {
         if (!ServerConstants.DETERRED_MULTICLIENT) return true;
         
@@ -296,6 +315,11 @@ public class MapleSessionCoordinator {
         String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
         if (nibbleHwid != null) {
             onlineRemoteHwids.remove(nibbleHwid);
+            
+            MapleClient client = getSessionClient(session);
+            if (client != null) {
+                onlineClients.remove(client.getAccID());
+            }
         }
     }
     
@@ -447,6 +471,11 @@ public class MapleSessionCoordinator {
         
         hwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID); // making sure to clean up calls to this function on login phase
         onlineRemoteHwids.remove(hwid);
+        
+        MapleClient client = getSessionClient(session);
+        if (client != null) {
+            onlineClients.remove(client.getAccID());
+        }
         
         if (immediately != null) {
             session.close(immediately);

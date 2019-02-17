@@ -32,6 +32,14 @@ function init() {
     em.setProperty("noEntry","false");
 }
 
+function setup(level, lobbyid) {
+    var eim = em.newInstance("DollHouse_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
+    return eim;
+}
+
 function playerEntry(eim, player) {
     eim.getInstanceMap(entryMap).shuffleReactors();
     eim.setExclusiveItems([4031094]);
@@ -80,8 +88,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function monsterValue(eim, mobid) {return 0;}
 

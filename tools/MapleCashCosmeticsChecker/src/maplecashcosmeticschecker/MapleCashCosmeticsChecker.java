@@ -57,7 +57,7 @@ public class MapleCashCosmeticsChecker {
     static String wzPath = "../../wz";
     static String scriptPath = "../../scripts";
     
-    private static PrintWriter printWriter = null;
+    static PrintWriter printWriter = null;
     static InputStreamReader fileReader = null;
     static BufferedReader bufferedReader = null;
     

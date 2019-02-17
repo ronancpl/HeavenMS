@@ -78,18 +78,18 @@ public class MapScriptManager {
             return;
         }
         FileReader fr = null;
-        ScriptEngine portal = sef.getScriptEngine();
+        ScriptEngine se = sef.getScriptEngine();
         try {
             fr = new FileReader(scriptFile);
             
             // java 8 support here thanks to Arufonsu
             if (ServerConstants.JAVA_8){
-                    portal.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
+                    se.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
             }
             
-            ((Compilable) portal).compile(fr).eval();
+            ((Compilable) se).compile(fr).eval();
             
-            final Invocable script = ((Invocable) portal);
+            final Invocable script = ((Invocable) se);
             scripts.put(scriptName, script);
             script.invokeFunction("start", new MapScriptMethods(c));
         } catch (final UndeclaredThrowableException | ScriptException ute) {

@@ -193,6 +193,7 @@ public class CommandsExecutor {
         addCommand("int", StatIntCommand.class);
         addCommand("luk", StatLukCommand.class);
         addCommand("enableauth", EnableAuthCommand.class);
+        addCommand("toggleexp", ToggleExpCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

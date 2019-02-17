@@ -86,6 +86,7 @@ import constants.ItemConstants;
 import constants.GameConstants;
 import constants.ServerConstants;
 import java.util.TimeZone;
+import net.server.coordinator.MapleSessionCoordinator;
 import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
@@ -1693,7 +1694,7 @@ public class Server {
             if(c.isLoggedIn()) {
                 c.disconnect(false, false);
             } else {
-                c.getSession().close(true);
+                MapleSessionCoordinator.getInstance().closeSession(c.getSession(), true);
             }
         }
     }
@@ -1766,8 +1767,13 @@ public class Server {
         System.out.println("Worlds + Channels are offline.");
         acceptor.unbind();
         acceptor = null;
-        if (!restart) {
-            System.exit(0);
+        if (!restart) {  // shutdown hook deadlocks if System.exit() method is used within its body chores, thanks MIKE for pointing that out
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.exit(0);
+                }
+            }).start();
         } else {
             System.out.println("\r\nRestarting the server....\r\n");
             try {

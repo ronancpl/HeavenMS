@@ -6,7 +6,7 @@
 var status;
 
 function start(){
-	status = -1;
+        status = -1;
 	action(1, 0, 0);
 }
 
@@ -26,6 +26,11 @@ function action(mode, type, selection){
 
 
         if(cm.getMapId() == 106021402) {
+                if (!(cm.isQuestCompleted(2331))) {
+                        cm.dispose();
+                        return;
+                }
+            
                 if(status == 0){
                         cm.sendSimple("#L0#Enter to fight #bKing Pepe#k and #bYeti Brothers#k.#l\r\n#L1#Enter to fight #bPrime Minister#k.#l");
                 }
@@ -48,6 +53,12 @@ function action(mode, type, selection){
                         }
                 }
         } else {
+                var questProgress = cm.getQuestProgress(2330, 3300005) + cm.getQuestProgress(2330, 3300006) + cm.getQuestProgress(2330, 3300007); //3 Yetis
+                if (!(cm.isQuestStarted(2330) && questProgress < 3)) {  // thanks Vcoc for finding an exploit with boss entry through NPC
+                        cm.dispose();
+                        return;
+                }
+            
                 if(status == 0){
                         cm.sendSimple("#L1#Enter to fight #bKing Pepe#k and #bYeti Brothers#k.#l");
                 }

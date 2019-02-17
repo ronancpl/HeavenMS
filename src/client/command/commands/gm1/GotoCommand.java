@@ -46,10 +46,17 @@ public class GotoCommand extends Command {
             player.yellowMessage("Syntax: @goto <map name>");
             return;
         }
-
-        if (player.getEventInstance() != null || MapleMiniDungeonInfo.isDungeonMap(player.getMapId()) || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit()) || !player.isAlive()) {
-            player.dropMessage(1, "This command can not be used in this map.");
+        
+        if (!player.isAlive()) {
+            player.dropMessage(1, "This command cannot be used when you're dead.");
             return;
+        }
+
+        if (!player.isGM()) {
+            if (player.getEventInstance() != null || MapleMiniDungeonInfo.isDungeonMap(player.getMapId()) || FieldLimit.CANNOTMIGRATE.check(player.getMap().getFieldLimit())) {
+                player.dropMessage(1, "This command can not be used in this map.");
+                return;
+            }
         }
 
         HashMap<String, Integer> gotomaps;

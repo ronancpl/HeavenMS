@@ -29,6 +29,8 @@ import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class CharInfoRequestHandler extends AbstractMaplePacketHandler {
+    
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.skip(4);
         int cid = slea.readInt();

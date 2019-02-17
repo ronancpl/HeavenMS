@@ -25,10 +25,11 @@ function action(mode, type, selection) {
     }
     if (status == 1) {
         if (selection == 0) {
-    		var train = cm.getEventManager("KerningTrain");
-        	train.newInstance("KerningTrain");
-        	train.setProperty("player", cm.getPlayer().getName());
-        	train.startInstance(cm.getPlayer());
+    		var em = cm.getEventManager("KerningTrain");
+                if (!em.startInstance(cm.getPlayer())) {
+                    cm.sendOk("The passenger wagon is already full. Try again a bit later.");
+                }
+                
         	cm.dispose();
         	return;
         } else if (selection == 1) {

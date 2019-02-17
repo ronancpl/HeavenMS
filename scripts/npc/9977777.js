@@ -48,6 +48,7 @@ function writeFeatureTab_PQs() {
         addFeature("Mu Lung Dojo.");
         addFeature("Capt. Latanica with party fighting the boss.");
         addFeature("Filled up missing obligatory event script methods.");
+        addFeature("Secured uniquety of active lobby-name instances.");
 }
 
 function writeFeatureTab_Skills() {
@@ -126,7 +127,9 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Mobs now can drop more than one of the same equip.");
         addFeature("Mobs only drop items collectable by the player/party.");
         addFeature("Mobs shouldn't fall from foothold too often now.");
+        addFeature("Puppets holds targeted mobs nearby on new aggro feat.");
         addFeature("Properly applying MP cost on non-skill mob moves.");
+        addFeature("Limited underling mob spawns.");
         addFeature("Implemented mob banish by touch & skill move.");
         addFeature("Redesigned HT mechanics: assemble & dmg taken.");
         addFeature("Implemented Zombify disease status.");
@@ -253,10 +256,12 @@ function writeFeatureTab_Project() {
         addFeature("Improved login phase, using cache over DB queries.");
         addFeature("Protected many flaws with login management system.");
         addFeature("Developed a robust anti-exploit login coordinator.");
+        addFeature("Revised uniqueness aspect of logged in accounts.");
         addFeature("Usage of HikariCP to improve DB connection calls.");
         addFeature("Usage of Java Threadpool to improve runnable calls.");
         addFeature("Developed many survey tools for content profiling.");
         addFeature("Removed dangling item name throughout game files.");
+        addFeature("Remodeled item scripts, properly using NPC dialogs.");
         addFeature("ThreadTracker: runtime tool for deadlock detection.");
         addFeature("Channel, World and Server-wide timer management.");
         addFeature("Thoroughly reviewed encapsulation for player stats.");

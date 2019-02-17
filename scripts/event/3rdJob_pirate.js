@@ -51,6 +51,14 @@ function playerEntry(eim, player) {
     eim.startEventTimer(eventTime * 60000);
 }
 
+function setup(level, lobbyid) {
+    var eim = em.newInstance("3rdJob_pirate_" + lobbyid);
+    eim.setProperty("level", level);
+    eim.setProperty("boss", "0");
+    
+    return eim;
+}
+
 function playerUnregistered(eim, player) {}
 
 function playerExit(eim, player) {
@@ -96,8 +104,6 @@ function dispose() {}
 
 
 // ---------- FILLER FUNCTIONS ----------
-
-function setup(eim, leaderid) {}
 
 function disbandParty(eim, player) {}
 

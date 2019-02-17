@@ -48,17 +48,14 @@ function start(mode, type, selection) {
                 return;
             }
             else {
-                if (em.getProperty("noEntry") == "false") {
-                    var eim = em.newInstance("Aran_3rdmount");
-                    eim.registerPlayer(qm.getPlayer());
-                    
-                    qm.forceStartQuest();
-                    qm.dispose();
-                }
-                else {
+                var em = qm.getEventManager("Aran_3rdmount");
+                if (!em.startInstance(qm.getPlayer())) {
                     qm.sendOk("There is currently someone in this map, come back later.");
-                    qm.dispose();
+                } else {
+                    qm.forceStartQuest();
                 }
+                
+                qm.dispose();
             }
         }
     }

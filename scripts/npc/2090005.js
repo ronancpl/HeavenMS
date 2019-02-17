@@ -85,10 +85,14 @@ function action(mode, type, selection) {
                             cm.warp(250000100, 0);
                             cm.dispose();
                         } else {
+                            var em = cm.getEventManager("Hak");
+                            if (!em.startInstance(cm.getPlayer())) {
+                                cm.sendOk("Uh... We are currently taking requests from too many maplers right now... Please try again in a bit.");
+                                cm.dispose();
+                                return;
+                            }
+                            
                             cm.gainMeso(-cost[slct]);
-                            hak.newInstance("Hak");
-                            hak.setProperty("player", cm.getPlayer().getName());
-                            hak.startInstance(cm.getPlayer());
                             cm.dispose();
                         }
                 }

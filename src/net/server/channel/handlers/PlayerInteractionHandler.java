@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.autoban.AutobanFactory;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
@@ -465,22 +466,41 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
             } else if (mode == Action.SET_ITEMS.getCode()) {
                 MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 MapleInventoryType ivType = MapleInventoryType.getByType(slea.readByte());
-                Item item = chr.getInventory(ivType).getItem(slea.readShort());
+                short pos = slea.readShort();
+                Item item = chr.getInventory(ivType).getItem(pos);
                 short quantity = slea.readShort();
                 byte targetSlot = slea.readByte();
 
+                if (targetSlot < 1 || targetSlot > 9) {
+                    System.out.println("[h4x] " + chr.getName() + " Trying to dupe on trade slot.");
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
+                }
+                
                 if (item == null) {
                     c.announce(MaplePacketCreator.serverNotice(1, "Invalid item description."));
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-
+                
+                if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && ii.isCash(item.getItemId())) {
+                    c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be traded."));
+                    return;
+                }
+                
+                if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(item.getItemId())) {
+                    c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be traded."));
+                    return;
+                }
+                
                 if (quantity < 1 || quantity > item.getQuantity()) {
                     c.announce(MaplePacketCreator.serverNotice(1, "You don't have enough quantity of the item."));
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
-                if (chr.getTrade() != null) {
+                
+                MapleTrade trade = chr.getTrade();
+                if (trade != null) {
                     if ((quantity <= item.getQuantity() && quantity >= 0) || ItemConstants.isRechargeable(item.getItemId())) {
                         if (ii.isDropRestricted(item.getItemId())) { // ensure that undroppable items do not make it to the trade window
                             if (!MapleKarmaManipulator.hasKarmaFlag(item)) {
@@ -489,16 +509,38 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                                 return;
                             }
                         }
-                        Item tradeItem = item.copy();
-                        if (ItemConstants.isRechargeable(item.getItemId())) {
-                            tradeItem.setQuantity(item.getQuantity());
-                            MapleInventoryManipulator.removeFromSlot(c, ivType, item.getPosition(), item.getQuantity(), true);
-                        } else {
+                        
+                        MapleInventory inv = chr.getInventory(ivType);
+                        inv.lockInventory();
+                        try {
+                            Item checkItem = chr.getInventory(ivType).getItem(pos);
+                            if (checkItem != item || checkItem.getPosition() != item.getPosition()) {
+                                c.announce(MaplePacketCreator.serverNotice(1, "Invalid item description."));
+                                c.announce(MaplePacketCreator.enableActions());
+                                return;
+                            }
+                            
+                            Item tradeItem = item.copy();
+                            if (ItemConstants.isRechargeable(item.getItemId())) {
+                                quantity = item.getQuantity();
+                            }
+                            
                             tradeItem.setQuantity(quantity);
-                            MapleInventoryManipulator.removeFromSlot(c, ivType, item.getPosition(), quantity, true);
+                            tradeItem.setPosition(targetSlot);
+                            
+                            if (trade.addItem(tradeItem)) {
+                                MapleInventoryManipulator.removeFromSlot(c, ivType, item.getPosition(), quantity, true);
+                                
+                                trade.getChr().announce(MaplePacketCreator.getTradeItemAdd((byte) 0, tradeItem));
+                                if (trade.getPartner() != null) {
+                                    trade.getPartner().getChr().announce(MaplePacketCreator.getTradeItemAdd((byte) 1, tradeItem));
+                                }
+                            }
+                        } catch (Exception e) {
+                            FilePrinter.printError(FilePrinter.TRADE_EXCEPTION, e, "Player '" + chr + "' tried to add " + ii.getName(item.getItemId()) + " qty. " + item.getQuantity() + " in trade (slot " + targetSlot + ") then exception occurred.");
+                        } finally {
+                            inv.unlockInventory();
                         }
-                        tradeItem.setPosition(targetSlot);
-                        chr.getTrade().addItem(tradeItem);
                     }
                 }
             } else if (mode == Action.CONFIRM.getCode()) {

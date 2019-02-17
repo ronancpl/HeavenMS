@@ -130,7 +130,9 @@ public class MapleAlliance {
 
                 Server.getInstance().addAlliance(id, alliance);
                 
-                Server.getInstance().allianceMessage(id, MaplePacketCreator.updateAllianceInfo(alliance, guildMasters.get(0).getClient()), -1, -1);
+                int worldid = guildMasters.get(0).getWorld();
+                Server.getInstance().allianceMessage(id, MaplePacketCreator.updateAllianceInfo(alliance, worldid), -1, -1);
+                Server.getInstance().allianceMessage(id, MaplePacketCreator.getGuildAlliances(alliance, worldid), -1, -1);  // thanks Vcoc for noticing guilds from other alliances being visually stacked here due to this not being updated
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -347,7 +349,7 @@ public class MapleAlliance {
     
     public void updateAlliancePackets(MapleCharacter chr) {
         if (allianceId > 0) {
-            this.broadcastMessage(MaplePacketCreator.updateAllianceInfo(this, chr.getClient()));
+            this.broadcastMessage(MaplePacketCreator.updateAllianceInfo(this, chr.getWorld()));
             this.broadcastMessage(MaplePacketCreator.allianceNotice(this.getId(), this.getNotice()));
         }
     }

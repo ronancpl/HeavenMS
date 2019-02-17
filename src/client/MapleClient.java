@@ -517,11 +517,15 @@ public class MapleClient {
 	}
 
 	public int login(String login, String pwd, String nibbleHwid) {
-		loginattempt++;
-		if (loginattempt > 4) {
-			MapleSessionCoordinator.getInstance().closeSession(session, false);
-		}
 		int loginok = 5;
+                
+		loginattempt++;
+                if (loginattempt > 4) {
+                        loggedIn = false;
+			MapleSessionCoordinator.getInstance().closeSession(session, false);
+                        return loginok;
+		}
+		
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -748,7 +752,12 @@ public class MapleClient {
 		return accId;
 	}
         
-	public void updateLoginState(int newstate) {
+        public void updateLoginState(int newstate) {
+                // rules out possibility of multiple account entries
+                if (newstate == LOGIN_LOGGEDIN) {
+                        MapleSessionCoordinator.getInstance().updateOnlineSession(this.getSession());
+                }
+                
 		try {
                         Connection con = DatabaseConnection.getConnection();
 			try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, lastlogin = ? WHERE id = ?")) {
@@ -763,6 +772,7 @@ public class MapleClient {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+                
 		if (newstate == LOGIN_NOTLOGGEDIN) {
 			loggedIn = false;
 			serverTransition = false;
@@ -797,9 +807,6 @@ public class MapleClient {
                                         MapleSessionCoordinator.getInstance().closeSession(session, null);
 					updateLoginState(LOGIN_NOTLOGGEDIN);
 				}
-			} else if (state == LOGIN_LOGGEDIN && player == null) {
-				state = LOGIN_LOGGEDIN;
-				updateLoginState(LOGIN_LOGGEDIN);
 			}
 			rs.close();
 			ps.close();
@@ -1006,8 +1013,7 @@ public class MapleClient {
             
                 Server.getInstance().unregisterLoginState(this);
             
-                this.session.setAttribute(MapleClient.CLIENT_KEY, null);
-		this.accountName = null;
+                this.accountName = null;
 		this.macs = null;
 		this.hwid = null;
 		this.birthday = null;

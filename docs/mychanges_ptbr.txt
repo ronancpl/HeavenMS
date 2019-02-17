@@ -1620,3 +1620,44 @@ Corrigido um exploit com mercantes, envolvendo chamada à DB antes de retirar it
 
 30 Janeiro 2019,
 Corrigido chamadas irregulares a "qm/cm" em scripts.
+
+31 Janeiro 2019,
+Com a ajuda de Irenex, adicionado referência a pet flags no criador de pacotes.
+Adicionado funcionalidade de quest que permite pets a andarem na velocidade do jogador.
+Corrigido quest repetível de Dragon Stone não apropriadamente recompensando o item ao jogador.
+Corrigido método de checagem de slots em MapleCharacter, agora utilizando o método padrão implementado especificamente para checagem de slots.
+
+01 Fevereiro 2019,
+Corrigido vulnerabilidade na ação de jogadores ao retornar para a cidade após reviver. Servidor poderia receber packet de dano e processá-lo legitimamente com o HP atualizado do jogador antes de enviá-lo de volta para cidade.
+
+04 - 05 Fevereiro 2019,
+Corrigido NPCs de portão em Mushking Empire permitindo jogadores acesso a área de bosses sem requisitos mínimos.
+Incrementado diálogos de permissão para realizar expedições contra Zakum.
+Modificado gerenciador de item scripts, agora referenciando conversação de NPCs (como previsto pelo WZ).
+Implementado limitação de mob summons, como previsto no WZ.
+Revisado fechamento de sessões no código-fonte não utilizando o coordenador de sessões para isto.
+Revisado sistema de login, agora automaticamente desconectando contas retidas no jogo quando DB determina que uma conta está disponível para login.
+Revisado Teleport Rocks, agora devidamente checando se é possível chegar ao mapa alvo (ou se há bloqueio de uso do item para esse mapa), além de certas checagens contra exploits com esse item.
+Corrigido agendamento de removeAfter de mobs atuando quando o mesmo já foi liberado.
+
+07 - 08 Fevereiro 2019,
+Corrigido ocorrências de NPE ao tentar registrar-se em instância de evento, quando existe uma outra instância que leva o mesmo nome em andamento.
+Tentativa de correção em todos os scripts de eventos, após ter atualizado o sistema de eventos para não mais ficar gerando instâncias livremente (agora, todas as instâncias orientadas-a-solo têm limite de acesso simultâneo entre jogadores).
+Corrigido lojas de jogadores e mercantes não aceitando itens em certos casos onde já se foi usado Scissors of Karma.
+Revisado novamente diversos scripts de evento, atentando às chamadas de função "setup" das mesmas.
+
+09 Fevereiro 2019,
+Tentativa de correção em sessões com exceptionCaught, já que aparentemente a sessão nem sempre é fechada pelo MINA automaticamente.
+Corrigido lista de guilds em alliances não sendo atualizado corretamente ao criar-se uma nova alliance. Era possível ver guilds de alianças passadas antes de ocorrer alguma atualização de packet em jogo que resolva isso.
+Implementado comando "toggleexp", que permite jogadores a escolher ganhar nível ou não se os mesmos não estivem em instância de evento.
+Nova ferramenta: MapleCashVegaChecker. Ferramenta busca por itens que supostamente deveriam permitir uso do Vega Scroll (segundo descrição) porém não o permitem.
+Revisado nomes de skill e mastery books, que mantinham números no nome da skill (agora padronizado com os outros livros).
+
+10 Fevereiro 2019,
+Editado requerimentos de level de medalhas level 200 para 180, assim evitando o problema onde nível das medalhas não apareçe na visão do cliente devido ao level cap.
+Corrigido puppets não tomando prioridade na nova mecânica de aggro.
+Incrementado mensagem custom de venda de produtos pelo mercante.
+
+13 - 14 Fevereiro 2019,
+Corrigido limites na função isWeapon, que não contabilizaria certos itens corretamente.
+Resolvido comportamento de puppets usando o novo sistema de aggro.

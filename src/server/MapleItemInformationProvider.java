@@ -112,7 +112,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Integer> monsterBookID = new HashMap<>();
     protected Map<Integer, Boolean> untradeableCache = new HashMap<>();
     protected Map<Integer, Boolean> onEquipUntradeableCache = new HashMap<>();
-    protected Map<Integer, scriptedItem> scriptedItemCache = new HashMap<>();
+    protected Map<Integer, ScriptedItem> scriptedItemCache = new HashMap<>();
     protected Map<Integer, Boolean> karmaCache = new HashMap<>();
     protected Map<Integer, Integer> triggerItemCache = new HashMap<>();
     protected Map<Integer, Integer> expCache = new HashMap<>();
@@ -1447,14 +1447,14 @@ public class MapleItemInformationProvider {
         return untradeableOnEquip;
     }
 
-    public scriptedItem getScriptedItemInfo(int itemId) {
+    public ScriptedItem getScriptedItemInfo(int itemId) {
         if (scriptedItemCache.containsKey(itemId)) {
             return scriptedItemCache.get(itemId);
         }
         if ((itemId / 10000) != 243) {
             return null;
         }
-        scriptedItem script = new scriptedItem(MapleDataTool.getInt("spec/npc", getItemData(itemId), 0),
+        ScriptedItem script = new ScriptedItem(MapleDataTool.getInt("spec/npc", getItemData(itemId), 0),
         MapleDataTool.getString("spec/script", getItemData(itemId), ""),
         MapleDataTool.getInt("spec/runOnPickup", getItemData(itemId), 0) == 1);
         scriptedItemCache.put(itemId, script);
@@ -2100,13 +2100,13 @@ public class MapleItemInformationProvider {
         return skillbook;
     }
 
-    public class scriptedItem {
+    public class ScriptedItem {
 
         private boolean runOnPickup;
         private int npc;
         private String script;
 
-        public scriptedItem(int npc, String script, boolean rop) {
+        public ScriptedItem(int npc, String script, boolean rop) {
             this.npc = npc;
             this.script = script;
             this.runOnPickup = rop;

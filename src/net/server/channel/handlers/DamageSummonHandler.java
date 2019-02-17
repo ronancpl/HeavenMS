@@ -24,7 +24,6 @@ package net.server.channel.handlers;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
-import client.SkillFactory;
 import net.AbstractMaplePacketHandler;
 import server.maps.MapleSummon;
 import server.maps.MapleMapObject;

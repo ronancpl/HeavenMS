@@ -27,6 +27,7 @@ import client.MapleStat;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import constants.ItemConstants;
 import server.MapleItemInformationProvider;
 
 public class HairCommand extends Command {
@@ -45,7 +46,7 @@ public class HairCommand extends Command {
         try {
             if (params.length == 1) {
                 int itemId = Integer.parseInt(params[0]);
-                if (!(itemId >= 30000 && itemId < 35000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                if (!ItemConstants.isHair(itemId) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                     player.yellowMessage("Hair id '" + params[0] + "' does not exist.");
                     return;
                 }
@@ -55,7 +56,7 @@ public class HairCommand extends Command {
                 player.equipChanged();
             } else {
                 int itemId = Integer.parseInt(params[1]);
-                if (!(itemId >= 30000 && itemId < 35000) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
+                if (!ItemConstants.isHair(itemId) || MapleItemInformationProvider.getInstance().getName(itemId) == null) {
                     player.yellowMessage("Hair id '" + params[1] + "' does not exist.");
                     return;
                 }

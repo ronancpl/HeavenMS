@@ -25,8 +25,10 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import constants.ServerConstants;
 import client.MapleCharacter;
@@ -55,6 +57,8 @@ public class MapleMonsterAggroCoordinator {
     
     private Map<MapleMonster, Map<Integer, PlayerAggroEntry>> mobAggroEntries = new HashMap<>();
     private Map<MapleMonster, List<PlayerAggroEntry>> mobSortedAggros = new HashMap<>();
+    
+    private Set<Integer> mapPuppetEntries = new HashSet<>();
     
     private class PlayerAggroEntry {
         protected int cid;
@@ -291,6 +295,12 @@ public class MapleMonsterAggroCoordinator {
     }
     
     public boolean isLeadingCharacterAggro(MapleMonster mob, MapleCharacter player) {
+        if (mob.isLeadingPuppetInVicinity()) {
+            return false;
+        } else if (mob.isCharacterPuppetInVicinity(player)) {
+            return true;
+        }
+        
         // by assuming the quasi-sorted nature of "mobAggroList", this method
         // returns whether the player given as parameter can be elected as next aggro leader
         
@@ -339,6 +349,24 @@ public class MapleMonsterAggroCoordinator {
             mobSortedAggros.remove(mob);
         } finally {
             lock.unlock();
+        }
+    }
+    
+    public void addPuppetAggro(MapleCharacter player) {
+        synchronized (mapPuppetEntries) {
+            mapPuppetEntries.add(player.getId());
+        }
+    }
+    
+    public void removePuppetAggro(Integer cid) {
+        synchronized (mapPuppetEntries) {
+            mapPuppetEntries.remove(cid);
+        }
+    }
+    
+    public List<Integer> getPuppetAggroList() {
+        synchronized (mapPuppetEntries) {
+            return new ArrayList<>(mapPuppetEntries);
         }
     }
     

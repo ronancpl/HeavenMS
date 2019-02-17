@@ -53,6 +53,7 @@ import server.MapleShop;
 import server.MapleShopFactory;
 import server.TimerManager;
 import server.maps.AbstractMapleMapObject;
+import server.maps.FieldLimit;
 import server.maps.MaplePlayerShopItem;
 import server.maps.MapleKite;
 import server.maps.MapleMap;
@@ -106,31 +107,32 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         
         if (itemType == 504) { // vip teleport rock
             String error1 = "Either the player could not be found or you were trying to teleport to an illegal location.";
-            boolean vip = slea.readByte() == 1;
+            boolean vip = slea.readByte() == 1 && itemId / 1000 >= 5041;
             remove(c, position, itemId);
+            boolean success = false;
             if (!vip) {
                 int mapId = slea.readInt();
-                if (c.getChannelServer().getMapFactory().getMap(mapId).getForcedReturnId() == 999999999) {
-                	player.changeMap(c.getChannelServer().getMapFactory().getMap(mapId));
+                if (itemId / 1000 >= 5041 || mapId / 100000000 == player.getMapId() / 100000000) { //check vip or same continent
+                    MapleMap targetMap = c.getChannelServer().getMapFactory().getMap(mapId);
+                    if (!FieldLimit.CANNOTVIPROCK.check(targetMap.getFieldLimit()) && (targetMap.getForcedReturnId() == 999999999 || mapId < 100000000)) {
+                        player.forceChangeMap(targetMap, targetMap.getRandomPlayerSpawnpoint());
+                        success = true;
+                    } else {
+                        player.dropMessage(1, error1);
+                    }
                 } else {
-                    MapleInventoryManipulator.addById(c, itemId, (short) 1);
-                    player.dropMessage(1, error1);
-                    c.announce(MaplePacketCreator.enableActions());
+                    player.dropMessage(1, "You cannot teleport between continents with this teleport rock.");
                 }
             } else {
                 String name = slea.readMapleAsciiString();
                 MapleCharacter victim = c.getChannelServer().getPlayerStorage().getCharacterByName(name);
-                boolean success = false;
+                
                 if (victim != null) {
-                    MapleMap target = victim.getMap();
-                    if (c.getChannelServer().getMapFactory().getMap(victim.getMapId()).getForcedReturnId() == 999999999 || victim.getMapId() < 100000000) {
+                    MapleMap targetMap = victim.getMap();
+                    if (!FieldLimit.CANNOTVIPROCK.check(targetMap.getFieldLimit()) && (targetMap.getForcedReturnId() == 999999999 || targetMap.getId() < 100000000)) {
                         if (victim.gmLevel() <= player.gmLevel()) {
-                            if (itemId == 5041000 || victim.getMapId() / player.getMapId() == 1) { //viprock & same continent
-                                player.changeMap(target, target.findClosestPlayerSpawnpoint(victim.getPosition()));
-                                success = true;
-                            } else {
-                                player.dropMessage(1, "You cannot teleport between continents with this teleport rock.");
-                            }
+                            player.forceChangeMap(targetMap, targetMap.findClosestPlayerSpawnpoint(victim.getPosition()));
+                            success = true;
                         } else {
                             player.dropMessage(1, error1);
                         }
@@ -140,10 +142,11 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 } else {
                     player.dropMessage(1, "Player could not be found in this channel.");
                 }
-                if (!success) {
-                    MapleInventoryManipulator.addById(c, itemId, (short) 1);
-                    c.announce(MaplePacketCreator.enableActions());
-                }
+            }
+            
+            if (!success) {
+                MapleInventoryManipulator.addById(c, itemId, (short) 1);
+                c.announce(MaplePacketCreator.enableActions());
             }
         } else if (itemType == 505) { // AP/SP reset
             if(!player.isAlive()) {

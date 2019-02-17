@@ -1,8 +1,10 @@
 function enter(pi) {
+        var em = pi.getEventManager("KerningTrain");
+        if (!em.startInstance(pi.getPlayer())) {
+            pi.message("The passenger wagon is already full. Try again a bit later.");
+            return false;
+        }
+        
 	pi.playPortalSound();
-	var train = pi.getEventManager("KerningTrain");
-	train.newInstance("KerningTrain");
-	train.setProperty("player", pi.getPlayer().getName());
-	train.startInstance(pi.getPlayer());
 	return true;
 }

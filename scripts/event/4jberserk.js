@@ -20,27 +20,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 var exitMap;
-var instanceId;
 var minPlayers = 3;
 
-function init() {
-    instanceId = 1;
-}
+function init() {}
 
 function monsterValue(eim, mobId) {
     return 1;
 }
 
-function setup() {
+function setup(level, lobbyid) {
     exitMap = em.getChannelServer().getMapFactory().getMap(105090800); // <exit>
-    var instanceName = "4jberserk" + instanceId;
-
-    var eim = em.newInstance(instanceName);
+    
+    var eim = em.newInstance("4jberserk_" + lobbyid);
+    eim.setProperty("level", level);
 	
     var mf = eim.getMapFactory();
-	
-    instanceId++;
-	
+    
     var map = mf.getMap(910500200);
     map.addMapTimer(3*60);
     em.schedule("timeOut", 20 * 60000);

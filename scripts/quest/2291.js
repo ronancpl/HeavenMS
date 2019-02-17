@@ -43,13 +43,14 @@ function end(mode, type, selection) {
             
             qm.sendNext("You got the #b#i4032521##k with you, great. Let me show you the way.");
         } else if (status == 1) {
+            var em = qm.getEventManager("RockSpiritVIP");
+            if (!em.startInstance(qm.getPlayer())) {
+                qm.sendOk("Uh... It looks like the rooms ahead are a bit crowded right now. Please wait around here for a bit, ok?");
+                qm.dispose();
+                return;
+            }
+            
             qm.gainItem(4032521, -10);
-            
-            var rock = qm.getEventManager("RockSpiritVIP");
-            rock.newInstance("RockSpiritVIP");
-            rock.setProperty("player", qm.getPlayer().getName());
-            rock.startInstance(qm.getPlayer());
-            
             qm.forceCompleteQuest();
             qm.dispose();
         }
