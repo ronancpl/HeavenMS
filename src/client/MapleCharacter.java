@@ -288,7 +288,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private AutobanManager autoban;
     private boolean isbanned = false;
     private boolean blockCashShop = false;
-    private boolean allowExpGain = false;
+    private boolean allowExpGain = true;
     private byte pendantExp = 0, lastmobcount = 0, doorSlot = -1;
     private List<Integer> trockmaps = new ArrayList<>();
     private List<Integer> viptrockmaps = new ArrayList<>();
