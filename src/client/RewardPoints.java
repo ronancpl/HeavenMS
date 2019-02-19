@@ -9,10 +9,16 @@ import java.sql.SQLException;
 
 public class RewardPoints {
 
+    private int id;
+
+    public RewardPoints(int id) {
+        this.id = id;
+    }
+
     public int getPoints() {
         int point = -1;
         try {
-            ResultSet rs = query("SELECT rewardpoints FROM accounts;");
+            ResultSet rs = query("SELECT rewardpoints FROM accounts WHERE id=" + id +";");
             while (rs.next()) {
                 point = rs.getInt("rewardpoints");
             }
@@ -24,7 +30,7 @@ public class RewardPoints {
 
     public boolean setPoints(int value) {
         try {
-            query("UPDATE accounts SET rewardpoints=" + value);
+            query("UPDATE accounts SET rewardpoints=" + value + "WHERE id=" + id +";");
             return true;
         } catch (SQLException e) {
             System.out.println("RewardPoints failed to update rewardpoints");
@@ -43,10 +49,10 @@ public class RewardPoints {
         } finally {
             try {
                 ps.close();
-            } catch (Exception stacktrace) { /* ignored */ }
+            } catch (Exception e) { /* ignored */ }
             try {
                 con.close();
-            } catch (Exception stacktrace) { /* ignored */ }
+            } catch (Exception e) { /* ignored */ }
         }
         return ps.executeQuery();
     }
