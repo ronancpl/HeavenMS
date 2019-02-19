@@ -317,6 +317,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int banishSp = -1;
     private long banishTime = 0;
     private long lastExpGainTime;
+    private RewardPoints rewardPoints = new RewardPoints();
     
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
@@ -9842,5 +9843,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void removeJailExpirationTime() {
         jailExpiration = 0;
+    }
+
+    public int getRewardPoints() {
+        return this.rewardPoints.getPoints();
+    }
+
+    public void setRewardPoints(int value) {
+        this.rewardPoints.setPoints(value);
     }
 }
