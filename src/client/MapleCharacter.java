@@ -9849,7 +9849,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return this.rewardPoints.getPoints();
     }
 
-    public void setRewardPoints(int value) {
-        this.rewardPoints.setPoints(value);
+    public boolean setRewardPoints(int value) {
+        return this.rewardPoints.setPoints(value);
     }
 }
