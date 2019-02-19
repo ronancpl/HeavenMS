@@ -9,16 +9,14 @@ import java.sql.SQLException;
 
 public class RewardPoints {
 
-    private int point;
-
     public int getPoints() {
+        int point = -1;
         try {
             ResultSet rs = query("SELECT rewardpoints FROM accounts;");
             while (rs.next()) {
                 point = rs.getInt("rewardpoints");
             }
         } catch (SQLException e) {
-            point = -1;
             System.out.println("RewardPoints failed to fetch rewardpoints");
         }
         return point;
