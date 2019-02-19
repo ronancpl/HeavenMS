@@ -39,13 +39,14 @@ public class RewardPoints {
             con = DatabaseConnection.getConnection();
             ps = con.prepareStatement(queryString);
         } catch (SQLException e) {
+            throw new SQLException(e);
+        } finally {
             try {
                 ps.close();
             } catch (Exception stacktrace) { /* ignored */ }
             try {
                 con.close();
             } catch (Exception stacktrace) { /* ignored */ }
-            throw new SQLException(e);
         }
         return ps.executeQuery();
     }
