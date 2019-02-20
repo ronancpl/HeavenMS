@@ -9843,4 +9843,43 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public void removeJailExpirationTime() {
         jailExpiration = 0;
     }
+
+    public int getRewardPoints() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT rewardpoints FROM accounts WHERE id=?;");
+            ps.setInt(1, accountid);
+            ResultSet resultSet = ps.executeQuery();
+            int point = -1;
+            if (resultSet.next()) {
+                point = resultSet.getInt(1);
+            }
+            return point;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+        return -1;
+    }
+
+    public void setRewardPoints(int value) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("UPDATE accounts SET rewardpoints=? WHERE id=?;");
+            ps.setInt(1, value);
+            ps.setInt(2, accountid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
 }
