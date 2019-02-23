@@ -9911,6 +9911,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public int getReborns() {
         if (!ServerConstants.USE_REBIRTH_SYSTEM) {
+            yellowMessage("Rebirth system is not enabled!");
             throw new NotEnabledException();
         }
         Connection con = null;
@@ -9933,6 +9934,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void executeReborn() {
         if (!ServerConstants.USE_REBIRTH_SYSTEM) {
+            yellowMessage("Rebirth system is not enabled!");
             throw new NotEnabledException();
         }
         if (getLevel() != 200) {
