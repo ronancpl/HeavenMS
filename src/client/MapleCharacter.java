@@ -107,6 +107,7 @@ import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
+import tools.exceptions.NotEnabledException;
 import tools.packets.Wedding;
 import client.autoban.AutobanManager;
 import client.creator.CharacterFactoryRecipe;
@@ -9881,5 +9882,67 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             try { ps.close(); } catch (Exception e) { /* ignored */ }
             try { con.close(); } catch (Exception e) { /* ignored */ }
         }
+    }
+
+    public void setReborns(int value) {
+        if (!ServerConstants.USE_REBIRTH_SYSTEM) {
+            yellowMessage("Rebirth system is not enabled!");
+            throw new NotEnabledException();
+        }
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("UPDATE characters SET reborns=? WHERE id=?;");
+            ps.setInt(1, value);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public void addReborns() {
+        setReborns(getReborns() + 1);
+    }
+
+    public int getReborns() {
+        if (!ServerConstants.USE_REBIRTH_SYSTEM) {
+            yellowMessage("Rebirth system is not enabled!");
+            throw new NotEnabledException();
+        }
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement("SELECT reborns FROM characters WHERE id=?;");
+            ps.setInt(1, id);
+            ResultSet resultSet = ps.executeQuery();
+            resultSet.next();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { ps.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+        throw new RuntimeException();
+    }
+
+    public void executeReborn() {
+        if (!ServerConstants.USE_REBIRTH_SYSTEM) {
+            yellowMessage("Rebirth system is not enabled!");
+            throw new NotEnabledException();
+        }
+        if (getLevel() != 200) {
+            return;
+        }
+        addReborns();
+        changeJob(MapleJob.BEGINNER);
+        setLevel(0);
+        levelUp(true);
     }
 }

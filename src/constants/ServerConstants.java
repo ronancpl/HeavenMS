@@ -104,6 +104,7 @@ public class ServerConstants {
     public static final boolean USE_BANISHABLE_TOWN_SCROLL = true;  //Enables town scrolls to act as if it's a "player banish", rendering the antibanish scroll effect available.
     public static final boolean USE_ENABLE_FULL_RESPAWN = true;     //At respawn task, always respawn missing mobs when they're available. Spawn count doesn't depend on how many players are currently there.
     public static final boolean USE_ENABLE_CHAT_LOG = true;         //Write in-game chat to log
+    public static final boolean USE_REBIRTH_SYSTEM = false;       //Flag to enable/disable rebirth system
     
     //Events/PQs Configuration
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
