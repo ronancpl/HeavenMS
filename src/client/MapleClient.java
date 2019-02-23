@@ -1165,7 +1165,7 @@ public class MapleClient {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
-				points = rs.getInt("votes");
+				points = rs.getInt("votepoints");
 			}
 			ps.close();
 			rs.close();
