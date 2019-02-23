@@ -48,8 +48,6 @@ function action(mode, type, selection) {
                 cm.sendOk("You are not level 200, please come back when you hit level 200.");
                 cm.dispose();
             }
-            // cm.sendOk("You have been rebirthed");
-            // cm.dipose();
         } else if (selection == 1) {
             cm.sendOk("Ok Bye")
             cm.dispose();
