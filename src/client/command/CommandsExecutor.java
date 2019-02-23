@@ -280,6 +280,7 @@ public class CommandsExecutor {
         addCommand("givenx", 3, GiveNxCommand.class);
         addCommand("givevp", 3, GiveVpCommand.class);
         addCommand("givems", 3, GiveMesosCommand.class);
+        addCommand("giverp", 3, GiveRpCommand.class);
         addCommand("id", 3, IdCommand.class);
         addCommand("expeds", 3, ExpedsCommand.class);
         addCommand("kill", 3, KillCommand.class);
