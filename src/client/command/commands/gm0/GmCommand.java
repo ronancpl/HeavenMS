@@ -46,7 +46,7 @@ public class GmCommand extends Command {
                 "Do not say 'I have a bug to report', just state it.",
         };
         MapleCharacter player = c.getPlayer();
-        if (params[0].length() < 3) { // #goodbye 'hi'
+        if (params.length < 1 || params[0].length() < 3) { // #goodbye 'hi'
             player.dropMessage(5, "Your message was too short. Please provide as much detail as possible.");
             return;
         }
