@@ -48,10 +48,11 @@ public class StartEventCommand extends Command {
                         + " and will allow "
                         + players
                         + " players to join. Type @joinevent to participate."));
-        player.dropMessage(5, "[Event] An event has started on "
-                + player.getMap().getMapName()
-                + " and will allow "
-                + players
-                + " players to join.");
+        Server.getInstance().broadcastMessage(c.getWorld(),
+                MaplePacketCreator.serverNotice(6, "[Event] An event has started on "
+                        + player.getMap().getMapName()
+                        + " and will allow "
+                        + players
+                        + " players to join. Type @joinevent to participate."));
     }
 }
