@@ -1,5 +1,5 @@
-var map = 980000000;
-var minLvl = 0;
+var map = 980030000;
+var minLvl = 30;
 var maxLvl = 255;
 var minAmt = 0;
 var maxAmt = 6;
@@ -37,7 +37,7 @@ function action(mode, type, selection) {
                     if (party.get(i).getLevel() >= minLvl && party.get(i).getLevel() <= maxLvl) {
                         lvlOk++;
                     }
-                    if (party.get(i).getPlayer().getMapId() != 980000000) {
+                    if (party.get(i).getPlayer().getMapId()!= 980030000) {
                         //isInMap = false;
                         isInMap++
                     }
@@ -53,14 +53,13 @@ function action(mode, type, selection) {
                     status = 10;
                     cm.sendOk("Existe alguém do grupo que não esta no mapa!");
                 } else {
-                    cm.sendCPQMapLists();
+                    cm.sendCPQMapLists2();
                 }
             }
         } else if (status == 1) {
-            
-            if (cm.fieldTaken(selection)) {
-                if (cm.fieldLobbied(selection)) {
-                    cm.challengeParty(selection);
+            if (cm.fieldTaken2(selection)) {
+                if (cm.fieldLobbied2(selection)) {
+                    cm.challengeParty2(selection);
                     cm.dispose();
                 } else {
                     cm.sendOk("A sala esta cheia.");
@@ -68,12 +67,12 @@ function action(mode, type, selection) {
                 }
             } else {
                 var party = cm.getParty().getMembers();
-                if ((selection === 0 || selection === 1 || selection === 2 || selection === 3) && party.size() < 2) {
+                if ((selection === 0 || selection === 1 ) && party.size() < 2) {
                     cm.sendOk("Você precisa de no mínimo 2 player para entrar na competição.");
-                } else if ((selection === 4 || selection === 5) && party.size() < 3) {
+                } else if ((selection === 2 ) && party.size() < 3) {
                     cm.sendOk("Você precisa de no mínimo 3 player para entrar na competição.");
                 } else {
-                    cm.cpqLobby(selection);
+                    cm.cpqLobby2(selection);
                 }
                 cm.dispose();
             }

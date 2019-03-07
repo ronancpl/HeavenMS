@@ -47,6 +47,8 @@ import server.maps.MapMonitor;
 import server.maps.MapleMap;
 import server.maps.MapleReactor;
 import server.maps.ReactorDropEntry;
+import server.partyquest.MapleCarnivalFactory;
+import server.partyquest.MapleCarnivalFactory.MCSkill;
 import tools.MaplePacketCreator;
 
 /**
@@ -310,5 +312,21 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 }
             }
         }, timestamp);
+    }
+    
+    public void dispelAllMonsters(int num, int team) { //dispels all mobs, cpq
+        final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
+        if (skil != null) {
+            for (MapleMonster mons : getMap().getMonsters()) {
+                if(mons.getTeam() == team) {
+                    mons.dispelSkill(skil.getSkill());
+                }
+            }
+        }
+        if (team == 0) {
+            getPlayer().getMap().getRedTeamBuffs().remove(skil);
+        } else {
+            getPlayer().getMap().getBlueTeamBuffs().remove(skil);
+        }
     }
 }

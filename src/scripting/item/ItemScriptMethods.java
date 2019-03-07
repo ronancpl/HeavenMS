@@ -19,33 +19,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package scripting.item;
+
+import client.MapleClient;
+import scripting.AbstractPlayerInteraction;
+
 /**
-	Pila Present
--- By ---------------------------------------------------------------------------------------------
-	Angel (get31720 ragezone)
--- Version Info -----------------------------------------------------------------------------------
-	1.0 - First Version by Angel
-        2.0 - Second Version by happydud3 & XotiCraze
-        3.0 - Third Version by RonanLana (HeavenMS)
-        4.0 - Four Version bby Drago(MapleStorySA)
----------------------------------------------------------------------------------------------------
-**/
-var status = -1;
-
-function start() {
-    status = -1;
-    action(1, 0, 0);
-}
-
-function action(mode, type, selection) {
-    if (mode == 1) {
-        status++;
-    } else {
-        cm.dispose();
-        return;
-    }
-    if (status == 0) {
-        cm.enviarLista();
-        cm.dispose();
+ *
+ * @author kevintjuh93
+ */
+public class ItemScriptMethods extends AbstractPlayerInteraction {
+    public ItemScriptMethods(MapleClient c) {
+    	super(c);
     }
 }

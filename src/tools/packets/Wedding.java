@@ -18,7 +18,7 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 /**
  * CField_Wedding, CField_WeddingPhoto, CWeddingMan, OnMarriageResult, and all Wedding/Marriage enum/structs.
  * 
- * @author Eric
+ * @author Eric edited by Drago/Dragohe4rt on Wishlist
  */
 public class Wedding extends MaplePacketCreator {
     private static final short MARRIAGE_REQUEST = 0x48;
@@ -375,7 +375,7 @@ public class Wedding extends MaplePacketCreator {
     }
 
     /**
-     * Handles all of WeddingWishlist packets
+     * Handles all of WeddingWishlist packets 
      * 
      *    @param mode
      *    @param itemnames
@@ -392,17 +392,16 @@ public class Wedding extends MaplePacketCreator {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(WEDDING_GIFT_RESULT);
         mplew.write(mode);
-        switch(mode) {
+        switch (mode) {
             case 0x09: { // Load Wedding Registry
                 mplew.write(itemnames.size());
                 for (String names : itemnames) {
                     mplew.writeMapleAsciiString(names);
                 }
-                mplew.write(itemnames.size());
-                for (String names : itemnames) {
-                    mplew.writeMapleAsciiString(names);
+                mplew.write(items.size());
+                for (Item item : items) {
+                    addItemInfo(mplew, item, true);
                 }
-                // need to load items somehow
                 break;
             }
             case 0xA: // Load Bride's Wishlist 
@@ -415,30 +414,31 @@ public class Wedding extends MaplePacketCreator {
                         mplew.writeMapleAsciiString(names);
                     }
                 }
-                switch (items.get((items.size() - 1)).getInventoryType()) {
-                    case EQUIP:
-                        mplew.writeLong(4);
-                        break;
-                    case USE:
-                        mplew.writeLong(8);
-                        break;
-                    case SETUP:
-                        mplew.writeLong(16);
-                        break;
-                    case ETC:
-                        mplew.writeLong(32);
-                        break;
-                    default: // impossible flag, cash item can't be sent
-                        if (items.get((items.size() - 1)).getInventoryType() != MapleInventoryType.CASH) {
-                            mplew.writeLong(0);
-                        }
-                }
-                if (mode == 0xA) { // random unknown bytes involved within Bride's Wishlist
-                    mplew.writeInt(0);
+                if (items.size() >= 1) {
+                    switch (items.get((items.size() - 1)).getInventoryType()) {
+                        case EQUIP:
+                            mplew.writeLong(4);
+                            break;
+                        case USE:
+                            mplew.writeLong(8);
+                            break;
+                        case SETUP:
+                            mplew.writeLong(16);
+                            break;
+                        case ETC:
+                            mplew.writeLong(32);
+                            break;
+                        default: // impossible flag, cash item can't be sent
+                            if (items.get((items.size() - 1)).getInventoryType() != MapleInventoryType.CASH) {
+                                mplew.writeLong(0);
+                            }
+                    }
+                } else {
+                    mplew.writeLong(0);
                 }
                 mplew.write(items.size());
                 for (Item item : items) {
-                    MaplePacketCreator.addItemInfo(mplew, item, true);
+                    addItemInfo(mplew, item, true);
                 }
                 break;
             }

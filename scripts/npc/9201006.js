@@ -50,6 +50,7 @@ function action(mode, type, selection) {
     var eim = cm.getEventInstance();
     if(eim == null) {
         cm.warp(680000000,0);
+        //cm.criarLista();
         cm.dispose();
         return;
     }
@@ -71,7 +72,7 @@ function action(mode, type, selection) {
                     cm.sendOk("Congratulations on your wedding. Please talk to #b#p9201007##k to start the afterparty.");
                     cm.dispose();
                 } else if(hasEngagement) {
-                    cm.sendOk("Please continue with the wedding.");
+                    cm.criarLista();
                     cm.dispose();
                 } else {
                     cm.sendOk("You do not have the required item to continue through this wedding. Unfortunately, it's over...");

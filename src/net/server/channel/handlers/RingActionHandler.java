@@ -21,8 +21,6 @@
 */
 package net.server.channel.handlers;
 
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
 import client.MapleClient;
 import client.MapleCharacter;
 import client.inventory.MapleInventoryType;
@@ -31,14 +29,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-//import tools.DatabaseConnection;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import tools.DatabaseConnection;
 import tools.data.input.SeekableLittleEndianAccessor;
-//import scripting.npc.NPCScriptManager;
 import tools.Pair;
 import tools.MaplePacketCreator;
 import tools.packets.Wedding;
@@ -52,6 +46,7 @@ import client.inventory.Item;
 /**
  * @author Jvlaple
  * @author Ronan - major overhaul on Ring handling mechanics
+ * @author Drago/Dragohe4rt on Wishlist
  */
 public final class RingActionHandler extends AbstractMaplePacketHandler {
     private static int getBoxId(int useItemId) {
@@ -467,11 +462,16 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 
                 break;
                 
-            case 9: // Groom and Bride's Wishlist
-                short size = slea.readShort();
-                List<String> itemnames = new ArrayList<>(size);
-                for (int i = 0; i < size; i++) {
-                    itemnames.add(slea.readMapleAsciiString());
+            case 9: 
+                // By Drago/Dragohe4rt
+                // Groom and Bride's Wishlist
+                //short size = slea.readShort();
+                int amount = slea.readShort();
+                if (amount > 10) {
+                    amount = 10;
+                }
+                for (int i = 0; i < amount; i++) {
+                    c.getPlayer().setItens(slea.readMapleAsciiString());
                 }
                 
                 //System.out.println("G&B WISHLIST: " + itemnames);

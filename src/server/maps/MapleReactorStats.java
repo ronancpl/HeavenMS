@@ -22,6 +22,7 @@
 package server.maps;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,12 @@ public class MapleReactorStats {
     public void addState(byte state, List<StateData> data, int timeOut) {
         stateInfo.put(state, data);
         if(timeOut > -1) timeoutInfo.put(state, timeOut);
+    }
+    
+    public void addState(byte state, int type, Pair<Integer, Integer> reactItem, byte nextState, int timeOut, byte canTouch) {
+        List<StateData> data = new ArrayList<>();
+        data.add(new StateData(type, reactItem, null, nextState));
+        stateInfo.put(state, data);
     }
     
     public int getTimeout(byte state) {

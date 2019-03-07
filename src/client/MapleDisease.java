@@ -21,34 +21,34 @@
 */
 package client;
 
-import java.util.ArrayList;
-import java.util.List;
+import tools.Randomizer;
 
 public enum MapleDisease {
     NULL(0x0),
-    SLOW(0x1),
-    SEDUCE(0x80),
+    SLOW(0x1, 126),
+    SEDUCE(0x80, 128),
     FISHABLE(0x100),
     ZOMBIFY(0x4000),
     CONFUSE(0x80000),
-    STUN(0x2000000000000L),
-    POISON(0x4000000000000L),
-    SEAL(0x8000000000000L),
-    DARKNESS(0x10000000000000L),
-    WEAKEN(0x4000000000000000L),
-    CURSE(0x8000000000000000L);
+    STUN(0x2000000000000L, 123),
+    POISON(0x4000000000000L, 125),
+    SEAL(0x8000000000000L, 120),
+    DARKNESS(0x10000000000000L, 121),
+    WEAKEN(0x4000000000000000L, 122),
+    CURSE(0x8000000000000000L, 124);
     
     private long i;
     private boolean first;
+    private int disease;
     
     private MapleDisease(long i) {
         this.i = i;
         this.first = false;
     }
 
-    private MapleDisease(long i, boolean first) {
+    private MapleDisease(long i, int disease) {
         this.i = i;
-        this.first = first;
+        this.disease = disease;
     }
     
     public long getValue() {
@@ -58,6 +58,10 @@ public enum MapleDisease {
     public boolean isFirst() {
             return first;
     }
+
+    public int getDisease() {
+        return disease;
+    }
     
     public static MapleDisease ordinal(int ord) {
         try {
@@ -66,4 +70,24 @@ public enum MapleDisease {
             return NULL;
         }
     }
+    
+    public static final MapleDisease getRandom() {
+        while (true) {
+            for (MapleDisease dis : MapleDisease.values()) {
+                if (Randomizer.nextInt(MapleDisease.values().length) == 0) {
+                    return dis;
+                }
+            }
+        }
+    }
+    
+    public static final MapleDisease getBySkill(final int skill) {
+        for (MapleDisease d : MapleDisease.values()) {
+            if (d.getDisease() == skill && d.getDisease() != 0) {
+                return d;
+            }
+        }
+        return null;
+    }
+    
 }

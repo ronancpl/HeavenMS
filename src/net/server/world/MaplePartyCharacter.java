@@ -141,4 +141,100 @@ public class MaplePartyCharacter {
     public int getWorld() {
         return world;
     }
+    
+    public String getJobNameById(int job) {
+        switch (job) {
+            case 0:
+                return "Aprendiz";
+            case 100:
+                return "Guerreiro";// Warrior
+            case 110:
+                return "Soldado";
+            case 111:
+                return "Templario";
+            case 112:
+                return "Heroi";
+            case 120:
+                return "Escudeiro";
+            case 121:
+                return "Cavaleiro Branco";
+            case 122:
+                return "Paladino";
+            case 130:
+                return "Lanceiro";
+            case 131:
+                return "Cavaleiro Draconiano";
+            case 132:
+                return "Cavaleiro Negro";
+
+            case 200:
+                return "Bruxo";
+            case 210:
+                return "Feiticeiro (Fogo, Veneno)";
+            case 211:
+                return "Mago (Fogo, Veneno)";
+            case 212:
+                return "Arquimago (Fogo, Veneno)";
+            case 220:
+                return "Feiticeiro (Gelo, Raio)";
+            case 221:
+                return "Mago (Gelo, Raio)";
+            case 222:
+                return "Arquimago (Gelo, Raio)";
+            case 230:
+                return "Clérigo";
+            case 231:
+                return "Sacerdote";
+            case 232:
+                return "Sumo Sacerdote";
+
+            case 300:
+                return "Arqueiro";
+            case 310:
+                return "Caçador";
+            case 311:
+                return "Rastreador";
+            case 312:
+                return "Mestre Arqueiro";
+            case 320:
+                return "Balestreiro";
+            case 321:
+                return "Atirador";
+            case 322:
+                return "Atirador De Elite";
+
+            case 400:
+                return "Gatuno";
+            case 410:
+                return "Mercenario";
+            case 411:
+                return "Andarilho";
+            case 412:
+                return "Lorde Negro";
+            case 420:
+                return "Arruaceiro";
+            case 421:
+                return "Mestre Arruaceiro";
+            case 422:
+                return "Mestre Das Sombras";
+
+            case 500:
+                return "Pirata";
+            case 510:
+                return "Lutador";
+            case 511:
+                return "Saqueador";
+            case 512:
+                return "Foragido";
+            case 520:
+                return "Pistoleiro";
+            case 521:
+                return "Bucaneiro";
+            case 522:
+                return "Captain";
+
+            default:
+                return "Unknown Job";
+        }
+    }
 }
