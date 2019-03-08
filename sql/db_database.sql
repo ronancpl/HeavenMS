@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `rewardpoints` int(11) NOT NULL DEFAULT '0',
   `votepoints` int(11) NOT NULL DEFAULT '0',
   `hwid` varchar(12) NOT NULL DEFAULT '',
+  `lingua` int(1) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `ranking1` (`id`,`banned`),
@@ -17443,7 +17444,7 @@ CREATE TABLE IF NOT EXISTS `rings` (
 CREATE TABLE IF NOT EXISTS `savedlocations` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `characterid` int(11) NOT NULL,
-  `locationtype` enum('FREE_MARKET','WORLDTOUR','FLORINA','INTRO','SUNDAY_MARKET','MIRROR','EVENT','BOSSPQ','HAPPYVILLE','DEVELOPER') NOT NULL,
+  `locationtype` enum('FREE_MARKET','WORLDTOUR','FLORINA','INTRO','SUNDAY_MARKET','MIRROR','EVENT','BOSSPQ','HAPPYVILLE','DEVELOPER','MONSTER_CARNIVAL') NOT NULL,
   `map` int(11) NOT NULL,
   `portal` int(11) NOT NULL,
   PRIMARY KEY (`id`)

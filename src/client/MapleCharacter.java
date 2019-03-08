@@ -9598,7 +9598,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private MapleFitness fitness;
     private MapleOla ola;
     private long snowballattack;
-    private int lingua = 0;// 0 PTB  1 ESP  2 ENG
     public static final List<String> itens = new ArrayList();
     public static final List<Item> item = new ArrayList();
 
@@ -10174,12 +10173,24 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.challenged = challenged;
     }
 
-    public void setLingua(int a) {
-        this.lingua = a;
+    public void setLingua(int num) {
+        getClient().setLingua(num);
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET lingua = ? WHERE id = ?")) {
+                ps.setInt(1, num);
+                ps.setInt(2, getClient().getAccID());
+                ps.executeUpdate();
+            } finally {
+                con.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
+    
     public int getLingua() {
-        return lingua;
+        return getClient().getLingua();
     }
 
     public void setItens(String item) {
