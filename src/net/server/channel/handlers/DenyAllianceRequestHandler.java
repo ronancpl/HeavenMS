@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -21,24 +19,28 @@
 */
 package net.server.channel.handlers;
 
-import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleCharacter;
 import net.AbstractMaplePacketHandler;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import tools.MaplePacketCreator;
+import net.server.guild.MapleAlliance;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
-    
+/**
+ * @author Ronan
+ */
+public final class DenyAllianceRequestHandler extends AbstractMaplePacketHandler {
+
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         slea.readByte();
-        MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
-        if (cfrom != null) {
-            if (MapleInviteCoordinator.answerInvite(InviteType.PARTY, c.getPlayer().getId(), cfrom.getPartyId(), false).getLeft() == InviteResult.DENIED) {
-                cfrom.getClient().announce(MaplePacketCreator.partyStatusMessage(23, c.getPlayer().getName()));
+        String inviterName = slea.readMapleAsciiString();
+        String guildName = slea.readMapleAsciiString();
+        
+        MapleCharacter chr = c.getWorldServer().getPlayerStorage().getCharacterByName(inviterName);
+        if (chr != null) {
+            MapleAlliance alliance = chr.getAlliance();
+            if (alliance != null) {
+                MapleAlliance.answerInvitation(c.getPlayer().getId(), guildName, alliance.getId(), false);
             }
         }
     }

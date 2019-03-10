@@ -460,47 +460,50 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     public boolean isAttackedBy(MapleCharacter chr) {
         return takenDamage.containsKey(chr.getId());
     }
-
-    private void distributeExperienceToParty(int pid, float exp, int killer, int killerLevel, Set<MapleCharacter> underleveled, int minThresholdLevel) {
-        List<MapleCharacter> members = new LinkedList<>();
-        MapleCharacter pchar = getMap().getAnyCharacterFromParty(pid);
+    
+    private void distributeExperienceToParty(int pid, float exp, int mostDamageCid, int minThresholdLevel, int killerLevel, Set<MapleCharacter> underleveled, Map<MapleCharacter, Float> partyExpReward) {
+        MapleCharacter pchar = getMap().getAnyCharacterFromParty(pid);  // thanks G h o s t, Alfred, Vcoc, BHB for poiting out a bug in detecting party members after membership transactions in a party took place
+        
+        List<MapleCharacter> members;
         if(pchar != null) {
-            for(MapleCharacter chr : pchar.getPartyMembersOnSameMap()) {
-                members.add(chr);
-            }
+            members = pchar.getPartyMembersOnSameMap();
         } else {
-            MapleCharacter chr = getMap().getCharacterById(killer);
-            if(chr == null) return;
-            
-            members.add(chr);
+            members = new LinkedList<>();
         }
         
         List<MapleCharacter> expSharers = new LinkedList<>();
-        int expSharersLevel = 0;
+        int expSharersMaxLevel = 1;
+        boolean hasMostDamageCid = false;
         for (MapleCharacter mc : members) {
+            if (mc.getId() == mostDamageCid) {
+                hasMostDamageCid = true;
+            }
+            
             if (mc.getLevel() >= minThresholdLevel) {    //NO EXP WILL BE GIVEN for those who are underleveled!
                 if (Math.abs(killerLevel - mc.getLevel()) < ServerConstants.MIN_RANGELEVEL_TO_EXP_LEECH) {
                     // thanks Thora for pointing out leech level limitation
                     
-                    expSharersLevel += mc.getLevel();
+                    if (expSharersMaxLevel < mc.getLevel()) {
+                        expSharersMaxLevel = mc.getLevel();
+                    }
                     expSharers.add(mc);
                 }
             } else {
                 underleveled.add(mc);
             }
         }
-
-        final int mostDamageCid = getHighestDamagerId();
-
+        
+        int numExpSharers = expSharers.size();
+        
+        // PARTY BONUS: 2p -> +2% , 3p -> +4% , 4p -> +6% , 5p -> +8% , 6p -> +10%
+        // MOST DAMAGE BONUS: 1.5x bonus
+        final float partyModifier = numExpSharers <= 1 ? 0.0f : 0.02f * (numExpSharers - 1);
+        final float mostDamageModifier = hasMostDamageCid ? 1.5f : 1.0f;
+        final float partyExp = exp * partyModifier * mostDamageModifier;
+        
         for (MapleCharacter mc : expSharers) {
-            int id = mc.getId();
-            boolean isKiller = killer == id;
-            boolean mostDamage = mostDamageCid == id;
-            float xp = ((0.80f * exp * mc.getLevel()) / expSharersLevel);
-            if (mostDamage) {
-                xp += (0.20f * exp);
-            }
-            giveExpToCharacter(mc, xp, isKiller, expSharers.size());
+            float levelPenaltyModifier = (float) Math.sqrt(((float) mc.getLevel()) / expSharersMaxLevel);
+            partyExpReward.put(mc, partyExp * levelPenaltyModifier);
         }
     }
 
@@ -518,10 +521,25 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
+    private void propagateExperienceGains(Map<MapleCharacter, Float> personalExpReward, Map<MapleCharacter, Float> partyExpReward) {
+        Set<MapleCharacter> expRewardPlayers = new HashSet<>(personalExpReward.keySet());
+        expRewardPlayers.addAll(partyExpReward.keySet());
+        
+        for (MapleCharacter chr : expRewardPlayers) {
+            Float personalExp = personalExpReward.get(chr);
+            Float partyExp = partyExpReward.get(chr);
+            
+            this.giveExpToCharacter(chr, personalExp, partyExp);
+        }
+    }
+    
     private void distributeExperience(int killerId) {
         if (isAlive()) {
             return;
         }
+        
+        Map<MapleCharacter, Float> personalExpReward = new HashMap<>();
+        Map<MapleCharacter, Float> partyExpReward = new HashMap<>();
         
         EventInstanceManager eim = getMap().getEventInstance();
         int minThresholdLevel = calcThresholdLevel(eim != null), killerLevel = Integer.MAX_VALUE;
@@ -553,18 +571,18 @@ public class MapleMonster extends AbstractLoadedMapleLife {
                     xp += exp2;
                 }
                 
-                MapleParty p = mc.getParty();
-                if (p != null) {
-                    int pID = p.getId();
-                    float pXP = xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
-                    partyExp.put(pID, pXP);
-                } else {
-                    if(mc.getLevel() >= minThresholdLevel) {
-                        //NO EXP WILL BE GIVEN for those who are underleveled!
-                        giveExpToCharacter(mc, xp, isKiller, 1);
-                    } else {
-                        underleveled.add(mc);
+                if(mc.getLevel() >= minThresholdLevel) {
+                    //NO EXP WILL BE GIVEN for those who are underleveled!
+                    personalExpReward.put(mc, xp);
+                    
+                    MapleParty p = mc.getParty();
+                    if (p != null) {    // for party bonus exp
+                        int pID = p.getId();
+                        float pXP = xp + (partyExp.containsKey(pID) ? partyExp.get(pID) : 0);
+                        partyExp.put(pID, pXP);
                     }
+                } else {
+                    underleveled.add(mc);
                 }
             }
         }
@@ -587,52 +605,78 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             }
         }
         
+        int mostDamageCid = this.getHighestDamagerId();
         for (Entry<Integer, Float> party : partyExp.entrySet()) {
-            distributeExperienceToParty(party.getKey(), party.getValue(), killerId, killerLevel, underleveled, minThresholdLevel);
+            distributeExperienceToParty(party.getKey(), party.getValue(), mostDamageCid, minThresholdLevel, killerLevel, underleveled, partyExpReward);
         }
         
         for(MapleCharacter mc : underleveled) {
             mc.showUnderleveledInfo(this);
         }
-    }
-
-    private void giveExpToCharacter(MapleCharacter attacker, float exp, boolean isKiller, int numExpSharers) {
-        //PARTY BONUS: 2p -> +2% , 3p -> +4% , 4p -> +6% , 5p -> +8% , 6p -> +10%
-        final float partyModifier = numExpSharers <= 1 ? 0.0f : 0.02f * (numExpSharers - 1);
         
-        int partyExp = 0;
-        if (attacker.getHp() > 0) {
-            exp *= attacker.getExpRate();
+        propagateExperienceGains(personalExpReward, partyExpReward);
+    }
+    
+    private float getStatusExpMultiplier(MapleCharacter attacker) {
+        float multiplier = 1.0f;
+        
+        // thanks Prophecy & Aika for finding out Holy Symbol not being applied on party bonuses
+        Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
+        if (holySymbol != null) {
+            multiplier *= (1.0 + (holySymbol.doubleValue() / 100.0));
+        }
+
+        statiLock.lock();
+        try {
+            MonsterStatusEffect mse = stati.get(MonsterStatus.SHOWDOWN);
+            if (mse != null) {
+                multiplier *= (1.0 + (mse.getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0));
+            }
+        } finally {
+            statiLock.unlock();
+        }
+        
+        return multiplier;
+    }
+    
+    private static int expValueToInteger(double exp) {
+        if (exp > Integer.MAX_VALUE) {
+            exp = Integer.MAX_VALUE;
+        } else if (exp < Integer.MIN_VALUE) {
+            exp = Integer.MIN_VALUE;
+        }
+        
+        return (int) exp;
+    }
+    
+    private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp) {
+        if (attacker.isAlive()) {
+            if (personalExp != null) {
+                personalExp *= getStatusExpMultiplier(attacker);
+                personalExp *= attacker.getExpRate();
+            } else {
+                personalExp = 0.0f;
+            }
             
             Integer expBonus = attacker.getBuffedValue(MapleBuffStat.EXP_INCREASE);
-            if (expBonus != null) {     // exp increase buff found thanks to HighKey21
-                exp += expBonus;
+            if (expBonus != null) {     // exp increase player buff found thanks to HighKey21
+                personalExp += expBonus;
             }
-            
-            int personalExp = (int) exp;
-            if (exp <= Integer.MAX_VALUE) {  // assuming no negative xp here
-                if (partyModifier > 0.0f) {
-                    partyExp = (int) (personalExp * partyModifier * ServerConstants.PARTY_BONUS_EXP_RATE);
-                }
-                Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
-                if (holySymbol != null) {
-                    personalExp *= 1.0 + (holySymbol.doubleValue() / 100.0);
-                }
 
-                statiLock.lock();
-                try {
-                    if (stati.containsKey(MonsterStatus.SHOWDOWN)) {
-                        personalExp *= (stati.get(MonsterStatus.SHOWDOWN).getStati().get(MonsterStatus.SHOWDOWN).doubleValue() / 100.0 + 1.0);
-                    }
-                } finally {
-                    statiLock.unlock();
-                }
+            int _personalExp = expValueToInteger(personalExp); // assuming no negative xp here
+            
+            if (partyExp != null) {
+                partyExp *= getStatusExpMultiplier(attacker);
+                partyExp *= attacker.getExpRate();
+                partyExp *= ServerConstants.PARTY_BONUS_EXP_RATE;
             } else {
-                personalExp = Integer.MAX_VALUE;
+                partyExp = 0.0f;
             }
             
-            attacker.gainExp(personalExp, partyExp, true, false, isKiller);
-            attacker.increaseEquipExp(personalExp);
+            int _partyExp = expValueToInteger(partyExp);
+            
+            attacker.gainExp(_personalExp, _partyExp, true, false, false);
+            attacker.increaseEquipExp(_personalExp);
             attacker.updateQuestMobCount(getId());
         }
     }

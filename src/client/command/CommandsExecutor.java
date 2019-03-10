@@ -93,8 +93,16 @@ public class CommandsExecutor {
     }
     
     private void handleInternal(MapleClient client, String message){
-        final String[] spitedMessage = message.toLowerCase().substring(1).split("[ ]");
-        final String commandName = spitedMessage[0];
+        final String splitRegex = "[ ]";
+        String[] splitedMessage = message.substring(1).split(splitRegex, 2);
+        if (splitedMessage.length < 2) {
+            splitedMessage = new String[]{splitedMessage[0], ""};
+        }
+        
+        client.getPlayer().setLastCommandMessage(splitedMessage[1]);    // thanks Tochi & Nulliphite for noticing string messages being marshalled lowercase
+        final String commandName = splitedMessage[0].toLowerCase();
+        final String[] lowercaseParams = splitedMessage[1].toLowerCase().split(splitRegex);
+        
         final RegisteredCommand command = registeredCommands.get(commandName);
         if (command == null){
             client.getPlayer().yellowMessage("Command '" + commandName + "' is not available. See @commands for a list of available commands.");
@@ -105,8 +113,8 @@ public class CommandsExecutor {
             return;
         }
         String[] params;
-        if (spitedMessage.length > 1) {
-             params = Arrays.copyOfRange(spitedMessage, 1, spitedMessage.length);
+        if (lowercaseParams.length > 0) {
+             params = Arrays.copyOfRange(lowercaseParams, 0, lowercaseParams.length);
         } else {
             params = new String[]{};
         }
@@ -194,6 +202,7 @@ public class CommandsExecutor {
         addCommand("luk", StatLukCommand.class);
         addCommand("enableauth", EnableAuthCommand.class);
         addCommand("toggleexp", ToggleExpCommand.class);
+        addCommand("mylawn", MapOwnerClaimCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }
@@ -331,6 +340,7 @@ public class CommandsExecutor {
         addCommand("droprate", 4, DropRateCommand.class);
         addCommand("questrate", 4, QuestRateCommand.class);
         addCommand("travelrate", 4, TravelRateCommand.class);
+        addCommand("fishrate", 4, FishingRateCommand.class);
         addCommand("itemvac", 4, ItemVacCommand.class);
         addCommand("forcevac", 4, ForceVacCommand.class);
         addCommand("zakum", 4, ZakumCommand.class);
@@ -356,6 +366,8 @@ public class CommandsExecutor {
         addCommand("set", 5, SetCommand.class);
         addCommand("showpackets", 5, ShowPacketsCommand.class);
         addCommand("showmovelife", 5, ShowMoveLifeCommand.class);
+        addCommand("showsessions", 5, ShowSessionsCommand.class);
+        addCommand("iplist", 5, IpListCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

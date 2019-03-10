@@ -38,8 +38,10 @@ import client.MapleClient;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import org.apache.mina.core.session.IoSession;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {
 
@@ -54,9 +56,18 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
         return HexTool.toString(digester.digest()).replace(" ", "").toLowerCase();
     }
 
+    private static String getRemoteIp(IoSession session) {
+        return ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+    }
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-
+        String remoteHost = getRemoteIp(c.getSession());
+        if (remoteHost.startsWith("127.") && !ServerConstants.HOST.startsWith("127.")) {
+            c.announce(MaplePacketCreator.getLoginFailed(13));   // cannot login as localhost if it's not a test server
+            return;
+        }
+        
         String login = slea.readMapleAsciiString();
         String pwd = slea.readMapleAsciiString();
         c.setAccountName(login);

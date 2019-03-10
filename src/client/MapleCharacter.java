@@ -54,6 +54,7 @@ import java.util.regex.Pattern;
 import net.server.PlayerBuffValueHolder;
 import net.server.PlayerCoolDownValueHolder;
 import net.server.Server;
+import net.server.coordinator.MapleInviteCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
@@ -125,6 +126,7 @@ import client.inventory.PetDataFactory;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.newyear.NewYearCardRecord;
+import client.processor.FredrickProcessor;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
@@ -167,7 +169,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
     private static final String LEVEL_200 = "[Congrats] %s has reached Level %d! Congratulate %s on such an amazing achievement!";
-    private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "help", "helper", "alert", "notice", "maplestory", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
+    private static final String[] BLOCKED_NAMES = {"admin", "owner", "moderator", "intern", "donor", "administrator", "FREDRICK", "help", "helper", "alert", "notice", "maplestory", "fuck", "wizet", "fucking", "negro", "fuk", "fuc", "penis", "pussy", "asshole", "gay",
         "nigger", "homo", "suck", "cum", "shit", "shitty", "condom", "security", "official", "rape", "nigga", "sex", "tit", "boner", "orgy", "clit", "asshole", "fatass", "bitch", "support", "gamemaster", "cock", "gaay", "gm",
         "operate", "master", "sysop", "party", "GameMaster", "community", "message", "event", "test", "meso", "Scania", "yata", "AsiaSoft", "henesys"};
     
@@ -208,6 +210,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private boolean usedStorage = false;
     private String name;
     private String chalktext;
+    private String commandtext;
     private String dataString;
     private String search = null;
     private AtomicBoolean mapTransitioning = new AtomicBoolean(true);  // player client is currently trying to change maps or log in the game map
@@ -313,7 +316,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private short extraRecInterval;
     private int targetHpBarHash = 0;
     private long targetHpBarTime = 0;
-    private long nextUnderlevelTime = 0;
+    private long nextWarningTime = 0;
     private int banishMap = -1;
     private int banishSp = -1;
     private long banishTime = 0;
@@ -1055,9 +1058,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             gainSp(spGain, GameConstants.getSkillBook(newJob.getId()), true);
         }
         
-        if (newJob.getId() % 10 > 1) {
+        // thanks xinyifly for finding out job advancements awarding APs
+        /*
+        if (newJob.getId() % 10 >= 1) {
             gainAp(5, true);
         }
+        */
         
         if (!isGM()) {
             for (byte i = 1; i < 5; i++) {
@@ -1578,6 +1584,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
         }
     }
+    
+    public void removeIncomingInvites() {
+        MapleInviteCoordinator.removePlayerIncomingInvites(id);
+    }
 
     private void changeMapInternal(final MapleMap to, final Point pos, final byte[] warpPacket) {
         if(!canWarpMap) return;
@@ -1586,6 +1596,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         
         this.unregisterChairBuff();
         this.clearBanishPlayerData();
+        MapleTrade.cancelTrade(this, MapleTrade.TradeResult.UNSUCCESSFUL_ANOTHER_MAP);
         this.closePlayerInteractions();
         
         client.announce(warpPacket);
@@ -1946,6 +1957,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         
     public boolean canHold(int itemid, int quantity) {
         return client.getAbstractPlayerInteraction().canHold(itemid, quantity);
+    }
+    
+    public boolean canHoldUniques(List<Integer> itemids) {
+        for (Integer itemid : itemids) {
+            if (ii.isPickupRestricted(itemid) && this.haveItem(itemid)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     public boolean isRidingBattleship() {
@@ -4131,15 +4152,15 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getChair() {
         return chair.get();
     }
-
+    
     public String getChalkboard() {
         return this.chalktext;
     }
-
+    
     public MapleClient getClient() {
         return client;
     }
-
+    
     public final List<MapleQuestStatus> getCompletedQuests() {
         synchronized (quests) {
             List<MapleQuestStatus> ret = new LinkedList<>();
@@ -4738,6 +4759,32 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getMerchantMeso() {
         return merchantmeso;
     }
+    
+    public int getMerchantNetMeso() {
+        int elapsedDays = 0;
+        
+        try {
+            Connection con = DatabaseConnection.getConnection();
+            
+            try (PreparedStatement ps = con.prepareStatement("SELECT `timestamp` FROM `fredstorage` WHERE `cid` = ?")) {
+                ps.setInt(1, id);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        elapsedDays = FredrickProcessor.timestampElapsedDays(rs.getTimestamp(1), System.currentTimeMillis());
+                    }
+                }
+            }
+            
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        if (elapsedDays > 100) elapsedDays = 100;
+        
+        int netMeso = (merchantmeso * (100 - elapsedDays)) / 100;
+        return netMeso;
+    }
 
     public int getMesosTraded() {
         return mesosTraded;
@@ -4980,7 +5027,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void closeTrade() {
-        MapleTrade.cancelTrade(this);
+        MapleTrade.cancelTrade(this, MapleTrade.TradeResult.PARTNER_CANCEL);
     }
     
     public void closePlayerShop() {
@@ -5024,9 +5071,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         MapleHiredMerchant merchant = this.getHiredMerchant();
         if(merchant == null) return;
         
-        if(closeMerchant) {
-            merchant.removeVisitor(this);
-            this.setHiredMerchant(null);
+        if (closeMerchant) {
+            if (merchant.isOwner(this) && merchant.getItems().isEmpty()) {
+                merchant.forceClose();
+            } else {
+                merchant.removeVisitor(this);
+                this.setHiredMerchant(null);
+            }
         } else {
             if (merchant.isOwner(this)) {
                 merchant.setOpen(true);
@@ -5674,12 +5725,20 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return guildid > 0 && guildRank < 3;
     }
     
+    public boolean attemptCatchFish(int baitLevel) {
+        return GameConstants.isFishingArea(mapid) && this.getPosition().getY() > 0 && ItemConstants.isFishingChair(chair.get()) && this.getWorldServer().registerFisherPlayer(this, baitLevel);
+    }
+    
     public void leaveMap() {
         releaseControlledMonsters();
         visibleMapObjects.clear();
         setChair(0);
         if (hpDecreaseTask != null) {
             hpDecreaseTask.cancel(false);
+        }
+        
+        if (map.unclaimOwnership(this)) {
+            map.dropMessage(5, "This lawn is now free real estate.");
         }
     }
     
@@ -6950,7 +7009,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     private void unsitChairInternal() {
-        if (chair.get() != 0) {
+        int chairid = chair.get();
+        if (chairid != 0) {
+            if (ItemConstants.isFishingChair(chairid)) {
+                this.getWorldServer().unregisterFisherPlayer(this);
+            }
+            
             setChair(0);
             if (unregisterChairBuff()) {
                 getMap().broadcastMessage(this, MaplePacketCreator.cancelForeignChairSkillEffect(this.getId()), false);
@@ -8085,10 +8149,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void sendNote(String to, String msg, byte fame) throws SQLException {
+        sendNote(to, this.getName(), msg, fame);
+    }
+    
+    public static void sendNote(String to, String from, String msg, byte fame) throws SQLException {
         Connection con = DatabaseConnection.getConnection();
         try (PreparedStatement ps = con.prepareStatement("INSERT INTO notes (`to`, `from`, `message`, `timestamp`, `fame`) VALUES (?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, to);
-            ps.setString(2, this.getName());
+            ps.setString(2, from);
             ps.setString(3, msg);
             ps.setLong(4, Server.getInstance().getCurrentTime());
             ps.setByte(5, fame);
@@ -8262,7 +8330,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public synchronized void withdrawMerchantMesos() {
-        int merchantMeso = this.getMerchantMeso();
+        int merchantMeso = this.getMerchantNetMeso();
         if (merchantMeso > 0) {
             int possible = Integer.MAX_VALUE - merchantMeso;
             
@@ -8274,6 +8342,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     this.gainMeso(merchantMeso, false);
                     this.setMerchantMeso(0);
                 }
+            }
+        } else {
+            int playerMeso = this.getMeso();
+            int nextMeso = playerMeso + merchantMeso;
+            
+            if (nextMeso < 0) {
+                this.gainMeso(-playerMeso, false);
+                this.setMerchantMeso(merchantMeso + playerMeso);
+            } else {
+                this.gainMeso(merchantMeso, false);
+                this.setMerchantMeso(0);
             }
         }
     }
@@ -8461,6 +8540,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void changeName(String name) {
+        FredrickProcessor.removeFredrickReminders(this.getId());
+        
         this.name = name;
         try {
             Connection con = DatabaseConnection.getConnection();
@@ -8830,16 +8911,32 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void showUnderleveledInfo(MapleMonster mob) {
-        chrLock.lock();
-        try {
-            long curTime = Server.getInstance().getCurrentTime();
-            if(nextUnderlevelTime < curTime) {
-                nextUnderlevelTime = curTime + (60 * 1000);   // show underlevel info again after 1 minute
-                
-                showHint("You have gained #rno experience#k from defeating #e#b" + mob.getName() + "#k#n (lv. #b" + mob.getLevel() + "#k)! Take note you must have around the same level as the mob to start earning EXP from it.");
+        long curTime = Server.getInstance().getCurrentTime();
+        if(nextWarningTime < curTime) {
+            nextWarningTime = curTime + (60 * 1000);   // show underlevel info again after 1 minute
+            
+            showHint("You have gained #rno experience#k from defeating #e#b" + mob.getName() + "#k#n (lv. #b" + mob.getLevel() + "#k)! Take note you must have around the same level as the mob to start earning EXP from it.");
+        }
+    }
+    
+    public void showMapOwnershipInfo(MapleCharacter mapOwner) {
+        long curTime = Server.getInstance().getCurrentTime();
+        if(nextWarningTime < curTime) {
+            nextWarningTime = curTime + (60 * 1000);   // show underlevel info again after 1 minute
+            
+            String medal = "";
+            Item medalItem = mapOwner.getInventory(MapleInventoryType.EQUIPPED).getItem((short) -49);
+            if (medalItem != null) {
+                medal = "<" + ii.getName(medalItem.getItemId()) + "> ";
             }
-        } finally {
-            chrLock.unlock();
+            
+            List<String> strLines = new LinkedList<>();
+            strLines.add("");
+            strLines.add("");
+            strLines.add("");
+            strLines.add(this.getClient().getChannelServer().getServerMessage().isEmpty() ? 0 : 1, "Get off my lawn!!");
+            
+            this.announce(MaplePacketCreator.getAvatarMega(mapOwner, medal, this.getClient().getChannel(), 5390006, strLines, true));
         }
     }
     
@@ -9843,6 +9940,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void removeJailExpirationTime() {
         jailExpiration = 0;
+    }
+    
+    public String getLastCommandMessage() {
+        return this.commandtext;
+    }
+    
+    public void setLastCommandMessage(String text) {
+        this.commandtext = text;
     }
 
     public int getRewardPoints() {

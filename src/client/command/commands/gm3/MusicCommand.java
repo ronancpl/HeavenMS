@@ -57,7 +57,7 @@ public class MusicCommand extends Command {
             return;
         }
         
-        String song = joinStringFrom(params, 0);
+        String song = player.getLastCommandMessage();
         for (String s : GameConstants.GAME_SONGS) {
             if (s.equalsIgnoreCase(song)) {    // thanks Masterrulax for finding an issue here
                 player.getMap().broadcastMessage(MaplePacketCreator.musicChange(s));

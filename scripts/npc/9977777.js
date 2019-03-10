@@ -87,6 +87,8 @@ function writeFeatureTab_PlayerSocialNetwork() {
         addFeature("Engagement & Wedding system with ring effects.");
         addFeature("Equipments displays to everyone it's level & EXP info.");
         addFeature("Further improved the existent minigame mechanics.");
+        addFeature("Trade complete using handshake synchronization.");
+        addFeature("GMS-like trade results displaying after transactions.");
 }
 
 function writeFeatureTab_CashItems() {
@@ -123,11 +125,11 @@ function writeFeatureTab_MonstersMapsReactors() {
         addFeature("Added meso drop data for many missing mobs.");
         addFeature("Monsterbook displays updated drop data info.");
         addFeature("Every skill/mastery book is now obtainable.");
-        addFeature("Enhanced aggro system: real-time DPS aggro detection.");
+        addFeature("Enhanced aggro system, with real-time DPS detection.");
+        addFeature("Puppets keep targeted mobs nearby on new aggro.");
         addFeature("Mobs now can drop more than one of the same equip.");
         addFeature("Mobs only drop items collectable by the player/party.");
         addFeature("Mobs shouldn't fall from foothold too often now.");
-        addFeature("Puppets holds targeted mobs nearby on new aggro feat.");
         addFeature("Properly applying MP cost on non-skill mob moves.");
         addFeature("Limited underling mob spawns.");
         addFeature("Implemented mob banish by touch & skill move.");
@@ -173,6 +175,7 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("Reviewed keybinding system.");
         addFeature("Character slots per world/server-wide.");
         addFeature("Optional cash shop inventory separated by classes.");
+        addFeature("Players manage 'same-typed' invites exclusively.");
 }
 
 function writeFeatureTab_Serverpotentials() {
@@ -188,6 +191,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Players-appointed bestsellers for Owl and Cash Shop.");
         addFeature("Tweaked pet/mount hunger to a balanced growth rate.");
         addFeature("Consistent experience and meso gain system.");
+        addFeature("Fredrick Store Bank warn/delete unclaimed items.");
         addFeature("NPC crafters won't take items freely anymore.");
         addFeature("Duey: pkg rcvd popup and many delivery mechanics.");
         addFeature("Pet pickup gives preference to player attacks.");
@@ -198,6 +202,8 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("M. book announcer displays info based on demand.");
         addFeature("Custom jail system.");
         addFeature("Custom buyback system, uses mesos / NX, via MTS.");
+        addFeature("Custom fishing system having 'seasonal' catch times.");
+        addFeature("Custom map leasing system.");
         addFeature("Delete Character.");
         addFeature("Smooth view-all-char, now showing all account chars.");
         addFeature("Centralized servertime, boosting handler performance.");

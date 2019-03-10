@@ -146,6 +146,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
+                    visitors[i].setPlayerShop(null);
                     visitors[i] = null;
                     visitor.setSlot(-1);
                     
@@ -298,7 +299,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                                 }
                             }
                         } else {
-                            c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
+                            c.getPlayer().dropMessage(1, "Your inventory is full. Please clear a slot before buying this item.");
                             c.announce(MaplePacketCreator.enableActions());
                             return false;
                         }

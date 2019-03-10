@@ -1,5 +1,5 @@
 /*
-    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    This file is part of the HeavenMS MapleStory Server
     Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
@@ -17,26 +17,44 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package client.command.commands.gm5;
 
-/*
-   @Author: Arthur L - Refactored command content into modules
-*/
-package client.command.commands.gm3;
-
-import client.command.Command;
+import java.util.Collection;
 import client.MapleClient;
 import client.MapleCharacter;
+import client.command.Command;
+import constants.GameConstants;
 import net.server.Server;
-import tools.MaplePacketCreator;
+import net.server.world.World;
 
-public class NoticeCommand extends Command {
+/**
+ *
+ * @author Mist
+ * @author Blood (Tochi)
+ * @author Ronan
+ */
+public class IpListCommand extends Command {
     {
         setDescription("");
     }
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        MapleCharacter player = c.getPlayer();
-        Server.getInstance().broadcastMessage(c.getWorld(), MaplePacketCreator.serverNotice(6, "[Notice] " + player.getLastCommandMessage()));
+        String str = "Player-IP relation:";
+        
+        for (World w : Server.getInstance().getWorlds()) {
+            Collection<MapleCharacter> chars = w.getPlayerStorage().getAllCharacters();
+            
+            if (!chars.isEmpty()) {
+                str += "\r\n" + GameConstants.WORLD_NAMES[w.getId()] + "\r\n";
+                
+                for (MapleCharacter chr : chars) {
+                    str += "  " + chr.getName() + " - " + chr.getClient().getSession().getRemoteAddress() + "\r\n";
+                }
+            }
+        }
+        
+        c.getAbstractPlayerInteraction().npcTalk(22000, str);
     }
+    
 }

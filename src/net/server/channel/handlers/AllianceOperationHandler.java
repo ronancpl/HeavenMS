@@ -61,7 +61,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
             }
         } else {
             if (b == 4) {
-                chr.dropMessage("Your guild is already registered on a Guild Alliance.");
+                chr.dropMessage(5, "Your guild is already registered on a guild alliance.");
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }
@@ -88,27 +88,16 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
             case 0x03: // Send Invite
                 String guildName = slea.readMapleAsciiString();
                 
-                if(alliance.getGuilds().size() == alliance.getCapacity()) {
-                    chr.dropMessage("Your alliance cannot comport any more guilds at the moment.");
+                if (alliance.getGuilds().size() == alliance.getCapacity()) {
+                    chr.dropMessage(5, "Your alliance cannot comport any more guilds at the moment.");
                 } else {
-                    MapleGuild mg = Server.getInstance().getGuildByName(guildName);
-                    if(mg == null) {
-                        chr.dropMessage("The entered guild does not exist.");
-                    }
-                    else {
-                        MapleCharacter victim = mg.getMGC(mg.getLeaderId()).getCharacter();
-                        
-                        if (victim == null) {
-                            chr.dropMessage("The master of the guild that you offered an invitation is currently not online.");
-                        } else {
-                            victim.getClient().announce(MaplePacketCreator.sendAllianceInvitation(alliance.getId(), chr));
-                        }
-                    }
+                    MapleAlliance.sendInvitation(c, guildName, alliance.getId());
                 }
                 
                 break;
             case 0x04: { // Accept Invite
-                if (chr.getGuild().getAllianceId() != 0 || chr.getGuildRank() != 1 || chr.getGuildId() < 1) {
+                MapleGuild guild = chr.getGuild();
+                if (guild.getAllianceId() != 0 || chr.getGuildRank() != 1 || chr.getGuildId() < 1) {
                     return;
                 }
                 
@@ -117,6 +106,15 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                 
                 alliance = Server.getInstance().getAlliance(allianceid);
                 if (alliance == null) {
+                    return;
+                }
+                
+                if (!MapleAlliance.answerInvitation(c.getPlayer().getId(), guild.getName(), alliance.getId(), true)) {
+                    return;
+                }
+                
+                if (alliance.getGuilds().size() == alliance.getCapacity()) {
+                    chr.dropMessage(5, "Your alliance cannot comport any more guilds at the moment.");
                     return;
                 }
                 
@@ -132,7 +130,7 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.addGuildToAlliance(alliance, guildid, c), -1, -1);
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.updateAllianceInfo(alliance, c.getWorld()), -1, -1);
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.allianceNotice(alliance.getId(), alliance.getNotice()), -1, -1);
-                chr.getGuild().dropMessage("Your guild has joined the [" + alliance.getName() + "] union.");
+                guild.dropMessage("Your guild has joined the [" + alliance.getName() + "] union.");
                
                 break;
             }

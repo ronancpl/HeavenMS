@@ -592,6 +592,10 @@ public class GameConstants {
     	return isDojo(mapid) || isPyramid(mapid);
     }
     
+    public static boolean isFishingArea(int mapid) {
+    	return mapid == 120010000 || mapid == 251000100 || mapid == 541010110;
+    }
+    
     public static boolean isFinisherSkill(int skillId) {
         return skillId > 1111002 && skillId < 1111007 || skillId == 11111002 || skillId == 11111003;
     }

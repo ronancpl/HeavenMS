@@ -848,18 +848,18 @@ public class AbstractPlayerInteraction {
     }
 
 	public void teachSkill(int skillid, byte level, byte masterLevel, long expiration, boolean force) {
-	    Skill skill = SkillFactory.getSkill(skillid);
-	    
-	    if (!force && level > -1) {
+            Skill skill = SkillFactory.getSkill(skillid);
             MapleCharacter.SkillEntry skillEntry = getPlayer().getSkills().get(skill);
-
             if (skillEntry != null) {
-                getPlayer().changeSkillLevel(skill, (byte) Math.max(skillEntry.skillevel, level), Math.max(skillEntry.masterlevel, masterLevel), expiration == -1 ? -1 : Math.max(skillEntry.expiration, expiration));
-                return;
+                if (!force && level > -1) {
+                    getPlayer().changeSkillLevel(skill, (byte) Math.max(skillEntry.skillevel, level), Math.max(skillEntry.masterlevel, masterLevel), expiration == -1 ? -1 : Math.max(skillEntry.expiration, expiration));
+                    return;
+                }
+            } else if (GameConstants.isAranSkills(skillid)) {
+                c.announce(MaplePacketCreator.showInfo("Effect/BasicEff.img/AranGetSkill"));
             }
-        }
-        
-        getPlayer().changeSkillLevel(skill, level, masterLevel, expiration);
+            
+            getPlayer().changeSkillLevel(skill, level, masterLevel, expiration);
 	}
 
 	public void removeEquipFromSlot(short slot) {

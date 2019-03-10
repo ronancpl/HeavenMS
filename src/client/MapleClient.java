@@ -118,12 +118,18 @@ public class MapleClient {
         private final Semaphore actionsSemaphore = new Semaphore(7);
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
-        private static final Lock loginLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
+        private static final Lock loginLocks[] = new Lock[200];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
 	private int votePoints;
 	private int voteTime = -1;
         private int visibleWorlds;
 	private long lastNpcClick;
 	private long sessionId;
+        
+        static {
+            for (int i = 0; i < 200; i++) {
+                loginLocks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
+            }
+        }
 
         public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
 		this.send = send;
@@ -434,6 +440,7 @@ public class MapleClient {
 	}
 
 	public int finishLogin() {
+                Lock loginLock = loginLocks[this.getAccID() % 200];
                 loginLock.lock();
                 try {
                     if (getLoginState() > LOGIN_NOTLOGGEDIN) { // 0 = LOGIN_NOTLOGGEDIN, 1= LOGIN_SERVER_TRANSITION, 2 = LOGIN_LOGGEDIN
@@ -535,8 +542,15 @@ public class MapleClient {
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				boolean banned = (rs.getByte("banned") == 1);
 				accId = rs.getInt("id");
+                                if (accId == 0) {
+                                        // odd case where accId is actually attributed as 0 (further on this leads to getLoginState ACCID = 0, an absurd), thanks Thora for finding this issue
+                                        return 15;
+                                } else if (accId < 0) {
+                                        FilePrinter.printError(FilePrinter.LOGIN_EXCEPTION, "Tried to login with accid " + accId);
+                                }
+                                
+                                boolean banned = (rs.getByte("banned") == 1);
 				gmlevel = 0;
 				pin = rs.getString("pin");
 				pic = rs.getString("pic");
@@ -861,6 +875,7 @@ public class MapleClient {
 		try {
                         player.setDisconnectedFromChannelWorld();
                         player.notifyMapTransferToPartner(-1);
+                        player.removeIncomingInvites();
                         player.cancelAllBuffs(true);
                         
                         player.closePlayerInteractions();
@@ -1000,8 +1015,8 @@ public class MapleClient {
                                 MapleSessionCoordinator.getInstance().closeSession(session, false);
                                 session.removeAttribute(MapleClient.CLIENT_KEY);
                         }
-                    
-                        engines.clear();
+                        
+                        engines = null; // thanks Tochi for pointing out a NPE here
                 }
 	}
 
@@ -1413,7 +1428,7 @@ public class MapleClient {
                 }
                 
 		if (player.getTrade() != null) {
-			MapleTrade.cancelTrade(getPlayer());
+			MapleTrade.cancelTrade(getPlayer(), MapleTrade.TradeResult.PARTNER_CANCEL);
 		}
 
 		MapleHiredMerchant merchant = player.getHiredMerchant();
@@ -1429,6 +1444,7 @@ public class MapleClient {
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
                 player.setDisconnectedFromChannelWorld();
                 player.notifyMapTransferToPartner(-1);
+                player.removeIncomingInvites();
 		player.cancelAllBuffs(true);
                 player.cancelAllDebuffs();
                 player.cancelBuffExpireTask();

@@ -32,7 +32,6 @@ import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
 import tools.MaplePacketCreator;
-import tools.Randomizer;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class SkillBookHandler extends AbstractMaplePacketHandler {
@@ -75,7 +74,9 @@ public final class SkillBookHandler extends AbstractMaplePacketHandler {
             } else {
                 canuse = false;
             }
-            player.getClient().announce(MaplePacketCreator.skillBookSuccess(player, skill, maxlevel, canuse, success));
+            
+            // thanks Vcoc for noting skill book result not showing for all in area
+            player.getMap().broadcastMessage(MaplePacketCreator.skillBookResult(player, skill, maxlevel, canuse, success));
         }
     }
 }

@@ -24,84 +24,104 @@ package net.server.channel.handlers;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
+import net.server.coordinator.MapleInviteCoordinator;
+import net.server.coordinator.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import net.server.world.MapleMessenger;
 import net.server.world.MapleMessengerCharacter;
 import net.server.world.World;
 import tools.MaplePacketCreator;
+import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class MessengerHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        String input;
-        byte mode = slea.readByte();
-        MapleCharacter player = c.getPlayer();
-        World world = c.getWorldServer();
-        MapleMessenger messenger = player.getMessenger();
-        switch (mode) {
-            case 0x00:
-                if (messenger == null) {
+        c.tryacquireClient();
+        try {
+            String input;
+            byte mode = slea.readByte();
+            MapleCharacter player = c.getPlayer();
+            World world = c.getWorldServer();
+            MapleMessenger messenger = player.getMessenger();
+            switch (mode) {
+                case 0x00:
                     int messengerid = slea.readInt();
-                    if (messengerid == 0) {
-                        MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, 0);
-                        messenger = world.createMessenger(messengerplayer);
-                        player.setMessenger(messenger);
-                        player.setMessengerPosition(0);
-                    } else {
-                        messenger = world.getMessenger(messengerid);
-                        int position = messenger.getLowestPosition();
-                        MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, position);
-                        if (messenger.getMembers().size() < 3) {
+                    if (messenger == null) {
+                        if (messengerid == 0) {
+                            MapleInviteCoordinator.removeInvite(InviteType.MESSENGER, player.getId());
+                            
+                            MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, 0);
+                            messenger = world.createMessenger(messengerplayer);
                             player.setMessenger(messenger);
-                            player.setMessengerPosition(position);
-                            world.joinMessenger(messenger.getId(), messengerplayer, player.getName(), messengerplayer.getChannel());
-                        }
-                    }
-                }
-                break;
-            case 0x02:
-                player.closePlayerMessenger();
-                break;
-            case 0x03:
-                if (messenger.getMembers().size() < 3) {
-                    input = slea.readMapleAsciiString();
-                    MapleCharacter target = c.getChannelServer().getPlayerStorage().getCharacterByName(input);
-                    if (target != null) {
-                        if (target.getMessenger() == null) {
-                            target.getClient().announce(MaplePacketCreator.messengerInvite(c.getPlayer().getName(), messenger.getId()));
-                            c.announce(MaplePacketCreator.messengerNote(input, 4, 1));
+                            player.setMessengerPosition(0);
                         } else {
-                            c.announce(MaplePacketCreator.messengerChat(player.getName() + " : " + input + " is already using Maple Messenger"));
+                            messenger = world.getMessenger(messengerid);
+                            if (messenger != null) {
+                                Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), messengerid, true);
+                                InviteResult res = inviteRes.getLeft();
+                                if (res == InviteResult.ACCEPTED) {
+                                    int position = messenger.getLowestPosition();
+                                    MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, position);
+                                    if (messenger.getMembers().size() < 3) {
+                                        player.setMessenger(messenger);
+                                        player.setMessengerPosition(position);
+                                        world.joinMessenger(messenger.getId(), messengerplayer, player.getName(), messengerplayer.getChannel());
+                                    }
+                                } else {
+                                    player.message("Could not verify your Maple Messenger accept since the invitation rescinded.");
+                                }
+                            }
                         }
                     } else {
-                        if (world.find(input) > -1) {
-                            world.messengerInvite(c.getPlayer().getName(), messenger.getId(), input, c.getChannel());
+                        MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), messengerid, false);
+                    }
+                    break;
+                case 0x02:
+                    player.closePlayerMessenger();
+                    break;
+                case 0x03:
+                    if (messenger == null) {
+                        c.announce(MaplePacketCreator.messengerChat(player.getName() + " : This Maple Messenger is currently unavailable. Please quit this chat."));
+                    } else if (messenger.getMembers().size() < 3) {
+                        input = slea.readMapleAsciiString();
+                        MapleCharacter target = c.getChannelServer().getPlayerStorage().getCharacterByName(input);
+                        if (target != null) {
+                            if (target.getMessenger() == null) {
+                                if (MapleInviteCoordinator.createInvite(InviteType.MESSENGER, c.getPlayer(), messenger.getId(), target.getId())) {
+                                    target.getClient().announce(MaplePacketCreator.messengerInvite(c.getPlayer().getName(), messenger.getId()));
+                                    c.announce(MaplePacketCreator.messengerNote(input, 4, 1));
+                                } else {
+                                    c.announce(MaplePacketCreator.messengerChat(player.getName() + " : " + input + " is already managing a Maple Messenger invitation"));
+                                }
+                            } else {
+                                c.announce(MaplePacketCreator.messengerChat(player.getName() + " : " + input + " is already using Maple Messenger"));
+                            }
                         } else {
-                            c.announce(MaplePacketCreator.messengerNote(input, 4, 0));
+                            if (world.find(input) > -1) {
+                                world.messengerInvite(c.getPlayer().getName(), messenger.getId(), input, c.getChannel());
+                            } else {
+                                c.announce(MaplePacketCreator.messengerNote(input, 4, 0));
+                            }
                         }
+                    } else {
+                        c.announce(MaplePacketCreator.messengerChat(player.getName() + " : You cannot have more than 3 people in the Maple Messenger"));
                     }
-                } else {
-                    c.announce(MaplePacketCreator.messengerChat(player.getName() + " : You cannot have more than 3 people in the Maple Messenger"));
-                }
-                break;
-            case 0x05:
-                String targeted = slea.readMapleAsciiString();
-                MapleCharacter target = c.getChannelServer().getPlayerStorage().getCharacterByName(targeted);
-                if (target != null) {
-                    if (target.getMessenger() != null) {
-                        target.getClient().announce(MaplePacketCreator.messengerNote(player.getName(), 5, 0));
+                    break;
+                case 0x05:
+                    String targeted = slea.readMapleAsciiString();
+                    world.declineChat(targeted, player);
+                    break;
+                case 0x06:
+                    if (messenger != null) {
+                        MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, player.getMessengerPosition());
+                        input = slea.readMapleAsciiString();
+                        world.messengerChat(messenger, input, messengerplayer.getName());
                     }
-                } else {
-                    world.declineChat(targeted, player.getName());
-                }
-                break;
-            case 0x06:
-                if (messenger != null) {
-                    MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, player.getMessengerPosition());
-                    input = slea.readMapleAsciiString();
-                    world.messengerChat(messenger, input, messengerplayer.getName());
-                }
-                break;
+                    break;
+            }
+        } finally {
+            c.releaseClient();
         }
     }
 }

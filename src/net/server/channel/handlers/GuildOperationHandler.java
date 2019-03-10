@@ -28,7 +28,6 @@ import constants.ServerConstants;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import tools.data.input.SeekableLittleEndianAccessor;
-import java.util.Iterator;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import net.server.Server;
@@ -47,50 +46,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
         return true;
     }
 
-    private class Invited {
-        public String name;
-        public int gid;
-        public long expiration;
-
-        public Invited(String n, int id) {
-            name = n.toLowerCase();
-            gid = id;
-            expiration = currentServerTime() + 60 * 60 * 1000;
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            if (!(other instanceof Invited)) {
-                return false;
-            }
-            Invited oth = (Invited) other;
-            return (gid == oth.gid && name.equals(oth));
-        }
-
-        @Override
-        public int hashCode() {
-            int hash = 3;
-            hash = 83 * hash + (this.name != null ? this.name.hashCode() : 0);
-            hash = 83 * hash + this.gid;
-            return hash;
-        }
-    }
-    private java.util.List<Invited> invited = new java.util.LinkedList<Invited>();
-    private long nextPruneTime = currentServerTime() + 20 * 60 * 1000;
-
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if (currentServerTime() >= nextPruneTime) {
-            Iterator<Invited> itr = invited.iterator();
-            Invited inv;
-            while (itr.hasNext()) {
-                inv = itr.next();
-                if (currentServerTime() >= inv.expiration) {
-                    itr.remove();
-                }
-            }
-            nextPruneTime = currentServerTime() + 20 * 60 * 1000;
-        }
         MapleCharacter mc = c.getPlayer();
         byte type = slea.readByte();
         int allianceId = -1;
@@ -134,16 +91,13 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {
                     return;
                 }
-                String name = slea.readMapleAsciiString();
-                MapleGuildResponse mgr = MapleGuild.sendInvite(c, name);
+                
+                String targetName = slea.readMapleAsciiString();
+                MapleGuildResponse mgr = MapleGuild.sendInvitation(c, targetName);
                 if (mgr != null) {
-                    c.announce(mgr.getPacket());
-                } else {
-                    Invited inv = new Invited(name, mc.getGuildId());
-                    if (!invited.contains(inv)) {
-                        invited.add(inv);
-                    }
-                }
+                    c.announce(mgr.getPacket(targetName));
+                } else {} // already sent invitation, do nothing
+                
                 break;
             case 0x06:
                 if (mc.getGuildId() > 0) {
@@ -156,28 +110,18 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                     System.out.println("[hax] " + mc.getName() + " attempted to join a guild with a different character id.");
                     return;
                 }
-                name = mc.getName().toLowerCase();
-                Iterator<Invited> itr = invited.iterator();
-                boolean bOnList = false;
-                while (itr.hasNext()) {
-                    Invited inv = itr.next();
-                    if (gid == inv.gid && name.equals(inv.name)) {
-                        bOnList = true;
-                        itr.remove();
-                        break;
-                    }
-                }
-                if (!bOnList) {
-                    System.out.println("[hax] " + mc.getName() + " is trying to join a guild that never invited him/her (or that the invitation has expired)");
+                
+                if (!MapleGuild.answerInvitation(cid, mc.getName(), gid, true)) {
                     return;
                 }
+                
                 mc.getMGC().setGuildId(gid); // joins the guild
                 mc.getMGC().setGuildRank(5); // start at lowest rank
                 mc.getMGC().setAllianceRank(5);
                 
                 int s = Server.getInstance().addGuildMember(mc.getMGC(), mc);
                 if (s == 0) {
-                    c.getPlayer().dropMessage(1, "The Guild you are trying to join is already full.");
+                    c.getPlayer().dropMessage(1, "The guild you are trying to join is already full.");
                     mc.getMGC().setGuildId(0);
                     return;
                 }
@@ -193,7 +137,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 break;
             case 0x07:
                 cid = slea.readInt();
-                name = slea.readMapleAsciiString();
+                String name = slea.readMapleAsciiString();
                 if (cid != mc.getId() || !name.equals(mc.getName()) || mc.getGuildId() <= 0) {
                     System.out.println("[hax] " + mc.getName() + " tried to quit guild under the name \"" + name + "\" and current guild id of " + mc.getGuildId() + ".");
                     return;

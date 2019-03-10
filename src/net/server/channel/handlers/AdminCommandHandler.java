@@ -132,7 +132,6 @@ public final class AdminCommandHandler extends AbstractMaplePacketHandler {
                     MapleMonster monster = (MapleMonster) monsterx.get(x);
                     if (monster.getId() == mobToKill) {
                         c.getPlayer().getMap().killMonster(monster, c.getPlayer(), true);
-                        //monster.giveExpToCharacter(c.getPlayer(), monster.getExp(), true, 1); already being done
                     }
                 }
                 break;

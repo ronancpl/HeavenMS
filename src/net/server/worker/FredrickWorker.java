@@ -17,19 +17,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package scripting.event;
+package net.server.worker;
 
+import client.processor.FredrickProcessor;
 
 /**
- *
  * @author Ronan
  */
-public class EventInstanceInProgressException extends Exception {
+public class FredrickWorker implements Runnable {
     
-    public static String EIIP_KEY = "Event instance ";
-    
-    public EventInstanceInProgressException(String eventName, String eventInstance) {
-        super(EIIP_KEY + "already in progress - " + eventName + ", EM: " + eventInstance);
+    @Override
+    public void run() {
+        FredrickProcessor.runFredrickSchedule();
     }
-
 }

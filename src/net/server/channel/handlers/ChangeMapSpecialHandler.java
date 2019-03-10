@@ -25,6 +25,7 @@ import client.MapleClient;
 import net.AbstractMaplePacketHandler;
 import server.MaplePortal;
 import server.MapleTrade;
+import server.MapleTrade.TradeResult;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -44,7 +45,7 @@ public final class ChangeMapSpecialHandler extends AbstractMaplePacketHandler {
                     return;
             }
             if (c.getPlayer().getTrade() != null) {
-                    MapleTrade.cancelTrade(c.getPlayer());
+                    MapleTrade.cancelTrade(c.getPlayer(), TradeResult.UNSUCCESSFUL_ANOTHER_MAP);
             }
             portal.enterPortal(c);   
     }

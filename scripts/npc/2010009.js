@@ -56,7 +56,7 @@ function action(mode, type, selection) {
             cm.sendNext("Guild Union is just as it says, a union of a number of guilds to form a super group. I am in charge of managing these Guild Unions.");
             cm.dispose();
         } else if (selection == 1) {
-            cm.sendNext("To make a Guild Union, two and only two Guild Masters need to be in a party and both must be present on this room on the same channel. The leader of this party will be assigned as the Guild Union Master.");
+            cm.sendNext("To make a Guild Union, two and only #btwo Guild Masters need to be in a party#k and #bboth must be present on this room#k on the same channel. The leader of this party will be assigned as the Guild Union Master.\r\n\r\nInitially, #bonly two guilds#k can make part of the new Union, but over the time you can #rexpand#k the Union capacity by talking to me when the time comes and investing in an estipulated fee.");
             cm.dispose();
         } else if(selection == 2) {
             if(!cm.isLeader()) {
@@ -80,7 +80,7 @@ function action(mode, type, selection) {
             
             var rank = cm.getPlayer().getMGC().getAllianceRank();
             if (rank == 1)
-                cm.sendYesNo("Do you want to increase your Alliance by one guild slot? The fee for this procedure is #b" + increaseCost + " mesos#k.");
+                cm.sendYesNo("Do you want to increase your Alliance by #rone guild#k slot? The fee for this procedure is #b" + increaseCost + " mesos#k.");
             else {
                 cm.sendNext("Only the Guild Union Master can expand the number of guilds in the Union.");
                 cm.dispose();

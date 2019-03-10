@@ -1661,3 +1661,54 @@ Incrementado mensagem custom de venda de produtos pelo mercante.
 13 - 14 Fevereiro 2019,
 Corrigido limites na função isWeapon, que não contabilizaria certos itens corretamente.
 Resolvido comportamento de puppets usando o novo sistema de aggro.
+
+18 Fevereiro 2019,
+Corrigido um caso onde jogador em party poderia perder prioridade sobre loots recentes no chão ao mudar de mapas.
+Ajustado contabilização de buffs no ganho de exp, agora bonus de party também contabiliza ganho pelos buffs.
+Corrigido mercantes não checando estoque de itens apropriadamente ao pegar de volta itens colocados nos mercantes.
+Corrigido referências a lojas de jogadores não sendo devidamente liberadas para visitantes quando dono fecha a loja, levando a problemas de update visuais no mapa ao realizar certas ações.
+Ajustado mercantes para automaticamente fechar a loja assim que dono tenta sair da loja deixando a mesma vazia.
+Adicionado opcodes de resultado de trades entre jogadores.
+Incrementado resultados de trades, agora utilizando um conjunto de respostas mais parecido com o do GMS.
+
+19 - 20 Fevereiro 2019,
+Implementado checagem de distância a portais no mapa em criação de loja/mercante de jogador.
+Implementado checagem de IP localhost ao tentar logar em server com IP de produção.
+Ajustado quests de door bosses, agora entregando emblemas a jogadores no início e retirando os mesmos ao terminar a quest. O item emblema é um dos requerimentos para acessar o boss da área.
+Corrigido problema no sistema de login utilizando flag de detecção de múltiplas sessões abertas não tratando hashcodes negativos de IP.
+Adicionado comandos de desenvolvedor que permitem visualizar situações de conexão de jogadores (avaliação de stack de IP abertos no servidor e sessões logadas).
+
+21 Fevereiro 2019,
+Corrigido chalkboard não aparecendo corretamente para o usuário do item ao trocar mapas.
+Revisado chalkboard agora removendo unidade do inventário ao usar.
+Implementado checagem por chalkboard em salas do FM.
+Adicionado opcodes de mensagens genéricas de guild.
+
+22 Fevereiro 2019,
+Corrigido líder de aliança de guilds não sendo permitido convidar guilds logo após aumentar a capacidade da aliança.
+Corrigido impossibilidade de abrir novos mercantes logo assim que último mercante expirou.
+Implementado visualização do "tempo de sobra" ao reentrar no mercante (somente sendo dono da loja).
+Ajustado resultado de skillbooks não aparecendo para todos jogadores no mapa.
+Corrigido alguns comandos utilizando letras minúsculas em conteúdos de mensagens.
+
+23 Fevereiro 2019,
+Adicionado funcionalidade de colocar tipo de cash a adicionar no comando GiveNx.
+Implementado taxas de manutenção de mesos/itens no Fredrick. Após 100 dias, itens guardados são removidos conforme descrição de utilização das lojas.
+Incrementado comportamento do NPC Fredrick. Como na descrição do serviço (ao abrir mercantes), itens guardados agora podem ser removidos após 100 dias, e há a perda de 1% da valia do montante vendido a cada dia que se passa sem os itens serem recuperados pelo jogador.
+
+25 - 28 Fevereiro 2019,
+Adicionado número de locks disponíveis para seção de login e controle de item factory.
+Incrementado quantidade de locks de atividades disponíveis por canal, visando uma carga relevante de pessoas online.
+Corrigido abertura de inventário (comportamento do trade) sendo feita mesmo em cenários onde não é possível nem convidar o outro jogador.
+Implementado sistema de gerenciamento de convites para as diversas modalidades no jogo (party, guild, messenger, etc).
+Ajustado mercantes, agora salvando dados do jogador dono da loja a todo movimento de itens na loja não-aberta (quando o mesmo ainda está gerenciando itens na loja).
+Implementado funcionalidade de arrendamento de mapas. Jogadores podem se tornar donos de mapa e evitar outros de farmar nos mesmos.
+Ajustado ordenador de inventários, agora deixando itens projéteis (flechas, shurikens e balas) em ordem confortável para uso do jogador.
+
+01 Março 2019,
+Adicionado efeito visual em ganho de Aran skills.
+Implementado mecânica de pescaria no código-fonte.
+
+09 Março 2019,
+Corrigido membros de party não recebendo bonus devidamente após membros sairem do mapa/party em alguns casos.
+Revisado sistema de experiência em party. Ganhos de bonus agora levam em conta valores-base que membros de party ganham ao derrotar um mob para definir o ganho geral da equipe. Contabilização de ganhos remodelado, buscando por um modo de distribuição mais coerente.

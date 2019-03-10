@@ -60,6 +60,8 @@ import net.server.guild.MapleGuildCharacter;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.EventRecallCoordinatorWorker;
+import net.server.worker.FredrickWorker;
+import net.server.worker.InvitationWorker;
 import net.server.worker.LoginCoordinatorWorker;
 import net.server.worker.LoginStorageWorker;
 import net.server.worker.RankingCommandWorker;
@@ -398,11 +400,12 @@ public class Server {
             int bossdroprate = getWorldProperty(p, "bossdroprate", i, ServerConstants.BOSS_DROP_RATE);
             int questrate = getWorldProperty(p, "questrate", i, ServerConstants.QUEST_RATE);
             int travelrate = getWorldProperty(p, "travelrate", i, ServerConstants.TRAVEL_RATE);
+            int fishingrate = getWorldProperty(p, "fishrate", i, ServerConstants.FISHING_RATE);
             
             World world = new World(i,
                     Integer.parseInt(p.getProperty("flag" + i)),
                     p.getProperty("eventmessage" + i),
-                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate);
+                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
 
             worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
             worlds.add(world);
@@ -915,6 +918,8 @@ public class Server {
         tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new FredrickWorker(), 60 * 60 * 1000, 60 * 60 * 1000);
+        tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();

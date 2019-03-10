@@ -46,7 +46,7 @@ public class WhatDropsFromCommand extends Command {
             player.dropMessage(5, "Please do @whatdropsfrom <monster name>");
             return;
         }
-        String monsterName = joinStringFrom(params, 0);
+        String monsterName = player.getLastCommandMessage();
         String output = "";
         int limit = 3;
         Iterator<Pair<Integer, String>> listIterator = MapleMonsterInformationProvider.getMobsIDsFromName(monsterName).iterator();

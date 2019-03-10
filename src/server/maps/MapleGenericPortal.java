@@ -22,6 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package server.maps;
 
 import client.MapleClient;
+import client.MapleCharacter;
+import constants.GameConstants;
 import java.awt.Point;
 import scripting.portal.PortalScriptManager;
 import server.MaplePortal;
@@ -140,13 +142,18 @@ public class MapleGenericPortal implements MaplePortal {
                 npe.printStackTrace();
             }
         } else if (getTargetMapId() != 999999999) {
-            MapleMap to = c.getPlayer().getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : c.getPlayer().getEventInstance().getMapInstance(getTargetMapId());
-            MaplePortal pto = to.getPortal(getTarget());
-            if (pto == null) {// fallback for missing portals - no real life case anymore - interesting for not implemented areas
-                pto = to.getPortal(0);
+            MapleCharacter chr = c.getPlayer();
+            if (!(chr.getChalkboard() != null && GameConstants.isFreeMarketRoom(getTargetMapId()))) {
+                MapleMap to = chr.getEventInstance() == null ? c.getChannelServer().getMapFactory().getMap(getTargetMapId()) : chr.getEventInstance().getMapInstance(getTargetMapId());
+                MaplePortal pto = to.getPortal(getTarget());
+                if (pto == null) {// fallback for missing portals - no real life case anymore - interesting for not implemented areas
+                    pto = to.getPortal(0);
+                }
+                chr.changeMap(to, pto); //late resolving makes this harder but prevents us from loading the whole world at once
+                changed = true;
+            } else {
+                chr.dropMessage(5, "You cannot enter this map with the chalkboard opened.");
             }
-            c.getPlayer().changeMap(to, pto); //late resolving makes this harder but prevents us from loading the whole world at once
-            changed = true;
         }
         if (!changed) {
             c.announce(MaplePacketCreator.enableActions());

@@ -50,7 +50,7 @@ public class GmCommand extends Command {
             player.dropMessage(5, "Your message was too short. Please provide as much detail as possible.");
             return;
         }
-        String message = joinStringFrom(params, 0);
+        String message = player.getLastCommandMessage();
         Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[GM MESSAGE]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
         Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(1, message));
         FilePrinter.printError(FilePrinter.COMMAND_GM, MapleCharacter.makeMapleReadable(player.getName()) + ": " + message);

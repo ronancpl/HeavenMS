@@ -31,6 +31,7 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.awt.Point;
@@ -150,6 +151,8 @@ public class MapleMap {
     private Pair<Integer, String> timeMob = null;
     private short mobInterval = 5000;
     private boolean allowSummons = true; // All maps should have this true at the beginning
+    private MapleCharacter mapOwner = null;
+    private long mapOwnerLastActivityTime = Long.MAX_VALUE;
     
     // HPQ
     private int riceCakes = 0;
@@ -1080,6 +1083,18 @@ public class MapleMap {
     public final void disappearingItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, final Point pos) {
         final Point droppos = calcDropPos(pos, pos);
         final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
+        
+        mdrop.lockItem();
+        try {
+            broadcastItemDropMessage(mdrop, dropper.getPosition(), droppos, (byte) 3, mdrop.getPosition());
+        } finally {
+            mdrop.unlockItem();
+        }
+    }
+    
+    public final void disappearingMesoDrop(final int meso, final MapleMapObject dropper, final MapleCharacter owner, final Point pos) {
+        final Point droppos = calcDropPos(pos, pos);
+        final MapleMapItem mdrop = new MapleMapItem(meso, droppos, dropper, owner, owner.getClient(), (byte) 1, false);
         
         mdrop.lockItem();
         try {
@@ -2254,23 +2269,13 @@ public class MapleMap {
     }
     
     public MapleCharacter getAnyCharacterFromParty(int partyid) {
-        chrRLock.lock();
-        try {
-            Set<Integer> list = mapParty.get(partyid);
-            if(list == null) return null;
-            
-            for(Integer cid : list) {
-                for (MapleCharacter c : this.characters) {
-                    if (c.getId() == cid) {
-                        return c;
-                    }
-                }
+        for (MapleCharacter chr : this.getAllPlayers()) {
+            if (chr.getPartyId() == partyid) {
+                return chr;
             }
-            
-            return null;
-        } finally {
-            chrRLock.unlock();
         }
+        
+        return null;
     }
     
     private void addPartyMemberInternal(MapleCharacter chr) {
@@ -2451,6 +2456,14 @@ public class MapleMap {
         
         chr.removeSandboxItems();
         
+        if (chr.getChalkboard() != null) {
+            if (!GameConstants.isFreeMarketRoom(mapid)) {
+                chr.announce(MaplePacketCreator.useChalkboard(chr, false)); // update player's chalkboard when changing maps found thanks to Vcoc
+            } else {
+                chr.setChalkboard(null);
+            }
+        }
+        
         if (chr.isHidden()) {
             broadcastGMSpawnPlayerMapObjectMessage(chr, chr, true);
             chr.announce(MaplePacketCreator.getGMEffect(0x10, (byte) 1));
@@ -2479,10 +2492,11 @@ public class MapleMap {
         } finally {
             objectWLock.unlock();
         }
+        
         if (chr.getPlayerShop() != null) {
             addMapObject(chr.getPlayerShop());
         }
-
+        
         final MapleDragon dragon = chr.getDragon();
         if (dragon != null) {
             dragon.setPosition(chr.getPosition());
@@ -2555,6 +2569,19 @@ public class MapleMap {
         }
         MaplePortal portal = spawnPoints.get(new Random().nextInt(spawnPoints.size()));
         return portal != null ? portal : getPortal(0);
+    }
+    
+    public MaplePortal findClosestWarpPortal(Point from) {
+        MaplePortal closest = null;
+        double shortestDistance = Double.POSITIVE_INFINITY;
+        for (MaplePortal portal : portals.values()) {
+            double distance = portal.getPosition().distanceSq(from);
+            if (portal.getType() == MaplePortal.MAP_PORTAL && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
+                closest = portal;
+                shortestDistance = distance;
+            }
+        }
+        return closest;
     }
     
     public MaplePortal findClosestPlayerSpawnpoint(Point from) {
@@ -4018,6 +4045,58 @@ public class MapleMap {
             });
 
             spawnMonsterOnGroundBelow(m, targetPoint);
+        }
+    }
+    
+    public boolean claimOwnership(MapleCharacter chr) {
+        if (mapOwner == null) {
+            mapOwner = chr;
+            mapOwnerLastActivityTime = Server.getInstance().getCurrentTime();
+            
+            getChannelServer().registerOwnedMap(this);
+            return true;
+        } else {
+            return chr == mapOwner;
+        }
+    }
+    
+    public boolean unclaimOwnership(MapleCharacter chr) {
+        if (mapOwner == chr) {
+            mapOwner = null;
+            mapOwnerLastActivityTime = Long.MAX_VALUE;
+            
+            getChannelServer().unregisterOwnedMap(this);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    private void refreshOwnership() {
+        mapOwnerLastActivityTime = Server.getInstance().getCurrentTime();
+    }
+    
+    public boolean isOwnershipRestricted(MapleCharacter chr) {
+        MapleCharacter owner = mapOwner;
+        
+        if (owner != null) {
+            if (owner != chr && !owner.isPartyMember(chr)) {    // thanks Vcoc & BHB for suggesting the map ownership feature
+                chr.showMapOwnershipInfo(owner);
+                return true;
+            } else {
+                this.refreshOwnership();
+            }
+        }
+        
+        return false;
+    }
+    
+    public void checkMapOwnerActivity() {
+        long timeNow = Server.getInstance().getCurrentTime();
+        if (timeNow - mapOwnerLastActivityTime > 60000) {
+            if (unclaimOwnership(mapOwner)) {
+                this.dropMessage(5, "This lawn is now free real estate.");
+            }
         }
     }
     

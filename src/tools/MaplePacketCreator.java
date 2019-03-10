@@ -1065,7 +1065,7 @@ public class MaplePacketCreator {
                 mplew.writeShort(chr.getHp());
                 mplew.writeBool(false);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(14);
+                mplew.skip(18);
                 return mplew.getPacket();
         }
         
@@ -1082,7 +1082,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(spawnPosition.x);    // spawn position placement thanks to Arnah (Vertisy)
                 mplew.writeInt(spawnPosition.y);
                 mplew.writeLong(getTime(Server.getInstance().getCurrentTime()));
-                mplew.skip(14);
+                mplew.skip(18);
                 return mplew.getPacket();
         }
         
@@ -3175,7 +3175,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] getTradeInvite(MapleCharacter c) {
+        public static byte[] tradeInvite(MapleCharacter c) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.INVITE.getCode());
@@ -3309,21 +3309,22 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] getTradeCompletion(byte number) {
+        /**
+         * Possible values for <code>operation</code>:<br> 2: Trade cancelled by the
+         * other character<br> 7: Trade successful<br> 8: Trade unsuccessful<br> 
+         * 9: Cannot carry more one-of-a-kind items<br> 12: Cannot trade on different maps<br>
+         * 13: Cannot trade, game files damaged<br> 
+         *
+         * @param number
+         * @param operation
+         * @return
+         */
+        public static byte[] getTradeResult(byte number, byte operation) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.EXIT.getCode());
                 mplew.write(number);
-                mplew.write(6);
-                return mplew.getPacket();
-        }
-
-        public static byte[] getTradeCancel(byte number) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
-                mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
-                mplew.write(PlayerInteractionHandler.Action.EXIT.getCode());
-                mplew.write(number);
-                mplew.write(2);
+                mplew.write(operation);
                 return mplew.getPacket();
         }
         
@@ -3783,11 +3784,9 @@ public class MaplePacketCreator {
          * party. 13: You have yet to join a party.
          * 16: Already have joined a party. 17: The party you're trying to join is
          * already in full capacity. 19: Unable to find the requested character in
-         * this channel. 21: Player is blocking any party invitations. 22: Player
-         * is taking care of another invitation. 23: Player denied request.
-         * 25: Cannot kick another user in this map. 28/29: Leadership can only be
-         * given to a party member in the vicinity. 30: Change leadership only on
-         * same channel.
+         * this channel. 25: Cannot kick another user in this map. 28/29: Leadership
+         * can only be given to a party member in the vicinity. 30: Change leadership
+         * only on same channel.
          *
          * @param message
          * @return
@@ -3800,7 +3799,8 @@ public class MaplePacketCreator {
         }
 
         /**
-         * 23: 'Char' have denied request to the party.
+         * 21: Player is blocking any party invitations, 22: Player is taking care of
+         * another invitation, 23: Player have denied request to the party.
          *
          * @param message
          * @param charname
@@ -4372,23 +4372,41 @@ public class MaplePacketCreator {
         }
 
         /**
-         * 'Char' has denied your guild invitation.
+         * Gets a Heracle/guild message packet.
          *
-         * @param charname
-         * @return
+         * Possible values for <code>code</code>:<br> 28: guild name already in use<br>
+         * 31: problem in locating players during agreement<br> 33/40: already joined a guild<br>
+         * 35: Cannot make guild<br> 36: problem in player agreement<br> 38: problem during forming guild<br> 
+         * 41: max number of players in joining guild<br> 42: character can't be found this channel<br> 
+         * 45/48: character not in guild<br> 52: problem in disbanding guild<br> 56: admin cannot make guild<br>
+         * 57: problem in increasing guild size<br> 
+         * 
+         *
+         * @param code The response code.
+         * @return The guild message packet.
          */
-        public static byte[] denyGuildInvitation(String charname) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.GUILD_OPERATION.getValue());
-                mplew.write(0x37);
-                mplew.writeMapleAsciiString(charname);
-                return mplew.getPacket();
-        }
-
         public static byte[] genericGuildMessage(byte code) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.GUILD_OPERATION.getValue());
                 mplew.write(code);
+                return mplew.getPacket();
+        }
+        
+        /**
+         * Gets a guild message packet appended with target name.
+         * 
+         * 53: player not accepting guild invites<br>
+         * 54: player already managing an invite<br> 55: player denied an invite<br> 
+         * 
+         * @param code The response code.
+         * @param targetName The initial player target of the invitation.
+         * @return The guild message packet.
+         */
+        public static byte[] responseGuildMessage(byte code, String targetName) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.GUILD_OPERATION.getValue());
+                mplew.write(code);
+                mplew.writeMapleAsciiString(targetName);
                 return mplew.getPacket();
         }
 
@@ -4937,7 +4955,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] skillBookSuccess(MapleCharacter chr, int skillid, int maxlevel, boolean canuse, boolean success) {
+        public static byte[] skillBookResult(MapleCharacter chr, int skillid, int maxlevel, boolean canuse, boolean success) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SKILL_LEARN_ITEM_RESULT.getValue());
                 mplew.writeInt(chr.getId());
@@ -5378,7 +5396,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(9030000); // Fredrick
                 mplew.writeInt(32272); //id
                 mplew.skip(5);
-                mplew.writeInt(chr.getMerchantMeso());
+                mplew.writeInt(chr.getMerchantNetMeso());
                 mplew.write(0);
                 try {
                         List<Pair<Item, MapleInventoryType>> items = ItemFactory.MERCHANT.loadItems(chr.getId(), false);
@@ -5578,7 +5596,8 @@ public class MaplePacketCreator {
                 }
                 mplew.writeMapleAsciiString(hm.getOwner());
                 if (hm.isOwner(chr)) {
-                        mplew.writeInt(hm.getTimeLeft());
+                        mplew.writeShort(0);
+                        mplew.writeShort(hm.getTimeOpen());
                         mplew.write(firstTime ? 1 : 0);
                         List<MapleHiredMerchant.SoldItem> sold = hm.getSold();
                         mplew.write(sold.size());
@@ -6348,6 +6367,16 @@ public class MaplePacketCreator {
                 mplew.writeInt(1);
                 return mplew.getPacket();
         }
+        
+        public static byte[] showForeignInfo(int cid, String path) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SHOW_FOREIGN_EFFECT.getValue());
+                mplew.writeInt(cid);
+                mplew.write(0x17);
+                mplew.writeMapleAsciiString(path);
+                mplew.writeInt(1);
+                return mplew.getPacket();
+        }
 
         /**
          * Sends a UI utility. 0x01 - Equipment Inventory. 0x02 - Stat Window. 0x03
@@ -6875,7 +6904,7 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        public static byte[] sendAllianceInvitation(int allianceid, MapleCharacter chr) {
+        public static byte[] allianceInvite(int allianceid, MapleCharacter chr) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.ALLIANCE_OPERATION.getValue());
                 mplew.write(0x03);

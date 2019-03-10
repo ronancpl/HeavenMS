@@ -21,6 +21,7 @@
 */
 package scripting.event;
 
+import tools.exceptions.EventInstanceInProgressException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

@@ -34,7 +34,7 @@ public class ServerMessageCommand extends Command {
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        //MapleCharacter player = c.getPlayer();
-        c.getWorldServer().setServerMessage(joinStringFrom(params, 0));
+        MapleCharacter player = c.getPlayer();
+        c.getWorldServer().setServerMessage(player.getLastCommandMessage());
     }
 }

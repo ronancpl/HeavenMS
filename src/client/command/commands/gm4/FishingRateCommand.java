@@ -19,18 +19,16 @@
 */
 
 /*
-   @Author: Arthur L - Refactored command content into modules
+   @Author: Ronan
 */
-package client.command.commands.gm0;
+package client.command.commands.gm4;
 
-import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
-import net.server.Server;
-import tools.FilePrinter;
+import client.MapleCharacter;
 import tools.MaplePacketCreator;
 
-public class ReportBugCommand extends Command {
+public class FishingRateCommand extends Command {
     {
         setDescription("");
     }
@@ -38,16 +36,13 @@ public class ReportBugCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-
         if (params.length < 1) {
-            player.dropMessage(5, "Message too short and not sent. Please do @bug <bug>");
+            player.yellowMessage("Syntax: !fishrate <newrate>");
             return;
         }
-        String message = player.getLastCommandMessage();
-        Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[BUG]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
-        Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(1, message));
-        FilePrinter.printError(FilePrinter.COMMAND_BUG, MapleCharacter.makeMapleReadable(player.getName()) + ": " + message);
-        player.dropMessage(5, "Your bug '" + message + "' was submitted successfully to our developers. Thank you!");
 
+        int fishrate = Math.max(Integer.parseInt(params[0]), 1);
+        c.getWorldServer().setFishingRate(fishrate);
+        c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Fishing Rate has been changed to " + fishrate + "x."));
     }
 }

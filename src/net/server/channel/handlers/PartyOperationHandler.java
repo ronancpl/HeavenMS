@@ -31,9 +31,14 @@ import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
-import java.util.List;
+import net.server.coordinator.MapleInviteCoordinator;
+import net.server.coordinator.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import scripting.event.EventInstanceManager;
 import server.maps.MapleMap;
+import tools.Pair;
+
+import java.util.List;
 
 public final class PartyOperationHandler extends AbstractMaplePacketHandler {
     
@@ -101,26 +106,33 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             }
             case 3: { // join
                 int partyid = slea.readInt();
-                if (party == null) {
-                    party = world.getParty(partyid);
-                    if (party != null) {
-                        if (party.getMembers().size() < 6) {
-                            partyplayer = new MaplePartyCharacter(player);
-                            player.getMap().addPartyMember(player);
+                
+                Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.PARTY, player.getId(), partyid, true);
+                InviteResult res = inviteRes.getLeft();
+                if (res == InviteResult.ACCEPTED) {
+                    if (party == null) {
+                        party = world.getParty(partyid);
+                        if (party != null) {
+                            if (party.getMembers().size() < 6) {
+                                partyplayer = new MaplePartyCharacter(player);
+                                player.getMap().addPartyMember(player);
 
-                            world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
-                            player.receivePartyMemberHP();
-                            player.updatePartyMemberHP();
-                            
-                            player.partyOperationUpdate(party, null);
+                                world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
+                                player.receivePartyMemberHP();
+                                player.updatePartyMemberHP();
+
+                                player.partyOperationUpdate(party, null);
+                            } else {
+                                c.announce(MaplePacketCreator.partyStatusMessage(17));
+                            }
                         } else {
-                            c.announce(MaplePacketCreator.partyStatusMessage(17));
+                            c.announce(MaplePacketCreator.serverNotice(5, "The person you have invited to the party is already in one."));
                         }
                     } else {
-                        c.announce(MaplePacketCreator.serverNotice(5, "The person you have invited to the party is already in one."));
+                        c.announce(MaplePacketCreator.serverNotice(5, "You can't join the party as you are already in one."));
                     }
                 } else {
-                    c.announce(MaplePacketCreator.serverNotice(5, "You can't join the party as you are already in one."));
+                    c.announce(MaplePacketCreator.serverNotice(5, "You couldn't join the party due to an expired invitation request."));
                 }
                 break;
             }
@@ -154,7 +166,11 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                             c.announce(MaplePacketCreator.partyCreated(party, partyplayer.getId()));
                         }
                         if (party.getMembers().size() < 6) {
-                            invited.getClient().announce(MaplePacketCreator.partyInvite(player));
+                            if (MapleInviteCoordinator.createInvite(InviteType.PARTY, player, party.getId(), invited.getId())) {
+                                invited.getClient().announce(MaplePacketCreator.partyInvite(player));
+                            } else {
+                                c.announce(MaplePacketCreator.partyStatusMessage(22, invited.getName()));
+                            }
                         } else {
                             c.announce(MaplePacketCreator.partyStatusMessage(17));
                         }

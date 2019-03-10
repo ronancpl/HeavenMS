@@ -435,8 +435,8 @@ public class MapleInventory implements Iterable<Item> {
         }
     }
     
-    public static boolean checkSpot(MapleCharacter chr, Item item) {
-        return !chr.getInventory(item.getInventoryType()).isFull();
+    public static boolean checkSpot(MapleCharacter chr, Item item) {    // thanks Vcoc for noticing pshops not checking item stacks when taking item back
+        return checkSpotsAndOwnership(chr, Collections.singletonList(new Pair<>(item, item.getInventoryType())));
     }
     
     public static boolean checkSpots(MapleCharacter chr, List<Pair<Item, MapleInventoryType>> items) {
