@@ -237,7 +237,9 @@ public class AbstractPlayerInteraction {
         
         private static List<Integer> convertToIntegerArray(List<Double> list) {
                 List<Integer> intList = new LinkedList<>();
-                for(Double d: list) intList.add(d.intValue());
+                for(Double d: list) {
+                        intList.add(d.intValue());
+                }
 
                 return intList;
         }
@@ -346,7 +348,9 @@ public class AbstractPlayerInteraction {
 	}
 
 	public void openNpc(int npcid, String script) {
-                if(c.getCM() != null) return;
+                if (c.getCM() != null) {
+                    return;
+                }
             
 		c.removeClickedNPC();
 		NPCScriptManager.getInstance().dispose(c);
@@ -423,17 +427,23 @@ public class AbstractPlayerInteraction {
                 MapleQuestStatus status = c.getPlayer().getQuest(MapleQuest.getInstance(qid));
                 String progress = status.getProgress(status.getAnyProgressKey());
             
-                if(progress.isEmpty()) return 0;
+                if (progress.isEmpty()) {
+                        return 0;
+                }
                 return Integer.parseInt(progress);
         }
         
         public int getQuestProgress(int qid, int pid) {
-                if(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) return 0;
+                if (getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) {
+                    return 0;
+                }
 		return Integer.parseInt(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid));
 	}
         
         public String getStringQuestProgress(int qid, int pid) {
-                if(getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) return "";
+                if (getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid).isEmpty()) {
+                    return "";
+                }
                 return getPlayer().getQuest(MapleQuest.getInstance(qid)).getProgress(pid);
         }
         
@@ -548,7 +558,9 @@ public class AbstractPlayerInteraction {
                                 
                                 if(item != null) {
                                     Equip it = (Equip)item;
-                                    if(ItemConstants.isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) it.setUpgradeSlots(3);
+                                    if (ItemConstants.isAccessory(item.getItemId()) && it.getUpgradeSlots() <= 0) {
+                                        it.setUpgradeSlots(3);
+                                    }
                                 
                                     if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true) {
                                         Equip eqp = (Equip)item;
@@ -562,8 +574,9 @@ public class AbstractPlayerInteraction {
 				item = new Item(id, (short) 0, quantity, petId);
 			}
 
-			if(expires >= 0)
-				item.setExpiration(System.currentTimeMillis() + expires);
+			if (expires >= 0) {
+                                item.setExpiration(System.currentTimeMillis() + expires);
+                        }
 
 			if (!MapleInventoryManipulator.checkSpace(c, id, quantity, "")) {
 				c.getPlayer().dropMessage(1, "Your inventory is full. Please remove an item from your " + ItemConstants.getInventoryType(id).name() + " inventory.");
@@ -641,8 +654,6 @@ public class AbstractPlayerInteraction {
 		showIntro(intro);
 	}
 
-
-
 	public void showIntro(String path) {
 		c.announce(MaplePacketCreator.showIntro(path));
 	}
@@ -680,8 +691,9 @@ public class AbstractPlayerInteraction {
         }
 
         public boolean isPartyLeader() {
-		if(getParty() == null)
+		if (getParty() == null) {
 			return false;
+                }
 		
                 return getParty().getLeaderId() == getPlayer().getId();
 	}
@@ -734,7 +746,6 @@ public class AbstractPlayerInteraction {
 	public void givePartyExp(String PQ) {
 		givePartyExp(PQ, true);
 	}
-
 
 	public void givePartyExp(String PQ, boolean instance) {
 		//1 player  =  +0% bonus (100)

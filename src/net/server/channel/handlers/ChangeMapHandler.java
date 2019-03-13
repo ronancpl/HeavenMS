@@ -101,11 +101,10 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
                                                         }
                                                 }
                                         } else {
-                                                if(chr.isGM()) {
+                                                if (chr.isGM()) {
                                                         MapleMap to = chr.getWarpMap(targetid);
                                                         chr.changeMap(to, to.getPortal(0));
-                                                }
-                                                else {
+                                                } else {
                                                         final int divi = chr.getMapId() / 100;
                                                         boolean warp = false;
                                                         if (divi == 0) {

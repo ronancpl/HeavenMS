@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,22 +17,26 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package server.maps;
 
-public enum SavedLocationType {
-    FREE_MARKET,
-    WORLDTOUR,
-    FLORINA,
-    INTRO,
-    SUNDAY_MARKET,
-    MIRROR,
-    EVENT,
-    BOSSPQ,
-    HAPPYVILLE,
-    MONSTER_CARNIVAL,
-    DEVELOPER;
+/*
+   @Author: Arthur L - Refactored command content into modules
+*/
+package client.command.commands.gm0;
 
-    public static SavedLocationType fromString(String Str) {
-        return valueOf(Str);
+import client.command.Command;
+import client.MapleClient;
+
+public class ChangeLinguaCommand extends Command {
+    {
+        setDescription("");
+    }
+
+    @Override
+    public void execute(MapleClient c, String[] params) {
+        if (params.length < 1) {
+            c.getPlayer().yellowMessage("Syntax: !changel <0=ptb, 1=esp, 2=eng>");
+            return;
+        }
+        c.setLingua(Integer.parseInt(params[0]));
     }
 }

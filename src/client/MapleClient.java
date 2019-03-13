@@ -124,6 +124,7 @@ public class MapleClient {
         private int visibleWorlds;
 	private long lastNpcClick;
 	private long sessionId;
+        private int lingua = 0;
         
         static {
             for (int i = 0; i < 200; i++) {
@@ -269,8 +270,9 @@ public class MapleClient {
 	}
 	
 	public boolean hasBannedHWID() {
-		if(hwid == null)
-			return false;
+		if(hwid == null) {
+                        return false;
+                }
 		
 		boolean ret = false;
 		PreparedStatement ps = null;
@@ -509,7 +511,9 @@ public class MapleClient {
 	}
 
 	public boolean checkPic(String other) {
-                if(!(ServerConstants.ENABLE_PIC && !canBypassPic())) return true;
+                if (!(ServerConstants.ENABLE_PIC && !canBypassPic())) {
+                        return true;
+                }
             
 		picattempt++;
 		if (picattempt > 5) {
@@ -538,7 +542,7 @@ public class MapleClient {
 		ResultSet rs = null;
 		try {
 			con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT id, password, gender, banned, pin, pic, characterslots, tos FROM accounts WHERE name = ?");
+			ps = con.prepareStatement("SELECT id, password, gender, banned, pin, pic, characterslots, tos, lingua FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
 			if (rs.next()) {
@@ -556,6 +560,7 @@ public class MapleClient {
 				pic = rs.getString("pic");
 				gender = rs.getByte("gender");
 				characterSlots = rs.getByte("characterslots");
+                                lingua = rs.getInt("lingua");
 				String passhash = rs.getString("password");
 				byte tos = rs.getByte("tos");
 
@@ -888,6 +893,10 @@ public class MapleClient {
                                 if (eim != null) {
                                         eim.playerDisconnected(player);
                                 }
+                                
+                                if (player.getMonsterCarnival() != null) {
+                                        player.getMonsterCarnival().playerDisconnected(getPlayer().getId());
+                                }
                         }
                         
                         if (player.getMap() != null) {
@@ -985,7 +994,9 @@ public class MapleClient {
 				FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, e);
 			} finally {
                                 if (!this.serverTransition) {
-                                        if(chrg != null) chrg.setCharacter(null);
+                                        if(chrg != null) {
+                                            chrg.setCharacter(null);
+                                        }
 					wserv.removePlayer(player);
                                         //getChannelServer().removePlayer(player); already being done
                                         
@@ -1532,5 +1543,13 @@ public class MapleClient {
         
         public boolean canBypassPic() {
                 return MapleLoginBypassCoordinator.getInstance().canLoginBypass(getNibbleHWID(), accId, true);
+        }
+        
+        public int getLingua() {
+                return lingua;
+        }
+
+        public void setLingua(int lingua) {
+                this.lingua = lingua;
         }
 }
