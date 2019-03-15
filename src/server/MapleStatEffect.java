@@ -940,26 +940,17 @@ public class MapleStatEffect {
         } else if (cp != 0 && applyto.getMonsterCarnival() != null) {
             applyto.gainCP(cp);
         } else if (nuffSkill != 0 && applyto.getParty() != null && applyto.getMap().isCPQMap()) { // by Drago-Dragohe4rt
-            final MCSkill skil = MapleCarnivalFactory.getInstance().getSkill(nuffSkill);
-            if (skil != null) {
-                final MapleDisease dis = skil.getDisease();
-                MapleParty inimigos = applyfrom.getParty().getEnemy();
-                if (nuffSkill == 8) {
-                    int amount = inimigos.getMembers().size() - 1;
-                    int randd = (int) Math.floor(Math.random() * amount);
-                    MapleCharacter chrApp = applyfrom.getClient().getChannelServer().getPlayerStorage().getCharacterById(inimigos.getMemberByPos(randd).getId());
+            final MCSkill skill = MapleCarnivalFactory.getInstance().getSkill(nuffSkill);
+            if (skill != null) {
+                final MapleDisease dis = skill.getDisease();
+                MapleParty opposition = applyfrom.getParty().getEnemy();
+                for (MaplePartyCharacter enemyChrs : opposition.getPartyMembers()) {
+                    MapleCharacter chrApp = enemyChrs.getPlayer();
                     if (chrApp != null && chrApp.getMap().isCPQMap()) {
-                        chrApp.dispel();
-                    }
-                } else {
-                    for (MaplePartyCharacter chrsInimigos : inimigos.getPartyMembers()) {
-                        MapleCharacter chrApp = chrsInimigos.getPlayer();
-                        if (chrApp != null && chrApp.getMap().isCPQMap()) {
-                            if (dis == null) {
-                                chrApp.dispel();
-                            } else if (skil.getSkill() != null) {
-                                chrApp.giveDebuff(dis, skil.getSkill());
-                            }
+                        if (dis == null) {
+                            chrApp.dispel();
+                        } else {
+                            chrApp.giveDebuff(dis, MCSkill.getMobSkill(dis.getDisease()));
                         }
                     }
                 }

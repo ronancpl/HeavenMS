@@ -45,7 +45,8 @@ public enum ItemFactory {
     CASH_CYGNUS(4, true),
     CASH_ARAN(5, true),
     MERCHANT(6, false),
-    CASH_OVERALL(7, true);
+    CASH_OVERALL(7, true),
+    MARRIAGE_GIFTS(8, false);
     private final int value;
     private final boolean account;
     private static final Lock locks[] = new Lock[200];  // thanks Masterrulax for pointing out a bottleneck issue here

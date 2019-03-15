@@ -74,7 +74,9 @@ function action(mode, type, selection) {
                         cm.sendOk("You guys totally rocked the stage!!! Go go, talk to #b#p9201007##k to start the afterparty.");
                         cm.dispose();
                     } else if(hasEngagement) {
-                        cm.sendOk("Please continue rocking on the stage, you are our superstars today!");
+                        if (!cm.createMarriageWishlist()) {
+                            cm.sendOk("You have already sent your wishlist...");
+                        }
                         cm.dispose();
                     } else {
                         cm.sendOk("Oh, hey, where are the credentials for the this so-lauded party? Oh man, we can't continue at this rate now... Sorry, the party is over.");

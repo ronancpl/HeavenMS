@@ -58,22 +58,23 @@ import client.inventory.Item;
 import client.inventory.ItemFactory;
 import client.inventory.MaplePet;
 import constants.ItemConstants;
-import constants.LinguaConstants;
+import constants.LanguageConstants;
+import net.server.PlayerStorage;
 import net.server.channel.Channel;
-import scripting.event.EventInstanceManager;
 import server.MapleSkillbookInformationProvider;
 import server.MapleSkillbookInformationProvider.SkillBookEntry;
 import server.TimerManager;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.partyquest.MonsterCarnival;
-import tools.FilePrinter;
 import tools.packets.Wedding;
 
 import java.awt.Point;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import server.MapleMarriage;
 
 /**
  *
@@ -619,8 +620,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         public int calcAvgLvl(int map) {
             int num = 0;
             int avg = 0;
-            for (MapleMapObject mmo
-                    : c.getChannelServer().getMapFactory().getMap(map).getAllPlayer()) {
+            for (MapleMapObject mmo : c.getChannelServer().getMapFactory().getMap(map).getAllPlayer()) {
                 avg += ((MapleCharacter) mmo).getLevel();
                 num++;
             }
@@ -629,7 +629,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
 
         public void sendCPQMapLists() {
-            String msg = LinguaConstants.Linguas(getPlayer()).CPQInicioEscolha;
+            String msg = LanguageConstants.Linguas(getPlayer()).CPQInicioEscolha;
             for (int i = 0; i < 6; i++) {
                 if (fieldTaken(i)) {
                     if (fieldLobbied(i)) {
@@ -641,7 +641,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         continue;
                     }
                 } else {
-                    if (i == 0 || i == 1 || i == 2 || i == 3) {
+                    if (i >= 0 && i <= 3) {
                         msg += "#b#L" + i + "#Map " + (i + 1) + " (2x2) #l\\r\\n";
                     } else {
                         msg += "#b#L" + i + "#Map " + (i + 1) + " (3x3) #l\\r\\n";
@@ -673,16 +673,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
         public void cpqLobby(int field) {
             try {
-                final MapleMap map, mapsaida;
+                final MapleMap map, mapExit;
                 Channel cs = c.getChannelServer();
+                PlayerStorage ps = cs.getPlayerStorage();
+                
                 map = cs.getMapFactory().getMap(980000100 + 100 * field);
-                mapsaida = cs.getMapFactory().getMap(980000000);
+                mapExit = cs.getMapFactory().getMap(980000000);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
                     final MapleCharacter mc;
-                    mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    mc = ps.getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.changeMap(map, map.getPortal(0));
-                        mc.getClient().getSession().write(MaplePacketCreator.serverNotice(6, LinguaConstants.Linguas(mc).CPQEntradaLobby));
+                        mc.announce(MaplePacketCreator.serverNotice(6, LanguageConstants.Linguas(mc).CPQEntradaLobby));
                         TimerManager tMan = TimerManager.getInstance();
                         tMan.schedule(new Runnable() {
                             @Override
@@ -690,13 +692,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                                 mapClock(3 * 60);
                             }
                         }, 1500);
+                        
+                        mc.setCpqTimer(TimerManager.getInstance().schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                mc.changeMap(mapExit, mapExit.getPortal(0));
+                            }
+                        }, 3 * 60 * 1000));
                     }
-                    mc.timer = TimerManager.getInstance().schedule(new Runnable() {
-                        @Override
-                        public void run() {
-                            mc.changeMap(mapsaida, mapsaida.getPortal(0));
-                        }
-                    }, 3 * 60 * 1000);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -704,17 +707,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
 
         public MapleCharacter getChrById(int id) {
-            Channel cs = c.getChannelServer();
-            return cs.getPlayerStorage().getCharacterById(id);
+            return c.getChannelServer().getPlayerStorage().getCharacterById(id);
         }
 
         public void cancelarSaida() {
-            Channel cs = c.getChannelServer();
+            PlayerStorage ps = c.getChannelServer().getPlayerStorage();
             for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
-                if (mc.timer != null) {
-                    mc.timer.cancel(true);
-                    mc.timer = null;
+                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                if (mc != null) {
+                    mc.clearCpqTimer();
                 }
             }
         }
@@ -726,8 +727,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     if (challenger.getParty() == null) {
                         throw new RuntimeException("Nao existe oponente!");
                     }
+                    PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                     for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                        MapleCharacter mc = c.getChannelServer().getPlayerStorage().getCharacterByName(mpc.getName());
+                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
                         if (mc != null) {
                             mc.changeMap(getPlayer().getMap(), getPlayer().getMap().getPortal(0));
                             TimerManager tMan = TimerManager.getInstance();
@@ -740,7 +742,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         }
                     }
                     for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                        MapleCharacter mc = c.getChannelServer().getPlayerStorage().getCharacterByName(mpc.getName());
+                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
                         if (mc != null) {
                             TimerManager tMan = TimerManager.getInstance();
                             tMan.schedule(new Runnable() {
@@ -757,17 +759,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 tMan.schedule(new Runnable() {
                     @Override
                     public void run() {
-                        Channel cs = c.getChannelServer();
+                        PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                         for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                            MapleCharacter mc = ps.getCharacterById(mpc.getId());
                             mc.setMonsterCarnival(null);
                         }
                         for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                            MapleCharacter mc = ps.getCharacterById(mpc.getId());
                             mc.setMonsterCarnival(null);
                         }
                         
-                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, true);
+                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, true, (field / 100) % 10);
                     }
                 }, 11000);
             } catch (Exception e) {
@@ -782,8 +784,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     if (challenger.getParty() == null) {
                         throw new RuntimeException("Não existe oponente!");
                     }
+                    PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                     for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                        MapleCharacter mc = c.getChannelServer().getPlayerStorage().getCharacterByName(mpc.getName());
+                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
                         if (mc != null) {
                             mc.changeMap(getPlayer().getMap(), getPlayer().getMap().getPortal(0));
                             mapClock(10);
@@ -795,17 +798,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 tMan.schedule(new Runnable() {
                     @Override
                     public void run() {
-                        Channel cs = c.getChannelServer();
+                        PlayerStorage ps = c.getChannelServer().getPlayerStorage();
+                        
                         for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                            MapleCharacter mc = ps.getCharacterById(mpc.getId());
                             mc.setMonsterCarnival(null);
                         }
                         for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                            MapleCharacter mc = ps.getCharacterById(mpc.getId());
                             mc.setMonsterCarnival(null);
                         }
                         
-                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, false);
+                        new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, false, (field / 1000) % 10);
                     }
                 }, 10000);
             } catch (Exception e) {
@@ -814,7 +818,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
 
         public void sendCPQMapLists2() {
-            String msg = LinguaConstants.Linguas(getPlayer()).CPQInicioEscolha;
+            String msg = LanguageConstants.Linguas(getPlayer()).CPQInicioEscolha;
             for (int i = 0; i < 3; i++) {
                 if (fieldTaken2(i)) {
                     if (fieldLobbied2(i)) {
@@ -856,16 +860,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
         public void cpqLobby2(int field) {
             try {
-                final MapleMap map, mapsaida;
+                final MapleMap map, mapExit;
                 Channel cs = c.getChannelServer();
-                mapsaida = cs.getMapFactory().getMap(980030000);
+                PlayerStorage ps = c.getChannelServer().getPlayerStorage();
+                
+                mapExit = cs.getMapFactory().getMap(980030000);
                 map = cs.getMapFactory().getMap(980031000 + 1000 * field);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
                     final MapleCharacter mc;
-                    mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    mc = ps.getCharacterByName(mpc.getName());
                     if (mc != null) {
                         mc.changeMap(map, map.getPortal(0));
-                        mc.getClient().getSession().write(MaplePacketCreator.serverNotice(6, LinguaConstants.Linguas(mc).CPQEntradaLobby));
+                        mc.announce(MaplePacketCreator.serverNotice(6, LanguageConstants.Linguas(mc).CPQEntradaLobby));
                         TimerManager tMan = TimerManager.getInstance();
                         tMan.schedule(new Runnable() {
                             @Override
@@ -873,13 +879,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                                 mapClock(3 * 60);
                             }
                         }, 1500);
+                        
+                        mc.setCpqTimer(TimerManager.getInstance().schedule(new Runnable() {
+                            @Override
+                            public void run() {
+                                mc.changeMap(mapExit, mapExit.getPortal(0));
+                            }
+                        }, 3 * 60 * 1000));
                     }
-                    mc.timer = TimerManager.getInstance().schedule(new Runnable() {
-                        @Override
-                        public void run() {
-                            mc.changeMap(mapsaida, mapsaida.getPortal(0));
-                        }
-                    }, 3 * 60 * 1000);
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -892,7 +899,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             for (MapleMapObject mmo : map.getAllPlayer()) {
                 MapleCharacter mc = (MapleCharacter) mmo;
                 if (mc.getParty() == null) {
-                    sendOk(LinguaConstants.Linguas(mc).CPQEscolha);
+                    sendOk(LanguageConstants.Linguas(mc).CPQEscolha);
                     return;
                 }
                 if (mc.getParty().getLeader().getId() == mc.getId()) {
@@ -908,15 +915,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     }
                     NPCScriptManager.getInstance().start("cpqchallenge2", leader.getClient(), npc, members);
                 } else {
-                    sendOk(LinguaConstants.Linguas(leader).CPQInicioEscolhaEmEscolha);
+                    sendOk(LanguageConstants.Linguas(leader).CPQInicioEscolhaEmEscolha);
                 }
             } else {
-                sendOk(LinguaConstants.Linguas(leader).CPQLiderNaoEncontrado);
+                sendOk(LanguageConstants.Linguas(leader).CPQLiderNaoEncontrado);
             }
         }
 
         public void mapClock(int time) {
-            //getPlayer().getMap().broadcastMessage(MaplePacketCreator.serverNotice(type, message));
             getPlayer().getMap().broadcastMessage(MaplePacketCreator.getClock(time));
         }
 
@@ -930,7 +936,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             for (MapleMapObject mmo : map.getAllPlayer()) {
                 MapleCharacter mc = (MapleCharacter) mmo;
                 if (mc.getParty() == null) {
-                    sendOk(LinguaConstants.Linguas(mc).CPQEscolha);
+                    sendOk(LanguageConstants.Linguas(mc).CPQEscolha);
                     return;
                 }
                 if (mc.getParty().getLeader().getId() == mc.getId()) {
@@ -941,15 +947,17 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             if (leader != null) {
                 if (!leader.isChallenged()) {
                     List<MaplePartyCharacter> members = new LinkedList<>();
-                    for (MaplePartyCharacter fucker : c.getPlayer().getParty().getMembers()) {
-                        members.add(fucker);
+                    for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
+                        members.add(mpc);
                     }
+                    
                     NPCScriptManager.getInstance().start("cpqchallenge", leader.getClient(), npc, members);
+                    sendOk(LanguageConstants.Linguas(leader).CPQInicioEscolhaEnviada);
                 } else {
-                    sendOk(LinguaConstants.Linguas(leader).CPQInicioEscolhaEmEscolha);
+                    sendOk(LanguageConstants.Linguas(leader).CPQInicioEscolhaEmEscolha);
                 }
             } else {
-                sendOk(LinguaConstants.Linguas(leader).CPQLiderNaoEncontrado);
+                sendOk(LanguageConstants.Linguas(leader).CPQLiderNaoEncontrado);
             }
         }
 
@@ -961,24 +969,46 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             }
         }
 
-        public void enviarLista() {
-            EventInstanceManager eim = getEventInstance();
-            if(eim != null) {
-                String name = eim.getProperty("brideId");
-                MapleCharacter chr = getChrById(Integer.parseInt(name));
-                //MapleCharacter chr = getChrById(3);
+        public void sendMarriageWishlist(boolean groom) {
+            MapleCharacter player = this.getPlayer();
+            MapleMarriage marriage = player.getMarriageInstance();
+            if(marriage != null) {
+                int cid = marriage.getIntProperty(groom ? "groomId" : "brideId");
+                MapleCharacter chr = marriage.getPlayerById(cid);
                 if (chr != null) {
-                    if (chr.getId() == getPlayer().getId()) {
-                        getPlayer().announce(Wedding.OnWeddingGiftResult((byte) 0xA, chr.getItens(), chr.getItem()));
+                    if (chr.getId() == player.getId()) {
+                        player.announce(Wedding.OnWeddingGiftResult((byte) 0xA, marriage.getWishlistItems(groom), marriage.getGiftItems(player.getClient(), groom)));
                     } else {
-                        getPlayer().announce(Wedding.OnWeddingGiftResult((byte) 0x09, chr.getItens(), chr.getItem()));
+                        marriage.setIntProperty("wishlistSelection", groom ? 0 : 1);
+                        player.announce(Wedding.OnWeddingGiftResult((byte) 0x09, marriage.getWishlistItems(groom), marriage.getGiftItems(player.getClient(), groom)));
                     }
                 }
             }
         }
-
-        public void criarLista() {
-            getClient().getSession().write(Wedding.sendWishList());
-        }
         
+        public void sendMarriageGifts(List<Item> gifts) {
+            this.getPlayer().announce(Wedding.OnWeddingGiftResult((byte) 0xA, Collections.singletonList(""), gifts));
+        }
+
+        public boolean createMarriageWishlist() {
+            MapleMarriage marriage = this.getPlayer().getMarriageInstance();
+            if (marriage != null) {
+                Boolean groom = marriage.isMarriageGroom(this.getPlayer());
+                if (groom != null) {
+                    String wlKey;
+                    if (groom) {
+                        wlKey = "groomWishlist";
+                    } else {
+                        wlKey = "brideWishlist";
+                    }
+                    
+                    if (marriage.getProperty(wlKey).contentEquals("")) {
+                        getClient().announce(Wedding.sendWishList());
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
 }

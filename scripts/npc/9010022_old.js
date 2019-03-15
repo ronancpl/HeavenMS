@@ -1,5 +1,3 @@
-importPackage(Packages.client); 
-importPackage(Packages.server.maps); 
 
 var status; 
 var sel; 

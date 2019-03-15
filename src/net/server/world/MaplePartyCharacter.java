@@ -182,7 +182,7 @@ public class MaplePartyCharacter {
             case 222:
                 return "Arquimago (Gelo, Raio)";
             case 230:
-                return "Clérigo";
+                return "Clerigo";
             case 231:
                 return "Sacerdote";
             case 232:
@@ -191,7 +191,7 @@ public class MaplePartyCharacter {
             case 300:
                 return "Arqueiro";
             case 310:
-                return "Caçador";
+                return "Cacador";
             case 311:
                 return "Rastreador";
             case 312:
@@ -231,7 +231,7 @@ public class MaplePartyCharacter {
             case 521:
                 return "Bucaneiro";
             case 522:
-                return "Captain";
+                return "Capitao";
 
             default:
                 return "Unknown Job";

@@ -1,8 +1,7 @@
-var map = 980030000;
-var minLvl = 30;
-var maxLvl = 255;
-var minAmt = 0;
-var maxAmt = 6;
+var cpqMinLvl = 30;
+var cpqMaxLvl = 255;
+var cpqMinAmt = 0;
+var cpqMaxAmt = 6;
 
 function start() {
     status = -1;
@@ -24,34 +23,35 @@ function action(mode, type, selection) {
         if (status == 0) {
             if (cm.getParty() == null) {
                 status = 10;
-                cm.sendOk("#eÉ necessário criar um grupo antes de começar o Festival de Monstros!#k");
+                cm.sendOk("#eï¿½ necessï¿½rio criar um grupo antes de comeï¿½ar o Festival de Monstros!#k");
             } else if (!cm.isLeader()) {
                 status = 10;
-                cm.sendOk("Se você quer começar o Festival, avise o #blíder do grupo#k para falar comigo.");
+                cm.sendOk("Se vocï¿½ quer comeï¿½ar o Festival, avise o #blï¿½der do grupo#k para falar comigo.");
             } else {
+                var leaderMapid = cm.getMapId();
                 var party = cm.getParty().getMembers();
                 var inMap = cm.partyMembersInMap();
                 var lvlOk = 0;
-                var isInMap = 0;
+                var isOutMap = 0;
                 for (var i = 0; i < party.size(); i++) {
-                    if (party.get(i).getLevel() >= minLvl && party.get(i).getLevel() <= maxLvl) {
+                    if (party.get(i).getLevel() >= cpqMinLvl && party.get(i).getLevel() <= cpqMaxLvl) {
                         lvlOk++;
-                    }
-                    if (party.get(i).getPlayer().getMapId()!= 980030000) {
-                        //isInMap = false;
-                        isInMap++
+                        
+                        if (party.get(i).getPlayer().getMapId() != leaderMapid) {
+                            isOutMap++;
+                        }
                     }
                 }
 
                 if (party >= 1) {
                     status = 10;
-                    cm.sendOk("Você não tem número suficiente de pessoas em seu grupo. Você precisa de um grupo com #b" + minAmt + "#k - #r" + maxAmt + "#k membros e eles devem estar no mapa com você.");
+                    cm.sendOk("Vocï¿½ nï¿½o tem nï¿½mero suficiente de pessoas em seu grupo. Vocï¿½ precisa de um grupo com #b" + cpqMinAmt + "#k - #r" + cpqMaxAmt + "#k membros e eles devem estar no mapa com vocï¿½.");
                 } else if (lvlOk != inMap) {
                     status = 10;
-                    cm.sendOk("Certifique se todos em seu grupo estão dentre os níveis corretos (" + minLvl + "~" + maxLvl + ")!");
-                } else if (isInMap > 0) {
+                    cm.sendOk("Certifique se todos em seu grupo estï¿½o dentre os nï¿½veis corretos (" + cpqMinLvl + "~" + cpqMaxLvl + ")!");
+                } else if (isOutMap > 0) {
                     status = 10;
-                    cm.sendOk("Existe alguém do grupo que não esta no mapa!");
+                    cm.sendOk("Existe alguï¿½m do grupo que nï¿½o esta no mapa!");
                 } else {
                     cm.sendCPQMapLists2();
                 }
@@ -67,10 +67,10 @@ function action(mode, type, selection) {
                 }
             } else {
                 var party = cm.getParty().getMembers();
-                if ((selection === 0 || selection === 1 ) && party.size() < 2) {
-                    cm.sendOk("Você precisa de no mínimo 2 player para entrar na competição.");
-                } else if ((selection === 2 ) && party.size() < 3) {
-                    cm.sendOk("Você precisa de no mínimo 3 player para entrar na competição.");
+                if ((selection === 0 || selection === 1 ) && party.size() < 1) {
+                    cm.sendOk("Vocï¿½ precisa de no mï¿½nimo 2 player para entrar na competiï¿½ï¿½o.");
+                } else if ((selection === 2 ) && party.size() < 1) {
+                    cm.sendOk("Vocï¿½ precisa de no mï¿½nimo 3 player para entrar na competiï¿½ï¿½o.");
                 } else {
                     cm.cpqLobby2(selection);
                 }

@@ -4213,7 +4213,7 @@ public class MaplePacketCreator {
                 mplew.write(reactor.getState());
                 mplew.writePos(pos);
                 mplew.writeShort(0);
-                mplew.write(reactor.getFacingDirection()); // stance, thanks to Drago/Dragohe4rt
+                mplew.write(0);
                 return mplew.getPacket();
         }
 

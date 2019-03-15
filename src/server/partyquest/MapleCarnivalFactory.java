@@ -63,6 +63,10 @@ public class MapleCarnivalFactory {
         }
 
         public MobSkill getSkill() {
+            return getMobSkill(skillid);
+        }
+        
+        public static MobSkill getMobSkill(int skillid) {
             return MobSkillFactory.getMobSkill(skillid, 1); //level?
         }
 

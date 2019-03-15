@@ -7,7 +7,6 @@
 package tools.packets;
 
 import client.inventory.Item;
-import client.inventory.MapleInventoryType;
 import client.MapleCharacter;
 import java.util.ArrayList;
 import java.util.List;
@@ -383,59 +382,32 @@ public class Wedding extends MaplePacketCreator {
      *    @return mplew
      */
     public static byte[] OnWeddingGiftResult(byte mode, List<String> itemnames, List<Item> items) {
-        // if (itemnames == null || itemnames.size() < 1) { // for now lol
-        //     itemnames = new ArrayList<>();
-        //     itemnames.add("mesos");
-        //     itemnames.add("rare items");
-        //     itemnames.add("more mesos");
-        // }
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(WEDDING_GIFT_RESULT);
         mplew.write(mode);
         switch (mode) {
+            case 0xC: // 12 : You cannot give more than one present for each wishlist 
+            case 0xE: // 14 : Failed to send the gift.
+                break;
+            
             case 0x09: { // Load Wedding Registry
                 mplew.write(itemnames.size());
                 for (String names : itemnames) {
                     mplew.writeMapleAsciiString(names);
-                }
-                mplew.write(items.size());
-                for (Item item : items) {
-                    addItemInfo(mplew, item, true);
                 }
                 break;
             }
             case 0xA: // Load Bride's Wishlist 
             case 0xF: // 10, 15, 16 = CWishListRecvDlg::OnPacket
             case 0xB: { // Add Item to Wedding Registry 
-                // 11 : You have sent a gift | 12 : You cannot give more than one present for each wishlist | 13 : Failed to send the gift. | 14 : Failed to send the gift.
+                // 11 : You have sent a gift | | 13 : Failed to send the gift. | 
                 if (mode == 0xB) {
                     mplew.write(itemnames.size());
                     for (String names : itemnames) {
                         mplew.writeMapleAsciiString(names);
                     }
                 }
-                if (items.size() >= 1) {
-                    switch (items.get((items.size() - 1)).getInventoryType()) {
-                        case EQUIP:
-                            mplew.writeLong(4);
-                            break;
-                        case USE:
-                            mplew.writeLong(8);
-                            break;
-                        case SETUP:
-                            mplew.writeLong(16);
-                            break;
-                        case ETC:
-                            mplew.writeLong(32);
-                            break;
-                        default: // impossible flag, cash item can't be sent
-                            if (items.get((items.size() - 1)).getInventoryType() != MapleInventoryType.CASH) {
-                                mplew.writeLong(0);
-                            }
-                    }
-                } else {
-                    mplew.writeLong(0);
-                }
+                mplew.writeLong(32);
                 mplew.write(items.size());
                 for (Item item : items) {
                     addItemInfo(mplew, item, true);

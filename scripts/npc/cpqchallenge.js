@@ -15,7 +15,6 @@ function action(mode, type, selection) {
         cm.dispose();
     } else {
         if (mode == 0) {
-            cm.sendOk("Come back once you have thought about it some more.");
             cm.getChar().setChallenged(false);
             cm.dispose();
             return;
@@ -46,7 +45,7 @@ function action(mode, type, selection) {
                 cm.getChar().getParty().setEnemy(ch.getParty());
                 cm.getChar().setChallenged(false);
             } else {
-                cm.sendOk("O numero de players entre os times não esta igual.");
+                cm.sendOk("O numero de players entre os times nao esta igual.");
             }
             cm.dispose();
         }

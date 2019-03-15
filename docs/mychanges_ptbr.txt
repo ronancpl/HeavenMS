@@ -1712,3 +1712,17 @@ Implementado mecânica de pescaria no código-fonte.
 09 Março 2019,
 Corrigido membros de party não recebendo bonus devidamente após membros sairem do mapa/party em alguns casos.
 Revisado sistema de experiência em party. Ganhos de bonus agora levam em conta valores-base que membros de party ganham ao derrotar um mob para definir o ganho geral da equipe. Contabilização de ganhos remodelado, buscando por um modo de distribuição mais coerente.
+
+12 - 13 Março 2019,
+Iniciado operação de introdução da wishlist de casamento e MCPQ no fonte, a partir do pull request feito pelo Dragohe4rt.
+Implementado estrutura back-end para comportar e manter (em DB) o wishlist de casamento.
+Ajustado mecânicas de wishlist iniciadas nos scripts do evento de casamento.
+
+14 Março 2019,
+Adicionado checagem por itens untradeable no handler de wishlist ao enviar itens.
+Adicionado drops da CPQ na DB.
+Corrigido diversas diseases da CPQ não funcionando corretamente ao pegar do chão item que aleatoriza disease no time/pessoa oponente.
+Modificado geração de mapas da CPQ, agora sempre carregando um novo mapa da WZ ao invés de sempre buscar e resetar o mapa carregado na cache.
+
+15 Março 2019,
+Adicionado SFX nos portais da CPQ.

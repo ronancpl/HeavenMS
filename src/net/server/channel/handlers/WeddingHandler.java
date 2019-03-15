@@ -6,19 +6,23 @@
 
 package net.server.channel.handlers;
 
-import client.inventory.Item;
-import client.inventory.MapleInventoryType;
+
 import client.MapleCharacter;
 import client.MapleClient;
-import client.inventory.Equip;
-import constants.ItemConstants;
-import net.AbstractMaplePacketHandler;
+import client.inventory.Item;
+import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import net.server.channel.Channel;
-import scripting.event.EventInstanceManager;
+import client.inventory.manipulator.MapleKarmaManipulator;
+import constants.ItemConstants;
+import constants.ServerConstants;
+import net.AbstractMaplePacketHandler;
+import server.MapleMarriage;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.packets.Wedding;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -28,43 +32,123 @@ public final class WeddingHandler extends AbstractMaplePacketHandler {
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        MapleCharacter chr = c.getPlayer();
-        final byte mode = slea.readByte();
-        Channel cs = c.getChannelServer();
         
-        if (mode == 6) { //additem
-            short slot = slea.readShort();
-            int itemid = slea.readInt();
-            short quantity = slea.readShort();
-            EventInstanceManager eim = c.getPlayer().getEventInstance();
-            if (eim != null) {
-                String name = eim.getProperty("brideId");
-                MapleCharacter chrs = cs.getPlayerStorage().getCharacterById(Integer.parseInt(name));
-                //MapleCharacter chrs = cs.getPlayerStorage().getCharacterById(3);
-                MapleInventoryType type = ItemConstants.getInventoryType(itemid);
-                Item item = chr.getInventory(type).getItem((byte) slot);
-                if (itemid == item.getItemId() && quantity <= item.getQuantity()) {
-                    if(!(item instanceof Equip)) {
-                        item = new Item(itemid, slot, quantity);
-                    }
-                    chrs.setEquips(item);
-                    MapleInventoryManipulator.removeById(chr.getClient(), type, itemid, quantity, false, false);
-                    c.announce(Wedding.OnWeddingGiftResult((byte) 0xB, chrs.getItens(), chrs.getItem()));
-                }
-            }
-        } else if (mode == 7) { // noiva abre e pega itens
-            byte inventId = slea.readByte();
-            int itemPos = slea.readByte();
-            MapleInventoryType inv = MapleInventoryType.getByType(inventId);
-            Item item = chr.getItemid(itemPos);
-            c.getAbstractPlayerInteraction().gainItem(item.getItemId(), item.getQuantity());
-            chr.removeItem(item);
-            c.announce(Wedding.OnWeddingGiftResult((byte) 0xF, chr.getItens(), chr.getItem()));
-        } else if (mode == 8) { // sair update?
+        c.tryacquireClient();
+        try {
+            MapleCharacter chr = c.getPlayer();
+            final byte mode = slea.readByte();
             
-            c.announce(MaplePacketCreator.enableActions());
-        } else {
-            System.out.println(mode);
+            if (mode == 6) { //additem
+                short slot = slea.readShort();
+                int itemid = slea.readInt();
+                short quantity = slea.readShort();
+
+                MapleMarriage marriage = c.getPlayer().getMarriageInstance();
+                if (marriage != null) {
+                    try {
+                        boolean groomWishlist = marriage.giftItemToSpouse(chr.getId());
+                        String groomWishlistProp = "giftedItem" + (groomWishlist ? "G" : "B") + chr.getId();
+                        
+                        int giftCount = marriage.getIntProperty(groomWishlistProp);
+                        if (giftCount < ServerConstants.WEDDING_GIFT_LIMIT) {
+                            int cid = marriage.getIntProperty(groomWishlist ? "groomId" : "brideId");
+                            if (chr.getId() != cid) {   // cannot gift yourself
+                                MapleCharacter spouse = marriage.getPlayerById(cid);
+                                if (spouse != null) {
+                                    MapleInventoryType type = ItemConstants.getInventoryType(itemid);
+                                    MapleInventory chrInv = chr.getInventory(type);
+
+                                    chrInv.lockInventory();
+                                    try {
+                                        Item item = chrInv.getItem((byte) slot);
+                                        if (item != null) {
+                                            if (!item.isUntradeable()) {
+                                                if (itemid == item.getItemId() && quantity <= item.getQuantity()) {
+                                                    Item newItem = item.copy();
+
+                                                    marriage.addGiftItem(groomWishlist, newItem);
+                                                    MapleInventoryManipulator.removeFromSlot(c, type, slot, quantity, false, false);
+
+                                                    if (ServerConstants.USE_ENFORCE_MERCHANT_SAVE) chr.saveCharToDB(false); 
+                                                    marriage.saveGiftItemsToDb(c, groomWishlist, cid);
+
+                                                    MapleKarmaManipulator.toggleKarmaFlagToUntradeable(newItem);
+                                                    marriage.setIntProperty(groomWishlistProp, giftCount + 1);
+
+                                                    c.announce(Wedding.OnWeddingGiftResult((byte) 0xB, marriage.getWishlistItems(groomWishlist), Collections.singletonList(newItem)));
+                                                }
+                                            } else {
+                                                c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), null));
+                                            }
+                                        }
+                                    } finally {
+                                        chrInv.unlockInventory();
+                                    }
+                                } else {
+                                    c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), null));
+                                }
+                            } else {
+                                c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), null));
+                            }
+                        } else {
+                            c.announce(Wedding.OnWeddingGiftResult((byte) 0xC, marriage.getWishlistItems(groomWishlist), null));
+                        }
+                    } catch (NumberFormatException nfe) {}
+                } else {
+                    c.announce(MaplePacketCreator.enableActions());
+                }
+            } else if (mode == 7) { // take items
+                slea.readByte();    // invType
+                int itemPos = slea.readByte();
+                
+                MapleMarriage marriage = chr.getMarriageInstance();
+                if (marriage != null) {
+                    Boolean groomWishlist = marriage.isMarriageGroom(chr);
+                    if (groomWishlist != null) {
+                        Item item = marriage.getGiftItem(c, groomWishlist, itemPos);
+                        if (item != null) {
+                            if (MapleInventory.checkSpot(chr, item)) {
+                                marriage.removeGiftItem(groomWishlist, item);
+                                marriage.saveGiftItemsToDb(c, groomWishlist, chr.getId());
+                                
+                                MapleInventoryManipulator.addFromDrop(c, item, true);
+
+                                c.announce(Wedding.OnWeddingGiftResult((byte) 0xF, marriage.getWishlistItems(groomWishlist), marriage.getGiftItems(c, groomWishlist)));
+                            } else {
+                                c.getPlayer().dropMessage(1, "Free a slot on your inventory before collecting this item.");
+                                c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), marriage.getGiftItems(c, groomWishlist)));
+                            }
+                        } else {
+                            c.getPlayer().dropMessage(1, "You have already collected this item.");
+                            c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, marriage.getWishlistItems(groomWishlist), marriage.getGiftItems(c, groomWishlist)));
+                        }
+                    }
+                } else {
+                    List<Item> items = c.getAbstractPlayerInteraction().getUnclaimedMarriageGifts();
+                    try {
+                        Item item = items.get(itemPos);
+                        if (MapleInventory.checkSpot(chr, item)) {
+                            items.remove(itemPos);
+                            MapleMarriage.saveGiftItemsToDb(c, items, chr.getId());
+
+                            MapleInventoryManipulator.addFromDrop(c, item, true);
+                            c.announce(Wedding.OnWeddingGiftResult((byte) 0xF, Collections.singletonList(""), items));
+                        } else {
+                            c.getPlayer().dropMessage(1, "Free a slot on your inventory before collecting this item.");
+                            c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, Collections.singletonList(""), items));
+                        }
+                    } catch (Exception e) {
+                        c.getPlayer().dropMessage(1, "You have already collected this item.");
+                        c.announce(Wedding.OnWeddingGiftResult((byte) 0xE, Collections.singletonList(""), items));
+                    }
+                }
+            } else if (mode == 8) { // out of Wedding Registry
+                c.announce(MaplePacketCreator.enableActions());
+            } else {
+                System.out.println(mode);
+            }
+        } finally {
+            c.releaseClient();
         }
     }
 }

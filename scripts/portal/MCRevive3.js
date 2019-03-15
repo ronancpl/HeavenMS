@@ -1,4 +1,3 @@
-importPackage(Packages.server.maps);
 
 /*
 [CelticMS] Monster Carnival Reviving Field 1
@@ -15,5 +14,6 @@ function enter(pi) {
 			break;
 	}
 	pi.warp(980000301, portal);
+        pi.playPortalSound();
 	return true;
 }

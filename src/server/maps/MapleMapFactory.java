@@ -166,18 +166,20 @@ public class MapleMapFactory {
         }
     }
 
-    private synchronized MapleMap loadMapFromWz(int mapid, Integer omapid) {
+    private synchronized MapleMap loadMapFromWz(int mapid, Integer omapid, boolean cache) {
         MapleMap map;
 
-        mapsRLock.lock();
-        try {
-            map = maps.get(omapid);
-        } finally {
-            mapsRLock.unlock();
-        }
+        if (cache) {
+            mapsRLock.lock();
+            try {
+                map = maps.get(omapid);
+            } finally {
+                mapsRLock.unlock();
+            }
 
-        if (map != null) {
-            return map;
+            if (map != null) {
+                return map;
+            }
         }
 
         String mapName = getMapName(mapid);
@@ -389,11 +391,13 @@ public class MapleMapFactory {
         map.setBackgroundTypes(backTypes);
         map.generateMapDropRangeCache();
 
-        mapsWLock.lock();
-        try {
-            maps.put(omapid, map);
-        } finally {
-            mapsWLock.unlock();
+        if (cache) {
+            mapsWLock.lock();
+            try {
+                maps.put(omapid, map);
+            } finally {
+                mapsWLock.unlock();
+            }
         }
 
         return map;
@@ -410,7 +414,11 @@ public class MapleMapFactory {
             mapsRLock.unlock();
         }
 
-        return (map != null) ? map : loadMapFromWz(mapid, omapid);
+        return (map != null) ? map : loadMapFromWz(mapid, omapid, true);
+    }
+    
+    public MapleMap getDisposableMap(int mapid) {
+        return loadMapFromWz(mapid, mapid, false);
     }
 
     public boolean isMapLoaded(int mapId) {

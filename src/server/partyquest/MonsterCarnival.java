@@ -2,7 +2,8 @@ package server.partyquest;
 
 import java.util.concurrent.ScheduledFuture;
 import client.MapleCharacter;
-import constants.LinguaConstants;
+import constants.LanguageConstants;
+import constants.ServerConstants;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.world.MapleParty;
@@ -24,22 +25,23 @@ public class MonsterCarnival {
 
     private MapleParty p1, p2;
     private MapleMap map;
-    private ScheduledFuture<?> timer, effectTimer;
+    private ScheduledFuture<?> timer, effectTimer, respawnTask;
     private long startTime = 0;
-    private int summons = 8, summonss = 8;
+    private int summonsR = 8, summonsB = 8, room = 0;
     private MapleCharacter leader1, leader2, Grupo1, Grupo2;
     private int redCP, blueCP, redTotalCP, blueTotalCP;
     private boolean cpq1;
 
-    public MonsterCarnival(MapleParty p1, MapleParty p2, int mapid, boolean cpq1) {
+    public MonsterCarnival(MapleParty p1, MapleParty p2, int mapid, boolean cpq1, int room) {
         try {
             this.cpq1 = cpq1;
+            this.room = room;
             this.p1 = p1;
             this.p2 = p2;
             Channel cs = Server.getInstance().getWorld(p2.getLeader().getWorld()).getChannel(p2.getLeader().getChannel());
             p1.setEnemy(p2);
             p2.setEnemy(p1);
-            map = cs.getMapFactory().resetMap(mapid);
+            map = cs.getMapFactory().getDisposableMap(mapid);
             int redPortal = 0;
             int bluePortal = 0;
             if (map.isPurpleCPQMap()) {
@@ -47,13 +49,13 @@ public class MonsterCarnival {
                 bluePortal = 1;
             }
             for (MaplePartyCharacter mpc : p1.getMembers()) {
-                MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                 if (mc != null) {
                     mc.setMonsterCarnival(this);
                     mc.setTeam(0);
                     mc.setFestivalPoints(0);
-                    mc.changeMap(map, map.getPortal(redPortal));
-                    mc.dropMessage(6, LinguaConstants.Linguas(mc).CPQEntrada);
+                    mc.forceChangeMap(map, map.getPortal(redPortal));
+                    mc.dropMessage(6, LanguageConstants.Linguas(mc).CPQEntrada);
                     if (p1.getLeader().getId() == mc.getId()) {
                         leader1 = mc;
                     }
@@ -61,13 +63,13 @@ public class MonsterCarnival {
                 }
             }
             for (MaplePartyCharacter mpc : p2.getMembers()) {
-                MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                 if (mc != null) {
                     mc.setMonsterCarnival(this);
                     mc.setTeam(1);
                     mc.setFestivalPoints(0);
-                    mc.changeMap(map, map.getPortal(bluePortal));
-                    mc.dropMessage(6, LinguaConstants.Linguas(mc).CPQEntrada);
+                    mc.forceChangeMap(map, map.getPortal(bluePortal));
+                    mc.dropMessage(6, LanguageConstants.Linguas(mc).CPQEntrada);
                     if (p2.getLeader().getId() == mc.getId()) {
                         leader2 = mc;
                     }
@@ -76,10 +78,10 @@ public class MonsterCarnival {
             }
             if (Grupo1 == null || Grupo2 == null) {
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LinguaConstants.Linguas(mpc.getPlayer()).CPQErro);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.Linguas(mpc.getPlayer()).CPQErro);
                 }
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LinguaConstants.Linguas(mpc.getPlayer()).CPQErro);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.Linguas(mpc.getPlayer()).CPQErro);
                 }
                 return;
             }
@@ -98,6 +100,12 @@ public class MonsterCarnival {
                     complete();
                 }
             }, 10 * 60 * 1000 - 10 * 1000);
+            respawnTask = TimerManager.getInstance().register(new Runnable() {
+                @Override
+                public void run() {
+                    respawn();
+                }
+            }, ServerConstants.RESPAWN_INTERVAL);
             TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -109,6 +117,10 @@ public class MonsterCarnival {
         }
     }
 
+    private void respawn() {
+        map.respawn();
+    }
+    
     public void playerDisconnected(int charid) {
         int team = -1;
         for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
@@ -128,13 +140,13 @@ public class MonsterCarnival {
             String teamS = "";
             switch (team) {
                 case 0:
-                    teamS = LinguaConstants.Linguas(chrMap).CPQVermelho;
+                    teamS = LanguageConstants.Linguas(chrMap).CPQVermelho;
                     break;
                 case 1:
-                    teamS = LinguaConstants.Linguas(chrMap).CPQAzul;
+                    teamS = LanguageConstants.Linguas(chrMap).CPQAzul;
                     break;
             }
-            chrMap.dropMessage(5, teamS + LinguaConstants.Linguas(chrMap).CPQPlayerExit);
+            chrMap.dropMessage(5, teamS + LanguageConstants.Linguas(chrMap).CPQPlayerExit);
         }
         earlyFinish();
     }
@@ -151,20 +163,20 @@ public class MonsterCarnival {
         dispose(false);
     }
 
-    public void summon() {
-        this.summons--;
+    public void summonR() {
+        this.summonsR--;
     }
 
-    public boolean canSummon() {
-        return this.summons > 0;
+    public boolean canSummonR() {
+        return this.summonsR > 0;
     }
 
-    public void summons() {
-        this.summonss--;
+    public void summonB() {
+        this.summonsB--;
     }
 
-    public boolean canSummons() {
-        return this.summonss > 0;
+    public boolean canSummonB() {
+        return this.summonsB > 0;
     }
 
     protected void dispose(boolean warpout) {
@@ -176,7 +188,7 @@ public class MonsterCarnival {
             out = cs.getMapFactory().getMap(980000000);
         }
         for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
-            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+            MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
             if (mc != null) {
                 mc.resetCP();
                 mc.setTeam(-1);
@@ -187,7 +199,7 @@ public class MonsterCarnival {
             }
         }
         for (MaplePartyCharacter mpc : leader2.getParty().getMembers()) {
-            MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+            MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
             if (mc != null) {
                 mc.resetCP();
                 mc.setTeam(-1);
@@ -205,10 +217,16 @@ public class MonsterCarnival {
             this.effectTimer.cancel(true);
             this.effectTimer = null;
         }
+        if (this.respawnTask != null) {
+            this.respawnTask.cancel(true);
+            this.respawnTask = null;
+        }
         redTotalCP = 0;
         blueTotalCP = 0;
         leader1.getParty().setEnemy(null);
         leader2.getParty().setEnemy(null);
+        map.dispose();
+        map = null;
 
     }
 
@@ -225,7 +243,7 @@ public class MonsterCarnival {
             Channel cs = Server.getInstance().getWorld(p1.getLeader().getWorld()).getChannel(p1.getLeader().getChannel());
             if (winningTeam == 0) {
                 for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
-                    MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.gainFestivalPoints(this.redTotalCP);
                         mc.setMonsterCarnival(null);
@@ -239,7 +257,7 @@ public class MonsterCarnival {
                     }
                 }
                 for (MaplePartyCharacter mpc : leader2.getParty().getMembers()) {
-                    MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.gainFestivalPoints(this.blueTotalCP);
                         mc.setMonsterCarnival(null);
@@ -254,7 +272,7 @@ public class MonsterCarnival {
                 }
             } else if (winningTeam == 1) {
                 for (MaplePartyCharacter mpc : leader2.getParty().getMembers()) {
-                    MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.gainFestivalPoints(this.blueTotalCP);
                         mc.setMonsterCarnival(null);
@@ -268,7 +286,7 @@ public class MonsterCarnival {
                     }
                 }
                 for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
-                    MapleCharacter mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+                    MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.gainFestivalPoints(this.redTotalCP);
                         mc.setMonsterCarnival(null);
@@ -312,7 +330,7 @@ public class MonsterCarnival {
 
     public void extendTime() {
         for (MapleCharacter chrMap : map.getAllPlayers()) {
-            chrMap.dropMessage(5, LinguaConstants.Linguas(chrMap).CPQTempoExtendido);
+            chrMap.dropMessage(5, LanguageConstants.Linguas(chrMap).CPQTempoExtendido);
         }
         startTime = System.currentTimeMillis() + 3 * 1000;
         map.addClock(3 * 60);
@@ -340,14 +358,14 @@ public class MonsterCarnival {
         int chnl = leader1.getClient().getChannel();
         int chnl1 = leader2.getClient().getChannel();
         if (chnl != chnl1) {
-            throw new RuntimeException("Os líderes estão em canais diferentes.");
+            throw new RuntimeException("Os lideres estao em canais diferentes.");
         }
 
         Channel cs = Server.getInstance().getWorld(p1.getLeader().getWorld()).getChannel(p1.getLeader().getChannel());
         map.killAllMonsters();
         for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
             MapleCharacter mc;
-            mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+            mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
             if (mc != null) {
                 if (redWin) {
                     mc.getClient().announce(MaplePacketCreator.showEffect("quest/carnival/win"));
@@ -362,7 +380,7 @@ public class MonsterCarnival {
         }
         for (MaplePartyCharacter mpc : leader2.getParty().getMembers()) {
             MapleCharacter mc;
-            mc = cs.getPlayerStorage().getCharacterByName(mpc.getName());
+            mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
             if (mc != null) {
                 if (!redWin) {
                     mc.getClient().announce(MaplePacketCreator.showEffect("quest/carnival/win"));
@@ -485,5 +503,9 @@ public class MonsterCarnival {
         } else if (team == 1) {
             this.blueCP = CP;
         }
+    }
+    
+    public int getRoom() {
+        return this.room;
     }
 }

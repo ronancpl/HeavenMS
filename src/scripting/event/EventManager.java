@@ -42,6 +42,7 @@ import net.server.guild.MapleGuild;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import scripting.event.worker.EventScriptScheduler;
+import server.MapleMarriage;
 import server.expeditions.MapleExpedition;
 import server.maps.MapleMap;
 import server.life.MapleMonster;
@@ -269,6 +270,19 @@ public class EventManager {
         } else {
             ret.setName(name);
         }
+        
+        synchronized (instances) {
+            if (instances.containsKey(name)) {
+                throw new EventInstanceInProgressException(name, this.getName());
+            }
+            
+            instances.put(name, ret);
+        }
+        return ret;
+    }
+    
+    public MapleMarriage newMarriage(String name) throws EventInstanceInProgressException {
+        MapleMarriage ret = new MapleMarriage(this, name);
         
         synchronized (instances) {
             if (instances.containsKey(name)) {

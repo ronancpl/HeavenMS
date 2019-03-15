@@ -24,7 +24,7 @@
 * @Name:   So Gong
 * @Map(s): Dojo Hall
 */
-importPackage(Packages.server.maps);
+
 importPackage(Packages.constants);
 
 var disabled = false;

@@ -77,7 +77,7 @@ function spawnCakeBoss(eim) {
 }
 
 function setup(level, lobbyid) {
-        var eim = em.newInstance("Wedding" + lobbyid);
+        var eim = em.newMarriage("Wedding" + lobbyid);
         eim.setProperty("weddingId", "0");
         eim.setProperty("weddingStage", "0");   // 0: gathering time, 1: wedding time, 2: ready to fulfill the wedding, 3: just married
         eim.setProperty("guestBlessings", "0");
@@ -86,6 +86,9 @@ function setup(level, lobbyid) {
         eim.setProperty("groomId", "0");
         eim.setProperty("brideId", "0");
         eim.setProperty("confirmedVows", "-1");
+        eim.setProperty("groomWishlist", "");
+        eim.setProperty("brideWishlist", "");
+        eim.initializeGiftItems();
         
         eim.getInstanceMap(680000400).resetPQ(level);
         if(eventBoss) spawnCakeBoss(eim);
@@ -105,9 +108,11 @@ function respawnStages(eim) {
 }
 
 function playerEntry(eim, player) {
-        var map = eim.getMapInstance(entryMap);
-        
+        eim.setProperty("giftedItemG" + player.getId(), "0");
+        eim.setProperty("giftedItemB" + player.getId(), "0");
         player.getClient().getAbstractPlayerInteraction().gainItem(4000313, 1);
+        
+        var map = eim.getMapInstance(entryMap);
         player.changeMap(map, map.getPortal(0));
 }
 

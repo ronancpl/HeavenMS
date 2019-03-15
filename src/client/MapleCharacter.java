@@ -68,6 +68,7 @@ import scripting.event.EventInstanceManager;
 import server.CashShop;
 import server.MapleItemInformationProvider;
 import server.MapleItemInformationProvider.ScriptedItem;
+import server.MapleMarriage;
 import server.MaplePortal;
 import server.MapleShop;
 import server.MapleStatEffect;
@@ -130,7 +131,7 @@ import client.processor.FredrickProcessor;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
-import constants.LinguaConstants;
+import constants.LanguageConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
@@ -166,6 +167,7 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import scripting.AbstractPlayerInteraction;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -277,7 +279,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private ScheduledFuture<?> extraRecoveryTask = null;
     private ScheduledFuture<?> chairRecoveryTask = null;
     private ScheduledFuture<?> pendantOfSpirit = null; //1122017
-    public ScheduledFuture<?> timer;
+    private ScheduledFuture<?> cpqSchedule = null;
     private Lock chrLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CHR, true);
     private Lock evtLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_EVT, true);
     private Lock petLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_PET, true);
@@ -4381,6 +4383,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             return eventInstance;
         } finally {
             evtLock.unlock();
+        }
+    }
+    
+    public MapleMarriage getMarriageInstance() {
+        EventInstanceManager eim = getEventInstance();
+        
+        if (eim != null || !(eim instanceof MapleMarriage)) {
+            return (MapleMarriage) eim;
+        } else {
+            return null;
         }
     }
 
@@ -9848,6 +9860,15 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.partyQuest = pq;
     }
 
+    public void setCpqTimer(ScheduledFuture timer) {
+        this.cpqSchedule = timer;
+    }
+    
+    public void clearCpqTimer() {
+        if (cpqSchedule != null) { cpqSchedule.cancel(true); }
+        cpqSchedule = null;
+    }
+    
     public final void empty(final boolean remove) {
         if (dragonBloodSchedule != null) { dragonBloodSchedule.cancel(true); }
         dragonBloodSchedule = null;
@@ -9886,8 +9907,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (pendantOfSpirit != null) { pendantOfSpirit.cancel(true); }
         pendantOfSpirit = null;
         
-        if (timer != null) { timer.cancel(true); }
-        timer = null;
+        clearCpqTimer();
         
         evtLock.lock();
         try {
@@ -10130,9 +10150,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private MapleFitness fitness;
     private MapleOla ola;
     private long snowballattack;
-    public static final List<String> itens = new ArrayList();
-    public static final List<Item> item = new ArrayList();
-
+    
     public byte getTeam() {
         return team;
     }
@@ -10289,38 +10307,5 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getLingua() {
         return getClient().getLingua();
     }
-
-    public void setItens(String item) {
-        if (!itens.contains(item)) {
-            this.itens.add(item);
-        }
-    }
-
-    public static List<String> getItens() {
-        return itens;
-    }
-
-    public void setEquips(Item item) {
-        this.item.add(item);
-    }
-
-    public static List<Item> getItem() {
-        return item;
-    }
-
-    public Item getItemid(int numb) {
-        return this.item.get(numb);
-    }
-
-    public void removeItem(Item item) {
-        if (this.item.contains(item)) {
-            this.item.remove(item);
-        }
-    }
-
-    public void obterItens() {
-        for (Item item : getItem()) {
-            getClient().getAbstractPlayerInteraction().gainItem(item.getItemId(), item.getQuantity());
-        }
-    }
+    
 }

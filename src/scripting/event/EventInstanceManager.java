@@ -55,10 +55,16 @@ import tools.DatabaseConnection;
 import client.MapleCharacter;
 import client.SkillFactory;
 import client.Skill;
+import client.inventory.Item;
+import client.inventory.ItemFactory;
+import client.inventory.MapleInventory;
+import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import java.awt.Point;
 import java.sql.Connection;
+import java.util.Arrays;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -73,6 +79,7 @@ import server.ThreadManager;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
+import tools.Randomizer;
 
 /**
  *
@@ -89,6 +96,7 @@ public class EventInstanceManager {
 	private MapleMapFactory mapFactory;
 	private String name;
 	private Properties props = new Properties();
+        private Map<String, Object> objectProps = new HashMap<>();
 	private long timeStarted = 0;
 	private long eventTime = 0;
 	private MapleExpedition expedition = null;
@@ -628,6 +636,7 @@ public class EventInstanceManager {
                 killCount.clear();
                 mapIds.clear();
                 props.clear();
+                objectProps.clear();
                 
                 disposeExpedition();
                 
@@ -741,6 +750,15 @@ public class EventInstanceManager {
                         pL.unlock();
                 }
 	}
+        
+        public void setObjectProperty(String key, Object obj) {
+                pL.lock();
+                try {
+                        objectProps.put(key, obj);
+                } finally {
+                        pL.unlock();
+                }
+        }
 
 	public String getProperty(String key) {
                 pL.lock();
@@ -755,6 +773,15 @@ public class EventInstanceManager {
                 pL.lock();
                 try {
                         return Integer.parseInt(props.getProperty(key));
+                } finally {
+                        pL.unlock();
+                }
+        }
+        
+        public Object getObjectProperty(String key) {
+                pL.lock();
+                try {
+                        return objectProps.get(key);
                 } finally {
                         pL.unlock();
                 }

@@ -19,11 +19,6 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-importPackage(Packages.server.maps);
-
-/*
- */
-
 function enter(pi) {
     var returnMap = pi.getPlayer().getSavedLocation("MONSTER_CARNIVAL");
     if (returnMap < 0) {
@@ -31,5 +26,6 @@ function enter(pi) {
     }
     var target = pi.getPlayer().getClient().getChannelServer().getMapFactory().getMap(returnMap);
     pi.getPlayer().changeMap(target);
+    pi.playPortalSound();
     return true;
 }

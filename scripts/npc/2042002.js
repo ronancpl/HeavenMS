@@ -1,4 +1,3 @@
-importPackage(Packages.server.maps);
 
 var status = 0;
 var rnk = -1;
@@ -7,6 +6,12 @@ var n2 = 40; //??? ???
 var n3 = 7; //35
 var n4 = 10; //40
 var n5 = 20; //50
+
+// Ronan's custom ore refiner NPC
+var refineRocks = true;     // enables moon rock, star rock
+var refineCrystals = true;  // enables common crystals
+var refineSpecials = true;  // enables lithium, special crystals
+var feeMultiplier = 7.0;
 
 function start() {
     status = -1;
@@ -25,9 +30,10 @@ function action(mode, type, selection) {
             status++;
         else
             status--;
+        
         if (cm.getPlayer().getMapId() == 980000010) {
             if (status == 0) {
-                cm.sendNext("Eu espero que você tinha divertido na Folia dos Monstros!");
+                cm.sendNext("Eu espero que vocï¿½ tenha divertido na Folia dos Monstros!");
             } else if (status > 0) {
                 cm.warp(980000000, 0);
                 cm.dispose();
@@ -36,22 +42,22 @@ function action(mode, type, selection) {
             if (status == 0) {
                 if (cm.getChar().getParty() != null) {
                     var shiu = "";
-                    if (cm.getPlayer().getFestivalPoints() >= 100) {
+                    if (cm.getPlayer().getFestivalPoints() >= 300) {
                         shiu += "#rA#k";
-                        cm.sendOk("Infelizmente, você ou empatou ou perdeu a batalha, apesar da sua excelente performance. A vitória pode ser sua da próxima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Infelizmente, vocï¿½ ou empatou ou perdeu a batalha, apesar da sua excelente performance. A vitï¿½ria pode ser sua da prï¿½xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
                         rnk = 10;
-                    } else if (cm.getPlayer().getFestivalPoints() >= 50 && cm.getPlayer().getFestivalPoints() < 100) {
+                    } else if (cm.getPlayer().getFestivalPoints() >= 100) {
                         shiu += "#rB#k";
                         rnk = 20;
-                        cm.sendOk("Infelizmente, você ou empatou ou perdeu a batalha, mesmo com sua ótima performance. Só mais um pouquinho, e a vitória poderia ter sido sua.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
-                    } else if (cm.getPlayer().getFestivalPoints() >= 30 && cm.getPlayer().getFestivalPoints() < 50) {
+                        cm.sendOk("Infelizmente, vocï¿½ ou empatou ou perdeu a batalha, mesmo com sua ï¿½tima performance. Sï¿½ mais um pouquinho, e a vitï¿½ria poderia ter sido sua.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                    } else if (cm.getPlayer().getFestivalPoints() >= 50) {
                         shiu += "#rC#k";
                         rnk = 30;
-                        cm.sendOk("Infelizmente, você ou empatou ou perdeu a batalha. A vitória está para aqueles que se esforçam. Vejo seus esforços, então a vitória não está tão longe do seu alcance. Continue assim!\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Infelizmente, vocï¿½ ou empatou ou perdeu a batalha. A vitï¿½ria estï¿½ para aqueles que se esforï¿½am. Vejo seus esforï¿½os, entï¿½o a vitï¿½ria nï¿½o estï¿½ tï¿½o longe do seu alcance. Continue assim!\r\n\r\n#bNota da Folia de Monstros : " + shiu);
                     } else {
                         shiu += "#rD#k";
                         rnk = 40;
-                        cm.sendOk("Infelizmente, você ou empatou ou perdeu a batalha, e sua performance claramente reflete nisso. Espero mais de você da próxima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Infelizmente, vocï¿½ ou empatou ou perdeu a batalha, e sua performance claramente reflete nisso. Espero mais de vocï¿½ da prï¿½xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
                     }
                 } else {
                     cm.warp(980000000, 0);
@@ -92,19 +98,19 @@ function action(mode, type, selection) {
                     if (cm.getPlayer().getFestivalPoints() >= 300) {
                         shi += "#rA#k";
                         rnk = 1;
-                        cm.sendOk("Parabéns pela sua vitória!!! Que ótima performance! O grupo adversário não pôde fazer nada! Espero o mesmo bom trabalho da próxima vez!\r\n\r\n#bNota da Folia de Monstros : " + shi);
-                    } else if (cm.getPlayer().getFestivalPoints() >= 100 && cm.getPlayer().getFestivalPoints() < 300) {
+                        cm.sendOk("Parabï¿½ns pela sua vitï¿½ria!!! Que ï¿½tima performance! O grupo adversï¿½rio nï¿½o pï¿½de fazer nada! Espero o mesmo bom trabalho da prï¿½xima vez!\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                    } else if (cm.getPlayer().getFestivalPoints() >= 100) {
                         shi += "#rB#k";
                         rnk = 2;
-                        cm.sendOk("Parabéns pela sua vitória! Isso foi impressionante! Você fez um bom trabalho contra o grupo adversário! Só mais um pouco, e você definitivamente vai conseguir um A na próxima vez. \r\n\r\n#bNota da Folia de Monstros : " + shi);
-                    } else if (cm.getPlayer().getFestivalPoints() >= 50 && cm.getPlayer().getFestivalPoints() < 100) {
+                        cm.sendOk("Parabï¿½ns pela sua vitï¿½ria! Isso foi impressionante! Vocï¿½ fez um bom trabalho contra o grupo adversï¿½rio! Sï¿½ mais um pouco, e vocï¿½ definitivamente vai conseguir um A na prï¿½xima vez. \r\n\r\n#bNota da Folia de Monstros : " + shi);
+                    } else if (cm.getPlayer().getFestivalPoints() >= 50) {
                         shi += "#rC#k";
                         rnk = 3;
-                        cm.sendOk("Parabéns pela sua vitória. Você fez algumas coisas cá e lá, mas essa não pode ser considerada uma boa vitória. Espero mais de ti da próxima vez.\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Parabï¿½ns pela sua vitï¿½ria. Vocï¿½ fez algumas coisas cï¿½ e lï¿½, mas essa nï¿½o pode ser considerada uma boa vitï¿½ria. Espero mais de ti da prï¿½xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shi);
                     } else {
                         shi += "#rD#k";
                         rnk = 4;
-                        cm.sendOk("Parabéns pela sua vitória, entretanto sua performance não refletiu muito bem isso. Seja mais ativo na sua próxima participação da Folia de Monstros!\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Parabï¿½ns pela sua vitï¿½ria, entretanto sua performance nï¿½o refletiu muito bem isso. Seja mais ativo na sua prï¿½xima participaï¿½ï¿½o da Folia de Monstros!\r\n\r\n#bNota da Folia de Monstros : " + shi);
                     }
                 } else {
                     cm.warp(980000000, 0);
@@ -140,8 +146,11 @@ function action(mode, type, selection) {
             }
         } else {
             if (status == 0) {
-               // cm.sendSimple("O que gostaria de fazer? Se você nunca participou da Folia de Monstros, você precisará saber de algumas coisas antes de participar.\r\n#b#L0# Ir para o campo da Folia de Monstros 1.#l\r\n#L1# Aprender sobre a Folia de Monstros.#l\r\n#L2# Trocar #t4001129#.#l");
-                cm.sendSimple("O que gostaria de fazer? Se você nunca participou da Folia de Monstros, você precisará saber de algumas coisas antes de participar.\r\n#b#L0# Ir para o campo da Folia de Monstros 1.#l\r\n#L3# Ir para o campo da Folia de Monstros 2.#l\r\n#L1# Aprender sobre a Folia de Monstros.#l\r\n#L2# Trocar #t4001129#.#l");
+                var talk = "O que gostaria de fazer? Se vocï¿½ nunca participou da Folia de Monstros, vocï¿½ precisarï¿½ saber de algumas coisas antes de participar.\r\n#b#L0# Ir para o campo da Folia de Monstros 1.#l\r\n#L3# Ir para o campo da Folia de Monstros 2.#l\r\n#L1# Aprender sobre a Folia de Monstros.#l\r\n#L2# Trocar #t4001129#.#l";
+                if (Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+                    talk += "\r\n#L4# ... Can I just refine my ores?#l";
+                }
+                cm.sendSimple(talk);
             } else if (status == 1) {
                 if (selection == 0) {
                     if ((cm.getLevel() > 29 && cm.getLevel() < 51) || cm.getPlayer().isGM()) {
@@ -150,26 +159,43 @@ function action(mode, type, selection) {
                         cm.dispose();
                         return;
                     } else if (cm.getLevel() < 30) {
-                        cm.sendOk("Você precisa ser no mínimo nível 30 para participar da Folia de Monstros. Fale comigo quando for forte o bastante.");
+                        cm.sendOk("Vocï¿½ precisa ser no mï¿½nimo nï¿½vel 30 para participar da Folia de Monstros. Fale comigo quando for forte o bastante.");
                         cm.dispose();
                         return;
                     } else {
-                        cm.sendOk("Sinto muito, mas apenas os jogadores de nível 30~50 podem participar da Folia de Monstros.");
+                        cm.sendOk("Sinto muito, mas apenas os jogadores de nï¿½vel 30~50 podem participar da Folia de Monstros.");
                         cm.dispose();
                         return;
                     }
                 } else if (selection == 1) {
                     status = 60;
-                    cm.sendSimple("O que gostaria de fazer?\r\n#b#L0# O que é a Folia de Monstros?#l\r\n#L1# Visão geral sobre a Folia de Monstros#l\r\n#L2# Informações detalhadas sobre a Folia de Monstros#l\r\n#L3# Nada, de verdade. Mudei de ideia.#l");
+                    cm.sendSimple("O que gostaria de fazer?\r\n#b#L0# O que ï¿½ a Folia de Monstros?#l\r\n#L1# Visï¿½o geral sobre a Folia de Monstros#l\r\n#L2# Informaï¿½ï¿½es detalhadas sobre a Folia de Monstros#l\r\n#L3# Nada, de verdade. Mudei de ideia.#l");
                 } else if (selection == 2) {
-                    cm.sendSimple("Lembre-se se você possui #t4001129#, você pode trocá-las por itens. Tenha certeza que você possui #t4001129# suficientes para o item que você deseja. Selecione o item que você gostaria de trocá-las! \r\n#b#L0# #t1122007#(" + n1 + " moedas)#l\r\n#L1# #t2041211#(" + n2 + " moedas)#l\r\n#L2# Armas para Guerreiros#l\r\n#L3# Armas para Bruxos#l\r\n#L4# Armas para Arqueiros#l\r\n#L5# Armas para Gatunos#l");
+                    cm.sendSimple("Lembre-se se vocï¿½ possui #t4001129#, vocï¿½ pode trocï¿½-las por itens. Tenha certeza que vocï¿½ possui #t4001129# suficientes para o item que vocï¿½ deseja. Selecione o item que vocï¿½ gostaria de trocï¿½-las! \r\n#b#L0# #t1122007#(" + n1 + " moedas)#l\r\n#L1# #t2041211#(" + n2 + " moedas)#l\r\n#L2# Armas para Guerreiros#l\r\n#L3# Armas para Bruxos#l\r\n#L4# Armas para Arqueiros#l\r\n#L5# Armas para Gatunos#l");
                 } else if (selection == 3) {
                     cm.getChar().saveLocation("MONSTER_CARNIVAL");
                     cm.warp(980030000, 0);
                     cm.dispose();
                     return;
-                }
+                } else if (selection == 4) {
+                    var selStr = "Very well, instead I offer a steadfast #bore refining#k service for you, taxing #r" + ((feeMultiplier * 100) | 0) + "%#k over the usual fee to synthetize them. What will you do?#b";
 
+                    var options = new Array("Refine mineral ores","Refine jewel ores");
+                    if(refineCrystals) {
+                        options.push("Refine crystal ores");
+                    }
+                    if(refineRocks) {
+                        options.push("Refine plates/jewels");
+                    }
+
+                    for (var i = 0; i < options.length; i++){
+                        selStr += "\r\n#L" + i + "# " + options[i] + "#l";
+                    }
+
+                    cm.sendSimple(selStr);
+                    
+                    status = 76;
+                }
             } else if (status == 2) {
                 select = selection;
                 if (select == 0) {
@@ -178,7 +204,7 @@ function action(mode, type, selection) {
                         cm.gainItem(4001129, -n1);
                         cm.dispose();
                     } else {
-                        cm.sendOk("Verifique e veja se estão faltando #b#t4001129##k ou se seu inventário de Equipamentos está cheio.");
+                        cm.sendOk("Verifique e veja se estï¿½o faltando #b#t4001129##k ou se seu inventï¿½rio de Equipamentos estï¿½ cheio.");
                         cm.dispose();
                     }
                 } else if (select == 1) {
@@ -187,25 +213,25 @@ function action(mode, type, selection) {
                         cm.gainItem(4001129, -n2);
                         cm.dispose();
                     } else {
-                        cm.sendOk("Verifique e veja se estão faltando #b#t4001129##k ou se seu inventário de Uso está cheio.");
+                        cm.sendOk("Verifique e veja se estï¿½o faltando #b#t4001129##k ou se seu inventï¿½rio de Uso estï¿½ cheio.");
                         cm.dispose();
                     }
                 } else if (select == 2) {//S2 Warrior 26 S3 Magician 6 S4 Bowman 6 S5 Thief 8
                     status = 10;
-                    cm.sendSimple("Por favor tenha certeza que você possui #t4001129# para a arma que você deseja. Selecione a arma que você gostaria de trocar #t4001129# por. As opções que tenho são realmente boas, e eu não sou eu que falo é o povo que diz! \r\n#b#L0# #z1302004#(" + n3 + " moedas)#l\r\n#L1# #z1402006#(" + n3 + " moedas)#l\r\n#L2# #z1302009#(" + n4 + " moedas)#l\r\n#L3# #z1402007#(" + n4 + " moedas)#l\r\n#L4# #z1302010#(" + n5 + " moedas)#l\r\n#L5# #z1402003#(" + n5 + " moedas)#l\r\n#L6# #z1312006#(" + n3 + " moedas)#l\r\n#L7# #z1412004#(" + n3 + " moedas)#l\r\n#L8# #z1312007#(" + n4 + " moedas)#l\r\n#L9# #z1412005#(" + n4 + " moedas)#l\r\n#L10# #z1312008#(" + n5 + " moedas)#l\r\n#L11# #z1412003#(" + n5 + " moedas)#l\r\n#L12# Ir para a próxima página(1/2)#l");
+                    cm.sendSimple("Por favor tenha certeza que vocï¿½ possui #t4001129# para a arma que vocï¿½ deseja. Selecione a arma que vocï¿½ gostaria de trocar #t4001129# por. As opï¿½ï¿½es que tenho sï¿½o realmente boas, e eu nï¿½o sou eu que falo ï¿½ o povo que diz! \r\n#b#L0# #z1302004#(" + n3 + " moedas)#l\r\n#L1# #z1402006#(" + n3 + " moedas)#l\r\n#L2# #z1302009#(" + n4 + " moedas)#l\r\n#L3# #z1402007#(" + n4 + " moedas)#l\r\n#L4# #z1302010#(" + n5 + " moedas)#l\r\n#L5# #z1402003#(" + n5 + " moedas)#l\r\n#L6# #z1312006#(" + n3 + " moedas)#l\r\n#L7# #z1412004#(" + n3 + " moedas)#l\r\n#L8# #z1312007#(" + n4 + " moedas)#l\r\n#L9# #z1412005#(" + n4 + " moedas)#l\r\n#L10# #z1312008#(" + n5 + " moedas)#l\r\n#L11# #z1412003#(" + n5 + " moedas)#l\r\n#L12# Ir para a prï¿½xima pï¿½gina(1/2)#l");
                 } else if (select == 3) {
                     status = 20;
-                    cm.sendSimple("Selecione a arma que você gostaria de trocar. As armas que eu tenho aqui são extremamente atraentes. Veja você mesmo! \r\n#b#L0# #z1372001#(" + n3 + " moedas)#l\r\n#L1# #z1382018#(" + n3 + " moedas)#l\r\n#L2# #z1372012#(" + n4 + "moedas)#l\r\n#L3# #z1382019#(" + n4 + "moedas)#l\r\n#L4# #z1382001#(" + n5 + " moedas)#l\r\n#L5# #z1372007#(" + n5 + " moedas)#l");
+                    cm.sendSimple("Selecione a arma que vocï¿½ gostaria de trocar. As armas que eu tenho aqui sï¿½o extremamente atraentes. Veja vocï¿½ mesmo! \r\n#b#L0# #z1372001#(" + n3 + " moedas)#l\r\n#L1# #z1382018#(" + n3 + " moedas)#l\r\n#L2# #z1372012#(" + n4 + "moedas)#l\r\n#L3# #z1382019#(" + n4 + "moedas)#l\r\n#L4# #z1382001#(" + n5 + " moedas)#l\r\n#L5# #z1372007#(" + n5 + " moedas)#l");
                 } else if (select == 4) {
                     status = 30;
-                    cm.sendSimple("Selecione a arma que você gostaria de trocar. As armas que eu tenho aqui são extremamente atraentes. Veja você mesmo! \r\n#b#L0# #z1452006#(" + n3 + " moedas)#l\r\n#L1# #z1452007#(" + n4 + " moedas)#l\r\n#L2# #z1452008#(" + n5 + " moedas)#l\r\n#L3# #z1462005#(" + n3 + " moedas)#l\r\n#L4# #z1462006#(" + n4 + " moedas)#l\r\n#L5# #z1462007#(" + n5 + " moedas)#l");
+                    cm.sendSimple("Selecione a arma que vocï¿½ gostaria de trocar. As armas que eu tenho aqui sï¿½o extremamente atraentes. Veja vocï¿½ mesmo! \r\n#b#L0# #z1452006#(" + n3 + " moedas)#l\r\n#L1# #z1452007#(" + n4 + " moedas)#l\r\n#L2# #z1452008#(" + n5 + " moedas)#l\r\n#L3# #z1462005#(" + n3 + " moedas)#l\r\n#L4# #z1462006#(" + n4 + " moedas)#l\r\n#L5# #z1462007#(" + n5 + " moedas)#l");
                 } else if (select == 5) {
                     status = 40;
-                    cm.sendSimple("Selecione a arma que você gostaria de trocar por. As armas que eu tenho são da maior qualidade. Seleciona a mais atraente para você! \r\n#b#L0# #z1472013#(" + n3 + " moedas)#l\r\n#L1# #z1472017#(" + n4 + "moedas)#l\r\n#L2# #z1472021#(" + n5 + " moedas)#l\r\n#L3# #z1332014#(" + n3 + " moedas)#l\r\n#L4# #z1332031#(" + n4 + "moedas)#l\r\n#L5# #z1332011#(" + n4 + "moedas)#l\r\n#L6# #z1332016#(" + n5 + " moedas)#l\r\n#L7# #z1332003#(" + n5 + " moedas)#l");
+                    cm.sendSimple("Selecione a arma que vocï¿½ gostaria de trocar por. As armas que eu tenho sï¿½o da maior qualidade. Seleciona a mais atraente para vocï¿½! \r\n#b#L0# #z1472013#(" + n3 + " moedas)#l\r\n#L1# #z1472017#(" + n4 + "moedas)#l\r\n#L2# #z1472021#(" + n5 + " moedas)#l\r\n#L3# #z1332014#(" + n3 + " moedas)#l\r\n#L4# #z1332031#(" + n4 + "moedas)#l\r\n#L5# #z1332011#(" + n4 + "moedas)#l\r\n#L6# #z1332016#(" + n5 + " moedas)#l\r\n#L7# #z1332003#(" + n5 + " moedas)#l");
                 }
             } else if (status == 11) {
                 if (selection == 12) {
-                    cm.sendSimple("Selecione a arma que você gostaria de trocar. As armas que eu tenho aqui são extremamente úteis. Dá uma olhada! \r\n#b#L0# #z1322015#(" + n3 + " moedas)#l\r\n#L1# #z1422008#(" + n3 + " moedas)#l\r\n#L2# #z1322016#(" + n4 + "moedas)#l\r\n#L3# #z1422007#(" + n4 + "moedas)#l\r\n#L4# #z1322017#(" + n5 + " moedas)#l\r\n#L5# #z1422005#(" + n5 + " moedas)#l\r\n#L6# #z1432003#(" + n3 + " moedas)#l\r\n#L7# #z1442003#(" + n3 + " moedas)#l\r\n#L8# #z1432005#(" + n4 + "moedas)#l\r\n#L9# #z1442009#(" + n4 + "moedas)#l\r\n#L10# #z1442005#(" + n5 + " moedas)#l\r\n#L11# #z1432004#(" + n5 + " moedas)#l\r\n#L12# Voltar para a página inicial(2/2)#l");
+                    cm.sendSimple("Selecione a arma que vocï¿½ gostaria de trocar. As armas que eu tenho aqui sï¿½o extremamente ï¿½teis. Dï¿½ uma olhada! \r\n#b#L0# #z1322015#(" + n3 + " moedas)#l\r\n#L1# #z1422008#(" + n3 + " moedas)#l\r\n#L2# #z1322016#(" + n4 + "moedas)#l\r\n#L3# #z1422007#(" + n4 + "moedas)#l\r\n#L4# #z1322017#(" + n5 + " moedas)#l\r\n#L5# #z1422005#(" + n5 + " moedas)#l\r\n#L6# #z1432003#(" + n3 + " moedas)#l\r\n#L7# #z1442003#(" + n3 + " moedas)#l\r\n#L8# #z1432005#(" + n4 + "moedas)#l\r\n#L9# #z1442009#(" + n4 + "moedas)#l\r\n#L10# #z1442005#(" + n5 + " moedas)#l\r\n#L11# #z1432004#(" + n5 + " moedas)#l\r\n#L12# Voltar para a pï¿½gina inicial(2/2)#l");
                 } else {
                     var item = new Array(1302004, 1402006, 1302009, 1402007, 1302010, 1402003, 1312006, 1412004, 1312007, 1412005, 1312008, 1412003);
                     var cost = new Array(n3, n3, n4, n4, n5, n5, n3, n3, n4, n4, n5);
@@ -214,14 +240,14 @@ function action(mode, type, selection) {
                         cm.gainItem(4001129, -cost[selection]);
                         cm.dispose();
                     } else {
-                        cm.sendOk("Você ou não possui #b#t4001129##k suficientes, ou seu inventário está cheio. Verifique novamente.");
+                        cm.sendOk("Vocï¿½ ou nï¿½o possui #b#t4001129##k suficientes, ou seu inventï¿½rio estï¿½ cheio. Verifique novamente.");
                         cm.dispose();
                     }
                 }
             } else if (status == 12) {
                 if (selection == 12) {
                     status = 10;
-                    cm.sendSimple("Por favor tenha certeza que você possui #t4001129# para a arma que você deseja. Selecione a arma que você gostaria de trocar #t4001129# por. As opções que tenho são realmente boas, e eu não sou eu que falo é o povo que diz! \r\n#b#L0# #z1302004#(" + n3 + " moedas)#l\r\n#L1# #z1402006#(" + n3 + " moedas)#l\r\n#L2# #z1302009#(" + n4 + " moedas)#l\r\n#L3# #z1402007#(" + n4 + " moedas)#l\r\n#L4# #z1302010#(" + n5 + " moedas)#l\r\n#L5# #z1402003#(" + n5 + " moedas)#l\r\n#L6# #z1312006#(" + n3 + " moedas)#l\r\n#L7# #z1412004#(" + n3 + " moedas)#l\r\n#L8# #z1312007#(" + n4 + " moedas)#l\r\n#L9# #z1412005#(" + n4 + " moedas)#l\r\n#L10# #z1312008#(" + n5 + " moedas)#l\r\n#L11# #z1412003#(" + n5 + " moedas)#l\r\n#L12# Ir para a próxima página(1/2)#l");
+                    cm.sendSimple("Por favor tenha certeza que vocï¿½ possui #t4001129# para a arma que vocï¿½ deseja. Selecione a arma que vocï¿½ gostaria de trocar #t4001129# por. As opï¿½ï¿½es que tenho sï¿½o realmente boas, e eu nï¿½o sou eu que falo ï¿½ o povo que diz! \r\n#b#L0# #z1302004#(" + n3 + " moedas)#l\r\n#L1# #z1402006#(" + n3 + " moedas)#l\r\n#L2# #z1302009#(" + n4 + " moedas)#l\r\n#L3# #z1402007#(" + n4 + " moedas)#l\r\n#L4# #z1302010#(" + n5 + " moedas)#l\r\n#L5# #z1402003#(" + n5 + " moedas)#l\r\n#L6# #z1312006#(" + n3 + " moedas)#l\r\n#L7# #z1412004#(" + n3 + " moedas)#l\r\n#L8# #z1312007#(" + n4 + " moedas)#l\r\n#L9# #z1412005#(" + n4 + " moedas)#l\r\n#L10# #z1312008#(" + n5 + " moedas)#l\r\n#L11# #z1412003#(" + n5 + " moedas)#l\r\n#L12# Ir para a prï¿½xima pï¿½gina(1/2)#l");
                 } else {
                     var item = new Array(1322015, 1422008, 1322016, 1422007, 1322017, 1422005, 1432003, 1442003, 1432005, 1442009, 1442005, 1432004);
                     var cost = new Array(n3, n3, n4, n4, n5, n5, n3, n3, n4, n4, n5, n5);
@@ -230,7 +256,7 @@ function action(mode, type, selection) {
                         cm.gainItem(4001129, -cost[selection]);
                         cm.dispose();
                     } else {
-                        cm.sendOk("Você ou não possui #b#t4001129##k suficientes, ou seu inventário está cheio. Verifique novamente.");
+                        cm.sendOk("Vocï¿½ ou nï¿½o possui #b#t4001129##k suficientes, ou seu inventï¿½rio estï¿½ cheio. Verifique novamente.");
                         cm.dispose();
                     }
                 }
@@ -242,7 +268,7 @@ function action(mode, type, selection) {
                     cm.gainItem(4001129, -cost[selection]);
                     cm.dispose();
                 } else {
-                    cm.sendOk("Ou você não possui #b#t4001129##k suficientes, ou seu inventário está cheio. Verifique novamente.");
+                    cm.sendOk("Ou vocï¿½ nï¿½o possui #b#t4001129##k suficientes, ou seu inventï¿½rio estï¿½ cheio. Verifique novamente.");
                     cm.dispose();
                 }
             } else if (status == 31) {
@@ -253,7 +279,7 @@ function action(mode, type, selection) {
                     cm.gainItem(4001129, -cost[selection]);
                     cm.dispose();
                 } else {
-                    cm.sendOk("Ou você não possui #b#t4001129##k suficientes, ou seu inventário está cheio. Verifique novamente.");
+                    cm.sendOk("Ou vocï¿½ nï¿½o possui #b#t4001129##k suficientes, ou seu inventï¿½rio estï¿½ cheio. Verifique novamente.");
                     cm.dispose();
                 }
             } else if (status == 41) {
@@ -264,57 +290,213 @@ function action(mode, type, selection) {
                     cm.gainItem(4001129, -cost[selection]);
                     cm.dispose();
                 } else {
-                    cm.sendOk("Ou você não possui #b#t4001129##k suficientes, ou seu inventário está cheio. Verifique novamente.");
+                    cm.sendOk("Ou vocï¿½ nï¿½o possui #b#t4001129##k suficientes, ou seu inventï¿½rio estï¿½ cheio. Verifique novamente.");
                     cm.dispose();
                 }
             } else if (status == 61) {
                 select = selection;
                 if (selection == 0) {
-                    cm.sendNext("Haha! Eu sou Spiegelmann, o líder dessa Folia. Eu comecei a primeira #bFolia de Monstros#k aqui, aguardando por viajantes como você para participar dessa extravaganza!");
+                    cm.sendNext("Haha! Eu sou Spiegelmann, o lï¿½der dessa Folia. Eu comecei a primeira #bFolia de Monstros#k aqui, aguardando por viajantes como vocï¿½ para participar dessa extravaganza!");
                 } else if (selection == 1) {
-                    cm.sendNext("#bFolia de Monstros#k consiste em 2 grupos entrando no campo de batalha, e caçando os monstros invocados pelo outro grupo. É uma #bmissão de combate que determina o vitorioso pela quantia de Pontos de Folia (CP) recebidos#k.");
+                    cm.sendNext("#bFolia de Monstros#k consiste em 2 grupos entrando no campo de batalha, e caï¿½ando os monstros invocados pelo outro grupo. ï¿½ uma #bmissï¿½o de combate que determina o vitorioso pela quantia de Pontos de Folia (CP) recebidos#k.");
                 } else if (selection == 2) {
-                    cm.sendNext("Quando entrar no Campo da Folia, você verá a janela da Folia de Monstros aparecer. Tudo que precisa fazer é #bselecionar o que vocêe quer usar, e pressionar OK#k. Muito fácil, né?");
+                    cm.sendNext("Quando entrar no Campo da Folia, vocï¿½ verï¿½ a janela da Folia de Monstros aparecer. Tudo que precisa fazer ï¿½ #bselecionar o que vocï¿½e quer usar, e pressionar OK#k. Muito fï¿½cil, nï¿½?");
                 } else {
                     cm.dispose();
                 }
             } else if (status == 62) {
                 if (select == 0) {
-                    cm.sendNext("O que é a #bFolia de Monstros#k? Hahaha! Vamos dizer que é uma experiência que jamais esquecerá! É uma #bbatalha contra outros viajantes assim como você!#k");
+                    cm.sendNext("O que ï¿½ a #bFolia de Monstros#k? Hahaha! Vamos dizer que ï¿½ uma experiï¿½ncia que jamais esquecerï¿½! ï¿½ uma #bbatalha contra outros viajantes assim como vocï¿½!#k");
                 } else if (select == 1) {
-                    cm.sendNext("Quando entrar no Campo da Folia, sua tarefa é #breceber CP caçando os monstros do grupo oposto, e usar estes CP's para distrair o grupo oposto de caçar monstros.#k.");
+                    cm.sendNext("Quando entrar no Campo da Folia, sua tarefa ï¿½ #breceber CP caï¿½ando os monstros do grupo oposto, e usar estes CP's para distrair o grupo oposto de caï¿½ar monstros.#k.");
                 } else if (select == 2) {
-                    cm.sendNext("Assim que se acostumar com os comandos, tente usar #bas teclas TAB e F1 ~ F12#k. #bTAB alterna entre Invocação de Monstros/Habilidades/Protetor,#k e, #bF1~ F12 possibilita-o de acessar uma das janelas diretamente#k.");
+                    cm.sendNext("Assim que se acostumar com os comandos, tente usar #bas teclas TAB e F1 ~ F12#k. #bTAB alterna entre Invocaï¿½ï¿½o de Monstros/Habilidades/Protetor,#k e, #bF1~ F12 possibilita-o de acessar uma das janelas diretamente#k.");
                 }
             } else if (status == 63) {
                 if (select == 0) {
-                    cm.sendNext("Eu sei que é muito perigoso para vocês lutarem uns com os outros usando armas de verdade; e eu não sugeriria um ato tão barbárico. Não meu amigo, o que eu ofereço é competição. A emoção da batalha e a emoção de competir contra pessoas tão fortes e motivadas. Eu ofereço a premissa de que seu grupo e o grupo oposto ambos #binvoquem os monstros, e derrote os monstros invocados pelo grupo adversário. Essa é a essência da Folia de Monstros. Além disso, você pode usar Maple Coins ganhos durante a Folia de Monstros para obter novos itens e armas! #k");
+                    cm.sendNext("Eu sei que ï¿½ muito perigoso para vocï¿½s lutarem uns com os outros usando armas de verdade; e eu nï¿½o sugeriria um ato tï¿½o barbï¿½rico. Nï¿½o meu amigo, o que eu ofereï¿½o ï¿½ competiï¿½ï¿½o. A emoï¿½ï¿½o da batalha e a emoï¿½ï¿½o de competir contra pessoas tï¿½o fortes e motivadas. Eu ofereï¿½o a premissa de que seu grupo e o grupo oposto ambos #binvoquem os monstros, e derrote os monstros invocados pelo grupo adversï¿½rio. Essa ï¿½ a essï¿½ncia da Folia de Monstros. Alï¿½m disso, vocï¿½ pode usar Maple Coins ganhos durante a Folia de Monstros para obter novos itens e armas! #k");
                 } else if (select == 1) {
-                    cm.sendNext("Existem 3 maneiras de distrair o grupo adversário: #bInvodar um monstro, Habilidade, and Protetor#k. Vou dar-lhe um olhar mais aprofundado, se você quiser saber mais sobre 'Instruções detalhadas'.");
+                    cm.sendNext("Existem 3 maneiras de distrair o grupo adversï¿½rio: #bInvodar um monstro, Habilidade, and Protetor#k. Vou dar-lhe um olhar mais aprofundado, se vocï¿½ quiser saber mais sobre 'Instruï¿½ï¿½es detalhadas'.");
                 } else if (select == 2) {
-                    cm.sendNext("#bInvocar um Monstro#k chama um monstro que ataca o grupo adversário, sob seu controle. Use CP para trazer um Monstro Invocado, e ele irá aparecer na mesma área, atacando o grupo oposto.");
+                    cm.sendNext("#bInvocar um Monstro#k chama um monstro que ataca o grupo adversï¿½rio, sob seu controle. Use CP para trazer um Monstro Invocado, e ele irï¿½ aparecer na mesma ï¿½rea, atacando o grupo oposto.");
                 }
             } else if (status == 64) {
                 if (select == 0) {
-                    cm.sendNext("Claro, não é tão simples assim. Existem outras maneiras de prevenir o outro grupo de caçar monstros, e cabe a você descobrir como fazê-lo. O que acha? Interessado em uma competição amigável?");
+                    cm.sendNext("Claro, nï¿½o ï¿½ tï¿½o simples assim. Existem outras maneiras de prevenir o outro grupo de caï¿½ar monstros, e cabe a vocï¿½ descobrir como fazï¿½-lo. O que acha? Interessado em uma competiï¿½ï¿½o amigï¿½vel?");
                     cm.dispose();
                 } else if (select == 1) {
-                    cm.sendNext("Por favor lembre-se. Nunca é uma boa ideia guardar seus CP's. #bOs CP's que você usou irão ajudar a determinar o vencedor e o perdedor da Folia.");
+                    cm.sendNext("Por favor lembre-se. Nunca ï¿½ uma boa ideia guardar seus CP's. #bOs CP's que vocï¿½ usou irï¿½o ajudar a determinar o vencedor e o perdedor da Folia.");
                 } else if (select == 2) {
-                    cm.sendNext("#bHabilidade#k é uma opção de usar habilidades tais como Escuridão, Fraqueza, e outras para prevenir o grupo oposto de matar outros monstros. São necessários muitos CP's, mas vale muito a pena. O único problema é que eles não duram muito. Use essa tática com sabedoria!");
+                    cm.sendNext("#bHabilidade#k ï¿½ uma opï¿½ï¿½o de usar habilidades tais como Escuridï¿½o, Fraqueza, e outras para prevenir o grupo oposto de matar outros monstros. Sï¿½o necessï¿½rios muitos CP's, mas vale muito a pena. O ï¿½nico problema ï¿½ que eles nï¿½o duram muito. Use essa tï¿½tica com sabedoria!");
                 }
             } else if (status == 65) {
                 if (select == 1) {
-                    cm.sendNext("Oh, e não se preocupe em tranformar-se em um fantasma. Na Folia de Monstros, #bvocê não perderá EXP após a morte#k. É realmente uma experência como nenhuma outra!");
+                    cm.sendNext("Oh, e nï¿½o se preocupe em tranformar-se em um fantasma. Na Folia de Monstros, #bvocï¿½ nï¿½o perderï¿½ EXP apï¿½s a morte#k. ï¿½ realmente uma experï¿½ncia como nenhuma outra!");
                     cm.dispose();
                 } else if (select == 2) {
-                    cm.sendNext("#bProtetor#k é basicamente um item invocado que aumenta drásticamente as habilidades dos monstros invocados pelo seu grupo. Protetor funciona enquanto não for demolido pelo grupo oposto, então eu surigo que você invoque vários monstros primeiro, e então traga o Protetor.");
+                    cm.sendNext("#bProtetor#k ï¿½ basicamente um item invocado que aumenta drï¿½sticamente as habilidades dos monstros invocados pelo seu grupo. Protetor funciona enquanto nï¿½o for demolido pelo grupo oposto, entï¿½o eu surigo que vocï¿½ invoque vï¿½rios monstros primeiro, e entï¿½o traga o Protetor.");
                 }
             } else if (status == 66) {
-                cm.sendNext("Por último, enquanto estiver na Folia de Monstros, #bvocê não pode usar items/poções de recuperação que você leva por ai contigo.#k Entretanto, os monstros deixam esses items cair de vez em quando, e #bassim que pegá-los, o item ativará imediatamente#k. É por isso que é importante saber quando pegar estes items.");
+                cm.sendNext("Por ï¿½ltimo, enquanto estiver na Folia de Monstros, #bvocï¿½ nï¿½o pode usar items/poï¿½ï¿½es de recuperaï¿½ï¿½o que vocï¿½ leva por ai contigo.#k Entretanto, os monstros deixam esses items cair de vez em quando, e #bassim que pegï¿½-los, o item ativarï¿½ imediatamente#k. ï¿½ por isso que ï¿½ importante saber quando pegar estes items.");
+                cm.dispose();
+            } else if (status == 77) {
+                var allDone;
+
+                if (selection == 0) {
+                    allDone = refineItems(0); // minerals
+                } else if (selection == 1) {
+                    allDone = refineItems(1); // jewels
+                } else if (selection == 2 && refineCrystals) {
+                    allDone = refineItems(2); // crystals
+                } else if (selection == 2 && !refineCrystals || selection == 3) {
+                    allDone = refineRockItems(); // moon/star rock
+                }
+
+                if(allDone) {
+                    cm.sendOk("Done. Thanks for showing up~.");
+                } else {
+                    cm.sendOk("Done. Be aware some of the items #rcould not be synthetized#k because either you have a lack of space on your ETC inventory or there's not enough mesos to cover the fee.");
+                }
                 cm.dispose();
             }
         }
     }
 }
 
+function getRefineFee(fee) {
+    return ((feeMultiplier * fee) | 0);
+}
+
+function isRefineTarget(refineType, refineItemid) {
+    if(refineType == 0) { //mineral refine
+        return refineItemid >= 4010000 && refineItemid <= 4010007 && !(refineItemid == 4010007 && !refineSpecials);
+    } else if(refineType == 1) { //jewel refine
+        return refineItemid >= 4020000 && refineItemid <= 4020008 && !(refineItemid == 4020008 && !refineSpecials);
+    } else if(refineType == 2) { //crystal refine
+        return refineItemid >= 4004000 && refineItemid <= 4004004 && !(refineItemid == 4004004 && !refineSpecials);
+    }
+    
+    return false;
+}
+
+function getRockRefineTarget(refineItemid) {
+    if(refineItemid >= 4011000 && refineItemid <= 4011006) {
+        return 0;
+    } else if(refineItemid >= 4021000 && refineItemid <= 4021008) {
+        return 1;
+    }
+    
+    return -1;
+}
+
+function refineItems(refineType) {
+    var allDone = true;
+    
+    var refineFees = [[300,300,300,500,500,500,800,270],[500,500,500,500,500,500,500,1000,3000],[5000,5000,5000,5000,1000000]];
+    var itemCount = {};
+    
+    var iter = cm.getPlayer().getInventory(Packages.client.inventory.MapleInventoryType.ETC).iterator();
+    while (iter.hasNext()) {
+        var it = iter.next();
+        var itemid = it.getItemId();
+
+        if(isRefineTarget(refineType, itemid)) {
+            var ic = itemCount[itemid];
+            
+            if(ic != undefined) {
+                itemCount[itemid] += it.getQuantity();
+            } else {
+                itemCount[itemid] = it.getQuantity();
+            }
+        }
+    }
+    
+    for(var key in itemCount) {
+        var itemqty = itemCount[key];
+        var itemid = parseInt(key);
+        
+        var refineQty = ((itemqty / 10) | 0);
+        if(refineQty <= 0) continue;
+        
+        while(true) {
+            itemqty = refineQty * 10;
+        
+            var fee = getRefineFee(refineFees[refineType][(itemid % 100) | 0] * refineQty);
+            if(cm.canHold(itemid + 1000, refineQty, itemid, itemqty) && cm.getMeso() >= fee) {
+                cm.gainMeso(-fee);
+                cm.gainItem(itemid, -itemqty);
+                cm.gainItem(itemid + (itemid != 4010007 ? 1000 : 1001), refineQty);
+                
+                break;
+            } else if(refineQty <= 1) {
+                allDone = false;
+                break;
+            } else {
+                refineQty--;
+            }
+        }
+    }
+    
+    return allDone;
+}
+
+function refineRockItems() {
+    var allDone = true;
+    var minItems = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]];
+    var minRocks = [2147483647, 2147483647];
+    
+    var rockItems = [4011007, 4021009];
+    var rockFees = [10000, 15000];
+
+    var iter = cm.getPlayer().getInventory(Packages.client.inventory.MapleInventoryType.ETC).iterator();
+    while (iter.hasNext()) {
+        var it = iter.next();
+        var itemid = it.getItemId();
+        var rockRefine = getRockRefineTarget(itemid);
+        if(rockRefine >= 0) {
+            var rockItem = ((itemid % 100) | 0);
+            var itemqty = it.getQuantity();
+            
+            minItems[rockRefine][rockItem] += itemqty;
+        }
+    }
+    
+    for(var i = 0; i < minRocks.length; i++) {
+        for(var j = 0; j < minItems[i].length; j++) {
+            if(minRocks[i] > minItems[i][j]) {
+                minRocks[i] = minItems[i][j];
+            }
+        }
+        if(minRocks[i] <= 0 || minRocks[i] == 2147483647) continue;
+        
+        var refineQty = minRocks[i];
+        while(true) {
+            var fee = getRefineFee(rockFees[i] * refineQty);
+            if(cm.canHold(rockItems[i], refineQty) && cm.getMeso() >= fee) {
+                cm.gainMeso(-fee);
+
+                var j;
+                if(i == 0) {
+                    for(j = 4011000; j < 4011007; j++) {
+                        cm.gainItem(j, -refineQty);
+                    }
+                    cm.gainItem(j, refineQty);
+                } else {
+                    for(j = 4021000; j < 4021009; j++) {
+                        cm.gainItem(j, -refineQty);
+                    }
+                    cm.gainItem(j, refineQty);
+                }
+                
+                break;
+            } else if(refineQty <= 1) {
+                allDone = false;
+                break;
+            } else {
+                refineQty--;
+            }
+        }
+    }
+    
+    return allDone;
+}

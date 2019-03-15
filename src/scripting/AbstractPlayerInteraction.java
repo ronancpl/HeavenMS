@@ -55,7 +55,6 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleQuestStatus;
-import client.MapleStat;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -68,6 +67,7 @@ import client.inventory.manipulator.MapleInventoryManipulator;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
+import server.MapleMarriage;
 import server.life.MapleNPC;
 import tools.Pair;
 
@@ -1048,6 +1048,10 @@ public class AbstractPlayerInteraction {
                 return list;
         }
         
+        public List<Item> getUnclaimedMarriageGifts() {
+            return MapleMarriage.loadGiftItemsFromDb(this.getClient(), this.getPlayer().getId());
+        }
+        
         public boolean startDungeonInstance(int dungeonid) {
                 return c.getChannelServer().addMiniDungeon(dungeonid);
         }
@@ -1101,7 +1105,7 @@ public class AbstractPlayerInteraction {
                 c.announce(MaplePacketCreator.getNPCTalk(npcid, (byte) 0, message, "00 00", (byte) 0));
         }
 
-    public long getCurrentTime() {
-	    return System.currentTimeMillis();
-    }    
+        public long getCurrentTime() {
+                return Server.getInstance().getCurrentTime();
+        }    
 }
