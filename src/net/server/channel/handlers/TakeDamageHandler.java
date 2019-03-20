@@ -34,7 +34,6 @@ import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
-import constants.skills.Corsair;
 
 import java.awt.Point;
 import java.util.Collections;
@@ -44,6 +43,7 @@ import java.util.List;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleStatEffect;
+import server.life.MapleLifeFactory;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
@@ -87,14 +87,18 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 
-                if (attacker != null) {
+                if (attacker != null || monsteridfrom == 9300166) {
                     List<loseItem> loseItems;
                     
-                    if (attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
+                    if (monsteridfrom != 9300166 && attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
                         return;
                     }
                     if (damage > 0) {
                         MapleMonster assaulter = map.getMonsterById(monsteridfrom);
+                        
+                        if (monsteridfrom == 9300166) {
+                            assaulter = MapleLifeFactory.getMonster(monsteridfrom);
+                        } 
                         
                         if(assaulter != null) {
                             loseItems = assaulter.getStats().loseItem();
@@ -106,8 +110,14 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                                 for (loseItem loseItem : loseItems) {
                                     type = ItemConstants.getInventoryType(loseItem.getId());
                                     for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
+                                        boolean buffAtivo = false;
                                         if (Randomizer.nextInt(100) < loseItem.getChance()) {
-                                            if (chr.haveItem(loseItem.getId())) {
+                                            for (Integer inteiro : chr.getAvailableBuffs()) {
+                                                if (inteiro == -2022269) {
+                                                    buffAtivo = true;
+                                                }
+                                            }
+                                            if (chr.haveItem(loseItem.getId()) && !buffAtivo) {
                                                 pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
                                                 MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
                                                 map.spawnItemDrop(chr, chr, new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, chr.getPosition()), true, true);
@@ -118,7 +128,9 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                                         }
                                     }
                                 }
-                                map.removeMapObject(attacker);
+                                if(monsteridfrom != 9300166) {
+                                    map.removeMapObject(attacker);
+                                }
                             }
                         }
                     }

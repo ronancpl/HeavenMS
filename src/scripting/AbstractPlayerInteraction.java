@@ -55,7 +55,6 @@ import tools.MaplePacketCreator;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleQuestStatus;
-import client.MapleStat;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -331,7 +330,7 @@ public class AbstractPlayerInteraction {
         return true;
     }
 
-        //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----
+    //---- \/ \/ \/ \/ \/ \/ \/  NOT TESTED  \/ \/ \/ \/ \/ \/ \/ \/ \/ ----
     public final MapleQuestStatus getQuestRecord(final int id) {
         return c.getPlayer().getQuestNAdd(MapleQuest.getInstance(id));
     }
@@ -340,7 +339,7 @@ public class AbstractPlayerInteraction {
         return c.getPlayer().getQuestNoAdd(MapleQuest.getInstance(id));
     }
 
-        //---- /\ /\ /\ /\ /\ /\ /\  NOT TESTED  /\ /\ /\ /\ /\ /\ /\ /\ /\ ----
+    //---- /\ /\ /\ /\ /\ /\ /\  NOT TESTED  /\ /\ /\ /\ /\ /\ /\ /\ /\ ----
     public void openNpc(int npcid) {
         openNpc(npcid, null);
     }
@@ -745,7 +744,7 @@ public class AbstractPlayerInteraction {
     }
 
     public void givePartyExp(String PQ, boolean instance) {
-		//1 player  =  +0% bonus (100)
+        //1 player  =  +0% bonus (100)
         //2 players =  +0% bonus (100)
         //3 players =  +0% bonus (100)
         //4 players = +10% bonus (110)
@@ -1023,6 +1022,33 @@ public class AbstractPlayerInteraction {
             }
         }
         return null;
+    }
+
+    public String getNomeDosMembrosExpedition(MapleExpeditionType tipo) {
+        String membros = "";
+        MapleExpedition expedicao = getExpedition(tipo);
+        for (String memberName : expedicao.getMembers().values()) {
+            membros += "" + memberName + ", ";
+        }
+        return membros;
+    }
+    
+    public boolean getIsLeaderExpedition(MapleExpeditionType tipo) {
+        MapleExpedition expedicao = getExpedition(tipo);
+        return expedicao.isLeader(getPlayer());
+    }
+    
+    public void warpExpedition(int mapId, MapleExpeditionType tipo) {
+        if (tipo != null ) {
+            MapleExpedition expedicao = getExpedition(tipo);
+            for (MapleCharacter chr : expedicao.getActiveMembers()) {
+                chr.changeMap(mapId);
+            }
+        } else {
+            for (MapleCharacter chr : getMap().getAllPlayers()) {
+                chr.changeMap(mapId);
+            }
+        }
     }
 
     public long getJailTimeLeft() {

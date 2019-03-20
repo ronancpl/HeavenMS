@@ -1,25 +1,3 @@
-/* 
- This file is part of the OdinMS Maple Story Server
- Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
- Matthias Butz <matze@odinms.de>
- Jan Christian Meyer <vimes@odinms.de>
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation version 3 as published by
- the Free Software Foundation. You may not use, modify or distribute
- this program under any otheer version of the GNU Affero General Public
- License.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; witout even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
-
-
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package client;
 
 import java.awt.Point;
@@ -126,7 +104,6 @@ import client.newyear.NewYearCardRecord;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
-import constants.LinguaConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
@@ -320,7 +297,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int banishSp = -1;
     private long banishTime = 0;
     private long lastExpGainTime;
-
+    public ScheduledFuture<?> pqMapleMap;
+    public ScheduledFuture<?> ariantScore;
+    
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
             @Override
@@ -1944,11 +1923,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             this.getMonsterBook().addCard(client, mItem.getItemId());
                         }
                     } else if (MapleInventoryManipulator.addFromDrop(client, mItem, true)) {
-                    } else if (mItem.getItemId() == 4031868) {
-                        this.getMap().broadcastMessage(MaplePacketCreator.updateAriantPQRanking(this.getName(), this.getItemQuantity(4031868, false), false));
                     } else {
                         client.announce(MaplePacketCreator.enableActions());
                         return;
+                    }
+                    if (mItem.getItemId() == 4031868) {
+                        updateAriantScore();
+                        getMap().broadcastMessage(MaplePacketCreator.updateAriantPQRanking(this.getName(), this.getItemQuantity(4031868, false), false));
                     }
 
                     this.getMap().pickItemDrop(pickupPacket, mapitem);
@@ -5780,6 +5761,22 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (hpDecreaseTask != null) {
             hpDecreaseTask.cancel(false);
         }
+        cancelPqMapleMap();
+        cancelAriantScore();
+    }
+    
+    public void cancelPqMapleMap() {
+        if (pqMapleMap != null) {
+            pqMapleMap.cancel(true);
+            pqMapleMap = null;
+        }
+    }
+    
+    public void cancelAriantScore() {
+        if (ariantScore != null) {
+            ariantScore.cancel(true);
+            ariantScore = null;
+        }
     }
 
     private int getChangedJobSp(MapleJob newJob) {
@@ -7007,12 +7004,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     private void playerDead() {
         if (this.getMap().isCPQMap()) {
-            int lost = getCP();
-            if (lost > 6) {
-                lost = 6;
+            int losing = getMap().getDeathCP();
+            if (getCP() < losing) {
+                losing = getCP();
             }
-            getMap().broadcastMessage(MaplePacketCreator.playerDiedMessage(getName(), lost, getTeam()));
-            gainCP(-lost);
+            getMap().broadcastMessage(MaplePacketCreator.playerDiedMessage(getName(), losing, getTeam()));
+            gainCP(-losing);
             return;
         }
         cancelAllBuffs(false);
@@ -10226,4 +10223,41 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             getClient().getAbstractPlayerInteraction().gainItem(item.getItemId(), item.getQuantity());
         }
     }
+    
+    public int getAriantScore() {
+        return this.countItem(4031868);
+    }
+
+    public void updateAriantScore() {
+        this.getMap().broadcastMessage(MaplePacketCreator.updateAriantPQRanking(this.getName(), getAriantScore(), false));
+    }
+    
+    public void disease(int type, int level) {
+        if (MapleDisease.getBySkill(type) == null) {
+            return;
+        }
+        giveDebuff(MapleDisease.getBySkill(type), MobSkillFactory.getMobSkill(type, level));
+    }
+    
+    public void shield() {
+        List<Pair<MapleBuffStat, Integer>> ldsstat = Collections.singletonList(new Pair<MapleBuffStat, Integer>(MapleBuffStat.ARIANT_PQ_SHIELD, 1));
+        getMap().broadcastMessage(this, MaplePacketCreator.giveForeignBuff(id, ldsstat), false);
+    }
+
+    public ScheduledFuture<?> getPqMapleMap() {
+        return pqMapleMap;
+    }
+
+    public void setPqMapleMap(ScheduledFuture<?> pqMapleMap) {
+        this.pqMapleMap = pqMapleMap;
+    }
+
+    public ScheduledFuture<?> getAriantScoreBord() {
+        return ariantScore;
+    }
+
+    public void setAriantScore(ScheduledFuture<?> ariantScore) {
+        this.ariantScore = ariantScore;
+    }
+    
 }

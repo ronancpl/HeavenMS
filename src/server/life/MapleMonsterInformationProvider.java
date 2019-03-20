@@ -186,7 +186,12 @@ public class MapleMonsterInformationProvider {
         if (monsterId >= 9300127 && monsterId <= 9300136 || monsterId >= 9300315 && monsterId <= 9300324) {
             int dropArray[] = {2022157, 2022158, 2022159, 2022160, 2022161, 2022162, 2022163, 2022164, 2022165, 2022166, 2022167, 2022168, 2022169, 2022170, 2022171, 2022172, 2022173, 2022174, 2022175, 2022176, 2022177, 2022178, 4001129}; //These are the drops, -1 means meso :D
             for (int id : dropArray) {
-                ret.add(new MonsterDropEntry(id, 2000, 1, 1, (short) 0));
+                ret.add(new MonsterDropEntry(id, 20000, 1, 1, (short) 0));
+            }
+        } else if (monsterId == 9300157) {
+            int dropArray[] = {2022266, 2022267, 2022268, 2022269}; //These are the drops, -1 means meso :D
+            for (int id : dropArray) {
+                ret.add(new MonsterDropEntry(id, 20000, 1, 1, (short) 0));
             }
         } else {
             PreparedStatement ps = null;

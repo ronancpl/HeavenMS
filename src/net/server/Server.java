@@ -88,6 +88,7 @@ import constants.ServerConstants;
 import java.util.TimeZone;
 import net.server.coordinator.MapleSessionCoordinator;
 import server.CashShop.CashItemFactory;
+import server.MapleItemInformationProvider;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
 import server.TimerManager;
@@ -924,6 +925,7 @@ public class Server {
         //MapleItemInformationProvider.getInstance().getAllItems(); //unused, rofl
 
         CashItemFactory.getSpecialCashItems();
+        MapleItemInformationProvider.getInstance().getAllItems();
         System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
         
 	timeToTake = System.currentTimeMillis();

@@ -14,7 +14,6 @@ import tools.MaplePacketCreator;
 /**
  * @author Drago/Dragohe4rt
  */
-
 public class MonsterCarnival {
 
     public static int D = 3;
@@ -36,6 +35,8 @@ public class MonsterCarnival {
             this.cpq1 = cpq1;
             this.p1 = p1;
             this.p2 = p2;
+            setSummons(map.getMaxMobs());
+            setSummonss(map.getMaxMobs());
             Channel cs = Server.getInstance().getWorld(p2.getLeader().getWorld()).getChannel(p2.getLeader().getChannel());
             p1.setEnemy(p2);
             p2.setEnemy(p1);
@@ -91,17 +92,17 @@ public class MonsterCarnival {
                 public void run() {
                     timeUp();
                 }
-            }, 10 * 60 * 1000);
+            }, (map.getTimeDefault() - 10) * 1000);
             effectTimer = TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     complete();
                 }
-            }, 10 * 60 * 1000 - 10 * 1000);
+            }, (map.getTimeDefault() - 10) * 1000 - 10 * 1000);
             TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
-                    map.addClock(60 * 10);
+                    map.addClock(map.getTimeDefault() - 10);
                 }
             }, 2000);
         } catch (Exception e) {
@@ -321,13 +322,13 @@ public class MonsterCarnival {
             public void run() {
                 timeUp();
             }
-        }, 3 * 60 * 1000);
+        }, map.getTimeExpand() * 1000);
         effectTimer = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 complete();
             }
-        }, 3 * 60 * 1000 - 10);
+        }, map.getTimeExpand() * 1000 - 10);
     }
 
     public void complete() {
@@ -485,5 +486,21 @@ public class MonsterCarnival {
         } else if (team == 1) {
             this.blueCP = CP;
         }
+    }
+
+    public int getSummons() {
+        return summons;
+    }
+
+    public void setSummons(int summons) {
+        this.summons = summons;
+    }
+
+    public int getSummonss() {
+        return summonss;
+    }
+
+    public void setSummonss(int summonss) {
+        this.summonss = summonss;
     }
 }

@@ -1,24 +1,3 @@
-/*
- This file is part of the OdinMS Maple Story Server
- Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
- Matthias Butz <matze@odinms.de>
- Jan Christian Meyer <vimes@odinms.de>
-
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU Affero General Public License as
- published by the Free Software Foundation version 3 as published by
- the Free Software Foundation. You may not use, modify or distribute
- this program under any other version of the GNU Affero General Public
- License.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU Affero General Public License for more details.
-
- You should have received a copy of the GNU Affero General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 package server.maps;
 
 import client.MapleBuffStat;
@@ -84,9 +63,9 @@ import server.life.MonsterDropEntry;
 import server.life.MonsterGlobalDropEntry;
 import server.life.SpawnPoint;
 import scripting.event.EventInstanceManager;
+import server.expeditions.MapleExpedition;
+import server.expeditions.MapleExpeditionType;
 import server.life.MaplePlayerNPC;
-import server.life.MobSkill;
-import server.life.MobSkillFactory;
 import server.life.MonsterListener;
 import server.partyquest.GuardianSpawnPoint;
 import server.partyquest.MapleCarnivalFactory;
@@ -162,6 +141,13 @@ public class MapleMap {
     private MapleSnowball snowball0 = null;
     private MapleSnowball snowball1 = null;
     private MapleCoconut coconut;
+    
+    //CPQ
+    private int maxMobs;
+    private int maxReactors;
+    private int deathCP;
+    private int timeDefault;
+    private int timeExpand;
 
     //locks
     private ReadLock chrRLock;
@@ -2499,6 +2485,42 @@ public class MapleMap {
             if (mmd != null) {
                 mmd.registerPlayer(chr);
             }
+        } else if (mapid == 980010101 || mapid == 980010201 || mapid == 980010301) { // AriantPQ
+            int pqTimer = (10 * 60 * 1000);
+            int pqTimerBord = (9 * 60 * 1000) + 50 * 1000;
+
+            chr.announce(MaplePacketCreator.getClock(pqTimer / 1000));
+
+            chr.setAriantScore(TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    if (chr.getMapId() == 980010101 || chr.getMapId() == 980010201 || chr.getMapId() == 980010301) {
+                        broadcastMessage(MaplePacketCreator.showAriantScoreBoard());
+                        killAllMonsters();
+                    }
+                }
+            }, pqTimerBord));
+
+            chr.setPqMapleMap(TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    if (chr.getMapId() == 980010101 || chr.getMapId() == 980010201 || chr.getMapId() == 980010301) {
+                        MapleExpedition exp = null;
+                        if (chr.getMapId() == 980010101) {
+                            exp = chr.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT);
+                        } else if (chr.getMapId() == 980010201) {
+                            exp = chr.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT1);
+                        } else {
+                            exp = chr.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT2);
+                        }
+                        chr.changeMap(980010010, 0);
+                        chr.cancelPqMapleMap();
+                        if (exp != null) {
+                            chr.getClient().getAbstractPlayerInteraction().endExpedition(exp);
+                        }
+                    }
+                }
+            }, pqTimer));
         }
 
         MaplePet[] pets = chr.getPets();
@@ -4350,7 +4372,7 @@ public class MapleMap {
     public final List<Pair<Integer, Integer>> getMobsToSpawn() {
         return mobsToSpawn;
     }
-    
+
     public boolean isCPQWinnerMap() {
         switch (this.getId()) {
             case 980000103:
@@ -4381,5 +4403,45 @@ public class MapleMap {
                 return true;
         }
         return false;
+    }
+    
+    public int getMaxMobs() {
+        return maxMobs;
+    }
+
+    public void setMaxMobs(int maxMobs) {
+        this.maxMobs = maxMobs;
+    }
+
+    public int getMaxReactors() {
+        return maxReactors;
+    }
+
+    public void setMaxReactors(int maxReactors) {
+        this.maxReactors = maxReactors;
+    }
+
+    public int getDeathCP() {
+        return deathCP;
+    }
+
+    public void setDeathCP(int deathCP) {
+        this.deathCP = deathCP;
+    }
+
+    public int getTimeDefault() {
+        return timeDefault;
+    }
+
+    public void setTimeDefault(int timeDefault) {
+        this.timeDefault = timeDefault;
+    }
+
+    public int getTimeExpand() {
+        return timeExpand;
+    }
+
+    public void setTimeExpand(int timeExpand) {
+        this.timeExpand = timeExpand;
     }
 }

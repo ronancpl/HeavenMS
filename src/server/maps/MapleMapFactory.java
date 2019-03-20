@@ -94,12 +94,12 @@ public class MapleMapFactory {
             String type = MapleDataTool.getString(life.getChildByPath("type"));
             int team = MapleDataTool.getInt("team", life, -1);
             if (map.isCPQMap2() && type.equals("m")) {
-                if((Integer.parseInt(life.getName()) % 2) == 0)  {
+                if ((Integer.parseInt(life.getName()) % 2) == 0) {
                     team = 0;
                 } else {
                     team = 1;
                 }
-            } 
+            }
             int cy = MapleDataTool.getInt(life.getChildByPath("cy"));
             MapleData dF = life.getChildByPath("f");
             int f = (dF != null) ? MapleDataTool.getInt(dF) : 0;
@@ -313,6 +313,11 @@ public class MapleMapFactory {
         if (map.isCPQMap()) {
             MapleData mcData = mapData.getChildByPath("monsterCarnival");
             if (mcData != null) {
+                map.setDeathCP(MapleDataTool.getIntConvert("deathCP", mcData, 0));
+                map.setMaxMobs(MapleDataTool.getIntConvert("mobGenMax", mcData, 0));
+                map.setTimeDefault(MapleDataTool.getIntConvert("timeDefault", mcData, 0));
+                map.setTimeExpand(MapleDataTool.getIntConvert("timeExpand", mcData, 0));
+                map.setMaxReactors(MapleDataTool.getIntConvert("guardianGenMax", mcData, 0));
                 MapleData guardianGenData = mcData.getChildByPath("guardianGenPos");
                 for (MapleData node : guardianGenData.getChildren()) {
                     GuardianSpawnPoint pt = new GuardianSpawnPoint(new Point(MapleDataTool.getIntConvert("x", node), MapleDataTool.getIntConvert("y", node)));
@@ -320,18 +325,19 @@ public class MapleMapFactory {
                     pt.setTaken(false);
                     map.addGuardianSpawnPoint(pt);
                 }
-            }
-            if (mcData.getChildByPath("skill") != null) {
-                for (MapleData area : mcData.getChildByPath("skill")) {
-                    map.addSkillId(MapleDataTool.getInt(area));
+                if (mcData.getChildByPath("skill") != null) {
+                    for (MapleData area : mcData.getChildByPath("skill")) {
+                        map.addSkillId(MapleDataTool.getInt(area));
+                    }
+                }
+
+                if (mcData.getChildByPath("mob") != null) {
+                    for (MapleData area : mcData.getChildByPath("mob")) {
+                        map.addMobSpawn(MapleDataTool.getInt(area.getChildByPath("id")), MapleDataTool.getInt(area.getChildByPath("spendCP")));
+                    }
                 }
             }
-            
-            if (mcData.getChildByPath("mob") != null) {
-                for (MapleData area : mcData.getChildByPath("mob")) {
-                    map.addMobSpawn(MapleDataTool.getInt(area.getChildByPath("id")), MapleDataTool.getInt(area.getChildByPath("spendCP")));
-                }
-            }
+
         }
 
         if (mapData.getChildByPath("reactor") != null) {

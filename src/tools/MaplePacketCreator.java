@@ -4988,12 +4988,18 @@ public class MaplePacketCreator {
 
     public static byte[] updateAriantPQRanking(String name, int score, boolean empty) {
         final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendOpcode.ARIANT_SCORE.getValue());
+        mplew.writeShort(SendOpcode.ARIANT_ARENA_USER_SCORE.getValue());
         mplew.write(empty ? 0 : 1);
         if (!empty) {
             mplew.writeMapleAsciiString(name);
             mplew.writeInt(score);
         }
+        return mplew.getPacket();
+    }
+    
+    public static byte[] showAriantScoreBoard() {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendOpcode.ARIANT_ARENA_SHOW_RESULT.getValue());
         return mplew.getPacket();
     }
 

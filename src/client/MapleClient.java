@@ -81,6 +81,8 @@ import server.quest.MapleQuest;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.coordinator.MapleLoginBypassCoordinator;
+import server.expeditions.MapleExpedition;
+import server.expeditions.MapleExpeditionType;
 
 public class MapleClient {
 
@@ -767,7 +769,7 @@ public class MapleClient {
         try {
             Connection con = DatabaseConnection.getConnection();
             try (PreparedStatement ps = con.prepareStatement("UPDATE accounts SET loggedin = ?, lastlogin = ? WHERE id = ?")) {
-                                // using sql currenttime here could potentially break the login, thanks Arnah for pointing this out
+                // using sql currenttime here could potentially break the login, thanks Arnah for pointing this out
 
                 ps.setInt(1, newstate);
                 ps.setTimestamp(2, new java.sql.Timestamp(Server.getInstance().getCurrentTime()));
@@ -884,6 +886,9 @@ public class MapleClient {
                 if (player.getMonsterCarnival() != null) {
                     player.getMonsterCarnival().playerDisconnected(getPlayer().getId());
                 }
+
+                cancelarAriantPQ();
+
             }
 
             if (player.getMap() != null) {
@@ -896,6 +901,20 @@ public class MapleClient {
 
         } catch (final Throwable t) {
             FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, t);
+        }
+    }
+
+    public void cancelarAriantPQ() {
+        MapleExpedition exp = null;
+        if (player.getMapId() == 980010101) {
+            exp = player.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT);
+        } else if (player.getMapId() == 980010201) {
+            exp = player.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT1);
+        } else {
+            exp = player.getClient().getAbstractPlayerInteraction().getExpedition(MapleExpeditionType.ARIANT2);
+        }
+        if (exp != null && (player.getMapId() == 980010101 || player.getMapId() == 980010201 || player.getMapId() == 980010301) && player.getMap().getAllPlayer().size() == 1) {
+            getAbstractPlayerInteraction().endExpedition(exp);
         }
     }
 
@@ -985,7 +1004,7 @@ public class MapleClient {
                         chrg.setCharacter(null);
                     }
                     wserv.removePlayer(player);
-                                        //getChannelServer().removePlayer(player); already being done
+                    //getChannelServer().removePlayer(player); already being done
 
                     player.saveCooldowns();
                     player.cancelAllDebuffs();
@@ -1448,7 +1467,7 @@ public class MapleClient {
         player.cancelDiseaseExpireTask();
         player.cancelSkillCooldownTask();
         player.cancelQuestExpirationTask();
-		//Cancelling magicdoor? Nope
+        //Cancelling magicdoor? Nope
         //Cancelling mounts? Noty
 
         player.getInventory(MapleInventoryType.EQUIPPED).checked(false); //test

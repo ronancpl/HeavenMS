@@ -125,10 +125,10 @@ public class MapleStatEffect {
     private short watk, matk, wdef, mdef, acc, avoid, speed, jump;
     private short hp, mp;
     private double hpR, mpR;
-    private short mhpRRate, mmpRRate;
+    private short mhpRRate, mmpRRate, mobSkill, mobSkillLevel;
     private byte mhpR, mmpR;
     private short mpCon, hpCon;
-    private int duration;
+    private int duration, target, barrier, mob;
     private boolean overTime, repeatEffect;
     private int sourceid;
     private int moveTo;
@@ -208,6 +208,24 @@ public class MapleStatEffect {
         ret.fatigue = MapleDataTool.getInt("incFatigue", source, 0);
         ret.repeatEffect = MapleDataTool.getInt("repeatEffect", source, 0) > 0;
 
+        MapleData mdd = source.getChildByPath("0");
+        if (mdd != null && mdd.getChildren().size() > 0) {
+            ret.mobSkill = (short) MapleDataTool.getInt("mobSkill", mdd, 0);
+            ret.mobSkillLevel = (short) MapleDataTool.getInt("level", mdd, 0);
+            ret.target = MapleDataTool.getInt("target", mdd, 0);
+        } else {
+            ret.mobSkill = 0;
+            ret.mobSkillLevel = 0;
+            ret.target = 0;
+        }
+        ret.barrier = MapleDataTool.getInt("barrier", source, 0);
+        
+        MapleData mdds = source.getChildByPath("mob");
+        if (mdds != null) {
+            if (mdds.getChildren()!= null && mdds.getChildren().size() > 0) {
+                ret.mob = MapleDataTool.getInt("mob", mdds, 0);
+            }
+        }
         ret.sourceid = sourceid;
         ret.skill = skill;
         if (!ret.skill && ret.duration > -1) {
@@ -228,8 +246,15 @@ public class MapleStatEffect {
         ret.speed = (short) MapleDataTool.getInt("speed", source, 0);
         ret.jump = (short) MapleDataTool.getInt("jump", source, 0);
 
+        
+        if (MapleDataTool.getInt("barrier", source, 0) > 0) {
+            ret.barrier = MapleDataTool.getInt("barrier", source, 0);
+            addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ARIANT_PQ_SHIELD, Integer.valueOf(1));
+        }
+        
         ret.mapProtection = mapProtection(sourceid);
         addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_PROTECTION, Integer.valueOf(ret.mapProtection));
+        
 
         if (ret.overTime && ret.getSummonMovementType() == null) {
             if (!skill) {
@@ -974,8 +999,19 @@ public class MapleStatEffect {
                     applyfrom.dispelDebuff(debuff);
                 }
             }
+        } else if (mobSkill > 0 && mobSkillLevel > 0) {
+            if (target > 0) {
+                for (MapleCharacter chr : applyto.getMap().getAllPlayers()) {
+                    if (chr.getId() != applyto.getId()) {
+                        chr.disease(mobSkill, mobSkillLevel);
+                    }
+                }
+            } else {
+                applyto.disease(mobSkill, mobSkillLevel);
+            }
+        } else if (barrier > 0) {
+            applyto.shield();
         }
-
         return true;
     }
 
@@ -1195,7 +1231,6 @@ public class MapleStatEffect {
 
                     localstatups = statups;
                 }
-
                 buff = MaplePacketCreator.giveBuff(localsourceid, localDuration, localstatups);
                 mbuff = MaplePacketCreator.showMonsterRiding(applyto.getId(), givemount);
                 localDuration = duration;
