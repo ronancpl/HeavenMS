@@ -1264,19 +1264,19 @@ public class MapleMap {
     }
     
     public void broadcastBalrogVictory(String leaderName) {
-        getWorldServer().dropMessage(6, "[VICTORY] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
+        getWorldServer().dropMessage(6, "[Victory] " + leaderName + "'s party has successfully defeated the Balrog! Praise to them, they finished with " + countAlivePlayers() + " players alive.");
     }
     
     public void broadcastHorntailVictory() {
-        getWorldServer().dropMessage(6, "[VICTORY] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
+        getWorldServer().dropMessage(6, "[Victory] To the crew that have finally conquered Horned Tail after numerous attempts, I salute thee! You are the true heroes of Leafre!!");
     }
     
     public void broadcastZakumVictory() {
-        getWorldServer().dropMessage(6, "[VICTORY] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
+        getWorldServer().dropMessage(6, "[Victory] At last, the tree of evil that for so long overwhelmed Ossyria has fallen. To the crew that managed to finally conquer Zakum, after numerous attempts, victory! You are the true heroes of Ossyria!!");
     }
     
     public void broadcastPinkBeanVictory(int channel) {
-        getWorldServer().dropMessage(6, "[VICTORY] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
+        getWorldServer().dropMessage(6, "[Victory] In a swift stroke of sorts, the crew that has attempted Pink Bean at channel " + channel + " has ultimately defeated it. The Temple of Time shines radiantly once again, the day finally coming back, as the crew that managed to finally conquer it returns victoriously from the battlefield!!");
     }
     
     private boolean removeKilledMonsterObject(MapleMonster monster) {
@@ -1893,7 +1893,7 @@ public class MapleMap {
     
     public void spawnAllMonsterIdFromMapSpawnList(int id, int difficulty, boolean isPq) {
         for(SpawnPoint sp: getAllMonsterSpawn()) {
-            if(sp.getMonsterId() == id) {
+            if(sp.getMonsterId() == id && sp.shouldForceSpawn()) {
                 spawnMonster(sp.getMonster(), difficulty, isPq);
             }
         }
@@ -2079,7 +2079,7 @@ public class MapleMap {
     public MaplePortal getDoorPortal(int doorid) {
         MaplePortal doorPortal = portals.get(0x80 + doorid);
         if(doorPortal == null) {
-            FilePrinter.printError(FilePrinter.EXCEPTION, "[DOOR] " + mapName + "(" + mapid + ") does not contain door portalid " + doorid);
+            FilePrinter.printError(FilePrinter.EXCEPTION, "[Door] " + mapName + "(" + mapid + ") does not contain door portalid " + doorid);
             return portals.get(0x80);
         }
         
@@ -4334,10 +4334,10 @@ public class MapleMap {
             if (team == 0 && redTeamBuffs.size() >= 4 || team == 1 && blueTeamBuffs.size() >= 4) {
                 return 2;
             }
-            final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
-            if (team == 0 && redTeamBuffs.contains(skil)) {
+            final MCSkill skill = MapleCarnivalFactory.getInstance().getGuardian(num);
+            if (team == 0 && redTeamBuffs.contains(skill)) {
                 return 0;
-            } else if (team == 1 && blueTeamBuffs.contains(skil)) {
+            } else if (team == 1 && blueTeamBuffs.contains(skill)) {
                 return 0;
             }
             GuardianSpawnPoint pt = this.getRandomGuardianSpawn(team);
@@ -4352,7 +4352,7 @@ public class MapleMap {
             reactor.resetReactorActions(0);
             this.spawnReactor(reactor);
             reactor.setGuardian(pt);
-            this.buffMonsters(team, skil);
+            this.buffMonsters(team, skill);
             getReactorByOid(reactor.getObjectId()).hitReactor(((MapleCharacter) this.getAllPlayer().get(0)).getClient());
         } catch (Exception e) {
             e.printStackTrace();
@@ -4360,21 +4360,20 @@ public class MapleMap {
         return 1;
     }
 
-    public void buffMonsters(int team, MCSkill skil) {
+    public void buffMonsters(int team, MCSkill skill) {
+        if (skill == null) return;
+        
         if (team == 0) {
-            redTeamBuffs.add(skil);
+            redTeamBuffs.add(skill);
         } else if (team == 1) {
-            blueTeamBuffs.add(skil);
+            blueTeamBuffs.add(skill);
         }
         for (MapleMapObject mmo : this.mapobjects.values()) {
             if (mmo.getType() == MapleMapObjectType.MONSTER) {
                 MapleMonster mob = (MapleMonster) mmo;
                 if (mob.getTeam() == team) {
-                    if (skil != null) {
-                        skil.getSkill().applyEffect(null, mob, false, null);
-                    }
+                    skill.getSkill().applyEffect(null, mob, false, null);
                 }
-
             }
         }
     }

@@ -1,7 +1,6 @@
 package net.server.handlers.login;
 
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 
 import net.AbstractMaplePacketHandler;
@@ -85,7 +84,7 @@ public class CharSelectedWithPicHandler extends AbstractMaplePacketHandler {
             
             server.unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-            server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
+            server.setCharacteridInTransition(session, charId);
             
             try {
                 c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));

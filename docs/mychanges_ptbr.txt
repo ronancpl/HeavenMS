@@ -1713,6 +1713,18 @@ Implementado mecânica de pescaria no código-fonte.
 Corrigido membros de party não recebendo bonus devidamente após membros sairem do mapa/party em alguns casos.
 Revisado sistema de experiência em party. Ganhos de bonus agora levam em conta valores-base que membros de party ganham ao derrotar um mob para definir o ganho geral da equipe. Contabilização de ganhos remodelado, buscando por um modo de distribuição mais coerente.
 
+10 Março 2019,
+Ajustado ganho de APs ao mudar de classe, como esperado para o 2o avanço em diante.
+Corrigido itemids impróprios presentes no sistema de fishing.
+Corrigido itens one-of-a-kind sendo perdidos em transações entre jogadores.
+Ajustado resultado de falha de itens one-of-a-kind em transações também aparecendo pro outro jogador (somente o jogador que gerou o problema tem esse popup mostrado).
+Ajustado ganho de APs em Cygnus, agora não mais faltando AP's de acordo com a métrica definida no AP Reset.
+
+11 Março 2019,
+Implementado sistema de matching na fase de criação de guilds.
+Corrigido mudança de classes não tendo update de informação em party.
+Implementado matching (na forma de tratado GMS-like) entre líder e jogadores sem party presentes no mapa durante a fase de criação de guilds.
+
 12 - 13 Março 2019,
 Iniciado operação de introdução da wishlist de casamento e MCPQ no fonte, a partir do pull request feito pelo Dragohe4rt.
 Implementado estrutura back-end para comportar e manter (em DB) o wishlist de casamento.
@@ -1726,3 +1738,31 @@ Modificado geração de mapas da CPQ, agora sempre carregando um novo mapa da WZ
 
 15 Março 2019,
 Adicionado SFX nos portais da CPQ.
+Ajustado limites na CPQ para atuar GMS-like, além de ajustado a server flag USE_ENABLE_SOLO_EXPEDITIONS para permitir entradas solo nos mapas deste evento.
+Corrigido sistema de login não avaliando corretamente o campo HOST em "configuration.ini" quando o mesmo é preenchido como "localhost" ao invés de um valor de IP loopback.
+
+16 - 18 Março 2019,
+Revisado descrições em certos livros de upgrade de skill de Aran.
+Adicionado server flag para remover disponibilidade da CPQ. Feito devido às mensagens nos scripts estarem atualmente em português.
+Corrigido update de packet duplo ao inicializar uma instância de CPQ, fazendo funcionais aparecerem em dobro.
+Corrigido instância de CPQ não terminando após retirada de um membro da party ou dispensa da mesma.
+Corrigido instância de CPQ não levando jogadores ao mapa de batalha devidamente após implementado sistema de geração de mapas.
+Corrigido verificação por instâncias em andamento de CPQ não sendo realizado corretamente.
+Refatorado busca por nomes de jobs na CPQ e gerenciador de NPC scripts (estava em maiúsculo).
+
+20 Março 2019,
+Revisado sistema de login, agora evitando conexões indiretas feitas ao servidor. Servidor local somente aceita conexões locais, servidor remoto somente aceita conexões remotas.
+Revisado busca por cliente ao finalizar sessão. Se não há clientes registrados sob uma determinada sessão IP, o sistema vai tentar buscar a mesma dentro dos registros de transição (removendo assim possibilidade de perder detecção de accounts na fase de transição).
+
+22 Março 2019,
+Ajustado PiratePQ stage 2, agora fazendo respawn de mobs na área ao invés de requisitar líder para chamar uma nova onda.
+Refatorado busca por IP remoto de uma sessão, agora utilizando um registro na classe da sessão para manter o IP usado pela conexão.
+Ajustado quest do Prime Minister, permitindo entrada de grupos de até 3 jogadores. Também alterado modo como o chefe é colocado em campo: algum dos jogadores precisa ter a quest a fazer para começar (na primeira fase).
+Corrigido vários itemids inexistentes nos drops da MCPQ.
+Corrigido comando "forcevac" guardando no inventário mas não usando (como deveria ser) os itens "usáveis ao pegar".
+
+26 Março 2019,
+Revisado novamente login, para o caso onde accId = 0 estava sendo atribuído e então conta estava sendo rechecada, assim gerando conflito ao tentar logar.
+Adicionado update de estado de login no módulo de disconnect, para também atualizar estado da conta quando a mesma não se encontra já logada ou em transição.
+Corrigido NPC da CPQ2, saída abrupta, não retornando jogadores devidamente para o saguão de espera.
+Corrigido bug na CPQ em tempo estendido não mostrando devidamente o efeito visual de fim de partida.

@@ -29,7 +29,7 @@ public class MonsterCarnival {
     private long startTime = 0;
     private int summonsR = 8, summonsB = 8, room = 0;
     private MapleCharacter leader1, leader2, Grupo1, Grupo2;
-    private int redCP, blueCP, redTotalCP, blueTotalCP;
+    private int redCP, blueCP, redTotalCP, blueTotalCP, redTimeupCP, blueTimeupCP;
     private boolean cpq1;
 
     public MonsterCarnival(MapleParty p1, MapleParty p2, int mapid, boolean cpq1, int room) {
@@ -42,6 +42,7 @@ public class MonsterCarnival {
             p1.setEnemy(p2);
             p2.setEnemy(p1);
             map = cs.getMapFactory().getDisposableMap(mapid);
+            startTime = System.currentTimeMillis() + 10 * 60 * 1000;
             int redPortal = 0;
             int bluePortal = 0;
             if (map.isPurpleCPQMap()) {
@@ -55,7 +56,7 @@ public class MonsterCarnival {
                     mc.setTeam(0);
                     mc.setFestivalPoints(0);
                     mc.forceChangeMap(map, map.getPortal(redPortal));
-                    mc.dropMessage(6, LanguageConstants.Linguas(mc).CPQEntrada);
+                    mc.dropMessage(6, LanguageConstants.Languages(mc).CPQEntry);
                     if (p1.getLeader().getId() == mc.getId()) {
                         leader1 = mc;
                     }
@@ -69,7 +70,7 @@ public class MonsterCarnival {
                     mc.setTeam(1);
                     mc.setFestivalPoints(0);
                     mc.forceChangeMap(map, map.getPortal(bluePortal));
-                    mc.dropMessage(6, LanguageConstants.Linguas(mc).CPQEntrada);
+                    mc.dropMessage(6, LanguageConstants.Languages(mc).CPQEntry);
                     if (p2.getLeader().getId() == mc.getId()) {
                         leader2 = mc;
                     }
@@ -78,16 +79,16 @@ public class MonsterCarnival {
             }
             if (Grupo1 == null || Grupo2 == null) {
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LanguageConstants.Linguas(mpc.getPlayer()).CPQErro);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.Languages(mpc.getPlayer()).CPQError);
                 }
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LanguageConstants.Linguas(mpc.getPlayer()).CPQErro);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.Languages(mpc.getPlayer()).CPQError);
                 }
                 return;
             }
-            Grupo1.getClient().announce(MaplePacketCreator.startMonsterCarnival(Grupo1, 0, 1));
-            Grupo2.getClient().announce(MaplePacketCreator.startMonsterCarnival(Grupo2, 1, 0));
-            startTime = System.currentTimeMillis() + 60 * 10000;
+            
+            // thanks Atoot, Vcoc for noting double CPQ functional being sent to players in CPQ start
+            
             timer = TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
@@ -106,12 +107,8 @@ public class MonsterCarnival {
                     respawn();
                 }
             }, ServerConstants.RESPAWN_INTERVAL);
-            TimerManager.getInstance().schedule(new Runnable() {
-                @Override
-                public void run() {
-                    map.addClock(60 * 10);
-                }
-            }, 2000);
+            
+            cs.initMonsterCarnival(cpq1, room);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -140,18 +137,18 @@ public class MonsterCarnival {
             String teamS = "";
             switch (team) {
                 case 0:
-                    teamS = LanguageConstants.Linguas(chrMap).CPQVermelho;
+                    teamS = LanguageConstants.Languages(chrMap).CPQRed;
                     break;
                 case 1:
-                    teamS = LanguageConstants.Linguas(chrMap).CPQAzul;
+                    teamS = LanguageConstants.Languages(chrMap).CPQBlue;
                     break;
             }
-            chrMap.dropMessage(5, teamS + LanguageConstants.Linguas(chrMap).CPQPlayerExit);
+            chrMap.dropMessage(5, teamS + LanguageConstants.Languages(chrMap).CPQPlayerExit);
         }
         earlyFinish();
     }
 
-    public void earlyFinish() {
+    private void earlyFinish() {
         dispose(true);
     }
 
@@ -180,12 +177,12 @@ public class MonsterCarnival {
     }
 
     protected void dispose(boolean warpout) {
-        Channel cs = Server.getInstance().getWorld(p1.getLeader().getWorld()).getChannel(p1.getLeader().getChannel());
+        Channel cs = map.getChannelServer();
         MapleMap out;
         if (!cpq1) { // cpq2
-            out = cs.getMapFactory().getMap(980030000);
+            out = cs.getMapFactory().getMap(980030010);
         } else {
-            out = cs.getMapFactory().getMap(980000000);
+            out = cs.getMapFactory().getMap(980000010);
         }
         for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
             MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
@@ -227,7 +224,8 @@ public class MonsterCarnival {
         leader2.getParty().setEnemy(null);
         map.dispose();
         map = null;
-
+        
+        cs.finishMonsterCarnival(cpq1, room);
     }
 
     public void exit() {
@@ -238,9 +236,9 @@ public class MonsterCarnival {
         return this.timer;
     }
 
-    public void finish(int winningTeam) {
+    private void finish(int winningTeam) {
         try {
-            Channel cs = Server.getInstance().getWorld(p1.getLeader().getWorld()).getChannel(p1.getLeader().getChannel());
+            Channel cs = map.getChannelServer();
             if (winningTeam == 0) {
                 for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
                     MapleCharacter mc = cs.getPlayerStorage().getCharacterById(mpc.getId());
@@ -306,9 +304,9 @@ public class MonsterCarnival {
         }
     }
 
-    public void timeUp() {
-        int cp1 = this.redTotalCP;
-        int cp2 = this.blueTotalCP;
+    private void timeUp() {
+        int cp1 = this.redTimeupCP;
+        int cp2 = this.blueTimeupCP;
         if (cp1 == cp2) {
             extendTime();
             return;
@@ -328,11 +326,11 @@ public class MonsterCarnival {
         return (int) (getTimeLeft() / 1000);
     }
 
-    public void extendTime() {
+    private void extendTime() {
         for (MapleCharacter chrMap : map.getAllPlayers()) {
-            chrMap.dropMessage(5, LanguageConstants.Linguas(chrMap).CPQTempoExtendido);
+            chrMap.dropMessage(5, LanguageConstants.Languages(chrMap).CPQExtendTime);
         }
-        startTime = System.currentTimeMillis() + 3 * 1000;
+        startTime = System.currentTimeMillis() + 3 * 60 * 1000;
         map.addClock(3 * 60);
         timer = TimerManager.getInstance().schedule(new Runnable() {
             @Override
@@ -345,12 +343,16 @@ public class MonsterCarnival {
             public void run() {
                 complete();
             }
-        }, 3 * 60 * 1000 - 10);
+        }, 3 * 60 * 1000 - 10 * 1000); // thanks Vcoc for noticing a time set issue here
     }
 
     public void complete() {
         int cp1 = this.redTotalCP;
         int cp2 = this.blueTotalCP;
+        
+        this.redTimeupCP = cp1;
+        this.blueTimeupCP = cp2;
+        
         if (cp1 == cp2) {
             return;
         }
@@ -361,7 +363,7 @@ public class MonsterCarnival {
             throw new RuntimeException("Os lideres estao em canais diferentes.");
         }
 
-        Channel cs = Server.getInstance().getWorld(p1.getLeader().getWorld()).getChannel(p1.getLeader().getChannel());
+        Channel cs = map.getChannelServer();
         map.killAllMonsters();
         for (MaplePartyCharacter mpc : leader1.getParty().getMembers()) {
             MapleCharacter mc;
@@ -507,5 +509,9 @@ public class MonsterCarnival {
     
     public int getRoom() {
         return this.room;
+    }
+    
+    public MapleMap getEventMap() {
+        return this.map;
     }
 }

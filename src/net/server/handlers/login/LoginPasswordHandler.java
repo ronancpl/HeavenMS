@@ -38,9 +38,9 @@ import client.MapleClient;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import net.server.coordinator.MapleSessionCoordinator;
 import org.apache.mina.core.session.IoSession;
 
 public final class LoginPasswordHandler implements MaplePacketHandler {
@@ -57,15 +57,22 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
     }
 
     private static String getRemoteIp(IoSession session) {
-        return ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+        return MapleSessionCoordinator.getSessionRemoteAddress(session);
     }
     
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         String remoteHost = getRemoteIp(c.getSession());
-        if (remoteHost.startsWith("127.") && !ServerConstants.HOST.startsWith("127.")) {
-            c.announce(MaplePacketCreator.getLoginFailed(13));   // cannot login as localhost if it's not a test server
-            return;
+        if (remoteHost.startsWith("127.")) {
+            if (!ServerConstants.LOCALSERVER) {  // thanks Mills for noting HOST can also have a field named "localhost"
+                c.announce(MaplePacketCreator.getLoginFailed(13));   // cannot login as localhost if it's not a local server
+                return;
+            }
+        } else {
+            if (ServerConstants.LOCALSERVER) {
+                c.announce(MaplePacketCreator.getLoginFailed(13));   // cannot login as non-localhost if it's a local server
+                return;
+            }
         }
         
         String login = slea.readMapleAsciiString();

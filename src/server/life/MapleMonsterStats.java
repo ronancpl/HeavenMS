@@ -21,6 +21,7 @@
 */
 package server.life;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,20 +37,20 @@ import tools.Pair;
  * @author Frz
  */
 public class MapleMonsterStats {
-    private boolean changeable;
-    private int exp, hp, mp, level, PADamage, PDDamage, MADamage, MDDamage, dropPeriod, cp, buffToGive = -1, removeAfter;
-    private boolean boss, undead, ffaLoot, isExplosiveReward, firstAttack, removeOnMiss;
-    private String name;
-    private Map<String, Integer> animationTimes = new HashMap<String, Integer>();
-    private Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();
-    private List<Integer> revives = Collections.emptyList();
-    private byte tagColor, tagBgColor;
-    private List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
-    private Pair<Integer, Integer> cool = null;
-    private BanishInfo banish = null;
-    private List<loseItem> loseItem = null;
-    private selfDestruction selfDestruction = null;
-    private boolean friendly;
+    public boolean changeable;
+    public int exp, hp, mp, level, PADamage, PDDamage, MADamage, MDDamage, dropPeriod, cp, buffToGive = -1, removeAfter;
+    public boolean boss, undead, ffaLoot, isExplosiveReward, firstAttack, removeOnMiss;
+    public String name;
+    public Map<String, Integer> animationTimes = new HashMap<String, Integer>();
+    public Map<Element, ElementalEffectiveness> resistance = new HashMap<Element, ElementalEffectiveness>();
+    public List<Integer> revives = Collections.emptyList();
+    public byte tagColor, tagBgColor;
+    public List<Pair<Integer, Integer>> skills = new ArrayList<Pair<Integer, Integer>>();
+    public Pair<Integer, Integer> cool = null;
+    public BanishInfo banish = null;
+    public List<loseItem> loseItem = null;
+    public selfDestruction selfDestruction = null;
+    public boolean friendly;
 
     public void setChange(boolean change) {
         this.changeable = change;
@@ -337,4 +338,40 @@ public class MapleMonsterStats {
     public void setMDDamage(int MDDamage) {
         this.MDDamage = MDDamage;
     } 
+    
+    public MapleMonsterStats copy() {
+        MapleMonsterStats copy = new MapleMonsterStats();
+        try {
+            FieldCopyUtil.setFields(this, copy);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                Thread.sleep(10000);
+            } catch (Exception ex) {
+                
+            }
+            
+        }
+        
+        return copy;
+    }
+    
+    // FieldCopyUtil src: http://www.codesenior.com/en/tutorial/Java-Copy-Fields-From-One-Object-to-Another-Object-with-Reflection
+    private static class FieldCopyUtil { // thanks to Codesenior dev team
+        private static void setFields(Object from, Object to) {
+            Field[] fields = from.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                try {
+                    Field fieldFrom = from.getClass().getDeclaredField(field.getName());
+                    Object value = fieldFrom.get(from);
+                    to.getClass().getDeclaredField(field.getName()).set(to, value);
+
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

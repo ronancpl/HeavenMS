@@ -100,7 +100,7 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
                         NewYearCardRecord.updateNewYearCard(newyear);
 
                         player.getClient().getAbstractPlayerInteraction().gainItem(4301000, (short)1);
-                        if(!newyear.getMessage().isEmpty()) player.dropMessage(6, "[NEW YEAR] " + newyear.getSenderName() + ": " + newyear.getMessage());
+                        if(!newyear.getMessage().isEmpty()) player.dropMessage(6, "[New Year] " + newyear.getSenderName() + ": " + newyear.getMessage());
 
                         player.addNewYearRecord(newyear);
                         player.announce(MaplePacketCreator.onNewYearCardRes(player, newyear, 6, 0));    // successfully rcvd
@@ -110,17 +110,17 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
                         MapleCharacter sender = c.getWorldServer().getPlayerStorage().getCharacterById(newyear.getSenderId());
                         if(sender != null && sender.isLoggedinWorld()) {
                             sender.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(sender, newyear, 0xD, 0));
-                            sender.dropMessage(6, "[NEW YEAR] Your addressee successfully received the New Year card.");
+                            sender.dropMessage(6, "[New Year] Your addressee successfully received the New Year card.");
                         }
                     } else {
                         player.announce(MaplePacketCreator.onNewYearCardRes(player, -1, 5, 0x10));  // inventory full
                     }
                 } else {
-                    player.dropMessage(6, "[NEW YEAR] The sender of the New Year card already dropped it. Nothing to receive.");
+                    player.dropMessage(6, "[New Year] The sender of the New Year card already dropped it. Nothing to receive.");
                 }
             } else {
                 if(newyear == null) {
-                    player.dropMessage(6, "[NEW YEAR] The sender of the New Year card already dropped it. Nothing to receive.");
+                    player.dropMessage(6, "[New Year] The sender of the New Year card already dropped it. Nothing to receive.");
                 }
             }
         }

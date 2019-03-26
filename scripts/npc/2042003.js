@@ -21,7 +21,7 @@ function action(mode, type, selection) {
             status--;
         if (status == 0) {
             cm.warpParty(980000000);
-            cm.cancelarSaida();
+            cm.cancelCPQLobby();
             cm.dispose();
         }
     }

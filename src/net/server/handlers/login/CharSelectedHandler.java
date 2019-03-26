@@ -23,7 +23,6 @@ package net.server.handlers.login;
 
 import client.MapleClient;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
@@ -103,7 +102,7 @@ public final class CharSelectedHandler extends AbstractMaplePacketHandler {
         
         server.unregisterLoginState(c);
         c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-        server.setCharacteridInTransition((InetSocketAddress) session.getRemoteAddress(), charId);
+        server.setCharacteridInTransition(session, charId);
         
         try {
             c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));

@@ -20,34 +20,50 @@ function enter(pi) {
         return true;
     }
     else if(pi.isQuestStarted(2332) && pi.hasItem(4032388)){
-        if(pi.getPlayer().getParty() != null){
-            pi.getPlayer().showHint("The next part of the quest is solo only! Must leave party.");
-            return false;
-        }
-        else{
-            pi.forceCompleteQuest(2332, 1300002);
-            pi.getPlayer().message("You've found the princess!");
-            pi.giveCharacterExp(4400 * 1.5, pi.getPlayer());
-            var pm = pi.getEventManager("MK_PrimeMinister");
-            pm.setProperty("player", pi.getPlayer().getName());
-            
-            pm.startInstance(pi.getPlayer());
-            pi.playPortalSound();
-            return true;
+        pi.forceCompleteQuest(2332, 1300002);
+        pi.getPlayer().message("You've found the princess!");
+        pi.giveCharacterExp(4400 * 1.5, pi.getPlayer());
+        
+        var em = pi.getEventManager("MK_PrimeMinister");
+        var party = pi.getPlayer().getParty();
+        if (party != null) {
+            if (em.startInstance(party, pi.getMap())) {
+                pi.playPortalSound();
+                return true;
+            } else {
+                pi.message("Another party is already challenging the boss in this channel.");
+                return false;
+            }
+        } else {
+            if (em.startInstance(pi.getPlayer(), pi.getMap())) {
+                pi.playPortalSound();
+                return true;
+            } else {
+                pi.message("Another party is already challenging the boss in this channel.");
+                return false;
+            }
         }
     }
     else if(pi.isQuestStarted(2333) || (pi.isQuestCompleted(2332) && !pi.isQuestStarted(2333))){
-        if(pi.getPlayer().getParty() != null){
-            pi.getPlayer().showHint("The next part of the quest is solo only! Must leave party.");
-            return false;
-        }
-        else{
-            var pm = pi.getEventManager("MK_PrimeMinister");
-            pm.setProperty("player", pi.getPlayer().getName());
-            
-            pm.startInstance(pi.getPlayer());
-            pi.playPortalSound();
-            return true;
+        var em = pi.getEventManager("MK_PrimeMinister");
+        
+        var party = pi.getPlayer().getParty();
+        if (party != null) {
+            if (em.startInstance(1, party, pi.getMap())) {
+                pi.playPortalSound();
+                return true;
+            } else {
+                pi.message("Another party is already challenging the boss in this channel.");
+                return false;
+            }
+        } else {
+            if (em.startInstance(pi.getPlayer(), pi.getMap())) {
+                pi.playPortalSound();
+                return true;
+            } else {
+                pi.message("Another party is already challenging the boss in this channel.");
+                return false;
+            }
         }
     }
     else{

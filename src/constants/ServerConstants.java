@@ -28,7 +28,7 @@ public class ServerConstants {
     public static final long  COUPON_INTERVAL = 60 * 60 * 1000;	//60 minutes, 3600000.
     public static final long  UPDATE_INTERVAL = 777;            //Dictates the frequency on which the "centralized server time" is updated.
     
-    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character required PIC available.
+    public static final boolean ENABLE_PIC = false;             //Pick true/false to enable or disable Pic. Delete character requires PIC available.
     public static final boolean ENABLE_PIN = false;             //Pick true/false to enable or disable Pin.
     
     public static final int BYPASS_PIC_EXPIRATION = 20;         //Enables PIC bypass, which will remain active for that account by that client machine for N minutes. Set 0 to disable.
@@ -48,6 +48,7 @@ public class ServerConstants {
     
     //Ip Configuration
     public static String HOST;
+    public static boolean LOCALSERVER;
 
     //Other Configuration
     public static boolean JAVA_8;
@@ -66,6 +67,7 @@ public class ServerConstants {
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events on a map, rather than those of only view range.
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
     public static final boolean USE_MTS = false;
+    public static final boolean USE_CPQ = true;                     //Renders the CPQ available or not.
     public static final boolean USE_AUTOHIDE_GM = false;            //When enabled, GMs are automatically hidden when joining. Thanks to Steven Deblois (steven1152).
     public static final boolean USE_BUYBACK_SYSTEM = true;          //Enables the HeavenMS-builtin buyback system, to be used by dead players when clicking the MTS button.
     public static final boolean USE_FIXED_RATIO_HPMP_UPDATE = true; //Enables the HeavenMS-builtin HPMP update based on the current pool to max pool ratio.
@@ -108,6 +110,7 @@ public class ServerConstants {
     public static final boolean USE_ENABLE_CHAT_LOG = false;        //Write in-game chat to log
     public static final boolean USE_REBIRTH_SYSTEM = false;         //Flag to enable/disable rebirth system
     public static final boolean USE_MAP_OWNERSHIP_SYSTEM = true;    //Flag to enable/disable map ownership system
+    public static final boolean USE_FISHING_SYSTEM = true;          //Flag to enable/disable fishing system
     
     //Events/PQs Configuration
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
@@ -219,6 +222,7 @@ public class ServerConstants {
     public static final int QUEST_POINT_PER_EVENT_CLEAR = 1;     //Each completed event instance awards N quest points, set 0 to disable.
     
     //Guild Configuration
+    public static final int CREATE_GUILD_MIN_PARTNERS = 6;       //Minimum number of members on Guild Headquarters to establish a new guild.
     public static final int CREATE_GUILD_COST = 1500000;
     public static final int CHANGE_EMBLEM_COST = 5000000;
     public static final int EXPAND_GUILD_BASE_COST = 500000;
@@ -302,6 +306,7 @@ public class ServerConstants {
 
             //Server Host
             ServerConstants.HOST = p.getProperty("HOST");
+            ServerConstants.LOCALSERVER = ServerConstants.HOST.startsWith("127.") || ServerConstants.HOST.startsWith("localhost");
 
             //Sql Database
             ServerConstants.DB_URL = p.getProperty("URL");

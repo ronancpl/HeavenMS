@@ -9,7 +9,7 @@ function start() {
 
 function action(mode, type, selection) {
     cm.warpParty(980000000);
-    cm.cancelarSaida();
+    cm.cancelCPQLobby();
     cm.dispose();
 }
 

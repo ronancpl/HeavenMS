@@ -59,7 +59,6 @@ import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
 import constants.ServerConstants;
-import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -128,7 +127,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 IoSession session = c.getSession();
                 String remoteHwid;
                 if (player == null) {
-                    if (!server.validateCharacteridInTransition((InetSocketAddress) session.getRemoteAddress(), cid)) {
+                    if (!server.validateCharacteridInTransition(session, cid)) {
                         c.disconnect(true, false);
                         return;
                     }

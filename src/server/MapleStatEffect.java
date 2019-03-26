@@ -944,13 +944,26 @@ public class MapleStatEffect {
             if (skill != null) {
                 final MapleDisease dis = skill.getDisease();
                 MapleParty opposition = applyfrom.getParty().getEnemy();
-                for (MaplePartyCharacter enemyChrs : opposition.getPartyMembers()) {
-                    MapleCharacter chrApp = enemyChrs.getPlayer();
+                if (skill.targetsAll) {
+                    for (MaplePartyCharacter enemyChrs : opposition.getPartyMembers()) {
+                        MapleCharacter chrApp = enemyChrs.getPlayer();
+                        if (chrApp != null && chrApp.getMap().isCPQMap()) {
+                            if (dis == null) {
+                                chrApp.dispel();
+                            } else {
+                                chrApp.giveDebuff(dis, MCSkill.getMobSkill(dis.getDisease(), skill.level));
+                            }
+                        }
+                    }
+                } else {
+                    int amount = opposition.getMembers().size() - 1;
+                    int randd = (int) Math.floor(Math.random() * amount);
+                    MapleCharacter chrApp = applyfrom.getMap().getCharacterById(opposition.getMemberByPos(randd).getId());
                     if (chrApp != null && chrApp.getMap().isCPQMap()) {
                         if (dis == null) {
                             chrApp.dispel();
                         } else {
-                            chrApp.giveDebuff(dis, MCSkill.getMobSkill(dis.getDisease()));
+                            chrApp.giveDebuff(dis, MCSkill.getMobSkill(dis.getDisease(), skill.level));
                         }
                     }
                 }

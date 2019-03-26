@@ -98,6 +98,7 @@ import server.quest.MapleQuest;
 import tools.AutoJCE;
 import tools.DatabaseConnection;
 import tools.Pair;
+import org.apache.mina.core.session.IoSession;
 
 public class Server {
     
@@ -1630,12 +1631,12 @@ public class Server {
         return gmLevel;
     }
     
-    private static String getRemoteIp(InetSocketAddress isa) {
-        return isa.getAddress().getHostAddress();
+    private static String getRemoteIp(IoSession session) {
+        return MapleSessionCoordinator.getSessionRemoteAddress(session);
     }
     
-    public void setCharacteridInTransition(InetSocketAddress isa, int charId) {
-        String remoteIp = getRemoteIp(isa);
+    public void setCharacteridInTransition(IoSession session, int charId) {
+        String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
         try {
@@ -1645,8 +1646,8 @@ public class Server {
         }
     }
     
-    public boolean validateCharacteridInTransition(InetSocketAddress isa, int charId) {
-        String remoteIp = getRemoteIp(isa);
+    public boolean validateCharacteridInTransition(IoSession session, int charId) {
+        String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
         try {
@@ -1654,6 +1655,28 @@ public class Server {
             return cid != null && cid.equals(charId);
         } finally {
             lgnWLock.unlock();
+        }
+    }
+    
+    public Integer freeCharacteridInTransition(IoSession session) {
+        String remoteIp = getRemoteIp(session);
+        
+        lgnWLock.lock();
+        try {
+            return transitioningChars.remove(remoteIp);
+        } finally {
+            lgnWLock.unlock();
+        }
+    }
+    
+    public boolean hasCharacteridInTransition(IoSession session) {
+        String remoteIp = getRemoteIp(session);
+        
+        lgnRLock.lock();
+        try {
+            return transitioningChars.containsKey(remoteIp);
+        } finally {
+            lgnRLock.unlock();
         }
     }
     

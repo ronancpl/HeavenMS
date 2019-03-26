@@ -1,6 +1,13 @@
-var cpqMinLvl = 30;
-var cpqMaxLvl = 255;
-var cpqMinAmt = 0;
+/**
+-- Version Info -----------------------------------------------------------------------------------
+	1.0 - First Version by Drago (MapleStorySA)
+        2.0 - Second Version by Jayd - translated CPQ contents to English
+---------------------------------------------------------------------------------------------------
+**/
+
+var cpqMinLvl = 51;
+var cpqMaxLvl = 69;
+var cpqMinAmt = 2;
 var cpqMaxAmt = 6;
 
 function start() {
@@ -23,10 +30,10 @@ function action(mode, type, selection) {
         if (status == 0) {
             if (cm.getParty() == null) {
                 status = 10;
-                cm.sendOk("#e� necess�rio criar um grupo antes de come�ar o Festival de Monstros!#k");
+                cm.sendOk("You need to create a party before you can participate in Monster Carnival!");
             } else if (!cm.isLeader()) {
                 status = 10;
-                cm.sendOk("Se voc� quer come�ar o Festival, avise o #bl�der do grupo#k para falar comigo.");
+                cm.sendOk("If you want to start the battle, let the #bleader#k come and speak to me.");
             } else {
                 var leaderMapid = cm.getMapId();
                 var party = cm.getParty().getMembers();
@@ -45,15 +52,18 @@ function action(mode, type, selection) {
 
                 if (party >= 1) {
                     status = 10;
-                    cm.sendOk("Voc� n�o tem n�mero suficiente de pessoas em seu grupo. Voc� precisa de um grupo com #b" + cpqMinAmt + "#k - #r" + cpqMaxAmt + "#k membros e eles devem estar no mapa com voc�.");
+                    cm.sendOk("You do not have enough people in your party. You need a party with #b" + cpqMinAmt + "#k - #r" + cpqMaxAmt + "#k members and they should be on the map with you.");
                 } else if (lvlOk != inMap) {
                     status = 10;
-                    cm.sendOk("Certifique se todos em seu grupo est�o dentre os n�veis corretos (" + cpqMinLvl + "~" + cpqMaxLvl + ")!");
+                    cm.sendOk("Make sure everyone in your party is among the correct levels (" + cpqMinLvl + "~" + cpqMaxLvl + ")!");
                 } else if (isOutMap > 0) {
                     status = 10;
-                    cm.sendOk("Existe algu�m do grupo que n�o esta no mapa!");
+                    cm.sendOk("There are some of the party members that is not on the map!");
                 } else {
-                    cm.sendCPQMapLists2();
+                    if (!cm.sendCPQMapLists2()) {
+                        cm.sendOk("All Monster Carnival fields are currently in use! Try again later.");
+                        cm.dispose();
+                    }
                 }
             }
         } else if (status == 1) {
@@ -62,15 +72,15 @@ function action(mode, type, selection) {
                     cm.challengeParty2(selection);
                     cm.dispose();
                 } else {
-                    cm.sendOk("A sala esta cheia.");
+                    cm.sendOk("The room is currently full.");
                     cm.dispose();
                 }
             } else {
                 var party = cm.getParty().getMembers();
-                if ((selection === 0 || selection === 1 ) && party.size() < 1) {
-                    cm.sendOk("Voc� precisa de no m�nimo 2 player para entrar na competi��o.");
-                } else if ((selection === 2 ) && party.size() < 1) {
-                    cm.sendOk("Voc� precisa de no m�nimo 3 player para entrar na competi��o.");
+                if ((selection === 0 || selection === 1 ) && party.size() < (Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 2)) {
+                    cm.sendOk("You need at least 2 players to participate in the battle!");
+                } else if ((selection === 2 ) && party.size() < (Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 3)) {
+                    cm.sendOk("You need at least 3 players to participate in the battle!");
                 } else {
                     cm.cpqLobby2(selection);
                 }

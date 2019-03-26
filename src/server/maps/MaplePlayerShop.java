@@ -42,6 +42,7 @@ import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import server.MapleTrade;
 
 /**
  *
@@ -279,6 +280,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                             }
                             
                             c.getPlayer().gainMeso(-price, false);
+                            price -= MapleTrade.getFee(price);  // thanks BHB for pointing out trade fees not applying here
                             owner.gainMeso(price, true);
                             
                             SoldItem soldItem = new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price);

@@ -90,12 +90,13 @@ public class MapleClient {
 	public static final String CLIENT_KEY = "CLIENT";
         public static final String CLIENT_HWID = "HWID";
         public static final String CLIENT_NIBBLEHWID = "HWID2";
+        public static final String CLIENT_REMOTE_ADDRESS = "REMOTE_IP";
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
 	private final IoSession session;
 	private MapleCharacter player;
 	private int channel = 1;
-	private int accId = 0;
+	private int accId = -4;
 	private boolean loggedIn = false;
 	private boolean serverTransition = false;
 	private Calendar birthday = null;
@@ -124,7 +125,7 @@ public class MapleClient {
         private int visibleWorlds;
 	private long lastNpcClick;
 	private long sessionId;
-        private int lingua = 0;
+        private int lang = 0;
         
         static {
             for (int i = 0; i < 200; i++) {
@@ -534,7 +535,7 @@ public class MapleClient {
                 if (loginattempt > 4) {
                         loggedIn = false;
 			MapleSessionCoordinator.getInstance().closeSession(session, false);
-                        return loginok;
+                        return 6;   // thanks Survival_Project for finding out an issue with AUTOMATIC_REGISTER here
 		}
 		
 		Connection con = null;
@@ -542,16 +543,15 @@ public class MapleClient {
 		ResultSet rs = null;
 		try {
 			con = DatabaseConnection.getConnection();
-			ps = con.prepareStatement("SELECT id, password, gender, banned, pin, pic, characterslots, tos, lingua FROM accounts WHERE name = ?");
+			ps = con.prepareStatement("SELECT id, password, gender, banned, pin, pic, characterslots, tos, language FROM accounts WHERE name = ?");
 			ps.setString(1, login);
 			rs = ps.executeQuery();
+                        accId = -2;
 			if (rs.next()) {
 				accId = rs.getInt("id");
-                                if (accId == 0) {
-                                        // odd case where accId is actually attributed as 0 (further on this leads to getLoginState ACCID = 0, an absurd), thanks Thora for finding this issue
-                                        return 15;
-                                } else if (accId < 0) {
+                                if (accId <= 0) {
                                         FilePrinter.printError(FilePrinter.LOGIN_EXCEPTION, "Tried to login with accid " + accId);
+                                        return 15;
                                 }
                                 
                                 boolean banned = (rs.getByte("banned") == 1);
@@ -560,7 +560,7 @@ public class MapleClient {
 				pic = rs.getString("pic");
 				gender = rs.getByte("gender");
 				characterSlots = rs.getByte("characterslots");
-                                lingua = rs.getInt("lingua");
+                                lang = rs.getInt("language");
 				String passhash = rs.getString("password");
 				byte tos = rs.getByte("tos");
 
@@ -583,7 +583,9 @@ public class MapleClient {
 					loggedIn = false;
 					loginok = 4;
 				}
-			}
+			} else {
+                                accId = -3;
+                        }
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -822,9 +824,10 @@ public class MapleClient {
 			int state = rs.getInt("loggedin");
 			if (state == LOGIN_SERVER_TRANSITION) {
 				if (rs.getTimestamp("lastlogin").getTime() + 30000 < Server.getInstance().getCurrentTime()) {
+                                        int accountId = accId;
 					state = LOGIN_NOTLOGGEDIN;
-                                        MapleSessionCoordinator.getInstance().closeSession(session, null);
-					updateLoginState(LOGIN_NOTLOGGEDIN);
+					updateLoginState(LOGIN_NOTLOGGEDIN);   // ACCID = 0, issue found thanks to Tochi & K u ssss o & Thora & Omo Oppa
+                                        this.setAccID(accountId);
 				}
 			}
 			rs.close();
@@ -1026,6 +1029,9 @@ public class MapleClient {
                                 MapleSessionCoordinator.getInstance().closeSession(session, false);
                                 session.removeAttribute(MapleClient.CLIENT_KEY);
                         }
+                        if (!Server.getInstance().hasCharacteridInTransition(session)) {
+                                updateLoginState(MapleClient.LOGIN_NOTLOGGEDIN);
+                        }
                         
                         engines = null; // thanks Tochi for pointing out a NPE here
                 }
@@ -1068,7 +1074,21 @@ public class MapleClient {
 
         public boolean deleteCharacter(int cid, int senderAccId) {
                 try {
-                        return MapleCharacter.deleteCharFromDB(MapleCharacter.loadCharFromDB(cid, this, false), senderAccId);
+                        MapleCharacter chr = MapleCharacter.loadCharFromDB(cid, this, false);
+                        
+                        Integer partyid = chr.getWorldServer().getCharacterPartyid(cid);
+                        if (partyid != null) {
+                                this.setPlayer(chr);
+                            
+                                MapleParty party = chr.getWorldServer().getParty(partyid);
+                                chr.setParty(party);
+                                chr.getMPC();
+                                chr.leaveParty();   // thanks Vcoc for pointing out deleted characters would still stay in a party
+                                
+                                this.setPlayer(null);
+                        }
+                        
+                        return MapleCharacter.deleteCharFromDB(chr, senderAccId);
                 } catch(SQLException ex) {
                         ex.printStackTrace();
                         return false;
@@ -1545,11 +1565,11 @@ public class MapleClient {
                 return MapleLoginBypassCoordinator.getInstance().canLoginBypass(getNibbleHWID(), accId, true);
         }
         
-        public int getLingua() {
-                return lingua;
+        public int getLanguage() {
+                return lang;
         }
 
-        public void setLingua(int lingua) {
-                this.lingua = lingua;
+        public void setLanguage(int lingua) {
+                this.lang = lingua;
         }
 }

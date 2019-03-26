@@ -34,6 +34,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 
 import java.util.concurrent.locks.Lock;
@@ -746,7 +747,20 @@ public class MapleGuild {
         }
         return false;
     }
-
+    
+    public static Set<MapleCharacter> getEligiblePlayersForGuild(MapleCharacter guildLeader) {
+        Set<MapleCharacter> guildMembers = new HashSet<>();
+        guildMembers.add(guildLeader);
+        
+        for (MapleCharacter chr : guildLeader.getMap().getAllPlayers()) {
+            if (chr.getParty() == null && chr.getGuild() == null) {
+                guildMembers.add(chr);
+            }
+        }
+        
+        return guildMembers;
+    }
+    
     public static void displayGuildRanks(MapleClient c, int npcid) {
         try {
             ResultSet rs;

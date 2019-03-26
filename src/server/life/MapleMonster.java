@@ -127,9 +127,9 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         externalLock.unlock();
     }
 
-    private void initWithStats(MapleMonsterStats stats) {
+    private void initWithStats(MapleMonsterStats baseStats) {
         setStance(5);
-        this.stats = stats;
+        this.stats = baseStats.copy();
         hp.set(stats.getHp());
         mp = stats.getMp();
         
@@ -223,7 +223,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         this.hp.addAndGet(hp);
     }
     
-    public void setStartingHp(int hp) {
+    public synchronized void setStartingHp(int hp) {
+        stats.setHp(hp);    // refactored mob stats after non-static HP pool suggestion thanks to twigs
         this.hp.set(hp);
     }
 

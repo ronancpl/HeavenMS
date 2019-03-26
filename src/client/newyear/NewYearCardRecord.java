@@ -318,7 +318,7 @@ public class NewYearCardRecord {
                         other.removeNewYearRecord(nyc);
                         other.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(other, nyc, 0xE, 0));
 
-                        other.dropMessage(6, "[NEW YEAR] " + chr.getName() + " threw away the New Year card.");
+                        other.dropMessage(6, "[New Year] " + chr.getName() + " threw away the New Year card.");
                     }
                 }
             } else {
@@ -336,7 +336,7 @@ public class NewYearCardRecord {
                         other.removeNewYearRecord(nyc);
                         other.getMap().broadcastMessage(MaplePacketCreator.onNewYearCardRes(other, nyc, 0xE, 0));
 
-                        other.dropMessage(6, "[NEW YEAR] " + chr.getName() + " threw away the New Year card.");
+                        other.dropMessage(6, "[New Year] " + chr.getName() + " threw away the New Year card.");
                     }
                 }
             }

@@ -43,10 +43,6 @@ function action(mode, type, selection) {
                 break;
             case 925100100:
                 var emp = eim.getProperty("stage2");
-                if (emp == null) {
-                    eim.setProperty("stage2", "0");
-                    emp = "0";
-                }
                 if (emp.equals("0")) {
                     if (cm.haveItem(4001120,20)) {
                         cm.sendNext("Excellent! Now hunt me 20 Rising Medals.");
@@ -55,7 +51,6 @@ function action(mode, type, selection) {
                         eim.setProperty("stage2", "1");
                     } else {
                         cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Rookie Medals.");
-                        if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300114, level, true);
                     }
                 } else if (emp.equals("1")) {
                     if (cm.haveItem(4001121,20)) {
@@ -65,7 +60,6 @@ function action(mode, type, selection) {
                         eim.setProperty("stage2", "2");
                     } else {
                         cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Rising Medals.");
-                        if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300115, level, true);
                     }
                 } else if (emp.equals("2")) {
                     if (cm.haveItem(4001122,20)) {
@@ -76,7 +70,6 @@ function action(mode, type, selection) {
                         eim.showClearEffect(cm.getMapId());
                     } else {
                         cm.sendNext("We are heading into the Pirate Ship now! To get in, we must qualify ourselves as noble pirates. Hunt me 20 Veteran Medals.");
-                        if(cm.countMonster() < 1) cm.getPlayer().getMap().spawnAllMonsterIdFromMapSpawnList(9300116, level, true);
                     }
                 } else {
                     cm.sendNext("The next stage has opened. GO!");

@@ -48,6 +48,7 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
+import server.MapleTrade;
 
 /**
  *
@@ -274,6 +275,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
             if (c.getPlayer().getMeso() >= price) {
                 if (canBuy(c, newItem)) {
                     c.getPlayer().gainMeso(-price, false);
+                    price -= MapleTrade.getFee(price);  // thanks BHB for pointing out trade fees not applying here
                     
                     synchronized (sold) {
                         sold.add(new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), newItem.getQuantity(), price));

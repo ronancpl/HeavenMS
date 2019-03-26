@@ -83,7 +83,7 @@ public class MapleTrade {
         this.number = number;
     }
 
-    private static int getFee(long meso) {
+    public static int getFee(long meso) {
         long fee = 0;
         if (meso >= 100000000) {
             fee = (meso * 6) / 100;
@@ -179,7 +179,7 @@ public class MapleTrade {
             throw new RuntimeException("Trade is locked.");
         }
         if (meso < 0) {
-            System.out.println("[h4x] " + chr.getName() + " Trying to trade < 0 mesos");
+            System.out.println("[Hack] " + chr.getName() + " Trying to trade < 0 mesos");
             return;
         }
         if (chr.getMeso() >= meso) {
@@ -372,12 +372,30 @@ public class MapleTrade {
         chr.setTrade(null);
     }
     
+    private static byte[] tradeResultsPair(byte result) {
+        byte selfResult, partnerResult;
+        
+        if (result == TradeResult.PARTNER_CANCEL.getValue()) {
+            partnerResult = result;
+            selfResult = TradeResult.NO_RESPONSE.getValue();
+        } else if (result == TradeResult.UNSUCCESSFUL_UNIQUE_ITEM_LIMIT.getValue()) {
+            partnerResult = TradeResult.UNSUCCESSFUL.getValue();
+            selfResult = result;
+        } else {
+            partnerResult = result;
+            selfResult = result;
+        }
+        
+        return new byte[]{selfResult, partnerResult};
+    }
+    
     private synchronized void tradeCancelHandshake(boolean updateSelf, byte result) {
         byte selfResult, partnerResult;
         MapleTrade self;
         
-        partnerResult = result;
-        selfResult = (result == TradeResult.PARTNER_CANCEL.getValue() ? TradeResult.NO_RESPONSE.getValue() : result);
+        byte[] pairedResult = tradeResultsPair(result);
+        selfResult = pairedResult[0];
+        partnerResult = pairedResult[1];
         
         if (updateSelf) {
             self = this;

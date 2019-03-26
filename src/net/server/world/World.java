@@ -85,6 +85,7 @@ import net.server.guild.MapleGuildSummary;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.packets.Fishing;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
@@ -92,7 +93,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import tools.packets.Fishing;
+import net.server.coordinator.MapleMatchCheckerCoordinator;
 
 /**
  *
@@ -113,6 +114,7 @@ public class World {
     private Map<Integer, Pair<Integer, Integer>> relationshipCouples = new HashMap<>();
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
+    private MapleMatchCheckerCoordinator matchChecker = new MapleMatchCheckerCoordinator();
     
     private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
     private ReadLock chnRLock = chnLock.readLock();
@@ -487,6 +489,10 @@ public class World {
     
     public PlayerStorage getPlayerStorage() {
         return players;
+    }
+    
+    public MapleMatchCheckerCoordinator getMatchCheckerCoordinator() {
+        return matchChecker;
     }
 
     public void addPlayer(MapleCharacter chr) {
@@ -1267,7 +1273,15 @@ public class World {
     
     private List<List<Pair<Integer, Integer>>> getBoughtCashItems() {
         if (ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
-            return new ArrayList<>(0);
+            List<List<Pair<Integer, Integer>>> boughtCounts = new ArrayList<>(9);
+            
+            // thanks GabrielSin for pointing out an issue here
+            for (int i = 0; i < 9; i++) {
+                List<Pair<Integer, Integer>> tabCounts = new ArrayList<>(0);
+                boughtCounts.add(tabCounts);
+            }
+            
+            return boughtCounts;
         }
         
         suggestRLock.lock();

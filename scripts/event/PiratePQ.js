@@ -24,7 +24,7 @@
 */
 
 var isPq = true;
-var isGrindMode = true;     // stages done after breaking all boxes on maps
+var isGrindMode = false;     // stages done after breaking all boxes on maps
 
 var minPlayers = 3, maxPlayers = 6;
 var minLevel = 55, maxLevel = 100;
@@ -185,7 +185,7 @@ function setup(level, lobbyid) {
 	eim.getInstanceMap(925100400).resetPQ(level);
 	eim.getInstanceMap(925100500).resetPQ(level);
         
-        respawnStg4(eim);
+        respawnStages(eim);
         
         eim.startEventTimer(eventTime * 60000);
         setEventRewards(eim);
@@ -195,9 +195,14 @@ function setup(level, lobbyid) {
 
 function afterSetup(eim) {}
 
-function respawnStg4(eim) {
+function respawnStages(eim) {
+        var stg = eim.getIntProperty("stage2");
+        if (stg < 3) {  // thanks Chloek3, seth1, BHB for suggesting map respawn rather than waves on stg2
+            eim.getMapInstance(925100100).spawnAllMonsterIdFromMapSpawnList(9300114 + stg, eim.getIntProperty("level"), true);
+        }
+        
         eim.getMapInstance(925100400).instanceMapRespawn();
-        eim.schedule("respawnStg4", 10 * 1000);
+        eim.schedule("respawnStages", 10 * 1000);
 }
 
 function playerEntry(eim, player) {

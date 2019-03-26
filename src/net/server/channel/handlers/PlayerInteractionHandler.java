@@ -484,7 +484,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 byte targetSlot = slea.readByte();
 
                 if (targetSlot < 1 || targetSlot > 9) {
-                    System.out.println("[h4x] " + chr.getName() + " Trying to dupe on trade slot.");
+                    System.out.println("[Hack] " + chr.getName() + " Trying to dupe on trade slot.");
                     c.announce(MaplePacketCreator.enableActions());
                     return;
                 }

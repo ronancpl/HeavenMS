@@ -21,30 +21,22 @@
 /*
    @Author: Arthur L - Refactored command content into modules
 */
-package client.command.commands.gm4;
+package client.command.commands.gm0;
 
 import client.command.Command;
 import client.MapleClient;
-import client.MapleCharacter;
-import server.life.MapleLifeFactory;
-import server.life.MapleMonster;
 
-public class CakeCommand extends Command {
+public class ChangeLanguageCommand extends Command {
     {
         setDescription("");
     }
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        MapleCharacter player = c.getPlayer();
-        MapleMonster monster = MapleLifeFactory.getMonster(9400606);
-        if (params.length == 1) {
-            double mobHp = Double.parseDouble(params[0]);
-            int newHp = (mobHp <= 0) ? Integer.MAX_VALUE : ((mobHp > Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) mobHp);
-
-            monster.setStartingHp(newHp);
+        if (params.length < 1) {
+            c.getPlayer().yellowMessage("Syntax: !changel <0=ptb, 1=esp, 2=eng>");
+            return;
         }
-
-        player.getMap().spawnMonsterOnGroundBelow(monster, player.getPosition());
+        c.setLanguage(Integer.parseInt(params[0]));
     }
 }

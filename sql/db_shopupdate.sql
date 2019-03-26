@@ -159,11 +159,10 @@ INSERT IGNORE INTO `shopitems` (`shopid`, `itemid`, `price`, `pitch`, `position`
 (2130000, 2030100, 450, 0, 126),
 (9201060, 2030100, 450, 0, 114),
 (9270021, 2030100, 450, 0, 118),
-(9270022, 2030100, 450, 0, 114),
+(9270022, 2030100, 450, 0, 114),  -- Thanks Rednor for finding duplicate item on NPC
 (1338, 2030100, 450, 0, 114),
 (9270057, 2030100, 450, 0, 4),
-(9270065, 2030100, 450, 0, 3),
-(9270022, 2030100, 450, 0, 118);
+(9270065, 2030100, 450, 0, 3);
 
 -- Thanks to Vcoc
 -- GMShop: Sacks, GmEquip, Cheese & Onyx, Utils, 

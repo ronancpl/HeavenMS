@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
 
@@ -28,7 +29,6 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import org.apache.mina.core.session.IoSession;
 import tools.DatabaseConnection;
 
-import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -220,8 +220,8 @@ public class MapleSessionCoordinator {
         return poolLock.get(Math.abs(remoteHost.hashCode()) % 100);
     }
     
-    private static String getRemoteIp(IoSession session) {
-        return ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+    public static String getSessionRemoteAddress(IoSession session) {
+        return (String) session.getAttribute(MapleClient.CLIENT_REMOTE_ADDRESS);
     }
     
     private static MapleClient getSessionClient(IoSession session) {
@@ -245,7 +245,7 @@ public class MapleSessionCoordinator {
     public boolean canStartLoginSession(IoSession session) {
         if (!ServerConstants.DETERRED_MULTICLIENT) return true;
         
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         Lock lock = getCoodinatorLock(remoteHost);
         
         try {
@@ -305,7 +305,7 @@ public class MapleSessionCoordinator {
     }
     
     public void closeLoginSession(IoSession session) {
-        String remoteIp = getRemoteIp(session);
+        String remoteIp = getSessionRemoteAddress(session);
         Set<IoSession> lrh = loginRemoteHosts.get(remoteIp);
         if (lrh != null) {
             lrh.remove(session);
@@ -336,7 +336,7 @@ public class MapleSessionCoordinator {
             return AntiMulticlientResult.SUCCESS;
         }
         
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         Lock lock = getCoodinatorLock(remoteHost);
         
         try {
@@ -402,7 +402,7 @@ public class MapleSessionCoordinator {
     }
     
     public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         if (!ServerConstants.DETERRED_MULTICLIENT) {
             associateRemoteHostHwid(remoteHost, remoteHwid);
             return AntiMulticlientResult.SUCCESS;
@@ -472,14 +472,47 @@ public class MapleSessionCoordinator {
         }
     }
     
+    private static MapleClient fetchInTransitionSessionClient(IoSession session) {
+        String remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
+        
+        if (remoteHwid != null) {   // maybe this session was currently in-transition?
+            int hwidLen = remoteHwid.length();
+            if (hwidLen <= 8) {
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid);
+            } else {
+                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
+            }
+            
+            MapleClient client = new MapleClient(null, null, session);
+            Integer cid = Server.getInstance().freeCharacteridInTransition(session);
+            if (cid != null) {
+                try {
+                    client.setAccID(MapleCharacter.loadCharFromDB(cid, client, false).getAccountID());
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+            
+            session.setAttribute(MapleClient.CLIENT_KEY, client);
+            return client;
+        }
+        
+        return null;
+    }
+    
     public void closeSession(IoSession session, Boolean immediately) {
+        MapleClient client = getSessionClient(session);
+        if (client == null) {
+            client = fetchInTransitionSessionClient(session);
+        }
+        
         String hwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID); // making sure to clean up calls to this function on login phase
         onlineRemoteHwids.remove(hwid);
         
         hwid = (String) session.removeAttribute(MapleClient.CLIENT_HWID);
         onlineRemoteHwids.remove(hwid);
         
-        MapleClient client = getSessionClient(session);
         if (client != null) {
             if (hwid != null) { // is a game session
                 onlineClients.remove(client.getAccID());
@@ -496,10 +529,12 @@ public class MapleSessionCoordinator {
         if (immediately != null) {
             session.close(immediately);
         }
+        
+        // session.removeAttribute(MapleClient.CLIENT_REMOTE_ADDRESS); No real need for removing String property on closed sessions
     }
     
     public String getGameSessionHwid(IoSession session) {
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         return cachedHostHwids.get(remoteHost);
     }
     

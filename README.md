@@ -83,6 +83,8 @@ If you liked this project, please don't forget to __star__ the repo ;) .
 
 It's never enough to tell this, thanks to everyone that have been contributing something for the continuous improvement of the server! Be it through bug reports, donation, code snippets and/or pull requests.
 
+Note for anyone up to contribute further pull requests: make awareness to use __english language__ in codes and messages, as usage of any other languages will render it open to faculty of whether this content will be ready to be accepted or *further changes are going to be requested* before it becomes apt to merge.
+
 Our Discord channel is still available on: https://discord.gg/Q7wKxHX
 
 <hr id="donate" />
@@ -166,11 +168,11 @@ Now open NetBeans, and click "Open a project..." . Select then the "HeavenMS" fo
 
 Inside the project, you may encounter some code errors.
 
-These errors pops-up because you have not set yet the "cores" of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
+Firstly, a **new Java7 platform** must be defined to run the server. Click "Manage Platforms...", then "Add platform", browse through "C:\Program Files\Java" for the JDK 1.7 folder. Then, name this new platform "JDK 1.7".
 
-Locate the "cores" folder inside the root directory of this project and manually configure the missing files with the files that are there.
+In case errors still show up, these errors probably occurs because you have yet to set the core JARs of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
 
-Also, a new Java7 platform must be defined to run the server. Click "Manage Platforms...", then "Add platform", browse through until you locate the Java7 folder in the file system, it should be at "C:\Program Files\Java". Then, name this new platform "JDK 1.7".
+Locate the folder "cores" inside the root directory of this project and manually configure the missing files on NetBeans (mina-core, slf4j-api, ...).
 
 Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functional, then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
@@ -190,7 +192,7 @@ The client's set-up is quite straightforward:
 
 #### Editing localhost IP target
 
-If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Text String" "127.0.0.1", and applying the changes wherever it fits.
+If you are not using "localhost" as the target IP on the server's config file, you will need to HEX-EDIT "localhost.exe" to fetch your IP. Track down all IP locations by searching for "Type: String" "127.0.0.1", and applying the changes wherever it fits.
 
 To hex-edit, install the Neo Hex Editor from "free-hex-editor-neo.exe" and follow their instructions. Once done, open "localhost.exe" for editing and overwrite the IP values under the 3 addresses. Save the changes and exit the editor.
 

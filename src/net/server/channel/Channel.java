@@ -106,6 +106,7 @@ public final class Channel {
     private MapleEvent event;
     private boolean finishedShutdown = false;
     private int usedDojo = 0;
+    private Set<Integer> usedMC = new HashSet<>();
     
     private ScheduledFuture<?> respawnTask;
     
@@ -990,6 +991,22 @@ public final class Channel {
                 map.checkMapOwnerActivity();
             }
         }
+    }
+    
+    private static int getMonsterCarnivalRoom(boolean cpq1, int field) {
+        return (cpq1 ? 0 : 100) + field;
+    }
+    
+    public void initMonsterCarnival(boolean cpq1, int field) {
+        usedMC.add(getMonsterCarnivalRoom(cpq1, field));
+    }
+    
+    public void finishMonsterCarnival(boolean cpq1, int field) {
+        usedMC.remove(getMonsterCarnivalRoom(cpq1, field));
+    }
+    
+    public boolean canInitMonsterCarnival(boolean cpq1, int field) {
+        return !usedMC.contains(getMonsterCarnivalRoom(cpq1, field));
     }
     
     private static int getChannelSchedulerIndex(int mapid) {

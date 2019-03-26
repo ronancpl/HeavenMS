@@ -1,3 +1,9 @@
+/**
+-- Version Info -----------------------------------------------------------------------------------
+	1.0 - First Version by Drago (MapleStorySA)
+        2.0 - Second Version by Jayd - translated CPQ contents to English
+---------------------------------------------------------------------------------------------------
+**/
 
 var status = 0;
 var rnk = -1;
@@ -21,26 +27,33 @@ function action(mode, type, selection) {
         else
             status--;
         
-        if (cm.getChar().getMap().isCPQLoserMap()) {
+        if (cm.getPlayer().getMapId() == 980030010) {
+            if (status == 0) {
+                cm.sendNext("I hope you had fun at the Monster Carnival!");
+            } else if (status > 0) {
+                cm.warp(980030000, 0);
+                cm.dispose();
+            }
+        } else if (cm.getChar().getMap().isCPQLoserMap()) {
             if (status == 0) {
                 if (cm.getChar().getParty() != null) {
                     var shiu = "";
                     if (cm.getPlayer().getFestivalPoints() >= 300) {
                         shiu += "#rA#k";
-                        cm.sendOk("Infelizmente, voc� ou empatou ou perdeu a batalha, apesar da sua excelente performance. A vit�ria pode ser sua da pr�xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Unfortunately, you either drew or lost the battle despite your excellent performance. Victory can be yours next time! \r\n\r\n#bYour result: " + shiu);
                         rnk = 10;
                     } else if (cm.getPlayer().getFestivalPoints() >= 100) {
                         shiu += "#rB#k";
                         rnk = 20;
-                        cm.sendOk("Infelizmente, voc� ou empatou ou perdeu a batalha, mesmo com sua �tima performance. S� mais um pouquinho, e a vit�ria poderia ter sido sua.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Unfortunately, you either drew or lost the battle, even with your ultimate performance. Just a little bit, and the victory could have been yours! \r\n\r\n#bYour result: " + shiu);
                     } else if (cm.getPlayer().getFestivalPoints() >= 50) {
                         shiu += "#rC#k";
                         rnk = 30;
-                        cm.sendOk("Infelizmente, voc� ou empatou ou perdeu a batalha. A vit�ria est� para aqueles que se esfor�am. Vejo seus esfor�os, ent�o a vit�ria n�o est� t�o longe do seu alcance. Continue assim!\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Unfortunately, you either drew or lost the battle. Victory is for those who strive. I see your efforts, so victory is not far from your reach. Keep it up!\r\n\r\n#bYour result: " + shiu);
                     } else {
                         shiu += "#rD#k";
                         rnk = 40;
-                        cm.sendOk("Infelizmente, voc� ou empatou ou perdeu a batalha, e sua performance claramente reflete nisso. Espero mais de voc� da pr�xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shiu);
+                        cm.sendOk("Unfortunately, you either equalized or lost the battle, and your performance clearly reflects on it. I expect more from you next time. \r\n\r\n#bYour result: " + shiu);
                     }
                 } else {
                     cm.warp(980030000, 0);
@@ -81,19 +94,19 @@ function action(mode, type, selection) {
                     if (cm.getPlayer().getFestivalPoints() >= 300) {
                         shi += "#rA#k";
                         rnk = 1;
-                        cm.sendOk("Parab�ns pela sua vit�ria!!! Que �tima performance! O grupo advers�rio n�o p�de fazer nada! Espero o mesmo bom trabalho da pr�xima vez!\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Congratulations on your victory!!! What a performance! The opposite group could not do anything! I hope the same good work next time! \r\n\r\n#bYour result: " + shi);
                     } else if (cm.getPlayer().getFestivalPoints() >= 100) {
                         shi += "#rB#k";
                         rnk = 2;
-                        cm.sendOk("Parab�ns pela sua vit�ria! Isso foi impressionante! Voc� fez um bom trabalho contra o grupo advers�rio! S� mais um pouco, e voc� definitivamente vai conseguir um A na pr�xima vez. \r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Congratulations on your victory! That was awesome! You did a good job against the opposing group! Just a little longer, and you'll definitely get an A next time! \r\n\r\n#bYour result: " + shi);
                     } else if (cm.getPlayer().getFestivalPoints() >= 50) {
                         shi += "#rC#k";
                         rnk = 3;
-                        cm.sendOk("Parab�ns pela sua vit�ria. Voc� fez algumas coisas c� e l�, mas essa n�o pode ser considerada uma boa vit�ria. Espero mais de ti da pr�xima vez.\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Congratulations on your victory. You did some things here and there, but that can not be considered a good victory. I expect more from you next time. \r\n\r\n#bYour result: " + shi);
                     } else {
                         shi += "#rD#k";
                         rnk = 4;
-                        cm.sendOk("Parab�ns pela sua vit�ria, entretanto sua performance n�o refletiu muito bem isso. Seja mais ativo na sua pr�xima participa��o da Folia de Monstros!\r\n\r\n#bNota da Folia de Monstros : " + shi);
+                        cm.sendOk("Congratulations on your victory, though your performance did not quite reflect that. Be more active in your next participation in the Monster Carnival! \r\n\r\n#bYour result: " + shi);
                     }
                 } else {
                     cm.warp(980030000, 0);

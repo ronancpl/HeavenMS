@@ -1,5 +1,5 @@
 /*
-    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    This file is part of the HeavenMS MapleStory Server
     Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
@@ -17,26 +17,12 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package net.server.coordinator.matchchecker;
 
-/*
-   @Author: Arthur L - Refactored command content into modules
-*/
-package client.command.commands.gm0;
-
-import client.command.Command;
-import client.MapleClient;
-
-public class ChangeLinguaCommand extends Command {
-    {
-        setDescription("");
-    }
-
-    @Override
-    public void execute(MapleClient c, String[] params) {
-        if (params.length < 1) {
-            c.getPlayer().yellowMessage("Syntax: !changel <0=ptb, 1=esp, 2=eng>");
-            return;
-        }
-        c.setLingua(Integer.parseInt(params[0]));
-    }
+/**
+ *
+ * @author Ronan
+ */
+public interface MatchCheckerListenerRecipe {
+    public AbstractMatchCheckerListener getListener();
 }

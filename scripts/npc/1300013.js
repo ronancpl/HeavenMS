@@ -44,9 +44,18 @@ function action(mode, type, selection){
                         }
                     
                         else if(selection == 1){
-                                var pm = cm.getEventManager("MK_PrimeMinister2");
-                                pm.setProperty("player", cm.getPlayer().getName());
-                                pm.startInstance(cm.getPlayer());
+                                var em = cm.getEventManager("MK_PrimeMinister2");
+                                
+                                var party = cm.getPlayer().getParty();
+                                if (party != null) {
+                                    if (!em.startInstance(party, cm.getMap())) {
+                                        cm.sendOk("Another party is already challenging the boss in this channel.");
+                                    }
+                                } else {
+                                    if (!em.startInstance(cm.getPlayer())) {
+                                        cm.sendOk("Another party is already challenging the boss in this channel.");
+                                    }
+                                }
                                 
                                 cm.dispose();
                                 return;

@@ -2,7 +2,9 @@ package server.partyquest;
 
 import client.MapleDisease;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import server.life.MobSkillFactory;
 import provider.MapleDataProvider;
@@ -20,6 +22,9 @@ public class MapleCarnivalFactory {
     private final Map<Integer, MCSkill> skills = new HashMap<Integer, MCSkill>();
     private final Map<Integer, MCSkill> guardians = new HashMap<Integer, MCSkill>();
     private final MapleDataProvider dataRoot = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Skill.wz"));
+    
+    private final List<Integer> singleTargetedSkills = new ArrayList<>();
+    private final List<Integer> multiTargetedSkills = new ArrayList<>();
 
     public MapleCarnivalFactory() {
         //whoosh
@@ -35,15 +40,36 @@ public class MapleCarnivalFactory {
             return;
         }
         for (MapleData z : dataRoot.getData("MCSkill.img")) {
-            skills.put(Integer.parseInt(z.getName()), new MCSkill(MapleDataTool.getInt("spendCP", z, 0), MapleDataTool.getInt("mobSkillID", z, 0), MapleDataTool.getInt("level", z, 0), MapleDataTool.getInt("target", z, 1) > 1));
+            Integer id = Integer.parseInt(z.getName());
+            MCSkill ms = new MCSkill(MapleDataTool.getInt("spendCP", z, 0), MapleDataTool.getInt("mobSkillID", z, 0), MapleDataTool.getInt("level", z, 0), MapleDataTool.getInt("target", z, 1) > 1);
+            
+            skills.put(id, ms);
+            if (ms.targetsAll) {
+                multiTargetedSkills.add(id);
+            } else {
+                singleTargetedSkills.add(id);
+            }
         }
         for (MapleData z : dataRoot.getData("MCGuardian.img")) {
             guardians.put(Integer.parseInt(z.getName()), new MCSkill(MapleDataTool.getInt("spendCP", z, 0), MapleDataTool.getInt("mobSkillID", z, 0), MapleDataTool.getInt("level", z, 0), true));
         }
     }
 
+    private MCSkill randomizeSkill(boolean multi) {
+        if (multi) {
+            return skills.get(multiTargetedSkills.get((int) (Math.random() * multiTargetedSkills.size())));
+        } else {
+            return skills.get(multiTargetedSkills.get((int) (Math.random() * multiTargetedSkills.size())));
+        }
+    }
+    
     public MCSkill getSkill(final int id) {
-        return skills.get(id);
+        MCSkill skill = skills.get(id);
+        if (skill != null && skill.skillid <= 0) {
+            return randomizeSkill(skill.targetsAll);
+        } else {
+            return skill;
+        }
     }
 
     public MCSkill getGuardian(final int id) {
@@ -63,17 +89,14 @@ public class MapleCarnivalFactory {
         }
 
         public MobSkill getSkill() {
-            return getMobSkill(skillid);
+            return getMobSkill(skillid, level);
         }
         
-        public static MobSkill getMobSkill(int skillid) {
-            return MobSkillFactory.getMobSkill(skillid, 1); //level?
+        public static MobSkill getMobSkill(int skillid, int level) {
+            return MobSkillFactory.getMobSkill(skillid, level);
         }
 
         public MapleDisease getDisease() {
-            if (skillid <= 0) {
-                return MapleDisease.getRandom();
-            }
             return MapleDisease.getBySkill(skillid);
         }
     }

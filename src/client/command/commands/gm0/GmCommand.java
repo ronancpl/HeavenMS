@@ -51,7 +51,7 @@ public class GmCommand extends Command {
             return;
         }
         String message = player.getLastCommandMessage();
-        Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[GM MESSAGE]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
+        Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.sendYellowTip("[GM Message]:" + MapleCharacter.makeMapleReadable(player.getName()) + ": " + message));
         Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(1, message));
         FilePrinter.printError(FilePrinter.COMMAND_GM, MapleCharacter.makeMapleReadable(player.getName()) + ": " + message);
         player.dropMessage(5, "Your message '" + message + "' was sent to GMs.");

@@ -57,7 +57,7 @@ public class MapleAlliance {
     public MapleAlliance(String name, int id) {
         this.name = name;
         allianceId = id;
-        String[] ranks = {"Master", "Jr.Master", "Member", "Member", "Member"};
+        String[] ranks = {"Master", "Jr. Master", "Member", "Member", "Member"};
         for (int i = 0; i < 5; i++) {
             rankTitles[i] = ranks[i];
         }

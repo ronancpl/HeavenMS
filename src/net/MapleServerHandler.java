@@ -34,6 +34,7 @@ import org.apache.mina.core.session.IoSession;
 
 import client.MapleClient;
 import constants.ServerConstants;
+import java.net.InetSocketAddress;
 
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
@@ -105,6 +106,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void sessionOpened(IoSession session) {
+        session.setAttribute(MapleClient.CLIENT_REMOTE_ADDRESS, ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress());
+        
         if (!Server.getInstance().isOnline()) {
             MapleSessionCoordinator.getInstance().closeSession(session, true);
             return;
