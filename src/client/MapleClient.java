@@ -91,6 +91,7 @@ public class MapleClient {
         public static final String CLIENT_HWID = "HWID";
         public static final String CLIENT_NIBBLEHWID = "HWID2";
         public static final String CLIENT_REMOTE_ADDRESS = "REMOTE_IP";
+        public static final String CLIENT_CASH_SHOP = "CASH_SHOP";
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
 	private final IoSession session;

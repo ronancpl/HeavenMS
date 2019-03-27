@@ -487,6 +487,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void setAwayFromChannelWorld() {
+        client.getSession().setAttribute(MapleClient.CLIENT_CASH_SHOP);
         setAwayFromChannelWorld(false);
     }
             

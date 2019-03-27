@@ -150,11 +150,9 @@ public class MapleServerHandler extends IoHandlerAdapter {
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (client != null) {
             try {
-                boolean inCashShop = false;
-                if (client.getPlayer() != null) {
-                    inCashShop = client.getPlayer().getCashShop().isOpened();
+                if (!session.containsAttribute(MapleClient.CLIENT_CASH_SHOP)) {
+                    client.disconnect(false, false);
                 }
-                client.disconnect(false, inCashShop);
             } catch (Throwable t) {
                 FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, t);
             } finally {

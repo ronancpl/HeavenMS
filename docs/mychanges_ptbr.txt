@@ -1766,3 +1766,6 @@ Revisado novamente login, para o caso onde accId = 0 estava sendo atribuído e e
 Adicionado update de estado de login no módulo de disconnect, para também atualizar estado da conta quando a mesma não se encontra já logada ou em transição.
 Corrigido NPC da CPQ2, saída abrupta, não retornando jogadores devidamente para o saguão de espera.
 Corrigido bug na CPQ em tempo estendido não mostrando devidamente o efeito visual de fim de partida.
+
+27 Março 2019,
+Corrigido possibilidade de bloqueio de volta do jogador ao jogo, ao utilizar o sistema de MTS/Cash Shop. Problema ocorria devido a mudanças concorrentes de login states ao fazer a transição de volta ao jogo.
