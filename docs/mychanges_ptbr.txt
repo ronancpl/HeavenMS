@@ -1769,3 +1769,6 @@ Corrigido bug na CPQ em tempo estendido não mostrando devidamente o efeito visu
 
 27 Março 2019,
 Corrigido possibilidade de bloqueio de volta do jogador ao jogo, ao utilizar o sistema de MTS/Cash Shop. Problema ocorria devido a mudanças concorrentes de login states ao fazer a transição de volta ao jogo.
+
+28 Março 2019,
+Corrigido possibilidade de congelamento de tela ao tentar trocar de canais. Problema ocorria devido a mudanças concorrentes de login states ao fazer a transição de volta ao jogo.

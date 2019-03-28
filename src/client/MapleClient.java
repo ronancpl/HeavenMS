@@ -91,7 +91,7 @@ public class MapleClient {
         public static final String CLIENT_HWID = "HWID";
         public static final String CLIENT_NIBBLEHWID = "HWID2";
         public static final String CLIENT_REMOTE_ADDRESS = "REMOTE_IP";
-        public static final String CLIENT_CASH_SHOP = "CASH_SHOP";
+        public static final String CLIENT_TRANSITION = "TRANSITION";
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
 	private final IoSession session;
@@ -1474,6 +1474,7 @@ public class MapleClient {
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
+                player.setSessionTransitionState();
                 player.setDisconnectedFromChannelWorld();
                 player.notifyMapTransferToPartner(-1);
                 player.removeIncomingInvites();

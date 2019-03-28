@@ -150,7 +150,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (client != null) {
             try {
-                if (!session.containsAttribute(MapleClient.CLIENT_CASH_SHOP)) {
+                // client freeze issues on session transition states found thanks to yolinlin, Omo Oppa, Nozphex
+                if (!session.containsAttribute(MapleClient.CLIENT_TRANSITION)) {
                     client.disconnect(false, false);
                 }
             } catch (Throwable t) {

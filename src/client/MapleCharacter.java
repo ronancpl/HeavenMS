@@ -487,7 +487,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void setAwayFromChannelWorld() {
-        client.getSession().setAttribute(MapleClient.CLIENT_CASH_SHOP);
         setAwayFromChannelWorld(false);
     }
             
@@ -503,6 +502,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else {
             client.getChannelServer().removePlayerAway(id);
         }
+    }
+    
+    public void setSessionTransitionState() {
+        client.getSession().setAttribute(MapleClient.CLIENT_TRANSITION);
     }
     
     public long getPetLootCd() {
