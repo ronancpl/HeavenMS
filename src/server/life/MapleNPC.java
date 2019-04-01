@@ -44,6 +44,13 @@ public class MapleNPC extends AbstractLoadedMapleLife {
 
     @Override
     public void sendSpawnData(MapleClient client) {
+        if (ServerConstants.USE_DISABLE_NPC) {
+            for (int n = 0; n < GameConstants.DISABLED_NPC.length; n++) {
+                if (getId() == GameConstants.DISABLED_NPC[n]) {
+                    return;
+                }
+            }
+        }
         client.announce(MaplePacketCreator.spawnNPC(this));
         client.announce(MaplePacketCreator.spawnNPCRequestController(this, true));
     }
