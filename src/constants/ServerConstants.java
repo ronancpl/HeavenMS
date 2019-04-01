@@ -111,6 +111,7 @@ public class ServerConstants {
     public static final boolean USE_REBIRTH_SYSTEM = false;         //Flag to enable/disable rebirth system
     public static final boolean USE_MAP_OWNERSHIP_SYSTEM = true;    //Flag to enable/disable map ownership system
     public static final boolean USE_FISHING_SYSTEM = true;          //Flag to enable/disable fishing system
+    public static final boolean USE_DISABLE_NPC = true;             //Flag to disable certain NPCs.
     
     //Events/PQs Configuration
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
