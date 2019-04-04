@@ -439,7 +439,7 @@ public class MapleSessionCoordinator {
         }
         
         try {
-            String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+            String nibbleHwid = (String) session.getAttribute(MapleClient.CLIENT_NIBBLEHWID);   // thanks Paxum for noticing account stuck after PIC failure
             if (nibbleHwid != null) {
                 onlineRemoteHwids.remove(nibbleHwid);
                 

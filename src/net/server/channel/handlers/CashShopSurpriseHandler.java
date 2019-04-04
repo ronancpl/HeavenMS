@@ -25,6 +25,7 @@ import net.AbstractMaplePacketHandler;
 import server.CashShop;
 import tools.data.input.SeekableLittleEndianAccessor;
 import tools.MaplePacketCreator;
+import tools.Pair;
 
 /**
  *
@@ -36,11 +37,14 @@ public class CashShopSurpriseHandler extends AbstractMaplePacketHandler {
         CashShop cs = c.getPlayer().getCashShop();
         
         if(cs.isOpened()) {
-            Item cssItem = cs.openCashShopSurprise();
+            Pair<Item, Item> cssResult = cs.openCashShopSurprise();
             
-            if(cssItem != null) {
+            if(cssResult != null) {
+                //Item cssItem = cssResult.getLeft(), cssBox = cssResult.getRight();
+                //c.announce(MaplePacketCreator.onCashGachaponOpenSuccess(c.getAccID(), cssBox.getSN(), cssBox.getQuantity(), cssItem, cssItem.getItemId(), cssItem.getQuantity(), true));
                 c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xA4));
             } else {
+                //c.announce(MaplePacketCreator.onCashItemGachaponOpenFailed());
                 c.announce(MaplePacketCreator.showCashShopMessage((byte) 0x00));
             }
         }

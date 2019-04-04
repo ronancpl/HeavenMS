@@ -59,11 +59,6 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
         }
         
         IoSession session = c.getSession();
-        AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptGameSession(session, c.getAccID(), hwid);
-        if (res != AntiMulticlientResult.SUCCESS) {
-            c.announce(MaplePacketCreator.getAfterLoginError(parseAntiMulticlientError(res)));
-            return;
-        }
         
         Server server = Server.getInstance();
         if(!server.haveCharacterEntry(c.getAccID(), charId)) {
@@ -85,6 +80,12 @@ public class ViewAllCharSelectedWithPicHandler extends AbstractMaplePacketHandle
             String[] socket = server.getInetSocket(c.getWorld(), c.getChannel());
             if(socket == null) {
                 c.announce(MaplePacketCreator.getAfterLoginError(10));
+                return;
+            }
+            
+            AntiMulticlientResult res = MapleSessionCoordinator.getInstance().attemptGameSession(session, c.getAccID(), hwid);
+            if (res != AntiMulticlientResult.SUCCESS) {
+                c.announce(MaplePacketCreator.getAfterLoginError(parseAntiMulticlientError(res)));
                 return;
             }
             

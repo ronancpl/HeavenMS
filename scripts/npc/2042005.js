@@ -6,7 +6,7 @@
 **/
 
 var cpqMinLvl = 51;
-var cpqMaxLvl = 69;
+var cpqMaxLvl = 70;
 var cpqMinAmt = 2;
 var cpqMaxAmt = 6;
 

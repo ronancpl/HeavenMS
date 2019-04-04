@@ -59,19 +59,24 @@ function action(mode, type, selection) {
                         }
                 } else if(status == 1) {
                         if (mode >= 1 && cm.getJobId() % 100 % 10 != 2) {
-                                cm.changeJobById(cm.getJobId() + 1);
-                                if(cm.getJobId() == 112) {
-                                        cm.teachSkill(1121001, 0, 10, -1);
-                                        cm.teachSkill(1120004, 0, 10, -1);
-                                        cm.teachSkill(1121008, 0, 10, -1);
-                                } else if(cm.getJobId() == 122) {
-                                        cm.teachSkill(1221001, 0, 10, -1);
-                                        cm.teachSkill(1220005, 0, 10, -1);
-                                        cm.teachSkill(1221009, 0, 10, -1);
-                                } else if(cm.getJobId() == 132) {
-                                        cm.teachSkill(1321001, 0, 10, -1);
-                                        cm.teachSkill(1320005, 0, 10, -1);
-                                        cm.teachSkill(1321007, 0, 10, -1);
+                                if (cm.canHold(2280003, 1)) {
+                                        cm.changeJobById(cm.getJobId() + 1);
+                                        if(cm.getJobId() == 112) {
+                                                cm.teachSkill(1121001, 0, 10, -1);
+                                                cm.teachSkill(1120004, 0, 10, -1);
+                                                cm.teachSkill(1121008, 0, 10, -1);
+                                        } else if(cm.getJobId() == 122) {
+                                                cm.teachSkill(1221001, 0, 10, -1);
+                                                cm.teachSkill(1220005, 0, 10, -1);
+                                                cm.teachSkill(1221009, 0, 10, -1);
+                                        } else if(cm.getJobId() == 132) {
+                                                cm.teachSkill(1321001, 0, 10, -1);
+                                                cm.teachSkill(1320005, 0, 10, -1);
+                                                cm.teachSkill(1321007, 0, 10, -1);
+                                        }
+                                        cm.gainItem(2280003, 1);
+                                } else {
+                                        cm.sendOk("Please have one slot available on #bUSE#k inventory to receive a skill book.");
                                 }
                         } else if(mode >= 0 && cm.getJobId() % 100 % 10 == 2) {
                                 // TEMP until I can get the quest fixed...

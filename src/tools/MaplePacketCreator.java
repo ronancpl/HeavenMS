@@ -1668,7 +1668,7 @@ public class MaplePacketCreator {
                 mplew.writeBool(white);
                 mplew.writeInt(gain);
                 mplew.writeBool(inChat);
-                mplew.writeInt(0); // monster book bonus (Bonus Event Exp)
+                mplew.writeInt(0); // bonus event exp
                 mplew.write(0); // third monster kill event
                 mplew.write(0); // RIP byte, this is always a 0
                 mplew.writeInt(0); //wedding bonus
@@ -1676,9 +1676,7 @@ public class MaplePacketCreator {
                         mplew.write(0);
                 }
 
-                int mod = ServerConstants.PARTY_EXPERIENCE_MOD != 1 ? ServerConstants.PARTY_EXPERIENCE_MOD * 100 : 0;
-
-                mplew.write(mod); //0 = party bonus, 100 = 1x Bonus EXP, 200 = 2x Bonus EXP
+                mplew.write(0); //0 = party bonus, 100 = 1x Bonus EXP, 200 = 2x Bonus EXP
                 mplew.writeInt(party); // party bonus 
                 mplew.writeInt(equip); //equip bonus
                 mplew.writeInt(0); //Internet Cafe Bonus
@@ -1808,15 +1806,15 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] dropItemFromMapObject(boolean recvrInParty, MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
+        public static byte[] dropItemFromMapObject(MapleCharacter player, MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
                 mplew.write(mod);
                 mplew.writeInt(drop.getObjectId());
                 mplew.writeBool(drop.getMeso() > 0); // 1 mesos, 0 item, 2 and above all item meso bag,
                 mplew.writeInt(drop.getItemId()); // drop object ID
-                mplew.writeInt(!drop.isFFADrop() ? (recvrInParty ? drop.getPartyOwnerId() : drop.getOwnerId()) : 0); // owner charid/partyid :)
-                mplew.write(drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
+                mplew.writeInt(drop.getClientsideOwnerId(player)); // owner charid/partyid :)
+                mplew.write(!drop.hasExpiredOwnershipTime() ? drop.getDropType() : 2); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
                 mplew.writeInt(drop.getDropper().getObjectId()); // dropper oid, found thanks to Li Jixue
 
@@ -6759,7 +6757,28 @@ public class MaplePacketCreator {
 
                 return mplew.getPacket();
         }
+        
+        // Cash Shop Surprise packets found thanks to Arnah (Vertisy)
+        public static byte[] onCashItemGachaponOpenFailed(){
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		mplew.writeShort(SendOpcode.CASHSHOP_CASH_ITEM_GACHAPON_RESULT.getValue());
+		mplew.write(189);
+		return mplew.getPacket();
+	}
 
+	public static byte[] onCashGachaponOpenSuccess(int accountid, long sn, int remainingBoxes, Item item, int itemid, int nSelectedItemCount, boolean bJackpot){
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+		mplew.writeShort(SendOpcode.CASHSHOP_CASH_ITEM_GACHAPON_RESULT.getValue());
+		mplew.write(190);
+		mplew.writeLong(sn);// sn of the box used
+		mplew.writeInt(remainingBoxes);
+		addCashItemInformation(mplew, item, accountid);
+		mplew.writeInt(itemid);// the itemid of the liSN?
+		mplew.write(nSelectedItemCount);// the total count now? o.O
+		mplew.writeBool(bJackpot);// "CashGachaponJackpot"
+		return mplew.getPacket();
+	}
+        
         private static void getGuildInfo(final MaplePacketLittleEndianWriter mplew, MapleGuild guild) {
                 mplew.writeInt(guild.getId());
                 mplew.writeMapleAsciiString(guild.getName());
@@ -7495,7 +7514,7 @@ public class MaplePacketCreator {
 
                 return mplew.getPacket();
         }
-
+        
         /*
          * 00 = Due to an unknown error, failed
          * A4 = Due to an unknown error, failed + warpout

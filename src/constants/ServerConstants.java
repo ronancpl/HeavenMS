@@ -150,8 +150,6 @@ public class ServerConstants {
     public static final float PARTY_BONUS_EXP_RATE = 1.0f;          //Rate for the party exp bonus reward.
     public static final double PQ_BONUS_EXP_RATE = 0.5;             //Rate for the PQ exp reward.
     
-    public static final int PARTY_EXPERIENCE_MOD = 1;               //Change for event stuff.
-    
     //Miscellaneous Configuration
     public static String TIMEZONE = "GMT-3";
     public static boolean USE_DISPLAY_NUMBERS_WITH_COMMA = true;        //Enforce comma on displayed strings (use this when USE_UNITPRICE_WITH_COMMA is active and you still want to display comma-separated values).

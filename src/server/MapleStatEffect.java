@@ -1107,7 +1107,7 @@ public class MapleStatEffect {
     }
 
     private void applyBuffEffect(MapleCharacter applyfrom, MapleCharacter applyto, boolean primary) {
-        if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody()) {     // last mystic door already dispelled if it has been used before.
+        if (!isMonsterRiding() && !isCouponBuff() && !isMysticDoor() && !isHyperBody() && !isCombo()) {     // last mystic door already dispelled if it has been used before.
             applyto.cancelEffect(this, true, -1);
         }
 
@@ -1190,7 +1190,12 @@ public class MapleStatEffect {
                 List<Pair<MapleBuffStat, Integer>> dsstat = Collections.singletonList(new Pair<>(MapleBuffStat.WIND_WALK, 0));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), dsstat);
             } else if (isCombo()) {
-                mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), statups);
+                Integer comboCount = applyto.getBuffedValue(MapleBuffStat.COMBO);
+                if (comboCount == null) comboCount = 0;
+                
+                List<Pair<MapleBuffStat, Integer>> cbstat = Collections.singletonList(new Pair<>(MapleBuffStat.COMBO, comboCount));
+                buff = MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), localDuration, cbstat);
+                mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), cbstat);
             } else if (isMonsterRiding()) {
                 if (sourceid == Corsair.BATTLE_SHIP) {//hp
                     if (applyto.getBattleshipHp() <= 0) {

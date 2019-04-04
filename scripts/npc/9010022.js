@@ -33,14 +33,15 @@ function action(mode, type, selection) {
                     selStr += "#1# Mu Lung Dojo"; 
                 } 
 
-                /*if (cm.getLevel() >= 30 && cm.getLevel() <= 50) { NOT IMPLEMENTED
+                if (cm.getLevel() >= 30 && cm.getLevel() <= 50) {   // MC 1 & 2 recalled thanks to ---
                     selStr += "#2# Monster Carnival 1"; 
                 } 
 
-                if (cm.getLevel() >= 51 && cm.getLevel() <= 70) { NOT IMPLEMENTED
+                if (cm.getLevel() >= 51 && cm.getLevel() <= 70) {
                     selStr += "#3# Monster Carnival 2"; 
                 } 
 
+                /*
                 if (cm.getLevel() >= 40) { NOT IMPLEMENTED
                     selStr += "#5# Nett's Pyramid"; 
                 } 
@@ -62,9 +63,11 @@ function action(mode, type, selection) {
                     cm.warp(925020000, 0); 
                     break; 
                 case 2: 
+                    cm.getPlayer().saveLocation("MONSTER_CARNIVAL"); 
                     cm.warp(980000000, 3); 
                     break; 
                 case 3: 
+                    cm.getPlayer().saveLocation("MONSTER_CARNIVAL"); 
                     cm.warp(980030000, 3); 
                     break; 
                 case 5: 

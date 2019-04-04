@@ -55,8 +55,14 @@ function end(mode, type, selection) {
 				qm.dispose();
 				return;
 			}
+                        if (!qm.canHold(2280003, 1)) {
+                                qm.sendOk("Hey, your #buse#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");
+				qm.dispose();
+				return;
+                        }
 			
 			qm.gainItem(1142132, true);
+                        qm.gainItem(2280003, 1);
 			qm.changeJobById(2112);
 			
 			qm.completeQuest();

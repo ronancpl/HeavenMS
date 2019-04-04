@@ -28,4 +28,5 @@
 function act(){
     rm.spawnMonster(9400213, 2);
     rm.spawnMonster(9400214, 2);
+    rm.mapMessage(5, "Some monsters are summoned.");
 }

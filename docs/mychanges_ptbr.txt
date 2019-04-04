@@ -1014,7 +1014,7 @@ Modificado sistema de EXP de mounts de forma a favorecer usar Revitalizer quando
 Retirado aspecto aleatório de ganho de closeness em pets ao usar o Pet Food, adicionado proteção a acesso concorrente.
 Corrigido script da Arwen não retirando itens ao gerar certos itens.
 Corrigido script de viagem para Florina levando jogadores a Lith Harbor mesmo quando entrando por outras regiões.
-Corrigido Stance, Berserk, Ninja Storm, Concentrate, Mage skills and other 4th job skills questlines.
+Corrigido Stance, Berserk, Ninja Storm, Concentrate, Mage skills e outras questlines de skills de 4th job.
 Novo release: Light.
 
 05 - 06 Junho 2018,
@@ -1769,6 +1769,24 @@ Corrigido bug na CPQ em tempo estendido não mostrando devidamente o efeito visu
 
 27 Março 2019,
 Corrigido possibilidade de bloqueio de volta do jogador ao jogo, ao utilizar o sistema de MTS/Cash Shop. Problema ocorria devido a mudanças concorrentes de login states ao fazer a transição de volta ao jogo.
+Corrigido instância de eventos finalizada ainda utilizando os scripts, levando a possíveis inconsistências em jogo. Premissa é: não deveriam existir mais ações de script após se finalizar uma instância.
+Ajustado Dimensional Door, agora permitindo jogadores a entrar no saguão de espera das MCPQs.
+Corrigido combo resetando orbs ao reusar a skill ainda ativa.
+Adicionado ganho de skill book Maple Warrior ao iniciar 4th job.
 
 28 Março 2019,
+Corrigido problema com jogador não conseguindo coletar próprio drop se o mesmo estiver em party e for enviado para outro mapa e o mesmo retornar em tempo de exclusividade de coleta.
+Corrigido problema com jogador não conseguindo coletar drops de party após o mesmo voltar do MTS/Cash Shop ainda em tempo de exclusividade de coleta.
+Corrigido problema com jogador não conseguindo coletar drops com tempo de exclusividade de coleta já expirado.
+Revisado visão de ganho de EXP. Jogadores que participaram mais no dano de mob percebem o ganho de EXP em branco, caso contrário em amarelo.
 Corrigido possibilidade de congelamento de tela ao tentar trocar de canais. Problema ocorria devido a mudanças concorrentes de login states ao fazer a transição de volta ao jogo.
+
+01 Abril 2019,
+Adicionado mensagens ao spawnar mobs em boxes da LMPQ.
+Revisado conteúdo de ganho de EXP, onde mensagens de ganho simples (sem "party bonus") aparecem em amarelo caso o jogador ganhou experiência sem qualquer contribuição de dano no mob.
+Corrigido cliente não desconectando apropriadamente após fechar o jogo dentro do MTS/Cash Shop, levando a não-update de login state na DB.
+Corrigido inserção de PIC errado no sistema anti-multicliente impossibilitando contas de logarem usando um mesmo IP.
+
+04 Abril 2019,
+Corrigido comandos sem parâmetros contabilizando feed de "um parâmetro vazio".
+Ajustado moderadamente drop rate de vários equipamentos na DB.

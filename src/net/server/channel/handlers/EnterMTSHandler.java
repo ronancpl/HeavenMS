@@ -91,7 +91,6 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
             chr.unregisterChairBuff();
             Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(chr.getId(), chr.getAllBuffs());
             Server.getInstance().getPlayerBuffStorage().addDiseasesToStorage(chr.getId(), chr.getAllDiseases());
-            chr.setSessionTransitionState();
             chr.setAwayFromChannelWorld();
             chr.notifyMapTransferToPartner(-1);
             chr.removeIncomingInvites();

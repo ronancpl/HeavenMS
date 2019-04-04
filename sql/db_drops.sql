@@ -23914,3 +23914,5 @@ SET minimum_quantity = CASE
                        WHEN dropperid = 9500369 AND itemid = 2060000 THEN 24
   ELSE maximum_quantity END
 ;
+
+  UPDATE drop_data SET `chance`=1287 WHERE `chance`=1500;

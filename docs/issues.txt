@@ -5,8 +5,6 @@ Vcoc - Freelance Developer
 
 ---------------------------
 Known issues:
-- Everytime two people click on an npc at the same time, one of them dcs and the other needs to @dispose to talk to the npc.
-- If multiple people hit boxes/reactors at the same time, they both dc with invalid pointer error.
 - Some criticals (e.g. from Aran skills) will not show up as crit for other players.
 - Deadlocks may start appearing if the server stays online long enough with many players logged in.
 - If there are multiple bosses that shows HPBar on the map, if a player hits more than one the HPBar may start flickering on the screen.
@@ -57,6 +55,7 @@ Missing features list:
 ---------------------------
 ** Skills **
 - Check autoban system
+- Attack speed reference for autoban, brought here thanks to GitGud: https://ayumilovemaple.wordpress.com/2009/09/06/maplestory-attack-speed-reference/
 ---------------------------
 
 

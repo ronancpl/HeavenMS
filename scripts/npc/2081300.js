@@ -60,15 +60,20 @@ function action(mode, type, selection) {
                         }
                 } else if(status == 1) {
                         if (mode >= 1 && cm.getJobId() % 100 % 10 != 2) {
-                                cm.changeJobById(cm.getJobId() + 1);
-                                if(cm.getJobId() == 312) {
-                                        cm.teachSkill(3121002, 0, 10, -1);
-                                        cm.teachSkill(3120005, 0, 10, -1);
-                                        cm.teachSkill(3121007, 0, 10, -1);
-                                } else if(cm.getJobId() == 322) {
-                                        cm.teachSkill(3221002, 0, 10, -1);
-                                        cm.teachSkill(3220004, 0, 10, -1);
-                                        cm.teachSkill(3221006, 0, 10, -1);
+                                if (cm.canHold(2280003, 1)) {
+                                        cm.changeJobById(cm.getJobId() + 1);
+                                        if(cm.getJobId() == 312) {
+                                                cm.teachSkill(3121002, 0, 10, -1);
+                                                cm.teachSkill(3120005, 0, 10, -1);
+                                                cm.teachSkill(3121007, 0, 10, -1);
+                                        } else if(cm.getJobId() == 322) {
+                                                cm.teachSkill(3221002, 0, 10, -1);
+                                                cm.teachSkill(3220004, 0, 10, -1);
+                                                cm.teachSkill(3221006, 0, 10, -1);
+                                        }
+                                        cm.gainItem(2280003, 1);
+                                } else {
+                                        cm.sendOk("Please have one slot available on #bUSE#k inventory to receive a skill book.");
                                 }
                         } else if(mode >= 0 && cm.getJobId() % 100 % 10 == 2) {
                                 if(cm.getJobId() == 312) {

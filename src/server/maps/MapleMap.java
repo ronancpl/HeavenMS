@@ -1069,7 +1069,7 @@ public class MapleMap {
                 if (chr.needQuestItem(questid, idrop.getItemId())) {
                     mdrop.lockItem();
                     try {
-                        c.announce(MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, mdrop, dropper.getPosition(), dropPos, (byte) 1));
+                        c.announce(MaplePacketCreator.dropItemFromMapObject(chr, mdrop, dropper.getPosition(), dropPos, (byte) 1));
                     } finally {
                         mdrop.unlockItem();
                     }
@@ -1091,7 +1091,7 @@ public class MapleMap {
             public void sendPackets(MapleClient c) {
                 mdrop.lockItem();
                 try {
-                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer().getParty() != null, mdrop, dropper.getPosition(), droppos, (byte) 1));
+                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer(), mdrop, dropper.getPosition(), droppos, (byte) 1));
                 } finally {
                     mdrop.unlockItem();
                 }
@@ -2179,7 +2179,7 @@ public class MapleMap {
             public void sendPackets(MapleClient c) {
                 mdrop.lockItem();
                 try {
-                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer().getParty() != null, mdrop, dropper.getPosition(), droppos, (byte) 1));
+                    c.announce(MaplePacketCreator.dropItemFromMapObject(c.getPlayer(), mdrop, dropper.getPosition(), droppos, (byte) 1));
                 } finally {
                     mdrop.unlockItem();
                 }
@@ -2877,7 +2877,7 @@ public class MapleMap {
         chrRLock.lock();
         try {
             for (MapleCharacter chr : characters) {
-                final byte[] packet = MaplePacketCreator.dropItemFromMapObject(chr.getParty() != null, mdrop, dropperPos, dropPos, mod);
+                final byte[] packet = MaplePacketCreator.dropItemFromMapObject(chr, mdrop, dropperPos, dropPos, mod);
                 
                 if (rangeSq < Double.POSITIVE_INFINITY) {
                     if (rangedFrom.distanceSq(chr.getPosition()) <= rangeSq) {

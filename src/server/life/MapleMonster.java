@@ -535,15 +535,34 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
     }
     
-    private void propagateExperienceGains(Map<MapleCharacter, Float> personalExpReward, Map<MapleCharacter, Float> partyExpReward) {
+    private static double calcExperienceStandDevThreshold(Map<MapleCharacter, Float> personalExpReward, float exp2) {
+        float avgExpReward = 0.0f;
+        for (Float exp : personalExpReward.values()) {
+            avgExpReward += exp;
+        }
+        
+        avgExpReward -= exp2;   // clear out the 20% raw exp from last hitting
+        avgExpReward /= personalExpReward.size();
+        
+        float varExpReward = 0.0f;
+        for (Float exp : personalExpReward.values()) {
+            varExpReward += Math.pow(exp - avgExpReward, 2);
+        }
+        varExpReward /= personalExpReward.size();
+        
+        return avgExpReward + Math.sqrt(varExpReward);
+    }
+    
+    private void propagateExperienceGains(Map<MapleCharacter, Float> personalExpReward, Map<MapleCharacter, Float> partyExpReward, float exp2) {
         Set<MapleCharacter> expRewardPlayers = new HashSet<>(personalExpReward.keySet());
         expRewardPlayers.addAll(partyExpReward.keySet());
         
+        double sdevExp = calcExperienceStandDevThreshold(personalExpReward, exp2);
         for (MapleCharacter chr : expRewardPlayers) {
             Float personalExp = personalExpReward.get(chr);
             Float partyExp = partyExpReward.get(chr);
             
-            this.giveExpToCharacter(chr, personalExp, partyExp);
+            this.giveExpToCharacter(chr, personalExp, partyExp, personalExp != null && personalExp >= sdevExp);
         }
     }
     
@@ -628,7 +647,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             mc.showUnderleveledInfo(this);
         }
         
-        propagateExperienceGains(personalExpReward, partyExpReward);
+        propagateExperienceGains(personalExpReward, partyExpReward, killerLevel != Integer.MAX_VALUE ? exp2 : 0.0f);
     }
     
     private float getStatusExpMultiplier(MapleCharacter attacker) {
@@ -663,7 +682,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return (int) exp;
     }
     
-    private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp) {
+    private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp, boolean white) {
         if (attacker.isAlive()) {
             if (personalExp != null) {
                 personalExp *= getStatusExpMultiplier(attacker);
@@ -689,7 +708,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             
             int _partyExp = expValueToInteger(partyExp);
             
-            attacker.gainExp(_personalExp, _partyExp, true, false, false);
+            attacker.gainExp(_personalExp, _partyExp, true, false, white);
             attacker.increaseEquipExp(_personalExp);
             attacker.updateQuestMobCount(getId());
         }

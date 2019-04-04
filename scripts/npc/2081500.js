@@ -60,17 +60,22 @@ function action(mode, type, selection) {
                         }
                 } else if(status == 1) {
                         if (mode >= 1 && cm.getJobId() % 100 % 10 != 2) {
-                                cm.changeJobById(cm.getJobId() + 1);
-                                if(cm.getJobId() == 512) {
-                                        cm.teachSkill(5121001, 0, 10, -1);
-                                        cm.teachSkill(5121002, 0, 10, -1);
-                                        cm.teachSkill(5121007, 0, 10, -1);
-                                        cm.teachSkill(5121009, 0, 10, -1);
-                                } else if(cm.getJobId() == 522) {
-                                        cm.teachSkill(5220001, 0, 10, -1);
-                                        cm.teachSkill(5220002, 0, 10, -1);
-                                        cm.teachSkill(5221004, 0, 10, -1);
-                                        cm.teachSkill(5220011, 0, 10, -1);
+                                if (cm.canHold(2280003, 1)) {
+                                        cm.changeJobById(cm.getJobId() + 1);
+                                        if(cm.getJobId() == 512) {
+                                                cm.teachSkill(5121001, 0, 10, -1);
+                                                cm.teachSkill(5121002, 0, 10, -1);
+                                                cm.teachSkill(5121007, 0, 10, -1);
+                                                cm.teachSkill(5121009, 0, 10, -1);
+                                        } else if(cm.getJobId() == 522) {
+                                                cm.teachSkill(5220001, 0, 10, -1);
+                                                cm.teachSkill(5220002, 0, 10, -1);
+                                                cm.teachSkill(5221004, 0, 10, -1);
+                                                cm.teachSkill(5220011, 0, 10, -1);
+                                        }
+                                        cm.gainItem(2280003, 1);
+                                } else {
+                                        cm.sendOk("Please have one slot available on #bUSE#k inventory to receive a skill book.");
                                 }
                         } else if(mode >= 1 && cm.getJobId() % 100 % 10 == 2) {
                                 if(cm.getJobId() == 512) {

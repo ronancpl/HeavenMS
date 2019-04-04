@@ -81,7 +81,7 @@ public class CommandsExecutor {
     }
     
     public void handle(MapleClient client, String message){
-            if (client.tryacquireClient()) {
+        if (client.tryacquireClient()) {
             try {
                 handleInternal(client, message);
             } finally {
@@ -113,8 +113,8 @@ public class CommandsExecutor {
             return;
         }
         String[] params;
-        if (lowercaseParams.length > 0) {
-             params = Arrays.copyOfRange(lowercaseParams, 0, lowercaseParams.length);
+        if (lowercaseParams.length > 0 && !lowercaseParams[0].isEmpty()) {
+            params = Arrays.copyOfRange(lowercaseParams, 0, lowercaseParams.length);
         } else {
             params = new String[]{};
         }

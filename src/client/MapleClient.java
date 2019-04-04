@@ -1474,7 +1474,6 @@ public class MapleClient {
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
-                player.setSessionTransitionState();
                 player.setDisconnectedFromChannelWorld();
                 player.notifyMapTransferToPartner(-1);
                 player.removeIncomingInvites();
@@ -1491,8 +1490,10 @@ public class MapleClient {
 		player.getMap().removePlayer(player);
                 player.clearBanishPlayerData();
 		player.getClient().getChannelServer().removePlayer(player);
-		player.getClient().updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-		try {
+		
+                player.getClient().updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+		player.setSessionTransitionState();
+                try {
 			announce(MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1])));
 		} catch (IOException e) {
                     e.printStackTrace();
