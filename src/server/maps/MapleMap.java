@@ -1018,13 +1018,15 @@ public class MapleMap {
         unregisterItemDrop(mdrop);
     }
     
-    public void updatePlayerItemDrops(int partyid, int charid, List<MapleCharacter> partyMembers, MapleCharacter partyLeaver) {
-        for(MapleMapItem mdrop : getDroppedItems()) {
-            if(mdrop.getOwnerId() == charid) {
+    public List<MapleMapItem> updatePlayerItemDropsToParty(int partyid, int charid, List<MapleCharacter> partyMembers, MapleCharacter partyLeaver) {
+        List<MapleMapItem> partyDrops = new LinkedList<>();
+        
+        for (MapleMapItem mdrop : getDroppedItems()) {
+            if (mdrop.getOwnerId() == charid) {
                 mdrop.lockItem();
                 try {
                     if (mdrop.isPickedUp()) {
-                        return;
+                        continue;
                     }
                     
                     mdrop.setPartyOwnerId(partyid);
@@ -1032,21 +1034,21 @@ public class MapleMap {
                     byte[] removePacket = MaplePacketCreator.silentRemoveItemFromMap(mdrop.getObjectId());
                     byte[] updatePacket = MaplePacketCreator.updateMapItemObject(mdrop, partyLeaver == null);
                     
-                    for(MapleCharacter mc : partyMembers) {
-                        if(this.equals(mc.getMap())) {
+                    for (MapleCharacter mc : partyMembers) {
+                        if (this.equals(mc.getMap())) {
                             mc.announce(removePacket);
                             
-                            if(mc.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
+                            if (mc.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
                                 mc.announce(updatePacket);
                             }
                         }
                     }
                     
-                    if(partyLeaver != null) {
-                        if(this.equals(partyLeaver.getMap())) {
+                    if (partyLeaver != null) {
+                        if (this.equals(partyLeaver.getMap())) {
                             partyLeaver.announce(removePacket);
                             
-                            if(partyLeaver.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
+                            if (partyLeaver.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
                                 partyLeaver.announce(MaplePacketCreator.updateMapItemObject(mdrop, true));
                             }
                         }
@@ -1054,6 +1056,36 @@ public class MapleMap {
                 } finally {
                     mdrop.unlockItem();
                 }
+            } else if (partyid != -1 && mdrop.getPartyOwnerId() == partyid) {
+                partyDrops.add(mdrop);
+            }
+        }
+        
+        return partyDrops;
+    }
+    
+    public void updatePartyItemDropsToNewcomer(MapleCharacter newcomer, List<MapleMapItem> partyItems) {
+        for (MapleMapItem mdrop : partyItems) {
+            mdrop.lockItem();
+            try {
+                if (mdrop.isPickedUp()) {
+                    continue;
+                }
+
+                byte[] removePacket = MaplePacketCreator.silentRemoveItemFromMap(mdrop.getObjectId());
+                byte[] updatePacket = MaplePacketCreator.updateMapItemObject(mdrop, true);
+
+                if (newcomer != null) {
+                    if (this.equals(newcomer.getMap())) {
+                        newcomer.announce(removePacket);
+
+                        if (newcomer.needQuestItem(mdrop.getQuest(), mdrop.getItemId())) {
+                            newcomer.announce(updatePacket);
+                        }
+                    }
+                }
+            } finally {
+                mdrop.unlockItem();
             }
         }
     }

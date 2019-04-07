@@ -1407,13 +1407,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
         monsterLock.lock();
         try {
-            /*
-            for (Pair<Integer, Integer> skill : usedSkills) {
+            for (Pair<Integer, Integer> skill : usedSkills) {   // thanks OishiiKawaiiDesu for noticing an issue with mobskill cooldown
                 if (skill.getLeft() == useSkillid && skill.getRight() == toUse.getSkillLevel()) {
                     return false;
                 }
             }
-            */
             
             int mpCon = toUse.getMpCon();
             if (mp < mpCon) {

@@ -23,7 +23,6 @@ package server.maps;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.inventory.Item;
-import constants.ServerConstants;
 import java.awt.Point;
 import java.util.concurrent.locks.Lock;
 import tools.MaplePacketCreator;
@@ -109,18 +108,16 @@ public class MapleMapItem extends AbstractMapleMapObject {
         party_ownerid = partyid;
     }
     
-    public final int getClientsideOwnerId(MapleCharacter player) {
+    public final int getClientsideOwnerId() {   // thanks nozphex (RedHat) for noting an issue with collecting party items
         if (this.party_ownerid == -1) {
             return this.character_ownerid;
         } else {
-            if (!partyDrop && player.getId() == this.character_ownerid) {
-                return player.getId();
-            } else if (player.getPartyId() == this.party_ownerid) {
-                return player.getId();
-            } else {
-                return this.party_ownerid;
-            }
+            return this.party_ownerid;
         }
+    }
+    
+    public final boolean hasClientsideOwnership(MapleCharacter player) {
+        return this.character_ownerid == player.getId() || this.party_ownerid == player.getPartyId() || hasExpiredOwnershipTime();
     }
     
     public final boolean isFFADrop() {

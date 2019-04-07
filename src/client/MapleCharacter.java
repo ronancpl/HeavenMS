@@ -1480,13 +1480,23 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             partyLeaver = this;
         }
         
-        int partyId = exPartyMembers != null ? 0 : this.getPartyId();
+        MapleMap map = this.getMap();
+        List<MapleMapItem> partyItems = null;
+        
+        int partyId = exPartyMembers != null ? -1 : this.getPartyId();
         for(WeakReference<MapleMap> mapRef : mapids) {
             MapleMap mapObj = mapRef.get();
             
             if(mapObj != null) {
-                mapObj.updatePlayerItemDrops(partyId, id, partyMembers, partyLeaver);
+                List<MapleMapItem> partyMapItems = mapObj.updatePlayerItemDropsToParty(partyId, id, partyMembers, partyLeaver);
+                if (map.hashCode() == mapObj.hashCode()) {
+                    partyItems = partyMapItems;
+                }
             }
+        }
+        
+        if (partyItems != null && exPartyMembers == null) {
+            map.updatePartyItemDropsToNewcomer(this, partyItems);
         }
         
         updatePartyTownDoors(party, this, partyLeaver, partyMembers);

@@ -1790,3 +1790,8 @@ Corrigido inserção de PIC errado no sistema anti-multicliente impossibilitando
 04 Abril 2019,
 Corrigido comandos sem parâmetros contabilizando feed de "um parâmetro vazio".
 Ajustado moderadamente drop rate de vários equipamentos na DB.
+
+06 Abril 2019,
+Corrigido loot de party não funcionando adequadamente após updates recentes.
+Implementado loot de party agora atualizando também loots de jogadores ao entrar numa party (pronta permissão de coleta de loots de outros membros da party).
+Corrigido cooldown de skills de mob não atuando adequadamente.
