@@ -1,4 +1,4 @@
-#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
+﻿#EXECUTE THIS FIRST, THEN NEXT SQL: 'db_drops.sql'
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `rewardpoints` int(11) NOT NULL DEFAULT '0',
   `votepoints` int(11) NOT NULL DEFAULT '0',
   `hwid` varchar(12) NOT NULL DEFAULT '',
-  `language` int(1) NOT NULL DEFAULT '2',
+  `lingua` int(1) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `ranking1` (`id`,`banned`),
