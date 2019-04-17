@@ -265,8 +265,12 @@ public class MapleInventoryManipulator {
         MapleCharacter chr = c.getPlayer();
         MapleInventory inv = chr.getInventory(type);
         
-        if(ii.isPickupRestricted(itemid) && haveItemWithId(inv, itemid)) {
-            return false;
+        if (ii.isPickupRestricted(itemid)) {
+            if (haveItemWithId(inv, itemid)) {
+                return false;
+            } else if (ItemConstants.isEquipment(itemid) && haveItemWithId(chr.getInventory(MapleInventoryType.EQUIPPED), itemid)) {
+                return false;
+            }
         }
         
         if (!type.equals(MapleInventoryType.EQUIP)) {
@@ -313,8 +317,12 @@ public class MapleInventoryManipulator {
         MapleCharacter chr = c.getPlayer();
         MapleInventory inv = chr.getInventory(type);
         
-        if(ii.isPickupRestricted(itemid) && haveItemWithId(inv, itemid)) {
-            return 0;
+        if (ii.isPickupRestricted(itemid)) {
+            if (haveItemWithId(inv, itemid)) {
+                return 0;
+            } else if (ItemConstants.isEquipment(itemid) && haveItemWithId(chr.getInventory(MapleInventoryType.EQUIPPED), itemid)) {
+                return 0;   // thanks Captain & Aika & Vcoc for pointing out inventory checkup on player trades missing out one-of-a-kind items.
+            }
         }
         
         if (!type.equals(MapleInventoryType.EQUIP)) {
@@ -430,7 +438,7 @@ public class MapleInventoryManipulator {
             }
         }
         if (removeQuantity > 0 && type != MapleInventoryType.CANHOLD) {
-            throw new RuntimeException("[HACK] Not enough items available of Item:" + itemId + ", Quantity (After Quantity/Over Current Quantity): " + (quantity - removeQuantity) + "/" + quantity);
+            throw new RuntimeException("[Hack] Not enough items available of Item:" + itemId + ", Quantity (After Quantity/Over Current Quantity): " + (quantity - removeQuantity) + "/" + quantity);
         }
     }
 

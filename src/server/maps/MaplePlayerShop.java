@@ -42,6 +42,7 @@ import tools.Pair;
 import tools.data.output.MaplePacketLittleEndianWriter;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import server.MapleTrade;
 
 /**
  *
@@ -146,6 +147,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
         try {
             for (int i = 0; i < 3; i++) {
                 if (visitors[i] != null && visitors[i].getId() == visitor.getId()) {
+                    visitors[i].setPlayerShop(null);
                     visitors[i] = null;
                     visitor.setSlot(-1);
                     
@@ -278,6 +280,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                             }
                             
                             c.getPlayer().gainMeso(-price, false);
+                            price -= MapleTrade.getFee(price);  // thanks BHB for pointing out trade fees not applying here
                             owner.gainMeso(price, true);
                             
                             SoldItem soldItem = new SoldItem(c.getPlayer().getName(), pItem.getItem().getItemId(), quantity, price);
@@ -298,7 +301,7 @@ public class MaplePlayerShop extends AbstractMapleMapObject {
                                 }
                             }
                         } else {
-                            c.getPlayer().dropMessage(1, "Your inventory is full. Please clean a slot before buying this item.");
+                            c.getPlayer().dropMessage(1, "Your inventory is full. Please clear a slot before buying this item.");
                             c.announce(MaplePacketCreator.enableActions());
                             return false;
                         }

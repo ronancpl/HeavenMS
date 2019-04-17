@@ -60,6 +60,8 @@ import net.server.guild.MapleGuildCharacter;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.EventRecallCoordinatorWorker;
+import net.server.worker.FredrickWorker;
+import net.server.worker.InvitationWorker;
 import net.server.worker.LoginCoordinatorWorker;
 import net.server.worker.LoginStorageWorker;
 import net.server.worker.RankingCommandWorker;
@@ -88,7 +90,6 @@ import constants.ServerConstants;
 import java.util.TimeZone;
 import net.server.coordinator.MapleSessionCoordinator;
 import server.CashShop.CashItemFactory;
-import server.MapleItemInformationProvider;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
 import server.TimerManager;
@@ -97,6 +98,7 @@ import server.quest.MapleQuest;
 import tools.AutoJCE;
 import tools.DatabaseConnection;
 import tools.Pair;
+import org.apache.mina.core.session.IoSession;
 
 public class Server {
     
@@ -399,11 +401,12 @@ public class Server {
             int bossdroprate = getWorldProperty(p, "bossdroprate", i, ServerConstants.BOSS_DROP_RATE);
             int questrate = getWorldProperty(p, "questrate", i, ServerConstants.QUEST_RATE);
             int travelrate = getWorldProperty(p, "travelrate", i, ServerConstants.TRAVEL_RATE);
+            int fishingrate = getWorldProperty(p, "fishrate", i, ServerConstants.FISHING_RATE);
             
             World world = new World(i,
                     Integer.parseInt(p.getProperty("flag" + i)),
                     p.getProperty("eventmessage" + i),
-                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate);
+                    exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
 
             worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
             worlds.add(world);
@@ -916,6 +919,8 @@ public class Server {
         tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
+        tMan.register(new FredrickWorker(), 60 * 60 * 1000, 60 * 60 * 1000);
+        tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();
@@ -925,7 +930,6 @@ public class Server {
         //MapleItemInformationProvider.getInstance().getAllItems(); //unused, rofl
 
         CashItemFactory.getSpecialCashItems();
-        MapleItemInformationProvider.getInstance().getAllItems();
         System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
         
 	timeToTake = System.currentTimeMillis();
@@ -1627,12 +1631,12 @@ public class Server {
         return gmLevel;
     }
     
-    private static String getRemoteIp(InetSocketAddress isa) {
-        return isa.getAddress().getHostAddress();
+    private static String getRemoteIp(IoSession session) {
+        return MapleSessionCoordinator.getSessionRemoteAddress(session);
     }
     
-    public void setCharacteridInTransition(InetSocketAddress isa, int charId) {
-        String remoteIp = getRemoteIp(isa);
+    public void setCharacteridInTransition(IoSession session, int charId) {
+        String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
         try {
@@ -1642,8 +1646,8 @@ public class Server {
         }
     }
     
-    public boolean validateCharacteridInTransition(InetSocketAddress isa, int charId) {
-        String remoteIp = getRemoteIp(isa);
+    public boolean validateCharacteridInTransition(IoSession session, int charId) {
+        String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
         try {
@@ -1651,6 +1655,28 @@ public class Server {
             return cid != null && cid.equals(charId);
         } finally {
             lgnWLock.unlock();
+        }
+    }
+    
+    public Integer freeCharacteridInTransition(IoSession session) {
+        String remoteIp = getRemoteIp(session);
+        
+        lgnWLock.lock();
+        try {
+            return transitioningChars.remove(remoteIp);
+        } finally {
+            lgnWLock.unlock();
+        }
+    }
+    
+    public boolean hasCharacteridInTransition(IoSession session) {
+        String remoteIp = getRemoteIp(session);
+        
+        lgnRLock.lock();
+        try {
+            return transitioningChars.containsKey(remoteIp);
+        } finally {
+            lgnRLock.unlock();
         }
     }
     

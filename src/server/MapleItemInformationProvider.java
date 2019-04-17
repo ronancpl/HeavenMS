@@ -116,10 +116,6 @@ public class MapleItemInformationProvider {
     protected Map<Integer, Boolean> karmaCache = new HashMap<>();
     protected Map<Integer, Integer> triggerItemCache = new HashMap<>();
     protected Map<Integer, Integer> expCache = new HashMap<>();
-    protected Map<Integer, Integer> createItem = new HashMap<>();
-    protected Map<Integer, Integer> mobItem = new HashMap<>();
-    protected Map<Integer, Integer> useDelay = new HashMap<>();
-    protected Map<Integer, Integer> mobHP = new HashMap<>();
     protected Map<Integer, Integer> levelCache = new HashMap<>();
     protected Map<Integer, Pair<Integer, List<RewardItem>>> rewardCache = new HashMap<>();
     protected List<Pair<Integer, String>> itemNameCache = new ArrayList<>();
@@ -154,6 +150,40 @@ public class MapleItemInformationProvider {
         isPartyQuestItemCache.put(0, false);
     }
 
+//    public MapleInventoryType getInventoryType(int itemId) {
+//        if (inventoryTypeCache.containsKey(itemId)) {
+//            return inventoryTypeCache.get(itemId);
+//        }
+//        MapleInventoryType ret;
+//        String idStr = "0" + String.valueOf(itemId);
+//        MapleDataDirectoryEntry root = itemData.getRoot();
+//        for (MapleDataDirectoryEntry topDir : root.getSubdirectories()) {
+//            for (MapleDataFileEntry iFile : topDir.getFiles()) {
+//                if (iFile.getName().equals(idStr.substring(0, 4) + ".img")) {
+//                    ret = MapleInventoryType.getByWZName(topDir.getName());
+//                    inventoryTypeCache.put(itemId, ret);
+//                    return ret;
+//                } else if (iFile.getName().equals(idStr.substring(1) + ".img")) {
+//                    ret = MapleInventoryType.getByWZName(topDir.getName());
+//                    inventoryTypeCache.put(itemId, ret);
+//                    return ret;
+//                }
+//            }
+//        }
+//        root = equipData.getRoot();
+//        for (MapleDataDirectoryEntry topDir : root.getSubdirectories()) {
+//            for (MapleDataFileEntry iFile : topDir.getFiles()) {
+//                if (iFile.getName().equals(idStr + ".img")) {
+//                    ret = MapleInventoryType.EQUIP;
+//                    inventoryTypeCache.put(itemId, ret);
+//                    return ret;
+//                }
+//            }
+//        }
+//        ret = MapleInventoryType.UNDEFINED;
+//        inventoryTypeCache.put(itemId, ret);
+//        return ret;
+//    }
 
     public List<Pair<Integer, String>> getAllItems() {
         if (!itemNameCache.isEmpty()) {
@@ -1146,10 +1176,7 @@ public class MapleItemInformationProvider {
             if (item == null) {
                 return null;
             }
-            MapleData spec = item.getChildByPath("specEx");
-            if (spec == null) {
-                spec = item.getChildByPath("spec");
-            }
+            MapleData spec = item.getChildByPath("spec");
             ret = MapleStatEffect.loadItemEffectFromData(spec, itemId);
             itemEffects.put(Integer.valueOf(itemId), ret);
         }
@@ -1452,46 +1479,6 @@ public class MapleItemInformationProvider {
             return triggerItem;
         }
     }
-    
-    public int getCreatItem(int itemId) {
-        if (createItem.containsKey(itemId)) {
-            return createItem.get(itemId);
-        } else {
-            int itemFrom = MapleDataTool.getIntConvert("info/create", getItemData(itemId), 0);
-            createItem.put(itemId, itemFrom);
-            return itemFrom;
-        }
-    }
-    
-    public int getMobItem(int itemId) {
-        if (mobItem.containsKey(itemId)) {
-            return mobItem.get(itemId);
-        } else {
-            int mobItemCatch = MapleDataTool.getIntConvert("info/mob", getItemData(itemId), 0);
-            mobItem.put(itemId, mobItemCatch);
-            return mobItemCatch;
-        }
-    }
-    
-    public int getUseDelay(int itemId) {
-        if (useDelay.containsKey(itemId)) {
-            return useDelay.get(itemId);
-        } else {
-            int mobUseDelay = MapleDataTool.getIntConvert("info/useDelay", getItemData(itemId), 0);
-            useDelay.put(itemId, mobUseDelay);
-            return mobUseDelay;
-        }
-    }
-    
-    public int getMobHP(int itemId) {
-        if (mobHP.containsKey(itemId)) {
-            return mobHP.get(itemId);
-        } else {
-            int mobHPItem = MapleDataTool.getIntConvert("info/mobHP", getItemData(itemId), 0);
-            mobHP.put(itemId, mobHPItem);
-            return mobHPItem;
-        }
-    }
 
     public int getExpById(int itemId) {
         if (expCache.containsKey(itemId)) {
@@ -1670,7 +1657,7 @@ public class MapleItemInformationProvider {
         if (!EquipSlot.getFromTextSlot(islot).isAllowed(dst, isCash(id))) {
             equip.wear(false);
             String itemName = MapleItemInformationProvider.getInstance().getName(equip.getItemId());
-            Server.getInstance().broadcastGMMessage(chr.getWorld(), MaplePacketCreator.sendYellowTip("[WARNING]: " + chr.getName() + " tried to equip " + itemName + " into slot " + dst + "."));
+            Server.getInstance().broadcastGMMessage(chr.getWorld(), MaplePacketCreator.sendYellowTip("[Warning]: " + chr.getName() + " tried to equip " + itemName + " into slot " + dst + "."));
             AutobanFactory.PACKET_EDIT.alert(chr, chr.getName() + " tried to forcibly equip an item.");
             FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " tried to equip " + itemName + " into " + dst + " slot.");
             return false;

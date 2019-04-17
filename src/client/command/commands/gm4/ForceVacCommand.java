@@ -54,6 +54,7 @@ public class ForceVacCommand extends Command {
 
                 if (mapItem.getMeso() > 0) {
                     player.gainMeso(mapItem.getMeso(), true);
+                } else if (player.applyConsumeOnPickup(mapItem.getItemId())) {    // thanks Vcoc for pointing out consumables on pickup not being processed here
                 } else if (mapItem.getItemId() == 4031865 || mapItem.getItemId() == 4031866) {
                     // Add NX to account, show effect and make item disappear
                     player.getCashShop().gainCash(1, mapItem.getItemId() == 4031865 ? 100 : 250);

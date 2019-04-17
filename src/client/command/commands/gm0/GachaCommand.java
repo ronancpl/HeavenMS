@@ -27,7 +27,6 @@ import client.command.Command;
 import client.MapleClient;
 import server.MapleItemInformationProvider;
 import server.gachapon.MapleGachapon;
-import tools.MaplePacketCreator;
 
 public class GachaCommand extends Command {
     {
@@ -37,7 +36,7 @@ public class GachaCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleGachapon.Gachapon gacha = null;
-        String search = joinStringFrom(params,0);
+        String search = c.getPlayer().getLastCommandMessage();
         String gachaName = "";
         String [] names = {"Henesys", "Ellinia", "Perion", "Kerning City", "Sleepywood", "Mushroom Shrine", "Showa Spa Male", "Showa Spa Female", "New Leaf City", "Nautilus Harbor"};
         int [] ids = {9100100, 9100101, 9100102, 9100103, 9100104, 9100105, 9100106, 9100107, 9100109, 9100117};

@@ -34,6 +34,7 @@ import org.apache.mina.core.session.IoSession;
 
 import client.MapleClient;
 import constants.ServerConstants;
+import java.net.InetSocketAddress;
 
 import net.server.Server;
 import net.server.audit.locks.MonitoredLockType;
@@ -105,6 +106,8 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void sessionOpened(IoSession session) {
+        session.setAttribute(MapleClient.CLIENT_REMOTE_ADDRESS, ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress());
+        
         if (!Server.getInstance().isOnline()) {
             MapleSessionCoordinator.getInstance().closeSession(session, true);
             return;
@@ -147,11 +150,10 @@ public class MapleServerHandler extends IoHandlerAdapter {
         MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
         if (client != null) {
             try {
-                boolean inCashShop = false;
-                if (client.getPlayer() != null) {
-                    inCashShop = client.getPlayer().getCashShop().isOpened();
+                // client freeze issues on session transition states found thanks to yolinlin, Omo Oppa, Nozphex
+                if (!session.containsAttribute(MapleClient.CLIENT_TRANSITION)) {
+                    client.disconnect(false, false);
                 }
-                client.disconnect(false, inCashShop);
             } catch (Throwable t) {
                 FilePrinter.printError(FilePrinter.ACCOUNT_STUCK, t);
             } finally {

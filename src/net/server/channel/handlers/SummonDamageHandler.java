@@ -84,6 +84,9 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
             allDamage.add(new SummonAttackEntry(monsterOid, damage));
         }
         player.getMap().broadcastMessage(player, MaplePacketCreator.summonAttack(player.getId(), summon.getObjectId(), direction, allDamage), summon.getPosition());
+        if (player.getMap().isOwnershipRestricted(player)) {
+            return;
+        }
         for (SummonAttackEntry attackEntry : allDamage) {
             int damage = attackEntry.getDamage();
             MapleMonster target = player.getMap().getMonsterByOid(attackEntry.getMonsterOid());

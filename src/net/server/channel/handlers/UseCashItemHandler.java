@@ -400,9 +400,16 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         } else if (itemType == 533) {
             NPCScriptManager.getInstance().start(c, 9010009, null);
         } else if (itemType == 537) {
+            if (GameConstants.isFreeMarketRoom(player.getMapId())) {
+                player.dropMessage(5, "You cannot use the chalkboard here.");
+                player.getClient().announce(MaplePacketCreator.enableActions());
+                return;
+            }
+            
             player.setChalkboard(slea.readMapleAsciiString());
             player.getMap().broadcastMessage(MaplePacketCreator.useChalkboard(player, false));
             player.getClient().announce(MaplePacketCreator.enableActions());
+            remove(c, position, itemId);
         } else if (itemType == 539) {
             List<String> strLines = new LinkedList<>();
             for (int i = 0; i < 4; i++) {

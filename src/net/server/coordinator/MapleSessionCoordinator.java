@@ -19,6 +19,7 @@
 */
 package net.server.coordinator;
 
+import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
 
@@ -28,12 +29,13 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import org.apache.mina.core.session.IoSession;
 import tools.DatabaseConnection;
 
-import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.HashMap;
@@ -215,11 +217,11 @@ public class MapleSessionCoordinator {
     }
     
     private Lock getCoodinatorLock(String remoteHost) {
-        return poolLock.get(remoteHost.hashCode() % 100);
+        return poolLock.get(Math.abs(remoteHost.hashCode()) % 100);
     }
     
-    private static String getRemoteIp(IoSession session) {
-        return ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+    public static String getSessionRemoteAddress(IoSession session) {
+        return (String) session.getAttribute(MapleClient.CLIENT_REMOTE_ADDRESS);
     }
     
     private static MapleClient getSessionClient(IoSession session) {
@@ -243,7 +245,7 @@ public class MapleSessionCoordinator {
     public boolean canStartLoginSession(IoSession session) {
         if (!ServerConstants.DETERRED_MULTICLIENT) return true;
         
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         Lock lock = getCoodinatorLock(remoteHost);
         
         try {
@@ -303,7 +305,7 @@ public class MapleSessionCoordinator {
     }
     
     public void closeLoginSession(IoSession session) {
-        String remoteIp = getRemoteIp(session);
+        String remoteIp = getSessionRemoteAddress(session);
         Set<IoSession> lrh = loginRemoteHosts.get(remoteIp);
         if (lrh != null) {
             lrh.remove(session);
@@ -318,7 +320,12 @@ public class MapleSessionCoordinator {
             
             MapleClient client = getSessionClient(session);
             if (client != null) {
-                onlineClients.remove(client.getAccID());
+                MapleClient loggedClient = onlineClients.get(client.getAccID());
+                
+                // do not remove an online game session here, only login session
+                if (loggedClient != null && loggedClient.getSessionId() == client.getSessionId()) {
+                    onlineClients.remove(client.getAccID());
+                }
             }
         }
     }
@@ -329,7 +336,7 @@ public class MapleSessionCoordinator {
             return AntiMulticlientResult.SUCCESS;
         }
         
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         Lock lock = getCoodinatorLock(remoteHost);
         
         try {
@@ -395,7 +402,7 @@ public class MapleSessionCoordinator {
     }
     
     public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         if (!ServerConstants.DETERRED_MULTICLIENT) {
             associateRemoteHostHwid(remoteHost, remoteHwid);
             return AntiMulticlientResult.SUCCESS;
@@ -432,7 +439,7 @@ public class MapleSessionCoordinator {
         }
         
         try {
-            String nibbleHwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID);
+            String nibbleHwid = (String) session.getAttribute(MapleClient.CLIENT_NIBBLEHWID);   // thanks Paxum for noticing account stuck after PIC failure
             if (nibbleHwid != null) {
                 onlineRemoteHwids.remove(nibbleHwid);
                 
@@ -465,25 +472,69 @@ public class MapleSessionCoordinator {
         }
     }
     
+    private static MapleClient fetchInTransitionSessionClient(IoSession session) {
+        String remoteHwid = MapleSessionCoordinator.getInstance().getGameSessionHwid(session);
+        
+        if (remoteHwid != null) {   // maybe this session was currently in-transition?
+            int hwidLen = remoteHwid.length();
+            if (hwidLen <= 8) {
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid);
+            } else {
+                session.setAttribute(MapleClient.CLIENT_HWID, remoteHwid);
+                session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, remoteHwid.substring(hwidLen - 8, hwidLen));
+            }
+            
+            MapleClient client = new MapleClient(null, null, session);
+            Integer cid = Server.getInstance().freeCharacteridInTransition(session);
+            if (cid != null) {
+                try {
+                    client.setAccID(MapleCharacter.loadCharFromDB(cid, client, false).getAccountID());
+                } catch (SQLException sqle) {
+                    sqle.printStackTrace();
+                }
+            }
+            
+            session.setAttribute(MapleClient.CLIENT_KEY, client);
+            return client;
+        }
+        
+        return null;
+    }
+    
     public void closeSession(IoSession session, Boolean immediately) {
-        String hwid = (String) session.removeAttribute(MapleClient.CLIENT_HWID);
-        onlineRemoteHwids.remove(hwid);
-        
-        hwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID); // making sure to clean up calls to this function on login phase
-        onlineRemoteHwids.remove(hwid);
-        
         MapleClient client = getSessionClient(session);
+        if (client == null) {
+            client = fetchInTransitionSessionClient(session);
+        }
+        
+        String hwid = (String) session.removeAttribute(MapleClient.CLIENT_NIBBLEHWID); // making sure to clean up calls to this function on login phase
+        onlineRemoteHwids.remove(hwid);
+        
+        hwid = (String) session.removeAttribute(MapleClient.CLIENT_HWID);
+        onlineRemoteHwids.remove(hwid);
+        
         if (client != null) {
-            onlineClients.remove(client.getAccID());
+            if (hwid != null) { // is a game session
+                onlineClients.remove(client.getAccID());
+            } else {
+                MapleClient loggedClient = onlineClients.get(client.getAccID());
+                
+                // do not remove an online game session here, only login session
+                if (loggedClient != null && loggedClient.getSessionId() == client.getSessionId()) {
+                    onlineClients.remove(client.getAccID());
+                }
+            }
         }
         
         if (immediately != null) {
             session.close(immediately);
         }
+        
+        // session.removeAttribute(MapleClient.CLIENT_REMOTE_ADDRESS); No real need for removing String property on closed sessions
     }
     
     public String getGameSessionHwid(IoSession session) {
-        String remoteHost = getRemoteIp(session);
+        String remoteHost = getSessionRemoteAddress(session);
         return cachedHostHwids.get(remoteHost);
     }
     
@@ -522,5 +573,95 @@ public class MapleSessionCoordinator {
     
     public void runUpdateLoginHistory() {
         loginStorage.updateLoginHistory();
+    }
+    
+    public void printSessionTrace() {
+        if (!onlineClients.isEmpty()) {
+            List<Entry<Integer, MapleClient>> elist = new ArrayList<>(onlineClients.entrySet());
+            Collections.sort(elist, new Comparator<Entry<Integer, MapleClient>>() {
+                @Override
+                public int compare(Entry<Integer, MapleClient> e1, Entry<Integer, MapleClient> e2) {
+                    return e1.getKey().compareTo(e2.getKey());
+                }
+            });
+            
+            System.out.println("Current online clients: ");
+            for (Entry<Integer, MapleClient> e : elist) {
+                System.out.println("  " + e.getKey());
+            }
+        }
+        
+        if (!onlineRemoteHwids.isEmpty()) {
+            List<String> slist = new ArrayList<>(onlineRemoteHwids);
+            Collections.sort(slist);
+            
+            System.out.println("Current online HWIDs: ");
+            for (String s : slist) {
+                System.out.println("  " + s);
+            }
+        }
+        
+        if (!loginRemoteHosts.isEmpty()) {
+            List<Entry<String, Set<IoSession>>> elist = new ArrayList<>(loginRemoteHosts.entrySet());
+            
+            Collections.sort(elist, new Comparator<Entry<String, Set<IoSession>>>() {
+                @Override
+                public int compare(Entry<String, Set<IoSession>> e1, Entry<String, Set<IoSession>> e2) {
+                    return e1.getKey().compareTo(e2.getKey());
+                }
+            });
+            
+            System.out.println("Current login sessions: ");
+            for (Entry<String, Set<IoSession>> e : elist) {
+                System.out.println("  " + e.getKey() + ", size: " + e.getValue().size());
+            }
+        }
+    }
+    
+    public void printSessionTrace(MapleClient c) {
+        String str = "Opened server sessions:\r\n\r\n";
+        
+        if (!onlineClients.isEmpty()) {
+            List<Entry<Integer, MapleClient>> elist = new ArrayList<>(onlineClients.entrySet());
+            Collections.sort(elist, new Comparator<Entry<Integer, MapleClient>>() {
+                @Override
+                public int compare(Entry<Integer, MapleClient> e1, Entry<Integer, MapleClient> e2) {
+                    return e1.getKey().compareTo(e2.getKey());
+                }
+            });
+            
+            str += ("Current online clients:\r\n");
+            for (Entry<Integer, MapleClient> e : elist) {
+                str += ("  " + e.getKey() + "\r\n");
+            }
+        }
+        
+        if (!onlineRemoteHwids.isEmpty()) {
+            List<String> slist = new ArrayList<>(onlineRemoteHwids);
+            Collections.sort(slist);
+            
+            str += ("Current online HWIDs:\r\n");
+            for (String s : slist) {
+                str += ("  " + s + "\r\n");
+            }
+        }
+        
+        if (!loginRemoteHosts.isEmpty()) {
+            List<Entry<String, Set<IoSession>>> elist = new ArrayList<>(loginRemoteHosts.entrySet());
+            
+            Collections.sort(elist, new Comparator<Entry<String, Set<IoSession>>>() {
+                @Override
+                public int compare(Entry<String, Set<IoSession>> e1, Entry<String, Set<IoSession>> e2) {
+                    return e1.getKey().compareTo(e2.getKey());
+                }
+            });
+            
+            str += ("Current login sessions:\r\n");
+            for (Entry<String, Set<IoSession>> e : elist) {
+                str += ("  " + e.getKey() + ", IP: " + e.getValue() + "\r\n");
+            }
+        }
+        
+        c.getAbstractPlayerInteraction().npcTalk(2140000, str);
     }
 }

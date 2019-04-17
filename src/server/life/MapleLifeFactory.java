@@ -299,7 +299,7 @@ public class MapleLifeFactory {
         private int id;
         private byte chance, x;
 
-        public loseItem(int id, byte chance, byte x) {
+        private loseItem(int id, byte chance, byte x) {
             this.id = id;
             this.chance = chance;
             this.x = x;

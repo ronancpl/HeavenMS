@@ -53,6 +53,7 @@ public class WarpWorldCommand extends Command {
                 c.getWorldServer().removePlayer(player);
                 player.getMap().removePlayer(player);//LOL FORGOT THIS ><
                 c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
+                player.setSessionTransitionState();
                 player.setWorld(worldb);
                 player.saveCharToDB();//To set the new world :O (true because else 2 player instances are created, one in both worlds)
                 c.announce(MaplePacketCreator.getChannelChange(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1])));

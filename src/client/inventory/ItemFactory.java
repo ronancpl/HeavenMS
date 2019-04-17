@@ -28,10 +28,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
-import tools.DatabaseConnection;
-import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import tools.DatabaseConnection;
+import tools.Pair;
 
 /**
  *
@@ -45,11 +45,18 @@ public enum ItemFactory {
     CASH_CYGNUS(4, true),
     CASH_ARAN(5, true),
     MERCHANT(6, false),
-    CASH_OVERALL(7, true);
+    CASH_OVERALL(7, true),
+    MARRIAGE_GIFTS(8, false);
     private final int value;
     private final boolean account;
-    private static final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.ITEM, true);
-
+    private static final Lock locks[] = new Lock[200];  // thanks Masterrulax for pointing out a bottleneck issue here
+    
+    static {
+        for (int i = 0; i < 200; i++) {
+            locks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.ITEM, true);
+        }
+    }
+    
     private ItemFactory(int value, boolean account) {
         this.value = value;
         this.account = account;
@@ -192,6 +199,7 @@ public enum ItemFactory {
         PreparedStatement pse = null;
         ResultSet rs = null;
 
+        Lock lock = locks[id % 200];
         lock.lock();
         try {
             StringBuilder query = new StringBuilder();
@@ -357,6 +365,7 @@ public enum ItemFactory {
         PreparedStatement pse = null;
         ResultSet rs = null;
 
+        Lock lock = locks[id % 200];
         lock.lock();
         try {
             ps = con.prepareStatement("DELETE FROM `inventorymerchant` WHERE `characterid` = ?");

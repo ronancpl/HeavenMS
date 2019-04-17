@@ -78,13 +78,13 @@ public class DebugCommand extends Command {
                 break;
 
             case "packet":
-                player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(params, 1)));
+                //player.getMap().broadcastMessage(MaplePacketCreator.customPacket(joinStringFrom(params, 1)));
                 break;
 
             case "portal":
                 MaplePortal portal = player.getMap().findClosestPortal(player.getPosition());
                 if (portal != null)
-                    player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + portal.getPortalState() + ".");
+                    player.dropMessage(6, "Closest portal: " + portal.getId() + " '" + portal.getName() + "' Type: " + portal.getType() + " --> toMap: " + portal.getTargetMapId() + " scriptname: '" + portal.getScriptName() + "' state: " + (portal.getPortalState() ? 1 : 0) + ".");
                 else player.dropMessage(6, "There is no portal on this map.");
                 break;
 

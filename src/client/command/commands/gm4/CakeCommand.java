@@ -42,7 +42,6 @@ public class CakeCommand extends Command {
             double mobHp = Double.parseDouble(params[0]);
             int newHp = (mobHp <= 0) ? Integer.MAX_VALUE : ((mobHp > Integer.MAX_VALUE) ? Integer.MAX_VALUE : (int) mobHp);
 
-            monster.getStats().setHp(newHp);
             monster.setStartingHp(newHp);
         }
 

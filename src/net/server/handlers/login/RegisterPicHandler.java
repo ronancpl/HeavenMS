@@ -9,7 +9,6 @@ import net.server.world.World;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 import client.MapleClient;
-import java.net.InetSocketAddress;
 import net.server.coordinator.MapleSessionCoordinator;
 import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
 import org.apache.mina.core.session.IoSession;
@@ -88,7 +87,7 @@ public final class RegisterPicHandler extends AbstractMaplePacketHandler {
             
             server.unregisterLoginState(c);
             c.updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
-            server.setCharacteridInTransition((InetSocketAddress) c.getSession().getRemoteAddress(), charId);
+            server.setCharacteridInTransition(session, charId);
             
             try {
                 c.announce(MaplePacketCreator.getServerIP(InetAddress.getByName(socket[0]), Integer.parseInt(socket[1]), charId));

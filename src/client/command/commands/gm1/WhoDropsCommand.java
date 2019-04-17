@@ -51,7 +51,7 @@ public class WhoDropsCommand extends Command {
         
         if (c.tryacquireClient()) {
             try {
-                String searchString = joinStringFrom(params, 0);
+                String searchString = player.getLastCommandMessage();
                 String output = "";
                 Iterator<Pair<Integer, String>> listIterator = MapleItemInformationProvider.getInstance().getItemDataByName(searchString).iterator();
                 if(listIterator.hasNext()) {

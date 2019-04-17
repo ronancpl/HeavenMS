@@ -21,7 +21,7 @@
 */
 package client;
 
-import tools.Randomizer;
+import constants.GameConstants;
 
 public enum MapleDisease {
     NULL(0x0),
@@ -29,7 +29,7 @@ public enum MapleDisease {
     SEDUCE(0x80, 128),
     FISHABLE(0x100),
     ZOMBIFY(0x4000),
-    CONFUSE(0x80000, 132),
+    CONFUSE(0x80000),
     STUN(0x2000000000000L, 123),
     POISON(0x4000000000000L, 125),
     SEAL(0x8000000000000L, 120),
@@ -39,16 +39,20 @@ public enum MapleDisease {
     
     private long i;
     private boolean first;
-    private int disease;
+    private int mobskill;
     
     private MapleDisease(long i) {
-        this.i = i;
-        this.first = false;
+        this(i, false, 0);
     }
 
-    private MapleDisease(long i, int disease) {
+    private MapleDisease(long i, int skill) {
+        this(i, false, skill);
+    }
+    
+    private MapleDisease(long i, boolean first, int skill) {
         this.i = i;
-        this.disease = disease;
+        this.first = first;
+        this.mobskill = skill;
     }
     
     public long getValue() {
@@ -56,11 +60,11 @@ public enum MapleDisease {
     }
 
     public boolean isFirst() {
-            return first;
+        return first;
     }
-
+    
     public int getDisease() {
-        return disease;
+        return mobskill;
     }
     
     public static MapleDisease ordinal(int ord) {
@@ -72,13 +76,8 @@ public enum MapleDisease {
     }
     
     public static final MapleDisease getRandom() {
-        while (true) {
-            for (MapleDisease dis : MapleDisease.values()) {
-                if (Randomizer.nextInt(MapleDisease.values().length) == 0) {
-                    return dis;
-                }
-            }
-        }
+        MapleDisease[] diseases = GameConstants.CPQ_DISEASES;
+        return diseases[(int) (Math.random() * diseases.length)];
     }
     
     public static final MapleDisease getBySkill(final int skill) {

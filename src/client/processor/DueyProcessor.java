@@ -42,6 +42,7 @@ import java.util.List;
 import net.server.channel.Channel;
 import server.DueyPackages;
 import server.MapleItemInformationProvider;
+import server.MapleTrade;
 import tools.DatabaseConnection;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
@@ -230,24 +231,6 @@ public class DueyProcessor {
         }
     }
     
-    private static int getFee(long meso) {
-        long fee = 0;
-        if (meso >= 100000000) {
-            fee = (meso * 6) / 100;
-        } else if (meso >= 25000000) {
-            fee = (meso * 5) / 100;
-        } else if (meso >= 10000000) {
-            fee = (meso * 4) / 100;
-        } else if (meso >= 5000000) {
-            fee = (meso * 3) / 100;
-        } else if (meso >= 1000000) {
-            fee = (meso * 18) / 1000;
-        } else if (meso >= 100000) {
-            fee = (meso * 8) / 1000;
-        }
-        return (int) fee;
-    }
-    
     private static void addMesoToDB(int mesos, String sName, int recipientID) {
         addItemToDB(null, 1, mesos, sName, recipientID);
     }
@@ -404,7 +387,7 @@ public class DueyProcessor {
                         }
 
                         MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
-                        addItemToDB(item, amount, mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+                        addItemToDB(item, amount, mesos - MapleTrade.getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
                     } else {
                         if (item != null) {
                             c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_INCORRECT_REQUEST.getCode()));
@@ -415,7 +398,7 @@ public class DueyProcessor {
                     c.getPlayer().gainMeso(-finalcost, false);
                     c.announce(MaplePacketCreator.sendDueyMSG(DueyProcessor.Actions.TOCLIENT_SEND_SUCCESSFULLY_SENT.getCode()));    
 
-                    addMesoToDB(mesos - getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
+                    addMesoToDB(mesos - MapleTrade.getFee(mesos), c.getPlayer().getName(), getAccIdFromCNAME(recipient, false));
                 }
 
                 if (rClient != null && rClient.isLoggedIn() && !rClient.getPlayer().isAwayFromWorld()) {

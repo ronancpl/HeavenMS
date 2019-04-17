@@ -31,6 +31,8 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Xterminator
  */
 public final class CloseChalkboardHandler extends AbstractMaplePacketHandler {
+    
+    @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         c.getPlayer().setChalkboard(null);
         c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.useChalkboard(c.getPlayer(), true));

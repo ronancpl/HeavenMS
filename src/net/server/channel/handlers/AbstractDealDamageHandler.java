@@ -136,6 +136,10 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
     }
 
     protected synchronized void applyAttack(AttackInfo attack, final MapleCharacter player, int attackCount) {
+        if (player.getMap().isOwnershipRestricted(player)) {
+            return;
+        }
+        
         Skill theSkill = null;
         MapleStatEffect attackEffect = null;
         final int job = player.getJob().getId();

@@ -21,32 +21,34 @@
 */
 package net.server.channel.handlers;
 
-import client.MapleClient;
-import client.MapleCharacter;
-import client.inventory.MapleInventoryType;
-import client.processor.DueyProcessor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import net.AbstractMaplePacketHandler;
-import client.inventory.manipulator.MapleInventoryManipulator;
-import tools.DatabaseConnection;
-import tools.data.input.SeekableLittleEndianAccessor;
-import tools.Pair;
-import tools.MaplePacketCreator;
-import tools.packets.Wedding;
-import net.server.world.World;
-import net.server.channel.Channel;
-import server.MapleItemInformationProvider;
+
+import client.MapleClient;
+import client.MapleCharacter;
 import client.MapleRing;
 import client.inventory.Equip;
 import client.inventory.Item;
+import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
+import client.processor.DueyProcessor;
+import net.AbstractMaplePacketHandler;
+import net.server.world.World;
+import net.server.channel.Channel;
+import server.MapleItemInformationProvider;
+import scripting.event.EventInstanceManager;
+import tools.DatabaseConnection;
+import tools.Pair;
+import tools.MaplePacketCreator;
+import tools.data.input.SeekableLittleEndianAccessor;
+import tools.packets.Wedding;
 
 /**
  * @author Jvlaple
  * @author Ronan - major overhaul on Ring handling mechanics
- * @author Drago/Dragohe4rt on Wishlist
+ * @author Drago/Dragohe4rt - on Wishlist
  */
 public final class RingActionHandler extends AbstractMaplePacketHandler {
     private static int getBoxId(int useItemId) {
@@ -410,10 +412,10 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
 
                                 MapleCharacter guestChr = c.getWorldServer().getPlayerStorage().getCharacterById(guest);
                                 if(guestChr != null && MapleInventoryManipulator.checkSpace(guestChr.getClient(), newItemId, 1, "") && MapleInventoryManipulator.addById(guestChr.getClient(), newItemId, (short) 1, expiration)) {
-                                    guestChr.dropMessage(6, "[WEDDING] You've been invited to " + groom + " and " + bride + "'s Wedding!");
+                                    guestChr.dropMessage(6, "[Wedding] You've been invited to " + groom + " and " + bride + "'s Wedding!");
                                 } else {
                                     if(guestChr != null && guestChr.isLoggedinWorld()) {
-                                        guestChr.dropMessage(6, "[WEDDING] You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!");
+                                        guestChr.dropMessage(6, "[Wedding] You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!");
                                     } else {
                                         c.getPlayer().sendNote(name, "You've been invited to " + groom + " and " + bride + "'s Wedding! Receive your invitation from Duey!", (byte) 0);
                                     }
@@ -463,57 +465,42 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                 break;
                 
             case 9: 
-                // By Drago/Dragohe4rt
-                // Groom and Bride's Wishlist
-                //short size = slea.readShort();
-                int amount = slea.readShort();
-                if (amount > 10) {
-                    amount = 10;
-                }
-                for (int i = 0; i < amount; i++) {
-                    c.getPlayer().setItens(slea.readMapleAsciiString());
-                }
-                
-                //System.out.println("G&B WISHLIST: " + itemnames);
-                
-                /*
-                if (c.getPlayer().getMarriageItemId() > -1) {
-                    switch(c.getPlayer().getMarriageItemId()) {
-                        case 10: // Premium Cathedral
-                            c.getAbstractPlayerInteraction().gainItem(4031375, (short)1);
-                            c.getAbstractPlayerInteraction().gainItem(4031395, (short)15);
-                            break;
-                        case 11: // Normal Cathedral
-                            c.getAbstractPlayerInteraction().gainItem(4031480, (short)1);
-                            c.getAbstractPlayerInteraction().gainItem(4031395, (short)15);
-                            break;
-                        case 20: // Premium Chapel
-                            c.getAbstractPlayerInteraction().gainItem(4031376, (short)1);
-                            c.getAbstractPlayerInteraction().gainItem(4031377, (short)15);
-                            break;
-                        case 21: // Normal Chapel
-                            c.getAbstractPlayerInteraction().gainItem(4031481, (short)1);
-                            c.getAbstractPlayerInteraction().gainItem(4031377, (short)15);
-                            break;
-                        default: {
-                            System.out.println("Invalid Wedding Type for player " + c.getPlayer().getName() + "!");
-                            break;
+                try {
+                    // By Drago/Dragohe4rt
+                    // Groom and Bride's Wishlist
+
+                    MapleCharacter player = c.getPlayer();
+
+                    EventInstanceManager eim = player.getEventInstance();
+                    if (eim != null) {
+                        boolean isMarrying = (player.getId() == eim.getIntProperty("groomId") || player.getId() == eim.getIntProperty("brideId"));
+
+                        if (isMarrying) {
+                            int amount = slea.readShort();
+                            if (amount > 10) {
+                                amount = 10;
+                            }
+
+                            String wishlistItems = "";
+                            for (int i = 0; i < amount; i++) {
+                                String s = slea.readMapleAsciiString();
+                                wishlistItems += (s + "\r\n");
+                            }
+
+                            String wlKey;
+                            if (player.getId() == eim.getIntProperty("groomId")) {
+                                wlKey = "groomWishlist";
+                            } else {
+                                wlKey = "brideWishlist";
+                            }
+
+                            if (eim.getProperty(wlKey).contentEquals("")) {
+                                eim.setProperty(wlKey, wishlistItems);
+                            }
                         }
                     }
-                    
-                    //c.getPlayer().setMarriageItemId(-1); ?????
-                }
+                } catch (NumberFormatException nfe) {}
                 
-                if (c.getPlayer().getWishlist() == null) {
-                    c.getPlayer().registerWishlist(itemnames);
-                }
-                
-                if (c.getPlayer().getWedding() != null) {
-                    if (c.getPlayer().getGender() == 0 ? c.getPlayer().getWedding().isExistantGroom(c.getPlayer().getId()) : c.getPlayer().getWedding().isExistantBride(c.getPlayer().getId())) {
-                        c.getPlayer().getWedding().registerWishlist(c.getPlayer().getGender() == 1, itemnames);
-                    }
-                }
-                */
                 break;
                 
             default:
