@@ -122,7 +122,7 @@ public class MapleReactorFactory {
                             int timeOut = -1;
                             
                             for (MapleData fknexon : eventData.getChildren()) {
-                                if (fknexon.getName().equals("timeOut")) {
+                                if (fknexon.getName().equalsIgnoreCase("timeOut")) {
                                     timeOut = MapleDataTool.getInt(fknexon);
                                 } else {
                                     Pair<Integer, Integer> reactItem = null;
