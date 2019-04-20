@@ -21092,6 +21092,14 @@ DELETE FROM temp_data WHERE dropperid >= 9300315 AND dropperid <= 9300324;
 (9300324, 2022178, 1, 1, 0, 200000),
 (9300324, 4001129, 1, 1, 0, 12987);
 
+# add AriantPQ items, AriantPQ specific items found thanks to Dragohe4rt
+  INSERT IGNORE INTO temp_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+(9300157, 2100067, 1, 1, 0, 100000),
+(9300157, 2022266, 1, 1, 0, 200000),
+(9300157, 2022267, 1, 1, 0, 200000),
+(9300157, 2022268, 1, 1, 0, 200000),
+(9300157, 2022269, 1, 1, 0, 200000);
+
   CREATE TABLE IF NOT EXISTS `drop_data` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT,
     `dropperid` int(11) NOT NULL,

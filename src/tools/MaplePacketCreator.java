@@ -405,7 +405,7 @@ public class MaplePacketCreator {
                         mplew.writeShort(pet.getCloseness());
                         mplew.write(pet.getFullness());
                         addExpirationTime(mplew, item.getExpiration());
-                        mplew.writeInt(pet.getPetFlag());  /* pet flags found by -- Irenex & Spoon */
+                        mplew.writeInt(pet.getPetFlag());  /* pet flags found by -- lrenex & Spoon */
                         
                         mplew.write(new byte[]{(byte) 0x50, (byte) 0x46}); //wonder what this is
                         mplew.writeInt(0);
@@ -2534,7 +2534,46 @@ public class MaplePacketCreator {
                 mplew.writeInt(cid);
                 return mplew.getPacket();
         }
+        
+        public static byte[] catchMessage(int message) { // not done, I guess
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.BRIDLE_MOB_CATCH_FAIL.getValue());
+                mplew.write(message); // 1 = too strong, 2 = Elemental Rock
+                mplew.writeInt(0);//Maybe itemid?
+                mplew.writeInt(0);
+                return mplew.getPacket();
+        }
 
+        public static byte[] showAllCharacter(int chars, int unk) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(11);
+                mplew.writeShort(SendOpcode.VIEW_ALL_CHAR.getValue());
+                mplew.write(chars > 0 ? 1 : 5); // 2: already connected to server, 3 : unk error (view-all-characters), 5 : cannot find any
+                mplew.writeInt(chars);
+                mplew.writeInt(unk);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] showAriantScoreBoard() {   // thanks lrenex for pointing match's end scoreboard packet
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.ARIANT_ARENA_SHOW_RESULT.getValue());
+                return mplew.getPacket();
+        }
+        
+        public static byte[] updateAriantPQRanking(final MapleCharacter chr, final int score) {
+                return updateAriantPQRanking(new LinkedHashMap<MapleCharacter, Integer>(){{put(chr, score);}});
+        }
+        
+        public static byte[] updateAriantPQRanking(Map<MapleCharacter, Integer> playerScore) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.ARIANT_ARENA_USER_SCORE.getValue());
+                mplew.write(playerScore.size());
+                for (Entry<MapleCharacter, Integer> e : playerScore.entrySet()) {
+                        mplew.writeMapleAsciiString(e.getKey().getName());
+                        mplew.writeInt(e.getValue());
+                }
+                return mplew.getPacket();
+        }
+        
         public static byte[] silentRemoveItemFromMap(int oid) {
                 return removeItemFromMap(oid, 1, 0);
         }
@@ -5012,35 +5051,6 @@ public class MaplePacketCreator {
                                 mplew.writeInt(macro.getSkill3());
                         }
                 }
-                return mplew.getPacket();
-        }
-
-        public static byte[] updateAriantPQRanking(String name, int score, boolean empty) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.ARIANT_SCORE.getValue());
-                mplew.write(empty ? 0 : 1);
-                if (!empty) {
-                        mplew.writeMapleAsciiString(name);
-                        mplew.writeInt(score);
-                }
-                return mplew.getPacket();
-        }
-
-        public static byte[] catchMessage(int message) { // not done, I guess
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.BRIDLE_MOB_CATCH_FAIL.getValue());
-                mplew.write(message); // 1 = too strong, 2 = Elemental Rock
-                mplew.writeInt(0);//Maybe itemid?
-                mplew.writeInt(0);
-                return mplew.getPacket();
-        }
-
-        public static byte[] showAllCharacter(int chars, int unk) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(11);
-                mplew.writeShort(SendOpcode.VIEW_ALL_CHAR.getValue());
-                mplew.write(chars > 0 ? 1 : 5); // 2: already connected to server, 3 : unk error (view-all-characters), 5 : cannot find any
-                mplew.writeInt(chars);
-                mplew.writeInt(unk);
                 return mplew.getPacket();
         }
 

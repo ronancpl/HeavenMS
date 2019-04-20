@@ -29,6 +29,7 @@ import constants.ItemConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
 import client.inventory.manipulator.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 import server.life.MapleMonster;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -47,7 +48,7 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
         slea.readShort();
         int itemId = slea.readInt();
         int monsterid = slea.readInt();
-
+        
         MapleMonster mob = chr.getMap().getMonsterByOid(monsterid);
         if (chr.getInventory(ItemConstants.getInventoryType(itemId)).countById(itemId) <= 0) {
            return;
@@ -85,20 +86,25 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
                 if (mob.getId() == 9300157) {
                     if ((abm.getLastSpam(10) + 800) < currentServerTime()) {
                         if (mob.getHp() < ((mob.getMaxHp() / 10) * 4)) {
-                            if (Math.random() < 0.5) { // 50% chance
-                                chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
-                                mob.getMap().killMonster(mob, null, false);
-                                MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemId, 1, true, true);
-                                MapleInventoryManipulator.addById(c, 4031868, (short) 1, "", -1);
+                            if (chr.canHold(4031868, 1)) {
+                                if (Math.random() < 0.5) { // 50% chance
+                                    chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
+                                    mob.getMap().killMonster(mob, null, false);
+                                    MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemId, 1, true, true);
+                                    MapleInventoryManipulator.addById(c, 4031868, (short) 1, "", -1);
+                                } else {
+                                    chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 0));
+                                }
                             } else {
-                                chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 0));
+                                chr.dropMessage(5, "Make a ETC slot available before using this item.");
                             }
+                            
                             abm.spam(10);
                         } else {
                             c.announce(MaplePacketCreator.catchMessage(0));
                         }
                     }
-                c.announce(MaplePacketCreator.enableActions());
+                    c.announce(MaplePacketCreator.enableActions());
                 }
                 break;
             case 2270003:
@@ -181,7 +187,35 @@ public final class UseCatchItemHandler extends AbstractMaplePacketHandler {
                 }
                 break;
             default:
-               // System.out.println("UseCatchItemHandler: \r\n" + slea.toString());
+                // proper Fish catch, thanks to Dragohe4rt
+                
+                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                int itemGanho = ii.getCreateItem(itemId);
+                int mobItem = ii.getMobItem(itemId);
+                
+                if (itemGanho != 0 && mobItem == mob.getId()) {
+                    int timeCatch = ii.getUseDelay(itemId);
+                    int mobHp = ii.getMobHP(itemId);
+                    
+                    if (timeCatch != 0 && (abm.getLastSpam(10) + timeCatch) < currentServerTime()) {
+                        if (mobHp != 0 && mob.getHp() < ((mob.getMaxHp() / 100) * mobHp)) {
+                            chr.getMap().broadcastMessage(MaplePacketCreator.catchMonster(monsterid, itemId, (byte) 1));
+                            mob.getMap().killMonster(mob, null, false);
+                            MapleInventoryManipulator.removeById(c, MapleInventoryType.USE, itemId, 1, true, true);
+                            MapleInventoryManipulator.addById(c, itemGanho, (short) 1, "", -1);
+                        } else if (mob.getId() != 9500336) {
+                            if (mobHp != 0) {
+                                abm.spam(10);
+                                c.announce(MaplePacketCreator.catchMessage(0));
+                            }
+                        } else {
+                            chr.message("You cannot use the Fishing Net yet.");
+                        }
+                    }
+                }
+                c.announce(MaplePacketCreator.enableActions());
+                
+                // System.out.println("UseCatchItemHandler: \r\n" + slea.toString());
         }
     }
 }

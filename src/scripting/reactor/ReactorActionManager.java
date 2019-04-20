@@ -317,7 +317,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     public void dispelAllMonsters(int num, int team) { //dispels all mobs, cpq
         final MCSkill skil = MapleCarnivalFactory.getInstance().getGuardian(num);
         if (skil != null) {
-            for (MapleMonster mons : getMap().getMonsters()) {
+            for (MapleMonster mons : getMap().getAllMonsters()) {
                 if(mons.getTeam() == team) {
                     mons.dispelSkill(skil.getSkill());
                 }

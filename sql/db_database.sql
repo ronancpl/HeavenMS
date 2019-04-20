@@ -171,6 +171,7 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `monsterbookcover` int(11) NOT NULL DEFAULT '0',
   `allianceRank` int(10) NOT NULL DEFAULT '5',
   `vanquisherStage` int(11) unsigned NOT NULL DEFAULT '0',
+  `ariantPoints` int(11) unsigned NOT NULL DEFAULT '0',
   `dojoPoints` int(11) unsigned NOT NULL DEFAULT '0',
   `lastDojoStage` int(10) unsigned NOT NULL DEFAULT '0',
   `finishedDojoTutorial` tinyint(1) unsigned NOT NULL DEFAULT '0',

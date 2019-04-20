@@ -1,108 +1,178 @@
-/*
-    This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-    Matthias Butz <matze@odinms.de>
-    Jan Christian Meyer <vimes@odinms.de>
+/*2101014.js - Lobby and Entrance
+ * @author Jvlaple
+ * For Jvlaple's AriantPQ
+ */
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
+importPackage(Packages.server.expeditions);
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-    See the GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-/*
-	NPC NAME: Cesar (2)
-	NPC ID: 2101014
-	Author: Vcoc
-	Function: AriantPQ
-*/
-
-status = -1;
-var sel;
-empty = [false, false, false];
+var status = 0;
+var toBan = -1;
+var choice;
+var arenaType;
+var arena;
+var arenaName;
+var type;
+var map;
+var exped = MapleExpeditionType.ARIANT;
+var exped1 = MapleExpeditionType.ARIANT1;
+var exped2 = MapleExpeditionType.ARIANT2;
 
 function start() {
-    if((cm.getPlayer().getLevel() < 19 || cm.getPlayer().getLevel() > 30) && !cm.getPlayer().isGM()){
-        cm.sendNext("You're not between level 20 and 30. Sorry, you may not participate.");
-        cm.dispose();
-        return;
-    }
-    var text = "What do you want?#b";
-    for(var i = 0; i < 3; i += 1)
-        if (cm.getPlayerCount(980010100 + (i * 100)) > 0)
-            if(cm.getPlayerCount(980010101 + (i * 100)) > 0)
-                continue;
-            else
-                text += "\r\n#L" + i + "# Battle Arena " + (i + 1) + "([" + cm.getPlayerCount(980010100 + (i * 100)) + "/" + cm.getPlayer().getAriantSlotsRoom(i) + "]  users: " + cm.getPlayer().getAriantRoomLeaderName(i) + ")#l";
-        else{
-            empty[i] = true;
-            text += "\r\n#L" + i + "# Battle Arena " + (i + 1) + "( Empty )#l";
-            if(cm.getPlayer().getAriantRoomLeaderName(i) != "")
-                cm.getPlayer().removeAriantRoom(i);
-        }
-    cm.sendSimple(text + "\r\n#L3# I'd like to know more about the competition.#l");
+    status = -1;
+    action(1, 0, 0);
 }
 
-function action(mode, type, selection){
-    status++;
-    if(mode != 1){
-        if(mode == 0 && type == 0)
-            status -= 2;
-        else{
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
             cm.dispose();
             return;
         }
+        if (mode == 1) {
+            status++;
+        } else {
+            status--;
+        }
+        if (cm.getPlayer().getMapId() == 980010000) {
+            if (cm.getLevel() > 30) {
+                cm.sendOk("You are already over #rlevel 30#k, therefore you can't participate in this instance anymore.");
+                cm.dispose();
+                return;
+            }
+            
+            if (status == 0) {
+                var expedicao = cm.getExpedition(exped);
+                var expedicao1 = cm.getExpedition(exped1);
+                var expedicao2 = cm.getExpedition(exped2);
+                
+                var channelMaps = cm.getClient().getChannelServer().getMapFactory();
+                var startSnd = "Voc� gostaria de participar do Desafio #eAriant Coliseu#n?\r\n\r\n#e#r       (Escolha uma arena)#n#k\r\n#b";
+                var toSnd = startSnd;
+
+                if (expedicao == null) {
+                    toSnd += "#L0#Comece Ariant Coliseu (1)#l\r\n";
+                } else if (channelMaps.getMap(980010101).getCharacters().isEmpty()) {
+                    toSnd += "#L0#Junte-se ao Ariant Coliseu (1)  Dono (" + expedicao.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped) + "\r\n";
+                }
+                if (expedicao1 == null) {
+                    toSnd += "#L1#Comece Ariant Coliseu (2)#l\r\n";
+                } else if (channelMaps.getMap(980010201).getCharacters().isEmpty()) {
+                    toSnd += "#L1#Junte-se ao Ariant Coliseu (2)  Dono (" + expedicao1.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped1) + "\r\n";
+                }
+                if (expedicao2 == null) {
+                    toSnd += "#L2#Comece Ariant Coliseu (3)#l\r\n";
+                } else if (channelMaps.getMap(980010301).getCharacters().isEmpty()) {
+                    toSnd += "#L2#Junte-se ao Ariant Coliseu (3)  Dono (" + expedicao2.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped2) + "\r\n";
+                }
+                if (toSnd.equals(startSnd)) {
+                    cm.sendOk("Todas as arenas esta ocupadas agora. Eu sugiro que voc� volte mais tarde ou mudar de canal.");
+                    cm.dispose();
+                } else {
+                    cm.sendSimple(toSnd);
+                }
+            } else if (status == 1) {
+                arenaType = selection;
+                expedicao = fetchArenaType();
+                if (expedicao == "") {
+                    cm.dispose();
+                    return;
+                }
+                
+                if (expedicao != null) {
+                    enterArena(-1);
+                } else {
+                    cm.sendGetText("Quantos jogadores voce quer em sua instancia?");
+                }
+            } else if (status == 2) {
+                var players = parseInt(cm.getText());   // AriantPQ option limit found thanks to NarutoFury (iMrSiN)
+                if (isNaN(players)) {
+                    cm.sendNext("Por favor insira um valor numérico de limite de jogadores permitidos em sua instancia.");
+                    status = 0;
+                } else if (players < 2) {
+                    cm.sendNext("Sua instancia precisa ter ao menos 2 jogadores.");
+                    status = 0;
+                } else {
+                    enterArena(players);
+                } 
+            }
+        }
     }
-    if (status == 0){
-        if(sel == undefined)
-            sel = selection;
-        if(sel == 3)
-            cm.sendNext("What do you need to do? You must be new to this. Allow me explain in detail.");
-        else{
-            if(cm.getPlayer().getAriantRoomLeaderName(sel) != "" && empty[sel])
-                empty[sel] = false;
-            else if(cm.getPlayer().getAriantRoomLeaderName(sel) != ""){
-                cm.warp(980010100 + (sel * 100));
-                cm.dispose();
-                return;
-            }
-            if(!empty[sel]){
-                cm.sendNext("Another combatant has created the battle arena first. I advise you to either set up a new one, or join the battle arena that's already been set up.");
-                cm.dispose();
-                return;
-            }
-            cm.sendGetNumber("Up to how many participants can join in this match? (2~6 ppl)", 0, 2, 6);
-        }
-    }else if (status == 1){
-        if(sel == 3)
-            cm.sendNextPrev("It's really simple, actually. You'll receive #b#t2270002##k from me, and your task is to eliminate a set amount of HP from the monster, then use #b#t2270002##k to absorb its monstrous power.");
-        else{
-            if(cm.getPlayer().getAriantRoomLeaderName(sel) != "" && empty[sel])
-                empty[sel] = false;
-            if(!empty[sel]){
-                cm.sendNext("Another combatant has created the battle arena first. I advise you to either set up a new one, or join the battle arena that's already been set up.");
-                cm.dispose();
-                return;
-            }
-            cm.getPlayer().setAriantRoomLeader(sel, cm.getPlayer().getName());
-            cm.getPlayer().setAriantSlotRoom(sel, selection);
-            cm.warp(980010100 + (sel * 100));
-            cm.dispose();
-        }
-    }else if (status == 2)
-        cm.sendNextPrev("It's simple. If you absorb the power of the monster #b#t2270002##k, then you'll make #b#t4031868##k, which is something Queen Areda loves. The combatant with the most jewels wins the match. It's actually a smart idea to prevent others from absorbing in order to win.");
-    else if (status == 3)
-        cm.sendNextPrev("One thing. Using #b#t2100067##k, you can steal #b#t4031868##k from your enemies. Warning: #rYou may not use pets for this.#k Understood?!");
-    else if (status == 4)
+}
+
+function fetchArenaType() {
+    switch (arenaType) {
+        case 0 :
+            exped = MapleExpeditionType.ARIANT;
+            expedicao = cm.getExpedition(exped);
+            map = 980010100;
+            break;
+        case 1 :
+            exped = MapleExpeditionType.ARIANT1;
+            expedicao = cm.getExpedition(exped);
+            map = 980010200;
+            break;
+        case 2 :
+            exped = MapleExpeditionType.ARIANT2;
+            expedicao = cm.getExpedition(exped);
+            map = 980010300;
+            break;
+        default :
+            exped = null;
+            map = 0;
+            expedicao = "";
+    }
+    
+    return expedicao;
+}
+
+function enterArena(arenaPlayers) {
+    expedicao = fetchArenaType();
+    if (expedicao == "") {
         cm.dispose();
+        return;
+    } else if (expedicao == null) {
+        if (arenaPlayers != -1) {
+            if (cm.createExpedition(exped, true, 0, arenaPlayers)) {
+                cm.warp(map, 0);
+                cm.getPlayer().dropMessage("Sua Arena foi criada. Aguarde as pessoas entrarem agora!");
+            } else {
+                cm.sendOk("An unexpected error has occurred when starting the expedition, please try again later.");
+            }
+        } else {
+            cm.sendOk("An unexpected error has occurred when locating the expedition, please try again later.");
+        }
+        
+        cm.dispose();
+    } else {
+        if (playerAlreadyInLobby(cm.getPlayer())) {
+            cm.sendOk("Desculpe, você já pertence a alguma Lobby.");
+            cm.dispose();
+            return;
+        }
+
+        var playerAdd = expedicao.addMemberInt(cm.getPlayer());
+        if (playerAdd == 3) {
+            cm.sendOk("Desculpe, a Lobby esta cheia agora.");
+            cm.dispose();
+        } else {
+            if (playerAdd == 0) {
+                cm.warp(map, 0);
+                cm.dispose();
+            } else if (playerAdd == 2) {
+                cm.sendOk("Desculpe, mas o l�der pediu para nao ser autorizado a entrar.");
+                cm.dispose();
+            } else {
+                cm.sendOk("erro.");
+                cm.dispose();
+            }
+        }
+    }
+}
+
+function playerAlreadyInLobby(player) {
+    return cm.getExpedition(MapleExpeditionType.ARIANT) != null && cm.getExpedition(MapleExpeditionType.ARIANT).contains(player) ||
+            cm.getExpedition(MapleExpeditionType.ARIANT1) != null && cm.getExpedition(MapleExpeditionType.ARIANT1).contains(player) ||
+            cm.getExpedition(MapleExpeditionType.ARIANT2) != null && cm.getExpedition(MapleExpeditionType.ARIANT2).contains(player);
 }

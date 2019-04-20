@@ -20,14 +20,14 @@ function action(mode, type, selection) {
         else 
             status--; 
             if (status == 0) { 
-            if (cm.getLevel() < 25) { 
+            if (cm.getLevel() < 20) { 
                 cm.sendDimensionalMirror("#-1# There is no place for you to transport to from here."); 
                 cm.dispose(); 
             } else { 
                 var selStr = ""; 
-                /*if (cm.getLevel() >= 20 && cm.getLevel() <= 30) { NOT IMPLEMENTED
+                if (cm.getLevel() >= 20 && cm.getLevel() <= 30) {
                     selStr += "#0# Ariant Coliseum"; 
-                } */
+                }
 
                 if (cm.getLevel() >= 25) { 
                     selStr += "#1# Mu Lung Dojo"; 

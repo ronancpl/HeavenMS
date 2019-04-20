@@ -658,14 +658,6 @@ public class MapleInventoryManipulator {
         }
         
         MapleMap map = chr.getMap();
-        if (chr.getItemEffect() == itemId && source.getQuantity() == 1) {
-            chr.setItemEffect(0);
-            map.broadcastMessage(MaplePacketCreator.itemEffect(chr.getId(), 0));
-        } else if (itemId == 5370000 || itemId == 5370001) {
-            if (chr.getItemQuantity(itemId, false) == 1) {
-                chr.setChalkboard(null);
-            }
-        }
         if ((!ItemConstants.isRechargeable(itemId) && source.getQuantity() < quantity) || quantity < 0) {
             return;
         }
@@ -734,6 +726,20 @@ public class MapleInventoryManipulator {
             } else {
                 map.spawnItemDrop(chr, chr, source, dropPos, true, true);
             }
+        }
+        
+        int quantityNow = chr.getItemQuantity(itemId, false);
+        if (itemId == chr.getItemEffect()) {
+            if (quantityNow <= 0) {
+                chr.setItemEffect(0);
+                map.broadcastMessage(MaplePacketCreator.itemEffect(chr.getId(), 0));
+            }
+        } else if (itemId == 5370000 || itemId == 5370001) {
+            if (source.getQuantity() <= 0) {
+                chr.setChalkboard(null);
+            }
+        } else if (itemId == 4031868) {
+            chr.updateAriantScore(quantityNow);
         }
     }
 

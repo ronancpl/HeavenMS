@@ -1065,7 +1065,7 @@ public class EventInstanceManager {
                         
                         sL.lock();
                         try {
-                                em.getChannelServer().getExpeditions().remove(expedition);
+                                em.getChannelServer().removeExpedition(expedition);
                         } finally {
                                 sL.unlock();
                         }

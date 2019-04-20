@@ -901,6 +901,10 @@ public class MapleClient {
                                 if (player.getMonsterCarnival() != null) {
                                         player.getMonsterCarnival().playerDisconnected(getPlayer().getId());
                                 }
+                                
+                                if (player.getAriantColiseum() != null) {
+                                        player.getAriantColiseum().playerDisconnected(getPlayer());
+                                }
                         }
                         
                         if (player.getMap() != null) {

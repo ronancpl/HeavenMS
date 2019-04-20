@@ -64,8 +64,10 @@ public class ForceVacCommand extends Command {
                         continue;
                     }
                     MapleInventoryManipulator.addById(c, mapItem.getItem().getItemId(), mapItem.getItem().getQuantity(), null, petId);
-                } else {
-                    MapleInventoryManipulator.addFromDrop(c, mapItem.getItem(), true);
+                } else if (MapleInventoryManipulator.addFromDrop(c, mapItem.getItem(), true)) {
+                    if (mapItem.getItemId() == 4031868) {
+                        player.updateAriantScore();
+                    }
                 }
 
                 player.getMap().pickItemDrop(MaplePacketCreator.removeItemFromMap(mapItem.getObjectId(), 2, player.getId()), mapItem);

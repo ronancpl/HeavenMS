@@ -100,6 +100,7 @@ import server.life.MaplePlayerNPC;
 import server.life.MonsterDropEntry;
 import server.maps.SavedLocation;
 import server.maps.SavedLocationType;
+import server.partyquest.AriantColiseum;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
 import server.partyquest.PartyQuest;
@@ -131,7 +132,6 @@ import client.processor.FredrickProcessor;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
-import constants.LanguageConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
 import constants.skills.Beginner;
@@ -166,7 +166,6 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import scripting.AbstractPlayerInteraction;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -196,7 +195,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int battleshipHp = 0;
     private int mesosTraded = 0;
     private int possibleReports = 10;
-    private int dojoPoints, vanquisherStage, dojoStage, dojoEnergy, vanquisherKills;
+    private int ariantPoints, dojoPoints, vanquisherStage, dojoStage, dojoEnergy, vanquisherKills;
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
@@ -1979,13 +1978,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                         showHint("You have earned #e#b" + nxGain + " NX#k#n. (" + this.getCashShop().getCash(1) + " NX)", 300);
                     } else if (applyConsumeOnPickup(mItem.getItemId())) {
                     } else if (MapleInventoryManipulator.addFromDrop(client, mItem, true)) {
-                    } else if (mItem.getItemId() == 4031868) {
-                        this.getMap().broadcastMessage(MaplePacketCreator.updateAriantPQRanking(this.getName(), this.getItemQuantity(4031868, false), false));
+                        if (mItem.getItemId() == 4031868) {
+                            updateAriantScore();
+                        }
                     } else {
                         client.announce(MaplePacketCreator.enableActions());
                         return;
                     }
-                    
+
                     this.getMap().pickItemDrop(pickupPacket, mapitem);
                 } else if(!hasSpaceInventory) {
                     client.announce(MaplePacketCreator.getInventoryFull());
@@ -3174,6 +3174,21 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public static int getAriantSlotsRoom(int room) {
         return ariantroomslot[room];
+    }
+    
+    public void updateAriantScore() {
+        updateAriantScore(0);
+    }
+    
+    public void updateAriantScore(int dropQty) {
+        AriantColiseum arena = this.getAriantColiseum();
+        if (arena != null) {
+            arena.updateAriantScore(this, countItem(4031868));
+            
+            if (dropQty > 0) {
+                arena.addLostShards(dropQty);
+            }
+        }
     }
 
     public int getBattleshipHp() {
@@ -5894,6 +5909,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (map.unclaimOwnership(this)) {
             map.dropMessage(5, "This lawn is now free real estate.");
         }
+        
+        AriantColiseum arena = this.getAriantColiseum();
+        if (arena != null) {
+            arena.leaveArena(this);
+        }
     }
     
     private int getChangedJobSp(MapleJob newJob) {
@@ -6685,6 +6705,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.monsterbook = new MonsterBook();
             ret.monsterbook.loadCards(charid);
             ret.vanquisherStage = rs.getInt("vanquisherStage");
+            ret.ariantPoints = rs.getInt("ariantPoints");
             ret.dojoPoints = rs.getInt("dojoPoints");
             ret.dojoStage = rs.getInt("lastDojoStage");
             ret.dataString = rs.getString("dataString");
@@ -7137,12 +7158,12 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     private void playerDead() {
         if (this.getMap().isCPQMap()) {
-            int lost = getCP();
-            if (lost > 6) {
-                lost = 6;
+            int losing = getMap().getDeathCP();
+            if (getCP() < losing) {
+                losing = getCP();
             }
-            getMap().broadcastMessage(MaplePacketCreator.playerDiedMessage(getName(), lost, getTeam()));
-            gainCP(-lost);
+            getMap().broadcastMessage(MaplePacketCreator.playerDiedMessage(getName(), losing, getTeam()));
+            gainCP(-losing);
             return;
         }
         
@@ -7952,7 +7973,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ?, lastExpGainTime = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ?, lastExpGainTime = ?, ariantPoints = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             if (gmLevel < 1 && level > 199) {
                 ps.setInt(1, isCygnus() ? 120 : 200);
             } else {
@@ -8066,7 +8087,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.setInt(51, partnerId);
             ps.setInt(52, marriageItemid);
             ps.setTimestamp(53, new Timestamp(lastExpGainTime));
-            ps.setInt(54, id);
+            ps.setInt(54, ariantPoints);
+            ps.setInt(55, id);
 
             int updateRows = ps.executeUpdate();
             ps.close();
@@ -10231,13 +10253,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     // MCPQ
     
-    private int cp = 0;
-    private int totCP = 0;
+    public AriantColiseum ariantColiseum;
     private MonsterCarnival monsterCarnival;
     private MonsterCarnivalParty monsterCarnivalParty = null;
+    
+    private int cp = 0;
+    private int totCP = 0;
     private int FestivalPoints;
     private boolean challenged = false;
-
+    public short totalCP, availableCP;
+    
     public void gainFestivalPoints(int gain) {
         this.FestivalPoints += gain;
     }
@@ -10253,8 +10278,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getCP() {
         return cp;
     }
-
-    public short totalCP, availableCP;
 
     public void addCP(int ammount) {
         totalCP += ammount;
@@ -10318,6 +10341,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.monsterCarnival = monsterCarnival;
     }
     
+    public AriantColiseum getAriantColiseum() {
+        return ariantColiseum;
+    }
+
+    public void setAriantColiseum(AriantColiseum ariantColiseum) {
+        this.ariantColiseum = ariantColiseum;
+    }
+    
     public MonsterCarnivalParty getMonsterCarnivalParty() {
         return this.monsterCarnivalParty;
     }
@@ -10332,6 +10363,14 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void setChallenged(boolean challenged) {
         this.challenged = challenged;
+    }
+    
+    public void gainAriantPoints(int points) {
+        this.ariantPoints += points;
+    }
+    
+    public int getAriantPoints() {
+        return this.ariantPoints;
     }
 
     public void setLanguage(int num) {

@@ -100,7 +100,7 @@ public final class Channel {
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
     private Set<Integer> playersAway = new HashSet<>();
-    private List<MapleExpedition> expeditions = new ArrayList<>();
+    private Map<MapleExpeditionType, MapleExpedition> expeditions = new HashMap<>();
     private List<MapleExpeditionType> expedType = new ArrayList<>();
     private Set<MapleMap> ownedMaps = Collections.synchronizedSet(Collections.newSetFromMap(new WeakHashMap<MapleMap, Boolean>()));
     private MapleEvent event;
@@ -468,8 +468,31 @@ public final class Channel {
         return retArr;
     }
     
+    public boolean addExpedition(MapleExpedition exped) {
+        synchronized (expeditions) {
+            if (expeditions.containsKey(exped.getType())) {
+                return false;
+            }
+            
+            expeditions.put(exped.getType(), exped);
+            return true;
+        }
+    }
+    
+    public void removeExpedition(MapleExpedition exped) {
+        synchronized (expeditions) {
+            expeditions.remove(exped.getType());
+        }
+    }
+    
+    public MapleExpedition getExpedition(MapleExpeditionType type) {
+        return expeditions.get(type);
+    }
+    
     public List<MapleExpedition> getExpeditions() {
-    	return expeditions;
+        synchronized (expeditions) {
+            return new ArrayList<>(expeditions.values());
+        }
     }
     
     public boolean isConnected(String name) {
