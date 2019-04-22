@@ -115,6 +115,7 @@ public class MapleMap {
     private Map<MapleMapItem, Long> droppedItems = new LinkedHashMap<>();
     private LinkedList<WeakReference<MapleMapObject>> registeredDrops = new LinkedList<>();
     private Map<MobLootEntry, Long> mobLootEntries = new HashMap(20);
+    private List<Runnable> statUpdateRunnables = new ArrayList(50);
     private List<Rectangle> areas = new ArrayList<>();
     private MapleFootholdTree footholds = null;
     private Pair<Integer, Integer> xLimits;  // caches the min and max x's with available footholds
@@ -150,6 +151,7 @@ public class MapleMap {
     private ScheduledFuture<?> itemMonitor = null;
     private ScheduledFuture<?> expireItemsTask = null;
     private ScheduledFuture<?> mobSpawnLootTask = null;
+    private ScheduledFuture<?> characterStatUpdateTask = null;
     private short itemMonitorTimeout;
     private Pair<Integer, String> timeMob = null;
     private short mobInterval = 5000;
@@ -779,6 +781,9 @@ public class MapleMap {
             mobSpawnLootTask.cancel(false);
             mobSpawnLootTask = null;
         }
+        
+        characterStatUpdateTask.cancel(false);
+        characterStatUpdateTask = null;
     }
     
     private void cleanItemMonitor() {
@@ -856,6 +861,13 @@ public class MapleMap {
                     }
                 }, 200, 200);
             }
+            
+            characterStatUpdateTask = TimerManager.getInstance().register(new Runnable() {
+                @Override
+                public void run() {
+                    runCharacterStatUpdate();
+                }
+            }, 200, 200);
                     
             itemMonitorTimeout = 1;
         } finally {
@@ -3367,10 +3379,6 @@ public class MapleMap {
         return clock;
     }
     
-    public void addClock(int seconds) {
-        broadcastMessage(MaplePacketCreator.getClock(seconds));
-    }
-
     public void setTown(boolean isTown) {
         this.town = isTown;
     }
@@ -4491,6 +4499,21 @@ public class MapleMap {
         return false;
     }
     
+    public void runCharacterStatUpdate() {
+        if (!statUpdateRunnables.isEmpty()) {
+            List<Runnable> toRun = new ArrayList<>(statUpdateRunnables);
+            statUpdateRunnables.clear();
+
+            for (Runnable r : toRun) {
+                r.run();
+            }
+        }
+    }
+    
+    public void registerCharacterStatUpdate(Runnable r) {
+        statUpdateRunnables.add(r);
+    }
+    
     public void dispose() {
         for(MapleMonster mm : this.getAllMonsters()) {
             mm.dispose();
@@ -4526,6 +4549,11 @@ public class MapleMap {
             if(mobSpawnLootTask != null) {
                 mobSpawnLootTask.cancel(false);
                 mobSpawnLootTask = null;
+            }
+            
+            if(characterStatUpdateTask != null) {
+                characterStatUpdateTask.cancel(false);
+                characterStatUpdateTask = null;
             }
         } finally {
             chrWLock.unlock();

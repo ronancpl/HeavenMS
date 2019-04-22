@@ -356,7 +356,9 @@ public class MonsterCarnival {
             chrMap.dropMessage(5, LanguageConstants.Languages(chrMap).CPQExtendTime);
         }
         startTime = System.currentTimeMillis() + 3 * 60 * 1000;
-        map.addClock(3 * 60);
+        
+        map.broadcastMessage(MaplePacketCreator.getClock(3 * 60));
+        
         timer = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
