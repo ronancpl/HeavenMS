@@ -36,7 +36,7 @@ public class BossHpCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-        for(MapleMonster monster : player.getMap().getMonsters()) {
+        for(MapleMonster monster : player.getMap().getAllMonsters()) {
             if(monster != null && monster.isBoss() && monster.getHp() > 0) {
                 long percent = monster.getHp() * 100L / monster.getMaxHp();
                 String bar = "[";

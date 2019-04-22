@@ -30,6 +30,7 @@ import net.server.Server;
 import net.server.channel.Channel;
 import server.expeditions.MapleExpedition;
 
+import java.util.List;
 import java.util.Map.Entry;
 
 public class ExpedsCommand extends Command {
@@ -41,13 +42,14 @@ public class ExpedsCommand extends Command {
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
         for (Channel ch : Server.getInstance().getChannelsFromWorld(c.getWorld())) {
-            if (ch.getExpeditions().isEmpty()) {
+            List<MapleExpedition> expeds = ch.getExpeditions();
+            if (expeds.isEmpty()) {
                 player.yellowMessage("No Expeditions in Channel " + ch.getId());
                 continue;
             }
             player.yellowMessage("Expeditions in Channel " + ch.getId());
             int id = 0;
-            for (MapleExpedition exped : ch.getExpeditions()) {
+            for (MapleExpedition exped : expeds) {
                 id++;
                 player.yellowMessage("> Expedition " + id);
                 player.yellowMessage(">> Type: " + exped.getType().toString());

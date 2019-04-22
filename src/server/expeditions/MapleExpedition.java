@@ -41,6 +41,11 @@ import server.maps.MapleMap;
 import tools.LogHelper;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
+import java.util.Iterator;
+import java.util.Properties;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 
 /**
  *
@@ -89,21 +94,38 @@ public class MapleExpedition {
 	private Map<Integer, String> members = new ConcurrentHashMap<>();
 	private List<Integer> banned = new CopyOnWriteArrayList<>();
 	private long startTime;
+        private Properties props = new Properties();
+        private boolean silent;
+        private int minSize, maxSize;
+        private MonitoredReentrantLock pL = MonitoredReentrantLockFactory.createLock(MonitoredLockType.EIM_PARTY, true);
 
-	public MapleExpedition(MapleCharacter player, MapleExpeditionType met) {
+	public MapleExpedition(MapleCharacter player, MapleExpeditionType met, boolean sil, int minPlayers, int maxPlayers) {
 		leader = player;
 		members.put(player.getId(), player.getName());
                 startMap = player.getMap();
 		type = met;
+                silent = sil;
+                minSize = (minPlayers != 0) ? minPlayers : type.getMinSize();
+                maxSize = (maxPlayers != 0) ? maxPlayers : type.getMaxSize();
 		bossLogs = new CopyOnWriteArrayList<>();
 		beginRegistration();
 	}
+        
+        public int getMinSize() {
+                return minSize;
+        }
+        
+        public int getMaxSize() {
+                return maxSize;
+        }
 
 	private void beginRegistration() {
 		registering = true;
                 leader.announce(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
-		startMap.broadcastMessage(leader, MaplePacketCreator.serverNotice(6, "[Expedition] " + leader.getName() + " has been declared the expedition captain. Please register for the expedition."), false);
-                leader.announce(MaplePacketCreator.serverNotice(6, "[Expedition] You have become the expedition captain. Gather enough people for your team then talk to the NPC to start."));
+		if (!silent) {
+                        startMap.broadcastMessage(leader, MaplePacketCreator.serverNotice(6, "[Expedition] " + leader.getName() + " has been declared the expedition captain. Please register for the expedition."), false);
+                        leader.announce(MaplePacketCreator.serverNotice(6, "[Expedition] You have become the expedition captain. Gather enough people for your team then talk to the NPC to start."));
+                }
 		scheduleRegistrationEnd();
 	}
 
@@ -115,8 +137,8 @@ public class MapleExpedition {
 			@Override
 			public void run() {
 				if (registering){
-                                        startMap.getChannelServer().getExpeditions().remove(exped);
-					startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Expedition] The time limit has been reached. Expedition has been disbanded."));
+                                        startMap.getChannelServer().removeExpedition(exped);
+					if (!silent) startMap.broadcastMessage(MaplePacketCreator.serverNotice(6, "[Expedition] The time limit has been reached. Expedition has been disbanded."));
                                         
                                         dispose(false);
 				}
@@ -134,11 +156,15 @@ public class MapleExpedition {
 			LogHelper.logExpedition(this);
 		}
 	}
+        
+        public void finishRegistration() {
+                registering = false;
+        }
 
 	public void start(){
-		registering = false;
+		finishRegistration();
 		broadcastExped(MaplePacketCreator.removeClock());
-		broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] The expedition has started! Good luck, brave heroes!"));
+		if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] The expedition has started! Good luck, brave heroes!"));
 		startTime = System.currentTimeMillis();
 		Server.getInstance().broadcastGMMessage(startMap.getWorld(), MaplePacketCreator.serverNotice(6, "[Expedition] " + type.toString() + " Expedition started with leader: " + leader.getName()));
 	}
@@ -150,15 +176,32 @@ public class MapleExpedition {
 		if (banned.contains(player.getId())){
 			return "Sorry, you've been banned from this expedition by #b" + leader.getName() + "#k.";
 		}
-		if (members.size() >= type.getMaxSize()){ //Would be a miracle if anybody ever saw this
+		if (members.size() >= this.getMaxSize()){ //Would be a miracle if anybody ever saw this
 			return "Sorry, this expedition is full!";
 		}
                 
                 members.put(player.getId(), player.getName());
                 player.announce(MaplePacketCreator.getClock((int)(startTime - System.currentTimeMillis()) / 1000));
-                broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
+                if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
                 return "You have registered for the expedition successfully!";
 	}
+        
+        public int addMemberInt(MapleCharacter player) {
+                if (!registering) {
+                        return 1; //"Sorry, this expedition is already underway. Registration is closed!";
+                }
+                if (banned.contains(player.getId())) {
+                        return 2; //"Sorry, you've been banned from this expedition by #b" + leader.getName() + "#k.";
+                }
+                if (members.size() >= this.getMaxSize()) { //Would be a miracle if anybody ever saw this
+                       return 3; //"Sorry, this expedition is full!";
+                }
+
+                members.put(player.getId(), player.getName());
+                player.announce(MaplePacketCreator.getClock((int) (startTime - System.currentTimeMillis()) / 1000));
+                if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + player.getName() + " has joined the expedition!"));
+                return 0; //"You have registered for the expedition successfully!";
+        }
 
 	private void broadcastExped(byte[] packet){
 		for (MapleCharacter chr : getActiveMembers()){
@@ -169,13 +212,62 @@ public class MapleExpedition {
 	public boolean removeMember(MapleCharacter chr) {
 		if(members.remove(chr.getId()) != null) {
                     chr.announce(MaplePacketCreator.removeClock());
-                    broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getName() + " has left the expedition."));
-                    chr.dropMessage(6, "[Expedition] You have left this expedition.");
+                    if (!silent) {
+                        broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getName() + " has left the expedition."));
+                        chr.dropMessage(6, "[Expedition] You have left this expedition.");
+                    }
                     return true;
                 }
                 
                 return false;
 	}
+        
+        public void ban(Entry<Integer, String> chr) {
+            int cid = chr.getKey();
+            if (!banned.contains(cid)) {
+                banned.add(cid);
+                members.remove(cid);
+
+                if (!silent) broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getValue() + " has been banned from the expedition."));
+
+                MapleCharacter player = startMap.getWorldServer().getPlayerStorage().getCharacterById(cid);
+                if (player != null && player.isLoggedinWorld()) {
+                    player.announce(MaplePacketCreator.removeClock());
+                    if (!silent) player.dropMessage(6, "[Expedition] You have been banned from this expedition.");
+                    if (MapleExpeditionType.ARIANT.equals(type) || MapleExpeditionType.ARIANT1.equals(type) || MapleExpeditionType.ARIANT2.equals(type)) {
+                        player.changeMap(980010000);
+                    }
+                }
+            }
+        }
+
+        public void monsterKilled(MapleCharacter chr, MapleMonster mob) {
+            for (int i = 0; i < EXPEDITION_BOSSES.length; i++) {
+                if (mob.getId() == EXPEDITION_BOSSES[i]) { //If the monster killed was a boss
+                    String timeStamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
+                    bossLogs.add(">" + mob.getName() + " was killed after " + LogHelper.getTimeString(startTime) + " - " + timeStamp + "\r\n");
+                    return;
+                }
+            }
+        }
+
+        public void setProperty(String key, String value) {
+            pL.lock();
+            try {
+                props.setProperty(key, value);
+            } finally {
+                pL.unlock();
+            }
+        }
+
+        public String getProperty(String key) {
+            pL.lock();
+            try {
+                return props.getProperty(key);
+            } finally {
+                pL.unlock();
+            }
+        }
 
 	public MapleExpeditionType getType() {
 		return type;
@@ -217,6 +309,56 @@ public class MapleExpedition {
             
                 return memberList;
 	}
+        
+        public final boolean isExpeditionTeamTogether() {
+                List<MapleCharacter> chars = getActiveMembers();
+                if(chars.size() <= 1) return true;
+
+                Iterator<MapleCharacter> iterator = chars.iterator();
+                MapleCharacter mc = iterator.next();
+                int mapId = mc.getMapId();
+
+                for (; iterator.hasNext();) {
+                        mc = iterator.next();
+                        if(mc.getMapId() != mapId) return false;
+                }
+
+                return true;
+        }
+        
+        public final void warpExpeditionTeam(int warpFrom, int warpTo) {
+                List<MapleCharacter> players = getActiveMembers();
+                
+                for (MapleCharacter chr : players) {
+                        if(chr.getMapId() == warpFrom)
+                                chr.changeMap(warpTo);
+                }
+        }
+        
+        public final void warpExpeditionTeam(int warpTo) {
+                List<MapleCharacter> players = getActiveMembers();
+                
+                for (MapleCharacter chr : players) {
+                        chr.changeMap(warpTo);
+                }
+        }
+        
+        public final void warpExpeditionTeamToMapSpawnPoint(int warpFrom, int warpTo, int toSp) {
+                List<MapleCharacter> players = getActiveMembers();
+                
+                for (MapleCharacter chr : players) {
+                        if(chr.getMapId() == warpFrom)
+                                chr.changeMap(warpTo, toSp);
+                }
+        }
+        
+        public final void warpExpeditionTeamToMapSpawnPoint(int warpTo, int toSp) {
+                List<MapleCharacter> players = getActiveMembers();
+                
+                for (MapleCharacter chr : players) {
+                        chr.changeMap(warpTo, toSp);
+                }
+        }
 
 	public MapleCharacter getLeader(){
 		return leader;
@@ -245,39 +387,12 @@ public class MapleExpedition {
 	public boolean isInProgress(){
 		return !registering;
 	}
-
-	public void ban(Entry<Integer, String> chr) {
-                int cid = chr.getKey();
-                
-		if (!banned.contains(cid)) {
-			banned.add(cid);
-			members.remove(cid);
-                        
-                        broadcastExped(MaplePacketCreator.serverNotice(6, "[Expedition] " + chr.getValue() + " has been banned from the expedition."));
-                        
-                        MapleCharacter player = startMap.getWorldServer().getPlayerStorage().getCharacterById(cid);
-                        if (player != null && player.isLoggedinWorld()) {
-                                player.announce(MaplePacketCreator.removeClock());
-                                player.dropMessage(6, "[Expedition] You have been banned from this expedition.");
-                        }
-		}
-	}
-
+        
 	public long getStartTime(){
 		return startTime;
 	}
 	
 	public List<String> getBossLogs(){
 		return bossLogs;
-	}
-	
-	public void monsterKilled(MapleCharacter chr, MapleMonster mob) {
-		for (int i = 0; i < EXPEDITION_BOSSES.length; i++){
-			if (mob.getId() == EXPEDITION_BOSSES[i]){ //If the monster killed was a boss
-				String timeStamp = new SimpleDateFormat("HH:mm:ss").format(new Date());
-				bossLogs.add(">" + mob.getName() + " was killed after " + LogHelper.getTimeString(startTime) + " - " + timeStamp + "\r\n");
-				return;
-			}
-		}
 	}
 }

@@ -327,8 +327,11 @@ public class MapleParty {
     public static boolean createParty(MapleCharacter player, boolean silentCheck) {
         MapleParty party = player.getParty();
         if (party == null) {
-            if(player.getLevel() < 10 && !ServerConstants.USE_PARTY_FOR_STARTERS) {
+            if (player.getLevel() < 10 && !ServerConstants.USE_PARTY_FOR_STARTERS) {
                 player.announce(MaplePacketCreator.partyStatusMessage(10));
+                return false;
+            } else if (player.getAriantColiseum() != null) {
+                player.dropMessage(5, "You cannot request a party creation while participating the Ariant Battle Arena.");
                 return false;
             }
 

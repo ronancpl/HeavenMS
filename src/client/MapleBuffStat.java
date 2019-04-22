@@ -47,6 +47,7 @@ public enum MapleBuffStat {
     GHOST_MORPH(0x20000L),
     AURA(0x40000L),
     CONFUSE(0x80000L),
+    ARIANT_PQ_SHIELD(0x40000L),
     
     // ------ COUPON feature ------
     

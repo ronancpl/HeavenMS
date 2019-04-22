@@ -47,6 +47,7 @@ function writeFeatureTab_PQs() {
         addFeature("Brand-new PQs: BossRushPQ, CafePQ.");
         addFeature("Mu Lung Dojo.");
         addFeature("Monster Carnival 1 & 2 - thanks Dragohe4rt & Jayd!");
+        addFeature("AriantPQ - thanks Dragohe4rt!");
         addFeature("Capt. Latanica with party fighting the boss.");
         addFeature("Filled up missing obligatory event script methods.");
         addFeature("Secured uniquety of active lobby-name instances.");
@@ -207,6 +208,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("Custom jail system.");
         addFeature("Custom buyback system, uses mesos / NX, via MTS.");
         addFeature("Custom fishing system having 'seasonal' catch times.");
+        addFeature("Actual fishing handling w/ F. Net - thanks Dragohe4rt!");
         addFeature("Custom map leasing system.");
         addFeature("Delete Character.");
         addFeature("Smooth view-all-char, now showing all account chars.");

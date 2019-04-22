@@ -67,6 +67,9 @@ import server.MapleSkillbookInformationProvider.SkillBookEntry;
 import server.TimerManager;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
+import server.expeditions.MapleExpedition;
+import server.expeditions.MapleExpeditionType;
+import server.partyquest.AriantColiseum;
 import server.partyquest.MonsterCarnival;
 import tools.packets.Wedding;
 
@@ -997,6 +1000,56 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 }
             } else {
                 sendOk(LanguageConstants.Languages(leader).CPQLeaderNotFound);
+            }
+        }
+        
+        private synchronized boolean setupAriantBattle(MapleExpedition exped, int mapid) {
+            MapleMap arenaMap = this.getMap().getChannelServer().getMapFactory().getMap(mapid + 1);
+            if (!arenaMap.getAllPlayers().isEmpty()) {
+                return false;
+            }
+            
+            new AriantColiseum(arenaMap, exped);
+            return true;
+        }
+        
+        public String startAriantBattle(MapleExpeditionType expedType, int mapid) {
+            if (!GameConstants.isAriantColiseumLobby(mapid)) {
+                return "You cannot start an Ariant tournament from outside the Battle Arena Entrance.";
+            }
+            
+            MapleExpedition exped = this.getMap().getChannelServer().getExpedition(expedType);
+            if (exped == null) {
+                return "Please register on an expedition before attempting to start an Ariant tournament.";
+            }
+            
+            List<MapleCharacter> players = exped.getActiveMembers();
+            
+            int playersSize = players.size();
+            if (!(playersSize >= exped.getMinSize() && playersSize <= exped.getMaxSize())) {
+                return "Make sure there are between #r" + exped.getMinSize() + " ~ " + exped.getMaxSize() + " players#k in this room to start the battle.";
+            }
+            
+            MapleMap leaderMap = this.getMap();
+            for (MapleCharacter mc : players) {
+                if (mc.getMap() != leaderMap) {
+                    return "All competing players should be on this area to start the battle.";
+                }
+                
+                if (mc.getParty() != null) {
+                    return "All competing players must not be on a party to start the battle.";
+                }
+                
+                int level = mc.getLevel();
+                if (!(level >= expedType.getMinLevel() && level <= expedType.getMaxLevel())) {
+                    return "There are competing players outside of the acceptable level range in this room. All players must be on #blevel between 20~30#k to start the battle.";
+                }
+            }
+            
+            if (setupAriantBattle(exped, mapid)) {
+                return "";
+            } else {
+                return "Other players are already competing on the Ariant tournament in this room. Please wait a while until the arena becomes available again.";
             }
         }
         

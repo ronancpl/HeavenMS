@@ -72,6 +72,25 @@ public class MapleDataTool {
             return getInt(data);
         }
     }
+    
+    public static int getIntConvert(MapleData data, int def) {
+        if (data == null) {
+            return def;
+        }
+        if (data.getType() == MapleDataType.STRING) {
+	    String dd = getString(data);
+	    if (dd.endsWith("%")) {
+		dd = dd.substring(0, dd.length() - 1);
+	    }
+            try {
+                return Integer.parseInt(dd);
+            } catch (NumberFormatException nfe) {
+                return def;
+            }
+        } else {
+            return getInt(data, def);
+        }
+    }
 
     public static int getIntConvert(String path, MapleData data) {
         MapleData d = data.getChildByPath(path);

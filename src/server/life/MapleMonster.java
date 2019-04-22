@@ -541,12 +541,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             avgExpReward += exp;
         }
         
+        // thanks Simon for finding an issue with solo party player gaining yellow EXP when soloing mobs
+        float realAvgExpReward = avgExpReward;
         avgExpReward -= exp2;   // clear out the 20% raw exp from last hitting
         avgExpReward /= personalExpReward.size();
         
         float varExpReward = 0.0f;
         for (Float exp : personalExpReward.values()) {
-            varExpReward += Math.pow(exp - avgExpReward, 2);
+            varExpReward += Math.pow(exp - realAvgExpReward, 2);
         }
         varExpReward /= personalExpReward.size();
         

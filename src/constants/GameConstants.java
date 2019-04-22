@@ -21,6 +21,7 @@ import server.quest.MapleQuest;
 public class GameConstants {
     public static String[] WORLD_NAMES = {"Scania", "Bera", "Broa", "Windia", "Khaini", "Bellocan", "Mardia", "Kradia", "Yellonde", "Demethos", "Galicia", "El Nido", "Zenith", "Arcenia", "Kastia", "Judis", "Plana", "Kalluna", "Stius", "Croa", "Medere"};
     public static final int[]  OWL_DATA = new int[]{1082002, 2070005, 2070006, 1022047, 1102041, 2044705, 2340000, 2040017, 1092030, 2040804};
+    public static final String[] stats = {"tuc", "reqLevel", "reqJob", "reqSTR", "reqDEX", "reqINT", "reqLUK", "reqPOP", "cash", "cursed", "success", "setItemID", "equipTradeBlock", "durability", "randOption", "randStat", "masterLevel", "reqSkillLevel", "elemDefault", "incRMAS", "incRMAF", "incRMAI", "incRMAL", "canLevel", "skill", "charmEXP"};
     public static final int[] CASH_DATA = new int[]{50200004, 50200069, 50200117, 50100008, 50000047};
     
     // Ronan's rates upgrade system
@@ -590,6 +591,16 @@ public class GameConstants {
     
     public static boolean isPyramid(int mapid) {
     	return mapid >= 926010010 & mapid <= 930010000;
+    }
+    
+    public static boolean isAriantColiseumLobby(int mapid) {
+        int mapbranch = mapid / 1000;
+    	return mapbranch == 980010 && mapid % 10 == 0;
+    }
+    
+    public static boolean isAriantColiseumArena(int mapid) {
+        int mapbranch = mapid / 1000;
+    	return mapbranch == 980010 && mapid % 10 == 1;
     }
     
     public static boolean isPqSkillMap(int mapid) {

@@ -112,6 +112,8 @@ import constants.skills.WhiteKnight;
 import constants.skills.WindArcher;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
+import server.life.MobSkill;
+import server.life.MobSkillFactory;
 import server.partyquest.MapleCarnivalFactory;
 import server.partyquest.MapleCarnivalFactory.MCSkill;
 
@@ -125,10 +127,10 @@ public class MapleStatEffect {
     private short watk, matk, wdef, mdef, acc, avoid, speed, jump;
     private short hp, mp;
     private double hpR, mpR;
-    private short mhpRRate, mmpRRate;
+    private short mhpRRate, mmpRRate, mobSkill, mobSkillLevel;
     private byte mhpR, mmpR;
     private short mpCon, hpCon;
-    private int duration;
+    private int duration, target, barrier, mob;
     private boolean overTime, repeatEffect;
     private int sourceid;
     private int moveTo;
@@ -208,6 +210,23 @@ public class MapleStatEffect {
         ret.fatigue = MapleDataTool.getInt("incFatigue", source, 0);
         ret.repeatEffect = MapleDataTool.getInt("repeatEffect", source, 0) > 0;
 
+        MapleData mdd = source.getChildByPath("0");
+        if (mdd != null && mdd.getChildren().size() > 0) {
+            ret.mobSkill = (short) MapleDataTool.getInt("mobSkill", mdd, 0);
+            ret.mobSkillLevel = (short) MapleDataTool.getInt("level", mdd, 0);
+            ret.target = MapleDataTool.getInt("target", mdd, 0);
+        } else {
+            ret.mobSkill = 0;
+            ret.mobSkillLevel = 0;
+            ret.target = 0;
+        }
+        
+        MapleData mdds = source.getChildByPath("mob");
+        if (mdds != null) {
+            if (mdds.getChildren()!= null && mdds.getChildren().size() > 0) {
+                ret.mob = MapleDataTool.getInt("mob", mdds, 0);
+            }
+        }
         ret.sourceid = sourceid;
         ret.skill = skill;
         if (!ret.skill && ret.duration > -1) {
@@ -228,9 +247,12 @@ public class MapleStatEffect {
         ret.speed = (short) MapleDataTool.getInt("speed", source, 0);
         ret.jump = (short) MapleDataTool.getInt("jump", source, 0);
 
+        ret.barrier = MapleDataTool.getInt("barrier", source, 0);
+        addBuffStatPairToListIfNotZero(statups, MapleBuffStat.ARIANT_PQ_SHIELD, ret.barrier);
+        
         ret.mapProtection = mapProtection(sourceid);
         addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_PROTECTION, Integer.valueOf(ret.mapProtection));
-
+        
         if (ret.overTime && ret.getSummonMovementType() == null) {
             if (!skill) {
                 if (isPyramidBuff(sourceid)) {
@@ -978,8 +1000,20 @@ public class MapleStatEffect {
                     applyfrom.dispelDebuff(debuff);
                 }
             }
+        } else if (mobSkill > 0 && mobSkillLevel > 0) {
+            MobSkill ms = MobSkillFactory.getMobSkill(mobSkill, mobSkillLevel);
+            MapleDisease dis = MapleDisease.getBySkill(mobSkill);
+            
+            if (target > 0) {
+                for (MapleCharacter chr : applyto.getMap().getAllPlayers()) {
+                    if (chr.getId() != applyto.getId()) {
+                        chr.giveDebuff(dis, ms);
+                    }
+                }
+            } else {
+                applyto.giveDebuff(dis, ms);
+            }
         }
-
         return true;
     }
 
@@ -1204,7 +1238,6 @@ public class MapleStatEffect {
 
                     localstatups = statups;
                 }
-
                 buff = MaplePacketCreator.giveBuff(localsourceid, localDuration, localstatups);
                 mbuff = MaplePacketCreator.showMonsterRiding(applyto.getId(), givemount);
                 localDuration = duration;
@@ -1218,6 +1251,9 @@ public class MapleStatEffect {
                 applyto.handleOrbconsume();
             } else if (isMorph()) {
                 List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.MORPH, Integer.valueOf(getMorph(applyto))));
+                mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), stat);
+            } else if (isAriantShield()) {
+                List<Pair<MapleBuffStat, Integer>> stat = Collections.singletonList(new Pair<>(MapleBuffStat.ARIANT_PQ_SHIELD, 1));
                 mbuff = MaplePacketCreator.giveForeignBuff(applyto.getId(), stat);
             }
 
@@ -1455,6 +1491,10 @@ public class MapleStatEffect {
     public static boolean isExpIncrease(int sourceid) {
         return sourceid >= 2022450 && sourceid <= 2022452;
     }
+    
+    public static boolean isAriantShield(int sourceid) {
+        return sourceid == 2022269;
+    }
 
     private boolean isDs() {
         return skill && (sourceid == Rogue.DARK_SIGHT || sourceid == NightWalker.DARK_SIGHT);
@@ -1486,6 +1526,11 @@ public class MapleStatEffect {
 
     private boolean isCouponBuff() {
         return isRateCoupon(sourceid);
+    }
+    
+    private boolean isAriantShield() {
+        int itemid = sourceid;
+        return isAriantShield(itemid);
     }
 
     private boolean isMysticDoor() {

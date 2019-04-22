@@ -27,6 +27,7 @@ import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
@@ -34,7 +35,6 @@ import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import constants.skills.Aran;
-import constants.skills.Corsair;
 
 import java.awt.Point;
 import java.util.Collections;
@@ -44,6 +44,7 @@ import java.util.List;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleStatEffect;
+import server.life.MapleLifeFactory;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
@@ -87,39 +88,65 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 
+                if (monsteridfrom == 9300166 && attacker == null) {
+                    if (c.tryacquireClient()) {
+                        try {
+                            attacker = MapleLifeFactory.getMonster(monsteridfrom);
+                        } finally {
+                            c.releaseClient();
+                        }
+                    }
+                }
+                
                 if (attacker != null) {
-                    List<loseItem> loseItems;
-                    
                     if (attacker.isBuffed(MonsterStatus.NEUTRALISE)) {
                         return;
                     }
+                    
+                    List<loseItem> loseItems;
                     if (damage > 0) {
-                        MapleMonster assaulter = map.getMonsterById(monsteridfrom);
-                        
-                        if(assaulter != null) {
-                            loseItems = assaulter.getStats().loseItem();
-                            if (loseItems != null) {
+                        loseItems = attacker.getStats().loseItem();
+                        if (loseItems != null) {
+                            if (chr.getBuffEffect(MapleBuffStat.ARIANT_PQ_SHIELD) == null) {
                                 MapleInventoryType type;
                                 final int playerpos = chr.getPosition().x;
                                 byte d = 1;
                                 Point pos = new Point(0, chr.getPosition().y);
                                 for (loseItem loseItem : loseItems) {
                                     type = ItemConstants.getInventoryType(loseItem.getId());
-                                    for (byte b = 0; b < loseItem.getX(); b++) {//LOL?
+                                    
+                                    int dropCount = 0;
+                                    for (byte b = 0; b < loseItem.getX(); b++) {
                                         if (Randomizer.nextInt(100) < loseItem.getChance()) {
-                                            if (chr.haveItem(loseItem.getId())) {
-                                                pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
-                                                MapleInventoryManipulator.removeById(c, type, loseItem.getId(), 1, false, false);
-                                                map.spawnItemDrop(chr, chr, new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, chr.getPosition()), true, true);
-                                                d++;
-                                            } else {
-                                                break;
-                                            }
+                                            dropCount += 1;
+                                        }
+                                    }
+                                    
+                                    if (dropCount > 0) {
+                                        int qty;
+                                    
+                                        MapleInventory inv = chr.getInventory(type);
+                                        inv.lockInventory();
+                                        try {
+                                            qty = Math.min(chr.countItem(loseItem.getId()), dropCount);
+                                            MapleInventoryManipulator.removeById(c, type, loseItem.getId(), qty, false, false);
+                                        } finally {
+                                            inv.unlockInventory();
+                                        }
+                                        
+                                        if (loseItem.getId() == 4031868) {
+                                            chr.updateAriantScore();
+                                        }
+
+                                        for (byte b = 0; b < qty; b++) {
+                                            pos.x = (int) (playerpos + ((d % 2 == 0) ? (25 * (d + 1) / 2) : -(25 * (d / 2))));
+                                            map.spawnItemDrop(chr, chr, new Item(loseItem.getId(), (short) 0, (short) 1), map.calcDropPos(pos, chr.getPosition()), true, true);
+                                            d++;
                                         }
                                     }
                                 }
-                                map.removeMapObject(attacker);
                             }
+                            map.removeMapObject(attacker);
                         }
                     }
                 } else {

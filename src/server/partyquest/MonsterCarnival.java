@@ -1,5 +1,6 @@
 package server.partyquest;
 
+import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import client.MapleCharacter;
 import constants.LanguageConstants;
@@ -9,13 +10,15 @@ import net.server.channel.Channel;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import server.TimerManager;
+import server.life.MapleMonster;
 import server.maps.MapleMap;
+import server.maps.MapleMapObject;
+import server.maps.MapleReactor;
 import tools.MaplePacketCreator;
 
 /**
  * @author Drago/Dragohe4rt
  */
-
 public class MonsterCarnival {
 
     public static int D = 3;
@@ -27,7 +30,7 @@ public class MonsterCarnival {
     private MapleMap map;
     private ScheduledFuture<?> timer, effectTimer, respawnTask;
     private long startTime = 0;
-    private int summonsR = 8, summonsB = 8, room = 0;
+    private int summonsR = 0, summonsB = 0, room = 0;
     private MapleCharacter leader1, leader2, Grupo1, Grupo2;
     private int redCP, blueCP, redTotalCP, blueTotalCP, redTimeupCP, blueTimeupCP;
     private boolean cpq1;
@@ -94,13 +97,13 @@ public class MonsterCarnival {
                 public void run() {
                     timeUp();
                 }
-            }, 10 * 60 * 1000);
+            }, (map.getTimeDefault() - 10) * 1000);
             effectTimer = TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
                     complete();
                 }
-            }, 10 * 60 * 1000 - 10 * 1000);
+            }, map.getTimeDefault() * 1000 - 10 * 1000);
             respawnTask = TimerManager.getInstance().register(new Runnable() {
                 @Override
                 public void run() {
@@ -160,20 +163,42 @@ public class MonsterCarnival {
         dispose(false);
     }
 
-    public void summonR() {
-        this.summonsR--;
-    }
-
     public boolean canSummonR() {
-        return this.summonsR > 0;
+        return summonsR < map.getMaxMobs();
     }
-
-    public void summonB() {
-        this.summonsB--;
+    
+    public void summonR() {
+        summonsR++;
     }
 
     public boolean canSummonB() {
-        return this.summonsB > 0;
+        return summonsB < map.getMaxMobs();
+    }
+    
+    public void summonB() {
+        summonsB++;
+    }
+    
+    public boolean canGuardianR() {
+        int teamReactors = 0;
+        for (MapleReactor react : map.getAllReactors()) {
+            if (react.getName().substring(0, 1).contentEquals("0")) {
+                teamReactors += 1;
+            }
+        }
+        
+        return teamReactors < map.getMaxReactors();
+    }
+    
+    public boolean canGuardianB() {
+        int teamReactors = 0;
+        for (MapleReactor react : map.getAllReactors()) {
+            if (react.getName().substring(0, 1).contentEquals("1")) {
+                teamReactors += 1;
+            }
+        }
+        
+        return teamReactors < map.getMaxReactors();
     }
 
     protected void dispose(boolean warpout) {
@@ -331,19 +356,22 @@ public class MonsterCarnival {
             chrMap.dropMessage(5, LanguageConstants.Languages(chrMap).CPQExtendTime);
         }
         startTime = System.currentTimeMillis() + 3 * 60 * 1000;
-        map.addClock(3 * 60);
+        
+        map.broadcastMessage(MaplePacketCreator.getClock(3 * 60));
+        
         timer = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 timeUp();
             }
-        }, 3 * 60 * 1000);
+        }, map.getTimeExpand() * 1000);
         effectTimer = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
                 complete();
             }
-        }, 3 * 60 * 1000 - 10 * 1000); // thanks Vcoc for noticing a time set issue here
+
+        }, map.getTimeExpand() * 1000 - 10 * 1000); // thanks Vcoc for noticing a time set issue here
     }
 
     public void complete() {

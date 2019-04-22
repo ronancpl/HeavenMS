@@ -17,30 +17,29 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package constants;
 
-/*
-   @Author: Arthur L - Refactored command content into modules
-*/
-package client.command.commands.gm1;
+import java.util.Map;
+import java.util.HashMap;
+import net.opcodes.RecvOpcode;
+import net.opcodes.SendOpcode;
 
-import client.MapleCharacter;
-import client.command.Command;
-import client.MapleClient;
-import server.life.MapleMonster;
-
-public class MobHpCommand extends Command {
-    {
-        setDescription("");
-    }
-
-    @Override
-    public void execute(MapleClient c, String[] params) {
-        MapleCharacter player = c.getPlayer();
-        for(MapleMonster monster : player.getMap().getAllMonsters()) {
-            if (monster != null && monster.getHp() > 0) {
-                player.yellowMessage(monster.getName() + " (" + monster.getId() + ") has " + monster.getHp() + " / " + monster.getMaxHp() + " HP.");
-
-            }
+/**
+ *
+ * @author Ronan
+ */
+public class OpcodeConstants {
+    public static Map<Integer, String> sendOpcodeNames = new HashMap<>();
+    public static Map<Integer, String> recvOpcodeNames = new HashMap<>();
+    
+    public static void generateOpcodeNames() {
+        for (SendOpcode op : SendOpcode.values()) {
+            sendOpcodeNames.put(op.getValue(), op.name());
+        }
+        
+        for (RecvOpcode op : RecvOpcode.values()) {
+            recvOpcodeNames.put(op.getValue(), op.name());
         }
     }
+    
 }

@@ -98,8 +98,12 @@ function action(mode, type, selection) {
                     return;
                 }
                 
-                cm.createExpedition(exped);
-                cm.sendOk("The #r" + expedBoss + " Expedition#k has been created.\r\n\r\nTalk to me again to view the current team, or start the fight!");
+                if (cm.createExpedition(exped)) {
+                    cm.sendOk("The #r" + expedBoss + " Expedition#k has been created.\r\n\r\nTalk to me again to view the current team, or start the fight!");
+                } else {
+                    cm.sendOk("An unexpected error has occurred when starting the expedition, please try again later.");
+                }
+                
                 cm.dispose();
                 return;
             } else if (selection == 2) {

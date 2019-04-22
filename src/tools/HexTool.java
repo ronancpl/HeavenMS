@@ -21,6 +21,7 @@
 */
 package tools;
 
+import constants.CharsetConstants;
 import java.io.ByteArrayOutputStream;
 
 public class HexTool {
@@ -84,4 +85,23 @@ public class HexTool {
         }
         return baos.toByteArray();
     }
+    
+    public static final String toStringFromAscii(final byte[] bytes) {
+        byte[] ret = new byte[bytes.length];
+        for (int x = 0; x < bytes.length; x++) {
+            if (bytes[x] < 32 && bytes[x] >= 0) {
+                ret[x] = '.';
+            } else {
+                int chr = ((short) bytes[x]) & 0xFF;
+                ret[x] = (byte) chr;
+            }
+        }
+        String encode = CharsetConstants.MAPLE_TYPE.getAscii();
+        try {
+            String str = new String(ret, encode);
+            return str;
+        } catch (Exception e) {}
+        return "";
+    }
+
 }

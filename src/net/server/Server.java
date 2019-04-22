@@ -86,6 +86,7 @@ import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
+import constants.OpcodeConstants;
 import constants.ServerConstants;
 import java.util.TimeZone;
 import net.server.coordinator.MapleSessionCoordinator;
@@ -927,8 +928,7 @@ public class Server {
         System.out.println("Skills loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
 
         timeToTake = System.currentTimeMillis();
-        //MapleItemInformationProvider.getInstance().getAllItems(); //unused, rofl
-
+        
         CashItemFactory.getSpecialCashItems();
         System.out.println("Items loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds");
         
@@ -970,6 +970,7 @@ public class Server {
         online = true;
         
         MapleSkillbookInformationProvider.getInstance();
+        OpcodeConstants.generateOpcodeNames();
     }
 
     public static void main(String args[]) {

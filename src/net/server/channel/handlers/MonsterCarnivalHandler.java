@@ -63,13 +63,13 @@ public final class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
 
                         final MapleMonster mob = MapleLifeFactory.getMonster(mobs.get(num).left);
                         MonsterCarnival mcpq = c.getPlayer().getMonsterCarnival();
-                        if (mcpq != null) {                        
+                        if (mcpq != null) {
                             if (!mcpq.canSummonR() && c.getPlayer().getTeam() == 0 || !mcpq.canSummonB() && c.getPlayer().getTeam() == 1) {
                                 c.announce(MaplePacketCreator.CPQMessage((byte) 2));
                                 c.announce(MaplePacketCreator.enableActions());
                                 return;
                             }
-
+                            
                             if (c.getPlayer().getTeam() == 0) {
                                 mcpq.summonR();
                             } else {
@@ -135,19 +135,34 @@ public final class MonsterCarnivalHandler extends AbstractMaplePacketHandler {
                             c.announce(MaplePacketCreator.enableActions());
                             return;
                         }
-                        int success = c.getPlayer().getMap().spawnGuardian(c.getPlayer().getTeam(), num);
-                        if (success == -1 || success == 0 || success == 2) {
-                            if (success == -1) {
-                                c.announce(MaplePacketCreator.CPQMessage((byte) 3));
-                            } else if (success == 0) {
-                                c.announce(MaplePacketCreator.CPQMessage((byte) 4));
-                            } else if (success == 2) {
-                                c.announce(MaplePacketCreator.CPQMessage((byte) 3));
+                        
+                        MonsterCarnival mcpq = c.getPlayer().getMonsterCarnival();
+                        if (mcpq != null) {
+                            if (!mcpq.canGuardianR() && c.getPlayer().getTeam() == 0 || !mcpq.canGuardianB() && c.getPlayer().getTeam() == 1) {
+                                c.announce(MaplePacketCreator.CPQMessage((byte) 2));
+                                c.announce(MaplePacketCreator.enableActions());
+                                return;
                             }
-                            c.announce(MaplePacketCreator.enableActions());
-                            return;
-                        } else {
-                            neededCP = skill.cpLoss;
+
+                            int success = c.getPlayer().getMap().spawnGuardian(c.getPlayer().getTeam(), num);
+                            if (success != 1) {
+                                switch (success) {
+                                    case -1:
+                                        c.announce(MaplePacketCreator.CPQMessage((byte) 3));
+                                        break;
+
+                                    case 0:
+                                        c.announce(MaplePacketCreator.CPQMessage((byte) 4));
+                                        break;
+
+                                    default:
+                                        c.announce(MaplePacketCreator.CPQMessage((byte) 3));
+                                }
+                                c.announce(MaplePacketCreator.enableActions());
+                                return;
+                            } else {
+                                neededCP = skill.cpLoss;
+                            }
                         }
                     }
                     c.getPlayer().gainCP(-neededCP);
