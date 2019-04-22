@@ -229,7 +229,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private MaplePartyCharacter mpc = null;
     private MapleInventory[] inventory;
     private MapleJob job = MapleJob.BEGINNER;
-    private MapleMap map;
     private MapleMessenger messenger = null;
     private MapleMiniGame miniGame;
     private MapleMount maplemount;
@@ -4847,10 +4846,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
 
-    public MapleMap getMap() {
-        return map;
-    }
-
     public int getMapId() {
         if (map != null) {
             return map.getId();
@@ -8712,10 +8707,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void setMap(int PmapId) {
         this.mapid = PmapId;
-    }
-
-    public void setMap(MapleMap newmap) {
-        this.map = newmap;
     }
     
     public void setMessenger(MapleMessenger messenger) {

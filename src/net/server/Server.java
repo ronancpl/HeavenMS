@@ -86,6 +86,7 @@ import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
 import constants.GameConstants;
+import constants.OpcodeConstants;
 import constants.ServerConstants;
 import java.util.TimeZone;
 import net.server.coordinator.MapleSessionCoordinator;
@@ -969,6 +970,7 @@ public class Server {
         online = true;
         
         MapleSkillbookInformationProvider.getInstance();
+        OpcodeConstants.generateOpcodeNames();
     }
 
     public static void main(String args[]) {

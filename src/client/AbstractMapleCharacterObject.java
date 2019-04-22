@@ -32,12 +32,14 @@ import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import server.maps.AbstractAnimatedMapleMapObject;
+import server.maps.MapleMap;
 
 /**
  *
  * @author RonanLana
  */
 public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMapleMapObject {
+    protected MapleMap map;
     protected int str, dex, luk, int_, hp, maxhp, mp, maxmp;
     protected int hpMpApUsed, remainingAp;
     protected int[] remainingSp = new int[10];
@@ -63,6 +65,14 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
     
     protected void setListener(AbstractCharacterListener listener) {
         this.listener = listener;
+    }
+    
+    public void setMap(MapleMap map) {
+        this.map = map;
+    }
+    
+    public MapleMap getMap() {
+        return map;
     }
     
     public int getStr() {
@@ -202,16 +212,37 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
         this.hpMpApUsed = mpApUsed;
     }
     
-    private void dispatchHpChanged(int oldHp) {
-        listener.onHpChanged(oldHp);
+    private void dispatchHpChanged(final int oldHp) {
+        Runnable r = new Runnable() {   // thanks BHB (BHB88) for detecting a deadlock case within player stats.
+            @Override
+            public void run() {
+                listener.onHpChanged(oldHp);
+            }
+        };
+        
+        map.registerCharacterStatUpdate(r);
     }
     
     private void dispatchHpmpPoolUpdated() {
-        listener.onHpmpPoolUpdate();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                listener.onHpmpPoolUpdate();
+            }
+        };
+        
+        map.registerCharacterStatUpdate(r);
     }
     
     private void dispatchStatPoolUpdateAnnounced() {
-        listener.onAnnounceStatPoolUpdate();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                listener.onAnnounceStatPoolUpdate();
+            }
+        };
+        
+        map.registerCharacterStatUpdate(r);
     }
     
     protected void setHp(int newHp) {
