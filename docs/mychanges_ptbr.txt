@@ -1817,4 +1817,7 @@ Ajustado drops de mobs, agora sendo buscado na DB.
 Ajustado diversas mecânicas da AriantPQ, tais como update visual da pontuação de jogadores (ao dropar itens, ganhar itens, acessar mapa de evento), pontos de batalha persistindo na DB, etc.
 
 21 Abril 2019,
-Adicionado debug de packets descrito pelo Atoot.
+Adicionado debug de packets descrito pelo Atoot.Adicionado debug de packets descrito pelo Atoot.
+
+22 Abril 2019,
+Revisado refatoração recente em acesso a valores de stats de jogadores levando a inconsistência nos valores dos mesmos ao colocá-los para rodar em uma nova thread sem proteção concorrente.

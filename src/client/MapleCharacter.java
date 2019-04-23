@@ -8590,14 +8590,22 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
         }
+        
+        final boolean chrDied = playerDied;
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                updatePartyMemberHP();    // thanks BHB (BHB88) for detecting a deadlock case within player stats.
 
-        updatePartyMemberHP();
-
-        if (playerDied) {
-            playerDead();
-        } else {
-            checkBerserk(isHidden());
-        }
+                if (chrDied) {
+                    playerDead();
+                } else {
+                    checkBerserk(isHidden());
+                }
+            }
+        };
+        
+        map.registerCharacterStatUpdate(r);
     }
     
     private Pair<MapleStat, Integer> calcHpRatioUpdate(int newHp, int oldHp) {

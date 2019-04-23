@@ -106,7 +106,18 @@ public class MapleServerHandler extends IoHandlerAdapter {
     
     @Override
     public void sessionOpened(IoSession session) {
-        session.setAttribute(MapleClient.CLIENT_REMOTE_ADDRESS, ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress());
+        String remoteHost;
+        try {
+            remoteHost = ((InetSocketAddress) session.getRemoteAddress()).getAddress().getHostAddress();
+            
+            if (remoteHost == null) {
+                remoteHost = "null";
+            }
+        } catch (NullPointerException npe) {    // thanks Agassy, Alchemist for pointing out possibility of remoteHost = null.
+            remoteHost = "null";
+        }
+        
+        session.setAttribute(MapleClient.CLIENT_REMOTE_ADDRESS, remoteHost);
         
         if (!Server.getInstance().isOnline()) {
             MapleSessionCoordinator.getInstance().closeSession(session, true);

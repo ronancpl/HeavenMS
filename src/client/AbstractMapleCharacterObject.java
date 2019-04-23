@@ -213,36 +213,15 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
     }
     
     private void dispatchHpChanged(final int oldHp) {
-        Runnable r = new Runnable() {   // thanks BHB (BHB88) for detecting a deadlock case within player stats.
-            @Override
-            public void run() {
-                listener.onHpChanged(oldHp);
-            }
-        };
-        
-        map.registerCharacterStatUpdate(r);
+        listener.onHpChanged(oldHp);
     }
     
     private void dispatchHpmpPoolUpdated() {
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                listener.onHpmpPoolUpdate();
-            }
-        };
-        
-        map.registerCharacterStatUpdate(r);
+        listener.onHpmpPoolUpdate();
     }
     
     private void dispatchStatPoolUpdateAnnounced() {
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                listener.onAnnounceStatPoolUpdate();
-            }
-        };
-        
-        map.registerCharacterStatUpdate(r);
+        listener.onAnnounceStatPoolUpdate();
     }
     
     protected void setHp(int newHp) {
