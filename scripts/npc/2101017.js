@@ -52,17 +52,17 @@ function action(mode, type, selection) {
             expedMembers = expedicao.getMemberList();
             if (status == 0) {
                 if (cm.isLeaderExpedition(exped)) {
-                    cm.sendSimple("What would you like to do? #b\r\n#L1#View current members#l\r\n#L2#Ban members#l\r\n#L3#Start the battle#l\r\n#L4#Leave the arena#l");
+                    cm.sendSimple("O que voce gostaria de fazer?#b\r\n\r\n#L1#Ver registro atual da arena!#l\r\n#L2#Banir player!#l\r\n#L3#Comece a luta!#l\r\n#L4#Sair desta arena!#l");
                     status = 1;
                 } else {
-                    var toSend = "Current members inside this arena:\r\n#b";
+                    var toSend = "Voce tem atualmente essas pessoas em sua arena :\r\n#b";
                     toSend += cm.getExpeditionMemberNames(exped);
                     cm.sendOk(toSend);
                     cm.dispose();
                 }
             } else if (status == 1) {
                 if (selection == 1) {
-                    var toSend = "Current members inside this arena:\r\n#b";
+                    var toSend = "Voce tem atualmente essas pessoas em sua arena :\r\n#b";
                     toSend += cm.getExpeditionMemberNames(exped);
                     cm.sendOk(toSend);
                     cm.dispose();
@@ -82,11 +82,11 @@ function action(mode, type, selection) {
                     status = 6;
                 } else if (selection == 3) {
                     if (expedicao.getMembers().size() < 1) {
-                        cm.sendOk("Need one more players to start the battle.");
+                        cm.sendOk("Voc� precisa de mais que 2 jogadores para iniciar.");
                         cm.dispose();
                     } else {
                         if (cm.getParty() != null) {
-                            cm.sendOk("You cannot enter the battle as a party group.");
+                            cm.sendOk("Voc� n�o pode entrar na batalha em um grupo.");
                             cm.dispose();
                             return;
                         }
@@ -99,7 +99,7 @@ function action(mode, type, selection) {
                         cm.dispose();
                     }
                 } else if (selection == 4) {
-                    cm.mapMessage(5, "The Leader of the arena left.");
+                    cm.mapMessage(5, "O lider da Arena saiu.");
                     expedicao.warpExpeditionTeam(980010000);
                     cm.endExpedition(expedicao);
                     cm.dispose();
@@ -129,21 +129,21 @@ function action(mode, type, selection) {
             if (status == 0) {
                 var gotTheBombs = expedicao.getProperty("gotBomb" + cm.getChar().getId());
                 if (gotTheBombs != null) {
-                    cm.sendOk("I already gave you the bomb, please kill the #bScorpio#k now!");
+                    cm.sendOk("Eu ja lhe dei as bombas, por favor, mate os #eEscorpioes#n para conseguir mais delas!");
                     cm.dispose();
                 } else if (cm.canHoldAll([2270002, 2100067], [50, 5])) {
-                    cm.sendOk("I have given you (5) #b#eBombs#k#n and (50) #b#eElement Rock#k#n.\r\nUse the Elementary Rocks to capture the scorpions for #r#eSpirit Jewels#k#n!");
+                    cm.sendOk("Eu lhe dei (5) #b#eBombas#k#n e (50) #b#eRochas Elementais#k#n.\r\nUse as rochas elementais para capturar os escorpioes para Sra.#r#eSpirit Jewels#k#n!");
                     expedicao.setProperty("gotBomb" + cm.getChar().getId(), "1");
                     cm.gainItem(2270002, 50);
                     cm.gainItem(2100067, 5);
                     cm.dispose();
                 } else {
-                    cm.sendOk("It seems that your inventory is full.");
+                    cm.sendOk("Por favor encontre 2 espaços no seu inventário de USE antes de receber seus itens!");
                     cm.dispose();
                 }
             }
         } else {
-            cm.sendOk("Hi there, have you heard of the Ariant Coliseum Battle Arena, it's a competitive event available to players between level 20 to 30!");
+            cm.sendOk("Olá, já ouviu falar da Ariant Coliseum Battle Arena? É um evento competitivo disponível para jogadores entre níveis 20 a 30.");
             cm.dispose();
         } 
     }

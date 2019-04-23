@@ -6,7 +6,7 @@ importPackage(Packages.client);
 function start() {
     arena = cm.getPlayer().getAriantColiseum();
     if (arena == null) {
-        cm.sendOk("Hey, I did not see you on the field during the battle in the arena! What are you doing here?");
+        cm.sendOk("Ei, não vi você em campo durante as atividades do coliseu! O que você está fazendo aqui?");
         cm.dispose();
         return;
     }
@@ -28,22 +28,22 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-            menuStr = generateSelectionMenu(["I would like to check my battle points! / I would like to exchange (1) Palm Tree Beach Chair", "I would like to know more about the points of the Battle Arena."]);
-            cm.sendSimple("Hello, what I can do for you?\r\n\r\n" + menuStr);
+            menuStr = generateSelectionMenu(["Gostaria de verificar meus pontos de batalha / adquirir a minha Cadeira de Praia com Palmeira", "Gostaria de saber mais sobre os pontos da Arena de Batalha"]);
+            cm.sendSimple("Olá, o que posso fazer por você?\r\n\r\n" + menuStr);
         } else if (status == 1) {
             if (selection == 0) {
                 apqpoints = cm.getPlayer().getAriantPoints();
                 if (apqpoints < 100) {
-                    cm.sendOk("Your Battle Arena score: #b" + apqpoints + "#k points. You need to surpass #b100 points#k so that I can give you the #bPalm Tree Beach Chair#k. Talk to me again when you have enough points.");
+                    cm.sendOk("A sua Pontua��o de Arena de Batalha � #b" + apqpoints + "#k Pontos. Voc� precisa ultrapassar os #b100 Pontos#k para que eu possa lhe dar a #bCadeira de Praia com Palmeira#k. Fale comigo novamente somente quando voc� tiver pontos suficientes.");
                     cm.dispose();
                 } else if (apqpoints + arena.getAriantRewardTier(cm.getPlayer()) >= 100) {
-                    cm.sendOk("Your Battle Arena score: #b" + apqpoints + "#k points and you pratically already have that score! Talk to my wife, #p2101016#to get them and then re-chat with me!");
+                    cm.sendOk("A sua Pontua��o de Arena de Batalha � #b" + apqpoints + "#k Pontos, e voc� praticamente já possui essa pontuação! Converse com minha esposa, #p2101016#, para adquiri-los e então torne a conversar comigo!");
                     cm.dispose();
                 } else {
-                    cm.sendNext("Wow, it looks like you got the #b100#k points ready to trade, let's trade?!");
+                    cm.sendNext("Uaaau, parece que voc� conseguiu os #b100 Pontos#k necess�rios para troca, vamos l�?!");
                 }
             } else if (selection == 1) {
-                cm.sendOk("The main objective of the Battle Arena is to allow the player to accumulate points so that they can be traded honorably for the highest prize: the #bPalm Tree Beach Chair#k. Collect points during the battles and talk to me when it's time to get the prize. In each battle, the player is given the opportunity to score points based on the amount of jewelry that the player has at the end. But be careful! If your points distance from other players #ris too high#k, this will have been all for nothing and you will earn mere #r1 point#k only.");
+                cm.sendOk("O objetivo maior das Arenas de Batalha é permitir ao jogador acumular pontos para então trocá-los honrosamente pelo prêmio maior: a #bCadeira de Praia com Palmeira#k. Acumule pontos durante as batalhas e fale comigo quando chegar a hora de adquirir seu item.\r\n\r\nEm cada batalha, é dado ao jogador a oportunidade de #bsomar pontos baseando-se na quantidade de joias#k que o jogador possui ao final. Contudo tome cuidado! Se sua distância de pontos dentre os outros jogadores #rfor muito alto#k, isso terá sido tudo por nada e você ganhará mero #r1 ponto#k.");
                 cm.dispose();
             }
         } else if (status == 2) {
