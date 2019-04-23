@@ -54,6 +54,15 @@ Java7 SDK: https://www.oracle.com/technetwork/java/javase/downloads/java-archive
   * Eric's MapleSilver starting on window-mode.
 
 ---
+### Open-source client development - HeavenClient
+
+Continuing from where **SYJourney**'s JourneyClient has finished contributions (as of 5 Jul 2016), an open-source delevopment of a software artifact designed to handle both gaming operations and interactions with the server is being conducted.
+
+Newer implementations are being maintained by **頼晏 (ryantpayton)** and aims to offer higher display resolution, bring recent UI contents for the pre-BB gameplay and incremental support on overall gaming perspective.
+
+HeavenClient Github: https://github.com/ryantpayton/HeavenClient
+
+---
 ### Development information
 
 Status: <span style="color:grey">__In development (4th round)__</span>.
