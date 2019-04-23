@@ -48,26 +48,26 @@ function action(mode, type, selection) {
                 var expedicao2 = cm.getExpedition(exped2);
                 
                 var channelMaps = cm.getClient().getChannelServer().getMapFactory();
-                var startSnd = "Voc� gostaria de participar do Desafio #eAriant Coliseu#n?\r\n\r\n#e#r       (Escolha uma arena)#n#k\r\n#b";
+                var startSnd = "What would you like to do? \r\n\r\n\t#e#r(Choose a Battle Arena)#n#k\r\n#b";
                 var toSnd = startSnd;
 
                 if (expedicao == null) {
-                    toSnd += "#L0#Comece Ariant Coliseu (1)#l\r\n";
+                    toSnd += "#L0#Battle Arena (1) (Empty)#l\r\n";
                 } else if (channelMaps.getMap(980010101).getCharacters().isEmpty()) {
-                    toSnd += "#L0#Junte-se ao Ariant Coliseu (1)  Dono (" + expedicao.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped) + "\r\n";
+                    toSnd += "#L0#Join Battle Arena (1)  Owner (" + expedicao.getLeader().getName() + ")" + " Current Member: " + cm.getExpeditionMemberNames(exped) + "\r\n";
                 }
                 if (expedicao1 == null) {
-                    toSnd += "#L1#Comece Ariant Coliseu (2)#l\r\n";
+                    toSnd += "#L1#Battle Arena (2) (Empty)#l\r\n";
                 } else if (channelMaps.getMap(980010201).getCharacters().isEmpty()) {
-                    toSnd += "#L1#Junte-se ao Ariant Coliseu (2)  Dono (" + expedicao1.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped1) + "\r\n";
+                    toSnd += "#L1#Join Battle Arena (2)  Owner (" + expedicao1.getLeader().getName() + ")" + " Current Member: " + cm.getExpeditionMemberNames(exped1) + "\r\n";
                 }
                 if (expedicao2 == null) {
-                    toSnd += "#L2#Comece Ariant Coliseu (3)#l\r\n";
+                    toSnd += "#L2#Battle Arena (3) (Empty)#l\r\n";
                 } else if (channelMaps.getMap(980010301).getCharacters().isEmpty()) {
-                    toSnd += "#L2#Junte-se ao Ariant Coliseu (3)  Dono (" + expedicao2.getLeader().getName() + ")" + " Membros Atuais: " + cm.getExpeditionMemberNames(exped2) + "\r\n";
+                    toSnd += "#L2#Join Battle Arena (3)  Owner (" + expedicao2.getLeader().getName() + ")" + " Current Member: " + cm.getExpeditionMemberNames(exped2) + "\r\n";
                 }
                 if (toSnd.equals(startSnd)) {
-                    cm.sendOk("Todas as arenas esta ocupadas agora. Eu sugiro que voc� volte mais tarde ou mudar de canal.");
+                    cm.sendOk("All the Battle Arena is currently occupied. I suggest you to come back later or change channels.");
                     cm.dispose();
                 } else {
                     cm.sendSimple(toSnd);
@@ -83,15 +83,15 @@ function action(mode, type, selection) {
                 if (expedicao != null) {
                     enterArena(-1);
                 } else {
-                    cm.sendGetText("Quantos jogadores voce quer em sua instancia?");
+                    cm.sendGetText("Up to how many partipants can join in this match? (2~5 people)");
                 }
             } else if (status == 2) {
                 var players = parseInt(cm.getText());   // AriantPQ option limit found thanks to NarutoFury (iMrSiN)
                 if (isNaN(players)) {
-                    cm.sendNext("Por favor insira um valor numérico de limite de jogadores permitidos em sua instancia.");
+                    cm.sendNext("Please enter a numeric limit value of allowed players in your instance.");
                     status = 0;
                 } else if (players < 2) {
-                    cm.sendNext("Sua instancia precisa ter ao menos 2 jogadores.");
+                    cm.sendNext("The numeric limit value should not be less than 2 players.");
                     status = 0;
                 } else {
                     enterArena(players);
@@ -136,7 +136,7 @@ function enterArena(arenaPlayers) {
         if (arenaPlayers != -1) {
             if (cm.createExpedition(exped, true, 0, arenaPlayers)) {
                 cm.warp(map, 0);
-                cm.getPlayer().dropMessage("Sua Arena foi criada. Aguarde as pessoas entrarem agora!");
+                cm.getPlayer().dropMessage("Your arena was created successfully. Wait for people to join the battle.");
             } else {
                 cm.sendOk("An unexpected error has occurred when starting the expedition, please try again later.");
             }
@@ -147,24 +147,24 @@ function enterArena(arenaPlayers) {
         cm.dispose();
     } else {
         if (playerAlreadyInLobby(cm.getPlayer())) {
-            cm.sendOk("Desculpe, você já pertence a alguma Lobby.");
+            cm.sendOk("Sorry, you're already inside the lobby.");
             cm.dispose();
             return;
         }
 
         var playerAdd = expedicao.addMemberInt(cm.getPlayer());
         if (playerAdd == 3) {
-            cm.sendOk("Desculpe, a Lobby esta cheia agora.");
+            cm.sendOk("Sorry, the lobby is full now");
             cm.dispose();
         } else {
             if (playerAdd == 0) {
                 cm.warp(map, 0);
                 cm.dispose();
             } else if (playerAdd == 2) {
-                cm.sendOk("Desculpe, mas o l�der pediu para nao ser autorizado a entrar.");
+                cm.sendOk("Sorry, the leader do not allowed you to enter.");
                 cm.dispose();
             } else {
-                cm.sendOk("erro.");
+                cm.sendOk("Error.");
                 cm.dispose();
             }
         }
