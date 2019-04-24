@@ -49,7 +49,7 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         
-        if(!chr.isAlive() && ServerConstants.USE_BUYBACK_SYSTEM) {
+        if(chr.isAlive() && ServerConstants.USE_BUYBACK_SYSTEM) {
             BuybackProcessor.processBuyback(c);
             c.announce(MaplePacketCreator.enableActions());
         } else {
