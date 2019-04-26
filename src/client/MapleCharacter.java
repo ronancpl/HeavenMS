@@ -8605,8 +8605,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
         };
-        
-        map.registerCharacterStatUpdate(r);
+        if (map != null) {
+            map.registerCharacterStatUpdate(r);
+	}
     }
     
     private Pair<MapleStat, Integer> calcHpRatioUpdate(int newHp, int oldHp) {
