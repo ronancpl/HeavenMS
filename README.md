@@ -110,7 +110,7 @@ Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8
 
 * HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 
-* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance checks are needed in order to make it suitable for production use.
+* This server source is __NOT intended to be stable__ as is. But with **your** help we can get there. Proper deadlock review and other maintenance contributions are needed in order to make it suitable for production use. Please help where you can to better the server for everyone.
 
 ---
 ### Preparing the ambient 
