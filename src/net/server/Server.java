@@ -1648,6 +1648,10 @@ public class Server {
     }
     
     public boolean validateCharacteridInTransition(IoSession session, int charId) {
+        if (!ServerConstants.USE_IP_VALIDATION) {
+            return true;
+        }
+        
         String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
@@ -1660,6 +1664,10 @@ public class Server {
     }
     
     public Integer freeCharacteridInTransition(IoSession session) {
+        if (!ServerConstants.USE_IP_VALIDATION) {
+            return null;
+        }
+        
         String remoteIp = getRemoteIp(session);
         
         lgnWLock.lock();
@@ -1671,6 +1679,10 @@ public class Server {
     }
     
     public boolean hasCharacteridInTransition(IoSession session) {
+        if (!ServerConstants.USE_IP_VALIDATION) {
+            return true;
+        }
+        
         String remoteIp = getRemoteIp(session);
         
         lgnRLock.lock();

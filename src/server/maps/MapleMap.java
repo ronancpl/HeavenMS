@@ -1380,12 +1380,13 @@ public class MapleMap {
         }
         
         if (chr == null) {
-            if(removeKilledMonsterObject(monster)) {
+            if (removeKilledMonsterObject(monster)) {
                 monster.dispatchMonsterKilled(false);
                 broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
+                monster.aggroSwitchController(null, false);
             }
         } else {
-            if(removeKilledMonsterObject(monster)) {
+            if (removeKilledMonsterObject(monster)) {
                 if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
                     AutobanFactory.GENERAL.alert(chr, " for killing a " + monster.getName() + " which is over 30 levels higher.");
                 }
@@ -3676,7 +3677,7 @@ public class MapleMap {
     }
 
     private static double getCurrentSpawnRate(int numPlayers) {
-        return 0.550 + (0.075 * Math.min(6, numPlayers));
+        return 0.70 + (0.05 * Math.min(6, numPlayers));
     }
     
     private int getNumShouldSpawn(int numPlayers) {

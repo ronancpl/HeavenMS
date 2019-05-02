@@ -305,12 +305,12 @@ public class MapleSessionCoordinator {
     }
     
     public void closeLoginSession(IoSession session) {
-        String remoteIp = getSessionRemoteAddress(session);
-        Set<IoSession> lrh = loginRemoteHosts.get(remoteIp);
+        String remoteHost = getSessionRemoteAddress(session);
+        Set<IoSession> lrh = loginRemoteHosts.get(remoteHost);
         if (lrh != null) {
             lrh.remove(session);
             if (lrh.isEmpty()) {
-                loginRemoteHosts.remove(remoteIp);
+                loginRemoteHosts.remove(remoteHost);
             }
         }
         

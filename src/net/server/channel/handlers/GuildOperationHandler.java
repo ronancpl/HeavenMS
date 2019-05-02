@@ -77,7 +77,13 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 
                 Set<MapleCharacter> eligibleMembers = new HashSet<>(MapleGuild.getEligiblePlayersForGuild(mc));
                 if (eligibleMembers.size() < ServerConstants.CREATE_GUILD_MIN_PARTNERS) {
-                    mc.dropMessage(1, "The Guild you are trying to create don't meet the minimum criteria of number of founders.");
+                    if (mc.getMap().getAllPlayers().size() < ServerConstants.CREATE_GUILD_MIN_PARTNERS) {
+                        mc.dropMessage(1, "The Guild you are trying to create don't meet the minimum criteria of number of founders.");
+                    } else {
+                        // players may be unaware of not belonging on a party in order to become eligible, thanks Hair (Legalize) for pointing this out
+                        mc.dropMessage(1, "Please make sure everyone you are trying to invite is neither on a guild nor on a party.");
+                    }
+                    
                     return;
                 }
                 
@@ -91,7 +97,7 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                     eligibleCids.add(chr.getId());
                 }
                 
-                c.getWorldServer().getMatchCheckerCoordinator().createMatchConfirmation(MatchCheckerType.GUILD_CREATION, c.getWorld(), mc.getId(), eligibleCids, guildName);                
+                c.getWorldServer().getMatchCheckerCoordinator().createMatchConfirmation(MatchCheckerType.GUILD_CREATION, c.getWorld(), mc.getId(), eligibleCids, guildName);
                 break;
             case 0x05:
                 if (mc.getGuildId() <= 0 || mc.getGuildRank() > 2) {
@@ -246,12 +252,12 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 int leaderid = wserv.getMatchCheckerCoordinator().getMatchConfirmationLeaderid(mc.getId());
                 if (leaderid != -1) {
                     boolean result = slea.readByte() != 0;
-                    if (result) {
+                    if (result && wserv.getMatchCheckerCoordinator().isMatchConfirmationActive(mc.getId())) {
                         MapleCharacter leader = wserv.getPlayerStorage().getCharacterById(leaderid);
                         if (leader != null) {
                             int partyid = leader.getPartyId();
                             if (partyid != -1) {
-                                MapleParty.joinParty(mc, partyid, true);
+                                MapleParty.joinParty(mc, partyid, true);    // GMS gimmick "party to form guild" recalled thanks to Vcoc
                             }
                         }
                     }

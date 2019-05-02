@@ -27,23 +27,64 @@ import client.MapleCharacter;
 import client.command.Command;
 import client.MapleClient;
 import constants.GameConstants;
+import java.util.ArrayList;
+import java.util.Collections;
+import net.server.Server;
 import server.MaplePortal;
 import server.maps.FieldLimit;
 import server.maps.MapleMap;
+import server.maps.MapleMapFactory;
 import server.maps.MapleMiniDungeonInfo;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class GotoCommand extends Command {
+    
     {
         setDescription("");
+        
+        MapleMapFactory mapFactory = Server.getInstance().getWorlds().get(0).getChannels().get(0).getMapFactory();
+        
+        List<Entry<String, Integer>> towns = new ArrayList<>(GameConstants.GOTO_TOWNS.entrySet());
+        sortGotoEntries(towns);
+        for (Map.Entry<String, Integer> e : towns) {
+            GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (mapFactory.getMap(e.getValue()).getMapName()) + "#k\r\n");
+        }
+        
+        List<Entry<String, Integer>> areas = new ArrayList<>(GameConstants.GOTO_AREAS.entrySet());
+        sortGotoEntries(areas);
+        for (Map.Entry<String, Integer> e : areas) {
+            GOTO_AREAS_INFO += ("'" + e.getKey() + "' - #b" + (mapFactory.getMap(e.getValue()).getMapName()) + "#k\r\n");
+        }
+    }
+    
+    public static String GOTO_TOWNS_INFO = "";
+    public static String GOTO_AREAS_INFO = "";
+    
+    private static void sortGotoEntries(List<Entry<String, Integer>> listEntries) {
+        Collections.sort(listEntries, new Comparator<Entry<String, Integer>>() {
+            @Override
+            public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2)
+            {
+                return e1.getValue().compareTo(e2.getValue());
+            }
+        });
     }
 
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
         if (params.length < 1){
-            player.yellowMessage("Syntax: @goto <map name>");
+            String sendStr = "Syntax: #b@goto <map name>#k. Available areas:\r\n\r\n#rTowns:#k\r\n" + GOTO_TOWNS_INFO;
+            if (player.isGM()) {
+                sendStr += ("\r\n#rAreas:#k\r\n" + GOTO_AREAS_INFO);
+            }
+            
+            player.getAbstractPlayerInteraction().npcTalk(9000020, sendStr);
             return;
         }
         
@@ -74,7 +115,13 @@ public class GotoCommand extends Command {
             player.saveLocationOnWarp();
             player.changeMap(target, targetPortal);
         } else {
-            player.dropMessage(5, "Area '" + params[0] + "' is not registered.");
+            // detailed info on goto available areas suggested thanks to Vcoc
+            String sendStr = "Area '#r" + params[0] + "#k' is not available. Available areas:\r\n\r\n#rTowns:#k" + GOTO_TOWNS_INFO;
+            if (player.isGM()) {
+                sendStr += ("\r\n#rAreas:#k\r\n" + GOTO_AREAS_INFO);
+            }
+            
+            player.getAbstractPlayerInteraction().npcTalk(9000020, sendStr);
         }
     }
 }

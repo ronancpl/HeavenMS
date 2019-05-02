@@ -273,6 +273,17 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     
                     int totDamageToOneMonster = 0;
                     List<Integer> onedList = attack.allDamage.get(oned);
+                    
+                    if (attack.magic) { // thanks BHB, Alex (CanIGetaPR) for noticing no immunity status check here
+                        if (monster.isBuffed(MonsterStatus.MAGIC_IMMUNITY)) {
+                            Collections.fill(onedList, 1);
+                        }
+                    } else {
+                        if (monster.isBuffed(MonsterStatus.WEAPON_IMMUNITY)) {
+                            Collections.fill(onedList, 1);
+                        }
+                    }
+                    
                     for (Integer eachd : onedList) {
                         if(eachd < 0) eachd += Integer.MAX_VALUE;
                         totDamageToOneMonster += eachd;
@@ -453,7 +464,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                     int skillLv = player.getSkillLevel(threeSnailsId);
 
                                     if(skillLv > 0) {
-                                        AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
+                                        AbstractPlayerInteraction api = player.getAbstractPlayerInteraction();
 
                                         int shellId;
                                         switch(skillLv) {

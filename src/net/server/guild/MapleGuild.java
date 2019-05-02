@@ -50,6 +50,7 @@ import net.server.audit.locks.MonitoredLockType;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.MapleMatchCheckerCoordinator;
 
 public class MapleGuild {
     
@@ -752,8 +753,9 @@ public class MapleGuild {
         Set<MapleCharacter> guildMembers = new HashSet<>();
         guildMembers.add(guildLeader);
         
+        MapleMatchCheckerCoordinator mmce = guildLeader.getWorldServer().getMatchCheckerCoordinator();
         for (MapleCharacter chr : guildLeader.getMap().getAllPlayers()) {
-            if (chr.getParty() == null && chr.getGuild() == null) {
+            if (chr.getParty() == null && chr.getGuild() == null && mmce.getMatchConfirmationLeaderid(chr.getId()) == -1) {
                 guildMembers.add(chr);
             }
         }
@@ -765,7 +767,7 @@ public class MapleGuild {
         try {
             ResultSet rs;
             Connection con = DatabaseConnection.getConnection();
-            try (PreparedStatement ps = con.prepareStatement("SELECT `name`, `GP`, `logoBG`, `logoBGColor`, `logo`, `logoColor` FROM guilds WHERE NOT `guildid` = '1' ORDER BY `GP` DESC LIMIT 50")) {
+            try (PreparedStatement ps = con.prepareStatement("SELECT `name`, `GP`, `logoBG`, `logoBGColor`, `logo`, `logoColor` FROM guilds ORDER BY `GP` DESC LIMIT 50")) {
                 rs = ps.executeQuery();
                 c.announce(MaplePacketCreator.showGuildRanks(npcid, rs));
             }

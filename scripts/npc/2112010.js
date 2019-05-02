@@ -69,8 +69,12 @@ function action(mode, type, selection) {
                                 if(state == -1) {
                                     cm.sendOk("Heh, it seems you guys have company. Have fun with them, as I politely request my leave.");
 
-                                } else if (playersTooClose() || eim.getIntProperty("npcShocked") == 0) {
+                                } else if (playersTooClose()) {
                                     cm.sendOk("Oh, hello there. I have been #bmonitoring your moves#k since you guys entered this perimeter. Quite the feat reaching here, I commend all of you. Now, now, look at the time, I've got an appointment right now, I'm afraid I will need to request my leave. But worry not, my #raccessors#k will deal with all of you. Now, if you permit me, I'm leaving now.");
+
+                                    eim.setIntProperty("yuleteTalked", -1);
+                                } else if (eim.getIntProperty("npcShocked") == 0) {
+                                    cm.sendOk("Ho~ Aren't you quite the sneaky one? Well, it matters not. I have been #bmonitoring your moves#k since you guys entered this perimeter. Quite the feat reaching here, I commend all of you. Now, now, look at the time, I've got an appointment right now, I'm afraid I will need to request my leave. But worry not, my #raccessors#k will deal with all of you. Now, if you permit me, I'm leaving now.");
 
                                     eim.setIntProperty("yuleteTalked", -1);
                                 } else {

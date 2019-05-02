@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import java.util.concurrent.Semaphore;
@@ -76,6 +77,7 @@ public class MapleMatchCheckerCoordinator {
         
         private Map<Integer, MapleMatchCheckingEntry> confirmingMembers = new HashMap<>();
         private int confirmCount;
+        private boolean active = true;
         
         private String message;
         
@@ -108,8 +110,28 @@ public class MapleMatchCheckerCoordinator {
             return false;
         }
         
+        private boolean isMatchActive() {
+            return active;
+        }
+        
+        private void setMatchActive(boolean a) {
+            active = a;
+        }
+        
         private Set<Integer> getMatchPlayers() {
             return confirmingMembers.keySet();
+        }
+        
+        private Set<Integer> getAcceptedMatchPlayers() {
+            Set<Integer> s = new HashSet<>();
+            
+            for (Entry<Integer, MapleMatchCheckingEntry> e : confirmingMembers.entrySet()) {
+                if (e.getValue().getAccept()) {
+                    s.add(e.getKey());
+                }
+            }
+            
+            return s;
         }
         
         private Set<MapleCharacter> getMatchCharacters() {
@@ -197,6 +219,20 @@ public class MapleMatchCheckerCoordinator {
         return true;
     }
     
+    private void reenablePlayerMatching(Set<Integer> matchPlayers) {
+        for (Integer cid : matchPlayers) {
+            MapleMatchCheckingElement mmce = matchEntries.get(cid);
+            
+            if (mmce != null) {
+                synchronized (mmce) {
+                    if (!mmce.isMatchActive()) {
+                        matchEntries.remove(cid);
+                    }
+                }
+            }
+        }
+    }
+    
     public int getMatchConfirmationLeaderid(int cid) {
         MapleMatchCheckingElement mmce = matchEntries.get(cid);
         if (mmce != null) {
@@ -215,6 +251,15 @@ public class MapleMatchCheckerCoordinator {
         }
     }
     
+    public boolean isMatchConfirmationActive(int cid) {
+        MapleMatchCheckingElement mmce = matchEntries.get(cid);
+        if (mmce != null) {
+            return mmce.active;
+        } else {
+            return false;
+        }
+    }
+    
     private void createMatchConfirmationInternal(MatchCheckerType matchType, int world, int leaderCid, AbstractMatchCheckerListener leaderListener, Set<Integer> players, String message) {
         MapleMatchCheckingElement mmce = new MapleMatchCheckingElement(matchType, leaderCid, world, leaderListener, players, message);
         
@@ -224,9 +269,7 @@ public class MapleMatchCheckerCoordinator {
         
         mmce.dispatchMatchCreated();
         
-        if (mmce.acceptEntry(leaderCid)) {
-            acceptMatchElement(mmce, leaderCid);
-        }
+        acceptMatchElement(mmce, leaderCid);
     }
     
     public boolean createMatchConfirmation(MatchCheckerType matchType, int world, int leaderCid, Set<Integer> players, String message) {
@@ -239,6 +282,8 @@ public class MapleMatchCheckerCoordinator {
                             AbstractMatchCheckerListener leaderListener = matchType.getListener();
                             createMatchConfirmationInternal(matchType, world, leaderCid, leaderListener, players, message);
                             return true;
+                        } else {
+                            reenablePlayerMatching(players);
                         }
                     } finally {
                         unpoolMatchPlayers(players);
@@ -255,7 +300,7 @@ public class MapleMatchCheckerCoordinator {
     }
     
     private void disposeMatchElement(MapleMatchCheckingElement mmce) {
-        Set<Integer> matchPlayers = mmce.getMatchPlayers();
+        Set<Integer> matchPlayers = mmce.getAcceptedMatchPlayers();
         while (!poolMatchPlayers(matchPlayers)) {
             try {
                 Thread.sleep(1000);
@@ -288,6 +333,8 @@ public class MapleMatchCheckerCoordinator {
     }
     
     private void dismissMatchElement(MapleMatchCheckingElement mmce, int cid) {
+        mmce.setMatchActive(false);
+        
         unpoolMatchPlayer(cid);
         disposeMatchElement(mmce);
         
@@ -302,14 +349,22 @@ public class MapleMatchCheckerCoordinator {
                     if (poolMatchPlayer(cid)) {
                         try {
                             MapleMatchCheckingElement mmce = matchEntries.get(cid);
-
+                            
                             if (mmce != null) {
-                                if (accept) {
-                                    acceptMatchElement(mmce, cid);
-                                } else {
-                                    denyMatchElement(mmce, cid);
+                                synchronized (mmce) {
+                                    if (!mmce.isMatchActive()) {    // thanks Alex (CanIGetaPR) for noticing that exploiters could stall on match checking
+                                        matchEntries.remove(cid);
+                                        return false;
+                                    }
+                                    
+                                    if (accept) {
+                                        acceptMatchElement(mmce, cid);
+                                    } else {
+                                        denyMatchElement(mmce, cid);
+                                        matchEntries.remove(cid);
+                                    }
                                 }
-
+                                
                                 return true;
                             }
                         } finally {
@@ -337,8 +392,14 @@ public class MapleMatchCheckerCoordinator {
                             MapleMatchCheckingElement mmce = matchEntries.get(cid);
 
                             if (mmce != null) {
-                                dismissMatchElement(mmce, cid);
-                                return true;
+                                synchronized (mmce) {
+                                    if (!mmce.isMatchActive()) {
+                                        return false;
+                                    }
+                                    
+                                    dismissMatchElement(mmce, cid);
+                                    return true;
+                                }
                             }
                         } finally {
                             unpoolMatchPlayer(cid);

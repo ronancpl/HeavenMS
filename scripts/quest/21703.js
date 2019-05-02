@@ -67,10 +67,9 @@ function end(mode, type, selection) {
 	    qm.teachSkill(21000000, qm.getPlayer().getSkillLevel(21000000), 10, -1);   // Combo Ability Skill
 	    qm.gainExp(2800);
 	}
-		qm.sendNext("(You remembered the #bCombo Ability#k skill! You were skeptical of the training at first, since the old man suffers from Alzheimer's and all, but boy, was it effective!)", 2);
-		qm.showInfo("Effect/BasicEff.img/AranGetSkill");
+        qm.sendNext("(You remembered the #bCombo Ability#k skill! You were skeptical of the training at first, since the old man suffers from Alzheimer's and all, but boy, was it effective!)", 2);
     } else if (status == 4) {
-		qm.sendPrev("Now report back to #p1201000#. I know she'll be ecstatic when she sees the progress you've made!");
-		qm.dispose();
+        qm.sendPrev("Now report back to #p1201000#. I know she'll be ecstatic when she sees the progress you've made!");
+        qm.dispose();
     }
 }

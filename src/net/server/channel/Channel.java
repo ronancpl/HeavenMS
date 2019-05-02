@@ -296,17 +296,22 @@ public final class Channel {
     }
     
     private void closeAllMerchants() {
-        merchWlock.lock();
         try {
-            final Iterator<MapleHiredMerchant> hmit = hiredMerchants.values().iterator();
-            while (hmit.hasNext()) {
-                hmit.next().forceClose();
-                hmit.remove();
+            List<MapleHiredMerchant> merchs;
+            
+            merchWlock.lock();
+            try {
+                merchs = new ArrayList<>(hiredMerchants.values());
+                hiredMerchants.clear();
+            } finally {
+                merchWlock.unlock();
+            }
+
+            for (MapleHiredMerchant merch : merchs) {
+                merch.forceClose();
             }
         } catch (Exception e) {
-		e.printStackTrace();
-        } finally {
-                merchWlock.unlock();
+            e.printStackTrace();
         }
     }
     

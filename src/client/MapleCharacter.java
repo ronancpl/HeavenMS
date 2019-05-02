@@ -64,6 +64,7 @@ import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import net.server.world.PartyOperation;
 import net.server.world.World;
+import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
 import server.CashShop;
 import server.MapleItemInformationProvider;
@@ -199,7 +200,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int expRate = 1, mesoRate = 1, dropRate = 1, expCoupon = 1, mesoCoupon = 1, dropCoupon = 1;
     private int omokwins, omokties, omoklosses, matchcardwins, matchcardties, matchcardlosses;
     private int owlSearch;
-    private long lastfametime, lastUsedCashItem, lastExpression = 0, lastHealed, lastBuyback = 0, lastDeathtime, lastMesoDrop = -1, jailExpiration = -1;
+    private long lastfametime, lastUsedCashItem, lastExpression = 0, lastHealed, lastBuyback = 0, lastDeathtime, jailExpiration = -1;
     private transient int localstr, localdex, localluk, localint_, localmagic, localwatk;
     private transient int equipmaxhp, equipmaxmp, equipstr, equipdex, equipluk, equipint_, equipmagic, equipwatk, localchairhp, localchairmp;
     private int localchairrate;
@@ -2954,22 +2955,24 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void gainGachaExp() {
         int expgain = 0;
-        int currentgexp = gachaexp.get();
+        long currentgexp = gachaexp.get();
         if ((currentgexp + exp.get()) >= ExpTable.getExpNeededForLevel(level)) {
             expgain += ExpTable.getExpNeededForLevel(level) - exp.get();
+            
             int nextneed = ExpTable.getExpNeededForLevel(level + 1);
-            if ((currentgexp - expgain) >= nextneed) {
+            if (currentgexp - expgain >= nextneed) {
                 expgain += nextneed;
             }
-            this.gachaexp.set(currentgexp - expgain);
+            
+            this.gachaexp.set((int) (currentgexp - expgain));
         } else {
             expgain = this.gachaexp.getAndSet(0);
         }
-        gainExp(expgain, false, false);
+        gainExp(expgain, false, true);
         updateSingleStat(MapleStat.GACHAEXP, this.gachaexp.get());
     }
 
-    public void gainGachaExp(int gain) {
+    public void addGachaExp(int gain) {
         updateSingleStat(MapleStat.GACHAEXP, gachaexp.addAndGet(gain));
     }
     
@@ -4296,6 +4299,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return client;
     }
     
+    public AbstractPlayerInteraction getAbstractPlayerInteraction() {
+        return client.getAbstractPlayerInteraction();
+    }
+    
     public final List<MapleQuestStatus> getCompletedQuests() {
         synchronized (quests) {
             List<MapleQuestStatus> ret = new LinkedList<>();
@@ -4930,8 +4937,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         
         if (elapsedDays > 100) elapsedDays = 100;
         
-        int netMeso = (merchantmeso * (100 - elapsedDays)) / 100;
-        return netMeso;
+        long netMeso = (long) merchantmeso; // negative mesos issues found thanks to Flash, Vcoc
+        netMeso = (netMeso * (100 - elapsedDays)) / 100;
+        return (int) netMeso;
     }
 
     public int getMesosTraded() {
@@ -6906,6 +6914,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     }
 
                     status.setForfeited(rs.getInt("forfeited"));
+                    status.setCompleted(rs.getInt("completed"));
                     ret.quests.put(q.getId(), status);
                     loadedQuestStatus.put(rs.getInt("queststatusid"), status);
                 }
@@ -7665,7 +7674,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void resetBattleshipHp() {
-        this.battleshipHp = 400 * getSkillLevel(SkillFactory.getSkill(Corsair.BATTLE_SHIP)) + ((getLevel() - 120) * 200);
+        int bshipLevel = Math.max(getLevel() - 120, 0);  // thanks alex12 for noticing battleship HP issues for low-level players
+        this.battleshipHp = 400 * getSkillLevel(SkillFactory.getSkill(Corsair.BATTLE_SHIP)) + (bshipLevel * 200);
     }
     
     public void resetEnteredScript() {
@@ -8254,7 +8264,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             deleteQuestProgressWhereCharacterId(con, id);
             
-            ps = con.prepareStatement("INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`, `status`, `time`, `expires`, `forfeited`) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("INSERT INTO queststatus (`queststatusid`, `characterid`, `quest`, `status`, `time`, `expires`, `forfeited`, `completed`) VALUES (DEFAULT, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             PreparedStatement psf;
             try (PreparedStatement pse = con.prepareStatement("INSERT INTO questprogress VALUES (DEFAULT, ?, ?, ?, ?)")) {
                 psf = con.prepareStatement("INSERT INTO medalmaps VALUES (DEFAULT, ?, ?, ?)");
@@ -8267,6 +8277,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                         ps.setInt(4, (int) (q.getCompletionTime() / 1000));
                         ps.setLong(5, q.getExpirationTime());
                         ps.setInt(6, q.getForfeited());
+                        ps.setInt(7, q.getCompleted());
                         ps.executeUpdate();
                         try (ResultSet rs = ps.getGeneratedKeys()) {
                             rs.next();
@@ -8549,8 +8560,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public synchronized void withdrawMerchantMesos() {
         int merchantMeso = this.getMerchantNetMeso();
+        int playerMeso = this.getMeso();
+        
         if (merchantMeso > 0) {
-            int possible = Integer.MAX_VALUE - merchantMeso;
+            int possible = Integer.MAX_VALUE - playerMeso;
             
             if (possible > 0) {
                 if (possible < merchantMeso) {
@@ -8562,7 +8575,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 }
             }
         } else {
-            int playerMeso = this.getMeso();
             int nextMeso = playerMeso + merchantMeso;
             
             if (nextMeso < 0) {
@@ -9401,9 +9413,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.COMPLETED)) {
             MapleQuest mquest = quest.getQuest();
             short questid = mquest.getId();
-            if(!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
+            if (!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
                 awardQuestPoint(ServerConstants.QUEST_POINT_PER_QUEST_COMPLETE);
             }
+            quest.setCompleted(quest.getCompleted() + 1);   // count quest completed Jayd's idea
             
             announce(MaplePacketCreator.completeQuest(questid, quest.getCompletionTime()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.NOT_STARTED)) {
@@ -10038,14 +10051,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
     public void toggleWhiteChat() {
         whiteChat = !whiteChat;
-    }
-
-    public boolean canDropMeso() {
-        if (System.currentTimeMillis() - lastMesoDrop >= 200 || lastMesoDrop == -1) { //About 200 meso drops a minute
-            lastMesoDrop = System.currentTimeMillis();
-            return true;
-        }
-        return false;
     }
 
     // These need to be renamed, but I am too lazy right now to go through the scripts and rename them...

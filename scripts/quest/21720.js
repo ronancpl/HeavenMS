@@ -39,7 +39,6 @@ function end(mode, type, selection) {
 	    qm.teachSkill(21001003, qm.getPlayer().getSkillLevel(21001003), 20, -1);
 	    qm.gainExp(3900);
 	}
-        qm.showIntro("Effect/BasicEff.img/AranGetSkill");
         qm.sendNext('#b(You remembered the Polearm Booster skill!)#k', 2);
     } else if (status == 8) {
     	qm.sendNextPrev("This skill was found in an ancient incomprehensible script. I had a hunch it might be a skill you used in the past, and I think I was right. You're not as strong as you used to be, but you'll get there, in time.", 8);

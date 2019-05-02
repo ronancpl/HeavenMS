@@ -65,7 +65,7 @@ public class MapleQuestStatus {
     private final List<Integer> medalProgress = new LinkedList<Integer>();
     private int npc;
     private long completionTime, expirationTime;
-    private int forfeited = 0;
+    private int forfeited = 0, completed = 0;
     private String customData;
 
     public MapleQuestStatus(MapleQuest quest, Status status) {
@@ -214,6 +214,10 @@ public class MapleQuestStatus {
         return forfeited;
     }
     
+    public int getCompleted() {
+        return completed;
+    }
+    
     public String getInfo() {
         if(!progress.containsKey(0) && !getMedalMaps().isEmpty()) {
             return Integer.toString(getMedalProgress());
@@ -231,6 +235,14 @@ public class MapleQuestStatus {
             this.forfeited = forfeited;
         } else {
             throw new IllegalArgumentException("Can't set forfeits to something lower than before.");
+        }
+    }
+    
+    public void setCompleted(int completed) {
+        if (completed >= this.completed) {
+            this.completed = completed;
+        } else {
+            throw new IllegalArgumentException("Can't set completes to something lower than before.");
         }
     }
 

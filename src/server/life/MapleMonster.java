@@ -1750,6 +1750,8 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         changeLevelByDifficulty(difficulty, pqMob);
     }
     
+    // ---------------------------------------------------------------------------------
+    
     private boolean isPuppetInVicinity(MapleSummon summon) {
         return summon.getPosition().distanceSq(this.getPosition()) < 177777;
     }

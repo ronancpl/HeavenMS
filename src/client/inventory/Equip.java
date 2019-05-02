@@ -24,6 +24,7 @@ package client.inventory;
 import client.MapleClient;
 import constants.ServerConstants;
 import constants.ExpTable;
+import constants.ItemConstants;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -302,10 +303,33 @@ public class Equip extends Item {
         return stat;
     }
     
+    private static boolean isPhysicalWeapon(int itemid) {
+        Equip eqp = (Equip) MapleItemInformationProvider.getInstance().getEquipById(itemid);
+        return eqp.getWatk() >= eqp.getMatk();
+    }
+    
+    private boolean isNotWeaponAffinity(StatUpgrade name) {
+        // WATK/MATK expected gains lessens outside of weapon affinity (physical/magic): Vcoc's idea
+        
+        if (ItemConstants.isWeapon(this.getItemId())) {
+            if (name.equals(StatUpgrade.incPAD)) {
+                if (!isPhysicalWeapon(this.getItemId())) {
+                    return true;
+                }
+            } else if (name.equals(StatUpgrade.incMAD)) {
+                if (isPhysicalWeapon(this.getItemId())) {
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
     private void getUnitStatUpgrade(List<Pair<StatUpgrade, Integer>> stats, StatUpgrade name, int curStat, boolean isAttribute) {
         isUpgradeable = true;
         
-        int maxUpgrade = randomizeStatUpgrade((int)(1 + (curStat / getStatModifier(isAttribute))));
+        int maxUpgrade = randomizeStatUpgrade((int)(1 + (curStat / (getStatModifier(isAttribute) * (isNotWeaponAffinity(name) ? 2.7 : 1)))));
         if(maxUpgrade == 0) return;
             
         stats.add(new Pair<>(name, maxUpgrade));

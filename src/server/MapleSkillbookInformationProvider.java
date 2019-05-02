@@ -141,7 +141,7 @@ public class MapleSkillbookInformationProvider {
         if(token.contains("/imgdir")) {
             status -= 1;
         }
-        else if(token.contains("imgdir")) {
+        else if(token.contains("imgdir") && !token.endsWith("/>")) {    // '\>' XML node description not being accounted, issue found thanks to Robin Schulz, CanIGetaPR
             status += 1;
         }
     }
@@ -182,7 +182,7 @@ public class MapleSkillbookInformationProvider {
             currentItemid = 0;
             currentCount = 0;
         }
-        else if(token.contains("imgdir")) {
+        else if(token.contains("imgdir") && !token.endsWith("/>")) {
             status += 1;
         }
         else {
@@ -203,7 +203,7 @@ public class MapleSkillbookInformationProvider {
         if(token.contains("/imgdir")) {
             status -= 1;
         }
-        else if(token.contains("imgdir")) {
+        else if(token.contains("imgdir") && !token.endsWith("/>")) {
             if(status == 1) {           //getting QuestId
                 d = getName(token);
                 questId = Integer.parseInt(d);
@@ -228,19 +228,22 @@ public class MapleSkillbookInformationProvider {
     }
     
     private static void fetchSkillbooksFromQuests() {
-        String line;
+        String line = "";
+        int lineNumber = 0; // add line number, thanks to Alex (CanIGetaPR)
+        
         try {
             fileReader = new InputStreamReader(new FileInputStream(wzPath + "/Quest.wz/Act.img.xml"), "UTF-8");
             bufferedReader = new BufferedReader(fileReader);
 
             while((line = bufferedReader.readLine()) != null) {
+                lineNumber++;
                 translateActToken(line);
             }
 
             bufferedReader.close();
             fileReader.close();
         } catch(IOException ioe) {
-            System.out.println("Failed to read Quest.wz file.");
+            System.out.println("Failed to read Quest.wz file. Line " + lineNumber + ": " + line);
             ioe.printStackTrace();
         }
     }

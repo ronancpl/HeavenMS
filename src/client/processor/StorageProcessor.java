@@ -40,6 +40,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 /**
  *
  * @author Matze
+ * @author Ronan - inventory concurrency protection on storing items
  */
 public class StorageProcessor {
     
@@ -97,15 +98,15 @@ public class StorageProcessor {
                                         short slot = slea.readShort();
                                         int itemId = slea.readInt();
                                         short quantity = slea.readShort();
-                                        MapleInventoryType slotType = ItemConstants.getInventoryType(itemId);
-                                        MapleInventory Inv = chr.getInventory(slotType);
-                                        if (slot < 1 || slot > Inv.getSlotLimit()) { //player inv starts at one
+                                        MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
+                                        MapleInventory inv = chr.getInventory(invType);
+                                        if (slot < 1 || slot > inv.getSlotLimit()) { //player inv starts at one
                                                 AutobanFactory.PACKET_EDIT.alert(c.getPlayer(), c.getPlayer().getName() + " tried to packet edit with storage.");
                                                 FilePrinter.print(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to store item at slot " + slot);
                                                 c.disconnect(true, false);
                                                 return;
                                         }
-                                        if (quantity < 1 || chr.getItemQuantity(itemId, false) < quantity) {
+                                        if (quantity < 1) {
                                                 c.announce(MaplePacketCreator.enableActions());
                                                 return;
                                         }
@@ -118,28 +119,39 @@ public class StorageProcessor {
                                         if (chr.getMeso() < storeFee) {
                                                 c.announce(MaplePacketCreator.getStorageError((byte) 0x0B));
                                         } else {
-                                                MapleInventoryType invType = ItemConstants.getInventoryType(itemId);
-                                                Item item = chr.getInventory(invType).getItem(slot).copy();
-                                                if (item != null && item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
-                                                        if (ItemConstants.isWeddingRing(itemId) || ItemConstants.isWeddingToken(itemId)) {
+                                                Item item;
+                                                
+                                                inv.lockInventory();    // thanks imbee for pointing a dupe within storage
+                                                try {
+                                                        item = inv.getItem(slot);
+                                                        if (item != null && item.getItemId() == itemId && (item.getQuantity() >= quantity || ItemConstants.isRechargeable(itemId))) {
+                                                                if (ItemConstants.isWeddingRing(itemId) || ItemConstants.isWeddingToken(itemId)) {
+                                                                        c.announce(MaplePacketCreator.enableActions());
+                                                                        return;
+                                                                }
+                                                                
+                                                                if (ItemConstants.isRechargeable(itemId)) {
+                                                                        quantity = item.getQuantity();
+                                                                }
+                                                                
+                                                                MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
+                                                        } else {
                                                                 c.announce(MaplePacketCreator.enableActions());
                                                                 return;
                                                         }
-                                                    
-                                                        if (ItemConstants.isRechargeable(itemId)) {
-                                                                quantity = item.getQuantity();
-                                                        }
-
-                                                        chr.gainMeso(-storeFee, false, true, false);
-                                                        MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
-                                                        MapleInventoryManipulator.removeFromSlot(c, invType, slot, quantity, false);
-                                                        item.setQuantity(quantity);
-                                                        storage.store(item);
-                                                        storage.sendStored(c, ItemConstants.getInventoryType(itemId));
-                                                        String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                                                        FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
-                                                        chr.setUsedStorage();
+                                                } finally {
+                                                        inv.unlockInventory();
                                                 }
+                                                
+                                                chr.gainMeso(-storeFee, false, true, false);
+                                                
+                                                MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
+                                                item.setQuantity(quantity);
+                                                storage.store(item);
+                                                storage.sendStored(c, ItemConstants.getInventoryType(itemId));
+                                                String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
+                                                FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
+                                                chr.setUsedStorage();
                                         }
                                 } else if (mode == 6) { // arrange items
                                         if(ServerConstants.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);

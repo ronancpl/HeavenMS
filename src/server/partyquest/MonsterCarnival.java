@@ -59,7 +59,7 @@ public class MonsterCarnival {
                     mc.setTeam(0);
                     mc.setFestivalPoints(0);
                     mc.forceChangeMap(map, map.getPortal(redPortal));
-                    mc.dropMessage(6, LanguageConstants.Languages(mc).CPQEntry);
+                    mc.dropMessage(6, LanguageConstants.getMessage(mc, LanguageConstants.CPQEntry));
                     if (p1.getLeader().getId() == mc.getId()) {
                         leader1 = mc;
                     }
@@ -73,7 +73,7 @@ public class MonsterCarnival {
                     mc.setTeam(1);
                     mc.setFestivalPoints(0);
                     mc.forceChangeMap(map, map.getPortal(bluePortal));
-                    mc.dropMessage(6, LanguageConstants.Languages(mc).CPQEntry);
+                    mc.dropMessage(6, LanguageConstants.getMessage(mc, LanguageConstants.CPQEntry));
                     if (p2.getLeader().getId() == mc.getId()) {
                         leader2 = mc;
                     }
@@ -82,10 +82,10 @@ public class MonsterCarnival {
             }
             if (Grupo1 == null || Grupo2 == null) {
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LanguageConstants.Languages(mpc.getPlayer()).CPQError);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.getMessage(mpc.getPlayer(), LanguageConstants.CPQError));
                 }
                 for (MaplePartyCharacter mpc : p2.getMembers()) {
-                    mpc.getPlayer().dropMessage(5, LanguageConstants.Languages(mpc.getPlayer()).CPQError);
+                    mpc.getPlayer().dropMessage(5, LanguageConstants.getMessage(mpc.getPlayer(), LanguageConstants.CPQError));
                 }
                 return;
             }
@@ -140,13 +140,13 @@ public class MonsterCarnival {
             String teamS = "";
             switch (team) {
                 case 0:
-                    teamS = LanguageConstants.Languages(chrMap).CPQRed;
+                    teamS = LanguageConstants.getMessage(chrMap, LanguageConstants.CPQRed);
                     break;
                 case 1:
-                    teamS = LanguageConstants.Languages(chrMap).CPQBlue;
+                    teamS = LanguageConstants.getMessage(chrMap, LanguageConstants.CPQBlue);
                     break;
             }
-            chrMap.dropMessage(5, teamS + LanguageConstants.Languages(chrMap).CPQPlayerExit);
+            chrMap.dropMessage(5, teamS + LanguageConstants.getMessage(chrMap, LanguageConstants.CPQPlayerExit));
         }
         earlyFinish();
     }
@@ -353,7 +353,7 @@ public class MonsterCarnival {
 
     private void extendTime() {
         for (MapleCharacter chrMap : map.getAllPlayers()) {
-            chrMap.dropMessage(5, LanguageConstants.Languages(chrMap).CPQExtendTime);
+            chrMap.dropMessage(5, LanguageConstants.getMessage(chrMap, LanguageConstants.CPQExtendTime));
         }
         startTime = System.currentTimeMillis() + 3 * 60 * 1000;
         

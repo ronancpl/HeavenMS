@@ -1,4 +1,4 @@
-<img src="https://heavenmssurveyhome.files.wordpress.com/2018/12/heavenmslogo.png"  width="370" height="auto">
+﻿<img src="https://heavenmssurveyhome.files.wordpress.com/2018/12/heavenmslogo.png"  width="370" height="auto">
 
 ## Head developer: Ronan C. P. Lana
 
@@ -56,7 +56,7 @@ Java7 SDK: https://www.oracle.com/technetwork/java/javase/downloads/java-archive
 ---
 ### Open-source client development - HeavenClient
 
-Continuing from where **SYJourney**'s JourneyClient has finished contributions (as of 5 Jul 2016), an open-source delevopment of a software artifact designed to handle both gaming operations and interactions with the server is being conducted.
+Continuing from where **SYJourney**'s JourneyClient has finished contributions (as of 5 Jul 2016), an open-source development of a software artifact designed to handle both gaming operations and interactions with the server is being conducted.
 
 Newer implementations are being maintained by **頼晏 (ryantpayton)** and aims to offer higher display resolution, bring recent UI contents for the pre-BB gameplay and incremental support on overall gaming perspective.
 
@@ -84,15 +84,19 @@ By taking the v83 MapleStory as the angular stone, incrementally look forward to
 
 #### Announcements
 
-HeavenMS development achieved an acceptable state-of-the-art and will get into a halt. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
+HeavenMS development as we can see right now achieved an acceptable state-of-the-art. A heartfelt thanks for everyone that contributed in some way for the progress of this server!
 
-Although development is halted, support for fixing features that were implemented here is still up. You can still actively help us improve the server by issuing pull requests with informative details about what's changing.
+As development and support for fixing features that were implemented here is still up, with **your** help we can improve it even further! Please help where you can to better the server for everyone.
+
+Furthermore, you can actively help improving the server by issuing pull requests with informative details about what's changing.
+
+Note for anyone up to contribute further pull requests: make awareness to use __english language__ in codes and messages, as usage of any other languages will render it open to faculty of whether this content will be ready to be accepted or *further changes are going to be requested* before it becomes apt to merge.
+
+#### Support HeavenMS
 
 If you liked this project, please don't forget to __star__ the repo ;) .
 
 It's never enough to tell this, thanks to everyone that have been contributing something for the continuous improvement of the server! Be it through bug reports, donation, code snippets and/or pull requests.
-
-Note for anyone up to contribute further pull requests: make awareness to use __english language__ in codes and messages, as usage of any other languages will render it open to faculty of whether this content will be ready to be accepted or *further changes are going to be requested* before it becomes apt to merge.
 
 Our Discord channel is still available on: https://discord.gg/Q7wKxHX
 
@@ -110,7 +114,7 @@ Paypal: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3K8
 
 * HeavenMS staff has __no current intention__ to publicly open a server with this source, if that ever comes to happen this note will be lifted. __Don't be scammed!__
 
-* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance checks are needed in order to make it suitable for production use.
+* This server source is __NOT intended to be stable__ as is. Proper deadlock review and other maintenance contributions are needed in order to make it steps ahead on viability.
 
 ---
 ### Preparing the ambient 

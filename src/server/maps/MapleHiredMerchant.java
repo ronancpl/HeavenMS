@@ -34,6 +34,7 @@ import com.mysql.jdbc.Statement;
 import constants.ServerConstants;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -297,8 +298,20 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
                         try {
                             Connection con = DatabaseConnection.getConnection();
                             
-                            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET MerchantMesos = MerchantMesos + " + price + " WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                            long merchantMesos = 0;
+                            try (PreparedStatement ps = con.prepareStatement("SELECT MerchantMesos FROM characters WHERE id = ?")) {
                                 ps.setInt(1, ownerId);
+                                try (ResultSet rs = ps.executeQuery()) {
+                                    if (rs.next()) {
+                                        merchantMesos = rs.getInt(1);
+                                    }
+                                }
+                            }
+                            merchantMesos += price;
+                            
+                            try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET MerchantMesos = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS)) {
+                                ps.setInt(1, (int) Math.min(merchantMesos, Integer.MAX_VALUE));
+                                ps.setInt(2, ownerId);
                                 ps.executeUpdate();
                             }
                             

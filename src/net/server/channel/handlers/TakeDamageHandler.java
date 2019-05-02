@@ -212,21 +212,30 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             chr.getAutobanManager().resetMisses();
         }
         if (damage > 0 && !chr.isHidden()) {
-            if (attacker != null && damagefrom == -1 && chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null) { // PG works on bosses, but only at half of the rate.
-                int bouncedamage = (int) (damage * (chr.getBuffedValue(MapleBuffStat.POWERGUARD).doubleValue() / (attacker.isBoss() ? 200 : 100)));
-                bouncedamage = Math.min(bouncedamage, attacker.getMaxHp() / 10);
-                damage -= bouncedamage;
-                map.damageMonster(chr, attacker, bouncedamage);
-                map.broadcastMessage(chr, MaplePacketCreator.damageMonster(oid, bouncedamage), false, true);
-                attacker.aggroMonsterDamage(chr, bouncedamage);
-            }
-            if (attacker != null && damagefrom == -1 && chr.getBuffedValue(MapleBuffStat.BODY_PRESSURE) != null) {
-                Skill skill = SkillFactory.getSkill(Aran.BODY_PRESSURE);
-                final MapleStatEffect eff = skill.getEffect(chr.getSkillLevel(skill));
-                if (!attacker.alreadyBuffedStats().contains(MonsterStatus.NEUTRALISE)) {
-                    if (!attacker.isBoss() && eff.makeChanceResult()) {
-                    	attacker.applyStatus(chr, new MonsterStatusEffect(Collections.singletonMap(MonsterStatus.NEUTRALISE, 1), skill, null, false), false, (eff.getDuration()/10) * 2, false);
+            if (attacker != null) {
+                if (damagefrom == -1) {
+                    if (chr.getBuffedValue(MapleBuffStat.POWERGUARD) != null) { // PG works on bosses, but only at half of the rate.
+                        int bouncedamage = (int) (damage * (chr.getBuffedValue(MapleBuffStat.POWERGUARD).doubleValue() / (attacker.isBoss() ? 200 : 100)));
+                        bouncedamage = Math.min(bouncedamage, attacker.getMaxHp() / 10);
+                        damage -= bouncedamage;
+                        map.damageMonster(chr, attacker, bouncedamage);
+                        map.broadcastMessage(chr, MaplePacketCreator.damageMonster(oid, bouncedamage), false, true);
+                        attacker.aggroMonsterDamage(chr, bouncedamage);
                     }
+                    MapleStatEffect bPressure = chr.getBuffEffect(MapleBuffStat.COMBO_BARRIER);
+                    if (bPressure != null) {
+                        Skill skill = SkillFactory.getSkill(Aran.BODY_PRESSURE);
+                        if (!attacker.alreadyBuffedStats().contains(MonsterStatus.NEUTRALISE)) {
+                            if (!attacker.isBoss() && bPressure.makeChanceResult()) {
+                                attacker.applyStatus(chr, new MonsterStatusEffect(Collections.singletonMap(MonsterStatus.NEUTRALISE, 1), skill, null, false), false, (bPressure.getDuration() / 10) * 2, false);
+                            }
+                        }
+                    }
+                }
+                
+                MapleStatEffect cBarrier = chr.getBuffEffect(MapleBuffStat.COMBO_BARRIER);  // thanks BHB for noticing Combo Barrier buff not working
+                if (cBarrier != null) {
+                    damage *= (cBarrier.getX() / 1000.0);
                 }
             }
             if (damagefrom != -3 && damagefrom != -4) {

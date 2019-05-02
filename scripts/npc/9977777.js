@@ -47,7 +47,7 @@ function writeFeatureTab_PQs() {
         addFeature("Brand-new PQs: BossRushPQ, CafePQ.");
         addFeature("Mu Lung Dojo.");
         addFeature("Monster Carnival 1 & 2 - thanks Dragohe4rt & Jayd!");
-        addFeature("AriantPQ - thanks Dragohe4rt!");
+        addFeature("AriantPQ - thanks Dragohe4rt & Jayd!");
         addFeature("Capt. Latanica with party fighting the boss.");
         addFeature("Filled up missing obligatory event script methods.");
         addFeature("Secured uniquety of active lobby-name instances.");
@@ -222,6 +222,7 @@ function writeFeatureTab_Serverpotentials() {
         addFeature("SP cap past tier-level, recovered after job upgrade.");
         addFeature("Bypassable PIN/PIC system for authenticated users.");
         addFeature("Automatic account registration - thanks shavit!");
+        addFeature("Any NPC scriptable - thanks GabrielSin!");
 }
 
 function writeFeatureTab_Commands() {

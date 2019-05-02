@@ -110,7 +110,7 @@ public class MapleMapFactory {
             int y = MapleDataTool.getInt(life.getChildByPath("y"));
             int hide = MapleDataTool.getInt("hide", life, 0);
             int mobTime = MapleDataTool.getInt("mobTime", life, 0);
-
+            
             loadLifeRaw(map, Integer.parseInt(id), type, cy, f, fh, rx0, rx1, x, y, hide, mobTime, team);
         }
     }

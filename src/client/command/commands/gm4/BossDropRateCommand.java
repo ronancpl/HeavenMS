@@ -1,5 +1,5 @@
 /*
-    This file is part of the HeavenMS MapleStory Server, commands OdinMS-based
+    This file is part of the HeavenMS MapleStory Server
     Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
@@ -17,19 +17,18 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-/*
-   @Author: Arthur L - Refactored command content into modules
-*/
-package client.command.commands.gm3;
+package client.command.commands.gm4;
 
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import tools.MaplePacketCreator;
 
-import java.util.List;
-
-public class WarpSnowBallCommand extends Command {
+/**
+ *
+ * @author Ronan
+ */
+public class BossDropRateCommand extends Command {
     {
         setDescription("");
     }
@@ -37,10 +36,13 @@ public class WarpSnowBallCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-        List<MapleCharacter> chars = player.getMap().getAllPlayers();
-        for (MapleCharacter chr : chars) {
-            chr.saveLocationOnWarp();
-            chr.changeMap(109060000, chr.getTeam());
+        if (params.length < 1) {
+            player.yellowMessage("Syntax: !bossdroprate <newrate>");
+            return;
         }
+
+        int bossdroprate = Math.max(Integer.parseInt(params[0]), 1);
+        c.getWorldServer().setBossDropRate(bossdroprate);
+        c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Boss Drop Rate has been changed to " + bossdroprate + "x."));
     }
 }

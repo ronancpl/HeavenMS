@@ -8,9 +8,23 @@ function start() {
 
 
 function action(mode, type, selection) {
-    cm.warpParty(980000000);
-    cm.cancelCPQLobby();
-    cm.dispose();
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        if (status == 0) {
+            cm.warpParty(980000000);
+            cm.cancelCPQLobby();
+            cm.dispose();
+        }
+    }
 }
 
 

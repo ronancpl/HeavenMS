@@ -193,7 +193,7 @@ public class AriantColiseum {
                 chr.setAriantColiseum(null);
                 
                 int shards = chr.countItem(4031868);
-                chr.getClient().getAbstractPlayerInteraction().removeAll(4031868);
+                chr.getAbstractPlayerInteraction().removeAll(4031868);
                 chr.updateAriantScore(shards);
             }
         }

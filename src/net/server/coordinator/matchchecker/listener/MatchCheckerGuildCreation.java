@@ -166,13 +166,29 @@ public class MatchCheckerGuildCreation implements MatchCheckerListenerRecipe {
             
             @Override
             public void onMatchDismissed(int leaderid, Set<MapleCharacter> matchPlayers, String message) {
+                
+                MapleCharacter leader = null;
+                for (MapleCharacter chr : matchPlayers) {
+                    if (chr.getId() == leaderid) {
+                        leader = chr;
+                        break;
+                    }
+                }
+                
+                String msg;
+                if (leader != null && leader.getParty() == null) {
+                    msg = "The Guild creation has been dismissed since the leader left the founding party.";
+                } else {
+                    msg = "The Guild creation has been dismissed since a member was already in a party when they answered.";
+                }
+                
                 for (MapleCharacter chr : matchPlayers) {
                     if (chr.getId() == leaderid && chr.getClient() != null) {
                         MapleParty.leaveParty(chr.getParty(), chr.getClient());
                     }
                     
                     if (chr.isLoggedinWorld()) {
-                        chr.message("All cofounders must not be in a party when performing the Guild creation.");
+                        chr.message(msg);
                     }
                 }
             }

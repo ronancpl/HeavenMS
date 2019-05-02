@@ -67,8 +67,8 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
                                 NewYearCardRecord.saveNewYearCard(newyear);
                                 player.addNewYearRecord(newyear);
 
-                                player.getClient().getAbstractPlayerInteraction().gainItem(2160101, (short)-1);
-                                player.getClient().getAbstractPlayerInteraction().gainItem(4300000, (short) 1);
+                                player.getAbstractPlayerInteraction().gainItem(2160101, (short)-1);
+                                player.getAbstractPlayerInteraction().gainItem(4300000, (short) 1);
 
                                 Server.getInstance().setNewYearCard(newyear);
                                 newyear.startNewYearCardTask();
@@ -99,7 +99,7 @@ public final class NewYearCardHandler extends AbstractMaplePacketHandler {
                         newyear.stopNewYearCardTask();
                         NewYearCardRecord.updateNewYearCard(newyear);
 
-                        player.getClient().getAbstractPlayerInteraction().gainItem(4301000, (short)1);
+                        player.getAbstractPlayerInteraction().gainItem(4301000, (short)1);
                         if(!newyear.getMessage().isEmpty()) player.dropMessage(6, "[New Year] " + newyear.getSenderName() + ": " + newyear.getMessage());
 
                         player.addNewYearRecord(newyear);

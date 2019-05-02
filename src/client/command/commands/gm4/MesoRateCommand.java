@@ -44,6 +44,5 @@ public class MesoRateCommand extends Command {
         int mesorate = Math.max(Integer.parseInt(params[0]), 1);
         c.getWorldServer().setMesoRate(mesorate);
         c.getWorldServer().broadcastPacket(MaplePacketCreator.serverNotice(6, "[Rate] Meso Rate has been changed to " + mesorate + "x."));
-
     }
 }

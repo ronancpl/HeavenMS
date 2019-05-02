@@ -805,7 +805,7 @@ public class MapleStatEffect {
         int mpchange = calcMPChange(applyfrom, primary);
         if (primary) {
             if (itemConNo != 0) {
-                if (!applyto.getClient().getAbstractPlayerInteraction().hasItem(itemCon, itemConNo)) {
+                if (!applyto.getAbstractPlayerInteraction().hasItem(itemCon, itemConNo)) {
                     applyto.announce(MaplePacketCreator.enableActions());
                     return false;
                 }

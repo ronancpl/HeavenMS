@@ -108,7 +108,7 @@ public class Fishing {
                     rewardStr = "a(n) " + MapleItemInformationProvider.getInstance().getName(itemid) + ".";
                     
                     if (chr.canHold(itemid)) {
-                        chr.getClient().getAbstractPlayerInteraction().gainItem(itemid, true);
+                        chr.getAbstractPlayerInteraction().gainItem(itemid, true);
                     } else {
                         chr.showHint("Couldn't catch a(n) #r" + MapleItemInformationProvider.getInstance().getName(itemid) + "#k due to #e#b" + ItemConstants.getInventoryType(itemid) + "#k#n inventory limit.");
                         rewardStr += ".. but has goofed up due to full inventory.";

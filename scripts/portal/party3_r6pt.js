@@ -43,11 +43,11 @@ function enter(pi) {
     var pRow = Math.floor(portalId / 10);
     var pCol = portalId % 10;
     
-
     if (pCol == parseInt(comb.substring(pRow, pRow + 1), 10)) {    //climb
         pi.playPortalSound(); pi.warp(pi.getMapId(), (pRow % 4 != 0) ? pi.getPortal().getId() + 4 : (pRow / 4));
     } else {    //fail
-        pi.playPortalSound(); pi.warp(pi.getMapId(), 5);
+        pRow--;
+        pi.playPortalSound(); pi.warp(pi.getMapId(), (pRow / 4) > 1 ? (pRow / 4) : 5);  // thanks Chloek3, seth1 for noticing next plaform issues
     }
     
     return true;

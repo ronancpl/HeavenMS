@@ -25,17 +25,6 @@ function enter(pi) {
     var mapplayer = "stage6_comb" + (pi.getMapId() % 10);
     var eim = pi.getEventInstance();
     
-    if(eim.getProperty(mapplayer) == null) {
-        var comb = "";
-
-        for(var i = 0; i < 10; i++) {
-            var r = Math.floor((Math.random() * 4));
-            comb += r.toString();
-        }
-        
-        eim.setProperty(mapplayer, comb);
-    }
-
     var comb = eim.getProperty(mapplayer);
     
     var name = pi.getPortal().getName().substring(2, 4);

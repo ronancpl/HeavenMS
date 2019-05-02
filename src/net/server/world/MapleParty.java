@@ -334,7 +334,7 @@ public class MapleParty {
                 player.dropMessage(5, "You cannot request a party creation while participating the Ariant Battle Arena.");
                 return false;
             }
-
+            
             MaplePartyCharacter partyplayer = new MaplePartyCharacter(player);
             party = player.getWorldServer().createParty(partyplayer);
             player.setParty(party);
@@ -343,6 +343,7 @@ public class MapleParty {
             player.silentPartyUpdate();
 
             player.partyOperationUpdate(party, null);
+            
             player.announce(MaplePacketCreator.partyCreated(party, partyplayer.getId()));
             
             return true;
@@ -365,7 +366,7 @@ public class MapleParty {
                 if (party.getMembers().size() < 6) {
                     MaplePartyCharacter partyplayer = new MaplePartyCharacter(player);
                     player.getMap().addPartyMember(player);
-
+                    
                     world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
                     player.receivePartyMemberHP();
                     player.updatePartyMemberHP();

@@ -1798,10 +1798,18 @@ Corrigido cooldown de skills de mob não atuando adequadamente.
 
 08 - 09 Abril 2019,
 Resolvido problema de deadlock envolvendo acesso a valores de stats de jogadores e diversas operações de despacho de update de stats.
+Implementado envio de desafio na CPQ utilizando o sistema de matching.
+Corrigido LanguageConstants atuando estaticamente para todos os jogadores.
 Corrigido mob skills que não se encontram disponíveis sendo passados para o cliente para serem usados. Resultado disso era efeito visual de skill sendo mostrado ao usuário, habilidade sem ser aplicada em sequência.
+Corrigido portais do stage "<On the Way Up>" da OPQ levando jogadores incorretamente para a próxima plataforma.
+Corrigido portais do stage "<On the Way Up>" da OPQ retornando jogadores à plataforma inicial, ao invés de retornar a uma plataforma "checkpoint".
+Corrigido fonte da EllinPQ não atribuindo corretamente "Altaire Fragment" aos jogadores.
+Implementado geração de sequências com relação entre as mesmas, utilizadas no estágio "Lab - Unit" da RnJPQ.
 
 12 Abril 2019,
+Corrigido limites de mapas nos eventos de RockSpirit.
 Corrigido ganho visual do EXP de party ocasionalmente mostrando EXP em amarelo ao jogador em party solo.
+Corrigido battleship setando HP inicial menor que o esperado pela skill para jogadores de nível menor que 120.
 
 15 Abril 2019,
 Iniciado operação de introdução da AriantPQ no fonte, a partir do pull request feito pelo Dragohe4rt.
@@ -1817,7 +1825,26 @@ Ajustado drops de mobs, agora sendo buscado na DB.
 Ajustado diversas mecânicas da AriantPQ, tais como update visual da pontuação de jogadores (ao dropar itens, ganhar itens, acessar mapa de evento), pontos de batalha persistindo na DB, etc.
 
 21 Abril 2019,
-Adicionado debug de packets descrito pelo Atoot.Adicionado debug de packets descrito pelo Atoot.
+Adicionado debug de packets descrito pelo Atoot.
 
 22 Abril 2019,
+Corrigido Fredrick retornando valores negativos de mesos ao retornar espólios de mercantes aos jogadores.
+Adicionado informação aprimorada em comando "goto".
+Adicionado contagem de quests completadas de mesmo id.
+Corrigido problema de visibilidade latente com mobs que já foram derrotados aparecendo num flicker ao realizar certas ações (tal como mudar de mapas).
+Nova ferramenta: MapleSkillbookStackUpdate. Livros de skill e melhorias agora levam quantidade de stack padrão (100 unidades).
+Protegido concorrentemente adição de itens ao inventário. Checagens de posição e inserção ocorrem atomicamente.
+Protegido concorrentemente e revisado módulos de ganho de EXP do Writs of Solomon (gachapon EXP).
 Revisado refatoração recente em acesso a valores de stats de jogadores levando a inconsistência nos valores dos mesmos ao colocá-los para rodar em uma nova thread sem proteção concorrente.
+
+24 - 26 Abril 2019,
+Ajustado levemente taxa de respawn de mobs quando não se está usando a flag de respawn completo.
+Ajustado ganhos de stats de ataque ao passar de nível weapons, ganha-se menos do stat que não é a afinidade (watk/matk).
+Corrigido drops de mesos sendo bloqueados para drops rápidos de mesos, indevidamente dificultando jogabilidade para certas classes.
+Corrigido caso de XML parser em MapleSkillBookInformationParser não lidando com terminadores "/>" corretamente.
+
+01 - 02 Maio 2019,
+Corrigido jogadores podendo explorar mecânica de checagem de match, não respondendo ao match e sendo permitido se registrar em um novo sem ter respondido ao anterior.
+Corrigido caso de dupe com itens ao serem colocados no storage.
+Adicionado sistema de "qualquer NPC scriptável", com apoio do GabrielSin.
+Adicionado server flag para checagem de IP's ao logar jogadores.

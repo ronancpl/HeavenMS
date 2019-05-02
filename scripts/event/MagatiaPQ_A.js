@@ -176,6 +176,33 @@ function shuffle(array) {
     return array;
 }
 
+function generateStg6Combo(eim) {  // thanks Chloek3, seth1 for stating generated sequences are supposed to be linked
+        var matrix = [];
+        
+        for (var i = 0; i < 4; i++) {
+                matrix.push([]);
+        }
+        
+        for (var j = 0; j < 10; j++) {
+                var array = [0, 1, 2, 3];
+                array = shuffle(array);
+                
+                for (var i = 0; i < 4; i++) {
+                        matrix[i].push(array[i]);
+                }
+        }
+        
+        for (var i = 0; i < 4; i++) {
+                var comb = "";
+                for(var j = 0; j < 10; j++) {
+                    var r = matrix[i][j];
+                    comb += r.toString();
+                }
+                
+                eim.setProperty("stage6_comb" + (i + 1), comb);
+        }
+}
+
 function afterSetup(eim) {
         eim.setIntProperty("escortFail", 0);    // refresh friendly status
     
@@ -390,6 +417,7 @@ function monsterKilled(mob, eim) {
                         eim.showClearEffect();
                         eim.giveEventPlayersStageReward(5);
                         
+                        generateStg6Combo(eim);
                         map.getReactorByName("jnr6_out").forceHitReactor(1);
                 }
         } else if(mob.getId() == 9300151 || mob.getId() == 9300152) {

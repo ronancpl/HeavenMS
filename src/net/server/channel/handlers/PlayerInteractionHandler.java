@@ -572,11 +572,11 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 }
 
                 short perBundle = slea.readShort();
-
+                
                 if (ItemConstants.isRechargeable(ivItem.getItemId())) {
                     perBundle = 1;
                     bundles = 1;
-                } else if (chr.getItemQuantity(ivItem.getItemId(), false) < perBundle * bundles) {
+                } else if (ivItem.getQuantity() < (bundles * perBundle)) {     // thanks GabrielSin for finding a dupe here
                     c.announce(MaplePacketCreator.serverNotice(1, "Could not perform shop operation with that item."));
                     c.announce(MaplePacketCreator.enableActions());
                     return;

@@ -35,7 +35,7 @@ function enter(pi) {
                 return false;
             }
         } else {
-            if (em.startInstance(pi.getPlayer(), pi.getMap())) {
+            if (em.startInstance(pi.getPlayer())) { // thanks RedHat for noticing an issue here
                 pi.playPortalSound();
                 return true;
             } else {
@@ -57,7 +57,7 @@ function enter(pi) {
                 return false;
             }
         } else {
-            if (em.startInstance(pi.getPlayer(), pi.getMap())) {
+            if (em.startInstance(pi.getPlayer())) {
                 pi.playPortalSound();
                 return true;
             } else {

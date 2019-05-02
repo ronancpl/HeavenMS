@@ -943,7 +943,7 @@ public class EventInstanceManager {
         }
         
         private void dropExclusiveItems(MapleCharacter chr) {
-                AbstractPlayerInteraction api = chr.getClient().getAbstractPlayerInteraction();
+                AbstractPlayerInteraction api = chr.getAbstractPlayerInteraction();
                 
                 for(Integer item: exclusiveItems) {
                         api.removeAll(item);
@@ -1051,7 +1051,7 @@ public class EventInstanceManager {
 
                 if(!hasRewardSlot(player, eventLevel)) return false;
 
-                AbstractPlayerInteraction api = player.getClient().getAbstractPlayerInteraction();
+                AbstractPlayerInteraction api = player.getAbstractPlayerInteraction();
                 int rnd = (int)Math.floor(Math.random() * rewardsSet.size());
 
                 api.gainItem(rewardsSet.get(rnd), rewardsQty.get(rnd).shortValue());

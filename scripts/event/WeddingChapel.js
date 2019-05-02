@@ -110,7 +110,7 @@ function respawnStages(eim) {
 function playerEntry(eim, player) {
         eim.setProperty("giftedItemG" + player.getId(), "0");
         eim.setProperty("giftedItemB" + player.getId(), "0");
-        player.getClient().getAbstractPlayerInteraction().gainItem(4000313, 1);
+        player.getAbstractPlayerInteraction().gainItem(4000313, 1);
         
         var map = eim.getMapInstance(entryMap);
         player.changeMap(map, map.getPortal(0));

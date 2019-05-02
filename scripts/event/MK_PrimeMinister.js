@@ -52,7 +52,7 @@ function primeMinisterCheck(eim) {
         var pIter = map.getAllPlayers().iterator();
         while (pIter.hasNext()) {
                 var player = pIter.next();
-                if (player.getQuestStatus(2333) == 1 && player.getClient().getAbstractPlayerInteraction().getQuestProgress(2333, mobId) == 0) {
+                if (player.getQuestStatus(2333) == 1 && player.getAbstractPlayerInteraction().getQuestProgress(2333, mobId) == 0) {
                         return true;
                 }
         }

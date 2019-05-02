@@ -64,6 +64,7 @@ public class ServerConstants {
     public static       boolean USE_DEBUG_SHOW_RCVD_MVLIFE = false; //Prints on the cmd all received move life content.
     public static final boolean USE_DEBUG_SHOW_PACKET = false;
     public static       boolean USE_SUPPLY_RATE_COUPONS = true;     //Allows rate coupons to be sold through the Cash Shop.
+    public static final boolean USE_IP_VALIDATION = true;           //Enables IP checking when logging in.
     
     public static final boolean USE_MAXRANGE = true;                //Will send and receive packets from all events on a map, rather than those of only view range.
     public static final boolean USE_MAXRANGE_ECHO_OF_HERO = true;
@@ -112,6 +113,7 @@ public class ServerConstants {
     public static final boolean USE_REBIRTH_SYSTEM = false;         //Flag to enable/disable rebirth system
     public static final boolean USE_MAP_OWNERSHIP_SYSTEM = true;    //Flag to enable/disable map ownership system
     public static final boolean USE_FISHING_SYSTEM = true;          //Flag to enable/disable fishing system
+    public static final boolean USE_NPCS_SCRIPTABLE = true;         //Flag to enable/disable serverside predefined script NPCs.
     
     //Events/PQs Configuration
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;  //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
@@ -164,6 +166,7 @@ public class ServerConstants {
     public static final long PET_LOOT_UPON_ATTACK = (long)(0.7 * 1000); //Time the pet must wait before trying to pick items up.
     public static final int TOT_MOB_QUEST_REQUIREMENT = 77;             //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
     public static final int MOB_REACTOR_REFRESH_TIME = 30 * 1000;       //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
+    public static final int PARTY_SEARCH_REENTRY_LIMIT = 10;            //Max amount of times a party leader is allowed to persist on the Party Search before entry expiration (thus needing to manually restart the Party Search to be able to search for members).
     
     //Dangling Items/Locks Configuration
     public static final int ITEM_EXPIRE_TIME  = 3 * 60 * 1000;  //Time before items start disappearing. Recommended to be set up to 3 minutes.

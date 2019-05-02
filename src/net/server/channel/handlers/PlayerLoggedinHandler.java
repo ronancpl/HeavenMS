@@ -58,6 +58,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
 import constants.GameConstants;
+import constants.ScriptableNPCConstants;
 import constants.ServerConstants;
 import java.util.Collections;
 import java.util.Comparator;
@@ -403,6 +404,10 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                     if (eim != null) {
                         eim.registerPlayer(player);
                     }
+                }
+                
+                if (ServerConstants.USE_NPCS_SCRIPTABLE) {
+                    c.announce(MaplePacketCreator.setNPCScriptable(ScriptableNPCConstants.SCRIPTABLE_NPCS));
                 }
             } finally {
                 c.releaseClient();

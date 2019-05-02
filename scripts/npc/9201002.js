@@ -344,7 +344,7 @@ function action(mode, type, selection) {
                                             cm.sendOk("You have already confirmed your vows. All that is left is for your partner to confirm now.");
                                         } else {
                                             eim.setIntProperty("weddingStage", 3);
-                                            var cmPartner = partner.getClient().getAbstractPlayerInteraction();
+                                            var cmPartner = partner.getAbstractPlayerInteraction();
 
                                             var playerItemId = detectPlayerItemid(player);
                                             var partnerItemId = (playerItemId % 2 == 1) ? playerItemId + 1 : playerItemId - 1;

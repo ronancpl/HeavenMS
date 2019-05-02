@@ -321,6 +321,7 @@ public class MapleQuest {
     public boolean forceStart(MapleCharacter c, int npc) {
         MapleQuestStatus newStatus = new MapleQuestStatus(this, MapleQuestStatus.Status.STARTED, npc);
         newStatus.setForfeited(c.getQuest(this).getForfeited());
+        newStatus.setCompleted(c.getQuest(this).getCompleted());
 
         if (timeLimit > 0) {
             newStatus.setExpirationTime(System.currentTimeMillis() + (timeLimit * 1000));
@@ -355,6 +356,7 @@ public class MapleQuest {
         
         MapleQuestStatus newStatus = new MapleQuestStatus(this, MapleQuestStatus.Status.COMPLETED, npc);
         newStatus.setForfeited(c.getQuest(this).getForfeited());
+        newStatus.setCompleted(c.getQuest(this).getCompleted());
         newStatus.setCompletionTime(System.currentTimeMillis());
         c.updateQuest(newStatus);
         

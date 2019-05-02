@@ -204,6 +204,8 @@ public class CommandsExecutor {
         addCommand("enableauth", EnableAuthCommand.class);
         addCommand("toggleexp", ToggleExpCommand.class);
         addCommand("mylawn", MapOwnerClaimCommand.class);
+        addCommand("bosshp", BossHpCommand.class);
+        addCommand("mobhp", MobHpCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }
@@ -212,8 +214,6 @@ public class CommandsExecutor {
     private void registerLv1Commands() {
         levelCommandsCursor = new Pair<>((List<String>) new ArrayList<String>(), (List<String>) new ArrayList<String>());
         
-        addCommand("bosshp", 1, BossHpCommand.class);
-        addCommand("mobhp", 1, MobHpCommand.class);
         addCommand("whatdropsfrom", 1, WhatDropsFromCommand.class);
         addCommand("whodrops", 1, WhoDropsCommand.class);
         addCommand("buffme", 1, BuffMeCommand.class);
@@ -291,7 +291,6 @@ public class CommandsExecutor {
         addCommand("givevp", 3, GiveVpCommand.class);
         addCommand("givems", 3, GiveMesosCommand.class);
         addCommand("giverp", 3, GiveRpCommand.class);
-        addCommand("id", 3, IdCommand.class);
         addCommand("expeds", 3, ExpedsCommand.class);
         addCommand("kill", 3, KillCommand.class);
         addCommand("seed", 3, SeedCommand.class);
@@ -307,7 +306,6 @@ public class CommandsExecutor {
         addCommand("startmapevent", 3, StartMapEventCommand.class);
         addCommand("stopmapevent", 3, StopMapEventCommand.class);
         addCommand("online2", 3, OnlineTwoCommand.class);
-        addCommand("warpsnowball", 3, WarpSnowBallCommand.class);
         addCommand("ban", 3, BanCommand.class);
         addCommand("unban", 3, UnBanCommand.class);
         addCommand("healmap", 3, HealMapCommand.class);
@@ -339,6 +337,7 @@ public class CommandsExecutor {
         addCommand("exprate", 4, ExpRateCommand.class);
         addCommand("mesorate", 4, MesoRateCommand.class);
         addCommand("droprate", 4, DropRateCommand.class);
+        addCommand("bossdroprate", 4, BossDropRateCommand.class);
         addCommand("questrate", 4, QuestRateCommand.class);
         addCommand("travelrate", 4, TravelRateCommand.class);
         addCommand("fishrate", 4, FishingRateCommand.class);

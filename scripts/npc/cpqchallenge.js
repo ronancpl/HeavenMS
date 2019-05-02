@@ -18,10 +18,12 @@ function start(chrs) {
 
 function action(mode, type, selection) {
     if (mode == -1) {
+        cm.answerCPQChallenge(false);
         cm.getChar().setChallenged(false);
         cm.dispose();
     } else {
         if (mode == 0) {
+            cm.answerCPQChallenge(false);
             cm.getChar().setChallenged(false);
             cm.dispose();
             return;
@@ -43,16 +45,16 @@ function action(mode, type, selection) {
                     snd += "#bName: " + party.get(i).getName() + " / (Level: " + party.get(i).getLevel() + ") / " + GameConstants.getJobName(party.get(i).getJobId()) + "#k\r\n\r\n";
                 cm.sendAcceptDecline(snd + "Would you like to fight this party at the Monster Carnival?");
             } else {
-                return;
+                cm.answerCPQChallenge(false);
+                cm.getChar().setChallenged(false);
+                cm.dispose();
             }
         } else if (status == 1) {
-            var ch = cm.getChrById(party.get(0).getId());
             if (party.size() == cm.getParty().getMembers().size()) {
-                cm.startCPQ(ch, ch.getMapId() + 1);
-                ch.getParty().setEnemy(cm.getPlayer().getParty());
-                cm.getChar().getParty().setEnemy(ch.getParty());
-                cm.getChar().setChallenged(false);
+                cm.answerCPQChallenge(true);
             } else {
+                cm.answerCPQChallenge(false);
+                cm.getChar().setChallenged(false);
                 cm.sendOk("The number of players between the teams is not the same.");
             }
             cm.dispose();

@@ -12794,7 +12794,8 @@ INSERT INTO `drop_data_global` (`id`, `continent`, `itemid`, `minimum_quantity`,
 (2, -1, 4031866, 1, 1, 0, 20000, 'NX Card 250 PTS'),
 (3, -1, 4001126, 1, 2, 0, 8000, 'Maple Leaves'),
 (4, -1, 2049100, 1, 1, 0, 1200, 'Chaos Scroll 60%'),
-(5, -1, 4001006, 1, 1, 0, 10000, 'Flaming Feather');
+(5, -1, 2340000, 1, 1, 0, 1200, 'White Scroll'),
+(6, -1, 4001006, 1, 1, 0, 10000, 'Flaming Feather');
 
 CREATE TABLE IF NOT EXISTS `dueyitems` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -16461,7 +16462,6 @@ INSERT INTO `nxcoupons` (`id`, `couponid`, `rate`, `activeday`, `starthour`, `en
 (39,5360008,2,254,6,10),
 (40,5360042,2,254,0,24);
 
-
 CREATE TABLE IF NOT EXISTS `pets` (
   `petid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(13) DEFAULT NULL,
@@ -16583,6 +16583,7 @@ CREATE TABLE IF NOT EXISTS `queststatus` (
   `time` int(11) NOT NULL DEFAULT '0',
   `expires` bigint(20) NOT NULL DEFAULT '0',
   `forfeited` int(11) NOT NULL DEFAULT '0',
+  `completed` int(11) NOT NULL DEFAULT '0',
   `info` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`queststatusid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

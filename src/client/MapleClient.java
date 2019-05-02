@@ -888,7 +888,6 @@ public class MapleClient {
                         player.cancelAllBuffs(true);
                         
                         player.closePlayerInteractions();
-                        QuestScriptManager.getInstance().dispose(this);
                         
                         if (!serverTransition) {    // thanks MedicOP for detecting an issue with party leader change on changing channels
                                 removePartyPlayer(wserv);
@@ -1463,18 +1462,8 @@ public class MapleClient {
 			return;
                 }
                 
-		if (player.getTrade() != null) {
-			MapleTrade.cancelTrade(getPlayer(), MapleTrade.TradeResult.PARTNER_CANCEL);
-		}
-
-		MapleHiredMerchant merchant = player.getHiredMerchant();
-		if (merchant != null) {
-			if (merchant.isOwner(getPlayer())) {
-				merchant.setOpen(true);
-			} else {
-				merchant.removeVisitor(getPlayer());
-			}
-		}
+		player.closePlayerInteractions();
+                
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());
                 server.getPlayerBuffStorage().addDiseasesToStorage(player.getId(), player.getAllDiseases());
@@ -1540,6 +1529,7 @@ public class MapleClient {
         public void closePlayerScriptInteractions() {
                 this.removeClickedNPC();
                 NPCScriptManager.getInstance().dispose(this);
+                QuestScriptManager.getInstance().dispose(this);
         }
         
         public boolean attemptCsCoupon() {
