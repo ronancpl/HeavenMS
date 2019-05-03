@@ -95,7 +95,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                         if (castPos != -1) {
                                 toUse = MobSkillFactory.getMobSkill(useSkillId, useSkillLevel);
                                 
-                                if (monster.canUseSkill(toUse)) {
+                                if (monster.canUseSkill(toUse, true)) {
                                         int animationTime = MapleMonsterInformationProvider.getInstance().getMobSkillAnimationTime(toUse);
                                         if(animationTime > 0 && toUse.getSkillId() != 129) {
                                                 toUse.applyDelayedEffect(player, monster, true, animationTime);
@@ -126,7 +126,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
                                 nextSkillLevel = skillToUse.getRight();
                                 nextUse = MobSkillFactory.getMobSkill(nextSkillId, nextSkillLevel);
                                 
-                                if (!(nextUse != null && monster.canUseSkill(nextUse) && nextUse.getHP() >= (int) (((float) monster.getHp() / monster.getMaxHp()) * 100) && mobMp >= nextUse.getMpCon())) {
+                                if (!(nextUse != null && monster.canUseSkill(nextUse, false) && nextUse.getHP() >= (int) (((float) monster.getHp() / monster.getMaxHp()) * 100) && mobMp >= nextUse.getMpCon())) {
                                         // thanks OishiiKawaiiDesu for noticing mobs trying to cast skills they are not supposed to be able
                                         
                                         nextSkillId = 0;

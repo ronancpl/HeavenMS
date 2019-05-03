@@ -1848,3 +1848,5 @@ Corrigido jogadores podendo explorar mecânica de checagem de match, não respon
 Corrigido caso de dupe com itens ao serem colocados no storage.
 Adicionado sistema de "qualquer NPC scriptável", com apoio do GabrielSin.
 Adicionado server flag para checagem de IP's ao logar jogadores.
+Corrigido mobskills não sendo devidamente aplicados devido a um deslize anterior que tentaria aplicar indevidamente 2x "uso de skill" (uma das vezes deveria ser somente checagem de rotina).
+Corrigido puppets de arqueiros interrompendo mob statuses para o dono ao serem lançados em campo.
