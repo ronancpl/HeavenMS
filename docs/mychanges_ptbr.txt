@@ -1850,3 +1850,6 @@ Adicionado sistema de "qualquer NPC scriptável", com apoio do GabrielSin.
 Adicionado server flag para checagem de IP's ao logar jogadores.
 Corrigido mobskills não sendo devidamente aplicados devido a um deslize anterior que tentaria aplicar indevidamente 2x "uso de skill" (uma das vezes deveria ser somente checagem de rotina).
 Corrigido puppets de arqueiros interrompendo mob statuses para o dono ao serem lançados em campo.
+
+04 Maio 2019,
+Corrigido visão de mob statuses sendo interrompido para o novo controlador ao realizar troca de controladores.
