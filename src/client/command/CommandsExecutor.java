@@ -258,6 +258,7 @@ public class CommandsExecutor {
         addCommand("unjail", 2, UnJailCommand.class);
         addCommand("job", 2, JobCommand.class);
         addCommand("unbug", 2, UnBugCommand.class);
+        addCommand("id", 2, IdCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }
