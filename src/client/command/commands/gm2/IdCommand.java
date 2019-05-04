@@ -3,7 +3,6 @@ package client.command.commands.gm2;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.command.Command;
-import tools.StringUtil;
 import tools.exceptions.IdTypeNotSupportedException;
 
 import java.io.BufferedReader;
