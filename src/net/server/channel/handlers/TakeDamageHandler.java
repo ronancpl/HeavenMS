@@ -107,7 +107,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     if (damage > 0) {
                         loseItems = attacker.getStats().loseItem();
                         if (loseItems != null) {
-                            if (chr.getBuffEffect(MapleBuffStat.ARIANT_PQ_SHIELD) == null) {
+                            if (chr.getBuffEffect(MapleBuffStat.AURA) == null) {
                                 MapleInventoryType type;
                                 final int playerpos = chr.getPosition().x;
                                 byte d = 1;

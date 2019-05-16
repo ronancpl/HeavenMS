@@ -239,6 +239,7 @@ public class MapleHiredMerchant extends AbstractMapleMapObject {
     }
     
     private static boolean canBuy(MapleClient c, Item newItem) {
+        System.out.println(newItem.getPet().getName());
         return MapleInventoryManipulator.checkSpace(c, newItem.getItemId(), newItem.getQuantity(), newItem.getOwner()) && MapleInventoryManipulator.addFromDrop(c, newItem, false);
     }
     

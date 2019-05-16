@@ -75,6 +75,7 @@ function writeFeatureTab_Quests() {
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {
+        addFeature("Party Search fully functional.");
         addFeature("Guild and Alliance system fully functional.");
         addFeature("Guild contract system held in Guild Headquarters.");
         addFeature("Party for novices-only.");
@@ -180,6 +181,7 @@ function writeFeatureTab_Playerpotentials() {
         addFeature("Character slots per world/server-wide.");
         addFeature("Optional cash shop inventory separated by classes.");
         addFeature("Players manage 'same-typed' invites exclusively.");
+        addFeature("Player buffs with conditional active effects.");
 }
 
 function writeFeatureTab_Serverpotentials() {

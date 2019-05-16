@@ -1,0 +1,159 @@
+/*
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation version 3 as published by
+    the Free Software Foundation. You may not use, modify or distribute
+    this program under any other version of the GNU Affero General Public
+    License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+package mapleskillbookchancefetcher;
+
+import life.MapleLifeFactory;
+import life.MapleMonsterStats;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import java.io.*;
+import java.util.Collections;
+import java.util.Comparator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import tools.DatabaseConnection;
+import tools.Pair;
+
+/**
+ *
+ * @author RonanLana
+ * 
+ * This application traces missing meso drop data on the underlying DB (that must be
+ * defined on the DatabaseConnection file of this project) and generates a
+ * SQL file that proposes missing drop entries for the drop_data table.
+ * 
+ * The meso range is calculated accordingly with the target mob stats, such as level
+ * and if it's a boss or not, similarly as how it has been done for the actual meso
+ * drops.
+ * 
+ */
+public class MapleSkillbookChanceFetcher {
+
+    private static PrintWriter printWriter;
+    private static String newFile = "lib/skillbook_drop_data.sql";
+    
+    private static Map<Integer, MapleMonsterStats> mobStats;
+    private static Map<Pair<Integer, Integer>, Integer> skillbookChances = new HashMap<>();
+    
+    private static List<Entry<Pair<Integer, Integer>, Integer>> sortedSkillbookChances() {
+        List<Entry<Pair<Integer, Integer>, Integer>> skillbookChancesList = new ArrayList<>(skillbookChances.entrySet());
+        
+        Collections.sort(skillbookChancesList, new Comparator<Entry<Pair<Integer, Integer>, Integer>>() {
+            @Override
+            public int compare(Entry<Pair<Integer, Integer>, Integer> o1, Entry<Pair<Integer, Integer>, Integer> o2) {
+                if (o1.getKey().getLeft().equals(o2.getKey().getLeft())) {
+                    return o1.getKey().getRight() < o2.getKey().getRight() ? -1 : (o1.getKey().getRight().equals(o2.getKey().getRight()) ? 0 : 1);
+                }
+                
+                return (o1.getKey().getLeft() < o2.getKey().getLeft()) ? -1 : 1;
+            }
+        });
+        
+        return skillbookChancesList;
+    }
+            
+    private static boolean isLegendSkillUpgradeBook(int itemid) {
+        int itemidBranch = itemid / 10000;
+        return (itemidBranch == 228 && itemid >= 2280013 || itemidBranch == 229 && itemid >= 2290126);      // drop rate of Legends are higher
+    }
+    
+    private static void fetchSkillbookDropChances() {
+        Connection con = DatabaseConnection.getConnection();
+        
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT dropperid, itemid FROM drop_data WHERE itemid >= 2280000 AND itemid < 2300000");
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                int mobid = rs.getInt("dropperid");
+                int itemid = rs.getInt("itemid");
+                
+                int expectedChance = 1000;
+                
+                if (mobStats.get(mobid) != null) {
+                    int level = mobStats.get(mobid).getLevel();
+                    expectedChance *= Math.max(2, (level - 80) / 15);
+                    
+                    if (mobStats.get(mobid).isBoss()) {
+                        expectedChance *= 20;
+                    } else {
+                        expectedChance *= 1;
+                    }
+                } else {
+                    expectedChance = 1287;
+                }
+                
+                if (isLegendSkillUpgradeBook(itemid)) {     // drop rate of Legends seems to be higher than explorers, in retrospect from values in DB
+                    expectedChance *= 3;
+                }
+                
+                skillbookChances.put(new Pair<>(mobid, itemid), expectedChance);
+            }
+            
+            rs.close();
+            ps.close();
+            con.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static void printSkillbookChanceUpdateSqlHeader() {
+        printWriter.println(" # SQL File autogenerated from the MapleSkillbookChanceFetcher feature by Ronan Lana.");
+        printWriter.println(" # Generated data takes into account mob stats such as level and boss for the chance rates.");
+        printWriter.println();
+        
+        printWriter.println("  REPLACE INTO drop_data (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES");
+    }
+    
+    private static void generateSkillbookChanceUpdateFile() {
+        try {
+            printWriter = new PrintWriter(newFile, "UTF-8");
+            
+            printSkillbookChanceUpdateSqlHeader();
+            
+            List<Entry<Pair<Integer, Integer>, Integer>> skillbookChancesList = sortedSkillbookChances();
+            for (Entry<Pair<Integer, Integer>, Integer> e : skillbookChancesList) {
+                printWriter.println("(" + e.getKey().getLeft() + ", " + e.getKey().getRight() + ", 1, 1, 0, " + e.getValue() + "),");
+            }
+            
+            printWriter.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+    
+    public static void main(String[] args) {
+        // load mob stats from WZ
+        mobStats = MapleLifeFactory.getAllMonsterStats();
+        
+        fetchSkillbookDropChances();
+        generateSkillbookChanceUpdateFile();
+    }
+    
+}

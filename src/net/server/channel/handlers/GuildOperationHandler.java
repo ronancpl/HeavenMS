@@ -78,7 +78,8 @@ public final class GuildOperationHandler extends AbstractMaplePacketHandler {
                 Set<MapleCharacter> eligibleMembers = new HashSet<>(MapleGuild.getEligiblePlayersForGuild(mc));
                 if (eligibleMembers.size() < ServerConstants.CREATE_GUILD_MIN_PARTNERS) {
                     if (mc.getMap().getAllPlayers().size() < ServerConstants.CREATE_GUILD_MIN_PARTNERS) {
-                        mc.dropMessage(1, "The Guild you are trying to create don't meet the minimum criteria of number of founders.");
+                        // thanks NovaStory for noticing message in need of smoother info
+                        mc.dropMessage(1, "Your Guild doesn't have enough cofounders present here and therefore cannot be created at this time.");
                     } else {
                         // players may be unaware of not belonging on a party in order to become eligible, thanks Hair (Legalize) for pointing this out
                         mc.dropMessage(1, "Please make sure everyone you are trying to invite is neither on a guild nor on a party.");

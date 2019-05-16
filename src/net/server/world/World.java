@@ -70,6 +70,7 @@ import net.server.worker.FishingWorker;
 import net.server.worker.HiredMerchantWorker;
 import net.server.worker.MapOwnershipWorker;
 import net.server.worker.MountTirednessWorker;
+import net.server.worker.PartySearchWorker;
 import net.server.worker.PetFullnessWorker;
 import net.server.worker.ServerMessageWorker;
 import net.server.worker.TimedMapObjectWorker;
@@ -94,6 +95,7 @@ import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import net.server.coordinator.MapleMatchCheckerCoordinator;
+import net.server.coordinator.MaplePartySearchCoordinator;
 
 /**
  *
@@ -115,6 +117,7 @@ public class World {
     private Map<Integer, MapleGuildSummary> gsStore = new HashMap<>();
     private PlayerStorage players = new PlayerStorage();
     private MapleMatchCheckerCoordinator matchChecker = new MapleMatchCheckerCoordinator();
+    private MaplePartySearchCoordinator partySearch = new MaplePartySearchCoordinator();
     
     private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
     private ReadLock chnRLock = chnLock.readLock();
@@ -170,6 +173,7 @@ public class World {
     private ScheduledFuture<?> marriagesSchedule;
     private ScheduledFuture<?> mapOwnershipSchedule;
     private ScheduledFuture<?> fishingSchedule;
+    private ScheduledFuture<?> partySearchSchedule;
     
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int bossdroprate, int mesorate, int questrate, int travelrate, int fishingrate) {
         this.id = world;
@@ -202,6 +206,7 @@ public class World {
         marriagesSchedule = tman.register(new WeddingReservationWorker(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
         mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
         fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
+        partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
         
     }
 
@@ -493,6 +498,10 @@ public class World {
     
     public MapleMatchCheckerCoordinator getMatchCheckerCoordinator() {
         return matchChecker;
+    }
+    
+    public MaplePartySearchCoordinator getPartySearchCoordinator() {
+        return partySearch;
     }
 
     public void addPlayer(MapleCharacter chr) {
@@ -1975,6 +1984,11 @@ public class World {
         }
     }
     
+    public void runPartySearchUpdateSchedule() {
+        partySearch.updatePartySearchStorage();
+        partySearch.runPartySearch();
+    }
+    
     private void clearWorldData() {
         List<MapleParty> pList;
         partyLock.lock();
@@ -2059,6 +2073,11 @@ public class World {
         if(fishingSchedule != null) {
             fishingSchedule.cancel(false);
             fishingSchedule = null;
+        }
+        
+        if(partySearchSchedule != null) {
+            partySearchSchedule.cancel(false);
+            partySearchSchedule = null;
         }
         
         players.disconnectAll();

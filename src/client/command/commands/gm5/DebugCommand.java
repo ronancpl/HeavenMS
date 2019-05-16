@@ -39,10 +39,9 @@ import tools.MaplePacketCreator;
 import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
-import tools.packets.Wedding;
 
 public class DebugCommand extends Command {
-    private final static String debugTypes[] = {"monster", "packet", "portal", "spawnpoint", "pos", "map", "mobsp", "event", "areas", "reactors", "servercoupons", "playercoupons", "timer", "marriage", ""};
+    private final static String debugTypes[] = {"monster", "packet", "portal", "spawnpoint", "pos", "map", "mobsp", "event", "areas", "reactors", "servercoupons", "playercoupons", "timer", "marriage", "buff", ""};
     
     {
         setDescription("");
@@ -158,7 +157,10 @@ public class DebugCommand extends Command {
             case "marriage":
                 c.getChannelServer().debugMarriageStatus();
                 break;
-
+            
+            case "buff":
+                c.getPlayer().debugListAllBuffs();
+                break;
         }
     }
 }

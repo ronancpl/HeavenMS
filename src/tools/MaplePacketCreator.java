@@ -1853,36 +1853,7 @@ public class MaplePacketCreator {
 		return mplew.getPacket();
 	}
         
-        /**
-         * Gets a packet spawning a player as a mapobject to other clients.
-         *
-         * @param target The client receiving this packet.
-         * @param chr The character to spawn to other clients.
-         * @param enteringField Whether the character to spawn is not yet present in the map or already is.
-         * @return The spawn player packet.
-         */
-        public static byte[] spawnPlayerMapObject(MapleClient target, MapleCharacter chr, boolean enteringField) {
-                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-                mplew.writeShort(SendOpcode.SPAWN_PLAYER.getValue());
-                mplew.writeInt(chr.getId());
-                mplew.write(chr.getLevel()); //v83
-                mplew.writeMapleAsciiString(chr.getName());
-                if (chr.getGuildId() < 1) {
-                        mplew.writeMapleAsciiString("");
-                        mplew.write(new byte[6]);
-                } else {
-                        MapleGuildSummary gs = chr.getClient().getWorldServer().getGuildSummary(chr.getGuildId(), chr.getWorld());
-                        if (gs != null) {
-                                mplew.writeMapleAsciiString(gs.getName());
-                                mplew.writeShort(gs.getLogoBG());
-                                mplew.write(gs.getLogoBGColor());
-                                mplew.writeShort(gs.getLogo());
-                                mplew.write(gs.getLogoColor());
-                        } else {
-                                mplew.writeMapleAsciiString("");
-                                mplew.write(new byte[6]);
-                        }
-                }
+        private static void writeForeignBuffs(MaplePacketLittleEndianWriter mplew, MapleCharacter chr) {
                 mplew.writeInt(0);
                 mplew.writeShort(0); //v83
                 mplew.write(0xFC);
@@ -1962,6 +1933,40 @@ public class MaplePacketCreator {
                 mplew.writeInt(CHAR_MAGIC_SPAWN);
                 mplew.writeShort(0);
                 mplew.write(0);
+        }
+        
+        /**
+         * Gets a packet spawning a player as a mapobject to other clients.
+         *
+         * @param target The client receiving this packet.
+         * @param chr The character to spawn to other clients.
+         * @param enteringField Whether the character to spawn is not yet present in the map or already is.
+         * @return The spawn player packet.
+         */
+        public static byte[] spawnPlayerMapObject(MapleClient target, MapleCharacter chr, boolean enteringField) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.SPAWN_PLAYER.getValue());
+                mplew.writeInt(chr.getId());
+                mplew.write(chr.getLevel()); //v83
+                mplew.writeMapleAsciiString(chr.getName());
+                if (chr.getGuildId() < 1) {
+                        mplew.writeMapleAsciiString("");
+                        mplew.write(new byte[6]);
+                } else {
+                        MapleGuildSummary gs = chr.getClient().getWorldServer().getGuildSummary(chr.getGuildId(), chr.getWorld());
+                        if (gs != null) {
+                                mplew.writeMapleAsciiString(gs.getName());
+                                mplew.writeShort(gs.getLogoBG());
+                                mplew.write(gs.getLogoBGColor());
+                                mplew.writeShort(gs.getLogo());
+                                mplew.write(gs.getLogoColor());
+                        } else {
+                                mplew.writeMapleAsciiString("");
+                                mplew.write(new byte[6]);
+                        }
+                }
+                
+                writeForeignBuffs(mplew, chr);
                 
                 mplew.writeShort(chr.getJob().getId());
                 
@@ -3804,6 +3809,16 @@ public class MaplePacketCreator {
                 mplew.write(4);
                 mplew.writeInt(from.getParty().getId());
                 mplew.writeMapleAsciiString(from.getName());
+                mplew.write(0);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] partySearchInvite(MapleCharacter from) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.PARTY_OPERATION.getValue());
+                mplew.write(4);
+                mplew.writeInt(from.getParty().getId());
+                mplew.writeMapleAsciiString("PS: " + from.getName());
                 mplew.write(0);
                 return mplew.getPacket();
         }

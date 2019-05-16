@@ -80,8 +80,10 @@ import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import client.MapleClient;
 import client.MapleCharacter;
 import client.SkillFactory;
+import client.command.CommandsExecutor;
 import client.inventory.Item;
 import client.inventory.ItemFactory;
+import client.inventory.MaplePet;
 import client.inventory.manipulator.MapleCashidGenerator;
 import client.newyear.NewYearCardRecord;
 import constants.ItemConstants;
@@ -838,33 +840,6 @@ public class Server {
         return rankSystem;
     }
     
-    private static void clearUnreferencedPetIds() {
-        PreparedStatement ps = null;
-        Connection con = null;
-        try {
-            con = DatabaseConnection.getConnection();
-            
-            ps = con.prepareStatement("UPDATE inventoryitems SET petid = -1, expiration = 0 WHERE petid != -1 AND petid NOT IN (SELECT petid FROM pets)");
-            ps.executeUpdate();
-            
-            ps.close();
-            con.close();
-        } catch(SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            try {
-                if(ps != null && !ps.isClosed()) {
-                    ps.close();
-                }
-                if(con != null && !con.isClosed()) {
-                    con.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
     public void init() {
         Properties p = loadWorldINI();
         if(p == null) {
@@ -897,7 +872,7 @@ public class Server {
             sqle.printStackTrace();
         }
         
-        clearUnreferencedPetIds();
+        MaplePet.clearMissingPetsFromDb();
         MapleCashidGenerator.loadExistentCashIdsFromDb();
         
         IoBuffer.setUseDirectBuffer(false);
@@ -971,6 +946,7 @@ public class Server {
         
         MapleSkillbookInformationProvider.getInstance();
         OpcodeConstants.generateOpcodeNames();
+        CommandsExecutor.getInstance();
     }
 
     public static void main(String args[]) {

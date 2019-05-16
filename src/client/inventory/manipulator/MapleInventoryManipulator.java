@@ -439,7 +439,7 @@ public class MapleInventoryManipulator {
                     announceModifyInventory(c, item, fromDrop, allowZero);
                 }
                 
-                MaplePet.deleteFromDb(chr, petid);
+                // thanks Robin Schulz for noticing pet issues when moving pets out of inventory
             } else {
                 inv.removeItem(slot, quantity, allowZero);
                 if(type != MapleInventoryType.CANHOLD) {

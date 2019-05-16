@@ -36,7 +36,7 @@ public class Legend {
     public static final int MAKER = 20001007;
     public static final int BAMBOO_THRUST = 20001009;
     public static final int INVICIBLE_BARRIER = 20001010;
-    public static final int POWER_EXPLOSION = 20011011;
+    public static final int POWER_EXPLOSION = 20001011;
     public static final int METEO_SHOWER = 20001011;
     public static final int BLESSING_OF_THE_FAIRY = 20000012;
     public static final int TUTORIAL_SKILL1 = 20000014;

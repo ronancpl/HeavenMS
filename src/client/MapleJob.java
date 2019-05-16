@@ -114,11 +114,6 @@ public enum MapleJob {
                 return BEGINNER;
         }
     }
-
-    public boolean isBeginner(MapleJob beginners) {
-    	return MAGICIAN == beginners || WARRIOR == beginners || THIEF == beginners || PIRATE == beginners || BOWMAN == beginners || ARAN1 == beginners || THUNDERBREAKER1 == beginners
-    			|| DAWNWARRIOR1 == beginners || NIGHTWALKER1 == beginners || BLAZEWIZARD1 == beginners;
-     }
     
     public boolean isA(MapleJob basejob) {  // thanks Steve (kaito1410) for pointing out an improvement here
         int basebranch = basejob.getId() / 10;

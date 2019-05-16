@@ -888,6 +888,7 @@ public class MapleClient {
                         player.cancelAllBuffs(true);
                         
                         player.closePlayerInteractions();
+                        player.closePartySearchInteractions();
                         
                         if (!serverTransition) {    // thanks MedicOP for detecting an issue with party leader change on changing channels
                                 removePartyPlayer(wserv);
@@ -1463,6 +1464,7 @@ public class MapleClient {
                 }
                 
 		player.closePlayerInteractions();
+                player.closePartySearchInteractions();
                 
                 player.unregisterChairBuff();
 		server.getPlayerBuffStorage().addBuffsToStorage(player.getId(), player.getAllBuffs());

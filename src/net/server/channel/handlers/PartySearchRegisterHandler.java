@@ -30,13 +30,7 @@ import client.MapleClient;
  * @author Quasar
  */
 public class PartySearchRegisterHandler extends AbstractMaplePacketHandler {
-    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	return; //Disabling this for now.
-/*    	MapleCharacter chr = c.getPlayer();
-    	int min = slea.readInt();
-    	int max = slea.readInt();
-    	if (chr.getLevel() < min || chr.getLevel() > max || (max - min) > 30 || min > max) { // Client editing
-    		return;
-    	}*/
-    }
+    
+    @Override
+    public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {}
 }

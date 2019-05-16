@@ -341,7 +341,8 @@ public class MapleParty {
             player.setMPC(partyplayer);
             player.getMap().addPartyMember(player);
             player.silentPartyUpdate();
-
+            
+            player.updatePartySearchAvailability(false);
             player.partyOperationUpdate(party, null);
             
             player.announce(MaplePacketCreator.partyCreated(party, partyplayer.getId()));
@@ -370,7 +371,9 @@ public class MapleParty {
                     world.updateParty(party.getId(), PartyOperation.JOIN, partyplayer);
                     player.receivePartyMemberHP();
                     player.updatePartyMemberHP();
-
+                    
+                    player.resetPartySearchInvite(party.getLeaderId());
+                    player.updatePartySearchAvailability(false);
                     player.partyOperationUpdate(party, null);
                     return true;
                 } else {
@@ -466,7 +469,8 @@ public class MapleParty {
 
                         emc.setParty(null);
                         world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);
-
+                        
+                        emc.updatePartySearchAvailability(true);
                         emc.partyOperationUpdate(party, partyMembers);
                     } else {
                         world.updateParty(party.getId(), PartyOperation.EXPEL, expelled);

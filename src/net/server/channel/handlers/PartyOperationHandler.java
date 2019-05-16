@@ -56,6 +56,7 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                     List<MapleCharacter> partymembers = player.getPartyMembers();
 
                     MapleParty.leaveParty(party, c);
+                    player.updatePartySearchAvailability(true);
                     player.partyOperationUpdate(party, partymembers);
                 }
                 break;

@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import server.ThreadManager;
 
 public class IdCommand extends Command {
     {
@@ -34,7 +35,7 @@ public class IdCommand extends Command {
             return;
         }
         final String queryItem = joinStringArr(Arrays.copyOfRange(params, 1, params.length), " ");
-        player.yellowMessage("Querying for entry... May take some time... Please try to refine your search");
+        player.yellowMessage("Querying for entry... May take some time... Please try to refine your search.");
         Runnable queryRunnable = new Runnable() {
             @Override
             public void run() {
@@ -42,28 +43,31 @@ public class IdCommand extends Command {
                     populateIdMap(params[0].toLowerCase());
 
                     Map<String, String> resultList = fetchResults(itemMap.get(params[0]), queryItem);
-
+                    StringBuilder sb = new StringBuilder();
+                    
                     if (resultList.size() > 0) {
                         int count = 0;
                         for (Map.Entry<String, String> entry: resultList.entrySet()) {
-                            player.yellowMessage(String.format("Id for %s is: %s", entry.getKey(), entry.getValue()));
+                            sb.append(String.format("Id for %s is: #b%s#k", entry.getKey(), entry.getValue()) + "\r\n");
                             if (++count > 100) {
                                 break;
                             }
                         }
-                        player.yellowMessage(String.format("Results found: %d | Returned: %d/100 | Refine search query to improve time.", resultList.size(), count - 1));
+                        sb.append(String.format("Results found: #r%d#k | Returned: #b%d#k/100 | Refine search query to improve time.", resultList.size(), count) + "\r\n");
+                        
+                        player.getClient().getAbstractPlayerInteraction().npcTalk(9010000, sb.toString());
                     } else {
-                        player.yellowMessage(String.format("Id not found for item: %s, of type: %s", queryItem, params[0]));
+                        player.yellowMessage(String.format("Id not found for item: %s, of type: %s.", queryItem, params[0]));
                     }
                 } catch (IdTypeNotSupportedException e) {
-                    player.yellowMessage("Your query type is not supported");
+                    player.yellowMessage("Your query type is not supported.");
                 } catch (IOException e) {
-                    player.yellowMessage("Error reading file, please contact your administrator");
+                    player.yellowMessage("Error reading file, please contact your administrator.");
                 }
             }
         };
-        Thread thread = new Thread(queryRunnable);
-        thread.start();
+        
+        ThreadManager.getInstance().newTask(queryRunnable);
     }
 
     private void populateIdMap(String type) throws IdTypeNotSupportedException, IOException {

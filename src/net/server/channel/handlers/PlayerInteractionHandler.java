@@ -608,6 +608,8 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 MaplePlayerShop shop = chr.getPlayerShop();
                 MapleHiredMerchant merchant = chr.getHiredMerchant();
                 if (shop != null && shop.isOwner(chr)) {
+                    System.out.println(shopItem.getItem().getPet() + " " + shopItem.getItem().getPetId());
+                    System.out.println(ivItem.getPet() + " " + ivItem.getPetId());
                     if (shop.isOpen() || !shop.addItem(shopItem)) { // thanks Vcoc for pointing an exploit with unlimited shop slots
                         c.announce(MaplePacketCreator.serverNotice(1, "You can't sell it anymore."));
                         return;

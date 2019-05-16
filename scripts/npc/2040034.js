@@ -38,7 +38,7 @@ function action(mode, type, selection) {
                                 return;
                         }
                     
-                        cm.sendSimple("#e#b<Party Quest: Dimensional Schism>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nYou can't go any higher because of the extremely dangerous creatures above. Would you like to collaborate with party members to complete the quest? If so, please have your #bparty leader#k talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I want to find party members.\r\n#L2#I would like to hear more details.");
+                        cm.sendSimple("#e#b<Party Quest: Dimensional Schism>\r\n#k#n" + em.getProperty("party") + "\r\n\r\nYou can't go any higher because of the extremely dangerous creatures above. Would you like to collaborate with party members to complete the quest? If so, please have your #bparty leader#k talk to me.#b\r\n#L0#I want to participate in the party quest.\r\n#L1#I would like to " + (cm.getPlayer().isRecvPartySearchInviteEnabled() ? "disable" : "enable") + " Party Search.\r\n#L2#I would like to hear more details.");
                 } else if (status == 1) {
                         if (selection == 0) {
                                 if (cm.getParty() == null) {
@@ -61,7 +61,8 @@ function action(mode, type, selection) {
                                         cm.dispose();
                                 }
                         } else if (selection == 1) {
-                                cm.sendOk("Try using a Super Megaphone or asking your buddies or guild to join!");
+                                var psState = cm.getPlayer().toggleRecvPartySearchInvite();
+                                cm.sendOk("Your Party Search status is now: #b" + (psState ? "enabled" : "disabled") + "#k. Talk to me whenever you want to change it back.");
                                 cm.dispose();
                         } else {
                                 cm.sendOk("#e#b<Party Quest: Dimensional Schism>#k#n\r\nA Dimensional Schism has appeared in #b#m220000000#!#k We desperately need brave adventurers who can defeat the intruding monsters. Please, party with some dependable allies to save #m220000000#! You must pass through various stages by defeating monsters and solving quizzes, and ultimately defeat #r#o9300012##k.");

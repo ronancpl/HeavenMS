@@ -1840,6 +1840,7 @@ Revisado refatoração recente em acesso a valores de stats de jogadores levando
 24 - 26 Abril 2019,
 Ajustado levemente taxa de respawn de mobs quando não se está usando a flag de respawn completo.
 Ajustado ganhos de stats de ataque ao passar de nível weapons, ganha-se menos do stat que não é a afinidade (watk/matk).
+Implementado sistema de Party Search no fonte. Líderes de party são servidos em FIFO, buscando melhores jogadores na faixa escolhida sempre que possível. Thread separada lida com organização e convites automatizados para jogadores.
 Corrigido drops de mesos sendo bloqueados para drops rápidos de mesos, indevidamente dificultando jogabilidade para certas classes.
 Corrigido caso de XML parser em MapleSkillBookInformationParser não lidando com terminadores "/>" corretamente.
 
@@ -1851,5 +1852,23 @@ Adicionado server flag para checagem de IP's ao logar jogadores.
 Corrigido mobskills não sendo devidamente aplicados devido a um deslize anterior que tentaria aplicar indevidamente 2x "uso de skill" (uma das vezes deveria ser somente checagem de rotina).
 Corrigido puppets de arqueiros interrompendo mob statuses para o dono ao serem lançados em campo.
 
+03 Maio 2019,
+Revisado chance de drops de skillbooks. Chance de drops agora está relacionado ao nível do mob em conjunto com disponibilidade do mesmo (em bosses chances são melhores de sair o item).
+Ajustado ganhos de party bonus EXP. Penalidade por diferença de nível agora somente leva em conta membros de equipe que efetivamente participaram da ação.
+Ajustado as mecânicas da Party Search recentemente implementadas, de forma que se comporte bem em jogo.
+Ajustado inicialização do sistema de comandos, agora atuando na inicialização do server, evitando bottleneck de primeira instanciação.
+
 04 Maio 2019,
 Corrigido visão de mob statuses sendo interrompido para o novo controlador ao realizar troca de controladores.
+
+07 - 08 Maio 2019,
+Adicionado ao sistema de buffs suporte para condicionais de atuação (e.g. buff tendo efeito ativo dependendo do mapa de onde o jogador se encontra).
+Implementado ordenação topológica na atualização de buffs. Sistema aponta um "melhor caminho" na atualização dos buffs, desta forma mostrando visualmente ao jogador certas combinações de buffs aplicados que anteriormente falhava em mostrar (e.g. Congrats from GM & Chocolate Wafer).
+Corrigido Arans não recebendo corretamente buff de velocidade de ataque do Dojo.
+Implementado convite de Party Search sensível ao mapa onde os jogadores líder e convidado se encontram. O sistema somente detecta para convites jogadores em mapas "próximos".
+
+12 Maio 2019,
+Corrigido pets sendo indevidamente removido da DB ao realizar operações de retirada do inventário.
+
+15 Maio 2019,
+Revisado, via testes unitários, robustez dos registros/buscas de jogadores e fluidez do sistema de Party Search.

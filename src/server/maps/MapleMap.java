@@ -652,7 +652,8 @@ public class MapleMap {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         for (final MonsterDropEntry de : dropEntry) {
-            int dropChance = (int) Math.min((float) de.chance * chRate, Integer.MAX_VALUE);
+            float cardRate = chr.getCardRate(de.itemId);
+            int dropChance = (int) Math.min((float) de.chance * chRate * cardRate, Integer.MAX_VALUE);
             
             if (Randomizer.nextInt(999999) < dropChance) {
                 if (droptype == 3) {
@@ -2481,7 +2482,9 @@ public class MapleMap {
         } finally {
             chrWLock.unlock();
         }
+        
         chr.setMapId(mapid);
+        chr.updateActiveEffects();
         
         if (chrSize == 1) {
             if(!hasItemMonitor()) {
@@ -3305,11 +3308,10 @@ public class MapleMap {
         player.setPosition(newPosition);
         
         try {
-            Collection<MapleMapObject> visibleObjects = player.getVisibleMapObjects();
-            MapleMapObject[] visibleObjectsNow = visibleObjects.toArray(new MapleMapObject[visibleObjects.size()]);
+            MapleMapObject[] visibleObjects = player.getVisibleMapObjects();
 
             Map<Integer, MapleMapObject> mapObjects = getCopyMapObjects();
-            for (MapleMapObject mo : visibleObjectsNow) {
+            for (MapleMapObject mo : visibleObjects) {
                 if (mo != null) {
                     if (mapObjects.get(mo.getObjectId()) == mo) {
                         updateMapObjectVisibility(player, mo);

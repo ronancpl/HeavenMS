@@ -61,6 +61,7 @@ public class EnterCashShopHandler extends AbstractMaplePacketHandler {
             }
 
             mc.closePlayerInteractions();
+            mc.closePartySearchInteractions();
 
             mc.unregisterChairBuff();
             Server.getInstance().getPlayerBuffStorage().addBuffsToStorage(mc.getId(), mc.getAllBuffs());

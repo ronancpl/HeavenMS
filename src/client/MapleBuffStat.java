@@ -30,37 +30,35 @@ public enum MapleBuffStat {
     SHARP_EYES(0x20L),
     MANA_REFLECTION(0x40L),
     //ALWAYS_RIGHT(0X80L),
-    
-    //------ bgn EDITED SLOT (was unused before) --------
-    MAP_PROTECTION(0x100000000000000L),
-    //------ end EDITED SLOT ----------------------------
-    
     SHADOW_CLAW(0x100L),
     INFINITY(0x200L),
     HOLY_SHIELD(0x400L),
     HAMSTRING(0x800L),
     BLIND(0x1000L),
     CONCENTRATE(0x2000L),
-    HPREC(0x4000L),
+    PUPPET(0x4000L),
     ECHO_OF_HERO(0x8000L),
-    MPREC(0x10000L),
+    MESO_UP_BY_ITEM(0x10000L),
     GHOST_MORPH(0x20000L),
     AURA(0x40000L),
     CONFUSE(0x80000L),
-    ARIANT_PQ_SHIELD(0x40000L),
     
     // ------ COUPON feature ------
-    
     COUPON_EXP1(0x100000L),
     COUPON_EXP2(0x200000L),
-    COUPON_EXP3(0x400000L),
-    COUPON_EXP4(0x800000L),
-    COUPON_DRP1(0x1000000L),
-    COUPON_DRP2(0x2000000L),
-    COUPON_DRP3(0x4000000L),
+    COUPON_EXP3(0x400000L), COUPON_EXP4(0x400000L),
+    COUPON_DRP1(0x800000L),
+    COUPON_DRP2(0x1000000L), COUPON_DRP3(0x1000000L),
     
-    // ---- end COUPON feature ----
+    // ------ monster card buffs, thanks to Arnah (Vertisy) ------
+    ITEM_UP_BY_ITEM(0x100000L),
+    RESPECT_PIMMUNE(0x200000L),
+    RESPECT_MIMMUNE(0x400000L),
+    DEFENSE_ATT(0x800000L),
+    DEFENSE_STATE(0x1000000L),
     
+    HPREC(0x2000000L),
+    MPREC(0x4000000L),
     BERSERK_FURY(0x8000000L),
     DIVINE_BODY(0x10000000L),
     SPARK(0x20000000L),
@@ -73,7 +71,6 @@ public enum MapleBuffStat {
     ACC(0x1000000000L),
     AVOID(0x2000000000L),
     HANDS(0x4000000000L),
-    SHOWDASH(0x4000000000L),
     SPEED(0x8000000000L),
     JUMP(0x10000000000L),
     MAGIC_GUARD(0x20000000000L),
@@ -96,11 +93,10 @@ public enum MapleBuffStat {
     MESOUP(0x200000000000000L),
     SHADOWPARTNER(0x400000000000000L),
     PICKPOCKET(0x800000000000000L),
-    PUPPET(0x800000000000000L),
     MESOGUARD(0x1000000000000000L),
     EXP_INCREASE(0x2000000000000000L),
     WEAKEN(0x4000000000000000L),
-    //THAT GAP
+    MAP_PROTECTION(0x8000000000000000L),
     
     //all incorrect buffstats
     SLOW(0x200000000L, true), 
@@ -143,5 +139,10 @@ public enum MapleBuffStat {
 
     public boolean isFirst() {
         return isFirst;
+    }
+    
+    @Override
+    public String toString() {
+        return name();
     }
 }

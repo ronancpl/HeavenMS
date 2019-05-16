@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Stack;
 import java.util.Comparator;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.ScheduledFuture;
@@ -205,7 +206,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private transient int localstr, localdex, localluk, localint_, localmagic, localwatk;
     private transient int equipmaxhp, equipmaxmp, equipstr, equipdex, equipluk, equipint_, equipmagic, equipwatk, localchairhp, localchairmp;
     private int localchairrate;
-    private boolean hidden, equipchanged = true, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false;
+    private boolean hidden, equipchanged = true, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false, canRecvPartySearchInvite = true;
     private boolean equippedMesoMagnet = false, equippedItemPouch = false, equippedPetItemIgnore = false;
     private int linkedLevel = 0;
     private String linkedName = null;
@@ -286,6 +287,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private Lock cpnLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHARACTER_CPN);
     private Map<Integer, Set<Integer>> excluded = new LinkedHashMap<>();
     private Set<Integer> excludedItems = new LinkedHashSet<>();
+    private Set<Integer> disabledPartySearchInvites = new LinkedHashSet<>();
     private static String[] ariantroomleader = new String[3];
     private static int[] ariantroomslot = new int[3];
     private long portaldelay = 0, lastcombo = 0;
@@ -484,6 +486,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public void setEnteredChannelWorld() {
         awayFromWorld.set(false);
         client.getChannelServer().removePlayerAway(id);
+        
+        if (canRecvPartySearchInvite) {
+            this.getWorldServer().getPartySearchCoordinator().attachPlayer(this);
+        }
     }
     
     public void setAwayFromChannelWorld() {
@@ -502,6 +508,46 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else {
             client.getChannelServer().removePlayerAway(id);
         }
+    }
+    
+    public void updatePartySearchAvailability(boolean psearchAvailable) {
+        if (psearchAvailable) {
+            if (canRecvPartySearchInvite && getParty() == null) {
+                this.getWorldServer().getPartySearchCoordinator().attachPlayer(this);
+            }
+        } else {
+            if (canRecvPartySearchInvite) {
+                this.getWorldServer().getPartySearchCoordinator().detachPlayer(this);
+            }
+        }
+    }
+    
+    public boolean toggleRecvPartySearchInvite() {
+        canRecvPartySearchInvite = !canRecvPartySearchInvite;
+        
+        if (canRecvPartySearchInvite) {
+            updatePartySearchAvailability(getParty() == null);
+        } else {
+            this.getWorldServer().getPartySearchCoordinator().detachPlayer(this);
+        }
+        
+        return canRecvPartySearchInvite;
+    }
+    
+    public boolean isRecvPartySearchInviteEnabled() {
+        return canRecvPartySearchInvite;
+    }
+    
+    public void resetPartySearchInvite(int fromLeaderid) {
+        disabledPartySearchInvites.remove(fromLeaderid);
+    }
+    
+    public void disablePartySearchInvite(int fromLeaderid) {
+        disabledPartySearchInvites.add(fromLeaderid);
+    }
+    
+    public boolean hasDisabledPartySearchInvite(int fromLeaderid) {
+        return disabledPartySearchInvites.contains(fromLeaderid);
     }
     
     public void setSessionTransitionState() {
@@ -1047,7 +1093,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             return;//the fuck you doing idiot!
         }
         
-        this.job = newJob;
+        if (canRecvPartySearchInvite && getParty() == null) {
+            this.updatePartySearchAvailability(false);
+            this.job = newJob;
+            this.updatePartySearchAvailability(true);
+        } else {
+            this.job = newJob;
+        }
         
         int spGain = 1;
         if (GameConstants.hasSPTable(newJob)) {
@@ -3448,6 +3500,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         for(Entry<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> bpl: buffEffects.entrySet()) {
             MapleBuffStatValueHolder mbsvhi = bpl.getValue().get(mbs);
             if(mbsvhi != null) {
+                if(!mbsvhi.effect.isActive(mapid)) {
+                    continue;
+                }
+                
                 if(mbsvhi.value > max.left) {
                     max = new Pair<>(mbsvhi.value, mbsvhi.effect.getStatups().size());
                     mbsvh = mbsvhi;
@@ -3477,6 +3533,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         effLock.lock();
         chrLock.lock();
         try {
+            System.out.println("-------------------");
+            System.out.println("CACHED BUFF COUNT: ");
+            for(Entry<MapleBuffStat, Byte> bpl : buffEffectsCount.entrySet()) {
+                System.out.println(bpl.getKey() + ": " + bpl.getValue());
+            }
             System.out.println("-------------------");
             System.out.println("CACHED BUFFS: ");
             for(Entry<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> bpl : buffEffects.entrySet()) {
@@ -3664,46 +3725,33 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
+    public void updateActiveEffects() {
+        chrLock.lock();
+        try {
+            effects.clear();
+            updateEffects(buffEffectsCount.keySet());
+        } finally {
+            chrLock.unlock();
+        }
+    }
+    
     private void updateEffects(Set<MapleBuffStat> removedStats) {
         chrLock.lock();
         try {
-            Map<Integer, Pair<MapleStatEffect, Long>> retrievedEffects = new LinkedHashMap<>();
-            Map<MapleBuffStat, Pair<Integer, Integer>> maxStatups = new LinkedHashMap<>();
-            
-            for(Entry<Integer, Map<MapleBuffStat, MapleBuffStatValueHolder>> bel : buffEffects.entrySet()) {
-                for(Entry<MapleBuffStat, MapleBuffStatValueHolder> belv : bel.getValue().entrySet()) {
-                    if(removedStats.contains(belv.getKey())) {
-                        if(!retrievedEffects.containsKey(bel.getKey())) {
-                            retrievedEffects.put(bel.getKey(), new Pair<>(belv.getValue().effect, belv.getValue().startTime));
-                        }
-                        
-                        Pair<Integer, Integer> thisStat = maxStatups.get(belv.getKey());
-                        if(thisStat == null || belv.getValue().value > thisStat.getRight()) {
-                            maxStatups.put(belv.getKey(), new Pair<>(bel.getKey(), belv.getValue().value));
-                        }
-                    }
-                }
-            }
-            
-            Map<Integer, Pair<MapleStatEffect, Long>> bestEffects = new LinkedHashMap<>();
             Set<MapleBuffStat> retrievedStats = new LinkedHashSet<>();
-            for(Entry<MapleBuffStat, Pair<Integer, Integer>> lmsee: maxStatups.entrySet()) {
-                if(isSingletonStatup(lmsee.getKey())) {
-                    continue;
-                }
+            
+            for (MapleBuffStat mbs : removedStats) {
+                fetchBestEffectFromItemEffectHolder(mbs);
                 
-                Integer srcid = lmsee.getValue().getLeft();
-                if(!bestEffects.containsKey(srcid)) {
-                    Pair<MapleStatEffect, Long> msel = retrievedEffects.get(srcid);
-                    
-                    bestEffects.put(srcid, msel);
-                    for(Pair<MapleBuffStat, Integer> mbsi : msel.getLeft().getStatups()) {
-                        retrievedStats.add(mbsi.getLeft());
+                MapleBuffStatValueHolder mbsvh = effects.get(mbs);
+                if (mbsvh != null) {
+                    for (Pair<MapleBuffStat, Integer> statup : mbsvh.effect.getStatups()) {
+                        retrievedStats.add(statup.getLeft());
                     }
                 }
             }
             
-            propagateBuffEffectUpdates(bestEffects, retrievedStats);
+            propagateBuffEffectUpdates(new LinkedHashMap<Integer, Pair<MapleStatEffect, Long>>(), retrievedStats, removedStats);
         } finally {
             chrLock.unlock();
         }
@@ -3771,21 +3819,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         
         if (!overwrite) {
-            List<MapleBuffStat> cancelStats = new LinkedList<>();
-            
-            chrLock.lock();
-            try {
-                for(Entry<MapleBuffStat, MapleBuffStatValueHolder> mbsl : buffstats.entrySet()) {
-                    cancelStats.add(mbsl.getKey());
-                }
-            } finally {
-                chrLock.unlock();
-            }
-            
-            for(MapleBuffStat mbs : cancelStats) {
-                removedStats.add(mbs);
-            }
-            cancelPlayerBuffs(cancelStats);
+            removedStats.addAll(buffstats.keySet());
         }
         
         return toCancel;
@@ -3909,7 +3943,152 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return extractedStatBuffs;
     }
     
-    private void propagateBuffEffectUpdates(Map<Integer, Pair<MapleStatEffect, Long>> retrievedEffects, Set<MapleBuffStat> retrievedStats) {
+    private void cancelInactiveBuffStats(Set<MapleBuffStat> retrievedStats, Set<MapleBuffStat> removedStats) {
+        List<MapleBuffStat> inactiveStats = new LinkedList<>();
+        for (MapleBuffStat mbs : removedStats) {
+            if (!retrievedStats.contains(mbs)) {
+                inactiveStats.add(mbs);
+            }
+        }
+        
+        if (!inactiveStats.isEmpty()) {
+            client.announce(MaplePacketCreator.cancelBuff(inactiveStats));
+            getMap().broadcastMessage(this, MaplePacketCreator.cancelForeignBuff(getId(), inactiveStats), false);
+        }
+    }
+    
+    private static Map<MapleStatEffect, Integer> topologicalSortLeafStatCount(Map<MapleBuffStat, Stack<MapleStatEffect>> buffStack) {
+        Map<MapleStatEffect, Integer> leafBuffCount = new LinkedHashMap<>();
+        
+        for (Entry<MapleBuffStat, Stack<MapleStatEffect>> e : buffStack.entrySet()) {
+            Stack<MapleStatEffect> mseStack = e.getValue();
+            if (mseStack.isEmpty()) {
+                continue;
+            }
+            
+            MapleStatEffect mse = mseStack.peek();
+            Integer count = leafBuffCount.get(mse);
+            if (count == null) {
+                leafBuffCount.put(mse, 1);
+            } else {
+                leafBuffCount.put(mse, count + 1);
+            }
+        }
+        
+        return leafBuffCount;
+    }
+    
+    private static List<MapleStatEffect> topologicalSortRemoveLeafStats(Map<MapleStatEffect, Set<MapleBuffStat>> stackedBuffStats, Map<MapleBuffStat, Stack<MapleStatEffect>> buffStack, Map<MapleStatEffect, Integer> leafStatCount) {
+        List<MapleStatEffect> clearedStatEffects = new LinkedList<>();
+        Set<MapleBuffStat> clearedStats = new LinkedHashSet<>();
+        
+        for (Entry<MapleStatEffect, Integer> e : leafStatCount.entrySet()) {
+            MapleStatEffect mse = e.getKey();
+            
+            if (stackedBuffStats.get(mse).size() <= e.getValue()) {
+                clearedStatEffects.add(mse);
+                
+                for (MapleBuffStat mbs : stackedBuffStats.get(mse)) {
+                    clearedStats.add(mbs);
+                }
+            }
+        }
+        
+        for (MapleBuffStat mbs : clearedStats) {
+            MapleStatEffect mse = buffStack.get(mbs).pop();
+            stackedBuffStats.get(mse).remove(mbs);
+        }
+        
+        return clearedStatEffects;
+    }
+    
+    private static void topologicalSortRebaseLeafStats(Map<MapleStatEffect, Set<MapleBuffStat>> stackedBuffStats, Map<MapleBuffStat, Stack<MapleStatEffect>> buffStack) {
+        for (Entry<MapleBuffStat, Stack<MapleStatEffect>> e : buffStack.entrySet()) {
+            Stack<MapleStatEffect> mseStack = e.getValue();
+            
+            if (!mseStack.isEmpty()) {
+                MapleStatEffect mse = mseStack.pop();
+                stackedBuffStats.get(mse).remove(e.getKey());
+            }
+        }
+    }
+    
+    private static List<MapleStatEffect> topologicalSortEffects(Map<MapleBuffStat, List<Pair<MapleStatEffect, Integer>>> buffEffects) {
+        Map<MapleStatEffect, Set<MapleBuffStat>> stackedBuffStats = new LinkedHashMap<>();
+        Map<MapleBuffStat, Stack<MapleStatEffect>> buffStack = new LinkedHashMap<>();
+        
+        for (Entry<MapleBuffStat, List<Pair<MapleStatEffect, Integer>>> e : buffEffects.entrySet()) {
+            MapleBuffStat mbs = e.getKey();
+            
+            Stack<MapleStatEffect> mbsStack = new Stack<>();
+            buffStack.put(mbs, mbsStack);
+            
+            for (Pair<MapleStatEffect, Integer> emse : e.getValue()) {
+                MapleStatEffect mse = emse.getLeft();
+                mbsStack.push(mse);
+                
+                Set<MapleBuffStat> mbsStats = stackedBuffStats.get(mse);
+                if (mbsStats == null) {
+                    mbsStats = new LinkedHashSet<>();
+                    stackedBuffStats.put(mse, mbsStats);
+                }
+                
+                mbsStats.add(mbs);
+            }
+        }
+        
+        List<MapleStatEffect> buffList = new LinkedList<>();
+        while (true) {
+            Map<MapleStatEffect, Integer> leafStatCount = topologicalSortLeafStatCount(buffStack);
+            if (leafStatCount.isEmpty()) break;
+            
+            List<MapleStatEffect> clearedNodes = topologicalSortRemoveLeafStats(stackedBuffStats, buffStack, leafStatCount);
+            if (clearedNodes.isEmpty()) {
+                topologicalSortRebaseLeafStats(stackedBuffStats, buffStack);
+            } else {
+                buffList.addAll(clearedNodes);
+            }
+        }
+        
+        return buffList;
+    }
+    
+    private static List<MapleStatEffect> sortEffectsList(Map<MapleStatEffect, Integer> updateEffectsList) {
+        Map<MapleBuffStat, List<Pair<MapleStatEffect, Integer>>> buffEffects = new LinkedHashMap<>();
+        
+        for (Entry<MapleStatEffect, Integer> p : updateEffectsList.entrySet()) {
+            MapleStatEffect mse = p.getKey();
+            
+            for (Pair<MapleBuffStat, Integer> statup : mse.getStatups()) {
+                MapleBuffStat stat = statup.getLeft();
+                
+                List<Pair<MapleStatEffect, Integer>> statBuffs = buffEffects.get(stat);
+                if (statBuffs == null) {
+                    statBuffs = new ArrayList<>();
+                    buffEffects.put(stat, statBuffs);
+                }
+                
+                statBuffs.add(new Pair<>(mse, statup.getRight()));
+            }
+        }
+        
+        Comparator cmp = new Comparator<Pair<MapleStatEffect, Integer>>() {
+            @Override
+            public int compare(Pair<MapleStatEffect, Integer> o1, Pair<MapleStatEffect, Integer> o2)
+            {
+                return o2.getRight().compareTo(o1.getRight());
+            }
+        };
+        
+        for (Entry<MapleBuffStat, List<Pair<MapleStatEffect, Integer>>> statBuffs : buffEffects.entrySet()) {
+            Collections.sort(statBuffs.getValue(), cmp);
+        }
+        
+        return topologicalSortEffects(buffEffects);
+    }
+    
+    private void propagateBuffEffectUpdates(Map<Integer, Pair<MapleStatEffect, Long>> retrievedEffects, Set<MapleBuffStat> retrievedStats, Set<MapleBuffStat> removedStats) {
+        cancelInactiveBuffStats(retrievedStats, removedStats);
         if (retrievedStats.isEmpty()) {
             return;
         }
@@ -3924,7 +4103,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             maxBuffValue.put(mbs, new Pair<>(Integer.MIN_VALUE, (MapleStatEffect) null));
         }
         
-        Map<MapleStatEffect, Pair<Integer, Integer>> updateEffects = new LinkedHashMap<>();
+        Map<MapleStatEffect, Integer> updateEffects = new LinkedHashMap<>();
         
         List<MapleStatEffect> recalcMseList = new LinkedList<>();
         for(Entry<Integer, Pair<MapleStatEffect, Long>> re : retrievedEffects.entrySet()) {
@@ -3937,7 +4116,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             recalcMseList = new LinkedList<>();
             
             for(MapleStatEffect mse : mseList) {
-                int mseAmount = 0;
                 int maxEffectiveStatup = Integer.MIN_VALUE;
                 for(Pair<MapleBuffStat, Integer> st : mse.getStatups()) {
                     MapleBuffStat mbs = st.getLeft();
@@ -3972,36 +4150,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             }
                         }
                     }
-                    
-                    if(relevantStatup) {
-                        mseAmount += st.getRight();
-                    }
                 }
                 
-                updateEffects.put(mse, new Pair<>(maxEffectiveStatup, mseAmount));
+                updateEffects.put(mse, maxEffectiveStatup);
             }
         } while(!recalcMseList.isEmpty());
         
-        List<Pair<MapleStatEffect, Pair<Integer, Integer>>> updateEffectsList = new ArrayList<>();
-        for(Entry<MapleStatEffect, Pair<Integer, Integer>> ue : updateEffects.entrySet()) {
-            updateEffectsList.add(new Pair<>(ue.getKey(), ue.getValue()));
-        }
-        
-        Collections.sort(updateEffectsList, new Comparator<Pair<MapleStatEffect, Pair<Integer, Integer>>>() {
-            @Override
-            public int compare(Pair<MapleStatEffect, Pair<Integer, Integer>> o1, Pair<MapleStatEffect, Pair<Integer, Integer>> o2)
-            {
-                if(o1.getRight().getLeft().equals(o2.getRight().getLeft())) {
-                    return o1.getRight().getRight().compareTo(o2.getRight().getRight());
-                } else {
-                    return o1.getRight().getLeft().compareTo(o2.getRight().getLeft());
-                }
-            }
-        });
+        List<MapleStatEffect> updateEffectsList = sortEffectsList(updateEffects);
         
         List<Pair<Integer, Pair<MapleStatEffect, Long>>> toUpdateEffects = new LinkedList<>();
-        for(Pair<MapleStatEffect, Pair<Integer, Integer>> msep : updateEffectsList) {
-            MapleStatEffect mse = msep.getLeft();
+        for(MapleStatEffect mse : updateEffectsList) {
             toUpdateEffects.add(new Pair<>(mse.getBuffSourceId(), retrievedEffects.get(mse.getBuffSourceId())));
         }
         
@@ -4010,9 +4168,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             Pair<MapleStatEffect, Long> msel = lmse.getRight();
             
             for(Pair<MapleBuffStat, Integer> statup : getActiveStatupsFromSourceid(lmse.getLeft())) {
-                if(!isSingletonStatup(statup.getLeft())) {
-                    activeStatups.add(statup);
-                }
+                activeStatups.add(statup);
             }
             
             msel.getLeft().updateBuffEffect(this, activeStatups, msel.getRight());
@@ -4059,6 +4215,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             default:
                 return true;
         }
+    }
+    
+    private void addItemEffectHolderCount(MapleBuffStat stat) {
+        Byte val = buffEffectsCount.get(stat);
+        if (val != null) {
+            val = (byte) (val + 1);
+        } else {
+            val = (byte) 1;
+        }
+
+        buffEffectsCount.put(stat, val);
     }
     
     public void registerEffect(MapleStatEffect effect, long starttime, long expirationtime, boolean isSilent) {
@@ -4180,6 +4347,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 appliedStatups.put(ps.getLeft(), new MapleBuffStatValueHolder(effect, starttime, ps.getRight()));
             }
             
+            boolean active = effect.isActive(mapid);
             if(ServerConstants.USE_BUFF_MOST_SIGNIFICANT) {
                 toDeploy = new LinkedHashMap<>();
                 Map<Integer, Pair<MapleStatEffect, Long>> retrievedEffects = new LinkedHashMap<>();
@@ -4189,25 +4357,19 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     MapleBuffStatValueHolder mbsvh = effects.get(statup.getKey());
                     MapleBuffStatValueHolder statMbsvh = statup.getValue();
                     
-                    if(mbsvh == null || mbsvh.value < statMbsvh.value || (mbsvh.value == statMbsvh.value && mbsvh.effect.getStatups().size() <= statMbsvh.effect.getStatups().size())) {
-                        toDeploy.put(statup.getKey(), statMbsvh);
-                    } else {
-                        if(!isSingletonStatup(statup.getKey())) {
-                            retrievedEffects.put(mbsvh.effect.getBuffSourceId(), new Pair<>(mbsvh.effect, mbsvh.startTime));
-                            for(Pair<MapleBuffStat, Integer> mbs : mbsvh.effect.getStatups()) {
-                                retrievedStats.add(mbs.getLeft());
+                    if(active) {
+                        if(mbsvh == null || mbsvh.value < statMbsvh.value || (mbsvh.value == statMbsvh.value && mbsvh.effect.getStatups().size() <= statMbsvh.effect.getStatups().size())) {
+                            toDeploy.put(statup.getKey(), statMbsvh);
+                        } else {
+                            if(!isSingletonStatup(statup.getKey())) {
+                                for(Pair<MapleBuffStat, Integer> mbs : mbsvh.effect.getStatups()) {
+                                    retrievedStats.add(mbs.getLeft());
+                                }
                             }
                         }
                     }
                     
-                    Byte val = buffEffectsCount.get(statup.getKey());
-                    if (val != null) {
-                        val = (byte) (val + 1);
-                    } else {
-                        val = (byte) 1;
-                    }
-                    
-                    buffEffectsCount.put(statup.getKey(), val);
+                    addItemEffectHolderCount(statup.getKey());
                 }
                 
                 if(!isSilent) {
@@ -4216,22 +4378,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                         effects.put(statup.getKey(), statup.getValue());
                     }
                     
-                    retrievedEffects.put(sourceid, new Pair<>(effect, starttime));
-                    propagateBuffEffectUpdates(retrievedEffects, retrievedStats);
+                    if (active) {
+                        retrievedEffects.put(sourceid, new Pair<>(effect, starttime));
+                    }
+                    
+                    propagateBuffEffectUpdates(retrievedEffects, retrievedStats, new LinkedHashSet<MapleBuffStat>());
                 }
             } else {
                 for (Entry<MapleBuffStat, MapleBuffStatValueHolder> statup : appliedStatups.entrySet()) {
-                    Byte val = buffEffectsCount.get(statup.getKey());
-                    if (val != null) {
-                        val = (byte) (val + 1);
-                    } else {
-                        val = (byte) 1;
-                    }
-                    
-                    buffEffectsCount.put(statup.getKey(), val);
+                    addItemEffectHolderCount(statup.getKey());
                 }
                 
-                toDeploy = appliedStatups;
+                toDeploy = (active ? appliedStatups : new LinkedHashMap<MapleBuffStat, MapleBuffStatValueHolder>());
             }
             
             addItemEffectHolder(sourceid, expirationtime, appliedStatups);
@@ -4605,6 +4763,24 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public int getQuestMesoRate() {
         World w = getWorldServer();
         return w.getMesoRate() * w.getQuestRate();
+    }
+    
+    public float getCardRate(int itemid) {
+        float rate = 100.0f;
+        
+        if (itemid == 0) {
+            MapleStatEffect mseMeso = getBuffEffect(MapleBuffStat.MESO_UP_BY_ITEM);
+            if (mseMeso != null) {
+                rate += mseMeso.getCardRate(mapid, itemid);
+            }
+        } else {
+            MapleStatEffect mseItem = getBuffEffect(MapleBuffStat.ITEM_UP_BY_ITEM);
+            if (mseItem != null) {
+                rate += mseItem.getCardRate(mapid, itemid);
+            }
+        }
+        
+        return rate / 100;
     }
     
     public int getFace() {
@@ -5169,6 +5345,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.gmLevel = Math.max(level, 0);
     }
     
+    public void closePartySearchInteractions() {
+        this.getWorldServer().getPartySearchCoordinator().unregisterPartyLeader(this);
+        if (canRecvPartySearchInvite) {
+            this.getWorldServer().getPartySearchCoordinator().detachPlayer(this);
+        }
+    }
+    
     public void closePlayerInteractions() {
         closeNpcShop();
         closeTrade();
@@ -5570,8 +5753,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return vanquisherStage;
     }
 
-    public Collection<MapleMapObject> getVisibleMapObjects() {
-        return Collections.unmodifiableCollection(visibleMapObjects);
+    public MapleMapObject[] getVisibleMapObjects() {
+        return visibleMapObjects.toArray(new MapleMapObject[visibleMapObjects.size()]);
     }
 
     public int getWorld() {
@@ -6717,6 +6900,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             int buddyCapacity = rs.getInt("buddyCapacity");
             ret.buddylist = new BuddyList(buddyCapacity);
             ret.lastExpGainTime = rs.getTimestamp("lastExpGainTime").getTime();
+            ret.canRecvPartySearchInvite = rs.getBoolean("partySearch");
             
             ret.getInventory(MapleInventoryType.EQUIP).setSlotLimit(rs.getByte("equipslots"));
             ret.getInventory(MapleInventoryType.USE).setSlotLimit(rs.getByte("useslots"));
@@ -7979,12 +8163,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ?, lastExpGainTime = ?, ariantPoints = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
-            if (gmLevel < 1 && level > 199) {
-                ps.setInt(1, isCygnus() ? 120 : 200);
-            } else {
-                ps.setInt(1, level);
-            }
+            ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, gachaexp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpMpUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?,  monsterbookcover = ?, vanquisherStage = ?, dojoPoints = ?, lastDojoStage = ?, finishedDojoTutorial = ?, vanquisherKills = ?, matchcardwins = ?, matchcardlosses = ?, matchcardties = ?, omokwins = ?, omoklosses = ?, omokties = ?, dataString = ?, fquest = ?, jailexpire = ?, partnerId = ?, marriageItemId = ?, lastExpGainTime = ?, ariantPoints = ?, partySearch = ? WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps.setInt(1, level);    // thanks CanIGetaPR for noticing an unnecessary "level" limitation when persisting DB data
             ps.setInt(2, fame);
             
             effLock.lock();
@@ -8094,7 +8274,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ps.setInt(52, marriageItemid);
             ps.setTimestamp(53, new Timestamp(lastExpGainTime));
             ps.setInt(54, ariantPoints);
-            ps.setInt(55, id);
+            ps.setBoolean(55, canRecvPartySearchInvite);
+            ps.setInt(56, id);
 
             int updateRows = ps.executeUpdate();
             ps.close();
