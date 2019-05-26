@@ -139,6 +139,8 @@ public class StorageProcessor {
                                                                 c.announce(MaplePacketCreator.enableActions());
                                                                 return;
                                                         }
+                                                        
+                                                        item = item.copy();     // thanks Robin Schulz & BHB88 for noticing a inventory glitch when storing items
                                                 } finally {
                                                         inv.unlockInventory();
                                                 }
