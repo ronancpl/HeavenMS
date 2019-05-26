@@ -40,7 +40,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 
 /**
-    *@author Drago/Dragohe4rt
+    *@author Drago (Dragohe4rt)
 */
 
 public final class MonsterCarnivalHandler extends AbstractMaplePacketHandler {

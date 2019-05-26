@@ -30,7 +30,9 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
- * @author kevintjuh93; modified by Ronan
+ * @author kevintjuh93
+ * 
+ * Modified by -- Ronan - concurrency protection
  */
 public class UseGachaExpHandler extends AbstractMaplePacketHandler {
     

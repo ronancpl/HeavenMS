@@ -2205,7 +2205,7 @@ public class MaplePacketCreator {
                 mplew.write(game.getGameType().getValue());
                 mplew.writeInt(game.getObjectId()); // gameid/shopid
                 mplew.writeMapleAsciiString(game.getDescription()); // desc
-                mplew.writeBool(!game.getPassword().isEmpty());    // password here, thanks GabrielSin!
+                mplew.writeBool(!game.getPassword().isEmpty());    // password here, thanks GabrielSin
                 mplew.write(game.getPieceType());
                 mplew.write(ammount);
                 mplew.write(2);         //player capacity
@@ -2219,7 +2219,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(hm.getObjectId());
                 mplew.writeMapleAsciiString(hm.getDescription());
                 mplew.write(hm.getItemId() % 100);
-                mplew.write(roomInfo);    // visitor capacity here, thanks GabrielSin!
+                mplew.write(roomInfo);    // visitor capacity here, thanks GabrielSin
         }
         
         public static byte[] updateHiredMerchantBox(MapleHiredMerchant hm) {

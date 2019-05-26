@@ -2153,7 +2153,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public static boolean deleteCharFromDB(MapleCharacter player, int senderAccId) {
             int cid = player.getId();
-            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {    // thanks zera (EpiphanyMS) for pointing a critical exploit with non-authored character deletion request
+            if(!Server.getInstance().haveCharacterEntry(senderAccId, cid)) {    // thanks zera (EpiphanyMS) for pointing a critical exploit with non-authed character deletion request
                     return false;
             }
             
@@ -3156,7 +3156,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
-    public boolean canHoldMeso(int gain) {  // thanks lucasziron found pointing out a need to check space availability for mesos on player transactions
+    public boolean canHoldMeso(int gain) {  // thanks lucasziron for pointing out a need to check space availability for mesos on player transactions
         long nextMeso = (long) meso.get() + gain;
         return nextMeso <= Integer.MAX_VALUE;
     }
@@ -9599,7 +9599,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             if (!mquest.isSameDayRepeatable() && !MapleQuest.isExploitableQuest(questid)) {
                 awardQuestPoint(ServerConstants.QUEST_POINT_PER_QUEST_COMPLETE);
             }
-            quest.setCompleted(quest.getCompleted() + 1);   // count quest completed Jayd's idea
+            quest.setCompleted(quest.getCompleted() + 1);   // Jayd's idea - count quest completed
             
             announce(MaplePacketCreator.completeQuest(questid, quest.getCompletionTime()));
         } else if (quest.getStatus().equals(MapleQuestStatus.Status.NOT_STARTED)) {

@@ -1,4 +1,4 @@
-/* Author: aaroncsn - MapleSea Like, Incomplete
+/* Author: aaroncsn <MapleSea Like, Incomplete>
 	NPC Name: 		Euryth
 	Map(s): 		Elin Forest:Altair Camp(300000000)
 	Description: 		Unknown

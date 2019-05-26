@@ -100,7 +100,7 @@ import net.server.coordinator.MaplePartySearchCoordinator;
 /**
  *
  * @author kevintjuh93
- * @author Ronan - thread-oriented world schedules, guild queue, marriages & party chars
+ * @author Ronan - thread-oriented (world schedules + guild queue + marriages + party chars)
  */
 public class World {
 

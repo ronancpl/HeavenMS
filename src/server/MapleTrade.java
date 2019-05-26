@@ -44,7 +44,7 @@ import tools.Pair;
 /**
  *
  * @author Matze
- * @author Ronan - concurrency safety & check available slots & trade results
+ * @author Ronan - concurrency safety + check available slots + trade results
  */
 public class MapleTrade {
     

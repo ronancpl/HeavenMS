@@ -14,7 +14,7 @@ import server.maps.MapleReactor;
 import tools.MaplePacketCreator;
 
 /**
- * @author Drago/Dragohe4rt
+ * @author Drago (Dragohe4rt)
  */
 public class MonsterCarnival {
 

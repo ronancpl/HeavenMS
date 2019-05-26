@@ -50,7 +50,7 @@ import tools.Pair;
 
 /**
  *
- * @author RonanLana - synchronization of Fredrick modules & operation results
+ * @author RonanLana - synchronization of Fredrick modules and operation results
  */
 public class FredrickProcessor {
     

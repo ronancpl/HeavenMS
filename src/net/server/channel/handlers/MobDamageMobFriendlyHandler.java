@@ -31,7 +31,7 @@ import client.MapleClient;
 
 /**
  *
- * @author Xotic & BubblesDev
+ * @author Xotic (XoticStory) & BubblesDev
  */
 
 public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandler {

@@ -2,7 +2,7 @@
 -- Version Info -----------------------------------------------------------------------------------
 	1.0 - First Version by Drago (MapleStorySA)
         2.0 - Second Version by Ronan (HeavenMS)
-        3.0 - Third Version by Jayd - translated CPQ contents to English & added Pirate items
+        3.0 - Third Version by Jayd - translated CPQ contents to English and added Pirate items
                                 Special thanks to 頼晏 (ryantpayton) for also stepping in to translate CPQ scripts.
 ---------------------------------------------------------------------------------------------------
 **/

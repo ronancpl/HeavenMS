@@ -1,4 +1,4 @@
-/* Author: aaroncsn - MapleSea Like, Need to add creation of minigame
+/* Author: aaroncsn <MapleSea Like, Need to add creation of minigame>
 	NPC Name: 		Wisp
 	Map(s): 		Ludibrium: Eos Tower Entrance(220000400)
 	Description: 		Pet Master

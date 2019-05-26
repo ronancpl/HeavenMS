@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  *
- * @author By Drago/Dragohe4rt
+ * @author Drago (Dragohe4rt)
  */
 public final class WeddingHandler extends AbstractMaplePacketHandler {
     

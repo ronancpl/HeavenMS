@@ -48,7 +48,7 @@ import tools.MaplePacketCreator;
 /**
  *
  * @author Matze
- * @author Ronan - improved check space feature & removed redundant object calls
+ * @author Ronan - improved check space feature and removed redundant object calls
  */
 public class MapleInventoryManipulator {
 
@@ -427,7 +427,7 @@ public class MapleInventoryManipulator {
             announceModifyInventory(c, item, fromDrop, allowZero);
         } else {
             int petid = item.getPetId();
-            if (petid > -1) { // thanks Vcoc for finding a d/c issue with equipped pets & pets remaining on DB here
+            if (petid > -1) { // thanks Vcoc for finding a d/c issue with equipped pets and pets remaining on DB here
                 int petIdx = chr.getPetIndex(petid);
                 if(petIdx > -1) {
                     MaplePet pet = chr.getPet(petIdx);

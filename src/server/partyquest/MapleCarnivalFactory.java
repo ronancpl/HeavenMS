@@ -14,7 +14,7 @@ import provider.MapleDataTool;
 import server.life.MobSkill;
 
 /**
-    *@author Drago/Dragohe4rt
+    *@author Drago (Dragohe4rt)
 */
 public class MapleCarnivalFactory {
 

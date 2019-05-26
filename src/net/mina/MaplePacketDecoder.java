@@ -75,7 +75,7 @@ public class MaplePacketDecoder extends CumulativeProtocolDecoder {
             rcvdCrypto.crypt(decryptedPacket);
             MapleCustomEncryption.decryptData(decryptedPacket);
             out.write(decryptedPacket);
-            if (ServerConstants.USE_DEBUG_SHOW_PACKET){ // packet traffic log: Atoot's idea, applied using auto-identation thanks to lrenex
+            if (ServerConstants.USE_DEBUG_SHOW_PACKET){ // Atoot's idea: packet traffic log, applied using auto-identation thanks to lrenex
                 int packetLen = decryptedPacket.length;
                 int pHeader = readFirstShort(decryptedPacket);
                 String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();

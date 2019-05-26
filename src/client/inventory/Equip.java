@@ -309,7 +309,7 @@ public class Equip extends Item {
     }
     
     private boolean isNotWeaponAffinity(StatUpgrade name) {
-        // WATK/MATK expected gains lessens outside of weapon affinity (physical/magic): Vcoc's idea
+        // Vcoc's idea - WATK/MATK expected gains lessens outside of weapon affinity (physical/magic)
         
         if (ItemConstants.isWeapon(this.getItemId())) {
             if (name.equals(StatUpgrade.incPAD)) {

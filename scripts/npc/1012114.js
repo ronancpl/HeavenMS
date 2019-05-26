@@ -1,7 +1,7 @@
 /*
   Growlie (that fatass uhh.. hungry lion or whatever)
-  FightDesign @RageZONE
 
+  @author FightDesign (RageZONE)
   @author Ronan
   */
 

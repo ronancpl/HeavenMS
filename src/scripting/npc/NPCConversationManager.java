@@ -622,7 +622,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 return sbe != SkillBookEntry.UNAVAILABLE ? "    Obtainable through #rquestline#k." : "";
         }
         
-        // By Drago/Dragohe4rt CPQ + WED
+        // (CPQ + WED wishlist) by -- Drago (Dragohe4rt)
         public int cpqCalcAvgLvl(int map) {
             int num = 0;
             int avg = 0;

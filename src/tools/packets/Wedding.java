@@ -17,7 +17,9 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 /**
  * CField_Wedding, CField_WeddingPhoto, CWeddingMan, OnMarriageResult, and all Wedding/Marriage enum/structs.
  * 
- * @author Eric edited by Drago/Dragohe4rt on Wishlist
+ * @author Eric
+ * 
+ * Edited wishlists by -- Drago (Dragohe4rt)
  */
 public class Wedding extends MaplePacketCreator {
     private static final short MARRIAGE_REQUEST = 0x48;
