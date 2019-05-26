@@ -4,7 +4,7 @@
 		       Matthias Butz <matze@odinms.de>
 		       Jan Christian Meyer <vimes@odinms.de>
 
-    Copyleft (L) 2016 - 2018 RonanLana (HeavenMS)
+    Copyleft (L) 2016 - 2019 RonanLana (HeavenMS)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
