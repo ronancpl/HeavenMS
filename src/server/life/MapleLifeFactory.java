@@ -269,6 +269,10 @@ public class MapleLifeFactory {
     public static MapleNPC getNPC(int nid) {
         return new MapleNPC(nid, new MapleNPCStats(MapleDataTool.getString(nid + "/name", npcStringData, "MISSINGNO")));
     }
+    
+    public static String getNPCDefaultTalk(int nid) {
+        return MapleDataTool.getString(nid + "/d0", npcStringData, "(...)");
+    }
 
     public static class BanishInfo {
 

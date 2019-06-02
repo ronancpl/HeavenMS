@@ -1045,8 +1045,6 @@ public class MapleStatEffect {
 
                 door.getTarget().spawnDoor(door.getAreaDoor());
                 door.getTown().spawnDoor(door.getTownDoor());
-
-                applyto.disableDoorSpawn();
             } else {
                 MapleInventoryManipulator.addFromDrop(applyto.getClient(), new Item(4006000, (short) 0, (short) 1), false);
 

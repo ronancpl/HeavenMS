@@ -82,10 +82,10 @@ public class MapleIdRetriever {
     }
     
     private static void parseMapleHandbookLine(String line) throws SQLException {
-        String[] tokens = line.split(" - ");
+        String[] tokens = line.split(" - ", 3);
         
         if(tokens.length > 1) {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO `handbook` (`id`, `name`) VALUES (?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO `handbook` (`id`, `name`, `description`) VALUES (?, ?, ?)");
             try {
                 ps.setInt(1, Integer.parseInt(tokens[0]));
             } catch (NumberFormatException npe) {   // odd...
@@ -93,7 +93,10 @@ public class MapleIdRetriever {
                 ps.setInt(1, Integer.parseInt(num));
             }
             ps.setString(2, tokens[1]);
+            ps.setString(3, tokens.length > 2 ? tokens[2] : "");
             ps.execute();
+            
+            ps.close();
         }
     }
     
@@ -124,14 +127,17 @@ public class MapleIdRetriever {
     private static void setupSqlTable() throws SQLException {
         PreparedStatement ps = con.prepareStatement("DROP TABLE IF EXISTS `handbook`;");
         ps.execute();
+        ps.close();
         
         ps = con.prepareStatement("CREATE TABLE `handbook` ("
                 + "`key` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`id` int(10) DEFAULT NULL,"
                 + "`name` varchar(200) DEFAULT NULL,"
+                + "`description` varchar(1000) DEFAULT '',"
                 + "PRIMARY KEY (`key`)"
                 + ") ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;");
         ps.execute();
+        ps.close();
     }
     
     private static void parseMapleHandbook() throws SQLException {
@@ -174,6 +180,9 @@ public class MapleIdRetriever {
                     str += id.toString();
                     str += " ";
                 }
+                
+                rs.close();
+                ps.close();
                 
                 printWriter.println(str);
             }

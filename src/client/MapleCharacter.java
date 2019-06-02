@@ -206,7 +206,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private transient int localstr, localdex, localluk, localint_, localmagic, localwatk;
     private transient int equipmaxhp, equipmaxmp, equipstr, equipdex, equipluk, equipint_, equipmagic, equipwatk, localchairhp, localchairmp;
     private int localchairrate;
-    private boolean hidden, equipchanged = true, canDoor = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false, canRecvPartySearchInvite = true;
+    private boolean hidden, equipchanged = true, berserk, hasMerchant, hasSandboxItem = false, whiteChat = false, canRecvPartySearchInvite = true;
     private boolean equippedMesoMagnet = false, equippedItemPouch = false, equippedPetItemIgnore = false;
     private int linkedLevel = 0;
     private String linkedName = null;
@@ -961,7 +961,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public boolean canDoor() {
-        return canDoor;
+        MapleDoor door = getPlayerDoor();
+        return door == null || (door.isActive() && door.getElapsedDeployTime() > 5000);
     }
     
     public void setHasSandboxItem() {
@@ -2297,6 +2298,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     }
                     
                     deleteQuestProgressWhereCharacterId(con, cid);
+                    FredrickProcessor.removeFredrickLog(cid);   // thanks maple006 for pointing out the player's Fredrick items are not being deleted at character deletion
                     
                     try (PreparedStatement ps = con.prepareStatement("SELECT id FROM mts_cart WHERE cid = ?")) {
                             ps.setInt(1, cid);
@@ -2519,19 +2521,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 addMPHP(healHP, healMP);
             }
         }, healInterval, healInterval);
-    }
-
-    public void disableDoorSpawn() {
-        canDoor = false;
-        
-        Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                canDoor = true;
-            }
-        };
-        
-        client.getChannelServer().registerOverallAction(mapid, r, 5000);
     }
 
     public void disbandGuild() {
@@ -3783,29 +3772,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         
         if (effect.isMagicDoor()) {
-            MapleDoor destroyDoor = removePartyDoor(false);
-            
-            if (destroyDoor != null) {
-                destroyDoor.getTarget().removeMapObject(destroyDoor.getAreaDoor());
-                destroyDoor.getTown().removeMapObject(destroyDoor.getTownDoor());
-                
-                for (MapleCharacter chr : destroyDoor.getTarget().getCharacters()) {
-                    destroyDoor.getAreaDoor().sendDestroyData(chr.getClient());
-                }
-                
-                Collection<MapleCharacter> townChars = destroyDoor.getTown().getCharacters();
-                for (MapleCharacter chr : townChars) {
-                    destroyDoor.getTownDoor().sendDestroyData(chr.getClient());
-                }
-                if (destroyDoor.getTownPortal().getId() == 0x80) {
-                    for (MapleCharacter chr : townChars) {
-                        MapleDoor door = chr.getMainTownDoor();
-                        if (door != null) {
-                            destroyDoor.getTownDoor().sendSpawnData(chr.getClient());
-                        }
-                    }
-                }
-            }
+            MapleDoor.attemptRemoveDoor(this);
         } else if (effect.isMapChair()) {
             stopChairTask();
         }
@@ -4559,7 +4526,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         silentPartyUpdateInternal(chrParty);
     }
     
-    private MapleDoor removePartyDoor(boolean partyUpdate) {
+    public MapleDoor removePartyDoor(boolean partyUpdate) {
         MapleDoor ret = null;
         MapleParty chrParty;
         
@@ -5356,7 +5323,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         closeNpcShop();
         closeTrade();
         closePlayerShop();
-        closeMiniGame();
+        closeMiniGame(true);
         closeHiredMerchant(false);
         closePlayerMessenger();
         
@@ -5398,18 +5365,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         this.setPlayerShop(null);
     }
     
-    public void closeMiniGame() {
+    public void closeMiniGame(boolean forceClose) {
         MapleMiniGame game = this.getMiniGame();
         if (game == null) {
             return;
         }
         
-        this.setMiniGame(null);
         if (game.isOwner(this)) {
-            this.getMap().broadcastMessage(MaplePacketCreator.removeMinigameBox(this));
-            game.broadcastToVisitor(MaplePacketCreator.getMiniGameClose(3));
+            game.closeRoom(forceClose);
         } else {
-            game.removeVisitor(this);
+            game.removeVisitor(forceClose, this);
         }
     }
     

@@ -2131,18 +2131,7 @@ public class MapleMap {
         spawnAndAddRangedMapObject(door, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                if (door.getFrom().getId() == c.getPlayer().getMapId()) {
-                    if (c.getPlayer().getParty() != null && (door.getOwnerId() == c.getPlayer().getId() || c.getPlayer().getParty().getMemberById(door.getOwnerId()) != null)) {
-                        c.announce(MaplePacketCreator.partyPortal(door.getFrom().getId(), door.getTo().getId(), door.toPosition()));
-                    }
-                    
-                    c.announce(MaplePacketCreator.spawnPortal(door.getFrom().getId(), door.getTo().getId(), door.toPosition()));
-                    if (!door.inTown()) {
-                        c.announce(MaplePacketCreator.spawnDoor(door.getOwnerId(), door.getPosition(), false));
-                    }
-                }
-
-                c.announce(MaplePacketCreator.enableActions());
+                door.sendSpawnData(c, false);
             }
         }, new SpawnCondition() {
             @Override

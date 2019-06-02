@@ -119,9 +119,9 @@ public class AutobanManager {
                 
                 FilePrinter.print(FilePrinter.EXPLOITS, "Player " + chr + " was caught spamming TYPE " + type + " and has been disconnected.");
             }
-            return;
+        } else {
+            this.timestamp[type] = time;
+            this.timestampcounter[type] = 0;
         }
-        this.timestamp[type] = time;
-        this.timestampcounter[type] = 0;
     }
 }

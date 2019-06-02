@@ -47,11 +47,11 @@ public class IgnoreCommand extends Command {
             player.message("Player '" + params[0] + "' could not be found on this world.");
             return;
         }
-        boolean monitored_ = MapleLogger.ignored.contains(victim.getName());
+        boolean monitored_ = MapleLogger.ignored.contains(victim.getId());
         if (monitored_) {
-            MapleLogger.ignored.remove(victim.getName());
+            MapleLogger.ignored.remove(victim.getId());
         } else {
-            MapleLogger.ignored.add(victim.getName());
+            MapleLogger.ignored.add(victim.getId());
         }
         player.yellowMessage(victim.getName() + " is " + (!monitored_ ? "now being ignored." : "no longer being ignored."));
         String message_ = player.getName() + (!monitored_ ? " has started ignoring " : " has stopped ignoring ") + victim.getName() + ".";

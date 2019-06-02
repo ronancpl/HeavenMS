@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-        if(!pi.isQuestCompleted(3706)) {
+        if (!pi.isQuestStarted(100203)) { // thanks Conrad for suggesting grant players access to area with Nein Spirit's Baby Dragon after hatching egg
             pi.playPortalSound(); pi.warp(240040611, "out00");
         } else {
             pi.playPortalSound(); pi.warp(240040612, "out00");

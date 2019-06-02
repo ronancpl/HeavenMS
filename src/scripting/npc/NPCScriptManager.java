@@ -92,14 +92,8 @@ public class NPCScriptManager extends AbstractScriptManager {
             cms.put(c, cm);
             Invocable iv = null;
             iv = getInvocable("npc/" + filename + ".js", c);
-            NPCScriptManager npcsm = NPCScriptManager.getInstance();
 
-            if (iv == null || NPCScriptManager.getInstance() == null) {
-                c.getPlayer().dropMessage(1, npc + "");
-                cm.dispose();
-                return;
-            }
-            if (iv == null || npcsm == null) {
+            if (iv == null) {
                 c.getPlayer().dropMessage(1, npc + "");
                 cm.dispose();
                 return;
@@ -147,7 +141,7 @@ public class NPCScriptManager extends AbstractScriptManager {
                     iv = getInvocable("npc/" + npc + ".js", c);
                     cm.resetItemScript();
                 }
-                if (iv == null || NPCScriptManager.getInstance() == null) {
+                if (iv == null) {
                     dispose(c);
                     return false;
                 }
@@ -166,7 +160,6 @@ public class NPCScriptManager extends AbstractScriptManager {
             } else {
                 c.announce(MaplePacketCreator.enableActions());
             }
-
             return true;
         } catch (final UndeclaredThrowableException | ScriptException ute) {
             FilePrinter.printError(FilePrinter.NPC + npc + ".txt", ute);

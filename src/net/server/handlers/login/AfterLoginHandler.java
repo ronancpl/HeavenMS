@@ -37,7 +37,7 @@ public final class AfterLoginHandler extends AbstractMaplePacketHandler {
             c3 = slea.readByte();
         }
         if (c2 == 1 && c3 == 1) {
-            if (c.getPin() == null) {
+            if (c.getPin() == null || c.getPin().equals("")) {
                 c.announce(MaplePacketCreator.registerPin());
             } else {
                 c.announce(MaplePacketCreator.requestPin());

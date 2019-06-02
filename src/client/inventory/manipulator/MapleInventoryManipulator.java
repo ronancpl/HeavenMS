@@ -316,7 +316,11 @@ public class MapleInventoryManipulator {
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
             List<Item> existing = inv.listById(itemid);
-            if (!ItemConstants.isRechargeable(itemid)) {
+            
+            final int numSlotsNeeded;
+            if (ItemConstants.isRechargeable(itemid)) {
+                numSlotsNeeded = 1;
+            } else {
                 if (existing.size() > 0) // first update all existing slots to slotMax
                 {
                     for (Item eItem : existing) {
@@ -330,15 +334,14 @@ public class MapleInventoryManipulator {
                         }
                     }
                 }
+                
+                if (slotMax > 0) {
+                    numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
+                } else {
+                    numSlotsNeeded = 1;
+                }
             }
-            final int numSlotsNeeded;
-            if (slotMax > 0) {
-                numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
-            } else if (ItemConstants.isRechargeable(itemid)) {
-                numSlotsNeeded = 1;
-            } else {
-                numSlotsNeeded = 1;
-            }
+            
             return !inv.isFull(numSlotsNeeded - 1);
         } else {
             return !inv.isFull();
@@ -367,7 +370,11 @@ public class MapleInventoryManipulator {
         
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemid);
-            if (!ItemConstants.isRechargeable(itemid)) {
+            final int numSlotsNeeded;
+            
+            if (ItemConstants.isRechargeable(itemid)) {
+                numSlotsNeeded = 1;
+            } else {
                 List<Item> existing = inv.listById(itemid);
                 
                 if (existing.size() > 0) // first update all existing slots to slotMax
@@ -383,14 +390,12 @@ public class MapleInventoryManipulator {
                         }
                     }
                 }
-            }
-            final int numSlotsNeeded;
-            if (slotMax > 0) {
-                numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
-            } else if (ItemConstants.isRechargeable(itemid)) {
-                numSlotsNeeded = 1;
-            } else {
-                numSlotsNeeded = 1;
+                
+                if (slotMax > 0) {
+                    numSlotsNeeded = (int) (Math.ceil(((double) quantity) / slotMax));
+                } else {
+                    numSlotsNeeded = 1;
+                }
             }
             
             returnValue = ((numSlotsNeeded + usedSlots) << 1);

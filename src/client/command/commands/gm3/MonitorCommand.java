@@ -47,14 +47,14 @@ public class MonitorCommand extends Command {
             player.message("Player '" + params[0] + "' could not be found on this world.");
             return;
         }
-        boolean monitored = MapleLogger.monitored.contains(victim.getName());
+        boolean monitored = MapleLogger.monitored.contains(victim.getId());
         if (monitored) {
-            MapleLogger.monitored.remove(victim.getName());
+            MapleLogger.monitored.remove(victim.getId());
         } else {
-            MapleLogger.monitored.add(victim.getName());
+            MapleLogger.monitored.add(victim.getId());
         }
-        player.yellowMessage(victim.getName() + " is " + (!monitored ? "now being monitored." : "no longer being monitored."));
-        String message = player.getName() + (!monitored ? " has started monitoring " : " has stopped monitoring ") + victim.getName() + ".";
+        player.yellowMessage(victim.getId() + " is " + (!monitored ? "now being monitored." : "no longer being monitored."));
+        String message = player.getName() + (!monitored ? " has started monitoring " : " has stopped monitoring ") + victim.getId() + ".";
         Server.getInstance().broadcastGMMessage(c.getWorld(), MaplePacketCreator.serverNotice(5, message));
 
     }

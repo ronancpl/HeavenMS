@@ -94,7 +94,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         ANSWER_TIE(0x33),
         GIVE_UP(0x34),
         EXIT_AFTER_GAME(0x38),
-        CANCEL_EXIT(0x39),
+        CANCEL_EXIT_AFTER_GAME(0x39),
         READY(0x3A),
         UN_READY(0x3B),
         EXPEL(0x3C),
@@ -344,7 +344,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     MapleTrade.cancelTrade(chr, MapleTrade.TradeResult.PARTNER_CANCEL);
                 } else {
                     chr.closePlayerShop();
-                    chr.closeMiniGame();
+                    chr.closeMiniGame(false);
                     chr.closeHiredMerchant(true);
                 }
             } else if (mode == Action.OPEN_STORE.getCode() || mode == Action.OPEN_CASH.getCode()) {
@@ -608,8 +608,6 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 MaplePlayerShop shop = chr.getPlayerShop();
                 MapleHiredMerchant merchant = chr.getHiredMerchant();
                 if (shop != null && shop.isOwner(chr)) {
-                    System.out.println(shopItem.getItem().getPet() + " " + shopItem.getItem().getPetId());
-                    System.out.println(ivItem.getPet() + " " + ivItem.getPetId());
                     if (shop.isOpen() || !shop.addItem(shopItem)) { // thanks Vcoc for pointing an exploit with unlimited shop slots
                         c.announce(MaplePacketCreator.serverNotice(1, "You can't sell it anymore."));
                         return;
@@ -770,9 +768,19 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     MapleCharacter visitor = miniGame.getVisitor();
 
                     if(visitor != null) {
-                        visitor.closeMiniGame();
-                        visitor.announce(MaplePacketCreator.getMiniGameClose(5));
+                        visitor.closeMiniGame(false);
+                        visitor.announce(MaplePacketCreator.getMiniGameClose(true, 5));
                     }
+                }
+            } else if (mode == Action.EXIT_AFTER_GAME.getCode()) {
+                MapleMiniGame miniGame = chr.getMiniGame();
+                if(miniGame != null) {
+                    miniGame.setQuitAfterGame(chr, true);
+                }
+            } else if (mode == Action.CANCEL_EXIT_AFTER_GAME.getCode()) {
+                MapleMiniGame miniGame = chr.getMiniGame();
+                if(miniGame != null) {
+                    miniGame.setQuitAfterGame(chr, false);
                 }
             }
         } finally {

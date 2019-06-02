@@ -63,9 +63,11 @@ import constants.LanguageConstants;
 import net.server.PlayerStorage;
 import net.server.channel.Channel;
 import net.server.coordinator.matchchecker.MatchCheckerListenerFactory.MatchCheckerType;
+import server.MapleMarriage;
 import server.MapleSkillbookInformationProvider;
 import server.MapleSkillbookInformationProvider.SkillBookEntry;
 import server.TimerManager;
+import server.life.MapleLifeFactory;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.expeditions.MapleExpedition;
@@ -77,10 +79,11 @@ import tools.packets.Wedding;
 import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import server.MapleMarriage;
 
 /**
  *
@@ -94,6 +97,18 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	private String getText;
         private boolean itemScript;
         private List<MaplePartyCharacter> otherParty;
+        
+        private static Map<Integer, String> npcDefaultTalks = new HashMap<>();
+        
+        private static String getDefaultTalk(int npcid) {
+            String talk = npcDefaultTalks.get(npcid);
+            if (talk == null) {
+                talk = MapleLifeFactory.getNPCDefaultTalk(npcid);
+                npcDefaultTalks.put(npcid, talk);
+            }
+            
+            return talk;
+        }
         
         public NPCConversationManager(MapleClient c, int npc, String scriptName) {
                this(c, npc, -1, scriptName, false);
@@ -154,6 +169,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	public void sendOk(String text) {
 		getClient().announce(MaplePacketCreator.getNPCTalk(npc, (byte) 0, text, "00 00", (byte) 0));
 	}
+        
+        public void sendDefault() {
+                sendOk(getDefaultTalk(npc));
+        }
 
 	public void sendYesNo(String text) {
 		getClient().announce(MaplePacketCreator.getNPCTalk(npc, (byte) 1, text, "", (byte) 0));
@@ -236,76 +255,34 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		return getPlayer().getJob();
 	}
 
-	public void startQuest(short id) {
-		try {
-			MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
-		} catch (NullPointerException ex) {
-                        ex.printStackTrace();
-		}
-	}
-
-	public void completeQuest(short id) {
-		try {
-			MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
-		} catch (NullPointerException ex) {
-                        ex.printStackTrace();
-		}
-	}
-
+	@Override
         public boolean forceStartQuest(int id) {
-                return MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
+                return forceStartQuest(id, npc);
         }
-
+        
+        @Override
         public boolean forceCompleteQuest(int id) {
-                return MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
+                return forceCompleteQuest(id, npc);
         }
         
-	public void startQuest(int id) {
-		try {
-			MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
-		} catch (NullPointerException ex) {
-                        ex.printStackTrace();
-		}
-	}
-
-	public void completeQuest(int id) {
-		try {
-			MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
-		} catch (NullPointerException ex) {
-                        ex.printStackTrace();
-		}
-	}
-        
-        public void startQuest(short id, int npcId) {
-                try {
-                        MapleQuest.getInstance(id).forceStart(getPlayer(), npcId);
-                } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                }
+        @Override
+        public boolean startQuest(short id) {
+                return startQuest((int) id);
         }
         
-        public void startQuest(int id, int npcId) {
-                try {
-                        MapleQuest.getInstance(id).forceStart(getPlayer(), npcId);
-                } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                }
+        @Override
+        public boolean completeQuest(short id) {
+                return completeQuest((int) id);
         }
         
-        public void completeQuest(short id, int npcId) {
-                try {
-                        MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
-                } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                }
+        @Override
+        public boolean startQuest(int id) {
+                return startQuest(id, npc);
         }
         
-        public void completeQuest(int id, int npcId) {
-                try {
-                        MapleQuest.getInstance(id).forceComplete(getPlayer(), npcId);
-                } catch (NullPointerException ex) {
-                        ex.printStackTrace();
-                }
+        @Override
+        public boolean completeQuest(int id) {
+                return completeQuest(id, npc);
         }
         
 	public int getMeso() {

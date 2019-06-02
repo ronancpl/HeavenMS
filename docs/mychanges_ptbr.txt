@@ -7,8 +7,8 @@
 	Abdula -> 9209000 *
 
 CUSTOM NPC SHOPS (db_shopupdate.sql):
-	Asia -> 2082014 *
-	T-1337 -> 9201101 *
+	Asia -> 2082014
+	T-1337 -> 9201101
 
 	* : those won't get disabled when USE_ENABLE_CUSTOM_NPC_SCRIPTS = false
 
@@ -1872,3 +1872,39 @@ Corrigido pets sendo indevidamente removido da DB ao realizar operações de ret
 
 15 Maio 2019,
 Revisado, via testes unitários, robustez dos registros/buscas de jogadores e fluidez do sistema de Party Search.
+
+18 - 19 Maio 2019,
+Corrigido glitch de inventário ao colocar itens no storage, problema que foi introduzido recentemente.
+Finalmente aprendido como funciona a mecânica por trás dos nodos "infoEx/infoNumber" amplamente usado pelas quests! :D
+Implementado sistema de "crescimento de itens" na fonte.
+
+20 - 24 Maio 2019,
+Ajustado "Party Search". Ao invés de expirar sessões de busca após N tentativas, líderes são colocados em espera por alguns minutos e podem voltar a buscar automaticamente mais tarde.
+Corrigido itens armazenados no Fredrick não sendo deletados ao deletar personagem, acarretando em inconsistências com cid inexistente.
+Corrigido livros de upgrade de skills stackados em quantidade maior que 1 não podendo ser utilizados.
+Nova ferramenta: MapleGachaponItemidRetriever. A ferramenta lê o arquivo-receita com nomes de itens designados para os diversos gachapons do jogo e, analisando a tabela da DB "handbook" (descrito pela ferramenta MapleIdRetriever), gera diversos arquivos (um para cada gachapon) contendo os ids dos itens especificados (ou próprio nome do item, se não encontrado).
+Revisado script itens da região de Mushroom Empire. Ao invés dos efeitos dos itens atuarem ao acessar portais, agora ao utilizar os próprios itens pelo inventário as regiões anteriormente inacessíveis se tornam exploráveis, seguindo a descrição dos mesmos.
+Revisado transições em 2 mapas da região de Mushroom Empire (um deles agora podendo ser atravessado ao utilizar um ETC, como previsto). Ambas transições projetadas para atuar após uso dos itens designados.
+Corrigido script "secretroom" sempre requerendo o ETC adquirido via questline, algo que tornava a área interna inacessível ao tentar fazê-la múltiplas vezes.
+Reelaborado completamente sistema de loots dos gachapons. Nova lista de loots de cada cidade disponível tenta seguir conteúdos encontrados na Web, supostamente legítimos (vide fontes mencionadas no fonte).
+Adicionado gachapons para El Nath e Ludibrium.
+Corrigido presença de PIN e PIC nulos (modificado para strings vazias).
+Corrigido skill "Monster Magnet" desconectando jogadores ao utilizá-la. Isso ocorria devido a um problema no lado-cliente ao "falhar" em capturar o mob. Nova skill foi remodelada para solucionar isso (além de MP e range, árvore de atributos varia por quantidade máxima de mobs).
+
+26 Maio 2019,
+Ajustado portal que acessa área do NPC Nein Spirit's Baby Dragon, para permitir acesso aos jogadores que concluem a rachadura do ovo, ao invés de somente após completar quest.
+
+31 Maio 2019,
+Implementado método/comando que permite visualizar itens que podem ser ganhos pelo gachapons.
+Corrigido Mystic Doors crashando jogadores ao tentar cancelar o buff da skill excessivamente cedo.
+Corrigido tentativa de acessar boss Prime Minister acarretando em exceções de nulos ao tentar entrar em party.
+Corrigido evento de acesso ao boss Prime Minister não realizando disposes corretamente (assim que evento fica sem jogadores, após mudar de mapa, reviver, desconectar, etc).
+Refatorado estruturas de "ignored" e "monitored" dos comandos, agora utilizando conjuntos e checagem de inteiros ao invés de nomes.
+Refatorado referências aos métodos da família "startQuest" e "completeQuest", com funcionalidade repetida para diversas subclasses de AbstractPlayerInteraction.
+
+01 Junho 2019,
+Corrigido métodos de chegagem por espaço de inventários não avaliando corretamente quantidade de slots necessário para acomodar itens recarregáveis.
+Corrigido minigames não retirando referências dos jogadores devidamente, problema que veio a ocorrer após atualizações recentes.
+Implementado requisição de saída de minigames após fim de partida.
+Corrigido possibilidade de minigames entregando mais de um resultado cada partida (jogadores podem decidir desistir em conjunto, somando pontos).
+Corrigido negação de empate em minigame pelo outro jogador não permitindo o mesmo lançar um pedido de empate em sequência.

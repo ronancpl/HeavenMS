@@ -26,6 +26,7 @@ import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
 import client.inventory.Item;
+import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import java.util.Map;
 import net.AbstractMaplePacketHandler;
@@ -41,38 +42,57 @@ public final class SkillBookHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
+        
         slea.readInt();
         short slot = (short) slea.readShort();
         int itemId = slea.readInt();
+        
+        boolean canuse;
+        boolean success = false;
+        int skill = 0;
+        int maxlevel = 0;
+        
         MapleCharacter player = c.getPlayer();
-        Item toUse = c.getPlayer().getInventory(MapleInventoryType.USE).getItem(slot);
-        if (toUse != null && toUse.getQuantity() == 1) {
-            if (toUse.getItemId() != itemId) {
-                return;
-            }
-            Map<String, Integer> skilldata = MapleItemInformationProvider.getInstance().getSkillStats(toUse.getItemId(), c.getPlayer().getJob().getId());
-            boolean canuse;
-            boolean success = false;
-            int skill = 0;
-            int maxlevel = 0;
-            if (skilldata == null) {
-                return;
-            }
-            Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
-            if (skilldata.get("skillid") == 0) {
-                canuse = false;
-            } else if ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")) {
-                canuse = true;
-                if (MapleItemInformationProvider.rollSuccessChance(skilldata.get("success"))) {
-                    success = true;
-                    player.changeSkillLevel(skill2, player.getSkillLevel(skill2), Math.max(skilldata.get("masterLevel"), player.getMasterLevel(skill2)), -1);
-                } else {
-                    success = false;
-                    //player.dropMessage("The skill book lights up, but the skill winds up as if nothing happened.");
+        if (c.tryacquireClient()) {
+            try {
+                MapleInventory inv = c.getPlayer().getInventory(MapleInventoryType.USE);
+                Item toUse = inv.getItem(slot);
+                if (toUse == null || toUse.getItemId() != itemId) {
+                    return;
                 }
-                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
-            } else {
-                canuse = false;
+                Map<String, Integer> skilldata = MapleItemInformationProvider.getInstance().getSkillStats(toUse.getItemId(), c.getPlayer().getJob().getId());
+                if (skilldata == null) {
+                    return;
+                }
+                Skill skill2 = SkillFactory.getSkill(skilldata.get("skillid"));
+                if (skilldata.get("skillid") == 0) {
+                    canuse = false;
+                } else if ((player.getSkillLevel(skill2) >= skilldata.get("reqSkillLevel") || skilldata.get("reqSkillLevel") == 0) && player.getMasterLevel(skill2) < skilldata.get("masterLevel")) {
+                    inv.lockInventory();
+                    try {
+                        Item used = inv.getItem(slot);
+                        if (used != toUse || toUse.getQuantity() < 1) {    // thanks ClouD for noticing skillbooks not being usable when stacked
+                            return;
+                        }
+
+                        MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.USE, slot, (short) 1, false);
+                    } finally {
+                        inv.unlockInventory();
+                    }
+
+                    canuse = true;
+                    if (MapleItemInformationProvider.rollSuccessChance(skilldata.get("success"))) {
+                        success = true;
+                        player.changeSkillLevel(skill2, player.getSkillLevel(skill2), Math.max(skilldata.get("masterLevel"), player.getMasterLevel(skill2)), -1);
+                    } else {
+                        success = false;
+                        //player.dropMessage("The skill book lights up, but the skill winds up as if nothing happened.");
+                    }
+                } else {
+                    canuse = false;
+                }
+            } finally {
+                c.releaseClient();
             }
             
             // thanks Vcoc for noting skill book result not showing for all in area

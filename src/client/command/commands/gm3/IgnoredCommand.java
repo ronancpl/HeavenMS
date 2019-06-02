@@ -36,8 +36,8 @@ public class IgnoredCommand extends Command {
     @Override
     public void execute(MapleClient c, String[] params) {
         MapleCharacter player = c.getPlayer();
-        for (String ign : MapleLogger.ignored) {
-            player.yellowMessage(ign + " is being ignored.");
+        for (Integer cid : MapleLogger.ignored) {
+            player.yellowMessage(MapleCharacter.getNameById(cid) + " is being ignored.");
         }
     }
 }

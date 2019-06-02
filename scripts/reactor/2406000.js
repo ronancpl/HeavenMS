@@ -18,6 +18,9 @@ function touch() {
 function untouch() {}
 
 function act() {
+    rm.message("With your latest efforts the egg has matured and cracked, thus born a radiant baby dragon.");
+    rm.startQuest(100203);
+    
     rm.spawnNpc(2081008);
     rm.schedule("sendToHeaven", 12 * 1000);
 }

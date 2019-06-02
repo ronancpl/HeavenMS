@@ -82,22 +82,6 @@ public class PortalPlayerInteraction extends AbstractPlayerInteraction {
         return getPlayer().getLevel() >= 30;
     }
     
-    public boolean forceStartQuest(int id) {
-            return forceStartQuest(id, 9010000);
-    }
-
-    public boolean forceStartQuest(int id, int npc) {
-            return MapleQuest.getInstance(id).forceStart(getPlayer(), npc);
-    }
-    
-    public boolean forceCompleteQuest(int id) {
-            return forceCompleteQuest(id, 9010000);
-    }
-
-    public boolean forceCompleteQuest(int id, int npc) {
-            return MapleQuest.getInstance(id).forceComplete(getPlayer(), npc);
-    }
-    
     public void blockPortal() {
         c.getPlayer().blockPortal(getPortal().getScriptName());
     }

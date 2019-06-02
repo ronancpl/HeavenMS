@@ -259,6 +259,7 @@ public class CommandsExecutor {
         addCommand("job", 2, JobCommand.class);
         addCommand("unbug", 2, UnBugCommand.class);
         addCommand("id", 2, IdCommand.class);
+        addCommand("gachalist", GachaListCommand.class);
         
         commandsNameDesc.add(levelCommandsCursor);
     }

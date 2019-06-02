@@ -85,7 +85,7 @@ public enum AutobanFactory {
 	
 	public void alert(MapleCharacter chr, String reason) {
             if(ServerConstants.USE_AUTOBAN == true) {
-		if (chr != null && MapleLogger.ignored.contains(chr.getName())){
+		if (chr != null && MapleLogger.ignored.contains(chr.getId())){
 			return;
 		}
 		Server.getInstance().broadcastGMMessage((chr != null ? chr.getWorld() : 0), MaplePacketCreator.sendYellowTip((chr != null ? MapleCharacter.makeMapleReadable(chr.getName()) : "") + " caused " + this.name() + " " + reason));

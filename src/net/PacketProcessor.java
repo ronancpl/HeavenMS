@@ -263,7 +263,8 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.WATER_OF_LIFE, new UseWaterOfLifeHandler());
             registerHandler(RecvOpcode.ADMIN_CHAT, new AdminChatHandler());
             registerHandler(RecvOpcode.MOVE_DRAGON, new MoveDragonHandler());
-            registerHandler(RecvOpcode.USE_ITEMUI, new UseItemCanvasHandler());
+            registerHandler(RecvOpcode.OPEN_ITEMUI, new RaiseUIStateHandler());
+            registerHandler(RecvOpcode.USE_ITEMUI, new RaiseIncExpHandler());
         }
     }
 }

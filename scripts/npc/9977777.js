@@ -60,6 +60,7 @@ function writeFeatureTab_Skills() {
         addFeature("Maker skill features properly developed.");
         addFeature("Chair Mastery - map chair boosts HP/MP rec.");
         addFeature("Mu Lung Dojo skills functional.");
+        addFeature("Monster Magnet skill no longer crashes players.");
 }
 
 function writeFeatureTab_Quests() {
@@ -72,6 +73,7 @@ function writeFeatureTab_Quests() {
         addFeature("Reviewed several 4th job skill questlines.");
         addFeature("Rewarding system now looks up for item stacking.");
         addFeature("3rd job quiz with all 40-question pool available.");
+        addFeature("Item raising functional.");
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {
@@ -113,6 +115,7 @@ function writeFeatureTab_CashItems() {
         addFeature("Reviewed an pet position issue within CASH inventory.");
         addFeature("Reviewed fashion-related contents, almost GMS-like.");
         addFeature("Plastic surgeons/stylists no longer stuck characters.");
+        addFeature("Reworked gachapon loots, website-lists lookalike.");
         addFeature("Scroll for Spikes on Shoes.");
         addFeature("Scroll for Cold Protection.");
         addFeature("Vega's spell.");

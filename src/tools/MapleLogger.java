@@ -20,10 +20,11 @@
  */
 package tools;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import net.opcodes.RecvOpcode;
+import client.MapleCharacter;
 import client.MapleClient;
 
 /**
@@ -34,14 +35,15 @@ import client.MapleClient;
 
 public class MapleLogger {
 
-    public static List<String> monitored = new ArrayList<>();
-    public static List<String> ignored = new ArrayList<>();
+        public static Set<Integer> monitored = new HashSet<>();
+        public static Set<Integer> ignored = new HashSet<>();
     
 	public static void logRecv(MapleClient c, short packetId, Object message) {
-		if (c.getPlayer() == null){
+                MapleCharacter chr = c.getPlayer();
+		if (chr == null){
 			return;
 		}
-		if (!monitored.contains(c.getPlayer().getName())){
+		if (!monitored.contains(chr.getId())){
 			return;
 		}
 		RecvOpcode op = getOpcodeFromValue(packetId);
@@ -49,7 +51,7 @@ public class MapleLogger {
 			return;
 		}
 		String packet = op.toString() + "\r\n" + HexTool.toString((byte[]) message);
-		FilePrinter.printError(FilePrinter.PACKET_LOGS + c.getAccountName() + "-" + c.getPlayer().getName() + ".txt", packet);
+		FilePrinter.printError(FilePrinter.PACKET_LOGS + c.getAccountName() + "-" + chr.getName() + ".txt", packet);
 	}
 	
 	private static final boolean isRecvBlocked(RecvOpcode op){

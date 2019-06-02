@@ -64,6 +64,10 @@ public class MaplePartySearchCoordinator {
     private Map<Integer, MapleCharacter> searchLeaders = new HashMap<>();
     private Map<Integer, LeaderSearchMetadata> searchSettings = new HashMap<>();
     
+    private Map<MapleCharacter, LeaderSearchMetadata> timeoutLeaders = new HashMap<>();
+    
+    private int updateCount = 0;
+    
     private static Map<Integer, Set<Integer>> mapNeighbors = fetchNeighbouringMaps();
     private static Map<Integer, MapleJob> jobTable = instantiateJobTable();
     
@@ -245,11 +249,21 @@ public class MaplePartySearchCoordinator {
         addQueueLeader(leader);
     }
     
+    private void registerPartyLeader(MapleCharacter leader, LeaderSearchMetadata settings) {
+        if (searchLeaders.containsKey(leader.getId())) return;
+        
+        searchSettings.put(leader.getId(), settings);
+        searchLeaders.put(leader.getId(), leader);
+        addQueueLeader(leader);
+    }
+    
     public void unregisterPartyLeader(MapleCharacter leader) {
         MapleCharacter toRemove = searchLeaders.remove(leader.getId());
         if (toRemove != null) {
             removeQueueLeader(toRemove);
             searchSettings.remove(leader.getId());
+        } else {
+            unregisterLongTermPartyLeader(leader);
         }
     }
     
@@ -307,6 +321,41 @@ public class MaplePartySearchCoordinator {
         return new Pair<>(queuedLeaders, nextLeaders);
     }
     
+    private void registerLongTermPartyLeaders(List<Pair<MapleCharacter, LeaderSearchMetadata>> recycledLeaders) {
+        leaderQueueRLock.lock();
+        try {
+            for (Pair<MapleCharacter, LeaderSearchMetadata> p : recycledLeaders) {
+                timeoutLeaders.put(p.getLeft(), p.getRight());
+            }
+        } finally {
+            leaderQueueRLock.unlock();
+        }
+    }
+    
+    private void unregisterLongTermPartyLeader(MapleCharacter leader) {
+        leaderQueueRLock.lock();
+        try {
+            timeoutLeaders.remove(leader);
+        } finally {
+            leaderQueueRLock.unlock();
+        }
+    }
+    
+    private void reinstateLongTermPartyLeaders() {
+        Map<MapleCharacter, LeaderSearchMetadata> timeoutLeadersCopy;
+        leaderQueueWLock.lock();
+        try {
+            timeoutLeadersCopy = new HashMap<>(timeoutLeaders);
+            timeoutLeaders.clear();
+        } finally {
+            leaderQueueWLock.unlock();
+        }
+        
+        for (Entry<MapleCharacter, LeaderSearchMetadata> e : timeoutLeadersCopy.entrySet()) {
+            registerPartyLeader(e.getKey(), e.getValue());
+        }
+    }
+    
     public void runPartySearch() {
         Pair<List<MapleCharacter>, List<MapleCharacter>> queuedLeaders = fetchQueuedLeaders();
         
@@ -356,10 +405,28 @@ public class MaplePartySearchCoordinator {
             }
         }
         
+        List<Pair<MapleCharacter, LeaderSearchMetadata>> recycledLeaders = new LinkedList<>();
         for (MapleCharacter leader : expiredLeaders) {
-            if (leader.isLoggedinWorld()) leader.dropMessage(5, "Your Party Search token session expired, please stop your Party Search and retry again later.");
             searchLeaders.remove(leader.getId());
-            searchSettings.remove(leader.getId());
+            LeaderSearchMetadata settings = searchSettings.remove(leader.getId());
+            
+            if (leader.isLoggedinWorld()) {
+                if (settings != null) {
+                    recycledLeaders.add(new Pair<>(leader, settings));
+                    if (ServerConstants.USE_DEBUG && leader.isGM()) leader.dropMessage(5, "Your Party Search token session is now on waiting queue for up to 7 minutes, to get it working right away please stop your Party Search and retry again later.");
+                } else {
+                    leader.dropMessage(5, "Your Party Search token session expired, please stop your Party Search and retry again later.");
+                }
+            }
+        }
+        
+        if (!recycledLeaders.isEmpty()) {
+            registerLongTermPartyLeaders(recycledLeaders);
+        }
+        
+        updateCount++;
+        if (updateCount % 77 == 0) {
+            reinstateLongTermPartyLeaders();
         }
     }
     
