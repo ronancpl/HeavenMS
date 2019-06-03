@@ -93,6 +93,10 @@ public class CommandsExecutor {
     }
     
     private void handleInternal(MapleClient client, String message){
+        if (client.getPlayer().getMapId() == 300000012) {
+            client.getPlayer().yellowMessage("You not have permission to use this command while in jail.");
+            return;
+        }
         final String splitRegex = "[ ]";
         String[] splitedMessage = message.substring(1).split(splitRegex, 2);
         if (splitedMessage.length < 2) {
