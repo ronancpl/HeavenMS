@@ -21,6 +21,7 @@
  */
 package server.gachapon;
 
+import server.MapleItemInformationProvider;
 import tools.Randomizer;
 
 /**
@@ -46,9 +47,11 @@ public class MapleGachapon {
 		MUSHROOM_SHRINE(9100105, 90, 8, 2, new MushroomShrine()),
 		SHOWA_SPA_MALE(9100106, 90, 8, 2, new ShowaSpaMale()),
 		SHOWA_SPA_FEMALE(9100107, 90, 8, 2, new ShowaSpaFemale()),
+                LUDIBRIUM(9100108, 90, 8, 2, new Ludibrium()),
 		NEW_LEAF_CITY(9100109, 90, 8, 2, new NewLeafCity()),
+                EL_NATH(9100110, 90, 8, 2, new ElNath()),
 		NAUTILUS_HARBOR(9100117, 90, 8, 2, new NautilusHarbor());
-
+                
 		private static final Gachapon[] values = Gachapon.values();
 
 		private GachaponItems gachapon;
@@ -71,8 +74,9 @@ public class MapleGachapon {
 				return 2; //Rare
 			} else if (chance > common) {
 				return 1; //Uncommon
-			}
-			return 0; //Common
+			} else {
+                                return 0; //Common
+                        }
 		}
 		
 		public int [] getItems(int tier){
@@ -93,6 +97,44 @@ public class MapleGachapon {
 				}
 			}
 			return null;
+		}
+                
+                public static String[] getLootInfo() {
+			MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                        
+                        String[] strList = new String[values.length + 1];
+                        
+                        String menuStr = "";
+                        int j = 0;
+                        for (Gachapon gacha : values) {
+                                menuStr += "#L" + j + "#" + gacha.name() + "#l\r\n";
+                                j++;
+                                
+                                String str = "";
+				for (int i = 0; i < 3; i++) {
+                                        int[] gachaItems = gacha.getItems(i);
+                                        
+                                        if (gachaItems.length > 0) {
+                                                str += ("  #rTier " + i + "#k:\r\n");
+                                                for (int itemid : gachaItems) {
+                                                        String itemName = ii.getName(itemid);
+                                                        if (itemName == null) {
+                                                                itemName = "MISSING NAME #" + itemid;
+                                                        }
+
+                                                        str += ("    " + itemName + "\r\n");
+                                                }
+
+                                                str += "\r\n";
+                                        }
+                                }
+                                str += "\r\n";
+                                
+                                strList[j] = str;
+			}
+                        strList[0] = menuStr;
+                        
+			return strList;
 		}
 	}
 	

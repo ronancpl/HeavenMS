@@ -4,6 +4,9 @@ var eventTimer = 1000 * 60 * timeLimit;
 var exitMap = 105070300;
 var eventMap = 910510000;
 
+var minMapId = 910510000;
+var maxMapId = 910510000;
+
 function init(){}
 
 function setup(difficulty, lobbyId){
@@ -67,9 +70,9 @@ function playerExit(eim, player){
 	player.changeMap(exitMap);
 }
 
-function changedMap(eim, player){
-	if(player.getMap().getId() < eventMap || player.getMap().getId() > next){
-		removePlayer(eim, player);
+function changedMap(eim, chr, mapid){
+	if(mapid < minMapId || mapid > maxMapId){
+		removePlayer(eim, chr);
 		eim.stopEventTimer();
 		eim.setEventCleared();
 		eim.dispose();

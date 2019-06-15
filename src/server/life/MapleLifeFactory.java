@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package server.life;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -216,6 +217,14 @@ public class MapleLifeFactory {
             stats.setBanishInfo(new BanishInfo(MapleDataTool.getString("banMsg", banishData), MapleDataTool.getInt("banMap/0/field", banishData, -1), MapleDataTool.getString("banMap/0/portal", banishData, "sp")));
         }
         
+        int noFlip = MapleDataTool.getInt("noFlip", monsterInfoData, 0);
+        if (noFlip > 0) {
+            Point origin = MapleDataTool.getPoint("stand/0/origin", monsterData, null);
+            if (origin != null) {
+                stats.setFixedStance(origin.getX() < 1 ? 5 : 4);    // fixed left/right
+            }
+        }
+        
         return new Pair<>(stats, attackInfos);
     }
     
@@ -268,6 +277,10 @@ public class MapleLifeFactory {
 
     public static MapleNPC getNPC(int nid) {
         return new MapleNPC(nid, new MapleNPCStats(MapleDataTool.getString(nid + "/name", npcStringData, "MISSINGNO")));
+    }
+    
+    public static String getNPCDefaultTalk(int nid) {
+        return MapleDataTool.getString(nid + "/d0", npcStringData, "(...)");
     }
 
     public static class BanishInfo {

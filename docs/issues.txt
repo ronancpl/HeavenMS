@@ -15,6 +15,7 @@ Known issues:
 - On low-end connections, things such as command summoning a player that is currently logging in (already visible to other players) may cause the player to freeze, consequently freezing the account as well since the server-side disconnection doesn't happen.
 - Reportedly, there are cases where mob positions fail to sync between player's client-view.
 - Visual equip EXP watch value will present stuttering for early levels requirement (EXP needed less than 100), and requirement at level 200 will not progress at all due to the level cap in client.
+- Monster Magnet will crash the player when trying to pull fixed monsters.
 ---------------------------
 
 ---------------------------

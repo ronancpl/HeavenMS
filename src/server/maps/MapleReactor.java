@@ -194,7 +194,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     }
 
     private void tryForceHitReactor(final byte newState) {  // weak hit state signal, if already changed reactor state before timeout then drop this
-        if (!this.reactorLock.tryLock()) {
+        if (!reactorLock.tryLock()) {
             return;
         }
 
@@ -202,7 +202,7 @@ public class MapleReactor extends AbstractMapleMapObject {
             this.resetReactorActions(newState);
             map.broadcastMessage(MaplePacketCreator.triggerReactor(this, (short) 0));
         } finally {
-            this.reactorLock.unlock();
+            reactorLock.unlock();
         }
     }
 
@@ -311,9 +311,8 @@ public class MapleReactor extends AbstractMapleMapObject {
                     }
                 } finally {
                     this.unlockReactor();
+                    hitLock.unlock();   // non-encapsulated unlock found thanks to MiLin
                 }
-
-                hitLock.unlock();
             }
         } catch (Exception e) {
             e.printStackTrace();

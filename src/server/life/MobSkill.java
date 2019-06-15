@@ -197,7 +197,7 @@ public class MobSkill {
                 }
                 break;
             case 131: // Mist
-                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), true), monster, this), x * 100, false, false, false);
+                monster.getMap().spawnMist(new MapleMist(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), monster, this), x * 100, false, false, false);
                 break;
             case 132:
                 disease = MapleDisease.CONFUSE;
@@ -253,9 +253,9 @@ public class MobSkill {
                     List<Integer> summons = getSummons();
                     int summonLimit = monster.countAvailableMobSummons(summons.size(), skillLimit);
                     if (summonLimit >= 1) {
-                        Collections.shuffle(summons);
                         boolean bossRushMap = GameConstants.isBossRush(map.getId());
-
+                        
+                        Collections.shuffle(summons);
                         for (Integer mobId : summons.subList(0, summonLimit)) {
                             MapleMonster toSpawn = MapleLifeFactory.getMonster(mobId);
                             if (toSpawn != null) {
@@ -412,12 +412,11 @@ public class MobSkill {
         int multiplier = facingLeft ? 1 : -1;
         Point mylt = new Point(lt.x * multiplier + posFrom.x, lt.y + posFrom.y);
         Point myrb = new Point(rb.x * multiplier + posFrom.x, rb.y + posFrom.y);
-        return new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
+        Rectangle bounds = new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
+        return bounds;
     }
 
     private List<MapleMapObject> getObjectsInRange(MapleMonster monster, MapleMapObjectType objectType) {
-        List<MapleMapObjectType> objectTypes = new ArrayList<MapleMapObjectType>();
-        objectTypes.add(objectType);
-        return monster.getMap().getMapObjectsInBox(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), objectTypes);
+        return monster.getMap().getMapObjectsInBox(calculateBoundingBox(monster.getPosition(), monster.isFacingLeft()), Collections.singletonList(objectType));
     }
 }

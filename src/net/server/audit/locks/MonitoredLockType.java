@@ -26,6 +26,7 @@ package net.server.audit.locks;
 
 public enum MonitoredLockType {
     UNDEFINED,
+    INTERVAL,
     CHARACTER_CHR,
     CHARACTER_CPN,
     CHARACTER_EFF,
@@ -96,7 +97,7 @@ public enum MonitoredLockType {
     VISITOR_MERCH,
     MAP_CHRS,
     MAP_OBJS,
-    MAP_FACTORY,
+    MAP_MANAGER,
     MAP_ITEM,
     MAP_LOOT,
     MAP_BOUNDS,

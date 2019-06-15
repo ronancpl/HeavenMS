@@ -59,7 +59,12 @@ function action(mode, type, selection) {
         }
         
         if(!(cm.isQuestStarted(100200) || cm.isQuestCompleted(100200))) {   // thanks Vcoc for finding out a need of reapproval from the masters for Zakum expeditions
-            cm.sendOk("Beware, for the power of olde has not been forgotten... ");
+            if (cm.getPlayer().getLevel() >= 50) {  // thanks Z1peR for noticing not-so-clear unmet requirements message here.
+                cm.sendOk("Beware, for the power of olde has not been forgotten... If you seek to defeat #rZakum#k someday, earn the #bChief's Residence Council#k approval foremost and then #bface the trials#k, only then you will become eligible to fight.");
+            } else {
+                cm.sendOk("Beware, for the power of olde has not been forgotten...");
+            }
+            
             cm.dispose();
             return;
         }

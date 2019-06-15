@@ -94,7 +94,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         ANSWER_TIE(0x33),
         GIVE_UP(0x34),
         EXIT_AFTER_GAME(0x38),
-        CANCEL_EXIT(0x39),
+        CANCEL_EXIT_AFTER_GAME(0x39),
         READY(0x3A),
         UN_READY(0x3B),
         EXPEL(0x3C),
@@ -344,7 +344,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     MapleTrade.cancelTrade(chr, MapleTrade.TradeResult.PARTNER_CANCEL);
                 } else {
                     chr.closePlayerShop();
-                    chr.closeMiniGame();
+                    chr.closeMiniGame(false);
                     chr.closeHiredMerchant(true);
                 }
             } else if (mode == Action.OPEN_STORE.getCode() || mode == Action.OPEN_CASH.getCode()) {
@@ -495,13 +495,14 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 
-                if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && ii.isCash(item.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be traded."));
-                    return;
-                }
-                
-                if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(item.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be traded."));
+                if (ii.isUnmerchable(item.getItemId())) {
+                    if (ItemConstants.isPet(item.getItemId())) {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be traded."));
+                    } else {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be traded."));
+                    }
+                    
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 
@@ -569,6 +570,15 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.serverNotice(1, "Could not perform shop operation with that item."));
                     c.announce(MaplePacketCreator.enableActions());
                     return;
+                } else if (MapleItemInformationProvider.getInstance().isUnmerchable(ivItem.getItemId())) {
+                    if (ItemConstants.isPet(ivItem.getItemId())) {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Store."));
+                    } else {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be sold on the Player Store."));
+                    }
+                    
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
                 }
 
                 short perBundle = slea.readShort();
@@ -588,17 +598,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " might of possibly packet edited Hired Merchants\nperBundle: " + perBundle + "\nperBundle * bundles (This multiplied cannot be greater than 2000): " + perBundle * bundles + "\nbundles: " + bundles + "\nprice: " + price);
                     return;
                 }
-
-                if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && MapleItemInformationProvider.getInstance().isCash(ivItem.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be sold on the Player Store."));
-                    return;
-                }
                 
-                if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(ivItem.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Store."));
-                    return;
-                }
-
                 Item sellItem = ivItem.copy();
                 if(!ItemConstants.isRechargeable(ivItem.getItemId())) {
                     sellItem.setQuantity(perBundle);
@@ -608,8 +608,6 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 MaplePlayerShop shop = chr.getPlayerShop();
                 MapleHiredMerchant merchant = chr.getHiredMerchant();
                 if (shop != null && shop.isOwner(chr)) {
-                    System.out.println(shopItem.getItem().getPet() + " " + shopItem.getItem().getPetId());
-                    System.out.println(ivItem.getPet() + " " + ivItem.getPetId());
                     if (shop.isOpen() || !shop.addItem(shopItem)) { // thanks Vcoc for pointing an exploit with unlimited shop slots
                         c.announce(MaplePacketCreator.serverNotice(1, "You can't sell it anymore."));
                         return;
@@ -770,9 +768,19 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     MapleCharacter visitor = miniGame.getVisitor();
 
                     if(visitor != null) {
-                        visitor.closeMiniGame();
-                        visitor.announce(MaplePacketCreator.getMiniGameClose(5));
+                        visitor.closeMiniGame(false);
+                        visitor.announce(MaplePacketCreator.getMiniGameClose(true, 5));
                     }
+                }
+            } else if (mode == Action.EXIT_AFTER_GAME.getCode()) {
+                MapleMiniGame miniGame = chr.getMiniGame();
+                if(miniGame != null) {
+                    miniGame.setQuitAfterGame(chr, true);
+                }
+            } else if (mode == Action.CANCEL_EXIT_AFTER_GAME.getCode()) {
+                MapleMiniGame miniGame = chr.getMiniGame();
+                if(miniGame != null) {
+                    miniGame.setQuitAfterGame(chr, false);
                 }
             }
         } finally {

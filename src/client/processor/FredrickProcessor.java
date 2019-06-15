@@ -100,7 +100,7 @@ public class FredrickProcessor {
         return msg;
     }
     
-    private static void removeFredrickLog(int cid) {
+    public static void removeFredrickLog(int cid) {
         try {
             Connection con = DatabaseConnection.getConnection();
             removeFredrickLog(con, cid);

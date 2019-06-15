@@ -22,17 +22,20 @@ function enter(pi) {
     else if(pi.isQuestStarted(2332) && pi.hasItem(4032388)){
         pi.forceCompleteQuest(2332, 1300002);
         pi.getPlayer().message("You've found the princess!");
-        pi.giveCharacterExp(4400 * 1.5, pi.getPlayer());
+        pi.giveCharacterExp(4400, pi.getPlayer());
         
         var em = pi.getEventManager("MK_PrimeMinister");
         var party = pi.getPlayer().getParty();
         if (party != null) {
-            if (em.startInstance(party, pi.getMap())) {
-                pi.playPortalSound();
-                return true;
-            } else {
-                pi.message("Another party is already challenging the boss in this channel.");
-                return false;
+            var eli = em.getEligibleParty(pi.getParty());   // thanks Conrad for pointing out missing eligible party declaration here
+            if(eli.size() > 0) {
+                if (em.startInstance(party, pi.getMap(), 1)) {
+                    pi.playPortalSound();
+                    return true;
+                } else {
+                    pi.message("Another party is already challenging the boss in this channel.");
+                    return false;
+                }
             }
         } else {
             if (em.startInstance(pi.getPlayer())) { // thanks RedHat for noticing an issue here
@@ -49,12 +52,15 @@ function enter(pi) {
         
         var party = pi.getPlayer().getParty();
         if (party != null) {
-            if (em.startInstance(1, party, pi.getMap())) {
-                pi.playPortalSound();
-                return true;
-            } else {
-                pi.message("Another party is already challenging the boss in this channel.");
-                return false;
+            var eli = em.getEligibleParty(pi.getParty());
+            if(eli.size() > 0) {
+                if (em.startInstance(party, pi.getMap(), 1)) {
+                    pi.playPortalSound();
+                    return true;
+                } else {
+                    pi.message("Another party is already challenging the boss in this channel.");
+                    return false;
+                }
             }
         } else {
             if (em.startInstance(pi.getPlayer())) {

@@ -34,8 +34,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
-
-import java.awt.geom.Line2D;
+import tools.IntervalBuilder;
 
 /**
  *
@@ -44,84 +43,7 @@ import java.awt.geom.Line2D;
 public class PartySearchStorage {
     
     private List<PartySearchCharacter> storage = new ArrayList<>(20);
-    private PartySearchEmptyIntervals emptyManager = new PartySearchEmptyIntervals();
-    
-    private class PartySearchEmptyIntervals {
-        
-        private List<Line2D> emptyLimits = new ArrayList<>();
-        
-        private void refitEmptyIntervals(int st, int en, int minLevel, int maxLevel) {
-            List<Line2D> checkLimits = new ArrayList<>(emptyLimits.subList(st, en));
-            
-            float newLimitX1, newLimitX2;
-            if (!checkLimits.isEmpty()) {
-                Line2D firstLimit = checkLimits.get(0);
-                Line2D lastLimit = checkLimits.get(checkLimits.size() - 1);
-
-                newLimitX1 = (float) ((minLevel < firstLimit.getX1()) ? minLevel : firstLimit.getX1());
-                newLimitX2 = (float) ((maxLevel > lastLimit.getX2()) ? maxLevel : lastLimit.getX2());
-
-                for (Line2D limit : checkLimits) {
-                    emptyLimits.remove(st);
-                }
-            } else {
-                newLimitX1 = minLevel;
-                newLimitX2 = maxLevel;
-            }
-            
-            emptyLimits.add(st, new Line2D.Float((float) newLimitX1, 0, (float) newLimitX2, 0));
-        }
-        
-        private int bsearchInterval(int level) {
-            int st = 0, en = emptyLimits.size() - 1;
-
-            int mid, idx;
-            while (en >= st) {
-                idx = (st + en) / 2;
-                mid = (int) emptyLimits.get(idx).getX1();
-
-                if (mid == level) {
-                    return idx;
-                } else if (mid < level) {
-                    st = idx + 1;
-                } else {
-                    en = idx - 1;
-                }
-            }
-
-            return en;
-        }
-        
-        public void addEmptyInterval(int fromLevel, int toLevel) {
-            synchronized (emptyLimits) {    // adding intervals occurs on a same-thread process, so this is actually not performance grinding
-                int st = bsearchInterval(fromLevel);
-                if (st < 0) {
-                    st = 0;
-                } else if (emptyLimits.get(st).getX2() < fromLevel) {
-                    st += 1;
-                }
-
-                int en = bsearchInterval(toLevel);
-                if (en < st) en = st - 1;
-
-                refitEmptyIntervals(st, en + 1, fromLevel, toLevel);
-            }
-        }
-        
-        public boolean isInEmptyInterval(int minLevel, int maxLevel) {
-            synchronized (emptyLimits) {
-                int idx = bsearchInterval(minLevel);
-                return idx >= 0 && maxLevel <= emptyLimits.get(idx).getX2();
-            }
-        }
-        
-        public void clearEmptyInterval() {
-            synchronized (emptyLimits) {
-                emptyLimits.clear();
-            }
-        }
-        
-    }
+    private IntervalBuilder emptyIntervals = new IntervalBuilder();
     
     private final ReentrantReadWriteLock psLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_PARTY_SEARCH_STORAGE, true);
     private final ReadLock psRLock = psLock.readLock();
@@ -183,7 +105,7 @@ public class PartySearchStorage {
             psWLock.unlock();
         }
         
-        emptyManager.clearEmptyInterval();
+        emptyIntervals.clear();
     }
     
     private static int bsearchStorage(List<PartySearchCharacter> storage, int level) {
@@ -207,7 +129,7 @@ public class PartySearchStorage {
     }
     
     public MapleCharacter callPlayer(int callerCid, int callerMapid, int minLevel, int maxLevel) {
-        if (emptyManager.isInEmptyInterval(minLevel, maxLevel)) {
+        if (emptyIntervals.inInterval(minLevel, maxLevel)) {
             return null;
         }
         
@@ -230,7 +152,7 @@ public class PartySearchStorage {
             }
         }
         
-        emptyManager.addEmptyInterval(minLevel, maxLevel);
+        emptyIntervals.addInterval(minLevel, maxLevel);
         return null;
     }
     

@@ -92,8 +92,6 @@ public class GameConstants {
     
     // used by the "goto" command for only-GMs
     public static final HashMap<String, Integer> GOTO_AREAS = new HashMap<String, Integer>() {{
-        putAll(GOTO_TOWNS);
-        
         put("gmmap", 180000000);
         put("excavation", 990000000);
         put("mushmom", 100000005);

@@ -5,17 +5,12 @@
  */
  
  function enter(pi){
- 	if (pi.isQuestCompleted(2316)) {
- 		if (pi.hasItem(2430014)) {
- 			pi.gainItem(2430014, -1 * pi.getPlayer().getItemQuantity(2430014, false));
-                        pi.message("You have used the Killer Mushroom Spore to open the way.");
- 		}
- 
+ 	if (pi.isQuestStarted(100202)) {
  		pi.playPortalSound(); pi.warp(106020400, 2);
  		return true;
- 	} else if (pi.hasItem(2430015)) {
-                pi.gainItem(2430015, -1 * pi.getPlayer().getItemQuantity(2430015, false));
-                pi.message("You have used the Thorn Remover to clean the way.");
+ 	} else if (pi.hasItem(4000507)) {
+                pi.gainItem(4000507, -1);
+                pi.message("You have used a Poison Spore to pass through the barrier.");
                 
                 pi.playPortalSound(); pi.warp(106020400, 2);
                 return true;

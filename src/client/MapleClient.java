@@ -109,11 +109,11 @@ public class MapleClient {
 	private Map<String, ScriptEngine> engines = new HashMap<>();
 	private byte characterSlots = 3;
 	private byte loginattempt = 0;
-	private String pin = null;
+	private String pin = "";
 	private int pinattempt = 0;
-	private String pic = null;
-	private String hwid = null;
+	private String pic = "";
 	private int picattempt = 0;
+        private String hwid = null;
         private byte csattempt = 0;
 	private byte gender = -1;
 	private boolean disconnecting = false;
@@ -480,6 +480,10 @@ public class MapleClient {
 	}
 
 	public boolean checkPin(String other) {
+                if (!(ServerConstants.ENABLE_PIN && !canBypassPin())) {
+                        return true;
+                }
+                
 		pinattempt++;
 		if (pinattempt > 5) {
                         MapleSessionCoordinator.getInstance().closeSession(session, false);
@@ -521,7 +525,7 @@ public class MapleClient {
 		if (picattempt > 5) {
 			MapleSessionCoordinator.getInstance().closeSession(session, false);
 		}
-		if (pic.equals(other)) {
+		if (pic.equals(other)) {    // thanks ryantpayton (HeavenClient) for noticing null pics being checked here
 			picattempt = 0;
                         MapleLoginBypassCoordinator.getInstance().registerLoginBypassEntry(getNibbleHWID(), accId, true);
 			return true;
@@ -1485,6 +1489,8 @@ public class MapleClient {
 		player.getMap().removePlayer(player);
                 player.clearBanishPlayerData();
 		player.getClient().getChannelServer().removePlayer(player);
+                
+                player.saveCharToDB();
 		
                 player.getClient().updateLoginState(MapleClient.LOGIN_SERVER_TRANSITION);
 		player.setSessionTransitionState();

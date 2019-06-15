@@ -422,8 +422,8 @@ public final class RingActionHandler extends AbstractMaplePacketHandler {
                                     
                                     Item weddingTicket = new Item(newItemId, (short) 0, (short) 1);
                                     weddingTicket.setExpiration(expiration);
-
-                                    DueyProcessor.addItemToDB(weddingTicket, 1, 0, groom, guest);
+                                    
+                                    DueyProcessor.dueyCreatePackage(weddingTicket, 0, groom, guest);
                                 }
                             } else {
                                 c.getPlayer().dropMessage(5, "Wedding is already under way. You cannot invite any more guests for the event.");

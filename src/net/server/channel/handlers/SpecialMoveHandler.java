@@ -101,6 +101,7 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         monster.aggroClearDamages();
                         monster.aggroMonsterDamage(chr, 1);
                         
+                        // thanks onechord for pointing out Magnet disconnecting the caster (issue would actually happen upon failing to catch mob)
                         monster.aggroSwitchController(chr, true);
                     }
                 }
@@ -133,12 +134,20 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                 } else {
                     skill.getEffect(skillLevel).applyEchoOfHero(chr);
                 }
-            } else if(chr.canDoor()) {
-                //update door lists
-                chr.cancelMagicDoor();
-                skill.getEffect(skillLevel).applyTo(chr, pos);
             } else {
-                chr.message("Please wait 5 seconds before casting Mystic Door again.");
+                if (c.tryacquireClient()) {
+                    try {
+                        if (chr.canDoor()) {
+                            chr.cancelMagicDoor();
+                            skill.getEffect(skillLevel).applyTo(chr, pos);
+                        } else {
+                            chr.message("Please wait 5 seconds before casting Mystic Door again.");
+                        }
+                    } finally {
+                        c.releaseClient();
+                    }
+                }
+                
                 c.announce(MaplePacketCreator.enableActions());
             }
         } else {

@@ -100,15 +100,20 @@ public class MapleDoorObject extends AbstractMapleMapObject {
 
     @Override
     public void sendSpawnData(MapleClient client) {
+        sendSpawnData(client, true);
+    }
+    
+    public void sendSpawnData(MapleClient client, boolean launched) {
         MapleCharacter chr = client.getPlayer();
-        if (from.getId() == chr.getMapId()) {
-            MapleParty party = chr.getParty();
-            if (party != null && (ownerId == chr.getId() || party.getMemberById(ownerId) != null)) {
-                client.announce(MaplePacketCreator.partyPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
+        if (this.getFrom().getId() == chr.getMapId()) {
+            if (chr.getParty() != null && (this.getOwnerId() == chr.getId() || chr.getParty().getMemberById(this.getOwnerId()) != null)) {
+                chr.announce(MaplePacketCreator.partyPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
             }
-            
-            client.announce(MaplePacketCreator.spawnPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
-            if(!this.inTown()) client.announce(MaplePacketCreator.spawnDoor(this.getOwnerId(), this.getPosition(), true));
+
+            chr.announce(MaplePacketCreator.spawnPortal(this.getFrom().getId(), this.getTo().getId(), this.toPosition()));
+            if (!this.inTown()) {
+                chr.announce(MaplePacketCreator.spawnDoor(this.getOwnerId(), this.getPosition(), launched));
+            }
         }
     }
 

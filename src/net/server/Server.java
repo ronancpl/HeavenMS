@@ -495,15 +495,12 @@ public class Server {
         return true;
     }
     
-    private void resetServerWorlds() {
+    private void resetServerWorlds() {  // thanks maple006 for noticing proprietary lists assigned to null
         wldWLock.lock();
         try {
             worlds.clear();
-            worlds = null;
             channels.clear();
-            channels = null;
             worldRecommendedList.clear();
-            worldRecommendedList = null;
         } finally {
             wldWLock.unlock();
         }

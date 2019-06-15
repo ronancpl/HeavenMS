@@ -48,7 +48,7 @@ function action(mode, type, selection){
                                 
                                 var party = cm.getPlayer().getParty();
                                 if (party != null) {
-                                    if (!em.startInstance(party, cm.getMap())) {
+                                    if (!em.startInstance(party, cm.getMap(), 1)) {
                                         cm.sendOk("Another party is already challenging the boss in this channel.");
                                     }
                                 } else {

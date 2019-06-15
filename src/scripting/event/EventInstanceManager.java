@@ -21,7 +21,6 @@
  */
 package scripting.event;
 
-import java.io.File;
 import tools.Pair;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -40,14 +39,13 @@ import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import provider.MapleDataProviderFactory;
 import server.MaplePortal;
 import server.TimerManager;
 import server.MapleStatEffect;
 import server.expeditions.MapleExpedition;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
-import server.maps.MapleMapFactory;
+import server.maps.MapleMapManager;
 import server.maps.MapleReactor;
 import client.MapleCharacter;
 import client.SkillFactory;
@@ -82,7 +80,7 @@ public class EventInstanceManager {
 	private Map<MapleCharacter, Integer> killCount = new HashMap<>();
 	private EventManager em;
         private EventScriptScheduler ess;
-	private MapleMapFactory mapFactory;
+	private MapleMapManager mapManager;
 	private String name;
 	private Properties props = new Properties();
         private Map<String, Object> objectProps = new HashMap<>();
@@ -125,8 +123,7 @@ public class EventInstanceManager {
 		this.em = em;
 		this.name = name;
                 this.ess = new EventScriptScheduler();
-		mapFactory = new MapleMapFactory(this, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), (byte) 0, (byte) 1);//Fk this
-		mapFactory.setChannel(em.getChannelServer().getId());
+		this.mapManager = new MapleMapManager(this, em.getWorldServer().getId(), em.getChannelServer().getId());
 	}
         
         public void setName(String name) {
@@ -647,10 +644,10 @@ public class EventInstanceManager {
                 TimerManager.getInstance().schedule(new Runnable() {
                         @Override
                         public void run() {
-                                mapFactory.dispose();   // issues from instantly disposing some event objects found thanks to MedicOP
+                                mapManager.dispose();   // issues from instantly disposing some event objects found thanks to MedicOP
                                 wL.lock();
                                 try {
-                                        mapFactory = null;
+                                        mapManager = null;
                                         em = null;
                                 } finally {
                                         wL.unlock();
@@ -675,8 +672,8 @@ public class EventInstanceManager {
                 sL = sL.dispose();
         }
 
-	public MapleMapFactory getMapFactory() {
-		return mapFactory;
+	public MapleMapManager getMapFactory() {
+		return mapManager;
 	}
 
 	public void schedule(final String methodName, long delay) {
@@ -706,10 +703,10 @@ public class EventInstanceManager {
 	}
 
 	public MapleMap getMapInstance(int mapId) {
-		MapleMap map = mapFactory.getMap(mapId);
+		MapleMap map = mapManager.getMap(mapId);
                 map.setEventInstance(this);
 
-		if (!mapFactory.isMapLoaded(mapId)) {
+		if (!mapManager.isMapLoaded(mapId)) {
                         sL.lock();
                         try {
                                 if (em.getProperty("shuffleReactors") != null && em.getProperty("shuffleReactors").equals("true")) {

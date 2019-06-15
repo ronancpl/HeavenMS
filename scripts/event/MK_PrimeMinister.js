@@ -86,27 +86,36 @@ function scheduledTimeout(eim){
 	eim.dispose();
 }
 
-function playerRevive(eim, player){
-	player.respawn(eim, entryMap);
-	return false;
+function playerRevive(eim, player) { // player presses ok on the death pop up.
+        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
 }
 
 function playerDead(eim, player){}
 
 function playerDisconnected(eim, player){
-	var party = eim.getPlayers();
-
-	for(var i = 0; i < party.size(); i++){
-		if(party.get(i).equals(player))
-			removePlayer(eim, player);
-		else
-			playerExit(eim, party.get(i));
-	}
-	eim.dispose();
+	if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                eim.unregisterPlayer(player);
+                end(eim);
+        }
+        else
+                eim.unregisterPlayer(player);
 }
 
 function monsterValue(eim, mobId){
 	return -1;
+}
+
+function end(eim) {
+        var party = eim.getPlayers();
+        for (var i = 0; i < party.size(); i++) {
+                playerExit(eim, party.get(i));
+        }
+        eim.dispose();
 }
 
 function leftParty(eim, player){}
@@ -120,8 +129,15 @@ function playerExit(eim, player){
 	player.changeMap(exitMap, 2);
 }
 
-function changedMap(eim, chr, mapid) {
-        if(mapid < minMapId || mapid > maxMapId) playerExit(eim, chr);
+function changedMap(eim, player, mapid) {
+        if (mapid < minMapId || mapid > maxMapId) {
+                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                        eim.unregisterPlayer(player);
+                        end(eim);
+                }
+                else
+                        eim.unregisterPlayer(player);
+        }
 }
 
 function removePlayer(eim, player){

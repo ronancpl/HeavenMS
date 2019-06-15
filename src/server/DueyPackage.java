@@ -24,21 +24,22 @@ package server;
 import client.inventory.Item;
 import java.util.Calendar;
 
-public class DueyPackages {
+public class DueyPackage {
     private String sender = null;
     private Item item = null;
     private int mesos = 0;
+    private String message = "";
     private int day;
     private int month;
     private int year;
     private int packageId = 0;
 
-    public DueyPackages(int pId, Item item) {
+    public DueyPackage(int pId, Item item) {
         this.item = item;
         packageId = pId;
     }
 
-    public DueyPackages(int pId) { // Meso only package.
+    public DueyPackage(int pId) { // Meso only package.
         this.packageId = pId;
     }
 
@@ -60,6 +61,14 @@ public class DueyPackages {
 
     public void setMesos(int set) {
         mesos = set;
+    }
+    
+    public String getMessage() {
+        return message;
+    }
+    
+    public void setMessage(String m) {
+        message = m;
     }
 
     public int getPackageId() {

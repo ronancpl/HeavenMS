@@ -51,7 +51,7 @@ import net.server.world.PartyOperation;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import server.CashShop.SpecialCashItem;
-import server.DueyPackages;
+import server.DueyPackage;
 import server.MTSItemInfo;
 import server.MapleItemInformationProvider;
 import server.MapleShopItem;
@@ -719,7 +719,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(1); // 1: Remove the "Select the world you want to play in"
                 
                 mplew.write(ServerConstants.ENABLE_PIN && !c.canBypassPin() ? 0 : 1); // 0 = Pin-System Enabled, 1 = Disabled
-                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
+                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2); // 0 = Register PIC, 1 = Ask for PIC, 2 = Disabled
                 
                 return mplew.getPacket();
         }
@@ -905,7 +905,7 @@ public class MaplePacketCreator {
                         addCharEntry(mplew, chr, false);
                 }
 
-                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null ? 0 : 1) : 2);
+                mplew.write(ServerConstants.ENABLE_PIC && !c.canBypassPic() ? (c.getPic() == null || c.getPic().equals("") ? 0 : 1) : 2);
                 mplew.writeInt(ServerConstants.COLLECTIVE_CHARSLOT ? chars.size() + c.getAvailableCharacterSlots() : c.getCharacterSlots());
                 return mplew.getPacket();
         }
@@ -5252,7 +5252,7 @@ public class MaplePacketCreator {
                 mplew.write(1);
                 return mplew.getPacket();
         }
-
+        
         private static byte[] getMiniGameResult(MapleMiniGame game, int tie, int result, int forfeit) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
@@ -5312,12 +5312,12 @@ public class MaplePacketCreator {
         public static byte[] getMiniGameTie(MapleMiniGame game) {
                 return getMiniGameResult(game, 1, 3, 0);
         }
-
-        public static byte[] getMiniGameClose(int type) {
+        
+        public static byte[] getMiniGameClose(boolean visitor, int type) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(5);
                 mplew.writeShort(SendOpcode.PLAYER_INTERACTION.getValue());
                 mplew.write(PlayerInteractionHandler.Action.EXIT.getCode());
-                mplew.write(1);
+                mplew.writeBool(visitor);
                 mplew.write(type); /* 2 : CRASH 3 : The room has been closed 4 : You have left the room 5 : You have been expelled  */
                 return mplew.getPacket();
         }
@@ -7039,26 +7039,35 @@ public class MaplePacketCreator {
                 return sendDuey(operation, null);
         }
 
-        public static byte[] sendDuey(byte operation, List<DueyPackages> packages) {
+        public static byte[] sendDuey(byte operation, List<DueyPackage> packages) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PARCEL.getValue());
                 mplew.write(operation);
                 if (operation == 8) {
                         mplew.write(0);
                         mplew.write(packages.size());
-                        for (DueyPackages dp : packages) {
+                        for (DueyPackage dp : packages) {
                                 mplew.writeInt(dp.getPackageId());
                                 mplew.writeAsciiString(dp.getSender());
                                 for (int i = dp.getSender().length(); i < 13; i++) {
                                         mplew.write(0);
                                 }
+                                
                                 mplew.writeInt(dp.getMesos());
                                 mplew.writeLong(getTime(dp.sentTimeInMilliseconds()));
-                                mplew.writeLong(0); // Contains message o____o.
-                                for (int i = 0; i < 48; i++) {
-                                        mplew.writeInt(Randomizer.nextInt(Integer.MAX_VALUE));
+                                
+                                String msg = dp.getMessage();
+                                if (!msg.isEmpty()) {
+                                    mplew.writeInt(1);
+                                    mplew.writeAsciiString(msg);
+                                    for (int i = msg.length(); i < 200; i++) {
+                                            mplew.write(0);
+                                    }
+                                } else {
+                                    mplew.writeInt(0);
+                                    mplew.skip(200);
                                 }
-                                mplew.writeInt(0);
+                                
                                 mplew.write(0);
                                 if (dp.getItem() != null) {
                                         mplew.write(1);
