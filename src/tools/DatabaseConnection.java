@@ -11,7 +11,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import constants.ServerConstants;
 
 /**
- * @author Frz - Big Daddy
+ * @author Frz (Big Daddy)
  * @author The Real Spookster - some modifications to this beautiful code
  * @author Ronan - some connection pool to this beautiful code
  */
