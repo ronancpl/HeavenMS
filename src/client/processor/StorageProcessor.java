@@ -147,7 +147,6 @@ public class StorageProcessor {
                                                 
                                                 chr.gainMeso(-storeFee, false, true, false);
                                                 
-                                                item = item.copy(); // thanks Robin Schulz for pointing out an issue with stored items
                                                 MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
                                                 item.setQuantity(quantity);
                                                 storage.store(item);

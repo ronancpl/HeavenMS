@@ -46,13 +46,16 @@ public enum ItemFactory {
     CASH_ARAN(5, true),
     MERCHANT(6, false),
     CASH_OVERALL(7, true),
-    MARRIAGE_GIFTS(8, false);
+    MARRIAGE_GIFTS(8, false),
+    DUEY(9, false);
     private final int value;
     private final boolean account;
-    private static final Lock locks[] = new Lock[200];  // thanks Masterrulax for pointing out a bottleneck issue here
+    
+    private static final int lockCount = 400;
+    private static final Lock locks[] = new Lock[lockCount];  // thanks Masterrulax for pointing out a bottleneck issue here
     
     static {
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < lockCount; i++) {
             locks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.ITEM, true);
         }
     }
@@ -75,7 +78,9 @@ public enum ItemFactory {
         saveItems(items, null, id, con);
     }
     
-    public synchronized void saveItems(List<Pair<Item, MapleInventoryType>> items, List<Short> bundlesList, int id, Connection con) throws SQLException {
+    public void saveItems(List<Pair<Item, MapleInventoryType>> items, List<Short> bundlesList, int id, Connection con) throws SQLException {
+        // thanks Arufonsu, MedicOP, BHB for pointing a "synchronized" bottleneck here
+        
         if(value != 6) saveItemsCommon(items, id, con);
         else saveItemsMerchant(items, bundlesList, id, con);
     }
@@ -199,7 +204,7 @@ public enum ItemFactory {
         PreparedStatement pse = null;
         ResultSet rs = null;
 
-        Lock lock = locks[id % 200];
+        Lock lock = locks[id % lockCount];
         lock.lock();
         try {
             StringBuilder query = new StringBuilder();
@@ -365,7 +370,7 @@ public enum ItemFactory {
         PreparedStatement pse = null;
         ResultSet rs = null;
 
-        Lock lock = locks[id % 200];
+        Lock lock = locks[id % lockCount];
         lock.lock();
         try {
             ps = con.prepareStatement("DELETE FROM `inventorymerchant` WHERE `characterid` = ?");

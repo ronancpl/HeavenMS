@@ -50,6 +50,7 @@ public class MapleMonsterStats {
     public BanishInfo banish = null;
     public List<loseItem> loseItem = null;
     public selfDestruction selfDestruction = null;
+    public int fixedStance = 0;
     public boolean friendly;
 
     public void setChange(boolean change) {
@@ -338,6 +339,14 @@ public class MapleMonsterStats {
     public void setMDDamage(int MDDamage) {
         this.MDDamage = MDDamage;
     } 
+    
+    public int getFixedStance() {
+        return this.fixedStance;
+    }
+    
+    public void setFixedStance(int stance) {
+        this.fixedStance = stance;
+    }
     
     public MapleMonsterStats copy() {
         MapleMonsterStats copy = new MapleMonsterStats();

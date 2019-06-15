@@ -29,7 +29,7 @@ function enter(pi) {
         if (party != null) {
             var eli = em.getEligibleParty(pi.getParty());   // thanks Conrad for pointing out missing eligible party declaration here
             if(eli.size() > 0) {
-                if (em.startInstance(party, pi.getMap())) {
+                if (em.startInstance(party, pi.getMap(), 1)) {
                     pi.playPortalSound();
                     return true;
                 } else {
@@ -54,7 +54,7 @@ function enter(pi) {
         if (party != null) {
             var eli = em.getEligibleParty(pi.getParty());
             if(eli.size() > 0) {
-                if (em.startInstance(1, party, pi.getMap())) {
+                if (em.startInstance(party, pi.getMap(), 1)) {
                     pi.playPortalSound();
                     return true;
                 } else {

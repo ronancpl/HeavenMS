@@ -54,7 +54,7 @@ function action(mode, type, selection) {
         }
 
         if (status == 0) {
-            if (player.getLevel() < cwkpq.getMinLevel() && player.getLevel() > cwkpq.getMaxLevel()) { //Don't fit requirement
+            if (player.getLevel() < cwkpq.getMinLevel() || player.getLevel() > cwkpq.getMaxLevel()) { //Don't fit requirement, thanks Conrad
                 cm.sendOk("You do not meet the criteria to take attempt Crimsonwood Keep Party Quest!");
                 cm.dispose();
             } else if (expedition == null) { //Start an expedition

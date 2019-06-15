@@ -51,7 +51,7 @@ import net.server.world.PartyOperation;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import server.CashShop.SpecialCashItem;
-import server.DueyPackages;
+import server.DueyPackage;
 import server.MTSItemInfo;
 import server.MapleItemInformationProvider;
 import server.MapleShopItem;
@@ -7039,26 +7039,35 @@ public class MaplePacketCreator {
                 return sendDuey(operation, null);
         }
 
-        public static byte[] sendDuey(byte operation, List<DueyPackages> packages) {
+        public static byte[] sendDuey(byte operation, List<DueyPackage> packages) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.PARCEL.getValue());
                 mplew.write(operation);
                 if (operation == 8) {
                         mplew.write(0);
                         mplew.write(packages.size());
-                        for (DueyPackages dp : packages) {
+                        for (DueyPackage dp : packages) {
                                 mplew.writeInt(dp.getPackageId());
                                 mplew.writeAsciiString(dp.getSender());
                                 for (int i = dp.getSender().length(); i < 13; i++) {
                                         mplew.write(0);
                                 }
+                                
                                 mplew.writeInt(dp.getMesos());
                                 mplew.writeLong(getTime(dp.sentTimeInMilliseconds()));
-                                mplew.writeLong(0); // Contains message o____o.
-                                for (int i = 0; i < 48; i++) {
-                                        mplew.writeInt(Randomizer.nextInt(Integer.MAX_VALUE));
+                                
+                                String msg = dp.getMessage();
+                                if (!msg.isEmpty()) {
+                                    mplew.writeInt(1);
+                                    mplew.writeAsciiString(msg);
+                                    for (int i = msg.length(); i < 200; i++) {
+                                            mplew.write(0);
+                                    }
+                                } else {
+                                    mplew.writeInt(0);
+                                    mplew.skip(200);
                                 }
-                                mplew.writeInt(0);
+                                
                                 mplew.write(0);
                                 if (dp.getItem() != null) {
                                         mplew.write(1);

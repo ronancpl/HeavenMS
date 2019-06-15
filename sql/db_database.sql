@@ -12800,30 +12800,9 @@ INSERT INTO `drop_data_global` (`id`, `continent`, `itemid`, `minimum_quantity`,
 CREATE TABLE IF NOT EXISTS `dueyitems` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `PackageId` int(10) unsigned NOT NULL DEFAULT '0',
-  `itemid` int(10) unsigned NOT NULL DEFAULT '0',
-  `quantity` int(10) unsigned NOT NULL DEFAULT '0',
-  `upgradeslots` int(11) DEFAULT '0',
-  `level` int(11) DEFAULT '0',
-  `itemlevel` int(11) DEFAULT '0',
-  `itemexp` int(11) DEFAULT '0',
-  `str` int(11) DEFAULT '0',
-  `dex` int(11) DEFAULT '0',
-  `int` int(11) DEFAULT '0',
-  `luk` int(11) DEFAULT '0',
-  `hp` int(11) DEFAULT '0',
-  `mp` int(11) DEFAULT '0',
-  `watk` int(11) DEFAULT '0',
-  `matk` int(11) DEFAULT '0',
-  `wdef` int(11) DEFAULT '0',
-  `mdef` int(11) DEFAULT '0',
-  `acc` int(11) DEFAULT '0',
-  `avoid` int(11) DEFAULT '0',
-  `hands` int(11) DEFAULT '0',
-  `speed` int(11) DEFAULT '0',
-  `jump` int(11) DEFAULT '0',
-  `flag` int(11) DEFAULT '0',
-  `owner` varchar(13) DEFAULT NULL,
+  `inventoryitemid` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  KEY `INVENTORYITEMID` (`inventoryitemid`),
   KEY `PackageId` (`PackageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -12833,8 +12812,8 @@ CREATE TABLE IF NOT EXISTS `dueypackages` (
   `SenderName` varchar(13) NOT NULL,
   `Mesos` int(10) unsigned DEFAULT '0',
   `TimeStamp` varchar(10) NOT NULL,
+  `Message` varchar(200) NOT NULL DEFAULT "",
   `Checked` tinyint(1) unsigned DEFAULT '1',
-  `Type` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`PackageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -12907,33 +12886,6 @@ CREATE TABLE IF NOT EXISTS `guilds` (
   `allianceId` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`guildid`),
   INDEX (guildid, name)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-CREATE TABLE IF NOT EXISTS `hiredmerchant` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ownerid` int(11) DEFAULT '0',
-  `itemid` int(10) unsigned NOT NULL DEFAULT '0',
-  `quantity` int(10) unsigned NOT NULL DEFAULT '0',
-  `upgradeslots` int(11) DEFAULT '0',
-  `level` int(11) DEFAULT '0',
-  `str` int(11) DEFAULT '0',
-  `dex` int(11) DEFAULT '0',
-  `int` int(11) DEFAULT '0',
-  `luk` int(11) DEFAULT '0',
-  `hp` int(11) DEFAULT '0',
-  `mp` int(11) DEFAULT '0',
-  `watk` int(11) DEFAULT '0',
-  `matk` int(11) DEFAULT '0',
-  `wdef` int(11) DEFAULT '0',
-  `mdef` int(11) DEFAULT '0',
-  `acc` int(11) DEFAULT '0',
-  `avoid` int(11) DEFAULT '0',
-  `hands` int(11) DEFAULT '0',
-  `speed` int(11) DEFAULT '0',
-  `jump` int(11) DEFAULT '0',
-  `owner` varchar(13) DEFAULT '',
-  `type` tinyint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `hwidaccounts` (

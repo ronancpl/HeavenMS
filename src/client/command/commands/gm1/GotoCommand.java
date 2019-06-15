@@ -33,7 +33,7 @@ import net.server.Server;
 import server.MaplePortal;
 import server.maps.FieldLimit;
 import server.maps.MapleMap;
-import server.maps.MapleMapFactory;
+import server.maps.MapleMapManager;
 import server.maps.MapleMiniDungeonInfo;
 
 import java.util.Comparator;
@@ -47,18 +47,18 @@ public class GotoCommand extends Command {
     {
         setDescription("");
         
-        MapleMapFactory mapFactory = Server.getInstance().getWorlds().get(0).getChannels().get(0).getMapFactory();
+        MapleMapManager mapManager = Server.getInstance().getWorlds().get(0).getChannels().get(0).getMapFactory();
         
         List<Entry<String, Integer>> towns = new ArrayList<>(GameConstants.GOTO_TOWNS.entrySet());
         sortGotoEntries(towns);
         for (Map.Entry<String, Integer> e : towns) {
-            GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (mapFactory.getMap(e.getValue()).getMapName()) + "#k\r\n");
+            GOTO_TOWNS_INFO += ("'" + e.getKey() + "' - #b" + (mapManager.getMap(e.getValue()).getMapName()) + "#k\r\n");
         }
         
         List<Entry<String, Integer>> areas = new ArrayList<>(GameConstants.GOTO_AREAS.entrySet());
         sortGotoEntries(areas);
         for (Map.Entry<String, Integer> e : areas) {
-            GOTO_AREAS_INFO += ("'" + e.getKey() + "' - #b" + (mapFactory.getMap(e.getValue()).getMapName()) + "#k\r\n");
+            GOTO_AREAS_INFO += ("'" + e.getKey() + "' - #b" + (mapManager.getMap(e.getValue()).getMapName()) + "#k\r\n");
         }
     }
     
@@ -103,6 +103,7 @@ public class GotoCommand extends Command {
         HashMap<String, Integer> gotomaps;
         if (player.isGM()) {
             gotomaps = new HashMap<>(GameConstants.GOTO_AREAS);     // distinct map registry for GM/users suggested thanks to Vcoc
+            gotomaps.putAll(GameConstants.GOTO_TOWNS);  // thanks Halcyon for pointing out duplicates on listed entries functionality
         } else {
             gotomaps = new HashMap<>(GameConstants.GOTO_TOWNS);
         }

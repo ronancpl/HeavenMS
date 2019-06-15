@@ -1,16 +1,16 @@
 var minPlayers = 1;
-var timeLimit = 1; //10 minutes
+var timeLimit = 5; //5 minutes
 var eventTimer = 1000 * 60 * timeLimit;
-var exitMap = 105070300;
-var eventMap = 910510000;
+var exitMap = 240040610;
+var eventMap = 240040611;
 
-var minMapId = 910510000;
-var maxMapId = 910510000;
+var minMapId = 240040611;
+var maxMapId = 240040611;
 
 function init(){}
 
 function setup(difficulty, lobbyId){
-	var eim = em.newInstance("Puppeteer_" +lobbyId);
+	var eim = em.newInstance("NineSpirit_" +lobbyId);
 	eim.getInstanceMap(eventMap).resetFully();
 	eim.getInstanceMap(eventMap).allowSummonState(false);
 	respawn(eim);
@@ -23,8 +23,12 @@ function afterSetup(eim){}
 function respawn(eim){}
 
 function playerEntry(eim, player){
-	var cave = eim.getMapInstance(eventMap);
-	player.changeMap(cave);
+	var nest = eim.getMapInstance(eventMap);
+        if (!player.haveItem(4001094)) {
+            eim.spawnNpc(2081008, nest.getReactorById(2406000).getPosition(), nest);
+        }
+        
+	player.changeMap(nest, 1);
 }
 
 function scheduledTimeout(eim){

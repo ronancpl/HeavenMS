@@ -26,7 +26,6 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Collections;
 import java.util.HashSet;
@@ -64,7 +63,6 @@ import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.transport.socket.SocketSessionConfig;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 
-import provider.MapleDataProviderFactory;
 import scripting.event.EventScriptManager;
 import server.TimerManager;
 import server.events.gm.MapleEvent;
@@ -72,7 +70,7 @@ import server.expeditions.MapleExpedition;
 import server.expeditions.MapleExpeditionType;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMap;
-import server.maps.MapleMapFactory;
+import server.maps.MapleMapManager;
 import server.maps.MapleMiniDungeon;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -88,7 +86,7 @@ public final class Channel {
     private int world, channel;
     private IoAcceptor acceptor;
     private String ip, serverMessage;
-    private MapleMapFactory mapFactory;
+    private MapleMapManager mapManager;
     private EventScriptManager eventSM;
     private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[ServerConstants.CHANNEL_LOCKS];
     private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[ServerConstants.CHANNEL_LOCKS];
@@ -107,8 +105,6 @@ public final class Channel {
     private boolean finishedShutdown = false;
     private int usedDojo = 0;
     private Set<Integer> usedMC = new HashSet<>();
-    
-    private ScheduledFuture<?> respawnTask;
     
     private int[] dojoStage;
     private long[] dojoFinishTime;
@@ -142,7 +138,7 @@ public final class Channel {
         this.channel = channel;
         
         this.ongoingStartTime = startTime + 10000;  // rude approach to a world's last channel boot time, placeholder for the 1st wedding reservation ever
-        this.mapFactory = new MapleMapFactory(null, MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")), world, channel);
+        this.mapManager = new MapleMapManager(null, world, channel);
         try {
             eventSM = new EventScriptManager(this, getEvents());
             port = 7575 + this.channel - 1;
@@ -151,7 +147,6 @@ public final class Channel {
             IoBuffer.setUseDirectBuffer(false);
             IoBuffer.setAllocator(new SimpleBufferAllocator());
             acceptor = new NioSocketAcceptor();
-            respawnTask = TimerManager.getInstance().register(new respawnMaps(), ServerConstants.RESPAWN_INTERVAL);
             acceptor.setHandler(new MapleServerHandler(world, channel));
             acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
             acceptor.getFilterChain().addLast("codec", (IoFilter) new ProtocolCodecFilter(new MapleCodecFactory()));
@@ -204,13 +199,8 @@ public final class Channel {
             disconnectAwayPlayers();
             players.disconnectAll();
             
-            if(respawnTask != null) {
-                respawnTask.cancel(false);
-                respawnTask = null;
-            }
-            
-            mapFactory.dispose();
-            mapFactory = null;
+            mapManager.dispose();
+            mapManager = null;
             
             eventSM.cancel();
             eventSM = null;
@@ -315,8 +305,8 @@ public final class Channel {
         }
     }
     
-    public MapleMapFactory getMapFactory() {
-        return mapFactory;
+    public MapleMapManager getMapFactory() {
+        return mapManager;
     }
 
     public int getWorld() {
@@ -417,16 +407,6 @@ public final class Channel {
         }
     }
         
-    public class respawnMaps implements Runnable {
-
-        @Override
-        public void run() {
-            for (MapleMap map : mapFactory.getMaps().values()) {
-                map.respawn();
-            }
-        }
-    }
-
     public Map<Integer, MapleHiredMerchant> getHiredMerchants() {
         merchRlock.lock();
         try {

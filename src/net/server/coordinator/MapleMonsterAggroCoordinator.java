@@ -237,7 +237,9 @@ public class MapleMonsterAggroCoordinator {
                             }
                             
                             if (mobAggro.isEmpty()) {   // all aggro on this mob expired
-                                am.getLeft().aggroResetAggro();
+                                if (!am.getLeft().isBoss()) {
+                                    am.getLeft().aggroResetAggro();
+                                }
                             }
                         }
 

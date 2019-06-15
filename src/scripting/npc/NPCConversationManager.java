@@ -41,10 +41,9 @@ import server.gachapon.MapleGachapon;
 import server.gachapon.MapleGachapon.MapleGachaponItem;
 import server.life.MaplePlayerNPC;
 import server.maps.MapleMap;
-import server.maps.MapleMapFactory;
+import server.maps.MapleMapManager;
 import server.partyquest.Pyramid;
 import server.partyquest.Pyramid.PyramidMode;
-import server.quest.MapleQuest;
 import tools.LogHelper;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
@@ -215,7 +214,12 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
 
 	public void sendStyle(String text, int styles[]) {
-		getClient().announce(MaplePacketCreator.getNPCTalkStyle(npc, text, styles));
+                if (styles.length > 0) {
+                        getClient().announce(MaplePacketCreator.getNPCTalkStyle(npc, text, styles));
+                } else {    // thanks Conrad for noticing empty styles crashing players
+                        sendOk("Sorry, there are no options of cosmetics available for you here at the moment.");
+                        dispose();
+                }
 	}
 
 	public void sendGetNumber(String text, int def, int min, int max) {
@@ -515,7 +519,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		PyramidMode mod = PyramidMode.valueOf(mode);
 
 		MapleParty partyz = getPlayer().getParty();
-		MapleMapFactory mf = c.getChannelServer().getMapFactory();
+		MapleMapManager mapManager = c.getChannelServer().getMapFactory();
 
 		MapleMap map = null;
 		int mapid = 926010100;
@@ -525,7 +529,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 		mapid += (mod.getMode() * 1000);
 
 		for (byte b = 0; b < 5; b++) {//They cannot warp to the next map before the timer ends (:
-			map = mf.getMap(mapid + b);
+			map = mapManager.getMap(mapid + b);
 			if (map.getCharacters().size() > 0) {
 				continue;
 			} else {

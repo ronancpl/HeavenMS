@@ -239,7 +239,10 @@ public class ThreadTracker {
                 }
                 else {
                     AtomicInteger c = lockCount.get(lockOid);
-                    c.decrementAndGet();
+                    if (c != null) {    // thanks BHB for detecting an NPE here
+                        c.decrementAndGet();
+                    }
+                    
                     lockUpdate.put(lockOid, 0);
 
                     List<MonitoredLockType> list = threadTracker.get(tid);

@@ -150,12 +150,14 @@ public class MapleStatEffect {
     
     private static class CardItemupStats {
         protected int itemCode, prob;
+        protected boolean party;
         private List<Pair<Integer, Integer>> areas;
         
-        private CardItemupStats(int code, int prob, List<Pair<Integer, Integer>> areas) {
+        private CardItemupStats(int code, int prob, List<Pair<Integer, Integer>> areas, boolean inParty) {
             this.itemCode = code;
             this.prob = prob;
             this.areas = areas;
+            this.party = inParty;
         }
         
         private boolean isInArea(int mapid) {
@@ -173,8 +175,22 @@ public class MapleStatEffect {
         }
     }
     
-    public boolean isActive(int mapid) {
-        return cardStats == null || cardStats.isInArea(mapid);
+    private boolean isEffectActive(int mapid, boolean partyHunting) {
+        if (cardStats == null) return true;
+        
+        if (!cardStats.isInArea(mapid)) {
+            return false;
+        }
+        
+        if (cardStats.party && !partyHunting) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    public boolean isActive(MapleCharacter applyto) {
+        return isEffectActive(applyto.getMapId(), applyto.getPartyMembersOnSameMap().size() > 1);
     }
     
     public int getCardRate(int mapid, int itemid) {
@@ -354,16 +370,27 @@ public class MapleStatEffect {
                 } else if (isMonsterCard(sourceid)) {
                     int prob = 0, itemupCode = Integer.MAX_VALUE;
                     List<Pair<Integer, Integer>> areas = null;
+                    boolean inParty = false;
                     
                     MapleData con = source.getChildByPath("con");
                     if (con != null) {
                         areas = new ArrayList<>(3);
 
                         for (MapleData conData : con.getChildren()) {
-                            int startMap = MapleDataTool.getInt("sMap", conData, 0);
-                            int endMap = MapleDataTool.getInt("eMap", conData, 0);
+                            int type = MapleDataTool.getInt("type", conData, -1);
+                            
+                            if (type == 0) {
+                                int startMap = MapleDataTool.getInt("sMap", conData, 0);
+                                int endMap = MapleDataTool.getInt("eMap", conData, 0);
 
-                            areas.add(new Pair<>(startMap, endMap));
+                                areas.add(new Pair<>(startMap, endMap));
+                            } else if (type == 2) {
+                                inParty = true;
+                            }
+                        }
+                        
+                        if (areas.isEmpty()) {
+                            areas = null;
                         }
                     }
                     
@@ -409,7 +436,7 @@ public class MapleStatEffect {
                         addBuffStatPairToListIfNotZero(statups, MapleBuffStat.MAP_PROTECTION, thaw > 0 ? 1 : 2);
                     }
                     
-                    ret.cardStats = new CardItemupStats(itemupCode, prob, areas);
+                    ret.cardStats = new CardItemupStats(itemupCode, prob, areas, inParty);
                 } else if (isExpIncrease(sourceid)) {
                     addBuffStatPairToListIfNotZero(statups, MapleBuffStat.EXP_INCREASE, MapleDataTool.getInt("expinc", source, 0));
                 }
@@ -1180,15 +1207,9 @@ public class MapleStatEffect {
     }
 
     private Rectangle calculateBoundingBox(Point posFrom, boolean facingLeft) {
-        Point mylt;
-        Point myrb;
-        if (facingLeft) {
-            mylt = new Point(lt.x + posFrom.x, lt.y + posFrom.y);
-            myrb = new Point(rb.x + posFrom.x, rb.y + posFrom.y);
-        } else {
-            myrb = new Point(-lt.x + posFrom.x, rb.y + posFrom.y);
-            mylt = new Point(-rb.x + posFrom.x, lt.y + posFrom.y);
-        }
+        int multiplier = facingLeft ? 1 : -1;
+        Point mylt = new Point(lt.x * multiplier + posFrom.x, lt.y + posFrom.y);
+        Point myrb = new Point(rb.x * multiplier + posFrom.x, rb.y + posFrom.y);
         Rectangle bounds = new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
         return bounds;
     }
@@ -1313,7 +1334,7 @@ public class MapleStatEffect {
         if (localstatups.size() > 0) {
             byte[] buff = null;
             byte[] mbuff = null;
-            if (getSummonMovementType() == null && this.isActive(applyto.getMapId())) {
+            if (getSummonMovementType() == null && this.isActive(applyto)) {
                 buff = MaplePacketCreator.giveBuff((skill ? sourceid : -sourceid), localDuration, localstatups);
             }
             if (isDash()) {

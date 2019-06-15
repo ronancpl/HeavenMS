@@ -36,6 +36,7 @@ import client.inventory.ModifyInventory;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
 import client.processor.AssignAPProcessor;
+import client.processor.DueyProcessor;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -47,7 +48,6 @@ import java.util.List;
 
 import net.AbstractMaplePacketHandler;
 import net.server.Server;
-import scripting.npc.NPCScriptManager;
 import server.MapleItemInformationProvider;
 import server.MapleShop;
 import server.MapleShopFactory;
@@ -294,7 +294,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                         if (item == null) //hack
                         {
                             return;
-                        } else if (item.isUntradeable()) {
+                        } else if (item.isUntradeable() || ii.isUnmerchable(item.getItemId())) {
                             player.dropMessage(1, "You cannot trade this item.");
                             c.announce(MaplePacketCreator.enableActions());
                             return;
@@ -398,7 +398,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             ii.getItemEffect(itemId).applyTo(player);
             remove(c, position, itemId);
         } else if (itemType == 533) {
-            NPCScriptManager.getInstance().start(c, 9010009, null);
+            DueyProcessor.dueySendTalk(c);
         } else if (itemType == 537) {
             if (GameConstants.isFreeMarketRoom(player.getMapId())) {
                 player.dropMessage(5, "You cannot use the chalkboard here.");
@@ -409,7 +409,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             player.setChalkboard(slea.readMapleAsciiString());
             player.getMap().broadcastMessage(MaplePacketCreator.useChalkboard(player, false));
             player.getClient().announce(MaplePacketCreator.enableActions());
-            remove(c, position, itemId);
+            //remove(c, position, itemId);  thanks Conrad for noticing chalkboards shouldn't be depleted upon use
         } else if (itemType == 539) {
             List<String> strLines = new LinkedList<>();
             for (int i = 0; i < 4; i++) {

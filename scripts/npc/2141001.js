@@ -60,7 +60,7 @@ function action(mode, type, selection) {
         }
 
         if (status == 0) {
-            if (player.getLevel() < exped.getMinLevel() && player.getLevel() > exped.getMaxLevel()) { //Don't fit requirement
+            if (player.getLevel() < exped.getMinLevel() || player.getLevel() > exped.getMaxLevel()) { //Don't fit requirement, thanks Conrad
                 cm.sendOk("You do not meet the criteria to battle " + expedBoss + "!");
                 cm.dispose();
             } else if (expedition == null) { //Start an expedition

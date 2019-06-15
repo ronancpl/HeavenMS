@@ -23,23 +23,18 @@ package server.maps;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import provider.MapleData;
 import provider.MapleDataProvider;
+import provider.MapleDataProviderFactory;
 import provider.MapleDataTool;
 import server.PortalFactory;
 import server.life.AbstractLoadedMapleLife;
@@ -54,40 +49,17 @@ import tools.StringUtil;
 
 public class MapleMapFactory {
 
-    private static Map<Integer, Float> mapRecoveryRate = new HashMap<>();
-
-    private MapleDataProvider source;
-    private MapleData nameData;
-    private EventInstanceManager event;
-    private Map<Integer, MapleMap> maps = new HashMap<>();
-    private ReadLock mapsRLock;
-    private WriteLock mapsWLock;
-    private int channel, world;
-
-    public MapleMapFactory(EventInstanceManager eim, MapleDataProvider source, MapleDataProvider stringSource, int world, int channel) {
-        this.source = source;
-        this.nameData = stringSource.getData("Map.img");
-        this.world = world;
-        this.channel = channel;
-        this.event = eim;
-
-        ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_FACTORY);
-        this.mapsRLock = rrwl.readLock();
-        this.mapsWLock = rrwl.writeLock();
+    private static Map<Integer, Float> mapRecoveryRateCache = new HashMap<>();
+    
+    private static MapleData nameData;
+    private static MapleDataProvider mapSource;
+    
+    static {
+        nameData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/String.wz")).getData("Map.img");
+        mapSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz"));
     }
 
-    public MapleMap resetMap(int mapid) {
-        mapsWLock.lock();
-        try {
-            maps.remove(Integer.valueOf(mapid));
-        } finally {
-            mapsWLock.unlock();
-        }
-
-        return getMap(mapid);
-    }
-
-    private void loadLifeFromWz(MapleMap map, MapleData mapData) {
+    private static void loadLifeFromWz(MapleMap map, MapleData mapData) {
         for (MapleData life : mapData.getChildByPath("life")) {
             life.getName();
             String id = MapleDataTool.getString(life.getChildByPath("id"));
@@ -115,7 +87,7 @@ public class MapleMapFactory {
         }
     }
 
-    private void loadLifeFromDb(MapleMap map) {
+    private static void loadLifeFromDb(MapleMap map) {
         try {
             Connection con = DatabaseConnection.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM plife WHERE map = ? and world = ?");
@@ -148,7 +120,7 @@ public class MapleMapFactory {
         }
     }
 
-    private void loadLifeRaw(MapleMap map, int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide, int mobTime, int team) {
+    private static void loadLifeRaw(MapleMap map, int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide, int mobTime, int team) {
         AbstractLoadedMapleLife myLife = loadLife(id, type, cy, f, fh, rx0, rx1, x, y, hide);
         if (myLife instanceof MapleMonster) {
             MapleMonster monster = (MapleMonster) myLife;
@@ -166,30 +138,17 @@ public class MapleMapFactory {
         }
     }
 
-    private synchronized MapleMap loadMapFromWz(int mapid, Integer omapid, boolean cache) {
+    public static MapleMap loadMapFromWz(int mapid, int world, int channel, EventInstanceManager event) {
         MapleMap map;
-
-        if (cache) {
-            mapsRLock.lock();
-            try {
-                map = maps.get(omapid);
-            } finally {
-                mapsRLock.unlock();
-            }
-
-            if (map != null) {
-                return map;
-            }
-        }
-
+        
         String mapName = getMapName(mapid);
-        MapleData mapData = source.getData(mapName);    // source.getData issue with giving nulls in rare ocasions found thanks to MedicOP
+        MapleData mapData = mapSource.getData(mapName);    // source.getData issue with giving nulls in rare ocasions found thanks to MedicOP
         MapleData infoData = mapData.getChildByPath("info");
 
         String link = MapleDataTool.getString(infoData.getChildByPath("link"), "");
         if (!link.equals("")) { //nexon made hundreds of dojo maps so to reduce the size they added links.
             mapName = getMapName(Integer.parseInt(link));
-            mapData = source.getData(mapName);
+            mapData = mapSource.getData(mapName);
         }
         float monsterRate = 0;
         MapleData mobRate = infoData.getChildByPath("mobRate");
@@ -288,7 +247,7 @@ public class MapleMapFactory {
             try {
                 Connection con = DatabaseConnection.getConnection();
                 try (PreparedStatement ps = con.prepareStatement("SELECT * FROM playernpcs WHERE map = ? AND world = ?")) {
-                    ps.setInt(1, omapid);
+                    ps.setInt(1, mapid);
                     ps.setInt(2, world);
                     try (ResultSet rs = ps.executeQuery()) {
                         while (rs.next()) {
@@ -352,12 +311,12 @@ public class MapleMapFactory {
             }
         }
         try {
-            map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(omapid)), ""));
-            map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(omapid)), ""));
+            map.setMapName(MapleDataTool.getString("mapName", nameData.getChildByPath(getMapStringName(mapid)), ""));
+            map.setStreetName(MapleDataTool.getString("streetName", nameData.getChildByPath(getMapStringName(mapid)), ""));
         } catch (Exception e) {
-            if (omapid / 1000 != 1020) {     // explorer job introducion scenes
+            if (mapid / 1000 != 1020) {     // explorer job introduction scenes
                 e.printStackTrace();
-                System.err.println("Not found mapid " + omapid);
+                System.err.println("Not found mapid " + mapid);
             }
 
             map.setMapName("");
@@ -365,8 +324,8 @@ public class MapleMapFactory {
         }
 
         map.setClock(mapData.getChildByPath("clock") != null);
-        map.setEverlast(infoData.getChildByPath("everlast") != null);
-        map.setTown(infoData.getChildByPath("town") != null);
+        map.setEverlast(MapleDataTool.getIntConvert("everlast", infoData, 0) != 0); // thanks davidlafriniere for noticing value 0 accounting as true
+        map.setTown(MapleDataTool.getIntConvert("town", infoData, 0) != 0);
         map.setHPDec(MapleDataTool.getIntConvert("decHP", infoData, 0));
         map.setHPDecProtect(MapleDataTool.getIntConvert("protectItem", infoData, 0));
         map.setForcedReturnMap(MapleDataTool.getInt(infoData.getChildByPath("forcedReturn"), 999999999));
@@ -378,7 +337,7 @@ public class MapleMapFactory {
         MapleData recData = infoData.getChildByPath("recovery");
         if (recData != null) {
             float recoveryRate = MapleDataTool.getFloat(recData);
-            mapRecoveryRate.put(mapid, recoveryRate);
+            mapRecoveryRateCache.put(mapid, recoveryRate);
         }
 
         HashMap<Integer, Integer> backTypes = new HashMap<>();
@@ -397,46 +356,10 @@ public class MapleMapFactory {
         map.setBackgroundTypes(backTypes);
         map.generateMapDropRangeCache();
 
-        if (cache) {
-            mapsWLock.lock();
-            try {
-                maps.put(omapid, map);
-            } finally {
-                mapsWLock.unlock();
-            }
-        }
-
         return map;
     }
-
-    public MapleMap getMap(int mapid) {
-        Integer omapid = Integer.valueOf(mapid);
-        MapleMap map;
-
-        mapsRLock.lock();
-        try {
-            map = maps.get(omapid);
-        } finally {
-            mapsRLock.unlock();
-        }
-
-        return (map != null) ? map : loadMapFromWz(mapid, omapid, true);
-    }
     
-    public MapleMap getDisposableMap(int mapid) {
-        return loadMapFromWz(mapid, mapid, false);
-    }
-
-    public boolean isMapLoaded(int mapId) {
-        mapsRLock.lock();
-        try {
-            return maps.containsKey(mapId);
-        } finally {
-            mapsRLock.unlock();
-        }
-    }
-
-    private AbstractLoadedMapleLife loadLife(int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide) {
+    private static AbstractLoadedMapleLife loadLife(int id, String type, int cy, int f, int fh, int rx0, int rx1, int x, int y, int hide) {
         AbstractLoadedMapleLife myLife = MapleLifeFactory.getLife(id, type);
         myLife.setCy(cy);
         myLife.setF(f);
@@ -450,7 +373,7 @@ public class MapleMapFactory {
         return myLife;
     }
 
-    private MapleReactor loadReactor(MapleData reactor, String id, final byte FacingDirection) {
+    private static MapleReactor loadReactor(MapleData reactor, String id, final byte FacingDirection) {
         MapleReactor myReactor = new MapleReactor(MapleReactorFactory.getReactor(Integer.parseInt(id)), Integer.parseInt(id));
         int x = MapleDataTool.getInt(reactor.getChildByPath("x"));
         int y = MapleDataTool.getInt(reactor.getChildByPath("y"));
@@ -462,7 +385,7 @@ public class MapleMapFactory {
         return myReactor;
     }
 
-    private String getMapName(int mapid) {
+    private static String getMapName(int mapid) {
         String mapName = StringUtil.getLeftPaddedStr(Integer.toString(mapid), '0', 9);
         StringBuilder builder = new StringBuilder("Map/Map");
         int area = mapid / 100000000;
@@ -474,7 +397,7 @@ public class MapleMapFactory {
         return mapName;
     }
 
-    private String getMapStringName(int mapid) {
+    private static String getMapStringName(int mapid) {
         StringBuilder builder = new StringBuilder();
         if (mapid < 100000000) {
             builder.append("maple");
@@ -513,35 +436,8 @@ public class MapleMapFactory {
         return builder.toString();
     }
 
-    public void setChannel(int channel) {
-        this.channel = channel;
-    }
-
-    public void setWorld(int world) {
-        this.channel = world;
-    }
-
-    public Map<Integer, MapleMap> getMaps() {
-        mapsRLock.lock();
-        try {
-            return new HashMap<>(maps);
-        } finally {
-            mapsRLock.unlock();
-        }
-    }
-
-    public void dispose() {
-        Collection<MapleMap> mapValues = getMaps().values();
-
-        for (MapleMap map : mapValues) {
-            map.dispose();
-        }
-
-        this.event = null;
-    }
-
     public static float getMapRecoveryRate(int mapid) {
-        Float recRate = mapRecoveryRate.get(mapid);
+        Float recRate = mapRecoveryRateCache.get(mapid);
         return recRate != null ? recRate : 1.0f;
     }
 }

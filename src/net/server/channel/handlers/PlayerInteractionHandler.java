@@ -495,13 +495,14 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     return;
                 }
                 
-                if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && ii.isCash(item.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be traded."));
-                    return;
-                }
-                
-                if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(item.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be traded."));
+                if (ii.isUnmerchable(item.getItemId())) {
+                    if (ItemConstants.isPet(item.getItemId())) {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be traded."));
+                    } else {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be traded."));
+                    }
+                    
+                    c.announce(MaplePacketCreator.enableActions());
                     return;
                 }
                 
@@ -569,6 +570,15 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     c.announce(MaplePacketCreator.serverNotice(1, "Could not perform shop operation with that item."));
                     c.announce(MaplePacketCreator.enableActions());
                     return;
+                } else if (MapleItemInformationProvider.getInstance().isUnmerchable(ivItem.getItemId())) {
+                    if (ItemConstants.isPet(ivItem.getItemId())) {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Store."));
+                    } else {
+                        c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be sold on the Player Store."));
+                    }
+                    
+                    c.announce(MaplePacketCreator.enableActions());
+                    return;
                 }
 
                 short perBundle = slea.readShort();
@@ -588,17 +598,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     FilePrinter.printError(FilePrinter.EXPLOITS + chr.getName() + ".txt", chr.getName() + " might of possibly packet edited Hired Merchants\nperBundle: " + perBundle + "\nperBundle * bundles (This multiplied cannot be greater than 2000): " + perBundle * bundles + "\nbundles: " + bundles + "\nprice: " + price);
                     return;
                 }
-
-                if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && MapleItemInformationProvider.getInstance().isCash(ivItem.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Cash items are not allowed to be sold on the Player Store."));
-                    return;
-                }
                 
-                if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(ivItem.getItemId())) {
-                    c.announce(MaplePacketCreator.serverNotice(1, "Pets are not allowed to be sold on the Player Store."));
-                    return;
-                }
-
                 Item sellItem = ivItem.copy();
                 if(!ItemConstants.isRechargeable(ivItem.getItemId())) {
                     sellItem.setQuantity(perBundle);

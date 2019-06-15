@@ -85,8 +85,6 @@ import server.life.MonsterDropEntry;
 import server.life.MonsterGlobalDropEntry;
 import server.life.SpawnPoint;
 import scripting.event.EventInstanceManager;
-import server.expeditions.MapleExpedition;
-import server.expeditions.MapleExpeditionType;
 import server.life.MaplePlayerNPC;
 import server.life.MonsterListener;
 import server.partyquest.GuardianSpawnPoint;
@@ -744,7 +742,7 @@ public class MapleMap {
         final List<MonsterDropEntry>  dropEntry = new ArrayList<>();
         final List<MonsterDropEntry> visibleQuestEntry = new ArrayList<>();
         final List<MonsterDropEntry> otherQuestEntry = new ArrayList<>();
-        sortDropEntries(ServerConstants.USE_SPAWN_RELEVANT_LOOT ? chr.retrieveRelevantDrops(mob.getId()) : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
+        sortDropEntries(ServerConstants.USE_SPAWN_RELEVANT_LOOT ? mob.retrieveRelevantDrops() : mi.retrieveEffectiveDrop(mob.getId()), dropEntry, visibleQuestEntry, otherQuestEntry, chr);
         
         registerMobItemDrops(droptype, mobpos, chRate, pos, dropEntry, visibleQuestEntry, otherQuestEntry, globalEntry, chr, mob);
     }
@@ -1279,6 +1277,15 @@ public class MapleMap {
         }
         
         return character;
+    }
+    
+    public Map<Integer, MapleCharacter> getMapAllPlayers() {
+        Map<Integer, MapleCharacter> pchars = new HashMap<>();
+        for (MapleCharacter chr : this.getAllPlayers()) {
+            pchars.put(chr.getId(), chr);
+        }
+        
+        return pchars;
     }
     
     public List<MapleCharacter> getPlayersInRange(Rectangle box, List<MapleCharacter> targets) {
@@ -3720,6 +3727,14 @@ public class MapleMap {
                         break;
                     }
                 }
+            }
+        }
+    }
+    
+    public void mobMpRecovery() {
+        for (MapleMonster mob : this.getAllMonsters()) {
+            if (mob.isAlive()) {
+                mob.heal(0, mob.getLevel());
             }
         }
     }

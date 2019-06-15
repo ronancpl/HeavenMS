@@ -1586,6 +1586,18 @@ public class MapleItemInformationProvider {
                 eq.getWatk() > 0 || eq.getMatk() > 0 || eq.getWdef() > 0 || eq.getMdef() > 0 || eq.getAcc() > 0 ||
                 eq.getAvoid() > 0 || eq.getSpeed() > 0 || eq.getJump() > 0 || eq.getHp() > 0 || eq.getMp() > 0);
     }
+    
+    public boolean isUnmerchable(int itemId) {
+        if(ServerConstants.USE_ENFORCE_UNMERCHABLE_CASH && isCash(itemId)) {
+            return true;
+        }
+
+        if (ServerConstants.USE_ENFORCE_UNMERCHABLE_PET && ItemConstants.isPet(itemId)) {
+            return true;
+        }
+        
+        return false;
+    }
 
     public Collection<Item> canWearEquipment(MapleCharacter chr, Collection<Item> items) {
         MapleInventory inv = chr.getInventory(MapleInventoryType.EQUIPPED);

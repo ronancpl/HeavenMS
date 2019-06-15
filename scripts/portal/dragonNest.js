@@ -20,11 +20,20 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 function enter(pi) {
-        if (!pi.isQuestStarted(100203)) { // thanks Conrad for suggesting grant players access to area with Nein Spirit's Baby Dragon after hatching egg
-            pi.playPortalSound(); pi.warp(240040611, "out00");
+    if (pi.isQuestCompleted(3706)) {
+        pi.playPortalSound(); pi.warp(240040612, "out00");
+        return true;
+    } else if (pi.isQuestStarted(100203) || pi.getPlayer().haveItem(4001094)) {
+        var em = pi.getEventManager("NineSpirit");
+        if (!em.startInstance(pi.getPlayer())) {
+            pi.message("There is currently someone in this map, come back later.");
+            return false;
         } else {
-            pi.playPortalSound(); pi.warp(240040612, "out00");
+            pi.playPortalSound();
+            return true;
         }
-    
-	return true;
+    } else {
+        pi.message("A strange force is blocking you from entering.");
+        return false;
+    }
 }

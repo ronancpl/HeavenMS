@@ -3,9 +3,9 @@ Dragon nest
 */
 
 function sendToHeaven() {
-    rm.destroyNpc(2081008);
-    rm.mapMessage(6, "In a flicker of light, Nine Spirit's Little Dragon returns to the place it belongs, high above the skies.");
-    rm.getReactor().getMap().resetReactors();
+    rm.spawnNpc(2081008);
+    rm.startQuest(100203);
+    rm.mapMessage(6, "In a flicker of light the egg has matured and cracked, thus born a radiant baby dragon.");
 }
 
 function touch() {
@@ -18,9 +18,5 @@ function touch() {
 function untouch() {}
 
 function act() {
-    rm.message("With your latest efforts the egg has matured and cracked, thus born a radiant baby dragon.");
-    rm.startQuest(100203);
-    
-    rm.spawnNpc(2081008);
-    rm.schedule("sendToHeaven", 12 * 1000);
+    sendToHeaven();     // thanks Conrad for pointing out the GMS-like way of Nine Spirit's Nest
 }

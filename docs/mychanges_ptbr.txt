@@ -1908,3 +1908,44 @@ Corrigido minigames não retirando referências dos jogadores devidamente, probl
 Implementado requisição de saída de minigames após fim de partida.
 Corrigido possibilidade de minigames entregando mais de um resultado cada partida (jogadores podem decidir desistir em conjunto, somando pontos).
 Corrigido negação de empate em minigame pelo outro jogador não permitindo o mesmo lançar um pedido de empate em sequência.
+
+02 - 03 Junho 2019,
+Tentativa de correção de mais casos de skill "Monster Magnet" desconectando jogadores ao utilizá-la (tentativa não foi bem-sucedida, mas apresenta resultados para bosses ou mobs fixos, mutuamente exclusivos).
+
+04 Junho 2019,
+Aprimorado sistema de update de buffs condicionais, não mais atualizando todos os buffs ao mudar de mapas.
+
+05 Junho 2019,
+Refatorado uso da DB pelo Duey. Itens registrados pelo Duey agora compartilham da mesma tabela de itens e equipamentos que os demais.
+Revisado levemente transação de itens pelas diversas interações disponíveis (trades, shops, Duey, até checagem de item ao anunciar pelo megafone), adotando uso das server flags.
+Corrigido caso de unlock não-encapsulado no hitLock de reatores.
+
+07 - 08 Junho 2019,
+Corrigido NPCs de cosméticos desconectando jogadores ao tentar mostrar ao jogador uma lista sem opções.
+Corrigido caso de deadlock ao realizar update de buffs durante transição de mapas.
+
+09 Junho 2019,
+Corrigido falhas na detecção de objetos dentro do alcançe de mob skills, código anterior levava em conta atributo "facingLeft" desnecessário para cálculo da área de efeito.
+Revisado sistema de aggro não mais retirando perseguição de boss sobre jogadores após expirar contagem de aggro.
+Refatorado checagem desnecessária por mapas onde itens não expiram (não havia efeito na checagem, itens expiráveis são determinados mais à frente com tempo de expiração máximo).
+Corrigido chalkboard removendo unidade do inventário ao usar (usa-se à vontade, por um curto período).
+Corrigido detecção de "mob virado para um lado" atuando incorretamente para mobs fixos não-viráveis (resultado deveria ser sempre a mesma orientação para esse caso).
+
+10 Junho 2019,
+Refatorado MapleMapFactory, buscando normalizar o padrão de design "Factory" que fora implementado inicialmente. Com a adição de novas funcionalidades o padrão implementado perdeu um pouco de sua coesão, agora revisado.
+Adicionado sistema de recuperação de MP para mobs, evitando assim possibilidade de mobs faltarem com MP em lutas muito longas.
+Adicionado no sistema de buff condicionais suporte para condicional de "caçando em grupo" (dois ou mais membros de grupo no mesmo mapa).
+Corrigido indisponibilidade de certos loots de mobs para jogadores que poderiam obter o mesmo mas que não fazem parte do grupo que lidou o golpe final (somente o grupo citado era levado em consideração).
+Corrigido loots one-of-a-kind se tornando indisponível uma vez que o jogador possui o mesmo em seu inventário.
+
+11 - 12 Junho 2019,
+Refatorado objeto construtor de intervalos para fora da classe encarregada com "Party Search", agora servindo como objeto de propósito-geral.
+Revisado sistema de distribuição de EXP, agora seguindo cálculos mais chegados ao GMS-like.
+
+13 Junho 2019,
+Ajustado novamente portal que acessa área do NPC Nein Spirit's Baby Dragon. Somente acessa a área quem completou a quest inicial do NPC.
+Ajustado interação com mapa do NPC Nein Spirit's Baby Dragon. Acesso à área é restrita para um jogador por vez, tempo limitado, e somente se o mesmo pode/já interagiu com o NPC.
+Normalizado uso de lobbyids em início de eventos nos scripts.
+
+15 Junho 2019,
+Corrigido limites de requisitos de nível para acessar expedições nos scripts de NPCs que as gerenciam.
