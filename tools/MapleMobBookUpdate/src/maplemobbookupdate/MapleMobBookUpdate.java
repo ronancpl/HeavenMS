@@ -32,10 +32,10 @@ import java.io.*;
  * @author RonanLana
  *
  * This application updates the Monster Book drop data with the actual underlying drop data from
- * the Maplestory database specified by the URL below.
+ * the Maplestory database specified in the URL below.
  *
  * In other words all items drops from monsters listed inside the Mob Book feature will be patched to match exactly like the item
- * drop list specified by the URL's Maplestory database.
+ * drop list specified in the URL's Maplestory database.
  *
  * The original file "MonsterBook.img.xml" from String.wz must be copied to the directory of this application and only then
  * executed. This program will generate another file that must replace the original server file to make the effects take place

@@ -33,7 +33,7 @@ import java.sql.Connection;
  * 
  * This application parses skillbook XMLs, filling up stack amount of those
  * items to 100 (eliminating limitations on held skillbooks, now using
- * default stack quantity expected by USE items).
+ * default stack quantity expected from USE items).
  * 
  * Estimated parse time: 10 seconds
  */

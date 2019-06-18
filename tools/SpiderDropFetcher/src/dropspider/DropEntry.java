@@ -9,7 +9,7 @@ import constants.ItemConstants;
 
 /**
  *
- * @author Simon
+ * @author Simon (DropSpider)
  */
 public class DropEntry {
     private int version;

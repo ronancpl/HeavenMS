@@ -1,6 +1,6 @@
 /** 
 Roodolph - Happy ville 
-By fantier123
+@author fantier123
 **/ 
 var status;
 function start() { 

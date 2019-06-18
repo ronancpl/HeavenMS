@@ -76,7 +76,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
                 int start = slea.readInt();
                 listBBSThreads(c, start * 10);
                 break;
-            case 3: // list thread + reply, followed by id (int)
+            case 3: // list thread + reply, following by id (int)
                 localthreadid = slea.readInt();
                 displayThread(c, localthreadid);
                 break;

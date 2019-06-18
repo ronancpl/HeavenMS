@@ -2044,7 +2044,7 @@ public class MapleItemInformationProvider {
             ps.setInt(1, itemId);
             ResultSet rs = ps.executeQuery();
 
-            if(rs.next()) {   // cost is 13.6363~ % of the original value trimmed by 1000.
+            if(rs.next()) {   // cost is 13.6363~ % of the original value, trim by 1000.
                 float val = (float) (rs.getInt("req_meso") * 0.13636363636364);
                 fee = (int) (val / 1000);
                 fee *= 1000;

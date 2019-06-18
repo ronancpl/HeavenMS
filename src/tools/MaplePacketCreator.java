@@ -405,7 +405,7 @@ public class MaplePacketCreator {
                         mplew.writeShort(pet.getCloseness());
                         mplew.write(pet.getFullness());
                         addExpirationTime(mplew, item.getExpiration());
-                        mplew.writeInt(pet.getPetFlag());  /* pet flags found by -- lrenex & Spoon */
+                        mplew.writeInt(pet.getPetFlag());  /* pet flags noticed by lrenex & Spoon */
                         
                         mplew.write(new byte[]{(byte) 0x50, (byte) 0x46}); //wonder what this is
                         mplew.writeInt(0);
@@ -569,8 +569,8 @@ public class MaplePacketCreator {
          * Sends a hello packet.
          *
          * @param mapleVersion The maple client version.
-         * @param sendIv the IV used by the server for sending
-         * @param recvIv the IV used by the server for receiving
+         * @param sendIv the IV in use by the server for sending
+         * @param recvIv the IV in use by the server for receiving
          * @return
          */
         public static byte[] getHello(short mapleVersion, byte[] sendIv, byte[] recvIv) {
@@ -3345,7 +3345,7 @@ public class MaplePacketCreator {
         }
 
         /**
-         * Possible values for <code>operation</code>:<br> 2: Trade cancelled by the
+         * Possible values for <code>operation</code>:<br> 2: Trade cancelled, by the
          * other character<br> 7: Trade successful<br> 8: Trade unsuccessful<br> 
          * 9: Cannot carry more one-of-a-kind items<br> 12: Cannot trade on different maps<br>
          * 13: Cannot trade, game files damaged<br> 
@@ -7114,7 +7114,7 @@ public class MaplePacketCreator {
          * now.<br> 2: You cannot go to that place.<br> 3: Unable to approach due to
          * the force of the ground.<br> 4: You cannot teleport to or on this
          * map.<br> 5: Unable to approach due to the force of the ground.<br> 6:
-         * This map can only be entered by party members.<br> 7: The Cash Shop is
+         * Only party members can enter this map.<br> 7: The Cash Shop is
          * currently not available. Stay tuned...<br>
          *
          * @param type The type
@@ -7595,7 +7595,7 @@ public class MaplePacketCreator {
          * E0 = event or free test time ended
          * E6 = item cannot be purchased with MaplePoints
          * E7 = lol sorry for the inconvenience, eh?
-         * E8 = cannot be purchased by anyone under 7
+         * E8 = cannot purchase by anyone under 7
          */
         public static byte[] showCashShopMessage(byte message) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter(4);

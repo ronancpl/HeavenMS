@@ -1093,7 +1093,7 @@ public class MapleStatEffect {
             applyto.removeAllCooldownsExcept(Buccaneer.TIME_LEAP, true);
         } else if (cp != 0 && applyto.getMonsterCarnival() != null) {
             applyto.gainCP(cp);
-        } else if (nuffSkill != 0 && applyto.getParty() != null && applyto.getMap().isCPQMap()) { // by Drago-Dragohe4rt
+        } else if (nuffSkill != 0 && applyto.getParty() != null && applyto.getMap().isCPQMap()) { // added by Drago (Dragohe4rt)
             final MCSkill skill = MapleCarnivalFactory.getInstance().getSkill(nuffSkill);
             if (skill != null) {
                 final MapleDisease dis = skill.getDisease();
@@ -1122,7 +1122,7 @@ public class MapleStatEffect {
                     }
                 }
             }
-        } else if (cureDebuffs.size() > 0) { // by Drago-Dragohe4rt
+        } else if (cureDebuffs.size() > 0) { // added by Drago (Dragohe4rt)
             for (final MapleDisease debuff : cureDebuffs) {
                 if (applyfrom.getParty() != null) {
                     for (MaplePartyCharacter chrs : applyfrom.getParty().getPartyMembers()) {

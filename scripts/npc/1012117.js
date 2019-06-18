@@ -24,7 +24,7 @@
         Map(s): 		Victoria Road : Henesys Hair Salon (100000104)
 	Description: 		Random haircut
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 
 var status = 0;

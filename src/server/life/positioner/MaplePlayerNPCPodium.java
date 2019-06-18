@@ -38,7 +38,7 @@ import tools.MaplePacketCreator;
  *
  * @author RonanLana
  * 
- * Note: the podium uses getGroundBelow that in its turn uses inputted posY decremented by 7.
+ * Note: the podium uses getGroundBelow that in its turn uses inputted posY minus 7.
  * Podium system will implement increase-by-7 to negate that behaviour.
  */
 public class MaplePlayerNPCPodium {

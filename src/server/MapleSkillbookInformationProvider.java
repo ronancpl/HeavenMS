@@ -141,7 +141,7 @@ public class MapleSkillbookInformationProvider {
         if(token.contains("/imgdir")) {
             status -= 1;
         }
-        else if(token.contains("imgdir") && !token.endsWith("/>")) {    // '\>' XML node description not being accounted, issue found thanks to Robin Schulz, CanIGetaPR
+        else if(token.contains("imgdir") && !token.endsWith("/>")) {    // '\>' XML node description not being accounted, issue found thanks to Robin Schulz, Alex-0000 (CanIGetaPR)
             status += 1;
         }
     }

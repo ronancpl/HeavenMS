@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author BubblesDev v83 (Moogra)
+ * @author Moogra (BubblesDev)
  * @purpose Warps to the Relic map for the Assassinate Skill.
  */
 function enter(pi) {

@@ -3,7 +3,7 @@ package server.gachapon;
 /**
 *
 * @author Alan (SharpAceX)
-* @author Ronan - added ores, reworked global loots
+* @author Ronan - added ores and reworked global loots
 */
 
 public class Global extends GachaponItems {

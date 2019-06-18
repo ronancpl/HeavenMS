@@ -42,7 +42,7 @@ import java.util.Set;
  * @author RonanLana
  * 
  * This application finds inexistent itemids within the drop data from
- * the Maplestory database specified by the URL below. This program
+ * the Maplestory database specified in the URL below. This program
  * assumes all itemids uses 7 digits.
  * 
  * A file is generated listing all the inexistent ids.

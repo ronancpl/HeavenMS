@@ -1,5 +1,5 @@
 /*
-    Author: BubblesDev 0.75
+    Author: BubblesDev
     Quest: Abel Glasses Quest
 */
 

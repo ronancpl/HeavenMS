@@ -22,7 +22,7 @@
 /* Julius Styleman
 	Amoria VIP Hair/Hair Color Change.
 
-        GMS-like revised by Ronan. Contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
+        GMS-like revised by Ronan -- contents found thanks to Mitsune (GamerBewbs), Waltzing, AyumiLove
 */
 var status = 0;
 var beauty = 0;

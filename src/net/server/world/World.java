@@ -452,7 +452,7 @@ public class World {
         return getAllCharactersView();
     }
     
-    public List<MapleCharacter> getAllCharactersView() {    // sorted by accountid, charid
+    public List<MapleCharacter> getAllCharactersView() {    // sorting by accountid, charid
         List<MapleCharacter> chrList = new LinkedList<>();
         Map<Integer, SortedMap<Integer, MapleCharacter>> accChars;
         

@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * 
  * This application acts two-way: first section sets up a table on the SQL Server with all the names used within MapleStory,
  * and the second queries all the names placed inside "fetch.txt", returning in the same line order the ids of the elements.
- * In case of multiple entries with the same name, multiple ids will be returned in the same line separated by a simple space
+ * In case of multiple entries with the same name, multiple ids will be returned in the same line split by a simple space
  * in ascending order. An empty line means that no entry with the given name in a line has been found.
  * 
  * IMPORTANT: this will fail for fetching MAP ID (you shouldn't be using this program for these, just checking them up in the

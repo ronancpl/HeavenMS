@@ -71,7 +71,7 @@ public class ServerConstants {
     public static final boolean USE_MTS = false;
     public static final boolean USE_CPQ = true;                     //Renders the CPQ available or not.
     public static final boolean USE_AUTOHIDE_GM = false;            //When enabled, GMs are automatically hidden when joining. Thanks to Steven Deblois (steven1152).
-    public static final boolean USE_BUYBACK_SYSTEM = true;          //Enables the HeavenMS-builtin buyback system, to be used by dead players when clicking the MTS button.
+    public static final boolean USE_BUYBACK_SYSTEM = true;          //Enables the HeavenMS-builtin buyback system, dead players can use it by clicking the MTS button.
     public static final boolean USE_FIXED_RATIO_HPMP_UPDATE = true; //Enables the HeavenMS-builtin HPMP update based on the current pool to max pool ratio.
     public static final boolean USE_FAMILY_SYSTEM = false;
     public static final boolean USE_DUEY = true;
@@ -93,7 +93,7 @@ public class ServerConstants {
     public static final boolean USE_ENFORCE_MOB_LEVEL_RANGE = true; //Players N levels below the killed mob will gain no experience from defeating it.
     public static final boolean USE_ENFORCE_JOB_LEVEL_RANGE = false;//Caps the player level on the minimum required to advance their current jobs.
     public static final boolean USE_ENFORCE_JOB_SP_RANGE = false;   //Caps the player SP level on the total obtainable by their current jobs. After changing jobs, missing SP will be retrieved.
-    public static final boolean USE_ENFORCE_ITEM_SUGGESTION = false;//Forces the Owl of Minerva and the Cash Shop to always display the defined item array instead of those featured by the players.
+    public static final boolean USE_ENFORCE_ITEM_SUGGESTION = false;//Forces the Owl of Minerva and the Cash Shop to always display the defined item array instead of those featured from players.
     public static final boolean USE_ENFORCE_UNMERCHABLE_CASH = false;//Forces players to not sell CASH items via merchants.
     public static final boolean USE_ENFORCE_UNMERCHABLE_PET = false; //Forces players to not sell pets via merchants. (since non-named pets gets dirty name and other possible DB-related issues)
     public static final boolean USE_ENFORCE_MERCHANT_SAVE = true;   //Forces automatic DB save on merchant owners, at every item movement on shop.
@@ -130,7 +130,7 @@ public class ServerConstants {
     
     //Maker Configuration
     public static final boolean USE_MAKER_PERMISSIVE_ATKUP = true;  //Allows players to use attack-based strengthening gems on non-weapon items.
-    public static final boolean USE_MAKER_FEE_HEURISTICS = true;    //Apply compiled values for stimulants and reagents into the Maker fee calculations (max error revolves around 50k mesos). Set false to use basic constant values instead (results are never higher than requested by the client-side).
+    public static final boolean USE_MAKER_FEE_HEURISTICS = true;    //Apply compiled values for stimulants and reagents into the Maker fee calculations (max error revolves around 50k mesos). Set false to use basic constant values instead (results are never higher than the client-side requests).
     
     //Custom Configuration
     public static final boolean USE_ENABLE_CUSTOM_NPC_SCRIPT = true;//Enables usage of custom HeavenMS NPC scripts (Agent E, Coco, etc). Will not disable Abdula (it's actually useful for the gameplay), quests or NPC shops.
@@ -138,7 +138,7 @@ public class ServerConstants {
     
     //Commands Configuration
     public static final boolean BLOCK_GENERATE_CASH_ITEM = false;   //Prevents creation of cash items with the item/drop command.
-    public static final boolean USE_WHOLE_SERVER_RANKING = false;   //Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of separated by worlds.
+    public static final boolean USE_WHOLE_SERVER_RANKING = false;   //Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of split by worlds.
     
     //Server Rates And Experience
     public static final int EXP_RATE = 10;                          //NOTE: World-specific rates within "world.ini" OVERRIDES the default rates from here.
@@ -180,7 +180,7 @@ public class ServerConstants {
     //Map Monitor Configuration
     public static final int ITEM_EXPIRE_CHECK = 10 * 1000;      //Interval between item expiring tasks on maps, which checks and makes disappear expired items.
     public static final int ITEM_LIMIT_ON_MAP = 200;            //Max number of items allowed on a map.
-    public static final int MAP_VISITED_SIZE = 5;               //Max length for last mapids visited by a player. This is used to recover and update drops on these maps accordingly with player actions.
+    public static final int MAP_VISITED_SIZE = 5;               //Max length for last mapids a player visits. This is used to recover and update drops on these maps accordingly with player actions.
     public static final int MAP_DAMAGE_OVERTIME_INTERVAL = 5000;//Interval in milliseconds between map environment damage (e.g. El Nath and Aqua Road surrondings).
     
     //Channel Mob Disease Monitor Configuration
@@ -218,7 +218,7 @@ public class ServerConstants {
     public static final boolean USE_PERFECT_PITCH = true;       //For lvl 30 or above, each lvlup grants player 1 perfect pitch.
     
     //Quest Configuration
-    public static final boolean USE_QUEST_RATE = false;         //Exp/Meso gained by quests uses fixed server exp/meso rate times quest rate as multiplier, instead of player rates.
+    public static final boolean USE_QUEST_RATE = false;         //Exp/Meso gain by quests uses fixed server exp/meso rate times quest rate as multiplier, instead of player rates.
     
     //Quest Points Configuration
     public static final int QUEST_POINT_REPEATABLE_INTERVAL = 24;//Minimum interval between repeatable quest completions for quest points to be awarded.
@@ -259,7 +259,7 @@ public class ServerConstants {
     
     //Pet Auto-Pot Configuration
     public static final boolean USE_COMPULSORY_AUTOPOT = true;  //Pets will consume as many potions as needed to fulfill the AUTOHP/MP ratio threshold.
-    public static final boolean USE_EQUIPS_ON_AUTOPOT = true;   //Player MaxHP and MaxMP check values on autopot handler will be updated by the HP/MP bonuses on equipped items.
+    public static final boolean USE_EQUIPS_ON_AUTOPOT = true;   //Player MaxHP and MaxMP check values on autopot handler will change according to HP/MP bonuses on equipped items.
     public static final double PET_AUTOHP_RATIO = 0.99;         //Will automatically consume potions until given ratio of the MaxHP/MaxMP is reached.
     public static final double PET_AUTOMP_RATIO = 0.99;
     
@@ -269,7 +269,7 @@ public class ServerConstants {
     
     //Pet Hunger Configuration
     public static final boolean PETS_NEVER_HUNGRY = false;      //If true, pets and mounts will never grow hungry.
-    public static final boolean GM_PETS_NEVER_HUNGRY = true;    //If true, pets and mounts owned by GMs will never grow hungry.
+    public static final boolean GM_PETS_NEVER_HUNGRY = true;    //If true, pets and mounts own by GMs will never grow hungry.
     
     //Event Configuration
     public static final int EVENT_MAX_GUILD_QUEUE = 10;         //Max number of guilds in queue for GPQ.

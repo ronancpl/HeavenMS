@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @author DiscoveryMS (Twdtwd)
+ * @author Twdtwd (DiscoveryMS)
  * @purpose Warps to the Forgotten Passage and gives you the needed item for the resurrection.
  */
 function enter(pi) {

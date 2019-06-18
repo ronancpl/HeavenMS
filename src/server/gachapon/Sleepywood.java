@@ -5,7 +5,7 @@ package server.gachapon;
 * @author Alan (SharpAceX) - gachapon source classes stub & pirate equipment
 * @author Ronan - parsed MapleSEA loots
 * 
-* MapleSEA-like loots thanks to AyumiLove, src: https://ayumilovemaple.wordpress.com/maplestory-gachapon-guide/
+* MapleSEA-like loots thanks to AyumiLove - src: https://ayumilovemaple.wordpress.com/maplestory-gachapon-guide/
 */
 
 public class Sleepywood extends GachaponItems {

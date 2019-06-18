@@ -19,7 +19,9 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/* Author: Xterminator <Modified by XxOsirisxX>
+/* Author: Xterminator
+ * Edited by XxOsirisxX
+
 	NPC Name: 		Roger
 	Map(s): 		Maple Road : Lower level of the Training Camp (2)
 	Description: 		Quest - Roger's Apple

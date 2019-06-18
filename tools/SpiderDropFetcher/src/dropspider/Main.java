@@ -21,7 +21,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 /**
  *
- * @author Simon
+ * @author Simon (DropSpider)
  */
 
 //NOTE: this tool is currently unsupported since HS started using HTTPS. Missing proper SSL certificates to access Hidden-Street's website.

@@ -21,7 +21,7 @@
 */
 /* 	Xan
 	Lian Hua Hua Skin Care
-    by Moogra
+        @author Moogra
 */
 var skin = Array(0, 1, 2, 3, 4);
 var status;

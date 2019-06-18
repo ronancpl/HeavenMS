@@ -19,7 +19,7 @@ import tools.data.output.MaplePacketLittleEndianWriter;
  * 
  * @author Eric
  * 
- * Edited wishlists by -- Drago (Dragohe4rt)
+ * Wishlists edited by Drago (Dragohe4rt)
  */
 public class Wedding extends MaplePacketCreator {
     private static final short MARRIAGE_REQUEST = 0x48;

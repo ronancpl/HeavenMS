@@ -144,7 +144,7 @@ function leftParty(eim, player) {
 }
 
 function disbandParty(eim, player) {
-    // Happens when the party is disbanded by the leader.
+    // Happens when the party is disbanded.
 }
 
 function removePlayer(eim, player) {

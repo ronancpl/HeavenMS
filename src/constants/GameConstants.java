@@ -50,7 +50,7 @@ public class GameConstants {
         return(EXP_RATE_GAIN[slot]);
     }
     
-    // used by the "goto" command for players
+    // "goto" command for players
     public static final HashMap<String, Integer> GOTO_TOWNS = new HashMap<String, Integer>() {{
         put("southperry", 60000);
         put("amherst", 1000000);
@@ -90,7 +90,7 @@ public class GameConstants {
         put("mushking", 106020000);
     }};
     
-    // used by the "goto" command for only-GMs
+    // "goto" command for only-GMs
     public static final HashMap<String, Integer> GOTO_AREAS = new HashMap<String, Integer>() {{
         put("gmmap", 180000000);
         put("excavation", 990000000);

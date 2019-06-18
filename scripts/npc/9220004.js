@@ -1,6 +1,6 @@
 /** 
 Happy - Happy ville 
-By Ronan
+@author Ronan
 **/ 
 var status = -1;
 function start() { 

@@ -20,7 +20,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /* Roudolph Happyville Warp NPC
-   By Moogra
+   @author Moogra
 */
 
 function start() {

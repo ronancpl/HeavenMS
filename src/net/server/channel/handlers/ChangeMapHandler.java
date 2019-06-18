@@ -86,7 +86,7 @@ public final class ChangeMapHandler extends AbstractMaplePacketHandler {
                                         if (!chr.isAlive()) {
                                                 MapleMap map = chr.getMap();
                                                 if (wheel && chr.haveItemWithId(5510000, false)) {
-                                                        // thanks lucasziron for showing revivePlayer() also being triggered by Wheel
+                                                        // thanks lucasziron (lziron) for showing revivePlayer() triggering by Wheel
 
                                                         MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, 5510000, 1, true, false);
                                                         chr.announce(MaplePacketCreator.showWheelsLeft(chr.getItemQuantity(5510000, false)));

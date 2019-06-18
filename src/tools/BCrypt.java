@@ -416,7 +416,7 @@ public class BCrypt {
     }
 
     /**
-     * Look up the 3 bits base64-encoded by the specified character,
+     * Look up the 3 bits base64-encoded with the specified character,
      * range-checking againt conversion table
      * @param x	the base64-encoded value
      * @return	the decoded value of x
@@ -434,7 +434,7 @@ public class BCrypt {
      * the standard MIME-base64 encoding.
      * @param s	the string to decode
      * @param maxolen	the maximum number of bytes to decode
-     * @return	an array containing the decoded bytes
+     * @return	an array containing the bytes decoded
      * @throws IllegalArgumentException if maxolen is invalid
      */
     private static byte[] decode_base64(String s, int maxolen)
@@ -652,7 +652,7 @@ public class BCrypt {
          *
          * It is crucial that we don't do the same to the expanded key used in the main
          * Eksblowfish loop.  By doing it to only one of these two, we deviate from a
-         * state that could be directly specified by a password to the buggy algorithm
+         * state that could be directly specified on a password to the buggy algorithm
          * (and to the fully correct one as well, but that's a side-effect).
          */
         P[0] ^= sign;

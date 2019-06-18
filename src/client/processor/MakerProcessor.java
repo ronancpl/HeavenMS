@@ -247,7 +247,7 @@ public class MakerProcessor {
             reagentids.remove(i);
         }
         
-        // only quantity 1 of each gem will be accepted by the Maker skill
+        // the Maker skill will only quantity 1 of each gem
         for(Integer i : reagentids.keySet()) {
             reagentids.put(i, (short) 1);
         }

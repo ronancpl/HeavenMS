@@ -1,5 +1,5 @@
 /* ===========================================================
-			Resonance
+        @author Resonance
 	NPC Name: 		Minister of Magic
 	Map(s): 		Mushroom Castle: Corner of Mushroom Forest(106020000)
 	Description: 	Quest -  Exploring Mushroom Forest(3)

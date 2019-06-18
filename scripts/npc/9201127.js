@@ -22,8 +22,8 @@
     |- Warps you to 120000101 (Navigation Room)
 
     Version
-    |- 1.0 by Jayd
-    |- 1.1 by Ronan (check job requirements)
+    |- 1.0 First Version by Jayd
+    |- 1.1 Edited by Ronan - check job requirements
  */
 
 var status;

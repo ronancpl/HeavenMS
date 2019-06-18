@@ -67,7 +67,7 @@ public class Pair<E, F> {
     /**
      * Turns the pair into a string.
      *
-     * @return Each value of the pair as a string joined by a colon.
+     * @return Each value of the pair as a string joined with a colon.
      */
     @Override
     public String toString() {
