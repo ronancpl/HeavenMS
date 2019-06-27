@@ -53,8 +53,7 @@ public final class NPCTalkHandler extends AbstractMaplePacketHandler {
             if(ServerConstants.USE_DEBUG == true) c.getPlayer().dropMessage(5, "Talking to NPC " + npc.getId());
             
             if (npc.getId() == 9010009) {   //is duey
-                c.getPlayer().setNpcCooldown(currentServerTime());
-                DueyProcessor.dueySendTalk(c);
+                DueyProcessor.dueySendTalk(c, false);
             } else {
                 if (c.getCM() != null || c.getQM() != null) {
                     c.announce(MaplePacketCreator.enableActions());

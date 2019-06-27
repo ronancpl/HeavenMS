@@ -38,13 +38,19 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
     
     // isNpcNearby credits to GabrielSin
     private static boolean isNpcNearby(SeekableLittleEndianAccessor slea, MapleCharacter player, MapleQuest quest, int npcId) {
-        Point playerP = null;
+        Point playerP;
+        Point pos = player.getPosition();
         
         if(slea.available() >= 4) {
             playerP = new Point(slea.readShort(), slea.readShort());
+            if (playerP.distance(pos) > 1000) {     // thanks Darter (YungMoozi) for reporting unchecked player position
+                playerP = pos;
+            }
+        } else {
+            playerP = pos;
         }
         
-        if (playerP != null && !quest.isAutoStart() && !quest.isAutoComplete()) {
+        if (!quest.isAutoStart() && !quest.isAutoComplete()) {
             MapleNPC npc = player.getMap().getNPCById(npcId);
             if(npc == null) {
                 return false;

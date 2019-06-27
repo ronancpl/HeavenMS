@@ -93,7 +93,7 @@ public class MapleSkillbookChanceFetcher {
                 int mobid = rs.getInt("dropperid");
                 int itemid = rs.getInt("itemid");
                 
-                int expectedChance = 1000;
+                int expectedChance = 250;
                 
                 if (mobStats.get(mobid) != null) {
                     int level = mobStats.get(mobid).getLevel();

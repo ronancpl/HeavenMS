@@ -1062,7 +1062,7 @@ public class EventInstanceManager {
                         
                         sL.lock();
                         try {
-                                em.getChannelServer().removeExpedition(expedition);
+                                expedition.removeChannelExpedition(em.getChannelServer());
                         } finally {
                                 sL.unlock();
                         }
@@ -1127,8 +1127,8 @@ public class EventInstanceManager {
                 if(eventCleared) {
                         if(leavingEventMap && getPlayerCount() <= 1) return true;
                 } else {
-                        if(leavingEventMap && getLeaderId() == quitter.getId()) return true;
-                        if(getPlayerCount() <= (ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : minPlayers)) return true;
+                        // thanks Conrad for noticing expeditions don't need to have neither the leader nor meet the minimum requirement inside the event
+                        if(getPlayerCount() <= 1) return true;
                 }
                 
                 return false;

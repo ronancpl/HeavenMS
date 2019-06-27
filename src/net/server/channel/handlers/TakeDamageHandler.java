@@ -44,7 +44,6 @@ import java.util.List;
 import net.AbstractMaplePacketHandler;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import server.MapleStatEffect;
-import server.life.MapleLifeFactory;
 import server.life.MapleLifeFactory.loseItem;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
@@ -85,16 +84,6 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     attacker = (MapleMonster) mmo;
                     if(attacker.getId() != monsteridfrom) {
                         attacker = null;
-                    }
-                }
-                
-                if (monsteridfrom == 9300166 && attacker == null) {
-                    if (c.tryacquireClient()) {
-                        try {
-                            attacker = MapleLifeFactory.getMonster(monsteridfrom);
-                        } finally {
-                            c.releaseClient();
-                        }
                     }
                 }
                 
@@ -149,7 +138,7 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                             map.removeMapObject(attacker);
                         }
                     }
-                } else {
+                } else if (damagefrom != 0 || !map.removeSelfDestructive(oid)) {    // thanks inhyuk for noticing self-destruct damage not being handled properly
                     return;
                 }
             } catch(ClassCastException e) {
@@ -196,8 +185,15 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                     }
 	        }
         }
+        
         if (damage == -1) {
             fake = 4020002 + (chr.getJob().getId() / 10 - 40) * 100000;
+        }
+        
+        if (damage > 0) {
+            chr.getAutobanManager().resetMisses();
+        } else {
+            chr.getAutobanManager().addMiss();
         }
         
         //in dojo player cannot use pot, so deadly attacks should be turned off as well
@@ -206,11 +202,6 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
             mpattack = 0;
         }
         
-        if (damage == 0) {
-            chr.getAutobanManager().addMiss();
-        } else {
-            chr.getAutobanManager().resetMisses();
-        }
         if (damage > 0 && !chr.isHidden()) {
             if (attacker != null) {
                 if (damagefrom == -1) {

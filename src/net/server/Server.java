@@ -57,6 +57,7 @@ import net.server.channel.Channel;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
+import net.server.worker.BossLogWorker;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.EventRecallCoordinatorWorker;
@@ -96,6 +97,7 @@ import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
 import server.TimerManager;
+import server.expeditions.MapleExpeditionBossLog;
 import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
 import tools.AutoJCE;
@@ -527,6 +529,16 @@ public class Server {
         return Math.max(0, nextHour.getTimeInMillis() - System.currentTimeMillis());
     }
     
+    private static long getTimeLeftForNextDay() {
+        Calendar nextDay = Calendar.getInstance();
+        nextDay.add(Calendar.DAY_OF_MONTH, 1);
+        nextDay.set(Calendar.HOUR, 0);
+        nextDay.set(Calendar.MINUTE, 0);
+        nextDay.set(Calendar.SECOND, 0);
+        
+        return Math.max(0, nextDay.getTimeInMillis() - System.currentTimeMillis());
+    }
+    
     public Map<Integer, Integer> getCouponRates() {
         return couponRates;
     }
@@ -894,6 +906,10 @@ public class Server {
         tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
         tMan.register(new FredrickWorker(), 60 * 60 * 1000, 60 * 60 * 1000);
         tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
+        
+        timeLeft = getTimeLeftForNextDay();
+        MapleExpeditionBossLog.resetBossLogTable();
+        tMan.register(new BossLogWorker(), 24 * 60 * 60 * 1000, timeLeft);
         
         long timeToTake = System.currentTimeMillis();
         SkillFactory.loadAllSkills();

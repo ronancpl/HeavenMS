@@ -29,7 +29,7 @@ Java7 SDK: https://www.oracle.com/technetwork/java/javase/downloads/java-archive
 
 **Change log:**
 
-  * Fixed Monster Magnet crashing the caster when trying to pull-in bosses.
+  * Fixed Monster Magnet crashing the caster when trying to pull bosses.
 
   * Fixed some 'rn' problems with quest icons & removed "tab" from party leader changed message. https://hostr.co/tsYsQzzV6xT0
 
@@ -247,7 +247,7 @@ To change a character's GM level, make sure that character is not logged in, the
 ---
 ### Some notes about WZ/WZ.XML EDITING 
 
-NOTE: Be extremely wary when using server-side's XMLs data being reimporting into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
+NOTE: Be extremely wary when using server-side's XMLs data being reimported into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
 
 #### Editing the v83 WZ's:
 

@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,23 +17,17 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/*
- *@Author:     kevintjuh93
-*/
+package net.server.worker;
 
-importPackage(Packages.tools); 
-var player;
+import server.expeditions.MapleExpeditionBossLog;
 
-function start(ms) { 
-	player = ms.getPlayer();
-        player.resetEnteredScript(); 
-        ms.getClient().announce(MaplePacketCreator.showEffect("event/space/start")); 
-        player.startMapEffect("Please rescue Gaga within the time limit.", 5120027); 
-	var map = player.getMap();
-	if (map.getTimeLeft() > 0) {
-		ms.getClient().announce(MaplePacketCreator.getClock(map.getTimeLeft()));
-	} else {
-		map.addMapTimer(180);
-	}
-	ms.useItem(2360002);//HOORAY <3
-}  
+/**
+ * @author Ronan
+ */
+public class BossLogWorker implements Runnable {
+    
+    @Override
+    public void run() {
+        MapleExpeditionBossLog.resetBossLogTable();
+    }
+}

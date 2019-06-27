@@ -1073,12 +1073,12 @@ public class AbstractPlayerInteraction {
         
 	public boolean createExpedition(MapleExpeditionType type, boolean silent, int minPlayers, int maxPlayers) {
 		MapleExpedition exped = new MapleExpedition(getPlayer(), type, silent, minPlayers, maxPlayers);
-		return getPlayer().getClient().getChannelServer().addExpedition(exped);
+		return exped.addChannelExpedition(getPlayer().getClient().getChannelServer());
 	}
 
 	public void endExpedition(MapleExpedition exped) {
 		exped.dispose(true);
-		getPlayer().getClient().getChannelServer().removeExpedition(exped);
+		exped.removeChannelExpedition(getPlayer().getClient().getChannelServer());
 	}
 
 	public MapleExpedition getExpedition(MapleExpeditionType type) {

@@ -25,24 +25,32 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.Skill;
 import client.SkillFactory;
+import client.autoban.AutobanFactory;
 import client.status.MonsterStatusEffect;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import server.MapleStatEffect;
 import server.life.MapleMonster;
+import server.life.MapleMonsterInformationProvider;
 import server.maps.MapleSummon;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class SummonDamageHandler extends AbstractDealDamageHandler {
+    
     public final class SummonAttackEntry {
 
         private int monsterOid;
         private int damage;
+        private boolean magic;
 
-        public SummonAttackEntry(int monsterOid, int damage) {
+        public SummonAttackEntry(int monsterOid, int damage, boolean magic) {
             this.monsterOid = monsterOid;
             this.damage = damage;
+            this.magic = magic;
         }
 
         public int getMonsterOid() {
@@ -51,6 +59,10 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
 
         public int getDamage() {
             return damage;
+        }
+        
+        public boolean isMagic() {
+            return magic;
         }
     }
 
@@ -79,18 +91,34 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
         slea.skip(8); //Thanks Gerald :D, I failed lol (mob x,y and summon x,y)
         for (int x = 0; x < numAttacked; x++) {
             int monsterOid = slea.readInt(); // attacked oid
-            slea.skip(18);
+            slea.skip(17);
+            boolean magic = slea.readByte() != 0;
             int damage = slea.readInt();
-            allDamage.add(new SummonAttackEntry(monsterOid, damage));
+            allDamage.add(new SummonAttackEntry(monsterOid, damage, magic));
         }
         player.getMap().broadcastMessage(player, MaplePacketCreator.summonAttack(player.getId(), summon.getObjectId(), direction, allDamage), summon.getPosition());
         if (player.getMap().isOwnershipRestricted(player)) {
             return;
         }
+        
+        Map<Integer, Integer> maxDmgEntries = new HashMap<>();
         for (SummonAttackEntry attackEntry : allDamage) {
             int damage = attackEntry.getDamage();
             MapleMonster target = player.getMap().getMonsterByOid(attackEntry.getMonsterOid());
             if (target != null) {
+                Integer maxDmg = maxDmgEntries.get(attackEntry.getMonsterOid());
+                if (maxDmg == null) {
+                    maxDmg = calcMaxDamage(summonEffect, player, attackEntry.isMagic());    // thanks Darter (YungMoozi) for reporting unchecked max dmg
+                    maxDmgEntries.put(attackEntry.getMonsterOid(), maxDmg);
+                }
+                
+                if (damage > maxDmg) {
+                    AutobanFactory.DAMAGE_HACK.alert(c.getPlayer(), "Possible packet editing summon damage exploit.");
+
+                    FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " used a summon of skillid " + summon.getSkill() + " to attack " + MapleMonsterInformationProvider.getInstance().getMobNameFromId(target.getId()) + " with damage " + damage + " (max: " + maxDmg + ")");
+                    damage = maxDmg;
+                }
+                
                 if (damage > 0 && summonEffect.getMonsterStati().size() > 0) {
                     if (summonEffect.makeChanceResult()) {
                         target.applyStatus(player, new MonsterStatusEffect(summonEffect.getMonsterStati(), summonSkill, null, false), summonEffect.isPoison(), 4000);
@@ -99,5 +127,17 @@ public final class SummonDamageHandler extends AbstractDealDamageHandler {
                 player.getMap().damageMonster(player, target, damage);
             }
         }
+    }
+    
+    private static int calcMaxDamage(MapleStatEffect summonEffect, MapleCharacter player, boolean magic) {
+        double maxDamage;
+        
+        if (magic) {
+            maxDamage = player.calculateMaxBaseMagicDamage() * (0.05 * summonEffect.getMatk());
+        } else {
+            maxDamage = player.calculateMaxBaseDamage(player.getTotalWatk()) * (0.021 * summonEffect.getWatk());
+        }
+        
+        return (int) maxDamage;
     }
 }

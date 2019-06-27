@@ -78,17 +78,17 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
                 if (ItemConstants.isCleanSlate(scroll.getItemId())) {
                     Map<String, Integer> eqStats = ii.getEquipStats(toScroll.getItemId());  // clean slate issue found thanks to Masterrulax
                     if (eqStats == null || eqStats.get("tuc") == 0) {
-                        c.announce(MaplePacketCreator.getInventoryFull());
+                        announceCannotScroll(c, legendarySpirit);
                         return;
                     }
                 } else if (!ItemConstants.isModifierScroll(scroll.getItemId()) && ((Equip) toScroll).getUpgradeSlots() < 1) {
-                    c.announce(MaplePacketCreator.getInventoryFull());
+                    announceCannotScroll(c, legendarySpirit);   // thanks onechord for noticing zero upgrade slots freezing Legendary Scroll UI
                     return;
                 }
 
                 List<Integer> scrollReqs = ii.getScrollReqs(scroll.getItemId());
                 if (scrollReqs.size() > 0 && !scrollReqs.contains(toScroll.getItemId())) {
-                    c.announce(MaplePacketCreator.getInventoryFull());
+                    announceCannotScroll(c, legendarySpirit);
                     return;
                 }
                 if (whiteScroll) {
@@ -100,11 +100,13 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
 
                 if (!ItemConstants.isChaosScroll(scroll.getItemId()) && !ItemConstants.isCleanSlate(scroll.getItemId())) {
                     if (!canScroll(scroll.getItemId(), toScroll.getItemId())) {
+                        announceCannotScroll(c, legendarySpirit);
                         return;
                     }
                 }
 
                 if (ItemConstants.isCleanSlate(scroll.getItemId()) && !ii.canUseCleanSlate(toScroll)) {
+                    announceCannotScroll(c, legendarySpirit);
                     return;
                 }
 
@@ -119,11 +121,13 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
                 useInventory.lockInventory();
                 try {
                     if (scroll.getQuantity() < 1) {
+                        announceCannotScroll(c, legendarySpirit);
                         return;
                     }
                     
                     if (whiteScroll && !ItemConstants.isCleanSlate(scroll.getItemId())) {
                         if (wscroll.getQuantity() < 1) {
+                            announceCannotScroll(c, legendarySpirit);
                             return;
                         }
                         
@@ -171,13 +175,21 @@ public final class ScrollHandler extends AbstractMaplePacketHandler {
                     mods.add(new ModifyInventory(0, scrolled));
                 }
                 c.announce(MaplePacketCreator.modifyInventory(true, mods));
-                chr.getMap().broadcastMessage(MaplePacketCreator.getScrollEffect(chr.getId(), scrollSuccess, legendarySpirit));
+                chr.getMap().broadcastMessage(MaplePacketCreator.getScrollEffect(chr.getId(), scrollSuccess, legendarySpirit, whiteScroll));
                 if (dst < 0 && (scrollSuccess == Equip.ScrollResult.SUCCESS || scrollSuccess == Equip.ScrollResult.CURSE)) {
                     chr.equipChanged();
                 }
             } finally {
                 c.releaseClient();
             }
+        }
+    }
+    
+    private static void announceCannotScroll(MapleClient c, boolean legendarySpirit) {
+        if (legendarySpirit) {
+            c.announce(MaplePacketCreator.getScrollEffect(c.getPlayer().getId(), Equip.ScrollResult.FAIL, false, false));
+        } else {
+            c.announce(MaplePacketCreator.getInventoryFull());
         }
     }
 

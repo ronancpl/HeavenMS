@@ -94,7 +94,7 @@ public class ServerConstants {
     public static final boolean USE_ENFORCE_JOB_LEVEL_RANGE = false;//Caps the player level on the minimum required to advance their current jobs.
     public static final boolean USE_ENFORCE_JOB_SP_RANGE = false;   //Caps the player SP level on the total obtainable by their current jobs. After changing jobs, missing SP will be retrieved.
     public static final boolean USE_ENFORCE_ITEM_SUGGESTION = false;//Forces the Owl of Minerva and the Cash Shop to always display the defined item array instead of those featured by the players.
-    public static final boolean USE_ENFORCE_UNMERCHABLE_CASH = false;//Forces players to not sell CASH items via merchants.
+    public static final boolean USE_ENFORCE_UNMERCHABLE_CASH = true;//Forces players to not sell CASH items via merchants.
     public static final boolean USE_ENFORCE_UNMERCHABLE_PET = false; //Forces players to not sell pets via merchants. (since non-named pets gets dirty name and other possible DB-related issues)
     public static final boolean USE_ENFORCE_MERCHANT_SAVE = true;   //Forces automatic DB save on merchant owners, at every item movement on shop.
     public static final boolean USE_ENFORCE_MDOOR_POSITION = false; //Forces mystic door to be spawned near spawnpoints.
@@ -112,7 +112,7 @@ public class ServerConstants {
     public static final boolean USE_ENABLE_CHAT_LOG = false;        //Write in-game chat to log
     public static final boolean USE_REBIRTH_SYSTEM = false;         //Flag to enable/disable rebirth system
     public static final boolean USE_MAP_OWNERSHIP_SYSTEM = true;    //Flag to enable/disable map ownership system
-    public static final boolean USE_FISHING_SYSTEM = true;          //Flag to enable/disable fishing system
+    public static final boolean USE_FISHING_SYSTEM = true;          //Flag to enable/disable custom fishing system
     public static final boolean USE_NPCS_SCRIPTABLE = true;         //Flag to enable/disable serverside predefined script NPCs.
     
     //Events/PQs Configuration

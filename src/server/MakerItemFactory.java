@@ -57,14 +57,19 @@ public class MakerItemFactory {
         return makerEntry;
     }
     
-    public static MakerItemCreateEntry generateLeftoverCrystalEntry(int fromLeftoverid) {
-        MakerItemCreateEntry ret = new MakerItemCreateEntry(0, 0, 1, 1);
+    public static MakerItemCreateEntry generateLeftoverCrystalEntry(int fromLeftoverid, int crystalId) {
+        MakerItemCreateEntry ret = new MakerItemCreateEntry(0, 0, 1);
         ret.addReqItem(fromLeftoverid, 100);
+        ret.addGainItem(crystalId, 1);
         return ret;
     }
 
-    public static MakerItemCreateEntry generateDisassemblyCrystalEntry(int cost, int crystalGain) {     // equipment at specific position already taken
-        MakerItemCreateEntry ret = new MakerItemCreateEntry(cost, 0, 1, crystalGain);
+    public static MakerItemCreateEntry generateDisassemblyCrystalEntry(int fromEquipid, int cost, List<Pair<Integer, Integer>> gains) {     // equipment at specific position already taken
+        MakerItemCreateEntry ret = new MakerItemCreateEntry(cost, 0, 1);
+        ret.addReqItem(fromEquipid, 1);
+        for (Pair<Integer, Integer> p : gains) {
+            ret.addGainItem(p.getLeft(), p.getRight());
+        }
         return ret;
     }
             
@@ -143,32 +148,34 @@ public class MakerItemFactory {
         private double cost;
         private int reqCost;
         private List<Pair<Integer, Integer>> reqItems = new ArrayList<>(); // itemId / amount
-        private int toGive;
+        private List<Pair<Integer, Integer>> gainItems = new ArrayList<>(); // itemId / amount
 
-        public MakerItemCreateEntry(int cost, int reqLevel, int reqMakerLevel, int toGive) {
+        public MakerItemCreateEntry(int cost, int reqLevel, int reqMakerLevel) {
             this.cost = cost;
             this.reqLevel = reqLevel;
             this.reqMakerLevel = reqMakerLevel;
-            this.toGive = toGive;
         }
         
         public MakerItemCreateEntry(MakerItemCreateEntry mi) {
             this.cost = mi.cost;
             this.reqLevel = mi.reqLevel;
             this.reqMakerLevel = mi.reqMakerLevel;
-            this.toGive = mi.toGive;
             
             for(Pair<Integer, Integer> p : mi.reqItems) {
                 reqItems.add(p);
             }
-        }
-
-        public int getRewardAmount() {
-            return toGive;
+            
+            for(Pair<Integer, Integer> p : mi.gainItems) {
+                gainItems.add(p);
+            }
         }
 
         public List<Pair<Integer, Integer>> getReqItems() {
             return reqItems;
+        }
+        
+        public List<Pair<Integer, Integer>> getGainItems() {
+            return gainItems;
         }
 
         public int getReqLevel() {
@@ -189,6 +196,10 @@ public class MakerItemFactory {
 
         protected void addReqItem(int itemId, int amount) {
             reqItems.add(new Pair<>(itemId, amount));
+        }
+        
+        protected void addGainItem(int itemId, int amount) {
+            gainItems.add(new Pair<>(itemId, amount));
         }
         
         public void trimCost() {

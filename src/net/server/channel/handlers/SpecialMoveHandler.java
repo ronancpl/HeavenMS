@@ -101,7 +101,8 @@ public final class SpecialMoveHandler extends AbstractMaplePacketHandler {
                         monster.aggroClearDamages();
                         monster.aggroMonsterDamage(chr, 1);
                         
-                        // thanks onechord for pointing out Magnet disconnecting the caster (issue would actually happen upon failing to catch mob)
+                        // thanks onechord for pointing out Magnet crashing the caster (issue would actually happen upon failing to catch mob)
+                        // thanks Conrad for noticing Magnet crashing when trying to pull bosses and fixed mobs
                         monster.aggroSwitchController(chr, true);
                     }
                 }

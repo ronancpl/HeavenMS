@@ -415,7 +415,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             */
 
             if (damage > 0) {
-                this.applyDamage(attacker, damage, stayAlive);
+                this.applyDamage(attacker, damage, stayAlive, false);
                 if (!this.isAlive()) {  // monster just died
                     lastHit = true;
                 }
@@ -433,7 +433,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
      * @param damage
      * @param stayAlive
      */
-    private void applyDamage(MapleCharacter from, int damage, boolean stayAlive) {
+    private void applyDamage(MapleCharacter from, int damage, boolean stayAlive, boolean fake) {
         Integer trueDamage = applyAndGetHpDamage(damage, stayAlive);
         if (trueDamage == null) {
             return;
@@ -442,8 +442,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         if (ServerConstants.USE_DEBUG) {
             from.dropMessage(5, "Hitted MOB " + this.getId() + ", OID " + this.getObjectId());
         }
-        dispatchMonsterDamaged(from, trueDamage);
-
+        
+        if (!fake) {
+            dispatchMonsterDamaged(from, trueDamage);
+        }
+        
         if (!takenDamage.containsKey(from.getId())) {
             takenDamage.put(from.getId(), new AtomicLong(trueDamage));
         } else {
@@ -451,6 +454,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         }
 
         broadcastMobHpBar(from);
+    }
+    
+    public void applyFakeDamage(MapleCharacter from, int damage, boolean stayAlive) {
+        applyDamage(from, damage, stayAlive, true);
     }
     
     public void heal(int hp, int mp) {
@@ -743,21 +750,6 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (timeMob != null) {
                 if (toSpawn.contains(timeMob.getLeft())) {
                     reviveMap.broadcastMessage(MaplePacketCreator.serverNotice(6, timeMob.getRight()));
-                }
-
-                if (timeMob.getLeft() == 9300338 && (reviveMap.getId() >= 922240100 && reviveMap.getId() <= 922240119)) {
-                    if (!reviveMap.containsNPC(9001108)) {
-                        MapleNPC npc = MapleLifeFactory.getNPC(9001108);
-                        npc.setPosition(new Point(172, 9));
-                        npc.setCy(9);
-                        npc.setRx0(172 + 50);
-                        npc.setRx1(172 - 50);
-                        npc.setFh(27);
-                        reviveMap.addMapObject(npc);
-                        reviveMap.broadcastMessage(MaplePacketCreator.spawnNPC(npc));
-                    } else {
-                        reviveMap.toggleHiddenNPC(9001108);
-                    }
                 }
             }
             
@@ -1621,7 +1613,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             if (damage > 0) {
                 lockMonster();
                 try {
-                    applyDamage(chr, damage, true);
+                    applyDamage(chr, damage, true, false);
                 } finally {
                     unlockMonster();
                 }

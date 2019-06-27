@@ -199,11 +199,11 @@ public final class Channel {
             disconnectAwayPlayers();
             players.disconnectAll();
             
-            mapManager.dispose();
-            mapManager = null;
-            
             eventSM.cancel();
             eventSM = null;
+            
+            mapManager.dispose();
+            mapManager = null;
             
             closeChannelSchedules();
             players = null;
@@ -683,7 +683,7 @@ public final class Channel {
             if(dungeons.containsKey(dungeonid)) return false;
             
             MapleMiniDungeonInfo mmdi = MapleMiniDungeonInfo.getDungeon(dungeonid);
-            MapleMiniDungeon mmd = new MapleMiniDungeon(mmdi.getBase(), 30);    // all minidungeons timeout on 30 mins
+            MapleMiniDungeon mmd = new MapleMiniDungeon(mmdi.getBase(), this.getMapFactory().getMap(mmdi.getDungeonId()).getTimeLimit());   // thanks Conrad for noticing hardcoded time limit for minidungeons
             
             dungeons.put(dungeonid, mmd);
             return true;

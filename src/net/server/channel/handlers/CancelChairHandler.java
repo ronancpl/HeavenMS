@@ -32,8 +32,11 @@ public final class CancelChairHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         int id = slea.readShort();
         MapleCharacter mc = c.getPlayer();
-        if(!mc.isLoggedinWorld()) return;
         
-        mc.sitChair(id == -1 ? 0 : id);
+        if (id >= mc.getMap().getSeats()) {
+            return;
+        }
+        
+        mc.sitChair(id);
     }
 }

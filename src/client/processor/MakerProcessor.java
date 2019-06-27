@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import server.MakerItemFactory;
+import server.MakerItemFactory.MakerItemCreateEntry;
 import server.MapleItemInformationProvider;
 import tools.FilePrinter;
 import tools.MaplePacketCreator;
@@ -44,6 +45,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
  * @author Ronan
  */
 public class MakerProcessor {
+    
     private static MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
 
     public static void makerAction(SeekableLittleEndianAccessor slea, MapleClient c) {
@@ -54,7 +56,7 @@ public class MakerProcessor {
                 int toDisassemble = -1, pos = -1;
                 boolean makerSucceeded = true;
 
-                MakerItemFactory.MakerItemCreateEntry recipe;
+                MakerItemCreateEntry recipe;
                 Map<Integer, Short> reagentids = new LinkedHashMap<>();
                 int stimulantid = -1;
 
@@ -62,29 +64,31 @@ public class MakerProcessor {
                     int fromLeftover = toCreate;
                     toCreate = ii.getMakerCrystalFromLeftover(toCreate);
                     if(toCreate == -1) {
-                        c.announce(MaplePacketCreator.serverNotice(1, ii.getName(toCreate) + " is unavailable for Monster Crystal conversion."));
+                        c.announce(MaplePacketCreator.serverNotice(1, ii.getName(fromLeftover) + " is unavailable for Monster Crystal conversion."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         return;
                     }
-
-                    recipe = MakerItemFactory.generateLeftoverCrystalEntry(fromLeftover);
+                    
+                    recipe = MakerItemFactory.generateLeftoverCrystalEntry(fromLeftover, toCreate);
                 } else if(type == 4) {  // disassembling
                     slea.readInt(); // 1... probably inventory type
                     pos = slea.readInt();
 
                     Item it = c.getPlayer().getInventory(MapleInventoryType.EQUIP).getItem((short) pos);
                     if(it != null && it.getItemId() == toCreate) {
-                        Pair<Integer, Integer> p;
-
-                        if((p = generateDisassemblyInfo(toCreate)) != null) {
-                            recipe = MakerItemFactory.generateDisassemblyCrystalEntry(p.getLeft(), p.getRight());
-                            toDisassemble = toCreate;
-                            toCreate = ii.getMakerCrystalFromEquip(toCreate);
+                        toDisassemble = toCreate;
+                        
+                        Pair<Integer, List<Pair<Integer, Integer>>> p = generateDisassemblyInfo(toDisassemble);
+                        if(p != null) {
+                            recipe = MakerItemFactory.generateDisassemblyCrystalEntry(toDisassemble, p.getLeft(), p.getRight());
                         } else {
                             c.announce(MaplePacketCreator.serverNotice(1, ii.getName(toCreate) + " is unavailable for Monster Crystal disassembly."));
+                            c.announce(MaplePacketCreator.makerEnableActions());
                             return;
                         }
                     } else {
                         c.announce(MaplePacketCreator.serverNotice(1, "An unknown error occurred when trying to apply that item for disassembly."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         return;
                     }
                 } else {
@@ -132,6 +136,7 @@ public class MakerProcessor {
                         if(!reagentids.isEmpty()) {
                             if(!removeOddMakerReagents(toCreate, reagentids)) {
                                 c.announce(MaplePacketCreator.serverNotice(1, "You can only use WATK and MATK Strengthening Gems on weapon items."));
+                                c.announce(MaplePacketCreator.makerEnableActions());
                                 return;
                             }
                         }
@@ -146,65 +151,80 @@ public class MakerProcessor {
                     case -1:// non-available for Maker itemid has been tried to forge
                         FilePrinter.printError(FilePrinter.EXPLOITS, "Player " + c.getPlayer().getName() + " tried to craft itemid " + toCreate + " using the Maker skill.");
                         c.announce(MaplePacketCreator.serverNotice(1, "The requested item could not be crafted on this operation."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         break;
 
                     case 1: // no items
-                        c.announce(MaplePacketCreator.serverNotice(1, "You don't have all required items in your inventory to make " + recipe.getRewardAmount() + " " + ii.getName(toCreate) + "."));
+                        c.announce(MaplePacketCreator.serverNotice(1, "You don't have all required items in your inventory to make " + ii.getName(toCreate) + "."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         break;
 
                     case 2: // no meso
                         c.announce(MaplePacketCreator.serverNotice(1, "You don't have enough mesos (" + GameConstants.numberWithCommas(recipe.getCost()) + ") to complete this operation."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         break;
 
                     case 3: // no req level
                         c.announce(MaplePacketCreator.serverNotice(1, "You don't have enough level to complete this operation."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         break;
 
                     case 4: // no req skill level
                         c.announce(MaplePacketCreator.serverNotice(1, "You don't have enough Maker level to complete this operation."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
+                        break;
+                        
+                    case 5: // inventory full
+                        c.announce(MaplePacketCreator.serverNotice(1, "Your inventory is full."));
+                        c.announce(MaplePacketCreator.makerEnableActions());
                         break;
 
                     default:
-                        if (MapleInventoryManipulator.checkSpace(c, toCreate, (short) recipe.getRewardAmount(), "")) {
+                        if(toDisassemble != -1) {
+                            MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, (short) pos, (short) 1, false);
+                        } else {
                             for (Pair<Integer, Integer> p : recipe.getReqItems()) {
-                                c.getAbstractPlayerInteraction().gainItem(p.getLeft(), (short) -p.getRight());
+                                c.getAbstractPlayerInteraction().gainItem(p.getLeft(), (short) -p.getRight(), false);
                             }
+                        }
 
-                            if(toDisassemble != -1) {
-                                MapleInventoryManipulator.removeFromSlot(c, MapleInventoryType.EQUIP, (short) pos, (short) 1, false);
-                                c.announce(MaplePacketCreator.getShowItemGain(toDisassemble, (short) -1, true));
-                            }
-
-                            int cost = recipe.getCost();
-                            if(stimulantid == -1 && reagentids.isEmpty()) {
-                                if(cost > 0) c.getPlayer().gainMeso(-cost);
-
+                        int cost = recipe.getCost();
+                        if(stimulantid == -1 && reagentids.isEmpty()) {
+                            if(cost > 0) c.getPlayer().gainMeso(-cost, false);
+                            
+                            for (Pair<Integer, Integer> p : recipe.getGainItems()) {
                                 c.getPlayer().setCS(true);
-                                c.getAbstractPlayerInteraction().gainItem(toCreate, (short) recipe.getRewardAmount());
+                                c.getAbstractPlayerInteraction().gainItem(p.getLeft(), p.getRight().shortValue(), false);
                                 c.getPlayer().setCS(false);
-                            } else {
-                                if(stimulantid != -1) c.getAbstractPlayerInteraction().gainItem(stimulantid, (short) -1);
-                                if(!reagentids.isEmpty()) {
-                                    for(Map.Entry<Integer, Short> r : reagentids.entrySet()) {
-                                        c.getAbstractPlayerInteraction().gainItem(r.getKey(), (short) (-1 * r.getValue()));
-                                    }
-                                }
-
-                                if(cost > 0) c.getPlayer().gainMeso(-cost);
-                                makerSucceeded = addBoostedMakerItem(c, toCreate, stimulantid, reagentids);
-                            }
-
-                            if(makerSucceeded) c.announce(MaplePacketCreator.serverNotice(1, "You have successfully created " + recipe.getRewardAmount() + " " + ii.getName(toCreate) + "."));
-                            else c.getPlayer().dropMessage(5, "The Maker skill lights up, but the skill winds up as if nothing happened.");
-
-                            c.announce(MaplePacketCreator.showMakerEffect(makerSucceeded));
-                            c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignMakerEffect(c.getPlayer().getId(), makerSucceeded), false);
-
-                            if(toCreate == 4260003 && type == 3 && c.getPlayer().getQuestStatus(6033) == 1) {
-                                c.getAbstractPlayerInteraction().setQuestProgress(6033, 1);
                             }
                         } else {
-                            c.announce(MaplePacketCreator.serverNotice(1, "Your inventory is full."));
+                            toCreate = recipe.getGainItems().get(0).getLeft();
+                            
+                            if(stimulantid != -1) c.getAbstractPlayerInteraction().gainItem(stimulantid, (short) -1, false);
+                            if(!reagentids.isEmpty()) {
+                                for(Map.Entry<Integer, Short> r : reagentids.entrySet()) {
+                                    c.getAbstractPlayerInteraction().gainItem(r.getKey(), (short) (-1 * r.getValue()), false);
+                                }
+                            }
+
+                            if(cost > 0) c.getPlayer().gainMeso(-cost, false);
+                            makerSucceeded = addBoostedMakerItem(c, toCreate, stimulantid, reagentids);
+                        }
+
+                        // thanks inhyuk for noticing missing MAKER_RESULT packets
+                        if (type == 3) {
+                            c.announce(MaplePacketCreator.makerResultCrystal(recipe.getGainItems().get(0).getLeft(), recipe.getReqItems().get(0).getLeft()));
+                        } else if (type == 4) {
+                            c.announce(MaplePacketCreator.makerResultDesynth(recipe.getReqItems().get(0).getLeft(), recipe.getCost(), recipe.getGainItems()));
+                        } else {
+                            c.announce(MaplePacketCreator.makerResult(makerSucceeded, recipe.getGainItems().get(0).getLeft(), recipe.getGainItems().get(0).getRight(), recipe.getCost(), recipe.getReqItems(), stimulantid, new LinkedList<>(reagentids.keySet())));
+                        }
+                        
+                        c.announce(MaplePacketCreator.showMakerEffect(makerSucceeded));
+                        c.getPlayer().getMap().broadcastMessage(c.getPlayer(), MaplePacketCreator.showForeignMakerEffect(c.getPlayer().getId(), makerSucceeded), false);
+
+                        if(toCreate == 4260003 && type == 3 && c.getPlayer().getQuestStatus(6033) == 1) {
+                            c.getAbstractPlayerInteraction().setQuestProgress(6033, 1);
                         }
                 }
             } finally {
@@ -271,12 +291,12 @@ public class MakerProcessor {
         }
     }
     
-    private static Pair<Integer, Integer> generateDisassemblyInfo(int itemId) {
+    private static Pair<Integer, List<Pair<Integer, Integer>>> generateDisassemblyInfo(int itemId) {
         int recvFee = ii.getMakerDisassembledFee(itemId);
         if(recvFee > -1) {
-            int recvQty = ii.getMakerDisassembledQuantity(itemId);
-            if(recvQty > 0) {
-                return new Pair<>(recvFee, recvQty);
+            List<Pair<Integer, Integer>> gains = ii.getMakerDisassembledItems(itemId);
+            if(!gains.isEmpty()) {
+                return new Pair<>(recvFee, gains);
             }
         }
         
@@ -287,7 +307,7 @@ public class MakerProcessor {
         return chr.getSkillLevel((chr.getJob().getId() / 1000) * 10000000 + 1007);
     }
     
-    private static short getCreateStatus(MapleClient c, MakerItemFactory.MakerItemCreateEntry recipe) {
+    private static short getCreateStatus(MapleClient c, MakerItemCreateEntry recipe) {
         if(recipe == null) {
             return -1;
         }
@@ -308,10 +328,29 @@ public class MakerProcessor {
             return 4;
         }
         
+        List<Integer> addItemids = new LinkedList<>();
+        List<Integer> addQuantity = new LinkedList<>();
+        List<Integer> rmvItemids = new LinkedList<>();
+        List<Integer> rmvQuantity = new LinkedList<>();
+        
+        for (Pair<Integer, Integer> p : recipe.getReqItems()) {
+            rmvItemids.add(p.getLeft());
+            rmvQuantity.add(p.getRight());
+        }
+        
+        for (Pair<Integer, Integer> p : recipe.getGainItems()) {
+            addItemids.add(p.getLeft());
+            addQuantity.add(p.getRight());
+        }
+        
+        if (!c.getAbstractPlayerInteraction().canHoldAllAfterRemoving(addItemids, addQuantity, rmvItemids, rmvQuantity)) {
+            return 5;
+        }
+        
         return 0;
     }
 
-    private static boolean hasItems(MapleClient c, MakerItemFactory.MakerItemCreateEntry recipe) {
+    private static boolean hasItems(MapleClient c, MakerItemCreateEntry recipe) {
         for (Pair<Integer, Integer> p : recipe.getReqItems()) {
             int itemId = p.getLeft();
             if (c.getPlayer().getInventory(ItemConstants.getInventoryType(itemId)).countById(itemId) < p.getRight()) {
@@ -397,7 +436,6 @@ public class MakerProcessor {
         }
         
         MapleInventoryManipulator.addFromDrop(c, item, false, -1);
-        c.announce(MaplePacketCreator.getShowItemGain(itemid, (short) 1, true));
         return true;
     }
 }

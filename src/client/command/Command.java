@@ -27,6 +27,7 @@ import client.MapleClient;
 
 public abstract class Command {
 
+    protected int rank;
     protected String description;
 
     public abstract void execute(MapleClient client, String[] params);
@@ -37,6 +38,14 @@ public abstract class Command {
 
     protected void setDescription(String description) {
         this.description = description;
+    }
+    
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     protected String joinStringFrom(String arr[], int start) {

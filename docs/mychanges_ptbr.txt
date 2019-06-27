@@ -1949,3 +1949,37 @@ Normalizado uso de lobbyids em início de eventos nos scripts.
 
 15 Junho 2019,
 Corrigido limites de requisitos de nível para acessar expedições nos scripts de NPCs que as gerenciam.
+
+19 Junho 2019,
+Corrigido janela congelada de Legendary Spirit ao tentar aplicar scrolls em equipamentos sem slots.
+Ajustado chance de drops de skillbooks.
+Revisado funcionalidade de arrendamento de mapas. Jogadores não mais perdem posse ao trocar de mapas, somente ao expirar devido à falta de atividades ou ao tentar arrendar outro mapa.
+Revisado expedições retirando jogadores assim que o líder sai de mapa ou não há mais em campo a quantidade mínima de jogadores requisitada para começar o evento.
+Corrigido gerenciador de mapas finalizando antes dos eventos, potencialmente levando a quebra de scripts de evento durante a fase de shutdown do servidor.
+Corrigido comandos de começar/completar quests não atuando para quests não previstas pelos XMLs.
+Revisado sistema de quests desnecessariamente inicializando estruturas de leitura de XMLs.
+Corrigido sistema de quests no objeto do jogador não acessando corretamente certas quests devido a uso indevido de inteiros de tamanho short e int.
+
+20 Junho 2019,
+Implementado sistema de contabilização de entradas em bosses.
+Corrigido potencial exploit com expressão facial podendo crashar jogadores ao receber expressão inválida.
+
+21 - 22 Junho 2019,
+Ajustado data no Duey, que estava atuando de forma inesperada anteriormente.
+Adicionado checagem contra potenciais exploits de dano dado em mobs por mobs ou summons em seus respectivos handlers.
+Adicionado checagem contra potenciais exploits por itens nos handlers de cadeira e expressão facial.
+Ajustado checagem contra potenciais exploits de distância/inexistência de NPC na área onde o jogador se encontra, ao se realizar operações sobre quests.
+Refatorado função que modifica estado de mob aliado no mapa (no lado servidor) sendo executada dentro de definição de pacote.
+Implementado suporte para entrega rápida pelo Duey.
+
+24 - 25 Junho 2019,
+Corrigido Horntail não dropando itens após mudança recente na lógica de drops.
+Revisado sistema de comandos. Cada comando no sistema é inicializado somente uma vez, ao iniciar o servidor.
+Ajustado Maker skill, agora utilizando pacotes de resultados ao realizar suas operações.
+Corrigido Mini Dungeons utilizando tempo limite pré-determinado no código-fonte.
+Revisado utilização de "timeLimit" em objeto MapleMap. Valor supostamente pré-determinado pela receita XML poderia ser sobrescrito por outros métodos da classe.
+Ajustado evento de Gaga no espaço, evento agora funcional.
+Adicionado minigame RPS de NPC, recursos implementados pelo Arnah.
+
+27 Junho 2019,
+Corrigido contabilização de dano de auto-destruição de mobs não sendo aplicado corretamente.

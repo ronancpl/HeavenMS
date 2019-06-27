@@ -424,22 +424,22 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
         ResultSet rs = null;
         try {
             con = DatabaseConnection.getConnection();
-            ps = con.prepareStatement("SELECT Mesos FROM dueypackages WHERE ReceiverId = ? and Checked = 1");
+            ps = con.prepareStatement("SELECT Type FROM dueypackages WHERE ReceiverId = ? AND Checked = 1 ORDER BY Type DESC");
             ps.setInt(1, player.getId());
             rs = ps.executeQuery();
             if (rs.next()) {
                 try {
                     Connection con2 = DatabaseConnection.getConnection();
-                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 where ReceiverId = ?");
+                    pss = con2.prepareStatement("UPDATE dueypackages SET Checked = 0 WHERE ReceiverId = ?");
                     pss.setInt(1, player.getId());
                     pss.executeUpdate();
                     pss.close();
                     con2.close();
+                    
+                    c.announce(MaplePacketCreator.sendDueyParcelNotification(rs.getInt("Type") == 1));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-                c.announce(MaplePacketCreator.sendDueyNotification(false));
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -27,6 +27,7 @@ import client.command.Command;
 import client.MapleCharacter;
 import client.MapleClient;
 import constants.ServerConstants;
+import server.maps.MapleMap;
 
 public class MapOwnerClaimCommand extends Command {
     {
@@ -41,12 +42,20 @@ public class MapOwnerClaimCommand extends Command {
                 
                 if (ServerConstants.USE_MAP_OWNERSHIP_SYSTEM) {
                     if (chr.getEventInstance() == null) {
-                        if (chr.getMap().unclaimOwnership(chr)) {
-                            chr.dropMessage(5, "This lawn is now free real estate.");
-                        } else if (chr.getMap().claimOwnership(chr)) {
+                        MapleMap ownedMap = chr.getOwnedMap();  // thanks Conrad for suggesting not unlease a map as soon as player exits it
+                        if (ownedMap != null) {
+                            ownedMap.unclaimOwnership(chr);
+                            
+                            if (chr.getMap() == ownedMap) {
+                                chr.dropMessage(5, "This lawn is now free real estate.");
+                                return;
+                            }
+                        }
+                        
+                        if (chr.getMap().claimOwnership(chr)) {
                             chr.dropMessage(5, "You have leased this lawn for a while, until you leave here or after 1 minute of inactivity.");
                         } else {
-                            chr.dropMessage(5, "This lawn has already been leased by another player.");
+                            chr.dropMessage(5, "This lawn has already been leased by a player.");
                         }
                     } else {
                         chr.dropMessage(5, "This lawn cannot be leased.");

@@ -72,8 +72,15 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                                 map.addBunnyHit();
                         }
                 }
+                
+                monster.applyAndGetHpDamage(damage, false);
+                int remainingHp = monster.getHp();
+                if(remainingHp <= 0) {
+                    remainingHp = 0;
+                    monster.getMap().removeMapObject(monster);
+                }
 
-		c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.MobDamageMobFriendly(monster, damage), monster.getPosition());
+		c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.MobDamageMobFriendly(monster, damage, remainingHp), monster.getPosition());
 		c.announce(MaplePacketCreator.enableActions());
 	}
 }

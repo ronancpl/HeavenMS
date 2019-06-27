@@ -13,57 +13,46 @@ import client.SkillFactory;
  * @author kevintjuh93
  */
 public class RescueGaga extends MapleEvents {
-        private byte fallen;
-        private int completed;
+    
+    private int completed;
+    
+    public RescueGaga(int completed) {
+        super();
+        this.completed = completed;
+    }
 
-        public RescueGaga(int completed) {
-            super();
-            this.completed = completed;
-            this.fallen = 0;
-        }
+    public int getCompleted() {
+        return completed;
+    }
 
-        public int fallAndGet() {
-            fallen++;
-            if (fallen > 3) {
-                fallen = 0;
-                return 4;
-            }
-            return fallen;
-        }
+    public void complete() {
+        completed++;
+    }
 
-        public byte getFallen() {
-            return fallen;
-        }
-
-        public int getCompleted() {
-            return completed;
-        }
-
-        public void complete() {
-            completed++;
+    @Override
+    public int getInfo() {
+        return getCompleted();
+    }
+    
+    public void giveSkill(MapleCharacter chr) {
+        int skillid = 0;
+        switch (chr.getJobType()) {
+            case 0:
+                skillid = 1013;
+                break;
+            case 1:
+            case 2:
+                skillid = 10001014;
         }
         
-        public int getInfo() {
-            return getCompleted();
+        long expiration = (System.currentTimeMillis() + 3600 * 24 * 20 * 1000);//20 days
+        if (completed < 20) {
+            chr.changeSkillLevel(SkillFactory.getSkill(skillid), (byte) 1, 1, expiration);
+            chr.changeSkillLevel(SkillFactory.getSkill(skillid + 1), (byte) 1, 1, expiration);
+            chr.changeSkillLevel(SkillFactory.getSkill(skillid + 2), (byte) 1, 1, expiration);
+        } else {
+            chr.changeSkillLevel(SkillFactory.getSkill(skillid), (byte) 2, 2, chr.getSkillExpiration(skillid));
         }
-
-        public void giveSkill(MapleCharacter chr) {
-            int skillid = 0;
-            switch (chr.getJobType()) {
-                case 0:
-                    skillid = 1013;
-                    break;
-                case 1:
-                case 2:
-                    skillid = 10001014;
-            }
-            long expiration = (System.currentTimeMillis() + (long) (3600 * 24 * 20 * 1000));//20 days
-            if (completed < 20) {
-                chr.changeSkillLevel(SkillFactory.getSkill(skillid), (byte) 1, 1, expiration);
-                chr.changeSkillLevel(SkillFactory.getSkill(skillid + 1), (byte) 1, 1, expiration);
-                chr.changeSkillLevel(SkillFactory.getSkill(skillid + 2), (byte) 1, 1, expiration);
-            } else {
-                chr.changeSkillLevel(SkillFactory.getSkill(skillid), (byte) 2, 2, chr.getSkillExpiration(skillid));
-            }
-        }
+    }
+    
 }

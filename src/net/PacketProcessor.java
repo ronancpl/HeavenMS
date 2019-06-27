@@ -163,6 +163,7 @@ public final class PacketProcessor {
             registerHandler(RecvOpcode.CANCEL_BUFF, new CancelBuffHandler());
             registerHandler(RecvOpcode.CANCEL_ITEM_EFFECT, new CancelItemEffectHandler());
             registerHandler(RecvOpcode.PLAYER_INTERACTION, new PlayerInteractionHandler());
+            registerHandler(RecvOpcode.RPS_ACTION, new RPSActionHandler());
             registerHandler(RecvOpcode.DISTRIBUTE_AP, new DistributeAPHandler());
             registerHandler(RecvOpcode.DISTRIBUTE_SP, new DistributeSPHandler());
             registerHandler(RecvOpcode.CHANGE_KEYMAP, new KeymapChangeHandler());

@@ -170,7 +170,7 @@ function playerLeft(eim, player) {
 
 function changedMap(eim, player, mapid) {
         if (mapid < minMapId || mapid > maxMapId) {
-                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);
                 }
@@ -189,7 +189,7 @@ function changedLeader(eim, leader) {
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
-        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                 eim.unregisterPlayer(player);
                 end(eim);
         }
@@ -198,7 +198,7 @@ function playerRevive(eim, player) { // player presses ok on the death pop up.
 }
 
 function playerDisconnected(eim, player) {
-        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                 eim.unregisterPlayer(player);
                 end(eim);
         }
@@ -207,7 +207,7 @@ function playerDisconnected(eim, player) {
 }
 
 function leftParty(eim, player) {
-        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
+        if (eim.isExpeditionTeamLackingNow(false, minPlayers, player)) {
                 end(eim);
         }
         else

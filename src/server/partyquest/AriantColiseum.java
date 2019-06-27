@@ -272,7 +272,7 @@ public class AriantColiseum {
     }
     
     private void enterKingsRoom() {
-        map.getChannelServer().removeExpedition(exped);
+        exped.removeChannelExpedition(map.getChannelServer());
         cancelAriantSchedules();
         
         for (MapleCharacter chr : map.getAllPlayers()) {

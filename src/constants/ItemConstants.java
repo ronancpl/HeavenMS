@@ -247,4 +247,12 @@ public final class ItemConstants {
     public static boolean isHair(int itemId) {
         return itemId >= 30000 && itemId < 35000;
     }
+    
+    public static boolean isFaceExpression(int itemId) {
+        return itemId / 10000 == 516;
+    }
+    
+    public static boolean isChair(int itemId) {
+        return itemId / 10000 == 301;
+    }
 }

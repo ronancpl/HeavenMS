@@ -73,9 +73,9 @@ public class MapleQuest {
     private boolean repeatable = false;
     private String name = "", parent = "";
     private final static MapleDataProvider questData = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Quest.wz"));
-    private static MapleData questInfo;
-    private static MapleData questAct;
-    private static MapleData questReq;
+    private final static MapleData questInfo = questData.getData("QuestInfo.img");
+    private final static MapleData questAct = questData.getData("Act.img");
+    private final static MapleData questReq = questData.getData("Check.img");
 	
     private MapleQuest(int id) {
         this.id = (short) id;
@@ -186,10 +186,6 @@ public class MapleQuest {
     public static MapleQuest getInstance(int id) {
         MapleQuest ret = quests.get(id);
         if (ret == null) {
-            questInfo = questData.getData("QuestInfo.img");
-            questReq = questData.getData("Check.img");
-            questAct = questData.getData("Act.img");
-			
             ret = new MapleQuest(id);
             quests.put(id, ret);
         }
@@ -590,10 +586,6 @@ public class MapleQuest {
         }
         
 	public static void loadAllQuest() {
-		questInfo = questData.getData("QuestInfo.img");
-		questReq = questData.getData("Check.img");
-		questAct = questData.getData("Act.img");
-		
 		try {
 			for(MapleData quest : questInfo.getChildren()) {
 				int questID = Integer.parseInt(quest.getName());

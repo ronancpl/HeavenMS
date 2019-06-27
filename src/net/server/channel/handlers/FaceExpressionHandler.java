@@ -34,15 +34,17 @@ public final class FaceExpressionHandler extends AbstractMaplePacketHandler {
         int emote = slea.readInt();
         
         if (emote > 7) {
-            int emoteid = 5159992 + emote;
-            if (chr.getInventory(ItemConstants.getInventoryType(emoteid)).findById(emoteid) == null) {
+            int itemid = 5159992 + emote;   // thanks Rajan (Darter) for reporting unchecked emote itemid
+            if (!ItemConstants.isFaceExpression(itemid) || chr.getInventory(ItemConstants.getInventoryType(itemid)).findById(itemid) == null) {
                 return;
             }
+        } else if (emote < 1) {
+            return;
         }
         
         if(c.tryacquireClient()) {
             try {   // expecting players never intends to wear the emote 0 (default face, that changes back after 5sec timeout)
-                if (emote != 0 && chr.isLoggedinWorld()) {
+                if (chr.isLoggedinWorld()) {
                     chr.changeFaceExpression(emote);
                 }
             } finally {

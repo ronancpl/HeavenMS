@@ -239,6 +239,7 @@ public enum SendOpcode {
     MESO_BAG_MESSAGE(0xD2),
     UPDATE_QUEST_INFO(0xD3),
     PLAYER_HINT(0xD6),
+    MAKER_RESULT(0xD9),
     KOREAN_EVENT(0xDB),
     OPEN_UI(0xDC),
     LOCK_UI(0xDD),
