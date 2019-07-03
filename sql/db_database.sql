@@ -12830,6 +12830,7 @@ CREATE TABLE IF NOT EXISTS `dueypackages` (
   `TimeStamp` varchar(10) NOT NULL,
   `Message` varchar(200) NOT NULL DEFAULT "",
   `Checked` tinyint(1) unsigned DEFAULT '1',
+  `Type` tinyint(1) unsigned DEFAULT '0',
   PRIMARY KEY (`PackageId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
