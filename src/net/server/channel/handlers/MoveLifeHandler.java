@@ -141,24 +141,26 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 		short start_x = slea.readShort(); // hmm.. startpos?
 		short start_y = slea.readShort(); // hmm...
 		Point startPos = new Point(start_x, start_y - 2);
-		List<LifeMovementFragment> res = parseMovement(slea);
+		long movementDataStart = slea.getPosition();
+        updatePosition(slea, monster, 0);
+        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
 		
-                Boolean aggro = monster.aggroMoveLifeUpdate(player);
-                if (aggro == null) return;
-                
-                if (nextUse != null) {
-                        c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro, nextSkillId, nextSkillLevel));
+        Boolean aggro = monster.aggroMoveLifeUpdate(player);
+        if (aggro == null) return;
+        
+        if (nextUse != null) {
+            c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro, nextSkillId, nextSkillLevel));
 		} else {
 			c.announce(MaplePacketCreator.moveMonsterResponse(objectid, moveid, mobMp, aggro));
 		}
                 
-		if (res != null) {
-                        if (ServerConstants.USE_DEBUG_SHOW_RCVD_MVLIFE) {
-                                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
-                        }
-                        
-                        map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, res), monster.getPosition());
-			updatePosition(res, monster, -2);
+		if (movementDataLength > 0) {
+            if (ServerConstants.USE_DEBUG_SHOW_RCVD_MVLIFE) {
+                System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
+            }
+            slea.seek(movementDataStart);
+            map.broadcastMessage(player, MaplePacketCreator.moveMonster(objectid, nextMovementCouldBeSkill, rawActivity, useSkillId, useSkillLevel, pOption, startPos, slea, movementDataLength), monster.getPosition());
+			//updatePosition(res, monster, -2); //does this need to be done after the packet is broadcast?
 			map.moveMonster(monster, monster.getPosition());
 		}
                 

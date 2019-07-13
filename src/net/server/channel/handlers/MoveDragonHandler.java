@@ -21,12 +21,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.server.channel.handlers;
 
+import java.awt.Point;
+
 import client.MapleCharacter;
 import client.MapleClient;
-import java.awt.Point;
-import java.util.List;
 import server.maps.MapleDragon;
-import server.movement.LifeMovementFragment;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -36,14 +35,16 @@ public class MoveDragonHandler extends AbstractMovementPacketHandler {
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         final MapleCharacter chr = c.getPlayer();
         final Point startPos = new Point(slea.readShort(), slea.readShort());
-        List<LifeMovementFragment> res = parseMovement(slea);
+        long movementDataStart = slea.getPosition();
         final MapleDragon dragon = chr.getDragon();
-        if (dragon != null && res != null && res.size() > 0) {
-            updatePosition(res, dragon, 0);
+        updatePosition(slea, dragon, 0);
+        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+        if (dragon != null && movementDataLength > 0) {
+            slea.seek(movementDataStart);
             if (chr.isHidden()) {
-                chr.getMap().broadcastGMMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, res));
+                chr.getMap().broadcastGMMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength));
             } else {
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, res), dragon.getPosition());
+                chr.getMap().broadcastMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength), dragon.getPosition());
             }
         }
     }
