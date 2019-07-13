@@ -143,19 +143,6 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
         }
         return res;
     }
-
-    /*protected void updatePosition(List<LifeMovementFragment> movement, AnimatedMapleMapObject target, int yoffset) {
-        for (LifeMovementFragment move : movement) {
-            if (move instanceof LifeMovement) {
-                if (move instanceof AbsoluteLifeMovement) {
-                    Point position = ((LifeMovement) move).getPosition();
-                    position.y += yoffset;
-                    target.setPosition(position);
-                }
-                target.setStance(((LifeMovement) move).getNewstate());
-            }
-        }
-    }*/
     
     protected void updatePosition(LittleEndianAccessor lea, AnimatedMapleMapObject target, int yOffset) {
     	
