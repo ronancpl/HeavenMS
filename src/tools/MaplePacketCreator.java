@@ -110,7 +110,7 @@ import constants.ServerConstants;
 import constants.skills.Buccaneer;
 import constants.skills.Corsair;
 import constants.skills.ThunderBreaker;
-import scripting.npc.NPCConversationManager;
+import java.util.TimeZone;
 import server.maps.AbstractMapleMapObject;
 
 /**
@@ -120,20 +120,23 @@ import server.maps.AbstractMapleMapObject;
 public class MaplePacketCreator {
 
         public static final List<Pair<MapleStat, Integer>> EMPTY_STATUPDATE = Collections.emptyList();
-        private final static long FT_UT_OFFSET = 116444628000000000L;
+        private final static long FT_UT_OFFSET = 116444736010800000L + (10000L * TimeZone.getDefault().getOffset(System.currentTimeMillis())); // normalize with timezone offset suggested by Ari
         private final static long DEFAULT_TIME = 150842304000000000L;//00 80 05 BB 46 E6 17 02
         public final static long ZERO_TIME = 94354848000000000L;//00 40 E0 FD 3B 37 4F 01
         private final static long PERMANENT = 150841440000000000L; // 00 C0 9B 90 7D E5 17 02
 
-        private static long getTime(long realTimestamp) {
-                if (realTimestamp == -1) {
-                        return DEFAULT_TIME;//high number ll
-                } else if (realTimestamp == -2) {
-                        return ZERO_TIME;
-                } else if (realTimestamp == -3) {
-                        return PERMANENT;
+        private static long getTime(long utcTimestamp) {
+                if (utcTimestamp < 0 && utcTimestamp >= -3) {
+                        if (utcTimestamp == -1) {
+                                return DEFAULT_TIME;    //high number ll
+                        } else if (utcTimestamp == -2) {
+                                return ZERO_TIME;
+                        } else {
+                                return PERMANENT;
+                        }
                 }
-                return realTimestamp * 10000 + FT_UT_OFFSET;
+                
+                return utcTimestamp * 10000 + FT_UT_OFFSET;
         }
 
         public static byte[] showHpHealed(int cid, int amount) { 
@@ -361,7 +364,7 @@ public class MaplePacketCreator {
                         mplew.writeLong(getTime(q.getCompletionTime()));
                 }
         }
-
+        
         private static void addExpirationTime(final MaplePacketLittleEndianWriter mplew, long time) {
                 mplew.writeLong(getTime(time)); // offset expiration time issue found thanks to Thora
         }
@@ -2565,6 +2568,13 @@ public class MaplePacketCreator {
                         mplew.writeMapleAsciiString(e.getKey().getName());
                         mplew.writeInt(e.getValue());
                 }
+                return mplew.getPacket();
+        }
+        
+        public static byte[] updateWitchTowerScore(int score) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.WITCH_TOWER_SCORE_UPDATE.getValue());
+                mplew.write(score);
                 return mplew.getPacket();
         }
         

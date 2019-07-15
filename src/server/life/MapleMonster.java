@@ -52,6 +52,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -100,6 +101,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private int team;
     private int parentMobOid = 0;
     private final HashMap<Integer, AtomicLong> takenDamage = new HashMap<>();
+    private ScheduledFuture<?> monsterItemDrop = null;
     private Runnable removeAfterAction = null;
     private boolean availablePuppetUpdate = true;
 
@@ -512,14 +514,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return avgExpReward + Math.sqrt(varExpReward);
     }
     
-    private void distributePlayerExperience(MapleCharacter chr, float exp, float partyBonusMod, int totalPartyLevel, boolean highestPartyDamager, boolean whiteExpGain) {
+    private void distributePlayerExperience(MapleCharacter chr, float exp, float partyBonusMod, int totalPartyLevel, boolean highestPartyDamager, boolean whiteExpGain, boolean hasPartySharers) {
         float playerExp = (ServerConstants.EXP_SPLIT_COMMON_MOD * chr.getLevel()) / totalPartyLevel;
         if (highestPartyDamager) playerExp += ServerConstants.EXP_SPLIT_MVP_MOD;
         
         playerExp *= exp;
         float bonusExp = partyBonusMod * playerExp;
         
-        this.giveExpToCharacter(chr, playerExp, bonusExp, whiteExpGain);
+        this.giveExpToCharacter(chr, playerExp, bonusExp, whiteExpGain, hasPartySharers);
     }
     
     private void distributePartyExperience(Map<MapleCharacter, Long> partyParticipation, float expPerDmg, Set<MapleCharacter> underleveled, Map<Integer, Float> personalRatio, double sdevRatio) {
@@ -560,10 +562,11 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         float participationExp = partyDamage * expPerDmg;
         
         // thanks Crypter for reporting an insufficiency on party exp bonuses
-        float partyBonusMod = (membersSize > 1) ? 0.05f * membersSize : 0.0f;
+        boolean hasPartySharers = membersSize > 1;
+        float partyBonusMod = hasPartySharers ? 0.05f * membersSize : 0.0f;
         
         for (MapleCharacter mc : expMembers) {
-            distributePlayerExperience(mc, participationExp, partyBonusMod, totalPartyLevel, mc == participationMvp, isWhiteExpGain(mc, personalRatio, sdevRatio));
+            distributePlayerExperience(mc, participationExp, partyBonusMod, totalPartyLevel, mc == participationMvp, isWhiteExpGain(mc, personalRatio, sdevRatio), hasPartySharers);
         }
     }
     
@@ -636,7 +639,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             float exp = chrParticipation.getValue() * expPerDmg;
             MapleCharacter chr = chrParticipation.getKey();
             
-            distributePlayerExperience(chr, exp, 0.0f, chr.getLevel(), true, isWhiteExpGain(chr, personalRatio, sdevRatio));
+            distributePlayerExperience(chr, exp, 0.0f, chr.getLevel(), true, isWhiteExpGain(chr, personalRatio, sdevRatio), false);
         }
         
         for (Map<MapleCharacter, Long> partyParticipation : partyExpDist.values()) {
@@ -657,13 +660,17 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
     }
     
-    private float getStatusExpMultiplier(MapleCharacter attacker) {
+    private float getStatusExpMultiplier(MapleCharacter attacker, boolean hasPartySharers) {
         float multiplier = 1.0f;
         
         // thanks Prophecy & Aika for finding out Holy Symbol not being applied on party bonuses
         Integer holySymbol = attacker.getBuffedValue(MapleBuffStat.HOLY_SYMBOL);
         if (holySymbol != null) {
-            multiplier *= (1.0 + (holySymbol.doubleValue() / 100.0));
+            if (ServerConstants.USE_FULL_HOLY_SYMBOL) { // thanks Mordred, xinyifly, AyumiLove, andy33 for noticing HS hands out 20% of its potential on less than 3 players
+                multiplier *= (1.0 + (holySymbol.doubleValue() / 100.0));
+            } else {
+                multiplier *= (1.0 + (holySymbol.doubleValue() / (hasPartySharers ? 100.0 : 500.0)));
+            }
         }
 
         statiLock.lock();
@@ -689,10 +696,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         return (int) exp;
     }
     
-    private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp, boolean white) {
+    private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp, boolean white, boolean hasPartySharers) {
         if (attacker.isAlive()) {
             if (personalExp != null) {
-                personalExp *= getStatusExpMultiplier(attacker);
+                personalExp *= getStatusExpMultiplier(attacker, hasPartySharers);
                 personalExp *= attacker.getExpRate();
             } else {
                 personalExp = 0.0f;
@@ -706,7 +713,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             int _personalExp = expValueToInteger(personalExp); // assuming no negative xp here
             
             if (partyExp != null) {
-                partyExp *= getStatusExpMultiplier(attacker);
+                partyExp *= getStatusExpMultiplier(attacker, hasPartySharers);
                 partyExp *= attacker.getExpRate();
                 partyExp *= ServerConstants.PARTY_BONUS_EXP_RATE;
             } else {
@@ -722,6 +729,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     public List<MonsterDropEntry> retrieveRelevantDrops() {
+        if (this.getStats().isFriendly()) {     // thanks Conrad for noticing friendly mobs not spawning loots after a recent update
+            return MapleMonsterInformationProvider.getInstance().retrieveEffectiveDrop(this.getId());
+        }
+        
         Map<Integer, MapleCharacter> pchars = map.getMapAllPlayers();
         
         List<MapleCharacter> lootChars = new LinkedList<>();
@@ -812,6 +823,35 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         
         MapleCharacter looter = map.getCharacterById(getHighestDamagerId());
         return looter != null ? looter : killer;
+    }
+    
+    public void dropFromFriendlyMonster(long delay) {
+        final MapleMonster m = this;
+        monsterItemDrop = TimerManager.getInstance().register(new Runnable() {
+            @Override
+            public void run() {
+                if (!m.isAlive()) {
+                    if (monsterItemDrop != null) {
+                        monsterItemDrop.cancel(false);
+                    }
+                    
+                    return;
+                }
+                
+                MapleMap map = m.getMap();
+                List<MapleCharacter> chrList = map.getAllPlayers();
+                if (!chrList.isEmpty()) {
+                    MapleCharacter chr = (MapleCharacter) chrList.get(0);
+                    
+                    EventInstanceManager eim = map.getEventInstance();
+                    if (eim != null) {
+                        eim.friendlyItemDrop(m);
+                    }
+                    
+                    map.dropFromFriendlyMonster(chr, m);
+                }
+            }
+        }, delay, delay);
     }
     
     private void dispatchUpdateQuestMobCount() {
@@ -2176,6 +2216,10 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     }
     
     public void dispose() {
+        if (monsterItemDrop != null) {
+            monsterItemDrop.cancel(false);
+        }
+        
         this.getMap().dismissRemoveAfter(this);
         disposeLocks();
     }

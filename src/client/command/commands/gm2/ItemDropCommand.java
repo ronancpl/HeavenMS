@@ -75,12 +75,12 @@ public class ItemDropCommand extends Command {
 
                 toDrop.setOwner("");
                 if(player.gmLevel() < 3) {
-                    byte b = toDrop.getFlag();
-                    b |= ItemConstants.ACCOUNT_SHARING;
-                    b |= ItemConstants.UNTRADEABLE;
-                    b |= ItemConstants.SANDBOX;
+                    short f = toDrop.getFlag();
+                    f |= ItemConstants.ACCOUNT_SHARING;
+                    f |= ItemConstants.UNTRADEABLE;
+                    f |= ItemConstants.SANDBOX;
                     
-                    toDrop.setFlag(b);
+                    toDrop.setFlag(f);
                     toDrop.setOwner("TRIAL-MODE");
                 }
 
@@ -102,12 +102,12 @@ public class ItemDropCommand extends Command {
 
         toDrop.setOwner(player.getName());
         if(player.gmLevel() < 3) {
-            byte b = toDrop.getFlag();
-            b |= ItemConstants.ACCOUNT_SHARING;
-            b |= ItemConstants.UNTRADEABLE;
-            b |= ItemConstants.SANDBOX;
+            short f = toDrop.getFlag();
+            f |= ItemConstants.ACCOUNT_SHARING;
+            f |= ItemConstants.UNTRADEABLE;
+            f |= ItemConstants.SANDBOX;
 
-            toDrop.setFlag(b);
+            toDrop.setFlag(f);
             toDrop.setOwner("TRIAL-MODE");
         }
 

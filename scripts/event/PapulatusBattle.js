@@ -115,7 +115,9 @@ function setup(level, lobbyid) {
         return eim;
 }
 
-function afterSetup(eim) {}
+function afterSetup(eim) {
+        updateGateState(1);
+}
 
 function respawnStages(eim) {}
 
@@ -143,7 +145,7 @@ function playerLeft(eim, player) {
 
 function changedMap(eim, player, mapid) {
         if (mapid < minMapId || mapid > maxMapId) {
-                if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+                if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                         eim.unregisterPlayer(player);
                         end(eim);
                 }
@@ -152,17 +154,12 @@ function changedMap(eim, player, mapid) {
         }
 }
 
-function changedLeader(eim, leader) {
-        var mapid = leader.getMapId();
-        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
-                end(eim);
-        }
-}
+function changedLeader(eim, leader) {}
 
 function playerDead(eim, player) {}
 
 function playerRevive(eim, player) { // player presses ok on the death pop up.
-        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                 eim.unregisterPlayer(player);
                 end(eim);
         }
@@ -171,7 +168,7 @@ function playerRevive(eim, player) { // player presses ok on the death pop up.
 }
 
 function playerDisconnected(eim, player) {
-        if (eim.isEventTeamLackingNow(true, minPlayers, player)) {
+        if (eim.isExpeditionTeamLackingNow(true, minPlayers, player)) {
                 eim.unregisterPlayer(player);
                 end(eim);
         }
@@ -179,19 +176,9 @@ function playerDisconnected(eim, player) {
                 eim.unregisterPlayer(player);
 }
 
-function leftParty(eim, player) {
-        if (eim.isEventTeamLackingNow(false, minPlayers, player)) {
-                end(eim);
-        }
-        else
-                playerLeft(eim, player);
-}
+function leftParty(eim, player) {}
 
-function disbandParty(eim) {
-        if (!eim.isEventCleared()) {
-                end(eim);
-        }
-}
+function disbandParty(eim) {}
 
 function monsterValue(eim, mobId) {
         return 1;
@@ -213,6 +200,7 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
         eim.stopEventTimer();
         eim.setEventCleared();
+        updateGateState(0);
 }
 
 function isPapulatus(mob) {
@@ -231,5 +219,14 @@ function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
-function dispose(eim) {}
+function updateGateState(newState) {    // thanks Conrad for noticing missing gate update
+        em.getChannelServer().getMapFactory().getMap(220080000).getReactorById(2208001).forceHitReactor(newState);
+        em.getChannelServer().getMapFactory().getMap(220080000).getReactorById(2208002).forceHitReactor(newState);
+        em.getChannelServer().getMapFactory().getMap(220080000).getReactorById(2208003).forceHitReactor(newState);
+}
 
+function dispose(eim) {
+        if (!eim.isEventCleared()) {
+                updateGateState(0);
+        }
+}

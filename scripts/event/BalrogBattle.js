@@ -179,12 +179,7 @@ function changedMap(eim, player, mapid) {
         }
 }
 
-function changedLeader(eim, leader) {
-        var mapid = leader.getMapId();
-        if (!eim.isEventCleared() && (mapid < minMapId || mapid > maxMapId)) {
-                end(eim);
-        }
-}
+function changedLeader(eim, leader) {}
 
 function playerDead(eim, player) {}
 
@@ -206,19 +201,9 @@ function playerDisconnected(eim, player) {
                 eim.unregisterPlayer(player);
 }
 
-function leftParty(eim, player) {
-        if (eim.isExpeditionTeamLackingNow(false, minPlayers, player)) {
-                end(eim);
-        }
-        else
-                playerLeft(eim, player);
-}
+function leftParty(eim, player) {}
 
-function disbandParty(eim) {
-        if (!eim.isEventCleared()) {
-                end(eim);
-        }
-}
+function disbandParty(eim) {}
 
 function monsterValue(eim, mobId) {
         return 1;

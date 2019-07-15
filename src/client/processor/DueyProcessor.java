@@ -39,6 +39,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -112,21 +113,13 @@ public class DueyProcessor {
         return null;
     }
     
-    private static String getCurrentDate(boolean quick) {
-        String date = "";
+    private static Timestamp getCurrentDate(boolean quick) {
         Calendar cal = Calendar.getInstance();
         if (!quick) {
             cal.add(Calendar.DATE, 1);
         }
         
-        int day = cal.get(Calendar.DATE);
-        int month = cal.get(Calendar.MONTH) + 1; // its an array of months.
-        int year = cal.get(Calendar.YEAR);
-        date += day <= 9 ? "0" + day + "-" : "" + day + "-";
-        date += month <= 9 ? "0" + month + "-" : "" + month + "-";
-        date += year;
-        
-        return date;
+        return new Timestamp(cal.getTime().getTime());
     }
     
     private static void showDueyNotification(MapleClient c, MapleCharacter player) {
@@ -211,7 +204,7 @@ public class DueyProcessor {
             
             dueypack.setSender(rs.getString("SenderName"));
             dueypack.setMesos(rs.getInt("Mesos"));
-            dueypack.setSentTime(rs.getString("TimeStamp"));
+            dueypack.setSentTime(rs.getTimestamp("TimeStamp"));
             dueypack.setMessage(rs.getString("Message"));
             
             return dueypack;
@@ -257,7 +250,7 @@ public class DueyProcessor {
                 ps.setInt(1, toCid);
                 ps.setString(2, sender);
                 ps.setInt(3, mesos);
-                ps.setString(4, getCurrentDate(quick));
+                ps.setTimestamp(4, getCurrentDate(quick));
                 ps.setString(5, message);
                 ps.setInt(6, quick ? 1 : 0);
 
@@ -468,9 +461,14 @@ public class DueyProcessor {
                     }
                     con.close();
                     
-                    if(dp == null) {
+                    if (dp == null) {
                         c.announce(MaplePacketCreator.sendDueyMSG(Actions.TOCLIENT_RECV_UNKNOWN_ERROR.getCode()));
                         FilePrinter.printError(FilePrinter.EXPLOITS + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + " tried to receive package from duey with id " + packageId);
+                        return;
+                    }
+                    
+                    if (dp.isDeliveringTime()) {
+                        c.announce(MaplePacketCreator.sendDueyMSG(Actions.TOCLIENT_RECV_UNKNOWN_ERROR.getCode()));
                         return;
                     }
 
@@ -528,6 +526,40 @@ public class DueyProcessor {
         int packageId = createPackage(mesos, "", sender, recipientCid, false);
         if (packageId != -1) {
             insertPackageItem(packageId, item);
+        }
+    }
+    
+    public static void runDueyExpireSchedule() {
+        try {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DATE, -30);
+            
+            Timestamp ts = new Timestamp(c.getTime().getTime());
+            
+            Connection con = DatabaseConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement("SELECT `PackageId` FROM dueypackages WHERE `TimeStamp` < ?");
+            ps.setTimestamp(1, ts);
+            
+            List<Integer> toRemove = new LinkedList<>();
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    toRemove.add(rs.getInt("PackageId"));
+                }
+            }
+            ps.close();
+            
+            for (Integer pid : toRemove) {
+                removePackageFromDB(pid);
+            }
+            
+            ps = con.prepareStatement("DELETE FROM dueypackages WHERE `TimeStamp` < ?");
+            ps.setTimestamp(1, ts);
+            ps.executeUpdate();
+            ps.close();
+            
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

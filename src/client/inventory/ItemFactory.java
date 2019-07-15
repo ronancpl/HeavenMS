@@ -97,7 +97,7 @@ public enum ItemFactory {
         equip.setInt((short) rs.getInt("int"));
         equip.setJump((short) rs.getInt("jump"));
         equip.setVicious((short) rs.getInt("vicious"));
-        equip.setFlag((byte) rs.getInt("flag"));
+        equip.setFlag((short) rs.getInt("flag"));
         equip.setLuk((short) rs.getInt("luk"));
         equip.setMatk((short) rs.getInt("matk"));
         equip.setMdef((short) rs.getInt("mdef"));
@@ -177,7 +177,7 @@ public enum ItemFactory {
                     item.setOwner(rs.getString("owner"));
                     item.setExpiration(rs.getLong("expiration"));
                     item.setGiftFrom(rs.getString("giftFrom"));
-                    item.setFlag((byte) rs.getInt("flag"));
+                    item.setFlag((short) rs.getInt("flag"));
                     items.add(new Pair<>(item, mit));
                 }
             }
@@ -333,7 +333,7 @@ public enum ItemFactory {
                         item.setOwner(rs.getString("owner"));
                         item.setExpiration(rs.getLong("expiration"));
                         item.setGiftFrom(rs.getString("giftFrom"));
-                        item.setFlag((byte) rs.getInt("flag"));
+                        item.setFlag((short) rs.getInt("flag"));
                         items.add(new Pair<>(item, mit));
                     }
                 }

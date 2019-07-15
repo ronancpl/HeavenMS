@@ -106,6 +106,7 @@ public class MapleItemInformationProvider {
     protected Map<Integer, String> nameCache = new HashMap<>();
     protected Map<Integer, String> descCache = new HashMap<>();
     protected Map<Integer, String> msgCache = new HashMap<>();
+    protected Map<Integer, Boolean> accountItemRestrictionCache = new HashMap<>();
     protected Map<Integer, Boolean> dropRestrictionCache = new HashMap<>();
     protected Map<Integer, Boolean> pickupRestrictionCache = new HashMap<>();
     protected Map<Integer, Integer> getMesoCache = new HashMap<>();
@@ -1046,7 +1047,7 @@ public class MapleItemInformationProvider {
         return getEquipById(equipId, -1);
     }
 
-    Item getEquipById(int equipId, int ringId) {
+    private Item getEquipById(int equipId, int ringId) {
         Equip nEquip;
         nEquip = new Equip(equipId, (byte) 0, ringId);
         nEquip.setQuantity((short) 1);
@@ -1084,11 +1085,11 @@ public class MapleItemInformationProvider {
                 } else if (stat.getKey().equals("tuc")) {
                     nEquip.setUpgradeSlots((byte) stat.getValue().intValue());
                 } else if (isUntradeableRestricted(equipId)) {  // thanks Hyun & Thora for showing an issue with more than only "Untradeable" items being flagged as such here
-                    byte flag = nEquip.getFlag();
+                    short flag = nEquip.getFlag();
                     flag |= ItemConstants.UNTRADEABLE;
                     nEquip.setFlag(flag);
                 } else if (stats.get("fs") > 0) {
-                    byte flag = nEquip.getFlag();
+                    short flag = nEquip.getFlag();
                     flag |= ItemConstants.SPIKES;
                     nEquip.setFlag(flag);
                     equipCache.put(equipId, nEquip);
@@ -1230,6 +1231,23 @@ public class MapleItemInformationProvider {
         untradeableCache.put(itemId, bRestricted);
         return bRestricted;
     }
+    
+    public boolean isAccountRestricted(int itemId) {
+        if (accountItemRestrictionCache.containsKey(itemId)) {
+            return accountItemRestrictionCache.get(itemId);
+        }
+
+        boolean bRestricted = false;
+        if(itemId != 0) {
+            MapleData data = getItemData(itemId);
+            if (data != null) {
+                bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+            }
+        }
+
+        accountItemRestrictionCache.put(itemId, bRestricted);
+        return bRestricted;
+    }
 
     public boolean isLootRestricted(int itemId) {
         if (dropRestrictionCache.containsKey(itemId)) {
@@ -1242,7 +1260,7 @@ public class MapleItemInformationProvider {
             if (data != null) {
                 bRestricted = MapleDataTool.getIntConvert("info/tradeBlock", data, 0) == 1;
                 if (!bRestricted) {
-                    bRestricted = MapleDataTool.getIntConvert("info/accountSharable", data, 0) == 1;
+                    bRestricted = isAccountRestricted(itemId);
                 }
             }
         }

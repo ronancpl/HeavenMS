@@ -22,6 +22,7 @@
 package net.server.channel.handlers;
 
 import net.AbstractMaplePacketHandler;
+import scripting.event.EventInstanceManager;
 import server.life.MapleMonster;
 import server.maps.MapleMap;
 import tools.MaplePacketCreator;
@@ -40,9 +41,11 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
 		int attacker = slea.readInt();
 		slea.readInt();
 		int damaged = slea.readInt();
-		MapleMonster monster = c.getPlayer().getMap().getMonsterByOid(damaged);
+                
+                MapleMap map = c.getPlayer().getMap();
+		MapleMonster monster = map.getMonsterByOid(damaged);
 
-		if (monster == null || c.getPlayer().getMap().getMonsterByOid(attacker) == null) {
+		if (monster == null || map.getMonsterByOid(attacker) == null) {
 			return;
 		}
 
@@ -50,26 +53,26 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                 
                 if (monster.getHp() - damage < 1) {     // friendly dies
                         if(monster.getId() == 9300102) {
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Watch Hog has been injured by the aliens. Better luck next time..."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Watch Hog has been injured by the aliens. Better luck next time..."));
                         } else if (monster.getId() == 9300061) {  //moon bunny
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny went home because he was sick."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny went home because he was sick."));
                         } else if(monster.getId() == 9300093) {   //tylus
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of the ambush."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "Tylus has fallen by the overwhelming forces of the ambush."));
                         } else if(monster.getId() == 9300137) {   //juliet
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted in the middle of the combat."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "Juliet has fainted in the middle of the combat."));
                         } else if(monster.getId() == 9300138) {   //romeo
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Romeo has fainted in the middle of the combat."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "Romeo has fainted in the middle of the combat."));
                         } else if(monster.getId() == 9400322 || monster.getId() == 9400327 || monster.getId() == 9400332) { //snowman
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "The Snowman has melted on the heat of the battle."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Snowman has melted on the heat of the battle."));
                         } else if(monster.getId() == 9300162) {   //delli
-                                monster.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6, "Delli vanished after the ambush, sheets still laying on the ground..."));
+                                map.broadcastMessage(MaplePacketCreator.serverNotice(6, "Delli vanished after the ambush, sheets still laying on the ground..."));
                         }
                         
-                        c.getPlayer().getMap().killFriendlies(monster);
+                        map.killFriendlies(monster);
                 } else {
-                        if (monster.getId() == 9300061) {
-                                MapleMap map = c.getPlayer().getEventInstance().getMapInstance(monster.getMap().getId());
-                                map.addBunnyHit();
+                        EventInstanceManager eim = map.getEventInstance();
+                        if (eim != null) {
+                                eim.friendlyDamaged(monster);
                         }
                 }
                 
@@ -77,10 +80,10 @@ public final class MobDamageMobFriendlyHandler extends AbstractMaplePacketHandle
                 int remainingHp = monster.getHp();
                 if(remainingHp <= 0) {
                     remainingHp = 0;
-                    monster.getMap().removeMapObject(monster);
+                    map.removeMapObject(monster);
                 }
 
-		c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.MobDamageMobFriendly(monster, damage, remainingHp), monster.getPosition());
+		map.broadcastMessage(MaplePacketCreator.MobDamageMobFriendly(monster, damage, remainingHp), monster.getPosition());
 		c.announce(MaplePacketCreator.enableActions());
 	}
 }

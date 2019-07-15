@@ -174,7 +174,7 @@ public class MapleQuest {
             }
         }
     }
-	
+    
     public boolean isAutoComplete() {
         return autoPreComplete || autoComplete;
     }
@@ -544,8 +544,13 @@ public class MapleQuest {
 		return ret;
 	}
         
-        public static boolean isExploitableQuest(short questid) {
-                return exploitableQuests.contains(questid);
+        public boolean restoreLostItem(MapleCharacter chr, int itemid) {
+                ItemAction itemAct = (ItemAction) startActs.get(MapleQuestActionType.ITEM);
+                if (itemAct != null) {
+                        return itemAct.restoreLostItem(chr, itemid);
+                }
+                
+                return false;
         }
 	
         public int getMedalRequirement() {
@@ -570,6 +575,10 @@ public class MapleQuest {
         
         public String getParentName() {
                 return parent;
+        }
+        
+        public static boolean isExploitableQuest(short questid) {
+                return exploitableQuests.contains(questid);
         }
         
         public static List<MapleQuest> getMatchedQuests(String search) {

@@ -33,10 +33,11 @@ public class AutobanManager {
     }
 
     public void addPoint(AutobanFactory fac, String reason) {
-    	if (chr.isGM() || chr.isBanned()){
-    		return;
-    	}
     	if (ServerConstants.USE_AUTOBAN) {
+            if (chr.isGM() || chr.isBanned()){
+                    return;
+            }
+            
             if (lastTime.containsKey(fac)) {
                 if (lastTime.get(fac) < (Server.getInstance().getCurrentTime() - fac.getExpire())) {
                     points.put(fac, points.get(fac) / 2); //So the points are not completely gone.

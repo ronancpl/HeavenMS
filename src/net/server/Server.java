@@ -61,13 +61,14 @@ import net.server.worker.BossLogWorker;
 import net.server.worker.CharacterDiseaseWorker;
 import net.server.worker.CouponWorker;
 import net.server.worker.EventRecallCoordinatorWorker;
-import net.server.worker.FredrickWorker;
+import net.server.worker.DueyFredrickWorker;
 import net.server.worker.InvitationWorker;
 import net.server.worker.LoginCoordinatorWorker;
 import net.server.worker.LoginStorageWorker;
 import net.server.worker.RankingCommandWorker;
 import net.server.worker.RankingLoginWorker;
 import net.server.worker.ReleaseLockWorker;
+import net.server.worker.RespawnWorker;
 import net.server.world.World;
 
 import org.apache.mina.core.buffer.IoBuffer;
@@ -904,8 +905,9 @@ public class Server {
         tMan.register(new LoginCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new EventRecallCoordinatorWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new LoginStorageWorker(), 2 * 60 * 1000, 2 * 60 * 1000);
-        tMan.register(new FredrickWorker(), 60 * 60 * 1000, 60 * 60 * 1000);
+        tMan.register(new DueyFredrickWorker(), 60 * 60 * 1000, timeLeft);
         tMan.register(new InvitationWorker(), 30 * 1000, 30 * 1000);
+        tMan.register(new RespawnWorker(), ServerConstants.RESPAWN_INTERVAL, ServerConstants.RESPAWN_INTERVAL);
         
         timeLeft = getTimeLeftForNextDay();
         MapleExpeditionBossLog.resetBossLogTable();

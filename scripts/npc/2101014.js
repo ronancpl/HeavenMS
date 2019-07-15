@@ -134,9 +134,12 @@ function enterArena(arenaPlayers) {
         return;
     } else if (expedicao == null) {
         if (arenaPlayers != -1) {
-            if (cm.createExpedition(exped, true, 0, arenaPlayers)) {
+            var res = cm.createExpedition(exped, true, 0, arenaPlayers);
+            if (res == 0) {
                 cm.warp(map, 0);
                 cm.getPlayer().dropMessage("Your arena was created successfully. Wait for people to join the battle.");
+            } else if (res > 0) {
+                cm.sendOk("Sorry, you've already reached the quota of attempts for this expedition! Try again another day...");
             } else {
                 cm.sendOk("An unexpected error has occurred when starting the expedition, please try again later.");
             }

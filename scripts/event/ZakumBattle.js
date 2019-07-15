@@ -86,7 +86,7 @@ function setEventRewards(eim) {
 }
 
 function afterSetup(eim) {
-    em.getChannelServer().getMapFactory().getMap(211042300).getReactorById(2118002).forceHitReactor(1);
+    updateGateState(1);
 }
 
 function setup(channel) {
@@ -190,7 +190,7 @@ function giveRandomEventReward(eim, player) {
 function clearPQ(eim) {
     eim.stopEventTimer();
     eim.setEventCleared();
-    em.getChannelServer().getMapFactory().getMap(211042300).getReactorById(2118002).forceHitReactor(0);
+    updateGateState(0);
 }
 
 function isZakum(mob) {
@@ -212,8 +212,12 @@ function allMonstersDead(eim) {}
 
 function cancelSchedule() {}
 
+function updateGateState(newState) {    // thanks Conrad for noticing missing gate update
+    em.getChannelServer().getMapFactory().getMap(211042300).getReactorById(2118002).forceHitReactor(newState);
+}
+
 function dispose(eim) {
     if (!eim.isEventCleared()) {
-        em.getChannelServer().getMapFactory().getMap(211042300).getReactorById(2118002).forceHitReactor(0);
+        updateGateState(0);
     }
 }

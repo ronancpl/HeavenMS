@@ -64,7 +64,8 @@ public class Equip extends Item {
     }
     
     private byte upgradeSlots;
-    private byte level, flag, itemLevel;
+    private byte level, itemLevel;
+    private short flag;
     private short str, dex, _int, luk, hp, mp, watk, matk, wdef, mdef, acc, avoid, hands, speed, jump, vicious;
     private float itemExp;
     private int ringid = -1;
@@ -117,7 +118,7 @@ public class Equip extends Item {
     }
 
     @Override
-    public byte getFlag() {
+    public short getFlag() {
         return flag;
     }
 
@@ -195,7 +196,7 @@ public class Equip extends Item {
     }
 
     @Override
-    public void setFlag(byte flag) {
+    public void setFlag(short flag) {
         this.flag = flag;
     }
 

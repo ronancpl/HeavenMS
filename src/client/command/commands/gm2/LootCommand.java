@@ -16,28 +16,36 @@
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 /*
-   @Author: Arthur L - Refactored command content into modules
+   @Author: Resinate
 */
-package client.command.commands.gm4;
+package client.command.commands.gm2;
 
-import client.command.Command;
 import client.MapleClient;
-import client.MapleCharacter;
-import server.life.MapleLifeFactory;
+import client.command.Command;
+import java.util.Arrays;
+import java.util.List;
+import server.maps.MapleMapItem;
+import server.maps.MapleMapObject;
+import server.maps.MapleMapObjectType;
 
-public class PapCommand extends Command {
+public class LootCommand extends Command {
+
     {
-        setDescription("");
+        setDescription("Loots all items that belong to you.");
     }
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        MapleCharacter player = c.getPlayer();
-        
-        // thanks Conrad for noticing mobid typo here
-        player.getMap().spawnMonsterOnGroundBelow(MapleLifeFactory.getMonster(8500001), player.getPosition());
+        List<MapleMapObject> items = c.getPlayer().getMap().getMapObjectsInRange(c.getPlayer().getPosition(), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.ITEM));
+        for (MapleMapObject item : items) {
+            MapleMapItem mapItem = (MapleMapItem) item;
+            if (mapItem.getOwnerId() == c.getPlayer().getId() || mapItem.getOwnerId() == c.getPlayer().getPartyId()) {
+                c.getPlayer().pickupItem(mapItem);
+            }
+        }
+
     }
 }

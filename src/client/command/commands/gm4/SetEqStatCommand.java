@@ -68,7 +68,7 @@ public class SetEqStatCommand extends Command {
                 eq.setStr(newStat);
                 eq.setLuk(newStat);
 
-                byte flag = eq.getFlag();
+                short flag = eq.getFlag();
                 flag |= ItemConstants.UNTRADEABLE;
                 eq.setFlag(flag);
 

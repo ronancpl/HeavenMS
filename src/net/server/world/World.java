@@ -96,6 +96,8 @@ import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import net.server.coordinator.MapleMatchCheckerCoordinator;
 import net.server.coordinator.MaplePartySearchCoordinator;
+import server.maps.MapleMiniDungeon;
+import server.maps.MapleMiniDungeonInfo;
 
 /**
  *
@@ -927,10 +929,23 @@ public class World {
                 break;
             case CHANGE_LEADER:
                 MapleCharacter mc = party.getLeader().getPlayer();
+                MapleCharacter newLeader = target.getPlayer();
+                
                 EventInstanceManager eim = mc.getEventInstance();
                 
                 if(eim != null && eim.isEventLeader(mc)) {
-                    eim.changedLeader(target.getPlayer());
+                    eim.changedLeader(newLeader);
+                } else {
+                    int oldLeaderMapid = mc.getMapId();
+                    
+                    if (MapleMiniDungeonInfo.isDungeonMap(oldLeaderMapid)) {
+                        if (oldLeaderMapid != newLeader.getMapId()) {
+                            MapleMiniDungeon mmd = newLeader.getClient().getChannelServer().getMiniDungeon(oldLeaderMapid);
+                            if(mmd != null) {
+                                mmd.close();
+                            }
+                        }
+                    }
                 }
                 party.setLeader(target);
                 break;

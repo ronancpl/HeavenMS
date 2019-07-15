@@ -72,7 +72,12 @@ public final class QuestActionHandler extends AbstractMaplePacketHandler {
         short questid = slea.readShort();
         MapleCharacter player = c.getPlayer();
         MapleQuest quest = MapleQuest.getInstance(questid);
-        if (action == 1) { //Start Quest
+        
+        if (action == 0) { // Restore lost item, Credits Darter ( Rajan )
+            slea.readInt();
+            int itemid = slea.readInt();
+            quest.restoreLostItem(player, itemid);
+        } else if (action == 1) { //Start Quest
             int npc = slea.readInt();
             if(!isNpcNearby(slea, player, quest, npc)) {
                 return;

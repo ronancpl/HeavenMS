@@ -159,9 +159,6 @@ public class MapleMap {
     private MapleCharacter mapOwner = null;
     private long mapOwnerLastActivityTime = Long.MAX_VALUE;
     
-    // HPQ
-    private int riceCakes = 0;
-    private int bunnyDamage = 0;
     // events
     private boolean eventstarted = false, isMuted = false;
     private MapleSnowball snowball0 = null;
@@ -1864,35 +1861,8 @@ public class MapleMap {
         spawnMonster(mob);
     }
 
-    public void addBunnyHit() {
-        bunnyDamage++;
-        if (bunnyDamage > 5) {
-            broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny is feeling sick. Please protect it so it can make delicious rice cakes."));
-            bunnyDamage = 0;
-        }
-    }
-
     private void monsterItemDrop(final MapleMonster m, long delay) {
-        final ScheduledFuture<?> monsterItemDrop = TimerManager.getInstance().register(new Runnable() {
-            @Override
-            public void run() {
-                List<MapleMapObject> chrList = MapleMap.this.getPlayers();
-                
-                if (m.isAlive() && !chrList.isEmpty()) {
-                    MapleCharacter chr = (MapleCharacter) chrList.get(0);
-                    
-                    if (m.getId() == 9300061) {
-                        MapleMap.this.riceCakes++;
-                        MapleMap.this.broadcastMessage(MaplePacketCreator.serverNotice(6, "The Moon Bunny made rice cake number " + (MapleMap.this.riceCakes) + "."));
-                    }
-                    
-                    dropFromFriendlyMonster(chr, m);
-                }
-            }
-        }, delay, delay);
-        if (!m.isAlive()) {
-            monsterItemDrop.cancel(true);
-        }
+        m.dropFromFriendlyMonster(delay);
     }
 
     public void spawnFakeMonsterOnGroundBelow(MapleMonster mob, Point pos) {
@@ -2259,6 +2229,11 @@ public class MapleMap {
     }
 
     public final void spawnItemDrop(final MapleMapObject dropper, final MapleCharacter owner, final Item item, Point pos, final byte dropType, final boolean playerDrop) {
+        if (FieldLimit.DROP_LIMIT.check(this.getFieldLimit())) { // thanks Conrad for noticing some maps shouldn't have loots available
+            this.disappearingItemDrop(dropper, owner, item, pos);
+            return;
+        }
+        
         final Point droppos = calcDropPos(pos, pos);
         final MapleMapItem mdrop = new MapleMapItem(item, droppos, dropper, owner, owner.getClient(), dropType, playerDrop);
         mdrop.setDropTime(Server.getInstance().getCurrentTime());
@@ -3936,10 +3911,6 @@ public class MapleMap {
 
     public int getFieldLimit() {
         return fieldLimit;
-    }
-
-    public void resetRiceCakes() {
-        this.riceCakes = 0;
     }
 
     public void allowSummonState(boolean b) {

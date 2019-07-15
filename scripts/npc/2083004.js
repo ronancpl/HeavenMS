@@ -64,8 +64,13 @@ function action(mode, type, selection) {
                 cm.sendSimple("#e#b<Expedition: " + expedName + ">\r\n#k#n" + em.getProperty("party") + "\r\n\r\nWould you like to assemble a team to take on #r" + expedBoss + "#k?\r\n#b#L1#Lets get this going!#l\r\n\#L2#No, I think I'll wait a bit...#l");
                 status = 1;
             } else if (expedition.isLeader(player)) { //If you're the leader, manage the exped
-                cm.sendSimple(list);
-                status = 2;
+                if (expedition.isInProgress()) {
+                    cm.sendOk("Your expedition is already in progress, for those who remain battling lets pray for those brave souls.");
+                    cm.dispose();
+                } else {
+                    cm.sendSimple(list);
+                    status = 2;
+                }
             } else if (expedition.isRegistering()) { //If the expedition is registering
                 if (expedition.contains(player)) { //If you're in it but it hasn't started, be patient
                     cm.sendOk("You have already registered for the expedition. Please wait for #r" + expedition.getLeader().getName() + "#k to begin it.");
@@ -98,8 +103,11 @@ function action(mode, type, selection) {
                     return;
                 }
                 
-                if (cm.createExpedition(exped)) {
+                var res = cm.createExpedition(exped);
+                if (res == 0) {
                     cm.sendOk("The #r" + expedBoss + " Expedition#k has been created.\r\n\r\nTalk to me again to view the current team, or start the fight!");
+                } else if (res > 0) {
+                    cm.sendOk("Sorry, you've already reached the quota of attempts for this expedition! Try again another day...");
                 } else {
                     cm.sendOk("An unexpected error has occurred when starting the expedition, please try again later.");
                 }

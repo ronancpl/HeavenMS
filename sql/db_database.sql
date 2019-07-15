@@ -12827,7 +12827,7 @@ CREATE TABLE IF NOT EXISTS `dueypackages` (
   `ReceiverId` int(10) unsigned NOT NULL,
   `SenderName` varchar(13) NOT NULL,
   `Mesos` int(10) unsigned DEFAULT '0',
-  `TimeStamp` varchar(10) NOT NULL,
+  `TimeStamp` timestamp NOT NULL DEFAULT '2015-01-01 05:00:00',
   `Message` varchar(200) NOT NULL DEFAULT "",
   `Checked` tinyint(1) unsigned DEFAULT '1',
   `Type` tinyint(1) unsigned DEFAULT '0',
