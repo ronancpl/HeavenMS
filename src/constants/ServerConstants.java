@@ -51,10 +51,8 @@ public class ServerConstants {
     public static boolean LOCALSERVER;
 
     //Other Configuration
-    public static boolean JAVA_8;
+    public static final boolean JAVA_8 = getJavaVersion() >= 8;
     public static boolean SHUTDOWNHOOK;
-    // JAVA_8: every static function in AbstractPlayerInteraction are to be made non-static, and code comment sections uncommented after enabling this functionality.
-    
     
     //Server Flags
     public static final boolean USE_CUSTOM_KEYSET = true;           //Enables auto-setup of the HeavenMS's custom keybindings when creating characters.
@@ -318,8 +316,7 @@ public class ServerConstants {
             ServerConstants.DB_USER = p.getProperty("DB_USER");
             ServerConstants.DB_PASS = p.getProperty("DB_PASS");
 
-            //java8 And Shutdownhook
-            ServerConstants.JAVA_8 = p.getProperty("JAVA8").equalsIgnoreCase("TRUE");
+            // shutdownhook
             ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
@@ -327,5 +324,26 @@ public class ServerConstants {
             System.out.println("Failed to load configuration.ini.");
             System.exit(0);
         }
+    }
+    // https://github.com/openstreetmap/josm/blob/a3a6e8a6b657cf4c5b4c64ea14d6e87be6280d65/src/org/openstreetmap/josm/tools/Utils.java#L1566-L1585
+    /**
+     * Returns the Java version as an int value.
+     * @return the Java version as an int value (8, 9, etc.)
+     * @since 12130
+     */
+    public static int getJavaVersion() {
+        String version = System.getProperty("java.version");
+        if (version.startsWith("1.")) {
+            version = version.substring(2);
+        }
+        // Allow these formats:
+        // 1.8.0_72-ea
+        // 9-ea
+        // 9
+        // 9.0.1
+        int dotPos = version.indexOf('.');
+        int dashPos = version.indexOf('-');
+        return Integer.parseInt(version.substring(0,
+                dotPos > -1 ? dotPos : dashPos > -1 ? dashPos : 1));
     }
 }

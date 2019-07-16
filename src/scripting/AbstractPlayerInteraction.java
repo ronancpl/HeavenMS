@@ -95,7 +95,7 @@ public class AbstractPlayerInteraction {
                 return c.getPlayer().getMap();
         }
         
-        public static int getHourOfDay() {
+        public int getHourOfDay() {
                 return Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         }
         
@@ -103,7 +103,7 @@ public class AbstractPlayerInteraction {
             return getMarketPortalId(getWarpMap(mapId));
         }
         
-        private static int getMarketPortalId(MapleMap map) {
+        private int getMarketPortalId(MapleMap map) {
             return (map.findMarketPortal() != null) ? map.findMarketPortal().getId() : map.getRandomPlayerSpawnpoint().getId();
         }
         
@@ -235,7 +235,7 @@ public class AbstractPlayerInteraction {
                 return canHoldAllAfterRemoving(Collections.singletonList(itemid), Collections.singletonList(quantity), Collections.singletonList(removeItemid), Collections.singletonList(removeQuantity));
         }
         
-        private static List<Integer> convertToIntegerArray(List<Double> list) {
+        private List<Integer> convertToIntegerArray(List<Double> list) {
                 List<Integer> intList = new LinkedList<>();
                 for(Double d: list) {
                         intList.add(d.intValue());
@@ -269,7 +269,7 @@ public class AbstractPlayerInteraction {
             return MapleInventory.checkSpots(c.getPlayer(), addedItems, false);
         }
         
-        private static List<Pair<Item, MapleInventoryType>> prepareProofInventoryItems(List<Pair<Integer, Integer>> items) {
+        private List<Pair<Item, MapleInventoryType>> prepareProofInventoryItems(List<Pair<Integer, Integer>> items) {
             List<Pair<Item, MapleInventoryType>> addedItems = new LinkedList<>();
             for(Pair<Integer, Integer> p : items) {
                 Item it = new Item(p.getLeft(), (short) 0, p.getRight().shortValue());
@@ -279,7 +279,7 @@ public class AbstractPlayerInteraction {
             return addedItems;
         }
         
-        private static List<List<Pair<Integer, Integer>>> prepareInventoryItemList(List<Integer> itemids, List<Integer> quantity) {
+        private List<List<Pair<Integer, Integer>>> prepareInventoryItemList(List<Integer> itemids, List<Integer> quantity) {
             int size = Math.min(itemids.size(), quantity.size());
             
             List<List<Pair<Integer, Integer>>> invList = new ArrayList<>(6);
@@ -947,7 +947,7 @@ public class AbstractPlayerInteraction {
 		c.announce(MaplePacketCreator.modifyInventory(false, Collections.singletonList(new ModifyInventory(0, newItem))));
 	}
         
-        public static void spawnNpc(int npcId, Point pos, MapleMap map) {
+        public void spawnNpc(int npcId, Point pos, MapleMap map) {
                 MapleNPC npc = MapleLifeFactory.getNPC(npcId);
                 if (npc != null) {
                         npc.setPosition(pos);
@@ -966,11 +966,11 @@ public class AbstractPlayerInteraction {
 		getPlayer().getMap().spawnMonster(monster);
 	}
         
-	public static MapleMonster getMonsterLifeFactory(int mid) {
+	public MapleMonster getMonsterLifeFactory(int mid) {
 		return MapleLifeFactory.getMonster(mid);
 	}
         
-        public static MobSkill getMobSkill(int skill, int level) {
+        public MobSkill getMobSkill(int skill, int level) {
 		return MobSkillFactory.getMobSkill(skill, level);
 	}
 
@@ -1153,7 +1153,7 @@ public class AbstractPlayerInteraction {
                 }
         }
         
-        public static String getFirstJobStatRequirement(int jobType) {
+        public String getFirstJobStatRequirement(int jobType) {
                 switch(jobType) {
                     case 1:
                         return "STR " + 35;

@@ -186,7 +186,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
         return ReactorScriptManager.getInstance().getDrops(reactor.getId());
     }
     
-    private static List<ReactorDropEntry> generateDropList(List<ReactorDropEntry> drops, int dropRate, boolean meso, int mesoChance, int minItems) {
+    private List<ReactorDropEntry> generateDropList(List<ReactorDropEntry> drops, int dropRate, boolean meso, int mesoChance, int minItems) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         
         List<ReactorDropEntry> items = new ArrayList<>();
