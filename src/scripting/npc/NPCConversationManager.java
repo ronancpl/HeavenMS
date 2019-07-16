@@ -97,9 +97,9 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         private boolean itemScript;
         private List<MaplePartyCharacter> otherParty;
         
-        private static Map<Integer, String> npcDefaultTalks = new HashMap<>();
+        private Map<Integer, String> npcDefaultTalks = new HashMap<>();
         
-        private static String getDefaultTalk(int npcid) {
+        private String getDefaultTalk(int npcid) {
             String talk = npcDefaultTalks.get(npcid);
             if (talk == null) {
                 talk = MapleLifeFactory.getNPCDefaultTalk(npcid);
