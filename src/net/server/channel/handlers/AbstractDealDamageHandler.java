@@ -49,7 +49,6 @@ import tools.data.input.LittleEndianAccessor;
 import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleJob;
-import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import client.autoban.AutobanFactory;
@@ -650,7 +649,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         
         // Find the base damage to base futher calculations on.
         // Several skills have their own formula in this section.
-        int calcDmgMax = 0;	
+        long calcDmgMax = 0;	
         
         if(magic && ret.skill != 0) {
             calcDmgMax = (chr.getTotalMagic() * chr.getTotalMagic() / 1000 + chr.getTotalMagic()) / 30 + chr.getTotalInt() / 200;
@@ -714,7 +713,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             if(comboBuff > 6) {
                 // Advanced Combo
                 MapleStatEffect ceffect = SkillFactory.getSkill(advcomboid).getEffect(chr.getSkillLevel(advcomboid));
-                calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + 0.20 + (comboBuff - 5) * 0.04);
+                calcDmgMax = (long) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + 0.20 + (comboBuff - 5) * 0.04);
             } else {
                 // Normal Combo
                 int skillLv = chr.getSkillLevel(oid);
@@ -722,7 +721,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 
                 if(skillLv > 0) {
                     MapleStatEffect ceffect = SkillFactory.getSkill(oid).getEffect(skillLv);
-                    calcDmgMax = (int) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (skillLv / 6)) / 100);
+                    calcDmgMax = (long) Math.floor(calcDmgMax * (ceffect.getDamage() + 50) / 100 + Math.floor((comboBuff - 1) * (skillLv / 6)) / 100);
                 }
             }
             
@@ -850,7 +849,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             
             for (int j = 0; j < ret.numDamage; j++) {
                     int damage = lea.readInt();
-                    int hitDmgMax = calcDmgMax;
+                    long hitDmgMax = calcDmgMax;
                     if(ret.skill == Buccaneer.BARRAGE || ret.skill == ThunderBreaker.BARRAGE) {
                         if(j > 3)
                             hitDmgMax *= Math.pow(2, (j - 3));
@@ -870,7 +869,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         hitDmgMax = 82569000; // 30% of Max HP of strongest Dojo boss
                     }
 
-                    int maxWithCrit = hitDmgMax;
+                    long maxWithCrit = hitDmgMax;
                     if(canCrit) // They can crit, so up the max.
                             maxWithCrit *= 2;
 

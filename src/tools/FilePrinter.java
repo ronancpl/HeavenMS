@@ -21,6 +21,7 @@ public class FilePrinter {
             LOG_LEAF = "interactions/MapleLeaves.txt",
             LOG_GACHAPON = "interactions/Gachapon.txt",
             LOG_CHAT = "interactions/ChatLog.txt",
+            QUEST_RESTORE_ITEM = "game/QuestItemRestore.txt",
             EXCEPTION_CAUGHT = "game/ExceptionCaught.txt",
             CLIENT_START = "game/ClientStartError.txt",
             MAPLE_MAP = "game/MapleMap.txt",

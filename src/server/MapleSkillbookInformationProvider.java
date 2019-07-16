@@ -245,6 +245,8 @@ public class MapleSkillbookInformationProvider {
         } catch(IOException ioe) {
             System.out.println("Failed to read Quest.wz file. Line " + lineNumber + ": " + line);
             ioe.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Failed to parse Quest.wz XML file.");   // catch this exception, thanks to YonhNi
         }
     }
     

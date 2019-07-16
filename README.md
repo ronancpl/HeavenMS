@@ -23,7 +23,7 @@ Java7 SDK: https://www.oracle.com/technetwork/java/javase/downloads/java-archive
 
 **Important note about localhosts**: these executables are red-flagged by antivirus tools as __potentially malicious softwares__, this happens due to the reverse engineering methods that were applied onto these software artifacts. Those depicted here have been put to use for years already and posed no harm so far, so they are soundly assumed to be safe.
 
-  Latest localhost: https://hostr.co/itrvrHapvtEg
+  Latest localhost: https://hostr.co/SvnSKrGzXhG0
 
   The following list, in bottom-up chronological order, holds information regarding all changes that were applied from the starting localhost used in this development. Some lines have a link attached, that will lead you to a snapshot of the localhost at that version of the artifact. Naturally, later versions holds all previous changes along with the proposed changes.
 

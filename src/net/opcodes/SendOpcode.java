@@ -182,7 +182,7 @@ public enum SendOpcode {
     CONTI_STATE(0x95),
     SET_QUEST_CLEAR(0x96),
     SET_QUEST_TIME(0x97),
-    WARN_MESSAGE(0x98),
+    ARIANT_RESULT(0x98),    // thanks lrenex
     SET_OBJECT_STATE(0x99),
     STOP_CLOCK(0x9A),
     ARIANT_ARENA_SHOW_RESULT(0x9B),
@@ -302,7 +302,7 @@ public enum SendOpcode {
     ARIANT_ARENA_USER_SCORE(0x129),
     SHEEP_RANCH_INFO(0x12B),
     SHEEP_RANCH_CLOTHES(0x12C),
-    ARIANT_SCORE(0x12D),
+    WITCH_TOWER_SCORE_UPDATE(0x12D),    // thanks lrenex
     HORNTAIL_CAVE(0x12E),
     ZAKUM_SHRINE(0x12F),
     NPC_TALK(0x130),

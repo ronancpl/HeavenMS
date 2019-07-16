@@ -1207,9 +1207,15 @@ public class MapleStatEffect {
     }
 
     private Rectangle calculateBoundingBox(Point posFrom, boolean facingLeft) {
-        int multiplier = facingLeft ? 1 : -1;
-        Point mylt = new Point(lt.x * multiplier + posFrom.x, lt.y + posFrom.y);
-        Point myrb = new Point(rb.x * multiplier + posFrom.x, rb.y + posFrom.y);
+        Point mylt;
+        Point myrb;
+        if (facingLeft) {
+            mylt = new Point(lt.x + posFrom.x, lt.y + posFrom.y);
+            myrb = new Point(rb.x + posFrom.x, rb.y + posFrom.y);
+        } else {
+            myrb = new Point(-lt.x + posFrom.x, rb.y + posFrom.y);  // thanks Conrad, April for noticing a disturbance in AoE skill behavior after a hitched refactor here
+            mylt = new Point(-rb.x + posFrom.x, lt.y + posFrom.y);
+        }
         Rectangle bounds = new Rectangle(mylt.x, mylt.y, myrb.x - mylt.x, myrb.y - mylt.y);
         return bounds;
     }

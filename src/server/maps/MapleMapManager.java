@@ -19,17 +19,14 @@
 */
 package server.maps;
 
-import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import scripting.event.EventInstanceManager;
-import server.TimerManager;
 
 public class MapleMapManager {
 
@@ -37,8 +34,6 @@ public class MapleMapManager {
     private EventInstanceManager event;
     
     private Map<Integer, MapleMap> maps = new HashMap<>();
-    
-    private ScheduledFuture<?> updateTask;
     
     private ReadLock mapsRLock;
     private WriteLock mapsWLock;
@@ -51,13 +46,6 @@ public class MapleMapManager {
         ReentrantReadWriteLock rrwl = new MonitoredReentrantReadWriteLock(MonitoredLockType.MAP_MANAGER);
         this.mapsRLock = rrwl.readLock();
         this.mapsWLock = rrwl.writeLock();
-        
-        updateTask = TimerManager.getInstance().register(new Runnable() {
-            @Override
-            public void run() {
-                updateMaps();
-            }
-        }, ServerConstants.RESPAWN_INTERVAL);
     }
 
     public MapleMap resetMap(int mapid) {
@@ -136,7 +124,7 @@ public class MapleMapManager {
         }
     }
     
-    private void updateMaps() {
+    public void updateMaps() {
         for (MapleMap map : getMaps().values()) {
             map.respawn();
             map.mobMpRecovery();
@@ -144,11 +132,6 @@ public class MapleMapManager {
     }
     
     public void dispose() {
-        if (updateTask != null) {
-            updateTask.cancel(false);
-            updateTask = null;
-        }
-        
         for (MapleMap map : getMaps().values()) {
             map.dispose();
         }

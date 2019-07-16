@@ -105,6 +105,8 @@ function setup(level, lobbyid) {
         var eim = em.newInstance("Henesys" + lobbyid);
         eim.setProperty("level", level);
         eim.setProperty("stage", "0");
+        eim.setProperty("bunnyCake", "0");
+        eim.setProperty("bunnyDamage", "0");
         
         eim.getInstanceMap(910010000).resetPQ(level);
         eim.getInstanceMap(910010000).allowSummonState(false);
@@ -240,6 +242,25 @@ function monsterKilled(mob, eim) {}
 function friendlyKilled(mob, eim) {
         if (mob.getId() == 9300061) {
                 eim.schedule("bunnyDefeated", 5 * 1000);
+        }
+}
+
+function friendlyItemDrop(eim, mob) {
+        if (mob.getId() == 9300061) {
+                var cakes = eim.getIntProperty("bunnyCake") + 1;
+                eim.setIntProperty("bunnyCake", cakes);
+                
+                mob.getMap().broadcastMessage(Packages.tools.MaplePacketCreator.serverNotice(6, "The Moon Bunny made rice cake number " + cakes + "."));
+        }
+}
+
+function friendlyDamaged(eim, mob) {
+        if (mob.getId() == 9300061) {
+                var bunnyDamage = eim.getIntProperty("bunnyDamaged") + 1;
+                if (bunnyDamage > 5) {
+                        broadcastMessage(Packages.tools.MaplePacketCreator.serverNotice(6, "The Moon Bunny is feeling sick. Please protect it so it can make delicious rice cakes."));
+                        eim.setIntProperty("bunnyDamaged", 0);
+                }
         }
 }
 

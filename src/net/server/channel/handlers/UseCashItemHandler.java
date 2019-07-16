@@ -189,7 +189,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
                 if (eq == null) { //Check if the type is EQUIPMENT?
                     return;
                 }
-                byte flag = eq.getFlag();
+                short flag = eq.getFlag();
                 flag |= ItemConstants.LOCK;
                 if (eq.getExpiration() > -1) {
                     return; //No perma items pls

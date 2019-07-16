@@ -68,7 +68,7 @@ public class MapleInventoryManipulator {
         return addById(c, itemId, quantity, owner, petid, (byte) 0, expiration);
     }
 
-    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
+    public static boolean addById(MapleClient c, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         MapleCharacter chr = c.getPlayer();
         MapleInventoryType type = ItemConstants.getInventoryType(itemId);
         
@@ -90,7 +90,7 @@ public class MapleInventoryManipulator {
         }
     }
     
-    private static boolean addByIdInternal(MapleClient c, MapleCharacter chr, MapleInventoryType type, MapleInventory inv, int itemId, short quantity, String owner, int petid, byte flag, long expiration) {
+    private static boolean addByIdInternal(MapleClient c, MapleCharacter chr, MapleInventoryType type, MapleInventory inv, int itemId, short quantity, String owner, int petid, short flag, long expiration) {
         MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
         if (!type.equals(MapleInventoryType.EQUIP)) {
             short slotMax = ii.getSlotMax(c, itemId);

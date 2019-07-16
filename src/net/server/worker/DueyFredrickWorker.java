@@ -19,15 +19,17 @@
 */
 package net.server.worker;
 
+import client.processor.DueyProcessor;
 import client.processor.FredrickProcessor;
 
 /**
  * @author Ronan
  */
-public class FredrickWorker implements Runnable {
+public class DueyFredrickWorker implements Runnable {
     
     @Override
     public void run() {
         FredrickProcessor.runFredrickSchedule();
+        DueyProcessor.runDueyExpireSchedule();
     }
 }

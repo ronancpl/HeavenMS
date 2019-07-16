@@ -49,19 +49,7 @@ public class MapleMiniDungeon {
         timeoutTask = TimerManager.getInstance().schedule(new Runnable() {
             @Override
             public void run() {
-                lock.lock();
-                try {
-                    List<MapleCharacter> lchr = new ArrayList<>(players);
-                    
-                    for(MapleCharacter chr : lchr) {
-                        chr.changeMap(baseMap);
-                    }
-                    
-                    dispose();
-                    timeoutTask = null;
-                } finally {
-                    lock.unlock();
-                }
+                close();
             }
         }, expireTime);
         
@@ -95,8 +83,28 @@ public class MapleMiniDungeon {
                 dispose();
                 return false;
             }
-            
-            return true;
+        } finally {
+            lock.unlock();
+        }
+        
+        if (chr.isPartyLeader()) {  // thanks Conrad for noticing party is not sent out of the MD as soon as leader leaves it
+            close();
+        }
+        
+        return true;
+    }
+    
+    public void close() {
+        lock.lock();
+        try {
+            List<MapleCharacter> lchr = new ArrayList<>(players);
+
+            for(MapleCharacter chr : lchr) {
+                chr.changeMap(baseMap);
+            }
+
+            dispose();
+            timeoutTask = null;
         } finally {
             lock.unlock();
         }

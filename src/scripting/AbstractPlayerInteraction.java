@@ -68,6 +68,7 @@ import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import server.MapleMarriage;
+import server.expeditions.MapleExpeditionBossLog;
 import server.life.MapleNPC;
 import tools.Pair;
 
@@ -1067,13 +1068,24 @@ public class AbstractPlayerInteraction {
 		return (Pyramid) getPlayer().getPartyQuest();
 	}
 
-        public boolean createExpedition(MapleExpeditionType type) {
+        public int createExpedition(MapleExpeditionType type) {
                 return createExpedition(type, false, 0, 0);
         }
         
-	public boolean createExpedition(MapleExpeditionType type, boolean silent, int minPlayers, int maxPlayers) {
-		MapleExpedition exped = new MapleExpedition(getPlayer(), type, silent, minPlayers, maxPlayers);
-		return exped.addChannelExpedition(getPlayer().getClient().getChannelServer());
+	public int createExpedition(MapleExpeditionType type, boolean silent, int minPlayers, int maxPlayers) {
+                MapleCharacter player = getPlayer();
+                MapleExpedition exped = new MapleExpedition(player, type, silent, minPlayers, maxPlayers);
+                
+                int channel = player.getMap().getChannelServer().getId();
+                if (!MapleExpeditionBossLog.attemptBoss(player.getId(), channel, exped, false)) {    // thanks Conrad for noticing missing expeditions entry limit
+                        return 1;
+                }
+                
+                if (exped.addChannelExpedition(player.getClient().getChannelServer())) {
+                        return 0;
+                } else {
+                        return -1;
+                }
 	}
 
 	public void endExpedition(MapleExpedition exped) {

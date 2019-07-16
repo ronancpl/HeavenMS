@@ -77,12 +77,12 @@ public class ItemCommand extends Command {
                 }
         }
         
-        byte flag = 0;
+        short flag = 0;
         if(player.gmLevel() < 3) {
                 flag |= ItemConstants.ACCOUNT_SHARING;
                 flag |= ItemConstants.UNTRADEABLE;
         }
-
+        
         MapleInventoryManipulator.addById(c, itemId, quantity, player.getName(), -1, flag, -1);
     }
 }

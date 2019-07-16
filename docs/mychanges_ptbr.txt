@@ -1983,3 +1983,35 @@ Adicionado minigame RPS de NPC, recursos implementados pelo Arnah.
 
 27 Junho 2019,
 Corrigido contabilização de dano de auto-destruição de mobs não sendo aplicado corretamente.
+
+01 Julho 2019,
+Corrigido contabilização de entrada em bosses não checando criação de expedições.
+Corrigido caso de overflow em valor máximo calculado de dano em skills.
+Implementado retirada de itens mantidos pelo Duey na DB, após dado a data de expirar.
+
+02 Julho 2019,
+Refatorado flags de itens utilizando tamanho menor que o esperado.
+Adicionado checagem por FieldLimit ao lançar itens em mapas dados como "untradeable".
+Adicionado funcionalidade "Quest Item Restore".
+
+11 Julho 2019,
+Implementado instanciação de flag "somente compartilhável dentro de mesma conta" em itens recém-gerados que possuem essa funcionalidade.
+Implementado atualização de estados no portão de entrada do Papulatus.
+Corrigido deslize apontado pelo Conrad, na aplicação de caixas de limites usados pelos buffs em área.
+Implementado finalização de instância de minidungeon assim que o líder de party sai da área ou há troca de líderes com alguém fora da área.
+
+14 Julho 2019,
+Refatorado atributos de HenesysPQ sendo utilizados em objetos de áreas do jogo.
+Corrigido mobs aliados não realizando item drops devidamente após atualização recente no sistema de loot.
+Corrigido quest de proteger hog (explorers) "completando" mesmo embora o jogador tenha tentado sair da instância ao conversar com o NPC.
+Corrigido possível exploit com quest de proteger hog (explorers), onde o jogador poderia vir a tentar novamente a instância após completá-la (resultando em recompensas rápidas).
+Corrigido script de Papulatus não levando os métodos de checagem de requisitos atualizados para expedições.
+Corrigido diversos scripts de expedições finalizando expedições indevidamente ao realizar operações de party.
+Implementado checagem por flag de FieldLimit que evita penalidade de perda de EXP em certas áreas do jogo.
+Revisado limite de dano aplicável por alguns summons, cujo valor limite estava muito abaixo do esperado, levando a problemas com aplicação de ataques dos mesmos.
+
+15 Julho 2019,
+Implementado normalização de fuso horário em pacotes enviados ao cliente. Agora o sistema utiliza mesmo fuso horário definido nas flags do servidor.
+Corrigido certos casos onde grupos dentro de lobby de CPQ não conseguiam ser desafiados, geralmente ocorrendo ao se desconectar após o desafio ter sido aceito e antes de começar a instância.
+Revisado script de créditos.
+Adicionado checagem por GM's no método de autoban de jogador.

@@ -23,15 +23,14 @@ package server;
 
 import client.inventory.Item;
 import java.util.Calendar;
+import java.sql.Timestamp;
 
 public class DueyPackage {
     private String sender = null;
     private Item item = null;
     private int mesos = 0;
     private String message = "";
-    private int day;
-    private int month;
-    private int year;
+    private Calendar timestamp;
     private int packageId = 0;
 
     public DueyPackage(int pId, Item item) {
@@ -76,18 +75,35 @@ public class DueyPackage {
     }
 
     public long sentTimeInMilliseconds() {
+        Calendar ts = timestamp;
+        if (ts != null) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(ts.getTime());
+            cal.add(Calendar.MONTH, 1);  // duey representation is in an array of months.
+
+            return cal.getTimeInMillis();
+        } else {
+            return 0;
+        }
+    }
+    
+    public boolean isDeliveringTime() {
+        Calendar ts = timestamp;
+        if (ts != null) {
+            return ts.getTimeInMillis() >= System.currentTimeMillis();
+        } else {
+            return false;
+        }
+    }
+
+    public void setSentTime(Timestamp ts) {
         Calendar cal = Calendar.getInstance();
-        cal.set(year, month, day);
+        cal.setTimeInMillis(ts.getTime());
         cal.set(Calendar.HOUR, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTimeInMillis();
-    }
-
-    public void setSentTime(String sentTime) {
-        day = Integer.parseInt(sentTime.substring(0, 2));
-        month = Integer.parseInt(sentTime.substring(3, 5));
-        year = Integer.parseInt(sentTime.substring(6, 10));
+        
+        this.timestamp = cal;
     }
 }

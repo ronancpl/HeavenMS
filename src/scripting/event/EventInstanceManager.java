@@ -518,6 +518,18 @@ public class EventInstanceManager {
                         invokeScriptFunction("friendlyKilled", mob, EventInstanceManager.this, hasKiller);
                 } catch (ScriptException | NoSuchMethodException ex) {} //optional
 	}
+        
+        public void friendlyDamaged(final MapleMonster mob) {
+                try {
+                        invokeScriptFunction("friendlyDamaged", EventInstanceManager.this, mob);
+                } catch (ScriptException | NoSuchMethodException ex) {} // optional
+	}
+        
+        public void friendlyItemDrop(final MapleMonster mob) {
+                try {
+                        invokeScriptFunction("friendlyItemDrop", EventInstanceManager.this, mob);
+                } catch (ScriptException | NoSuchMethodException ex) {} // optional
+	}
 
 	public void playerKilled(final MapleCharacter chr) {
                 ThreadManager.getInstance().newTask(new Runnable() {

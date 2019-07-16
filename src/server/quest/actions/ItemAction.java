@@ -35,8 +35,10 @@ import java.util.List;
 import provider.MapleData;
 import provider.MapleDataTool;
 import client.inventory.manipulator.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 import server.quest.MapleQuest;
 import server.quest.MapleQuestActionType;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;
@@ -250,8 +252,34 @@ public class ItemAction extends MapleQuestAction {
                     }
                     return jobFound;
                 }
-        return true;
-    }
+                
+                return true;
+        }
+        
+        public boolean restoreLostItem(MapleCharacter chr, int itemid) {
+            if (!MapleItemInformationProvider.getInstance().isQuestItem(itemid)) {
+                return false;
+            }
+            
+            // thanks danielktran (MapleHeroesD)
+            for (ItemData item : items) {
+                if (item.getId() == itemid) {
+                    int missingQty = item.getCount() - chr.countItem(itemid);
+                    if (missingQty > 0) {
+                        if (!chr.canHold(itemid, missingQty)) {
+                            chr.dropMessage(1, "Please check if you have enough space in your inventory.");
+                            return false;
+                        }
+                        
+                        MapleInventoryManipulator.addById(chr.getClient(), item.getId(), (short) missingQty);
+                        FilePrinter.print(FilePrinter.QUEST_RESTORE_ITEM, chr + " obtained " + itemid + " qty. " + missingQty + " from quest " + questID);
+                    }
+                    return true;
+                }
+            }
+            
+            return false;
+        }
 	
 	private class ItemData {
 		private final int map, id, count, job, gender;

@@ -168,6 +168,7 @@ import server.maps.MapleMapItem;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import org.apache.mina.util.ConcurrentHashSet;
+import server.maps.FieldLimit;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -2956,9 +2957,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                             expiration = item.getExpiration();
                             
                             if (expiration != -1 && (expiration < currenttime) && ((item.getFlag() & ItemConstants.LOCK) == ItemConstants.LOCK)) {
-                                byte aids = item.getFlag();
-                                aids &= ~(ItemConstants.LOCK);
-                                item.setFlag(aids); //Probably need a check, else people can make expiring items into permanent items...
+                                short lock = item.getFlag();
+                                lock &= ~(ItemConstants.LOCK);
+                                item.setFlag(lock); //Probably need a check, else people can make expiring items into permanent items...
                                 item.setExpiration(-1);
                                 forceUpdateItem(item);   //TEST :3
                             } else if (expiration != -1 && expiration < currenttime) {
@@ -6099,7 +6100,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public boolean isPartyLeader() {
         prtLock.lock();
         try {
-            return party.getLeaderId() == getId();
+            MapleParty party = getParty();
+            return party != null && party.getLeaderId() == getId();
         } finally {
             prtLock.unlock();
         }
@@ -6410,7 +6412,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         prtLock.lock();
         try {
             party = getParty();
-            partyLeader = party != null && isPartyLeader();
+            partyLeader = isPartyLeader();
         } finally {
             prtLock.unlock();
         }
@@ -6932,7 +6934,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             ret.getInventory(MapleInventoryType.SETUP).setSlotLimit(rs.getByte("setupslots"));
             ret.getInventory(MapleInventoryType.ETC).setSlotLimit(rs.getByte("etcslots"));
             
-            byte sandboxCheck = 0x0;
+            short sandboxCheck = 0x0;
             for (Pair<Item, MapleInventoryType> item : ItemFactory.INVENTORY.loadItems(ret.id, !channelserver)) {
                 sandboxCheck |= item.getLeft().getFlag();
                 
@@ -7402,28 +7404,29 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (possesed > 0) {
             message("You have used a safety charm, so your EXP points have not been decreased.");
             MapleInventoryManipulator.removeById(client, ItemConstants.getInventoryType(charmID[i]), charmID[i], 1, true, false);
-        } else if (mapid > 925020000 && mapid < 925030000) {
-            this.dojoStage = 0;
         } else if (getJob() != MapleJob.BEGINNER) { //Hmm...
-            int XPdummy = ExpTable.getExpNeededForLevel(getLevel());
-            if (getMap().isTown()) {
-                XPdummy /= 100;
-            }
-            if (XPdummy == ExpTable.getExpNeededForLevel(getLevel())) {
-                if (getLuk() <= 100 && getLuk() > 8) {
-                    XPdummy *= (200 - getLuk()) / 2000;
-                } else if (getLuk() < 8) {
-                    XPdummy /= 10;
+            if (!FieldLimit.NO_EXP_DECREASE.check(getMap().getFieldLimit())) {  // thanks Conrad for noticing missing FieldLimit check
+                int XPdummy = ExpTable.getExpNeededForLevel(getLevel());
+                if (getMap().isTown()) {
+                    XPdummy /= 100;
+                }
+                if (XPdummy == ExpTable.getExpNeededForLevel(getLevel())) {
+                    if (getLuk() <= 100 && getLuk() > 8) {
+                        XPdummy *= (200 - getLuk()) / 2000;
+                    } else if (getLuk() < 8) {
+                        XPdummy /= 10;
+                    } else {
+                        XPdummy /= 20;
+                    }
+                }
+                if (getExp() > XPdummy) {
+                    loseExp(XPdummy, false, false);
                 } else {
-                    XPdummy /= 20;
+                    loseExp(getExp(), false, false);
                 }
             }
-            if (getExp() > XPdummy) {
-                loseExp(XPdummy, false, false);
-            } else {
-                loseExp(getExp(), false, false);
-            }
         }
+        
         if (getBuffedValue(MapleBuffStat.MORPH) != null) {
             cancelEffectFromBuffStat(MapleBuffStat.MORPH);
         }
@@ -9168,10 +9171,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     private static void setMergeFlag(Item item) {
-        int flag = item.getFlag();
+        short flag = item.getFlag();
         flag |= ItemConstants.MERGE_UNTRADEABLE;
         flag |= ItemConstants.UNTRADEABLE;
-        item.setFlag((byte) flag);
+        item.setFlag(flag);
     }
     
     private List<Equip> getUpgradeableEquipped() {
@@ -9911,6 +9914,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void autoban(String reason) {
+        if (this.isGM() || this.isBanned()){  // thanks RedHat for noticing GM's being able to get banned
+            return;
+        }
+        
         this.ban(reason);
         announce(MaplePacketCreator.sendPolice(String.format("You have been blocked by the#b %s Police for HACK reason.#k", "HeavenMS")));
         TimerManager.getInstance().schedule(new Runnable() {

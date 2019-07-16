@@ -47,6 +47,7 @@ public final class DueyHandler extends AbstractMaplePacketHandler {
             String recipient = slea.readMapleAsciiString();
             boolean quick = slea.readByte() != 0;
             String message = quick ? slea.readMapleAsciiString() : "";
+            
             DueyProcessor.dueySendItem(c, inventId, itemPos, amount, mesos, message, recipient, quick);
         } else if (operation == DueyProcessor.Actions.TOSERVER_REMOVE_PACKAGE.getCode()) {
             int packageid = slea.readInt();

@@ -27,6 +27,7 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+import constants.ServerConstants;
 import tools.DatabaseConnection;
 import tools.Pair;
 
@@ -184,6 +185,10 @@ public class MapleExpeditionBossLog {
     }
     
     public static boolean attemptBoss(int cid, int channel, MapleExpedition exped, boolean log) {
+        if (!ServerConstants.USE_ENABLE_DAILY_EXPEDITIONS) {
+            return true;
+        }
+        
         BossLogEntry boss = BossLogEntry.getBossEntryByName(exped.getType().name());
         if (boss == null) {
             return true;
