@@ -35,48 +35,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.opcodes.SendOpcode;
-import net.server.PlayerCoolDownValueHolder;
-import net.server.Server;
-import net.server.channel.Channel;
-import net.server.channel.handlers.PlayerInteractionHandler;
-import net.server.channel.handlers.SummonDamageHandler.SummonAttackEntry;
-import net.server.guild.MapleAlliance;
-import net.server.guild.MapleGuild;
-import net.server.guild.MapleGuildCharacter;
-import net.server.guild.MapleGuildSummary;
-import net.server.world.MapleParty;
-import net.server.world.MaplePartyCharacter;
-import net.server.world.PartyOperation;
-import server.CashShop.CashItem;
-import server.CashShop.CashItemFactory;
-import server.CashShop.SpecialCashItem;
-import server.DueyPackage;
-import server.MTSItemInfo;
-import server.MapleItemInformationProvider;
-import server.MapleShopItem;
-import server.MapleTrade;
-import server.events.gm.MapleSnowball;
-import server.life.MapleMonster;
-import server.life.MapleNPC;
-import server.life.MobSkill;
-import server.maps.MapleHiredMerchant;
-import server.maps.MapleDoor;
-import server.maps.MapleDoorObject;
-import server.maps.MapleDragon;
-import server.maps.MapleMap;
-import server.maps.MapleMapItem;
-import server.maps.MapleMist;
-import server.maps.MapleMiniGame;
-import server.maps.MapleMiniGame.MiniGameResult;
-import server.maps.MaplePlayerShop;
-import server.maps.MaplePlayerShopItem;
-import server.maps.MapleReactor;
-import server.maps.MapleSummon;
-import server.life.MaplePlayerNPC;
-import server.movement.LifeMovementFragment;
-import tools.data.output.LittleEndianWriter;
-import tools.data.output.MaplePacketLittleEndianWriter;
 import client.BuddylistEntry;
 import client.MapleBuffStat;
 import client.MapleCharacter;
@@ -110,8 +68,51 @@ import constants.ServerConstants;
 import constants.skills.Buccaneer;
 import constants.skills.Corsair;
 import constants.skills.ThunderBreaker;
-import java.util.TimeZone;
+import net.opcodes.SendOpcode;
+import net.server.PlayerCoolDownValueHolder;
+import net.server.Server;
+import net.server.channel.Channel;
+import net.server.channel.handlers.PlayerInteractionHandler;
+import net.server.channel.handlers.SummonDamageHandler.SummonAttackEntry;
+import net.server.guild.MapleAlliance;
+import net.server.guild.MapleGuild;
+import net.server.guild.MapleGuildCharacter;
+import net.server.guild.MapleGuildSummary;
+import net.server.world.MapleParty;
+import net.server.world.MaplePartyCharacter;
+import net.server.world.PartyOperation;
+import server.CashShop.CashItem;
+import server.CashShop.CashItemFactory;
+import server.CashShop.SpecialCashItem;
+import server.DueyPackage;
+import server.MTSItemInfo;
+import server.MapleItemInformationProvider;
+import server.MapleShopItem;
+import server.MapleTrade;
+import server.events.gm.MapleSnowball;
+import server.life.MapleMonster;
+import server.life.MapleNPC;
+import server.life.MaplePlayerNPC;
+import server.life.MobSkill;
 import server.maps.AbstractMapleMapObject;
+import server.maps.MapleDoor;
+import server.maps.MapleDoorObject;
+import server.maps.MapleDragon;
+import server.maps.MapleHiredMerchant;
+import server.maps.MapleMap;
+import server.maps.MapleMapItem;
+import server.maps.MapleMiniGame;
+import server.maps.MapleMiniGame.MiniGameResult;
+import server.maps.MapleMist;
+import server.maps.MaplePlayerShop;
+import server.maps.MaplePlayerShopItem;
+import server.maps.MapleReactor;
+import server.maps.MapleSummon;
+import server.movement.LifeMovementFragment;
+import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.output.LittleEndianWriter;
+import tools.data.output.MaplePacketLittleEndianWriter;
+import java.util.TimeZone;
 
 /**
  *
@@ -2272,33 +2273,41 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
+        private static void rebroadcastMovementList(LittleEndianWriter lew, SeekableLittleEndianAccessor slea, long movementDataLength) {
+        	//movement command length is sent by client, probably not a big issue? (could be calculated on server)
+        	//if multiple write/reads are slow, could use a (cached?) byte[] buffer
+        	for(long i = 0; i < movementDataLength; i++) {
+        		lew.write(slea.readByte());
+        	}
+        }
+        
         private static void serializeMovementList(LittleEndianWriter lew, List<LifeMovementFragment> moves) {
-                lew.write(moves.size());
-                for (LifeMovementFragment move : moves) {
-                        move.serialize(lew);
-                }
+        	lew.write(moves.size());
+        	for(LifeMovementFragment move : moves) {
+        		move.serialize(lew);
+        	}
         }
 
-        public static byte[] movePlayer(int cid, List<LifeMovementFragment> moves) {
+        public static byte[] movePlayer(int cid, SeekableLittleEndianAccessor movementSlea, long movementDataLength) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.MOVE_PLAYER.getValue());
                 mplew.writeInt(cid);
                 mplew.writeInt(0);
-                serializeMovementList(mplew, moves);
+                rebroadcastMovementList(mplew, movementSlea, movementDataLength);
                 return mplew.getPacket();
         }
 
-        public static byte[] moveSummon(int cid, int oid, Point startPos, List<LifeMovementFragment> moves) {
+        public static byte[] moveSummon(int cid, int oid, Point startPos, SeekableLittleEndianAccessor movementSlea, long movementDataLength) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.MOVE_SUMMON.getValue());
                 mplew.writeInt(cid);
                 mplew.writeInt(oid);
                 mplew.writePos(startPos);
-                serializeMovementList(mplew, moves);
+                rebroadcastMovementList(mplew, movementSlea, movementDataLength);
                 return mplew.getPacket();
         }
         
-        public static byte[] moveMonster(int oid, boolean skillPossible, int skill, int skillId, int skillLevel, int pOption, Point startPos, List<LifeMovementFragment> moves) {
+        public static byte[] moveMonster(int oid, boolean skillPossible, int skill, int skillId, int skillLevel, int pOption, Point startPos, SeekableLittleEndianAccessor movementSlea, long movementDataLength) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.MOVE_MONSTER.getValue());
                 mplew.writeInt(oid);
@@ -2309,7 +2318,7 @@ public class MaplePacketCreator {
                 mplew.write(skillLevel);
                 mplew.writeShort(pOption);
                 mplew.writePos(startPos);
-                serializeMovementList(mplew, moves);
+                rebroadcastMovementList(mplew, movementSlea, movementDataLength);
                 return mplew.getPacket();
         }
         
@@ -8021,12 +8030,12 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
 
-        public static byte[] moveDragon(MapleDragon dragon, Point startPos, List<LifeMovementFragment> res) {
+        public static byte[] moveDragon(MapleDragon dragon, Point startPos, SeekableLittleEndianAccessor movementSlea, long movementDataLength) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.MOVE_DRAGON.getValue());
                 mplew.writeInt(dragon.getOwner().getId());
                 mplew.writePos(startPos);
-                serializeMovementList(mplew, res);
+                rebroadcastMovementList(mplew, movementSlea, movementDataLength);
                 return mplew.getPacket();
         }
 

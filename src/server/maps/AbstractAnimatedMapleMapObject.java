@@ -21,14 +21,31 @@
 */
 package server.maps;
 
-import java.awt.Point;
-import java.util.Collections;
-import java.util.List;
-import server.movement.AbsoluteLifeMovement;
-import server.movement.LifeMovementFragment;
+import java.util.Arrays;
+
+import tools.data.input.ByteArrayByteStream;
+import tools.data.input.GenericSeekableLittleEndianAccessor;
+import tools.data.input.SeekableLittleEndianAccessor;
+import tools.data.output.MaplePacketLittleEndianWriter;
 
 public abstract class AbstractAnimatedMapleMapObject extends AbstractMapleMapObject implements AnimatedMapleMapObject {
-    private int stance;
+    
+	static {
+		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter((int) getIdleMovementDataLength());
+    	mplew.write(1); //movement command count
+    	mplew.writeShort(-1); //x
+    	mplew.writeShort(-1); //y
+    	mplew.writeShort(0); //xwobble
+    	mplew.writeShort(0); //ywobble
+    	mplew.writeShort(0); //fh
+    	mplew.write(-1); //stance
+    	mplew.writeShort(0); //duration
+    	idleMovementPacketData = mplew.getPacket();
+	}
+	
+	private static final byte[] idleMovementPacketData;
+	
+	private int stance;
 
     @Override
     public int getStance() {
@@ -45,11 +62,20 @@ public abstract class AbstractAnimatedMapleMapObject extends AbstractMapleMapObj
         return Math.abs(stance) % 2 == 1;
     }
     
-    public List<LifeMovementFragment> getIdleMovement() {
-        AbsoluteLifeMovement alm = new AbsoluteLifeMovement(0, getPosition(), 0, getStance());
-        alm.setPixelsPerSecond(new Point(0, 0));
-        
-        List<LifeMovementFragment> moveUpdate = Collections.singletonList((LifeMovementFragment) alm);
-        return moveUpdate;
+    public SeekableLittleEndianAccessor getIdleMovement() {
+    	byte[] movementData = Arrays.copyOf(idleMovementPacketData, idleMovementPacketData.length);
+    	//seems wasteful to create a whole packet writer when only a few values are changed
+    	int x = getPosition().x;
+    	int y = getPosition().y;
+    	movementData[1] = (byte) (x & 0xFF); //x
+    	movementData[2] = (byte) (x >> 8 & 0xFF);
+    	movementData[3] = (byte) (y & 0xFF); //y
+    	movementData[4] = (byte) (y >> 8 & 0xFF);
+    	movementData[11] = (byte) (getStance() & 0xFF);
+    	return new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(movementData));
+    }
+    
+    public static long getIdleMovementDataLength() {
+    	return 14;
     }
 }

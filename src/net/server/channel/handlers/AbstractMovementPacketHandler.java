@@ -30,7 +30,6 @@ import server.maps.AnimatedMapleMapObject;
 import server.movement.AbsoluteLifeMovement;
 import server.movement.ChangeEquip;
 import server.movement.JumpDownMovement;
-import server.movement.LifeMovement;
 import server.movement.LifeMovementFragment;
 import server.movement.RelativeLifeMovement;
 import server.movement.TeleportMovement;
@@ -144,17 +143,96 @@ public abstract class AbstractMovementPacketHandler extends AbstractMaplePacketH
         }
         return res;
     }
-
-    protected void updatePosition(List<LifeMovementFragment> movement, AnimatedMapleMapObject target, int yoffset) {
-        for (LifeMovementFragment move : movement) {
-            if (move instanceof LifeMovement) {
-                if (move instanceof AbsoluteLifeMovement) {
-                    Point position = ((LifeMovement) move).getPosition();
-                    position.y += yoffset;
-                    target.setPosition(position);
+    
+    protected void updatePosition(LittleEndianAccessor lea, AnimatedMapleMapObject target, int yOffset) {
+    	
+        byte numCommands = lea.readByte();
+        for (byte i = 0; i < numCommands; i++) {
+            byte command = lea.readByte();
+            switch (command) {
+                case 0: // normal move
+                case 5:
+                case 17: { // Float
+                	//Absolute movement - only this is important for the server, other movement can be passed to the client
+                    short xpos = lea.readShort(); //is signed fine here?
+                    short ypos = lea.readShort();
+                    target.setPosition(new Point(xpos, ypos + yOffset));
+                    lea.skip(6); //xwobble = lea.readShort(); ywobble = lea.readShort(); fh = lea.readShort();
+                    byte newstate = lea.readByte();
+                    target.setStance(newstate);
+                    lea.readShort(); //duration
+                    break;
                 }
-                target.setStance(((LifeMovement) move).getNewstate());
+                case 1:
+                case 2:
+                case 6: // fj
+                case 12:
+                case 13: // Shot-jump-back thing
+                case 16: // Float
+                case 18:
+                case 19: // Springs on maps
+                case 20: // Aran Combat Step
+                case 22: {
+                	//Relative movement - server only cares about stance
+                	lea.skip(4); //xpos = lea.readShort(); ypos = lea.readShort();
+                    byte newstate = lea.readByte();
+                    target.setStance(newstate);
+                    lea.readShort(); //duration
+                    break;
+                }
+                case 3:
+                case 4: // tele... -.-
+                case 7: // assaulter
+                case 8: // assassinate
+                case 9: // rush
+                case 11: //chair
+                {
+//                case 14: {
+                	//Teleport movement - same as above
+                	lea.skip(8); //xpos = lea.readShort(); ypos = lea.readShort(); xwobble = lea.readShort(); ywobble = lea.readShort();
+                    byte newstate = lea.readByte();
+                    target.setStance(newstate);
+                    break;
+                }
+                case 14:
+                    lea.skip(9); // jump down (?)
+                    break;
+                case 10: // Change Equip
+                    //ignored by server
+                    lea.readByte();
+                    break;
+                /*case 11: { // Chair
+                    short xpos = lea.readShort();
+                    short ypos = lea.readShort();
+                    short fh = lea.readShort();
+                    byte newstate = lea.readByte();
+                    short duration = lea.readShort();
+                    ChairMovement cm = new ChairMovement(command, new Point(xpos, ypos), duration, newstate);
+                    cm.setFh(fh);
+                    res.add(cm);
+                    break;
+                }*/
+                case 15: {
+                	//Jump down movement - stance only
+                	lea.skip(12); //short xpos = lea.readShort(); ypos = lea.readShort(); xwobble = lea.readShort(); ywobble = lea.readShort(); fh = lea.readShort(); ofh = lea.readShort();
+                    byte newstate = lea.readByte();
+                    target.setStance(newstate);
+                    lea.readShort(); // duration
+                    break;
+                }
+                case 21: {//Causes aran to do weird stuff when attacking o.o
+                    /*byte newstate = lea.readByte();
+                     short unk = lea.readShort();
+                     AranMovement am = new AranMovement(command, null, unk, newstate);
+                     res.add(am);*/
+                    lea.skip(3);
+                    break;
+                }
+                default:
+                    System.out.println("Unhandled Case:" + command);
+                    return;
             }
         }
+        return;
     }
 }
