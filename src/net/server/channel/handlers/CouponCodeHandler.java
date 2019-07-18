@@ -31,6 +31,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +64,6 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             int type = rs.getInt("type"), quantity = rs.getInt("quantity");
-            
             if (type < 5) {
                 Integer i = couponPoints.get(type);
                 if (i != null) {
@@ -195,8 +195,13 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
                 if (type < 0) {
                     c.announce(MaplePacketCreator.showCashShopMessage((byte) parseCouponResult(type)));
                 } else {
-                    List<Item> couponPackage = new LinkedList<>();
-
+                    List<Item> cashItems = new LinkedList<Item>();
+                    List<Pair<Integer, Integer>> items = new LinkedList<Pair<Integer, Integer>>();
+                    int nxCredit = 0;
+                    int maplePoints = 0;
+                    int nxPrepaid = 0;
+                    int mesos = 0;
+                    
                     for (Pair<Integer, Pair<Integer, Integer>> p : codeRes.getRight()) {
                         type = p.getLeft();
                         int quantity = p.getRight().getRight();
@@ -204,18 +209,26 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
                         CashShop cs = c.getPlayer().getCashShop();
                         switch (type) {
                             case 0:
+                                c.getPlayer().gainMeso(quantity, false); //mesos
+                                mesos += quantity;
+                                break;
                             case 4:
                                 cs.gainCash(1, quantity);    //nxCredit
+                                nxCredit += quantity;
                                 break;
                             case 1:
                                 cs.gainCash(2, quantity);    //maplePoint
+                                maplePoints += quantity;
                                 break;
                             case 2:
                                 cs.gainCash(4, quantity);    //nxPrepaid
+                                nxPrepaid += quantity;
                                 break;
                             case 3:
                                 cs.gainCash(1, quantity);
+                                nxCredit += quantity;
                                 cs.gainCash(4, (quantity / 5000));
+                                nxPrepaid += quantity / 5000;
                                 break;
 
                             default:
@@ -234,22 +247,28 @@ public final class CouponCodeHandler extends AbstractMaplePacketHandler {
                                     Item it = CashShop.generateCouponItem(item, qty);
 
                                     cs.addToInventory(it);
-                                    couponPackage.add(it);
+                                    cashItems.add(it);
                                 } else {
                                     MapleInventoryManipulator.addById(c, item, qty, "", -1);
+                                    items.add(new Pair<Integer, Integer>((int)qty, item));
                                 }
-
-                                //c.announce(MaplePacketCreator.showCouponRedeemedItem(item));
                                 break;
                         }
                     }
-
-                    if (!couponPackage.isEmpty()) {
-                        c.announce(MaplePacketCreator.showBoughtCashPackage(couponPackage, c.getAccID()));
-                    } else {
-                        c.announce(MaplePacketCreator.showBoughtQuestItem(0));
+                    if(cashItems.size() > 255) {
+                        List<Item> oldList = cashItems;
+                        cashItems = Arrays.asList(new Item[255]);
+                        int index = 0;
+                        for(Item item : oldList) {
+                            cashItems.set(index, item);
+                            index++;
+                        }
                     }
-
+                    if (nxCredit != 0 || nxPrepaid != 0) { //coupon packet can only show maple points (afaik)
+                        c.announce(MaplePacketCreator.showBoughtQuestItem(0));
+                    } else {
+                        c.announce(MaplePacketCreator.showCouponRedeemedItems(c.getAccID(), maplePoints, mesos, cashItems, items));
+                    }
                     c.enableCSActions();
                 }
             } finally {
