@@ -105,11 +105,7 @@ public class NPCScriptManager extends AbstractScriptManager {
             try {
                 iv.invokeFunction("start", chrs);
             } catch (final NoSuchMethodException nsme) {
-                try {
-                    iv.invokeFunction("start", chrs);
-                } catch (final NoSuchMethodException nsma) {
-                    nsma.printStackTrace();
-                }
+                nsme.printStackTrace();
             }
 
         } catch (final UndeclaredThrowableException ute) {

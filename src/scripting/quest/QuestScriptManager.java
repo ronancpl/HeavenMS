@@ -63,7 +63,7 @@ public class QuestScriptManager extends AbstractScriptManager {
                         }
                         if(c.canClickNPC()) {
                                 qms.put(c, qm);
-							NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
+                                NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
                                 if (iv == null) {
                                         if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
                                                 iv = getScriptEngine("quest/medalQuest.js", c);
