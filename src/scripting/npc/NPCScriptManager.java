@@ -30,7 +30,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.script.Invocable;
+import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import net.server.world.MaplePartyCharacter;
 
 import scripting.AbstractScriptManager;
@@ -56,7 +59,7 @@ public class NPCScriptManager extends AbstractScriptManager {
     public boolean isNpcScriptAvailable(MapleClient c, String fileName) {
         Invocable iv = null;
         if (fileName != null) {
-            iv = getInvocable("npc/" + fileName + ".js", c);
+            iv = getScriptEngine("npc/" + fileName + ".js", c);
         }
 
         return iv != null;
@@ -90,15 +93,14 @@ public class NPCScriptManager extends AbstractScriptManager {
                 return;
             }
             cms.put(c, cm);
-            Invocable iv = null;
-            iv = getInvocable("npc/" + filename + ".js", c);
+            NashornScriptEngine iv = getScriptEngine("npc/" + filename + ".js", c);
 
             if (iv == null) {
                 c.getPlayer().dropMessage(1, npc + "");
                 cm.dispose();
                 return;
             }
-            engine.put("cm", cm);
+            iv.put("cm", cm);
             scripts.put(c, iv);
             try {
                 iv.invokeFunction("start", chrs);
@@ -127,25 +129,25 @@ public class NPCScriptManager extends AbstractScriptManager {
             }
             if (c.canClickNPC()) {
                 cms.put(c, cm);
-                Invocable iv = null;
+                NashornScriptEngine iv = null;
                 if (!itemScript) {
                     if (fileName != null) {
-                        iv = getInvocable("npc/" + fileName + ".js", c);
+                        iv = getScriptEngine("npc/" + fileName + ".js", c);
                     }
                 } else {
                     if (fileName != null) {     // thanks MiLin for drafting NPC-based item scripts
-                        iv = getInvocable("item/" + fileName + ".js", c);
+                        iv = getScriptEngine("item/" + fileName + ".js", c);
                     }
                 }
                 if (iv == null) {
-                    iv = getInvocable("npc/" + npc + ".js", c);
+                    iv = getScriptEngine("npc/" + npc + ".js", c);
                     cm.resetItemScript();
                 }
                 if (iv == null) {
                     dispose(c);
                     return false;
                 }
-                engine.put(engineName, cm);
+                iv.put(engineName, cm);
                 scripts.put(c, iv);
                 c.setClickedNPC();
                 try {

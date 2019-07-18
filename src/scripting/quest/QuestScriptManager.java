@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.script.Invocable;
 
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import scripting.AbstractScriptManager;
 import server.quest.MapleQuest;
 import tools.FilePrinter;
@@ -62,10 +63,10 @@ public class QuestScriptManager extends AbstractScriptManager {
                         }
                         if(c.canClickNPC()) {
                                 qms.put(c, qm);
-                                Invocable iv = getInvocable("quest/" + questid + ".js", c);
+							NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
                                 if (iv == null) {
                                         if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
-                                                iv = getInvocable("quest/medalQuest.js", c);
+                                                iv = getScriptEngine("quest/medalQuest.js", c);
                                         } else {
                                                 FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.");
                                         }
@@ -74,7 +75,7 @@ public class QuestScriptManager extends AbstractScriptManager {
                                         qm.dispose();
                                         return;
                                 }
-                                engine.put("qm", qm);
+                                iv.put("qm", qm);
                                 scripts.put(c, iv);
                                 c.setClickedNPC();
                                 iv.invokeFunction("start", (byte) 1, (byte) 0, 0);
@@ -117,17 +118,17 @@ public class QuestScriptManager extends AbstractScriptManager {
 			}
 			if(c.canClickNPC()){
 				qms.put(c, qm);
-				Invocable iv = getInvocable("quest/" + questid + ".js", c);
+				NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
 				if (iv == null) {
                                         if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
-                                                iv = getInvocable("quest/medalQuest.js", c);
+                                                iv = getScriptEngine("quest/medalQuest.js", c);
                                         } else {
                                                 FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.");
                                                 qm.dispose();
                                                 return;
                                         }
 				}
-				engine.put("qm", qm);
+				iv.put("qm", qm);
 				scripts.put(c, iv);
 				c.setClickedNPC();
 				iv.invokeFunction("end", (byte) 1, (byte) 0, 0);

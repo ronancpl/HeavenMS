@@ -27,12 +27,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
+import javax.script.*;
 
 import constants.ServerConstants;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import tools.FilePrinter;
 
 /**
@@ -40,45 +39,35 @@ import tools.FilePrinter;
  * @author Matze
  */
 public abstract class AbstractScriptManager {
-
-    protected ScriptEngine engine;
-    private ScriptEngineManager sem;
+    private ScriptEngineFactory sef;
 
     protected AbstractScriptManager() {
-        sem = new ScriptEngineManager();
+        sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
     }
 
-    protected Invocable getInvocable(String path, MapleClient c) {
+    protected NashornScriptEngine getScriptEngine(String path, MapleClient c) {
         path = "scripts/" + path;
-        engine = null;
-        if (c != null) {
-            try {
-                engine = c.getScriptEngine(path);
-            } catch (NullPointerException npe) {
-                c = null;   // player disconnected
-            }
-        }
+        NashornScriptEngine engine = c.getScriptEngine(path);
+
         if (engine == null) {
             File scriptFile = new File(path);
             if (!scriptFile.exists()) {
                 return null;
             }
-            engine = sem.getEngineByName("javascript");
-            if (c != null) {
-                c.setScriptEngine(path, engine);
-            }
+            engine = (NashornScriptEngine) sef.getScriptEngine();
+            c.setScriptEngine(path, engine);
             try (FileReader fr = new FileReader(scriptFile)) {
             	if (ServerConstants.JAVA_8){
             		engine.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
             	}
                 engine.eval(fr);
             } catch (final ScriptException | IOException t) {
-                FilePrinter.printError(FilePrinter.INVOCABLE + path.substring(12, path.length()), t, path);
+                FilePrinter.printError(FilePrinter.INVOCABLE + path.substring(12), t, path);
                 return null;
             }
         }
 
-        return (Invocable) engine;
+        return engine;
     }
 
     protected void resetContext(String path, MapleClient c) {
