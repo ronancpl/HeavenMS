@@ -6112,12 +6112,12 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
+        
         public static byte[] sendNameTransferCheck(boolean canUseName) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CASHSHOP_CHECK_NAME_CHANGE.getValue());
                 mplew.writeShort(0);
                 mplew.writeBool(!canUseName);
-                
                 return mplew.getPacket();
         }
         
@@ -6219,16 +6219,23 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        public static byte[] showCouponRedeemedItem(int itemid) {
+        public static byte[] showCouponRedeemedItems(int accountId, int maplePoints, int mesos, List<Item> cashItems, List<Pair<Integer, Integer>> items) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
-                mplew.writeShort(0x49); //v72
-                mplew.writeInt(0);
-                mplew.writeInt(1);
-                mplew.writeShort(1);
-                mplew.writeShort(0x1A);
-                mplew.writeInt(itemid);
-                mplew.writeInt(0);
+                mplew.write(0x59);
+                mplew.write((byte)cashItems.size());
+                for(Item item : cashItems) {
+                    addCashItemInformation(mplew, item, accountId);
+                }
+                mplew.writeInt(maplePoints);
+                mplew.writeInt(items.size());
+                for(Pair<Integer, Integer> itemPair : items) {
+                    int quantity = itemPair.getLeft();
+                    mplew.writeShort((short) quantity); //quantity (0 = 1 for cash items)
+                    mplew.writeShort(0x1F); //0 = ?, >=0x20 = ?, <0x20 = ? (does nothing?)
+                    mplew.writeInt(itemPair.getRight());
+                }
+                mplew.writeInt(mesos);
                 return mplew.getPacket();
         }
 
