@@ -45,26 +45,33 @@ public abstract class AbstractScriptManager {
         sef = new ScriptEngineManager().getEngineByName("javascript").getFactory();
     }
 
-    protected NashornScriptEngine getScriptEngine(String path, MapleClient c) {
+    protected NashornScriptEngine getScriptEngine(String path) {
         path = "scripts/" + path;
-        NashornScriptEngine engine = c.getScriptEngine(path);
+        File scriptFile = new File(path);
+        if (!scriptFile.exists()) {
+            return null;
+        }
+        NashornScriptEngine engine = (NashornScriptEngine) sef.getScriptEngine();
+        try (FileReader fr = new FileReader(scriptFile)) {
+            if (ServerConstants.JAVA_8){
+                engine.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
+            }
+            engine.eval(fr);
+        } catch (final ScriptException | IOException t) {
+            FilePrinter.printError(FilePrinter.INVOCABLE + path.substring(12), t, path);
+            return null;
+        }
+
+        return engine;
+    }
+
+    protected NashornScriptEngine getScriptEngine(String path, MapleClient c) {
+        String cachePath = "scripts/" + path;
+        NashornScriptEngine engine = c.getScriptEngine(cachePath);
 
         if (engine == null) {
-            File scriptFile = new File(path);
-            if (!scriptFile.exists()) {
-                return null;
-            }
-            engine = (NashornScriptEngine) sef.getScriptEngine();
+            engine = getScriptEngine(cachePath);
             c.setScriptEngine(path, engine);
-            try (FileReader fr = new FileReader(scriptFile)) {
-            	if (ServerConstants.JAVA_8){
-            		engine.eval("load('nashorn:mozilla_compat.js');" + System.lineSeparator());
-            	}
-                engine.eval(fr);
-            } catch (final ScriptException | IOException t) {
-                FilePrinter.printError(FilePrinter.INVOCABLE + path.substring(12), t, path);
-                return null;
-            }
         }
 
         return engine;
