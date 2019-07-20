@@ -343,7 +343,8 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         slea.readByte();
                         MapleCharacter partner = c.getChannelServer().getPlayerStorage().getCharacterByName(sentTo);
                         if (partner == null) {
-                            chr.dropMessage(5, "The partner you specified cannot be found. Please make sure your partner is online and in the same channel.");
+                            chr.dropMessage(5, "The partner you specified cannot be found. Please make sure your partner is online and in the same channel."); //don't think this works in cs
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0xBE));
                         } else {
                             // Need to check to make sure its actually an equip and the right SN...
                             if(itemRing.toItem() instanceof Equip) {
@@ -351,7 +352,7 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                                 Pair<Integer, Integer> rings = MapleRing.createRing(itemRing.getItemId(), chr, partner);
                                 eqp.setRingId(rings.getLeft());
                                 cs.addToInventory(eqp);
-                                c.announce(MaplePacketCreator.showBoughtCashItem(eqp, c.getAccID()));
+                                c.announce(MaplePacketCreator.showBoughtCashRing(eqp, partner.getName(), c.getAccID()));
                                 cs.gift(partner.getId(), chr.getName(), text, eqp.getSN(), rings.getRight());
                                 cs.gainCash(payment, -itemRing.getPrice());
                                 chr.addFriendshipRing(MapleRing.loadFromDb(rings.getLeft()));
@@ -368,6 +369,34 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     }
 
                     c.announce(MaplePacketCreator.showCash(c.getPlayer()));
+                } else if (action == 0x2E) { //name change/world transfer
+                    int snCS = slea.readInt();
+                    CashItem cItem = CashItemFactory.getItem(snCS);
+                    if (!canBuy(chr, cItem, cs.getCash(4))) {
+                        c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                        //log error/exploit? shouldn't be able to get this far without enough cash
+                        c.enableCSActions();
+                        return;
+                    }
+                    if(snCS == 50600000 && ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) { //name change
+                        slea.readMapleAsciiString(); //old name
+                        String newName = slea.readMapleAsciiString();
+                        if(!MapleCharacter.canCreateChar(newName) || chr.getLevel() < 10) { //check  ban status? (longest ban duration isn't tracked currently)
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                            //log error/exploit? client already checks once before this
+                            c.enableCSActions();
+                            return;
+                        }
+                        if(chr.registerNameChange(newName)) { //success
+                            Item item = cItem.toItem();
+                            c.announce(MaplePacketCreator.showNameChangeSuccess(item, c.getAccID()));
+                            cs.addToInventory(item);
+                            cs.gainCash(4, cItem, chr.getWorld());
+                        } else {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                        }
+                    }
+                    c.enableCSActions();
                 } else {
                     System.out.println("Unhandled action: " + action + "\n" + slea);
                 }

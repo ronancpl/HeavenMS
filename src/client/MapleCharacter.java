@@ -328,6 +328,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int banishSp = -1;
     private long banishTime = 0;
     private long lastExpGainTime;
+    private boolean pendingNameChange; //only used to change name on logout, not to be relied upon elsewhere
     
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
@@ -10335,6 +10336,158 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void removeJailExpirationTime() {
         jailExpiration = 0;
+    }
+    
+    public boolean registerNameChange(String newName) {
+        try (Connection con = DatabaseConnection.getConnection()) {
+            //check for pending name change
+            long currentTimeMillis = System.currentTimeMillis();
+            try (PreparedStatement ps = con.prepareStatement("SELECT completionTime FROM namechanges WHERE characterid=?")) { //double check, just in case
+                ps.setInt(1, getId());
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    Timestamp completedTimestamp = rs.getTimestamp("completionTime");
+                    if(completedTimestamp == null) return false; //pending
+                    else if(completedTimestamp.getTime() + ServerConstants.NAME_CHANGE_COOLDOWN > currentTimeMillis) return false;
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO namechanges (characterid, old, new) VALUES (?, ?, ?)")){
+                    ps.setInt(1, getId());
+                    ps.setString(2, getName());
+                    ps.setString(3, newName);
+                    ps.executeUpdate();
+                    this.pendingNameChange = true;
+                    return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean cancelPendingNameChange() {
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("DELETE FROM namechanges WHERE characterid=? AND completionTime IS NULL")) {
+            ps.setInt(1, getId());
+            int affectedRows = ps.executeUpdate();
+            if(affectedRows > 0) pendingNameChange = false;
+            return affectedRows > 0; //rows affected
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    public void doPendingNameChange() { //called on logout
+        if(!pendingNameChange) return;
+        try (Connection con = DatabaseConnection.getConnection()) {
+            int nameChangeId = -1;
+            String newName = null;
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM namechanges WHERE characterid = ? AND completionTime IS NULL")) {
+                ps.setInt(1, getId());
+                ResultSet rs = ps.executeQuery();
+                if(!rs.next()) return;
+                nameChangeId = rs.getInt("id");
+                //String oldName = rs.getString("old");                
+                newName = rs.getString("new");
+            } catch(SQLException e) {
+                e.printStackTrace();
+            }
+            doNameChange(con, getId(), getName(), newName, nameChangeId);
+            FilePrinter.print(FilePrinter.CHANGE_CHARACTER_NAME, "Name change applied : from \"" + getName() + "\" to \"" + newName + "\" at " + Calendar.getInstance().getTime().toString());
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void doNameChange(int characterId, String oldName, String newName, int nameChangeId) { //Don't do this while player is online
+        try (Connection con = DatabaseConnection.getConnection()) {
+            con.setAutoCommit(false);
+            doNameChange(con, characterId, oldName, newName, nameChangeId);
+            con.setAutoCommit(true);
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void doNameChange(Connection con, int characterId, String oldName, String newName, int nameChangeId) {
+        try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET name = ? WHERE id = ?")) {
+            ps.setString(1, newName);
+            ps.setInt(2, characterId);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE rings SET partnername = ? WHERE partnername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        /*try (PreparedStatement ps = con.prepareStatement("UPDATE playernpcs SET name = ? WHERE name = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE gifts SET `from` = ? WHERE `from` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE dueypackages SET SenderName = ? WHERE SenderName = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE dueypackages SET SenderName = ? WHERE SenderName = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE inventoryitems SET owner = ? WHERE owner = ?")) { //GMS doesn't do this
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE mts_items SET owner = ? WHERE owner = ?")) { //GMS doesn't do this
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE newyear SET sendername = ? WHERE sendername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE newyear SET receivername = ? WHERE receivername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE notes SET `to` = ? WHERE `to` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE notes SET `from` = ? WHERE `from` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}
+        try (PreparedStatement ps = con.prepareStatement("UPDATE nxcode SET retriever = ? WHERE retriever = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) {e.printStackTrace();}*/
+        if(nameChangeId != -1) {
+            try (PreparedStatement ps = con.prepareStatement("UPDATE namechanges SET completionTime = ? WHERE id = ?")) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.setInt(2, nameChangeId);
+                ps.executeUpdate();
+            } catch(SQLException e) {e.printStackTrace();}
+        }
     }
     
     public String getLastCommandMessage() {

@@ -1017,6 +1017,7 @@ public class MapleClient {
                                         player.saveCharToDB(true);
                                         
 					player.logOff();
+					if(ServerConstants.INSTANT_NAME_CHANGE) player.doPendingNameChange();
                                         clear();
 				} else {
                                         getChannelServer().removePlayer(player);

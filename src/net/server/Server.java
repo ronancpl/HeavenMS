@@ -103,6 +103,7 @@ import server.life.MaplePlayerNPCFactory;
 import server.quest.MapleQuest;
 import tools.AutoJCE;
 import tools.DatabaseConnection;
+import tools.FilePrinter;
 import tools.Pair;
 import org.apache.mina.core.session.IoSession;
 
@@ -881,7 +882,7 @@ public class Server {
         } catch (SQLException sqle) {
             sqle.printStackTrace();
         }
-        
+        applyAllNameChanges(); //name changes can be missed by INSTANT_NAME_CHANGE
         MaplePet.clearMissingPetsFromDb();
         MapleCashidGenerator.loadExistentCashIdsFromDb();
         
@@ -1551,6 +1552,30 @@ public class Server {
             return !accountChars.containsKey(accId);
         } finally {
             lgnRLock.unlock();
+        }
+    }
+    
+    private static void applyAllNameChanges() {
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("SELECT * FROM namechanges WHERE completionTime IS NULL")) {
+            ResultSet rs = ps.executeQuery();
+            List<Pair<String, String>> changedNames = new LinkedList<Pair<String, String>>(); //logging only
+            con.setAutoCommit(false);
+            while(rs.next()) {
+                int nameChangeId = rs.getInt("id");
+                int characterId = rs.getInt("characterId");
+                String oldName = rs.getString("old");
+                String newName = rs.getString("new");
+                MapleCharacter.doNameChange(con, characterId, oldName, newName, nameChangeId);
+                changedNames.add(new Pair<String, String>(oldName, newName));
+            }
+            con.setAutoCommit(true);
+            //log
+            for(Pair<String, String> namePair : changedNames) {
+                FilePrinter.print(FilePrinter.CHANGE_CHARACTER_NAME, "Name change applied : from \"" + namePair.getLeft() + "\" to \"" + namePair.getRight() + "\" at " + Calendar.getInstance().getTime().toString());
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
     }
     

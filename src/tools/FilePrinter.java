@@ -59,6 +59,7 @@ public class FilePrinter {
             QUEST_UNCODED = "game/quests/UncodedQuests.txt",
             AUTOSAVING_CHARACTER = "players/SaveCharAuto.txt",
             SAVING_CHARACTER = "players/SaveChar.txt",
+            CHANGE_CHARACTER_NAME = "players/NameChange.txt",
             USED_COMMANDS = "commands/UsedCommands.txt",
             DEADLOCK_ERROR = "deadlocks/Deadlocks.txt",
             DEADLOCK_STACK = "deadlocks/Path.txt",

@@ -337,7 +337,7 @@ public class MaplePacketCreator {
                 if (!viewall) {
                         mplew.write(0);
                 }
-                if (chr.isGM()) {
+                if (chr.isGM() || chr.isGmJob()) {
                         mplew.write(0);
                         return;
                 }
@@ -6097,7 +6097,8 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
-        /*  1: name change already submitted
+        /*  0: no error, send rules
+            1: name change already submitted
             2: name change within a month
             3: recently banned
             4: unknown error
@@ -6112,12 +6113,25 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
+        /*  0: Name available
+         * >0: Name is in use
+         * <0: Unknown error
+         */
         
-        public static byte[] sendNameTransferCheck(boolean canUseName) {
+        public static byte[] sendNameTransferCheck(String availableName, boolean canUseName) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CASHSHOP_CHECK_NAME_CHANGE.getValue());
-                mplew.writeShort(0);
+                //Send provided name back to client to add to temporary cache of checked & accepted names
+                mplew.writeMapleAsciiString(availableName);
                 mplew.writeBool(!canUseName);
+                return mplew.getPacket();
+        }
+        
+        public static byte[] showNameChangeSuccess(Item item, int accountId) {
+                final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
+                mplew.write(0x9E);
+                addCashItemInformation(mplew, item, accountId);
                 return mplew.getPacket();
         }
         
@@ -7703,8 +7717,20 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
         }
         
+        public static byte[] showBoughtCashRing(Item ring, String recipient, int accountId) {
+            final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
+            mplew.write(0x87);
+            addCashItemInformation(mplew, ring, accountId);
+            mplew.writeMapleAsciiString(recipient);
+            mplew.writeInt(ring.getItemId());
+            mplew.writeShort(1); //quantity
+            return mplew.getPacket();
+        }
+        
         /*
          * 00 = Due to an unknown error, failed
+         * A3 = Request timed out. Please try again.
          * A4 = Due to an unknown error, failed + warpout
          * A5 = You don't have enough cash.
          * A6 = long as shet msg
@@ -7721,6 +7747,7 @@ public class MaplePacketCreator {
          * B2 = Expired Coupon
          * B3 = Coupon has been used already
          * B4 = Nexon internet cafes? lolfk
+         * B8 = Due to gender restrictions, the coupon cannot be used.
          * BB = inv full
          * BC = long as shet "(not?) available to purchase by a use at the premium" msg
          * BD = invalid gift recipient
@@ -7733,6 +7760,8 @@ public class MaplePacketCreator {
          * C4 = check birthday code
          * C7 = only available to users buying cash item, whatever msg too long
          * C8 = already applied for this
+         * CD = You have reached the daily purchase limit for the cash shop.
+         * D0 = coupon account limit reached
          * D2 = coupon system currently unavailable
          * D3 = item can only be used 15 days after registration
          * D4 = not enough gift tokens
@@ -7845,6 +7874,23 @@ public class MaplePacketCreator {
                 addItemInfo(mplew, item, true);
 
                 return mplew.getPacket();
+        }
+        
+        public static byte[] deleteCashItem(Item item) {
+            final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
+            mplew.write(0x6C);
+            mplew.writeLong(item.getCashId());
+            return mplew.getPacket();
+        }
+        
+        public static byte[] refundCashItem(Item item, int maplePoints) {
+            final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
+            mplew.write(0x85);
+            mplew.writeLong(item.getCashId());
+            mplew.writeInt(maplePoints);
+            return mplew.getPacket();
         }
 
         public static byte[] putIntoCashInventory(Item item, int accountId) {
