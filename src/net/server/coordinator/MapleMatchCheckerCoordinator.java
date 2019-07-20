@@ -300,7 +300,7 @@ public class MapleMatchCheckerCoordinator {
     }
     
     private void disposeMatchElement(MapleMatchCheckingElement mmce) {
-        Set<Integer> matchPlayers = mmce.getAcceptedMatchPlayers();
+        Set<Integer> matchPlayers = mmce.getMatchPlayers();
         while (!poolMatchPlayers(matchPlayers)) {
             try {
                 Thread.sleep(1000);
