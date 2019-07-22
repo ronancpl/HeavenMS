@@ -159,7 +159,7 @@ public class MatchCheckerGuildCreation implements MatchCheckerListenerRecipe {
                     }
                     
                     if (chr.isLoggedinWorld()) {
-                        chr.announce(MaplePacketCreator.genericGuildMessage((byte)0x24));
+                        chr.announce(MaplePacketCreator.genericGuildMessage((byte)0x26));
                     }
                 }
             }
@@ -189,6 +189,7 @@ public class MatchCheckerGuildCreation implements MatchCheckerListenerRecipe {
                     
                     if (chr.isLoggedinWorld()) {
                         chr.message(msg);
+                        chr.announce(MaplePacketCreator.genericGuildMessage((byte)0x26));
                     }
                 }
             }
