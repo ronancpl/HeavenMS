@@ -33,6 +33,7 @@ public abstract class AbstractAnimatedMapleMapObject extends AbstractMapleMapObj
 	static {
 		MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter((int) getIdleMovementDataLength());
     	mplew.write(1); //movement command count
+    	mplew.write(0);
     	mplew.writeShort(-1); //x
     	mplew.writeShort(-1); //y
     	mplew.writeShort(0); //xwobble
@@ -67,15 +68,15 @@ public abstract class AbstractAnimatedMapleMapObject extends AbstractMapleMapObj
     	//seems wasteful to create a whole packet writer when only a few values are changed
     	int x = getPosition().x;
     	int y = getPosition().y;
-    	movementData[1] = (byte) (x & 0xFF); //x
-    	movementData[2] = (byte) (x >> 8 & 0xFF);
-    	movementData[3] = (byte) (y & 0xFF); //y
-    	movementData[4] = (byte) (y >> 8 & 0xFF);
-    	movementData[11] = (byte) (getStance() & 0xFF);
+    	movementData[2] = (byte) (x & 0xFF); //x
+    	movementData[3] = (byte) (x >> 8 & 0xFF);
+    	movementData[4] = (byte) (y & 0xFF); //y
+    	movementData[5] = (byte) (y >> 8 & 0xFF);
+    	movementData[12] = (byte) (getStance() & 0xFF);
     	return new GenericSeekableLittleEndianAccessor(new ByteArrayByteStream(movementData));
     }
     
     public static long getIdleMovementDataLength() {
-    	return 14;
+    	return 15;
     }
 }
