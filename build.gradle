@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.zaxxer', name: 'HikariCP-java7', version: '2.4.13'
+    implementation group: 'org.apache.mina', name: 'mina-core', version: '2.0.19'
+    implementation group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
+    implementation group: 'org.slf4j', name: 'slf4j-jdk14', version: '1.7.5'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src'
+        }
+    }
+}
+
+mainClassName = "net.server.Server"
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': mainClassName
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: 'heavenms'
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - my-db:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d
+
+  heavenms:
+    build: .
+    environment:
+      HOST: '127.0.0.1'
+      URL: 'jdbc:mysql://db:3306/heavenms'
+      DB_USER: 'root'
+      DB_PASS: ''
+      JAVA8: 'true'
+      SHUTDOWNHOOK: 'true'
+    volumes:
+      - ./scripts:/mnt/scripts
+    ports:
+      - '8484:8484'
+      - '7575:7575'
+      - '7576:7576'
+      - '7577:7577'
+    expose:
+      - '8484'
+      - '7575'
+      - '7576'
+      - '7577'
+
+volumes:
+  my-db:

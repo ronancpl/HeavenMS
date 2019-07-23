@@ -6,10 +6,6 @@ Besides myself for maintaining this repository, credits are to be given to Wizet
 
 Regarding distributability and usage of the code presented here: like it was before, this MapleStory server is open-source. By that, it is meant that anyone is **free to install, use, modify and redistribute the contents**, as long as there is **no kind of commercial trading involved** and the **credits to the original creators are maintained** within the codes.
 
-This is a NetBeans 8.2 Project, that should be built and run on Java 8 in order to run properly (used to be ran in Java 7, thanks @kolakcc for the Java 8 support!).
-
-Being a NetBeans 8.2 Project, this means that it's easier to install the project via opening the server project folder inside NetBeans' IDE. Once installed, build this project on your machine and run the server using the "launch.bat" application.
-
 In this project, many gameplay-wise issues generated from either the original WZ files and the server source have been partially or completely solved. Considering the use of the provided edited WZ's and server-side wz.xml files should be of the greatest importance when dealing with this instance of server source, in order to perceive it at it's full potential. My opinion, though!
 
 The main objective of this project is to try as best as possible to recreate what once was the original MapleStory v83, while adding up some flavors that spices up the gameplay. In other words, aim to get the best of the MapleStory of that era.
@@ -176,18 +172,19 @@ Now it is OPTIONAL, you don't need to run it if you don't want, as it will simpl
 At the end of the execution of these SQLs, you should have installed a database schema named "heavenms". REGISTER YOUR FIRST ACCOUNT to be used in-game by **creating manually** an entry on the table "accounts" at that database with a login and a password.
 
 Configure the IP you want to use for your MapleStory server in "configuration.ini" file, or set it as "localhost" if you want to run it only on your machine. Alternatively, you can use the IP given by Hamachi to use on a Hamachi network, or you can use a non-Hamachi method of port-forwarding. Neither will be approached here.
+   
+#### Launching the server
+* If using **Windows**: 
+   * Double click `launch.bat` in this 
+* If using **Non-Windows**:
+   * Open this directory in a terminal.
+   * Run `./gradlew run`.
+* If using **Docker**:
+   * Build the project with `./gradlew build`.
+   * `docker-compose up` will get you a new database instance and start the server.
+   * Keep in mind that any changes to the sources requires a rebuild with `./gradlew build`.
 
-#### Open the NetBeans project
-
-Now open NetBeans, and click "Open a project..." . Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
-
-Inside the project, you may encounter some code errors.
-
-If that's the case, you have yet to set the core JARs of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
-
-Locate the folder "cores" inside the root directory of this project and manually configure the missing files on NetBeans (mina-core, slf4j-api, ...).
-
-Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functional, then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
+Once done, make sure both WampServer and Hamachi are on and functional, then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
 
 ---
 ### Installing the CLIENT 
@@ -243,6 +240,27 @@ To change a character's GM level, make sure that character is not logged in, the
 * Hit APPLY CHANGES.
 
 ---
+### Server Development
+To edit server files, you need a text editor. We recommend using one of these two IDEs:
+
+#### Using NetBeans
+Open NetBeans, and click "Open a project..." . Select then the "HeavenMS" folder, that should already be a project recognizable by NetBeans. If it isn't, you have a problem.
+
+Inside the project, you may encounter some code errors.
+
+If that's the case, you have yet to set the core JARs of the project. From the project hierarchy, right-click the project and select "Resolve Project Problems".
+
+Locate the folder "cores" inside the root directory of this project and manually configure the missing files on NetBeans (mina-core, slf4j-api, ...).
+
+Finally, select "Clean and Build project" to build the JAR file for the MapleStory server. Once done, make sure both WampServer and Hamachi are on and functional, then execute "launch.bat" on the root of the project. If no errors were raised from this action, your MapleStory server is now online.
+
+#### Using IntelliJ IDEA
+
+* Make sure you have downloaded this respository using Clone or Download.
+* Use `File > Open` to select the `build.gradle` file within this project.
+* IntelliJ should configure the rest automatically. 
+
+
 ### Some notes about WZ/WZ.XML EDITING 
 
 NOTE: Be extremely wary when using server-side's XMLs data being reimported into the client's WZ, as some means of synchronization between the server and client modules, this action COULD generate some kind of bugs afterwards. Client-to-server data reimporting seems to be fine, though.
