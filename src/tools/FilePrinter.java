@@ -60,6 +60,7 @@ public class FilePrinter {
             AUTOSAVING_CHARACTER = "players/SaveCharAuto.txt",
             SAVING_CHARACTER = "players/SaveChar.txt",
             CHANGE_CHARACTER_NAME = "players/NameChange.txt",
+            WORLD_TRANSFER = "players/WorldTransfer.txt",
             USED_COMMANDS = "commands/UsedCommands.txt",
             DEADLOCK_ERROR = "deadlocks/Deadlocks.txt",
             DEADLOCK_STACK = "deadlocks/Path.txt",

@@ -24,7 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
+import java.util.Calendar;
 import java.sql.Connection;
 
 import client.MapleCharacter;
@@ -59,6 +59,9 @@ public final class TransferNameHandler extends AbstractMaplePacketHandler {
         if(chr.getLevel() < 10) {
             c.announce(MaplePacketCreator.sendNameTransferRules(4));
             return;
+        } else if(c.getTempBanCalendar() != null && c.getTempBanCalendar().getTimeInMillis() + (30*24*60*60*1000) < Calendar.getInstance().getTimeInMillis()) {
+            c.announce(MaplePacketCreator.sendNameTransferRules(2));
+            return;
         }
         //sql queries
         try (Connection con = DatabaseConnection.getConnection();
@@ -77,8 +80,8 @@ public final class TransferNameHandler extends AbstractMaplePacketHandler {
             }
         } catch(SQLException e) {
             e.printStackTrace();
+            return;
         }
-        //success
         c.announce(MaplePacketCreator.sendNameTransferRules(0));
     }
 }

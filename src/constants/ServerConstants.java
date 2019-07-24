@@ -127,6 +127,7 @@ public class ServerConstants {
     public static final boolean USE_JOINT_CASHSHOP_INVENTORY = true;//Enables usage of a same cash shop inventory for explorers, cygnus and legends. Items from exclusive cash shop inventories won't show up on the shared inventory, though.
     public static final boolean USE_CLEAR_OUTDATED_COUPONS = true;  //Enables deletion of older code coupon registry from the DB, freeing so-long irrelevant data.
     public static final boolean ALLOW_CASHSHOP_NAME_CHANGE = true;  //Allows players to buy name changes in the cash shop.
+    public static final boolean ALLOW_CASHSHOP_WORLD_TRANSFER =true;//Allows players to buy world transfers in the cash shop.
     
     //Maker Configuration
     public static final boolean USE_MAKER_PERMISSIVE_ATKUP = true;  //Allows players to use attack-based strengthening gems on non-weapon items.
@@ -170,7 +171,8 @@ public class ServerConstants {
     public static final int TOT_MOB_QUEST_REQUIREMENT = 77;             //Overwrites old 999-mobs requirement for the ToT questline with new requirement value, set 0 for default.
     public static final int MOB_REACTOR_REFRESH_TIME = 30 * 1000;       //Overwrites refresh time for those reactors oriented to inflict damage to bosses (Ice Queen, Riche), set 0 for default.
     public static final int PARTY_SEARCH_REENTRY_LIMIT = 10;            //Max amount of times a party leader is allowed to persist on the Party Search before entry expiration (thus needing to manually restart the Party Search to be able to search for members).
-    public static final int NAME_CHANGE_COOLDOWN = 30 * 24 * 60 * 1000; //Cooldown for name changes, default (GMS) is 30 days.
+    public static final int NAME_CHANGE_COOLDOWN = 30*24*60*60*1000;    //Cooldown for name changes, default (GMS) is 30 days.
+    public static final int WORLD_TRANSFER_COOLDOWN=NAME_CHANGE_COOLDOWN;//Cooldown for world tranfers, default is same as name change (30 days).
     public static final boolean INSTANT_NAME_CHANGE = false;            //Whether or not to wait for server restart to apply name changes. Does on reconnect otherwise (requires queries on every login).
     
     //Dangling Items/Locks Configuration

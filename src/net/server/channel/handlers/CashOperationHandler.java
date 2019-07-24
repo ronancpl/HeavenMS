@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
 import server.CashShop;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
@@ -343,7 +344,6 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                         slea.readByte();
                         MapleCharacter partner = c.getChannelServer().getPlayerStorage().getCharacterByName(sentTo);
                         if (partner == null) {
-                            chr.dropMessage(5, "The partner you specified cannot be found. Please make sure your partner is online and in the same channel."); //don't think this works in cs
                             c.announce(MaplePacketCreator.showCashShopMessage((byte)0xBE));
                         } else {
                             // Need to check to make sure its actually an equip and the right SN...
@@ -369,27 +369,58 @@ public final class CashOperationHandler extends AbstractMaplePacketHandler {
                     }
 
                     c.announce(MaplePacketCreator.showCash(c.getPlayer()));
-                } else if (action == 0x2E) { //name change/world transfer
-                    int snCS = slea.readInt();
-                    CashItem cItem = CashItemFactory.getItem(snCS);
-                    if (!canBuy(chr, cItem, cs.getCash(4))) {
+                } else if (action == 0x2E) { //name change
+                    CashItem cItem = CashItemFactory.getItem(slea.readInt());
+                    if (cItem == null || !canBuy(chr, cItem, cs.getCash(4))) {
                         c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
-                        //log error/exploit? shouldn't be able to get this far without enough cash
                         c.enableCSActions();
                         return;
                     }
-                    if(snCS == 50600000 && ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) { //name change
+                    if(cItem.getSN() == 50600000 && ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) {
                         slea.readMapleAsciiString(); //old name
                         String newName = slea.readMapleAsciiString();
-                        if(!MapleCharacter.canCreateChar(newName) || chr.getLevel() < 10) { //check  ban status? (longest ban duration isn't tracked currently)
+                        if(!MapleCharacter.canCreateChar(newName) || chr.getLevel() < 10) { //(longest ban duration isn't tracked currently)
                             c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
-                            //log error/exploit? client already checks once before this
+                            c.enableCSActions();
+                            return;
+                        } else if(c.getTempBanCalendar() != null && c.getTempBanCalendar().getTimeInMillis() + (30*24*60*60*1000) > Calendar.getInstance().getTimeInMillis()) {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
                             c.enableCSActions();
                             return;
                         }
                         if(chr.registerNameChange(newName)) { //success
                             Item item = cItem.toItem();
                             c.announce(MaplePacketCreator.showNameChangeSuccess(item, c.getAccID()));
+                            cs.addToInventory(item);
+                            cs.gainCash(4, cItem, chr.getWorld());
+                        } else {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                        }
+                    }
+                    c.enableCSActions();
+                } else if(action == 0x31) { //world transfer
+                    CashItem cItem = CashItemFactory.getItem(slea.readInt());
+                    if (cItem == null || !canBuy(chr, cItem, cs.getCash(4))) {
+                        c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                        c.enableCSActions();
+                        return;
+                    }
+                    if(cItem.getSN() == 50600001 && ServerConstants.ALLOW_CASHSHOP_WORLD_TRANSFER) {
+                        int newWorldSelection = slea.readInt();
+                        
+                        int worldTransferError = chr.checkWorldTransferEligibility();
+                        if(worldTransferError != 0 || newWorldSelection >= Server.getInstance().getWorldsSize() || Server.getInstance().getWorldsSize() <= 1) {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0));
+                            return;
+                        } else if(newWorldSelection == c.getWorld()) {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0xDC));
+                            return;
+                        } else if(c.getAvailableCharacterWorldSlots(newWorldSelection) < 1 || Server.getInstance().getAccountWorldCharacterCount(c.getAccID(), newWorldSelection) >= 3) {
+                            c.announce(MaplePacketCreator.showCashShopMessage((byte)0xDF));
+                            return;
+                        } else if(chr.registerWorldTransfer(newWorldSelection)) {
+                            Item item = cItem.toItem();
+                            c.announce(MaplePacketCreator.showWorldTransferSuccess(item, c.getAccID()));
                             cs.addToInventory(item);
                             cs.gainCash(4, cItem, chr.getWorld());
                         } else {

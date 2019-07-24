@@ -135,7 +135,7 @@ public final class LoginPasswordHandler implements MaplePacketHandler {
             c.announce(MaplePacketCreator.getLoginFailed(3));
             return;
         }
-        Calendar tempban = c.getTempBanCalendar();
+        Calendar tempban = c.getTempBanCalendarFromDB();
         if (tempban != null) {
             if (tempban.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
                 c.announce(MaplePacketCreator.getTempBan(tempban.getTimeInMillis(), c.getGReason()));

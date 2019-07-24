@@ -81,6 +81,7 @@ import net.server.guild.MapleGuildSummary;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
 import net.server.world.PartyOperation;
+import net.server.world.World;
 import server.CashShop.CashItem;
 import server.CashShop.CashItemFactory;
 import server.CashShop.SpecialCashItem;
@@ -337,7 +338,7 @@ public class MaplePacketCreator {
                 if (!viewall) {
                         mplew.write(0);
                 }
-                if (chr.isGM() || chr.isGmJob()) {
+                if (chr.isGM() || chr.isGmJob()) {  // thanks Egg Daddy (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
                         mplew.write(0);
                         return;
                 }
@@ -6086,16 +6087,30 @@ public class MaplePacketCreator {
             8: must quit family,
             9: unknown error
         */
-        public static byte[] sendWorldTransferRules(int error) {
+        public static byte[] sendWorldTransferRules(int error, MapleClient c) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.CASHSHOP_CHECK_TRANSFER_WORLD_POSSIBLE_RESULT.getValue());
-                mplew.writeInt(0);
-                mplew.write(0); 
+                mplew.writeInt(0); //ignored
                 mplew.write(error);
                 mplew.writeInt(0);
-                
+                mplew.writeBool(error == 0); //0 = ?, otherwise list servers
+                if(error == 0) {
+                    List<World> worlds = Server.getInstance().getWorlds();
+                    mplew.writeInt(worlds.size());
+                    for(World world : worlds) {
+                        mplew.writeMapleAsciiString(GameConstants.WORLD_NAMES[world.getId()]);
+                    }
+                }
                 return mplew.getPacket();
         }
+        
+        public static byte[] showWorldTransferSuccess(Item item, int accountId) {
+            final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+            mplew.writeShort(SendOpcode.CASHSHOP_OPERATION.getValue());
+            mplew.write(0xA0);
+            addCashItemInformation(mplew, item, accountId);
+            return mplew.getPacket();
+    }
         
         /*  0: no error, send rules
             1: name change already submitted
