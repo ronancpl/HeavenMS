@@ -140,10 +140,10 @@ public class ServerConstants {
     public static final boolean USE_WHOLE_SERVER_RANKING = false;   //Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of separated by worlds.
     
     //Server Rates And Experience
-    public static final int EXP_RATE = 10;                          //NOTE: World-specific rates within "world.ini" OVERRIDES the default rates from here.
-    public static final int MESO_RATE = 10;
-    public static final int DROP_RATE = 10;
-    public static final int BOSS_DROP_RATE = 10;                    //NOTE: Boss drop rate OVERRIDES common drop rate, for bosses-only.
+    public static final int EXP_RATE = 1;                          //NOTE: World-specific rates within "world.ini" OVERRIDES the default rates from here.
+    public static final int MESO_RATE = 1;
+    public static final int DROP_RATE = 1;
+    public static final int BOSS_DROP_RATE = 1;                    //NOTE: Boss drop rate OVERRIDES common drop rate, for bosses-only.
     public static final int QUEST_RATE = 5;                         //Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
     public static final int FISHING_RATE = 10;                      //Multiplier for success likelihood on meso thrown during fishing.
     public static final int TRAVEL_RATE = 10;                       //Means of transportation rides/departs using 1/N of the default time.
