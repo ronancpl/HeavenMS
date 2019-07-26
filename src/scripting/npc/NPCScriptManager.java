@@ -74,6 +74,7 @@ public class NPCScriptManager extends AbstractScriptManager {
         return start(c, npc, -1, fileName, chr);
     }
 
+
     public boolean start(MapleClient c, int npc, int oid, String fileName, MapleCharacter chr) {
         return start(c, npc, oid, fileName, chr, false, "cm");
     }
@@ -119,6 +120,9 @@ public class NPCScriptManager extends AbstractScriptManager {
         }
     }
 
+    /**
+     * 点击NPC 调用该接口
+     */
     private boolean start(MapleClient c, int npc, int oid, String fileName, MapleCharacter chr, boolean itemScript, String engineName) {
         try {
             NPCConversationManager cm = new NPCConversationManager(c, npc, oid, fileName, itemScript);

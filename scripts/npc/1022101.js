@@ -44,7 +44,7 @@ function action(mode, type, selection) {
                         status--;
     
                 if(status == 0) {
-                        cm.sendYesNo("Santa told me to go to here, only he didn't told me when...  I hope I'm here on the right time! Oh! By the way, I'm Rooney, I can take you to #bHappyVille#k. Are you ready to go?");
+                        cm.sendYesNo("込込Santa told me to go to here, only he didn't told me when...  I hope I'm here on the right time! Oh! By the way, I'm Rooney, I can take you to #bHappyVille#k. Are you ready to go?11111111込込");
                 } else {
                         cm.getPlayer().saveLocation("HAPPYVILLE");
                         cm.warp(209000000, 0);

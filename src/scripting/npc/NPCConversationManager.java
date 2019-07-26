@@ -173,6 +173,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 sendOk(getDefaultTalk(npc));
         }
 
+	/**
+	 * 发送NPC消息
+	 * @param text
+	 */
 	public void sendYesNo(String text) {
 		getClient().announce(MaplePacketCreator.getNPCTalk(npc, (byte) 1, text, "", (byte) 0));
 	}
