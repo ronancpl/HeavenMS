@@ -199,10 +199,10 @@ public class ServerConstants {
     public static final int CHSCROLL_STAT_RATE = 3;             //Number of rolls of stat upgrade on a successfully applied chaos scroll, set 1 for default.
     public static final int CHSCROLL_STAT_RANGE = 6;            //Stat upgrade range (-N, N) on chaos scrolls.
     
-    //Beginner Skills Configuration
+    //初始技能
     public static final boolean USE_ULTRA_NIMBLE_FEET = true;   //Massive speed & jump upgrade.
-    public static final boolean USE_ULTRA_RECOVERY = true;      //Massive recovery amounts overtime.
-    public static final boolean USE_ULTRA_THREE_SNAILS = true;  //Massive damage on shell toss.
+    public static final boolean USE_ULTRA_RECOVERY = false;      //Massive recovery amounts overtime.
+    public static final boolean USE_ULTRA_THREE_SNAILS = false;  //Massive damage on shell toss.
     
     //Other Skills Configuration
     public static final boolean USE_FULL_ARAN_SKILLSET = false; //Enables starter availability to all Aran job skills. Suggestion thanks to Masterrulax.
