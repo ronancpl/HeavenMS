@@ -204,7 +204,7 @@ public class World {
         mountsSchedule = tman.register(new MountTirednessWorker(this), 60 * 1000, 60 * 1000);
         merchantSchedule = tman.register(new HiredMerchantWorker(this), 10 * 60 * 1000, 10 * 60 * 1000);
         timedMapObjectsSchedule = tman.register(new TimedMapObjectWorker(this), 60 * 1000, 60 * 1000);
-        charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
+        charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 10 * 60 * 1000, 10 * 60 * 1000);
         marriagesSchedule = tman.register(new WeddingReservationWorker(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
         mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
         fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
