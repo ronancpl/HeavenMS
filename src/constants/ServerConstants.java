@@ -37,7 +37,7 @@ public class ServerConstants {
     public static final boolean AUTOMATIC_REGISTER = true;      //Automatically register players when they login with a nonexistent username.
     public static final boolean BCRYPT_MIGRATION = true;        //Performs a migration from old SHA-1 and SHA-512 password to bcrypt.
     public static final boolean COLLECTIVE_CHARSLOT = false;    //Available character slots are contabilized globally rather than per world server.
-    public static final boolean DETERRED_MULTICLIENT = false;   //Enables detection of multi-client and suspicious remote IP on the login system.
+    public static final boolean DETERRED_MULTICLIENT = true;   //是否禁止多开客户端
     
     //Besides blocking logging in with several client sessions on the same machine, this also blocks suspicious login attempts for players that tries to login on an account using several diferent remote addresses.
     
