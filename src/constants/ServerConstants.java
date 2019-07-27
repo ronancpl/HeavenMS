@@ -115,7 +115,7 @@ public class ServerConstants {
     
     //Events/PQs Configuration
     public static final boolean USE_OLD_GMS_STYLED_PQ_NPCS = true;   //Enables PQ NPCs with similar behaviour to old GMS style, that skips info about the PQs and immediately tries to register the party in.
-    public static final boolean USE_ENABLE_SOLO_EXPEDITIONS = true;  //Enables start expeditions with any number of players. This will also bypass all the Zakum prequest.
+    public static final boolean USE_ENABLE_SOLO_EXPEDITIONS = false;  //是否不检查组队任务人数(这将绕过扎昆任务)
     public static final boolean USE_ENABLE_DAILY_EXPEDITIONS = false;//Enables daily entry limitations in expeditions.
     public static final boolean USE_ENABLE_RECALL_EVENT = false;      //Enables a disconnected player to reaccess the last event instance they were in before logging out. Recall only works if the event isn't cleared or disposed yet. Suggestion thanks to Alisson (Goukken).
     
