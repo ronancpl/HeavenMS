@@ -548,14 +548,21 @@ public class MapleMonster extends AbstractLoadedMapleLife {
         int totalPartyLevel = 0;
         
         // thanks G h o s t, Alfred, Vcoc, BHB for poiting out a bug in detecting party members after membership transactions in a party took place
-        for (MapleCharacter member : partyParticipation.keySet().iterator().next().getPartyMembersOnSameMap()) {
-            if (!leechInterval.inInterval(member.getLevel())) {
-                underleveled.add(member);
-                continue;
+        if (!ServerConstants.USE_ENFORCE_MOB_LEVEL_RANGE) {
+            for (MapleCharacter member : partyParticipation.keySet().iterator().next().getPartyMembersOnSameMap()) {
+                if (!leechInterval.inInterval(member.getLevel())) {
+                    underleveled.add(member);
+                    continue;
+                }
+
+                totalPartyLevel += member.getLevel();
+                expMembers.add(member);
             }
-            
-            totalPartyLevel += member.getLevel();
-            expMembers.add(member);
+        } else {    // thanks Ari for noticing unused server flag after EXP system overhaul
+            for (MapleCharacter member : partyParticipation.keySet().iterator().next().getPartyMembersOnSameMap()) {
+                totalPartyLevel += member.getLevel();
+                expMembers.add(member);
+            }
         }
         
         int membersSize = expMembers.size();

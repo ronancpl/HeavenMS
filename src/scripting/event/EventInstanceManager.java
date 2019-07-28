@@ -911,24 +911,28 @@ public class EventInstanceManager {
                 return(MapleLifeFactory.getMonster(mid));
         }
         
-        private List<Integer> convertToIntegerArray(List<Double> list) {
-            List<Integer> intList;
-            if(ServerConstants.JAVA_8)
-                 intList=new ArrayList<Integer> (new ArrayList(java.util.Arrays.asList(list.toArray())));
-            else
-            {
-                 intList = new ArrayList<>();
-                for(Double d: list) intList.add(d.intValue());
+        private List<Integer> convertToIntegerArray(List<Object> list) {
+            List<Integer> intList = new ArrayList<>();
+            
+            if (ServerConstants.JAVA_8) {
+                for (Object d: list) {
+                    intList.add(((Integer) d).intValue());
+                }
+            } else {
+                for (Object d: list) {
+                    intList.add(((Double) d).intValue());
+                }
             }
-                return intList;
+            
+            return intList;
         }
         
-        public void setEventClearStageExp(List<Double> gain) {
+        public void setEventClearStageExp(List<Object> gain) {
                 onMapClearExp.clear();
                 onMapClearExp.addAll(convertToIntegerArray(gain));
         }
         
-        public void setEventClearStageMeso(List<Double> gain) {
+        public void setEventClearStageMeso(List<Object> gain) {
                 onMapClearMeso.clear();
                 onMapClearMeso.addAll(convertToIntegerArray(gain));
         }
@@ -959,7 +963,7 @@ public class EventInstanceManager {
                 }
         }
         
-        public final void setExclusiveItems(List<Double> items) {
+        public final void setExclusiveItems(List<Object> items) {
                 List<Integer> exclusive = convertToIntegerArray(items);
                 
                 wL.lock();
@@ -972,19 +976,19 @@ public class EventInstanceManager {
                 }
         }
         
-        public final void setEventRewards(List<Double> rwds, List<Double> qtys, int expGiven) {
+        public final void setEventRewards(List<Object> rwds, List<Object> qtys, int expGiven) {
                 setEventRewards(1, rwds, qtys, expGiven);
         }
         
-        public final void setEventRewards(List<Double> rwds, List<Double> qtys) {
+        public final void setEventRewards(List<Object> rwds, List<Object> qtys) {
                 setEventRewards(1, rwds, qtys);
         }
         
-        public final void setEventRewards(int eventLevel, List<Double> rwds, List<Double> qtys) {
+        public final void setEventRewards(int eventLevel, List<Object> rwds, List<Object> qtys) {
                 setEventRewards(eventLevel, rwds, qtys, 0);
         }
         
-        public final void setEventRewards(int eventLevel, List<Double> rwds, List<Double> qtys, int expGiven) {
+        public final void setEventRewards(int eventLevel, List<Object> rwds, List<Object> qtys, int expGiven) {
                 // fixed EXP will be rewarded at the same time the random item is given
 
                 if(eventLevel <= 0 || eventLevel > ServerConstants.MAX_EVENT_LEVELS) return;

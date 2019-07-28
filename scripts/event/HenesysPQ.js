@@ -106,7 +106,7 @@ function setup(level, lobbyid) {
         eim.setProperty("level", level);
         eim.setProperty("stage", "0");
         eim.setProperty("bunnyCake", "0");
-        eim.setProperty("bunnyDamage", "0");
+        eim.setProperty("bunnyDamaged", "0");
         
         eim.getInstanceMap(910010000).resetPQ(level);
         eim.getInstanceMap(910010000).allowSummonState(false);

@@ -203,6 +203,7 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 }
                 
                 if (!newcomer) {
+                    c.setLanguage(player.getClient().getLanguage());
                     c.setCharacterSlots((byte) player.getClient().getCharacterSlots());
                     player.newClient(c);
                 }

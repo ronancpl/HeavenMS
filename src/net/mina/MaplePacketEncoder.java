@@ -24,7 +24,6 @@ package net.mina;
 import constants.ServerConstants;
 import client.MapleClient;
 import constants.OpcodeConstants;
-import net.opcodes.SendOpcode;
 import net.server.coordinator.MapleSessionCoordinator;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
@@ -43,40 +42,41 @@ public class MaplePacketEncoder implements ProtocolEncoder {
         final MapleClient client = (MapleClient) session.getAttribute(MapleClient.CLIENT_KEY);
 
         try {
-            client.lockEncoder();
-            try {
-                final MapleAESOFB send_crypto = client.getSendCrypto();
-                final byte[] input = (byte[]) message;
-                if (ServerConstants.USE_DEBUG_SHOW_PACKET) {
-                    int packetLen = input.length;
-                    int pHeader = readFirstShort(input);
-                    String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();
-                    String op = lookupRecv(pHeader);
-                    String Recv = "ServerSend:" + op + " [" + pHeaderStr + "] (" + packetLen + ")\r\n";
-                    if (packetLen <= 50000) {
-                        String RecvTo = Recv + HexTool.toString(input) + "\r\n" + HexTool.toStringFromAscii(input);
-                        System.out.println(RecvTo);
-                        if (op == null) {
-                            System.out.println("UnknownPacket:" + RecvTo);
+            if (client.tryacquireEncoder()) {
+                try {
+                    final MapleAESOFB send_crypto = client.getSendCrypto();
+                    final byte[] input = (byte[]) message;
+                    if (ServerConstants.USE_DEBUG_SHOW_PACKET) {
+                        int packetLen = input.length;
+                        int pHeader = readFirstShort(input);
+                        String pHeaderStr = Integer.toHexString(pHeader).toUpperCase();
+                        String op = lookupRecv(pHeader);
+                        String Recv = "ServerSend:" + op + " [" + pHeaderStr + "] (" + packetLen + ")\r\n";
+                        if (packetLen <= 50000) {
+                            String RecvTo = Recv + HexTool.toString(input) + "\r\n" + HexTool.toStringFromAscii(input);
+                            System.out.println(RecvTo);
+                            if (op == null) {
+                                System.out.println("UnknownPacket:" + RecvTo);
+                            }
+                        } else {
+                            FilePrinter.print(FilePrinter.PACKET_STREAM + MapleSessionCoordinator.getSessionRemoteAddress(session) + ".txt", HexTool.toString(new byte[]{input[0], input[1]}) + " ...");
                         }
-                    } else {
-                        FilePrinter.print(FilePrinter.PACKET_STREAM + MapleSessionCoordinator.getSessionRemoteAddress(session) + ".txt", HexTool.toString(new byte[]{input[0], input[1]}) + " ...");
                     }
+
+                    final byte[] unencrypted = new byte[input.length];
+                    System.arraycopy(input, 0, unencrypted, 0, input.length);
+                    final byte[] ret = new byte[unencrypted.length + 4];
+                    final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
+                    MapleCustomEncryption.encryptData(unencrypted);
+
+                    send_crypto.crypt(unencrypted);
+                    System.arraycopy(header, 0, ret, 0, 4);
+                    System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
+
+                    out.write(IoBuffer.wrap(ret));
+                } finally {
+                    client.unlockEncoder();
                 }
-                
-                final byte[] unencrypted = new byte[input.length];
-                System.arraycopy(input, 0, unencrypted, 0, input.length);
-                final byte[] ret = new byte[unencrypted.length + 4];
-                final byte[] header = send_crypto.getPacketHeader(unencrypted.length);
-                MapleCustomEncryption.encryptData(unencrypted);
-            
-                send_crypto.crypt(unencrypted);
-                System.arraycopy(header, 0, ret, 0, 4);
-                System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
-                
-                out.write(IoBuffer.wrap(ret));
-            } finally {
-                client.unlockEncoder();
             }
 //            System.arraycopy(unencrypted, 0, ret, 4, unencrypted.length);
 //            out.write(ByteBuffer.wrap(ret));

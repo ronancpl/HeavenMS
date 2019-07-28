@@ -29,6 +29,7 @@ public class Aran {
     public static final int DOUBLE_SWING = 21000002;
     public static final int TRIPLE_SWING = 21100001;
     public static final int COMBO_ABILITY = 21000000;
+    public static final int COMBAT_STEP = 21001001;
     public static final int POLEARM_BOOSTER = 21001003;
     public static final int MAPLE_WARRIOR = 21121000;
     public static final int FREEZE_STANDING = 21121003;

@@ -337,7 +337,7 @@ public class MaplePacketCreator {
                 if (!viewall) {
                         mplew.write(0);
                 }
-                if (chr.isGM()) {
+                if (chr.isGM() || chr.isGmJob()) {  // thanks Egg Daddy (Ubaware), resinate for noticing GM jobs crashing on non-GM players account
                         mplew.write(0);
                         return;
                 }
@@ -1811,6 +1811,11 @@ public class MaplePacketCreator {
         }
 
         public static byte[] dropItemFromMapObject(MapleCharacter player, MapleMapItem drop, Point dropfrom, Point dropto, byte mod) {
+                int dropType = drop.getDropType();
+                if (drop.hasClientsideOwnership(player) && dropType < 3) {
+                    dropType = 2;
+                }
+            
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.DROP_ITEM_FROM_MAPOBJECT.getValue());
                 mplew.write(mod);
@@ -1818,7 +1823,7 @@ public class MaplePacketCreator {
                 mplew.writeBool(drop.getMeso() > 0); // 1 mesos, 0 item, 2 and above all item meso bag,
                 mplew.writeInt(drop.getItemId()); // drop object ID
                 mplew.writeInt(drop.getClientsideOwnerId()); // owner charid/partyid :)
-                mplew.write(drop.hasClientsideOwnership(player) ? 2 : drop.getDropType()); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
+                mplew.write(dropType); // 0 = timeout for non-owner, 1 = timeout for non-owner's party, 2 = FFA, 3 = explosive/FFA
                 mplew.writePos(dropto);
                 mplew.writeInt(drop.getDropper().getObjectId()); // dropper oid, found thanks to Li Jixue
 

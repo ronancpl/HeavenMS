@@ -300,7 +300,7 @@ public class MapleMatchCheckerCoordinator {
     }
     
     private void disposeMatchElement(MapleMatchCheckingElement mmce) {
-        Set<Integer> matchPlayers = mmce.getMatchPlayers();
+        Set<Integer> matchPlayers = mmce.getMatchPlayers();     // thanks Ai for noticing players getting match-stuck on certain cases
         while (!poolMatchPlayers(matchPlayers)) {
             try {
                 Thread.sleep(1000);

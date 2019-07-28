@@ -20,7 +20,6 @@
     <int name="tuc" value="10"/>
     <int name="price" value="15000"/>
     <int name="cash" value="0"/>
-    <float name="recovery" value="15.0"/>
     <imgdir name="level">
       <imgdir name="info">
         <imgdir name="1">
@@ -115,6 +114,7 @@
         </imgdir>
       </imgdir>
     </imgdir>
+    <double name="recovery" value="1,5"/>
   </imgdir>
   <imgdir name="walk1">
     <imgdir name="0">

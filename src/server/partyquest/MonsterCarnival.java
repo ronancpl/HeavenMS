@@ -94,7 +94,7 @@ public class MonsterCarnival {
                 public void run() {
                     timeUp();
                 }
-            }, (map.getTimeDefault() - 10) * 1000);
+            }, map.getTimeDefault() * 1000); // thanks Atoot for noticing an irregular "event extended" issue here
             effectTimer = TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {

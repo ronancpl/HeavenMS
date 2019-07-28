@@ -34,17 +34,22 @@ function start(mode, type, selection) {
         else
             status--;
         
-        if (status == 0) {
-            qm.sendGetText("Hm, what do you want?");
+        if (status == 0) {  // thanks ZERO傑洛 for noticing this quest shouldn't need a pw -- GMS-like string data thanks to skycombat
+            qm.sendNext("What is it? I usually don't welcome uninvited guests, but you have a mysterious aura that makes me curious about what you have to say.", 9);
         } else if (status == 1) {
-            var text = qm.getText();
-            
-            if(text != "There's something strange going on in Orbis....") {
-                qm.sendNext("No business to deal with? I won't brook loitering around here, go away.");
-                qm.dispose();
-            } else {
-                qm.sendNext("Oh, that's right. I can sense the power emanating from you, as well. So I shall entrust something to you.");
-            }
+            qm.sendNext("(You tell her about Giant Nependeath.)", 3);
+        } else if (status == 2) {
+            qm.sendNext("Giant Nependeath? It's definitely a big problem, but I don't think it's enough to really affect Orbis. Wait, where did you say the Giant Nependeath was, again?", 9);
+        } else if (status == 3) {
+            qm.sendNext("Neglected Strolling Path.", 3);
+        } else if (status == 4) {
+            qm.sendNext("...Neglected Strolling Path? If Giant Nependeath is there, someone is trying to enter Sealed Garden! But why? And more importantly, who?", 9);
+        } else if (status == 5) {
+            qm.sendNext("Sealed Garden?", 3);
+        } else if (status == 6) {
+            qm.sendAcceptDecline("I can't tell you about Sealed Garden. If you want to find out, I must first see whether you are worthy of the information. Do you mind if I look into your fate?", 9);
+        } else if (status == 7) {
+            qm.sendOk("Well, now let's look into your fate. Give me a second.");
         } else {
             qm.forceStartQuest();
             qm.dispose();

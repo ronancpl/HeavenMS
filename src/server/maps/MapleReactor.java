@@ -57,6 +57,7 @@ public class MapleReactor extends AbstractMapleMapObject {
     private boolean shouldCollect;
     private boolean attackHit;
     private ScheduledFuture<?> timeoutTask = null;
+    private Runnable delayedRespawnRun = null;
     private GuardianSpawnPoint guardian = null;
     private byte facingDirection = 0;
     private Lock reactorLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.REACTOR, true);
@@ -165,7 +166,9 @@ public class MapleReactor extends AbstractMapleMapObject {
 
     @Override
     public void sendSpawnData(MapleClient client) {
-        client.announce(makeSpawnData());
+        if (this.isAlive()) {
+            client.announce(makeSpawnData());
+        }
     }
 
     public final byte[] makeSpawnData() {
@@ -317,6 +320,71 @@ public class MapleReactor extends AbstractMapleMapObject {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public boolean destroy() {
+        if (reactorLock.tryLock()) {
+            try {
+                boolean alive = this.isAlive();
+                if (alive) {
+                    this.setAlive(false);
+                    this.cancelReactorTimeout();
+
+                    if (this.getDelay() > 0) {
+                        this.delayedRespawn();
+                    }
+                } else if (this.inDelayedRespawn()) {
+                    return false;
+                } else {
+                    return true;    // reactor neither alive nor in delayed respawn, remove map object allowed
+                }
+            } finally {
+                reactorLock.unlock();
+            }
+        }
+        
+        map.broadcastMessage(MaplePacketCreator.destroyReactor(this));
+        return false;
+    }
+    
+    private void respawn() {
+        this.lockReactor();
+        try {
+            this.resetReactorActions(0);
+            this.setAlive(true);
+        } finally {
+            this.unlockReactor();
+        }
+        
+        map.broadcastMessage(this.makeSpawnData());
+    }
+    
+    public void delayedRespawn() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                delayedRespawnRun = null;
+                respawn();
+            }
+        };
+        
+        delayedRespawnRun = r;
+        map.getChannelServer().registerOverallAction(map.getId(), r, this.getDelay());
+    }
+    
+    public boolean forceDelayedRespawn() {
+        Runnable r = delayedRespawnRun;
+        
+        if (r != null) {
+            map.getChannelServer().forceRunOverallAction(map.getId(), r);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean inDelayedRespawn() {
+        return delayedRespawnRun != null;
     }
 
     public Rectangle getArea() {

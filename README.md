@@ -31,7 +31,7 @@ Java 8 SDK & NetBeans bundle: https://www.oracle.com/technetwork/pt/java/javase/
 
 **Change log:**
 
-  * Fixed Monster Magnet crashing the caster when trying to pull bosses.
+  * Fixed Monster Magnet crashing the caster when trying to pull bosses. Drawback: Dojo HPBar becomes unavailable.
 
   * Fixed some 'rn' problems with quest icons & removed "tab" from party leader changed message. https://hostr.co/tsYsQzzV6xT0
 

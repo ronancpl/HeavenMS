@@ -167,10 +167,19 @@ public class EventManager {
         startLock = startLock.dispose();
     }
     
-    private List<Integer> convertToIntegerArray(List<Double> list) {
+    private List<Integer> convertToIntegerArray(List<Object> list) {
         List<Integer> intList = new ArrayList<>();
-        for(Double d: list) intList.add(d.intValue());
-
+        
+        if (ServerConstants.JAVA_8) {
+            for (Object d: list) {
+                intList.add(((Integer) d).intValue());
+            }
+        } else {
+            for (Object d: list) {
+                intList.add(((Double) d).intValue());
+            }
+        }
+        
         return intList;
     }
     
@@ -181,7 +190,7 @@ public class EventManager {
     private List<Integer> getLobbyRange() {
         try {
             if (!ServerConstants.JAVA_8) {
-                return convertToIntegerArray((List<Double>)iv.invokeFunction("setLobbyRange", (Object) null));
+                return convertToIntegerArray((List<Object>)iv.invokeFunction("setLobbyRange", (Object) null));
             } else {  // java 8 support here thanks to MedicOP
                 ScriptObjectMirror object = (ScriptObjectMirror) iv.invokeFunction("setLobbyRange", (Object) null);
                 int[] to = object.to(int[].class);

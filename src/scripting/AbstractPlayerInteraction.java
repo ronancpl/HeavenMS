@@ -236,25 +236,43 @@ public class AbstractPlayerInteraction {
                 return canHoldAllAfterRemoving(Collections.singletonList(itemid), Collections.singletonList(quantity), Collections.singletonList(removeItemid), Collections.singletonList(removeQuantity));
         }
         
-        private List<Integer> convertToIntegerArray(List<Double> list) {
-                List<Integer> intList = new LinkedList<>();
-                for(Double d: list) {
-                        intList.add(d.intValue());
+        private List<Integer> convertToIntegerArray(List<Object> list) {
+                List<Integer> intList = new ArrayList<>();      // JAVA 7 Rhino script engine. Thanks Bruno, felipepm10 for noticing a typecast issue here.
+                
+                if (ServerConstants.JAVA_8) {
+                        for (Object d: list) {
+                                intList.add(((Integer) d).intValue());
+                        }
+                } else {
+                        for (Object d: list) {
+                                intList.add(((Double) d).intValue());
+                        }
                 }
 
                 return intList;
         }
         
-        public boolean canHoldAll(List<Double> itemids) {
-                List<Double> quantity = new LinkedList<>();
-                for (int i = 0; i < itemids.size(); i++) {
-                        quantity.add(1.0);
+        public boolean canHoldAll(List<Object> itemids) {
+                List<Object> quantity = new LinkedList<>();
+                
+                if (ServerConstants.JAVA_8) {
+                        Integer intOne = 1;
+                    
+                        for (int i = 0; i < itemids.size(); i++) {
+                                quantity.add(intOne);
+                        }
+                } else {
+                        Double doubleOne = 1.0;
+                    
+                        for (int i = 0; i < itemids.size(); i++) {
+                                quantity.add(doubleOne);
+                        }
                 }
-            
+                
                 return canHoldAll(itemids, quantity);
         }
         
-        public boolean canHoldAll(List<Double> itemids, List<Double> quantity) {
+        public boolean canHoldAll(List<Object> itemids, List<Object> quantity) {
                 return canHoldAll(convertToIntegerArray(itemids), convertToIntegerArray(quantity), true);
         }
         

@@ -44,10 +44,10 @@ public final class MoveSummonHandler extends AbstractMovementPacketHandler {
                 break;
             }
         }
-        long movementDataStart = slea.getPosition();
-        updatePosition(slea, summon, 0);
-        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
         if (summon != null) {
+            long movementDataStart = slea.getPosition();
+            updatePosition(slea, summon, 0);
+            long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
             slea.seek(movementDataStart);
             player.getMap().broadcastMessage(player, MaplePacketCreator.moveSummon(player.getId(), oid, startPos, slea, movementDataLength), summon.getPosition());
         }

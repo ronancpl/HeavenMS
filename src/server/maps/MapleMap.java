@@ -387,9 +387,10 @@ public class MapleMap {
     }
     
     public void addMapObject(MapleMapObject mapobject) {
+        int curOID = getUsableOID();
+        
         objectWLock.lock();
         try {
-            int curOID = getUsableOID();
             mapobject.setObjectId(curOID);
             this.mapobjects.put(curOID, mapobject);
         } finally {
@@ -413,11 +414,11 @@ public class MapleMap {
 
     private void spawnAndAddRangedMapObject(MapleMapObject mapobject, DelayedPacketCreation packetbakery, SpawnCondition condition) {
         List<MapleCharacter> inRangeCharacters = new LinkedList<>();
+        int curOID = getUsableOID();
         
         chrRLock.lock();
         objectWLock.lock();
         try {
-            int curOID = getUsableOID();
             mapobject.setObjectId(curOID);
             this.mapobjects.put(curOID, mapobject);
             for (MapleCharacter chr : characters) {
@@ -896,15 +897,16 @@ public class MapleMap {
         return droppedItemCount.get();
     }
     
-    private synchronized void instantiateItemDrop(MapleMapItem mdrop) {
+    private void instantiateItemDrop(MapleMapItem mdrop) {
         if(droppedItemCount.get() >= ServerConstants.ITEM_LIMIT_ON_MAP) {
             MapleMapObject mapobj;
             
             do {
+                mapobj = null;
+                
                 objectWLock.lock();
                 try {
-                    mapobj = registeredDrops.remove(0).get();
-                    while(mapobj == null) {
+                    while (mapobj == null) {
                         if (registeredDrops.isEmpty()) {
                             break;
                         }
@@ -1576,18 +1578,11 @@ public class MapleMap {
 
     public void destroyReactor(int oid) {
         final MapleReactor reactor = getReactorByOid(oid);
-        broadcastMessage(MaplePacketCreator.destroyReactor(reactor));
-        reactor.cancelReactorTimeout();
-        reactor.setAlive(false);
-        removeMapObject(reactor);
         
-        if (reactor.getDelay() > 0) {
-            registerMapSchedule(new Runnable() {
-                @Override
-                public void run() {
-                    respawnReactor(reactor);
-                }
-            }, reactor.getDelay());
+        if (reactor != null) {
+            if (reactor.destroy()) {
+                removeMapObject(reactor);
+            }
         }
     }
 
@@ -1611,9 +1606,14 @@ public class MapleMap {
     
     public final void resetReactors(List<MapleReactor> list) {
         for (MapleReactor r : list) {
+            if (r.forceDelayedRespawn()) {  // thanks Conrad for suggesting reactor with delay respawning immediately
+                continue;
+            }
+            
             r.lockReactor();
             try {
                 r.resetReactorActions(0);
+                r.setAlive(true);
                 broadcastMessage(MaplePacketCreator.triggerReactor(r, 0));
             } finally {
                 r.unlockReactor();
@@ -1742,7 +1742,7 @@ public class MapleMap {
     
     public void destroyNPC(int npcid) {     // assumption: there's at most one of the same NPC in a map.
         List<MapleMapObject> npcs = getMapObjectsInRange(new Point(0, 0), Double.POSITIVE_INFINITY, Arrays.asList(MapleMapObjectType.NPC));
-
+        
         chrRLock.lock();
         objectWLock.lock();
         try {
@@ -2106,19 +2106,6 @@ public class MapleMap {
                 c.announce(reactor.makeSpawnData());
             }
         });
-
-    }
-
-    private void respawnReactor(final MapleReactor reactor) {
-        reactor.lockReactor();
-        try {
-            reactor.resetReactorActions(0);
-            reactor.setAlive(true);
-        } finally {
-            reactor.unlockReactor();
-        }
-        
-        spawnReactor(reactor);
     }
 
     public void spawnDoor(final MapleDoorObject door) {
@@ -2587,6 +2574,7 @@ public class MapleMap {
                 break;
             }
         }
+        chr.commitExcludedItems();  // thanks OishiiKawaiiDesu for noticing pet item ignore registry erasing upon changing maps
         
         if (chr.getMonsterCarnival() != null) {
             chr.getClient().announce(MaplePacketCreator.getClock(chr.getMonsterCarnival().getTimeLeftSeconds()));
@@ -3555,6 +3543,7 @@ public class MapleMap {
                                         reactor.lockReactor();
                                         try {
                                             reactor.resetReactorActions(0);
+                                            reactor.setAlive(true);
                                             broadcastMessage(MaplePacketCreator.triggerReactor(reactor, 0));
                                         } finally {
                                             reactor.unlockReactor();

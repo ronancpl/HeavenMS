@@ -109,7 +109,6 @@ public class MapleExpedition {
                 minSize = (minPlayers != 0) ? minPlayers : type.getMinSize();
                 maxSize = (maxPlayers != 0) ? maxPlayers : type.getMaxSize();
 		bossLogs = new CopyOnWriteArrayList<>();
-		beginRegistration();
 	}
         
         public int getMinSize() {
@@ -120,7 +119,7 @@ public class MapleExpedition {
                 return maxSize;
         }
 
-	private void beginRegistration() {
+	public void beginRegistration() {
 		registering = true;
                 leader.announce(MaplePacketCreator.getClock(type.getRegistrationTime() * 60));
 		if (!silent) {

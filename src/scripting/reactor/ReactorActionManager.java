@@ -105,7 +105,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
 
     public void dropItems(int posX, int posY, boolean meso, int mesoChance, int minMeso, int maxMeso, int minItems) {
-        dropItems(false, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);
+        dropItems(true, posX, posY, meso, mesoChance, minMeso, maxMeso, minItems);  // all reactors actually drop items sequentially... thanks inhyuk for pointing this out!
     }
     
     public void dropItems(boolean delayed, int posX, int posY, boolean meso, int mesoChance, final int minMeso, final int maxMeso, int minItems) {

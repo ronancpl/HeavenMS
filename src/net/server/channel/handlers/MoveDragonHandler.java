@@ -37,14 +37,16 @@ public class MoveDragonHandler extends AbstractMovementPacketHandler {
         final Point startPos = new Point(slea.readShort(), slea.readShort());
         long movementDataStart = slea.getPosition();
         final MapleDragon dragon = chr.getDragon();
-        updatePosition(slea, dragon, 0);
-        long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
-        if (dragon != null && movementDataLength > 0) {
-            slea.seek(movementDataStart);
-            if (chr.isHidden()) {
-                chr.getMap().broadcastGMMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength));
-            } else {
-                chr.getMap().broadcastMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength), dragon.getPosition());
+        if (dragon != null) {
+            updatePosition(slea, dragon, 0);
+            long movementDataLength = slea.getPosition() - movementDataStart; //how many bytes were read by updatePosition
+            if (movementDataLength > 0) {
+                slea.seek(movementDataStart);
+                if (chr.isHidden()) {
+                    chr.getMap().broadcastGMMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength));
+                } else {
+                    chr.getMap().broadcastMessage(chr, MaplePacketCreator.moveDragon(dragon, startPos, slea, movementDataLength), dragon.getPosition());
+                }
             }
         }
     }

@@ -180,6 +180,7 @@ public class SkillFactory {
                 case NightWalker.POISON_BOMB:
                 case NightWalker.VAMPIRE:
                 case ChiefBandit.CHAKRA:
+                case Aran.COMBAT_STEP:
                 case Evan.RECOVERY_AURA:
                     isBuff = false;
                     break;

@@ -134,8 +134,9 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         }
     }
 
-    protected synchronized void applyAttack(AttackInfo attack, final MapleCharacter player, int attackCount) {
-        if (player.getMap().isOwnershipRestricted(player)) {
+    protected void applyAttack(AttackInfo attack, final MapleCharacter player, int attackCount) {
+        final MapleMap map = player.getMap();
+        if (map.isOwnershipRestricted(player)) {
             return;
         }
         
@@ -150,7 +151,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                 theSkill = SkillFactory.getSkill(GameConstants.getHiddenSkill(attack.skill)); //returns back the skill id if its not a hidden skill so we are gucci
                 attackEffect = attack.getAttackEffect(player, theSkill);
                 if (attackEffect == null) {
-                    player.getClient().announce(MaplePacketCreator.enableActions());
+                    player.announce(MaplePacketCreator.enableActions());
                     return;
                 }
 
@@ -176,7 +177,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             }
                         }
                     } else {
-                        player.getClient().announce(MaplePacketCreator.enableActions());
+                        player.announce(MaplePacketCreator.enableActions());
                     }
                 }
                 
@@ -195,7 +196,6 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
             }*/
             
             int totDamage = 0;
-            final MapleMap map = player.getMap();
 
             if (attack.skill == ChiefBandit.MESO_EXPLOSION) {
                 int delay = 0;
@@ -308,7 +308,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                     TimerManager.getInstance().schedule(new Runnable() {
                                         @Override
                                         public void run() {
-                                            player.getMap().spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, (double) 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2);
+                                            map.spawnMesoDrop(Math.min((int) Math.max(((double) eachdf / (double) 20000) * (double) maxmeso, (double) 1), maxmeso), new Point((int) (monster.getPosition().getX() + Randomizer.nextInt(100) - 50), (int) (monster.getPosition().getY())), monster, player, true, (byte) 2);
                                         }
                                     }, delay);
                                     delay += 100;
@@ -333,7 +333,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                                     List<MonsterDropEntry> toSteal = new ArrayList<>();
                                     toSteal.add(mi.retrieveDrop(monster.getId()).get(i));
                                     
-                                    player.getMap().dropItemsFromMonster(toSteal, player, monster);
+                                    map.dropItemsFromMonster(toSteal, player, monster);
                                     monster.addStolen(toSteal.get(0).itemId);
                                 }
                             }

@@ -1285,12 +1285,18 @@ public class MapleClient {
                 actionsSemaphore.release();
         }
         
-        public void lockEncoder() {
-                encoderLock.lock();
+        public boolean tryacquireEncoder() {
+                if (actionsSemaphore.tryAcquire()) {
+                        encoderLock.lock();
+                        return true;
+                } else {
+                        return false;
+                }
 	}
         
         public void unlockEncoder() {
                 encoderLock.unlock();
+                actionsSemaphore.release();
 	}
 
 	private static class CharNameAndId {

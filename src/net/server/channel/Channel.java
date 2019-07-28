@@ -460,6 +460,7 @@ public final class Channel {
             }
             
             expeditions.put(exped.getType(), exped);
+            exped.beginRegistration();  // thanks Conrad for noticing leader still receiving packets on failure-to-register cases
             return true;
         }
     }

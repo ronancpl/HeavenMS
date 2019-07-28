@@ -35,6 +35,7 @@ import provider.MapleDataProviderFactory;
 import scripting.AbstractPlayerInteraction;
 import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
+import server.MapleShop;
 import server.MapleShopFactory;
 import server.events.gm.MapleEvent;
 import server.gachapon.MapleGachapon;
@@ -83,6 +84,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import tools.FilePrinter;
 
 /**
  *
@@ -400,7 +402,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 	}
         
         public void openShopNPC(int id) {
-            MapleShopFactory.getInstance().getShop(id).sendShop(c);
+            MapleShop shop = MapleShopFactory.getInstance().getShop(id);
+            
+            if (shop != null) {
+                shop.sendShop(c);
+            } else {    // check for missing shopids thanks to resinate
+                FilePrinter.printError(FilePrinter.NPC_UNCODED, "Shop ID: " + id + " is missing from database.");
+                MapleShopFactory.getInstance().getShop(11000).sendShop(c);
+            }
         }
 
 	public void maxMastery() {

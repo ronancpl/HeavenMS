@@ -26,6 +26,7 @@ package client.command.commands.gm3;
 import client.command.Command;
 import client.MapleClient;
 import client.MapleCharacter;
+import server.quest.MapleQuest;
 
 public class QuestCompleteCommand extends Command {
     {
@@ -44,7 +45,13 @@ public class QuestCompleteCommand extends Command {
         int questId = Integer.parseInt(params[0]);
 
         if (player.getQuestStatus(questId) == 1) {
-            c.getAbstractPlayerInteraction().forceCompleteQuest(questId);
+            MapleQuest quest = MapleQuest.getInstance(questId);
+            if (quest != null && quest.getNpcRequirement(true) != -1) {
+                c.getAbstractPlayerInteraction().forceCompleteQuest(questId, quest.getNpcRequirement(true));
+            } else {
+                c.getAbstractPlayerInteraction().forceCompleteQuest(questId);
+            }
+            
             player.dropMessage(5, "QUEST " + questId + " completed.");
         } else {
             player.dropMessage(5, "QUESTID " + questId + " not started or already completed.");

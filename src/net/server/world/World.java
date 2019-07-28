@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
@@ -130,7 +131,7 @@ public class World {
     
     private Set<Integer> queuedGuilds = new HashSet<>();
     private Map<Integer, Pair<Pair<Boolean, Boolean>, Pair<Integer, Integer>>> queuedMarriages = new HashMap<>();
-    private Map<Integer, Set<Integer>> marriageGuests = new HashMap<>();
+    private Map<Integer, Set<Integer>> marriageGuests = new ConcurrentHashMap<>();
     
     private Map<Integer, Integer> partyChars = new HashMap<>();
     private Map<Integer, MapleParty> parties = new HashMap<>();
@@ -720,7 +721,7 @@ public class World {
         return new Pair<>(type, guests);
     }
     
-    public synchronized boolean addMarriageGuest(int marriageId, int playerId) {
+    public boolean addMarriageGuest(int marriageId, int playerId) {
         Set<Integer> guests = marriageGuests.get(marriageId);
         if(guests != null) {
             if(guests.contains(playerId)) return false;

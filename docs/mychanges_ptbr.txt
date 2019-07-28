@@ -2015,3 +2015,38 @@ Implementado normalização de fuso horário em pacotes enviados ao cliente. Ago
 Corrigido certos casos onde grupos dentro de lobby de CPQ não conseguiam ser desafiados, geralmente ocorrendo ao se desconectar após o desafio ter sido aceito e antes de começar a instância.
 Revisado script de créditos.
 Adicionado checagem por GM's no método de autoban de jogador.
+
+17 Julho 2019,
+Corrigido drops de reatores não utilizando o sistema de drops sequenciais.
+Revisado uso de sincronizações em vários métodos do sistema, tais como nos métodos de colocação de novos itens no mapa, detecção de toque em reatores, tabela de convidados em casamento, aplicação de dano de jogadores em mobs, recepção de pacotes.
+
+18 Julho 2019,
+Corrigido aplicação indevida de requisição de palavra-chave que prosseguia quest em uma das quests na questline de Aran.
+Corrigido nome errado em coluna da tabela "reports".
+Corrigido uso de NPC default na conversa padrão que ocorre ao se utilizar o comando "startquest" e "completequest".
+
+19 Julho 2019,
+Corrigido quest onde mobs podem aparecer na área do NPC Grendel permitindo repetir os ganhos de quest tanto quanto respawn de mobs à vontade.
+Corrigido robes de sauna e outros, que permitem ganhos bônus de HP, gerando ganhos 10x maiores que o esperado.
+Ajustado limites para recuperação de HP de forma a permitir ganhos em vários casos onde há a aplicação de bônus, tais como usando sauna robe, Endure skill.
+
+22 Julho 2019,
+Corrigido atributo de contagem de dano em mob aliado da HenesysPQ não instanciado.
+Corrigido skill "Combat Step" sendo considerado um "buff" pelo sistema do servidor. Isso implicava em duplicação de efeito visual para outros jogadores.
+
+26 - 27 Julho 2019,
+Corrigido problemas de cast de tipos que passou a ocorrer após trocar para Java 8.
+Ajustado flag que permite jogadores a ganhar EXP de mob independente de diferenças de nível.
+Corrigido Gaviota não sumindo após lançar ataque.
+Corrigido funcionalidade de ignorar items de pets não se mantendo após trocar de mapas.
+Corrigido CPQ1 campo 3 e 4 não permitindo jogadores a usar summons/protectors em campo.
+Corrigido líderes de expedição recebendo pacote de timer para fase de registro em casos onde a expedição falhou em ser iniciada.
+Corrigido problema de locking ocorrendo recentemente ao tentar rodar limpeza de itens no mapa (ocorre ao realizar drops de vários itens, mais antigos imediatamente sumindo), problema ocorrendo devido a um caso de loop infinito.
+Corrigido várias skills de summons não utilizando o ícone de buff no canto superior direito da tela.
+Corrigido alguns danos de summons sendo calculados extremamente baixos quando o jogador não equipa uma arma ou o mesmo não possui pelo menos uma dezena em ataque.
+
+28 Julho 2019,
+Corrigido funcionalidade de loot explosivo de mobs não aplicando devidamente.
+Corrigido linguagens, bastante usado na MCPQ, não utilizando o valor requisitado pelo jogador ao logar/trocar de canais.
+Corrigido casos de NPE ao tentar realizar updates de posição lado-servidor em alguns summons de jogador.
+Revisado reset de reatores em reatores que estão desaparecidos por um tempo, para retornar de imediato.

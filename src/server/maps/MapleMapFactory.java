@@ -278,10 +278,10 @@ public class MapleMapFactory {
             MapleData mcData = mapData.getChildByPath("monsterCarnival");
             if (mcData != null) {
                 map.setDeathCP(MapleDataTool.getIntConvert("deathCP", mcData, 0));
-                map.setMaxMobs(MapleDataTool.getIntConvert("mobGenMax", mcData, 0));
+                map.setMaxMobs(MapleDataTool.getIntConvert("mobGenMax", mcData, Integer.MAX_VALUE));    // thanks Atoot for noticing CPQ1 bf. 3 & 4 not accepting spawns due to undefined limits
                 map.setTimeDefault(MapleDataTool.getIntConvert("timeDefault", mcData, 0));
                 map.setTimeExpand(MapleDataTool.getIntConvert("timeExpand", mcData, 0));
-                map.setMaxReactors(MapleDataTool.getIntConvert("guardianGenMax", mcData, 0));
+                map.setMaxReactors(MapleDataTool.getIntConvert("guardianGenMax", mcData, Integer.MAX_VALUE));
                 MapleData guardianGenData = mcData.getChildByPath("guardianGenPos");
                 for (MapleData node : guardianGenData.getChildren()) {
                     GuardianSpawnPoint pt = new GuardianSpawnPoint(new Point(MapleDataTool.getIntConvert("x", node), MapleDataTool.getIntConvert("y", node)));

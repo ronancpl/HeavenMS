@@ -792,28 +792,31 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         return false;
     }
+    
+    public int calculateMaxBaseDamage(int watk, MapleWeaponType weapon) {
+        int mainstat, secondarystat;
+        if (getJob().isA(MapleJob.THIEF) && weapon == MapleWeaponType.DAGGER_OTHER) {
+            weapon = MapleWeaponType.DAGGER_THIEVES;
+        }
+
+        if (weapon == MapleWeaponType.BOW || weapon == MapleWeaponType.CROSSBOW || weapon == MapleWeaponType.GUN) {
+            mainstat = localdex;
+            secondarystat = localstr;
+        } else if (weapon == MapleWeaponType.CLAW || weapon == MapleWeaponType.DAGGER_THIEVES) {
+            mainstat = localluk;
+            secondarystat = localdex + localstr;
+        } else {
+            mainstat = localstr;
+            secondarystat = localdex;
+        }
+        return (int) (((weapon.getMaxDamageMultiplier() * mainstat + secondarystat) / 100.0) * watk);
+    }
 
     public int calculateMaxBaseDamage(int watk) {
         int maxbasedamage;
         Item weapon_item = getInventory(MapleInventoryType.EQUIPPED).getItem((short) -11);
         if (weapon_item != null) {
-            MapleWeaponType weapon = ii.getWeaponType(weapon_item.getItemId());
-            int mainstat, secondarystat;
-            if (getJob().isA(MapleJob.THIEF) && weapon == MapleWeaponType.DAGGER_OTHER) {
-                weapon = MapleWeaponType.DAGGER_THIEVES;
-            }
-
-            if (weapon == MapleWeaponType.BOW || weapon == MapleWeaponType.CROSSBOW || weapon == MapleWeaponType.GUN) {
-                mainstat = localdex;
-                secondarystat = localstr;
-            } else if (weapon == MapleWeaponType.CLAW || weapon == MapleWeaponType.DAGGER_THIEVES) {
-                mainstat = localluk;
-                secondarystat = localdex + localstr;
-            } else {
-                mainstat = localstr;
-                secondarystat = localdex;
-            }
-            maxbasedamage = (int) (((weapon.getMaxDamageMultiplier() * mainstat + secondarystat) / 100.0) * watk);
+            maxbasedamage = calculateMaxBaseDamage(watk, ii.getWeaponType(weapon_item.getItemId()));
         } else {
             if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
                 double weapMulti = 3;
@@ -830,8 +833,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return maxbasedamage;
     }
     
-    public int calculateMaxBaseMagicDamage() {
-        int maxbasedamage = getTotalMagic();
+    public int calculateMaxBaseMagicDamage(int matk) {
+        int maxbasedamage = matk;
         int totalint = getTotalInt();
         
         if (totalint > 2000) {
@@ -1110,6 +1113,29 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
         }
     }
+    
+    private void broadcastChangeJob() {
+        for (MapleCharacter chr : map.getAllPlayers()) {
+            MapleClient chrC = chr.getClient();
+
+            if (chrC != null) {     // propagate new job 3rd-person effects (FJ, Aran 1st strike, etc)
+                this.sendDestroyData(chrC);
+                this.sendSpawnData(chrC);
+            }
+        }
+        
+        TimerManager.getInstance().schedule(new Runnable() {    // need to delay to ensure clientside has finished reloading character data
+            @Override
+            public void run() {
+                MapleCharacter thisChr = MapleCharacter.this;
+                MapleMap map = thisChr.getMap();
+                
+                if (map != null) {
+                    map.broadcastMessage(thisChr, MaplePacketCreator.showForeignEffect(thisChr.getId(), 8), false);
+                }
+            }
+        }, 777);
+    }
 
     public synchronized void changeJob(MapleJob newJob) {
         if (newJob == null) {
@@ -1222,7 +1248,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         setMasteries(this.job.getId());
         guildUpdate();
         
-        getMap().broadcastMessage(this, MaplePacketCreator.showForeignEffect(this.getId(), 8), false);
+        broadcastChangeJob();
         
         if (GameConstants.hasSPTable(newJob) && newJob.getId() != 2001) {
             if (getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
@@ -7064,7 +7090,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
             rs.close();
             ps.close();
-            ps = con.prepareStatement("SELECT name, characterslots FROM accounts WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
+            ps = con.prepareStatement("SELECT name, characterslots, language FROM accounts WHERE id = ?", Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ret.accountid);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -7072,6 +7098,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 
                 retClient.setAccountName(rs.getString("name"));
                 retClient.setCharacterSlots(rs.getByte("characterslots"));
+                retClient.setLanguage(rs.getInt("language"));   // thanks Zein for noticing user language not overriding default once player is in-game
             }
             rs.close();
             ps.close();

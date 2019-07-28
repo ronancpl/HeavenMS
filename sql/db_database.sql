@@ -17406,7 +17406,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `victimid` int(11) NOT NULL,
   `reason` tinyint(4) NOT NULL,
   `chatlog` text NOT NULL,
-  `status` text NOT NULL,
+  `description` text NOT NULL,  # correct field name, thanks resinate
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
