@@ -21,6 +21,7 @@
 package tools;
 
 import java.awt.Point;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,10 +62,7 @@ import client.inventory.ModifyInventory;
 import client.newyear.NewYearCardRecord;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
-import constants.ExpTable;
-import constants.GameConstants;
-import constants.ItemConstants;
-import constants.ServerConstants;
+import constants.*;
 import constants.skills.Buccaneer;
 import constants.skills.Corsair;
 import constants.skills.ThunderBreaker;
@@ -3383,14 +3381,18 @@ public class MaplePacketCreator {
          * @param speaker
          * @return
          */
-        public static byte[] getNPCTalk(int npc, byte msgType, String talk, String endBytes, byte speaker) {
+        public static byte[] getNPCTalk(int npc, byte msgType, String talk, String endBytes, byte speaker){
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.NPC_TALK.getValue());
                 mplew.write(4); // ?
                 mplew.writeInt(npc);
                 mplew.write(msgType);
                 mplew.write(speaker);
-                mplew.writeMapleAsciiString(talk);
+                try {
+                        mplew.writeMapleAsciiString(talk,talk.getBytes(CharsetConstants.MapleLanguageType.LANGUAGE_ZH.getAscii()).length);
+                } catch (UnsupportedEncodingException e) {
+                        mplew.writeMapleAsciiString(talk);
+                }
                 mplew.write(HexTool.getByteArrayFromHexString(endBytes));
                 return mplew.getPacket();
         }

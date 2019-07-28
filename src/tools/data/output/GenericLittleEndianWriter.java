@@ -134,6 +134,11 @@ public class GenericLittleEndianWriter implements LittleEndianWriter {
         writeAsciiString(s);
     }
 
+    public void writeMapleAsciiString(String s,int length) {
+        writeShort(length);
+        writeAsciiString(s);
+    }
+
     /**
      * Writes a null-terminated ASCII string to the stream.
      *

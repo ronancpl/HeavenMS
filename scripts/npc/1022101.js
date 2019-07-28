@@ -44,7 +44,7 @@ function action(mode, type, selection) {
                         status--;
     
                 if(status == 0) {
-                        cm.sendYesNo("哈哈Santa told me to go to here, only he didn't told me when...  I hope I'm here on the right time! Oh! By the way, I'm Rooney, I can take you to #bHappyVille#k. Are you ready to go?11111111哈哈");
+                        cm.sendYesNo("圣诞老人告诉我去这里，只有他没告诉我什么时候......我希望我能在正确的时间来到这里！哦!顺便说一下，我是鲁尼，我可以带你去#b快乐都市 #k。你准备好出发了吗？");
                 } else {
                         cm.getPlayer().saveLocation("HAPPYVILLE");
                         cm.warp(209000000, 0);
