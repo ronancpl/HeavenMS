@@ -20,14 +20,25 @@
 
 package net.server.channel.handlers;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import client.MapleCharacter;
 import client.MapleClient;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
+import net.server.Server;
+import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
  * @author Ronan
+ * @author Ubaware
  */
 public final class TransferWorldHandler extends AbstractMaplePacketHandler {
     
@@ -40,7 +51,34 @@ public final class TransferWorldHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-        
-        c.announce(MaplePacketCreator.sendWorldTransferRules(9));
+        MapleCharacter chr = c.getPlayer();
+        if(!ServerConstants.ALLOW_CASHSHOP_WORLD_TRANSFER || Server.getInstance().getWorldsSize() <= 1) {
+            c.announce(MaplePacketCreator.sendWorldTransferRules(9, c));
+            return;
+        }
+        int worldTransferError = chr.checkWorldTransferEligibility();
+        if(worldTransferError != 0) {
+            c.announce(MaplePacketCreator.sendWorldTransferRules(worldTransferError, c));
+            return;
+        }
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("SELECT completionTime FROM worldtransfers WHERE characterid=?")) {
+            ps.setInt(1, chr.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Timestamp completedTimestamp = rs.getTimestamp("completionTime");
+                if(completedTimestamp == null) { //has pending world transfer
+                    c.announce(MaplePacketCreator.sendWorldTransferRules(6, c));
+                    return;
+                } else if(completedTimestamp.getTime() + ServerConstants.WORLD_TRANSFER_COOLDOWN > System.currentTimeMillis()) {
+                    c.announce(MaplePacketCreator.sendWorldTransferRules(7, c));
+                    return;
+                };
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+        c.announce(MaplePacketCreator.sendWorldTransferRules(0, c));
     }
 }

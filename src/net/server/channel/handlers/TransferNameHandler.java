@@ -20,14 +20,25 @@
 
 package net.server.channel.handlers;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.sql.Connection;
+
+import client.MapleCharacter;
 import client.MapleClient;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
+import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
  *
  * @author Ronan
+ * @author Ubaware
  */
 public final class TransferNameHandler extends AbstractMaplePacketHandler {
     
@@ -40,7 +51,37 @@ public final class TransferNameHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-        
-        c.announce(MaplePacketCreator.sendNameTransferRules(4));
+        if(!ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) {
+            c.announce(MaplePacketCreator.sendNameTransferRules(4));
+            return;
+        }
+        MapleCharacter chr = c.getPlayer();
+        if(chr.getLevel() < 10) {
+            c.announce(MaplePacketCreator.sendNameTransferRules(4));
+            return;
+        } else if(c.getTempBanCalendar() != null && c.getTempBanCalendar().getTimeInMillis() + (30*24*60*60*1000) < Calendar.getInstance().getTimeInMillis()) {
+            c.announce(MaplePacketCreator.sendNameTransferRules(2));
+            return;
+        }
+        //sql queries
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("SELECT completionTime FROM namechanges WHERE characterid=?")) { //double check, just in case
+            ps.setInt(1, chr.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Timestamp completedTimestamp = rs.getTimestamp("completionTime");
+                if(completedTimestamp == null) { //has pending name request
+                    c.announce(MaplePacketCreator.sendNameTransferRules(1));
+                    return;
+                } else if(completedTimestamp.getTime() + ServerConstants.NAME_CHANGE_COOLDOWN > System.currentTimeMillis()) {
+                    c.announce(MaplePacketCreator.sendNameTransferRules(3));
+                    return;
+                };
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            return;
+        }
+        c.announce(MaplePacketCreator.sendNameTransferRules(0));
     }
 }

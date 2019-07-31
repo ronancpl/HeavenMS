@@ -328,6 +328,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int banishSp = -1;
     private long banishTime = 0;
     private long lastExpGainTime;
+    private boolean pendingNameChange; //only used to change name on logout, not to be relied upon elsewhere
     
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
@@ -10362,6 +10363,379 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void removeJailExpirationTime() {
         jailExpiration = 0;
+    }
+    
+    public boolean registerNameChange(String newName) {
+        try (Connection con = DatabaseConnection.getConnection()) {
+            //check for pending name change
+            long currentTimeMillis = System.currentTimeMillis();
+            try (PreparedStatement ps = con.prepareStatement("SELECT completionTime FROM namechanges WHERE characterid=?")) { //double check, just in case
+                ps.setInt(1, getId());
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    Timestamp completedTimestamp = rs.getTimestamp("completionTime");
+                    if(completedTimestamp == null) return false; //pending
+                    else if(completedTimestamp.getTime() + ServerConstants.NAME_CHANGE_COOLDOWN > currentTimeMillis) return false;
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to register name change for character " + getName() + ".");
+                return false;
+            }
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO namechanges (characterid, old, new) VALUES (?, ?, ?)")){
+                    ps.setInt(1, getId());
+                    ps.setString(2, getName());
+                    ps.setString(3, newName);
+                    ps.executeUpdate();
+                    this.pendingNameChange = true;
+                    return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to register name change for character " + getName() + ".");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to get DB connection.");
+        }
+        return false;
+    }
+    
+    public boolean cancelPendingNameChange() {
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("DELETE FROM namechanges WHERE characterid=? AND completionTime IS NULL")) {
+            ps.setInt(1, getId());
+            int affectedRows = ps.executeUpdate();
+            if(affectedRows > 0) pendingNameChange = false;
+            return affectedRows > 0; //rows affected
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to cancel name change for character " + getName() + ".");
+            return false;
+        }
+    }
+    
+    public void doPendingNameChange() { //called on logout
+        if(!pendingNameChange) return;
+        try (Connection con = DatabaseConnection.getConnection()) {
+            int nameChangeId = -1;
+            String newName = null;
+            try (PreparedStatement ps = con.prepareStatement("SELECT * FROM namechanges WHERE characterid = ? AND completionTime IS NULL")) {
+                ps.setInt(1, getId());
+                ResultSet rs = ps.executeQuery();
+                if(!rs.next()) return;
+                nameChangeId = rs.getInt("id");
+                newName = rs.getString("new");
+            } catch(SQLException e) {
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to retrieve pending name changes for character " + getName() + ".");
+            }
+            con.setAutoCommit(false);
+            boolean success = doNameChange(con, getId(), getName(), newName, nameChangeId);
+            if(!success) con.rollback();
+            else FilePrinter.print(FilePrinter.CHANGE_CHARACTER_NAME, "Name change applied : from \"" + getName() + "\" to \"" + newName + "\" at " + Calendar.getInstance().getTime().toString());
+            con.setAutoCommit(true);
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to get DB connection.");
+        }
+    }
+    
+    public static void doNameChange(int characterId, String oldName, String newName, int nameChangeId) { //Don't do this while player is online
+        try (Connection con = DatabaseConnection.getConnection()) {
+            con.setAutoCommit(false);
+            boolean success = doNameChange(con, characterId, oldName, newName, nameChangeId);
+            if(!success) con.rollback();
+            con.setAutoCommit(true);
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Failed to get DB connection.");
+        }
+    }
+    
+    public static boolean doNameChange(Connection con, int characterId, String oldName, String newName, int nameChangeId) {
+        try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET name = ? WHERE id = ?")) {
+            ps.setString(1, newName);
+            ps.setInt(2, characterId);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE rings SET partnername = ? WHERE partnername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        /*try (PreparedStatement ps = con.prepareStatement("UPDATE playernpcs SET name = ? WHERE name = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE gifts SET `from` = ? WHERE `from` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE dueypackages SET SenderName = ? WHERE SenderName = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE dueypackages SET SenderName = ? WHERE SenderName = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE inventoryitems SET owner = ? WHERE owner = ?")) { //GMS doesn't do this
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE mts_items SET owner = ? WHERE owner = ?")) { //GMS doesn't do this
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE newyear SET sendername = ? WHERE sendername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE newyear SET receivername = ? WHERE receivername = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE notes SET `to` = ? WHERE `to` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE notes SET `from` = ? WHERE `from` = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE nxcode SET retriever = ? WHERE retriever = ?")) {
+            ps.setString(1, newName);
+            ps.setString(2, oldName);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+            return false;
+        }*/
+        if(nameChangeId != -1) {
+            try (PreparedStatement ps = con.prepareStatement("UPDATE namechanges SET completionTime = ? WHERE id = ?")) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.setInt(2, nameChangeId);
+                ps.executeUpdate();
+            } catch(SQLException e) { 
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e, "Character ID : " + characterId);
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public int checkWorldTransferEligibility() {
+        if(getLevel() < 20) {
+            return 2;
+        } else if(getClient().getTempBanCalendar() != null && getClient().getTempBanCalendar().getTimeInMillis() + (30*24*60*60*1000) < Calendar.getInstance().getTimeInMillis()) {
+            return 3;
+        } else if(isMarried()) {
+            return 4;
+        } else if(getGuildRank() < 2) {
+            return 5;
+        } else if(getFamily() != null) {
+            return 8;
+        } else {
+            return 0;
+        }
+    }
+    
+    public static String checkWorldTransferEligibility(Connection con, int characterId, int oldWorld, int newWorld) {
+        if(!ServerConstants.ALLOW_CASHSHOP_WORLD_TRANSFER) return "World transfers disabled.";
+        int accountId = -1;
+        try (PreparedStatement ps = con.prepareStatement("SELECT accountid, level, guildid, guildrank, partnerId, familyId FROM characters WHERE id = ?")) {
+            ps.setInt(1, characterId);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()) return "Character does not exist.";
+            accountId = rs.getInt("accountid");
+            if(rs.getInt("level") < 20) return "Character is under level 20.";
+            if(rs.getInt("familyId") != -1) return "Character is in family.";
+            if(rs.getInt("partnerId") != 0) return "Character is married.";
+            if(rs.getInt("guildid") != 0 && rs.getInt("guildrank") < 2) return "Character is the leader of a guild.";
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e);
+            return "SQL Error";
+        }
+        try (PreparedStatement ps = con.prepareStatement("SELECT tempban FROM accounts WHERE id = ?")) {
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()) return "Account does not exist.";
+            if(rs.getLong("tempban") != 0 && !rs.getString("tempban").equals("2018-06-20 00:00:00.0")) return "Account has been banned.";
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e);
+            return "SQL Error";
+        }
+        try (PreparedStatement ps = con.prepareStatement("SELECT COUNT(*) AS rowcount FROM characters WHERE accountid = ? AND world = ?")) {
+            ps.setInt(1, accountId);
+            ps.setInt(2, newWorld);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()) return "SQL Error";
+            if(rs.getInt("rowcount") >= 3) return "Too many characters on destination world.";
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.CHANGE_CHARACTER_NAME, e);
+            return "SQL Error";
+        }
+        return null;
+    }
+    
+    public boolean registerWorldTransfer(int newWorld) {
+        try (Connection con = DatabaseConnection.getConnection()) {
+            //check for pending world transfer
+            long currentTimeMillis = System.currentTimeMillis();
+            try (PreparedStatement ps = con.prepareStatement("SELECT completionTime FROM worldtransfers WHERE characterid=?")) { //double check, just in case
+                ps.setInt(1, getId());
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    Timestamp completedTimestamp = rs.getTimestamp("completionTime");
+                    if(completedTimestamp == null) return false; //pending
+                    else if(completedTimestamp.getTime() + ServerConstants.WORLD_TRANSFER_COOLDOWN > currentTimeMillis) return false;
+                }
+            } catch(SQLException e) {
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Failed to register world transfer for character " + getName() + ".");
+                return false;
+            }
+            try (PreparedStatement ps = con.prepareStatement("INSERT INTO worldtransfers (characterid, `from`, `to`) VALUES (?, ?, ?)")){
+                    ps.setInt(1, getId());
+                    ps.setInt(2, getWorld());
+                    ps.setInt(3, newWorld);
+                    ps.executeUpdate();
+                    return true;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Failed to register world transfer for character " + getName() + ".");
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Failed to get DB connection.");
+        }
+        return false;
+    }
+    
+    public boolean cancelPendingWorldTranfer() {
+        try (Connection con = DatabaseConnection.getConnection();
+                PreparedStatement ps = con.prepareStatement("DELETE FROM worldtransfers WHERE characterid=? AND completionTime IS NULL")) {
+            ps.setInt(1, getId());
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0; //rows affected
+        } catch(SQLException e) {
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Failed to cancel pending world transfer for character " + getName() + ".");
+            return false;
+        }
+    }
+    
+    public static boolean doWorldTransfer(Connection con, int characterId, int oldWorld, int newWorld, int worldTransferId) {
+        int mesos = 0;
+        try (PreparedStatement ps = con.prepareStatement("SELECT meso FROM characters WHERE id = ?")) {
+            ps.setInt(1, characterId);
+            ResultSet rs = ps.executeQuery();
+            if(!rs.next()) {
+                FilePrinter.printError(FilePrinter.WORLD_TRANSFER, "Character data invalid? (charid " + characterId + ")");
+                return false;
+            }
+            mesos = rs.getInt("meso");
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("UPDATE characters SET world = ?, meso = ?, guildid = ?, guildrank = ? WHERE id = ?")) {
+            ps.setInt(1, newWorld);
+            ps.setInt(2, Math.min(mesos, 1000000)); //might want a limit in ServerConstants for this
+            ps.setInt(3, 0);
+            ps.setInt(4, 5);
+            ps.setInt(5, characterId);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Character ID : " + characterId);
+            return false;
+        }
+        try (PreparedStatement ps = con.prepareStatement("DELETE FROM buddies WHERE characterid = ? OR buddyid = ?")) {
+            ps.setInt(1, characterId);
+            ps.setInt(2, characterId);
+            ps.executeUpdate();
+        } catch(SQLException e) { 
+            e.printStackTrace();
+            FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Character ID : " + characterId);
+            return false;
+        }
+        if(worldTransferId != -1) {
+            try (PreparedStatement ps = con.prepareStatement("UPDATE worldtransfers SET completionTime = ? WHERE id = ?")) {
+                ps.setTimestamp(1, new Timestamp(System.currentTimeMillis()));
+                ps.setInt(2, worldTransferId);
+                ps.executeUpdate();
+            } catch(SQLException e) { 
+                e.printStackTrace();
+                FilePrinter.printError(FilePrinter.WORLD_TRANSFER, e, "Character ID : " + characterId);
+                return false;
+            }
+        }
+        return true;
     }
     
     public String getLastCommandMessage() {
