@@ -16348,7 +16348,7 @@ CREATE TABLE IF NOT EXISTS `namechanges` (
   `old` varchar(13) NOT NULL,
   `new` varchar(13) NOT NULL,
   `requestTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `completionTime` timestamp,
+  `completionTime` timestamp NULL,
   PRIMARY KEY (`id`),
   INDEX (characterid)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -21435,7 +21435,7 @@ CREATE TABLE IF NOT EXISTS `worldtransfers` (
   `from` tinyint(3) NOT NULL,
   `to` tinyint(3) NOT NULL,
   `requestTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `completionTime` timestamp,
+  `completionTime` timestamp NULL,
   PRIMARY KEY (`id`),
   INDEX (characterid)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
