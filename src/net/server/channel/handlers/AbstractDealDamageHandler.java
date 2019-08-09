@@ -521,7 +521,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         
                         map.damageMonster(player, monster, totDamageToOneMonster);
                     }
-                    if (monster.isBuffed(MonsterStatus.WEAPON_REFLECT)) {
+                    if (monster.isBuffed(MonsterStatus.WEAPON_REFLECT) && !attack.magic) {
                         List<Pair<Integer, Integer>> mobSkills = monster.getSkills();
                         
                         for (Pair<Integer, Integer> ms : mobSkills) {
@@ -532,13 +532,14 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             }
                         }
                     }                
-                    if (monster.isBuffed(MonsterStatus.MAGIC_REFLECT)) {
+                    if (monster.isBuffed(MonsterStatus.MAGIC_REFLECT) && attack.magic) {
                         List<Pair<Integer, Integer>> mobSkills = monster.getSkills();
                         
                         for (Pair<Integer, Integer> ms : mobSkills) {
                             if (ms.left == 145) {
                                 MobSkill toUse = MobSkillFactory.getMobSkill(ms.left, ms.right);
-                                player.addMP(-toUse.getY());
+                                player.addHP(-toUse.getY());
+                                map.broadcastMessage(player, MaplePacketCreator.damagePlayer(0, monster.getId(), player.getId(), toUse.getY(), 0, 0, false, 0, true, monster.getObjectId(), 0, 0), true);
                             }
                         }
                     }
