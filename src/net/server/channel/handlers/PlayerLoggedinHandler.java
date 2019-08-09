@@ -40,6 +40,7 @@ import net.server.world.MaplePartyCharacter;
 import net.server.world.PartyOperation;
 import net.server.world.World;
 import tools.DatabaseConnection;
+import tools.FilePrinter;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
@@ -50,6 +51,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleDisease;
 import client.MapleFamily;
+import client.MapleFamilyEntry;
 import client.MapleKeyBinding;
 import client.SkillFactory;
 import client.inventory.Equip;
@@ -260,12 +262,22 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 c.announce(MaplePacketCreator.loadFamily(player));
                 if (player.getFamilyId() > 0) {
                     MapleFamily f = wserv.getFamily(player.getFamilyId());
-                    if (f == null) {
-                        f = new MapleFamily(player.getId());
-                        wserv.addFamily(player.getFamilyId(), f);
+                    if(f != null) {
+                        MapleFamilyEntry familyEntry = f.getEntryByID(player.getId());
+                        if(familyEntry != null) {
+                            familyEntry.setCharacter(player);
+                            player.setFamilyEntry(familyEntry);
+                        } else {
+                            FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + "'s family doesn't have an entry for them. (" + f.getID() + ")");
+                        }
+                        c.announce(MaplePacketCreator.getFamilyInfo(familyEntry));
+                        familyEntry.announceToSenior(MaplePacketCreator.sendFamilyLoginNotice(player.getName(), true), true);
+                    } else {
+                        FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + " has an invalid family ID. (" + player.getFamilyId() + ")");
+                        c.announce(MaplePacketCreator.getFamilyInfo(null));
                     }
-                    player.setFamily(f);
-                    c.announce(MaplePacketCreator.getFamilyInfo(f.getMember(player.getId())));
+                } else {
+                    c.announce(MaplePacketCreator.getFamilyInfo(null));
                 }
                 if (player.getGuildId() > 0) {
                     MapleGuild playerGuild = server.getGuild(player.getGuildId(), player.getWorld(), player);
@@ -410,6 +422,10 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                 if (ServerConstants.USE_NPCS_SCRIPTABLE) {
                     c.announce(MaplePacketCreator.setNPCScriptable(ScriptableNPCConstants.SCRIPTABLE_NPCS));
                 }
+                
+                if(newcomer) player.setLoginTime(System.currentTimeMillis());
+            } catch(Exception e) {
+                e.printStackTrace();
             } finally {
                 c.releaseClient();
             }

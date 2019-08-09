@@ -45,11 +45,10 @@ import net.server.Server;
 import net.server.channel.Channel;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
 import net.server.coordinator.MapleMatchCheckerCoordinator;
 
 public class MapleGuild {
@@ -727,11 +726,11 @@ public class MapleGuild {
     }
     
     public static boolean answerInvitation(int targetId, String targetName, int guildId, boolean answer) {
-        Pair<InviteResult, MapleCharacter> res = MapleInviteCoordinator.answerInvite(InviteType.GUILD, targetId, guildId, answer);
+        MapleInviteResult res = MapleInviteCoordinator.answerInvite(InviteType.GUILD, targetId, guildId, answer);
         
         MapleGuildResponse mgr;
-        MapleCharacter sender = res.getRight();
-        switch (res.getLeft()) {
+        MapleCharacter sender = res.from;
+        switch (res.result) {
             case ACCEPTED:
                 return true;
                 

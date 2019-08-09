@@ -12853,15 +12853,24 @@ CREATE TABLE IF NOT EXISTS `famelog` (
 CREATE TABLE IF NOT EXISTS `family_character` (
   `cid` int(11) NOT NULL,
   `familyid` int(11) NOT NULL,
-  `rank` int(11) NOT NULL,
-  `reputation` int(11) NOT NULL,
-  `todaysrep` int(11) NOT NULL,
-  `totaljuniors` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `juniorsadded` int(11) NOT NULL,
-  `totalreputation` int(11) NOT NULL,
+  `seniorid` int(11) NOT NULL,
+  `reputation` int(11) NOT NULL DEFAULT '0',
+  `todaysrep` int(11) NOT NULL DEFAULT '0',
+  `totalreputation` int(11) NOT NULL DEFAULT '0',
+  `reptosenior` int(11) NOT NULL DEFAULT '0',
+  `precepts` varchar(200) DEFAULT NULL,
+  `lastresettime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`cid`),
   INDEX (cid, familyid)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE IF NOT EXISTS `family_entitlement` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `charid` int(11) NOT NULL,
+  `entitlementid` int(11) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  INDEX (charid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS `fredstorage` (

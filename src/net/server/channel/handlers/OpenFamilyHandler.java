@@ -1,8 +1,6 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+    This file is part of the HeavenMS MapleStory Server
+    Copyleft (L) 2016 - 2018 RonanLana
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -21,30 +19,23 @@
 */
 package net.server.channel.handlers;
 
+import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
 import net.AbstractMaplePacketHandler;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
-public final class DenyPartyRequestHandler extends AbstractMaplePacketHandler {
-    
+/**
+ *
+ * @author Ubaware
+ */
+public final class OpenFamilyHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        slea.readByte();
-        String[] cname = slea.readMapleAsciiString().split("PS: ");
-        
-        MapleCharacter cfrom = c.getChannelServer().getPlayerStorage().getCharacterByName(cname[cname.length - 1]);
-        if (cfrom != null) {
-            MapleCharacter chr = c.getPlayer();
-            
-            if (MapleInviteCoordinator.answerInvite(InviteType.PARTY, chr.getId(), cfrom.getPartyId(), false).result == InviteResult.DENIED) {
-                chr.updatePartySearchAvailability(chr.getParty() == null);
-                cfrom.getClient().announce(MaplePacketCreator.partyStatusMessage(23, chr.getName()));
-            }
-        }
+        if(!ServerConstants.USE_FAMILY_SYSTEM) return;
+        MapleCharacter chr = c.getPlayer();
+        c.announce(MaplePacketCreator.getFamilyInfo(chr.getFamilyEntry()));
     }
 }
+

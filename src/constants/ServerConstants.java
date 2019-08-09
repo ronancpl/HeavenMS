@@ -71,7 +71,7 @@ public class ServerConstants {
     public static final boolean USE_AUTOHIDE_GM = false;            //When enabled, GMs are automatically hidden when joining. Thanks to Steven Deblois (steven1152).
     public static final boolean USE_BUYBACK_SYSTEM = true;          //Enables the HeavenMS-builtin buyback system, to be used by dead players when clicking the MTS button.
     public static final boolean USE_FIXED_RATIO_HPMP_UPDATE = true; //Enables the HeavenMS-builtin HPMP update based on the current pool to max pool ratio.
-    public static final boolean USE_FAMILY_SYSTEM = false;
+    public static final boolean USE_FAMILY_SYSTEM = true;
     public static final boolean USE_DUEY = true;
     public static final boolean USE_RANDOMIZE_HPMP_GAIN = true;     //Enables randomizing on MaxHP/MaxMP gains and INT accounting for the MaxMP gain on level up.
     public static final boolean USE_STORAGE_ITEM_SORT = true;       //Enables storage "Arrange Items" feature.
@@ -158,6 +158,10 @@ public class ServerConstants {
     public static final float EXP_SPLIT_MVP_MOD = 0.2f;
     public static final float EXP_SPLIT_COMMON_MOD = 0.8f;
     public static final float PARTY_BONUS_EXP_RATE = 1.0f;          //Rate for the party exp bonus reward.
+    
+    public static final int FAMILY_REP_PER_KILL = 4;                //Amount of rep gained per monster kill.
+    public static final int FAMILY_REP_PER_BOSS_KILL = 20;          //Amount of rep gained per boss kill.
+    public static final int FAMILY_REP_PER_LEVELUP = 200;           //Amount of rep gained upon leveling up.
     
     //Miscellaneous Configuration
     public static String TIMEZONE = "GMT-3";

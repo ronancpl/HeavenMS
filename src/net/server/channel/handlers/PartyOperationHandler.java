@@ -34,7 +34,7 @@ import constants.ServerConstants;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import tools.Pair;
+import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
 
 import java.util.List;
 
@@ -64,8 +64,8 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
             case 3: { // join
                 int partyid = slea.readInt();
                 
-                Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.PARTY, player.getId(), partyid, true);
-                InviteResult res = inviteRes.getLeft();
+                MapleInviteResult inviteRes = MapleInviteCoordinator.answerInvite(InviteType.PARTY, player.getId(), partyid, true);
+                InviteResult res = inviteRes.result;
                 if (res == InviteResult.ACCEPTED) {
                     MapleParty.joinParty(player, partyid, false);
                 } else {
