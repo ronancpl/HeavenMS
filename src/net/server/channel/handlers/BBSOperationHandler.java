@@ -56,7 +56,7 @@ public final class BBSOperationHandler extends AbstractMaplePacketHandler {
                 String text = correctLength(slea.readMapleAsciiString(), 600);
                 int icon = slea.readInt();
                 if (icon >= 0x64 && icon <= 0x6a) {
-                    if (c.getPlayer().haveItemWithId(5290000 + icon - 0x64, false)) {
+                    if (!c.getPlayer().haveItemWithId(5290000 + icon - 0x64, false)) {
                         return;
                     }
                 } else if (icon < 0 || icon > 3) {
