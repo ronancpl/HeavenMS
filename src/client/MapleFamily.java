@@ -49,11 +49,11 @@ public class MapleFamily {
     private static final AtomicInteger familyIDCounter = new AtomicInteger();
 
     private final int id, world;
+    private final Map<Integer, MapleFamilyEntry> members = new ConcurrentHashMap<Integer, MapleFamilyEntry>();
     private MapleFamilyEntry leader;
     private String name;
-    private final Map<Integer, MapleFamilyEntry> members = new ConcurrentHashMap<Integer, MapleFamilyEntry>(); // only needed in the building step?
-
     private String preceptsMessage = "";
+    private int totalGenerations;
 
     public MapleFamily(int id, int world) {
         int newId = id;
@@ -96,6 +96,14 @@ public class MapleFamily {
 
     public int getTotalMembers() {
         return members.size();
+    }
+    
+    public int getTotalGenerations() {
+        return totalGenerations;
+    }
+    
+    public void setTotalGenerations(int generations) {
+        this.totalGenerations = generations;
     }
 
     public String getName() {
@@ -170,6 +178,7 @@ public class MapleFamily {
         for(MapleFamilyEntry entry : members.values()) {
             entry.setTodaysRep(0);
             entry.setRepsToSenior(0);
+            entry.resetEntitlementUsages();
         }
     }
 
@@ -227,6 +236,14 @@ public class MapleFamily {
                     familyEntry.setTodaysRep(todaysRep);
                     familyEntry.setTotalReputation(totalRep);
                     familyEntry.setRepsToSenior(repsToSenior);
+                    //load used entitlements
+                    try (PreparedStatement ps = con.prepareStatement("SELECT entitlementid FROM family_entitlement WHERE charid = ?")) {
+                        ps.setInt(1, familyEntry.getChrId());
+                        ResultSet rs = ps.executeQuery();
+                        while(rs.next()) {
+                            familyEntry.setEntitlementUsed(rs.getInt("entitlementid"));
+                        }
+                    }
                 }
             } catch(SQLException e) {
                 FilePrinter.printError(FilePrinter.FAMILY_ERROR, e, "Could not get family_character entries.");

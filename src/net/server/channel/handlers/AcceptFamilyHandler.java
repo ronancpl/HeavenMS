@@ -64,36 +64,59 @@ public final class AcceptFamilyHandler extends AbstractMaplePacketHandler {
             if(inviteResult.result == InviteResult.NOT_FOUND) return; //was never invited. (or expired on server only somehow?)
             if(accept) {
                 if(inviter.getFamily() != null) {
-                    MapleFamilyEntry newEntry = new MapleFamilyEntry(inviter.getFamily(), chr.getId(), chr.getName(), chr.getLevel(), chr.getJob());
-                    newEntry.setCharacter(chr);
-                    if(!newEntry.setSenior(inviter.getFamilyEntry(), true)) {
-                        inviter.announce(MaplePacketCreator.sendFamilyMessage(1, 0));
-                        return;
-                    } else {
-                        // save
-                        inviter.getFamily().addEntry(newEntry);
-                        insertNewFamilyRecord(chr.getId(), inviter.getFamily().getID(), inviter.getId(), false);
-                        inviter.getClient().announce(MaplePacketCreator.getFamilyInfo(inviter.getFamilyEntry()));
-                        c.announce(MaplePacketCreator.getFamilyInfo(newEntry));
+                    if(chr.getFamily() == null) {
+                        MapleFamilyEntry newEntry = new MapleFamilyEntry(inviter.getFamily(), chr.getId(), chr.getName(), chr.getLevel(), chr.getJob());
+                        newEntry.setCharacter(chr);
+                        if(!newEntry.setSenior(inviter.getFamilyEntry(), true)) {
+                            inviter.announce(MaplePacketCreator.sendFamilyMessage(1, 0));
+                            return;
+                        } else {
+                            // save
+                            inviter.getFamily().addEntry(newEntry);
+                            insertNewFamilyRecord(chr.getId(), inviter.getFamily().getID(), inviter.getId(), false);
+                        }
+                    } else { //absorb target family
+                        MapleFamilyEntry targetEntry = chr.getFamilyEntry();
+                        MapleFamily targetFamily = targetEntry.getFamily();
+                        if(targetFamily.getLeader() != targetEntry) return;
+                        if(inviter.getFamily().getTotalGenerations() + targetFamily.getTotalGenerations() <= ServerConstants.FAMILY_MAX_GENERATIONS) {
+                            targetEntry.join(inviter.getFamilyEntry());
+                        } else {
+                            inviter.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
+                            chr.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
+                            return;
+                        }
                     }
                 } else { // create new family
-                    System.out.println("Create new family.");
+                    if(chr.getFamily() != null && inviter.getFamily() != null && chr.getFamily().getTotalGenerations() + inviter.getFamily().getTotalGenerations() >= ServerConstants.FAMILY_MAX_GENERATIONS) {
+                        inviter.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
+                        chr.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
+                        return;
+                    }
                     MapleFamily newFamily = new MapleFamily(-1, c.getWorld());
                     c.getWorldServer().addFamily(newFamily.getID(), newFamily);
                     MapleFamilyEntry inviterEntry = new MapleFamilyEntry(newFamily, inviter.getId(), inviter.getName(), inviter.getLevel(), inviter.getJob());
                     inviterEntry.setCharacter(inviter);
-                    newFamily.setLeader(inviter.getFamilyEntry());
-                    newFamily.setMessage("", true);
+                    newFamily.setLeader(inviter.getFamilyEntry());                    
                     newFamily.addEntry(inviterEntry);
-                    MapleFamilyEntry newEntry = new MapleFamilyEntry(newFamily, chr.getId(), chr.getName(), chr.getLevel(), chr.getJob());
-                    newEntry.setCharacter(chr);
-                    newEntry.setSenior(inviterEntry, true);
-                    // save new family
-                    insertNewFamilyRecord(inviter.getId(), newFamily.getID(), 0, true);
-                    insertNewFamilyRecord(chr.getId(), newFamily.getID(), inviter.getId(), false); // char was already saved by setSenior() above
+                    if(chr.getFamily() == null) { //completely new family
+                        MapleFamilyEntry newEntry = new MapleFamilyEntry(newFamily, chr.getId(), chr.getName(), chr.getLevel(), chr.getJob());
+                        newEntry.setCharacter(chr);
+                        newEntry.setSenior(inviterEntry, true);
+                        // save new family
+                        insertNewFamilyRecord(inviter.getId(), newFamily.getID(), 0, true);
+                        insertNewFamilyRecord(chr.getId(), newFamily.getID(), inviter.getId(), false); // char was already saved by setSenior() above
+                        newFamily.setMessage("", true);
+                    } else { //new family for inviter, absorb invitee family
+                        insertNewFamilyRecord(inviter.getId(), newFamily.getID(), 0 , true);
+                        newFamily.setMessage("", true);
+                        chr.getFamilyEntry().join(inviterEntry);
+                    }
                 }
                 c.getPlayer().getFamily().broadcast(MaplePacketCreator.sendFamilyJoinResponse(true, c.getPlayer().getName()), c.getPlayer().getId());
                 c.announce(MaplePacketCreator.getSeniorMessage(inviter.getName()));
+                c.announce(MaplePacketCreator.getFamilyInfo(chr.getFamilyEntry()));
+                chr.getFamilyEntry().updateSeniorFamilyInfo(true);
             } else {
                 inviter.announce(MaplePacketCreator.sendFamilyJoinResponse(false, c.getPlayer().getName()));
             }

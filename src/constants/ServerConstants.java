@@ -159,10 +159,6 @@ public class ServerConstants {
     public static final float EXP_SPLIT_COMMON_MOD = 0.8f;
     public static final float PARTY_BONUS_EXP_RATE = 1.0f;          //Rate for the party exp bonus reward.
     
-    public static final int FAMILY_REP_PER_KILL = 4;                //Amount of rep gained per monster kill.
-    public static final int FAMILY_REP_PER_BOSS_KILL = 20;          //Amount of rep gained per boss kill.
-    public static final int FAMILY_REP_PER_LEVELUP = 200;           //Amount of rep gained upon leveling up.
-    
     //Miscellaneous Configuration
     public static String TIMEZONE = "GMT-3";
     public static boolean USE_DISPLAY_NUMBERS_WITH_COMMA = true;        //Enforce comma on displayed strings (use this when USE_UNITPRICE_WITH_COMMA is active and you still want to display comma-separated values).
@@ -242,6 +238,12 @@ public class ServerConstants {
     public static final int EXPAND_GUILD_BASE_COST = 500000;
     public static final int EXPAND_GUILD_TIER_COST = 1000000;
     public static final int EXPAND_GUILD_MAX_COST = 5000000;
+    
+    //Family Configuration
+    public static final int FAMILY_REP_PER_KILL = 4;             //Amount of rep gained per monster kill.
+    public static final int FAMILY_REP_PER_BOSS_KILL = 20;       //Amount of rep gained per boss kill.
+    public static final int FAMILY_REP_PER_LEVELUP = 200;        //Amount of rep gained upon leveling up.
+    public static final int FAMILY_MAX_GENERATIONS = 1000;       //Maximum depth of family tree. (Distance from leader to farthest junior)
 
     //Equipment Configuration
     public static final boolean USE_EQUIPMNT_LVLUP_SLOTS = true;//Equips can upgrade slots at level up.

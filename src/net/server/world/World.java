@@ -546,6 +546,12 @@ public class World {
             }
         }
     }
+    
+    public void removeFamily(int id) {
+        synchronized (families) {
+            families.remove(id);
+        }
+    }
 
     public MapleFamily getFamily(int id) {
         synchronized (families) {

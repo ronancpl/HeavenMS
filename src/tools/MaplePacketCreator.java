@@ -6408,9 +6408,9 @@ public class MaplePacketCreator {
                 mplew.writeInt(MapleFamilyEntitlement.values().length);
                 for (int i = 0; i < MapleFamilyEntitlement.values().length; i++) {
                         MapleFamilyEntitlement entitlement = MapleFamilyEntitlement.values()[i];
-                        mplew.write(i > 4 ? (i % 2) + 1 : i);
+                        mplew.write(i <= 1 ? 1 : 2); //type
                         mplew.writeInt(entitlement.getRepCost());
-                        mplew.writeInt(1);
+                        mplew.writeInt(entitlement.getUsageLimit());
                         mplew.writeMapleAsciiString(entitlement.getName());
                         mplew.writeMapleAsciiString(entitlement.getDescription());
                 }
@@ -6473,9 +6473,11 @@ public class MaplePacketCreator {
                 mplew.writeInt(f.getFamily().getLeader().getChrId()); // Leader ID (Allows setting message)
                 mplew.writeMapleAsciiString(f.getFamily().getName());
                 mplew.writeMapleAsciiString(f.getFamily().getMessage()); //family message
-                mplew.writeInt(0); //Entitlement info count
-                mplew.writeInt(0); //ID
-                mplew.writeInt(0); //Used count
+                mplew.writeInt(MapleFamilyEntitlement.values().length); //Entitlement info count
+                for(MapleFamilyEntitlement entitlement : MapleFamilyEntitlement.values()) {
+                    mplew.writeInt(entitlement.ordinal()); //ID
+                    mplew.writeInt(f.isEntitlementUsed(entitlement) ? 1 : 0); //Used count
+                }
                 return mplew.getPacket();
         }
         
@@ -6500,9 +6502,16 @@ public class MaplePacketCreator {
                 mplew.writeShort(SendOpcode.FAMILY_CHART_RESULT.getValue());
                 mplew.writeInt(entry.getChrId()); //ID of viewed player's pedigree, can't be leader?
                 List<MapleFamilyEntry> superJuniors = new ArrayList<MapleFamilyEntry>(4);
+                boolean hasOtherJunior = false;
                 int entryCount = 2; //2 guaranteed, leader and self
                 entryCount += Math.min(2, entry.getTotalSeniors());
                 //needed since MaplePacketLittleEndianWriter doesn't have any seek functionality
+                if(entry.getSenior() != null) {
+                    if(entry.getSenior().getJuniorCount() == 2) {
+                        entryCount++;
+                        hasOtherJunior = true;
+                    }
+                }
                 for(MapleFamilyEntry junior : entry.getJuniors()) {
                     if(junior == null) continue;
                     entryCount++;
@@ -6513,7 +6522,7 @@ public class MaplePacketCreator {
                     }
                 }
                 //write entries
-                boolean missingEntries = entryCount == 2; //pedigree requires at least 3 entries to work properly, might only have 2 if leader's juniors leave
+                boolean missingEntries = entryCount == 2; //pedigree requires at least 3 entries to show leader, might only have 2 if leader's juniors leave
                 if(missingEntries) entryCount++;
                 mplew.writeInt(entryCount); //player count
                 addPedigreeEntry(mplew, entry.getFamily().getLeader());
@@ -6522,6 +6531,10 @@ public class MaplePacketCreator {
                     addPedigreeEntry(mplew, entry.getSenior());
                 }
                 addPedigreeEntry(mplew, entry);
+                if(hasOtherJunior) { //must be sent after own entry
+                    MapleFamilyEntry otherJunior = entry.getSenior().getOtherJunior(entry);
+                    if(otherJunior != null) addPedigreeEntry(mplew, otherJunior);
+                }
                 if(missingEntries) addPedigreeEntry(mplew, entry);
                 for(MapleFamilyEntry junior : entry.getJuniors()) {
                     if(junior == null) continue;
@@ -6551,7 +6564,7 @@ public class MaplePacketCreator {
                 MapleCharacter chr = entry.getChr();
                 boolean isOnline = chr != null;
                 mplew.writeInt(entry.getChrId()); //ID
-                mplew.writeInt(entry.getSenior() != null ? entry.getSenior().getChrId() : 0); //parent id?
+                mplew.writeInt(entry.getSenior() != null ? entry.getSenior().getChrId() : 0); //parent ID
                 mplew.writeShort(entry.getJob().getId()); //job id
                 mplew.write(entry.getLevel()); //level
                 mplew.writeBool(isOnline); //isOnline
@@ -7048,8 +7061,8 @@ public class MaplePacketCreator {
         public static byte[] sendFamilySummonRequest(String familyName, String from) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.FAMILY_SUMMON_REQUEST.getValue());
-                mplew.writeMapleAsciiString(familyName);
                 mplew.writeMapleAsciiString(from);
+                mplew.writeMapleAsciiString(familyName);
                 return mplew.getPacket();
         }
         

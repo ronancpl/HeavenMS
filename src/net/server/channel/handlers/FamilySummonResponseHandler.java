@@ -19,19 +19,19 @@ public class FamilySummonResponseHandler extends AbstractMaplePacketHandler {
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         if(!ServerConstants.USE_FAMILY_SYSTEM) return;
-        MapleCharacter inviter = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
+        slea.readMapleAsciiString(); //family name
         boolean accept = slea.readByte() != 0;
-        MapleFamilyEntry inviterEntry = inviter.getFamilyEntry();
-        if(inviter == null || inviterEntry == null) return;
         MapleInviteResult inviteResult = MapleInviteCoordinator.answerInvite(InviteType.FAMILY_SUMMON, c.getPlayer().getId(), c.getPlayer(), accept);
         if(inviteResult.result == InviteResult.NOT_FOUND) return;
-        if(inviter != inviteResult.from) return;
+        MapleCharacter inviter = inviteResult.from;
+        MapleFamilyEntry inviterEntry = inviter.getFamilyEntry();
+        if(inviterEntry == null) return;
         MapleMap map = (MapleMap) inviteResult.params[0];
         if(accept && inviter.getMap() == map) { //cancel if inviter has changed maps
             c.getPlayer().changeMap(map, map.getPortal(0));
         } else {
             inviterEntry.refundEntitlement(MapleFamilyEntitlement.SUMMON_FAMILY);
-            inviterEntry.gainReputation(MapleFamilyEntitlement.SUMMON_FAMILY.getRepCost()); //refund rep cost if declined
+            inviterEntry.gainReputation(MapleFamilyEntitlement.SUMMON_FAMILY.getRepCost(), false); //refund rep cost if declined
             inviter.announce(MaplePacketCreator.getFamilyInfo(inviterEntry));
             inviter.dropMessage(5, c.getPlayer().getName() + " has denied the summon request.");
         }

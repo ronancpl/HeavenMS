@@ -56,11 +56,23 @@ public class FamilySeparateHandler extends AbstractMaplePacketHandler {
             return;
         }
         c.getPlayer().gainMeso(-cost);
-        senior.gainReputation(-1200); //the rep cost is actually based on level difference as well, but i don't know the equation (yet)
+        int repCost = separateRepCost(forkOn);
+        senior.gainReputation(-repCost, false);
+        if(senior.getSenior() != null) senior.getSenior().gainReputation(-(repCost/2), false);
         forkOn.announceToSenior(MaplePacketCreator.serverNotice(5, forkOn.getName() + " has left the family."), true);
         forkOn.fork();
         c.announce(MaplePacketCreator.getFamilyInfo(forkOn)); //pedigree info will be requested by the client if the window is open
+        forkOn.updateSeniorFamilyInfo(true);
         c.announce(MaplePacketCreator.sendFamilyMessage(1, 0));
     }
-
+    
+    
+    private static int separateRepCost(MapleFamilyEntry junior) {
+        int level = junior.getLevel();
+        int ret = level / 20;
+        ret += 10;
+        ret *= level;
+        ret *= 2;
+        return ret;
+    }
 }

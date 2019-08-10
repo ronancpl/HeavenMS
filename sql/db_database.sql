@@ -12859,7 +12859,7 @@ CREATE TABLE IF NOT EXISTS `family_character` (
   `totalreputation` int(11) NOT NULL DEFAULT '0',
   `reptosenior` int(11) NOT NULL DEFAULT '0',
   `precepts` varchar(200) DEFAULT NULL,
-  `lastresettime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastresettime` BIGINT(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cid`),
   INDEX (cid, familyid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -12868,7 +12868,7 @@ CREATE TABLE IF NOT EXISTS `family_entitlement` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `charid` int(11) NOT NULL,
   `entitlementid` int(11) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `timestamp` BIGINT(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   INDEX (charid)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
