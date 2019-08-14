@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import tools.*;
 
 import javax.script.ScriptEngine;
@@ -106,7 +107,7 @@ public class MapleClient {
 	private long lastPong;
 	private int gmlevel;
 	private Set<String> macs = new HashSet<>();
-	private Map<String, ScriptEngine> engines = new HashMap<>();
+	private Map<String, NashornScriptEngine> engines = new HashMap<>();
 	private byte characterSlots = 3;
 	private byte loginattempt = 0;
 	private String pin = "";
@@ -1174,11 +1175,11 @@ public class MapleClient {
 		gmlevel = level;
 	}
 
-	public void setScriptEngine(String name, ScriptEngine e) {
+	public void setScriptEngine(String name, NashornScriptEngine e) {
                 engines.put(name, e);
 	}
 
-	public ScriptEngine getScriptEngine(String name) {
+	public NashornScriptEngine getScriptEngine(String name) {
 		return engines.get(name);
 	}
 

@@ -54,7 +54,7 @@ public class EventScriptManager extends AbstractScriptManager {
         super();
         for (String script : scripts) {
             if (!script.equals("")) {
-                Invocable iv = getInvocable("event/" + script + ".js", null);
+                Invocable iv = getScriptEngine("event/" + script + ".js");
                 events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
             }
         }
@@ -88,7 +88,7 @@ public class EventScriptManager extends AbstractScriptManager {
         Channel cserv = events.values().iterator().next().em.getChannelServer();
         for (Entry<String, EventEntry> entry : events.entrySet()) {
             String script = entry.getKey();
-            Invocable iv = getInvocable("event/" + script + ".js", null);
+            Invocable iv = getScriptEngine("event/" + script + ".js");
             events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
         }
     }
