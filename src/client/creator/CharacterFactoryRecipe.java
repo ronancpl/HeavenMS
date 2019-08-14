@@ -39,7 +39,7 @@ public class CharacterFactoryRecipe {
     private int level, map, top, bottom, shoes, weapon;
     private int str = 4, dex = 4, int_ = 4, luk = 4;
     private int maxHp = 50, maxMp = 5;
-    private int ap = 0, sp = 0;
+    private int ap = 9, sp = 0;
     private int meso = 0;
     private List<Pair<Skill, Integer>> skills = new LinkedList<>();
     
