@@ -48,12 +48,12 @@ function end(mode, type, selection) {
                 qm.dispose();
                 return;
             }
-        } else {
+        } else if (status == 2) {
+            qm.forceCompleteQuest();
+            
             var skillid = Math.floor(qm.getPlayer().getJob().getId() / 1000) * 10000000 + 1007;
             qm.teachSkill(skillid, 2, 3, -1);
-
             qm.gainExp(230000);
-            qm.forceCompleteQuest();
             qm.dispose();
         }
     }

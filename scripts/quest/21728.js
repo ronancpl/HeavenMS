@@ -42,7 +42,7 @@ function end(mode, type, selection) {
                 qm.gainExp(200);
                 qm.forceCompleteQuest();
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

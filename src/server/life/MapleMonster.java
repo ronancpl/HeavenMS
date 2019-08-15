@@ -97,7 +97,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private Set<Integer> usedAttacks = new HashSet<>();
     private Set<Integer> calledMobOids = null;
     private WeakReference<MapleMonster> callerMob = new WeakReference<>(null);
-    private List<Integer> stolenItems = new ArrayList<>();
+    private List<Integer> stolenItems = new ArrayList<>(5);
     private int team;
     private int parentMobOid = 0;
     private final HashMap<Integer, AtomicLong> takenDamage = new HashMap<>();

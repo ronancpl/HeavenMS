@@ -321,8 +321,9 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                         Skill steal = SkillFactory.getSkill(Bandit.STEAL);
                         if (monster.getStolen().size() < 1) { // One steal per mob <3
                             if (steal.getEffect(player.getSkillLevel(steal)).makeChanceResult()) {
-                                MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
+                                monster.addStolen(0);
                                 
+                                MapleMonsterInformationProvider mi = MapleMonsterInformationProvider.getInstance();
                                 List<Integer> dropPool = mi.retrieveDropPool(monster.getId());
                                 if(!dropPool.isEmpty()) {
                                     Integer rndPool = (int) Math.floor(Math.random() * dropPool.get(dropPool.size() - 1));
@@ -441,11 +442,13 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             } else {
                                 mortalBlow = SkillFactory.getSkill(Sniper.MORTAL_BLOW);
                             }
-                            if (player.getSkillLevel(mortalBlow) > 0) {	                    		
-                                MapleStatEffect mortal = mortalBlow.getEffect(player.getSkillLevel(mortalBlow));
+                            
+                            int skillLevel = player.getSkillLevel(mortalBlow);
+                            if (skillLevel > 0) {
+                                MapleStatEffect mortal = mortalBlow.getEffect(skillLevel);
                                 if (monster.getHp() <= (monster.getStats().getHp() * mortal.getX()) / 100) {
                                     if (Randomizer.rand(1, 100) <= mortal.getY()) {
-                                        monster.getMap().killMonster(monster, player, true);
+                                        map.damageMonster(player, monster, Integer.MAX_VALUE);  // thanks Conrad for noticing reduced EXP gain from skill kill
                                     }
                                 }
                             }

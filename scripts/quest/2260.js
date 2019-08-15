@@ -38,7 +38,7 @@ function start(mode, type, selection) {
         
         if (status == 0) {
             qm.sendNext("Once you've got #b2nd job advancement#k, I'll tell you about the #bMushroom Castle#k.");
-        } else {
+        } else if (status == 1) {
             qm.forceStartQuest();
             qm.dispose();
         }
@@ -67,8 +67,8 @@ function end(mode, type, selection) {
             }
             
             qm.sendNext("Okay you seem ready to go to the #bMushroom Castle#k. In #rHenesys#k, climb at the tree fort at #bwest#k then enter a portal over there. On the other area, #rgo west#k. From there, a portal will be readily available to access the #bMushroom Castle#k area.");
-        } else {
             qm.forceCompleteQuest();
+        } else if (status == 1) {
             qm.dispose();
         }
     }

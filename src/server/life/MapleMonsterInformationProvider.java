@@ -152,7 +152,7 @@ public class MapleMonsterInformationProvider {
 
                     int rnd = Randomizer.rand(mde.Minimum, mde.Maximum);
                     for (int i = 0; i < rnd - 1; i++) {
-                        extra.add(mde);   // this passes copies of the equips' MDE with min/max quantity > 1, but idc it'll be unused anyways
+                        extra.add(mde);   // this passes copies of the equips' MDE with min/max quantity > 1, but idc on equips they are unused anyways
                     }
                 }
             }

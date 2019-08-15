@@ -22,9 +22,10 @@ function start(mode, type, selection) {
 	}
 	if (status == 0)
 		qm.sendAcceptDecline("Oh, Jack sent you here? Good timing, I'm planning alongside Jack and others to storm the Keep and retake it from the Twisted Masters what is ours by right. You seem ready to fight alongside us, right?");
-	if (status == 1){
+	else if (status == 1){
 		qm.sendOk("Great! Your mission now is to rack down some numbers of their army and weaken their defenses by all effects. Defeat 75 of each: Windraider, Firebrand and Nightshadow, then return to me to report.");
 		qm.forceStartQuest();
-		qm.dispose();
-	}
+	} else if (status == 2) {
+                qm.dispose();
+        }
 }

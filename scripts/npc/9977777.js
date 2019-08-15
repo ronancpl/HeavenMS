@@ -75,6 +75,7 @@ function writeFeatureTab_Quests() {
         addFeature("Rewarding system now looks up for item stacking.");
         addFeature("3rd job quiz with all 40-question pool available.");
         addFeature("Item raising functional.");
+        addFeature("Cleared issue with player movement during NPC talk.");
 }
 
 function writeFeatureTab_PlayerSocialNetwork() {
@@ -295,7 +296,7 @@ function writeAllFeatures() {
                 feature_cursor = [];
 
                 var tabName = (tabs[i]).replace(re, "");
-                eval("writeFeatureTab_" + tabName)();
+                this["writeFeatureTab_" + tabName]();
         
                 feature_tree.push(feature_cursor);
         }

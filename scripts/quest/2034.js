@@ -1,7 +1,6 @@
 importPackage(Packages.client);
 
 var item;
-var stance;
 var status = -1;
 var item;
 
@@ -23,8 +22,7 @@ function end(mode, type, selection) {
 		return;
 	    }
 
-            stance = qm.getPlayer().getJobStyle();
-            
+            var stance = qm.getPlayer().getJobStyle();
             if(stance == Packages.client.MapleJob.WARRIOR) item = 1072003;
             else if(stance == Packages.client.MapleJob.MAGICIAN) item = 1072077;
             else if(stance == Packages.client.MapleJob.BOWMAN || stance == Packages.client.MapleJob.CROSSBOWMAN) item = 1072081;
@@ -34,11 +32,13 @@ function end(mode, type, selection) {
          
             qm.gainItem(item, 1);
             qm.gainItem(4000007, -150);
-            
             qm.gainExp(2200);
             qm.completeQuest();
             
             qm.sendOk("Alright, if you need work sometime down the road, feel free to come back and see me. This town sure can use a person like you for help~");
+        }
+
+        else if (status == 2) {
             qm.dispose();
-	}
+        }
 }

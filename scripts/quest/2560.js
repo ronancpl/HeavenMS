@@ -20,8 +20,10 @@ function start(mode, type, selection) {
 			qm.sendNext("Ook! Ook! (The monkey looks very dissatisfied.)");
 		} else {
 			qm.forceStartQuest();
+                        qm.dispose();
 		}
-		qm.dispose();
-	}
+	} else if (status == 4) {
+                qm.dispose();
+        }
 }
 	

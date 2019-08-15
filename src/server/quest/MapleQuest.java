@@ -28,6 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import client.MapleCharacter;
+import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleQuestStatus;
 import client.MapleQuestStatus.Status;
 import constants.ServerConstants;
@@ -337,7 +338,7 @@ public class MapleQuest {
                 if(pid >= 8200000 && pid <= 8200012) {
                     String pr = StringUtil.getLeftPaddedStr(Integer.toString(setProg), '0', 3);
                     newStatus.setProgress(pid, pr);
-                    c.announce(MaplePacketCreator.updateQuest(newStatus, false));
+                    c.announceUpdateQuest(DelayedQuestUpdate.UPDATE, newStatus, false);
                 }
             }
         }

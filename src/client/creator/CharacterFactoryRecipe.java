@@ -23,6 +23,7 @@ import client.MapleJob;
 import client.Skill;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import constants.ServerConstants;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -39,7 +40,7 @@ public class CharacterFactoryRecipe {
     private int level, map, top, bottom, shoes, weapon;
     private int str = 4, dex = 4, int_ = 4, luk = 4;
     private int maxHp = 50, maxMp = 5;
-    private int ap = 9, sp = 0;
+    private int ap = 0, sp = 0;
     private int meso = 0;
     private List<Pair<Skill, Integer>> skills = new LinkedList<>();
     
@@ -54,6 +55,15 @@ public class CharacterFactoryRecipe {
         this.bottom = bottom;
         this.shoes = shoes;
         this.weapon = weapon;
+        
+        if (!ServerConstants.USE_STARTING_AP_4) {
+            if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP) {
+                str = 12;
+                dex = 5;
+            } else {
+                ap = 9;
+            }
+        }
     }
     
     public void setStr(int v) {

@@ -28,6 +28,7 @@
 */
 
 var status = -1;
+var canComplete;
 
 function start(mode, type, selection) {
     if (mode == -1) {
@@ -45,6 +46,8 @@ function start(mode, type, selection) {
             qm.sendOk("Put your hand in your pocket. I think your friend has already found you.\r\nThe purple bellflower that soaks in the sun in between the skyscraping trees...Follow the path to the unknown that leads you to the bellflower. I will wait for you here.");
             qm.forceStartQuest();
             qm.gainItem(4032086, 1); // Mysterious Egg * 1
+        } else if (status == 3) {
+            qm.dispose();
         }
     }
 }
@@ -76,11 +79,20 @@ function end(mode, type, selection) {
         } else if (status == 5) {
             qm.sendYesNo("Now do you understand? Every action comes with consequences, and pets are no exception. The egg of the snail shall hatch soon.");
         } else if (status == 6) {
-            qm.gainItem(5000054, 1, false, true, 5 * 60 * 60 * 1000);  // rune snail (5hrs), missing expiration time detected thanks to cljnilsson
+            canComplete = qm.canHold(5000054, 1);
+            if (!canComplete) {
+                qm.sendNext("Please free a slot in your CASH inventory before you try to receive the pet...");
+                return;
+            }
             
-            qm.gainItem(4032086, -1); // Mysterious Egg * -1
-            qm.forceCompleteQuest();
             qm.sendNext("This snail will only be alive for #b5 hours#k. Shower it with love. Your love will be reciprocated in the end.");
+        } else if (status == 7) {
+            if (canComplete) {
+                qm.gainItem(4032086, -1); // Mysterious Egg * -1
+                qm.forceCompleteQuest();
+                qm.gainItem(5000054, 1, false, true, 5 * 60 * 60 * 1000);  // rune snail (5hrs), missing expiration time detected thanks to cljnilsson
+            }
+            
             qm.dispose();
         }
     }

@@ -157,7 +157,7 @@ public class CashShop {
         private static final Map<Integer, CashItem> items = new HashMap<>();
         private static final Map<Integer, List<Integer>> packages = new HashMap<>();
         private static final List<SpecialCashItem> specialcashitems = new ArrayList<>();
-        private static final List<Integer> randomitemids = new ArrayList<>();
+        private static final List<Integer> randomitemsns = new ArrayList<>();
 
         static {
             MapleDataProvider etc = MapleDataProviderFactory.getDataProvider(new File("wz/Etc.wz"));
@@ -184,7 +184,7 @@ public class CashShop {
             
             for(Entry<Integer, CashItem> e : items.entrySet()) {
                 if(e.getValue().isOnSale()) {
-                    randomitemids.add(e.getKey());
+                    randomitemsns.add(e.getKey());
                 }
             }
             
@@ -212,10 +212,10 @@ public class CashShop {
         }
 
         public static CashItem getRandomCashItem() {
-            if(randomitemids.isEmpty()) return null;
+            if(randomitemsns.isEmpty()) return null;
             
-            int rnd = (int)(Math.random() * randomitemids.size());
-            return items.get(randomitemids.get(rnd));
+            int rnd = (int)(Math.random() * randomitemsns.size());
+            return items.get(randomitemsns.get(rnd));
         }
         
         public static CashItem getItem(int sn) {

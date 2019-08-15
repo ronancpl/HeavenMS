@@ -37,7 +37,7 @@ function start(mode, type, selection) {
         if (status == 0) {
             qm.sendNext("(As you peek into the shattered statue, you might have found a clue about what happened. Better talk to #rScadur#k about this.)");
             qm.forceCompleteQuest();
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

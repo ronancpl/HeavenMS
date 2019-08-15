@@ -63,7 +63,7 @@ function end(mode, type, selection) {
                     qm.sendNext("Hey, what are you trying to pull on? To pass my test you must to deliver all the foods to the Residential areas.");
                 }
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

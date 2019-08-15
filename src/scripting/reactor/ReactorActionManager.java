@@ -30,6 +30,7 @@ import constants.ItemConstants;
 import constants.ServerConstants;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
@@ -57,23 +58,69 @@ import tools.MaplePacketCreator;
  */
 public class ReactorActionManager extends AbstractPlayerInteraction {
     private MapleReactor reactor;
-    private MapleClient client;
     private Invocable iv;
     private ScheduledFuture<?> sprayTask = null;
 
     public ReactorActionManager(MapleClient c, MapleReactor reactor, Invocable iv) {
         super(c);
         this.reactor = reactor;
-        this.client = c;
         this.iv = iv;
     }
 
     public void hitReactor() {
-        reactor.hitReactor(client);
+        reactor.hitReactor(c);
     }
     
     public void destroyNpc(int npcId) {
         reactor.getMap().destroyNPC(npcId);
+    }
+    
+    private static void sortDropEntries(List<ReactorDropEntry> from, List<ReactorDropEntry> item, List<ReactorDropEntry> visibleQuest, List<ReactorDropEntry> otherQuest, MapleCharacter chr) {
+        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+        
+        for(ReactorDropEntry mde : from) {
+            if(!ii.isQuestItem(mde.itemId)) {
+                item.add(mde);
+            } else {
+                if(chr.needQuestItem(mde.questid, mde.itemId)) {
+                    visibleQuest.add(mde);
+                } else {
+                    otherQuest.add(mde);
+                }
+            }
+        }
+    }
+    
+    private static List<ReactorDropEntry> assembleReactorDropEntries(MapleCharacter chr, List<ReactorDropEntry> items) {
+        final List<ReactorDropEntry> dropEntry = new ArrayList<>();
+        final List<ReactorDropEntry> visibleQuestEntry = new ArrayList<>();
+        final List<ReactorDropEntry> otherQuestEntry = new ArrayList<>();
+        sortDropEntries(items, dropEntry, visibleQuestEntry, otherQuestEntry, chr);
+        
+        Collections.shuffle(dropEntry);
+        Collections.shuffle(visibleQuestEntry);
+        Collections.shuffle(otherQuestEntry);
+        
+        items.clear();
+        items.addAll(dropEntry);
+        items.addAll(visibleQuestEntry);
+        items.addAll(otherQuestEntry);
+        
+        List<ReactorDropEntry> items1 = new ArrayList<>(items.size());
+        List<ReactorDropEntry> items2 = new ArrayList<>(items.size() / 2);
+        
+        for (int i = 0; i < items.size(); i++) {
+            if (i % 2 == 0) {
+                items1.add(items.get(i));
+            } else {
+                items2.add(items.get(i));
+            }
+        }
+        
+        Collections.reverse(items1);
+        items1.addAll(items2);
+        
+        return items1;
     }
 
     public void sprayItems() {
@@ -109,10 +156,10 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
     
     public void dropItems(boolean delayed, int posX, int posY, boolean meso, int mesoChance, final int minMeso, final int maxMeso, int minItems) {
-        if(c.getPlayer() == null) return;
+        MapleCharacter chr = c.getPlayer();
+        if(chr == null) return;
         
-        List<ReactorDropEntry> items = generateDropList(getDropChances(), c.getPlayer().getDropRate(), meso, mesoChance, minItems);
-        
+        List<ReactorDropEntry> items = assembleReactorDropEntries(chr, generateDropList(getDropChances(), chr.getDropRate(), meso, mesoChance, minItems));
         if(items.size() % 2 == 0) posX -= 12;
         final Point dropPos = new Point(posX, posY);
         
@@ -127,8 +174,8 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 if (d.itemId == 0) {
                     int range = maxMeso - minMeso;
                     int displayDrop = (int) (Math.random() * range) + minMeso;
-                    int mesoDrop = (displayDrop * client.getWorldServer().getMesoRate());
-                    reactor.getMap().spawnMesoDrop(mesoDrop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), reactor, client.getPlayer(), false, (byte) 2);
+                    int mesoDrop = (displayDrop * c.getWorldServer().getMesoRate());
+                    reactor.getMap().spawnMesoDrop(mesoDrop, reactor.getMap().calcDropPos(dropPos, reactor.getPosition()), reactor, c.getPlayer(), false, (byte) 2);
                 } else {
                     Item drop;
                     
@@ -142,10 +189,9 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                 }
             }
         } else {
-            final MapleCharacter chr = client.getPlayer();
             final MapleReactor r = reactor;
             final List<ReactorDropEntry> dropItems = items;
-            final int worldMesoRate = client.getWorldServer().getMesoRate();
+            final int worldMesoRate = c.getWorldServer().getMesoRate();
             
             dropPos.x -= (12 * items.size());
             
@@ -178,7 +224,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
                     
                     dropPos.x += 25;
                 }
-            }, 100);
+            }, 200);
         }
     }
 
@@ -187,37 +233,21 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
     
     private List<ReactorDropEntry> generateDropList(List<ReactorDropEntry> drops, int dropRate, boolean meso, int mesoChance, int minItems) {
-        MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
-        
         List<ReactorDropEntry> items = new ArrayList<>();
-        List<ReactorDropEntry> questItems = new ArrayList<>();
-        int numItems = 0;
-        
         if (meso && Math.random() < (1 / (double) mesoChance)) {
             items.add(new ReactorDropEntry(0, mesoChance, -1));
         }
         
         for(ReactorDropEntry mde : drops) {
             if (Math.random() < (dropRate / (double) mde.chance)) {
-                if(!ii.isQuestItem(mde.itemId)) {
-                    items.add(mde);
-                } else {
-                    questItems.add(mde);
-                }
-                
-                numItems++;
+                items.add(mde);
             }
         }
         
-        while (numItems < minItems) {
+        while (items.size() < minItems) {
             items.add(new ReactorDropEntry(0, mesoChance, -1));
-            numItems++;
         }
         
-        java.util.Collections.shuffle(items);
-        java.util.Collections.shuffle(questItems);
-        
-        items.addAll(questItems);
         return items;
     }
 
@@ -226,7 +256,7 @@ public class ReactorActionManager extends AbstractPlayerInteraction {
     }
 
     public void createMapMonitor(int mapId, String portal) {
-        new MapMonitor(client.getChannelServer().getMapFactory().getMap(mapId), portal);
+        new MapMonitor(c.getChannelServer().getMapFactory().getMap(mapId), portal);
     }
 
     public void spawnMonster(int id, int qty) {

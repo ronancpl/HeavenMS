@@ -80,6 +80,7 @@ public class ServerConstants {
     public static final boolean USE_PARTY_FOR_STARTERS = true;      //Players level 10 or below can create/invite other players on the given level range.
     public static final boolean USE_AUTOASSIGN_STARTERS_AP = false; //Beginners level 10 or below have their AP autoassigned (they can't choose to levelup a stat). Set true ONLY if the localhost doesn't support AP assigning for beginners level 10 or below.
     public static final boolean USE_AUTOASSIGN_SECONDARY_CAP = true;//Prevents AP autoassign from spending on secondary stats after the player class' cap (defined on the autoassign handler) has been reached.
+    public static final boolean USE_STARTING_AP_4 = true;           //Use early-GMS 4/4/4/4 starting stats. To overcome AP shortage, this gives 4AP/5AP at 1st/2nd job advancements.
     public static final boolean USE_AUTOBAN = false;                //Commands the server to detect infractors automatically.
     public static final boolean USE_AUTOBAN_LOG = true;             //Log autoban related messages. Still logs even with USE_AUTOBAN disabled.
     public static final boolean USE_AUTOSAVE = true;                //Enables server autosaving feature (saves characters to DB each 1 hour).

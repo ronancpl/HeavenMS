@@ -60,7 +60,6 @@ function end(mode, type, selection) {
             if(!qm.isQuestCompleted(21201)) {
                 if(!qm.canHold(1142130)) {
                     qm.sendOk("Wow, your #bequip#k inventory is full. I need you to make at least 1 empty slot to complete this quest.");   // thanks MedicOP for finding an issue here
-                    qm.dispose();
                     return;
                 }
 
@@ -78,6 +77,7 @@ function end(mode, type, selection) {
             }
 
             qm.sendNext("Your level isn't what it used to be back in your glory days, so I can't restore all of your old abilities. But the few I can restore should help you level up faster. Now hurry up and train so you can return to the old you.");    
+        } else if (status == 9) {
             qm.dispose();
         }
     }

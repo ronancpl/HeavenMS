@@ -53,6 +53,7 @@ import server.partyquest.Pyramid;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
+import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleClient;
 import client.MapleQuestStatus;
 import client.SkillFactory;
@@ -468,12 +469,12 @@ public class AbstractPlayerInteraction {
         
         public void resetAllQuestProgress(int qid) {
                 getPlayer().getQuest(MapleQuest.getInstance(qid)).resetAllProgress();
-                getClient().announce(MaplePacketCreator.updateQuest(getPlayer().getQuest(MapleQuest.getInstance(qid)), false));
+                getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, getPlayer().getQuest(MapleQuest.getInstance(qid)), false);
         }
         
         public void resetQuestProgress(int qid, int pid) {
                 getPlayer().getQuest(MapleQuest.getInstance(qid)).resetProgress(pid);
-                getClient().announce(MaplePacketCreator.updateQuest(getPlayer().getQuest(MapleQuest.getInstance(qid)), false));
+                getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, getPlayer().getQuest(MapleQuest.getInstance(qid)), false);
         }
         
         public boolean forceStartQuest(int id) {

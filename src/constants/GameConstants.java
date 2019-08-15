@@ -7,9 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import client.MapleJob;
 import constants.skills.Aran;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+import provider.MapleData;
+import provider.MapleDataDirectoryEntry;
+import provider.MapleDataFileEntry;
+import provider.MapleDataProvider;
+import provider.MapleDataProviderFactory;
+import provider.MapleDataTool;
 import server.maps.MapleMap;
 import server.maps.FieldLimit;
 import server.quest.MapleQuest;
@@ -37,6 +44,8 @@ public class GameConstants {
     
     public static final MapleDisease[] CPQ_DISEASES = {MapleDisease.SLOW, MapleDisease.SEDUCE, MapleDisease.STUN, MapleDisease.POISON,
                                                        MapleDisease.SEAL, MapleDisease.DARKNESS, MapleDisease.WEAKEN, MapleDisease.CURSE};
+    
+    public static final int MAX_FIELD_MOB_DAMAGE = getMaxObstacleMobDamageFromWz() * 2;
     
     public static int getPlayerBonusDropRate(int slot) {
         return(DROP_RATE_GAIN[slot]);
@@ -672,4 +681,32 @@ public class GameConstants {
             return 0.0f;
         }
     }
+    
+    private static int getMaxObstacleMobDamageFromWz() {
+        MapleDataProvider mapSource = MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/Map.wz"));
+        int maxMobDmg = 0;
+        
+        MapleDataDirectoryEntry root = mapSource.getRoot();
+        for (MapleDataDirectoryEntry objData : root.getSubdirectories()) {
+            if (!objData.getName().contentEquals("Obj")) {
+                continue;
+            }
+            
+            for (MapleDataFileEntry obj : objData.getFiles()) {
+                for (MapleData l0 : mapSource.getData(objData.getName() + "/" + obj.getName()).getChildren()) {
+                    for (MapleData l1 : l0.getChildren()) {
+                        for (MapleData l2 : l1.getChildren()) {
+                            int objDmg = MapleDataTool.getIntConvert("s1/mobdamage", l2, 0);
+                            if (maxMobDmg < objDmg) {
+                                maxMobDmg = objDmg;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return maxMobDmg;
+    }
+    
 }

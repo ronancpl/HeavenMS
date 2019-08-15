@@ -163,6 +163,7 @@ public class QuestScriptManager extends AbstractScriptManager {
 		scripts.remove(c);
                 c.getPlayer().setNpcCooldown(System.currentTimeMillis());
 		resetContext("quest/" + qm.getQuest() + ".js", c);
+                c.getPlayer().flushDelayedUpdateQuests();
 	}
 
 	public void dispose(MapleClient c) {

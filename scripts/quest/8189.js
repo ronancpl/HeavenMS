@@ -63,6 +63,7 @@ function end(mode, type, selection) {
 			if (id < 5000029 || id > 5000033) {
 				qm.sendOk("Something wrong, try again.");
 				qm.dispose();
+                                return;
 			}
 			var rand = 1 + Math.floor(Math.random() * 10);
 			var after = 0;
@@ -77,6 +78,7 @@ function end(mode, type, selection) {
 			} else {
 				qm.sendOk("Something wrong. Try again.");
 				qm.dispose();
+                                return;
 			}
 			
                         /*if (name.equals(MapleItemInformationProvider.getInstance().getName(id))) {
@@ -88,7 +90,8 @@ function end(mode, type, selection) {
 			qm.evolvePet(pet, after);
                         
 			qm.sendOk("Woo! It worked again! #rYou may find your new pet under your 'CASH' inventory.\r #kIt used to be a #b#i" + id + "##t" + id + "##k, and now it's \r a#b #i" + after + "##t" + after + "##k! \r\n Come back with 10,000 mesos and another Rock of Evolution if you don't like it!\r\n\r\n#fUI/UIWindow.img/QuestIcon/4/0#\r\n#v"+after+"# #t"+after+"#");
-			qm.dispose();
-		}
+		} else if (status == 3) {
+                        qm.dispose();
+                }
 	}
 }

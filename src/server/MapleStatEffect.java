@@ -1288,6 +1288,7 @@ public class MapleStatEffect {
             if (mount != null) {
                 ridingMountId = mount.getItemId();
             }
+            
             if (sourceid == Corsair.BATTLE_SHIP) {
                 ridingMountId = 1932000;
             } else if (sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP) {
@@ -1300,28 +1301,12 @@ public class MapleStatEffect {
                 ridingMountId = 1932005;
             } else if (sourceid == Beginner.BALROG_MOUNT || sourceid == Noblesse.BALROG_MOUNT || sourceid == Legend.BALROG_MOUNT) {
                 ridingMountId = 1932010;
-            } else {
-                if (applyto.getMount() == null) {
-                    applyto.mount(ridingMountId, sourceid);
-                }
-
-                applyto.getClient().getWorldServer().registerMountHunger(applyto);
             }
-            if (sourceid == Corsair.BATTLE_SHIP) {
-                givemount = new MapleMount(applyto, 1932000, sourceid);
-            } else if (sourceid == Beginner.SPACESHIP || sourceid == Noblesse.SPACESHIP) {
-                givemount = new MapleMount(applyto, 1932000 + applyto.getSkillLevel(sourceid), sourceid);
-            } else if (sourceid == Beginner.YETI_MOUNT1 || sourceid == Noblesse.YETI_MOUNT1 || sourceid == Legend.YETI_MOUNT1) {
-                givemount = new MapleMount(applyto, 1932003, sourceid);
-            } else if (sourceid == Beginner.YETI_MOUNT2 || sourceid == Noblesse.YETI_MOUNT2 || sourceid == Legend.YETI_MOUNT2) {
-                givemount = new MapleMount(applyto, 1932004, sourceid);
-            } else if (sourceid == Beginner.WITCH_BROOMSTICK || sourceid == Noblesse.WITCH_BROOMSTICK || sourceid == Legend.WITCH_BROOMSTICK) {
-                givemount = new MapleMount(applyto, 1932005, sourceid);
-            } else if (sourceid == Beginner.BALROG_MOUNT || sourceid == Noblesse.BALROG_MOUNT || sourceid == Legend.BALROG_MOUNT) {
-                givemount = new MapleMount(applyto, 1932010, sourceid);
-            } else {
-                givemount = applyto.getMount();
-            }
+            
+            // thanks inhyuk for noticing some skill mounts not acting properly for other players when changing maps
+            givemount = applyto.mount(ridingMountId, sourceid);
+            applyto.getClient().getWorldServer().registerMountHunger(applyto);
+            
             localDuration = sourceid;
             localsourceid = ridingMountId;
             localstatups = Collections.singletonList(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));

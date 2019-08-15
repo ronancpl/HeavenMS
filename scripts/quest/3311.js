@@ -42,7 +42,7 @@ function end(mode, type, selection) {
             } else {
                 qm.sendNext("Found nothing yet? Please check out Dr. De Lang's house properly, something there may give out a clue about what is going on.");
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

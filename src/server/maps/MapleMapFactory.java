@@ -31,7 +31,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import provider.MapleData;
 import provider.MapleDataProvider;
 import provider.MapleDataProviderFactory;
@@ -49,8 +48,6 @@ import tools.StringUtil;
 
 public class MapleMapFactory {
 
-    private static Map<Integer, Float> mapRecoveryRateCache = new HashMap<>();
-    
     private static MapleData nameData;
     private static MapleDataProvider mapSource;
     
@@ -336,11 +333,10 @@ public class MapleMapFactory {
         map.setTimeLimit(MapleDataTool.getIntConvert("timeLimit", infoData, -1));
         map.setFieldType(MapleDataTool.getIntConvert("fieldType", infoData, 0));
         map.setMobCapacity(MapleDataTool.getIntConvert("fixedMobCapacity", infoData, 500));//Is there a map that contains more than 500 mobs?
-
+        
         MapleData recData = infoData.getChildByPath("recovery");
         if (recData != null) {
-            float recoveryRate = MapleDataTool.getFloat(recData);
-            mapRecoveryRateCache.put(mapid, recoveryRate);
+            map.setRecovery(MapleDataTool.getFloat(recData));
         }
 
         HashMap<Integer, Integer> backTypes = new HashMap<>();
@@ -438,9 +434,5 @@ public class MapleMapFactory {
         builder.append("/").append(mapid);
         return builder.toString();
     }
-
-    public static float getMapRecoveryRate(int mapid) {
-        Float recRate = mapRecoveryRateCache.get(mapid);
-        return recRate != null ? recRate : 1.0f;
-    }
+    
 }

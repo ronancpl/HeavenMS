@@ -59,6 +59,7 @@ function end(mode, type, selection) {
         }
         
         qm.sendNext("Come on, keep training so you can get all your abilities back, and that way we can explore together once more!");    
+    } else if (status == 3) {
         qm.dispose();
     }
 }

@@ -30,7 +30,7 @@ function start(mode, type, selection) {
             } else {
                 qm.sendOk("Hey. There's no slot on your ETC.");
             }
-
+	} else if (status == 2){
             qm.dispose();
 	}
 }
@@ -53,7 +53,7 @@ function end(mode, type, selection) {
         } else {
             qm.sendOk("I'm afraid you don't have the letter you claimed to have with you.");
         }
-
+    } else if (status == 1) {
         qm.dispose();
     }
 }

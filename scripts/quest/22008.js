@@ -69,6 +69,7 @@ function end(mode, type, selection) {
 		qm.sendNextPrev("#bThis is a weapon that Magicians use. It's a Wand#k. You probably won't really need it, but it'll make you look important if you carry it around. Hahahahaha.");
 	} else if (status == 13) {
 		qm.sendPrev("Anyway, the Foxes have increased, right? How weird is that? Why are they growing day by day? We should really look into it and get to the bottom of this.");
-		qm.dispose();
-	}
+	} else if (status == 14) {
+                qm.dispose();
+        }
 }

@@ -25,7 +25,8 @@ function start(mode, type, selection) {
 			qm.sendNext("Hurry up and head #bleft#k to feed #b#p1013102##k. He's been barking to be fed all morning.");
 		}
 	} else if (status == 4) {
-		qm.sendPrev("Feed #p1013102# and come back to see me.");
-		qm.dispose();
-	}
+		qm.sendNextPrev("Feed #p1013102# and come back to see me.");
+	} else if (status == 5) {
+                qm.dispose();
+        }
 }

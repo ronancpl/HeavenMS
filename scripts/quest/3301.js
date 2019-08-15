@@ -48,8 +48,7 @@ function end(mode, type, selection) {
 	    qm.gainItem(oreArray[selection], -2); // Take 2 ores
 	    qm.sendNext("Then wait for awhile. I'll go and get the stuff to help you pass the test of Chief Zanumist.");
 	    qm.forceCompleteQuest();
-	    qm.dispose();
-	} else {
+	} else if (status == 1) {
 	    qm.dispose();
 	}
     }

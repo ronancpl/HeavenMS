@@ -68,7 +68,9 @@ function end(mode, type, selection) {
 			qm.completeQuest();
 		}
 		qm.sendNext("Your skills have been restored. Those skills have been dormant for so long that you'll have to re-train yourself, but you'll be as good as new once you complete your training.");
-	}
+	} else if(status == 3) {
+                qm.dispose();
+        }
 }
 
 function spawnMob(x, y, id, map) {

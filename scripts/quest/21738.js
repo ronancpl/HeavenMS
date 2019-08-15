@@ -50,7 +50,7 @@ function start(mode, type, selection) {
             qm.sendAcceptDecline("I can't tell you about Sealed Garden. If you want to find out, I must first see whether you are worthy of the information. Do you mind if I look into your fate?", 9);
         } else if (status == 7) {
             qm.sendOk("Well, now let's look into your fate. Give me a second.");
-        } else {
+        } else if (status == 8) {
             qm.forceStartQuest();
             qm.dispose();
         }

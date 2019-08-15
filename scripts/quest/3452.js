@@ -17,12 +17,13 @@ function end(mode, type, selection) {
 			qm.gainItem(2000011, 50);
 			qm.gainExp(8000);
 			qm.forceCompleteQuest();
+                        qm.dispose();
 		}
 		else {
 			qm.sendNext("Hm? It looks like your inventory is full.");
 		}
-                
+	} else if (status == 2) {
                 qm.dispose();
-	}
+        }
     }    
 }

@@ -1,10 +1,10 @@
 package net.server.channel.handlers;
 
+import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleClient;
 import client.MapleQuestStatus;
 import net.AbstractMaplePacketHandler;
 import server.quest.MapleQuest;
-import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 /**
@@ -25,7 +25,7 @@ public class RaiseUIStateHandler extends AbstractMaplePacketHandler {
                     quest.forceStart(c.getPlayer(), 22000);
                     c.getPlayer().updateQuestInfo(quest.getId(), "0"); 
                 } else if (mqs.getStatus() == MapleQuestStatus.Status.STARTED) {
-                    c.announce(MaplePacketCreator.updateQuest(mqs, false));
+                    c.getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, mqs, false);
                 } else {
                     //c.announce(MaplePacketCreator.updateQuestInfo(mqs.getQuestID(), 22000, "0"));
                 }

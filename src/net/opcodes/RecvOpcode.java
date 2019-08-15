@@ -170,6 +170,7 @@ public enum RecvOpcode {
     MOVE_DRAGON(0xB5),
     MOVE_LIFE(0xBC),
     AUTO_AGGRO(0xBD),
+    FIELD_DAMAGE_MOB(0xBF),
     MOB_DAMAGE_MOB_FRIENDLY(0xC0),
     MONSTER_BOMB(0xC1),
     MOB_DAMAGE_MOB(0xC2),

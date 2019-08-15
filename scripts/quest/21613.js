@@ -44,7 +44,6 @@ function start(mode, type, selection) {
             var em = qm.getEventManager("Aran_3rdmount");
             if (em == null) {
                 qm.sendOk("Sorry, but the 3rd mount quest (Wolves) is closed.");
-                qm.dispose();
                 return;
             }
             else {
@@ -54,9 +53,9 @@ function start(mode, type, selection) {
                 } else {
                     qm.forceStartQuest();
                 }
-                
-                qm.dispose();
             }
+        } else if (status == 4) {
+            qm.dispose();
         }
     }
 }

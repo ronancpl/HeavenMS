@@ -137,6 +137,7 @@ public class MapleMap {
     private int timeLimit;
     private long mapTimer;
     private int decHP = 0;
+    private float recovery = 1.0f;
     private int protectItem = 0;
     private boolean town;
     private MapleOxQuiz ox;
@@ -1408,81 +1409,85 @@ public class MapleMap {
             }
         } else {
             if (removeKilledMonsterObject(monster)) {
-                if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
-                    AutobanFactory.GENERAL.alert(chr, " for killing a " + monster.getName() + " which is over 30 levels higher.");
-                }
-                
-                /*if (chr.getQuest(MapleQuest.getInstance(29400)).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
-                 if (chr.getLevel() >= 120 && monster.getStats().getLevel() >= 120) {
-                 //FIX MEDAL SHET
-                 } else if (monster.getStats().getLevel() >= chr.getLevel()) {
-                 }
-                 }*/
-                
-                if (monster.getCP() > 0 && chr.getMap().isCPQMap()) {
-                    chr.gainCP(monster.getCP());
-                }
-                
-                int buff = monster.getBuffToGive();
-                if (buff > -1) {
-                    MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
-                    for (MapleMapObject mmo : this.getPlayers()) {
-                        MapleCharacter character = (MapleCharacter) mmo;
-                        if (character.isAlive()) {
-                            MapleStatEffect statEffect = mii.getItemEffect(buff);
-                            character.getClient().announce(MaplePacketCreator.showOwnBuffEffect(buff, 1));
-                            broadcastMessage(character, MaplePacketCreator.showBuffeffect(character.getId(), buff, 1), false);
-                            statEffect.applyTo(character);
-                        }
+                try {
+                    if (monster.getStats().getLevel() >= chr.getLevel() + 30 && !chr.isGM()) {
+                        AutobanFactory.GENERAL.alert(chr, " for killing a " + monster.getName() + " which is over 30 levels higher.");
                     }
-                }
-                
-                if (monster.getId() >= 8800003 && monster.getId() <= 8800010) {
-                    boolean makeZakReal = true;
-                    Collection<MapleMapObject> objects = getMapObjects();
-                    for (MapleMapObject object : objects) {
-                        MapleMonster mons = getMonsterByOid(object.getObjectId());
-                        if (mons != null) {
-                            if (mons.getId() >= 8800003 && mons.getId() <= 8800010) {
-                                makeZakReal = false;
-                                break;
+
+                    /*if (chr.getQuest(MapleQuest.getInstance(29400)).getStatus().equals(MapleQuestStatus.Status.STARTED)) {
+                     if (chr.getLevel() >= 120 && monster.getStats().getLevel() >= 120) {
+                     //FIX MEDAL SHET
+                     } else if (monster.getStats().getLevel() >= chr.getLevel()) {
+                     }
+                     }*/
+
+                    if (monster.getCP() > 0 && chr.getMap().isCPQMap()) {
+                        chr.gainCP(monster.getCP());
+                    }
+
+                    int buff = monster.getBuffToGive();
+                    if (buff > -1) {
+                        MapleItemInformationProvider mii = MapleItemInformationProvider.getInstance();
+                        for (MapleMapObject mmo : this.getPlayers()) {
+                            MapleCharacter character = (MapleCharacter) mmo;
+                            if (character.isAlive()) {
+                                MapleStatEffect statEffect = mii.getItemEffect(buff);
+                                character.getClient().announce(MaplePacketCreator.showOwnBuffEffect(buff, 1));
+                                broadcastMessage(character, MaplePacketCreator.showBuffeffect(character.getId(), buff, 1), false);
+                                statEffect.applyTo(character);
                             }
                         }
                     }
-                    if (makeZakReal) {
-                        MapleMap map = chr.getMap();
 
+                    if (monster.getId() >= 8800003 && monster.getId() <= 8800010) {
+                        boolean makeZakReal = true;
+                        Collection<MapleMapObject> objects = getMapObjects();
                         for (MapleMapObject object : objects) {
-                            MapleMonster mons = map.getMonsterByOid(object.getObjectId());
+                            MapleMonster mons = getMonsterByOid(object.getObjectId());
                             if (mons != null) {
-                                if (mons.getId() == 8800000) {
-                                    makeMonsterReal(mons);
-                                    mons.aggroUpdateController();
+                                if (mons.getId() >= 8800003 && mons.getId() <= 8800010) {
+                                    makeZakReal = false;
                                     break;
                                 }
                             }
                         }
-                    }
-                }
+                        if (makeZakReal) {
+                            MapleMap map = chr.getMap();
 
-                MapleCharacter dropOwner = monster.killBy(chr);
-                if (withDrops && !monster.dropsDisabled()) {
-                    if (dropOwner == null) {
-                        dropOwner = chr;
-                    }
-                    dropFromMonster(dropOwner, monster, false);
-                }
-
-                if (monster.hasBossHPBar()) {
-                    for(MapleCharacter mc : this.getAllPlayers()) {
-                        if(mc.getTargetHpBarHash() == monster.hashCode()) {
-                            mc.resetPlayerAggro();
+                            for (MapleMapObject object : objects) {
+                                MapleMonster mons = map.getMonsterByOid(object.getObjectId());
+                                if (mons != null) {
+                                    if (mons.getId() == 8800000) {
+                                        makeMonsterReal(mons);
+                                        mons.aggroUpdateController();
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
-                }
 
-                monster.dispatchMonsterKilled(true);
-                broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
+                    MapleCharacter dropOwner = monster.killBy(chr);
+                    if (withDrops && !monster.dropsDisabled()) {
+                        if (dropOwner == null) {
+                            dropOwner = chr;
+                        }
+                        dropFromMonster(dropOwner, monster, false);
+                    }
+
+                    if (monster.hasBossHPBar()) {
+                        for(MapleCharacter mc : this.getAllPlayers()) {
+                            if(mc.getTargetHpBarHash() == monster.hashCode()) {
+                                mc.resetPlayerAggro();
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {     // thanks resinate for pointing out a memory leak possibly from an exception thrown
+                    monster.dispatchMonsterKilled(true);
+                    broadcastMessage(MaplePacketCreator.killMonster(monster.getObjectId(), animation), monster.getPosition());
+                }
             }
         }
     }
@@ -2707,12 +2712,12 @@ public class MapleMap {
         return portal != null ? portal : getPortal(0);
     }
     
-    public MaplePortal findClosestWarpPortal(Point from) {
+    public MaplePortal findClosestTeleportPortal(Point from) {
         MaplePortal closest = null;
         double shortestDistance = Double.POSITIVE_INFINITY;
         for (MaplePortal portal : portals.values()) {
             double distance = portal.getPosition().distanceSq(from);
-            if (portal.getType() == MaplePortal.MAP_PORTAL && distance < shortestDistance && portal.getTargetMapId() == 999999999) {
+            if (portal.getType() == MaplePortal.TELEPORT_PORTAL && distance < shortestDistance && portal.getTargetMapId() != 999999999) {
                 closest = portal;
                 shortestDistance = distance;
             }
@@ -3776,6 +3781,14 @@ public class MapleMap {
 
     public void setHPDecProtect(int delta) {
         this.protectItem = delta;
+    }
+    
+    public float getRecovery() {
+        return recovery;
+    }
+
+    public void setRecovery(float recRate) {
+        recovery = recRate;
     }
 
     private int hasBoat() {

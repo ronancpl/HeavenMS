@@ -43,7 +43,7 @@ function end(mode, type, selection) {
             } else {
                 qm.sendNext("Did you not seal the #rmagic circle beneath Magatia#k yet? It is a matter of great importance, please haste yourself.");
             }
-            
+        } else if (status == 1) {
             qm.dispose();
         }
     }

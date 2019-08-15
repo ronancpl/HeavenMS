@@ -25,6 +25,7 @@ function start(mode, type, selection) {
 	else if (status == 1){
 		qm.sendOk("Very well. To prove your valor among our ranks, you must first pass on a little challenge: you have to be able to move extraordinaly well around here, known of all secrets these woods holds. Trace a #bmap of the Phantom Forest#k, then come talk to me. I shall then evaluate if you're worth to be with us.");
 		qm.forceStartQuest();
-		qm.dispose();
-	}
+	} else if (status == 2) {
+                qm.dispose();
+        }
 }

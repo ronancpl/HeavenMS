@@ -44,13 +44,16 @@ function start(mode, type, selection) {
         else if (status == 2)
             qm.sendAcceptDecline("Ah, I don't know if you are aware of this, but you won't find any monsters here in Ereve. Any form of evil will not be able to set foot on this island. Don't worry, you'll still have your opportunity to train here. Shinsoo created a fantasy creature called Mimi, which will be used as your training partners. Shall we begin?");
         else if (status == 3) {
+            qm.forceStartQuest();
+            qm.forceCompleteQuest();
+
             qm.gainExp(60);
             qm.gainItem(2000020, 10); // Red Potion for Noblesse * 10
             qm.gainItem(2000021, 10); // Blue Potion for Noblesse * 10
             qm.gainItem(1002869, 1);  // Elegant Noblesse Hat * 1
+
             qm.sendOk("Ha, I like your enthusiasm, but you must prepare yourself for the training first before we start things off. Make sure that you are equipped with weapons, and that your skills are calibrated and ready to be used. I also gave you some potions, so have it ready just in case. Let me know when you're ready. You're going to wish that you didn't sign up to become a Cygnus Knight.");
-            qm.forceStartQuest();
-            qm.forceCompleteQuest();
+        } else if (status == 4) {
             qm.dispose();
         }
     }

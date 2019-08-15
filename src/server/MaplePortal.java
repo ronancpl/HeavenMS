@@ -25,6 +25,7 @@ import java.awt.Point;
 import client.MapleClient;
 
 public interface MaplePortal {
+    public final int TELEPORT_PORTAL = 1;
     public final int MAP_PORTAL = 2;
     public final int DOOR_PORTAL = 6;
     public static boolean OPEN = true;

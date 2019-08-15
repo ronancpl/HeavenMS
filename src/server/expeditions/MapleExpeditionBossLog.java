@@ -65,12 +65,9 @@ public class MapleExpeditionBossLog {
         private static List<Pair<Timestamp, BossLogEntry>> getBossLogResetTimestamps(Calendar timeNow, boolean week) {
             List<Pair<Timestamp, BossLogEntry>> resetTimestamps = new LinkedList<>();
             
+            Timestamp ts = new Timestamp(timeNow.getTime().getTime());  // reset all table entries actually, thanks Conrad
             for (BossLogEntry b : BossLogEntry.values()) {
                 if (b.week == week) {
-                    Calendar c = (Calendar) timeNow.clone();
-                    c.roll(Calendar.DAY_OF_MONTH, -1 * (week ? 7 : 1) * b.timeLength);
-                    Timestamp ts = new Timestamp(c.getTime().getTime());
-                    
                     resetTimestamps.add(new Pair<>(ts, b));
                 }
             }

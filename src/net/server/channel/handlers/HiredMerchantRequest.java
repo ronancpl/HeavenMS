@@ -27,8 +27,12 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import client.MapleClient;
 import constants.GameConstants;
+import java.awt.Point;
 import net.AbstractMaplePacketHandler;
+import server.MaplePortal;
+import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
+import server.maps.MaplePlayerShop;
 import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
 
@@ -40,7 +44,34 @@ public final class HiredMerchantRequest extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
-        if (chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.HIRED_MERCHANT)).isEmpty() && (GameConstants.isFreeMarketRoom(chr.getMapId()))) {
+        
+        try {
+            for (MapleMapObject mmo : chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.HIRED_MERCHANT, MapleMapObjectType.PLAYER))) {
+                if (mmo instanceof MapleCharacter) {
+                    MapleCharacter mc = (MapleCharacter) mmo;
+
+                    MaplePlayerShop shop = mc.getPlayerShop();
+                    if (shop != null && shop.isOwner(mc)) {
+                        chr.announce(MaplePacketCreator.getMiniRoomError(13));
+                        return;
+                    }
+                } else {
+                    chr.announce(MaplePacketCreator.getMiniRoomError(13));
+                    return;
+                }
+            }
+
+            Point cpos = chr.getPosition();
+            MaplePortal portal = chr.getMap().findClosestTeleportPortal(cpos);
+            if (portal != null && portal.getPosition().distance(cpos) < 120.0) {
+                chr.announce(MaplePacketCreator.getMiniRoomError(10));
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        if (GameConstants.isFreeMarketRoom(chr.getMapId())) {
             if (!chr.hasMerchant()) {
                 try {
                     if (ItemFactory.MERCHANT.loadItems(chr.getId(), false).isEmpty() && chr.getMerchantMeso() == 0) {

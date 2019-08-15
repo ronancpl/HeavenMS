@@ -34,11 +34,13 @@ import constants.ServerConstants;
 
 import net.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
+import server.MaplePortal;
 import server.MapleTrade;
 import constants.GameConstants;
 import server.maps.FieldLimit;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMapObject;
+import server.maps.MapleMapObjectType;
 import server.maps.MapleMiniGame;
 import server.maps.MapleMiniGame.MiniGameType;
 import server.maps.MaplePlayerShop;
@@ -49,6 +51,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 
 import java.awt.Point;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
  *
@@ -237,13 +240,9 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                     
-                    try {
-                        Point cpos = chr.getPosition();
-                        if (chr.getMap().findClosestWarpPortal(cpos).getPosition().distance(cpos) < 120.0) {
-                            chr.getClient().announce(MaplePacketCreator.getMiniRoomError(10));
-                            return;
-                        }
-                    } catch (NullPointerException npe) {}
+                    if (!canPlaceStore(chr)) {
+                        return;
+                    }
                     
                     String desc = slea.readMapleAsciiString();
                     slea.skip(3);
@@ -361,6 +360,10 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     }
                     
                     c.announce(MaplePacketCreator.hiredMerchantOwnerMaintenanceLeave());
+                }
+                
+                if (!canPlaceStore(chr)) {    // thanks Ari for noticing player shops overlapping on opening time
+                    return;
                 }
 
                 MaplePlayerShop shop = chr.getPlayerShop();
@@ -796,5 +799,38 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
         }
         
         return false;
+    }
+    
+    private static boolean canPlaceStore(MapleCharacter chr) {
+        try {
+            for (MapleMapObject mmo : chr.getMap().getMapObjectsInRange(chr.getPosition(), 23000, Arrays.asList(MapleMapObjectType.HIRED_MERCHANT, MapleMapObjectType.PLAYER))) {
+                if (mmo instanceof MapleCharacter) {
+                    MapleCharacter mc = (MapleCharacter) mmo;
+                    if (mc.getId() == chr.getId()) {
+                        continue;
+                    }
+
+                    MaplePlayerShop shop = mc.getPlayerShop();
+                    if (shop != null && shop.isOwner(mc)) {
+                        chr.announce(MaplePacketCreator.getMiniRoomError(13));
+                        return false;
+                    }
+                } else {
+                    chr.announce(MaplePacketCreator.getMiniRoomError(13));
+                    return false;
+                }
+            }
+
+            Point cpos = chr.getPosition();
+            MaplePortal portal = chr.getMap().findClosestTeleportPortal(cpos);
+            if (portal != null && portal.getPosition().distance(cpos) < 120.0) {
+                chr.announce(MaplePacketCreator.getMiniRoomError(10));
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return true;
     }
 }

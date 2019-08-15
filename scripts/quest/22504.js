@@ -22,5 +22,7 @@ function start(mode, type, selection) {
 			qm.forceStartQuest();
 			qm.sendNext("#b#b(You already asked Dad once, but you don't have any better ideas. Time to ask him again!)");
 		}
-	}
+	} else if (status == 4) {
+                qm.dispose();
+        }
 }

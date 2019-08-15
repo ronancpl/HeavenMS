@@ -31,6 +31,7 @@ function start(mode, type, selection) {
 			qm.sendOk("If the #p1201001# reacts to you, then we'll know that you're #bAran#k, the hero that wielded a #p1201001#.", 8);
 			qm.showIntro("Effect/Direction1.img/aranTutorial/ClickPoleArm");
 		}
-		qm.dispose();
-	}
+	} else if (status == 8) {
+            qm.dispose();
+        }
 }

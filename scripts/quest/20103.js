@@ -50,6 +50,7 @@ function end(mode, type, selection) {
     	qm.sendNextPrev("Unlike your time as a Nobless, once you become the Wind Archer, you will lost a portion of your EXP when you run out of HP, okay?");
     } else if (status == 5) {
     	qm.sendNextPrev("Now... I want you to go out there and show the world how the Knights of Cygnus operate.");
-    	qm.dispose();
+    } else if (status == 6) {
+        qm.dispose();
     }
 }

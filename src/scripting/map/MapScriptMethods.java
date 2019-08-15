@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package scripting.map;
 
+import client.MapleCharacter.DelayedQuestUpdate;
 import client.MapleClient;
 import client.MapleQuestStatus;
 import scripting.AbstractPlayerInteraction;
@@ -99,7 +100,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
         }
         String status = Integer.toString(q.getMedalProgress());
         String infoex = quest.getInfoEx();
-        getPlayer().announce(MaplePacketCreator.updateQuest(q, true));
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, q, true);
         StringBuilder smp = new StringBuilder();
         StringBuilder etm = new StringBuilder();
         if (status.equals(infoex)) {
@@ -127,7 +128,7 @@ public class MapScriptMethods extends AbstractPlayerInteraction {
             return;
         }
         String status = Integer.toString(q.getMedalProgress());
-        getPlayer().announce(MaplePacketCreator.updateQuest(q, true));
+        getPlayer().announceUpdateQuest(DelayedQuestUpdate.UPDATE, q, true);
         getPlayer().announce(MaplePacketCreator.earnTitleMessage(status + "/5 Completed"));
         getPlayer().announce(MaplePacketCreator.earnTitleMessage("The One Who's Touched the Sky title in progress."));
         if (Integer.toString(q.getMedalProgress()).equals(quest.getInfoEx())) {

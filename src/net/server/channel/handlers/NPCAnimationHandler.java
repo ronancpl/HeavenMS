@@ -30,6 +30,10 @@ import tools.data.output.MaplePacketLittleEndianWriter;
 public final class NPCAnimationHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
+        if (c.getPlayer().isChangingMaps()) {   // possible cause of error 38 in some map transition scenarios, thanks Arnah
+            return;
+        }
+        
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         int length = (int) slea.available();
         if (length == 6) { // NPC Talk

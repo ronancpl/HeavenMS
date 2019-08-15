@@ -347,6 +347,12 @@ public class EventManager {
     private boolean startLobbyInstance(int lobbyId) {
         lobbyLock.lock();
         try {
+            if (lobbyId < 0) {
+                lobbyId = 0;
+            } else if (lobbyId >= maxLobbys) {
+                lobbyId = maxLobbys - 1;
+            }
+            
             if(!openedLobbys.get(lobbyId)) {
                 openedLobbys.set(lobbyId, true);
                 return true;

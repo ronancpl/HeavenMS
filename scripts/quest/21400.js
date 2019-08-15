@@ -14,8 +14,9 @@ function start(mode, type, selection) {
 	if (status == 0) {
         qm.sendAcceptDecline("How is the training going? I know you're busy, but please come to #bRien#k immediately. The #bMaha#k has started to act weird again... But its even weirder now. It's different from before. It's... darker than usual.");
     } else if (status == 1) {
-		qm.sendOk("I have a bad feeling about this. Please come back here. I've never seen or herd Maha like this, but I can sense the suffering its going through. #bOnly you, the master of Maha, can do something about it!");
-		qm.startQuest();
-		qm.dispose();
-	}
+            qm.startQuest();
+            qm.sendOk("I have a bad feeling about this. Please come back here. I've never seen or herd Maha like this, but I can sense the suffering its going through. #bOnly you, the master of Maha, can do something about it!");
+    } else if (status == 2) {
+            qm.dispose();
+    }
 }

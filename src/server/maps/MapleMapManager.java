@@ -139,7 +139,4 @@ public class MapleMapManager {
         this.event = null;
     }
 
-    public static float getMapRecoveryRate(int mapid) {
-        return MapleMapFactory.getMapRecoveryRate(mapid);
-    }
 }

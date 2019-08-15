@@ -2050,3 +2050,37 @@ Corrigido funcionalidade de loot explosivo de mobs não aplicando devidamente.
 Corrigido linguagens, bastante usado na MCPQ, não utilizando o valor requisitado pelo jogador ao logar/trocar de canais.
 Corrigido casos de NPE ao tentar realizar updates de posição lado-servidor em alguns summons de jogador.
 Revisado reset de reatores em reatores que estão desaparecidos por um tempo, para retornar de imediato.
+
+31 Julho 2019,
+Revisado AP inicial de jogadores, agora mantendo dois sistemas para suprir a falta de 9 AP's. Ambos com AP's começando em 4/4/4/4: 0AP inicialmente, com ganhos de 4AP na primeira mudança de classe e 5AP na segunda mudança. Se não estiver usando esse método, jogadores possuem de início 9 AP's à disposição.
+
+02 Agosto 2019,
+Refatorado vários scripts de quests, não mais realizando disposes e envio de caixas de texto no mesmo status.
+
+05 Agosto 2019,
+Revisado casos onde o sistema de recompensas de quests avisa "inventário cheio" mesmo embora novos espaços pudessem ser encontrados na retirada de itens.
+Corrigido posicionamento não-verificado de lojas criadas por jogadores.
+Corrigido ganho reduzido de EXP ao utilizar skill Mortal Blow.
+Corrigido clique em "O" na UI de recepção de itens pelo Duey não realizando ação alguma.
+Corrigido representação de "quick" na lista de pacotes recebidos pelo Duey não constando os pacotes enviados sem mensagem escrita.
+Revisado certos casos onde itens enviados com "quick delivery" não conseguiam ser recebidos imediatamente.
+
+06 Agosto 2019,
+Corrigido certas montarias não-ligadas a itens de inventário não atuando devidamente ao transicionar mapas (terceiros não conseguiam visualizar a montaria).
+Revisado os vários scripts de quests anteriormente refatorado. Adição: último if status sinalizando disposes de caixas de texto nos penúltimos status.
+
+08 - 10 Agosto 2019,
+Adicionado handler para aplicação de dano em mobs por objetos de ambiente.
+Revisado uso de Steal ao aplicar dano, preenchendo lista (e buscando evitar novas aplicações) assim que utilizado.
+Setado checagem para limites de lobbyid ao se iniciar uma instância de evento.
+Revisado boss logs somente removendo os itens da tabela a partir de um dia antes, não todas as entradas, assim que a tarefa de reset é iniciada.
+Refatorado elementos não-condizentes com o padrão de design Factory na classe geradora de mapas.
+Revisado possível cenário de vazamento de memória ocorrido devido a exceção lançada em algum trecho entre removeKilledMonsterObject e dispatchMonsterKilled.
+Aprimorado loots de reatores, agora colocando loots visíveis ao jogador no centro, similarmente a como loots de mobs ocorrem.
+Ajustado frequência de loots de reatores para 200ms.
+
+12 - 14 Agosto 2019,
+Refatorado vários casos de erros em acessos a funções estáticas a partir de scripts, que passou a ocorrer após trocar de versão Java.
+Corrigido listas que mantém conteúdo dos mundos e canais esvaziando antes que os processos em execução do TimerManager terminem de executar, no momento do sinal de shutdown do servidor.
+Revisado update de quests para o jogador durante script de quests, problema permite movimento enquanto o mesmo ainda está falando com o NPC.
+Revisado novamente os scripts de quest! Problema detectado envolvia incidências de iniciar e completar de quests com disposes na mesma estrutura status.

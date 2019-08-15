@@ -40,12 +40,10 @@ public class CashShopSurpriseHandler extends AbstractMaplePacketHandler {
             Pair<Item, Item> cssResult = cs.openCashShopSurprise();
             
             if(cssResult != null) {
-                //Item cssItem = cssResult.getLeft(), cssBox = cssResult.getRight();
-                //c.announce(MaplePacketCreator.onCashGachaponOpenSuccess(c.getAccID(), cssBox.getSN(), cssBox.getQuantity(), cssItem, cssItem.getItemId(), cssItem.getQuantity(), true));
-                c.announce(MaplePacketCreator.showCashShopMessage((byte) 0xA4));
+                Item cssItem = cssResult.getLeft(), cssBox = cssResult.getRight();
+                c.announce(MaplePacketCreator.onCashGachaponOpenSuccess(c.getAccID(), cssBox.getSN(), cssBox.getQuantity(), cssItem, cssItem.getItemId(), cssItem.getQuantity(), true));
             } else {
-                //c.announce(MaplePacketCreator.onCashItemGachaponOpenFailed());
-                c.announce(MaplePacketCreator.showCashShopMessage((byte) 0x00));
+                c.announce(MaplePacketCreator.onCashItemGachaponOpenFailed());
             }
         }
     }
