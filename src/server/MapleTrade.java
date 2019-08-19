@@ -39,6 +39,7 @@ import constants.ServerConstants;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
 import tools.Pair;
 
 /**
@@ -476,9 +477,9 @@ public class MapleTrade {
     }
 
     public static void visitTrade(MapleCharacter c1, MapleCharacter c2) {
-        Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.TRADE, c1.getId(), c2.getId(), true);
+        MapleInviteResult inviteRes = MapleInviteCoordinator.answerInvite(InviteType.TRADE, c1.getId(), c2.getId(), true);
         
-        InviteResult res = inviteRes.getLeft();
+        InviteResult res = inviteRes.result;
         if (res == InviteResult.ACCEPTED) {
             if (c1.getTrade() != null && c1.getTrade().getPartner() == c2.getTrade() && c2.getTrade() != null && c2.getTrade().getPartner() == c1.getTrade()) {
                 c2.getClient().announce(MaplePacketCreator.getTradePartnerAdd(c1));
@@ -499,7 +500,7 @@ public class MapleTrade {
         if (trade != null) {
             if (trade.getPartner() != null) {
                 MapleCharacter other = trade.getPartner().getChr();
-                if (MapleInviteCoordinator.answerInvite(InviteType.TRADE, c.getId(), other.getId(), false).getLeft() == InviteResult.DENIED) {
+                if (MapleInviteCoordinator.answerInvite(InviteType.TRADE, c.getId(), other.getId(), false).result == InviteResult.DENIED) {
                     other.message(c.getName() + " has declined your trade request.");
                 }
                 

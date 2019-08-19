@@ -27,11 +27,11 @@ import net.AbstractMaplePacketHandler;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.coordinator.MapleInviteCoordinator.InviteResult;
 import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.MapleInviteCoordinator.MapleInviteResult;
 import net.server.world.MapleMessenger;
 import net.server.world.MapleMessengerCharacter;
 import net.server.world.World;
 import tools.MaplePacketCreator;
-import tools.Pair;
 import tools.data.input.SeekableLittleEndianAccessor;
 
 public final class MessengerHandler extends AbstractMaplePacketHandler {
@@ -58,8 +58,8 @@ public final class MessengerHandler extends AbstractMaplePacketHandler {
                             } else {
                                 messenger = world.getMessenger(messengerid);
                                 if (messenger != null) {
-                                    Pair<InviteResult, MapleCharacter> inviteRes = MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), messengerid, true);
-                                    InviteResult res = inviteRes.getLeft();
+                                    MapleInviteResult inviteRes = MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), messengerid, true);
+                                    InviteResult res = inviteRes.result;
                                     if (res == InviteResult.ACCEPTED) {
                                         int position = messenger.getLowestPosition();
                                         MapleMessengerCharacter messengerplayer = new MapleMessengerCharacter(player, position);

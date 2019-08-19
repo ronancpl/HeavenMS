@@ -21,82 +21,121 @@
 */
 package net.server.channel.handlers;
 
-import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
+import client.MapleFamilyEntitlement;
+import client.MapleFamilyEntry;
+import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
-import net.opcodes.SendOpcode;
+import net.server.coordinator.MapleInviteCoordinator;
+import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import server.maps.FieldLimit;
+import server.maps.MapleMap;
+import tools.MaplePacketCreator;
 import tools.data.input.SeekableLittleEndianAccessor;
-import tools.data.output.MaplePacketLittleEndianWriter;
 
 /**
  *
  * @author Moogra
+ * @author Ubaware
  */
 public final class FamilyUseHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-    	if (!ServerConstants.USE_FAMILY_SYSTEM){
-    		return;
-    	}
-        int[] repCost = {3, 5, 7, 8, 10, 12, 15, 20, 25, 40, 50};
-        final int type = slea.readInt();
+        if(!ServerConstants.USE_FAMILY_SYSTEM) {
+            return;
+        }
+        MapleFamilyEntitlement type = MapleFamilyEntitlement.values()[slea.readInt()];
+        int cost = type.getRepCost();
+        MapleFamilyEntry entry = c.getPlayer().getFamilyEntry();
+        if(entry.getReputation() < cost || entry.isEntitlementUsed(type)) {
+            return; // shouldn't even be able to request it
+        }
+        c.announce(MaplePacketCreator.getFamilyInfo(entry));
         MapleCharacter victim;
-        if (type == 0 || type == 1) {
+        if(type == MapleFamilyEntitlement.FAMILY_REUINION || type == MapleFamilyEntitlement.SUMMON_FAMILY) {
             victim = c.getChannelServer().getPlayerStorage().getCharacterByName(slea.readMapleAsciiString());
-            if (victim != null) {
-                if (type == 0) {
-                    c.getPlayer().changeMap(victim.getMap(), victim.getMap().getPortal(0));
+            if(victim != null && victim != c.getPlayer()) {
+                if(victim.getFamily() == c.getPlayer().getFamily()) {
+                    MapleMap targetMap = victim.getMap();
+                    MapleMap ownMap = c.getPlayer().getMap();
+                    if(targetMap != null) {
+                        if(type == MapleFamilyEntitlement.FAMILY_REUINION) {
+                            if(!FieldLimit.CANNOTMIGRATE.check(ownMap.getFieldLimit()) && !FieldLimit.CANNOTVIPROCK.check(targetMap.getFieldLimit())
+                                    && (targetMap.getForcedReturnId() == 999999999 || targetMap.getId() < 100000000) && targetMap.getEventInstance() == null) {
+                                
+                                c.getPlayer().changeMap(victim.getMap(), victim.getMap().getPortal(0));
+                                useEntitlement(entry, type);
+                            } else {
+                                c.announce(MaplePacketCreator.sendFamilyMessage(75, 0)); // wrong message, but close enough. (client should check this first anyway)
+                                return;
+                            }
+                        } else {
+                            if(!FieldLimit.CANNOTMIGRATE.check(targetMap.getFieldLimit()) && !FieldLimit.CANNOTVIPROCK.check(ownMap.getFieldLimit()) 
+                                    && (ownMap.getForcedReturnId() == 999999999 || ownMap.getId() < 100000000) && ownMap.getEventInstance() == null) {
+                                
+                                if(MapleInviteCoordinator.hasInvite(InviteType.FAMILY_SUMMON, victim.getId())) {
+                                    c.announce(MaplePacketCreator.sendFamilyMessage(74, 0));
+                                    return;
+                                }
+                                MapleInviteCoordinator.createInvite(InviteType.FAMILY_SUMMON, c.getPlayer(), victim, victim.getId(), c.getPlayer().getMap());
+                                victim.announce(MaplePacketCreator.sendFamilySummonRequest(c.getPlayer().getFamily().getName(), c.getPlayer().getName()));
+                                useEntitlement(entry, type);
+                            } else {
+                                c.announce(MaplePacketCreator.sendFamilyMessage(75, 0));
+                                return;
+                            }
+                        }
+                    }
                 } else {
-                    victim.changeMap(c.getPlayer().getMap(), c.getPlayer().getMap().getPortal(0));
+                    c.announce(MaplePacketCreator.sendFamilyMessage(67, 0));
                 }
-            } else {
-                return;
             }
+        } else if(type == MapleFamilyEntitlement.FAMILY_BONDING) {
+            //not implemented
         } else {
-            int erate = type == 3 ? 150 : (type == 4 || type == 6 || type == 8 || type == 10 ? 200 : 100);
-            int drate = type == 2 ? 150 : (type == 4 || type == 5 || type == 7 || type == 9 ? 200 : 100);
-            if (type > 8) {
-            } else {
-                c.announce(useRep(drate == 100 ? 2 : (erate == 100 ? 3 : 4), type, erate, drate, ((type > 5 || type == 4) ? 2 : 1) * 15 * 60 * 1000));
-            }
+            boolean party = false;
+            boolean isExp = false;
+            float rate = 1.5f;
+            int duration = 15;
+            do {
+                switch(type) {
+                case PARTY_EXP_2_30MIN:
+                    party = true;
+                    isExp = true;
+                    type = MapleFamilyEntitlement.SELF_EXP_2_30MIN;
+                    continue;
+                case PARTY_DROP_2_30MIN:
+                    party = true;
+                    type = MapleFamilyEntitlement.SELF_DROP_2_30MIN;
+                    continue;
+                case SELF_DROP_2_30MIN:
+                    duration = 30;
+                case SELF_DROP_2:
+                    rate = 2.0f;
+                case SELF_DROP_1_5:
+                    break;
+                case SELF_EXP_2_30MIN:
+                    duration = 30;
+                case SELF_EXP_2:
+                    rate = 2.0f;
+                case SELF_EXP_1_5:
+                    isExp = true;
+                default:
+                    break;
+                }
+                break;
+            } while(true);
+            //not implemented
         }
-        c.getPlayer().getFamily().getMember(c.getPlayer().getId()).gainReputation(repCost[type]);
     }
-
-    /**
-     * [65 00][02][08 00 00 00][C8 00 00 00][00 00 00 00][00][40 77 1B 00]
-     */
-    private static byte[] useRep(int mode, int type, int erate, int drate, int time) {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(0x60);//noty
-        mplew.write(mode);
-        mplew.writeInt(type);
-        if (mode < 4) {
-            mplew.writeInt(erate);
-            mplew.writeInt(drate);
+    
+    private boolean useEntitlement(MapleFamilyEntry entry, MapleFamilyEntitlement entitlement) {
+        if(entry.useEntitlement(entitlement)) {
+            entry.gainReputation(-entitlement.getRepCost(), false);
+            entry.getChr().announce(MaplePacketCreator.getFamilyInfo(entry));
+            return true;
         }
-        mplew.write(0);
-        mplew.writeInt(time);
-        return mplew.getPacket();
-    }
-
-    //20 00
-    //00 00 00 00
-    //00 00 00 00 00 00 00 00
-    //80 01
-    //00 00 28 00
-    //8C 93 3E 00
-    //40 0D
-    //03 00 14 00
-    //8C 93 3E 00
-    //40 0D 03 00 00 00 00 00 02
-    private static byte[] giveBuff() {
-        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-        mplew.writeShort(SendOpcode.GIVE_BUFF.getValue());
-        mplew.writeInt(0);
-        mplew.writeLong(0);
-
-        return null;
+        return false;
     }
 }

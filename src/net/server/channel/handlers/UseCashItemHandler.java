@@ -427,17 +427,9 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             slea.readByte();
             slea.readInt();
             if(itemId == 5400000) { //name change
-                if(player.cancelPendingNameChange()) {
-                    player.dropMessage(1, "Successfully canceled pending name change.");
-                } else {
-                    player.dropMessage(1, "You do not have a pending name change.");
-                }
+                c.announce(MaplePacketCreator.showNameChangeCancel(player.cancelPendingNameChange()));
             } else if(itemId == 5401000) { //world transfer
-                if(player.cancelPendingWorldTranfer()) {
-                    player.dropMessage(1, "Successfully canceled pending world transfer.");
-                } else {
-                    player.dropMessage(1, "You do not have a pending world transfer.");
-                }
+                c.announce(MaplePacketCreator.showWorldTransferCancel(player.cancelPendingWorldTranfer()));
             }
             remove(c, position, itemId);
             c.announce(MaplePacketCreator.enableActions());

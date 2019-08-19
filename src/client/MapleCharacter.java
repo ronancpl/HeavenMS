@@ -193,7 +193,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private int energybar;
     private int gmLevel;
     private int ci = 0;
-    private MapleFamily family;
+    private MapleFamilyEntry familyEntry;
     private int familyId;
     private int bookCover;
     private int battleshipHp = 0;
@@ -331,6 +331,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     private long banishTime = 0;
     private long lastExpGainTime;
     private boolean pendingNameChange; //only used to change name on logout, not to be relied upon elsewhere
+    private long loginTime;
     
     private MapleCharacter() {
         super.setListener(new AbstractCharacterListener() {
@@ -1254,6 +1255,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (this.guildid > 0) {
             getGuild().broadcast(MaplePacketCreator.jobMessage(0, job.getId(), name), this.getId());
         }
+        MapleFamily family = getFamily();
+        if(family != null) {
+            family.broadcast(MaplePacketCreator.jobMessage(1, job.getId(), name), this.getId());
+        }
         setMasteries(this.job.getId());
         guildUpdate();
         
@@ -1279,9 +1284,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     
     public void broadcastAcquaintances(byte[] packet) {
         buddylist.broadcast(packet, getWorldServer().getPlayerStorage());
-        
+        MapleFamily family = getFamily();
         if(family != null) {
-            //family.broadcast(packet, id); not yet implemented
+            family.broadcast(packet, id);
         }
         
         MapleGuild guild = getGuild();
@@ -4873,11 +4878,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public MapleFamily getFamily() {
-        return family;
+        if(familyEntry != null) return familyEntry.getFamily();
+        else return null;
     }
-
-    public void setFamily(MapleFamily f) {
-        this.family = f;
+    
+    public MapleFamilyEntry getFamilyEntry() {
+        return familyEntry;
+    }
+    
+    public void setFamilyEntry(MapleFamilyEntry entry) {
+        if(entry != null) setFamilyId(entry.getFamily().getID());
+        this.familyEntry = entry;
     }
 
     public int getFamilyId() {
@@ -6440,6 +6451,16 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
         levelUpMessages();
         guildUpdate();
+        
+        MapleFamilyEntry familyEntry = getFamilyEntry();
+        if(familyEntry != null) {
+            familyEntry.giveReputationToSenior(ServerConstants.FAMILY_REP_PER_LEVELUP, true);
+            MapleFamilyEntry senior = familyEntry.getSenior();
+            if(senior != null) { //only send the message to direct senior
+                MapleCharacter seniorChr = senior.getChr();
+                if(seniorChr != null) seniorChr.announce(MaplePacketCreator.levelUpMessage(1, level, getName()));
+            }
+        }
     }
     
     public boolean leaveParty() {
@@ -8555,6 +8576,20 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             psf.close();
             ps.close();
             
+            MapleFamilyEntry familyEntry = getFamilyEntry(); //save family rep
+            if(familyEntry != null) {
+                if(familyEntry.saveReputation(con)) familyEntry.savedSuccessfully();
+                MapleFamilyEntry senior = familyEntry.getSenior();
+                if(senior != null && senior.getChr() == null) { //only save for offline family members
+                    if(senior.saveReputation(con)) senior.savedSuccessfully();
+                    senior = senior.getSenior(); //save one level up as well
+                    if(senior != null && senior.getChr() == null) {
+                        if(senior.saveReputation(con)) senior.savedSuccessfully();
+                    }
+                }
+                
+            }
+            
             con.commit();
             con.setAutoCommit(true);
 	    
@@ -10327,7 +10362,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             mpc = null;
             mgc = null;
             party = null;
-            family = null;
+            MapleFamilyEntry familyEntry = getFamilyEntry();
+            if(familyEntry != null) {
+                familyEntry.setCharacter(null);
+                setFamilyEntry(null);
+            }
             
             getWorldServer().registerTimedMapObject(new Runnable() {
                 @Override
@@ -10350,6 +10389,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void setLoginTime(long time) {
+        this.loginTime = time;
+    }
+    
+    public long getLoginTime() {
+        return loginTime;
+    }
+    
+    public long getLoggedInTime() {
+        return System.currentTimeMillis() - loginTime;
     }
 
     public boolean isLoggedin() {

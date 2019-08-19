@@ -67,6 +67,7 @@ import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
 import server.maps.AbstractMapleMapObject;
 import net.server.worker.CharacterAutosaverWorker;
+import net.server.worker.FamilyDailyResetWorker;
 import net.server.worker.FishingWorker;
 import net.server.worker.HiredMerchantWorker;
 import net.server.worker.MapOwnershipWorker;
@@ -211,6 +212,11 @@ public class World {
         fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
         partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
         
+        if(ServerConstants.USE_FAMILY_SYSTEM) {
+            long timeLeft = Server.getTimeLeftForNextDay();
+            FamilyDailyResetWorker.resetEntitlementUsage(this);
+            tman.register(new FamilyDailyResetWorker(this), 24 * 60 * 60 * 1000, timeLeft);
+        }
     }
 
     public int getChannelsSize() {
@@ -540,6 +546,12 @@ public class World {
             }
         }
     }
+    
+    public void removeFamily(int id) {
+        synchronized (families) {
+            families.remove(id);
+        }
+    }
 
     public MapleFamily getFamily(int id) {
         synchronized (families) {
@@ -547,6 +559,12 @@ public class World {
                 return families.get(id);
             }
             return null;
+        }
+    }
+    
+    public Collection<MapleFamily> getFamilies() {
+        synchronized(families) {
+            return Collections.unmodifiableCollection((Collection<MapleFamily>) families.values());
         }
     }
 
@@ -1109,7 +1127,7 @@ public class World {
         if (isConnected(sender)) {
             MapleCharacter senderChr = getPlayerStorage().getCharacterByName(sender);
             if (senderChr != null && senderChr.getMessenger() != null) {
-                if (MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), senderChr.getMessenger().getId(), false).getLeft() == InviteResult.DENIED) {
+                if (MapleInviteCoordinator.answerInvite(InviteType.MESSENGER, player.getId(), senderChr.getMessenger().getId(), false).result == InviteResult.DENIED) {
                     senderChr.getClient().announce(MaplePacketCreator.messengerNote(player.getName(), 5, 0));
                 }
             }
