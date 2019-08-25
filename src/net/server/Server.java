@@ -535,7 +535,7 @@ public class Server {
     public static long getTimeLeftForNextDay() {
         Calendar nextDay = Calendar.getInstance();
         nextDay.add(Calendar.DAY_OF_MONTH, 1);
-        nextDay.set(Calendar.HOUR, 0);
+        nextDay.set(Calendar.HOUR_OF_DAY, 0);
         nextDay.set(Calendar.MINUTE, 0);
         nextDay.set(Calendar.SECOND, 0);
         

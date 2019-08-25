@@ -2720,7 +2720,17 @@ public class MaplePacketCreator {
         }
 
         /**
-         * state 0 = del ok state 12 = invalid bday state 14 = incorrect pic
+         * State :
+         * 0x00 = success
+         * 0x06 = Trouble logging into the game?
+         * 0x09 = Unknown error
+         * 0x0A = Could not be processed due to too many connection requests to the server.
+         * 0x12 = invalid bday
+         * 0x14 = incorrect pic
+         * 0x16 = Cannot delete a guild master.
+         * 0x18 = Cannot delete a character with a pending wedding.
+         * 0x1A = Cannot delete a character with a pending world transfer.
+         * 0x1D = Cannot delete a character that has a family.
          *
          * @param cid
          * @param state
