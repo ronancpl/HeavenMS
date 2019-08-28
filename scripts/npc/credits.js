@@ -115,7 +115,7 @@ function writeAllServerStaffs() {
                 role_cursor = [];
 
                 var srvName = servers[i];
-                eval("writeServerStaff_" + srvName)();
+                this["writeServerStaff_" + srvName]();
         
                 name_tree.push(name_cursor);
                 role_tree.push(role_cursor);

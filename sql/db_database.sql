@@ -21400,7 +21400,8 @@ CREATE TABLE IF NOT EXISTS `skills` (
   `skilllevel` int(11) NOT NULL DEFAULT '0',
   `masterlevel` int(11) NOT NULL DEFAULT '0',
   `expiration` bigint(20) NOT NULL DEFAULT '-1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `skillpair` (`skillid`, `characterid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `specialcashitems` (
@@ -21455,6 +21456,9 @@ ALTER TABLE `dueyitems`
 
 ALTER TABLE `famelog`
   ADD CONSTRAINT `famelog_ibfk_1` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `skills`
+  ADD CONSTRAINT `skills_chrid_fk` FOREIGN KEY (`characterid`) REFERENCES `characters` (`id`) ON DELETE CASCADE;	# thanks Shavit
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

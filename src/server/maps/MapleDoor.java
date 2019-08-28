@@ -25,7 +25,6 @@ import java.awt.Point;
 import java.util.Collection;
 import tools.Pair;
 
-import server.MaplePortal;
 import client.MapleCharacter;
 import constants.ServerConstants;
 

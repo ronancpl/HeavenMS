@@ -2084,3 +2084,28 @@ Refatorado vários casos de erros em acessos a funções estáticas a partir de 
 Corrigido listas que mantém conteúdo dos mundos e canais esvaziando antes que os processos em execução do TimerManager terminem de executar, no momento do sinal de shutdown do servidor.
 Revisado update de quests para o jogador durante script de quests, problema permite movimento enquanto o mesmo ainda está falando com o NPC.
 Revisado novamente os scripts de quest! Problema detectado envolvia incidências de iniciar e completar de quests com disposes na mesma estrutura status.
+
+19 - 20 Agosto 2019,
+Revisado autocommit antes da hora e falta de chamada a rollbacks quando ocorre exceção no método de salvar jogador na DB.
+Corrigido quest scripts recém-formatados pelo caso dos updates de quest durante conversação com NPCs.
+Revisado cálculo de perda de EXP em nocaute.
+Corrigido caso de deadlock relacionado a party HP e manutenção de doors, ocorrendo devido a uso indevido de statLock antes de prtLock.
+
+22 - 23 Agosto 2019,
+Revisado envio sequencial de pacotes pelo IoSession acoplado à conexão com o cliente.
+Corrigido possibilidade de uso de SP Reset para aumentar skills imprevistas.
+Adicionado permissão de drops de NX utilizando a mesma flag dos shops.
+Adicionado comando para setar quantidade de slots em todos os inventários.
+
+24 Agosto 2019,
+Refatorado objeto de MapleStorage, agora sendo gerado um objeto por conta, acoplado ao mundo que jogador pertence (não mais acoplado diretamente com objeto do jogador, jogador agora recebe uma visão deste objeto).
+
+26 - 27 Agosto 2019,
+Revisado uso de objeto de jogador pelo MaplePartyCharacter, retirando acesso ao mesmo quando o jogador está desconectado (assim limpando retenção de múltiplos objetos de jogador offline, quando os mesmos se encontram em party).
+Corrigido casos inesperados como Nimble Feet seguido de Morph fazendo o segundo atuar inesperadamente, aplicando outras imagens de morphs.
+Corrigido buffs importantes para mecânicas do jogo sendo sobrescritas por possuir menores ganhos que outros.
+Revisado diversos casos no código-fonte onde havia possibilidade de acesso ao objeto de jogador nulo a partir do MaplePartyCharacter (quando o jogador se encontra offline e está na party).
+Corrigido caso de EXP ganho ocorrendo menor que o esperado, ao se usar diversos modificadores de ganhos.
+Corrigido bug crítico na atualização recente relacionado a skill mounts, onde na inicialização dos mounts informações estariam sendo perdidas inesperadamente...
+Corrigido informações de mount não sendo atualizado para o jogador assim que o mesmo loga, levando a certas quests com requerimento de mount não permitindo inicialização pelo lado-cliente.
+Revisado sistema criado para manutenção de pacotes enviados através do IoSession, tal sistema agora atuando como uma "pool" ao invés de uma "factory".

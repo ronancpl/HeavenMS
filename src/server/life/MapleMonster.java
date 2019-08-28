@@ -703,7 +703,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
             exp = Integer.MIN_VALUE;
         }
         
-        return (int) exp;
+        return (int) Math.round(exp);    // operations on float point are not point-precise... thanks IxianMace for noticing -1 EXP gains
     }
     
     private void giveExpToCharacter(MapleCharacter attacker, Float personalExp, Float partyExp, boolean white, boolean hasPartySharers) {

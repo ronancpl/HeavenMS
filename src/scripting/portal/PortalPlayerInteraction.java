@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import scripting.AbstractPlayerInteraction;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.quest.MapleQuest;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;

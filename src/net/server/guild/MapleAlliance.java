@@ -91,8 +91,13 @@ public class MapleAlliance {
         List<MapleCharacter> mcl = new LinkedList<>();
 
         for(MaplePartyCharacter mpc: party.getMembers()) {
-            if(mpc.getPlayer().getGuildRank() == 1 && mpc.getPlayer().getMapId() == party.getLeader().getPlayer().getMapId())
-                mcl.add(mpc.getPlayer());
+            MapleCharacter chr = mpc.getPlayer();
+            if (chr != null) {
+                MapleCharacter lchr = party.getLeader().getPlayer();
+                if (chr.getGuildRank() == 1 && lchr != null && chr.getMapId() == lchr.getMapId()) {
+                    mcl.add(chr);
+                }
+            }
         }
 
         if(!mcl.isEmpty() && !mcl.get(0).isPartyLeader()) {

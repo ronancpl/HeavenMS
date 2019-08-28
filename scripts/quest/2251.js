@@ -5,6 +5,8 @@
 	Item: Recording Charm (4032399)
 */
 
+var status = -1;
+
 function end(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();

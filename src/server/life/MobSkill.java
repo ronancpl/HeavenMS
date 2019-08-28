@@ -331,7 +331,7 @@ public class MobSkill {
             if (lt != null && rb != null && skill) {
                 int i = 0;
                 for (MapleCharacter character : getPlayersInRange(monster, player)) {
-                    if (!character.isActiveBuffedValue(2321005)) {  // holy shield
+                    if (!character.hasActiveBuff(2321005)) {  // holy shield
                         if (disease.equals(MapleDisease.SEDUCE)) {
                             if (i < 10) {
                                 character.giveDebuff(MapleDisease.SEDUCE, this);

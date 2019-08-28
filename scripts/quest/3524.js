@@ -23,6 +23,8 @@
  * In search for the lost memory - mage
 */
 
+var status = -1;
+
 function start(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();

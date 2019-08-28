@@ -36,6 +36,7 @@ import client.inventory.ModifyInventory;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
 import client.processor.AssignAPProcessor;
+import client.processor.AssignSPProcessor;
 import client.processor.DueyProcessor;
 import constants.GameConstants;
 import constants.ItemConstants;
@@ -156,6 +157,10 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
             
             if (itemId > 5050000) {
                 int SPTo = slea.readInt();
+                if (!AssignSPProcessor.canSPAssign(c, SPTo)) {  // exploit found thanks to Arnah
+                    return;
+                }
+                
                 int SPFrom = slea.readInt();
                 Skill skillSPTo = SkillFactory.getSkill(SPTo);
                 Skill skillSPFrom = SkillFactory.getSkill(SPFrom);

@@ -45,6 +45,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public class StorageProcessor {
     
         public static void storageAction(SeekableLittleEndianAccessor slea, MapleClient c) {
+                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
                 MapleCharacter chr = c.getPlayer();
                 MapleStorage storage = chr.getStorage();
                 byte mode = slea.readByte();
@@ -69,7 +70,7 @@ public class StorageProcessor {
                                         slot = storage.getSlot(MapleInventoryType.getByType(type), slot);
                                         Item item = storage.getItem(slot);
                                         if (item != null) {
-                                                if (MapleItemInformationProvider.getInstance().isPickupRestricted(item.getItemId()) && chr.haveItemWithId(item.getItemId(), true)) {
+                                                if (ii.isPickupRestricted(item.getItemId()) && chr.haveItemWithId(item.getItemId(), true)) {
                                                         c.announce(MaplePacketCreator.getStorageError((byte) 0x0C));
                                                         return;
                                                 }
@@ -83,13 +84,20 @@ public class StorageProcessor {
                                                 }
 
                                                 if (MapleInventoryManipulator.checkSpace(c, item.getItemId(), item.getQuantity(), item.getOwner())) {                
-                                                        item = storage.takeOut(slot);//actually the same but idc
-                                                        String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                                                        FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
-                                                        chr.setUsedStorage();
-                                                        MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
-                                                        MapleInventoryManipulator.addFromDrop(c, item, false);
-                                                        storage.sendTakenOut(c, item.getInventoryType());
+                                                        if (storage.takeOut(item)) {
+                                                                chr.setUsedStorage();
+                                                                
+                                                                MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
+                                                                MapleInventoryManipulator.addFromDrop(c, item, false);
+
+                                                                String itemName = ii.getName(item.getItemId());
+                                                                FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " took out " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
+
+                                                                storage.sendTakenOut(c, item.getInventoryType());
+                                                        } else {
+                                                                c.announce(MaplePacketCreator.enableActions());
+                                                                return;
+                                                        }
                                                 } else {
                                                         c.announce(MaplePacketCreator.getStorageError((byte) 0x0A));
                                                 }
@@ -149,11 +157,14 @@ public class StorageProcessor {
                                                 
                                                 MapleKarmaManipulator.toggleKarmaFlagToUntradeable(item);
                                                 item.setQuantity(quantity);
-                                                storage.store(item);
-                                                storage.sendStored(c, ItemConstants.getInventoryType(itemId));
-                                                String itemName = MapleItemInformationProvider.getInstance().getName(item.getItemId());
-                                                FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
+                                                
+                                                storage.store(item);    // inside a critical section, "!(storage.isFull())" is still in effect...
                                                 chr.setUsedStorage();
+                                                
+                                                String itemName = ii.getName(item.getItemId());
+                                                FilePrinter.print(FilePrinter.STORAGE + c.getAccountName() + ".txt", c.getPlayer().getName() + " stored " + item.getQuantity() + " " + itemName + " (" + item.getItemId() + ")");
+                                                
+                                                storage.sendStored(c, ItemConstants.getInventoryType(itemId));
                                         }
                                 } else if (mode == 6) { // arrange items
                                         if(ServerConstants.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);
@@ -178,14 +189,14 @@ public class StorageProcessor {
                                                 }
                                                 storage.setMeso(storageMesos - meso);
                                                 chr.gainMeso(meso, false, true, false);
-                                                FilePrinter.print(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos");
                                                 chr.setUsedStorage();
+                                                FilePrinter.print(FilePrinter.STORAGE + c.getPlayer().getName() + ".txt", c.getPlayer().getName() + (meso > 0 ? " took out " : " stored ") + Math.abs(meso) + " mesos");
+                                                storage.sendMeso(c);
                                         } else {
                                                 c.announce(MaplePacketCreator.enableActions());
                                                 return;
                                         }
-                                        storage.sendMeso(c);
-                                } else if (mode == 8) {// close
+                                } else if (mode == 8) {// close... unless the player decides to enter cash shop!
                                         storage.close();
                                 }
                         } finally {

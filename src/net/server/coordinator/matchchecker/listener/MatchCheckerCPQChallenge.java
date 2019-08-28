@@ -71,7 +71,9 @@ public class MatchCheckerCPQChallenge implements MatchCheckerListenerRecipe {
                 
                 List<MaplePartyCharacter> chrMembers = new LinkedList<>();
                 for (MaplePartyCharacter mpc : chr.getParty().getMembers()) {
-                    chrMembers.add(mpc);
+                    if (mpc.isOnline()) {
+                        chrMembers.add(mpc);
+                    }
                 }
                 
                 if (message.contentEquals("cpq1")) {

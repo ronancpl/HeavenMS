@@ -21,7 +21,6 @@
  */
 package scripting.event;
 
-import tools.Pair;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +38,7 @@ import net.server.audit.locks.MonitoredReentrantReadWriteLock;
 import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.TimerManager;
 import server.MapleStatEffect;
 import server.expeditions.MapleExpedition;
@@ -67,6 +66,7 @@ import server.ThreadManager;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
+import tools.Pair;
 
 /**
  *
@@ -366,9 +366,13 @@ public class EventInstanceManager {
         }
         
 	public void registerParty(MapleParty party, MapleMap map) {
-		for (MaplePartyCharacter pc : party.getEligibleMembers()) {
-			MapleCharacter c = map.getCharacterById(pc.getId());
-			registerPlayer(c);
+		for (MaplePartyCharacter mpc : party.getEligibleMembers()) {
+                        if (mpc.isOnline()) {   // thanks resinate
+                                MapleCharacter chr = map.getCharacterById(mpc.getId());
+                                if (chr != null) {
+                                        registerPlayer(chr);
+                                }
+                        }
 		}
 	}
 
@@ -468,7 +472,7 @@ public class EventInstanceManager {
                 } catch (ScriptException | NoSuchMethodException ex) {} // optional
 	}
         
-        public synchronized void changedLeader(final MapleCharacter ldr) {
+        public synchronized void changedLeader(final MaplePartyCharacter ldr) {
                 try {
                         invokeScriptFunction("changedLeader", EventInstanceManager.this, ldr);
                 } catch (ScriptException | NoSuchMethodException ex) {

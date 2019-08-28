@@ -58,13 +58,12 @@ public class MapleStorage {
     private int meso;
     private byte slots;
     private Map<MapleInventoryType, List<Item>> typeItems = new HashMap<>();
-    private List<Item> items;
+    private List<Item> items = new LinkedList<>();
     private Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.STORAGE, true);
 
     private MapleStorage(int id, byte slots, int meso) {
         this.id = id;
         this.slots = slots;
-        this.items = new LinkedList<>();
         this.meso = meso;
     }
 
@@ -119,15 +118,20 @@ public class MapleStorage {
         return slots;
     }
 
-    public synchronized boolean gainSlots(int slots) {
-        slots += this.slots;
+    public boolean gainSlots(int slots) {
+        lock.lock();
+        try {
+            slots += this.slots;
+            
+            if (slots <= 48) {
+                this.slots = (byte) slots;
+                return true;
+            }
 
-        if (slots <= 48) {
-            this.slots = (byte) slots;
-            return true;
+            return false;
+        } finally {
+            lock.unlock();
         }
-
-        return false;
     }
     
     public void saveToDB(Connection con) {
@@ -160,29 +164,33 @@ public class MapleStorage {
         }
     }
 
-    public Item takeOut(byte slot) {
-        Item ret;
-        
+    public boolean takeOut(Item item) {
         lock.lock();
         try {
-            ret = items.remove(slot);
+            boolean ret = items.remove(item);
             
-            MapleInventoryType type = ret.getInventoryType();
+            MapleInventoryType type = item.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
+            
+            return ret;
         } finally {
             lock.unlock();
         }
-        
-        return ret;
     }
 
-    public void store(Item item) {
+    public boolean store(Item item) {
         lock.lock();
         try {
+            if (isFull()) { // thanks Optimist for noticing unrestricted amount of insertions here
+                return false;
+            }
+            
             items.add(item);
             
             MapleInventoryType type = item.getInventoryType();
             typeItems.put(type, new ArrayList<>(filterItems(type)));
+            
+            return true;
         } finally {
             lock.unlock();
         }
@@ -196,7 +204,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     private List<Item> filterItems(MapleInventoryType type) {
         List<Item> storageItems = getItems();
         List<Item> ret = new LinkedList<>();
@@ -208,7 +216,7 @@ public class MapleStorage {
         }
         return ret;
     }
-
+    
     public byte getSlot(MapleInventoryType type, byte slot) {
         lock.lock();
         try {
@@ -225,7 +233,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     public void sendStorage(MapleClient c, int npcId) {
         if (c.getPlayer().getLevel() < 15){
             c.getPlayer().dropMessage(1, "You may only use the storage once you have reached level 15.");
@@ -287,7 +295,7 @@ public class MapleStorage {
             for (MapleInventoryType type : MapleInventoryType.values()) {
                 typeItems.put(type, new ArrayList<>(items));
             }
-
+            
             c.announce(MaplePacketCreator.arrangeStorage(slots, items));
         } finally {
             lock.unlock();
@@ -353,7 +361,7 @@ public class MapleStorage {
             lock.unlock();
         }
     }
-
+    
     public void close() {
         lock.lock();
         try {
@@ -362,4 +370,5 @@ public class MapleStorage {
             lock.unlock();
         }
     }
+    
 }

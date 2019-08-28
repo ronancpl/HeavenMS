@@ -54,6 +54,7 @@ import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.MapleServerHandler;
 import net.mina.MapleCodecFactory;
 import net.server.channel.Channel;
+import net.server.coordinator.MapleSessionCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
 import net.server.guild.MapleGuildCharacter;
@@ -70,6 +71,7 @@ import net.server.worker.RankingLoginWorker;
 import net.server.worker.ReleaseLockWorker;
 import net.server.worker.RespawnWorker;
 import net.server.world.World;
+import net.server.world.announcer.MapleAnnouncerCoordinator;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.buffer.SimpleBufferAllocator;
@@ -94,7 +96,6 @@ import constants.GameConstants;
 import constants.OpcodeConstants;
 import constants.ServerConstants;
 import java.util.TimeZone;
-import net.server.coordinator.MapleSessionCoordinator;
 import server.CashShop.CashItemFactory;
 import server.MapleSkillbookInformationProvider;
 import server.ThreadManager;
@@ -949,12 +950,17 @@ public class Server {
             System.exit(0);
         }
         
+        MapleAnnouncerCoordinator.getInstance().init();
+        System.out.println();
+        
         if(ServerConstants.USE_FAMILY_SYSTEM) {
             timeToTake = System.currentTimeMillis();
             MapleFamily.loadAllFamilies();
             System.out.println("Families loaded in " + ((System.currentTimeMillis() - timeToTake) / 1000.0) + " seconds\r\n");
         }
-
+        
+        System.out.println();
+        
         acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 30);
         acceptor.setHandler(new MapleServerHandler());
         try {
@@ -964,7 +970,7 @@ public class Server {
         }
         
         System.out.println("Listening on port 8484\r\n\r\n");
-
+        
         System.out.println("HeavenMS is now online.\r\n");
         online = true;
         
@@ -1446,6 +1452,11 @@ public class Server {
         } finally {
             lgnWLock.unlock();
         }
+    
+        for (World wserv : this.getWorlds()) {
+            wserv.clearAccountCharacterView(accountid);
+            wserv.unregisterAccountStorage(accountid);
+        }
     }
     */
     
@@ -1706,6 +1717,32 @@ public class Server {
         }
         
         return gmLevel;
+    }
+    
+    public void loadAccountStorages(MapleClient c) {
+        int accountId = c.getAccID();
+        Set<Integer> accWorlds = new HashSet<>();
+        lgnWLock.lock();
+        try {
+            Set<Integer> chars = accountChars.get(accountId);
+            
+            for (Integer cid : chars) {
+                Integer worldid = worldChars.get(cid);
+                if (worldid != null) {
+                    accWorlds.add(worldid);
+                }
+            }
+        } finally {
+            lgnWLock.unlock();
+        }
+        
+        List<World> worldList = this.getWorlds();
+        for (Integer worldid : accWorlds) {
+            if (worldid < worldList.size()) {
+                World wserv = worldList.get(worldid);
+                wserv.registerAccountStorage(accountId);
+            }
+        }
     }
     
     private static String getRemoteIp(IoSession session) {

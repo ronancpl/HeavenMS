@@ -144,6 +144,23 @@ public class MapleParty {
             lock.unlock();
         }
     }
+    
+    public List<MaplePartyCharacter> getPartyMembersOnline() {
+        lock.lock();
+        try {
+            List<MaplePartyCharacter> ret = new LinkedList<>();
+            
+            for (MaplePartyCharacter mpc : members) {
+                if (mpc.isOnline()) {
+                    ret.add(mpc);
+                }
+            }
+            
+            return ret;
+        } finally {
+            lock.unlock();
+        }
+    }
 
     // used whenever entering PQs: will draw every party member that can attempt a target PQ while ingnoring those unfit.
     public Collection<MaplePartyCharacter> getEligibleMembers() {
@@ -452,7 +469,7 @@ public class MapleParty {
                 if (expelled != null) {
                     MapleCharacter emc = expelled.getPlayer();
                     if(emc != null) {
-                        List<MapleCharacter> partyMembers = emc.getPartyMembers();
+                        List<MapleCharacter> partyMembers = emc.getPartyMembersOnline();
 
                         MapleMap map = emc.getMap();
                         if(map != null) map.removePartyMember(emc);

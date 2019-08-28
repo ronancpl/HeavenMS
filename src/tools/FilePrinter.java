@@ -50,6 +50,7 @@ public class FilePrinter {
             DELETED_CHAR = "players/deletedchars/",
             UNHANDLED_EVENT = "game/DoesNotExist.txt",
             SESSION = "players/Sessions.txt",
+            DCS = "game/disconnections/",
             EXPLOITS = "game/exploits/",
             STORAGE = "game/storage/",
             PACKET_LOGS = "game/packetlogs/",

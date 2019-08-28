@@ -53,6 +53,7 @@ import client.MapleDisease;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
 import client.MapleKeyBinding;
+import client.MapleMount;
 import client.SkillFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
@@ -352,8 +353,14 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
 
                 if (newcomer) {
                     for(MaplePet pet : player.getPets()) {
-                        if(pet != null)
+                        if(pet != null) {
                             wserv.registerPetHunger(player, player.getPetIndex(pet));
+                        }
+                    }
+                    
+                    MapleMount mount = player.getMount();   // thanks Ari for noticing a scenario where Silver Mane quest couldn't be started
+                    if (mount.getItemId() != 0) {
+                        player.announce(MaplePacketCreator.updateMount(player.getId(), mount, false));
                     }
 
                     player.reloadQuestExpirations();

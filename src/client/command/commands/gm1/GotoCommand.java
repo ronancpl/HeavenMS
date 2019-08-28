@@ -30,7 +30,7 @@ import constants.GameConstants;
 import java.util.ArrayList;
 import java.util.Collections;
 import net.server.Server;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.maps.FieldLimit;
 import server.maps.MapleMap;
 import server.maps.MapleMapManager;

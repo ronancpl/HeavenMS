@@ -3,6 +3,8 @@
     Quest: Abel Glasses Quest
 */
 
+var status = -1;    // thanks IxianMace for noticing missing status declaration
+
 function end(mode, type, selection){
     if (mode == -1) {
         qm.dispose();

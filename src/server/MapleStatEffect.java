@@ -21,7 +21,6 @@
  */
 package server;
 
-import client.inventory.manipulator.MapleInventoryManipulator;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMist;
+import server.maps.MaplePortal;
 import server.maps.MapleSummon;
 import server.maps.SummonMovementType;
 import tools.ArrayMap;
@@ -55,6 +55,7 @@ import client.SkillFactory;
 import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
+import client.inventory.manipulator.MapleInventoryManipulator;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import constants.ItemConstants;
@@ -1004,21 +1005,26 @@ public class MapleStatEffect {
             }
         }
         if (isShadowClaw()) {
-            int projectile = 0;
             MapleInventory use = applyto.getInventory(MapleInventoryType.USE);
-            for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
-                Item item = use.getItem((short) i);
-                if (item != null) {
-                    if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
-                        projectile = item.getItemId();
-                        break;
+            use.lockInventory();
+            try {
+                Item projectile = null;
+                for (int i = 1; i <= use.getSlotLimit(); i++) { // impose order...
+                    Item item = use.getItem((short) i);
+                    if (item != null) {
+                        if (ItemConstants.isThrowingStar(item.getItemId()) && item.getQuantity() >= 200) {
+                            projectile = item;
+                            break;
+                        }
                     }
                 }
-            }
-            if (projectile == 0) {
-                return false;
-            } else {
-                MapleInventoryManipulator.removeById(applyto.getClient(), MapleInventoryType.USE, projectile, 200, false, true);
+                if (projectile == null) {
+                    return false;
+                } else {
+                    MapleInventoryManipulator.removeFromSlot(applyto.getClient(), MapleInventoryType.USE, projectile.getPosition(), (short) 200, false, true);
+                }
+            } finally {
+                use.unlockInventory();
             }
         }
         SummonMovementType summonMovementType = getSummonMovementType();
@@ -1125,8 +1131,11 @@ public class MapleStatEffect {
         } else if (cureDebuffs.size() > 0) { // by Drago-Dragohe4rt
             for (final MapleDisease debuff : cureDebuffs) {
                 if (applyfrom.getParty() != null) {
-                    for (MaplePartyCharacter chrs : applyfrom.getParty().getPartyMembers()) {
-                        chrs.getPlayer().dispelDebuff(debuff);
+                    for (MaplePartyCharacter mpc : applyfrom.getParty().getPartyMembers()) {
+                        MapleCharacter chr = mpc.getPlayer();
+                        if (chr != null) {
+                            chr.dispelDebuff(debuff);
+                        }
                     }
                 } else {
                     applyfrom.dispelDebuff(debuff);

@@ -759,7 +759,7 @@ public class EventManager {
             return(new ArrayList<>());
         }
         try {
-            Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembers());
+            Object p = iv.invokeFunction("getEligibleParty", party.getPartyMembersOnline());
             
             if(p != null) {
                 List<MaplePartyCharacter> lmpc;

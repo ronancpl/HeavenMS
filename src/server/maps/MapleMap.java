@@ -68,7 +68,6 @@ import net.server.channel.Channel;
 import net.server.world.World;
 import scripting.map.MapScriptManager;
 import server.MapleItemInformationProvider;
-import server.MaplePortal;
 import server.MapleStatEffect;
 import server.TimerManager;
 import server.events.gm.MapleCoconut;

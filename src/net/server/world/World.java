@@ -60,12 +60,32 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ScheduledFuture;
 
 import scripting.event.EventInstanceManager;
+import server.MapleStorage;
 import server.TimerManager;
+import server.maps.AbstractMapleMapObject;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleMap;
+import server.maps.MapleMiniDungeon;
+import server.maps.MapleMiniDungeonInfo;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
-import server.maps.AbstractMapleMapObject;
+import net.server.PlayerStorage;
+import net.server.Server;
+import net.server.audit.LockCollector;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.MonitoredReentrantLock;
+import net.server.audit.locks.MonitoredReentrantReadWriteLock;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
+import net.server.channel.Channel;
+import net.server.channel.CharacterIdChannelPair;
+import net.server.coordinator.MapleInviteCoordinator;
+import net.server.coordinator.MapleInviteCoordinator.InviteResult;
+import net.server.coordinator.MapleInviteCoordinator.InviteType;
+import net.server.coordinator.MapleMatchCheckerCoordinator;
+import net.server.coordinator.MaplePartySearchCoordinator;
+import net.server.guild.MapleGuild;
+import net.server.guild.MapleGuildCharacter;
+import net.server.guild.MapleGuildSummary;
 import net.server.worker.CharacterAutosaverWorker;
 import net.server.worker.FamilyDailyResetWorker;
 import net.server.worker.FishingWorker;
@@ -76,30 +96,13 @@ import net.server.worker.PartySearchWorker;
 import net.server.worker.PetFullnessWorker;
 import net.server.worker.ServerMessageWorker;
 import net.server.worker.TimedMapObjectWorker;
+import net.server.worker.TimeoutWorker;
 import net.server.worker.WeddingReservationWorker;
-import net.server.PlayerStorage;
-import net.server.Server;
-import net.server.audit.LockCollector;
-import net.server.channel.Channel;
-import net.server.channel.CharacterIdChannelPair;
-import net.server.guild.MapleGuild;
-import net.server.guild.MapleGuildCharacter;
-import net.server.guild.MapleGuildSummary;
+import net.server.world.announcer.MapleAnnouncerCoordinator;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.packets.Fishing;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.MonitoredReentrantLock;
-import net.server.audit.locks.MonitoredReentrantReadWriteLock;
-import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
-import net.server.coordinator.MapleInviteCoordinator;
-import net.server.coordinator.MapleInviteCoordinator.InviteResult;
-import net.server.coordinator.MapleInviteCoordinator.InviteType;
-import net.server.coordinator.MapleMatchCheckerCoordinator;
-import net.server.coordinator.MaplePartySearchCoordinator;
-import server.maps.MapleMiniDungeon;
-import server.maps.MapleMiniDungeonInfo;
 
 /**
  *
@@ -122,12 +125,14 @@ public class World {
     private PlayerStorage players = new PlayerStorage();
     private MapleMatchCheckerCoordinator matchChecker = new MapleMatchCheckerCoordinator();
     private MaplePartySearchCoordinator partySearch = new MaplePartySearchCoordinator();
+    private MapleAnnouncerCoordinator announcer = new MapleAnnouncerCoordinator();
     
     private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
     private ReadLock chnRLock = chnLock.readLock();
     private WriteLock chnWLock = chnLock.writeLock();
     
     private Map<Integer, SortedMap<Integer, MapleCharacter>> accountChars = new HashMap<>();
+    private Map<Integer, MapleStorage> accountStorages = new HashMap<>();
     private MonitoredReentrantLock accountCharsLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.WORLD_CHARS, true);
     
     private Set<Integer> queuedGuilds = new HashSet<>();
@@ -178,6 +183,7 @@ public class World {
     private ScheduledFuture<?> mapOwnershipSchedule;
     private ScheduledFuture<?> fishingSchedule;
     private ScheduledFuture<?> partySearchSchedule;
+    private ScheduledFuture<?> timeoutSchedule;
     
     public World(int world, int flag, String eventmsg, int exprate, int droprate, int bossdroprate, int mesorate, int questrate, int travelrate, int fishingrate) {
         this.id = world;
@@ -211,12 +217,15 @@ public class World {
         mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
         fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
         partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
+        timeoutSchedule = tman.register(new TimeoutWorker(this), 10 * 1000, 10 * 1000);
         
         if(ServerConstants.USE_FAMILY_SYSTEM) {
             long timeLeft = Server.getTimeLeftForNextDay();
             FamilyDailyResetWorker.resetEntitlementUsage(this);
             tman.register(new FamilyDailyResetWorker(this), 24 * 60 * 60 * 1000, timeLeft);
         }
+        
+        announcer.init();
     }
 
     public int getChannelsSize() {
@@ -440,6 +449,41 @@ public class World {
         }
     }
     
+    public void clearAccountCharacterView(Integer accountId) {
+        accountCharsLock.lock();
+        try {
+            SortedMap<Integer, MapleCharacter> accChars = accountChars.remove(accountId);
+            if (accChars != null) {
+                accChars.clear();
+            }
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void registerAccountStorage(Integer accountId) {
+        MapleStorage storage = MapleStorage.loadOrCreateFromDB(accountId, this.id);
+        accountCharsLock.lock();
+        try {
+            accountStorages.put(accountId, storage);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public void unregisterAccountStorage(Integer accountId) {
+        accountCharsLock.lock();
+        try {
+            accountStorages.remove(accountId);
+        } finally {
+            accountCharsLock.unlock();
+        }
+    }
+    
+    public MapleStorage getAccountStorage(Integer accountId) {
+        return accountStorages.get(accountId);
+    }
+    
     private static List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> getSortedAccountCharacterView(Map<Integer, SortedMap<Integer, MapleCharacter>> map) {
         List<Entry<Integer, SortedMap<Integer, MapleCharacter>>> list = new ArrayList<>(map.size());
         for(Entry<Integer, SortedMap<Integer, MapleCharacter>> e : map.entrySet()) {
@@ -511,6 +555,10 @@ public class World {
     
     public MaplePartySearchCoordinator getPartySearchCoordinator() {
         return partySearch;
+    }
+    
+    public MapleAnnouncerCoordinator getAnnouncerCoordinator() {
+        return announcer;
     }
 
     public void addPlayer(MapleCharacter chr) {
@@ -909,7 +957,7 @@ public class World {
                     chr.setParty(party);
                     chr.setMPC(partychar);
                 }
-                chr.getClient().announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                chr.announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
             }
         }
         switch (operation) {
@@ -917,7 +965,7 @@ public class World {
             case EXPEL:
                 MapleCharacter chr = getPlayerStorage().getCharacterById(target.getId());
                 if (chr != null) {
-                    chr.getClient().announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
+                    chr.announce(MaplePacketCreator.updateParty(chr.getClient().getChannel(), party, operation, target));
                     chr.setParty(null);
                     chr.setMPC(null);
                 }
@@ -948,25 +996,25 @@ public class World {
                 break;
             case CHANGE_LEADER:
                 MapleCharacter mc = party.getLeader().getPlayer();
-                MapleCharacter newLeader = target.getPlayer();
-                
-                EventInstanceManager eim = mc.getEventInstance();
-                
-                if(eim != null && eim.isEventLeader(mc)) {
-                    eim.changedLeader(newLeader);
-                } else {
-                    int oldLeaderMapid = mc.getMapId();
-                    
-                    if (MapleMiniDungeonInfo.isDungeonMap(oldLeaderMapid)) {
-                        if (oldLeaderMapid != newLeader.getMapId()) {
-                            MapleMiniDungeon mmd = newLeader.getClient().getChannelServer().getMiniDungeon(oldLeaderMapid);
-                            if(mmd != null) {
-                                mmd.close();
+                if (mc != null) {
+                    EventInstanceManager eim = mc.getEventInstance();
+
+                    if(eim != null && eim.isEventLeader(mc)) {
+                        eim.changedLeader(target);
+                    } else {
+                        int oldLeaderMapid = mc.getMapId();
+
+                        if (MapleMiniDungeonInfo.isDungeonMap(oldLeaderMapid)) {
+                            if (oldLeaderMapid != target.getMapId()) {
+                                MapleMiniDungeon mmd = mc.getClient().getChannelServer().getMiniDungeon(oldLeaderMapid);
+                                if(mmd != null) {
+                                    mmd.close();
+                                }
                             }
                         }
                     }
+                    party.setLeader(target);
                 }
-                party.setLeader(target);
                 break;
             default:
                 System.out.println("Unhandled updateParty operation " + operation.name());
@@ -2114,9 +2162,15 @@ public class World {
             partySearchSchedule = null;
         }
         
+        if(timeoutSchedule != null) {
+            timeoutSchedule.cancel(false);
+            timeoutSchedule = null;
+        }
+        
         players.disconnectAll();
         players = null;
         
+        announcer.shutdown();
         clearWorldData();
         System.out.println("Finished shutting down world " + id + "\r\n");
     }

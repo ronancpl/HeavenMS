@@ -27,6 +27,8 @@
 	Quest ID: 		3454
 */
 
+var status = -1;
+
 function end(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();

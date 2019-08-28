@@ -684,8 +684,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 map = cs.getMapFactory().getMap(980000100 + 100 * field);
                 mapExit = cs.getMapFactory().getMap(980000000);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                    final MapleCharacter mc;
-                    mc = ps.getCharacterById(mpc.getId());
+                    final MapleCharacter mc = ps.getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.setChallenged(false);
                         mc.changeMap(map, map.getPortal(0));
@@ -780,11 +779,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                             for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
                                 MapleCharacter mc = ps.getCharacterById(mpc.getId());
-                                mc.setMonsterCarnival(null);
+                                if (mc != null) {
+                                    mc.setMonsterCarnival(null);
+                                }
                             }
                             for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
                                 MapleCharacter mc = ps.getCharacterById(mpc.getId());
-                                mc.setMonsterCarnival(null);
+                                if (mc != null) {
+                                    mc.setMonsterCarnival(null);
+                                }
                             }
                         } catch (NullPointerException npe) {
                             warpoutCPQLobby(lobbyMap);
@@ -826,11 +829,15 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                             PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                             for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
                                 MapleCharacter mc = ps.getCharacterById(mpc.getId());
-                                mc.setMonsterCarnival(null);
+                                if (mc != null) {
+                                    mc.setMonsterCarnival(null);
+                                }
                             }
                             for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
                                 MapleCharacter mc = ps.getCharacterById(mpc.getId());
-                                mc.setMonsterCarnival(null);
+                                if (mc != null) {
+                                    mc.setMonsterCarnival(null);
+                                }
                             }
                         } catch (NullPointerException npe) {
                             warpoutCPQLobby(lobbyMap);
@@ -905,8 +912,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 mapExit = cs.getMapFactory().getMap(980030000);
                 map = cs.getMapFactory().getMap(980031000 + 1000 * field);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                    final MapleCharacter mc;
-                    mc = ps.getCharacterById(mpc.getId());
+                    final MapleCharacter mc = ps.getCharacterById(mpc.getId());
                     if (mc != null) {
                         mc.setChallenged(false);
                         mc.changeMap(map, map.getPortal(0));

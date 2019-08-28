@@ -29,7 +29,7 @@ import client.MapleClient;
 import constants.GameConstants;
 import java.awt.Point;
 import net.AbstractMaplePacketHandler;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MaplePlayerShop;

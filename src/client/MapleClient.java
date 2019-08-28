@@ -47,8 +47,6 @@ import java.util.concurrent.locks.Lock;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import tools.*;
 
-import javax.script.ScriptEngine;
-
 import net.server.Server;
 import net.server.coordinator.MapleSessionCoordinator;
 import net.server.coordinator.MapleSessionCoordinator.AntiMulticlientResult;
@@ -63,6 +61,7 @@ import net.server.world.World;
 
 import org.apache.mina.core.session.IoSession;
 
+import net.server.world.announcer.MapleAnnouncerCoordinator;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import constants.ServerConstants;
@@ -74,7 +73,6 @@ import scripting.npc.NPCScriptManager;
 import scripting.quest.QuestActionManager;
 import scripting.quest.QuestScriptManager;
 import server.life.MapleMonster;
-import server.MapleTrade;
 import server.ThreadManager;
 import server.maps.*;
 import server.quest.MapleQuest;
@@ -85,7 +83,7 @@ import net.server.coordinator.MapleLoginBypassCoordinator;
 
 public class MapleClient {
 
-	public static final int LOGIN_NOTLOGGEDIN = 0;
+        public static final int LOGIN_NOTLOGGEDIN = 0;
 	public static final int LOGIN_SERVER_TRANSITION = 1;
 	public static final int LOGIN_LOGGEDIN = 2;
 	public static final String CLIENT_KEY = "CLIENT";
@@ -96,7 +94,8 @@ public class MapleClient {
 	private MapleAESOFB send;
 	private MapleAESOFB receive;
 	private final IoSession session;
-	private MapleCharacter player;
+        private MapleCharacter player;
+        private MapleAnnouncerCoordinator announcer = MapleAnnouncerCoordinator.getInstance();
 	private int channel = 1;
 	private int accId = -4;
 	private boolean loggedIn = false;
@@ -122,12 +121,13 @@ public class MapleClient {
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
         private static final Lock loginLocks[] = new Lock[200];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
-    private Calendar tempBanCalendar;
+        private Calendar tempBanCalendar;
 	private int votePoints;
 	private int voteTime = -1;
         private int visibleWorlds;
 	private long lastNpcClick;
 	private long sessionId;
+        private long lastPacket = System.currentTimeMillis();
         private int lang = 0;
         
         static {
@@ -135,6 +135,14 @@ public class MapleClient {
                 loginLocks[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_LOGIN, true);
             }
         }
+        
+	public void updateLastPacket() {
+		lastPacket = System.currentTimeMillis();
+	}
+
+	public long getLastPacket() {
+		return lastPacket;
+	}
 
         public MapleClient(MapleAESOFB send, MapleAESOFB receive, IoSession session) {
 		this.send = send;
@@ -877,9 +885,9 @@ public class MapleClient {
                 MapleMap map = player.getMap();
                 final MapleParty party = player.getParty();
                 final int idz = player.getId();
-                final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
                 
                 if (party != null) {
+                        final MaplePartyCharacter chrp = new MaplePartyCharacter(player);
                         chrp.setOnline(false);
                         wserv.updateParty(party.getId(), PartyOperation.LOG_ONOFF, chrp);
                         if (party.getLeader().getId() == idz && map != null) {
@@ -1135,6 +1143,13 @@ public class MapleClient {
 
 	public void setWorld(int world) {
 		this.world = world;
+                
+                World wserv = Server.getInstance().getWorld(world);
+                if (wserv != null) {
+                        this.announcer = wserv.getAnnouncerCoordinator();
+                } else {
+                        this.announcer = MapleAnnouncerCoordinator.getInstance();
+                }
 	}
 
 	public void pongReceived() {
@@ -1459,8 +1474,8 @@ public class MapleClient {
                 }
 	}
         
-        public synchronized void announce(final byte[] packet) {//MINA CORE IS A FUCKING BITCH AND I HATE IT <3
-                session.write(packet);
+        public void announce(final byte[] packet) {     // thanks GitGud for noticing an opportunity for improvement by overcoming "synchronized announce"
+                announcer.append(session, packet);
 	}
 
         public void announceHint(String msg, int length) {

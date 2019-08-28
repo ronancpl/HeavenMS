@@ -19,7 +19,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package server;
+package server.maps;
 
 import java.awt.Point;
 
@@ -28,10 +28,10 @@ import provider.MapleDataTool;
 import server.maps.MapleGenericPortal;
 import server.maps.MapleMapPortal;
 
-public class PortalFactory {
+public class MaplePortalFactory {
     private int nextDoorPortal;
 
-    public PortalFactory() {
+    public MaplePortalFactory() {
         nextDoorPortal = 0x80;
     }
 

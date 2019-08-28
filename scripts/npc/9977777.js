@@ -278,6 +278,7 @@ function writeFeatureTab_Project() {
         addFeature("Protected many flaws with login management system.");
         addFeature("Developed a robust anti-exploit login coordinator.");
         addFeature("Revised uniqueness aspect of logged in accounts.");
+        addFeature("Developed pooling system for IoSession sent packets.");
         addFeature("Usage of HikariCP to improve DB connection calls.");
         addFeature("Usage of Java Threadpool to improve runnable calls.");
         addFeature("Developed many survey tools for content profiling.");

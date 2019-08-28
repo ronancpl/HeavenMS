@@ -35,7 +35,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import tools.FilePrinter;
 
 public class PortalScriptManager {

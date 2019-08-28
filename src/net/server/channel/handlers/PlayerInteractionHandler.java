@@ -34,7 +34,7 @@ import constants.ServerConstants;
 
 import net.AbstractMaplePacketHandler;
 import server.MapleItemInformationProvider;
-import server.MaplePortal;
+import server.maps.MaplePortal;
 import server.MapleTrade;
 import constants.GameConstants;
 import server.maps.FieldLimit;

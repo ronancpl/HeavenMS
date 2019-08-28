@@ -702,7 +702,8 @@ public class MaplePacketCreator {
          */
         public static byte[] getAuthSuccess(MapleClient c) {
                 Server.getInstance().loadAccountCharacters(c);    // locks the login session until data is recovered from the cache or the DB.
-            
+                Server.getInstance().loadAccountStorages(c);
+                
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.LOGIN_STATUS.getValue());
                 mplew.writeInt(0);
@@ -8216,7 +8217,7 @@ public class MaplePacketCreator {
                 mplew.writeInt(exp);
                 return mplew.getPacket();
         }
-
+        
         public static byte[] spawnDragon(MapleDragon dragon) {
                 final MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
                 mplew.writeShort(SendOpcode.SPAWN_DRAGON.getValue());

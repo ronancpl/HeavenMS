@@ -23,6 +23,8 @@
  * In search for the lost memory - warrior
 */
 
+var status = -1;
+
 function start(mode, type, selection) {
     if (mode == -1) {
         qm.dispose();

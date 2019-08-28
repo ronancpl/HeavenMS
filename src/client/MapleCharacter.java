@@ -22,7 +22,6 @@
  */
 package client;
 
-import server.minigame.MapleRockPaperScissor;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 import java.sql.Connection;
@@ -56,6 +55,8 @@ import java.util.regex.Pattern;
 import net.server.PlayerBuffValueHolder;
 import net.server.PlayerCoolDownValueHolder;
 import net.server.Server;
+import net.server.audit.locks.MonitoredLockType;
+import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import net.server.coordinator.MapleInviteCoordinator;
 import net.server.guild.MapleAlliance;
 import net.server.guild.MapleGuild;
@@ -68,11 +69,11 @@ import net.server.world.PartyOperation;
 import net.server.world.World;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
+import scripting.item.ItemScriptManager;
 import server.CashShop;
 import server.MapleItemInformationProvider;
 import server.MapleItemInformationProvider.ScriptedItem;
 import server.MapleMarriage;
-import server.MaplePortal;
 import server.MapleShop;
 import server.MapleStatEffect;
 import server.MapleStorage;
@@ -84,23 +85,28 @@ import server.events.RescueGaga;
 import server.events.gm.MapleFitness;
 import server.events.gm.MapleOla;
 import server.life.MapleMonster;
+import server.life.MaplePlayerNPC;
 import server.life.MobSkill;
+import server.life.MobSkillFactory;
+import server.maps.FieldLimit;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleDoor;
 import server.maps.MapleDragon;
 import server.maps.MapleMap;
 import server.maps.MapleMapEffect;
 import server.maps.MapleMapManager;
+import server.maps.MapleMapItem;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import server.maps.MapleMiniGame;
 import server.maps.MapleMiniGame.MiniGameResult;
-import server.life.MaplePlayerNPC;
 import server.maps.MaplePlayerShop;
 import server.maps.MaplePlayerShopItem;
+import server.maps.MaplePortal;
 import server.maps.MapleSummon;
 import server.maps.SavedLocation;
 import server.maps.SavedLocationType;
+import server.minigame.MapleRockPaperScissor;
 import server.partyquest.AriantColiseum;
 import server.partyquest.MonsterCarnival;
 import server.partyquest.MonsterCarnivalParty;
@@ -162,14 +168,7 @@ import constants.skills.Shadower;
 import constants.skills.Sniper;
 import constants.skills.Swordsman;
 import constants.skills.ThunderBreaker;
-import scripting.item.ItemScriptManager;
-import server.life.MobSkillFactory;
-import server.maps.MapleMapItem;
-import net.server.audit.locks.MonitoredLockType;
-import net.server.audit.locks.factory.MonitoredReentrantLockFactory;
 import org.apache.mina.util.ConcurrentHashSet;
-import scripting.quest.QuestActionManager;
-import server.maps.FieldLimit;
 
 public class MapleCharacter extends AbstractMapleCharacterObject {
     private static final MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
@@ -1583,7 +1582,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
         
         List<MapleCharacter> partyMembers = new LinkedList<>();
-        for(MapleCharacter mc : (exPartyMembers != null) ? exPartyMembers : this.getPartyMembers()) {
+        for(MapleCharacter mc : (exPartyMembers != null) ? exPartyMembers : this.getPartyMembersOnline()) {
             if(mc.isLoggedinWorld()) {
                 partyMembers.add(mc);
             }
@@ -2605,7 +2604,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public void dispel() {
-        if(!(ServerConstants.USE_UNDISPEL_HOLY_SHIELD && this.isActiveBuffedValue(Bishop.HOLY_SHIELD))) {
+        if(!(ServerConstants.USE_UNDISPEL_HOLY_SHIELD && this.hasActiveBuff(Bishop.HOLY_SHIELD))) {
             List<MapleBuffStatValueHolder> mbsvhList = getAllStatups();
             for (MapleBuffStatValueHolder mbsvh : mbsvhList) {
                 if (mbsvh.effect.isSkill()) {
@@ -2701,7 +2700,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     public void giveDebuff(final MapleDisease disease, MobSkill skill) {
         if (!hasDisease(disease) && getDiseasesSize() < 2) {
             if (!(disease == MapleDisease.SEDUCE || disease == MapleDisease.STUN)) {
-                if (isActiveBuffedValue(Bishop.HOLY_SHIELD)) {
+                if (hasActiveBuff(Bishop.HOLY_SHIELD)) {
                     return;
                 }
             }
@@ -3480,17 +3479,44 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
+    public boolean hasActiveBuff(int sourceid) {
+        LinkedList<MapleBuffStatValueHolder> allBuffs;
+        
+        effLock.lock();
+        chrLock.lock();
+        try {
+            allBuffs = new LinkedList<>(effects.values());
+        } finally {
+            chrLock.unlock();
+            effLock.unlock();
+        }
+        
+        for (MapleBuffStatValueHolder mbsvh : allBuffs) {
+            if (mbsvh.effect.getBuffSourceId() == sourceid) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private List<Pair<MapleBuffStat, Integer>> getActiveStatupsFromSourceid(int sourceid) { // already under effLock & chrLock
         List<Pair<MapleBuffStat, Integer>> ret = new ArrayList<>();
-        
+        List<Pair<MapleBuffStat, Integer>> singletonStatups = new ArrayList<>();
         for(Entry<MapleBuffStat, MapleBuffStatValueHolder> bel : buffEffects.get(sourceid).entrySet()) {
             MapleBuffStat mbs = bel.getKey();
             MapleBuffStatValueHolder mbsvh = effects.get(bel.getKey());
             
+            Pair<MapleBuffStat, Integer> p;
             if(mbsvh != null) {
-                ret.add(new Pair<>(mbs, mbsvh.value));
+                p = new Pair<>(mbs, mbsvh.value);
             } else {
-                ret.add(new Pair<>(mbs, 0));
+                p = new Pair<>(mbs, 0);
+            }
+            
+            if (!isSingletonStatup(mbs)) {   // thanks resinate, Egg Daddy for pointing out morph issues when updating it along with other statups
+                ret.add(p);
+            } else {
+                singletonStatups.add(p);
             }
         }
         
@@ -3500,6 +3526,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 return p1.getLeft().compareTo(p2.getLeft());
             }
         });
+        
+        if (!singletonStatups.isEmpty()) {
+            Collections.sort(singletonStatups, new Comparator<Pair<MapleBuffStat, Integer>>() {
+                @Override
+                public int compare(Pair<MapleBuffStat, Integer> p1, Pair<MapleBuffStat, Integer> p2) {
+                    return p1.getLeft().compareTo(p2.getLeft());
+                }
+            });
+            
+            ret.addAll(singletonStatups);
+        }
         
         return ret;
     }
@@ -3776,12 +3813,29 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public boolean cancelEffect(MapleStatEffect effect, boolean overwrite, long startTime) {
+        boolean ret;
+        
         effLock.lock();
         try {
-            return cancelEffect(effect, overwrite, startTime, true);
+            ret = cancelEffect(effect, overwrite, startTime, true);
         } finally {
             effLock.unlock();
         }
+        
+        if (effect.isMagicDoor() && ret) {
+            prtLock.lock();
+            effLock.lock();
+            try {
+                if (!hasBuffFromSourceid(Priest.MYSTIC_DOOR)) {
+                    MapleDoor.attemptRemoveDoor(this);
+                }
+            } finally {
+                effLock.unlock();
+                prtLock.unlock();
+            }
+        }
+        
+        return ret;
     }
     
     private static MapleStatEffect getEffectFromBuffSource(Map<MapleBuffStat, MapleBuffStatValueHolder> buffSource) {
@@ -3882,9 +3936,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             buffstats = extractLeastRelevantStatEffectsIfFull(effect);
         }
         
-        if (effect.isMagicDoor()) {
-            MapleDoor.attemptRemoveDoor(this);
-        } else if (effect.isMapChair()) {
+        if (effect.isMapChair()) {
             stopChairTask();
         }
         
@@ -4163,6 +4215,44 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         return topologicalSortEffects(buffEffects);
     }
     
+    private List<Pair<Integer, Pair<MapleStatEffect, Long>>> propagatePriorityBuffEffectUpdates(Set<MapleBuffStat> retrievedStats) {
+        List<Pair<Integer, Pair<MapleStatEffect, Long>>> priorityUpdateEffects = new LinkedList<>();
+        Map<MapleBuffStatValueHolder, MapleStatEffect> yokeStats = new LinkedHashMap<>();
+        
+        // priority buffsources: override buffstats for the client to perceive those as "currently buffed"
+        Set<MapleBuffStatValueHolder> mbsvhList = new LinkedHashSet<>();
+        for (MapleBuffStatValueHolder mbsvh : getAllStatups()) {
+            mbsvhList.add(mbsvh);
+        }
+        
+        for (MapleBuffStatValueHolder mbsvh : mbsvhList) {
+            MapleStatEffect mse = mbsvh.effect;
+            int buffSourceId = mse.getBuffSourceId();
+            if (isPriorityBuffSourceid(buffSourceId) && !hasActiveBuff(buffSourceId)) {
+                for (Pair<MapleBuffStat, Integer> ps : mse.getStatups()) {
+                    MapleBuffStat mbs = ps.getLeft();
+                    if (retrievedStats.contains(mbs)) {
+                        MapleBuffStatValueHolder mbsvhe = effects.get(mbs);
+                        
+                        // this shouldn't even be null...
+                        //if (mbsvh != null) {
+                            yokeStats.put(mbsvh, mbsvhe.effect);
+                        //}
+                    }
+                }
+            }
+        }
+        
+        for (Entry<MapleBuffStatValueHolder, MapleStatEffect> e : yokeStats.entrySet()) {
+            MapleBuffStatValueHolder mbsvhPriority = e.getKey();
+            MapleStatEffect mseActive = e.getValue();
+            
+            priorityUpdateEffects.add(new Pair<>(mseActive.getBuffSourceId(), new Pair<>(mbsvhPriority.effect, mbsvhPriority.startTime)));
+        }
+        
+        return priorityUpdateEffects;
+    }
+    
     private void propagateBuffEffectUpdates(Map<Integer, Pair<MapleStatEffect, Long>> retrievedEffects, Set<MapleBuffStat> retrievedStats, Set<MapleBuffStat> removedStats) {
         cancelInactiveBuffStats(retrievedStats, removedStats);
         if (retrievedStats.isEmpty()) {
@@ -4251,6 +4341,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             activeStatups.clear();
         }
         
+        List<Pair<Integer, Pair<MapleStatEffect, Long>>> priorityEffects = propagatePriorityBuffEffectUpdates(retrievedStats);
+        for(Pair<Integer, Pair<MapleStatEffect, Long>> lmse: priorityEffects) {
+            Pair<MapleStatEffect, Long> msel = lmse.getRight();
+            
+            for(Pair<MapleBuffStat, Integer> statup : getActiveStatupsFromSourceid(lmse.getLeft())) {
+                activeStatups.add(statup);
+            }
+            
+            msel.getLeft().updateBuffEffect(this, activeStatups, msel.getRight());
+            activeStatups.clear();
+        }
+        
         if (this.isRidingBattleship()) {
             List<Pair<MapleBuffStat, Integer>> statups = new ArrayList<>(1);
             statups.add(new Pair<>(MapleBuffStat.MONSTER_RIDING, 0));
@@ -4296,6 +4398,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 
             default:
                 return true;
+        }
+    }
+    
+    private static boolean isPriorityBuffSourceid(int sourceid) {
+        switch(sourceid) {
+            case -2022631:
+            case -2022632:
+            case -2022633:
+                return true;
+                
+            default:
+                return false;
         }
     }
     
@@ -4452,6 +4566,18 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     }
                     
                     addItemEffectHolderCount(statup.getKey());
+                }
+                
+                // should also propagate update from buffs shared with priority sourceids
+                Set<MapleBuffStat> updated = appliedStatups.keySet();
+                for (MapleBuffStatValueHolder mbsvh : this.getAllStatups()) {
+                    if (isPriorityBuffSourceid(mbsvh.effect.getBuffSourceId())) {
+                        for (Pair<MapleBuffStat, Integer> p : mbsvh.effect.getStatups()) {
+                            if (updated.contains(p.getLeft())) {
+                                retrievedStats.add(p.getLeft());
+                            }
+                        }
+                    }
                 }
                 
                 if(!isSilent) {
@@ -5361,14 +5487,17 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         }
     }
     
-    public List<MapleCharacter> getPartyMembers() {
+    public List<MapleCharacter> getPartyMembersOnline() {
         List<MapleCharacter> list = new LinkedList<>();
         
         prtLock.lock();
         try {
             if(party != null) {
-                for(MaplePartyCharacter partyMembers: party.getMembers()) {
-                    list.add(partyMembers.getPlayer());
+                for(MaplePartyCharacter mpc: party.getMembers()) {
+                    MapleCharacter mc = mpc.getPlayer();
+                    if (mc != null) {
+                        list.add(mc);
+                    }
                 }
             }
         } finally {
@@ -5385,11 +5514,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         prtLock.lock();
         try {
             if(party != null) {
-                for(MaplePartyCharacter partyMembers: party.getMembers()) {
-                    MapleCharacter chr = partyMembers.getPlayer();
-                    MapleMap chrMap = chr.getMap();
-                    if(chrMap != null && chrMap.hashCode() == thisMapHash && chr.isLoggedinWorld()) {
-                        list.add(chr);
+                for(MaplePartyCharacter mpc: party.getMembers()) {
+                    MapleCharacter chr = mpc.getPlayer();
+                    if (chr != null) {
+                        MapleMap chrMap = chr.getMap();
+                        if(chrMap != null && chrMap.hashCode() == thisMapHash && chr.isLoggedinWorld()) {
+                            list.add(chr);
+                        }
                     }
                 }
             }
@@ -5405,10 +5536,13 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public boolean isPartyMember(int cid) {
-        for(MapleCharacter mpcu: getPartyMembers()) {
-            if(mpcu.getId() == cid) {
-                return true;
+        prtLock.lock();
+        try {
+            if(party != null) {
+                return party.getMemberById(cid) != null;
             }
+        } finally {
+            prtLock.unlock();
         }
         
         return false;
@@ -5987,26 +6121,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else {
             dropMessage(1, "Your guild already reached the maximum capacity of players.");
         }
-    }
-
-    public boolean isActiveBuffedValue(int skillid) {
-        LinkedList<MapleBuffStatValueHolder> allBuffs;
-        
-        effLock.lock();
-        chrLock.lock();
-        try {
-            allBuffs = new LinkedList<>(effects.values());
-        } finally {
-            chrLock.unlock();
-            effLock.unlock();
-        }
-        
-        for (MapleBuffStatValueHolder mbsvh : allBuffs) {
-            if (mbsvh.effect.isSkill() && mbsvh.effect.getSourceId() == skillid) {
-                return true;
-            }
-        }
-        return false;
     }
     
     private boolean canBuyback(int fee, boolean usingMesos) {
@@ -7313,7 +7427,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 rs.close();
                 ps.close();
                 ret.buddylist.loadFromDb(charid);
-                ret.storage = MapleStorage.loadOrCreateFromDB(ret.accountid, ret.world);
+                ret.storage = wserv.getAccountStorage(ret.accountid);
                 
                 int startHp = ret.hp, startMp = ret.mp;
                 ret.reapplyLocalStats();
@@ -7428,8 +7542,10 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public MapleMount mount(int id, int skillid) {
-        maplemount = new MapleMount(this, id, skillid);
-        return maplemount;
+        MapleMount mount = maplemount;
+        mount.setItemId(id);
+        mount.setSkillId(skillid);
+        return mount;
     }
 
     private void playerDead() {
@@ -7467,22 +7583,22 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } else if (getJob() != MapleJob.BEGINNER) { //Hmm...
             if (!FieldLimit.NO_EXP_DECREASE.check(getMap().getFieldLimit())) {  // thanks Conrad for noticing missing FieldLimit check
                 int XPdummy = ExpTable.getExpNeededForLevel(getLevel());
-                if (getMap().isTown()) {
+                
+                if (getMap().isTown()) {    // thanks MindLove, SIayerMonkey, HaItsNotOver for noting players only lose 1% on town maps
                     XPdummy /= 100;
-                }
-                if (XPdummy == ExpTable.getExpNeededForLevel(getLevel())) {
-                    if (getLuk() <= 100 && getLuk() > 8) {
-                        XPdummy *= (200 - getLuk()) / 2000;
-                    } else if (getLuk() < 8) {
+                } else {
+                    if (getLuk() < 50) {    // thanks Taiketo, Quit, Fishanelli for noting player EXP loss are fixed, 50-LUK threshold
                         XPdummy /= 10;
                     } else {
                         XPdummy /= 20;
                     }
                 }
-                if (getExp() > XPdummy) {
+                
+                int curExp = getExp();
+                if (curExp > XPdummy) {
                     loseExp(XPdummy, false, false);
                 } else {
-                    loseExp(getExp(), false, false);
+                    loseExp(curExp, false, false);
                 }
             }
         }
@@ -7792,6 +7908,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     private void updateLocalStats() {
+        prtLock.lock();
         effLock.lock();
         statWlock.lock();
         try {
@@ -7809,6 +7926,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         } finally {
             statWlock.unlock();
             effLock.unlock();
+            prtLock.unlock();
         }
     }
 
@@ -8447,8 +8565,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             ItemFactory.INVENTORY.saveItems(itemsWithType, id, con);
             		
-            deleteWhereCharacterId(con, "DELETE FROM skills WHERE characterid = ?");
-            ps = con.prepareStatement("INSERT INTO skills (characterid, skillid, skilllevel, masterlevel, expiration) VALUES (?, ?, ?, ?, ?)");
+            ps = con.prepareStatement("REPLACE INTO skills (characterid, skillid, skilllevel, masterlevel, expiration) VALUES (?, ?, ?, ?, ?)");
             ps.setInt(1, id);
             for (Entry<Skill, SkillEntry> skill : skills.entrySet()) {
                 ps.setInt(2, skill.getKey().getId());
@@ -8590,10 +8707,6 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 
             }
             
-            con.commit();
-            con.setAutoCommit(true);
-	    
-            
             if (cashshop != null) {
                 cashshop.save(con);
             }
@@ -8602,6 +8715,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 storage.saveToDB(con);
                 usedStorage = false;
             }
+            
+            con.commit();
+            con.setAutoCommit(true); // only commit after finishing all "con" usages, thanks Zygon
             
         } catch (SQLException | RuntimeException t) {
             FilePrinter.printError(FilePrinter.SAVE_CHAR, t, "Error saving " + name + " Level: " + level + " Job: " + job.getId());
@@ -8612,6 +8728,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
         } catch (Exception e) {
             FilePrinter.printError(FilePrinter.SAVE_CHAR, e, "Error saving " + name + " Level: " + level + " Job: " + job.getId());
+            try {
+                con.rollback(); // thanks Zygon
+            } catch (SQLException se) {
+                FilePrinter.printError(FilePrinter.SAVE_CHAR, se, "Error trying to rollback " + name);
+            }
         } finally {
             try {
                 con.setAutoCommit(true);
@@ -9923,7 +10044,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
         if (!this.isHidden() || client.getPlayer().gmLevel() > 1) {
             client.announce(MaplePacketCreator.spawnPlayerMapObject(client, this, false));
             
-            if (buffEffects.containsKey(getJobMapChair(job))) { // mustn't effLock, chrLock this function
+            if (buffEffects.containsKey(getJobMapChair(job))) { // mustn't effLock, chrLock sendSpawnData
                 client.announce(MaplePacketCreator.giveForeignChairSkillEffect(id));
             }
         }
