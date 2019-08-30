@@ -35,6 +35,7 @@ public enum MonitoredLockType {
     CHARACTER_EVT,
     CHARACTER_STA,
     CLIENT,
+    CLIENT_ANNOUNCER,
     CLIENT_ENCODER,
     CLIENT_SESSION,
     CLIENT_LOGIN,

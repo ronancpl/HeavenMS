@@ -98,7 +98,6 @@ import net.server.worker.ServerMessageWorker;
 import net.server.worker.TimedMapObjectWorker;
 import net.server.worker.TimeoutWorker;
 import net.server.worker.WeddingReservationWorker;
-import net.server.world.announcer.MapleAnnouncerCoordinator;
 import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
@@ -125,7 +124,6 @@ public class World {
     private PlayerStorage players = new PlayerStorage();
     private MapleMatchCheckerCoordinator matchChecker = new MapleMatchCheckerCoordinator();
     private MaplePartySearchCoordinator partySearch = new MaplePartySearchCoordinator();
-    private MapleAnnouncerCoordinator announcer = new MapleAnnouncerCoordinator();
     
     private final ReentrantReadWriteLock chnLock = new MonitoredReentrantReadWriteLock(MonitoredLockType.WORLD_CHANNELS, true);
     private ReadLock chnRLock = chnLock.readLock();
@@ -224,8 +222,6 @@ public class World {
             FamilyDailyResetWorker.resetEntitlementUsage(this);
             tman.register(new FamilyDailyResetWorker(this), 24 * 60 * 60 * 1000, timeLeft);
         }
-        
-        announcer.init();
     }
 
     public int getChannelsSize() {
@@ -557,10 +553,6 @@ public class World {
         return partySearch;
     }
     
-    public MapleAnnouncerCoordinator getAnnouncerCoordinator() {
-        return announcer;
-    }
-
     public void addPlayer(MapleCharacter chr) {
         players.addPlayer(chr);
     }
@@ -2170,7 +2162,6 @@ public class World {
         players.disconnectAll();
         players = null;
         
-        announcer.shutdown();
         clearWorldData();
         System.out.println("Finished shutting down world " + id + "\r\n");
     }

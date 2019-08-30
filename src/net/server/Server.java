@@ -71,7 +71,6 @@ import net.server.worker.RankingLoginWorker;
 import net.server.worker.ReleaseLockWorker;
 import net.server.worker.RespawnWorker;
 import net.server.world.World;
-import net.server.world.announcer.MapleAnnouncerCoordinator;
 
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.buffer.SimpleBufferAllocator;
@@ -950,7 +949,6 @@ public class Server {
             System.exit(0);
         }
         
-        MapleAnnouncerCoordinator.getInstance().init();
         System.out.println();
         
         if(ServerConstants.USE_FAMILY_SYSTEM) {

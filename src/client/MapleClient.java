@@ -61,7 +61,6 @@ import net.server.world.World;
 
 import org.apache.mina.core.session.IoSession;
 
-import net.server.world.announcer.MapleAnnouncerCoordinator;
 import client.inventory.MapleInventoryType;
 import constants.GameConstants;
 import constants.ServerConstants;
@@ -95,7 +94,6 @@ public class MapleClient {
 	private MapleAESOFB receive;
 	private final IoSession session;
         private MapleCharacter player;
-        private MapleAnnouncerCoordinator announcer = MapleAnnouncerCoordinator.getInstance();
 	private int channel = 1;
 	private int accId = -4;
 	private boolean loggedIn = false;
@@ -120,6 +118,7 @@ public class MapleClient {
         private final Semaphore actionsSemaphore = new Semaphore(7);
 	private final Lock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT, true);
         private final Lock encoderLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ENCODER, true);
+        private final Lock announcerLock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CLIENT_ANNOUNCER, true);
         private static final Lock loginLocks[] = new Lock[200];  // thanks Masterrulax & try2hack for pointing out a bottleneck issue here
         private Calendar tempBanCalendar;
 	private int votePoints;
@@ -1143,13 +1142,6 @@ public class MapleClient {
 
 	public void setWorld(int world) {
 		this.world = world;
-                
-                World wserv = Server.getInstance().getWorld(world);
-                if (wserv != null) {
-                        this.announcer = wserv.getAnnouncerCoordinator();
-                } else {
-                        this.announcer = MapleAnnouncerCoordinator.getInstance();
-                }
 	}
 
 	public void pongReceived() {
@@ -1475,7 +1467,12 @@ public class MapleClient {
 	}
         
         public void announce(final byte[] packet) {     // thanks GitGud for noticing an opportunity for improvement by overcoming "synchronized announce"
-                announcer.append(session, packet);
+                announcerLock.lock();
+                try {
+                        session.write(packet);
+                } finally {
+                        announcerLock.unlock();
+                }
 	}
 
         public void announceHint(String msg, int length) {
