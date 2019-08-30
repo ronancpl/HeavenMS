@@ -2109,3 +2109,6 @@ Corrigido caso de EXP ganho ocorrendo menor que o esperado, ao se usar diversos 
 Corrigido bug crítico na atualização recente relacionado a skill mounts, onde na inicialização dos mounts informações estariam sendo perdidas inesperadamente...
 Corrigido informações de mount não sendo atualizado para o jogador assim que o mesmo loga, levando a certas quests com requerimento de mount não permitindo inicialização pelo lado-cliente.
 Revisado sistema criado para manutenção de pacotes enviados através do IoSession, tal sistema agora atuando como uma "pool" ao invés de uma "factory".
+
+29 Agosto 2019,
+Revisado uso de loop em espera ocupada no sistema de manutenção de pacotes enviados. Em geral, threads que solicitam anúncio de pacotes não necessitam evitar esperar até que cada pacote seja enviado.
