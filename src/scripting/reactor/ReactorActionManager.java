@@ -35,8 +35,8 @@ import java.util.List;
 import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.script.Invocable;
 import javax.script.ScriptException;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import scripting.AbstractPlayerInteraction;
 import scripting.event.EventInstanceManager;
 import scripting.event.EventManager;
@@ -58,10 +58,10 @@ import tools.MaplePacketCreator;
  */
 public class ReactorActionManager extends AbstractPlayerInteraction {
     private MapleReactor reactor;
-    private Invocable iv;
+    private NashornScriptEngine iv;
     private ScheduledFuture<?> sprayTask = null;
 
-    public ReactorActionManager(MapleClient c, MapleReactor reactor, Invocable iv) {
+    public ReactorActionManager(MapleClient c, MapleReactor reactor, NashornScriptEngine iv) {
         super(c);
         this.reactor = reactor;
         this.iv = iv;

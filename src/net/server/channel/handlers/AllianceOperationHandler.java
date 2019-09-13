@@ -124,7 +124,11 @@ public final class AllianceOperationHandler extends AbstractMaplePacketHandler {
                 Server.getInstance().resetAllianceGuildPlayersRank(guildid);
                 
                 chr.getMGC().setAllianceRank(2);
-                Server.getInstance().getGuild(chr.getGuildId()).getMGC(chr.getId()).setAllianceRank(2);
+                MapleGuild g = Server.getInstance().getGuild(chr.getGuildId());
+                if (g != null) {
+                    g.getMGC(chr.getId()).setAllianceRank(2);
+                }
+                
                 chr.saveGuildStatus();
 
                 Server.getInstance().allianceMessage(alliance.getId(), MaplePacketCreator.addGuildToAlliance(alliance, guildid, c), -1, -1);

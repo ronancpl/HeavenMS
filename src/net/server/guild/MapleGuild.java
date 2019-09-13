@@ -580,14 +580,6 @@ public class MapleGuild {
         }
         
         membersLock.lock();
-        members.sort(new Comparator<MapleGuildCharacter>() {
-            @Override
-            public int compare(MapleGuildCharacter t, MapleGuildCharacter o) {
-                if(t.getGuildRank() <= 1 && o.getGuildRank() > 1) return -1;
-                else if(t.getGuildRank() > 1 && o.getGuildRank() <= 1) return 1;
-                else return 0;
-            }
-        });
         try {
             this.broadcast(MaplePacketCreator.changeRank(mgc));
         } finally {
@@ -597,7 +589,7 @@ public class MapleGuild {
     
     public void setGuildNotice(String notice) {
         this.notice = notice;
-        writeToDB(false);
+        this.writeToDB(false);
         
         membersLock.lock();
         try {

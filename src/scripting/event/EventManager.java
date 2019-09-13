@@ -31,7 +31,6 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.script.Invocable;
 import javax.script.ScriptException;
 
 import constants.ServerConstants;
@@ -59,6 +58,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -72,7 +72,7 @@ import server.ThreadManager;
  * @author Ronan
  */
 public class EventManager {
-    private Invocable iv;
+    private NashornScriptEngine iv;
     private Channel cserv;
     private World wserv;
     private Server server;
@@ -95,7 +95,7 @@ public class EventManager {
     
     private static final int maxLobbys = 8;     // an event manager holds up to this amount of concurrent lobbys
     
-    public EventManager(Channel cserv, Invocable iv, String name) {
+    public EventManager(Channel cserv, NashornScriptEngine iv, String name) {
         this.server = Server.getInstance();
         this.iv = iv;
         this.cserv = cserv;
@@ -256,7 +256,7 @@ public class EventManager {
         return cserv;
     }
     
-    public Invocable getIv() {
+    public NashornScriptEngine getIv() {
         return iv;
     }
 

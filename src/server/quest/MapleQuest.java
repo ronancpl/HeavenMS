@@ -490,6 +490,8 @@ public class MapleQuest {
 				ret = new BuffExceptRequirement(this, data);
 				break;
 			case SCRIPT:
+                                ret = new ScriptRequirement(this, data);
+                                break;
 			case NORMAL_AUTO_START:
 			case START:
 			case END:
@@ -561,12 +563,22 @@ public class MapleQuest {
         
         public int getNpcRequirement(boolean complete) {
                 Map<MapleQuestRequirementType, MapleQuestRequirement> reqs = !complete ? startReqs : completeReqs;
-                
                 MapleQuestRequirement mqr = reqs.get(MapleQuestRequirementType.NPC);
                 if (mqr != null) {
                         return ((NpcRequirement) mqr).get();
                 } else {
                         return -1;
+                }
+        }
+        
+        public boolean hasScriptRequirement(boolean complete) {
+                Map<MapleQuestRequirementType, MapleQuestRequirement> reqs = !complete ? startReqs : completeReqs;
+                MapleQuestRequirement mqr = reqs.get(MapleQuestRequirementType.SCRIPT);
+                
+                if (mqr != null) {
+                        return ((ScriptRequirement) mqr).get();
+                } else {
+                        return false;
                 }
         }
         

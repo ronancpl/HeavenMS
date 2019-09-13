@@ -225,7 +225,7 @@ function action(mode, type, selection) {
                 cm.sendAcceptDecline("So, you're giving up? You're really going to leave?");
             } else {
                 if (mode == 1) {
-                    cm.warp(925020002);
+                    cm.warp(925020002, "st00");
                 }
                 cm.dispose();
             }

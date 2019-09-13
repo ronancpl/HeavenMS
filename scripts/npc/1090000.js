@@ -222,7 +222,7 @@ function action(mode, type, selection) {
 					cm.sendOk("All the training maps are currently in use. Please try again later.");
 					cm.dispose();
 				} else {
-					cm.warp(map);
+					cm.warp(map, 0);
 					cm.dispose();
 					return;
                 }

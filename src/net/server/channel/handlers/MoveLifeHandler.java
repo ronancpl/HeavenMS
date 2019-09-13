@@ -36,7 +36,6 @@ import server.life.MobSkillFactory;
 import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
-import server.movement.LifeMovementFragment;
 import tools.MaplePacketCreator;
 import tools.Pair;
 import tools.Randomizer;

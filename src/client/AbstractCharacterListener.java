@@ -26,5 +26,6 @@ package client;
 public interface AbstractCharacterListener {
     public void onHpChanged(int oldHp);
     public void onHpmpPoolUpdate();
+    public void onStatUpdate();
     public void onAnnounceStatPoolUpdate();
 }

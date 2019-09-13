@@ -28,6 +28,6 @@ function start() {
         cm.gainItem(4031041,1);
     else
         cm.gainItem(prizes[parseInt(Math.random() * prizes.length)],1);
-    cm.warp(103000100);
+    cm.warp(103000100, 0);
     cm.dispose();
 }

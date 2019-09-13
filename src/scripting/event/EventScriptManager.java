@@ -27,8 +27,8 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.script.Invocable;
 import javax.script.ScriptEngine;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 
 import net.server.channel.Channel;
 import scripting.AbstractScriptManager;
@@ -41,11 +41,11 @@ public class EventScriptManager extends AbstractScriptManager {
 
     private class EventEntry {
 
-        public EventEntry(Invocable iv, EventManager em) {
+        public EventEntry(NashornScriptEngine iv, EventManager em) {
             this.iv = iv;
             this.em = em;
         }
-        public Invocable iv;
+        public NashornScriptEngine iv;
         public EventManager em;
     }
     private Map<String, EventEntry> events = new LinkedHashMap<>();
@@ -54,7 +54,7 @@ public class EventScriptManager extends AbstractScriptManager {
         super();
         for (String script : scripts) {
             if (!script.equals("")) {
-                Invocable iv = getScriptEngine("event/" + script + ".js");
+                NashornScriptEngine iv = getScriptEngine("event/" + script + ".js");
                 events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
             }
         }
@@ -71,7 +71,7 @@ public class EventScriptManager extends AbstractScriptManager {
     public void init() {
         for (EventEntry entry : events.values()) {
             try {
-                ((ScriptEngine) entry.iv).put("em", entry.em);
+                entry.iv.put("em", entry.em);
                 entry.iv.invokeFunction("init", (Object) null);
             } catch (Exception ex) {
                 Logger.getLogger(EventScriptManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +88,7 @@ public class EventScriptManager extends AbstractScriptManager {
         Channel cserv = events.values().iterator().next().em.getChannelServer();
         for (Entry<String, EventEntry> entry : events.entrySet()) {
             String script = entry.getKey();
-            Invocable iv = getScriptEngine("event/" + script + ".js");
+            NashornScriptEngine iv = getScriptEngine("event/" + script + ".js");
             events.put(script, new EventEntry(iv, new EventManager(cserv, iv, script)));
         }
     }

@@ -65,9 +65,7 @@ public abstract class AbstractScriptManager {
     }
 
     protected NashornScriptEngine getScriptEngine(String path, MapleClient c) {
-        String cachePath = "scripts/" + path;
-        NashornScriptEngine engine = c.getScriptEngine(cachePath);
-
+        NashornScriptEngine engine = c.getScriptEngine("scripts/" + path);
         if (engine == null) {
             engine = getScriptEngine(path);
             c.setScriptEngine(path, engine);

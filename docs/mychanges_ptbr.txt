@@ -2112,3 +2112,27 @@ Revisado sistema criado para manutenção de pacotes enviados através do IoSess
 
 29 Agosto 2019,
 Revisado uso de loop em espera ocupada no sistema de manutenção de pacotes enviados. Em geral, threads que solicitam anúncio de pacotes não necessitam evitar esperar até que cada pacote seja enviado.
+
+30 Agosto 2019,
+Corrigido skill Seal não atuando devidamente para Blaze Wizard.
+Corrigido skill Seal atuando em bosses.
+Refatorado funções ainda utilizando invocável desabstraindo o mesmo, assim evitando múltiplos casts de tipo ao decorrer da busca pelo motor de scripts.
+
+02 - 03 Setembro 2019,
+Revisado pontos de spawn usados em warps em vários scripts do servidor.
+Refatorado métodos da CPQ buscando jogadores pelo storage de canais. Não deveria mais haver necessidade já que a partir de uma atualização recente membros offline contém objeto de jogador nulo, e ao reentrar o MPC já assume o novo objeto de jogador.
+
+05 - 06 Setembro 2019,
+Adicionado doors em mapas de cidade como objetos visíveis em campo.
+Corrigido aplicação de status de mobs, onde em várias ocasiões os mobs poderiam parecer inafetáveis aos mesmos.
+
+07 Setembro 2019,
+Corrigido jogador não recebendo informações de debuffs em outros jogadores ao trocar de mapas.
+
+10 - 12 Setembro 2019,
+Corrigido algumas skills de tipo "mágico", que não usam cargas, não mostrando dano para outros jogadores quando golpe ocorre suficientemente perto.
+Adicionado checagem por evidência de disponibilidade de scripts em quests.
+Corrigido inscrição de itens no MTS levando a certos atributos de itens sendo perdidos no processo.
+Adicionado ganho de MaxHP extra da skill para Thunderbreakers, em ambos casos de aumento de nível e de MaxHP usando AP.
+Refatorado ação de autopots, permitindo o mesmo a agir imediatamente após detecção de perda suficiente de HP/MP ao usar itens ou skills.
+Adicionado efeito sonoro de portal ao atravessar Mystic Door.

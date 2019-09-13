@@ -48,7 +48,7 @@ function start(mode, type, selection) {
                 qm.sendOk("There is someone currently in this map, come back later.");
                 qm.dispose();
             } else {
-                qm.warp(926000000);
+                qm.warp(926000000, "st00");
                 qm.forceStartQuest();
                 qm.dispose();
             }

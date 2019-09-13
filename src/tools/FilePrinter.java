@@ -43,6 +43,7 @@ public class FilePrinter {
             MOB_MOVEMENT = "game/MobMovement.txt",
             MAP_SCRIPT = "game/mapscript/",
             DIRECTION = "game/directions/",
+            GUILD_CHAR_ERROR = "guilds/GuildCharError.txt",
             SAVE_CHAR = "players/SaveToDB.txt",
             INSERT_CHAR = "players/InsertCharacter.txt",
             LOAD_CHAR = "players/LoadCharFromDB.txt",

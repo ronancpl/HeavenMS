@@ -217,7 +217,11 @@ public class MapleFamily {
                     int repsToSenior = rsEntries.getInt("reptosenior");
                     String precepts = rsEntries.getString("precepts");
                     //Timestamp lastResetTime = rsEntries.getTimestamp("lastresettime"); //taken care of by FamilyDailyResetWorker
-                    MapleFamily family = Server.getInstance().getWorld(world).getFamily(familyid);
+                    World wserv = Server.getInstance().getWorld(world);
+                    if (wserv == null) {
+                        continue;
+                    }
+                    MapleFamily family = wserv.getFamily(familyid);
                     if(family == null) {
                         family = new MapleFamily(familyid, world);
                         Server.getInstance().getWorld(world).addFamily(familyid, family);

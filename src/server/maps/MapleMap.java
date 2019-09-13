@@ -2063,6 +2063,8 @@ public class MapleMap {
         
         spos.y--;
         monster.setPosition(spos);
+        monster.setSpawnEffect(effect);
+        
         spawnAndAddRangedMapObject(monster, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
@@ -2116,7 +2118,11 @@ public class MapleMap {
         spawnAndAddRangedMapObject(door, new DelayedPacketCreation() {
             @Override
             public void sendPackets(MapleClient c) {
-                door.sendSpawnData(c, false);
+                MapleCharacter chr = c.getPlayer();
+                if (chr != null) {
+                    door.sendSpawnData(c, false);
+                    chr.addVisibleMapObject(door);
+                }
             }
         }, new SpawnCondition() {
             @Override
@@ -2465,22 +2471,23 @@ public class MapleMap {
         chr.setMapId(mapid);
         chr.updateActiveEffects();
         
+        MapScriptManager msm = MapScriptManager.getInstance();
         if (chrSize == 1) {
             if(!hasItemMonitor()) {
                 startItemMonitor();
                 aggroMonitor.startAggroCoordinator();
             }
             
-            if (onFirstUserEnter.length() != 0 && !chr.hasEntered(onFirstUserEnter, mapid) && MapScriptManager.getInstance().scriptExists(onFirstUserEnter, true)) {
-                chr.enteredScript(onFirstUserEnter, mapid);
-                MapScriptManager.getInstance().runMapScript(chr.getClient(), onFirstUserEnter, true);
+            if (onFirstUserEnter.length() != 0) {
+                msm.runMapScript(chr.getClient(), "onFirstUserEnter/" + onFirstUserEnter, true);
             }
         }
         if (onUserEnter.length() != 0) {
             if (onUserEnter.equals("cygnusTest") && (mapid < 913040000 || mapid > 913040006)) {
                 chr.saveLocation("INTRO");
             }
-            MapScriptManager.getInstance().runMapScript(chr.getClient(), onUserEnter, false);
+            
+            msm.runMapScript(chr.getClient(), "onUserEnter/" + onUserEnter, false);
         }
         if (FieldLimit.CANNOTUSEMOUNTS.check(fieldLimit) && chr.getBuffedValue(MapleBuffStat.MONSTER_RIDING) != null) {
             chr.cancelEffectFromBuffStat(MapleBuffStat.MONSTER_RIDING);
@@ -3020,8 +3027,8 @@ public class MapleMap {
         }
     }
 
-    private void sendObjectPlacement(MapleClient mapleClient) {
-        MapleCharacter chr = mapleClient.getPlayer();
+    private void sendObjectPlacement(MapleClient c) {
+        MapleCharacter chr = c.getPlayer();
         Collection<MapleMapObject> objects;
         
         objectRLock.lock();
@@ -3033,7 +3040,7 @@ public class MapleMap {
         
         for (MapleMapObject o : objects) {
             if (isNonRangedType(o.getType())) {
-                o.sendSpawnData(mapleClient);
+                o.sendSpawnData(c);
             } else if (o.getType() == MapleMapObjectType.MONSTER) {
                 ((MapleMonster) o).aggroUpdateController();
             } else if (o.getType() == MapleMapObjectType.SUMMON) {

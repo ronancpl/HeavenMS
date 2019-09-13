@@ -91,6 +91,7 @@ import server.life.MobSkillFactory;
 import server.maps.FieldLimit;
 import server.maps.MapleHiredMerchant;
 import server.maps.MapleDoor;
+import server.maps.MapleDoorObject;
 import server.maps.MapleDragon;
 import server.maps.MapleMap;
 import server.maps.MapleMapEffect;
@@ -136,6 +137,7 @@ import client.inventory.manipulator.MapleCashidGenerator;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.newyear.NewYearCardRecord;
 import client.processor.FredrickProcessor;
+import client.processor.PetAutopotProcessor;
 import constants.ExpTable;
 import constants.GameConstants;
 import constants.ItemConstants;
@@ -145,6 +147,7 @@ import constants.skills.Beginner;
 import constants.skills.Bishop;
 import constants.skills.BlazeWizard;
 import constants.skills.Bowmaster;
+import constants.skills.Brawler;
 import constants.skills.Buccaneer;
 import constants.skills.Corsair;
 import constants.skills.Crusader;
@@ -166,7 +169,7 @@ import constants.skills.Priest;
 import constants.skills.Ranger;
 import constants.skills.Shadower;
 import constants.skills.Sniper;
-import constants.skills.Swordsman;
+import constants.skills.Warrior;
 import constants.skills.ThunderBreaker;
 import org.apache.mina.util.ConcurrentHashSet;
 
@@ -355,6 +358,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                     setMp(localmaxmp);
                     statUpdates.put(MapleStat.MP, mp);
                 }
+            }
+            
+            @Override
+            public void onStatUpdate() {
+                recalcLocalStats();
             }
             
             @Override
@@ -1647,7 +1655,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             for(MapleDoor door : partyDoors.values()) {
                 for(MapleCharacter pchar : partyMembers) {
-                    door.getTownDoor().sendDestroyData(pchar.getClient(), true);
+                    MapleDoorObject mdo = door.getTownDoor();
+                    mdo.sendDestroyData(pchar.getClient(), true);
+                    pchar.removeVisibleMapObject(mdo);
                 }
             }
             
@@ -1655,7 +1665,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 Collection<MapleDoor> leaverDoors = partyLeaver.getDoors();
                 for(MapleDoor door : leaverDoors) {
                     for(MapleCharacter pchar : partyMembers) {
-                        door.getTownDoor().sendDestroyData(pchar.getClient(), true);
+                        MapleDoorObject mdo = door.getTownDoor();
+                        mdo.sendDestroyData(pchar.getClient(), true);
+                        pchar.removeVisibleMapObject(mdo);
                     }
                 }
             }
@@ -1666,7 +1678,9 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
 
                 if(door != null) {
                     for(MapleCharacter pchar : partyMembers) {
-                        door.getTownDoor().sendSpawnData(pchar.getClient());
+                        MapleDoorObject mdo = door.getTownDoor();
+                        mdo.sendSpawnData(pchar.getClient());
+                        pchar.addVisibleMapObject(mdo);
                     }
                 }
             }
@@ -1677,17 +1691,24 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             
             if(partyDoors != null) {
                 for(MapleDoor door : partyDoors.values()) {
-                    door.getTownDoor().sendDestroyData(partyLeaver.getClient(), true);
+                    MapleDoorObject mdo = door.getTownDoor();
+                    mdo.sendDestroyData(partyLeaver.getClient(), true);
+                    partyLeaver.removeVisibleMapObject(mdo);
                 }
             }
             
             for(MapleDoor door : leaverDoors) {
-                door.getTownDoor().sendDestroyData(partyLeaver.getClient(), true);
+                MapleDoorObject mdo = door.getTownDoor();
+                mdo.sendDestroyData(partyLeaver.getClient(), true);
+                partyLeaver.removeVisibleMapObject(mdo);
             }
             
             for(MapleDoor door : leaverDoors) {
                 door.updateDoorPortal(partyLeaver);
-                door.getTownDoor().sendSpawnData(partyLeaver.getClient());
+                
+                MapleDoorObject mdo = door.getTownDoor();
+                mdo.sendSpawnData(partyLeaver.getClient());
+                partyLeaver.addVisibleMapObject(mdo);
             }
         }
     }
@@ -2693,6 +2714,24 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 map.broadcastMessage(MaplePacketCreator.giveForeignDebuff(id, debuff, skill));
             } else {
                 map.broadcastMessage(MaplePacketCreator.giveForeignSlowDebuff(id, debuff, skill));
+            }
+        }
+    }
+    
+    public void collectDiseases() {
+        for (MapleCharacter chr : map.getAllPlayers()) {
+            int cid = chr.getId();
+            
+            for (Entry<MapleDisease, Pair<Long, MobSkill>> di : chr.getAllDiseases().entrySet()) {
+                MapleDisease disease = di.getKey();
+                MobSkill skill = di.getValue().getRight();
+                final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(disease, Integer.valueOf(skill.getX())));
+
+                if (disease != MapleDisease.SLOW) {
+                    this.announce(MaplePacketCreator.giveForeignDebuff(cid, debuff, skill));
+                } else {
+                    this.announce(MaplePacketCreator.giveForeignSlowDebuff(cid, debuff, skill));
+                }
             }
         }
     }
@@ -6063,12 +6102,8 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
 
     public boolean hasEntered(String script, int mapId) {
-        if (entered.containsKey(mapId)) {
-            if (entered.get(mapId).equals(script)) {
-                return true;
-            }
-        }
-        return false;
+        String e = entered.get(mapId);
+        return script.equals(e);
     }
 
     public void hasGivenFame(MapleCharacter to) {
@@ -6416,7 +6451,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             addhp += Randomizer.rand(12, 16);
             addmp += Randomizer.rand(10, 12);
         } else if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1)) {
-            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(DawnWarrior.MAX_HP_INCREASE) : SkillFactory.getSkill(Swordsman.IMPROVED_MAX_HP_INCREASE);
+            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(DawnWarrior.MAX_HP_INCREASE) : SkillFactory.getSkill(Warrior.IMPROVED_MAXHP);
             if (job.isA(MapleJob.CRUSADER)) {
                 improvingMaxMP = SkillFactory.getSkill(1210000);
             } else if (job.isA(MapleJob.DAWNWARRIOR2)) {
@@ -6437,7 +6472,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             addhp += 30000;
             addmp += 30000;
         } else if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
-            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.IMPROVE_MAX_HP) : SkillFactory.getSkill(5100000);
+            improvingMaxHP = isCygnus() ? SkillFactory.getSkill(ThunderBreaker.IMPROVE_MAX_HP) : SkillFactory.getSkill(Brawler.IMPROVE_MAX_HP);
             improvingMaxHPLevel = getSkillLevel(improvingMaxHP);
             addhp += Randomizer.rand(22, 28);
             addmp += Randomizer.rand(18, 23);
@@ -6446,7 +6481,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             int aids = Randomizer.rand(4, 8);
             addmp += aids + Math.floor(aids * 0.1);
         }
-        if (improvingMaxHPLevel > 0 && (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.PIRATE) || job.isA(MapleJob.DAWNWARRIOR1))) {
+        if (improvingMaxHPLevel > 0 && (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.PIRATE) || job.isA(MapleJob.DAWNWARRIOR1) || job.isA(MapleJob.THUNDERBREAKER1))) {
             addhp += improvingMaxHP.getEffect(improvingMaxHPLevel).getX();
         }
         if (improvingMaxMPLevel > 0 && (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.CRUSADER) || job.isA(MapleJob.BLAZEWIZARD1))) {
@@ -7920,7 +7955,7 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
                 client.announce(MaplePacketCreator.updatePlayerStats(hpmpupdate, true, this));
             }
 
-            if (oldmaxhp != localmaxhp) {
+            if (oldmaxhp != localmaxhp) {   // thanks Wh1SK3Y for pointing out a deadlock occuring related to party members HP
                 updatePartyMemberHP();
             }
         } finally {
@@ -8072,15 +8107,11 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
     }
     
     public void resetEnteredScript() {
-        if (entered.containsKey(map.getId())) {
-            entered.remove(map.getId());
-        }
+        entered.remove(map.getId());
     }
 
     public void resetEnteredScript(int mapId) {
-        if (entered.containsKey(mapId)) {
-            entered.remove(mapId);
-        }
+        entered.remove(mapId);
     }
 
     public void resetEnteredScript(String script) {
@@ -9102,11 +9133,35 @@ public class MapleCharacter extends AbstractMapleCharacterObject {
             }
 
             updateHpMp(nextHp, nextMp);
-            return true;
         } finally {
             statWlock.unlock();
             effLock.unlock();
         }
+        
+        // autopot on HPMP deplete... thanks shavit for finding out D. Roar doesn't trigger autopot request
+        if (hpchange < 0) {
+            MapleKeyBinding autohpPot = this.getKeymap().get(91);
+            if (autohpPot != null) {
+                int autohpItemid = autohpPot.getAction();
+                Item autohpItem = this.getInventory(MapleInventoryType.USE).findById(autohpItemid);
+                if (autohpItem != null) {
+                    PetAutopotProcessor.runAutopotAction(client, autohpItem.getPosition(), autohpItemid);
+                }
+            }
+        }
+        
+        if (mpchange < 0) {
+            MapleKeyBinding autompPot = this.getKeymap().get(92);
+            if (autompPot != null) {
+                int autompItemid = autompPot.getAction();
+                Item autompItem = this.getInventory(MapleInventoryType.USE).findById(autompItemid);
+                if (autompItem != null) {
+                    PetAutopotProcessor.runAutopotAction(client, autompItem.getPosition(), autompItemid);
+                }
+            }
+        }
+        
+        return true;
     }
     
     public void setInventory(MapleInventoryType type, MapleInventory inv) {

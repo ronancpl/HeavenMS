@@ -29,8 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
@@ -54,10 +52,10 @@ public class NPCScriptManager extends AbstractScriptManager {
     }
 
     private Map<MapleClient, NPCConversationManager> cms = new HashMap<>();
-    private Map<MapleClient, Invocable> scripts = new HashMap<>();
+    private Map<MapleClient, NashornScriptEngine> scripts = new HashMap<>();
 
     public boolean isNpcScriptAvailable(MapleClient c, String fileName) {
-        Invocable iv = null;
+        NashornScriptEngine iv = null;
         if (fileName != null) {
             iv = getScriptEngine("npc/" + fileName + ".js", c);
         }
@@ -96,7 +94,7 @@ public class NPCScriptManager extends AbstractScriptManager {
             NashornScriptEngine iv = getScriptEngine("npc/" + filename + ".js", c);
 
             if (iv == null) {
-                c.getPlayer().dropMessage(1, npc + "");
+                c.getPlayer().dropMessage(1, "NPC " + npc + " is uncoded.");
                 cm.dispose();
                 return;
             }
@@ -173,7 +171,7 @@ public class NPCScriptManager extends AbstractScriptManager {
     }
 
     public void action(MapleClient c, byte mode, byte type, int selection) {
-        Invocable iv = scripts.get(c);
+        NashornScriptEngine iv = scripts.get(c);
         if (iv != null) {
             try {
                 c.setClickedNPC();

@@ -130,7 +130,7 @@ public class MapleParty {
     public Collection<MaplePartyCharacter> getMembers() {
         lock.lock();
         try {
-            return Collections.unmodifiableList(members);
+            return new LinkedList<>(members);
         } finally {
             lock.unlock();
         }
@@ -139,7 +139,7 @@ public class MapleParty {
     public List<MaplePartyCharacter> getPartyMembers() {
         lock.lock();
         try {
-            return Collections.unmodifiableList(members);
+            return new LinkedList<>(members);
         } finally {
             lock.unlock();
         }

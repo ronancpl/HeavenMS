@@ -268,11 +268,12 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                         if(familyEntry != null) {
                             familyEntry.setCharacter(player);
                             player.setFamilyEntry(familyEntry);
+                            
+                            c.announce(MaplePacketCreator.getFamilyInfo(familyEntry));
+                            familyEntry.announceToSenior(MaplePacketCreator.sendFamilyLoginNotice(player.getName(), true), true);
                         } else {
                             FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + "'s family doesn't have an entry for them. (" + f.getID() + ")");
                         }
-                        c.announce(MaplePacketCreator.getFamilyInfo(familyEntry));
-                        familyEntry.announceToSenior(MaplePacketCreator.sendFamilyLoginNotice(player.getName(), true), true);
                     } else {
                         FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Player " + player.getName() + " has an invalid family ID. (" + player.getFamilyId() + ")");
                         c.announce(MaplePacketCreator.getFamilyInfo(null));
@@ -379,8 +380,6 @@ public final class PlayerLoggedinHandler extends AbstractMaplePacketHandler {
                             final List<Pair<MapleDisease, Integer>> debuff = Collections.singletonList(new Pair<>(e.getKey(), Integer.valueOf(e.getValue().getRight().getX())));
                             c.announce(MaplePacketCreator.giveDebuff(debuff, e.getValue().getRight()));
                         }
-
-                        player.announceDiseases();
                     }
                 } else {
                     if(player.isRidingBattleship()) {

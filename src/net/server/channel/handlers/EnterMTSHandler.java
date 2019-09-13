@@ -152,6 +152,12 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                         equip.setWdef((short) rs.getInt("wdef"));
                         equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                         equip.setLevel((byte) rs.getInt("level"));
+                        equip.setItemLevel(rs.getByte("itemlevel"));
+                        equip.setItemExp(rs.getInt("itemexp"));
+                        equip.setRingId(rs.getInt("ringid"));
+                        equip.setExpiration(rs.getLong("expiration"));
+                        equip.setGiftFrom(rs.getString("giftFrom"));
+                        
                         items.add(new MTSItemInfo((Item) equip, rs.getInt("price") + 100 + (int) (rs.getInt("price") * 0.1), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                     }
                 }
@@ -209,7 +215,12 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rs.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                             equip.setLevel((byte) rs.getInt("level"));
+                            equip.setItemLevel(rs.getByte("itemlevel"));
+                            equip.setItemExp(rs.getInt("itemexp"));
+                            equip.setRingId(rs.getInt("ringid"));
                             equip.setFlag((short) rs.getInt("flag"));
+                            equip.setExpiration(rs.getLong("expiration"));
+                            equip.setGiftFrom(rs.getString("giftFrom"));
                             items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                         }
                     }
@@ -256,7 +267,12 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
                             equip.setWdef((short) rs.getInt("wdef"));
                             equip.setUpgradeSlots((byte) rs.getInt("upgradeslots"));
                             equip.setLevel((byte) rs.getInt("level"));
+                            equip.setItemLevel(rs.getByte("itemlevel"));
+                            equip.setItemExp(rs.getInt("itemexp"));
+                            equip.setRingId(rs.getInt("ringid"));
                             equip.setFlag((short) rs.getInt("flag"));
+                            equip.setExpiration(rs.getLong("expiration"));
+                            equip.setGiftFrom(rs.getString("giftFrom"));
                             items.add(new MTSItemInfo((Item) equip, rs.getInt("price"), rs.getInt("id"), rs.getInt("seller"), rs.getString("sellername"), rs.getString("sell_ends")));
                         }
                     }

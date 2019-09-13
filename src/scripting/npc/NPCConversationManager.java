@@ -679,12 +679,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             try {
                 final MapleMap map, mapExit;
                 Channel cs = c.getChannelServer();
-                PlayerStorage ps = cs.getPlayerStorage();
                 
                 map = cs.getMapFactory().getMap(980000100 + 100 * field);
                 mapExit = cs.getMapFactory().getMap(980000000);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                    final MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                    final MapleCharacter mc = mpc.getPlayer();
                     if (mc != null) {
                         mc.setChallenged(false);
                         mc.changeMap(map, map.getPortal(0));
@@ -715,9 +714,8 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         }
 
         public void cancelCPQLobby() {
-            PlayerStorage ps = c.getChannelServer().getPlayerStorage();
             for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                MapleCharacter mc = mpc.getPlayer();
                 if (mc != null) {
                     mc.clearCpqTimer();
                 }
@@ -741,11 +739,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 final MapleMap lobbyMap = getPlayer().getMap();
                 if (challenger != null) {
                     if (challenger.getParty() == null) {
-                        throw new RuntimeException("Nao existe oponente!");
+                        throw new RuntimeException("No opponent found!");
                     }
-                    PlayerStorage ps = c.getChannelServer().getPlayerStorage();
+                    
                     for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                        MapleCharacter mc = mpc.getPlayer();
                         if (mc != null) {
                             mc.changeMap(lobbyMap, lobbyMap.getPortal(0));
                             TimerManager tMan = TimerManager.getInstance();
@@ -758,7 +756,7 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                         }
                     }
                     for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                        MapleCharacter mc = mpc.getPlayer();
                         if (mc != null) {
                             TimerManager tMan = TimerManager.getInstance();
                             tMan.schedule(new Runnable() {
@@ -776,15 +774,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     @Override
                     public void run() {
                         try {
-                            PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                             for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                                MapleCharacter mc = mpc.getPlayer();
                                 if (mc != null) {
                                     mc.setMonsterCarnival(null);
                                 }
                             }
                             for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                                MapleCharacter mc = mpc.getPlayer();
                                 if (mc != null) {
                                     mc.setMonsterCarnival(null);
                                 }
@@ -809,11 +806,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                 final MapleMap lobbyMap = getPlayer().getMap();
                 if (challenger != null) {
                     if (challenger.getParty() == null) {
-                        throw new RuntimeException("Não existe oponente!");
+                        throw new RuntimeException("No opponent found!");
                     }
-                    PlayerStorage ps = c.getChannelServer().getPlayerStorage();
+                    
                     for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                        MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                        MapleCharacter mc = mpc.getPlayer();
                         if (mc != null) {
                             mc.changeMap(lobbyMap, lobbyMap.getPortal(0));
                             mapClock(10);
@@ -826,15 +823,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     @Override
                     public void run() {
                         try {
-                            PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                             for (MaplePartyCharacter mpc : getPlayer().getParty().getMembers()) {
-                                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                                MapleCharacter mc = mpc.getPlayer();
                                 if (mc != null) {
                                     mc.setMonsterCarnival(null);
                                 }
                             }
                             for (MaplePartyCharacter mpc : challenger.getParty().getMembers()) {
-                                MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                                MapleCharacter mc = mpc.getPlayer();
                                 if (mc != null) {
                                     mc.setMonsterCarnival(null);
                                 }
@@ -907,12 +903,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
             try {
                 final MapleMap map, mapExit;
                 Channel cs = c.getChannelServer();
-                PlayerStorage ps = c.getChannelServer().getPlayerStorage();
                 
                 mapExit = cs.getMapFactory().getMap(980030000);
                 map = cs.getMapFactory().getMap(980031000 + 1000 * field);
                 for (MaplePartyCharacter mpc : c.getPlayer().getParty().getMembers()) {
-                    final MapleCharacter mc = ps.getCharacterById(mpc.getId());
+                    final MapleCharacter mc = mpc.getPlayer();
                     if (mc != null) {
                         mc.setChallenged(false);
                         mc.changeMap(map, map.getPortal(0));

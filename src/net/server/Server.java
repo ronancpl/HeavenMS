@@ -677,6 +677,7 @@ public class Server {
             MapleCharacter player = c.getPlayer();
             if(player != null && player.isLoggedinWorld()) {
                 player.announceDiseases();
+                player.collectDiseases();
             }
         }
         
@@ -1111,18 +1112,25 @@ public class Server {
     
     public MapleGuild getGuild(int id, int world, MapleCharacter mc) {
         synchronized (guilds) {
-            if (guilds.get(id) != null) {
-                return guilds.get(id);
+            MapleGuild g = guilds.get(id);
+            if (g != null) {
+                return g;
             }
-            MapleGuild g = new MapleGuild(id, world);
+            
+            g = new MapleGuild(id, world);
             if (g.getId() == -1) {
                 return null;
             }
             
             if(mc != null) {
-                mc.setMGC(g.getMGC(mc.getId()));
-                if(g.getMGC(mc.getId()) == null) System.out.println("null for " + mc.getName() + " when loading guild " + id);
-                g.getMGC(mc.getId()).setCharacter(mc);
+                MapleGuildCharacter mgc = g.getMGC(mc.getId());
+                if (mgc != null) {
+                    mc.setMGC(mgc);
+                    mgc.setCharacter(mc);
+                } else {
+                    FilePrinter.printError(FilePrinter.GUILD_CHAR_ERROR, "Could not find " + mc.getName() + " when loading guild " + id + ".");
+                }
+                
                 g.setOnline(mc.getId(), true, mc.getClient().getChannel());
             }
             

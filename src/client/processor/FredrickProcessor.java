@@ -37,7 +37,6 @@ import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 import client.inventory.manipulator.MapleInventoryManipulator;
-import constants.ServerConstants;
 import java.util.Collections;
 import net.server.Server;
 import net.server.world.World;

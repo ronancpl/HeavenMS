@@ -38,6 +38,7 @@ import constants.skills.BlazeWizard;
 import constants.skills.Brawler;
 import constants.skills.DawnWarrior;
 import constants.skills.Magician;
+import constants.skills.ThunderBreaker;
 import constants.skills.Warrior;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -697,7 +698,7 @@ public class AssignAPProcessor {
             }
         } else if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
             if(!usedAPReset) {
-                Skill increaseHP = SkillFactory.getSkill(Brawler.IMPROVE_MAX_HP);
+                Skill increaseHP = SkillFactory.getSkill(job.isA(MapleJob.PIRATE) ? Brawler.IMPROVE_MAX_HP : ThunderBreaker.IMPROVE_MAX_HP);
                 int sLvl = player.getSkillLevel(increaseHP);
 
                 if(sLvl > 0)

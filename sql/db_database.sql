@@ -16325,6 +16325,9 @@ CREATE TABLE IF NOT EXISTS `mts_items` (
   `position` int(11) DEFAULT '0',
   `upgradeslots` int(11) DEFAULT '0',
   `level` int(11) DEFAULT '0',
+  `itemlevel` int(11) NOT NULL DEFAULT '1',
+  `itemexp` int(11) unsigned NOT NULL DEFAULT '0',
+  `ringid` int(11) NOT NULL DEFAULT '-1',
   `str` int(11) DEFAULT '0',
   `dex` int(11) DEFAULT '0',
   `int` int(11) DEFAULT '0',
@@ -16348,6 +16351,8 @@ CREATE TABLE IF NOT EXISTS `mts_items` (
   `transfer` int(2) DEFAULT '0',
   `vicious` int(2) unsigned NOT NULL DEFAULT '0',
   `flag` int(2) unsigned NOT NULL DEFAULT '0',
+  `expiration` bigint(20) NOT NULL DEFAULT '-1',
+  `giftFrom` varchar(26) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 

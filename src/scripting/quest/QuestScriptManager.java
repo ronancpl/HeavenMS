@@ -25,8 +25,6 @@ import java.lang.reflect.UndeclaredThrowableException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.script.Invocable;
-
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import scripting.AbstractScriptManager;
 import server.quest.MapleQuest;
@@ -48,7 +46,16 @@ public class QuestScriptManager extends AbstractScriptManager {
 	}
     
 	private Map<MapleClient, QuestActionManager> qms = new HashMap<>();
-	private Map<MapleClient, Invocable> scripts = new HashMap<>();
+	private Map<MapleClient, NashornScriptEngine> scripts = new HashMap<>();
+        
+        private NashornScriptEngine getQuestScriptEngine(MapleClient c, short questid) {
+                NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
+                if (iv == null && GameConstants.isMedalQuest(questid)) {
+                        iv = getScriptEngine("quest/medalQuest.js", c);   // start generic medal quest
+                }
+
+                return iv;
+        }
         
 	public void start(MapleClient c, short questid, int npc) {
                 MapleQuest quest = MapleQuest.getInstance(questid);
@@ -63,18 +70,19 @@ public class QuestScriptManager extends AbstractScriptManager {
                         }
                         if(c.canClickNPC()) {
                                 qms.put(c, qm);
-                                NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
-                                if (iv == null) {
-                                        if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
-                                                iv = getScriptEngine("quest/medalQuest.js", c);
-                                        } else {
-                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.");
-                                        }
-                                }
-                                if (iv == null || QuestScriptManager.getInstance() == null) {
+                                
+                                if (!quest.hasScriptRequirement(false)) {   // lack of scripted quest checks found thanks to Mali, Resinate
                                         qm.dispose();
                                         return;
                                 }
+                                
+                                NashornScriptEngine iv = getQuestScriptEngine(c, questid);
+                                if (iv == null) {
+                                        FilePrinter.printError(FilePrinter.QUEST_UNCODED, "START Quest " + questid + " is uncoded.");
+                                        qm.dispose();
+                                        return;
+                                }
+                                
                                 iv.put("qm", qm);
                                 scripts.put(c, iv);
                                 c.setClickedNPC();
@@ -90,7 +98,7 @@ public class QuestScriptManager extends AbstractScriptManager {
 	}
 
 	public void start(MapleClient c, byte mode, byte type, int selection) {
-		Invocable iv = scripts.get(c);
+		NashornScriptEngine iv = scripts.get(c);
 		if (iv != null) {
 			try {
 				c.setClickedNPC();
@@ -118,16 +126,19 @@ public class QuestScriptManager extends AbstractScriptManager {
 			}
 			if(c.canClickNPC()){
 				qms.put(c, qm);
-				NashornScriptEngine iv = getScriptEngine("quest/" + questid + ".js", c);
-				if (iv == null) {
-                                        if(GameConstants.isMedalQuest(questid)) {   // start generic medal quest
-                                                iv = getScriptEngine("quest/medalQuest.js", c);
-                                        } else {
-                                                FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.");
-                                                qm.dispose();
-                                                return;
-                                        }
-				}
+				
+                                if (!quest.hasScriptRequirement(true)) {
+                                        qm.dispose();
+                                        return;
+                                }
+                                
+                                NashornScriptEngine iv = getQuestScriptEngine(c, questid);
+                                if (iv == null) {
+                                        FilePrinter.printError(FilePrinter.QUEST_UNCODED, "END Quest " + questid + " is uncoded.");
+                                        qm.dispose();
+                                        return;
+                                }
+				
 				iv.put("qm", qm);
 				scripts.put(c, iv);
 				c.setClickedNPC();
@@ -143,7 +154,7 @@ public class QuestScriptManager extends AbstractScriptManager {
 	}
 
 	public void end(MapleClient c, byte mode, byte type, int selection) {
-		Invocable iv = scripts.get(c);
+		NashornScriptEngine iv = scripts.get(c);
 		if (iv != null) {
 			try {
 				c.setClickedNPC();

@@ -53,7 +53,7 @@ function action(mode, type, selection) {
                                 cm.sendOk("Oh, you don't have the money, right? Sorry, I can't let you in.");
                         } else {
                                 cm.gainMeso(-5000);
-                                cm.warp(193000000);
+                                cm.warp(193000000, "out00");
                         }
                     
                         cm.dispose();

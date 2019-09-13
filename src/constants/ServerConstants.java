@@ -135,7 +135,7 @@ public class ServerConstants {
     public static final boolean USE_MAKER_FEE_HEURISTICS = true;    //Apply compiled values for stimulants and reagents into the Maker fee calculations (max error revolves around 50k mesos). Set false to use basic constant values instead (results are never higher than requested by the client-side).
     
     //Custom Configuration
-    public static final boolean USE_ENABLE_CUSTOM_NPC_SCRIPT = true;//Enables usage of custom HeavenMS NPC scripts (Agent E, Coco, etc). Will not disable Abdula (it's actually useful for the gameplay), quests or NPC shops.
+    public static final boolean USE_ENABLE_CUSTOM_NPC_SCRIPT = true;//Enables usage of custom HeavenMS NPC scripts (Agent E, Coco, etc). Will not disable Abdula (it's actually useful for the gameplay) or quests.
     public static final boolean USE_STARTER_MERGE = false;          //Allows any players to use the Equipment Merge custom mechanic (as opposed to the high-level, Maker lv3 requisites).
     
     //Commands Configuration

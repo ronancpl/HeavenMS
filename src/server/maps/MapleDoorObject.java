@@ -87,6 +87,8 @@ public class MapleDoorObject extends AbstractMapleMapObject {
     public void warp(final MapleCharacter chr) {
         MapleParty party = chr.getParty();
         if (chr.getId() == ownerId || (party != null && party.getMemberById(ownerId) != null)) {
+            chr.announce(MaplePacketCreator.playPortalSound());
+            
             if(!inTown() && party == null) {
                 chr.changeMap(to, getLinkedPortalId());
             } else {

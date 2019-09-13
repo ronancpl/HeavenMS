@@ -102,10 +102,12 @@ public class MapleDoor {
 
         for (MapleCharacter chr : targetChars) {
             areaDoor.sendDestroyData(chr.getClient());
+            chr.removeVisibleMapObject(areaDoor);
         }
 
         for (MapleCharacter chr : townChars) {
             townDoor.sendDestroyData(chr.getClient());
+            chr.removeVisibleMapObject(townDoor);
         }
         
         owner.removePartyDoor(false);
@@ -115,6 +117,7 @@ public class MapleDoor {
                 MapleDoor door = chr.getMainTownDoor();
                 if (door != null) {
                     townDoor.sendSpawnData(chr.getClient());
+                    chr.addVisibleMapObject(townDoor);
                 }
             }
         }

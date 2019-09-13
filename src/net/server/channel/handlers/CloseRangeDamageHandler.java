@@ -33,7 +33,6 @@ import client.MapleBuffStat;
 import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleJob;
-import client.MapleStat;
 import client.Skill;
 import client.SkillFactory;
 import constants.GameConstants;
@@ -47,6 +46,7 @@ import constants.skills.Rogue;
 import constants.skills.WindArcher;
 
 public final class CloseRangeDamageHandler extends AbstractDealDamageHandler {
+    
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
