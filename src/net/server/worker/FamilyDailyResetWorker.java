@@ -29,7 +29,7 @@ public class FamilyDailyResetWorker implements Runnable {
     public static void resetEntitlementUsage(World world) {
         Calendar resetTime = Calendar.getInstance();
         resetTime.add(Calendar.MINUTE, 1); // to make sure that we're in the "next day", since this is called at midnight
-        resetTime.set(Calendar.HOUR, 0);
+        resetTime.set(Calendar.HOUR_OF_DAY, 0);
         resetTime.set(Calendar.MINUTE, 0);
         resetTime.set(Calendar.SECOND, 0);
         resetTime.set(Calendar.MILLISECOND, 0);

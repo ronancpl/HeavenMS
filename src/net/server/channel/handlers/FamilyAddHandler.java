@@ -46,6 +46,8 @@ public final class FamilyAddHandler extends AbstractMaplePacketHandler {
         MapleCharacter chr = c.getPlayer();
         if(addChr == null) {
             c.announce(MaplePacketCreator.sendFamilyMessage(65, 0));
+        } else if(addChr == chr) { //only possible through packet editing/client editing i think?
+            c.announce(MaplePacketCreator.enableActions());
         } else if(addChr.getMap() != chr.getMap() || (addChr.isHidden()) && chr.gmLevel() < addChr.gmLevel()) {
             c.announce(MaplePacketCreator.sendFamilyMessage(69, 0));
         } else if(addChr.getLevel() <= 10) {

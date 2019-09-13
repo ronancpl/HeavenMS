@@ -203,9 +203,11 @@ public class MapleFamily {
                             jobID = rs.getInt("job");
                         } else {
                             FilePrinter.printError(FilePrinter.FAMILY_ERROR, "Could not load character information of " + cid + " in loadAllFamilies(). (RECORD DOES NOT EXIST)");
+                            continue;
                         }
                     } catch(SQLException e) {
                         FilePrinter.printError(FilePrinter.FAMILY_ERROR, e, "Could not load character information of " + cid + " in loadAllFamilies(). (SQL ERROR)");
+                        continue;
                     }
                     int familyid = rsEntries.getInt("familyid");
                     int seniorid = rsEntries.getInt("seniorid");
