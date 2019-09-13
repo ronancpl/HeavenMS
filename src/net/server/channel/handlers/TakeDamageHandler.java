@@ -240,6 +240,12 @@ public final class TakeDamageHandler extends AbstractMaplePacketHandler {
                 if (achilles != 0 && achilles1 != null) {
                     damage *= (achilles1.getEffect(achilles).getX() / 1000.0);
                 }
+                
+                Skill highDef = SkillFactory.getSkill(Aran.HIGH_DEFENSE);
+                int hdLevel = chr.getSkillLevel(highDef);
+                if (highDef != null && hdLevel > 0) {
+                    damage *= (highDef.getEffect(hdLevel).getX() / 1000.0);
+                }
             }
             Integer mesoguard = chr.getBuffedValue(MapleBuffStat.MESOGUARD);
             if (chr.getBuffedValue(MapleBuffStat.MAGIC_GUARD) != null && mpattack == 0) {
