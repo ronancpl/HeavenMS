@@ -2,43 +2,43 @@ package config;
 
 public class ServerConfig {
     //Thread Tracker Configuration
-    private boolean USE_THREAD_TRACKER;
+    public boolean USE_THREAD_TRACKER;
 
     //Database Configuration
-    private String DB_URL;
-    private String DB_USER;
-    private String DB_PASS;
-    private boolean DB_CONNECTION_POOL;
+    public String DB_URL;
+    public String DB_USER;
+    public String DB_PASS;
+    public boolean DB_CONNECTION_POOL;
 
     //Login Configuration
-    private int WLDLIST_SIZE;
-    private int CHANNEL_SIZE;
-    private int CHANNEL_LOAD;
-    private int CHANNEL_LOCKS;
+    public int WLDLIST_SIZE;
+    public int CHANNEL_SIZE;
+    public int CHANNEL_LOAD;
+    public int CHANNEL_LOCKS;
 
-    private long RESPAWN_INTERVAL;
-    private long PURGING_INTERVAL;
-    private long RANKING_INTERVAL;
-    private long  COUPON_INTERVAL;
-    private long  UPDATE_INTERVAL;
+    public long RESPAWN_INTERVAL;
+    public long PURGING_INTERVAL;
+    public long RANKING_INTERVAL;
+    public long  COUPON_INTERVAL;
+    public long  UPDATE_INTERVAL;
 
-    private boolean ENABLE_PIC;
-    private boolean ENABLE_PIN;
+    public boolean ENABLE_PIC;
+    public boolean ENABLE_PIN;
 
-    private int BYPASS_PIC_EXPIRATION;
-    private int BYPASS_PIN_EXPIRATION;
+    public int BYPASS_PIC_EXPIRATION;
+    public int BYPASS_PIN_EXPIRATION;
 
-    private boolean AUTOMATIC_REGISTER;
-    private boolean BCRYPT_MIGRATION;
-    private boolean COLLECTIVE_CHARSLOT;
-    private boolean DETERRED_MULTICLIENT;
+    public boolean AUTOMATIC_REGISTER;
+    public boolean BCRYPT_MIGRATION;
+    public boolean COLLECTIVE_CHARSLOT;
+    public boolean DETERRED_MULTICLIENT;
 
     //Besides blocking logging in with several client sessions on the same machine, this also blocks suspicious login attempts for players that tries to login on an account using several diferent remote addresses.
 
     //Multiclient Coordinator Configuration
-    private int MAX_ALLOWED_ACCOUNT_HWID;
-    private int MAX_ACCOUNT_LOGIN_ATTEMPT;
-    private int LOGIN_ATTEMPT_DURATION;
+    public int MAX_ALLOWED_ACCOUNT_HWID;
+    public int MAX_ACCOUNT_LOGIN_ATTEMPT;
+    public int LOGIN_ATTEMPT_DURATION;
 
     //Ip Configuration
     public String HOST;
@@ -48,266 +48,266 @@ public class ServerConfig {
     public boolean SHUTDOWNHOOK;
 
     //Server Flags
-    private boolean USE_CUSTOM_KEYSET;
-    private boolean USE_DEBUG;
-    private boolean USE_DEBUG_SHOW_INFO_EQPEXP;
-    private boolean USE_DEBUG_SHOW_RCVD_PACKET;
-    private boolean USE_DEBUG_SHOW_RCVD_MVLIFE;
-    private boolean USE_DEBUG_SHOW_PACKET;
-    private boolean USE_SUPPLY_RATE_COUPONS;
-    private boolean USE_IP_VALIDATION;
+    public boolean USE_CUSTOM_KEYSET;
+    public boolean USE_DEBUG;
+    public boolean USE_DEBUG_SHOW_INFO_EQPEXP;
+    public boolean USE_DEBUG_SHOW_RCVD_PACKET;
+    public boolean USE_DEBUG_SHOW_RCVD_MVLIFE;
+    public boolean USE_DEBUG_SHOW_PACKET;
+    public boolean USE_SUPPLY_RATE_COUPONS;
+    public boolean USE_IP_VALIDATION;
 
-    private boolean USE_MAXRANGE;
-    private boolean USE_MAXRANGE_ECHO_OF_HERO;
-    private boolean USE_MTS;
-    private boolean USE_CPQ;
-    private boolean USE_AUTOHIDE_GM;
-    private boolean USE_BUYBACK_SYSTEM;
-    private boolean USE_FIXED_RATIO_HPMP_UPDATE;
-    private boolean USE_FAMILY_SYSTEM;
-    private boolean USE_DUEY;
-    private boolean USE_RANDOMIZE_HPMP_GAIN;
-    private boolean USE_STORAGE_ITEM_SORT;
-    private boolean USE_ITEM_SORT;
-    private boolean USE_ITEM_SORT_BY_NAME;
-    private boolean USE_PARTY_FOR_STARTERS;
-    private boolean USE_AUTOASSIGN_STARTERS_AP;
-    private boolean USE_AUTOASSIGN_SECONDARY_CAP;
-    private boolean USE_STARTING_AP_4;
-    private boolean USE_AUTOBAN;
-    private boolean USE_AUTOBAN_LOG;
-    private boolean USE_AUTOSAVE;
-    private boolean USE_SERVER_AUTOASSIGNER;
-    private boolean USE_REFRESH_RANK_MOVE;
-    private boolean USE_ENFORCE_ADMIN_ACCOUNT;
-    private boolean USE_ENFORCE_NOVICE_EXPRATE;
-    private boolean USE_ENFORCE_HPMP_SWAP;
-    private boolean USE_ENFORCE_MOB_LEVEL_RANGE;
-    private boolean USE_ENFORCE_JOB_LEVEL_RANGE;
-    private boolean USE_ENFORCE_JOB_SP_RANGE;
-    private boolean USE_ENFORCE_ITEM_SUGGESTION;
-    private boolean USE_ENFORCE_UNMERCHABLE_CASH;
-    private boolean USE_ENFORCE_UNMERCHABLE_PET;
-    private boolean USE_ENFORCE_MERCHANT_SAVE;
-    private boolean USE_ENFORCE_MDOOR_POSITION;
-    private boolean USE_SPAWN_CLEAN_MDOOR;
-    private boolean USE_SPAWN_LOOT_ON_ANIMATION;
-    private boolean USE_SPAWN_RELEVANT_LOOT;
-    private boolean USE_ERASE_PERMIT_ON_OPENSHOP;
-    private boolean USE_ERASE_UNTRADEABLE_DROP;
-    private boolean USE_ERASE_PET_ON_EXPIRATION;
-    private boolean USE_BUFF_MOST_SIGNIFICANT;
-    private boolean USE_BUFF_EVERLASTING;
-    private boolean USE_MULTIPLE_SAME_EQUIP_DROP;
-    private boolean USE_BANISHABLE_TOWN_SCROLL;
-    private boolean USE_ENABLE_FULL_RESPAWN;
-    private boolean USE_ENABLE_CHAT_LOG;
-    private boolean USE_REBIRTH_SYSTEM;
-    private boolean USE_MAP_OWNERSHIP_SYSTEM;
-    private boolean USE_FISHING_SYSTEM;
-    private boolean USE_NPCS_SCRIPTABLE;
+    public boolean USE_MAXRANGE;
+    public boolean USE_MAXRANGE_ECHO_OF_HERO;
+    public boolean USE_MTS;
+    public boolean USE_CPQ;
+    public boolean USE_AUTOHIDE_GM;
+    public boolean USE_BUYBACK_SYSTEM;
+    public boolean USE_FIXED_RATIO_HPMP_UPDATE;
+    public boolean USE_FAMILY_SYSTEM;
+    public boolean USE_DUEY;
+    public boolean USE_RANDOMIZE_HPMP_GAIN;
+    public boolean USE_STORAGE_ITEM_SORT;
+    public boolean USE_ITEM_SORT;
+    public boolean USE_ITEM_SORT_BY_NAME;
+    public boolean USE_PARTY_FOR_STARTERS;
+    public boolean USE_AUTOASSIGN_STARTERS_AP;
+    public boolean USE_AUTOASSIGN_SECONDARY_CAP;
+    public boolean USE_STARTING_AP_4;
+    public boolean USE_AUTOBAN;
+    public boolean USE_AUTOBAN_LOG;
+    public boolean USE_AUTOSAVE;
+    public boolean USE_SERVER_AUTOASSIGNER;
+    public boolean USE_REFRESH_RANK_MOVE;
+    public boolean USE_ENFORCE_ADMIN_ACCOUNT;
+    public boolean USE_ENFORCE_NOVICE_EXPRATE;
+    public boolean USE_ENFORCE_HPMP_SWAP;
+    public boolean USE_ENFORCE_MOB_LEVEL_RANGE;
+    public boolean USE_ENFORCE_JOB_LEVEL_RANGE;
+    public boolean USE_ENFORCE_JOB_SP_RANGE;
+    public boolean USE_ENFORCE_ITEM_SUGGESTION;
+    public boolean USE_ENFORCE_UNMERCHABLE_CASH;
+    public boolean USE_ENFORCE_UNMERCHABLE_PET;
+    public boolean USE_ENFORCE_MERCHANT_SAVE;
+    public boolean USE_ENFORCE_MDOOR_POSITION;
+    public boolean USE_SPAWN_CLEAN_MDOOR;
+    public boolean USE_SPAWN_LOOT_ON_ANIMATION;
+    public boolean USE_SPAWN_RELEVANT_LOOT;
+    public boolean USE_ERASE_PERMIT_ON_OPENSHOP;
+    public boolean USE_ERASE_UNTRADEABLE_DROP;
+    public boolean USE_ERASE_PET_ON_EXPIRATION;
+    public boolean USE_BUFF_MOST_SIGNIFICANT;
+    public boolean USE_BUFF_EVERLASTING;
+    public boolean USE_MULTIPLE_SAME_EQUIP_DROP;
+    public boolean USE_BANISHABLE_TOWN_SCROLL;
+    public boolean USE_ENABLE_FULL_RESPAWN;
+    public boolean USE_ENABLE_CHAT_LOG;
+    public boolean USE_REBIRTH_SYSTEM;
+    public boolean USE_MAP_OWNERSHIP_SYSTEM;
+    public boolean USE_FISHING_SYSTEM;
+    public boolean USE_NPCS_SCRIPTABLE;
 
     //Events/PQs Configuration
-    private boolean USE_OLD_GMS_STYLED_PQ_NPCS;
-    private boolean USE_ENABLE_SOLO_EXPEDITIONS;
-    private boolean USE_ENABLE_DAILY_EXPEDITIONS;
-    private boolean USE_ENABLE_RECALL_EVENT;
+    public boolean USE_OLD_GMS_STYLED_PQ_NPCS;
+    public boolean USE_ENABLE_SOLO_EXPEDITIONS;
+    public boolean USE_ENABLE_DAILY_EXPEDITIONS;
+    public boolean USE_ENABLE_RECALL_EVENT;
 
     //Announcement Configuration
-    private boolean USE_ANNOUNCE_SHOPITEMSOLD;
-    private boolean USE_ANNOUNCE_CHANGEJOB;
+    public boolean USE_ANNOUNCE_SHOPITEMSOLD;
+    public boolean USE_ANNOUNCE_CHANGEJOB;
 
     //Cash Shop Configuration
-    private boolean USE_JOINT_CASHSHOP_INVENTORY;
-    private boolean USE_CLEAR_OUTDATED_COUPONS;
-    private boolean ALLOW_CASHSHOP_NAME_CHANGE;
+    public boolean USE_JOINT_CASHSHOP_INVENTORY;
+    public boolean USE_CLEAR_OUTDATED_COUPONS;
+    public boolean ALLOW_CASHSHOP_NAME_CHANGE;
     public boolean ALLOW_CASHSHOP_WORLD_TRANSFER;//Allows players to buy world transfers in the cash shop.
 
     //Maker Configuration
-    private boolean USE_MAKER_PERMISSIVE_ATKUP;
-    private boolean USE_MAKER_FEE_HEURISTICS;
+    public boolean USE_MAKER_PERMISSIVE_ATKUP;
+    public boolean USE_MAKER_FEE_HEURISTICS;
 
     //Custom Configuration
-    private boolean USE_ENABLE_CUSTOM_NPC_SCRIPT;
-    private boolean USE_STARTER_MERGE;
+    public boolean USE_ENABLE_CUSTOM_NPC_SCRIPT;
+    public boolean USE_STARTER_MERGE;
 
     //Commands Configuration
-    private boolean BLOCK_GENERATE_CASH_ITEM;
-    private boolean USE_WHOLE_SERVER_RANKING;
+    public boolean BLOCK_GENERATE_CASH_ITEM;
+    public boolean USE_WHOLE_SERVER_RANKING;
 
     //Server Rates And Experience
-    private int EXP_RATE;
-    private int MESO_RATE;
-    private int DROP_RATE;
-    private int BOSS_DROP_RATE;
-    private int QUEST_RATE;
-    private int FISHING_RATE;
-    private int TRAVEL_RATE;
+    public int EXP_RATE;
+    public int MESO_RATE;
+    public int DROP_RATE;
+    public int BOSS_DROP_RATE;
+    public int QUEST_RATE;
+    public int FISHING_RATE;
+    public int TRAVEL_RATE;
 
-    private double EQUIP_EXP_RATE;
-    private double PQ_BONUS_EXP_RATE;
+    public double EQUIP_EXP_RATE;
+    public double PQ_BONUS_EXP_RATE;
 
-    private byte EXP_SPLIT_LEVEL_INTERVAL;
-    private byte EXP_SPLIT_LEECH_INTERVAL;
-    private float EXP_SPLIT_MVP_MOD;
-    private float EXP_SPLIT_COMMON_MOD;
-    private float PARTY_BONUS_EXP_RATE;
+    public byte EXP_SPLIT_LEVEL_INTERVAL;
+    public byte EXP_SPLIT_LEECH_INTERVAL;
+    public float EXP_SPLIT_MVP_MOD;
+    public float EXP_SPLIT_COMMON_MOD;
+    public float PARTY_BONUS_EXP_RATE;
 
     //Miscellaneous Configuration
-    private String TIMEZONE;
-    private boolean USE_DISPLAY_NUMBERS_WITH_COMMA;
-    private boolean USE_UNITPRICE_WITH_COMMA;
-    private byte MAX_MONITORED_BUFFSTATS;
-    private int MAX_AP;
-    private int MAX_EVENT_LEVELS;
-    private long BLOCK_NPC_RACE_CONDT;
-    private long PET_LOOT_UPON_ATTACK;
-    private int TOT_MOB_QUEST_REQUIREMENT;
-    private int MOB_REACTOR_REFRESH_TIME;
-    private int PARTY_SEARCH_REENTRY_LIMIT;
-    private int NAME_CHANGE_COOLDOWN;
+    public String TIMEZONE;
+    public boolean USE_DISPLAY_NUMBERS_WITH_COMMA;
+    public boolean USE_UNITPRICE_WITH_COMMA;
+    public byte MAX_MONITORED_BUFFSTATS;
+    public int MAX_AP;
+    public int MAX_EVENT_LEVELS;
+    public long BLOCK_NPC_RACE_CONDT;
+    public long PET_LOOT_UPON_ATTACK;
+    public int TOT_MOB_QUEST_REQUIREMENT;
+    public int MOB_REACTOR_REFRESH_TIME;
+    public int PARTY_SEARCH_REENTRY_LIMIT;
+    public int NAME_CHANGE_COOLDOWN;
     public int WORLD_TRANSFER_COOLDOWN=NAME_CHANGE_COOLDOWN;//Cooldown for world tranfers, default is same as name change (30 days).
-    private boolean INSTANT_NAME_CHANGE;
+    public boolean INSTANT_NAME_CHANGE;
 
     //Dangling Items/Locks Configuration
-    private int ITEM_EXPIRE_TIME ;
-    private int KITE_EXPIRE_TIME ;
-    private int ITEM_MONITOR_TIME;
-    private int LOCK_MONITOR_TIME;
+    public int ITEM_EXPIRE_TIME ;
+    public int KITE_EXPIRE_TIME ;
+    public int ITEM_MONITOR_TIME;
+    public int LOCK_MONITOR_TIME;
 
     //Map Monitor Configuration
-    private int ITEM_EXPIRE_CHECK;
-    private int ITEM_LIMIT_ON_MAP;
-    private int MAP_VISITED_SIZE;
-    private int MAP_DAMAGE_OVERTIME_INTERVAL;
+    public int ITEM_EXPIRE_CHECK;
+    public int ITEM_LIMIT_ON_MAP;
+    public int MAP_VISITED_SIZE;
+    public int MAP_DAMAGE_OVERTIME_INTERVAL;
 
     //Channel Mob Disease Monitor Configuration
-    private int MOB_STATUS_MONITOR_PROC;
-    private int MOB_STATUS_MONITOR_LIFE;
-    private int MOB_STATUS_AGGRO_PERSISTENCE;
-    private int MOB_STATUS_AGGRO_INTERVAL;
+    public int MOB_STATUS_MONITOR_PROC;
+    public int MOB_STATUS_MONITOR_LIFE;
+    public int MOB_STATUS_AGGRO_PERSISTENCE;
+    public int MOB_STATUS_AGGRO_INTERVAL;
 
     //Some Gameplay Enhancing Configurations
     //Scroll Configuration
-    private boolean USE_PERFECT_GM_SCROLL;
-    private boolean USE_PERFECT_SCROLLING;
-    private boolean USE_ENHANCED_CHSCROLL;
-    private boolean USE_ENHANCED_CRAFTING;
-    private boolean USE_ENHANCED_CLNSLATE;
-    private int SCROLL_CHANCE_RATE;
-    private int CHSCROLL_STAT_RATE;
-    private int CHSCROLL_STAT_RANGE;
+    public boolean USE_PERFECT_GM_SCROLL;
+    public boolean USE_PERFECT_SCROLLING;
+    public boolean USE_ENHANCED_CHSCROLL;
+    public boolean USE_ENHANCED_CRAFTING;
+    public boolean USE_ENHANCED_CLNSLATE;
+    public int SCROLL_CHANCE_RATE;
+    public int CHSCROLL_STAT_RATE;
+    public int CHSCROLL_STAT_RANGE;
 
     //Beginner Skills Configuration
-    private boolean USE_ULTRA_NIMBLE_FEET;
-    private boolean USE_ULTRA_RECOVERY;
-    private boolean USE_ULTRA_THREE_SNAILS;
+    public boolean USE_ULTRA_NIMBLE_FEET;
+    public boolean USE_ULTRA_RECOVERY;
+    public boolean USE_ULTRA_THREE_SNAILS;
 
     //Other Skills Configuration
-    private boolean USE_FULL_ARAN_SKILLSET;
-    private boolean USE_FAST_REUSE_HERO_WILL;
-    private boolean USE_ANTI_IMMUNITY_CRASH;
-    private boolean USE_UNDISPEL_HOLY_SHIELD;
-    private boolean USE_FULL_HOLY_SYMBOL;
+    public boolean USE_FULL_ARAN_SKILLSET;
+    public boolean USE_FAST_REUSE_HERO_WILL;
+    public boolean USE_ANTI_IMMUNITY_CRASH;
+    public boolean USE_UNDISPEL_HOLY_SHIELD;
+    public boolean USE_FULL_HOLY_SYMBOL;
 
     //Character Configuration
-    private boolean USE_ADD_SLOTS_BY_LEVEL;
-    private boolean USE_ADD_RATES_BY_LEVEL;
-    private boolean USE_STACK_COUPON_RATES;
-    private boolean USE_PERFECT_PITCH;
+    public boolean USE_ADD_SLOTS_BY_LEVEL;
+    public boolean USE_ADD_RATES_BY_LEVEL;
+    public boolean USE_STACK_COUPON_RATES;
+    public boolean USE_PERFECT_PITCH;
 
     //Quest Configuration
-    private boolean USE_QUEST_RATE;
+    public boolean USE_QUEST_RATE;
 
     //Quest Points Configuration
-    private int QUEST_POINT_REPEATABLE_INTERVAL;
-    private int QUEST_POINT_REQUIREMENT;
-    private int QUEST_POINT_PER_QUEST_COMPLETE;
-    private int QUEST_POINT_PER_EVENT_CLEAR;
+    public int QUEST_POINT_REPEATABLE_INTERVAL;
+    public int QUEST_POINT_REQUIREMENT;
+    public int QUEST_POINT_PER_QUEST_COMPLETE;
+    public int QUEST_POINT_PER_EVENT_CLEAR;
 
     //Guild Configuration
-    private int CREATE_GUILD_MIN_PARTNERS;
-    private int CREATE_GUILD_COST;
-    private int CHANGE_EMBLEM_COST;
-    private int EXPAND_GUILD_BASE_COST;
-    private int EXPAND_GUILD_TIER_COST;
-    private int EXPAND_GUILD_MAX_COST;
+    public int CREATE_GUILD_MIN_PARTNERS;
+    public int CREATE_GUILD_COST;
+    public int CHANGE_EMBLEM_COST;
+    public int EXPAND_GUILD_BASE_COST;
+    public int EXPAND_GUILD_TIER_COST;
+    public int EXPAND_GUILD_MAX_COST;
 
     //Family Configuration
-    private int FAMILY_REP_PER_KILL;
-    private int FAMILY_REP_PER_BOSS_KILL;
-    private int FAMILY_REP_PER_LEVELUP;
-    private int FAMILY_MAX_GENERATIONS;
+    public int FAMILY_REP_PER_KILL;
+    public int FAMILY_REP_PER_BOSS_KILL;
+    public int FAMILY_REP_PER_LEVELUP;
+    public int FAMILY_MAX_GENERATIONS;
 
     //Equipment Configuration
-    private boolean USE_EQUIPMNT_LVLUP_SLOTS;
-    private boolean USE_EQUIPMNT_LVLUP_POWER;
-    private boolean USE_EQUIPMNT_LVLUP_CASH;
-    private boolean USE_SPIKES_AVOID_BANISH;
-    private int MAX_EQUIPMNT_LVLUP_STAT_UP;
-    private int MAX_EQUIPMNT_STAT;
-    private int USE_EQUIPMNT_LVLUP;
+    public boolean USE_EQUIPMNT_LVLUP_SLOTS;
+    public boolean USE_EQUIPMNT_LVLUP_POWER;
+    public boolean USE_EQUIPMNT_LVLUP_CASH;
+    public boolean USE_SPIKES_AVOID_BANISH;
+    public int MAX_EQUIPMNT_LVLUP_STAT_UP;
+    public int MAX_EQUIPMNT_STAT;
+    public int USE_EQUIPMNT_LVLUP;
 
     //Map-Chair Configuration
-    private boolean USE_CHAIR_EXTRAHEAL;
-    private byte CHAIR_EXTRA_HEAL_MULTIPLIER;
-    private int CHAIR_EXTRA_HEAL_MAX_DELAY;
+    public boolean USE_CHAIR_EXTRAHEAL;
+    public byte CHAIR_EXTRA_HEAL_MULTIPLIER;
+    public int CHAIR_EXTRA_HEAL_MAX_DELAY;
 
     //Player NPC Configuration
-    private int PLAYERNPC_INITIAL_X;
-    private int PLAYERNPC_INITIAL_Y;
-    private int PLAYERNPC_AREA_X;
-    private int PLAYERNPC_AREA_Y;
-    private int PLAYERNPC_AREA_STEPS;
-    private boolean PLAYERNPC_ORGANIZE_AREA;
-    private boolean PLAYERNPC_AUTODEPLOY;
+    public int PLAYERNPC_INITIAL_X;
+    public int PLAYERNPC_INITIAL_Y;
+    public int PLAYERNPC_AREA_X;
+    public int PLAYERNPC_AREA_Y;
+    public int PLAYERNPC_AREA_STEPS;
+    public boolean PLAYERNPC_ORGANIZE_AREA;
+    public boolean PLAYERNPC_AUTODEPLOY;
 
     //Pet Auto-Pot Configuration
-    private boolean USE_COMPULSORY_AUTOPOT;
-    private boolean USE_EQUIPS_ON_AUTOPOT;
-    private double PET_AUTOHP_RATIO;
-    private double PET_AUTOMP_RATIO;
+    public boolean USE_COMPULSORY_AUTOPOT;
+    public boolean USE_EQUIPS_ON_AUTOPOT;
+    public double PET_AUTOHP_RATIO;
+    public double PET_AUTOMP_RATIO;
 
     //Pet & Mount Configuration
-    private byte PET_EXHAUST_COUNT;
-    private byte MOUNT_EXHAUST_COUNT;
+    public byte PET_EXHAUST_COUNT;
+    public byte MOUNT_EXHAUST_COUNT;
 
     //Pet Hunger Configuration
-    private boolean PETS_NEVER_HUNGRY;
-    private boolean GM_PETS_NEVER_HUNGRY;
+    public boolean PETS_NEVER_HUNGRY;
+    public boolean GM_PETS_NEVER_HUNGRY;
 
     //Event Configuration
-    private int EVENT_MAX_GUILD_QUEUE;
-    private long EVENT_LOBBY_DELAY;
+    public int EVENT_MAX_GUILD_QUEUE;
+    public long EVENT_LOBBY_DELAY;
 
     //Dojo Configuration
-    private boolean USE_FAST_DOJO_UPGRADE;
-    private boolean USE_DEADLY_DOJO;
-    private int DOJO_ENERGY_ATK;
-    private int DOJO_ENERGY_DMG;
+    public boolean USE_FAST_DOJO_UPGRADE;
+    public boolean USE_DEADLY_DOJO;
+    public int DOJO_ENERGY_ATK;
+    public int DOJO_ENERGY_DMG;
 
     //Wedding Configuration
-    private int WEDDING_RESERVATION_DELAY;
-    private int WEDDING_RESERVATION_TIMEOUT;
-    private int WEDDING_RESERVATION_INTERVAL;
-    private int WEDDING_BLESS_EXP;
-    private int WEDDING_GIFT_LIMIT;
-    private boolean WEDDING_BLESSER_SHOWFX;
+    public int WEDDING_RESERVATION_DELAY;
+    public int WEDDING_RESERVATION_TIMEOUT;
+    public int WEDDING_RESERVATION_INTERVAL;
+    public int WEDDING_BLESS_EXP;
+    public int WEDDING_GIFT_LIMIT;
+    public boolean WEDDING_BLESSER_SHOWFX;
 
     //Buyback Configuration
-    private boolean USE_BUYBACK_WITH_MESOS;
-    private float BUYBACK_FEE;
-    private float BUYBACK_LEVEL_STACK_FEE;
-    private int BUYBACK_MESO_MULTIPLIER;
-    private int BUYBACK_RETURN_MINUTES;
-    private int BUYBACK_COOLDOWN_MINUTES;
+    public boolean USE_BUYBACK_WITH_MESOS;
+    public float BUYBACK_FEE;
+    public float BUYBACK_LEVEL_STACK_FEE;
+    public int BUYBACK_MESO_MULTIPLIER;
+    public int BUYBACK_RETURN_MINUTES;
+    public int BUYBACK_COOLDOWN_MINUTES;
 
     // Login timeout by shavit
-    private long TIMEOUT_DURATION;
+    public long TIMEOUT_DURATION;
 
     //Event End Timestamp
-    private long EVENT_END_TIMESTAMP;
+    public long EVENT_END_TIMESTAMP;
 
     //Debug Variables
-    private int DEBUG_VALUES[];
+    public int DEBUG_VALUES[];
 }
