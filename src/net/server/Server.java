@@ -345,16 +345,11 @@ public class Server {
             int channelid = worldChannels.size();
             if(channelid >= YamlConfig.config.server.CHANNEL_SIZE) return -2;
             
-            Properties p = loadWorldINI();
-            if(p == null) {
-                return -1;
-            }
-            
             channelid++;
             World world = this.getWorld(worldid);
             Channel channel = new Channel(worldid, channelid, getCurrentTime());
-            
-            channel.setServerMessage(p.getProperty("whyamirecommended" + worldid));
+
+            channel.setServerMessage(YamlConfig.config.worlds.get(worldid).why_am_i_recommended);
             
             world.addChannel(channel);
             worldChannels.put(channelid, channel.getIP());
@@ -366,10 +361,7 @@ public class Server {
     }
     
     public int addWorld() {
-        Properties p = loadWorldINI();
-        if(p == null) return -2;
-        
-        int newWorld = initWorld(p);
+        int newWorld = initWorld();
         if(newWorld > -1) {
             installWorldPlayerRanking(newWorld);
             
@@ -389,12 +381,7 @@ public class Server {
         return newWorld;
     }
     
-    private static int getWorldProperty(Properties p, String property, int wid, int defaultValue) {
-        String content = p.getProperty(property + wid);
-        return content != null ? Integer.parseInt(content) : defaultValue;
-    }
-    
-    private int initWorld(Properties p) {
+    private int initWorld() {
         wldWLock.lock();
         try {
             int i = worlds.size();
@@ -404,25 +391,30 @@ public class Server {
             }
             
             System.out.println("Starting world " + i);
-            int exprate = getWorldProperty(p, "exprate", i, YamlConfig.config.server.EXP_RATE);
-            int mesorate = getWorldProperty(p, "mesorate", i, YamlConfig.config.server.MESO_RATE);
-            int droprate = getWorldProperty(p, "droprate", i, YamlConfig.config.server.DROP_RATE);
-            int bossdroprate = getWorldProperty(p, "bossdroprate", i, YamlConfig.config.server.BOSS_DROP_RATE);
-            int questrate = getWorldProperty(p, "questrate", i, YamlConfig.config.server.QUEST_RATE);
-            int travelrate = getWorldProperty(p, "travelrate", i, YamlConfig.config.server.TRAVEL_RATE);
-            int fishingrate = getWorldProperty(p, "fishrate", i, YamlConfig.config.server.FISHING_RATE);
+
+            int exprate = YamlConfig.config.worlds.get(i).exp_rate;
+            int mesorate = YamlConfig.config.worlds.get(i).meso_rate;
+            int droprate = YamlConfig.config.worlds.get(i).drop_rate;
+            int bossdroprate = YamlConfig.config.worlds.get(i).boss_drop_rate;
+            int questrate = YamlConfig.config.worlds.get(i).quest_rate;
+            int travelrate = YamlConfig.config.worlds.get(i).travel_rate;
+            int fishingrate = YamlConfig.config.worlds.get(i).fishing_rate;
+
+            int flag = YamlConfig.config.worlds.get(i).flag;
+            String event_message = YamlConfig.config.worlds.get(i).event_message;
+            String why_am_i_recommended = YamlConfig.config.worlds.get(i).why_am_i_recommended;
             
             World world = new World(i,
-                    Integer.parseInt(p.getProperty("flag" + i)),
-                    p.getProperty("eventmessage" + i),
+                    flag,
+                    event_message,
                     exprate, droprate, bossdroprate, mesorate, questrate, travelrate, fishingrate);
 
-            worldRecommendedList.add(new Pair<>(i, p.getProperty("whyamirecommended" + i)));
+            worldRecommendedList.add(new Pair<>(i, why_am_i_recommended));
             worlds.add(world);
 
             Map<Integer, String> channelInfo = new HashMap<>();
             long bootTime = getCurrentTime();
-            for (int j = 1; j <= Integer.parseInt(p.getProperty("channels" + i)); j++) {
+            for (int j = 1; j <= YamlConfig.config.worlds.get(i).channels; j++) {
                 int channelid = j;
                 Channel channel = new Channel(i, channelid, bootTime);
 
@@ -432,7 +424,7 @@ public class Server {
 
             channels.add(i, channelInfo);
 
-            world.setServerMessage(p.getProperty("servermessage" + i));
+            world.setServerMessage(YamlConfig.config.worlds.get(i).server_message);
             System.out.println("Finished loading world " + i + "\r\n");
             
             return i;
@@ -509,18 +501,6 @@ public class Server {
             worldRecommendedList.clear();
         } finally {
             wldWLock.unlock();
-        }
-    }
-    
-    public static Properties loadWorldINI() {
-        Properties p = new Properties();
-        try {
-            p.load(new FileInputStream("world.ini"));
-            return p;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("[SEVERE] Could not find/open 'world.ini'.");
-            return null;
         }
     }
     
@@ -855,11 +835,6 @@ public class Server {
     }
     
     public void init() {
-        Properties p = loadWorldINI();
-        if(p == null) {
-            System.exit(0);
-        }
-
         System.out.println("HeavenMS v" + ServerConstants.VERSION + " starting up.\r\n");
         
         if(YamlConfig.config.server.SHUTDOWNHOOK)
@@ -936,10 +911,10 @@ public class Server {
         if(YamlConfig.config.server.USE_THREAD_TRACKER) ThreadTracker.getInstance().registerThreadTrackerTask();
         
         try {
-            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, Integer.parseInt(p.getProperty("worlds")));
+            Integer worldCount = Math.min(GameConstants.WORLD_NAMES.length, YamlConfig.config.worlds.size());
             
             for (int i = 0; i < worldCount; i++) {
-                initWorld(p);
+                initWorld();
             }
             initWorldPlayerRanking();
             
