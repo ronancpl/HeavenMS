@@ -43,6 +43,7 @@ public class ServerConfig {
     //Ip Configuration
     public String HOST;
     public boolean LOCALSERVER;
+    public boolean GMSERVER;
 
     //Other configuration
     public boolean SHUTDOWNHOOK;
