@@ -8,6 +8,13 @@ worlds:
     event_message: Scania!
     why_am_i_recommended: Welcome to Scania!
     channels: 3
+    exp_rate: 10
+    meso_rate: 10
+    drop_rate: 10
+    boss_drop_rate: 10                      #NOTE: Boss drop rate OVERRIDES common drop rate, for bosses-only.
+    quest_rate: 5                           #Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
+    fishing_rate: 10                        #Multiplier for success likelihood on meso thrown during fishing.
+    travel_rate: 10                         #Means of transportation rides/departs using 1/N of the default time.
 
     #Properties for Bera 1
   - flag: 0
@@ -284,15 +291,6 @@ server:
     #Commands Configuration
     BLOCK_GENERATE_CASH_ITEM: false     #Prevents creation of cash items with the item/drop command.
     USE_WHOLE_SERVER_RANKING: false     #Enables a ranking pool made from every character registered on the server for the "ranks" command, instead of separated by worlds.
-
-    #Server Rates And Experience
-    EXP_RATE: 10                            #NOTE: World-specific rates within "world.ini" OVERRIDES the default rates from here.
-    MESO_RATE: 10
-    DROP_RATE: 10
-    BOSS_DROP_RATE: 10                      #NOTE: Boss drop rate OVERRIDES common drop rate, for bosses-only.
-    QUEST_RATE: 5                           #Multiplier for Exp & Meso gains when completing a quest. Only available when USE_QUEST_RATE is true. Stacks with server Exp & Meso rates.
-    FISHING_RATE: 10                        #Multiplier for success likelihood on meso thrown during fishing.
-    TRAVEL_RATE: 10                         #Means of transportation rides/departs using 1/N of the default time.
 
     EQUIP_EXP_RATE: 1.0                  #Rate for equipment exp gain, grows linearly. Set 1.0 for default (about 100~200 same-level range mobs killed to pass equip from level 1 to 2).
     PQ_BONUS_EXP_RATE: 0.5               #Rate for the PQ exp reward.

@@ -136,15 +136,6 @@ public class ServerConfig {
     public boolean BLOCK_GENERATE_CASH_ITEM;
     public boolean USE_WHOLE_SERVER_RANKING;
 
-    //Server Rates And Experience
-    public int EXP_RATE;
-    public int MESO_RATE;
-    public int DROP_RATE;
-    public int BOSS_DROP_RATE;
-    public int QUEST_RATE;
-    public int FISHING_RATE;
-    public int TRAVEL_RATE;
-
     public double EQUIP_EXP_RATE;
     public double PQ_BONUS_EXP_RATE;
 

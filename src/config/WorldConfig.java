@@ -1,16 +1,16 @@
 package config;
 
 public class WorldConfig {
-    public int flag;
-    public String server_message;
-    public String event_message;
-    public String why_am_i_recommended;
-    public int channels;
-    public int exp_rate;
-    public int meso_rate;
-    public int drop_rate;
-    public int boss_drop_rate;
-    public int quest_rate;
-    public int travel_rate;
-    public int fishing_rate;
+    public int flag = 0;
+    public String server_message = "Welcome!";
+    public String event_message = "";
+    public String why_am_i_recommended = "";
+    public int channels = 1;
+    public int exp_rate = 1;
+    public int meso_rate = 1;
+    public int drop_rate = 1;
+    public int boss_drop_rate = 1;
+    public int quest_rate = 1;
+    public int travel_rate = 1;
+    public int fishing_rate = 1;
 }
