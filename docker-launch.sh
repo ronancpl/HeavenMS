@@ -1,8 +1,8 @@
 #!/bin/bash
 
-sed -i "s/HOST=.*/HOST=${HOST}/" configuration.ini
-sed -i "s|URL=.*|URL=${URL}|" configuration.ini
-sed -i "s/DB_USER=.*/DB_USER=${DB_USER}/" configuration.ini
-sed -i "s/DB_PASS=.*/DB_PASS=${DB_PASS}/" configuration.ini
+sed -i "0,/^\([[:space:]]*HOST: *\).*/s//\1xxx/;0,/\([[:space:]]*HOST: *\).*/s//\1${HOST}/;" config.yaml
+sed -i "0,/^\([[:space:]]*DB_URL: *\).*/s//\1xxx/;0,/\([[:space:]]*DB_URL: *\).*/s//\1${DB_URL}/;" config.yaml
+sed -i "0,/^\([[:space:]]*DB_USER: *\).*/s//\1xxx/;0,/\([[:space:]]*DB_USER: *\).*/s//\1${DB_USER}/;" config.yaml
+sed -i "0,/^\([[:space:]]*DB_PASS: *\).*/s//\1xxx/;0,/\([[:space:]]*DB_PASS: *\).*/s//\1${DB_PASS}/;" config.yaml
 
 exec sh ./posix-launch.sh
