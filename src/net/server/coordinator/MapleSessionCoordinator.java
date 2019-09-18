@@ -204,7 +204,7 @@ public class MapleSessionCoordinator {
                     }
                 }
 
-                if (hwidCount < ServerConstants.MAX_ALLOWED_ACCOUNT_HWID) {
+                if (hwidCount < YamlConfig.config.server.MAX_ALLOWED_ACCOUNT_HWID) {
                     return true;
                 }
             } finally {
@@ -244,7 +244,7 @@ public class MapleSessionCoordinator {
     }
 
     public boolean canStartLoginSession(IoSession session) {
-        if (!ServerConstants.DETERRED_MULTICLIENT) return true;
+        if (!YamlConfig.config.server.DETERRED_MULTICLIENT) return true;
 
         String remoteHost = getSessionRemoteAddress(session);
         Lock lock = getCoodinatorLock(remoteHost);
@@ -332,7 +332,7 @@ public class MapleSessionCoordinator {
     }
 
     public AntiMulticlientResult attemptLoginSession(IoSession session, String nibbleHwid, int accountId, boolean routineCheck) {
-        if (!ServerConstants.DETERRED_MULTICLIENT) {
+        if (!YamlConfig.config.server.DETERRED_MULTICLIENT) {
             session.setAttribute(MapleClient.CLIENT_NIBBLEHWID, nibbleHwid);
             return AntiMulticlientResult.SUCCESS;
         }
@@ -404,7 +404,7 @@ public class MapleSessionCoordinator {
 
     public AntiMulticlientResult attemptGameSession(IoSession session, int accountId, String remoteHwid) {
         String remoteHost = getSessionRemoteAddress(session);
-        if (!ServerConstants.DETERRED_MULTICLIENT) {
+        if (!YamlConfig.config.server.DETERRED_MULTICLIENT) {
             associateRemoteHostHwid(remoteHost, remoteHwid);
             return AntiMulticlientResult.SUCCESS;
         }
