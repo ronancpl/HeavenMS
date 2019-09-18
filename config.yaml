@@ -160,9 +160,6 @@ server:
     DB_PASS: ""
     DB_CONNECTION_POOL: true        #Installs a connection pool to hub DB connections. Set false to default.
 
-    #Server Version
-    VERSION: 83
-
     #Login Configuration
     WLDLIST_SIZE: 21                    #Max possible worlds on the server.
     CHANNEL_SIZE: 20                    #Max possible channels per world (which is 20, based on the channel list on login phase).

@@ -166,8 +166,8 @@ public class ServerConfig {
     public int TOT_MOB_QUEST_REQUIREMENT;
     public int MOB_REACTOR_REFRESH_TIME;
     public int PARTY_SEARCH_REENTRY_LIMIT;
-    public int NAME_CHANGE_COOLDOWN;
-    public int WORLD_TRANSFER_COOLDOWN=NAME_CHANGE_COOLDOWN;//Cooldown for world tranfers, default is same as name change (30 days).
+    public long NAME_CHANGE_COOLDOWN;
+    public long WORLD_TRANSFER_COOLDOWN=NAME_CHANGE_COOLDOWN;//Cooldown for world tranfers, default is same as name change (30 days).
     public boolean INSTANT_NAME_CHANGE;
 
     //Dangling Items/Locks Configuration
