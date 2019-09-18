@@ -28,6 +28,7 @@ import client.inventory.Item;
 import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleKarmaManipulator;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import client.inventory.manipulator.MapleInventoryManipulator;
@@ -167,7 +168,7 @@ public class StorageProcessor {
                                                 storage.sendStored(c, ItemConstants.getInventoryType(itemId));
                                         }
                                 } else if (mode == 6) { // arrange items
-                                        if(ServerConstants.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);
+                                        if(YamlConfig.config.server.USE_STORAGE_ITEM_SORT) storage.arrangeItems(c);
                                         c.announce(MaplePacketCreator.enableActions());
                                 } else if (mode == 7) { // meso
                                         int meso = slea.readInt();

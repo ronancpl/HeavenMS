@@ -23,6 +23,8 @@ package server.maps;
 
 import java.awt.Point;
 import java.util.Collection;
+
+import config.YamlConfig;
 import tools.Pair;
 
 import client.MapleCharacter;
@@ -50,7 +52,7 @@ public class MapleDoor {
         this.target = owner.getMap();
         
         if(target.canDeployDoor(targetPosition)) {
-            if(ServerConstants.USE_ENFORCE_MDOOR_POSITION) {
+            if(YamlConfig.config.server.USE_ENFORCE_MDOOR_POSITION) {
                 posStatus = target.getDoorPositionStatus(targetPosition);
             }
             

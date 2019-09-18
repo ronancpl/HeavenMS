@@ -21,6 +21,7 @@
 */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -38,7 +39,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class FamilyAddHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(!ServerConstants.USE_FAMILY_SYSTEM) {
+        if(!YamlConfig.config.server.USE_FAMILY_SYSTEM) {
             return;
         }
         String toAdd = slea.readMapleAsciiString();
@@ -58,7 +59,7 @@ public final class FamilyAddHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
         } else if(MapleInviteCoordinator.hasInvite(InviteType.FAMILY, addChr.getId())) {
             c.announce(MaplePacketCreator.sendFamilyMessage(73, 0));
-        } else if(chr.getFamily() != null && addChr.getFamily() != null && addChr.getFamily().getTotalGenerations() + chr.getFamily().getTotalGenerations() > ServerConstants.FAMILY_MAX_GENERATIONS) {
+        } else if(chr.getFamily() != null && addChr.getFamily() != null && addChr.getFamily().getTotalGenerations() + chr.getFamily().getTotalGenerations() > YamlConfig.config.server.FAMILY_MAX_GENERATIONS) {
             c.announce(MaplePacketCreator.sendFamilyMessage(76, 0));
         } else {
             MapleInviteCoordinator.createInvite(InviteType.FAMILY, chr, addChr, addChr.getId());

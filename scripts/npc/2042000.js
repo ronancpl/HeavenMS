@@ -30,8 +30,8 @@ var feeMultiplier = 7.0;
 function start() {
     status = -1;
     
-    if (!Packages.constants.ServerConstants.USE_CPQ) {
-        if (Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+    if (!Packages.constants.YamlConfig.config.server.USE_CPQ) {
+        if (Packages.constants.YamlConfig.config.server.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
             status = 0;
             action(1, 0, 4);
         } else {
@@ -221,9 +221,9 @@ function action(mode, type, selection) {
                     }
                 } else {
                     var party = cm.getParty().getMembers();
-                    if ((selection >= 0 && selection <= 3) && party.size() < (Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 2)) {
+                    if ((selection >= 0 && selection <= 3) && party.size() < (Packages.constants.YamlConfig.config.server.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 2)) {
                         cm.sendOk("You need at least 2 players to participate in the battle!");
-                    } else if ((selection >= 4 && selection <= 5) && party.size() < (Packages.constants.ServerConstants.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 3)) {
+                    } else if ((selection >= 4 && selection <= 5) && party.size() < (Packages.constants.YamlConfig.config.server.USE_ENABLE_SOLO_EXPEDITIONS ? 1 : 3)) {
                         cm.sendOk("You need at least 3 players to participate in the battle!");
                     } else {
                         cm.cpqLobby(selection);
@@ -236,7 +236,7 @@ function action(mode, type, selection) {
         } else {
             if (status == 0) {
                 var talk = "What would you like to do? If you have never participate in the Monster Carnival, you will need to know a few things before participating! \r\n#b#L0# Go to the Monster Carnival 1.#l \r\n#L3# Go to the Monster Carnival 2.#l \r\n#L1# Learn about the Monster Carnival.#l\r\n#L2# Trade #t4001129#.#l";
-                if (Packages.constants.ServerConstants.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+                if (Packages.constants.YamlConfig.config.server.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
                     talk += "\r\n#L4# ... Can I just refine my ores?#l";
                 }
                 cm.sendSimple(talk);

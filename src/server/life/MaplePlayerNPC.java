@@ -21,6 +21,7 @@
 */
 package server.life;
 
+import config.YamlConfig;
 import server.life.positioner.MaplePlayerNPCPositioner;
 import server.life.positioner.MaplePlayerNPCPodium;
 import java.awt.Point;
@@ -426,7 +427,7 @@ public class MaplePlayerNPC extends AbstractMapleMapObject {
             }
         }
         
-        if(ServerConstants.USE_DEBUG) System.out.println("GOT SID " + scriptId + " POS " + pos);
+        if(YamlConfig.config.server.USE_DEBUG) System.out.println("GOT SID " + scriptId + " POS " + pos);
         
         int worldId = chr.getWorld();
         int jobId = (chr.getJob().getId() / 100) * 100;

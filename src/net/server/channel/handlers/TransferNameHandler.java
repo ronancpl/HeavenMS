@@ -29,6 +29,7 @@ import java.sql.Connection;
 
 import client.MapleCharacter;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.DatabaseConnection;
@@ -51,7 +52,7 @@ public final class TransferNameHandler extends AbstractMaplePacketHandler {
             c.announce(MaplePacketCreator.enableActions());
             return;
         }
-        if(!ServerConstants.ALLOW_CASHSHOP_NAME_CHANGE) {
+        if(!YamlConfig.config.server.ALLOW_CASHSHOP_NAME_CHANGE) {
             c.announce(MaplePacketCreator.sendNameTransferRules(4));
             return;
         }
@@ -73,7 +74,7 @@ public final class TransferNameHandler extends AbstractMaplePacketHandler {
                 if(completedTimestamp == null) { //has pending name request
                     c.announce(MaplePacketCreator.sendNameTransferRules(1));
                     return;
-                } else if(completedTimestamp.getTime() + ServerConstants.NAME_CHANGE_COOLDOWN > System.currentTimeMillis()) {
+                } else if(completedTimestamp.getTime() + YamlConfig.config.server.NAME_CHANGE_COOLDOWN > System.currentTimeMillis()) {
                     c.announce(MaplePacketCreator.sendNameTransferRules(3));
                     return;
                 };

@@ -38,6 +38,7 @@ import client.inventory.manipulator.MapleKarmaManipulator;
 import client.processor.AssignAPProcessor;
 import client.processor.AssignSPProcessor;
 import client.processor.DueyProcessor;
+import config.YamlConfig;
 import constants.GameConstants;
 import constants.ItemConstants;
 import constants.ServerConstants;
@@ -373,7 +374,7 @@ public final class UseCashItemHandler extends AbstractMaplePacketHandler {
         } else if (itemType == 523) {
             int itemid = slea.readInt();
             
-            if(!ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
+            if(!YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) c.getWorldServer().addOwlItemSearch(itemid);
             player.setOwlSearch(itemid);
             List<Pair<MaplePlayerShopItem, AbstractMapleMapObject>> hmsAvailable = c.getWorldServer().getAvailableItemBundles(itemid);
             if(!hmsAvailable.isEmpty()) remove(c, position, itemId);

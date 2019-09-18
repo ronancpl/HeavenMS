@@ -32,7 +32,7 @@ var eim;
 var weddingEventName = "WeddingChapel";
 var cathedralWedding = false;
 var weddingIndoors;
-var weddingBlessingExp = ServerConstants.WEDDING_BLESS_EXP;
+var weddingBlessingExp = YamlConfig.config.server.WEDDING_BLESS_EXP;
 
 function detectPlayerItemid(player) {
     for (var x = 4031357; x <= 4031364; x++) {
@@ -174,7 +174,7 @@ function action(mode, type, selection) {
             if(state == 0) {    // give player blessings
                 eim.gridInsert(cm.getPlayer(), 1);
 
-                if(ServerConstants.WEDDING_BLESSER_SHOWFX) {
+                if(YamlConfig.config.server.WEDDING_BLESSER_SHOWFX) {
                     var target = cm.getPlayer();
                     target.announce(MaplePacketCreator.showSpecialEffect(9));
                     target.getMap().broadcastMessage(target, MaplePacketCreator.showForeignEffect(target.getId(), 9), false);

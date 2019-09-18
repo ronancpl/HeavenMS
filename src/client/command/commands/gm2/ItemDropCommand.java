@@ -29,6 +29,7 @@ import client.MapleCharacter;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
 import client.inventory.MaplePet;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import server.MapleItemInformationProvider;
@@ -58,7 +59,7 @@ public class ItemDropCommand extends Command {
         short quantity = 1;
         if(params.length >= 2) quantity = Short.parseShort(params[1]);
 
-        if (ServerConstants.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
+        if (YamlConfig.config.server.BLOCK_GENERATE_CASH_ITEM && ii.isCash(itemId)) {
             player.yellowMessage("You cannot create a cash item with this command.");
             return;
         }

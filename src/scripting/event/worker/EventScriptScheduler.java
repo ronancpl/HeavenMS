@@ -19,6 +19,7 @@
  */
 package scripting.event.worker;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -66,7 +67,7 @@ public class EventScriptScheduler {
             if (registeredEntries.isEmpty()) {
                 idleProcs++;
 
-                if (idleProcs >= ServerConstants.MOB_STATUS_MONITOR_LIFE) {
+                if (idleProcs >= YamlConfig.config.server.MOB_STATUS_MONITOR_LIFE) {
                     if (schedulerTask != null) {
                         schedulerTask.cancel(false);
                         schedulerTask = null;
@@ -118,7 +119,7 @@ public class EventScriptScheduler {
                             return;
                         }
 
-                        schedulerTask = TimerManager.getInstance().register(monitorTask, ServerConstants.MOB_STATUS_MONITOR_PROC, ServerConstants.MOB_STATUS_MONITOR_PROC);
+                        schedulerTask = TimerManager.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
                     }
 
                     registeredEntries.put(scheduledAction, Server.getInstance().getCurrentTime() + duration);

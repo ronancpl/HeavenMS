@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 
+import config.YamlConfig;
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import tools.*;
 
@@ -489,7 +490,7 @@ public class MapleClient {
 	}
 
 	public boolean checkPin(String other) {
-                if (!(ServerConstants.ENABLE_PIN && !canBypassPin())) {
+                if (!(YamlConfig.config.server.ENABLE_PIN && !canBypassPin())) {
                         return true;
                 }
                 
@@ -526,7 +527,7 @@ public class MapleClient {
 	}
 
 	public boolean checkPic(String other) {
-                if (!(ServerConstants.ENABLE_PIC && !canBypassPic())) {
+                if (!(YamlConfig.config.server.ENABLE_PIC && !canBypassPic())) {
                         return true;
                 }
             
@@ -592,7 +593,7 @@ public class MapleClient {
 					loginok = (tos == 0) ? 23 : 0;
 				} else if (pwd.equals(passhash) || checkHash(passhash, "SHA-1", pwd) || checkHash(passhash, "SHA-512", pwd)) {
                                         // thanks GabrielSin for detecting some no-bcrypt inconsistencies here
-					loginok = (tos == 0) ? (!ServerConstants.BCRYPT_MIGRATION ? 23 : -23) : (!ServerConstants.BCRYPT_MIGRATION ? 0 : -10); // migrate to bcrypt
+					loginok = (tos == 0) ? (!YamlConfig.config.server.BCRYPT_MIGRATION ? 23 : -23) : (!YamlConfig.config.server.BCRYPT_MIGRATION ? 0 : -10); // migrate to bcrypt
 				} else {
 					loggedIn = false;
 					loginok = 4;
@@ -1036,7 +1037,7 @@ public class MapleClient {
                                         player.saveCharToDB(true);
                                         
 					player.logOff();
-					if(ServerConstants.INSTANT_NAME_CHANGE) player.doPendingNameChange();
+					if(YamlConfig.config.server.INSTANT_NAME_CHANGE) player.doPendingNameChange();
                                         clear();
 				} else {
                                         getChannelServer().removePlayer(player);

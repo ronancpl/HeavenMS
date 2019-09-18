@@ -1,5 +1,7 @@
 package constants;
 
+import config.YamlConfig;
+
 import java.io.FileInputStream;
 import java.util.Properties;
 
@@ -325,16 +327,16 @@ public class ServerConstants {
             p.load(new FileInputStream("configuration.ini"));
 
             //Server Host
-            ServerConstants.HOST = p.getProperty("HOST");
-            ServerConstants.LOCALSERVER = ServerConstants.HOST.startsWith("127.") || ServerConstants.HOST.startsWith("localhost");
+            YamlConfig.config.server.HOST = p.getProperty("HOST");
+            YamlConfig.config.server.LOCALSERVER = YamlConfig.config.server.HOST.startsWith("127.") || YamlConfig.config.server.HOST.startsWith("localhost");
 
             //Sql Database
-            ServerConstants.DB_URL = p.getProperty("URL");
-            ServerConstants.DB_USER = p.getProperty("DB_USER");
-            ServerConstants.DB_PASS = p.getProperty("DB_PASS");
+            YamlConfig.config.server.DB_URL = p.getProperty("URL");
+            YamlConfig.config.server.DB_USER = p.getProperty("DB_USER");
+            YamlConfig.config.server.DB_PASS = p.getProperty("DB_PASS");
 
             // shutdownhook
-            ServerConstants.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
+            YamlConfig.config.server.SHUTDOWNHOOK = p.getProperty("SHUTDOWNHOOK").equalsIgnoreCase("true");
 
         } catch (Exception e) {
             e.printStackTrace();

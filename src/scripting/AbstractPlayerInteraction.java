@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import client.Skill;
+import config.YamlConfig;
 import net.server.Server;
 import net.server.channel.Channel;
 import net.server.guild.MapleGuild;
@@ -627,9 +628,9 @@ public class AbstractPlayerInteraction {
                                         it.setUpgradeSlots(3);
                                     }
                                 
-                                    if(ServerConstants.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true) {
+                                    if(YamlConfig.config.server.USE_ENHANCED_CRAFTING == true && c.getPlayer().getCS() == true) {
                                         Equip eqp = (Equip)item;
-                                        if(!(c.getPlayer().isGM() && ServerConstants.USE_PERFECT_GM_SCROLL)) {
+                                        if(!(c.getPlayer().isGM() && YamlConfig.config.server.USE_PERFECT_GM_SCROLL)) {
                                             eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
                                         }
                                         item = MapleItemInformationProvider.getInstance().scrollEquipWithId(item, 2049100, true, 2049100, c.getPlayer().isGM());
@@ -855,8 +856,8 @@ public class AbstractPlayerInteraction {
 			int base = PartyQuest.getExp(PQ, player.getLevel());
 			int exp = base * bonus / 100;
 			player.gainExp(exp, true, true);
-			if(ServerConstants.PQ_BONUS_EXP_RATE > 0 && System.currentTimeMillis() <= ServerConstants.EVENT_END_TIMESTAMP) {
-				player.gainExp((int) (exp * ServerConstants.PQ_BONUS_EXP_RATE), true, true);
+			if(YamlConfig.config.server.PQ_BONUS_EXP_RATE > 0 && System.currentTimeMillis() <= YamlConfig.config.server.EVENT_END_TIMESTAMP) {
+				player.gainExp((int) (exp * YamlConfig.config.server.PQ_BONUS_EXP_RATE), true, true);
 			}
 		}
 	}
@@ -1159,7 +1160,7 @@ public class AbstractPlayerInteraction {
         }
         
         public boolean canGetFirstJob(int jobType) {
-                if (ServerConstants.USE_AUTOASSIGN_STARTERS_AP) {
+                if (YamlConfig.config.server.USE_AUTOASSIGN_STARTERS_AP) {
                         return true;
                 }
                 

@@ -19,6 +19,7 @@
 */
 package net.server.channel.worker;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public abstract class BaseScheduler {
             if(registeredEntries.isEmpty()) {
                 idleProcs++;
                 
-                if(idleProcs >= ServerConstants.MOB_STATUS_MONITOR_LIFE) {
+                if(idleProcs >= YamlConfig.config.server.MOB_STATUS_MONITOR_LIFE) {
                     if(schedulerTask != null) {
                         schedulerTask.cancel(false);
                         schedulerTask = null;
@@ -147,7 +148,7 @@ public abstract class BaseScheduler {
         try {
             idleProcs = 0;
             if(schedulerTask == null) {
-                schedulerTask = TimerManager.getInstance().register(monitorTask, ServerConstants.MOB_STATUS_MONITOR_PROC, ServerConstants.MOB_STATUS_MONITOR_PROC);
+                schedulerTask = TimerManager.getInstance().register(monitorTask, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC, YamlConfig.config.server.MOB_STATUS_MONITOR_PROC);
             }
             
             registeredEntries.put(key, new Pair<>(removalAction, Server.getInstance().getCurrentTime() + duration));

@@ -19,6 +19,7 @@
 */
 package client;
 
+import config.YamlConfig;
 import constants.GameConstants;
 import constants.ServerConstants;
 import java.util.Arrays;
@@ -635,19 +636,19 @@ public abstract class AbstractMapleCharacterObject extends AbstractAnimatedMaple
             }
 
             int newStr = str + deltaStr, newDex = dex + deltaDex, newInt = int_ + deltaInt, newLuk = luk + deltaLuk;
-            if (newStr < 4 && deltaStr != Short.MIN_VALUE || newStr > ServerConstants.MAX_AP) {
+            if (newStr < 4 && deltaStr != Short.MIN_VALUE || newStr > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newDex < 4 && deltaDex != Short.MIN_VALUE || newDex > ServerConstants.MAX_AP) {
+            if (newDex < 4 && deltaDex != Short.MIN_VALUE || newDex > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newInt < 4 && deltaInt != Short.MIN_VALUE || newInt > ServerConstants.MAX_AP) {
+            if (newInt < 4 && deltaInt != Short.MIN_VALUE || newInt > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 
-            if (newLuk < 4 && deltaLuk != Short.MIN_VALUE || newLuk > ServerConstants.MAX_AP) {
+            if (newLuk < 4 && deltaLuk != Short.MIN_VALUE || newLuk > YamlConfig.config.server.MAX_AP) {
                 return false;
             }
 

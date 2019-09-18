@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import config.YamlConfig;
 import tools.LogHelper;
 import tools.MaplePacketCreator;
 import client.MapleCharacter;
@@ -114,7 +115,7 @@ public class MapleTrade {
 
     private void completeTrade() {
         byte result;
-        boolean show = ServerConstants.USE_DEBUG;
+        boolean show = YamlConfig.config.server.USE_DEBUG;
         items.clear();
         meso = 0;
         
@@ -147,7 +148,7 @@ public class MapleTrade {
     }
 
     private void cancel(byte result) {
-        boolean show = ServerConstants.USE_DEBUG;
+        boolean show = YamlConfig.config.server.USE_DEBUG;
         
         for (Item item : items) {
             MapleInventoryManipulator.addFromDrop(chr.getClient(), item, show);

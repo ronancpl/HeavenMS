@@ -22,6 +22,8 @@
 package constants;
 
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.HashMap;
@@ -107,7 +109,7 @@ public final class ItemConstants {
     }
     
     public static boolean isExpirablePet(int itemId) {
-        return ServerConstants.USE_ERASE_PET_ON_EXPIRATION || itemId == 5000054;
+        return YamlConfig.config.server.USE_ERASE_PET_ON_EXPIRATION || itemId == 5000054;
     }
     
     public static boolean isPermanentItem(int itemId) {

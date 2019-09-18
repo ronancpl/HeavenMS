@@ -37,6 +37,8 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.ReadLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+
+import config.YamlConfig;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -88,13 +90,13 @@ public final class Channel {
     private String ip, serverMessage;
     private MapleMapManager mapManager;
     private EventScriptManager eventSM;
-    private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[ServerConstants.CHANNEL_LOCKS];
-    private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[ServerConstants.CHANNEL_LOCKS];
-    private MobClearSkillScheduler mobClearSkillSchedulers[] = new MobClearSkillScheduler[ServerConstants.CHANNEL_LOCKS];
-    private MobMistScheduler mobMistSchedulers[] = new MobMistScheduler[ServerConstants.CHANNEL_LOCKS];
-    private FaceExpressionScheduler faceExpressionSchedulers[] = new FaceExpressionScheduler[ServerConstants.CHANNEL_LOCKS];
-    private EventScheduler eventSchedulers[] = new EventScheduler[ServerConstants.CHANNEL_LOCKS];
-    private OverallScheduler channelSchedulers[] = new OverallScheduler[ServerConstants.CHANNEL_LOCKS];
+    private MobStatusScheduler mobStatusSchedulers[] = new MobStatusScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private MobAnimationScheduler mobAnimationSchedulers[] = new MobAnimationScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private MobClearSkillScheduler mobClearSkillSchedulers[] = new MobClearSkillScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private MobMistScheduler mobMistSchedulers[] = new MobMistScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private FaceExpressionScheduler faceExpressionSchedulers[] = new FaceExpressionScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private EventScheduler eventSchedulers[] = new EventScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
+    private OverallScheduler channelSchedulers[] = new OverallScheduler[YamlConfig.config.server.CHANNEL_LOCKS];
     private Map<Integer, MapleHiredMerchant> hiredMerchants = new HashMap<>();
     private final Map<Integer, Integer> storedVars = new HashMap<>();
     private Set<Integer> playersAway = new HashSet<>();
@@ -129,7 +131,7 @@ public final class Channel {
     private ReadLock merchRlock = merchantLock.readLock();
     private WriteLock merchWlock = merchantLock.writeLock();
     
-    private MonitoredReentrantLock faceLock[] = new MonitoredReentrantLock[ServerConstants.CHANNEL_LOCKS];
+    private MonitoredReentrantLock faceLock[] = new MonitoredReentrantLock[YamlConfig.config.server.CHANNEL_LOCKS];
     
     private MonitoredReentrantLock lock = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHANNEL, true);
     
@@ -143,7 +145,7 @@ public final class Channel {
             eventSM = new EventScriptManager(this, getEvents());
             port = 7575 + this.channel - 1;
             port += (world * 100);
-            ip = ServerConstants.HOST + ":" + port;
+            ip = YamlConfig.config.server.HOST + ":" + port;
             IoBuffer.setUseDirectBuffer(false);
             IoBuffer.setAllocator(new SimpleBufferAllocator());
             acceptor = new NioSocketAcceptor();
@@ -166,7 +168,7 @@ public final class Channel {
                 dojoTask[i] = null;
             }
             
-            for(int i = 0; i < ServerConstants.CHANNEL_LOCKS; i++) {
+            for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
                 faceLock[i] = MonitoredReentrantLockFactory.createLock(MonitoredLockType.CHANNEL_FACEEXPRS, true);
                 
                 mobStatusSchedulers[i] = new MobStatusScheduler();
@@ -228,7 +230,7 @@ public final class Channel {
             }
         }
 
-        for(int i = 0; i < ServerConstants.CHANNEL_LOCKS; i++) {
+        for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
             if(mobStatusSchedulers[i] != null) {
                 mobStatusSchedulers[i].dispose();
                 mobStatusSchedulers[i] = null;
@@ -278,7 +280,7 @@ public final class Channel {
     }
     
     private void emptyLocks() {
-        for(int i = 0; i < ServerConstants.CHANNEL_LOCKS; i++) {
+        for(int i = 0; i < YamlConfig.config.server.CHANNEL_LOCKS; i++) {
             faceLock[i] = faceLock[i].dispose();
         }
         
@@ -335,7 +337,7 @@ public final class Channel {
     }
     
     public int getChannelCapacity() {
-        return (int)(Math.ceil(((float) players.getAllCharacters().size() / ServerConstants.CHANNEL_LOAD) * 800));
+        return (int)(Math.ceil(((float) players.getAllCharacters().size() / YamlConfig.config.server.CHANNEL_LOAD) * 800));
     }
 
     public void broadcastPacket(final byte[] data) {
@@ -786,7 +788,7 @@ public final class Channel {
         try {
             List<Integer> weddingReservationQueue = (cathedral ? cathedralReservationQueue : chapelReservationQueue);
         
-            int delay = ServerConstants.WEDDING_RESERVATION_DELAY - 1 - weddingReservationQueue.size();
+            int delay = YamlConfig.config.server.WEDDING_RESERVATION_DELAY - 1 - weddingReservationQueue.size();
             for(int i = 0; i < delay; i++) {
                 weddingReservationQueue.add(null);  // push empty slots to fill the waiting time
             }
@@ -869,7 +871,7 @@ public final class Channel {
                 public void run() {
                     closeOngoingWedding(cathedral);
                 }
-            }, ServerConstants.WEDDING_RESERVATION_TIMEOUT * 60 * 1000);
+            }, YamlConfig.config.server.WEDDING_RESERVATION_TIMEOUT * 60 * 1000);
             
             if(cathedral) {
                 cathedralReservationTask = weddingTask;
@@ -933,7 +935,7 @@ public final class Channel {
     }
     
     public static long getRelativeWeddingTicketExpireTime(int resSlot) {
-        return (resSlot * ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+        return (resSlot * YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
     }
     
     public String getWeddingReservationTimeLeft(Integer weddingId) {
@@ -959,7 +961,7 @@ public final class Channel {
                 return venue + " - RIGHT NOW";
             }
             
-            return venue + " - " + getTimeLeft(ongoingStartTime + (resStatus * ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000)) + " from now";
+            return venue + " - " + getTimeLeft(ongoingStartTime + (resStatus * YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000)) + " from now";
         } finally {
             lock.unlock();
         }
@@ -1019,7 +1021,7 @@ public final class Channel {
     }
     
     private static int getChannelSchedulerIndex(int mapid) {
-        int section = 1000000000 / ServerConstants.CHANNEL_LOCKS;
+        int section = 1000000000 / YamlConfig.config.server.CHANNEL_LOCKS;
         return mapid / section;
     }
     

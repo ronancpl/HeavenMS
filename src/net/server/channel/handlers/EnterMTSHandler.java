@@ -28,6 +28,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import client.MapleCharacter;
 import client.MapleClient;
@@ -49,11 +50,11 @@ public final class EnterMTSHandler extends AbstractMaplePacketHandler {
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
         MapleCharacter chr = c.getPlayer();
         
-        if(!chr.isAlive() && ServerConstants.USE_BUYBACK_SYSTEM) {
+        if(!chr.isAlive() && YamlConfig.config.server.USE_BUYBACK_SYSTEM) {
             BuybackProcessor.processBuyback(c);
             c.announce(MaplePacketCreator.enableActions());
         } else {
-            if (!ServerConstants.USE_MTS) {
+            if (!YamlConfig.config.server.USE_MTS) {
                 c.announce(MaplePacketCreator.enableActions());
                 return;
             }

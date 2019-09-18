@@ -21,6 +21,7 @@
 */
 package net.server.channel.handlers;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import net.server.world.MapleParty;
 import net.server.world.MaplePartyCharacter;
@@ -77,11 +78,11 @@ public final class PartyOperationHandler extends AbstractMaplePacketHandler {
                 String name = slea.readMapleAsciiString();
                 MapleCharacter invited = world.getPlayerStorage().getCharacterByName(name);
                 if (invited != null) {
-                    if(invited.getLevel() < 10 && (!ServerConstants.USE_PARTY_FOR_STARTERS || player.getLevel() >= 10)) { //min requirement is level 10
+                    if(invited.getLevel() < 10 && (!YamlConfig.config.server.USE_PARTY_FOR_STARTERS || player.getLevel() >= 10)) { //min requirement is level 10
                         c.announce(MaplePacketCreator.serverNotice(5, "The player you have invited does not meet the requirements."));
                         return;
                     }
-                    if(ServerConstants.USE_PARTY_FOR_STARTERS && invited.getLevel() >= 10 && player.getLevel() < 10) {    //trying to invite high level
+                    if(YamlConfig.config.server.USE_PARTY_FOR_STARTERS && invited.getLevel() >= 10 && player.getLevel() < 10) {    //trying to invite high level
                         c.announce(MaplePacketCreator.serverNotice(5, "The player you have invited does not meet the requirements."));
                         return;
                     }

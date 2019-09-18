@@ -24,6 +24,7 @@ import client.MapleCharacter;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 import client.inventory.manipulator.MapleInventoryManipulator;
@@ -238,7 +239,7 @@ public class MakerProcessor {
         Map<Integer, Integer> reagentType = new LinkedHashMap<>();
         List<Integer> toRemove = new LinkedList<>();
         
-        boolean isWeapon = ItemConstants.isWeapon(toCreate) || ServerConstants.USE_MAKER_PERMISSIVE_ATKUP;  // thanks Vcoc for finding a case where a weapon wouldn't be counted as such due to a bounding on isWeapon
+        boolean isWeapon = ItemConstants.isWeapon(toCreate) || YamlConfig.config.server.USE_MAKER_PERMISSIVE_ATKUP;  // thanks Vcoc for finding a case where a weapon wouldn't be counted as such due to a bounding on isWeapon
         
         for(Map.Entry<Integer, Short> r : reagentids.entrySet()) {
             int curRid = r.getKey();
@@ -371,8 +372,8 @@ public class MakerProcessor {
         Equip eqp = (Equip)item;
         if(ItemConstants.isAccessory(item.getItemId()) && eqp.getUpgradeSlots() <= 0) eqp.setUpgradeSlots(3);
 
-        if(ServerConstants.USE_ENHANCED_CRAFTING == true) {
-            if(!(c.getPlayer().isGM() && ServerConstants.USE_PERFECT_GM_SCROLL)) {
+        if(YamlConfig.config.server.USE_ENHANCED_CRAFTING == true) {
+            if(!(c.getPlayer().isGM() && YamlConfig.config.server.USE_PERFECT_GM_SCROLL)) {
                 eqp.setUpgradeSlots((byte)(eqp.getUpgradeSlots() + 1));
             }
             item = MapleItemInformationProvider.getInstance().scrollEquipWithId(eqp, 2049100, true, 2049100, c.getPlayer().isGM());

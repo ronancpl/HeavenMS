@@ -27,6 +27,7 @@ import client.BuddyList.BuddyOperation;
 import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.MapleFamily;
+import config.YamlConfig;
 import constants.GameConstants;
 import constants.ServerConstants;
 import java.sql.Connection;
@@ -211,13 +212,13 @@ public class World {
         merchantSchedule = tman.register(new HiredMerchantWorker(this), 10 * 60 * 1000, 10 * 60 * 1000);
         timedMapObjectsSchedule = tman.register(new TimedMapObjectWorker(this), 60 * 1000, 60 * 1000);
         charactersSchedule = tman.register(new CharacterAutosaverWorker(this), 60 * 60 * 1000, 60 * 60 * 1000);
-        marriagesSchedule = tman.register(new WeddingReservationWorker(this), ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000, ServerConstants.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
+        marriagesSchedule = tman.register(new WeddingReservationWorker(this), YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000, YamlConfig.config.server.WEDDING_RESERVATION_INTERVAL * 60 * 1000);
         mapOwnershipSchedule = tman.register(new MapOwnershipWorker(this), 20 * 1000, 20 * 1000);
         fishingSchedule = tman.register(new FishingWorker(this), 10 * 1000, 10 * 1000);
         partySearchSchedule = tman.register(new PartySearchWorker(this), 10 * 1000, 10 * 1000);
         timeoutSchedule = tman.register(new TimeoutWorker(this), 10 * 1000, 10 * 1000);
         
-        if(ServerConstants.USE_FAMILY_SYSTEM) {
+        if(YamlConfig.config.server.USE_FAMILY_SYSTEM) {
             long timeLeft = Server.getTimeLeftForNextDay();
             FamilyDailyResetWorker.resetEntitlementUsage(this);
             tman.register(new FamilyDailyResetWorker(this), 24 * 60 * 60 * 1000, timeLeft);
@@ -624,7 +625,7 @@ public class World {
     }
     
     public int getWorldCapacityStatus() {
-        int worldCap = getChannelsSize() * ServerConstants.CHANNEL_LOAD;
+        int worldCap = getChannelsSize() * YamlConfig.config.server.CHANNEL_LOAD;
         int num = players.getSize();
         
         int status;
@@ -1320,7 +1321,7 @@ public class World {
     }
     
     public List<Pair<Integer, Integer>> getOwlSearchedItems() {
-        if(ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
+        if(YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) {
             return new ArrayList<>(0);
         }
         
@@ -1355,7 +1356,7 @@ public class World {
     }
     
     private List<List<Pair<Integer, Integer>>> getBoughtCashItems() {
-        if (ServerConstants.USE_ENFORCE_ITEM_SUGGESTION) {
+        if (YamlConfig.config.server.USE_ENFORCE_ITEM_SUGGESTION) {
             List<List<Pair<Integer, Integer>>> boughtCounts = new ArrayList<>(9);
             
             // thanks GabrielSin for pointing out an issue here
@@ -1445,7 +1446,7 @@ public class World {
     }
     
     public void registerPetHunger(MapleCharacter chr, byte petSlot) {
-        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+        if(chr.isGM() && YamlConfig.config.server.GM_PETS_NEVER_HUNGRY || YamlConfig.config.server.PETS_NEVER_HUNGRY) {
             return;
         }
         
@@ -1454,8 +1455,8 @@ public class World {
         activePetsLock.lock();
         try {
             int initProc;
-            if(Server.getInstance().getCurrentTime() - petUpdate > 55000) initProc = ServerConstants.PET_EXHAUST_COUNT - 2;
-            else initProc = ServerConstants.PET_EXHAUST_COUNT - 1;
+            if(Server.getInstance().getCurrentTime() - petUpdate > 55000) initProc = YamlConfig.config.server.PET_EXHAUST_COUNT - 2;
+            else initProc = YamlConfig.config.server.PET_EXHAUST_COUNT - 1;
             
             activePets.put(key, initProc);
         } finally {
@@ -1490,7 +1491,7 @@ public class World {
             if(chr == null || !chr.isLoggedinWorld()) continue;
             
             Integer dpVal = dp.getValue() + 1;
-            if(dpVal == ServerConstants.PET_EXHAUST_COUNT) {
+            if(dpVal == YamlConfig.config.server.PET_EXHAUST_COUNT) {
                 chr.runFullnessSchedule(dp.getKey() % 4);
                 dpVal = 0;
             }
@@ -1505,7 +1506,7 @@ public class World {
     }
     
     public void registerMountHunger(MapleCharacter chr) {
-        if(chr.isGM() && ServerConstants.GM_PETS_NEVER_HUNGRY || ServerConstants.PETS_NEVER_HUNGRY) {
+        if(chr.isGM() && YamlConfig.config.server.GM_PETS_NEVER_HUNGRY || YamlConfig.config.server.PETS_NEVER_HUNGRY) {
             return;
         }
         
@@ -1513,8 +1514,8 @@ public class World {
         activeMountsLock.lock();
         try {
             int initProc;
-            if(Server.getInstance().getCurrentTime() - mountUpdate > 45000) initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 2;
-            else initProc = ServerConstants.MOUNT_EXHAUST_COUNT - 1;
+            if(Server.getInstance().getCurrentTime() - mountUpdate > 45000) initProc = YamlConfig.config.server.MOUNT_EXHAUST_COUNT - 2;
+            else initProc = YamlConfig.config.server.MOUNT_EXHAUST_COUNT - 1;
             
             activeMounts.put(key, initProc);
         } finally {
@@ -1548,7 +1549,7 @@ public class World {
             if(chr == null || !chr.isLoggedinWorld()) continue;
             
             int dpVal = dp.getValue() + 1;
-            if(dpVal == ServerConstants.MOUNT_EXHAUST_COUNT) {
+            if(dpVal == YamlConfig.config.server.MOUNT_EXHAUST_COUNT) {
                 if (!chr.runTirednessSchedule()) {
                     continue;
                 }

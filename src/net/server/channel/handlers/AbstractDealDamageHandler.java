@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import config.YamlConfig;
 import net.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.TimerManager;
@@ -462,7 +463,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                             
                             int threeSnailsId = player.getJobType() * 10000000 + 1000;
                             if(attack.skill == threeSnailsId) {
-                                if(ServerConstants.USE_ULTRA_THREE_SNAILS) {
+                                if(YamlConfig.config.server.USE_ULTRA_THREE_SNAILS) {
                                     int skillLv = player.getSkillLevel(threeSnailsId);
 
                                     if(skillLv > 0) {

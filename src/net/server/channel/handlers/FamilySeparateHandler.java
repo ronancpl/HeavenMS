@@ -22,6 +22,7 @@ package net.server.channel.handlers;
 import client.MapleClient;
 import client.MapleFamily;
 import client.MapleFamilyEntry;
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import tools.MaplePacketCreator;
@@ -31,7 +32,7 @@ public class FamilySeparateHandler extends AbstractMaplePacketHandler {
 
     @Override
     public void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(!ServerConstants.USE_FAMILY_SYSTEM) return;
+        if(!YamlConfig.config.server.USE_FAMILY_SYSTEM) return;
         MapleFamily oldFamily = c.getPlayer().getFamily();
         if(oldFamily == null) return;
         MapleFamilyEntry forkOn = null;

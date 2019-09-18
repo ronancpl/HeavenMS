@@ -25,6 +25,7 @@ package client.command.commands.gm5;
 
 import client.command.Command;
 import client.MapleClient;
+import config.YamlConfig;
 import constants.ServerConstants;
 
 public class ShowPacketsCommand extends Command {
@@ -34,6 +35,6 @@ public class ShowPacketsCommand extends Command {
 
     @Override
     public void execute(MapleClient c, String[] params) {
-        ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET = !ServerConstants.USE_DEBUG_SHOW_RCVD_PACKET;
+        YamlConfig.config.server.USE_DEBUG_SHOW_RCVD_PACKET = !YamlConfig.config.server.USE_DEBUG_SHOW_RCVD_PACKET;
     }
 }

@@ -27,6 +27,8 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
+
+import config.YamlConfig;
 import constants.ServerConstants;
 import tools.DatabaseConnection;
 import tools.Pair;
@@ -182,7 +184,7 @@ public class MapleExpeditionBossLog {
     }
     
     public static boolean attemptBoss(int cid, int channel, MapleExpedition exped, boolean log) {
-        if (!ServerConstants.USE_ENABLE_DAILY_EXPEDITIONS) {
+        if (!YamlConfig.config.server.USE_ENABLE_DAILY_EXPEDITIONS) {
             return true;
         }
         

@@ -25,6 +25,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.world.World;
@@ -62,7 +63,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
             }
             if (player != null) {
                 player.getClient().announce(MaplePacketCreator.getWhisper(c.getPlayer().getName(), c.getChannel(), text));
-                if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                if (YamlConfig.config.server.USE_ENABLE_CHAT_LOG) {
                     LogHelper.logChat(c, "Whisper To " + player.getName(), text);
                 }
                 if(player.isHidden() && player.gmLevel() >= c.getPlayer().gmLevel()) {
@@ -74,7 +75,7 @@ public final class WhisperHandler extends AbstractMaplePacketHandler {
                 World world = c.getWorldServer();
                     if (world.isConnected(recipient)) {
                         world.whisper(c.getPlayer().getName(), recipient, c.getChannel(), text);
-                        if (ServerConstants.USE_ENABLE_CHAT_LOG) {
+                        if (YamlConfig.config.server.USE_ENABLE_CHAT_LOG) {
                             LogHelper.logChat(c, "Whisper To " + recipient, text);
                         }
                         player = world.getPlayerStorage().getCharacterByName(recipient);

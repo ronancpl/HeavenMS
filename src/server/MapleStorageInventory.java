@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
@@ -359,7 +360,7 @@ public class MapleStorageInventory {
         }
         
         int invTypeCriteria = 1;
-        int sortCriteria = (ServerConstants.USE_ITEM_SORT_BY_NAME == true) ? 2 : 0;
+        int sortCriteria = (YamlConfig.config.server.USE_ITEM_SORT_BY_NAME == true) ? 2 : 0;
         PairedQuicksort pq = new PairedQuicksort(itemarray, sortCriteria, invTypeCriteria);
         
         inventory.clear();

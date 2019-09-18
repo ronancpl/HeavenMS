@@ -33,6 +33,7 @@ import client.autoban.AutobanFactory;
 import client.inventory.Equip;
 import client.inventory.Item;
 import client.inventory.MapleInventoryType;
+import config.YamlConfig;
 import constants.ServerConstants;
 import constants.skills.BlazeWizard;
 import constants.skills.Brawler;
@@ -70,7 +71,7 @@ public class AssignAPProcessor {
             int remainingAp = chr.getRemainingAp();
             slea.skip(8);
 
-            if(ServerConstants.USE_SERVER_AUTOASSIGNER) {
+            if(YamlConfig.config.server.USE_SERVER_AUTOASSIGNER) {
                 // --------- Ronan Lana's AUTOASSIGNER ---------
                 // This method excels for assigning APs in such a way to cover all equipments AP requirements.
                 byte opt = slea.readByte();     // useful for pirate autoassigning
@@ -135,7 +136,7 @@ public class AssignAPProcessor {
                         luk = scStat;
                         str = 0; dex = 0;
 
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && luk + chr.getLuk() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && luk + chr.getLuk() > CAP) {
                             temp = luk + chr.getLuk() - CAP;
                             scStat -= temp;
                             prStat += temp;
@@ -161,7 +162,7 @@ public class AssignAPProcessor {
                         str = scStat;
                         int_ = 0; luk = 0;
 
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
                             scStat -= temp;
                             prStat += temp;
@@ -187,7 +188,7 @@ public class AssignAPProcessor {
                         str = scStat;
                         int_ = 0; luk = 0;
 
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
                             scStat -= temp;
                             prStat += temp;
@@ -241,12 +242,12 @@ public class AssignAPProcessor {
                         str = trStat;
                         int_ = 0;
 
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
                             temp = dex + chr.getDex() - CAP;
                             scStat -= temp;
                             prStat += temp;
                         }
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && str + chr.getStr() > CAP) {
                             temp = str + chr.getStr() - CAP;
                             trStat -= temp;
                             prStat += temp;
@@ -313,7 +314,7 @@ public class AssignAPProcessor {
                         dex = scStat;
                         int_ = 0; luk = 0;
 
-                        if(ServerConstants.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
+                        if(YamlConfig.config.server.USE_AUTOASSIGN_SECONDARY_CAP && dex + chr.getDex() > CAP) {
                             temp = dex + chr.getDex() - CAP;
                             scStat -= temp;
                             prStat += temp;
@@ -387,44 +388,44 @@ public class AssignAPProcessor {
         int newVal = 0;
         if (type.equals(MapleStat.STR)) {
             newVal = statUpdate[0] + gain;
-            if (newVal > ServerConstants.MAX_AP) {
-                statGain[0] += (gain - (newVal - ServerConstants.MAX_AP));
-                statUpdate[0] = ServerConstants.MAX_AP;
+            if (newVal > YamlConfig.config.server.MAX_AP) {
+                statGain[0] += (gain - (newVal - YamlConfig.config.server.MAX_AP));
+                statUpdate[0] = YamlConfig.config.server.MAX_AP;
             } else {
                 statGain[0] += gain;
                 statUpdate[0] = newVal;
             }
         } else if (type.equals(MapleStat.INT)) {
             newVal = statUpdate[3] + gain;
-            if (newVal > ServerConstants.MAX_AP) {
-                statGain[3] += (gain - (newVal - ServerConstants.MAX_AP));
-                statUpdate[3] = ServerConstants.MAX_AP;
+            if (newVal > YamlConfig.config.server.MAX_AP) {
+                statGain[3] += (gain - (newVal - YamlConfig.config.server.MAX_AP));
+                statUpdate[3] = YamlConfig.config.server.MAX_AP;
             } else {
                 statGain[3] += gain;
                 statUpdate[3] = newVal;
             }
         } else if (type.equals(MapleStat.LUK)) {
             newVal = statUpdate[2] + gain;
-            if (newVal > ServerConstants.MAX_AP) {
-                statGain[2] += (gain - (newVal - ServerConstants.MAX_AP));
-                statUpdate[2] = ServerConstants.MAX_AP;
+            if (newVal > YamlConfig.config.server.MAX_AP) {
+                statGain[2] += (gain - (newVal - YamlConfig.config.server.MAX_AP));
+                statUpdate[2] = YamlConfig.config.server.MAX_AP;
             } else {
                 statGain[2] += gain;
                 statUpdate[2] = newVal;
             }
         } else if (type.equals(MapleStat.DEX)) {
             newVal = statUpdate[1] + gain;
-            if (newVal > ServerConstants.MAX_AP) {
-                statGain[1] += (gain - (newVal - ServerConstants.MAX_AP));
-                statUpdate[1] = ServerConstants.MAX_AP;
+            if (newVal > YamlConfig.config.server.MAX_AP) {
+                statGain[1] += (gain - (newVal - YamlConfig.config.server.MAX_AP));
+                statUpdate[1] = YamlConfig.config.server.MAX_AP;
             } else {
                 statGain[1] += gain;
                 statUpdate[1] = newVal;
             }
         }
         
-        if (newVal > ServerConstants.MAX_AP) {
-            return newVal - ServerConstants.MAX_AP;
+        if (newVal > YamlConfig.config.server.MAX_AP) {
+            return newVal - YamlConfig.config.server.MAX_AP;
         }
         return 0;
     }
@@ -489,7 +490,7 @@ public class AssignAPProcessor {
                     }
                     break;
                 case 2048: // HP
-                    if(ServerConstants.USE_ENFORCE_HPMP_SWAP) {
+                    if(YamlConfig.config.server.USE_ENFORCE_HPMP_SWAP) {
                         if (APTo != 8192) {
                             player.message("You can only swap HP ability points to MP.");
                             c.announce(MaplePacketCreator.enableActions());
@@ -514,13 +515,13 @@ public class AssignAPProcessor {
                     int curHp = player.getHp();
                     int hplose = -takeHp(player.getJob());
                     player.assignHP(hplose, -1);
-                    if (!ServerConstants.USE_FIXED_RATIO_HPMP_UPDATE) {
+                    if (!YamlConfig.config.server.USE_FIXED_RATIO_HPMP_UPDATE) {
                         player.updateHp(Math.max(1, curHp + hplose));
                     }
                     
                     break;
                 case 8192: // MP
-                    if(ServerConstants.USE_ENFORCE_HPMP_SWAP) {
+                    if(YamlConfig.config.server.USE_ENFORCE_HPMP_SWAP) {
                         if (APTo != 2048) {
                             player.message("You can only swap MP ability points to HP.");
                             c.announce(MaplePacketCreator.enableActions());
@@ -558,7 +559,7 @@ public class AssignAPProcessor {
                     int curMp = player.getMp();
                     int mplose = -takeMp(job);
                     player.assignMP(mplose, -1);
-                    if (!ServerConstants.USE_FIXED_RATIO_HPMP_UPDATE) {
+                    if (!YamlConfig.config.server.USE_FIXED_RATIO_HPMP_UPDATE) {
                         player.updateMp(Math.max(0, curMp + mplose));
                     }
                     break;
@@ -647,7 +648,7 @@ public class AssignAPProcessor {
                     MaxHP += increaseHP.getEffect(sLvl).getY();
             }
             
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 20;
                 } else {
@@ -657,7 +658,7 @@ public class AssignAPProcessor {
                 MaxHP += 20;
             }
         } else if(job.isA(MapleJob.ARAN1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 20;
                 } else {
@@ -667,7 +668,7 @@ public class AssignAPProcessor {
                 MaxHP += 28;
             }
         } else if (job.isA(MapleJob.MAGICIAN) || job.isA(MapleJob.BLAZEWIZARD1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 6;
                 } else {
@@ -677,7 +678,7 @@ public class AssignAPProcessor {
                 MaxHP += 6;
             }
         } else if (job.isA(MapleJob.THIEF) || job.isA(MapleJob.NIGHTWALKER1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 16;
                 } else {
@@ -687,7 +688,7 @@ public class AssignAPProcessor {
                 MaxHP += 16;
             }
         } else if(job.isA(MapleJob.BOWMAN) || job.isA(MapleJob.WINDARCHER1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 16;
                 } else {
@@ -705,7 +706,7 @@ public class AssignAPProcessor {
                     MaxHP += increaseHP.getEffect(sLvl).getY();
             }
             
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if (usedAPReset) {
                     MaxHP += 18;
                 } else {
@@ -717,7 +718,7 @@ public class AssignAPProcessor {
         } else if (usedAPReset) {
             MaxHP += 8;
         } else {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 MaxHP += Randomizer.rand(8, 12);
             } else {
                 MaxHP += 10;
@@ -732,7 +733,7 @@ public class AssignAPProcessor {
         int MaxMP = 0;
         
         if (job.isA(MapleJob.WARRIOR) || job.isA(MapleJob.DAWNWARRIOR1) || job.isA(MapleJob.ARAN1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(2, 4) + (player.getInt() / 10));
                 } else {
@@ -750,7 +751,7 @@ public class AssignAPProcessor {
                     MaxMP += increaseMP.getEffect(sLvl).getY();
             }
             
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(12, 16) + (player.getInt() / 20));
                 } else {
@@ -760,7 +761,7 @@ public class AssignAPProcessor {
                 MaxMP += 18;
             }
         } else if (job.isA(MapleJob.BOWMAN) || job.isA(MapleJob.WINDARCHER1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(6, 8) + (player.getInt() / 10));
                 } else {
@@ -770,7 +771,7 @@ public class AssignAPProcessor {
                 MaxMP += 10;
             }
         } else if(job.isA(MapleJob.THIEF) || job.isA(MapleJob.NIGHTWALKER1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(6, 8) + (player.getInt() / 10));
                 } else {
@@ -780,7 +781,7 @@ public class AssignAPProcessor {
                 MaxMP += 10;
             }
         } else if (job.isA(MapleJob.PIRATE) || job.isA(MapleJob.THUNDERBREAKER1)) {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(7, 9) + (player.getInt() / 10));
                 } else {
@@ -790,7 +791,7 @@ public class AssignAPProcessor {
                 MaxMP += 14;
             }
         } else {
-            if(ServerConstants.USE_RANDOMIZE_HPMP_GAIN) {
+            if(YamlConfig.config.server.USE_RANDOMIZE_HPMP_GAIN) {
                 if(!usedAPReset) {
                     MaxMP += (Randomizer.rand(4, 6) + (player.getInt() / 10));
                 } else {

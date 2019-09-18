@@ -25,6 +25,7 @@ import client.MapleCharacter;
 import client.MapleClient;
 import client.MapleFamilyEntitlement;
 import client.MapleFamilyEntry;
+import config.YamlConfig;
 import constants.ServerConstants;
 import net.AbstractMaplePacketHandler;
 import net.server.coordinator.MapleInviteCoordinator;
@@ -42,7 +43,7 @@ import tools.data.input.SeekableLittleEndianAccessor;
 public final class FamilyUseHandler extends AbstractMaplePacketHandler {
     @Override
     public final void handlePacket(SeekableLittleEndianAccessor slea, MapleClient c) {
-        if(!ServerConstants.USE_FAMILY_SYSTEM) {
+        if(!YamlConfig.config.server.USE_FAMILY_SYSTEM) {
             return;
         }
         MapleFamilyEntitlement type = MapleFamilyEntitlement.values()[slea.readInt()];

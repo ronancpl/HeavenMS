@@ -26,6 +26,8 @@ import client.MapleClient;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
+
+import config.YamlConfig;
 import constants.ServerConstants;
 import server.life.MapleMonster;
 import server.life.MapleMonsterInformationProvider;
@@ -156,7 +158,7 @@ public final class MoveLifeHandler extends AbstractMovementPacketHandler {
 		}
                 
 		if (movementDataLength > 0) {
-            if (ServerConstants.USE_DEBUG_SHOW_RCVD_MVLIFE) {
+            if (YamlConfig.config.server.USE_DEBUG_SHOW_RCVD_MVLIFE) {
                 System.out.println((isSkill ? "SKILL " : (isAttack ? "ATTCK " : " ")) + "castPos: " + castPos + " rawAct: " + rawActivity + " opt: " + pOption + " skillID: " + useSkillId + " skillLV: " + useSkillLevel + " " + "allowSkill: " + nextMovementCouldBeSkill + " mobMp: " + mobMp);
             }
             slea.seek(movementDataStart);

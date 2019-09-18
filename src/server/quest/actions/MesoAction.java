@@ -22,6 +22,7 @@
 package server.quest.actions;
 
 import client.MapleCharacter;
+import config.YamlConfig;
 import constants.ServerConstants;
 import provider.MapleData;
 import provider.MapleDataTool;
@@ -56,7 +57,7 @@ public class MesoAction extends MapleQuestAction {
                 if (gain < 0) {
                         chr.gainMeso(gain, true, false, true);
                 } else {
-                        if (!ServerConstants.USE_QUEST_RATE) {
+                        if (!YamlConfig.config.server.USE_QUEST_RATE) {
                                 chr.gainMeso(gain * chr.getMesoRate(), true, false, true);
                         } else {
                                 chr.gainMeso(gain * chr.getQuestMesoRate(), true, false, true);

@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.script.ScriptException;
+
+import config.YamlConfig;
 import net.server.audit.LockCollector;
 import net.server.audit.locks.MonitoredLockType;
 import net.server.audit.locks.MonitoredReentrantLock;
@@ -102,9 +104,9 @@ public class EventInstanceManager {
         private boolean eventStarted = false;
         
         // multi-leveled PQ rewards!
-        private Map<Integer, List<Integer>> collectionSet = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
-        private Map<Integer, List<Integer>> collectionQty = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
-        private Map<Integer, Integer> collectionExp = new HashMap<>(ServerConstants.MAX_EVENT_LEVELS);
+        private Map<Integer, List<Integer>> collectionSet = new HashMap<>(YamlConfig.config.server.MAX_EVENT_LEVELS);
+        private Map<Integer, List<Integer>> collectionQty = new HashMap<>(YamlConfig.config.server.MAX_EVENT_LEVELS);
+        private Map<Integer, Integer> collectionExp = new HashMap<>(YamlConfig.config.server.MAX_EVENT_LEVELS);
         
         // Exp/Meso rewards by CLEAR on a stage
         private List<Integer> onMapClearExp = new ArrayList<>();
@@ -995,7 +997,7 @@ public class EventInstanceManager {
         public final void setEventRewards(int eventLevel, List<Object> rwds, List<Object> qtys, int expGiven) {
                 // fixed EXP will be rewarded at the same time the random item is given
 
-                if(eventLevel <= 0 || eventLevel > ServerConstants.MAX_EVENT_LEVELS) return;
+                if(eventLevel <= 0 || eventLevel > YamlConfig.config.server.MAX_EVENT_LEVELS) return;
                 eventLevel--;    //event level starts from 1
 
                 List<Integer> rewardIds = convertToIntegerArray(rwds);
@@ -1105,7 +1107,7 @@ public class EventInstanceManager {
                 eventCleared = true;
                 
                 for (MapleCharacter chr : getPlayers()) {
-                        chr.awardQuestPoint(ServerConstants.QUEST_POINT_PER_EVENT_CLEAR);
+                        chr.awardQuestPoint(YamlConfig.config.server.QUEST_POINT_PER_EVENT_CLEAR);
                 }
                 
                 sL.lock();

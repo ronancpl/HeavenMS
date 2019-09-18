@@ -29,6 +29,7 @@ import client.inventory.MapleInventory;
 import client.inventory.MapleInventoryType;
 import client.inventory.manipulator.MapleInventoryManipulator;
 import client.inventory.manipulator.MapleKarmaManipulator;
+import config.YamlConfig;
 import constants.ItemConstants;
 import constants.ServerConstants;
 
@@ -369,7 +370,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                 MaplePlayerShop shop = chr.getPlayerShop();
                 MapleHiredMerchant merchant = chr.getHiredMerchant();
                 if (shop != null && shop.isOwner(chr)) {
-                    if(ServerConstants.USE_ERASE_PERMIT_ON_OPENSHOP) {
+                    if(YamlConfig.config.server.USE_ERASE_PERMIT_ON_OPENSHOP) {
                         try {
                             MapleInventoryManipulator.removeById(c, MapleInventoryType.CASH, shop.getItemId(), 1, true, false);
                         } catch(RuntimeException re) {} // fella does not have a player shop permit...
@@ -642,7 +643,7 @@ public final class PlayerInteractionHandler extends AbstractMaplePacketHandler {
                     
                     c.announce(MaplePacketCreator.updateHiredMerchant(merchant, chr));
                     
-                    if (ServerConstants.USE_ENFORCE_MERCHANT_SAVE) {
+                    if (YamlConfig.config.server.USE_ENFORCE_MERCHANT_SAVE) {
                         chr.saveCharToDB(false);
                     }
                     
