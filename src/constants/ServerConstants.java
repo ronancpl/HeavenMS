@@ -1,10 +1,5 @@
 package constants;
 
-import config.YamlConfig;
-
-import java.io.FileInputStream;
-import java.util.Properties;
-
 public class ServerConstants {
     //Server Version
     public static short VERSION = 83;
