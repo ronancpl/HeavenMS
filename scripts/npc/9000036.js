@@ -39,7 +39,7 @@ var equip;
 var maxEqp = 0;
 
 function start() {
-    if (!Packages.constants.YamlConfig.config.server.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
+    if (!Packages.config.YamlConfig.config.server.USE_ENABLE_CUSTOM_NPC_SCRIPT) {
         cm.sendOk("Hi, I'm #b#p" + cm.getNpc() + "##k.");
         cm.dispose();
         return;

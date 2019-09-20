@@ -21,7 +21,7 @@
  Marriage NPC
  */
 
-importPackage(Packages.constants);
+importPackage(Packages.config);
 importPackage(Packages.net.server.channel.handlers);
 importPackage(Packages.tools);
 importPackage(Packages.tools.packets);

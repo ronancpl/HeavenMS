@@ -25,7 +25,7 @@
 * @Map(s): Dojo Hall
 */
 
-importPackage(Packages.constants);
+importPackage(Packages.config);
 
 var disabled = false;
 var belts = Array(1132000, 1132001, 1132002, 1132003, 1132004);
